@@ -52,6 +52,27 @@ class ParRoleForm extends ParBaseForm {
       $this->getFlowDataHandler()->setParameter('user', $account);
     }
 
+    // Determine whether the person has any organisation or authority memberships
+    // and can be given organisation roles.
+    $select_institution_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
+    if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
+      $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_institution_cid);
+      $organisations = $par_data_person->updateOrganisationMemberships($organisation_ids, FALSE);
+
+      $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_institution_cid);
+      $authorities = $par_data_person->updateAuthorityMemberships($authority_ids, FALSE);
+
+      // If there aren't any organisations for this user then organisation roles can't be assinged.
+      if (empty($organisations)) {
+        $this->getFlowDataHandler()->setFormPermValue("user_has_organisation", FALSE);
+      }
+
+      // If there aren't any authorities for this user then authority roles can't be assinged.
+      if (empty($authorities)) {
+        $this->getFlowDataHandler()->setFormPermValue("user_has_authority", FALSE);
+      }
+    }
+
     parent::loadData();
   }
 

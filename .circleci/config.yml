@@ -286,7 +286,7 @@ jobs:
       - run:
           name: "Deploy to production environment"
           command: |
-            DEPLOY_ENV="production-test"
+            DEPLOY_ENV="production"
             printf "$DEPLOY_ENV\n"
             if ! test $(git rev-parse master) = $(git rev-parse $CIRCLE_TAG^{commit}); then
               echo "Tags can only be deployed from the master branch"
@@ -332,7 +332,7 @@ jobs:
           command: |
             cf login -a api.cloud.service.gov.uk -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
             cf target -o office-for-product-safety-and-standards -s primary-authority-register-production
-            cf run-task par-beta-production "./scripts/db-backup.sh production -p" --name DB_ARCHIVE
+            cf run-task beis-par-production "./scripts/db-backup.sh production -p" --name DB_ARCHIVE
 
   sanitise_database:
     <<: *defaults
@@ -487,8 +487,7 @@ workflows:
               only:
                 - master
     jobs:
-      - archive_database:
-          context: production
+      - archive_database
 
   db_sanitise:
     triggers:

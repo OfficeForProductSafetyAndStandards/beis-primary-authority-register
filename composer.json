@@ -22,6 +22,7 @@
         "drupal/address": "~1.4.0",
         "drupal/better_exposed_filters": "~3.0.0",
         "drupal/big_pipe_sessionless": "~1.2.0",
+        "drupal/chosen": "~2.7.0",
         "drupal/clamav": "~1.1.0",
         "drupal/config_readonly": "~1.0.0",
         "drupal/config_split": "~1.4.0",
@@ -183,7 +184,7 @@
     "scripts": {
         "post-install-cmd": [
             "@composer drupal-scaffold",
-            "alias drush='/var/www/par-beta/vendor/bin/drush'"
+            "alias drush='/var/www/par/vendor/drush/drush/drush'"
         ],
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold"
     }

@@ -3,8 +3,10 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\Component\Datetime\DateTimePlus;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\TypedData\Type\DateTimeInterface;
 use Drupal\par_data\ParDataException;
 
 /**
@@ -96,14 +98,28 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
    * @param string $date
    *   The date this member was ceased.
    */
-  public function cease($date = '', $save = TRUE) {
-    if (!empty($date)) {
-      $this->set('date_membership_ceased', $date);
+  public function cease(DrupalDateTime $date = NULL, $save = TRUE) {
+    // Members can be ceased without a date.
+    if (empty($date)) {
+      return parent::revoke($save);
     }
 
-    // Ceasing a member has the same purpose as revoking partnerships
-    // so we use the same methods and status.
-    return parent::revoke($save);
+    $this->set('date_membership_ceased', $date->format('Y-m-d'));
+
+    $current_date = new DrupalDateTime();
+
+    // Only cease the membership if the expiry date is in the past.
+    if ($date < $current_date) {
+      // Ceasing a member has the same purpose as revoking partnerships
+      // so we use the same methods and status.
+      return parent::revoke($save);
+    }
+    elseif ($save) {
+      $this->save();
+    }
+
+    // If the member hasn't been immediately ceased return FALSE.
+    return FALSE;
   }
 
   /**

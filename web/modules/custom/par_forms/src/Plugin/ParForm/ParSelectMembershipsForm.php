@@ -64,16 +64,24 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
     }
     $this->getFlowDataHandler()->setFormPermValue('par_data_authority_id', $authority_ids);
 
-    // Get the memberships for the current user.
-    $current_user = $this->getFlowNegotiator()->getCurrentUser();
-    $memberships = $this->getParDataManager()->hasMemberships($current_user, TRUE);
+    // If the user has permissions to select from all memberships.
+    if ($this->getFlowNegotiator()->getCurrentUser()->hasPermission('assign all memberships')) {
+      $organisation_options = $this->getParDataManager()->getEntitiesByProperty('par_data_organisation', 'deleted', 0);
+      $authority_options = $this->getParDataManager()->getEntitiesByProperty('par_data_authority', 'deleted', 0);
+    }
+    else {
+      // Get the memberships for the current user.
+      $current_user = $this->getFlowNegotiator()->getCurrentUser();
+      $memberships = $this->getParDataManager()
+        ->hasMemberships($current_user, TRUE);
 
-    $organisation_options = array_filter($memberships, function ($membership) {
-      return ('par_data_organisation' === $membership->getEntityTypeId());
-    });
-    $authority_options = array_filter($memberships, function ($membership) {
-      return ('par_data_authority' === $membership->getEntityTypeId());
-    });
+      $organisation_options = array_filter($memberships, function ($membership) {
+        return ('par_data_organisation' === $membership->getEntityTypeId());
+      });
+      $authority_options = array_filter($memberships, function ($membership) {
+        return ('par_data_authority' === $membership->getEntityTypeId());
+      });
+    }
 
     $this->getFlowDataHandler()->setFormPermValue('organisation_options', $this->getParDataManager()->getEntitiesAsOptions($organisation_options, []));
     $this->getFlowDataHandler()->setFormPermValue('authority_options', $this->getParDataManager()->getEntitiesAsOptions($authority_options, []));
@@ -89,11 +97,30 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
     $organisation_options = $this->getFlowDataHandler()->getFormPermValue('organisation_options');
     $authority_options = $this->getFlowDataHandler()->getFormPermValue('authority_options');
 
+    // Should the user be able to select multiple options.
+    $multiple = $this->getFlowDataHandler()->getDefaultValues('allow_multiple', FALSE);
+
+    // Identify the type of selection interface that should be used.
+    if (count($organisation_options) > 10 || count($authority_options) > 10) {
+      $base = [
+        '#type' => 'select',
+        '#multiple' => $multiple ? TRUE : FALSE
+      ];
+    }
+    elseif ($multiple) {
+      $base = [
+        '#type' => 'checkboxes'
+      ];
+    }
+    else {
+      $base = [
+        '#type' => 'radios'
+      ];
+    }
+
     if (!empty($organisation_options)) {
-      $multiple = $this->getFlowDataHandler()->getDefaultValues('allow_multiple', FALSE);
       $default_value = $this->getDefaultValuesByKey("par_data_organisation_id", $cardinality, NULL);
-      $form['par_data_organisation_id'] = [
-        '#type' => $multiple ? 'checkboxes' : 'radios',
+      $form['par_data_organisation_id'] = $base + [
         '#title' => t('Which organisations are they a member of?'),
         '#options' => $organisation_options,
         '#default_value' => $multiple ? (array) $default_value : $default_value,
@@ -103,9 +130,9 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
 
     if (!empty($authority_options)) {
       $multiple = $this->getFlowDataHandler()->getDefaultValues('allow_multiple', FALSE);
+
       $default_value = $this->getDefaultValuesByKey("par_data_authority_id", $cardinality, NULL);
-      $form['par_data_authority_id'] = [
-        '#type' => $multiple ? 'checkboxes' : 'radios',
+      $form['par_data_authority_id'] = $base + [
         '#title' => t('Which authorities are they a member of?'),
         '#options' => $authority_options,
         '#default_value' => $multiple ? (array) $default_value : $default_value,

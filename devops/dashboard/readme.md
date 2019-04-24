@@ -18,7 +18,7 @@
 
 ## Deploy to Cloud Foundry
 
-	cf push par-beta-dashboard
+	cf push beis-par-dashboard
 	cf set-env par-dashboard BEIS_PAR_PUBNUB_PUBLISH_KEY **********
 	cf set-env par-dashboard BEIS_PAR_PUBNUB_SUBSCRIBE_KEY **********
 	cf set-env par-dashboard UPTIME_ROBOT_API_KEY **********
