@@ -11,6 +11,21 @@ par_partnership_flows.authority_details:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+# PAR Data Authority Partnership Advice document view.
+par_partnership_flows.advice_details:
+  path: '/partnership/{par_data_partnership}/advice-details/{par_data_advice}'
+  defaults:
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::build'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::titleCallback'
+  requirements:
+    _permission: 'update partnership authority details'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_advice:
+        type: entity:par_data_advice
 par_partnership_flows.about_partnership:
   path: '/partnership/{par_data_partnership}/about'
   defaults:

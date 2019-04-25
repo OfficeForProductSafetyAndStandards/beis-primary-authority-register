@@ -126,6 +126,16 @@ class ParDataAdvice extends ParDataEntity {
   }
 
   /**
+   * Get PAR Advice summary.
+   *
+   * @return string
+   *   advice entity title.
+   */
+  public function getAdviceSummary() {
+    return $this->get('advice_summary')->getString();
+  }
+
+  /**
    * Get the issue date for this Advice.
    */
   public function getIssueDate() {

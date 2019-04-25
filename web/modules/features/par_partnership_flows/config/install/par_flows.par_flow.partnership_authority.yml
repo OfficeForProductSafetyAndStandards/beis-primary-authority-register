@@ -103,3 +103,7 @@ steps:
       done: 1
   15:
     route: view.par_user_partnerships.partnerships_page
+  16:
+    route: par_partnership_flows.advice_details
+    redirect:
+      done: 1
