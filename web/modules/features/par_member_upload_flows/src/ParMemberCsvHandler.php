@@ -936,8 +936,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    */
   public function canDestroyMember(ParDataCoordinatedBusiness $member) {
     if ($par_data_organisation = $member->getOrganisation(TRUE)) {
-      $par_data_enforcement_notices = $par_data_organisation->getRelationships('par_data_enforcement_notice');
-      foreach ($par_data_enforcement_notices as $uuid => $relationship) {
+      foreach ($par_data_organisation->getRelationships('par_data_enforcement_notice') as $uuid => $relationship) {
         if ($relationship->getEntity()->isLiving()) {
           return FALSE;
         }
