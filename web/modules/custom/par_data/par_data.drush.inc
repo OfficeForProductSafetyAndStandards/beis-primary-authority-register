@@ -70,29 +70,117 @@ function par_data_drush_command() {
 function drush_par_data_par_cache_warm() {
   $par_data_manager = \Drupal::service('par_data.manager');
 
-  $authorities = $par_data_manager->getEntitiesByType('par_data_authority');
-  $i = 0;
-  $authority_count = count($authorities);
-  foreach ($authorities as $authority) {
-    $authority->getRelationships();
-    if ($i % 100 == 0 && $i > 0) {
-      drush_print("Warmed $i out of $authority_count authorities");
-    }
-    $i++;
-  }
-  drush_print("Completed warming par authorities");
+//  $par_data_organisation = $par_data_manager->getEntitiesByType('par_data_organisation');
+//  $par_data_authority = $par_data_manager->getEntitiesByType('par_data_authority');
+//  $par_data_coordinated_business = $par_data_manager->getEntitiesByType('par_data_coordinated_business');
+//  $par_data_advice = $par_data_manager->getEntitiesByType('par_data_advice');
+//  $par_data_inspection_plan = $par_data_manager->getEntitiesByType('par_data_inspection_plan');
+//  $par_data_inspection_feedback = $par_data_manager->getEntitiesByType('par_data_inspection_feedback');
+//  $par_data_general_enquiry = $par_data_manager->getEntitiesByType('par_data_general_enquiry');
+//  $par_data_deviation_request = $par_data_manager->getEntitiesByType('par_data_deviation_request');
+//  $par_data_information_referral = $par_data_manager->getEntitiesByType('par_data_information_referral');
+//  $par_data_legal_entity = $par_data_manager->getEntitiesByType('par_data_legal_entity');
+//  $par_data_enforcement_notice = $par_data_manager->getEntitiesByType('par_data_enforcement_notice');
+//  $par_data_enforcement_action = $par_data_manager->getEntitiesByType('par_data_enforcement_action');
+//  $par_data_sic_code = $par_data_manager->getEntitiesByType('par_data_sic_code');
+//  $par_data_person = $par_data_manager->getEntitiesByType('par_data_person');
+//  $par_data_premises = $par_data_manager->getEntitiesByType('par_data_premises');
+//  $par_data_partnership = $par_data_manager->getEntitiesByType('par_data_partnership');
+//  $par_data_regulatory_function = $par_data_manager->getEntitiesByType('par_data_regulatory_function');
+//
+  $count = 0;
 
-  $organisations = $par_data_manager->getEntitiesByType('par_data_organisation');
-  $i=0;
-  $organisation_count = count($organisations);
-  foreach ($organisations as $organisation) {
-    $organisation->getRelationships();
-    if ($i % 100 == 0 && $i > 0) {
-      drush_print("Warmed $i out of $organisation_count organisations");
-    }
-    $i++;
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+  foreach ($par_data_manager->getEntitiesByType('par_data_organisation') as $entity) {
+    $count++;
+    $entity->getRelationships();
   }
-  drush_print("Completed warming par organisations");
 
-  return 'Cache warmed for authorities and organisations.';
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+  foreach ($par_data_manager->getEntitiesByType('par_data_authority') as $entity) {
+    $count++;
+    $entity->getRelationships();
+  }
+
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+  foreach ($par_data_manager->getEntitiesByType('par_data_coordinated_business') as $entity) {
+    $count++;
+    $entity->getRelationships();
+  }
+
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+  foreach ($par_data_manager->getEntitiesByType('par_data_advice') as $entity) {
+    $count++;
+    $entity->getRelationships();
+  }
+
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+  foreach ($par_data_manager->getEntitiesByType('par_data_inspection_plan') as $entity) {
+    $count++;
+    $entity->getRelationships();
+  }
+
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+  foreach ($par_data_manager->getEntitiesByType('par_data_inspection_feedback') as $entity) {
+    $count++;
+    $entity->getRelationships();
+  }
+
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+  foreach ($par_data_manager->getEntitiesByType('par_data_general_enquiry') as $entity) {
+    $count++;
+    $entity->getRelationships();
+  }
+
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+  foreach ($par_data_manager->getEntitiesByType('par_data_deviation_request') as $entity) {
+    $count++;
+    $entity->getRelationships();
+  }
+
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+  foreach ($par_data_manager->getEntitiesByType('par_data_information_referral') as $entity) {
+    $count++;
+    $entity->getRelationships();
+  }
+
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+  foreach ($par_data_manager->getEntitiesByType('par_data_legal_entity') as $entity) {
+    $count++;
+    $entity->getRelationships();
+  }
+
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+  foreach ($par_data_manager->getEntitiesByType('par_data_enforcement_notice') as $entity) {
+    $count++;
+    $entity->getRelationships();
+  }
+
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+  foreach ($par_data_manager->getEntitiesByType('par_data_enforcement_action') as $entity) {
+    $count++;
+    $entity->getRelationships();
+  }
+
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+  foreach ($par_data_manager->getEntitiesByType('par_data_person') as $entity) {
+    $count++;
+    $entity->getRelationships();
+  }
+
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+  foreach ($par_data_manager->getEntitiesByType('par_data_premises') as $entity) {
+    $count++;
+    $entity->getRelationships();
+  }
+
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+  foreach ($par_data_manager->getEntitiesByType('par_data_partnership') as $entity) {
+    $count++;
+    $entity->getRelationships();
+  }
+
+  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB before iteration ' . $i . PHP_EOL;
+
+  return "Cache warmed for all $count data entities.";
 }

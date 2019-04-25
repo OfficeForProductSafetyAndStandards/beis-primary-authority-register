@@ -708,7 +708,9 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       });
     }
 
-    return $relationships;
+    foreach ($relationships as $uuid => $relationship) {
+      yield $uuid => $relationship;
+    }
   }
 
   /**
