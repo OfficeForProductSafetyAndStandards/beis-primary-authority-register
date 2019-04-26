@@ -138,7 +138,8 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
    */
   public function destroy() {
     // Freeze memberships that have active enforcement notices.
-    foreach ($this->getRelationships('par_data_enforcement_notice') as $uuid => $relationship) {
+    $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
+    foreach ($enforcement_notices as $uuid => $relationship) {
       if ($relationship->getEntity()->isLiving()) {
         return;
       }

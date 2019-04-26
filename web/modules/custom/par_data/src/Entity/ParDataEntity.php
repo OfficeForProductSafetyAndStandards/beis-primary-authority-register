@@ -587,7 +587,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function getDependents($dependents = []) {
     if (isset($this->dependents)) {
       foreach ($this->dependents as $entity_type) {
-        foreach ($this->getRelationships($entity_type) as $uuid => $relationship) {
+        $relationships = $this->getRelationships($entity_type);
+        foreach ($relationships as $uuid => $relationship) {
           // Don't get yer knickers in a twist and go loopy.
           if ($relationship->getEntity()->uuid() === $this->uuid()) {
             continue;
@@ -613,7 +614,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function getRequiredRelationships() {
     // As a general rule, any entities that reference this entity
     // should stop this entity being deleted.
-    $relationships = iterator_to_array($this->getRelationships(NULL, 'dependents'));
+    $relationships = $this->getRelationships(NULL, 'dependents');
     $relationships = array_filter($relationships, function ($relationship) {
       return ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE);
     });
@@ -632,7 +633,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   Whether to reset the cache.
    *
    * @return ParDataRelationship[]
-   *   A Generator of entities keyed by uuid.
+   *   An array of entities keyed by type.
    */
   public function getRelationships($target = NULL, $action = NULL, $reset = FALSE) {
     $random = new Random();
@@ -707,9 +708,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       });
     }
 
-    foreach ($relationships as $uuid => $relationship) {
-      yield $uuid => $relationship;
-    }
+    return $relationships;
   }
 
   /**
