@@ -632,7 +632,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   Whether to reset the cache.
    *
    * @return ParDataRelationship[]
-   *   An array of entities keyed by type.
+   *   A Generator of entities keyed by uuid.
    */
   public function getRelationships($target = NULL, $action = NULL, $reset = FALSE) {
     $random = new Random();

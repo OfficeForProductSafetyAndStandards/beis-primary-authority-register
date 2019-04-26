@@ -706,6 +706,13 @@ class ParDataManager implements ParDataManagerInterface {
    *   PAR People related to the user account.
    */
   public function getUserPeople(UserInterface $account) {
+    // Cache this function per request.
+    $function_id = __FUNCTION__ . $account->get('mail')->getString();
+    $entities = &drupal_static($function_id);
+    if (!empty($entities)) {
+      return $entities;
+    }
+
     $conditions = [
       [
         'AND' => [
