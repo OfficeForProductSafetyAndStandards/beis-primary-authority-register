@@ -121,7 +121,7 @@ class ParDashboardsDashboardController extends ControllerBase {
       $build['partnerships'] = [
         '#lazy_builder' => [
           'par_dashboards.components:managePartnershipComponent',
-          [TRUE]
+          [FALSE]
         ],
         '#create_placeholder' => TRUE
       ];
