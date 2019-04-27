@@ -261,6 +261,10 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
         $par_data_advice->set('document', $files_to_add);
       }
 
+      // Set the issue date value for the advice entity.
+      $time = new \DateTime();
+      $par_data_advice->set('issue_date', $time->format("d--m-Y"));
+
       if ($par_data_advice->save()) {
         $this->getFlowDataHandler()->deleteStore();
       }
