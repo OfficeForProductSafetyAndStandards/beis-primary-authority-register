@@ -6,6 +6,7 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+use \Drupal\views\Views;
 
 /**
  * A controller for rendering a list of advice documents.
@@ -20,104 +21,14 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
    * {@inheritdoc}
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
-    $advice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_advice');
 
-    // Show the documents in table format.
-    $build['documentation_list'] = [
-      '#theme' => 'table',
-      '#attributes' => ['class' => ['form-group']],
-      '#title' => 'Advice documentation',
-      '#header' => [
-        'Issue Date',
-        'Title',
-        'Type of document and regulatory functions',
-        'Actions',
-        'Status',
+    $par_data_partnership_id = !empty($par_data_partnership) ? $par_data_partnership->id() : NULL;
 
-      ],
-      '#empty' => $this->t("There is no documentation for this partnership."),
-    ];
-
-    // Get each Advice document and add as a table row.
-    foreach ($par_data_partnership->getAdvice() as $key => $advice) {
-
-      $file_list = [];
-
-      $advice_view_builder = $this->getParDataManager()->getViewBuilder('par_data_advice');
-
-      $advice_files = $advice->get('document')->referencedEntities();
-
-      foreach ($advice_files as $file) {
-        $file_list[] = $file->getFileName();
-      }
-
-      // The first column contains a rendered summary of the document.
-      $advice_summary = $advice_view_builder->view($advice, 'summary');
-
-      // The second column contains a summary of the confirmed details.
-      $advice_details = '';
-      $advice_type_value = $advice->get('advice_type')->getString();
-      if ($advice_type = $advice->getTypeEntity()->getAllowedFieldlabel('advice_type', $advice_type_value)){
-        $advice_details = "{$advice_type}";
-        if ($regulatory_functions = $advice->getRegulatoryFunction()) {
-          $advice_details .= " covering: " . PHP_EOL;
-          $names = [];
-          foreach ($regulatory_functions as $regulatory_function) {
-            $names[] = $regulatory_function->get('function_name')->getString();
-          }
-          $advice_details .= implode(', ', $names);
-        }
-      }
-
-
-      if ($advice_summary) {
-        $build['documentation_list']['#rows'][$key] = [
-          'data' => [
-            'issue_date' => $advice->getIssueDate(),
-            'title' => $advice->getAdviceTitle(),
-            'type' => $advice_details,
-          ],
-        ];
-      }
-
-      // Check permissions before adding the links for all operations.
-      if ($this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
-
-        // Create custom title element to add context to the edit link.
-        $file_list_title = implode(", ", $file_list);
-
-        // We need to create an array of all action links.
-        $links = [
-          [
-            '#type' => 'markup',
-            '#markup' => $this->getFlowNegotiator()->getFlow()
-              ->getNextLink(
-                'edit',
-                ['par_data_advice' => $advice->id()],
-                ['attributes' => ['title' => "edit {$file_list_title}"]]
-              )
-              ->setText('edit')
-              ->toString(),
-          ],
-        ];
-
-        if ($advice->getRawStatus() === 'active') {
-          $advice_action = $this->getRenderer()->render($links);
-        } else {
-          $advice_action = t('None');
-        }
-        $build['documentation_list']['#rows'][$key]['data']['actions'] = $advice_action;
-      }
-      $build['documentation_list']['#rows'][$key]['data']['status'] = $advice->getParStatus();
-      // Make sure to add the document cacheability data to this form.
-      $this->addCacheableDependency($advice);
-      $this->addCacheableDependency(current($advice->get('document')->referencedEntities()));
-    }
+    $advice_search_block_exposed  = views_embed_view('partnership_search', 'advice_search_block_exposed', $par_data_partnership_id);
+    $build['advice_search_block'] = $advice_search_block_exposed;
 
     // Check permissions before adding the links for all operations.
     if ($this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
-     // $build['documentation_list']['#header'][] = 'Actions';
-
       $build['actions'] = [
         '#type' => 'fieldset',
         '#attributes' => ['class' => 'form-group'],
@@ -136,13 +47,6 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
         ];
       }
     }
-
-    // Make sure to add the partnership cacheability data to this form.
-    $this->addCacheableDependency($par_data_partnership);
-    $this->addCacheableDependency($advice_bundle);
-
     return parent::build($build);
-
   }
-
 }
