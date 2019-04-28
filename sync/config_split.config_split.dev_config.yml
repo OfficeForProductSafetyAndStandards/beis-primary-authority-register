@@ -4,7 +4,6 @@ status: true
 dependencies: {  }
 id: dev_config
 label: 'Dev Config'
-description: ''
 folder: ../sync-dev
 module:
   config_inspector: 0
@@ -15,8 +14,7 @@ module:
 theme: {  }
 blacklist:
   - par_data.settings
-graylist:
-  - user.role.authenticated
+graylist: {  }
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 0
