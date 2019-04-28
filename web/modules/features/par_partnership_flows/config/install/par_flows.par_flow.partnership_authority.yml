@@ -87,7 +87,7 @@ steps:
     route: par_partnership_flows.advice_edit_documents
     form_id: par_partnership_advice_upload_edit
     redirect:
-      upload: 10
+      upload: 13
       cancel: 8
   13:
     route: par_partnership_flows.advice_edit
