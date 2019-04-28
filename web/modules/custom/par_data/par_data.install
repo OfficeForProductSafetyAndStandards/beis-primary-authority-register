@@ -613,4 +613,3 @@ function par_data_update_8037() {
 function par_data_update_8038() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
-
