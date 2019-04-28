@@ -1755,10 +1755,10 @@ display:
           entity_type: par_data_regulatory_function
           entity_field: function_name
           plugin_id: field
-        par_status_time:
-          id: par_status_time
+        changed:
+          id: changed
           table: par_advice_field_data
-          field: par_status_time
+          field: changed
           relationship: field_advice
           group_type: group
           admin_label: ''
@@ -1795,7 +1795,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -1803,8 +1803,25 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          click_sort_column: value
+          type: timestamp
+          settings:
+            date_format: gds_date_format
+            custom_date_format: ''
+            timezone: Europe/London
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
           entity_type: par_data_advice
-          plugin_id: par_data_status_time
+          entity_field: changed
+          plugin_id: field
         advice_title:
           id: advice_title
           table: par_advice_field_data
@@ -2064,7 +2081,7 @@ display:
           exposed: true
           expose:
             operator_id: combine_op
-            label: 'Advice Title/ Type/ Regulatory function / Status'
+            label: 'Advice Title/ Type/ Regulatory function'
             description: 'Enter keyword(s)'
             use_operator: false
             operator: combine_op
@@ -2210,6 +2227,50 @@ display:
             group_items: {  }
           entity_type: par_data_partnership
           entity_field: revoked
+          plugin_id: boolean
+        deleted:
+          id: deleted
+          table: par_advice_field_data
+          field: deleted
+          relationship: field_advice
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: Archived
+            description: ''
+            use_operator: false
+            operator: deleted_op
+            identifier: deleted
+            required: true
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              par_authority: '0'
+              par_enforcement: '0'
+              par_organisation: '0'
+              par_helpdesk: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: par_data_advice
+          entity_field: deleted
           plugin_id: boolean
       filter_groups:
         operator: AND
