@@ -21,6 +21,7 @@
         "drupal-composer/drupal-scaffold": "~2.3.0",
         "drupal/address": "~1.4.0",
         "drupal/better_exposed_filters": "~3.0.0",
+        "drupal/big_pipe_sessionless": "~1.2.0",
         "drupal/chosen": "~2.7.0",
         "drupal/clamav": "~1.1.0",
         "drupal/config_readonly": "~1.0.0",
