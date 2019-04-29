@@ -65,6 +65,21 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataSicCode extends ParDataEntity {
 
   /**
+   * Allows all relationships to be skipped.
+   */
+  public function lookupReferencesByAction($action = NULL) {
+    switch ($action) {
+      case 'manage':
+        // Regulatory functions are treated as non-membership entities and therefore
+        // their references are irrelevant when performing membership lookups.
+        return FALSE;
+
+    }
+
+    return parent::lookupReferencesByAction($action);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function filterRelationshipsByAction($relationship, $action) {
