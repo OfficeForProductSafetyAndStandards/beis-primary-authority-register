@@ -4,11 +4,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [28.1.0] - 2019-05-01
+### Fixed
+- Improved performance issues for authorities and organisations with lots of users.
+### Updated
+- Upgraded core software.
+
+## [28.1.0] - 2019-04-10
+### Fixed
+- Resolved issues with members being incorrectly expired when uploading membership CSV files.
+- Improved error messages when uploading membership CSV files.
+- Resolved issue showing incorrect enforcement officer on referred enforcement notices.
+### Added
+- Better selection mechanism to allow members of the Processing Team to more easily create users and enforcement notices.
+- Better caching to increase performance to all users.
+
+## [28.0.0] - 2019-04-03
+### Added
+- Users can now add and update members in their organisations or authorities.
+- Users can now re-issue invites to users that may not have received them.
+- Users can change roles and remove members from their organisations or authorities.
+
+## [27.1.0] - 2019-03-13
+### Updated
+- Fixes to resolve issues with the CSV export for admin users.
+
 ## [27.0.3] - 2019-03-04
 ### Updated
 - Critical security fixes
-- Resolved issues when clicking notification links
-- Stopped users from updating legal entities for active partnerships
+- Resolved issues when clicking notification links.
+- Stopped users from updating legal entities for active partnerships.
 
 ## [27.0.0] - 2018-11-26
 ### Added
