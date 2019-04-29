@@ -98,10 +98,13 @@ class ParDataAdvice extends ParDataEntity {
    * @param boolean $save
    *   Whether to save the entity after revoking.
    *
+   * @param boolean $archive_reason
+   *   Reason for archiving this entity.
+   *
    * @return boolean
    *   True if the entity was restored, false for all other results.
    */
-  public function archive($save = TRUE) {
+  public function archive($save = TRUE, $archive_reason) {
     if ($this->isNew()) {
       $save = FALSE;
     }
@@ -113,6 +116,9 @@ class ParDataAdvice extends ParDataEntity {
 
       // Set the advice status field.
       $this->set('advice_status', 'archived');
+
+      // Set the advice archive reason.
+      $this->set('archive_reason', $archive_reason);
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
