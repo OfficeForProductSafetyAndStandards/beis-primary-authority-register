@@ -300,7 +300,7 @@ class ParDataManager implements ParDataManagerInterface {
     }
 
     // Get all the relationships based on the given action
-    $relationships = iterator_to_array($entity->getRelationships(NULL, $action));
+    $relationships = $entity->getRelationships(NULL, $action);
 
     // Remove any universally banned relationships.
     $relationships = array_filter($relationships, function ($relationship) use ($iteration) {
@@ -712,7 +712,7 @@ class ParDataManager implements ParDataManagerInterface {
     if (!empty($entities)) {
       return $entities;
     }
-
+    
     $conditions = [
       [
         'AND' => [
