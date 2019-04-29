@@ -344,7 +344,9 @@ jobs:
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${UNSANITISED_DATABASE}-latest.tar.gz"
           to: backups/unsanitised-db.tar.gz
-          arguments: '--region eu-west-1'
+          arguments: |
+            --region eu-west-1 \
+            --cache-control "max-age=0"
       - run:
           name: "Unpacking database"
           command: cd backups && tar --no-same-owner -zxvf unsanitised-db.tar.gz
