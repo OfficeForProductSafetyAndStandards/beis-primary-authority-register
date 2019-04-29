@@ -190,6 +190,22 @@ par_partnership_flows.advice_edit:
         type: entity:par_data_partnership
       par_data_advice:
         type: entity:par_data_advice
+par_partnership_flows.advice_archive:
+  path: '/partnership/{par_data_partnership}/advice/{par_data_advice}/archive'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveConfirmForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveConfirmForm::titleCallback'
+  requirements:
+    _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_advice: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_advice:
+        type: entity:par_data_advice
 par_partnership_flows.inspection_plan_list:
   path: '/partnership/{par_data_partnership}/inspection/list'
   defaults:
