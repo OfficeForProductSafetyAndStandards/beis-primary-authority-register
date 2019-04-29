@@ -199,8 +199,7 @@ class ParDataPerson extends ParDataEntity {
         }
       }
 
-      $relationships = $person->getRelationships(NULL, NULL, TRUE);
-      foreach ($relationships as $relationship) {
+      foreach ($person->getRelationships(NULL, NULL, TRUE) as $relationship) {
         // Update all entities that reference the soon to be merged person.
         if ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE) {
           // Only update the related entity if it does not already reference the updated record.
@@ -273,9 +272,8 @@ class ParDataPerson extends ParDataEntity {
     $unset = [];
 
     $user = User::load(\Drupal::currentUser()->id());
-    $relationships = $this->getRelationships('par_data_authority');
     if ($user->hasPermission('bypass par_data membership')) {
-      foreach ($relationships as $relationship) {
+      foreach ($this->getRelationships('par_data_authority') as $relationship) {
         $id = $relationship->getEntity()->id();
 
         // Unset any relationships that are not selected.
@@ -290,7 +288,7 @@ class ParDataPerson extends ParDataEntity {
       $user_authorities_ids = $this->getParDataManager()
         ->getEntitiesAsOptions($user_authorities);
 
-      foreach ($relationships as $relationship) {
+      foreach ($this->getRelationships('par_data_authority') as $relationship) {
         $id = $relationship->getEntity()->id();
 
         // Any existing relationships that the current user is
@@ -362,9 +360,8 @@ class ParDataPerson extends ParDataEntity {
     $unset = [];
 
     $user = User::load(\Drupal::currentUser()->id());
-    $relationships = $this->getRelationships('par_data_organisation');
     if ($user->hasPermission('bypass par_data membership')) {
-      foreach ($relationships as $relationship) {
+      foreach ($this->getRelationships('par_data_organisation') as $relationship) {
         $id = $relationship->getEntity()->id();
 
         // Unset any relationships that are not selected.
@@ -379,7 +376,7 @@ class ParDataPerson extends ParDataEntity {
       $user_organisations_ids = $this->getParDataManager()
         ->getEntitiesAsOptions($user_organisations);
 
-      foreach ($relationships as $relationship) {
+      foreach ($this->getRelationships('par_data_organisation') as $relationship) {
         $id = $relationship->getEntity()->id();
 
         // Any existing relationships that the current user is
@@ -608,7 +605,7 @@ class ParDataPerson extends ParDataEntity {
 
   public function getReferencedLocations() {
     $locations = [];
-    $relationships = $this->getRelationships(NULL, NULL, TRUE);
+    $relationships = iterator_to_array($this->getRelationships(NULL, NULL, TRUE));
 
     // Get all the relationships that reference this person.
     $relationships = array_filter($relationships, function ($relationship) {
