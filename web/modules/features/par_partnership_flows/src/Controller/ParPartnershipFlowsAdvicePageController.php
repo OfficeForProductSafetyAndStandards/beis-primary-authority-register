@@ -12,7 +12,7 @@ use Drupal\par_flows\Controller\ParBaseInterface;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
- * The partnership form for the partnership details.
+ * The Advice entity details page.
  */
 class ParPartnershipFlowsAdvicePageController extends ParBaseController {
 
