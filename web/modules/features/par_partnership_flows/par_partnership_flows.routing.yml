@@ -165,6 +165,7 @@ par_partnership_flows.advice_edit_documents:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::accessCallback'
     par_data_partnership: \d+
     par_data_advice: \d+
   options:
@@ -180,6 +181,7 @@ par_partnership_flows.advice_edit:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::accessCallback'
     par_data_partnership: \d+
     par_data_advice: \d+
   options:
