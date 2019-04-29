@@ -5,6 +5,7 @@ namespace Drupal\par_partnership_flows;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_flows\ParFlowException;
 use Symfony\Component\Routing\Route;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -23,7 +24,7 @@ trait ParPartnershipFlowAccessTrait {
    * the ParPartnershipFlowsLegalEntityForm class and would need to be updated
    * for use with other forms in par_partnership_flows flows.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL ) {
     try {
       $this->getFlowNegotiator()->setRoute($route_match);
       $this->getFlowDataHandler()->reset();
@@ -46,6 +47,13 @@ trait ParPartnershipFlowAccessTrait {
         // Restrict access to active partnerships.
         if (!$par_data_partnership->inProgress()) {
           $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entity cannot be added.');
+        }
+        break;
+      case 'par_partnership_flows.advice_edit':
+      case 'par_partnership_flows.advice_edit_documents':
+        // Restrict editorial access to archived and deleted advice entities.
+        if ($par_data_advice->isArchived() || $par_data_advice->isDeleted()) {
+          $this->accessResult = AccessResult::forbidden('This advice has been archived and therefore cannot be edited.');
         }
         break;
       }
