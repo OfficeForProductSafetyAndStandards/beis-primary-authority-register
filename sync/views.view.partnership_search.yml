@@ -2023,7 +2023,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: archive
+            text: Archive
             make_link: true
             path: '/partnership/{{ id_1 }}/advice/{{ id }}/archive'
             absolute: false
