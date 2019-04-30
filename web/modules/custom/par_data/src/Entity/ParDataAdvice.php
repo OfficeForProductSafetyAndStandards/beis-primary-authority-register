@@ -104,7 +104,7 @@ class ParDataAdvice extends ParDataEntity {
    * @return boolean
    *   True if the entity was restored, false for all other results.
    */
-  public function archive($save = TRUE, $archive_reason) {
+  public function advice_archive($save = TRUE, $archive_reason) {
     if ($this->isNew()) {
       $save = FALSE;
     }
