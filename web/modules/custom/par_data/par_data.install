@@ -535,7 +535,7 @@ function par_data_update_8032() {
 
   // For Private files.
   if (!empty($private_new) && !empty($private_old)) {
-    drush_shell_exec("aws s3 sync s3://{$private_old}/ s3://{$private_new}/ --source-region {$region_old} --region {$region_new}" );
+    drush_shell_exec("aws s3 sync s3://{$private_old}/ s3://{$private_new}/ --source-region {$region_old} --region {$region_new}");
     drush_print(drush_shell_exec_output());
   }
   // For Public files.
@@ -543,4 +543,14 @@ function par_data_update_8032() {
     drush_shell_exec("aws s3 sync s3://{$public_old}/ s3://{$public_new}/ --source-region {$region_old} --region {$region_new}");
     drush_print(drush_shell_exec_output());
   }
+}
+
+/**
+ * Sync the old transform buckets to the new beis owned buckets.
+ *
+ * This is not ready to go until the new BEIS owned AWS S3 buckets are ready for production.
+ */
+function par_data_update_8033() {
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $entity_definition_update_manager->deleteLastInstalledDefinition('par_data_regulatory_area');
 }
