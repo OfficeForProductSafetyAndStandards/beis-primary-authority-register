@@ -16,6 +16,15 @@ function par_data_install() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
 
+function par_data_update_dependencies() {
+  // The system module adds fields to an entity which no longer exists.
+  $dependencies['system'][8702] = [
+    'par_data' => 8033,
+  ];
+
+  return $dependencies;
+}
+
 /**
  * Update the PAR entities.
  */
@@ -546,11 +555,9 @@ function par_data_update_8032() {
 }
 
 /**
- * Sync the old transform buckets to the new beis owned buckets.
- *
- * This is not ready to go until the new BEIS owned AWS S3 buckets are ready for production.
+ * Remove record of old entity which has been deleted but is still in the schema definition lists.
  */
 function par_data_update_8033() {
-  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $entity_definition_update_manager = \Drupal::service('entity.last_installed_schema.repository');
   $entity_definition_update_manager->deleteLastInstalledDefinition('par_data_regulatory_area');
 }
