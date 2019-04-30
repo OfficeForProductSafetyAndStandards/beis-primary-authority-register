@@ -31,7 +31,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     if ($this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
       $build['actions'] = [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => ['form-group', 'btn-link-upload']],
       ];
 
       // PAR-1359 only allow advice uploading on active partnerships as only active partnerships have regulatory
