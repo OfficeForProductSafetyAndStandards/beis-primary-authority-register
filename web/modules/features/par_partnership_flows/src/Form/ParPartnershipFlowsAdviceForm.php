@@ -42,7 +42,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    return "Primary Authority Advice | Edit document type and regulatory functions";
+    return "Primary Authority Advice | Edit advice details";
   }
 
   /**
