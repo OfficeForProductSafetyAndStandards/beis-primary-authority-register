@@ -53,7 +53,13 @@ trait ParPartnershipFlowAccessTrait {
       case 'par_partnership_flows.advice_edit_documents':
         // Restrict editorial access to archived and deleted advice entities.
         if ($par_data_advice->isArchived() || $par_data_advice->isDeleted()) {
-          $this->accessResult = AccessResult::forbidden('This advice has been archived and therefore cannot be edited.');
+          $this->accessResult = AccessResult::forbidden('This advice has been archived or deleted and therefore cannot be edited.');
+        }
+        break;
+      case 'par_partnership_flows.advice_archive':
+        // Restrict editorial access to archived and deleted advice entities.
+        if ($par_data_advice->isArchived() || $par_data_advice->isDeleted()) {
+          $this->accessResult = AccessResult::forbidden('This advice is already has been archived or deleted.');
         }
         break;
       }
