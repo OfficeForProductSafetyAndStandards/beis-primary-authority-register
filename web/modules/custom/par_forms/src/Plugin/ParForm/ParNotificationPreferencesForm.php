@@ -57,7 +57,7 @@ class ParNotificationPreferencesForm extends ParFormPluginBase {
     }
 
     $form['help'] = [
-      '#markup' => '<p>As a primary contact you will always receive transactional notifications that relevant to your partnerships, authorities or organisations.</p><p class="form-group">However, you can also choose to receive these notifications as a secondary contact for the partnership or as a member of the authority or organisation it relates to.</p>',
+      '#markup' => '<p>As a primary contact you will always receive transactional notifications that are relevant to your partnerships, authorities or organisations.</p><p class="form-group">However, you can also choose to receive these notifications as a secondary contact for the partnership or as a member of the authority or organisation it relates to.</p>',
     ];
 
     $form['preferred_contact'] = [

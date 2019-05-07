@@ -77,41 +77,18 @@ function drush_par_data_par_cache_warm($type = NULL) {
 
   // Can manually choose to warm other caches not listed as defaults.
   if ($type) {
+    echo "Warming caches for $type" . PHP_EOL;
+
     // Warming for selected caches only as it's currently memory intensive.
     foreach ($par_data_manager->getEntitiesByType($type) as $entity) {
       $count++;
       $entity->getRelationships();
     }
-  }
-  else {
-    // Warming for core caches only as it's currently memory intensive.
-    foreach ($par_data_manager->getEntitiesByType('par_data_organisation') as $entity) {
-      $count++;
-      $entity->getRelationships();
-    }
+    // Assess memory usage.
+    echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB used in the generation of caches ' . PHP_EOL;
 
-    foreach ($par_data_manager->getEntitiesByType('par_data_authority') as $entity) {
-      $count++;
-      $entity->getRelationships();
-    }
-
-    foreach ($par_data_manager->getEntitiesByType('par_data_partnership') as $entity) {
-      $count++;
-      $entity->getRelationships();
-    }
-
-    foreach ($par_data_manager->getEntitiesByType('par_data_person') as $entity) {
-      $count++;
-      $entity->getRelationships();
-    }
-
-    foreach ($par_data_manager->getEntitiesByType('par_data_enforcement_notice') as $entity) {
-      $count++;
-      $entity->getRelationships();
-    }
+    return "Cache warmed for all $count data entities.";
   }
 
-  echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB used in the generation of caches ' . PHP_EOL;
-
-  return "Cache warmed for all $count data entities.";
+  return "No caches warmed.";
 }
