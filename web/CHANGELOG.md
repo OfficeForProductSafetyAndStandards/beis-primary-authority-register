@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [30.0.0] - 2019-05-13
+### Updated
+- Security upgrad for core software.
+
+## [29.0.1] - 2019-05-07
+### Fixed
+- Improved performance issues all users.
+
 ## [28.1.0] - 2019-05-01
 ### Fixed
 - Improved performance issues for authorities and organisations with lots of users.
