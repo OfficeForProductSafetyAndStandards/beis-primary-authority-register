@@ -112,7 +112,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
       // PAR-1359 only allow advice uploading on active partnerships as only active partnerships have regulatory
       // functions assigned to them.
-      if (!$par_data_partnership->inProgress()) {
+      if ($par_data_partnership->isActive()) {
         $build['actions']['upload'] = [
           '#type' => 'markup',
           '#markup' => t('@link', [
