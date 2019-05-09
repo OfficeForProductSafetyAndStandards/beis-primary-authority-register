@@ -60,7 +60,6 @@ steps:
     route: par_partnership_flows.advice_list
     redirect:
       upload: 9
-      edit: 13
       done: 1
       cancel: 1
   9:
