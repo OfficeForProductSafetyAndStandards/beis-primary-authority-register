@@ -60,39 +60,35 @@ function par_data_drush_command() {
   $commands['par-cache-warm'] = [
     'description' => 'Warm the caches for PAR Data',
     'aliases' => ['pcw'],
+    'arguments' => [
+      'type' => 'Type of data to be warmed',
+    ],
     'examples' => [
-      'drush pcw',
+      'drush pcw par_data_authority',
     ],
   ];
   return $commands;
 }
 
-function drush_par_data_par_cache_warm() {
+function drush_par_data_par_cache_warm($type = NULL) {
   $par_data_manager = \Drupal::service('par_data.manager');
 
-  $authorities = $par_data_manager->getEntitiesByType('par_data_authority');
-  $i = 0;
-  $authority_count = count($authorities);
-  foreach ($authorities as $authority) {
-    $authority->getRelationships();
-    if ($i % 100 == 0 && $i > 0) {
-      drush_print("Warmed $i out of $authority_count authorities");
-    }
-    $i++;
-  }
-  drush_print("Completed warming par authorities");
+  $count = 0;
 
-  $organisations = $par_data_manager->getEntitiesByType('par_data_organisation');
-  $i=0;
-  $organisation_count = count($organisations);
-  foreach ($organisations as $organisation) {
-    $organisation->getRelationships();
-    if ($i % 100 == 0 && $i > 0) {
-      drush_print("Warmed $i out of $organisation_count organisations");
-    }
-    $i++;
-  }
-  drush_print("Completed warming par organisations");
+  // Can manually choose to warm other caches not listed as defaults.
+  if ($type) {
+    echo "Warming caches for $type" . PHP_EOL;
 
-  return 'Cache warmed for authorities and organisations.';
+    // Warming for selected caches only as it's currently memory intensive.
+    foreach ($par_data_manager->getEntitiesByType($type) as $entity) {
+      $count++;
+      $entity->getRelationships();
+    }
+    // Assess memory usage.
+    echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB used in the generation of caches ' . PHP_EOL;
+
+    return "Cache warmed for all $count data entities.";
+  }
+
+  return "No caches warmed.";
 }

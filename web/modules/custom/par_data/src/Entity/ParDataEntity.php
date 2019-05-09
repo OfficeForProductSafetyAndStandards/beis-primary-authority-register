@@ -657,28 +657,34 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $relationships = [];
 
       // Get all referenced entities.
-      $references = $this->getParDataManager()->getReferences($this->getEntityTypeId(), $this->bundle());
-      foreach ($references as $entity_type => $fields) {
-        // If the reference is on the current entity type
-        // we can get the value from the current $entity.
-        if ($this->getEntityTypeId() === $entity_type) {
-          foreach ($fields as $field_name => $field) {
-            foreach ($this->get($field_name)->referencedEntities() as $referenced_entity) {
-              if (!$referenced_entity->isDeleted()) {
-                $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+      if ($this->lookupReferencesByAction($action)) {
+        $references = $this->getParDataManager()
+          ->getReferences($this->getEntityTypeId(), $this->bundle());
+
+        foreach ($references as $entity_type => $fields) {
+          // If the reference is on the current entity type
+          // we can get the value from the current $entity.
+          if ($this->getEntityTypeId() === $entity_type) {
+            foreach ($fields as $field_name => $field) {
+              foreach ($this->get($field_name)
+                         ->referencedEntities() as $referenced_entity) {
+                if (!$referenced_entity->isDeleted()) {
+                  $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+                }
               }
             }
           }
-        }
-        // If the reference is on another entity type
-        // we must use an entity lookup to find all entities
-        // that reference the current entity.
-        else {
-          foreach ($fields as $field_name => $field) {
-            $referencing_entities = $this->getParDataManager()->getEntitiesByProperty($entity_type, $field_name, $this->id());
-            foreach ($referencing_entities as $referenced_entity) {
-              if (!$referenced_entity->isDeleted()) {
-                $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+          // If the reference is on another entity type
+          // we must use an entity lookup to find all entities
+          // that reference the current entity.
+          else {
+            foreach ($fields as $field_name => $field) {
+              $referencing_entities = $this->getParDataManager()
+                ->getEntitiesByProperty($entity_type, $field_name, $this->id());
+              foreach ($referencing_entities as $referenced_entity) {
+                if (!$referenced_entity->isDeleted()) {
+                  $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+                }
               }
             }
           }
@@ -697,7 +703,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     // Return only relationships of a specific entity type.
     if ($target) {
       $relationships = array_filter($relationships, function ($relationship) use ($target) {
-        return ($target === $relationship->getEntity()->getEntityTypeId());
+        return $this->filterRelationshipsByTarget($relationship, $target);
       });
     }
 
@@ -709,6 +715,36 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     }
 
     return $relationships;
+  }
+
+  /**
+   * Allows all relationships to be skipped.
+   */
+  public function lookupReferencesByAction($action = NULL) {
+    // By default all references will be looked up, some entities may choose
+    // to override this and skip reference checks for given actions.
+    return TRUE;
+  }
+
+  /**
+   * Allows relationships to be excluded based on the target entity required.
+   *
+   * @param $relationship
+   *   The relationship to check.
+   * @param $target
+   *   The target entity being checked for.
+   *
+   * @return bool
+   *   Whether not to include a given relationship.
+   */
+  public function filterRelationshipsByTarget($relationship, $target = NULL) {
+    // By default all relationships are included, this
+    // can be overridden on an entity by entity basis.
+    if ($target) {
+      return ($target === $relationship->getEntity()->getEntityTypeId());
+    }
+
+    return TRUE;
   }
 
   /**
