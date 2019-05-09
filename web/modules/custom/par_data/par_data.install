@@ -593,23 +593,17 @@ function par_data_update_8035() {
   }
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
-/**
- * Update fields required for new advice entity.
- */
-function par_data_update_8036() {
-  \Drupal::service('entity.definition_update_manager')->applyUpdates();
-}
 
 /**
  * Update module default config with latest conf.
  */
-function par_data_update_8037() {
+function par_data_update_8036() {
   \Drupal::service('config.installer')->installDefaultConfig('module', 'par_partnership_flows');
 }
 
 /**
- * Update module default config with latest conf.
+ * Update fields required for new advice entity.
  */
-function par_data_update_8038() {
+function par_data_update_8037() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
