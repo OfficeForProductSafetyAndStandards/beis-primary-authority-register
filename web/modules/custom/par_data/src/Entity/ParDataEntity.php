@@ -648,17 +648,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function getRelationships($target = NULL, $action = NULL, $reset = FALSE) {
     // Enable in memory caching for repeated entity lookups.
-    $random = new Random();
     $unique_function_id = __FUNCTION__ . ':'
       . $this->uuid() . ':'
       . (isset($target) ? $target : 'null') . ':'
-      . (isset($action) ? $action : 'null') . ':'
-      . ($reset ? 'true' . $random->name() : 'false');
-    // @TODO workout a more effective way of limiting drupal_static calls when running cache warming scripts from drush.
-    if (php_sapi_name() !== 'cli') {
-      $relationships = &drupal_static($unique_function_id);
-    }
-    if (isset($relationships)) {
+      . (isset($action) ? $action : 'null');
+    if (!$reset && isset($relationships)) {
       return $relationships;
     }
 

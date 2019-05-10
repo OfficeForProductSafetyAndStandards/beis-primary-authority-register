@@ -62,7 +62,6 @@ function par_data_drush_command() {
     'aliases' => ['pcw'],
     'arguments' => [
       'type' => 'Type of data to be warmed',
-      'action' => 'Type of action to be warmed',
     ],
     'examples' => [
       'drush pcw par_data_authority',
@@ -71,7 +70,7 @@ function par_data_drush_command() {
   return $commands;
 }
 
-function drush_par_data_par_cache_warm($type = NULL, $action = 'manage') {
+function drush_par_data_par_cache_warm($type = NULL) {
   $par_data_manager = \Drupal::service('par_data.manager');
 
   $count = 0;
@@ -85,6 +84,9 @@ function drush_par_data_par_cache_warm($type = NULL, $action = 'manage') {
       $count++;
       // By default it's the relationship cache's responsible for entity management we want to warm.
       $entity->getRelationships();
+
+      $unique_function_id = "getRelationships:{$entity->uuid()}:null:null";
+      drupal_static_reset($unique_function_id);
 
       // Assess memory usage.
       if ($count % 100 == 0 && $count > 0) {
