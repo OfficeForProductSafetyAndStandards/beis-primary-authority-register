@@ -62,6 +62,7 @@ function par_data_drush_command() {
     'aliases' => ['pcw'],
     'arguments' => [
       'type' => 'Type of data to be warmed',
+      'action' => 'Type of action to be warmed',
     ],
     'examples' => [
       'drush pcw par_data_authority',
@@ -70,7 +71,7 @@ function par_data_drush_command() {
   return $commands;
 }
 
-function drush_par_data_par_cache_warm($type = NULL) {
+function drush_par_data_par_cache_warm($type = NULL, $action = 'manage') {
   $par_data_manager = \Drupal::service('par_data.manager');
 
   $count = 0;
@@ -82,10 +83,14 @@ function drush_par_data_par_cache_warm($type = NULL) {
     // Warming for selected caches only as it's currently memory intensive.
     foreach ($par_data_manager->getEntitiesByType($type) as $entity) {
       $count++;
+      // By default it's the relationship cache's responsible for entity management we want to warm.
       $entity->getRelationships();
+
+      // Assess memory usage.
+      if ($count % 100 == 0 && $count > 0) {
+        drush_print(round(memory_get_usage() / 1024 / 1024, 2) . ' MB used in the generation of ' . $count . ' caches ');
+      }
     }
-    // Assess memory usage.
-    echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB used in the generation of ' . $count . ' caches ' . PHP_EOL;
 
     return "Cache warmed for all $count data entities.";
   }
