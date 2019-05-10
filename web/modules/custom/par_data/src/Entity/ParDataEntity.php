@@ -653,7 +653,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       . (isset($target) ? $target : 'null') . ':'
       . (isset($action) ? $action : 'null');
     $relationships = &drupal_static($unique_function_id);
-    if (isset($relationships)) {
+    if (!$reset && isset($relationships)) {
       return $relationships;
     }
 
