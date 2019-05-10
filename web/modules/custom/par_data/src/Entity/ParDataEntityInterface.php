@@ -41,6 +41,19 @@ interface ParDataEntityInterface {
   public function setParStatus($value);
 
   /**
+   * Any entity that is in a live, active state.
+   *
+   * Only finished and completed entities count, this is typically useful for
+   * entities that go through an approval process.
+   *
+   * @see Issue PAR-1402
+   *
+   * @return bool
+   *   TRUE if entity is active.
+   */
+  public function isActive();
+
+  /**
    * Any entity that is in progress can't be revoked, archived or deleted.
    *
    * @return bool
