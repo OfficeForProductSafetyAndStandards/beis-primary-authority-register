@@ -654,7 +654,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       . (isset($target) ? $target : 'null') . ':'
       . (isset($action) ? $action : 'null') . ':'
       . ($reset ? 'true' . $random->name() : 'false');
-    $relationships = &drupal_static($unique_function_id);
+    // @TODO workout a more effective way of limiting drupal_static calls when running cache warming scripts from drush.
+    if (php_sapi_name() !== 'cli') {
+      $relationships = &drupal_static($unique_function_id);
+    }
     if (isset($relationships)) {
       return $relationships;
     }
@@ -665,6 +668,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $relationships = $cache->data;
     }
     else {
+      // Set cache tags for all these relationships.
+      $tags = [$this->getEntityTypeId() . ':' . $this->id()];
       $relationships = [];
 
       // Get all referenced entities.
@@ -679,8 +684,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
             foreach ($fields as $field_name => $field) {
               foreach ($this->get($field_name)
                          ->referencedEntities() as $referenced_entity) {
-                if (!$referenced_entity->isDeleted()) {
-                  $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+                $relationship = new ParDataRelationship($this, $referenced_entity, $field);
+                if (!$referenced_entity->isDeleted()
+                  && $this->filterRelationshipsByTarget($relationship, $target)
+                  && $this->filterRelationshipsByAction($relationship, $action)) {
+                  // Add relationship and entity tags to cache tags.
+                  $tags[] = $relationship->getEntity()->getEntityTypeId() . ':' . $relationship->getEntity()->id();
+                  $relationships[$referenced_entity->uuid()] = $relationship;
                 }
               }
             }
@@ -693,8 +703,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
               $referencing_entities = $this->getParDataManager()
                 ->getEntitiesByProperty($entity_type, $field_name, $this->id());
               foreach ($referencing_entities as $referenced_entity) {
-                if (!$referenced_entity->isDeleted()) {
-                  $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+                $relationship = new ParDataRelationship($this, $referenced_entity, $field);
+                if (!$referenced_entity->isDeleted()
+                  && $this->filterRelationshipsByTarget($relationship, $target)
+                  && $this->filterRelationshipsByAction($relationship, $action)) {
+                  // Add relationship and entity tags to cache tags.
+                  $tags[] = $relationship->getEntity()->getEntityTypeId() . ':' . $relationship->getEntity()->id();
+                  $relationships[$referenced_entity->uuid()] = $relationship;
                 }
               }
             }
@@ -702,27 +717,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         }
       }
 
-      // Set cache tags for all these relationships.
-      $tags[] = $this->getEntityTypeId() . ':' . $this->id();
-      foreach ($relationships as $uuid => $relationship) {
-        $tags[] = $relationship->getEntity()->getEntityTypeId() . ':' . $relationship->getEntity()->id();
-      }
-
       \Drupal::cache('data')->set("par_data_relationships:{$this->uuid()}", $relationships, Cache::PERMANENT, $tags);
-    }
-
-    // Return only relationships of a specific entity type.
-    if ($target) {
-      $relationships = array_filter($relationships, function ($relationship) use ($target) {
-        return $this->filterRelationshipsByTarget($relationship, $target);
-      });
-    }
-
-    // Return only permitted relationships for a given action
-    if ($action) {
-      $relationships = array_filter($relationships, function ($relationship) use ($action) {
-        return $this->filterRelationshipsByAction($relationship, $action);
-      });
     }
 
     return $relationships;

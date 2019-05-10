@@ -85,7 +85,7 @@ function drush_par_data_par_cache_warm($type = NULL) {
       $entity->getRelationships();
     }
     // Assess memory usage.
-    echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB used in the generation of caches ' . PHP_EOL;
+    echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB used in the generation of ' . $count . ' caches ' . PHP_EOL;
 
     return "Cache warmed for all $count data entities.";
   }
