@@ -114,10 +114,10 @@ class AccessParPartnershipsTest extends ParDataTestBase {
     $partnership_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_partnership');
     $this->assertCount(10, $partnership_memberships, t('Partnership memberships are all correct.'));
 
-    $direct_authority_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_authority');
+    $direct_authority_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_authority', TRUE);
     $this->assertCount(5, $direct_authority_memberships, t('Direct Authority memberships are all correct.'));
 
-    $direct_organisation_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_organisation');
+    $direct_organisation_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_organisation', TRUE);
     $this->assertCount(5, $direct_organisation_memberships, t('Direct Organisation memberships are all correct.'));
 
     // Check that the correct caches have been created.
