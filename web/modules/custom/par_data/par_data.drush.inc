@@ -82,10 +82,17 @@ function drush_par_data_par_cache_warm($type = NULL) {
     // Warming for selected caches only as it's currently memory intensive.
     foreach ($par_data_manager->getEntitiesByType($type) as $entity) {
       $count++;
+      // By default it's the relationship cache's responsible for entity management we want to warm.
       $entity->getRelationships();
+
+      $unique_function_id = "getRelationships:{$entity->uuid()}:null:null";
+      drupal_static_reset($unique_function_id);
+
+      // Assess memory usage.
+      if ($count % 100 == 0 && $count > 0) {
+        drush_print(round(memory_get_usage() / 1024 / 1024, 2) . ' MB used in the generation of ' . $count . ' caches ');
+      }
     }
-    // Assess memory usage.
-    echo round(memory_get_usage() / 1024 / 1024, 2) . ' MB used in the generation of caches ' . PHP_EOL;
 
     return "Cache warmed for all $count data entities.";
   }
