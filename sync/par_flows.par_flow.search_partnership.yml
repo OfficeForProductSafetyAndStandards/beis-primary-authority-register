@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: jXu_gw1D4IFhOzaoTA5FiaeKFaxGvMhw-J3ePYwj-gY
+  default_config_hash: a-kh4BucvfxY492e75no4zqkj-bSpsw8eFCrr_BYJzI
 id: search_partnership
 label: 'Search Partnerships'
 default_title: null
@@ -21,8 +21,6 @@ steps:
       done: 4
   2:
     route: par_search_partnership_flows.advice_view
-    components:
-      advice_list: {  }
     redirect:
       done: 1
   3:
