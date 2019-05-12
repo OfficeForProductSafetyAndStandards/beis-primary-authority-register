@@ -16,6 +16,15 @@ function par_data_install() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
 
+function par_data_update_dependencies() {
+  // The system module adds fields to an entity which no longer exists.
+  $dependencies['system'][8702] = [
+    'par_data' => 8033,
+  ];
+
+  return $dependencies;
+}
+
 /**
  * Update the PAR entities.
  */
@@ -535,7 +544,7 @@ function par_data_update_8032() {
 
   // For Private files.
   if (!empty($private_new) && !empty($private_old)) {
-    drush_shell_exec("aws s3 sync s3://{$private_old}/ s3://{$private_new}/ --source-region {$region_old} --region {$region_new}" );
+    drush_shell_exec("aws s3 sync s3://{$private_old}/ s3://{$private_new}/ --source-region {$region_old} --region {$region_new}");
     drush_print(drush_shell_exec_output());
   }
   // For Public files.
@@ -546,10 +555,11 @@ function par_data_update_8032() {
 }
 
 /**
- * Update fields required for new advice entity.
+ * Remove record of old entity which has been deleted but is still in the schema definition lists.
  */
 function par_data_update_8033() {
-  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+  $entity_definition_update_manager = \Drupal::service('entity.last_installed_schema.repository');
+  $entity_definition_update_manager->deleteLastInstalledDefinition('par_data_regulatory_area');
 }
 
 /**
@@ -559,11 +569,18 @@ function par_data_update_8034() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
 
+/**
+ * Update fields required for new advice entity.
+ */
+function par_data_update_8035() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
+
 
 /**
  * Set default title value for advice entities that don't have title values.
  */
-function par_data_update_8035() {
+function par_data_update_8036() {
 
   $par_data_manager = \Drupal::service('par_data.manager');
 
@@ -597,13 +614,13 @@ function par_data_update_8035() {
 /**
  * Update module default config with latest conf.
  */
-function par_data_update_8036() {
+function par_data_update_8037() {
   \Drupal::service('config.installer')->installDefaultConfig('module', 'par_partnership_flows');
 }
 
 /**
  * Update fields required for new advice entity.
  */
-function par_data_update_8037() {
+function par_data_update_8038() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }

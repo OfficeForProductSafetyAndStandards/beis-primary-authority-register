@@ -38,24 +38,23 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     $advice_search_block_exposed  = views_embed_view('partnership_search', $advice_listing_view_block, $par_data_partnership_id);
     $build['advice_search_block'] = $advice_search_block_exposed;
 
-    // If partnership is not active no need to execute anymore logic.
-    if ($par_data_partnership->inProgress()) {
-      return parent::build($build);
+    // PAR-1359 only allow advice uploading on active partnerships as only active partnerships have regulatory
+    // functions assigned to them.
+    if ($par_data_partnership->isActive()) {
+      $build['actions'] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => ['form-group', 'btn-link-upload']],
+      ];
+
+      $build['actions']['upload'] = [
+        '#type' => 'markup',
+        '#markup' => t('@link', [
+          '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('upload', $this->getRouteParams())
+              ->setText('Upload advice')
+              ->toString(),
+        ]),
+      ];
     }
-
-    $build['actions'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => ['form-group', 'btn-link-upload']],
-    ];
-
-    $build['actions']['upload'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('upload', $this->getRouteParams())
-            ->setText('Upload advice')
-            ->toString(),
-      ]),
-    ];
     return parent::build($build);
   }
 }

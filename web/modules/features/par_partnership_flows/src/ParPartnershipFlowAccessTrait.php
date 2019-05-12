@@ -38,14 +38,14 @@ trait ParPartnershipFlowAccessTrait {
       case 'par_partnership_flows.advice_add':
       case 'par_partnership_flows.advice_upload_documents':
       case 'par_partnership_flows.advice_warning_declaration':
-        if ($par_data_partnership->inProgress()) {
+        if (!$par_data_partnership->isActive()) {
           $this->accessResult = AccessResult::forbidden('Advice can only be added to active partnerships.');
         }
         break;
       case 'par_partnership_flows.legal_entity_add':
       case 'par_partnership_flows.legal_entity_edit':
         // Restrict access to active partnerships.
-        if (!$par_data_partnership->inProgress()) {
+        if (!$par_data_partnership->isActive()) {
           $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entity cannot be added.');
         }
         break;

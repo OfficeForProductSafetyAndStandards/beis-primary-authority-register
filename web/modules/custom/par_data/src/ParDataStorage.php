@@ -3,6 +3,7 @@
 namespace Drupal\par_data;
 
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\trance\TranceStorage;
@@ -18,8 +19,8 @@ class ParDataStorage extends TranceStorage {
 
   protected $parDataManager;
 
-  public function __construct(\Drupal\Core\Entity\EntityTypeInterface $entity_type, \Drupal\Core\Database\Connection $database, \Drupal\Core\Entity\EntityManagerInterface $entity_manager, \Drupal\Core\Cache\CacheBackendInterface $cache, \Drupal\Core\Language\LanguageManagerInterface $language_manager) {
-    parent::__construct($entity_type, $database, $entity_manager, $cache, $language_manager);
+  public function __construct(\Drupal\Core\Entity\EntityTypeInterface $entity_type, \Drupal\Core\Database\Connection $database, EntityFieldManagerInterface $entity_field_manager, \Drupal\Core\Cache\CacheBackendInterface $cache, \Drupal\Core\Language\LanguageManagerInterface $language_manager) {
+    parent::__construct($entity_type, $database, $entity_field_manager, $cache, $language_manager);
 
     $this->parDataManager = \Drupal::service('par_data.manager');
   }

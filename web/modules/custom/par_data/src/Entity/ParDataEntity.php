@@ -369,6 +369,17 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  public function isActive() {
+    if ($this->isDeleted() || $this->isRevoked() || $this->isArchived() || !$this->isTransitioned()) {
+      return FALSE;
+    }
+
+    return TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getRawStatus() {
     if ($this->isDeleted()) {
       return 'deleted';
@@ -636,15 +647,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   An array of entities keyed by type.
    */
   public function getRelationships($target = NULL, $action = NULL, $reset = FALSE) {
-    $random = new Random();
     // Enable in memory caching for repeated entity lookups.
     $unique_function_id = __FUNCTION__ . ':'
       . $this->uuid() . ':'
       . (isset($target) ? $target : 'null') . ':'
-      . (isset($action) ? $action : 'null') . ':'
-      . ($reset ? 'true' . $random->name() : 'false');
+      . (isset($action) ? $action : 'null');
     $relationships = &drupal_static($unique_function_id);
-    if (isset($relationships)) {
+    if (!$reset && isset($relationships)) {
       return $relationships;
     }
 
@@ -654,6 +663,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $relationships = $cache->data;
     }
     else {
+      // Set cache tags for all these relationships.
+      $tags = [$this->getEntityTypeId() . ':' . $this->id()];
       $relationships = [];
 
       // Get all referenced entities.
@@ -666,10 +677,20 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
           // we can get the value from the current $entity.
           if ($this->getEntityTypeId() === $entity_type) {
             foreach ($fields as $field_name => $field) {
-              foreach ($this->get($field_name)
-                         ->referencedEntities() as $referenced_entity) {
+              foreach ($this->get($field_name)->referencedEntities() as $referenced_entity) {
+
                 if (!$referenced_entity->isDeleted()) {
-                  $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+                  $relationship = new ParDataRelationship($this, $referenced_entity, $field);
+
+                  if ($this->filterRelationshipsByTarget($relationship, $target)
+                    && $this->filterRelationshipsByAction($relationship, $action)) {
+
+                    // Add relationship and entity tags to cache tags.
+                    $tags[] = $relationship->getEntity()
+                        ->getEntityTypeId() . ':' . $relationship->getEntity()
+                        ->id();
+                    $relationships[$referenced_entity->uuid()] = $relationship;
+                  }
                 }
               }
             }
@@ -682,8 +703,19 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
               $referencing_entities = $this->getParDataManager()
                 ->getEntitiesByProperty($entity_type, $field_name, $this->id());
               foreach ($referencing_entities as $referenced_entity) {
+
                 if (!$referenced_entity->isDeleted()) {
-                  $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
+                  $relationship = new ParDataRelationship($this, $referenced_entity, $field);
+
+                  if ($this->filterRelationshipsByTarget($relationship, $target)
+                    && $this->filterRelationshipsByAction($relationship, $action)) {
+
+                    // Add relationship and entity tags to cache tags.
+                    $tags[] = $relationship->getEntity()
+                        ->getEntityTypeId() . ':' . $relationship->getEntity()
+                        ->id();
+                    $relationships[$referenced_entity->uuid()] = $relationship;
+                  }
                 }
               }
             }
@@ -691,27 +723,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         }
       }
 
-      // Set cache tags for all these relationships.
-      $tags[] = $this->getEntityTypeId() . ':' . $this->id();
-      foreach ($relationships as $uuid => $relationship) {
-        $tags[] = $relationship->getEntity()->getEntityTypeId() . ':' . $relationship->getEntity()->id();
-      }
-
       \Drupal::cache('data')->set("par_data_relationships:{$this->uuid()}", $relationships, Cache::PERMANENT, $tags);
-    }
-
-    // Return only relationships of a specific entity type.
-    if ($target) {
-      $relationships = array_filter($relationships, function ($relationship) use ($target) {
-        return $this->filterRelationshipsByTarget($relationship, $target);
-      });
-    }
-
-    // Return only permitted relationships for a given action
-    if ($action) {
-      $relationships = array_filter($relationships, function ($relationship) use ($action) {
-        return $this->filterRelationshipsByAction($relationship, $action);
-      });
     }
 
     return $relationships;

@@ -151,6 +151,24 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  public function isActive() {
+    // Whether an entity is complete and can be acted upon as a finished, live.
+    $awaiting_statuses = [
+      $this->getTypeEntity()->getDefaultStatus(),
+      'confirmed_authority',
+      'confirmed_business'
+    ];
+
+    if (in_array($this->getRawStatus(), $awaiting_statuses)) {
+      return FALSE;
+    }
+
+    return parent::isActive();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function inProgress() {
     // Freeze partnerships that are awaiting approval.
     $awaiting_statuses = [
