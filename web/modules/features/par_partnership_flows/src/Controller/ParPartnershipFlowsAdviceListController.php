@@ -24,7 +24,19 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
     $par_data_partnership_id = !empty($par_data_partnership) ? $par_data_partnership->id() : NULL;
 
-    $advice_search_block_exposed  = views_embed_view('partnership_search', 'advice_search_block_exposed', $par_data_partnership_id);
+    kint($this->getFlowNegotiator()->getFlowName());
+    switch ($this->getFlowNegotiator()->getFlowName()) {
+      case 'partnership_authority':
+      case 'partnership_direct':
+      case 'partnership_coordinated':
+        $advice_listing_view_block = 'advice_search_block_exposed';
+        break;
+      case 'search_partnership':
+        $advice_listing_view_block = 'help_desk_advice_search_block';
+        break;
+    }
+
+    $advice_search_block_exposed  = views_embed_view('partnership_search', $advice_listing_view_block, $par_data_partnership_id);
     $build['advice_search_block'] = $advice_search_block_exposed;
 
     // If partnership is not active no need to execute anymore logic.
@@ -32,27 +44,19 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       return parent::build($build);
     }
 
-    switch ($this->getFlowNegotiator()->getFlowName()) {
-      // Check permissions before adding the links for all operations.
-      case 'partnership_authority':
-      case 'partnership_direct':
-      case 'partnership_coordinated':
+    $build['actions'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => ['form-group', 'btn-link-upload']],
+    ];
 
-        $build['actions'] = [
-          '#type' => 'fieldset',
-          '#attributes' => ['class' => ['form-group', 'btn-link-upload']],
-        ];
-
-        $build['actions']['upload'] = [
-          '#type' => 'markup',
-          '#markup' => t('@link', [
-            '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('upload', $this->getRouteParams())
-                ->setText('Upload advice')
-                ->toString(),
-          ]),
-        ];
-        break;
-    }
+    $build['actions']['upload'] = [
+      '#type' => 'markup',
+      '#markup' => t('@link', [
+        '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('upload', $this->getRouteParams())
+            ->setText('Upload advice')
+            ->toString(),
+      ]),
+    ];
     return parent::build($build);
   }
 }
