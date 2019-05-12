@@ -24,7 +24,6 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
     $par_data_partnership_id = !empty($par_data_partnership) ? $par_data_partnership->id() : NULL;
 
-    kint($this->getFlowNegotiator()->getFlowName());
     switch ($this->getFlowNegotiator()->getFlowName()) {
       case 'partnership_authority':
       case 'partnership_direct':
