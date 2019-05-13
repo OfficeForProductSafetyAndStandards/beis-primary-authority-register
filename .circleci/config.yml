@@ -347,16 +347,16 @@ jobs:
       - *configure_webroot
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${UNSANITISED_DATABASE}-latest.tar.gz"
-          to: backups/unsanitised-db.tar.gz
+          to: "backups/${UNSANITISED_DATABASE}-latest.tar.gz"
           arguments: |
             --region eu-west-1 \
             --cache-control "max-age=0"
       - run:
           name: "Unpacking database"
-          command: cd backups && tar --no-same-owner -zxvf unsanitised-db.tar.gz
+          command: cd backups && tar --no-same-owner -zxvf ${UNSANITISED_DATABASE}-latest.tar.gz
       - run:
           name: "Check db archive date"
-          command: cd backups && ls -lah unsanitised-db.tar.gz
+          command: cd backups && ls -lah ${UNSANITISED_DATABASE}.sql
       - run:
           name: "Importing database"
           command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${UNSANITISED_DATABASE}.sql
