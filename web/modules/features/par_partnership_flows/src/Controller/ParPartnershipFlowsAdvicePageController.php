@@ -51,7 +51,7 @@ class ParPartnershipFlowsAdvicePageController extends ParBaseController {
       ];
     }
 
-    $build['advice_summary'] = $this->renderSection('About this advice document', $par_data_advice, ['advice_summary' => 'summary']);
+    $build['notes'] = $this->renderSection('About this advice document', $par_data_advice, ['notes' => 'summary']);
 
     $build['advice_type'] = $this->renderSection('The type of Advice', $par_data_advice, ['advice_type' => 'summary']);
 
