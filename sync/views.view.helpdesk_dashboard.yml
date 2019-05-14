@@ -282,13 +282,11 @@ display:
           batch_size: 100
           form_step: true
           buttons: true
-          clear_on_exposed: false
           action_title: Action
           selected_actions:
-            comment_delete_action: 0
             par_bulk_invite: 0
-            vbo_export_generate_csv_action: vbo_export_generate_csv_action
             vbo_export_generate_xlsx_action: 0
+            vbo_export_generate_csv_action: vbo_export_generate_csv_action
             views_bulk_operations_delete_entity: 0
             'entity:save_action:par_data_partnership': 0
           preconfiguration:
@@ -2273,22 +2271,6 @@ display:
         weight: 0
         context: '0'
         menu_name: account
-      header:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content:
-            value: "Please do not share data exported from the Primary Authority Register with third parties, except for other government departments where the data will be used directly for purposes related to the Primary Authority, such as reporting requirements.\r\n\r\nPlease see the <a href=\"https://www.gov.uk/help/privacy-policy\" target=\"_blank\">Privacy Notice</a> for more information."
-            format: full_html
-          plugin_id: text
-      defaults:
-        header: false
     cache_metadata:
       max-age: 0
       contexts:
