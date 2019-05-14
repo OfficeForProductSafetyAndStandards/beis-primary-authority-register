@@ -563,24 +563,9 @@ function par_data_update_8033() {
 }
 
 /**
- * Update fields required for new advice entity.
- */
-function par_data_update_8034() {
-  \Drupal::service('entity.definition_update_manager')->applyUpdates();
-}
-
-/**
- * Update fields required for new advice entity.
- */
-function par_data_update_8035() {
-  \Drupal::service('entity.definition_update_manager')->applyUpdates();
-}
-
-
-/**
  * Set default title value for advice entities that don't have title values.
  */
-function par_data_update_8036() {
+function par_data_update_8034() {
 
   $par_data_manager = \Drupal::service('par_data.manager');
 
@@ -614,13 +599,13 @@ function par_data_update_8036() {
 /**
  * Update module default config with latest conf.
  */
-function par_data_update_8037() {
+function par_data_update_8035() {
   \Drupal::service('config.installer')->installDefaultConfig('module', 'par_partnership_flows');
 }
 
 /**
  * Update fields required for new advice entity.
  */
-function par_data_update_8038() {
+function par_data_update_8036() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
