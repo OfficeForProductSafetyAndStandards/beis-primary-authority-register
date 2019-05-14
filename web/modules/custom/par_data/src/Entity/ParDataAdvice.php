@@ -169,7 +169,7 @@ class ParDataAdvice extends ParDataEntity {
    *   advice entity title.
    */
   public function getAdviceSummary() {
-    return $this->get('advice_summary')->getString();
+    return $this->get('notes')->getString();
   }
 
   /**
@@ -228,7 +228,7 @@ class ParDataAdvice extends ParDataEntity {
       ->setDisplayConfigurable('view', TRUE);
 
     // Advice Summary.
-    $fields['advice_summary'] = BaseFieldDefinition::create('text_long')
+    $fields['notes'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Advice Summary'))
       ->setDescription(t('Summary info for this advice.'))
       ->setRequired(TRUE)
