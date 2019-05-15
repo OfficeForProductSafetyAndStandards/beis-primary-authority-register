@@ -169,6 +169,9 @@
             "drupal/vbo_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2018-07-26/allow_configurable_scheme-2988257-5.patch"
             },
+            "drupal/views_bulk_operations": {
+                "Unable to select all items in table view": "https://www.drupal.org/files/issues/2019-05-15/3054877-2-table_view_unable_to_select_all.patch"
+            },
             "drush/drush": {
                 "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch",
                 "PGPASSFILE not getting passed to sql-dump": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4023.patch"
