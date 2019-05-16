@@ -61,8 +61,8 @@
         "drupal/twig_field_value": "~1.2.0",
         "drupal/twig_tweak": "~2.3.0",
         "drupal/ultimate_cron": "~2.0.0",
-        "drupal/vbo_export": "~2.1.0",
-        "drupal/views_bulk_operations": "~2.5.0",
+        "drupal/vbo_export": "~3.0.0",
+        "drupal/views_bulk_operations": "~3.0.0",
         "drupal/views_contextual_filters_or": "~1.1.0",
         "drupal/views_data_export": "~1.0.0",
         "drupal/views_field_view": "~1.0.0",
@@ -168,9 +168,6 @@
             },
             "drupal/vbo_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2018-07-26/allow_configurable_scheme-2988257-5.patch"
-            },
-            "drupal/views_bulk_operations": {
-                "Unable to select all items in table view": "https://www.drupal.org/files/issues/2019-05-15/3054877-2-table_view_unable_to_select_all.patch"
             },
             "drush/drush": {
                 "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch",
