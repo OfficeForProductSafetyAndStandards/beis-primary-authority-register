@@ -5,7 +5,7 @@ orbs:
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v3.0.0
+      - image: beispar/web:v3.1.0
         name: web
         environment:
           APP_ENV: ci
@@ -28,12 +28,12 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v4-repo-{{ .Branch }}-{{ .Revision }}
+        - v7-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v6-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+        - v7-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -98,7 +98,7 @@ jobs:
           name: "Unpacking database"
           command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql.tar.gz
       - save_cache:
-          key: v4-repo-{{ .Branch }}-{{ .Revision }}
+          key: v7-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
@@ -117,7 +117,7 @@ jobs:
             npm run gulp
             cd ./tests && rm -rf node_modules && npm install
       - save_cache:
-          key: v6-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+          key: v7-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
           paths:
             - ./vendor
             - ./web/core
