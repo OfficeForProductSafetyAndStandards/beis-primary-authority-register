@@ -312,7 +312,7 @@ function par_data_update_8020() {
 function par_data_update_8021() {
   // Run the entity updates first so that we have access to our new fields.
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
- 
+
   /** @var \Drupal\Core\Queue\QueueFactory $queue_factory */
   $queue_factory = \Drupal::service('queue');
   /** @var \Drupal\Core\Queue\QueueInterface $queue */
@@ -560,4 +560,51 @@ function par_data_update_8032() {
 function par_data_update_8033() {
   $entity_definition_update_manager = \Drupal::service('entity.last_installed_schema.repository');
   $entity_definition_update_manager->deleteLastInstalledDefinition('par_data_regulatory_area');
+}
+
+/**
+ * Refresh advice entity base field definitions.
+ */
+function par_data_update_8034() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
+
+/**
+ * Setup config updates in par_partnership_flows.
+ */
+function par_data_update_8035() {
+  \Drupal::service('config.installer')->installDefaultConfig('module', 'par_partnership_flows');
+}
+
+/**
+ * Set default title value for advice entities that don't have title values.
+ */
+function par_data_update_8036() {
+
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  // Advice entities with no titles.
+  $conditions = [
+    [
+      'AND' => [
+        ['advice_title', '', 'IS NULL'],
+      ]
+    ],
+  ];
+  $par_data_advice_entities = $par_data_manager->getEntitiesByQuery('par_data_advice', $conditions);
+
+  foreach ($par_data_advice_entities as $par_data_advice) {
+    $advice_type = $par_data_advice->getAdviceType();
+    if ($par_data_advice->getAdviceTitle() == NULL && !empty($advice_type)) {
+      $par_data_advice->setAdviceTitle($advice_type);
+      // Update advice entities with default titles.
+      if (!$par_data_advice->save()) {
+        $message = $this->t('This %advice could not be saved.');
+        $replacements = [
+          '%advice' => $par_data_advice->label(),
+        ];
+        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+      }
+    }
+  }
 }

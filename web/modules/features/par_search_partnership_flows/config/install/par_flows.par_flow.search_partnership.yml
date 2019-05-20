@@ -18,8 +18,6 @@ steps:
       done: 4
   2:
     route: par_search_partnership_flows.advice_view
-    components:
-      advice_list: {}
     redirect:
       done: 1
   3:
