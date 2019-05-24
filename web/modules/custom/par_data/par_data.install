@@ -558,8 +558,6 @@ function par_data_update_8032() {
  * Remove record of old entity which has been deleted but is still in the schema definition lists.
  */
 function par_data_update_8033() {
-  \Drupal::service('entity.definition_update_manager')->applyUpdates();
-  
   $entity_definition_update_manager = \Drupal::service('entity.last_installed_schema.repository');
   $entity_definition_update_manager->deleteLastInstalledDefinition('par_data_regulatory_area');
 }
@@ -572,16 +570,9 @@ function par_data_update_8034() {
 }
 
 /**
- * Setup config updates in par_partnership_flows.
- */
-function par_data_update_8035() {
-  \Drupal::service('config.installer')->installDefaultConfig('module', 'par_partnership_flows');
-}
-
-/**
  * Set default title value for advice entities that don't have title values.
  */
-function par_data_update_8036() {
+function par_data_update_8035() {
 
   $par_data_manager = \Drupal::service('par_data.manager');
 
