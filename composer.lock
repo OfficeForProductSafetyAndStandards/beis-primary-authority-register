@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "edf8eba26a3c37d0cb37516d552346ea",
+    "content-hash": "a42da80bbfff1127bc99a76c782f4685",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -116,16 +116,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.93.9",
+            "version": "3.94.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "047622ae51d49a89f4045c2daa138c2b47d2e089"
+                "reference": "402a7e30c4ad979ca264079cd224984840ce6b37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/047622ae51d49a89f4045c2daa138c2b47d2e089",
-                "reference": "047622ae51d49a89f4045c2daa138c2b47d2e089",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/402a7e30c4ad979ca264079cd224984840ce6b37",
+                "reference": "402a7e30c4ad979ca264079cd224984840ce6b37",
                 "shasum": ""
             },
             "require": {
@@ -195,7 +195,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-05-14T18:16:56+00:00"
+            "time": "2019-05-23T18:07:25+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -762,16 +762,16 @@
         },
         {
             "name": "cweagans/composer-patches",
-            "version": "1.6.5",
+            "version": "1.6.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cweagans/composer-patches.git",
-                "reference": "2ec4f00ff5fb64de584c8c4aea53bf9053ecb0b3"
+                "reference": "1d89dcc730e7f42426c434b88261fcfb3bce651e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cweagans/composer-patches/zipball/2ec4f00ff5fb64de584c8c4aea53bf9053ecb0b3",
-                "reference": "2ec4f00ff5fb64de584c8c4aea53bf9053ecb0b3",
+                "url": "https://api.github.com/repos/cweagans/composer-patches/zipball/1d89dcc730e7f42426c434b88261fcfb3bce651e",
+                "reference": "1d89dcc730e7f42426c434b88261fcfb3bce651e",
                 "shasum": ""
             },
             "require": {
@@ -802,7 +802,7 @@
                 }
             ],
             "description": "Provides a way to patch Composer packages.",
-            "time": "2018-05-11T18:00:16+00:00"
+            "time": "2018-10-24T15:51:16+00:00"
         },
         {
             "name": "deblan/csv",
@@ -2295,16 +2295,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.7.1",
+            "version": "8.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "969f24810fb31eac71dd624de593f551bd6dc2a3"
+                "reference": "31c01fe3b4eb8817e8ef127382a67c9e9d78e1a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/969f24810fb31eac71dd624de593f551bd6dc2a3",
-                "reference": "969f24810fb31eac71dd624de593f551bd6dc2a3",
+                "url": "https://api.github.com/repos/drupal/core/zipball/31c01fe3b4eb8817e8ef127382a67c9e9d78e1a9",
+                "reference": "31c01fe3b4eb8817e8ef127382a67c9e9d78e1a9",
                 "shasum": ""
             },
             "require": {
@@ -2542,7 +2542,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2019-05-08T16:00:55+00:00"
+            "time": "2019-05-23T07:22:46+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -3991,8 +3991,8 @@
                 "reference": "ef81a55ad49d7d4e18f493fad2284923d28bfe70"
             },
             "require": {
-                "drupal/core": "*",
-                "drupal/ctools": "*"
+                "drupal/core": "^8.5.0",
+                "drupal/ctools": "^3.1"
             },
             "type": "drupal-module",
             "extra": {
@@ -4393,17 +4393,17 @@
         },
         {
             "name": "drupal/role_delegation",
-            "version": "1.0.0-alpha3",
+            "version": "1.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/role_delegation.git",
-                "reference": "8.x-1.0-alpha3"
+                "reference": "8.x-1.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/role_delegation-8.x-1.0-alpha3.zip",
-                "reference": "8.x-1.0-alpha3",
-                "shasum": "e80f20b518c5f24b33e26efe918f8fdc4a2c016d"
+                "url": "https://ftp.drupal.org/files/projects/role_delegation-8.x-1.0-beta1.zip",
+                "reference": "8.x-1.0-beta1",
+                "shasum": "8b4ca97076323d67f16d308ab426ebe1f7f79a45"
             },
             "require": {
                 "drupal/core": "*"
@@ -4414,11 +4414,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha3",
-                    "datestamp": "1556911981",
+                    "version": "8.x-1.0-beta1",
+                    "datestamp": "1558337885",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Alpha releases are not covered by Drupal security advisories."
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -4835,17 +4835,11 @@
         },
         {
             "name": "drupal/views_bulk_operations",
-            "version": "3.0.0",
+            "version": "dev-3.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/views_bulk_operations.git",
-                "reference": "8.x-3.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/views_bulk_operations-8.x-3.0.zip",
-                "reference": "8.x-3.0",
-                "shasum": "2871a99a3e835f3f704be55a734b9d09979528c7"
+                "reference": "87692f301ea0acf5c32552b6915088fcdc2c7664"
             },
             "require": {
                 "drupal/core": "~8.5"
@@ -4856,11 +4850,11 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0",
-                    "datestamp": "1557927186",
+                    "version": "8.x-3.1+2-dev",
+                    "datestamp": "1558682290",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 },
                 "drush": {
@@ -4901,7 +4895,8 @@
                 "source": "https://git.drupalcode.org/project/views_bulk_operations",
                 "issues": "https://www.drupal.org/project/issues/views_bulk_operations?version=8.x",
                 "docs": "https://www.drupal.org/docs/8/modules/views-bulk-operations-vbo"
-            }
+            },
+            "time": "2019-05-24T07:25:56+00:00"
         },
         {
             "name": "drupal/views_contextual_filters_or",
@@ -5393,16 +5388,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.7",
+            "version": "2.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "709f21f92707308cdf8f9bcfa1af4cb26586521e"
+                "reference": "c26463ff9241f27907112fbcd0c86fa670cfef98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/709f21f92707308cdf8f9bcfa1af4cb26586521e",
-                "reference": "709f21f92707308cdf8f9bcfa1af4cb26586521e",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/c26463ff9241f27907112fbcd0c86fa670cfef98",
+                "reference": "c26463ff9241f27907112fbcd0c86fa670cfef98",
                 "shasum": ""
             },
             "require": {
@@ -5446,7 +5441,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2018-12-04T22:38:24+00:00"
+            "time": "2019-05-16T22:02:54+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -5858,16 +5853,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.51",
+            "version": "1.0.52",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "755ba7bf3fb9031e6581d091db84d78275874396"
+                "reference": "c5a5097156387970e6f0ccfcdf03f752856f3391"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/755ba7bf3fb9031e6581d091db84d78275874396",
-                "reference": "755ba7bf3fb9031e6581d091db84d78275874396",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/c5a5097156387970e6f0ccfcdf03f752856f3391",
+                "reference": "c5a5097156387970e6f0ccfcdf03f752856f3391",
                 "shasum": ""
             },
             "require": {
@@ -5938,7 +5933,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2019-03-30T13:22:34+00:00"
+            "time": "2019-05-20T20:21:14+00:00"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
@@ -12712,6 +12707,7 @@
         "drupal/login_destination": 20,
         "drupal/maillog": 20,
         "drupal/password_policy": 20,
+        "drupal/views_bulk_operations": 20,
         "behat/mink": 20,
         "behat/mink-selenium2-driver": 20,
         "drupal/examples": 20
