@@ -658,7 +658,7 @@ function par_data_update_8036() {
 }
 
 /**
- * Set default title value for advice entities that don't have title values.
+ * Set default the title value for advice entities that don't have title values.
  */
 function par_data_update_8037() {
 
