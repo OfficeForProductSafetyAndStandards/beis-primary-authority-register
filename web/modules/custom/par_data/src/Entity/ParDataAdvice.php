@@ -231,7 +231,7 @@ class ParDataAdvice extends ParDataEntity {
     $fields['notes'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Advice Summary'))
       ->setDescription(t('Summary info for this advice.'))
-      ->setRequired(TRUE)
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
