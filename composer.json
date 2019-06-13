@@ -136,7 +136,8 @@
                 "Provides support for s3 response objects": "./patches/file_entity_s3_file_support.patch"
             },
             "drupal/flysystem": {
-                "Add Drush commands for sending and receiving files": "./patches/flysystem-drush-command.patch"
+                "Add Drush commands for sending and receiving files": "./patches/flysystem-drush-command.patch",
+                "CSS and JS served through the flysystem.serve route can't be downloaded in maintenance mode": "https://www.drupal.org/files/issues/2019-06-13/serve_maintenance_page_assets-3061561-3.patch"
             },
             "drupal/flysystem_s3": {
                 "Allow downloading of private files from remote S3 wrappers": "./patches/private_s3_file_download.patch"
