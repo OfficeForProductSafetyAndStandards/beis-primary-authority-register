@@ -86,6 +86,11 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
+
+    if (!$form_state->getValue('archive_reason')) {
+      $id = $this->getElementId('archive_reason', $form);
+      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please supply the reason for archiving this document.', $id));
+    }
   }
 
   /**
