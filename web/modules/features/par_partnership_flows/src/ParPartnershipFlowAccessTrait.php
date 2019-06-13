@@ -6,6 +6,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\ParFlowException;
+use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
 use Drupal\Core\Routing\RouteMatchInterface;
 
@@ -33,6 +34,12 @@ trait ParPartnershipFlowAccessTrait {
 
     }
 
+    // Limit access to partnership pages.
+    $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
+    if (!$account->hasPermission('bypass par_data membership') && $user && !$this->getParDataManager()->isMember($par_data_partnership, $user)) {
+      $this->accessResult = AccessResult::forbidden('The user is not allowed to access this page.');
+    }
+
     switch ($route_match->getRouteName()) {
       case 'par_partnership_flows.advice_add':
       case 'par_partnership_flows.advice_upload_documents':
@@ -48,6 +55,7 @@ trait ParPartnershipFlowAccessTrait {
         }
         break;
       }
+
     return parent::accessCallback($route, $route_match, $account);
   }
 }
