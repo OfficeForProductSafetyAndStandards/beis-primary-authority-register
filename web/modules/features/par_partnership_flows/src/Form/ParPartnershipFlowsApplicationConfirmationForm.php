@@ -10,6 +10,7 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
@@ -18,6 +19,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
+  use ParPartnershipFlowAccessTrait;
 
   /**
    * {@inheritdoc}
