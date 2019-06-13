@@ -33,6 +33,11 @@ trait ParPartnershipFlowAccessTrait {
 
     }
 
+    // Limit access to partnership pages.
+    if (!$account->hasPermission('bypass par_data membership') && !$this->getParDataManager()->isMember($par_data_partnership, $account)) {
+      $this->accessResult = AccessResult::forbidden('The user is not allowed to access this page.');
+    }
+
     switch ($route_match->getRouteName()) {
       case 'par_partnership_flows.advice_add':
       case 'par_partnership_flows.advice_upload_documents':
