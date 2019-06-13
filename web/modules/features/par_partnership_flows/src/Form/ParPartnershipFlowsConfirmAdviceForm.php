@@ -63,7 +63,7 @@ class ParPartnershipFlowsConfirmAdviceForm extends ParBaseForm {
 
     if (!$form_state->getValue('confirm')) {
       $id = $this->getElementId('confirm', $form);
-      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please confirm security guidelines have been applied.', $id));
+      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please confirm the security guidelines have been applied.', $id));
     }
   }
 
