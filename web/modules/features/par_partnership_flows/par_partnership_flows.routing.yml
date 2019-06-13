@@ -90,7 +90,7 @@ par_partnership_flows.authority_contact_invite_sent:
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInviteSentController::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInviteSentController::accessCallback'
+    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInviteSentController::accessCallback'
     par_data_partnership: \d+
     par_data_person: \d+
   options:
@@ -106,7 +106,7 @@ par_partnership_flows.advice_list:
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceListController::accessCallback'
+    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -177,7 +177,7 @@ par_partnership_flows.inspection_plan_list:
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanListController::accessCallback'
+    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -433,7 +433,7 @@ par_partnership_flows.advice_view:
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceListController::accessCallback'
+    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -446,7 +446,7 @@ par_partnership_flows.inspection_plan_view:
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanListController::accessCallback'
+    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
