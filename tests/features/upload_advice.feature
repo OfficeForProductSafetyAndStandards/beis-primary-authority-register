@@ -2,7 +2,7 @@ Feature: upload advice
 As a user
 I should be able to upload advice
 
-
+@upload-advice
 Scenario: Verify upload advice is  not available for non-active partnerships
 Given I am logged in as "par_authority@example.com"
 When I click on "See your partnerships"
@@ -11,7 +11,7 @@ And I click "See all Advice"
 Then I should see advice page
 And I should not see the link "Upload advice"
 
-
+@upload-advice
 Scenario: Verify upload advice is available for active partnerships only
 Given I am logged in as "par_authority@example.com"
 When I click on "See your partnerships"
@@ -20,7 +20,7 @@ And I click "See all Advice"
 Then I should see advice page
 And I see the link "Upload advice"
 
-
+@upload-advice
 Scenario: Upload-advice type business
 Given I am logged in as "par_authority@example.com"
 And I navigate to an active partnership "33968"
@@ -35,7 +35,7 @@ And I select "Cookie control" regulatory function
 And I click save
 And I see advice uploaded successfully
 
-
+@upload-advice
 Scenario: Upload-advice type background information
 Given I am logged in as "par_authority@example.com"
 And I navigate to an active partnership "33968"
@@ -50,7 +50,7 @@ And I select "Cookie control" regulatory function
 And I click save
 And I see advice uploaded successfully
 
-
+@upload-advice
 Scenario: Helpdesk user able to upload advice for an active partnership
 Given I am logged in as "par_helpdesk@example.com"
 And I navigate to an active partnership "3316"
@@ -65,7 +65,7 @@ And I select "Environmental health" regulatory function
 And I click save
 And I see advice uploaded successfully
 
-
+@upload-advice
 Scenario: Edit advice
 Given I am logged in as "par_authority@example.com"
 And I navigate to an active partnership "33968"
@@ -88,11 +88,8 @@ And I click save
 Then I should archive successfully
 
 
-
-
-
 Scenario: validate error when guidline checkbox is not selected
-Scenario: valdiate error message when title, summary or type of advice
+Scenario: valdiate error message when title, summary or type of advice missing
 Scenario: Verify search advice
 Scenario: Verify filter advice
 
