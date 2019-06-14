@@ -44,6 +44,7 @@
         "drupal/login_destination": "1.x-dev#54be8b89fdc073ca40af6b9b2eeb050e0aeb7908",
         "drupal/maillog": "1.x-dev",
         "drupal/mailsystem": "~4.1.0",
+        "drupal/masquerade": "^2.0@beta",
         "drupal/message": "~1.0.0",
         "drupal/message_notify": "~1.0.0",
         "drupal/no_autocomplete": "~1.4.0",
