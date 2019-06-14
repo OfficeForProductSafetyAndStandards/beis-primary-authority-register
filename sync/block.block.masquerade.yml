@@ -1,23 +1,23 @@
-uuid: bd2a16df-55ba-4071-b2ad-dcd901443a38
+uuid: 4a05ca09-ac5a-421f-be09-71356c30374e
 langcode: en
 status: true
 dependencies:
   module:
-    - invite_link
+    - masquerade
     - system
     - user
   theme:
     - seven
-id: invitelink
+id: masquerade
 theme: seven
 region: content
-weight: -4
+weight: -3
 provider: null
-plugin: 'invite_link_block:invite_link'
+plugin: masquerade
 settings:
-  id: 'invite_link_block:invite_link'
-  label: 'Invite Link'
-  provider: invite_link
+  id: masquerade
+  label: Masquerade
+  provider: masquerade
   label_display: visible
 visibility:
   request_path:
@@ -29,7 +29,6 @@ visibility:
     id: user_role
     roles:
       administrator: administrator
-      par_helpdesk: par_helpdesk
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
