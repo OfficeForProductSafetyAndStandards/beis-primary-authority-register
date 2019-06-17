@@ -79,8 +79,6 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
       // Get Regulatory Functions.
       $regulatory_functions = $par_data_advice->get('field_regulatory_function')->referencedEntities();
-
-      ksm($regulatory_functions);
       $regulatory_options = [];
       foreach ($regulatory_functions as $function) {
         $regulatory_options[$function->id()] = $function->id();
@@ -149,8 +147,6 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('notes'),
       '#description' => '<p>Use this section to give a brief overview of the advice document.</p><p>Include any information you feel may be useful.</p>',
     ];
-    ksm($allowed_types);
-    ksm($this->getFlowDataHandler()->getDefaultValues('advice_type'));
 
     // The advice type.
     $form['advice_type'] = [
