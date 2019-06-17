@@ -633,6 +633,22 @@ class ParDataPerson extends ParDataEntity {
         case 'par_data_authority:field_authority_person':
           $label .= 'Primary contact for the authority: ';
           break;
+
+        case 'par_data_general_enquiry:field_person':
+          $label .= 'General enquiry for: ';
+          break;
+
+        case 'par_data_deviation_request:field_person':
+          $label .= 'Deviation request for: ';
+          break;
+
+        case 'par_data_inspection_feedback:field_person':
+          $label .= 'Inspection feedback for: ';
+          break;
+
+        case 'par_data_enforcement_notice:field_person':
+          $label .= 'Enforcement notice for: ';
+          break;
       }
 
       $locations[] = ucfirst($label . $relationship->getEntity()->label());

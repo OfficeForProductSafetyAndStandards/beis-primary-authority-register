@@ -6,6 +6,7 @@ par_partnership_flows.authority_details:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsDetailsForm::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsDetailsForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -18,6 +19,7 @@ par_partnership_flows.about_partnership:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -30,6 +32,7 @@ par_partnership_flows.authority_contact_edit:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::accessCallback'
     par_data_partnership: \d+
     par_data_person: \d+
   options:
@@ -45,6 +48,7 @@ par_partnership_flows.authority_contact_add:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -57,6 +61,7 @@ par_partnership_flows.authority_contact_add_confirm:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -69,6 +74,7 @@ par_partnership_flows.authority_contact_invite:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInviteForm::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInviteForm::accessCallback'
     par_data_partnership: \d+
     par_data_person: \d+
   options:
@@ -84,6 +90,7 @@ par_partnership_flows.authority_contact_invite_sent:
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInviteSentController::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInviteSentController::accessCallback'
     par_data_partnership: \d+
     par_data_person: \d+
   options:
@@ -99,6 +106,7 @@ par_partnership_flows.advice_list:
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -138,7 +146,7 @@ par_partnership_flows.advice_upload_documents:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::accessCallback'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -164,7 +172,7 @@ par_partnership_flows.advice_edit_documents:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::accessCallback'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm::accessCallback'
     par_data_partnership: \d+
     par_data_advice: \d+
   options:
@@ -196,7 +204,7 @@ par_partnership_flows.advice_archive:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveConfirmForm::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::accessCallback'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveConfirmForm::accessCallback'
     par_data_partnership: \d+
     par_data_advice: \d+
   options:
@@ -212,6 +220,7 @@ par_partnership_flows.inspection_plan_list:
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -226,6 +235,7 @@ par_partnership_flows.organisation_details:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsDetailsForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsDetailsForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -238,6 +248,7 @@ par_partnership_flows.about_business:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutBusinessForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAboutBusinessForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -250,6 +261,7 @@ par_partnership_flows.address_edit:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm::accessCallback'
     par_data_partnership: \d+
     par_data_premises: \d+
   options:
@@ -265,6 +277,7 @@ par_partnership_flows.address_add:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAddressForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -277,6 +290,7 @@ par_partnership_flows.organisation_contact_edit:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::accessCallback'
     par_data_partnership: \d+
     par_data_organisation: \d+
     par_data_person: \d+
@@ -295,6 +309,7 @@ par_partnership_flows.organisation_contact_add:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::accessCallback'
     par_data_partnership: \d+
     par_data_organisation: \d+
   options:
@@ -310,6 +325,7 @@ par_partnership_flows.organisation_contact_add_confirm:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm::accessCallback'
     par_data_partnership: \d+
     par_data_organisation: \d+
   options:
@@ -354,6 +370,7 @@ par_partnership_flows.trading_name_edit:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm::accessCallback'
     par_data_partnership: \d+
     trading_name_delta: \d+
   options:
@@ -367,6 +384,7 @@ par_partnership_flows.trading_name_add:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsTradingForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -379,6 +397,7 @@ par_partnership_flows.sic_code_edit:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm::accessCallback'
     par_data_partnership: \d+
     field_sic_code_delta: \d+
   options:
@@ -392,6 +411,7 @@ par_partnership_flows.sic_code_add:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsSicCodeForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -404,6 +424,7 @@ par_partnership_flows.employee_number:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsEmployeeNoForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsEmployeeNoForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -416,6 +437,7 @@ par_partnership_flows.business_size:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsBusinessSizeForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsBusinessSizeForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -428,6 +450,7 @@ par_partnership_flows.member_upload:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberUploadForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberUploadForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -440,6 +463,7 @@ par_partnership_flows.member_upload_confirm:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberConfirmForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberConfirmForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -452,6 +476,7 @@ par_partnership_flows.advice_view:
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
@@ -464,6 +489,7 @@ par_partnership_flows.inspection_plan_view:
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
