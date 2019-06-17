@@ -5,6 +5,7 @@ namespace Drupal\par_partnership_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
@@ -13,6 +14,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
+  use ParPartnershipFlowAccessTrait;
 
   /**
    * Helper to get all the editable values.

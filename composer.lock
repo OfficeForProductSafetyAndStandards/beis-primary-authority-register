@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "edf8eba26a3c37d0cb37516d552346ea",
+    "content-hash": "e91842dee2d1c6faf4b8a90cc8c7f37e",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -116,16 +116,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.99.0",
+            "version": "3.100.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "0a212802416698b1a452ca317c16cb909a2dd1ca"
+                "reference": "c08969c6bf828910fc868d882bcd55ea5d9f97f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0a212802416698b1a452ca317c16cb909a2dd1ca",
-                "reference": "0a212802416698b1a452ca317c16cb909a2dd1ca",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c08969c6bf828910fc868d882bcd55ea5d9f97f7",
+                "reference": "c08969c6bf828910fc868d882bcd55ea5d9f97f7",
                 "shasum": ""
             },
             "require": {
@@ -195,7 +195,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-06-03T18:16:19+00:00"
+            "time": "2019-06-12T18:09:10+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -1099,16 +1099,16 @@
         },
         {
             "name": "doctrine/collections",
-            "version": "v1.6.1",
+            "version": "v1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/collections.git",
-                "reference": "d2ae4ef05e25197343b6a39bae1d3c427a2f6956"
+                "reference": "c5e0bc17b1620e97c968ac409acbff28b8b850be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/collections/zipball/d2ae4ef05e25197343b6a39bae1d3c427a2f6956",
-                "reference": "d2ae4ef05e25197343b6a39bae1d3c427a2f6956",
+                "url": "https://api.github.com/repos/doctrine/collections/zipball/c5e0bc17b1620e97c968ac409acbff28b8b850be",
+                "reference": "c5e0bc17b1620e97c968ac409acbff28b8b850be",
                 "shasum": ""
             },
             "require": {
@@ -1165,7 +1165,7 @@
                 "iterators",
                 "php"
             ],
-            "time": "2019-03-25T19:03:48+00:00"
+            "time": "2019-06-09T13:48:14+00:00"
         },
         {
             "name": "doctrine/common",
@@ -1391,20 +1391,23 @@
         },
         {
             "name": "doctrine/lexer",
-            "version": "v1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/lexer.git",
-                "reference": "83893c552fd2045dd78aef794c31e694c37c0b8c"
+                "reference": "1febd6c3ef84253d7c815bed85fc622ad207a9f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/lexer/zipball/83893c552fd2045dd78aef794c31e694c37c0b8c",
-                "reference": "83893c552fd2045dd78aef794c31e694c37c0b8c",
+                "url": "https://api.github.com/repos/doctrine/lexer/zipball/1febd6c3ef84253d7c815bed85fc622ad207a9f8",
+                "reference": "1febd6c3ef84253d7c815bed85fc622ad207a9f8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.5"
             },
             "type": "library",
             "extra": {
@@ -1413,8 +1416,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Doctrine\\Common\\Lexer\\": "lib/"
+                "psr-4": {
+                    "Doctrine\\Common\\Lexer\\": "lib/Doctrine/Common/Lexer"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1435,13 +1438,16 @@
                     "email": "schmittjoh@gmail.com"
                 }
             ],
-            "description": "Base library for a lexer that can be used in Top-Down, Recursive Descent Parsers.",
-            "homepage": "http://www.doctrine-project.org",
+            "description": "PHP Doctrine Lexer parser library that can be used in Top-Down, Recursive Descent Parsers.",
+            "homepage": "https://www.doctrine-project.org/projects/lexer.html",
             "keywords": [
+                "annotations",
+                "docblock",
                 "lexer",
-                "parser"
+                "parser",
+                "php"
             ],
-            "time": "2014-09-09T13:34:57+00:00"
+            "time": "2019-06-08T11:03:04+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -1669,7 +1675,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.6",
-                    "datestamp": "1554334685",
+                    "datestamp": "1559642884",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -1745,6 +1751,10 @@
             ],
             "authors": [
                 {
+                    "name": "Etroid",
+                    "homepage": "https://www.drupal.org/user/3048985"
+                },
+                {
                     "name": "chr.fritsch",
                     "homepage": "https://www.drupal.org/user/2103716"
                 },
@@ -1757,10 +1767,6 @@
                     "homepage": "https://www.drupal.org/user/192273"
                 },
                 {
-                    "name": "mortona2k",
-                    "homepage": "https://www.drupal.org/user/1029484"
-                },
-                {
                     "name": "rlhawk",
                     "homepage": "https://www.drupal.org/user/352283"
                 }
@@ -1768,7 +1774,7 @@
             "description": "Provides advanced options (such as links, checkboxes, or jQueryUI widgets) for exposed Views elements.",
             "homepage": "https://www.drupal.org/project/better_exposed_filters",
             "support": {
-                "source": "http://cgit.drupalcode.org/better_exposed_filters"
+                "source": "https://git.drupalcode.org/project/better_exposed_filters"
             }
         },
         {
@@ -2031,7 +2037,7 @@
             "description": "Integration with the ClamAV anti-virus scanner.",
             "homepage": "https://www.drupal.org/project/clamav",
             "support": {
-                "source": "http://cgit.drupalcode.org/clamav"
+                "source": "https://git.drupalcode.org/project/clamav"
             }
         },
         {
@@ -2130,7 +2136,7 @@
                     "datestamp": "1519398184",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -2167,7 +2173,7 @@
             "description": "Enables making the active configuration store read-only to prevent configuration changes on a Drupal site.",
             "homepage": "https://www.drupal.org/project/config_readonly",
             "support": {
-                "source": "http://cgit.drupalcode.org/config_readonly"
+                "source": "https://git.drupalcode.org/project/config_readonly"
             }
         },
         {
@@ -2290,21 +2296,21 @@
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
             "support": {
-                "source": "http://cgit.drupalcode.org/config_update"
+                "source": "https://git.drupalcode.org/project/config_update"
             }
         },
         {
             "name": "drupal/core",
-            "version": "8.7.2",
+            "version": "8.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "31c01fe3b4eb8817e8ef127382a67c9e9d78e1a9"
+                "reference": "b8ca92d4274048aff6bb020c329596c0e9b91269"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/31c01fe3b4eb8817e8ef127382a67c9e9d78e1a9",
-                "reference": "31c01fe3b4eb8817e8ef127382a67c9e9d78e1a9",
+                "url": "https://api.github.com/repos/drupal/core/zipball/b8ca92d4274048aff6bb020c329596c0e9b91269",
+                "reference": "b8ca92d4274048aff6bb020c329596c0e9b91269",
                 "shasum": ""
             },
             "require": {
@@ -2329,7 +2335,7 @@
                 "ext-xml": "*",
                 "guzzlehttp/guzzle": "^6.2.1",
                 "masterminds/html5": "^2.1",
-                "paragonie/random_compat": "^1.0|^2.0",
+                "paragonie/random_compat": "^1.0|^2.0|^9.99.99",
                 "pear/archive_tar": "^1.4",
                 "php": "^5.5.9|>=7.0.8",
                 "stack/builder": "^1.0",
@@ -2542,7 +2548,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2019-05-23T07:22:46+00:00"
+            "time": "2019-06-05T19:21:30+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -2589,7 +2595,7 @@
             "description": "Provides CSV as a serialization format.",
             "homepage": "https://www.drupal.org/project/csv_serialization",
             "support": {
-                "source": "http://cgit.drupalcode.org/csv_serialization"
+                "source": "https://git.drupalcode.org/project/csv_serialization"
             }
         },
         {
@@ -2907,7 +2913,7 @@
             "description": "Enables administrators to package configuration into modules",
             "homepage": "https://www.drupal.org/project/features",
             "support": {
-                "source": "http://cgit.drupalcode.org/features"
+                "source": "https://git.drupalcode.org/project/features"
             }
         },
         {
@@ -2941,7 +2947,7 @@
                     "datestamp": "1522617782",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 },
                 "patches_applied": {
@@ -3002,6 +3008,10 @@
                     "homepage": "https://www.drupal.org/user/266527"
                 },
                 {
+                    "name": "dsutter",
+                    "homepage": "https://www.drupal.org/user/3357810"
+                },
+                {
                     "name": "effulgentsia",
                     "homepage": "https://www.drupal.org/user/78040"
                 },
@@ -3012,6 +3022,10 @@
                 {
                     "name": "mpotter",
                     "homepage": "https://www.drupal.org/user/616192"
+                },
+                {
+                    "name": "mxr576",
+                    "homepage": "https://www.drupal.org/user/315522"
                 },
                 {
                     "name": "robeano",
@@ -3025,7 +3039,7 @@
             "description": "Extends Drupal file entities to be fieldable and viewable.",
             "homepage": "https://www.drupal.org/project/file_entity",
             "support": {
-                "source": "http://cgit.drupalcode.org/file_entity"
+                "source": "https://git.drupalcode.org/project/file_entity"
             }
         },
         {
@@ -3058,10 +3072,15 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1497585842"
+                    "datestamp": "1497585842",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 },
                 "patches_applied": {
-                    "Add Drush commands for sending and receiving files": "./patches/flysystem-drush-command.patch"
+                    "Add Drush commands for sending and receiving files": "./patches/flysystem-drush-command.patch",
+                    "CSS and JS served through the flysystem.serve route can't be downloaded in maintenance mode": "https://www.drupal.org/files/issues/2019-06-13/serve_maintenance_page_assets-3061561-3.patch"
                 }
             },
             "autoload": {
@@ -3071,18 +3090,22 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
                     "name": "twistor",
                     "homepage": "https://www.drupal.org/user/473738"
+                },
+                {
+                    "name": "vijaycs85",
+                    "homepage": "https://www.drupal.org/user/93488"
                 }
             ],
             "description": "Provides access to various filesystem backends using Flysystem.",
             "homepage": "https://www.drupal.org/project/flysystem",
             "support": {
-                "source": "http://cgit.drupalcode.org/flysystem"
+                "source": "https://git.drupalcode.org/project/flysystem"
             }
         },
         {
@@ -3147,7 +3170,7 @@
             "description": "Provides an Amazon S3 plugin for Flysystem.",
             "homepage": "https://www.drupal.org/project/flysystem_s3",
             "support": {
-                "source": "http://cgit.drupalcode.org/flysystem_s3"
+                "source": "https://git.drupalcode.org/project/flysystem_s3"
             }
         },
         {
@@ -3287,7 +3310,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0",
-                    "datestamp": "1486045984"
+                    "datestamp": "1555051984",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 },
                 "patches_applied": {
                     "Health Check doesn't check Drupal application": "https://www.drupal.org/files/issues/health_check_doesn_t-2892294-2.patch"
@@ -3332,8 +3359,8 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.x-dev",
-                    "datestamp": "1501159742",
+                    "version": "8.x-2.0-alpha1+1-dev",
+                    "datestamp": "1521735784",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -3357,7 +3384,7 @@
             "description": "Allows addition, removal and modification of http headers.",
             "homepage": "https://www.drupal.org/project/http_response_headers",
             "support": {
-                "source": "http://cgit.drupalcode.org/http_response_headers"
+                "source": "https://git.drupalcode.org/project/http_response_headers"
             },
             "time": "2018-03-22T16:21:56+00:00"
         },
@@ -3409,6 +3436,14 @@
                     "homepage": "https://www.drupal.org/user/99340"
                 },
                 {
+                    "name": "joachim",
+                    "homepage": "https://www.drupal.org/user/107701"
+                },
+                {
+                    "name": "kaythay",
+                    "homepage": "https://www.drupal.org/user/2182186"
+                },
+                {
                     "name": "rszrama",
                     "homepage": "https://www.drupal.org/user/49344"
                 },
@@ -3424,7 +3459,7 @@
             "description": "Provides a widget for inline management (creation, modification, removal) of referenced entities.",
             "homepage": "https://www.drupal.org/project/inline_entity_form",
             "support": {
-                "source": "http://cgit.drupalcode.org/inline_entity_form"
+                "source": "https://git.drupalcode.org/project/inline_entity_form"
             }
         },
         {
@@ -3557,14 +3592,18 @@
             "require": {
                 "drupal/core": "~8.0"
             },
+            "require-dev": {
+                "drupal/admin_toolbar": "^1.23",
+                "drupal/admin_toolbar_tools": "*"
+            },
             "type": "drupal-module",
             "extra": {
                 "branch-alias": {
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.x-dev",
-                    "datestamp": "1514805485",
+                    "version": "8.x-1.0-alpha2+3-dev",
+                    "datestamp": "1553447888",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -3583,10 +3622,6 @@
                 {
                     "name": "Oliver Huynh",
                     "homepage": "https://www.drupal.org/user/243730"
-                },
-                {
-                    "name": "akashjain132",
-                    "homepage": "https://www.drupal.org/user/2622667"
                 },
                 {
                     "name": "beautifulmind",
@@ -3613,6 +3648,10 @@
                     "homepage": "https://www.drupal.org/user/23"
                 },
                 {
+                    "name": "perennial.sky",
+                    "homepage": "https://www.drupal.org/user/2622667"
+                },
+                {
                     "name": "quantumized",
                     "homepage": "https://www.drupal.org/user/61221"
                 },
@@ -3624,7 +3663,7 @@
             "description": "The Login Destination module add possibility customize the destination that the user is redirected to after login.",
             "homepage": "https://www.drupal.org/project/login_destination",
             "support": {
-                "source": "http://cgit.drupalcode.org/login_destination"
+                "source": "https://git.drupalcode.org/project/login_destination"
             },
             "time": "2018-01-01T11:13:09+00:00"
         },
@@ -3655,7 +3694,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -3678,7 +3717,7 @@
             "description": "Utility to log all Mails for debugging purposes. It is possible to suppress mail delivery for e.g. dev or staging systems.",
             "homepage": "https://www.drupal.org/project/maillog",
             "support": {
-                "source": "http://cgit.drupalcode.org/maillog"
+                "source": "https://git.drupalcode.org/project/maillog"
             },
             "time": "2016-08-05T21:18:07+00:00"
         },
@@ -3706,7 +3745,11 @@
                 },
                 "drupal": {
                     "version": "8.x-4.1",
-                    "datestamp": "1467993646"
+                    "datestamp": "1467993646",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3721,6 +3764,10 @@
                 {
                     "name": "Les Lim",
                     "homepage": "https://www.drupal.org/user/84263"
+                },
+                {
+                    "name": "Manuel Garcia",
+                    "homepage": "https://www.drupal.org/user/213194"
                 },
                 {
                     "name": "Nafes",
@@ -3738,7 +3785,81 @@
             "description": "Mail System",
             "homepage": "https://www.drupal.org/project/mailsystem",
             "support": {
-                "source": "http://cgit.drupalcode.org/mailsystem"
+                "source": "https://git.drupalcode.org/project/mailsystem"
+            }
+        },
+        {
+            "name": "drupal/masquerade",
+            "version": "2.0.0-beta2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/masquerade.git",
+                "reference": "8.x-2.0-beta2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/masquerade-8.x-2.0-beta2.zip",
+                "reference": "8.x-2.0-beta2",
+                "shasum": "a9fc1a54636f131d1e344113ce4c80a6c27bc8aa"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.0-beta2",
+                    "datestamp": "1521762446",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Andrey Postnikov (andypost)",
+                    "homepage": "https://www.drupal.org/u/andypost",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "David Norman (deekayen)",
+                    "homepage": "https://www.drupal.org/u/deekayen",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Mark Shropshire (shrop)",
+                    "homepage": "https://www.drupal.org/u/shrop",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Daniel Kudwien (sun)",
+                    "homepage": "https://www.drupal.org/u/sun",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Andrew Berry (deviantintegral)",
+                    "homepage": "https://www.drupal.org/u/deviantintegral",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "sun",
+                    "homepage": "https://www.drupal.org/user/54136"
+                }
+            ],
+            "description": "Allows privileged users to masquerade as another user.",
+            "homepage": "https://www.drupal.org/project/masquerade",
+            "support": {
+                "source": "https://git.drupal.org/project/masquerade.git",
+                "issues": "https://www.drupal.org/project/issues/masquerade",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
             }
         },
         {
@@ -3808,7 +3929,7 @@
             "description": "Message",
             "homepage": "https://www.drupal.org/project/message",
             "support": {
-                "source": "http://cgit.drupalcode.org/message"
+                "source": "https://git.drupalcode.org/project/message"
             }
         },
         {
@@ -3979,7 +4100,7 @@
             "description": "Configurable pager styles.",
             "homepage": "https://www.drupal.org/project/pagerer",
             "support": {
-                "source": "http://cgit.drupalcode.org/pagerer"
+                "source": "https://git.drupalcode.org/project/pagerer"
             }
         },
         {
@@ -4000,8 +4121,8 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.0-alpha4+10-dev",
-                    "datestamp": "1536680280",
+                    "version": "8.x-3.0-alpha5+3-dev",
+                    "datestamp": "1560358381",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -4040,7 +4161,7 @@
             "description": "Sets up constraints and expiration of passwords.",
             "homepage": "https://www.drupal.org/project/password_policy",
             "support": {
-                "source": "http://cgit.drupalcode.org/password_policy"
+                "source": "https://git.drupalcode.org/project/password_policy"
             },
             "time": "2018-03-08T21:48:13+00:00"
         },
@@ -4082,7 +4203,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4109,7 +4230,7 @@
             "description": "Integrates the Password Strength into Drupal's Password Policy module.",
             "homepage": "https://www.drupal.org/project/password_strength",
             "support": {
-                "source": "http://cgit.drupalcode.org/password_strength"
+                "source": "https://git.drupalcode.org/project/password_strength"
             }
         },
         {
@@ -4172,7 +4293,7 @@
             "description": "Interface and manager for Drupal queues.",
             "homepage": "https://www.drupal.org/project/queue_ui",
             "support": {
-                "source": "http://cgit.drupalcode.org/queue_ui"
+                "source": "https://git.drupalcode.org/project/queue_ui"
             }
         },
         {
@@ -4199,12 +4320,16 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1489346583"
+                    "datestamp": "1489346583",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4219,7 +4344,7 @@
             "description": "Defines a numeric range field type.",
             "homepage": "https://www.drupal.org/project/range",
             "support": {
-                "source": "http://cgit.drupalcode.org/range"
+                "source": "https://git.drupalcode.org/project/range"
             }
         },
         {
@@ -4247,7 +4372,7 @@
                 },
                 "drupal": {
                     "version": "8.x-2.15",
-                    "datestamp": "1556885285",
+                    "datestamp": "1559434981",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4363,7 +4488,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1491149284"
+                    "datestamp": "1529154524",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4471,7 +4600,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta2",
-                    "datestamp": "1519655285",
+                    "datestamp": "1519655459",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -4499,7 +4628,7 @@
             "description": "Swiftmailer",
             "homepage": "https://www.drupal.org/project/swiftmailer",
             "support": {
-                "source": "http://cgit.drupalcode.org/swiftmailer"
+                "source": "https://git.drupalcode.org/project/swiftmailer"
             }
         },
         {
@@ -4566,7 +4695,7 @@
             "description": "Provides a user interface for the Token API and some missing core tokens.",
             "homepage": "https://www.drupal.org/project/token",
             "support": {
-                "source": "http://cgit.drupalcode.org/token"
+                "source": "https://git.drupalcode.org/project/token"
             }
         },
         {
@@ -4593,7 +4722,11 @@
                 },
                 "drupal": {
                     "version": "8.x-1.1",
-                    "datestamp": "1500824643"
+                    "datestamp": "1500824643",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4778,7 +4911,7 @@
             "description": "Cron",
             "homepage": "https://www.drupal.org/project/ultimate_cron",
             "support": {
-                "source": "http://cgit.drupalcode.org/ultimate_cron"
+                "source": "https://git.drupalcode.org/project/ultimate_cron"
             }
         },
         {
@@ -5015,7 +5148,7 @@
             "description": "Plugin to export views data into various file formats.",
             "homepage": "https://www.drupal.org/project/views_data_export",
             "support": {
-                "source": "http://cgit.drupalcode.org/views_data_export"
+                "source": "https://git.drupalcode.org/project/views_data_export"
             }
         },
         {
@@ -5042,12 +5175,16 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta2",
-                    "datestamp": "1447937051"
+                    "datestamp": "1447937051",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -5074,7 +5211,7 @@
             "description": "Adds a view field handler to embed views inside views.",
             "homepage": "https://www.drupal.org/project/views_field_view",
             "support": {
-                "source": "http://cgit.drupalcode.org/views_field_view"
+                "source": "https://git.drupalcode.org/project/views_field_view"
             }
         },
         {
@@ -5942,16 +6079,16 @@
         },
         {
             "name": "league/flysystem-aws-s3-v3",
-            "version": "1.0.22",
+            "version": "1.0.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-aws-s3-v3.git",
-                "reference": "883b02c80ca9cd68cf58a9b4b2185beef24b836b"
+                "reference": "15b0cdeab7240bf8e8bffa85ae5275bbc3692bf4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/883b02c80ca9cd68cf58a9b4b2185beef24b836b",
-                "reference": "883b02c80ca9cd68cf58a9b4b2185beef24b836b",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/15b0cdeab7240bf8e8bffa85ae5275bbc3692bf4",
+                "reference": "15b0cdeab7240bf8e8bffa85ae5275bbc3692bf4",
                 "shasum": ""
             },
             "require": {
@@ -5985,7 +6122,7 @@
                 }
             ],
             "description": "Flysystem adapter for the AWS S3 SDK v3.x",
-            "time": "2019-01-31T15:07:25+00:00"
+            "time": "2019-06-05T17:18:29+00:00"
         },
         {
             "name": "league/flysystem-replicate-adapter",
@@ -6373,33 +6510,29 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.18",
+            "version": "v9.99.99",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db"
+                "reference": "84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
-                "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95",
+                "reference": "84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2.0"
+                "php": "^7"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.*|5.*"
+                "phpunit/phpunit": "4.*|5.*",
+                "vimeo/psalm": "^1"
             },
             "suggest": {
                 "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
             },
             "type": "library",
-            "autoload": {
-                "files": [
-                    "lib/random.php"
-                ]
-            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -6418,7 +6551,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2019-01-03T20:59:08+00:00"
+            "time": "2018-07-02T15:55:56+00:00"
         },
         {
             "name": "pear/archive_tar",
@@ -8918,16 +9051,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.42.0",
+            "version": "v1.42.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "2983fcf2e20a4afe95f07e61d89a7590b3c8df2e"
+                "reference": "671347603760a88b1e7288aaa9378f33687d7edf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/2983fcf2e20a4afe95f07e61d89a7590b3c8df2e",
-                "reference": "2983fcf2e20a4afe95f07e61d89a7590b3c8df2e",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/671347603760a88b1e7288aaa9378f33687d7edf",
+                "reference": "671347603760a88b1e7288aaa9378f33687d7edf",
                 "shasum": ""
             },
             "require": {
@@ -8980,7 +9113,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-05-31T06:20:05+00:00"
+            "time": "2019-06-04T11:31:08+00:00"
         },
         {
             "name": "twistor/flysystem-stream-wrapper",
@@ -11207,16 +11340,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.8.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "4ba436b55987b4bf311cb7c6ba82aa528aac0a06"
+                "reference": "1927e75f4ed19131ec9bcc3b002e07fb1173ee76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/4ba436b55987b4bf311cb7c6ba82aa528aac0a06",
-                "reference": "4ba436b55987b4bf311cb7c6ba82aa528aac0a06",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/1927e75f4ed19131ec9bcc3b002e07fb1173ee76",
+                "reference": "1927e75f4ed19131ec9bcc3b002e07fb1173ee76",
                 "shasum": ""
             },
             "require": {
@@ -11237,8 +11370,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Prophecy\\": "src/"
+                "psr-4": {
+                    "Prophecy\\": "src/Prophecy"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -11266,7 +11399,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2018-08-05T17:53:17+00:00"
+            "time": "2019-06-13T12:50:23+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -12318,16 +12451,16 @@
         },
         {
             "name": "symfony/browser-kit",
-            "version": "v4.3.0",
+            "version": "v4.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/browser-kit.git",
-                "reference": "3fa7d8cbd2e5006038a09b8ef93f3859a89b627e"
+                "reference": "e07d50e84b8cf489590f22244f4f609579b4a2c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/3fa7d8cbd2e5006038a09b8ef93f3859a89b627e",
-                "reference": "3fa7d8cbd2e5006038a09b8ef93f3859a89b627e",
+                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/e07d50e84b8cf489590f22244f4f609579b4a2c4",
+                "reference": "e07d50e84b8cf489590f22244f4f609579b4a2c4",
                 "shasum": ""
             },
             "require": {
@@ -12373,7 +12506,7 @@
             ],
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
-            "time": "2019-04-15T20:15:25+00:00"
+            "time": "2019-05-30T16:10:05+00:00"
         },
         {
             "name": "symfony/config",
@@ -12713,6 +12846,7 @@
         "drupal/invite": 20,
         "drupal/login_destination": 20,
         "drupal/maillog": 20,
+        "drupal/masquerade": 10,
         "drupal/password_policy": 20,
         "behat/mink": 20,
         "behat/mink-selenium2-driver": 20,

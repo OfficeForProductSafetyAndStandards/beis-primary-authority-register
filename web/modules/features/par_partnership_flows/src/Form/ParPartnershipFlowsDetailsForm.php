@@ -7,6 +7,7 @@ use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
@@ -15,6 +16,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
+  use ParPartnershipFlowAccessTrait;
 
   /**
    * {@inheritdoc}
