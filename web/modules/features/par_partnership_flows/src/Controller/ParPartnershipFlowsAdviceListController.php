@@ -25,6 +25,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
   public function content(ParDataPartnership $par_data_partnership = NULL) {
 
     $par_data_partnership_id = !empty($par_data_partnership) ? $par_data_partnership->id() : NULL;
+    $upload_new_advice = TRUE;
 
     switch ($this->getFlowNegotiator()->getFlowName()) {
       case 'partnership_authority':
@@ -34,6 +35,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
         break;
       case 'search_partnership':
         $advice_listing_view_block = 'help_desk_advice_search_block';
+        $upload_new_advice = FALSE;
         break;
     }
 
@@ -41,8 +43,8 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     $build['advice_search_block'] = $advice_search_block_exposed;
 
     // PAR-1359 only allow advice uploading on active partnerships as only active partnerships have regulatory
-    // functions assigned to them.
-    if ($par_data_partnership->isActive()) {
+    // functions assigned to them. Hide upload button when user is on the search path.
+    if ($par_data_partnership->isActive() && $upload_new_advice) {
       $build['actions'] = [
         '#type' => 'fieldset',
         '#attributes' => ['class' => ['form-group', 'btn-link-upload']],

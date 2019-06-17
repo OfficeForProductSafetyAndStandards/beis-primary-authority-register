@@ -171,11 +171,20 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     // The regulatory functions of the advice entity.
     $regulatory_function_options = $par_data_partnership->getEntityFieldAsOptions('field_regulatory_function');
 
+    $default_reg_function = $this->getFlowDataHandler()->getDefaultValues('regulatory_functions', []);
+
+    if (is_array($default_reg_function) && count($default_reg_function) > 1) {
+      $default_reg_function = [];
+    }
+    elseif (!empty($default_reg_function)) {
+      $default_reg_function = key($default_reg_function);
+    }
+
     $form['regulatory_functions'] = [
-      '#type' => 'checkboxes',
+      '#type' => 'radios',
       '#title' => $this->t('Regulatory functions this advice covers'),
       '#options' => $regulatory_function_options,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('regulatory_functions', []),
+      '#default_value' => $default_reg_function,
     ];
 
     // Make sure to add the document cacheability data to this form.
@@ -191,7 +200,9 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    if (!array_keys(array_filter($form_state->getValue('regulatory_functions')))) {
+    $submitted_reg_function = $form_state->getValue('regulatory_functions');
+
+    if (empty($submitted_reg_function)) {
       $id = $this->getElementId(['regulatory_functions'], $form);
       $form_state->setErrorByName($this->getElementName('regulatory_functions'), $this->wrapErrorMessage('You must select at least one regulatory function.', $id));
     };
@@ -253,7 +264,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
         $par_data_advice->set('advice_type', $advice_type);
       }
 
-      $regulatory_functions_selected = array_keys(array_filter($this->getFlowDataHandler()->getTempDataValue('regulatory_functions')));
+      $regulatory_functions_selected = $this->getFlowDataHandler()->getTempDataValue('regulatory_functions');
       $par_data_advice->set('field_regulatory_function', $regulatory_functions_selected);
 
       // Check if there are files to add from the Advice Upload form.
@@ -314,7 +325,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       }
 
       // Set regulatory functions.
-      $regulatory_functions_selected = array_keys(array_filter($this->getFlowDataHandler()->getTempDataValue('regulatory_functions')));
+      $regulatory_functions_selected = $this->getFlowDataHandler()->getTempDataValue('regulatory_functions');
 
       $par_data_advice->set('field_regulatory_function', $regulatory_functions_selected);
 
