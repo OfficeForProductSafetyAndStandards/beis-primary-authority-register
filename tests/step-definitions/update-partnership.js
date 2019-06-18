@@ -107,7 +107,6 @@ When('I upload a file to the partnership advice section', function () {
     .clickLinkByPureText('See all Advice')
     .clickLinkByPureText('Upload advice')
     .assert.containsText('h1.heading-xlarge', 'Uploading advice documents declaration')
-   // .assert.containsText('h1.heading-xlarge', 'Edit advice details')
     .click('#edit-declaration')
     .click('#edit-save')
     .assert.containsText('h3.heading-medium', 'How to upload Primary Authority Advice to Local Authorities')
@@ -117,7 +116,7 @@ When('I upload a file to the partnership advice section', function () {
     .assert.containsText('h1.heading-xlarge', 'Edit advice details')
     .setValue('#edit-advice-title','Advice upload test')
     .setValue('#edit-notes','This is a summary description for this test advice, the contents of this description should be searchable.')
-    .click('#edit-regulatory-functions--wrapper > div > div > label')
+    .click('#edit-regulatory-functions--wrapper > div > label')
     .click('#edit-advice-type-business-advice')
     .click('#edit-save')
     // @TODO Drupal renumbers existing files, had to change from:
