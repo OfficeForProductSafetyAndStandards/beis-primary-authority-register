@@ -106,6 +106,9 @@ When('I upload a file to the partnership advice section', function () {
   return shared
     .clickLinkByPureText('See all Advice')
     .clickLinkByPureText('Upload advice')
+    .assert.containsText('h1.heading-xlarge', 'Uploading advice documents declaration')
+    .click('#edit-confirm')
+    .click('#edit-next')
     .assert.containsText('h3.heading-medium', 'How to upload Primary Authority Advice to Local Authorities')
     .setValue('#edit-files-upload', __dirname + '/files/test.png')
     .click('#edit-upload')
