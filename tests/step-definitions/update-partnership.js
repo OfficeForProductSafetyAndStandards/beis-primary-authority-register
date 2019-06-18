@@ -16,7 +16,7 @@ When('I update the registered address for organisation', function () {
   .setValue('#edit-address-line1','1 Change St')
   .setValue('#edit-address-line2','New Change')
   .setValue('#edit-town-city','London')
-  .setValue('#edit-county','London')  
+  .setValue('#edit-county','London')
   .click('#edit-country-code option[value="GB"]')
   .click('#edit-nation option[value="GB-ENG"]')
   .click('#edit-save')
@@ -47,7 +47,7 @@ When('I edit about the partnership', function () {
     .click('#edit-save')
     .assert.containsText('#edit-about-partnership', 'Change to the about partnership details section')
 });
-  
+
 When('I update the SIC code', function () {
   return shared
       .clickLinkByPureText('add another sic code')
@@ -62,8 +62,8 @@ When('I update the number of employees', function () {
     .click('#edit-employees-band option[value="250"]')
     .click('#edit-save')
     .assert.containsText('#edit-employee-no', '50 to 249')
-  });  
-  
+  });
+
 When('I add and subsequently edit a trading name', function () {
     return shared
       .clickLinkByPureText('add another trading name')
@@ -107,9 +107,9 @@ When('I upload a file to the partnership advice section', function () {
     .clickLinkByPureText('See all Advice')
     .clickLinkByPureText('Upload advice')
     .assert.containsText('h1.heading-xlarge', 'Uploading advice documents declaration')
-    .assert.containsText('h1.heading-xlarge', 'Edit advice details')
-    .click('#edit-confirm')
-    .click('#edit-next')
+   // .assert.containsText('h1.heading-xlarge', 'Edit advice details')
+    .click('#edit-declaration')
+    .click('#edit-save')
     .assert.containsText('h3.heading-medium', 'How to upload Primary Authority Advice to Local Authorities')
     .setValue('#edit-files-upload', __dirname + '/files/test.png')
     .click('#edit-upload')
