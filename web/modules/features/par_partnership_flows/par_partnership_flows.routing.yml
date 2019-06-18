@@ -172,7 +172,6 @@ par_partnership_flows.advice_edit_documents:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::accessCallback'
     _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceUploadForm::accessCallback'
     par_data_partnership: \d+
     par_data_advice: \d+
@@ -205,7 +204,7 @@ par_partnership_flows.advice_archive:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveConfirmForm::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::accessCallback'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveConfirmForm::accessCallback'
     par_data_partnership: \d+
     par_data_advice: \d+
   options:

@@ -98,7 +98,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     // To use this form there must be a "form_data['upload']" key in the step configuration:
     // 1:
     //   route: example.route_name
-    //   form_id: form_id_where_file_is_uplaoded
+    //   form_id: form_id_where_file_is_uploaded
     //   form_data:
     //     upload: par_partnership_advice_upload_edit
     // 2:
@@ -159,15 +159,6 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_type'),
     ];
 
-    $form['advice_type_help_text'] = [
-      '#type' => 'fieldset',
-      '#attributes' => [
-        'class' => ['form-group'],
-      ],
-      '#title' => $this->t('How to upload Primary Authority Advice to Local Authorities'),
-      '#description' => $this->t('To upload Primary Authority Advice to a Local Authority, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the organisation it applies to and we’ll get back to you shortly.'),
-    ];
-
     // The regulatory functions of the advice entity.
     $regulatory_function_options = $par_data_partnership->getEntityFieldAsOptions('field_regulatory_function');
 
@@ -182,6 +173,9 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
     $form['regulatory_functions'] = [
       '#type' => 'radios',
+      '#attributes' => [
+        'class' => ['form-group'],
+      ],
       '#title' => $this->t('Regulatory functions this advice covers'),
       '#options' => $regulatory_function_options,
       '#default_value' => $default_reg_function,

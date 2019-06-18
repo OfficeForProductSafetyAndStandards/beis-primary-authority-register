@@ -29,7 +29,7 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    return 'Confirmation | Archive advice';
+    return 'Are you sure you want to archive this advice?';
   }
 
   /**
