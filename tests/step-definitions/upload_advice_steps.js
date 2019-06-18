@@ -40,8 +40,8 @@ Given('I open advice page', function () {
 
 Then('I should be able to confirm the guidelines', function () {
       return client
-      .click('#edit-confirm')
-      .click('#edit-save')
+      .click('#edit-declaration')
+     .click('#edit-save')
               });
 
 
@@ -85,7 +85,7 @@ Then('I enter summary of advice', function () {
          });
 
  Then('I select regulatory function', function () {
-           return shared
+           return client
            .clickCheckboxIfUnselected('#edit-regulatory-functions-13')
          });
 
@@ -109,7 +109,7 @@ Then('I enter summary of advice', function () {
          When('I click on archive against an advice', function () {
                     return shared
                     .clickLinkByPureText('Archive')
-                    .assert.containsText('h1.heading-xlarge','Archive advice')
+                    .assert.containsText('h1.heading-xlarge','Are you sure you want to archive this advice')
 
                   });
 
