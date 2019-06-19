@@ -109,7 +109,7 @@ Then('I enter summary of advice', function () {
          When('I click on archive against an advice', function () {
                     return shared
                     .clickLinkByPureText('Archive')
-                    .assert.containsText('h1.heading-xlarge','Are you sure you want to archive this advice')
+                    .assert.containsText('h1.heading-xlarge','Are you sure you want to archive this advice?')
 
                   });
 
