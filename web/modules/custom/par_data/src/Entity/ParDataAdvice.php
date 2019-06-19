@@ -92,40 +92,12 @@ class ParDataAdvice extends ParDataEntity {
   }
 
   /**
-   * Archive if the entity is archivable and is not new.
-   * Override main base class function to add custom advice entity logic.
-   *
-   * @param boolean $save
-   *   Whether to save the entity after revoking.
-   *
-   * @param boolean $archive_reason
-   *   Reason for archiving this entity.
-   *
-   * @return boolean
-   *   True if the entity was restored, false for all other results.
+   * {@inheritdoc}
    */
-  public function advice_archive($save = TRUE, $archive_reason) {
-    if ($this->isNew()) {
-      $save = FALSE;
-    }
+  public function archive($save = TRUE, $reason) {
+    $this->set('archive_reason', $reason);
 
-    if (!$this->inProgress() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
-
-      // Set the core par_entity field representing a par entity being archived.
-      $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
-
-      // Set the advice status field.
-      $this->set('advice_status', 'archived');
-
-      // Set the advice archive reason.
-      $this->set('archive_reason', $archive_reason);
-
-      // Always revision status changes.
-      $this->setNewRevision(TRUE);
-
-      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
-    }
-    return FALSE;
+    parent::archive($save);
   }
 
   /**
