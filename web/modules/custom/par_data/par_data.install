@@ -664,19 +664,13 @@ function par_data_update_8037() {
 
   $par_data_manager = \Drupal::service('par_data.manager');
 
-  // Advice entities with no titles.
-  $conditions = [
-    [
-      'AND' => [
-        ['advice_title', '', 'IS NULL'],
-      ]
-    ],
-  ];
-  $par_data_advice_entities = $par_data_manager->getEntitiesByQuery('par_data_advice', $conditions);
+  // Get all advice entities.
+  $par_data_advice_entities = $par_data_manager->getEntitiesByType('par_data_advice');
 
   foreach ($par_data_advice_entities as $par_data_advice) {
-    $advice_type = $par_data_advice->getAdviceType();
-    if ($par_data_advice->getAdviceTitle() == NULL && !empty($advice_type)) {
+    // Set the title.
+    $advice_type_value = $par_data_advice->get('advice_type')->getString();
+    if ($advice_type = $par_data_advice->getTypeEntity()->getAllowedFieldlabel('advice_type', $advice_type_value)){
       $par_data_advice->setAdviceTitle($advice_type);
       // Update advice entities with default titles.
       if (!$par_data_advice->save()) {
@@ -686,6 +680,11 @@ function par_data_update_8037() {
         ];
         $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
       }
+    }
+
+    // Set the status.
+    if ($this->getRawStatus() !== 'deleted') {
+      $par_data_advice->setParStatus('active');
     }
   }
 }

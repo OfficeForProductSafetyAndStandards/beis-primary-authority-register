@@ -271,7 +271,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       $par_data_advice->set('issue_date', $time->format("d--m-Y"));
 
       // Set the status to active for the advice entity.
-      $par_data_advice->set('advice_status', 'active');
+      $par_data_advice->setParStatus('active');
 
       if ($par_data_advice->save()) {
         $this->getFlowDataHandler()->deleteStore();
