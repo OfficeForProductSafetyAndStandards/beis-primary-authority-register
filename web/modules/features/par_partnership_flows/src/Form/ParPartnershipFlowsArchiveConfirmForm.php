@@ -101,11 +101,11 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
 
     $par_data_advice = $this->getFlowDataHandler()->getParameter('par_data_advice');
 
-    // We only want to update the status of active partnerships.
+    // We only want to update the status of active advice document.
     if (!$par_data_advice->isArchived()) {
 
       $reason = $this->getFlowDataHandler()->getTempDataValue('archive_reason');
-      $archived = $par_data_advice->archive(TRUE, $reason);
+      $archived = $par_data_advice->advice_archive(TRUE, $reason);
 
       if ($archived) {
         $this->getFlowDataHandler()->deleteStore();
