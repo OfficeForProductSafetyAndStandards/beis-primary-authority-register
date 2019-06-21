@@ -674,18 +674,26 @@ function par_data_update_8037() {
       $par_data_advice->setAdviceTitle($advice_type);
       // Update advice entities with default titles.
       if (!$par_data_advice->save()) {
-        $message = $this->t('This %advice could not be saved.');
+        $message = $this->t('The default title for this advice %advice could not be saved.');
         $replacements = [
-          '%advice' => $par_data_advice->label(),
+          '%advice' => $par_data_advice->id(),
         ];
-        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+        $par_data_advice->getLogger($this->getLoggerChannel())->error($message, $replacements);
       }
     }
-
     // Set the status.
-    if ($this->getRawStatus() !== 'deleted') {
-      $par_data_advice->setParStatus('active');
+    if ($par_data_advice->getRawStatus() !== 'deleted') {
+      $par_data_advice->setParStatus('active', TRUE);
     }
+
+    if (!$par_data_advice->save()) {
+      $message = $this->t('The active setting for this %advice could not be saved.');
+      $replacements = [
+        '%advice' => $par_data_advice->id(),
+      ];
+      $par_data_advice->getLogger($this->getLoggerChannel())->error($message, $replacements);
+    }
+
   }
 }
 
