@@ -458,7 +458,7 @@ fi
 cf bind-service $TARGET_ENV $PG_BACKING_SERVICE
 # Binding the redis backing service
 cf bind-service $TARGET_ENV $REDIS_BACKING_SERVICE
-if [[ $ENV == "production" ]] && cf service $REDIS_BACKING_SERVICE 2>&1; then
+if [[ $ENV == "production" ]] && cf service $LOGGING_BACKING_SERVICE 2>&1; then
     # Binding the opss logging service
     cf bind-service $TARGET_ENV $LOGGING_BACKING_SERVICE
 fi
