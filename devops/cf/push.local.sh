@@ -377,7 +377,7 @@ do
 done
 
 ## Checking the postgres backing services
-cf_poll $PG_BACKING_SERVICELOGGING_BACKING_SERVICE
+cf_poll $PG_BACKING_SERVICE
 ## Checking the redis backing services
 cf_poll $REDIS_BACKING_SERVICE
 
