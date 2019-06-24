@@ -6,3 +6,4 @@ host: beis-par-production
 buildpack: php_buildpack
 services:
 - par-pg-production
+- par-redis-production
