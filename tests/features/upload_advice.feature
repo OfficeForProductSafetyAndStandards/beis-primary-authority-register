@@ -3,10 +3,9 @@ As a user
 I should be able to upload advice
 
 @upload-advice @ci
-Scenario: Verify upload advice is  not available for non-active partnerships
+Scenario: Verify upload advice is not available for non-active partnerships
 Given I am logged in as "par_authority@example.com"
-When I click on "See your partnerships"
-And I click on "City Enforcement Squad"
+When I go to detail page for partnership with authority "City Enforcement Squad"
 And I click "See all Advice"
 Then I should see advice page
 And I should not see the link "Upload advice"
