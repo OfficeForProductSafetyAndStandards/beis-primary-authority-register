@@ -123,7 +123,7 @@ When('I upload a file to the partnership advice section', function () {
     // .assert.containsText('.table-scroll-wrapper', 'Download test.png')
     .assert.containsText('.table-scroll-wrapper', 'Advice upload test')
     // shared.assert.containsText('.table-scroll-wrapper', 'Primary Authority advice for the organisation covering: ' + result.value)
-    .click('.button')
+    .clickLinkByPureText('Done')
 });
 
 When('I add and subsequently edit a organisation contact', function () {
