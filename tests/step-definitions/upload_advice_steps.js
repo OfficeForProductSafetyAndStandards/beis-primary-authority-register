@@ -21,7 +21,6 @@ Then('I should not see the link {string}', function (string) {
          });
 
 
-
 Then('I see the link {string}', function (string) {
            return client
 .assert.containsText('a.flow-link','Upload advice')
@@ -35,7 +34,7 @@ Given('I open an active partnership {string}', function (string) {
 Given('I open advice page', function () {
            return shared
             .clickLinkByPureText('See all Advice')
-            .clickUploadAdvice()
+            .clickLinkByPureText('Upload advice')
          });
 
 Then('I should be able to confirm the guidelines', function () {
