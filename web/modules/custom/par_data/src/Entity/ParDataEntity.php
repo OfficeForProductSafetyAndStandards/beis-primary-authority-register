@@ -656,17 +656,14 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     if (!$reset && isset($relationships)) {
       return $relationships;
     }
-
-    $relationships = [];
-
+    
     // Loading the relationships is costly so caching is necessary.
     $cache = \Drupal::cache('data')->get("par_data_relationships:{$this->uuid()}");
     if ($cache && !$reset) {
-      foreach ($cache->data as $relationship) {
-        $relationships[$relationship->getEntity()->uuid()] = $relationship;
-      }
+      $relationships = $cache->data;
     }
     else {
+      $relationships = [];
       // Set cache tags for all these relationships.
       $tags = [$this->getEntityTypeId() . ':' . $this->id()];
 
