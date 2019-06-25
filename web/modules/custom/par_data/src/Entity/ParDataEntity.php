@@ -656,21 +656,14 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     if (!$reset && isset($relationships)) {
       return $relationships;
     }
-
-    $relationships = [];
-
+    
     // Loading the relationships is costly so caching is necessary.
     $cache = \Drupal::cache('data')->get("par_data_relationships:{$this->uuid()}");
     if ($cache && !$reset) {
-      foreach ($cache->data as $relationship) {
-        if (!$relationship->getEntity()->isDeleted()
-          && $this->filterRelationshipsByTarget($relationship, $target)
-          && $this->filterRelationshipsByAction($relationship, $action)) {
-          $relationships[$relationship->getEntity()->uuid()] = $relationship;
-        }
-      }
+      $relationships = $cache->data;
     }
     else {
+      $relationships = [];
       // Set cache tags for all these relationships.
       $tags = [$this->getEntityTypeId() . ':' . $this->id()];
 
@@ -689,15 +682,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
                 if (!$referenced_entity->isDeleted()) {
                   $relationship = new ParDataRelationship($this, $referenced_entity, $field);
 
-                  if ($this->filterRelationshipsByTarget($relationship, $target)
-                    && $this->filterRelationshipsByAction($relationship, $action)) {
-
-                    // Add relationship and entity tags to cache tags.
-                    $tags[] = $relationship->getEntity()
-                        ->getEntityTypeId() . ':' . $relationship->getEntity()
-                        ->id();
-                    $relationships[$referenced_entity->uuid()] = $relationship;
-                  }
+                  // Add relationship and entity tags to cache tags.
+                  $tags[] = $relationship->getEntity()
+                      ->getEntityTypeId() . ':' . $relationship->getEntity()
+                      ->id();
+                  $relationships[$referenced_entity->uuid()] = $relationship;
                 }
               }
             }
@@ -714,15 +703,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
                 if (!$referenced_entity->isDeleted()) {
                   $relationship = new ParDataRelationship($this, $referenced_entity, $field);
 
-                  if ($this->filterRelationshipsByTarget($relationship, $target)
-                    && $this->filterRelationshipsByAction($relationship, $action)) {
-
-                    // Add relationship and entity tags to cache tags.
-                    $tags[] = $relationship->getEntity()
-                        ->getEntityTypeId() . ':' . $relationship->getEntity()
-                        ->id();
-                    $relationships[$referenced_entity->uuid()] = $relationship;
-                  }
+                  // Add relationship and entity tags to cache tags.
+                  $tags[] = $relationship->getEntity()
+                      ->getEntityTypeId() . ':' . $relationship->getEntity()
+                      ->id();
+                  $relationships[$referenced_entity->uuid()] = $relationship;
                 }
               }
             }
@@ -731,6 +716,20 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       }
 
       \Drupal::cache('data')->set("par_data_relationships:{$this->uuid()}", $relationships, Cache::PERMANENT, $tags);
+    }
+
+    // Return only permitted relationships for a given action
+    if ($target) {
+      $relationships = array_filter($relationships, function ($relationship) use ($target) {
+        return $this->filterRelationshipsByTarget($relationship, $target);
+      });
+    }
+
+    // Return only permitted relationships for a given action
+    if ($action) {
+      $relationships = array_filter($relationships, function ($relationship) use ($action) {
+        return $this->filterRelationshipsByAction($relationship, $action);
+      });
     }
 
     return $relationships;
