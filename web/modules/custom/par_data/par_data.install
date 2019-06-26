@@ -698,31 +698,6 @@ function par_data_update_8037() {
 }
 
 /**
- * Set default the title value for advice entities that don't have title values.
- */
-function par_data_update_8038() {
-
-  $par_data_manager = \Drupal::service('par_data.manager');
-  // Get all advice entities.
-  $par_data_advice_entities = $par_data_manager->getEntitiesByType('par_data_advice');
-
-  foreach ($par_data_advice_entities as $par_data_advice) {
-    // Set the status.
-    if ($par_data_advice->getRawStatus() !== 'deleted') {
-      $par_data_advice->setParStatus('active', TRUE);
-      $par_data_advice->set('advice_status', 'active');
-      if (!$par_data_advice->save()) {
-        $message = $this->t('The active setting for this %advice could not be saved.');
-        $replacements = [
-          '%advice' => $par_data_advice->id(),
-        ];
-        $par_data_advice->getLogger($this->getLoggerChannel())->error($message, $replacements);
-      }
-    }
-  }
-}
-
-/**
  * Refresh advice entity base field definitions.
  */
 function par_data_update_8038() {
