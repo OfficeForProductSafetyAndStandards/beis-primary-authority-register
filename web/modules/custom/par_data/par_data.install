@@ -683,8 +683,8 @@ function par_data_update_8037() {
     }
     // Set the status.
     if ($par_data_advice->getRawStatus() !== 'deleted') {
-
       $par_data_advice->setParStatus('active', TRUE);
+      $par_data_advice->set('advice_status', 'active');
 
       if (!$par_data_advice->save()) {
         $message = $this->t('The active setting for this %advice could not be saved.');
@@ -725,6 +725,6 @@ function par_data_update_8038() {
 /**
  * Refresh advice entity base field definitions.
  */
-function par_data_update_8039() {
+function par_data_update_8038() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
