@@ -25,6 +25,7 @@ configuration:
   advice_status:
     allowed_values:
       active: Active
+      archived: Archived
   advice_type:
     allowed_values:
       business_advice: 'Primary Authority advice for the organisation'

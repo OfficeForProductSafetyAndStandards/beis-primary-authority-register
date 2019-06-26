@@ -21,7 +21,6 @@ Then('I should not see the link {string}', function (string) {
          });
 
 
-
 Then('I see the link {string}', function (string) {
            return client
 .assert.containsText('a.flow-link','Upload advice')
@@ -35,7 +34,7 @@ Given('I open an active partnership {string}', function (string) {
 Given('I open advice page', function () {
            return shared
             .clickLinkByPureText('See all Advice')
-            .clickUploadAdvice()
+            .clickLinkByPureText('Upload advice')
          });
 
 Then('I should be able to confirm the guidelines', function () {
@@ -109,7 +108,7 @@ Then('I enter summary of advice', function () {
          When('I click on archive against an advice', function () {
                     return shared
                     .clickLinkByPureText('Archive')
-                    .assert.containsText('h1.heading-xlarge','Are you sure you want to archive this advice')
+                    .assert.containsText('h1.heading-xlarge','Are you sure you want to archive this advice?')
 
                   });
 
