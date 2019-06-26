@@ -5,7 +5,7 @@ Feature: upload advice
   @upload-advice @ci
   Scenario: Verify upload advice is not available for non-active partnerships
     Given I am logged in as "par_authority@example.com"
-    When I go to detail page for partnership with authority "City Enforcement Squad"
+    And I navigate to an active partnership "City Enforcement Squad"
     And I click "See all Advice"
     Then I should see advice page
     And I should not see the link "Upload advice"
