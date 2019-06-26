@@ -296,7 +296,7 @@ jobs:
               echo "Tags can only be deployed from the master branch"
               exit 1
             else
-              ./devops/cf/push.local.sh -u $GOVUK_CF_USER -p $GOVUK_CF_PWD -x -d /tmp/workspace $DEPLOY_ENV
+              ./devops/cf/push.local.sh -u $GOVUK_CF_USER -p $GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
             fi
 
   deploy_test:
