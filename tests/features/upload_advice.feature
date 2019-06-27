@@ -48,7 +48,7 @@ Feature: upload advice
     And I click save
     And I see advice uploaded successfully
 
-  @upload-advice @ci
+  @upload-advice
   Scenario: Helpdesk user able to upload advice for an active partnership
     Given I am logged in as "par_helpdesk@example.com"
     And I navigate to an active partnership "Lower East Side Borough Council"

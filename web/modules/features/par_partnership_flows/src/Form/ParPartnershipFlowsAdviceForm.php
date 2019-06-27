@@ -99,13 +99,11 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     // 1:
     //   route: example.route_name
     //   form_id: form_id_where_file_is_uploaded
-    //   form_data:
-    //     upload: par_partnership_advice_upload_edit
     // 2:
     //   route: example.route_name_2
     //   form_id: example_form_id
     //   form_data:
-    //     upload: form_id_where_file_is_uplaoded
+    //     upload: form_id_where_file_is_uploaded
     $cid = $this->getFlowNegotiator()->getFormKey('upload');
     $files = $this->getFlowDataHandler()->getDefaultValues("files", '', $cid);
     if ($files) {
@@ -215,14 +213,12 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     // To use this form there must be a "form_data['upload']" key in the step configuration:
     // 1:
     //   route: example.route_name
-    //   form_id: form_id_where_file_is_uplaoded
-    //   form_data:
-    //     upload: par_partnership_advice_upload_edit
+    //   form_id: form_id_where_file_is_uploaded
     // 2:
     //   route: example.route_name_2
     //   form_id: example_form_id
     //   form_data:
-    //     upload: form_id_where_file_is_uplaoded
+    //     upload: form_id_where_file_is_uploaded
     $cid = $this->getFlowNegotiator()->getFormKey('upload');
     $files = $this->getFlowDataHandler()->getDefaultValues('files', [], $cid);
 

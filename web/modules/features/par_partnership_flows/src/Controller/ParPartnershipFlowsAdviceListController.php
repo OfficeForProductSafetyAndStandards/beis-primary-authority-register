@@ -39,6 +39,19 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
         break;
     }
 
+    $build['partnership'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+    $build['partnership']['title'] = [
+      '#type' => 'markup',
+      '#markup' => $par_data_partnership->label(),
+      '#prefix' => '<h2>',
+      '#suffix' => '</h2>',
+    ];
+
     $advice_search_block_exposed  = views_embed_view('partnership_search', $advice_listing_view_block, $par_data_partnership_id);
     $build['advice_search_block'] = $advice_search_block_exposed;
 
@@ -59,6 +72,16 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
         ]),
       ];
     }
+
+    // When new advice is added these can't clear the cache,
+    // for now we will keep this page uncached.
+    $this->killSwitch->trigger();
+
+    // Make sure changes to the partnership invalidate this page
+    if ($par_data_partnership) {
+      $this->addCacheableDependency($par_data_partnership);
+    }
+
     return parent::build($build);
   }
 }
