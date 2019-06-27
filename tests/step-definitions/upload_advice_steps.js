@@ -8,6 +8,7 @@ Given('I navigate to an active partnership {string}', function (string) {
       .clickLinkByPureText('Dashboard')
       .clickLinkByPartialText('See your partnerships')
       .setValue('#edit-keywords', string)
+      .click('#edit-partnership-status-1 option[value="confirmed_rd"]')
       .click('#edit-submit-par-user-partnerships')
       .clickLinkByPureText(string)
 });
