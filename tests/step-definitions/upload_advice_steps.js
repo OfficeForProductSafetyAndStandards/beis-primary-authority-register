@@ -11,6 +11,15 @@ Given('I navigate to an active partnership {string}', function (string) {
       .click('#edit-submit-par-user-partnerships')
       .clickLinkByPureText(string)
 });
+Given('I navigate to a partially completed partnership {string}', function (string) {
+  return shared
+      .clickLinkByPureText('Dashboard')
+      .clickLinkByPartialText('See your partnerships')
+      .setValue('#edit-keywords', string)
+      .click('#edit-partnership-status-1 option[value="confirmed_authority"]')
+      .click('#edit-submit-par-user-partnerships')
+      .clickLinkByPureText(string)
+});
 
 Then('I should see advice page', function () {
   return shared
@@ -84,6 +93,11 @@ Then('I select {string} regulatory function', function (string) {
 Then('I select type of advice', function () {
   return client
       .click('#edit-advice-type-business-advice')
+});
+
+Then('I filter by partnership status {status}', function (status) {
+  return client
+      .click('#edit-partnership-status-1 option[value="'+status+'"]')
 });
 
 Then('I select regulatory function', function () {
