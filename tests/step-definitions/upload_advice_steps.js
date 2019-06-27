@@ -6,9 +6,9 @@ const shared = client.page.shared()
 Given('I navigate to an active partnership {string}', function (string) {
   return client
       .url(client.launch_url + 'partnerships')
-      .setValue('#edit-keywords', authority)
+      .setValue('#edit-keywords', string)
       .click('#edit-submit-par-user-partnerships')
-      .clickLinkByPureText(authority)
+      .clickLinkByPureText(string)
 });
 
 Then('I should see advice page', function () {
