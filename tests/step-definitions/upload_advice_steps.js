@@ -4,12 +4,10 @@ const shared = client.page.shared()
 
 
 Given('I navigate to an active partnership {string}', function (string) {
-  client
-    .url(client.launch_url + 'partnerships')
-    .setValue('#edit-keywords', string)
-    .click('#edit-submit-par-user-partnerships')
-  
   return shared
+      .url(client.launch_url + 'partnerships')
+      .setValue('#edit-keywords', string)
+      .click('#edit-submit-par-user-partnerships')
       .clickLinkByPureText(string)
 });
 
