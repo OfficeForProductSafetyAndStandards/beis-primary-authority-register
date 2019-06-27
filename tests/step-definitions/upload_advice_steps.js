@@ -95,7 +95,7 @@ Then('I select type of advice', function () {
       .click('#edit-advice-type-business-advice')
 });
 
-Then('I filter by partnership status {status}', function (status) {
+Then('I filter by partnership status {string}', function (status) {
   return client
       .click('#edit-partnership-status-1 option[value="'+status+'"]')
 });
