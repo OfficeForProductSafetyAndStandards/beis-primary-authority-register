@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: KUftwdVrFnUkpod3Fq6DDoyXp5fQqMZZd0phAlnemXI
+  default_config_hash: Jg1O7ktawA88NQPDsy2U_PIJPBnFy4DLEHkEkKZu6Mo
 id: partnership_direct
 label: 'Direct Partnership Flow'
 default_title: null
@@ -29,9 +29,9 @@ steps:
       add_field_sic_code: 12
       edit_field_sic_code: 13
       edit_employees_band: 14
-      advice: 15
-      inspection_plans: 16
-      save: 17
+      inspection_plans: 15
+      save: 16
+      advice: 17
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
@@ -113,14 +113,59 @@ steps:
       save: 1
       cancel: 1
   15:
-    route: par_partnership_flows.advice_view
-    redirect:
-      next: 1
-      cancel: 1
-  16:
     route: par_partnership_flows.inspection_plan_view
     redirect:
       next: 1
       cancel: 1
-  17:
+  16:
     route: view.par_user_partnerships.partnerships_page
+  17:
+    route: par_partnership_flows.advice_view
+    redirect:
+      upload: 18
+      done: 1
+      cancel: 1
+  18:
+    route: par_partnership_flows.advice_warning_declaration
+    form_id: par_partnership_confirm_advice_form
+    redirect:
+      save: 19
+      cancel: 17
+  19:
+    route: par_partnership_flows.advice_upload_documents
+    form_id: par_partnership_advice_upload_add
+    redirect:
+      upload: 20
+      cancel: 17
+  20:
+    route: par_partnership_flows.advice_add
+    form_id: par_partnership_advice_add
+    form_data:
+      upload: par_partnership_advice_upload_add
+    redirect:
+      save: 17
+      cancel: 17
+  21:
+    route: par_partnership_flows.advice_edit_documents
+    form_id: par_partnership_advice_upload_edit
+    redirect:
+      upload: 22
+      cancel: 17
+  22:
+    route: par_partnership_flows.advice_edit
+    form_id: par_partnership_advice_edit
+    form_data:
+      upload: par_partnership_advice_upload_edit
+    redirect:
+      save: 17
+      cancel: 17
+  23:
+    route: par_partnership_flows.advice_details
+    redirect:
+      done: 17
+  24:
+    route: par_partnership_flows.advice_archive
+    form_id: par_partnership_advice_archive
+    redirect:
+      save: 17
+      cancel: 17

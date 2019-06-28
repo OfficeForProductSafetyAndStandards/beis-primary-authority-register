@@ -318,7 +318,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   Whether to save the entity after revoking.
    *
    * @return boolean
-   *   True if the entity was restored, false for all other results.
+   *   True if the entity was archived, false for all other results.
    */
   public function archive($save = TRUE) {
     if ($this->isNew()) {

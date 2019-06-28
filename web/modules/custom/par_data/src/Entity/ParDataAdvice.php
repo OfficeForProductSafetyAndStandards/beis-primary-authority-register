@@ -92,6 +92,34 @@ class ParDataAdvice extends ParDataEntity {
   }
 
   /**
+   * Archive if the entity is archivable and is not new.
+   * Override main base class function to add custom advice entity logic.
+   *
+   * @param boolean $save
+   *   Whether to save the entity after revoking.
+   *
+   * @param boolean $archive_reason
+   *   Reason for archiving this entity.
+   *
+   * @return boolean
+   *   True if the entity was restored, false for all other results.
+   */
+  public function advice_archive($save = TRUE, $reason) {
+
+    if ($entity_archived = parent::archive($save)) {
+      // Set reason for archiving the advice.
+      $this->set('archive_reason', $reason);
+      // Set the advice status field.
+      $this->set('advice_status', 'archived');
+
+      if (!$this->save()) {
+        return FALSE;
+      }
+    }
+    return $entity_archived;
+  }
+
+  /**
    * Get the regulatory functions for this Advice.
    */
   public function getRegulatoryFunction() {
@@ -99,10 +127,75 @@ class ParDataAdvice extends ParDataEntity {
   }
 
   /**
+   * Get PAR Advice's title.
+   *
+   * @return string
+   *   advice entity title.
+   */
+  public function getAdviceTitle() {
+    return $this->get('advice_title')->getString();
+  }
+
+  /**
+   * Set PAR Advice's title.
+   */
+  public function setAdviceTitle($advice_title) {
+    $this->set('advice_title', $advice_title);
+  }
+
+  /**
+   * Get PAR Advice type.
+   *
+   * @return string
+   *   advice entity title.
+   */
+  public function getAdviceType() {
+    return $this->get('advice_type')->getString();
+  }
+
+  /**
+   * Get PAR Advice summary.
+   *
+   * @return string
+   *   advice entity title.
+   */
+  public function getAdviceSummary() {
+    return $this->get('notes')->getString();
+  }
+
+  /**
+   * Get the issue date for this Advice.
+   */
+  public function getIssueDate() {
+    return $this->get('issue_date')->getString();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
+
+    // Advice Title.
+    $fields['advice_title'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Advice Title'))
+      ->setDescription(t('The title of the advice documents.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
 
     // Advice Type.
     $fields['advice_type'] = BaseFieldDefinition::create('string')
@@ -125,10 +218,10 @@ class ParDataAdvice extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Notes.
+    // Advice Notes.
     $fields['notes'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Notes'))
-      ->setDescription(t('Notes about this advice.'))
+      ->setLabel(t('Advice Summary'))
+      ->setDescription(t('Summary info for this advice.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
@@ -201,7 +294,7 @@ class ParDataAdvice extends ParDataEntity {
     // Issue Date.
     $fields['issue_date'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Issue Date'))
-      ->setDescription(t('The date this enforcement notice was issued.'))
+      ->setDescription(t('The date this advice was issued.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
@@ -244,6 +337,47 @@ class ParDataAdvice extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
+    // Advice Status.
+    $fields['advice_status'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Advice Status'))
+      ->setDescription(t('The current status of the advice. For example, active, archived.'))
+      ->addConstraint('par_required')
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+    // Archive Reason.
+    $fields['archive_reason'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Archive Reason'))
+      ->setDescription(t('Comments about why this advice document was archived.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ])->setDisplayOptions('form', [
+        'type' => 'text_textarea',
+        'weight' => 13,
+        'settings' => [
+          'rows' => 25,
+        ],
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
     return $fields;
   }
 

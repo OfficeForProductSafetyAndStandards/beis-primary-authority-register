@@ -10,14 +10,18 @@ module.exports = {
         Logout: '.button'
     },
     commands: [{
-        clickLinkByXpath: function(xpathValue){      
+        clickLinkByXpath: function(xpathValue){
            return client
            .useXpath()
-           .click(xpathValue)   
-           .useCss()                 
+           .click(xpathValue)
+           .useCss()
            .click('#edit-next')
         },
-        clickLinkByPureText: function(linkText){      
+        clickUploadAdvice: function(){
+        return client
+        .click('a.flow-link')
+        },
+        clickLinkByPureText: function(linkText){
             return this.click('link text', linkText);
         },
         clickLinkByPartialText: function(partialLinkText){
@@ -26,14 +30,14 @@ module.exports = {
                 .useCss();
             return this;
         },
-        putTextFromSelectorToAnotherSelector: function(selector1, input1){ 
+        putTextFromSelectorToAnotherSelector: function(selector1, input1){
             var text;
             this.getValue(selector1, function (result) {
                 text = result.value;
                 browser.setValue(input1, text);
           });
-        },  
-        
+        },
+
      generaterandomString: function(length) {
      var text = "";
      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -43,69 +47,69 @@ module.exports = {
 
      return text;
      },
-       
-        chooseAuthorityIfOptionPresent: function(elem, toClick){ 
+
+        chooseAuthorityIfOptionPresent: function(elem, toClick){
             return this.api.element('css selector', elem , function (result) {
                 if (result.value.ELEMENT) {
-                    return this  
+                    return this
                     .useXpath()
-                    .click(toClick)   
-                    .useCss()                 
+                    .click(toClick)
+                    .useCss()
                     .click('#edit-next');
                 }
-                else{ 
+                else{
                     return this
                     }
-              })  
+              })
         },
-        chooseMemberIfOptionPresent: function(){ 
+        chooseMemberIfOptionPresent: function(){
             return this.api.element('css selector', 'input[name="par_data_organisation_id"]', function(result){
                 if (result.value.ELEMENT) {
                     return this
-                    .click('.form-radio')  
+                    .click('.form-radio')
                     .click('#edit-next');
                   } else
                   {
                     return this
                   }
-            })   
+            })
         },
-        chooseNewPersonIfOptionPresent: function(elem, toclick){ 
+        chooseNewPersonIfOptionPresent: function(elem, toclick){
             return this.api.element('css selector', 'input[name="par_data_person_id"]', function(result){
                 if (result.value.ELEMENT) {
                     return this
-                    .click('#edit-par-data-person-id-new')  
+                    .click('#edit-par-data-person-id-new')
                     .click('#edit-save');
                   } else
                   {
                     return this
                   }
-            })   
+            })
         },
-        chooseNewOrganisationOptionIfPresent: function(elem, toclick){ 
+        chooseNewOrganisationOptionIfPresent: function(elem, toclick){
             return this.api.element('css selector', 'input[name="par_data_organisation_id"]', function(result){
                 if (result.value.ELEMENT) {
                     return this
-                    .click(toclick)  
+                    .click(toclick)
                     .click('#edit-next');
                   } else
                   {
                     return this
                   }
-            })   
+            })
         },
-        clickShowMembersListIfPresent: function(){ 
+        clickShowMembersListIfPresent: function(){
             return this.api.element('css selector', 'edit-members-link p:nth-child(2)', function(result){
                 if (result.value.ELEMENT) {
                     return this
-                    .clickLinkByPureText('Show members list')  
+                    .clickLinkByPureText('Show members list')
                   } else
                   {
                     return this
                   }
-            })   
+            })
         },
-        checkMessageTypeDisplay: function(messageType){ 
+        checkMessageTypeDisplay: function(messageType){
             let element = null;
             this.api.elements('css selector', 'td.views-field.views-field-par-status', function (elements) {
               let success = false;
@@ -119,9 +123,9 @@ module.exports = {
               }
             });
         },
-        checkEmails: function(string, string2){ 
+        checkEmails: function(string, string2){
             var emailSubject = ''
-            switch (string) 
+            switch (string)
             {
                 case 'enforcement creation': emailSubject = 'Primary Authority: Notification of Proposed Enforcement'; break;
                 case 'partnership approval': emailSubject = 'Primary Authority: Partnerships Nominated'; break;
@@ -145,7 +149,7 @@ module.exports = {
                 .assert.containsText('h1.heading-xlarge', emailSubject)
                 .assert.containsText('#block-par-theme-content',string2)
         },
-        loggedInAs:function(string){ 
+        loggedInAs:function(string){
             return this
                 .clickLinkByPureText('Sign in')
                 .setValue('#edit-name', string)
@@ -154,7 +158,7 @@ module.exports = {
                 .waitForElementVisible('#footer', 15000)
                 .assert.containsText('body', 'Sign out')
         },
-        goToPartnershipDetailPage: function(orgName, status){ 
+        goToPartnershipDetailPage: function(orgName, status){
         return this
             .clickLinkByPureText('Dashboard')
             .clickLinkByPartialText('See your partnerships')
@@ -175,14 +179,14 @@ module.exports = {
               .click('#edit-next')
               .assert.containsText('#par-partnership-about','Use this section to give a brief overview of the partnership')
               .setValue('#edit-about-partnership', 'About the partnership detail')
-              .click('#edit-next')    
+              .click('#edit-next')
         },
         searchSelectOrganisation: function(organisation){
             return this
 
         },
 
-        runTota11yAgainstCurrentPage: function(){ 
+        runTota11yAgainstCurrentPage: function(){
             return this.click('.tota11y-toolbar-toggle')
             var list = ['Headings', 'Contrast', 'Link text', 'Labels', 'Image alt-text'];
             for (var i = 0; i < list.length; i++) {
