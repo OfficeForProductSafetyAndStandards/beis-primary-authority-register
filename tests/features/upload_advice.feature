@@ -22,11 +22,11 @@ Feature: upload advice
   Scenario: Upload-advice type business
     Given I am logged in as "par_authority@example.com"
     And I navigate to an active partnership "Lower East Side Borough Council"
-    When I open advice page
+    When I open advice add page
     Then I should be able to confirm the guidelines
     And I upload the file "files/test.png" to field "#edit-files-upload"
     And I click on the button "#edit-upload"
-    And enter advice title
+    And I enter advice title
     And I enter summary of advice
     And I select advice type "business-advice"
     And I select "Cookie control" regulatory function
@@ -37,11 +37,11 @@ Feature: upload advice
   Scenario: Upload-advice type background information
     Given I am logged in as "par_authority@example.com"
     And I navigate to an active partnership "Lower East Side Borough Council"
-    When I open advice page
+    When I open advice add page
     Then I should be able to confirm the guidelines
     And I upload the file "files/test.png" to field "#edit-files-upload"
     And I click on the button "#edit-upload"
-    And enter advice title
+    And I enter advice title
     And I enter summary of advice
     And I select advice type "background-information"
     And I select "Cookie control" regulatory function
@@ -52,11 +52,11 @@ Feature: upload advice
   Scenario: Helpdesk user able to upload advice for an active partnership
     Given I am logged in as "par_helpdesk@example.com"
     And I navigate to an active partnership "Lower East Side Borough Council"
-    When I open advice page
+    When I open advice add page
     Then I should be able to confirm the guidelines
     And I upload the file "files/test.png" to field "#edit-files-upload"
     And I click on the button "#edit-upload"
-    And enter advice title
+    And I enter advice title
     And I enter summary of advice
     And I select advice type "business-advice"
     And I select "Environmental health" regulatory function
@@ -69,11 +69,11 @@ Feature: upload advice
     And I navigate to an active partnership "Lower East Side Borough Council"
     And I click "See all Advice"
     When I click on edit against an advice
-    And I select file to remove
-    And I click on the button "#edit-upload"
-    Then I upload the file "files/Advice Issued - 01 - Attic Descriptions v2_1.pdf" to field "#edit-files-upload"
-    And I click on the button "#edit-upload"
-    And I see new file in the advice detail page
+    And I enter new advice title
+    And I enter new summary of advice
+    And I click save
+    Then I see advice updated successfully
+
 
   @upload-advice @ci
   Scenario: Archive advice

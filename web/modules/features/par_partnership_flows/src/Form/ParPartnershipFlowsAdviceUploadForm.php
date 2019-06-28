@@ -25,7 +25,10 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    return "Primary Authority Advice | Edit document type";
+    $verb = 'Upload';
+    $this->pageTitle = "$verb advice documents";
+
+    return parent::titleCallback();
   }
 
   /**

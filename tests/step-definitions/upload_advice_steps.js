@@ -44,7 +44,7 @@ Given('I open an active partnership {string}', function (string) {
       .goToPartnershipDetailPage(string, 'active')
 });
 
-Given('I open advice page', function () {
+Given('I open advice add page', function () {
   return shared
       .clickLinkByPureText('See all Advice')
       .clickLinkByPureText('Upload advice')
@@ -64,16 +64,29 @@ Then('I able to upload advice document', function () {
 });
 
 
-Then('enter advice title', function () {
+Then('I enter advice title', function () {
   return client
       .clearValue('#edit-advice-title')
       .setValue('#edit-advice-title', 'Auto-test-NewAdvice')
 
 });
+Then('I enter new advice title', function () {
+  return client
+      .clearValue('#edit-advice-title')
+      .setValue('#edit-advice-title', 'Auto-test-NewAdvice-retest')
+
+});
+
 Then('I enter summary of advice', function () {
   return client
       .clearValue('#edit-notes')
       .setValue('#edit-notes', 'Auto-advice-Summary')
+
+});
+Then('I enter new summary of advice', function () {
+  return client
+      .clearValue('#edit-notes')
+      .setValue('#edit-notes', 'Auto-advice-Summary-retest')
 
 });
 
@@ -115,10 +128,18 @@ Then('I see advice uploaded successfully', function () {
 });
 
 
+Then('I see advice updated successfully', function () {
+  return shared
+      .clickLinkByPureText('Auto-test-NewAdvice-retest')
+      .assert.containsText('h1.heading-xlarge', 'Auto-test-NewAdvice-retest')
+      .assert.containsText('#content', 'Auto-advice-Summary-retest')
+});
+
+
 When('I click on edit against an advice', function () {
   return shared
       .clickLinkByPureText('Edit')
-      .assert.containsText('h1.heading-xlarge', 'Edit document type')
+      .assert.containsText('h1.heading-xlarge', 'Edit advice details')
 
 });
 

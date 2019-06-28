@@ -4,6 +4,7 @@
  * Installation hooks for par_data module.
  */
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataEntity;
@@ -668,31 +669,31 @@ function par_data_update_8037() {
   $par_data_advice_entities = $par_data_manager->getEntitiesByType('par_data_advice');
 
   foreach ($par_data_advice_entities as $par_data_advice) {
+    $save = FALSE;
+
     // Set the title.
     $advice_type_value = $par_data_advice->get('advice_type')->getString();
-    if ($advice_type = $par_data_advice->getTypeEntity()->getAllowedFieldlabel('advice_type', $advice_type_value)) {
+    $advice_type = $par_data_advice->getTypeEntity()->getAllowedFieldlabel('advice_type', $advice_type_value);
+    if ($advice_type && $par_data_advice->get('advice_title')->isEmpty()) {
       $par_data_advice->setAdviceTitle($advice_type);
-      // Update advice entities with default titles.
-      if (!$par_data_advice->save()) {
-        $message = $this->t('The default title for this advice %advice could not be saved.');
-        $replacements = [
-          '%advice' => $par_data_advice->id(),
-        ];
-        $par_data_advice->getLogger($this->getLoggerChannel())->error($message, $replacements);
-      }
+      $save = TRUE;
     }
     // Set the status.
     if ($par_data_advice->getRawStatus() !== 'deleted') {
       $par_data_advice->setParStatus('active', TRUE);
-      $par_data_advice->set('advice_status', 'active');
+      $save = TRUE;
+    }
+    // Set the issue date.
+    $issue_date = $par_data_advice->get('issue_date')->getString();
+    if (empty($issue_date) || !preg_match('/2\d{3}-\d{2}-\d{2}/', $issue_date)) {
+      $timestamp = $par_data_advice->get('created')->value;
+      $request_date = DrupalDateTime::createFromTimestamp($timestamp, NULL, ['validate_format' => FALSE]);
+      $par_data_advice->set('issue_date', $request_date->format("Y-m-d"));
+      $save = TRUE;
+    }
 
-      if (!$par_data_advice->save()) {
-        $message = $this->t('The active setting for this %advice could not be saved.');
-        $replacements = [
-          '%advice' => $par_data_advice->id(),
-        ];
-        $par_data_advice->getLogger($this->getLoggerChannel())->error($message, $replacements);
-      }
+    if ($save) {
+      $par_data_advice->save();
     }
   }
 }
