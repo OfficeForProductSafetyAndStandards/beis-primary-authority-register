@@ -2,11 +2,11 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
-
 use Drupal\file\Entity\File;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
@@ -26,7 +26,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     ['advice_title', 'par_data_advice', 'advice_title', NULL, NULL, 0, [
       'This value should not be null.' => 'You must provide a title for this advice document.'
     ]],
-    ['advice_summary', 'par_data_advice', 'advice_summary', NULL, NULL, 0, [
+    ['notes', 'par_data_advice', 'notes', NULL, NULL, 0, [
       'This value should not be null.' => 'You must provide a summary for this advice document.'
     ]],
     ['advice_type', 'par_data_advice', 'advice_type', NULL, NULL, 0, [
@@ -42,7 +42,12 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    return "Primary Authority Advice | Edit document type and regulatory functions";
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+
+    $verb = $par_data_partnership ? 'Edit' : 'Add';
+    $this->pageTitle = "$verb advice details";
+
+    return parent::titleCallback();
   }
 
   /**
@@ -72,18 +77,15 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       }
 
       // Advice summary.
-      $advice_summary = $par_data_advice->get('advice_summary')->getString();
-      if (isset($advice_summary)) {
-        $this->getFlowDataHandler()->setFormPermValue('advice_summary', $advice_summary);
+      $notes = $par_data_advice->get('notes')->getString();
+      if (isset($notes)) {
+        $this->getFlowDataHandler()->setFormPermValue('notes', $notes);
       }
 
       // Get Regulatory Functions.
       $regulatory_functions = $par_data_advice->get('field_regulatory_function')->referencedEntities();
-      $regulatory_options = [];
-      foreach ($regulatory_functions as $function) {
-        $regulatory_options[$function->id()] = $function->id();
-      }
-      $this->getFlowDataHandler()->setFormPermValue('regulatory_functions', $regulatory_options);
+      $regulatory_function_options = $this->getParDataManager()->getEntitiesAsOptions($regulatory_functions);
+      $this->getFlowDataHandler()->setFormPermValue('regulatory_functions', $regulatory_function_options);
     }
   }
 
@@ -95,17 +97,6 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     $advice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_advice');
 
     // Get files from "upload" step.
-    // To use this form there must be a "form_data['upload']" key in the step configuration:
-    // 1:
-    //   route: example.route_name
-    //   form_id: form_id_where_file_is_uplaoded
-    //   form_data:
-    //     upload: par_partnership_advice_upload_edit
-    // 2:
-    //   route: example.route_name_2
-    //   form_id: example_form_id
-    //   form_data:
-    //     upload: form_id_where_file_is_uplaoded
     $cid = $this->getFlowNegotiator()->getFormKey('upload');
     $files = $this->getFlowDataHandler()->getDefaultValues("files", '', $cid);
     if ($files) {
@@ -137,17 +128,6 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_title'),
     ];
 
-    // The advice summary.
-    $form['advice_summary'] = [
-      '#type' => 'textarea',
-      '#attributes' => [
-        'class' => ['form-group'],
-      ],
-      '#title' => '<h3 class="heading-medium">' . $this->t('Provide summarised details of this advice') . '</h3>',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_summary'),
-      '#description' => '<p>Use this section to give a brief overview of the advice document.</p><p>Include any information you feel may be useful.</p>',
-    ];
-
     // The advice type.
     $form['advice_type'] = [
       '#type' => 'radios',
@@ -159,23 +139,35 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_type'),
     ];
 
-    $form['advice_type_help_text'] = [
-      '#type' => 'fieldset',
+    // The regulatory functions of the advice entity.
+    $regulatory_function_options = $par_data_partnership->getEntityFieldAsOptions('field_regulatory_function');
+    $default_reg_function = $this->getFlowDataHandler()->getDefaultValues('regulatory_functions', []);
+    if (is_array($default_reg_function) && count($default_reg_function) > 1) {
+      $default_reg_function = [];
+    }
+    elseif (!empty($default_reg_function)) {
+      $default_reg_function = key($default_reg_function);
+    }
+
+    $form['regulatory_functions'] = [
+      '#type' => 'radios',
       '#attributes' => [
         'class' => ['form-group'],
       ],
-      '#title' => $this->t('How to upload Primary Authority Advice to Local Authorities'),
-      '#description' => $this->t('To upload Primary Authority Advice to a Local Authority, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the organisation it applies to and we’ll get back to you shortly.'),
-    ];
-
-    // The regulatory functions of the advice entity.
-    $regulatory_function_options = $par_data_partnership->getEntityFieldAsOptions('field_regulatory_function');
-
-    $form['regulatory_functions'] = [
-      '#type' => 'checkboxes',
       '#title' => $this->t('Regulatory functions this advice covers'),
       '#options' => $regulatory_function_options,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('regulatory_functions', []),
+      '#default_value' => $default_reg_function,
+    ];
+
+    // The advice summary.
+    $form['notes'] = [
+      '#type' => 'textarea',
+      '#attributes' => [
+        'class' => ['form-group'],
+      ],
+      '#title' => '<h3 class="heading-medium">' . $this->t('Provide summarised details of this advice') . '</h3>',
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('notes'),
+      '#description' => '<p>Use this section to give a brief overview of the advice document, include any information you feel may be useful to someone to search for this advice.</p>',
     ];
 
     // Make sure to add the document cacheability data to this form.
@@ -191,7 +183,9 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    if (!array_keys(array_filter($form_state->getValue('regulatory_functions')))) {
+    $submitted_reg_function = $form_state->getValue('regulatory_functions');
+
+    if (empty($submitted_reg_function)) {
       $id = $this->getElementId(['regulatory_functions'], $form);
       $form_state->setErrorByName($this->getElementName('regulatory_functions'), $this->wrapErrorMessage('You must select at least one regulatory function.', $id));
     };
@@ -207,17 +201,6 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     $par_data_advice = $this->getFlowDataHandler()->getParameter('par_data_advice');
 
     // Get files from "upload" step.
-    // To use this form there must be a "form_data['upload']" key in the step configuration:
-    // 1:
-    //   route: example.route_name
-    //   form_id: form_id_where_file_is_uplaoded
-    //   form_data:
-    //     upload: par_partnership_advice_upload_edit
-    // 2:
-    //   route: example.route_name_2
-    //   form_id: example_form_id
-    //   form_data:
-    //     upload: form_id_where_file_is_uplaoded
     $cid = $this->getFlowNegotiator()->getFormKey('upload');
     $files = $this->getFlowDataHandler()->getDefaultValues('files', [], $cid);
 
@@ -233,43 +216,50 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       $files_to_add[] = $file->id();
     }
 
-    if ($par_data_advice) {
-      $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
-      $advice_type = $this->getFlowDataHandler()->getTempDataValue('advice_type');
-      $advice_title = $this->getFlowDataHandler()->getTempDataValue('advice_title');
-      $advice_summary = $this->getFlowDataHandler()->getTempDataValue('advice_summary');
+    // Create new advice if needed.
+    if (!$par_data_advice) {
+      $request_date = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
+      $par_data_advice = ParDataAdvice::create([
+        'type' => 'advice',
+        'uid' => 1,
+        'issue_date' => $request_date->format("Y-m-d"),
+      ]);
+    }
+    $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
 
-      // Check if title data has been stored.
-      if ($advice_title) {
-        $par_data_advice->set('advice_title', $advice_title);
-      }
+    // Set the advice title.
+    $par_data_advice->set('advice_title', $this->getFlowDataHandler()->getTempDataValue('advice_title'));
 
-      // Check if advice_summary data has been stored.
-      if ($advice_summary) {
-        $par_data_advice->set('advice_summary', $advice_summary);
-      }
+    // Set the advice summary.
+    $par_data_advice->set('notes', $this->getFlowDataHandler()->getTempDataValue('notes'));
 
-      if (isset($allowed_types[$advice_type])) {
-        $par_data_advice->set('advice_type', $advice_type);
-      }
+    // Set the advice type.
+    $advice_type = $this->getFlowDataHandler()->getTempDataValue('advice_type');
+    if (isset($allowed_types[$advice_type])) {
+      $par_data_advice->set('advice_type', $advice_type);
+    }
 
-      $regulatory_functions_selected = array_keys(array_filter($this->getFlowDataHandler()->getTempDataValue('regulatory_functions')));
-      $par_data_advice->set('field_regulatory_function', $regulatory_functions_selected);
+    // Set regulatory functions.
+    $par_data_advice->set('field_regulatory_function', $this->getFlowDataHandler()->getTempDataValue('regulatory_functions'));
 
-      // Check if there are files to add from the Advice Upload form.
-      if ($files_to_add) {
-        $par_data_advice->set('document', $files_to_add);
-      }
+    // Set the status to active for the advice entity.
+    $par_data_advice->setParStatus('active', TRUE);
 
-      // Set the issue date value for the advice entity.
-      $time = new \DateTime();
-      $par_data_advice->set('issue_date', $time->format("d--m-Y"));
+    // Add files if required.
+    if ($files_to_add) {
+      $par_data_advice->set('document', $files_to_add);
+    }
 
-      if ($par_data_advice->save()) {
+    // Save and attach new advice entities.
+    if ($par_data_advice->isNew() && $par_data_advice->save()) {
+      $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+      $par_data_partnership->get('field_advice')->appendItem($par_data_advice->id());
+
+      if ($par_data_partnership->save()) {
         $this->getFlowDataHandler()->deleteStore();
       }
       else {
-        $message = $this->t('This %advice could not be saved for %form_id');
+        $message = $this->t('This %advice could not be created for %form_id');
         $replacements = [
           '%advice' => $par_data_advice->label(),
           '%form_id' => $this->getFormId(),
@@ -277,68 +267,18 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
         $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
       }
     }
+    // Save existing advice entities.
+    else if ($par_data_advice->save()) {
+      $this->getFlowDataHandler()->deleteStore();
+    }
+    // Log an error.
     else {
-      // Create new advice entity.
-      $par_data_advice = ParDataAdvice::create([
-        'type' => 'advice',
-        'uid' => 1,
-      ]);
-
-      // Check if there are files to add from the Advice Upload form.
-      if ($files_to_add) {
-        $par_data_advice->set('document', $files_to_add);
-      }
-
-      $advice_title = $this->getFlowDataHandler()->getTempDataValue('advice_title');
-
-      if (isset($advice_title)) {
-        $par_data_advice->set('advice_title', $advice_title);
-      }
-
-      $advice_summary = $this->getFlowDataHandler()->getTempDataValue('advice_summary');
-
-      if (isset($advice_summary)) {
-        $par_data_advice->set('advice_summary', $advice_summary);
-      }
-
-      // Set advice type.
-      $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
-
-      $advice_type = $this->getFlowDataHandler()->getTempDataValue('advice_type');
-
-      if (isset($allowed_types[$advice_type])) {
-        $par_data_advice->set('advice_type', $advice_type);
-      }
-
-      // Set regulatory functions.
-      $regulatory_functions_selected = array_keys(array_filter($this->getFlowDataHandler()->getTempDataValue('regulatory_functions')));
-
-      $par_data_advice->set('field_regulatory_function', $regulatory_functions_selected);
-
-      // Save new advice entity.
-      $par_data_advice->save();
-
-      // Get partnership entity from URL.
-      $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-
-      // Combine current pieces of advice to prevent overwriting field.
-      $partnership_advice = array_merge($par_data_partnership->retrieveEntityIds('field_advice'), [$par_data_advice->id()]);
-
-      // Update field_advice with our new advice ID.
-      $par_data_partnership->set('field_advice', $partnership_advice);
-
-      // Save partnership.
-      if ($par_data_partnership->save()) {
-        $this->getFlowDataHandler()->deleteStore();
-      }
-      else {
-        $message = $this->t('This %partnership could not be saved for %form_id');
-        $replacements = [
-          '%partnership' => $par_data_partnership->label(),
-          '%form_id' => $this->getFormId(),
-        ];
-        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-      }
+      $message = $this->t('This %advice could not be saved for %form_id');
+      $replacements = [
+        '%advice' => $par_data_advice->label(),
+        '%form_id' => $this->getFormId(),
+      ];
+      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
     }
   }
 

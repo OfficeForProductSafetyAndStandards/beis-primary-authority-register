@@ -16,7 +16,7 @@ When('I update the registered address for organisation', function () {
   .setValue('#edit-address-line1','1 Change St')
   .setValue('#edit-address-line2','New Change')
   .setValue('#edit-town-city','London')
-  .setValue('#edit-county','London')  
+  .setValue('#edit-county','London')
   .click('#edit-country-code option[value="GB"]')
   .click('#edit-nation option[value="GB-ENG"]')
   .click('#edit-save')
@@ -47,7 +47,7 @@ When('I edit about the partnership', function () {
     .click('#edit-save')
     .assert.containsText('#edit-about-partnership', 'Change to the about partnership details section')
 });
-  
+
 When('I update the SIC code', function () {
   return shared
       .clickLinkByPureText('add another sic code')
@@ -62,8 +62,8 @@ When('I update the number of employees', function () {
     .click('#edit-employees-band option[value="250"]')
     .click('#edit-save')
     .assert.containsText('#edit-employee-no', '50 to 249')
-  });  
-  
+  });
+
 When('I add and subsequently edit a trading name', function () {
     return shared
       .clickLinkByPureText('add another trading name')
@@ -106,18 +106,24 @@ When('I upload a file to the partnership advice section', function () {
   return shared
     .clickLinkByPureText('See all Advice')
     .clickLinkByPureText('Upload advice')
+    .assert.containsText('h1.heading-xlarge', 'Uploading advice documents declaration')
+    .click('#edit-declaration')
+    .click('#edit-save')
     .assert.containsText('h3.heading-medium', 'How to upload Primary Authority Advice to Local Authorities')
     .setValue('#edit-files-upload', __dirname + '/files/test.png')
     .click('#edit-upload')
     .waitForElementVisible('#par-partnership-advice-add', 2000)
-    .click('#edit-regulatory-functions--wrapper > div > div > label')
+    .assert.containsText('h1.heading-xlarge', 'Edit advice details')
+    .setValue('#edit-advice-title','Advice upload test')
+    .setValue('#edit-notes','This is a summary description for this test advice, the contents of this description should be searchable.')
+    .click('#edit-regulatory-functions--wrapper > div > label')
     .click('#edit-advice-type-business-advice')
     .click('#edit-save')
     // @TODO Drupal renumbers existing files, had to change from:
     // .assert.containsText('.table-scroll-wrapper', 'Download test.png')
-    .assert.containsText('.table-scroll-wrapper', 'Download test')
+    .assert.containsText('.table-scroll-wrapper', 'Advice upload test')
     // shared.assert.containsText('.table-scroll-wrapper', 'Primary Authority advice for the organisation covering: ' + result.value)
-    .click('.button')
+    .clickLinkByPureText('Done')
 });
 
 When('I add and subsequently edit a organisation contact', function () {

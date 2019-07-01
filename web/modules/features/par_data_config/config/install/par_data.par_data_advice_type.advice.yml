@@ -12,12 +12,16 @@ configuration:
   entity:
     label_fields:
       - document
+    status_field: advice_status
     completed_fields:
       - advice_type
       - field_regulatory_function
     required_fields:
       advice_type: 'The %field is required.'
       regulatory_function: 'The %field is required.'
+  advice_status:
+    allowed_values:
+      active: Active
   advice_type:
     allowed_values:
       business_advice: 'Primary Authority advice for the organisation'

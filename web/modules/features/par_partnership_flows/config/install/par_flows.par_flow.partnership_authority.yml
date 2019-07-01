@@ -60,7 +60,6 @@ steps:
     route: par_partnership_flows.advice_list
     redirect:
       upload: 9
-      edit: 13
       done: 1
       cancel: 1
   9:
@@ -106,4 +105,10 @@ steps:
   16:
     route: par_partnership_flows.advice_details
     redirect:
-      done: 1
+      done: 8
+  17:
+    route: par_partnership_flows.advice_archive
+    form_id: par_partnership_advice_archive
+    redirect:
+      save: 8
+      cancel: 8

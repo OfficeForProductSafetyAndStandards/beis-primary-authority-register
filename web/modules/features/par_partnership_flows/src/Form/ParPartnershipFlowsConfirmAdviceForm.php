@@ -40,7 +40,7 @@ class ParPartnershipFlowsConfirmAdviceForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
 
 
-    $form['confirm'] = [
+    $form['declaration'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('I confirm the documents to be uploaded do not contain signatures or sensitive information.'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('confirm', FALSE),
@@ -61,9 +61,9 @@ class ParPartnershipFlowsConfirmAdviceForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    if (!$form_state->getValue('confirm')) {
-      $id = $this->getElementId('confirm', $form);
-      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please confirm security guidelines have been applied.', $id));
+    if (!$form_state->getValue('declaration')) {
+      $id = $this->getElementId('declaration', $form);
+      $form_state->setErrorByName($this->getElementName(['declaration']), $this->wrapErrorMessage('Please confirm the security guidelines have been applied.', $id));
     }
   }
 

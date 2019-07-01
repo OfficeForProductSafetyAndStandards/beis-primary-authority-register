@@ -267,6 +267,7 @@ fi
 PG_BACKING_SERVICE="par-pg-$ENV"
 CDN_BACKING_SERVICE="par-cdn-$ENV"
 REDIS_BACKING_SERVICE="par-redis-$ENV"
+LOGGING_BACKING_SERVICE="opss-log-drain"
 
 MANIFEST="${BASH_SOURCE%/*}/manifests/manifest.$ENV.yml"
 if [[ ! -f $MANIFEST ]]; then
@@ -451,17 +452,21 @@ if [[ $ENV != "production" ]]; then
     cf_poll $PG_BACKING_SERVICE
     ## Checking the redis backing services
     cf_poll $REDIS_BACKING_SERVICE
+fi
 
-    # Binding the postgres backing service
-    cf bind-service $TARGET_ENV $PG_BACKING_SERVICE
-    # Binding the redis backing service
-    cf bind-service $TARGET_ENV $REDIS_BACKING_SERVICE
+# Binding the postgres backing service
+cf bind-service $TARGET_ENV $PG_BACKING_SERVICE
+# Binding the redis backing service
+cf bind-service $TARGET_ENV $REDIS_BACKING_SERVICE
+if [[ $ENV == "production" ]] && cf service $LOGGING_BACKING_SERVICE 2>&1; then
+    # Binding the opss logging service
+    cf bind-service $TARGET_ENV $LOGGING_BACKING_SERVICE
+fi
 
-    ## Deployment to no production environments need a database
-    if [[ $DB_RESET == 'y' ]] && [[ ! -f $DB_IMPORT ]]; then
-        printf "Non-production environments need a copy of the database to seed from at '$DB_IMPORT'.\n"
-        exit 5
-    fi
+## Deployment to no production environments need a database
+if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]] && [[ ! -f $DB_IMPORT ]]; then
+    printf "Non-production environments need a copy of the database to seed from at '$DB_IMPORT'.\n"
+    exit 5
 fi
 
 
@@ -544,4 +549,6 @@ echo "##########################################################################
 printf "Running the post deployment scripts...\n"
 
 cf ssh $TARGET_ENV -c "cd app/devops/tools && python cron_runner.py"
-cf ssh $TARGET_ENV -c "cd app/devops/tools && python cache_warmer.py"
+
+## Run the cache warmer asynchronously with lots of memory
+cf run-task $TARGET_ENV "./scripts/cache-warmer.sh" -m 4G --name CACHE_WARMER

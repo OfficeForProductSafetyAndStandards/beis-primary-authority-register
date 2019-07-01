@@ -19,10 +19,6 @@ Feature: PA User - Update a partnership
 
         And I edit the main authority contact
 
-        # ADVICE DOCUMENTATION
-
-        And I upload a file to the partnership advice section
-
         # COMPLETE CHANGES
 
         And I click on the button "#edit-save"

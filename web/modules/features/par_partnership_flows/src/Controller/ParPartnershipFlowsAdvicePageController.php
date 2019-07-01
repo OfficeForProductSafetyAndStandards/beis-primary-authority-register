@@ -12,7 +12,7 @@ use Drupal\par_flows\Controller\ParBaseInterface;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
- * The partnership form for the partnership details.
+ * The Advice entity details page.
  */
 class ParPartnershipFlowsAdvicePageController extends ParBaseController {
 
@@ -36,15 +36,30 @@ class ParPartnershipFlowsAdvicePageController extends ParBaseController {
    */
   public function build($build = [], ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
 
-    $build['advice_summary'] = $this->renderSection('About this advice document', $par_data_advice, ['advice_summary' => 'summary']);
+    if ($par_data_advice->isArchived()) {
+      $build['advice_details'] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+      $build['advice_details']['archived'] = [
+        '#type' => 'markup',
+        '#markup' => 'Archived advice',
+        '#prefix' => '<h2>',
+        '#suffix' => '</h2>',
+      ];
+    }
 
-    $build['advice_type'] = $this->renderSection('The type of Advice', $par_data_advice, ['advice_type' => 'summary']);
+    $build['notes'] = $this->renderSection('About this advice document', $par_data_advice, ['notes' => 'summary']);
+
+    $build['advice_type'] = $this->renderSection('The type of advice', $par_data_advice, ['advice_type' => 'summary']);
 
     $build['regulatory_functions'] = $this->renderSection('Regulatory functions', $par_data_advice, ['field_regulatory_function' => 'full']);
 
-    $build['issue_date'] = $this->renderSection('Issue Date', $par_data_advice, ['issue_date' => 'full']);
+    $build['issue_date'] = $this->renderSection('Issue date', $par_data_advice, ['issue_date' => 'full']);
 
-    $build['advice_link'] = $this->renderSection('Advice document', $par_data_advice, ['document' => 'title']);
+    $build['advice_link'] = $this->renderSection('Advice documents', $par_data_advice, ['document' => 'title']);
 
     return parent::build($build);
   }

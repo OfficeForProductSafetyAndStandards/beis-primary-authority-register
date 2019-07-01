@@ -14,8 +14,8 @@ par_search_partnership_flows.partnership_page:
 par_search_partnership_flows.advice_view:
   path: '/partnership/{par_data_partnership}/advice/search'
   defaults:
-    _controller: '\Drupal\par_search_partnership_flows\Controller\ParAdviceController::build'
-    _title_callback: '\Drupal\par_search_partnership_flows\Controller\ParAdviceController::titleCallback'
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
   requirements:
     _permission: 'search partnerships'
     par_data_partnership: \d+

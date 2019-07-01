@@ -15,6 +15,13 @@ targetEntityType: par_data_advice
 bundle: advice
 mode: title
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   document:
     type: file_download_link
     weight: 0

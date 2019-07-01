@@ -5,7 +5,7 @@ orbs:
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v3.0.0
+      - image: beispar/web:v3.1.0
         name: web
         environment:
           APP_ENV: ci
@@ -28,12 +28,12 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v4-repo-{{ .Branch }}-{{ .Revision }}
+        - v7-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v6-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+        - v7-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -91,12 +91,14 @@ jobs:
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
           to: backups/sanitised-db.sql.tar.gz
-          arguments: '--region eu-west-1'
+          arguments: |
+            --region eu-west-1 \
+            --cache-control "max-age=0"
       - run:
           name: "Unpacking database"
           command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql.tar.gz
       - save_cache:
-          key: v4-repo-{{ .Branch }}-{{ .Revision }}
+          key: v7-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
@@ -115,7 +117,7 @@ jobs:
             npm run gulp
             cd ./tests && rm -rf node_modules && npm install
       - save_cache:
-          key: v6-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+          key: v7-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
           paths:
             - ./vendor
             - ./web/core
@@ -263,7 +265,9 @@ jobs:
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
-          arguments: '--region eu-west-1'
+          arguments: |
+            --region eu-west-1 \
+            --cache-control "max-age=0"
       - run:
           name: "Deploy to staging environment"
           command: |
@@ -292,7 +296,7 @@ jobs:
               echo "Tags can only be deployed from the master branch"
               exit 1
             else
-              ./devops/cf/push.local.sh -u $GOVUK_CF_USER -p $GOVUK_CF_PWD -x -d /tmp/workspace $DEPLOY_ENV
+              ./devops/cf/push.local.sh -u $GOVUK_CF_USER -p $GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
             fi
 
   deploy_test:
@@ -343,13 +347,16 @@ jobs:
       - *configure_webroot
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${UNSANITISED_DATABASE}-latest.tar.gz"
-          to: backups/unsanitised-db.tar.gz
+          to: "backups/${UNSANITISED_DATABASE}-latest.tar.gz"
           arguments: |
             --region eu-west-1 \
             --cache-control "max-age=0"
       - run:
           name: "Unpacking database"
-          command: cd backups && tar --no-same-owner -zxvf unsanitised-db.tar.gz
+          command: cd backups && tar --no-same-owner -zxvf ${UNSANITISED_DATABASE}-latest.tar.gz
+      - run:
+          name: "Check db archive date"
+          command: cd backups && ls -lah ${UNSANITISED_DATABASE}.sql
       - run:
           name: "Check db archive date"
           command: cd backups && ls -lah unsanitised-db.tar.gz

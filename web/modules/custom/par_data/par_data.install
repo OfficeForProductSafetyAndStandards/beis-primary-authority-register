@@ -4,9 +4,12 @@
  * Installation hooks for par_data module.
  */
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataEntity;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Implements hook_install().
@@ -14,6 +17,15 @@ use Drupal\par_data\Entity\ParDataEntity;
 function par_data_install() {
   // Ensure the translation fields are created in the database.
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
+
+function par_data_update_dependencies() {
+  // The system module adds fields to an entity which no longer exists.
+  $dependencies['system'][8702] = [
+    'par_data' => 8033,
+  ];
+
+  return $dependencies;
 }
 
 /**
@@ -535,7 +547,7 @@ function par_data_update_8032() {
 
   // For Private files.
   if (!empty($private_new) && !empty($private_old)) {
-    drush_shell_exec("aws s3 sync s3://{$private_old}/ s3://{$private_new}/ --source-region {$region_old} --region {$region_new}" );
+    drush_shell_exec("aws s3 sync s3://{$private_old}/ s3://{$private_new}/ --source-region {$region_old} --region {$region_new}");
     drush_print(drush_shell_exec_output());
   }
   // For Public files.
@@ -546,69 +558,148 @@ function par_data_update_8032() {
 }
 
 /**
- * Update fields required for new advice entity.
+ * Remove record of old entity which has been deleted but is still in the schema definition lists.
  */
 function par_data_update_8033() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
+
+  $entity_definition_update_manager = \Drupal::service('entity.last_installed_schema.repository');
+  $entity_definition_update_manager->deleteLastInstalledDefinition('par_data_regulatory_area');
 }
 
 /**
- * Update fields required for new advice entity.
+ * Refresh advice entity base field definitions.
  */
 function par_data_update_8034() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
 
-
 /**
- * Set default title value for advice entities that don't have title values.
+ * Setup config updates in par_partnership_flows.
  */
 function par_data_update_8035() {
-
-  $par_data_manager = \Drupal::service('par_data.manager');
-
-  // Advice entities with no titles.
-  $conditions = [
-    [
-      'AND' => [
-        ['advice_title', '', 'IS NULL'],
-      ]
-    ],
-  ];
-  $par_data_advice_entities = $par_data_manager->getEntitiesByQuery('par_data_advice', $conditions);
-
-  foreach ($par_data_advice_entities as $par_data_advice) {
-    $advice_type = $par_data_advice->getAdviceType();
-    if ($par_data_advice->getAdviceTitle() == NULL && !empty($advice_type)) {
-      $par_data_advice->setAdviceTitle($advice_type);
-      // Update advice entities with default titles.
-      if (!$par_data_advice->save()) {
-        $message = $this->t('This %advice could not be saved.');
-        $replacements = [
-          '%advice' => $par_data_advice->label(),
-        ];
-        $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-      }
-    }
-  }
-  \Drupal::service('entity.definition_update_manager')->applyUpdates();
-}
-/**
- * Update fields required for new advice entity.
- */
-function par_data_update_8036() {
-  \Drupal::service('entity.definition_update_manager')->applyUpdates();
-}
-
-/**
- * Update module default config with latest conf.
- */
-function par_data_update_8037() {
   \Drupal::service('config.installer')->installDefaultConfig('module', 'par_partnership_flows');
 }
 
 /**
- * Update module default config with latest conf.
+ * Setup required new fields for advice features.
+ */
+function par_data_update_8036() {
+
+  //new fields definitions to be added to the advice entity.
+  $storage_definitions = [];
+
+  // Advice Title.
+  $storage_definitions['advice_title'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Advice Title'))
+    ->setDescription(t('The title of the advice documents.'))
+    ->setRequired(TRUE)
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'max_length' => 255,
+    ])
+    ->setDefaultValue('')
+    ->setDisplayOptions('form', [
+      'type' => 'string_textfield',
+      'weight' => 1,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+// Advice archive reason.
+  $storage_definitions['archive_reason'] = BaseFieldDefinition::create('text_long')
+    ->setLabel(t('Archive Reason'))
+    ->setDescription(t('Comments about why this advice document was archived.'))
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'text_processing' => 0,
+    ])->setDisplayOptions('form', [
+      'type' => 'text_textarea',
+      'weight' => 13,
+      'settings' => [
+        'rows' => 25,
+      ],
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ]);
+
+  // Advice Status.
+  $storage_definitions['advice_status'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Advice Status'))
+      ->setDescription(t('The current status of the advice. For example, active, archived.'))
+      ->addConstraint('par_required')
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+  foreach ($storage_definitions as $field => $definition) {
+    \Drupal::entityDefinitionUpdateManager()
+      ->installFieldStorageDefinition($field, 'par_data_advice', 'par_data_advice', $definition);
+  }
+}
+
+/**
+ * Set default the title value for advice entities that don't have title values.
+ */
+function par_data_update_8037() {
+
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  // Get all advice entities.
+  $par_data_advice_entities = $par_data_manager->getEntitiesByType('par_data_advice');
+
+  foreach ($par_data_advice_entities as $par_data_advice) {
+    $save = FALSE;
+
+    // Set the title.
+    $advice_type_value = $par_data_advice->get('advice_type')->getString();
+    $advice_type = $par_data_advice->getTypeEntity()->getAllowedFieldlabel('advice_type', $advice_type_value);
+    if ($advice_type && $par_data_advice->get('advice_title')->isEmpty()) {
+      $par_data_advice->setAdviceTitle($advice_type);
+      $save = TRUE;
+    }
+    // Set the status.
+    if ($par_data_advice->getRawStatus() !== 'deleted') {
+      $par_data_advice->setParStatus('active', TRUE);
+      $save = TRUE;
+    }
+    // Set the issue date.
+    $issue_date = $par_data_advice->get('issue_date')->getString();
+    if (empty($issue_date) || !preg_match('/2\d{3}-\d{2}-\d{2}/', $issue_date)) {
+      $timestamp = $par_data_advice->get('created')->value;
+      $request_date = DrupalDateTime::createFromTimestamp($timestamp, NULL, ['validate_format' => FALSE]);
+      $par_data_advice->set('issue_date', $request_date->format("Y-m-d"));
+      $save = TRUE;
+    }
+
+    if ($save) {
+      $par_data_advice->save();
+    }
+  }
+}
+
+/**
+ * Refresh advice entity base field definitions.
  */
 function par_data_update_8038() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();

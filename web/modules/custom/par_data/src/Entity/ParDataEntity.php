@@ -318,7 +318,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   Whether to save the entity after revoking.
    *
    * @return boolean
-   *   True if the entity was restored, false for all other results.
+   *   True if the entity was archived, false for all other results.
    */
   public function archive($save = TRUE) {
     if ($this->isNew()) {
@@ -364,6 +364,17 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function inProgress() {
     // By default there are no conditions by which an entity is frozen.
     return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isActive() {
+    if ($this->isDeleted() || $this->isRevoked() || $this->isArchived() || !$this->isTransitioned()) {
+      return FALSE;
+    }
+
+    return TRUE;
   }
 
   /**
@@ -636,18 +647,16 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   An array of entities keyed by type.
    */
   public function getRelationships($target = NULL, $action = NULL, $reset = FALSE) {
-    $random = new Random();
     // Enable in memory caching for repeated entity lookups.
     $unique_function_id = __FUNCTION__ . ':'
       . $this->uuid() . ':'
       . (isset($target) ? $target : 'null') . ':'
-      . (isset($action) ? $action : 'null') . ':'
-      . ($reset ? 'true' . $random->name() : 'false');
+      . (isset($action) ? $action : 'null');
     $relationships = &drupal_static($unique_function_id);
-    if (isset($relationships)) {
+    if (!$reset && isset($relationships)) {
       return $relationships;
     }
-
+    
     // Loading the relationships is costly so caching is necessary.
     $cache = \Drupal::cache('data')->get("par_data_relationships:{$this->uuid()}");
     if ($cache && !$reset) {
@@ -655,49 +664,64 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     }
     else {
       $relationships = [];
+      // Set cache tags for all these relationships.
+      $tags = [$this->getEntityTypeId() . ':' . $this->id()];
 
       // Get all referenced entities.
-      $references = $this->getParDataManager()->getReferences($this->getEntityTypeId(), $this->bundle());
-      foreach ($references as $entity_type => $fields) {
-        // If the reference is on the current entity type
-        // we can get the value from the current $entity.
-        if ($this->getEntityTypeId() === $entity_type) {
-          foreach ($fields as $field_name => $field) {
-            foreach ($this->get($field_name)->referencedEntities() as $referenced_entity) {
-              if (!$referenced_entity->isDeleted()) {
-                $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
-              }
-            }
-          }
-        }
-        // If the reference is on another entity type
-        // we must use an entity lookup to find all entities
-        // that reference the current entity.
-        else {
-          foreach ($fields as $field_name => $field) {
-            $referencing_entities = $this->getParDataManager()->getEntitiesByProperty($entity_type, $field_name, $this->id());
-            foreach ($referencing_entities as $referenced_entity) {
-              if (!$referenced_entity->isDeleted()) {
-                $relationships[$referenced_entity->uuid()] = new ParDataRelationship($this, $referenced_entity, $field);
-              }
-            }
-          }
-        }
-      }
+      if ($this->lookupReferencesByAction($action)) {
+        $references = $this->getParDataManager()
+          ->getReferences($this->getEntityTypeId(), $this->bundle());
 
-      // Set cache tags for all these relationships.
-      $tags[] = $this->getEntityTypeId() . ':' . $this->id();
-      foreach ($relationships as $uuid => $relationship) {
-        $tags[] = $relationship->getEntity()->getEntityTypeId() . ':' . $relationship->getEntity()->id();
+        foreach ($references as $entity_type => $fields) {
+          // If the reference is on the current entity type
+          // we can get the value from the current $entity.
+          if ($this->getEntityTypeId() === $entity_type) {
+            foreach ($fields as $field_name => $field) {
+              foreach ($this->get($field_name)->referencedEntities() as $referenced_entity) {
+
+                if (!$referenced_entity->isDeleted()) {
+                  $relationship = new ParDataRelationship($this, $referenced_entity, $field);
+
+                  // Add relationship and entity tags to cache tags.
+                  $tags[] = $relationship->getEntity()
+                      ->getEntityTypeId() . ':' . $relationship->getEntity()
+                      ->id();
+                  $relationships[$referenced_entity->uuid()] = $relationship;
+                }
+              }
+            }
+          }
+          // If the reference is on another entity type
+          // we must use an entity lookup to find all entities
+          // that reference the current entity.
+          else {
+            foreach ($fields as $field_name => $field) {
+              $referencing_entities = $this->getParDataManager()
+                ->getEntitiesByProperty($entity_type, $field_name, $this->id());
+              foreach ($referencing_entities as $referenced_entity) {
+
+                if (!$referenced_entity->isDeleted()) {
+                  $relationship = new ParDataRelationship($this, $referenced_entity, $field);
+
+                  // Add relationship and entity tags to cache tags.
+                  $tags[] = $relationship->getEntity()
+                      ->getEntityTypeId() . ':' . $relationship->getEntity()
+                      ->id();
+                  $relationships[$referenced_entity->uuid()] = $relationship;
+                }
+              }
+            }
+          }
+        }
       }
 
       \Drupal::cache('data')->set("par_data_relationships:{$this->uuid()}", $relationships, Cache::PERMANENT, $tags);
     }
 
-    // Return only relationships of a specific entity type.
+    // Return only permitted relationships for a given action
     if ($target) {
       $relationships = array_filter($relationships, function ($relationship) use ($target) {
-        return ($target === $relationship->getEntity()->getEntityTypeId());
+        return $this->filterRelationshipsByTarget($relationship, $target);
       });
     }
 
@@ -709,6 +733,36 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     }
 
     return $relationships;
+  }
+
+  /**
+   * Allows all relationships to be skipped.
+   */
+  public function lookupReferencesByAction($action = NULL) {
+    // By default all references will be looked up, some entities may choose
+    // to override this and skip reference checks for given actions.
+    return TRUE;
+  }
+
+  /**
+   * Allows relationships to be excluded based on the target entity required.
+   *
+   * @param $relationship
+   *   The relationship to check.
+   * @param $target
+   *   The target entity being checked for.
+   *
+   * @return bool
+   *   Whether not to include a given relationship.
+   */
+  public function filterRelationshipsByTarget($relationship, $target = NULL) {
+    // By default all relationships are included, this
+    // can be overridden on an entity by entity basis.
+    if ($target) {
+      return ($target === $relationship->getEntity()->getEntityTypeId());
+    }
+
+    return TRUE;
   }
 
   /**
