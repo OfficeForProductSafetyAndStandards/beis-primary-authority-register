@@ -613,5 +613,4 @@ function par_data_update_8034() {
       $par_data_advice->save();
     }
   }
-  die;
 }
