@@ -568,102 +568,19 @@ function par_data_update_8033() {
 }
 
 /**
- * Refresh advice entity base field definitions.
+ * Set default the title value for advice entities that don't have title values.
  */
 function par_data_update_8034() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
-}
 
-/**
- * Setup config updates in par_partnership_flows.
- */
-function par_data_update_8035() {
-  \Drupal::service('config.installer')->installDefaultConfig('module', 'par_partnership_flows');
-}
-
-/**
- * Setup required new fields for advice features.
- */
-function par_data_update_8036() {
-
-  //new fields definitions to be added to the advice entity.
-  $storage_definitions = [];
-
-  // Advice Title.
-  $storage_definitions['advice_title'] = BaseFieldDefinition::create('string')
-    ->setLabel(t('Advice Title'))
-    ->setDescription(t('The title of the advice documents.'))
-    ->setRequired(TRUE)
-    ->setRevisionable(TRUE)
-    ->setSettings([
-      'max_length' => 255,
-    ])
-    ->setDefaultValue('')
-    ->setDisplayOptions('form', [
-      'type' => 'string_textfield',
-      'weight' => 1,
-    ])
-    ->setDisplayConfigurable('form', FALSE)
-    ->setDisplayOptions('view', [
-      'label' => 'hidden',
-      'weight' => 0,
-    ])
-    ->setDisplayConfigurable('view', TRUE);
-
-// Advice archive reason.
-  $storage_definitions['archive_reason'] = BaseFieldDefinition::create('text_long')
-    ->setLabel(t('Archive Reason'))
-    ->setDescription(t('Comments about why this advice document was archived.'))
-    ->setRevisionable(TRUE)
-    ->setSettings([
-      'text_processing' => 0,
-    ])->setDisplayOptions('form', [
-      'type' => 'text_textarea',
-      'weight' => 13,
-      'settings' => [
-        'rows' => 25,
-      ],
-    ])
-    ->setDisplayConfigurable('form', FALSE)
-    ->setDisplayOptions('view', [
-      'label' => 'hidden',
-      'weight' => 0,
-    ]);
-
-  // Advice Status.
-  $storage_definitions['advice_status'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Advice Status'))
-      ->setDescription(t('The current status of the advice. For example, active, archived.'))
-      ->addConstraint('par_required')
-      ->setRevisionable(TRUE)
-      ->setSettings([
-        'max_length' => 255,
-        'text_processing' => 0,
-      ])
-      ->setDefaultValue('')
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => 2,
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'weight' => 0,
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-  foreach ($storage_definitions as $field => $definition) {
-    \Drupal::entityDefinitionUpdateManager()
-      ->installFieldStorageDefinition($field, 'par_data_advice', 'par_data_advice', $definition);
-  }
-}
-
-/**
- * Set default the title value for advice entities that don't have title values.
- */
-function par_data_update_8037() {
-
+  $config_factory = \Drupal::configFactory();
   $par_data_manager = \Drupal::service('par_data.manager');
+
+  // Because the configuration hasn't been imported yet the status field value needs to be set manually.
+  $configuration = $config_factory->getEditable('par_data.par_data_advice_type.advice')->get('configuration');
+  $configuration['entity']['status_field'] = 'advice_status';
+  $configuration['advice_status']['allowed_values'] = ['active' => 'Active'];
+  $config_factory->getEditable('par_data.par_data_advice_type.advice')->set('configuration', $configuration)->save();
 
   // Get all advice entities.
   $par_data_advice_entities = $par_data_manager->getEntitiesByType('par_data_advice');
@@ -696,11 +613,5 @@ function par_data_update_8037() {
       $par_data_advice->save();
     }
   }
-}
-
-/**
- * Refresh advice entity base field definitions.
- */
-function par_data_update_8038() {
-  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+  die;
 }

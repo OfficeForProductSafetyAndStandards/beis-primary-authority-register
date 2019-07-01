@@ -358,6 +358,7 @@ class ParDataAdvice extends ParDataEntity {
         'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
+
     // Archive Reason.
     $fields['archive_reason'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Archive Reason'))
