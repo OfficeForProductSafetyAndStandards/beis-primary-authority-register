@@ -69,10 +69,10 @@ Feature: Coordinator User - Update Partnership
         And I add "New Member One" to the inputfield "#edit-organisation-name"
         When I click on the button "#edit-submit-members-list"
         Then the element ".table-scroll-wrapper" contains the text "New Member One"
-        When I select the option with the value "revoked" for element "#edit-partnership-status"
+        When I select the option with the value "2" for element "#edit-revoked"
         And I click on the button "#edit-submit-members-list"
         Then the element ".table-scroll-wrapper" does not exist
-        When I select the option with the value "revoked" for element "#edit-partnership-status"
+        When I select the option with the value "1" for element "#edit-revoked"
         And I click on the button "#edit-submit-members-list"
         Then the element ".table-scroll-wrapper" contains the text "New Member One"
 
