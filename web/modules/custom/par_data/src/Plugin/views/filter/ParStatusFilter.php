@@ -32,12 +32,28 @@ class ParStatusFilter extends FilterPluginBase {
     parent::init($view, $display, $options);
   }
 
+  protected function defineOptions() {
+    $options = parent::defineOptions();
+
+    return $options;
+  }
+
   /**
    * {@inheritdoc}
    */
   protected function valueForm(&$form, FormStateInterface $form_state) {
     $entity_bundle = $this->getParDataManager()->getParBundleEntity($this->getEntityType());
     $allowed_values = $entity_bundle->getAllowedValues($this->realField);
+
+    if ($entity_bundle->isDeletable() && \Drupal::currentUser()->hasPermission('bypass par_data access')) {
+      $allowed_values['deleted'] = 'Deleted';
+    }
+    if ($entity_bundle->isRevokable()) {
+      $allowed_values['revoked'] = 'Revoked';
+    }
+    if ($entity_bundle->isArchivable()) {
+      $allowed_values['archived'] = 'Archived';
+    }
 
     $form['value'] = [
       '#type' => 'select',
