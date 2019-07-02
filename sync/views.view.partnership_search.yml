@@ -2203,7 +2203,7 @@ display:
           exposed: true
           expose:
             operator_id: combine_op
-            label: 'Advice Title/ Summary/ Regulatory function'
+            label: 'Advice Title / Summary/ Regulatory function'
             description: 'Enter keyword(s)'
             use_operator: false
             operator: combine_op
@@ -2288,12 +2288,12 @@ display:
           group: 1
           exposed: false
           expose:
-            operator_id: ''
-            label: ''
-            description: ''
+            operator_id: partnership_status_op
+            label: 'PAR Status'
+            description: null
             use_operator: false
-            operator: ''
-            identifier: ''
+            operator: partnership_status_op
+            identifier: partnership_status
             required: false
             remember: false
             multiple: false
@@ -2357,7 +2357,7 @@ display:
           field: advice_status
           relationship: field_advice
           group_type: group
-          admin_label: 'Exposed select state'
+          admin_label: ''
           operator: '='
           value: active
           group: 1
@@ -4757,7 +4757,7 @@ display:
           field: advice_status
           relationship: field_advice
           group_type: group
-          admin_label: 'Exposed select state'
+          admin_label: ''
           operator: '='
           value: active
           group: 1
