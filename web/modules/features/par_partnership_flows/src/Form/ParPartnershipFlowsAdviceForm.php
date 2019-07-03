@@ -42,9 +42,9 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+    $par_data_advice = $this->getFlowDataHandler()->getParameter('par_data_advice');
 
-    $verb = $par_data_partnership ? 'Edit' : 'Add';
+    $verb = $par_data_advice ? 'Edit' : 'Add';
     $this->pageTitle = "$verb advice details";
 
     return parent::titleCallback();
@@ -142,21 +142,15 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     // The regulatory functions of the advice entity.
     $regulatory_function_options = $par_data_partnership->getEntityFieldAsOptions('field_regulatory_function');
     $default_reg_function = $this->getFlowDataHandler()->getDefaultValues('regulatory_functions', []);
-    if (is_array($default_reg_function) && count($default_reg_function) > 1) {
-      $default_reg_function = [];
-    }
-    elseif (!empty($default_reg_function)) {
-      $default_reg_function = key($default_reg_function);
-    }
 
     $form['regulatory_functions'] = [
-      '#type' => 'radios',
+      '#type' => 'checkboxes',
       '#attributes' => [
         'class' => ['form-group'],
       ],
       '#title' => $this->t('Regulatory functions this advice covers'),
       '#options' => $regulatory_function_options,
-      '#default_value' => $default_reg_function,
+      '#default_value' => array_keys($default_reg_function),
     ];
 
     // The advice summary.

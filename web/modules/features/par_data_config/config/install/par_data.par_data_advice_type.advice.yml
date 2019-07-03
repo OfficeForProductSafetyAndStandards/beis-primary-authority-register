@@ -6,7 +6,7 @@ label: Advice
 description: 'Advice is given by a Primary Authority in the context of a Partnership.'
 help: ''
 isDeletable: true
-isRevokable: true
+isRevokable: false
 isArchivable: true
 configuration:
   entity:
