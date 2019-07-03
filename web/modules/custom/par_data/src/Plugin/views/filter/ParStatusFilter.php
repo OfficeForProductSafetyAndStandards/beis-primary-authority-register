@@ -71,6 +71,8 @@ class ParStatusFilter extends FilterPluginBase {
       return;
     }
 
+    $par_entity_type = $this->getParDataManager()->getParEntityType($this->getEntityType());
+
     // The normal use of ensureMyTable() here breaks Views.
     // So instead we trick the filter into using the alias of the base table.
     // @see https://www.drupal.org/node/271833.
@@ -83,10 +85,27 @@ class ParStatusFilter extends FilterPluginBase {
       $this->tableAlias = $this->query->ensureTable($this->view->storage->get('base_table'));
     }
 
-    // Get field to query e.g. "par_partnerships_field_data.partnership_status".
-    $field = "{$this->tableAlias}.{$this->realField}";
-
-    $this->query->addWhere(0, $field, $this->value, 'in');
+    // Add query to target default statuses.
+    if ($default_statuses = array_intersect((array) $this->value, ['deleted', 'revoked', 'archived'])) {
+      foreach ($default_statuses as $status) {
+        // Get field to query e.g. "par_partnerships_field_data.revoked".
+        $field = "{$this->tableAlias}.{$status}";
+        $this->query->addWhere($this->options['group'], $field, 1);
+      }
+    }
+    // Add query to explicitly not target default statuses that are not set.
+    if ($ignored_default_statuses = array_diff(['deleted', 'revoked', 'archived'], (array) $this->value)) {
+      foreach ($ignored_default_statuses as $status) {
+        // Get field to query e.g. "par_partnerships_field_data.revoked".
+        $field = "{$this->tableAlias}.{$status}";
+        $this->query->addWhere($this->options['group'], $field, 1, '<>');
+      }
+    }
+    if ($non_default_statuses = array_diff((array) $this->value, ['deleted', 'revoked', 'archived'])) {
+      // Get field to query e.g. "par_partnerships_field_data.partnership_status".
+      $field = "{$this->tableAlias}.{$this->realField}";
+      $this->query->addWhere($this->options['group'], $field, $this->value, 'in');
+    }
   }
 
 }
