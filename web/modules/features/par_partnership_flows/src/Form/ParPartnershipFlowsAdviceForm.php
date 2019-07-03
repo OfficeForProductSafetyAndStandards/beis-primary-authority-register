@@ -42,9 +42,9 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+    $par_data_advice = $this->getFlowDataHandler()->getParameter('par_data_advice');
 
-    $verb = $par_data_partnership ? 'Edit' : 'Add';
+    $verb = $par_data_advice ? 'Edit' : 'Add';
     $this->pageTitle = "$verb advice details";
 
     return parent::titleCallback();
@@ -150,7 +150,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     }
 
     $form['regulatory_functions'] = [
-      '#type' => 'radios',
+      '#type' => 'checkboxes',
       '#attributes' => [
         'class' => ['form-group'],
       ],
