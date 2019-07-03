@@ -69,10 +69,10 @@ Feature: upload advice
     And I navigate to an active partnership "Lower East Side Borough Council"
     And I click "See all Advice"
     When I click on edit against an advice
-    And I enter new advice title
+    Then I enter new advice title
     And I enter new summary of advice
     And I click save
-    Then I see advice updated successfully
+    And I see advice updated successfully
 
 
   @upload-advice @ci
