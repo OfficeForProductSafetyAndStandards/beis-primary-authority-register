@@ -2320,8 +2320,8 @@ display:
           relationship: none
           group_type: group
           admin_label: 'PAR Partnership: Is Not Revoked'
-          operator: '='
-          value: '0'
+          operator: '!='
+          value: '1'
           group: 1
           exposed: false
           expose:
@@ -2400,9 +2400,9 @@ display:
           field: deleted
           relationship: field_advice
           group_type: group
-          admin_label: ''
-          operator: '='
-          value: '0'
+          admin_label: 'Is Not Deleted'
+          operator: '!='
+          value: '1'
           group: 1
           exposed: false
           expose:
