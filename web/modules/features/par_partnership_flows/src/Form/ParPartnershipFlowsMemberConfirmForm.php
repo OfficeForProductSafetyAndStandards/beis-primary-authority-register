@@ -12,6 +12,7 @@ use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\Entity\File;
+use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
@@ -21,6 +22,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
   use StringTranslationTrait;
+  use ParPartnershipFlowAccessTrait;
 
   /**
    * The column mappings in the CSV.

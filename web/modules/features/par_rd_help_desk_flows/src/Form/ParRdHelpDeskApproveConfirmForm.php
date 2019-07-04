@@ -150,7 +150,6 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
 
     // We only want to update the status of none active partnerships.
     if ($partnership->getRawStatus() !== 'confirmed_rd') {
-
       try {
         $partnership->setParStatus('confirmed_rd');
       }
