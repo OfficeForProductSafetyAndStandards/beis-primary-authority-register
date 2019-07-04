@@ -64,6 +64,7 @@ hidden:
   field_authority_person: true
   field_coordinated_business: true
   field_inspection_plan: true
+  field_legal_entity: true
   field_organisation_person: true
   field_regulatory_function: true
   inspection_plan: true

@@ -5,6 +5,7 @@ namespace Drupal\par_partnership_flows;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_flows\ParFlowException;
 use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
@@ -24,7 +25,7 @@ trait ParPartnershipFlowAccessTrait {
    * the ParPartnershipFlowsLegalEntityForm class and would need to be updated
    * for use with other forms in par_partnership_flows flows.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL ) {
     try {
       $this->getFlowNegotiator()->setRoute($route_match);
       $this->getFlowDataHandler()->reset();
@@ -43,6 +44,7 @@ trait ParPartnershipFlowAccessTrait {
     switch ($route_match->getRouteName()) {
       case 'par_partnership_flows.advice_add':
       case 'par_partnership_flows.advice_upload_documents':
+      case 'par_partnership_flows.advice_warning_declaration':
         if (!$par_data_partnership->isActive()) {
           $this->accessResult = AccessResult::forbidden('Advice can only be added to active partnerships.');
         }
@@ -52,6 +54,19 @@ trait ParPartnershipFlowAccessTrait {
         // Restrict access to active partnerships.
         if (!$par_data_partnership->isActive()) {
           $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entity cannot be added.');
+        }
+        break;
+      case 'par_partnership_flows.advice_edit':
+      case 'par_partnership_flows.advice_edit_documents':
+        // Restrict editorial access to archived and deleted advice entities.
+        if ($par_data_advice->isArchived() || $par_data_advice->isDeleted()) {
+          $this->accessResult = AccessResult::forbidden('This advice has been archived or deleted and therefore cannot be edited.');
+        }
+        break;
+      case 'par_partnership_flows.advice_archive':
+        // Restrict editorial access to archived and deleted advice entities.
+        if ($par_data_advice->isArchived() || $par_data_advice->isDeleted()) {
+          $this->accessResult = AccessResult::forbidden('This advice is already has been archived or deleted.');
         }
         break;
       }

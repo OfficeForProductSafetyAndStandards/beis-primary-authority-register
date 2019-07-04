@@ -42,7 +42,7 @@ Feature: Helpdesk approve partnership
 
         Given I click the link text "Manage partnerships"
         And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
-        And I select the option with the value "0" for element "#edit-revoked"
+        And I select the option with the value "confirmed_rd" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         And there is "1" occurences of element ".par-rd-helpdesk-dashboard tbody tr"
         Then I click the link text "Revoke partnership"
@@ -59,7 +59,7 @@ Feature: Helpdesk approve partnership
 
         And the element "#edit-keywords" is visible
         When I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
-        And I select the option with the value "1" for element "#edit-revoked"
+        And I select the option with the value "revoked" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-helpdesk-dashboard"
         And the element ".table-scroll-wrapper" is visible
         And the element ".table-scroll-wrapper" contains the text "Organisation For Direct Partnership"

@@ -63,6 +63,7 @@ hidden:
   communication_mobile: true
   communication_phone: true
   email: true
+  field_notification_preferences: true
   field_user_account: true
   first_name: true
   job_title: true

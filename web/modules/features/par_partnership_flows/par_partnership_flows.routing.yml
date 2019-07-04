@@ -112,6 +112,33 @@ par_partnership_flows.advice_list:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+par_partnership_flows.advice_details:
+  path: '/partnership/{par_data_partnership}/advice-details/{par_data_advice}'
+  defaults:
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::build'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::titleCallback'
+  requirements:
+    _permission: 'update partnership authority details'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_advice:
+        type: entity:par_data_advice
+par_partnership_flows.advice_warning_declaration:
+  path: '/partnership/{par_data_partnership}/advice/confirm'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsConfirmAdviceForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsConfirmAdviceForm::titleCallback'
+  requirements:
+    _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsConfirmAdviceForm::accessCallback'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_partnership_flows.advice_upload_documents:
   path: '/partnership/{par_data_partnership}/advice/upload'
   defaults:
@@ -162,6 +189,22 @@ par_partnership_flows.advice_edit:
   requirements:
     _permission: 'update partnership authority details'
     _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_advice: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_advice:
+        type: entity:par_data_advice
+par_partnership_flows.advice_archive:
+  path: '/partnership/{par_data_partnership}/advice/{par_data_advice}/archive'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveConfirmForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveConfirmForm::titleCallback'
+  requirements:
+    _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveConfirmForm::accessCallback'
     par_data_partnership: \d+
     par_data_advice: \d+
   options:
