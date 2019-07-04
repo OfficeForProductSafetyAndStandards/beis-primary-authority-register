@@ -31,10 +31,10 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       case 'partnership_authority':
       case 'partnership_direct':
       case 'partnership_coordinated':
-        $advice_listing_view_block = 'advice_search_block_exposed';
+        $advice_listing_view_block = 'advice_list_block_exposed';
         break;
       case 'search_partnership':
-        $advice_listing_view_block = 'help_desk_advice_search_block';
+        $advice_listing_view_block = 'advice_search_block_exposed';
         $upload_new_advice = FALSE;
         break;
     }
