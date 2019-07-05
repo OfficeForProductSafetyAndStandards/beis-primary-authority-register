@@ -1,0 +1,4 @@
+update partnership contact:
+  title: 'Update partnership contact'
+  description: 'Update a partnership\'s contact.'
+  restrict access: TRUE

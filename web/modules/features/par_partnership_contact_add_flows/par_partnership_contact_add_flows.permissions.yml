@@ -1,0 +1,4 @@
+add partnership contact:
+  title: 'Add partnership contact'
+  description: 'Add a contact to a partnership.'
+  restrict access: TRUE

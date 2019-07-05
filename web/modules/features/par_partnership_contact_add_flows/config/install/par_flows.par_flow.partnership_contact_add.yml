@@ -1,0 +1,63 @@
+langcode: en
+status: true
+dependencies: {  }
+id: partnership_contact_add
+label: 'Add Partnership Contact Flow'
+default_title: null
+default_section_title: 'Primary Authority partnership information'
+description: ''
+save_method: end
+steps:
+  1:
+    route: par_partnership_contact_add_flows.create_contact
+    form_id: par_add_contact
+    components:
+      contact_details: {}
+    redirect:
+      cancel: 6
+  2:
+    route: par_partnership_contact_add_flows.choose_account
+    form_id: par_person_choose_account
+    components:
+      choose_account: {}
+    form_data:
+      contact_details: par_add_contact
+    redirect:
+      cancel: 6
+  3:
+    route: par_partnership_contact_add_flows.choose_role
+    form_id: par_choose_role
+    components:
+      role_select: {}
+    form_data:
+      contact_details: par_add_contact
+      user_account: par_person_link
+      choose_account: par_person_choose_account
+    redirect:
+      cancel: 6
+  4:
+    route: par_partnership_contact_add_flows.invite_contact
+    form_id: par_person_invite
+    components:
+      invite: {}
+    form_data:
+      contact_details: par_add_contact
+      user_account: par_person_link
+      choose_account: par_person_choose_account
+    redirect:
+      cancel: 6
+  5:
+    route: par_partnership_contact_add_flows.review
+    form_id: par_person_review
+    form_data:
+      contact_details: par_add_contact
+      choose_account: par_person_choose_account
+      select_authority: par_add_institution
+      select_organisation: par_add_institution
+      role_select: par_choose_role
+      invite: par_person_invite
+    redirect:
+      save: 6
+      cancel: 6
+  6:
+    route: par_partnership_contact_add_flows.completed
