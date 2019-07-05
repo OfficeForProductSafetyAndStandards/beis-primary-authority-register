@@ -25,80 +25,6 @@ par_partnership_flows.about_partnership:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_partnership_flows.authority_contact_edit:
-  path: '/partnership/{par_data_partnership}/authority/contact/{par_data_person}'
-  defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
-  requirements:
-    _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::accessCallback'
-    par_data_partnership: \d+
-    par_data_person: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-      par_data_person:
-        type: entity:par_data_person
-par_partnership_flows.authority_contact_add:
-  path: '/partnership/{par_data_partnership}/authority/contact/add'
-  defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
-  requirements:
-    _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::accessCallback'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-par_partnership_flows.authority_contact_add_confirm:
-  path: '/partnership/{par_data_partnership}/authority/contact/add/confirm'
-  defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm::titleCallback'
-  requirements:
-    _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm::accessCallback'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-par_partnership_flows.authority_contact_invite:
-  path: '/partnership/{par_data_partnership}/authority/contact/invite/{par_data_person}'
-  defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInviteForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInviteForm::titleCallback'
-  requirements:
-    _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInviteForm::accessCallback'
-    par_data_partnership: \d+
-    par_data_person: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-      par_data_person:
-        type: entity:par_data_person
-par_partnership_flows.authority_contact_invite_sent:
-  path: '/partnership/{par_data_partnership}/authority/contact/invite/sent/{par_data_person}'
-  defaults:
-    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInviteSentController::content'
-    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInviteSentController::titleCallback'
-  requirements:
-    _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInviteSentController::accessCallback'
-    par_data_partnership: \d+
-    par_data_person: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-      par_data_person:
-        type: entity:par_data_person
 par_partnership_flows.advice_list:
   path: '/partnership/{par_data_partnership}/advice/list'
   defaults:
@@ -283,57 +209,6 @@ par_partnership_flows.address_add:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_partnership_flows.organisation_contact_edit:
-  path: '/partnership/{par_data_partnership}/organisation/contact/{par_data_person}'
-  defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
-  requirements:
-    _permission: 'update partnership organisation details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::accessCallback'
-    par_data_partnership: \d+
-    par_data_organisation: \d+
-    par_data_person: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-      par_data_organisation:
-        type: entity:par_data_organisation
-      par_data_person:
-        type: entity:par_data_person
-par_partnership_flows.organisation_contact_add:
-  path: '/partnership/{par_data_partnership}/organisation/contact/add'
-  defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::titleCallback'
-  requirements:
-    _permission: 'update partnership organisation details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactForm::accessCallback'
-    par_data_partnership: \d+
-    par_data_organisation: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-      par_data_organisation:
-        type: entity:par_data_organisation
-par_partnership_flows.organisation_contact_add_confirm:
-  path: '/partnership/{par_data_partnership}/organisation/contact/add/confirm'
-  defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm::titleCallback'
-  requirements:
-    _permission: 'update partnership organisation details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm::accessCallback'
-    par_data_partnership: \d+
-    par_data_organisation: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-      par_data_authority:
-        type: entity:par_data_organisation
 par_partnership_flows.legal_entity_edit:
   path: '/partnership/{par_data_partnership}/legal-entity/{par_data_legal_entity}'
   defaults:

@@ -4,7 +4,7 @@ par_partnership_contact_add_flows.create_contact:
     _form: '\Drupal\par_partnership_contact_add_flows\Form\ParContactForm'
     _title_callback: '\Drupal\par_partnership_contact_add_flows\Form\ParContactForm::titleCallback'
   requirements:
-    _permission: 'add partnership contact'
+    _permission: 'add partnership authority contact+add partnership organisation contact'
     _custom_access: '\Drupal\par_partnership_contact_add_flows\Form\ParContactForm::accessCallback'
     par_data_partnership: \d+
     type: '(authority|organisation)'
@@ -19,7 +19,7 @@ par_partnership_contact_add_flows.choose_account:
     _form: '\Drupal\par_partnership_contact_add_flows\Form\ParAccountForm'
     _title_callback: '\Drupal\par_partnership_contact_add_flows\Form\ParAccountForm::titleCallback'
   requirements:
-    _permission: 'add partnership contact'
+    _permission: 'add partnership authority contact+add partnership organisation contact'
     _custom_access: '\Drupal\par_partnership_contact_add_flows\Form\ParAccountForm::accessCallback'
     par_data_partnership: \d+
     type: '(authority|organisation)'
@@ -34,7 +34,7 @@ par_partnership_contact_add_flows.choose_role:
     _form: '\Drupal\par_partnership_contact_add_flows\Form\ParRoleForm'
     _title_callback: '\Drupal\par_partnership_contact_add_flows\Form\ParRoleForm::titleCallback'
   requirements:
-    _permission: 'add partnership contact'
+    _permission: 'add partnership authority contact+add partnership organisation contact'
     _custom_access: '\Drupal\par_partnership_contact_add_flows\Form\ParRoleForm::accessCallback'
     par_data_partnership: \d+
     type: '(authority|organisation)'
@@ -49,7 +49,7 @@ par_partnership_contact_add_flows.invite_contact:
     _form: '\Drupal\par_partnership_contact_add_flows\Form\ParInviteForm'
     _title_callback: '\Drupal\par_partnership_contact_add_flows\Form\ParInviteForm::titleCallback'
   requirements:
-    _permission: 'add partnership contact'
+    _permission: 'add partnership authority contact+add partnership organisation contact'
     _custom_access: '\Drupal\par_partnership_contact_add_flows\Form\ParInviteForm::accessCallback'
     par_data_partnership: \d+
     type: '(authority|organisation)'
@@ -64,7 +64,7 @@ par_partnership_contact_add_flows.review:
     _form: '\Drupal\par_partnership_contact_add_flows\Form\ParReviewForm'
     _title_callback: '\Drupal\par_partnership_contact_add_flows\Form\ParReviewForm::titleCallback'
   requirements:
-    _permission: 'add partnership contact'
+    _permission: 'add partnership authority contact+add partnership organisation contact'
     _custom_access: '\Drupal\par_partnership_contact_add_flows\Form\ParReviewForm::accessCallback'
     par_data_partnership: \d+
     type: '(authority|organisation)'
