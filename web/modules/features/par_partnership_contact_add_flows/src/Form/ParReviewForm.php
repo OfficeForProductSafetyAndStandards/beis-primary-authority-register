@@ -3,10 +3,12 @@
 namespace Drupal\par_partnership_contact_add_flows\Form;
 
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\invite\Entity\Invite;
+use Drupal\invite\InviteInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataLegalEntity;
@@ -32,42 +34,35 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  protected $pageTitle = 'Profile review';
+  protected $pageTitle = 'Review contact information';
 
   /**
    * {@inheritdoc}
    */
   public function loadData() {
-    // Set the user account that is being updated as a parameter for plugins to access
-    $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
-    $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
-    $account = ParChooseAccount::getUserAccount($account_selection);
-
-    if ($account) {
-      $this->getFlowDataHandler()->setParameter('user', $account);
-    }
-
     // Set the data values on the entities
     $entities = $this->createEntities();
     extract($entities);
+    /** @var ParDataPartnership $par_data_partnership */
     /** @var ParDataPerson $par_data_person */
     /** @var User $account */
+    /** @var ParDataAuthority $par_data_authority */
+    /** @var ParDataOrganisation $par_data_organisation */
+    /** @var Invite $invite */
+    $type = $this->getFlowDataHandler()->getParameter('type');
+
+    $this->getFlowDataHandler()->setFormPermValue("institution", $type);
+    $this->getFlowDataHandler()->setFormPermValue("partnership", lcfirst($par_data_partnership->label()));
 
     $this->getFlowDataHandler()->setFormPermValue("full_name", $par_data_person->getFullName());
     $this->getFlowDataHandler()->setFormPermValue("work_phone", $par_data_person->getWorkPhone());
     $this->getFlowDataHandler()->setFormPermValue("mobile_phone", $par_data_person->getMobilePhone());
     $this->getFlowDataHandler()->setFormPermValue("email", $par_data_person->getEmailWithPreferences());
 
-    $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
-    $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
-
-    if (!$role) {
-      $this->getFlowDataHandler()->setFormPermValue("user_status", 'none');
-    }
-    elseif($account) {
+    if (isset($account)) {
       $this->getFlowDataHandler()->setFormPermValue("user_status", 'existing');
     }
-    else {
+    elseif (isset($invite)) {
       $this->getFlowDataHandler()->setFormPermValue("user_status", 'invited');
     }
 
@@ -165,13 +160,16 @@ class ParReviewForm extends ParBaseForm {
     // Get the cache IDs for the various forms that needs needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_add_contact');
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
-    $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_add_institution');
-    $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_add_institution');
     $cid_invitation = $this->getFlowNegotiator()->getFormKey('invite');
     $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
 
-    $account = $this->getFlowDataHandler()->getParameter('user');
+    $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
+    $account = ParChooseAccount::getUserAccount($account_selection);
 
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+    $type = $this->getFlowDataHandler()->getParameter('type');
+
+    // Create the new person.
     $par_data_person = ParDataPerson::create([
       'type' => 'person',
       'salutation' => $this->getFlowDataHandler()->getTempDataValue('salutation', $contact_details_cid),
@@ -182,24 +180,68 @@ class ParReviewForm extends ParBaseForm {
       'email' => $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid),
     ]);
 
-    // If there is an existing user attach it to this person.
-    if ($account) {
+    $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
+    if (!$account) {
+      switch ($role) {
+        case 'par_authority':
+          $invitation_type = 'invite_authority_member';
+
+          break;
+
+        case 'par_organisation':
+          $invitation_type = 'invite_organisation_member';
+
+          break;
+      }
+    }
+    // Create invitation if an invitation type has been set and no existing user has been found.
+    $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
+    if (isset($invitation_type) && $account_selection === ParChooseAccount::CREATE) {
+      $invite = Invite::create([
+        'type' => $invitation_type,
+        'user_id' => $this->getCurrentUser()->id(),
+        'invitee' => $this->getFlowDataHandler()->getDefaultValues('to', NULL, $cid_invitation),
+      ]);
+      $invite->set('field_invite_email_address', $this->getFlowDataHandler()->getDefaultValues('to', NULL, $cid_invitation));
+      $invite->set('field_invite_email_subject', $this->getFlowDataHandler()->getDefaultValues('subject', NULL, $cid_invitation));
+      $invite->set('field_invite_email_body', $this->getFlowDataHandler()->getDefaultValues('body', NULL, $cid_invitation));
+      $invite->setPlugin('invite_by_email');
+    }
+    // Update the user account.
+    elseif ($account) {
+      // If there is an existing user attach it to this person.
       $par_data_person->setUserAccount($account);
+
+      // Update any roles this user may not already have.
+      if ($role && !$account->hasRole($role)) {
+        $account->addRole($role);
+      }
     }
 
-    // Get the authorities and organisations that will be associated with the person.
-    $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
-    $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
-    $par_data_authorities = $par_data_person->updateAuthorityMemberships($authority_ids);
-    $par_data_organisations = $par_data_person->updateOrganisationMemberships($organisation_ids);
-
-
-    return [
+    $entities = [
+      'par_data_partnership' => $par_data_partnership,
       'par_data_person' => $par_data_person,
       'account' => $account ?: NULL,
-      'par_data_authority' => !empty($par_data_authorities) ? $par_data_authorities : NULL,
-      'par_data_organisation' => !empty($par_data_organisations) ? $par_data_organisations : NULL,
     ];
+
+    if (isset($invite) && $invite instanceof InviteInterface) {
+      $entities['invite'] = $invite;
+    }
+
+    switch ($type) {
+      case 'authority':
+        $entities['par_data_authority'] = $par_data_partnership->getAuthority(TRUE);
+
+        break;
+
+      case 'organisation':
+        $entities['par_data_organisation'] = $par_data_partnership->getOrganisation(TRUE);
+
+        break;
+
+    }
+
+    return $entities;
   }
 
   /**
@@ -211,10 +253,13 @@ class ParReviewForm extends ParBaseForm {
     // Set the data values on the entities
     $entities = $this->createEntities();
     extract($entities);
+    /** @var ParDataPartnership $par_data_partnership */
     /** @var ParDataPerson $par_data_person */
     /** @var User $account */
-    /** @var ParDataAuthority[] $par_data_authority */
-    /** @var ParDataOrganisation[] $par_data_organisation */
+    /** @var ParDataAuthority $par_data_authority */
+    /** @var ParDataOrganisation $par_data_organisation */
+    /** @var Invite $invite */
+    $type = $this->getFlowDataHandler()->getParameter('type');
 
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_add_institution');
@@ -225,88 +270,49 @@ class ParReviewForm extends ParBaseForm {
     $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
     $account = $this->getFlowDataHandler()->getParameter('user');
 
-    $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
-    switch ($role) {
-      case 'par_enforcement':
-        $invitation_type = 'invite_enforcement_officer';
 
-        break;
-
-      case 'par_authority':
-        $invitation_type = 'invite_authority_member';
-
-        break;
-
-      case 'par_organisation':
-        $invitation_type = 'invite_organisation_member';
-
-        break;
-
-      case 'par_helpdesk':
-        $invitation_type = 'invite_processing_team_member';
-
-        break;
-    }
-
-    // Create invitation if an invitation type has been set and no existing user has been found.
-    if (isset($invitation_type) && !$account && $account_selection === ParChooseAccount::CREATE) {
-      $invite = Invite::create([
-        'type' => $invitation_type,
-        'user_id' => $this->getCurrentUser()->id(),
-        'invitee' => $this->getFlowDataHandler()->getDefaultValues('to', NULL, $cid_invitation),
-      ]);
-      $invite->set('field_invite_email_address', $this->getFlowDataHandler()->getDefaultValues('to', NULL, $cid_invitation));
-      $invite->set('field_invite_email_subject', $this->getFlowDataHandler()->getDefaultValues('subject', NULL, $cid_invitation));
-      $invite->set('field_invite_email_body', $this->getFlowDataHandler()->getDefaultValues('body', NULL, $cid_invitation));
-      $invite->setPlugin('invite_by_email');
-    }
-    // Update any roles as necessary.
-    elseif ($account) {
-      $role_options = $this->getFlowDataHandler()->getDefaultValues('role_options', [], $cid_role_select);
-      foreach ($role_options as $option) {
-        if ($option !== $role) {
-          $account->removeRole($option);
-        }
-      }
-      if (!$account->hasRole($role)) {
-        $account->addRole($role);
-      }
-    }
 
     if ($par_data_person->save()) {
-      $role = $this->getFlowDataHandler()->getTempDataValue('role', $cid_role_select);
+      // Add this person to the partnership and the appropriate authority or organisaiton.
+      switch ($type) {
+        case 'authority':
+          $field = 'field_authority_person';
+          if ($par_data_authority) {
+            $par_data_authority->get('field_person')->appendItem($par_data_person);
+            $par_data_authority->save();
+          }
 
-      if ($account) {
+          break;
+
+        case 'organisation':
+          $field = 'field_organisation_person';
+          if ($par_data_organisation) {
+            $par_data_organisation->get('field_person')->appendItem($par_data_person);
+            $par_data_organisation->save();
+          }
+
+          break;
+
+      }
+      if (isset($field)) {
+        $par_data_partnership->get($field)->appendItem($par_data_person);
+        $par_data_partnership->save();
+      }
+
+      // Re-save the user account to store any roles that might have been added,
+      // but also to clear the user account caches.
+      if (isset($account)) {
         $account->save();
+        \Drupal::entityTypeManager()->getStorage('user')->resetCache([$account->id()]);
       }
-
-      // If some authorities have been selected and either
-      // an authority role has been selected or no user is being created.
-      $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
-      if ($authority_ids && (in_array($role, ['par_authority', 'par_enforcement']) || !$role)) {
-        $par_data_person->updateAuthorityMemberships($authority_ids, TRUE);
-      }
-
-      // If some organisations have been selected and either
-      // an organisation role has been selected or no user is being created.
-      $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
-      if ($organisation_ids && ($role === 'par_organisation' || !$role)) {
-        $par_data_person->updateOrganisationMemberships($organisation_ids, TRUE);
-      }
-
       // Send the invite.
-      if (isset($invite)) {
+      elseif (isset($invite)) {
         $invite->save();
       }
 
       // We also need to clear the relationships caches once
       // any new relationships have been saved.
       $par_data_person->getRelationships(NULL, NULL, TRUE);
-
-      // Also invalidate the user account cache if there is one.
-      if ($account) {
-        \Drupal::entityTypeManager()->getStorage('user')->resetCache([$account->id()]);
-      }
 
       $this->getFlowDataHandler()->deleteStore();
     }
@@ -317,6 +323,23 @@ class ParReviewForm extends ParBaseForm {
       ];
       $this->getLogger($this->getLoggerChannel())
         ->error($message, $replacements);
+    }
+
+    // Go to cancel route.
+    switch ($type) {
+      case 'organisation':
+        $cancel_route = 'par_partnership_flows.organisation_details';
+
+        break;
+
+      case 'authority':
+        $cancel_route = 'par_partnership_flows.authority_details';
+
+        break;
+    }
+
+    if ($cancel_route) {
+      $form_state->setRedirect($cancel_route, ['par_data_partnership' => $par_data_partnership->id()]);
     }
   }
 

@@ -7,6 +7,7 @@ par_partnership_contact_update_flows.create_contact:
     _permission: 'update partnership authority contact+update partnership organisation contact'
     _custom_access: '\Drupal\par_partnership_contact_update_flows\Form\ParContactForm::accessCallback'
     par_data_partnership: \d+
+    par_data_person: \d+
     type: '(authority|organisation)'
   options:
     parameters:
@@ -24,6 +25,7 @@ par_partnership_contact_update_flows.choose_account:
     _permission: 'update partnership authority contact+update partnership organisation contact'
     _custom_access: '\Drupal\par_partnership_contact_update_flows\Form\ParAccountForm::accessCallback'
     par_data_partnership: \d+
+    par_data_person: \d+
     type: '(authority|organisation)'
   options:
     parameters:
@@ -41,6 +43,7 @@ par_partnership_contact_update_flows.choose_role:
     _permission: 'update partnership authority contact+update partnership organisation contact'
     _custom_access: '\Drupal\par_partnership_contact_update_flows\Form\ParRoleForm::accessCallback'
     par_data_partnership: \d+
+    par_data_person: \d+
     type: '(authority|organisation)'
   options:
     parameters:
@@ -58,6 +61,7 @@ par_partnership_contact_update_flows.invite_contact:
     _permission: 'update partnership authority contact+update partnership organisation contact'
     _custom_access: '\Drupal\par_partnership_contact_update_flows\Form\ParInviteForm::accessCallback'
     par_data_partnership: \d+
+    par_data_person: \d+
     type: '(authority|organisation)'
   options:
     parameters:
@@ -75,6 +79,7 @@ par_partnership_contact_update_flows.review:
     _permission: 'update partnership authority contact+update partnership organisation contact'
     _custom_access: '\Drupal\par_partnership_contact_update_flows\Form\ParReviewForm::accessCallback'
     par_data_partnership: \d+
+    par_data_person: \d+
     type: '(authority|organisation)'
   options:
     parameters:

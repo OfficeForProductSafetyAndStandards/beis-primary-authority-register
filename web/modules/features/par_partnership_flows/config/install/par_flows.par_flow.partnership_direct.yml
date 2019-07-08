@@ -13,8 +13,6 @@ steps:
   1:
     route: par_partnership_flows.organisation_details
     form_id: par_partnership_details
-    components:
-      contact_details: {}
     redirect:
       edit_comments: 2
       add_field_premises: 3

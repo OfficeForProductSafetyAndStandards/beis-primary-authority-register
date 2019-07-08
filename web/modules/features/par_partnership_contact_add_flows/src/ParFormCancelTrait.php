@@ -36,7 +36,7 @@ trait ParFormCancelTrait {
 
     if ($cancel_route) {
       $params = $this->getRouteParams();
-      $form_state->setRedirect($cancel_route, [$params['par_data_partnership']]);
+      $form_state->setRedirect($cancel_route, ['par_data_partnership' => $params['par_data_partnership']]);
     }
   }
 }

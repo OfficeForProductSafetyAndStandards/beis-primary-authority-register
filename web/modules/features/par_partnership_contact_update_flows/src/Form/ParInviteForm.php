@@ -2,7 +2,9 @@
 
 namespace Drupal\par_partnership_contact_update_flows\Form;
 
+use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\invite\InviteConstants;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
@@ -26,6 +28,13 @@ class ParInviteForm extends ParBaseForm {
   protected $pageTitle = 'Invite the person to create an account';
 
   /**
+   * @return DateFormatterInterface
+   */
+  protected function getEntityTypeManager() {
+    return \Drupal::service('entity_type.manager');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function loadData() {
@@ -42,11 +51,6 @@ class ParInviteForm extends ParBaseForm {
     $role = $this->getFlowDataHandler()->getDefaultValues('role', '', $cid_role_select);
 
     switch ($role) {
-      case 'par_enforcement':
-        $invitation_type = 'invite_enforcement_officer';
-        $role_options = $this->getParDataManager()->getEntitiesAsOptions([Role::load($role)], []);
-
-        break;
       case 'par_authority':
         $invitation_type = 'invite_authority_member';
         $role_options = $this->getParDataManager()->getEntitiesAsOptions([Role::load($role)], []);
@@ -92,6 +96,26 @@ class ParInviteForm extends ParBaseForm {
           ->getFlow()
           ->getNextRoute('next'), $this->getRouteParams());
       return new RedirectResponse($url);
+    }
+
+    // Skip the invitation process if there is already a pending invitation for this user.
+    // See if there are any outstanding invitations.
+    $invitations = $this->getEntityTypeManager()
+      ->getStorage('invite')
+      ->loadByProperties([
+        'field_invite_email_address' => $this->getFlowDataHandler()->getTempDataValue('to'),
+        'status' => InviteConstants::INVITE_VALID
+      ]);
+
+    if (count($invitations) >= 1) {
+      $invite = current($invitations);
+      if ($invite->expires->value >= time()) {
+        $url = $this->getUrlGenerator()
+          ->generateFromRoute($this->getFlowNegotiator()
+            ->getFlow()
+            ->getNextRoute('next'), $this->getRouteParams());
+        return new RedirectResponse($url);
+      }
     }
 
     return parent::buildForm($form, $form_state);

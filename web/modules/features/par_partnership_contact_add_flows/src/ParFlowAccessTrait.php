@@ -21,17 +21,35 @@ trait ParFlowAccessTrait {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, User $user = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, $type = NULL) {
     try {
       $this->getFlowNegotiator()->setRoute($route_match);
       $this->getFlowDataHandler()->reset();
-      $this->getFlowDataHandler()->setParameter('user', $user);
+      $this->getFlowDataHandler()->setParameter('par_data_partnership', $par_data_partnership);
+      $this->getFlowDataHandler()->setParameter('type', $type);
       $this->loadData();
     } catch (ParFlowException $e) {
 
     }
 
+    switch ($type) {
+      case 'authority':
+        if (!$account->hasPermission('add partnership authority contact')) {
+          $this->accessResult = AccessResult::forbidden('User does not have permissions to update authority contacts.');
+        }
 
+        break;
+
+      case 'organisation':
+        if (!$account->hasPermission('add partnership organisation contact')) {
+          $this->accessResult = AccessResult::forbidden('User does not have permissions to update organisation contacts.');
+        }
+
+        break;
+
+      default:
+        $this->accessResult = AccessResult::forbidden('A valid contact type must be choosen.');
+    }
 
     return parent::accessCallback($route, $route_match, $account);
   }
