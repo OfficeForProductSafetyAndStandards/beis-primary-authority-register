@@ -98,7 +98,7 @@ When('I add and subsequently edit a trading name', function () {
       .assert.containsText('#edit-name', 'Mrs Helen Brittas')
       .assert.containsText('#edit-work-phone', '02078886663')
       .assert.containsText('#edit-mobile-phone', '07965465726')
-      .click('#edit-save')
+      .click('#edit-next')
 });
 
 When('I upload a file to the partnership advice section', function () {
