@@ -36,7 +36,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  protected $pageTitle = 'Profile review';
+  protected $pageTitle = 'Review contact information';
 
   /**
    * @return DateFormatterInterface
@@ -179,17 +179,20 @@ class ParReviewForm extends ParBaseForm {
     $account = ParChooseAccount::getUserAccount($account_selection);
 
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+    $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
-    // Create the new person.
-    $par_data_person = ParDataPerson::create([
-      'type' => 'person',
-      'salutation' => $this->getFlowDataHandler()->getTempDataValue('salutation', $contact_details_cid),
-      'first_name' => $this->getFlowDataHandler()->getTempDataValue('first_name', $contact_details_cid),
-      'last_name' => $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_details_cid),
-      'work_phone' => $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid),
-      'mobile_phone' => $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid),
-      'email' => $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid),
-    ]);
+    if ($par_data_person) {
+      // Store the original email to check if it changes.
+      $this->getFlowDataHandler()->setFormPermValue('orginal_email', $par_data_person->getEmail());
+
+      // Update the person record with the new values.
+      $par_data_person->set('salutation', $this->getFlowDataHandler()->getTempDataValue('salutation', $contact_details_cid));
+      $par_data_person->set('first_name', $this->getFlowDataHandler()->getTempDataValue('first_name', $contact_details_cid));
+      $par_data_person->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_details_cid));
+      $par_data_person->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid));
+      $par_data_person->set('mobile_phone', $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid));
+      $par_data_person->set('email', $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid));
+    }
 
     $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
     if (!$account) {
