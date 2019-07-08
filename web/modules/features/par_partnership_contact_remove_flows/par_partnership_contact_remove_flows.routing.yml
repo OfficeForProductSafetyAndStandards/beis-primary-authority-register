@@ -1,0 +1,17 @@
+par_partnership_contact_remove_flows.remove:
+  path: '/partnership/{par_data_partnership}/{type}/contact/{par_data_person}/remove'
+  defaults:
+    _form: '\Drupal\par_partnership_contact_remove_flows\Form\ParReviewForm'
+    _title_callback: '\Drupal\par_partnership_contact_remove_flows\Form\ParReviewForm::titleCallback'
+  requirements:
+    _permission: 'add partnership authority contact+add partnership organisation contact'
+    _custom_access: '\Drupal\par_partnership_contact_remove_flows\Form\ParReviewForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_person: \d+
+    type: '(authority|organisation)'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_person:
+        type: entity:par_data_person
