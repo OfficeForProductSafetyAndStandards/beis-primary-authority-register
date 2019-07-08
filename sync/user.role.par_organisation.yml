@@ -73,6 +73,7 @@ permissions:
   - 'receive partnership_approved_notificatio notification'
   - 'receive partnership_confirmed_notificati notification'
   - 'receive partnership_revocation_notificat notification'
+  - 'remove partnership organisation contact'
   - 'update coordinated member'
   - 'update partnership organisation contact'
   - 'update partnership organisation details'

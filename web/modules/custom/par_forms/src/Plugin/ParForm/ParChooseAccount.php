@@ -72,9 +72,18 @@ class ParChooseAccount extends ParFormPluginBase {
     // See if we can find a user related to the person being updated.
     if ($par_data_person) {
       $existing_account = $par_data_person->getUserAccount();
+      $total_people = $existing_account ? $this->getParDataManager()->getUserPeople($existing_account) : [];
 
       if ($existing_account) {
         $account_options[$existing_account->id()] = 'Keep the existing account: ' . $existing_account->getEmail();
+
+        // @see PAR-1413: This should be the only option if this is the only
+        // contact for this user, this should stop contact records being orphaned.
+        if ($total_people <= 1) {
+          $this->getFlowDataHandler()->setFormPermValue("account_options", $account_options);
+
+          parent::loadData();
+        }
       }
     }
 

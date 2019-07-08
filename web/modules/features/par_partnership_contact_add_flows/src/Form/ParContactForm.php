@@ -7,6 +7,7 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_contact_add_flows\ParFlowAccessTrait;
+use Drupal\par_partnership_contact_add_flows\ParFormCancelTrait;
 
 /**
  * The member contact form.
@@ -14,6 +15,7 @@ use Drupal\par_partnership_contact_add_flows\ParFlowAccessTrait;
 class ParContactForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
+  use ParFormCancelTrait;
 
   /**
    * Set the page title.

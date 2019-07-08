@@ -8,6 +8,7 @@ use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
 use Drupal\par_partnership_contact_update_flows\ParFlowAccessTrait;
+use Drupal\par_partnership_contact_update_flows\ParFormCancelTrait;
 use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ParRoleForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
+  use ParFormCancelTrait;
 
   /**
    * Set the page title.

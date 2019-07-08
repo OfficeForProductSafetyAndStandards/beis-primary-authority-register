@@ -10,46 +10,45 @@ default_title: null
 default_section_title: 'Primary Authority partnership information'
 description: ''
 save_method: end
-states: null
+states:
+  - par_data_partnership
+  - type
+  - par_data_person
 steps:
   1:
     route: par_partnership_contact_update_flows.create_contact
     form_id: par_add_contact
     components:
-      contact_details_no_email: {  }
-    redirect:
-      cancel: 6
+      contact_details: {}
   2:
     route: par_partnership_contact_update_flows.choose_account
     form_id: par_person_choose_account
     components:
-      choose_account: {  }
+      choose_account:
+        require_user: true
     form_data:
       contact_details: par_add_contact
-    redirect:
-      cancel: 6
   3:
     route: par_partnership_contact_update_flows.choose_role
     form_id: par_choose_role
     components:
-      role_select: {  }
+      role_select:
+        roles:
+          - par_authority
+          - par_organisation
     form_data:
       contact_details: par_add_contact
       user_account: par_person_link
       choose_account: par_person_choose_account
-    redirect:
-      cancel: 6
   4:
     route: par_partnership_contact_update_flows.invite_contact
     form_id: par_person_invite
     components:
-      invite: {  }
+      invite: {}
     form_data:
       contact_details: par_add_contact
       user_account: par_person_link
       choose_account: par_person_choose_account
-    redirect:
-      cancel: 6
   5:
     route: par_partnership_contact_update_flows.review
     form_id: par_person_review
@@ -60,8 +59,3 @@ steps:
       select_organisation: par_add_institution
       role_select: par_choose_role
       invite: par_person_invite
-    redirect:
-      save: 6
-      cancel: 6
-  6:
-    route: par_partnership_contact_update_flows.completed

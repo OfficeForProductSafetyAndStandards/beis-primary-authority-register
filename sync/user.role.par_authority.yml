@@ -86,6 +86,7 @@ permissions:
   - 'receive partnership_revocation_notificat notification'
   - 'receive reviewed_deviation_request notification'
   - 'receive reviewed_enforcement notification'
+  - 'remove partnership authority contact'
   - 'review deviation request'
   - 'search partnership'
   - 'search partnerships'
