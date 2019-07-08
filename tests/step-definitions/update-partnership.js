@@ -163,7 +163,7 @@ return shared
       .setValue('#edit-mobile-phone', '07877943768')
       .click('#edit-next')
       .assert.containsText('h1.heading-xlarge', 'Review contact information')
-      .assert.containsText('#edit-name', 'Mrs Laura Lansing')
+      .assert.containsText('#edit-name', 'Ms Laura Lansing')
       .assert.containsText('#edit-work-phone', '1234865432')
       .assert.containsText('#edit-mobile-phone', '07877943768')
       .clickLinkByPureText('edit carol parkinson')
@@ -175,6 +175,6 @@ return shared
       .assert.containsText('#edit-recipient', 'another.contact@example.com')
       .click('#edit-next')
       .assert.containsText('h1.heading-xlarge', 'Review contact information')
-      .assert.containsText('#edit-name', 'Mrs Laura Lansing')
+      .assert.containsText('#edit-name', 'Ms Laura Lansing')
       .assert.containsText('#edit-email', 'another.contact@example.com')
   });
