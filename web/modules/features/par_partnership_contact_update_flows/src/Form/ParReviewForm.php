@@ -71,7 +71,7 @@ class ParReviewForm extends ParBaseForm {
     if (isset($account)) {
       $this->getFlowDataHandler()->setFormPermValue("user_status", 'existing');
     }
-    elseif (isset($invite) && $invite->getStatus() === InviteConstants::INVITE_VALID) {
+    elseif (isset($invite) && (int) $invite->getStatus() === InviteConstants::INVITE_VALID && $invite->id()) {
       $this->getFlowDataHandler()->setFormPermValue("user_status", 'active_invite');
     }
     elseif (isset($invite)) {
@@ -218,7 +218,7 @@ class ParReviewForm extends ParBaseForm {
       }
 
       // Only create a new invitation if one doesn't already exist.
-      if (isset($invitations) && count($invitations) === 0) {
+      if (isset($invitations) && count($invitations) >= 1) {
         $invite = current($invitations);
       }
       else {

@@ -47,6 +47,21 @@ class ParReviewForm extends ParBaseForm {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if ($par_data_partnership) {
       $this->getFlowDataHandler()->setFormPermValue("partnership_label", lcfirst($par_data_partnership->label()));
+
+      switch ($this->getFlowDataHandler()->getParameter('type')) {
+        case 'authority':
+          $authority = $par_data_partnership->getAuthority(TRUE);
+          $this->getFlowDataHandler()->setFormPermValue("institution", $authority->label());
+
+          break;
+
+        case 'organisation':
+          $organisation = $par_data_partnership->getOrganisation(TRUE);
+          $this->getFlowDataHandler()->setFormPermValue("institution", $organisation->label());
+
+          break;
+
+      }
     }
 
     parent::loadData();
@@ -64,11 +79,21 @@ class ParReviewForm extends ParBaseForm {
       '#collapsed' => FALSE,
     ];
 
-    $form['partnership_info']['partnership_between'] = [
+    $form['partnership_info']['removal'] = [
       '#type' => 'markup',
       '#markup' => $this->t('Please confirm you wish to remove @person from the @partnership.', [
         '@person' => $this->getFlowDataHandler()->getDefaultValues('contact_name', ''),
         '@partnership' => $this->getFlowDataHandler()->getDefaultValues('partnership_label', '')
+      ]),
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+    ];
+
+    $form['partnership_only'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('Be aware that this will not remove this person from the @institution_type @institution.', [
+        '@institution' => $this->getFlowDataHandler()->getDefaultValues('institution', ''),
+        '@institution_type' => $this->getFlowDataHandler()->getParameter('type'),
       ]),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
