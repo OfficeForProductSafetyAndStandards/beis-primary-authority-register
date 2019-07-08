@@ -203,6 +203,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
       ]),
     ];
 
+
     // Display the authority contacts for information.
     $authority_contacts = $par_data_partnership->getAuthorityPeople();
 
@@ -318,7 +319,6 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     }
 
 
-
     // Display all the organisational contacts.
     $organisation_contacts = $par_data_partnership->getOrganisationPeople();
 
@@ -341,7 +341,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     $form['organisation_contacts'] = [
       '#type' => 'fieldset',
-      '#title' => t('Contacts at the Primary organisation'),
+      '#title' => t('Contacts at the Organisation'),
       '#attributes' => ['class' => ['form-group']],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
