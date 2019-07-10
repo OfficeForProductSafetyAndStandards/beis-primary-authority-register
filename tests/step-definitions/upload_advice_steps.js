@@ -22,7 +22,7 @@ Given('I navigate to a partially completed partnership {string}', function (stri
       .clickLinkByPureText(string)
 });
 
-Then('I should see advice page', function () {
+Then('I should see advice list page', function () {
   return shared
       .assert.containsText('h1.heading-xlarge', 'Advice')
 });
