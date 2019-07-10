@@ -17,6 +17,5 @@ Then('I search for active advice by the title {string}', function (string) {
       .setValue('#edit-keywords', string)
       .click('#edit-submit-partnership-search')
       .clickLinkByPureText(string)
-      .assert.containsText('h1.heading-xlarge', string)
 });
 

@@ -26,6 +26,10 @@ Then('I should see advice list page', function () {
   return shared
       .assert.containsText('h1.heading-xlarge', 'Advice')
 });
+Then('I should see advice view page has the title {string}', function (string) {
+  return shared
+      .assert.containsText('h1.heading-xlarge', string)
+});
 
 Then('I should not see the link {string}', function (string) {
   return client
