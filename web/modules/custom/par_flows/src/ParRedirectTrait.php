@@ -5,6 +5,7 @@ namespace Drupal\par_flows;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteProvider;
 use Drupal\Core\Url;
+use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 trait ParRedirectTrait {
@@ -21,6 +22,9 @@ trait ParRedirectTrait {
     }
     catch (RouteNotFoundException $e) {
       throw new ParFlowException(t('This flow cannot find the route @route', ['@route' => $route]));
+    }
+    catch (MissingMandatoryParametersException $e) {
+      throw new ParFlowException(t('The parameters are missing for the route @route', ['@route' => $route]));
     }
 
     // Automatically add the route params from the current route if needed.
