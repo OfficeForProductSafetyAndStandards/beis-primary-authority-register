@@ -45,6 +45,7 @@
         "drupal/maillog": "1.x-dev",
         "drupal/mailsystem": "~4.1.0",
         "drupal/masquerade": "^2.0@beta",
+        "drupal/menu_link_attributes": "^1.0",
         "drupal/message": "~1.0.0",
         "drupal/message_notify": "~1.0.0",
         "drupal/no_autocomplete": "~1.4.0",
