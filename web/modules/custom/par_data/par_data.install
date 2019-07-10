@@ -684,3 +684,44 @@ function par_data_update_8034() {
     }
   }
 }
+
+/**
+ * Request to update any titles that haven't already been updated to the filename.
+ */
+function par_data_update_8035() {
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  $conditions = [
+    [
+      'OR' => [
+        ['advice_title', 'Primary Authority advice for the organisation', 'LIKE'],
+      ],
+    ],
+    [
+      'OR' => [
+        ['advice_title', 'Background information', 'LIKE'],
+      ],
+    ],
+    [
+      'OR' => [
+        ['advice_title', 'Primary Authority advice for the authority', 'LIKE'],
+      ],
+    ],
+  ];
+
+  $advice = $par_data_manager->getEntitiesByQuery('par_data_advice', $conditions, NULL, NULL, 'DESC', 'OR');
+
+  foreach ($advice as $a) {
+    $documents = $a->get('document')->referencedEntities();
+    $document = !$a->get('document')->isEmpty() ? current($documents) : NULL;
+
+    if ($document) {
+      /* @var \Drupal\file\Entity\File $document */
+      $filename = $document->getFilename();
+      $sanitised = pathinfo($filename, PATHINFO_FILENAME);
+
+      $a->setAdviceTitle($sanitised);
+      $a->save();
+    }
+  }
+}
