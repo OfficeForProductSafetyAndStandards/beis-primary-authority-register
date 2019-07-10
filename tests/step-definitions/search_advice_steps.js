@@ -8,7 +8,7 @@ Given('I search for an active partnership {string}', function (string) {
       .clickLinkByPureText('Dashboard')
       .clickLinkByPartialText('Search for a partnership')
       .setValue('#edit-keywords', string)
-      .click('#edit-submit-par-user-partnerships')
+      .click('#edit-submit-partnership-search')
       .clickLinkByPartialText(string)
 });
 
