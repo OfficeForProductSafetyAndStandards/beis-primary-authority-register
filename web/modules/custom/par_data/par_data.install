@@ -704,7 +704,7 @@ function par_data_update_8035() {
     ],
     [
       'OR' => [
-        ['advice_title', 'Primary Authority advice for the authority', 'LIKE'],
+        ['advice_title', 'Primary Authority advice to Local Authorities', 'LIKE'],
       ],
     ],
   ];
