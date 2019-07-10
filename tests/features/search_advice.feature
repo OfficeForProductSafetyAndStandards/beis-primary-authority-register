@@ -4,7 +4,7 @@ Feature: Search advice
 
   @upload-advice @ci
   Scenario: Search for advice on other partnerships
-    Given I am logged in as "par_enforcement@example.com"
+    Given I am logged in as "par_enforcement_officer@example.com"
     And I search for an active partnership "Enquirer"
     And I click "See all Advice"
     Then I should see advice list page
