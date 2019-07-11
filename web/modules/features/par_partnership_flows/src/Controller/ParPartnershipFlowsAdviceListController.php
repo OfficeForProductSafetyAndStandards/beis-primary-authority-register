@@ -39,7 +39,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       '#suffix' => '</h2>',
     ];
 
-    $advice_search_block_exposed  = views_embed_view('partnership_search', 'advice_list_block_exposed', $par_data_partnership_id);
+    $advice_search_block_exposed  = views_embed_view('advice_lists', 'advice_list_block_exposed', $par_data_partnership_id);
     $build['advice_search_block'] = $advice_search_block_exposed;
 
     // PAR-1359 only allow advice uploading on active partnerships as only active partnerships have regulatory
