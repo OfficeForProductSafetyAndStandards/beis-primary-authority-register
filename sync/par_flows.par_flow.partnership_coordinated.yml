@@ -115,7 +115,7 @@ steps:
       next: 1
       cancel: 1
   16:
-    route: par_partnership_flows.advice_list
+    route: par_partnership_flows.organisation_advice_list
     redirect:
       done: 1
       cancel: 1
