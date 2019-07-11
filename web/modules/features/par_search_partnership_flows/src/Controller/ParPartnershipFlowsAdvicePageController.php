@@ -9,14 +9,14 @@ use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_flows\Controller\ParBaseInterface;
-use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+use Drupal\par_search_partnership_flows\ParFlowAccessTrait;
 
 /**
  * The Advice entity details page.
  */
 class ParPartnershipFlowsAdvicePageController extends ParBaseController {
 
-  use ParPartnershipFlowsTrait;
+  use ParFlowAccessTrait;
 
   /**
    * {@inheritdoc}

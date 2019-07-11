@@ -5,8 +5,7 @@ namespace Drupal\par_search_partnership_flows\Controller;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\par_flows\Controller\ParBaseController;
-use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
-use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+use Drupal\par_search_partnership_flows\ParFlowAccessTrait;
 use \Drupal\views\Views;
 
 /**
@@ -14,8 +13,7 @@ use \Drupal\views\Views;
  */
 class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
-  use ParPartnershipFlowsTrait;
-  use ParPartnershipFlowAccessTrait;
+  use ParFlowAccessTrait;
 
   protected $pageTitle = 'Advice';
 
