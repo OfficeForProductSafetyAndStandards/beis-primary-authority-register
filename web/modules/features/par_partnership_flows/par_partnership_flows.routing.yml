@@ -100,7 +100,7 @@ par_partnership_flows.authority_contact_invite_sent:
       par_data_person:
         type: entity:par_data_person
 par_partnership_flows.authority_advice_list:
-  path: '/partnership/{par_data_partnership}/advice/authority-list
+  path: '/partnership/{par_data_partnership}/advice/authority-list'
   defaults:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
@@ -473,8 +473,8 @@ par_partnership_flows.member_upload_confirm:
         type: entity:par_data_partnership
 par_partnership_flows.organisation_advice_list:
   path: '/partnership/{par_data_partnership}/advice/organisation-list'
-  _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
-  _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
     _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::accessCallback'
