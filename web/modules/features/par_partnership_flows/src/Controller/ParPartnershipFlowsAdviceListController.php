@@ -5,6 +5,7 @@ namespace Drupal\par_partnership_flows\Controller;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\par_flows\Controller\ParBaseController;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use \Drupal\views\Views;
@@ -53,7 +54,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
     }
     if ($advice_list_block) {
-      $advice_search_block_exposed = views_embed_view('advice_lists', 'advice_list_block_exposed', $par_data_partnership_id);
+      $advice_search_block_exposed = views_embed_view('advice_lists', $advice_list_block, $par_data_partnership_id);
       $build['advice_search_block'] = $advice_search_block_exposed;
     }
     else {
@@ -67,20 +68,27 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
     // PAR-1359 only allow advice uploading on active partnerships as only active partnerships have regulatory
     // functions assigned to them. Hide upload button when user is on the search path.
-    if ($par_data_partnership->isActive()) {
+    if ($par_data_partnership->isActive() && $this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
       $build['actions'] = [
         '#type' => 'fieldset',
         '#attributes' => ['class' => ['form-group', 'btn-link-upload']],
       ];
 
-      $build['actions']['upload'] = [
-        '#type' => 'markup',
-        '#markup' => '<br>' . t('@link', [
-          '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('edit', $this->getRouteParams())
-              ->setText('Upload advice')
-              ->toString(),
-        ]),
-      ];
+      try {
+        $build['actions']['upload'] = [
+          '#type' => 'markup',
+          '#markup' => '<br>' . t('@link', [
+              '@link' => $this->getFlowNegotiator()
+                ->getFlow()
+                ->getNextLink('upload', $this->getRouteParams())
+                ->setText('Upload advice')
+                ->toString(),
+            ]),
+        ];
+      }
+      catch (ParFlowException $e) {
+
+      }
     }
 
     // When new advice is added these can't clear the cache,
