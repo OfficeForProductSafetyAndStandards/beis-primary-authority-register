@@ -473,6 +473,7 @@ par_partnership_flows.member_upload_confirm:
         type: entity:par_data_partnership
 par_partnership_flows.organisation_advice_list:
   path: '/partnership/{par_data_partnership}/advice/organisation-list'
+  defaults:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
   requirements:
