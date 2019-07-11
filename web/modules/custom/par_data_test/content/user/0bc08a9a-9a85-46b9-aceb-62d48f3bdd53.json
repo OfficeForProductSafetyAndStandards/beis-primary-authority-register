@@ -1,0 +1,108 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/user\/13803?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+        }
+    },
+    "uid": [
+        {
+            "value": 13803
+        }
+    ],
+    "uuid": [
+        {
+            "value": "0bc08a9a-9a85-46b9-aceb-62d48f3bdd53"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "preferred_langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "preferred_admin_langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "par_business_enquirer@example.com"
+        }
+    ],
+    "mail": [
+        {
+            "value": "par_business_enquirer@example.com"
+        }
+    ],
+    "pass": [
+        {
+            "value": "TestPassword"
+        }
+    ],
+    "timezone": [
+        {
+            "value": "UTC"
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": 1562872704
+        }
+    ],
+    "changed": [
+        {
+            "value": 1562872704,
+            "lang": "en"
+        }
+    ],
+    "access": [
+        {
+            "value": 0
+        }
+    ],
+    "login": [
+        {
+            "value": 0
+        }
+    ],
+    "init": [
+        {
+            "value": "par_business_enquirer@example.com"
+        }
+    ],
+    "roles": [
+        {
+            "target_id": "par_organisation"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "role_change": [
+        {
+            "target_id": "__role_delegation_empty_field_value__"
+        }
+    ],
+    "field_gdpr": [
+        {
+            "value": true
+        }
+    ]
+}

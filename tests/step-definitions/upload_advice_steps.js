@@ -45,7 +45,7 @@ Then('I see the link {string}', function (string) {
 
 Given('I open an active partnership {string}', function (string) {
   return shared
-      .goToPartnershipDetailPage(string, 'active')
+      .goToPartnershipDetailPage(string, string, 'active')
 });
 
 Given('I open advice add page', function () {
