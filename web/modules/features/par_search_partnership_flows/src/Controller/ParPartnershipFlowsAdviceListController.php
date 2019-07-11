@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_partnership_flows\Controller;
+namespace Drupal\par_search_partnership_flows\Controller;
 
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -39,26 +39,8 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       '#suffix' => '</h2>',
     ];
 
-    $advice_search_block_exposed  = views_embed_view('partnership_search', 'advice_list_block_exposed', $par_data_partnership_id);
+    $advice_search_block_exposed  = views_embed_view('partnership_search', 'advice_search_block_exposed', $par_data_partnership_id);
     $build['advice_search_block'] = $advice_search_block_exposed;
-
-    // PAR-1359 only allow advice uploading on active partnerships as only active partnerships have regulatory
-    // functions assigned to them. Hide upload button when user is on the search path.
-    if ($par_data_partnership->isActive()) {
-      $build['actions'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => ['form-group', 'btn-link-upload']],
-      ];
-
-      $build['actions']['upload'] = [
-        '#type' => 'markup',
-        '#markup' => '<br>' . t('@link', [
-          '@link' => $this->getFlowNegotiator()->getFlow()->getNextLink('edit', $this->getRouteParams())
-              ->setText('Upload advice')
-              ->toString(),
-        ]),
-      ];
-    }
 
     // When new advice is added these can't clear the cache,
     // for now we will keep this page uncached.
