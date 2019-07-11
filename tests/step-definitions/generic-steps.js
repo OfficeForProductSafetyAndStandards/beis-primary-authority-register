@@ -160,7 +160,7 @@ const shared = client.page.shared();
       .goToPartnershipDetailPage(orgname,orgname,status)
    });
 
-  When('I open an active partnership {string} by searching for {search}', function (string, search) {
+  When('I open an active partnership {string} by searching for {string}', function (string, search) {
     return shared
       .goToPartnershipDetailPage(search, string, 'active')
   });
