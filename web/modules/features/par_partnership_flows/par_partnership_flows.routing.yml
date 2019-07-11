@@ -477,7 +477,7 @@ par_partnership_flows.organisation_advice_list:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
   requirements:
-    _permission: 'update partnership authority details'
+    _permission: 'update partnership organisation details'
     _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::accessCallback'
     par_data_partnership: \d+
   options:
@@ -490,7 +490,7 @@ par_partnership_flows.organisation_advice_details:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::build'
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::titleCallback'
   requirements:
-    _permission: 'update partnership authority details'
+    _permission: 'update partnership organisation details'
     _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::accessCallback'
     par_data_partnership: \d+
     par_data_advice: \d+
