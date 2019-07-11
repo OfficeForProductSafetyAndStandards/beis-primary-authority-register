@@ -39,8 +39,31 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       '#suffix' => '</h2>',
     ];
 
-    $advice_search_block_exposed  = views_embed_view('advice_lists', 'advice_list_block_exposed', $par_data_partnership_id);
-    $build['advice_search_block'] = $advice_search_block_exposed;
+    switch ($this->getFlowNegotiator()->getFlowName()) {
+      case 'partnership_authority':
+        $advice_list_block = 'advice_list_authority_block';
+
+        break;
+
+      case 'partnership_direct':
+      case 'partnership_coordinated':
+        $advice_list_block = 'advice_list_organisation_block';
+
+        break;
+
+    }
+    if ($advice_list_block) {
+      $advice_search_block_exposed = views_embed_view('advice_lists', 'advice_list_block_exposed', $par_data_partnership_id);
+      $build['advice_search_block'] = $advice_search_block_exposed;
+    }
+    else {
+      $build['advice_search_block'] = [
+        '#type' => 'markup',
+        '#markup' => "Advice can't be listed here. Please contact the helpdesk.",
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
+    }
 
     // PAR-1359 only allow advice uploading on active partnerships as only active partnerships have regulatory
     // functions assigned to them. Hide upload button when user is on the search path.
