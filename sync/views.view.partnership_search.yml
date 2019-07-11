@@ -3446,7 +3446,7 @@ display:
           settings:
             thousand_separator: ''
             prefix_suffix: true
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -3519,7 +3519,7 @@ display:
           settings:
             thousand_separator: ''
             prefix_suffix: true
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -3711,6 +3711,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           title: 'Partnership between {{ authority_name }} and {{ organisation_name }}'
+          assistive_text: {  }
           link: '/partnership/{{ id_1 }}'
           hidden: 0
           entity_type: par_data_partnership
@@ -4544,7 +4545,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -4608,7 +4609,7 @@ display:
           click_sort_column: value
           type: text_default
           settings: {  }
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
