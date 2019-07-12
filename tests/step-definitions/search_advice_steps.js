@@ -15,7 +15,7 @@ Given('I search for an active partnership {string}', function (string) {
 Then('I search for active advice by the title {string}', function (string) {
   return shared
       .setValue('#edit-keywords', string)
-      .click('#edit-submit-partnership-search')
+      .click('#edit-submit-advice-lists')
       .clickLinkByPureText(string)
 });
 
