@@ -37,7 +37,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       '#suffix' => '</h2>',
     ];
 
-    $advice_search_block_exposed  = views_embed_view('partnership_search', 'advice_search_block_exposed', $par_data_partnership_id);
+    $advice_search_block_exposed  = views_embed_view('advice_lists', 'advice_search_block_exposed', $par_data_partnership_id);
     $build['advice_search_block'] = $advice_search_block_exposed;
 
     // When new advice is added these can't clear the cache,

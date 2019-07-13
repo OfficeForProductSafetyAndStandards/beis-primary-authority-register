@@ -158,14 +158,14 @@ module.exports = {
                 .waitForElementVisible('#footer', 15000)
                 .assert.containsText('body', 'Sign out')
         },
-        goToPartnershipDetailPage: function(orgName, status){
+        goToPartnershipDetailPage: function(search, name, status){
         return this
             .clickLinkByPureText('Dashboard')
             .clickLinkByPartialText('See your partnerships')
-            .setValue('#edit-keywords', orgName)
+            .setValue('#edit-keywords', search)
             .click('#edit-partnership-status-1 option[value="'+status+'"]')
             .click('#edit-submit-par-user-partnerships')
-            .clickLinkByPureText(orgName)
+            .clickLinkByPureText(name)
         },
         createNewPartnership: function(){
              return this

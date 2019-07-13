@@ -9,6 +9,7 @@ use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_flows\Controller\ParBaseInterface;
+use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
@@ -16,6 +17,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
  */
 class ParPartnershipFlowsAdvicePageController extends ParBaseController {
 
+  use ParPartnershipFlowAccessTrait;
   use ParPartnershipFlowsTrait;
 
   /**
