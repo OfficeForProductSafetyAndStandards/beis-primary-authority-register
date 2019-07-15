@@ -18,8 +18,8 @@ steps:
       add_field_authority_person: 3
       edit_field_authority_person: 7
       advice: 8
-      inspection_plans: 14
-      save: 15
+      inspection_plans: 16
+      save: 17
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
@@ -57,24 +57,28 @@ steps:
       save: 1
       cancel: 1
   8:
-    route: par_partnership_flows.advice_list
+    route: par_partnership_flows.authority_advice_list
     redirect:
-      upload: 9
+      upload: 10
       done: 1
       cancel: 1
   9:
+    route: par_partnership_flows.authority_advice_details
+    redirect:
+      done: 8
+  10:
     route: par_partnership_flows.advice_warning_declaration
     form_id: par_partnership_confirm_advice_form
     redirect:
-      save: 10
+      next: 11
       cancel: 8
-  10:
+  11:
     route: par_partnership_flows.advice_upload_documents
     form_id: par_partnership_advice_upload_add
     redirect:
-      upload: 11
+      upload: 12
       cancel: 8
-  11:
+  12:
     route: par_partnership_flows.advice_add
     form_id: par_partnership_advice_add
     form_data:
@@ -82,13 +86,13 @@ steps:
     redirect:
       save: 8
       cancel: 8
-  12:
+  13:
     route: par_partnership_flows.advice_edit_documents
     form_id: par_partnership_advice_upload_edit
     redirect:
-      upload: 13
+      upload: 14
       cancel: 8
-  13:
+  14:
     route: par_partnership_flows.advice_edit
     form_id: par_partnership_advice_edit
     form_data:
@@ -96,19 +100,15 @@ steps:
     redirect:
       save: 8
       cancel: 8
-  14:
-    route: par_partnership_flows.inspection_plan_list
-    redirect:
-      done: 1
   15:
-    route: view.par_user_partnerships.partnerships_page
-  16:
-    route: par_partnership_flows.advice_details
-    redirect:
-      done: 8
-  17:
     route: par_partnership_flows.advice_archive
     form_id: par_partnership_advice_archive
     redirect:
       save: 8
       cancel: 8
+  16:
+    route: par_partnership_flows.inspection_plan_list
+    redirect:
+      done: 1
+  17:
+    route: view.par_user_partnerships.partnerships_page
