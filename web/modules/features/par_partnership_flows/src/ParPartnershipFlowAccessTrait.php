@@ -45,15 +45,20 @@ trait ParPartnershipFlowAccessTrait {
       case 'par_partnership_flows.advice_add':
       case 'par_partnership_flows.advice_upload_documents':
       case 'par_partnership_flows.advice_warning_declaration':
+        // Restrict advice upload to active partnerships only.
         if (!$par_data_partnership->isActive()) {
           $this->accessResult = AccessResult::forbidden('Advice can only be added to active partnerships.');
         }
         break;
       case 'par_partnership_flows.legal_entity_add':
       case 'par_partnership_flows.legal_entity_edit':
-        // Restrict access to active partnerships.
-        if (!$par_data_partnership->isActive()) {
-          $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entity cannot be added.');
+        // Restrict access to partnerships that haven't yet been nominated.
+        if ($par_data_partnership->isActive()) {
+          $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
+        }
+        // Also restrict business users who have already conirmed their business details.
+        if ($par_data_partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
+          $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
         }
         break;
       case 'par_partnership_flows.advice_edit':

@@ -46,3 +46,21 @@ Feature: Business User - Complete organisation details
         # REVIEW PARTNERSHIP
 
         And I submit final confirmation of completion by organisation "Organisation For Direct Partnership"
+
+
+    @ci @directpartnership
+    Scenario: Business User - Cannot modify legal entities
+        Given I am logged in as "par_business@example.com"
+        And I go to partnership detail page for my partnership "Test parntership for legal entities" with status "confirmed_rd"
+        And the element "#edit-legal-entities" does not contain the text "add another sic code"
+        Given I am logged in as "par_business@example.com"
+        And I go to partnership detail page for my partnership "Test Partnership for legal entities" with status "confirmed_business"
+        And the element "#edit-legal-entities" does not contain the text "add another sic code"
+
+
+    @ci @directpartnership
+    Scenario: Helpdesk User - Cannot modify legal entities on active partnerships
+        Given I am logged in as "par_helpdesk@example.com"
+        And I go to partnership detail page for my partnership "Test parntership for legal entities" with status "confirmed_rd"
+        And the element "#edit-legal-entities" does not contain the text "add another sic code"
+        Given I am logged in as "par_business@example.com"
