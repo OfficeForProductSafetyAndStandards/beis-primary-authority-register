@@ -1,0 +1,214 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_organisation\/102526?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_organisation\/organisation"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/5?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/5?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/field_legal_entity": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/22167?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/field_person": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/120305?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/field_premises": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_premises\/214850?_format=hal_json",
+                "lang": "en"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 102526
+        }
+    ],
+    "type": [
+        {
+            "target_id": "organisation"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "88a43414-ea82-44cf-8dcc-98a35437d1de"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 8029
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/5?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "46e65664-bf34-4713-ab14-740cbe581538"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/5?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "46e65664-bf34-4713-ab14-740cbe581538"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/field_legal_entity": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/22167?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_legal_entity\/legal_entity"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "fcb17676-24e1-4b24-8484-0b9b565fc372"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/field_person": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/120305?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "3c6b5029-8934-47e2-b3dc-ec6112afae39"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_organisation\/organisation\/field_premises": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_premises\/214850?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_premises\/premises"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "356c2b17-bc8f-4427-84e8-810111153c6e"
+                    }
+                ],
+                "lang": "en"
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1563311475
+        }
+    ],
+    "changed": [
+        {
+            "value": 1563311475
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1563311475
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5d2e3d9d5202d",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "organisation_name": [
+        {
+            "value": "Pizeria"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

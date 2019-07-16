@@ -169,4 +169,17 @@ Feature: Coordinator User - Upload Members
         When I add "Coordinated Member 1" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
         Then the element ".table-scroll-wrapper" contains the text "Organisation For Coordinated Partnership"
-    
+
+        @coordinatedpartnership @ci
+    Scenario: Test member upload numbers
+        Given I am logged in as "par_coordinator@example.com"
+        And I click the link with text "See your partnerships"
+        When I click the link text "Member Upload Test Business"
+        And the element "#edit-members-link" contains the text "13"
+        When I click the link text "Show members list"
+        And the element ".pagerer-container" contains the text "Showing 1-10 of 15 results"
+        And the element ".pagerer-container" contains the text "Showing 1-10 of 13 results"
+        And I select the option with the value "1" for element "#edit-revoked"
+        And I click on the button "#edit-submit-members-list"
+        And the element ".pagerer-container" contains the text "Showing 1-10 of 13 results"
+
