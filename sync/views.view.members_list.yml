@@ -249,7 +249,7 @@ display:
           settings:
             thousand_separator: ''
             prefix_suffix: true
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -315,7 +315,7 @@ display:
           settings:
             thousand_separator: ''
             prefix_suffix: true
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -442,6 +442,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           title: '{{ organisation_name }}'
+          assistive_text: {  }
           link: '/partnership/{{ id_1 }}/member/{{ id }}/update'
           hidden: 0
           entity_type: par_data_coordinated_business
@@ -497,7 +498,7 @@ display:
           click_sort_column: langcode
           type: address_default
           settings: {  }
-          group_column: ''
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -564,7 +565,7 @@ display:
             date_format: gds_date_format
             custom_date_format: ''
             timezone: ''
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -630,7 +631,7 @@ display:
           settings:
             timezone_override: ''
             format_type: gds_date_format
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -696,7 +697,7 @@ display:
           settings:
             timezone_override: ''
             format_type: gds_date_format
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -760,7 +761,7 @@ display:
           click_sort_column: value
           type: par_boolean_formatter
           settings: {  }
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -876,6 +877,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           title: 'Add a member'
+          assistive_text: {  }
           link: '/partnership/{{ id_1 }}/members/add'
           hidden: 1
           entity_type: par_data_coordinated_business
@@ -929,6 +931,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           title: '&#9664; Back to partnership'
+          assistive_text: {  }
           link: '/partnership/{{ id_1 }}/organisation-details'
           hidden: 1
           entity_type: par_data_coordinated_business
@@ -982,6 +985,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           title: 'Unlock membership list'
+          assistive_text: {  }
           link: '/partnership/{{ id_1 }}/members/unlock'
           hidden: 1
           entity_type: par_data_coordinated_business
@@ -1035,6 +1039,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           title: 'Upload a Member List (CSV)'
+          assistive_text: {  }
           link: '/partnership/{{ id_1 }}/members/upload'
           hidden: 1
           entity_type: par_data_coordinated_business
@@ -1194,7 +1199,7 @@ display:
           field: reverse__par_data_partnership__field_coordinated_business
           relationship: none
           group_type: group
-          admin_label: field_coordinated_business
+          admin_label: 'Coordinated Business'
           required: false
           entity_type: par_data_coordinated_business
           plugin_id: entity_reverse
@@ -1204,7 +1209,7 @@ display:
           field: field_organisation
           relationship: none
           group_type: group
-          admin_label: 'field_organisation: PAR Organisation'
+          admin_label: 'PAR Organisation'
           required: false
           plugin_id: standard
         field_premises:
@@ -1213,8 +1218,17 @@ display:
           field: field_premises
           relationship: field_organisation
           group_type: group
-          admin_label: 'field_premises: PAR Premises'
+          admin_label: 'PAR Premises'
           required: true
+          plugin_id: standard
+        field_legal_entity:
+          id: field_legal_entity
+          table: par_data_coordinated_business__field_legal_entity
+          field: field_legal_entity
+          relationship: none
+          group_type: group
+          admin_label: 'PAR Legal Entity'
+          required: false
           plugin_id: standard
       arguments:
         id:
@@ -1255,6 +1269,7 @@ display:
           entity_field: id
           plugin_id: numeric
       display_extenders: {  }
+      group_by: true
     cache_metadata:
       max-age: -1
       contexts:
