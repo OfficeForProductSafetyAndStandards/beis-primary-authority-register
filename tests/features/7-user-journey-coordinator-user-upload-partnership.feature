@@ -178,7 +178,6 @@ Feature: Coordinator User - Upload Members
         And the element "#edit-members-link" contains the text "13"
         When I click the link text "Show members list"
         And the element ".pagerer-container" contains the text "Showing 1-10 of 15 results"
-        And the element ".pagerer-container" contains the text "Showing 1-10 of 13 results"
         And I select the option with the value "1" for element "#edit-revoked"
         And I click on the button "#edit-submit-members-list"
         And the element ".pagerer-container" contains the text "Showing 1-10 of 13 results"
