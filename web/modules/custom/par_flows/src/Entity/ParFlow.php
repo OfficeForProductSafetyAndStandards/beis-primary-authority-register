@@ -471,7 +471,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
-  public function getLinkByStep($index, array $route_params = [], array $link_options = []) {
+  public function getLinkByStep($index, array $route_params = [], array $link_options = [], $check_access = FALSE) {
     $step = $this->getStep($index);
     if (empty($step)) {
       throw new ParFlowException("The specified route does not exist for step {$index}.");
@@ -480,7 +480,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     $route = $step['route'];
 
     /** @var Link $link */
-    $link = $this->getLinkByRoute($route, $route_params, $link_options, TRUE);
+    $link = $this->getLinkByRoute($route, $route_params, $link_options, $check_access);
 
     return $link ? $link : NULL;
   }
@@ -488,31 +488,31 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
-  protected function getLinkByOperation($index, $operation, array $route_params = [], array $link_options = []) {
+  protected function getLinkByOperation($index, $operation, array $route_params = [], array $link_options = [], $check_access = FALSE) {
     $step = $this->getStepByOperation($index, $operation);
-    return $this->getLinkByStep($step, $route_params, $link_options);
+    return $this->getLinkByStep($step, $route_params, $link_options, $check_access);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getLinkByCurrentOperation($operation, array $route_params = [], array $link_options = []) {
-    return $this->getLinkByOperation($this->getCurrentStep(), $operation, $route_params, $link_options);
+  public function getLinkByCurrentOperation($operation, array $route_params = [], array $link_options = [], $check_access = FALSE) {
+    return $this->getLinkByOperation($this->getCurrentStep(), $operation, $route_params, $link_options, $check_access);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getNextLink($operation = NULL, array $route_params = [], array $link_options = []) {
+  public function getNextLink($operation = NULL, array $route_params = [], array $link_options = [], $check_access = FALSE) {
     $step = $this->getNextStep($operation);
-    return $this->getLinkByStep($step, $route_params, $link_options);
+    return $this->getLinkByStep($step, $route_params, $link_options, $check_access);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getPrevLink($operation = NULL, array $route_params = [], array $link_options = []) {
+  public function getPrevLink($operation = NULL, array $route_params = [], array $link_options = [], $check_access = FALSE) {
     $step = $this->getPrevStep($operation);
-    return $this->getLinkByStep($step, $route_params, $link_options);
+    return $this->getLinkByStep($step, $route_params, $link_options, $check_access);
   }
 }

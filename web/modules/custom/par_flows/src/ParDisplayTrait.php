@@ -216,7 +216,7 @@ trait ParDisplayTrait {
       }
 
       try {
-        $edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params);
+        $edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params, [], TRUE);
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -333,7 +333,7 @@ trait ParDisplayTrait {
       $link_name_suffix = strtolower($field->getFieldDefinition()->getLabel());
       if (isset($operations) && (in_array('add', $operations)) && !($single && !$field->isEmpty())) {
         try {
-          $add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_' . $field->getName());
+          $add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_' . $field->getName(), [], [], TRUE);
         } catch (ParFlowException $e) {
           $this->getLogger($this->getLoggerChannel())->notice($e);
         }
