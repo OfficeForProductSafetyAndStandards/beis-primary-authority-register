@@ -479,7 +479,10 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
     $route = $step['route'];
 
-    return $route ? $this->getLinkByRoute($route, $route_params, $link_options) : NULL;
+    /** @var Link $link */
+    $link = $this->getLinkByRoute($route, $route_params, $link_options, TRUE);
+
+    return $link ? $link : NULL;
   }
 
   /**

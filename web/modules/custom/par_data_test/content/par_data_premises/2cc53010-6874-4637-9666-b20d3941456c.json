@@ -1,49 +1,49 @@
 {
     "_links": {
         "self": {
-            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_sic_code\/53?_format=hal_json"
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_premises\/214853?_format=hal_json"
         },
         "type": {
-            "href": "http:\/\/drupal.org\/rest\/type\/par_data_sic_code\/sic_code"
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_premises\/premises"
         },
-        "http:\/\/drupal.org\/rest\/relation\/par_data_sic_code\/sic_code\/user_id": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/user_id": [
             {
-                "href": "http:\/\/default\/user\/1?_format=hal_json",
+                "href": "http:\/\/default\/user\/2?_format=hal_json",
                 "lang": "en"
             }
         ],
-        "http:\/\/drupal.org\/rest\/relation\/par_data_sic_code\/sic_code\/revision_uid": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/revision_uid": [
             {
-                "href": "http:\/\/default\/user\/1?_format=hal_json"
+                "href": "http:\/\/default\/user\/2?_format=hal_json"
             }
         ]
     },
     "id": [
         {
-            "value": 53
+            "value": 214853
         }
     ],
     "type": [
         {
-            "target_id": "sic_code"
+            "target_id": "premises"
         }
     ],
     "uuid": [
         {
-            "value": "86bcff9c-882e-46d1-b768-68eb5b311f2c"
+            "value": "2cc53010-6874-4637-9666-b20d3941456c"
         }
     ],
     "revision_id": [
         {
-            "value": 56
+            "value": 65173
         }
     ],
     "_embedded": {
-        "http:\/\/drupal.org\/rest\/relation\/par_data_sic_code\/sic_code\/user_id": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/user_id": [
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                        "href": "http:\/\/default\/user\/2?_format=hal_json"
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
@@ -51,17 +51,17 @@
                 },
                 "uuid": [
                     {
-                        "value": "3508aee8-7e04-4b5d-a784-3667ea038e49"
+                        "value": "1a6dc8cd-fea2-486b-bd0e-12572c6a26ab"
                     }
                 ],
                 "lang": "en"
             }
         ],
-        "http:\/\/drupal.org\/rest\/relation\/par_data_sic_code\/sic_code\/revision_uid": [
+        "http:\/\/drupal.org\/rest\/relation\/par_data_premises\/premises\/revision_uid": [
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/user\/1?_format=hal_json"
+                        "href": "http:\/\/default\/user\/2?_format=hal_json"
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
@@ -69,7 +69,7 @@
                 },
                 "uuid": [
                     {
-                        "value": "3508aee8-7e04-4b5d-a784-3667ea038e49"
+                        "value": "1a6dc8cd-fea2-486b-bd0e-12572c6a26ab"
                     }
                 ]
             }
@@ -88,17 +88,17 @@
     ],
     "created": [
         {
-            "value": 1521559594
+            "value": 1563455883
         }
     ],
     "changed": [
         {
-            "value": 1521559594
+            "value": 1563455883
         }
     ],
     "revision_timestamp": [
         {
-            "value": 1521559594
+            "value": 1563455883
         }
     ],
     "revision_translation_affected": [
@@ -109,7 +109,7 @@
     ],
     "name": [
         {
-            "value": "5ab1282d29326",
+            "value": "5d30718b779e9",
             "lang": "en"
         }
     ],
@@ -128,14 +128,21 @@
             "value": false
         }
     ],
-    "sic_code": [
+    "address": [
         {
-            "value": "111111"
-        }
-    ],
-    "description": [
-        {
-            "value": "This SIC Code should be used if you sell cookies."
+            "langcode": null,
+            "country_code": "GB",
+            "administrative_area": null,
+            "locality": "London",
+            "dependent_locality": null,
+            "postal_code": "SE5 9EZ",
+            "sorting_code": null,
+            "address_line1": "4 Lowth Road",
+            "address_line2": null,
+            "organization": null,
+            "given_name": null,
+            "additional_name": null,
+            "family_name": null
         }
     ],
     "default_langcode": [

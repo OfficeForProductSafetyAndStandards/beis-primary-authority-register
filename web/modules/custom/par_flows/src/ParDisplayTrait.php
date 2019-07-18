@@ -216,7 +216,7 @@ trait ParDisplayTrait {
       }
 
       try {
-        $edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params)->setText("edit {$link_name_suffix}")->toString();
+        $edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_' . $field->getName(), $params);
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -224,7 +224,7 @@ trait ParDisplayTrait {
       if (isset($edit_link)) {
         $operation_links['edit'] = [
           '#type' => 'markup',
-          '#markup' => t('@link', ['@link' => $edit_link]),
+          '#markup' => t('@link', ['@link' => $edit_link->setText("edit {$link_name_suffix}")->toString()]),
         ];
       }
     }
@@ -333,14 +333,14 @@ trait ParDisplayTrait {
       $link_name_suffix = strtolower($field->getFieldDefinition()->getLabel());
       if (isset($operations) && (in_array('add', $operations)) && !($single && !$field->isEmpty())) {
         try {
-          $add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_' . $field->getName())->setText("add another {$link_name_suffix}")->toString();
+          $add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_' . $field->getName());
         } catch (ParFlowException $e) {
           $this->getLogger($this->getLoggerChannel())->notice($e);
         }
         if (isset($add_link)) {
           $element[$field_name]['operations']['add'] = [
             '#type' => 'markup',
-            '#markup' => t('@link', ['@link' => $add_link]),
+            '#markup' => t('@link', ['@link' => $add_link->setText("add another {$link_name_suffix}")->toString()]),
           ];
         }
       }

@@ -26,15 +26,6 @@ trait ParPartnershipFlowAccessTrait {
    * for use with other forms in par_partnership_flows flows.
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL ) {
-    try {
-      $this->getFlowNegotiator()->setRoute($route_match);
-      $this->getFlowDataHandler()->reset();
-      $this->getFlowDataHandler()->setParameter('par_data_partnership', $par_data_partnership);
-      $this->loadData();
-    } catch (ParFlowException $e) {
-
-    }
-
     // Limit access to partnership pages.
     $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
     if (!$account->hasPermission('bypass par_data membership') && $user && !$this->getParDataManager()->isMember($par_data_partnership, $user)) {
