@@ -27,7 +27,7 @@ trait ParFlowAccessTrait {
     } catch (ParFlowException $e) {
 
     }
-
+    
     // Steps 1 & 2 shouldn't be accessed if the enforcement notice has already been approved.
     if (!$par_data_enforcement_notice->inProgress() && $access_route_negotiator->getFlow()->getCurrentStep() <= 2) {
       // Set an error if this action has already been reviewed.

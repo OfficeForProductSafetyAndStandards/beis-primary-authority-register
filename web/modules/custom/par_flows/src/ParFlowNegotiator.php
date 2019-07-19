@@ -155,6 +155,11 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
       $flow = $this->flow_storage->load($flow_name);
     }
 
+    // The current route must be passed to the flow if set.
+    if ($route = $this->getRoute()) {
+      $flow->setCurrentRouteMatch($route);
+    }
+
     return $flow;
   }
 
