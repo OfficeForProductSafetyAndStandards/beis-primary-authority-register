@@ -22,9 +22,13 @@ Given('I navigate to a partially completed partnership {string}', function (stri
       .clickLinkByPureText(string)
 });
 
-Then('I should see advice page', function () {
+Then('I should see advice list page', function () {
   return shared
       .assert.containsText('h1.heading-xlarge', 'Advice')
+});
+Then('I should see advice view page has the title {string}', function (string) {
+  return shared
+      .assert.containsText('h1.heading-xlarge', string)
 });
 
 Then('I should not see the link {string}', function (string) {
@@ -41,7 +45,7 @@ Then('I see the link {string}', function (string) {
 
 Given('I open an active partnership {string}', function (string) {
   return shared
-      .goToPartnershipDetailPage(string, 'active')
+      .goToPartnershipDetailPage(string, string, 'active')
 });
 
 Given('I open advice add page', function () {

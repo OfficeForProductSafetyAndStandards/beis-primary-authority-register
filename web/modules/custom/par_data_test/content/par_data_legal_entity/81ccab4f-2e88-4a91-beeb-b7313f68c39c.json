@@ -1,0 +1,152 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/22157?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_legal_entity\/legal_entity"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/5?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/5?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 22157
+        }
+    ],
+    "type": [
+        {
+            "target_id": "legal_entity"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "81ccab4f-2e88-4a91-beeb-b7313f68c39c"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 7416
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/5?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "46e65664-bf34-4713-ab14-740cbe581538"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/5?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "46e65664-bf34-4713-ab14-740cbe581538"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1563311475
+        }
+    ],
+    "changed": [
+        {
+            "value": 1563311475
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1563311475
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5d2e3d8153c03",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "registered_name": [
+        {
+            "value": "Fish \u2018n\u2019 Chips Ltd"
+        }
+    ],
+    "registered_number": [
+        {
+            "value": "1098523955"
+        }
+    ],
+    "legal_entity_type": [
+        {
+            "value": "public_limited_company"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

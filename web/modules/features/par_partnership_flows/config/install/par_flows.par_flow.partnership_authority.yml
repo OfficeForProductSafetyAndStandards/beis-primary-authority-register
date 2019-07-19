@@ -29,7 +29,7 @@ steps:
     redirect:
       done: 1
   4:
-    route: par_partnership_flows.advice_list
+    route: par_partnership_flows.authority_advice_list
     redirect:
       upload: 5
       done: 1
@@ -69,7 +69,7 @@ steps:
       save: 4
       cancel: 4
   10:
-    route: par_partnership_flows.advice_details
+    route: par_partnership_flows.authority_advice_details
     redirect:
       done: 4
   11:

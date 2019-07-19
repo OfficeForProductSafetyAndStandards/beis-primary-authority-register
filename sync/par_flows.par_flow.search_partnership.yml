@@ -17,17 +17,21 @@ steps:
     route: par_search_partnership_flows.partnership_page
     redirect:
       advice: 2
-      inspection_plans: 3
-      done: 4
+      inspection_plans: 4
+      done: 5
   2:
     route: par_search_partnership_flows.advice_view
     redirect:
       done: 1
   3:
+    route: par_search_partnership_flows.advice_page
+    redirect:
+      done: 2
+  4:
     route: par_search_partnership_flows.inspection_plan_view
     components:
       inspection_plan_list: {  }
     redirect:
       done: 1
-  4:
+  5:
     route: view.partnership_search.enforcment_flow_search_partnerships

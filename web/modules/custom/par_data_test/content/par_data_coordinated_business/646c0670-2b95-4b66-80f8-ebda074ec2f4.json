@@ -1,0 +1,164 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_coordinated_business\/2135?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_coordinated_business\/coordinated_business"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_coordinated_business\/coordinated_business\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/5?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_coordinated_business\/coordinated_business\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/5?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_coordinated_business\/coordinated_business\/field_organisation": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_organisation\/102516?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 2135
+        }
+    ],
+    "type": [
+        {
+            "target_id": "coordinated_business"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "646c0670-2b95-4b66-80f8-ebda074ec2f4"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 2255
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_coordinated_business\/coordinated_business\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/5?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "46e65664-bf34-4713-ab14-740cbe581538"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_coordinated_business\/coordinated_business\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/5?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "46e65664-bf34-4713-ab14-740cbe581538"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_coordinated_business\/coordinated_business\/field_organisation": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_organisation\/102516?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_organisation\/organisation"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "ccf2a4aa-209c-4da9-9807-4ce555c066fb"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1563311475
+        }
+    ],
+    "changed": [
+        {
+            "value": 1563311475
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1563311475
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5d2e3d7bbba38",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "date_membership_began": [
+        {
+            "value": "2004-11-24"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

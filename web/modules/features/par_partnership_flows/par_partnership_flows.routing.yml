@@ -25,8 +25,8 @@ par_partnership_flows.about_partnership:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_partnership_flows.advice_list:
-  path: '/partnership/{par_data_partnership}/advice/list'
+par_partnership_flows.authority_advice_list:
+  path: '/partnership/{par_data_partnership}/advice/authority-list'
   defaults:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
@@ -38,14 +38,16 @@ par_partnership_flows.advice_list:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_partnership_flows.advice_details:
-  path: '/partnership/{par_data_partnership}/advice-details/{par_data_advice}'
+par_partnership_flows.authority_advice_details:
+  path: '/partnership/{par_data_partnership}/advice/authority-list/{par_data_advice}'
   defaults:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::build'
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::accessCallback'
     par_data_partnership: \d+
+    par_data_advice: \d+
   options:
     parameters:
       par_data_partnership:
@@ -318,34 +320,8 @@ par_partnership_flows.business_size:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_partnership_flows.member_upload:
-  path: '/partnership/{par_data_partnership}/members-upload'
-  defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberUploadForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberUploadForm::titleCallback'
-  requirements:
-    _permission: 'update partnership organisation details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberUploadForm::accessCallback'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-par_partnership_flows.member_upload_confirm:
-  path: '/partnership/{par_data_partnership}/members-upload/confirm'
-  defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberConfirmForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberConfirmForm::titleCallback'
-  requirements:
-    _permission: 'update partnership organisation details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsMemberConfirmForm::accessCallback'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-par_partnership_flows.advice_view:
-  path: '/partnership/{par_data_partnership}/advice/view'
+par_partnership_flows.organisation_advice_list:
+  path: '/partnership/{par_data_partnership}/advice/organisation-list'
   defaults:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::content'
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdviceListController::titleCallback'
@@ -357,6 +333,22 @@ par_partnership_flows.advice_view:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+par_partnership_flows.organisation_advice_details:
+  path: '/partnership/{par_data_partnership}/advice/organisation-list/{par_data_advice}'
+  defaults:
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::build'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::titleCallback'
+  requirements:
+    _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::accessCallback'
+    par_data_partnership: \d+
+    par_data_advice: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_advice:
+        type: entity:par_data_advice
 par_partnership_flows.inspection_plan_view:
   path: '/partnership/{par_data_partnership}/inspection/view'
   defaults:

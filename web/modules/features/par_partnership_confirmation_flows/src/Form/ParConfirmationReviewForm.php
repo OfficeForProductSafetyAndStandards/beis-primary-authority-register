@@ -172,7 +172,8 @@ class ParConfirmationReviewForm extends ParBaseForm {
       ]),
     ];
 
-    $url = Url::fromUri('internal:/par-terms-and-conditions', ['attributes' => ['target' => '_blank']]);
+    $url_address = 'https://www.gov.uk/government/publications/primary-authority-terms-and-conditions';
+    $url = Url::fromUri($url_address, ['attributes' => ['target' => '_blank']]);
     $terms_link = Link::fromTextAndUrl(t('terms & conditions (opens in a new window)'), $url);
     $form['terms_organisation_agreed'] = [
       '#type' => 'checkbox',
