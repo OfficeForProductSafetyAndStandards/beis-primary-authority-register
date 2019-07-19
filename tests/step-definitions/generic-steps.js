@@ -160,6 +160,11 @@ const shared = client.page.shared();
       .goToPartnershipDetailPage(orgname,orgname,status)
    });
 
+  When('I go to manage the partnership {string} with status {string}', function (orgname, status) {
+    return shared
+        .goToManagePartnershipPage(orgname,orgname,status)
+  });
+
   When('I open an active partnership {string} by searching for {string}', function (string, search) {
     return shared
       .goToPartnershipDetailPage(search, string, 'active')

@@ -167,6 +167,15 @@ module.exports = {
             .click('#edit-submit-par-user-partnerships')
             .clickLinkByPureText(name)
         },
+        goToManagePartnershipPage: function(search, name, status){
+        return this
+            .clickLinkByPureText('Helpdesk')
+            .clickLinkByPartialText('Manage partnerships')
+            .setValue('#edit-keywords', search)
+            .click('#edit-partnership-status option[value="'+status+'"]')
+            .click('#edit-submit-helpdesk-dashboard')
+            .clickLinkByPureText(name)
+        },
         createNewPartnership: function(){
              return this
               .assert.containsText('.error-summary', 'Please confirm that all conditions for a new partnership have been met')
