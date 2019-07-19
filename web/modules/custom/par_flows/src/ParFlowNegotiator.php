@@ -92,6 +92,18 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
   }
 
   /**
+   * {@inheritDoc}
+   */
+  public function cloneFlowNegotiator(RouteMatchInterface $route) {
+    $new_flow_negotiator = clone $this;
+
+    $new_flow_negotiator->setRoute($route);
+    $new_flow_negotiator->getFlowName(TRUE);
+
+    return $new_flow_negotiator;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getRoute() {
@@ -103,10 +115,6 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
    */
   public function setRoute(RouteMatchInterface $route) {
     $this->route = $route;
-
-    // Because we've changed the route we need to reset the negotiated flow.
-    // and the route parameters
-    $this->getFlowName(TRUE);
   }
 
   /**

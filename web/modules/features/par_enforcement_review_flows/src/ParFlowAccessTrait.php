@@ -22,19 +22,14 @@ trait ParFlowAccessTrait {
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
     try {
-      $this->getFlowNegotiator()->setRoute($route_match);
-      $this->getFlowDataHandler()->reset();
-      $this->getFlowDataHandler()->setParameter('par_data_enforcement_notice', $par_data_enforcement_notice);
-      $this->loadData();
+      // Get a new flow negotiator that points the the route being checked for access.
+      $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
     } catch (ParFlowException $e) {
 
     }
 
-    // Get the parameters for this route.
-    $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
-
     // Steps 1 & 2 shouldn't be accessed if the enforcement notice has already been approved.
-    if (!$par_data_enforcement_notice->inProgress() && $this->getFlowNegotiator()->getFlow()->getCurrentStep() <= 2) {
+    if (!$par_data_enforcement_notice->inProgress() && $access_route_negotiator->getFlow()->getCurrentStep() <= 2) {
       // Set an error if this action has already been reviewed.
       $this->accessResult = AccessResult::forbidden('This action has already been reviewed.');
     }

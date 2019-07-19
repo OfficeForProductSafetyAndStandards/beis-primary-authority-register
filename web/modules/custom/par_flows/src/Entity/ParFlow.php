@@ -8,6 +8,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_flows\ParDefaultActionsTrait;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
+use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
  * Defines the PAR Form Flow entity.
@@ -133,6 +134,13 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   protected $steps;
 
   /**
+   * The current route used to determine which part of the flow is being dealt with.
+   *
+   * @var RouteMatchInterface
+   */
+  protected $currentRoute;
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $values, $entity_type) {
@@ -149,10 +157,28 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
   /**
    * Get the current route.
+   *
+   * @return RouteMatchInterface
+   */
+  public function getCurrentRouteMatch() {
+    // Submit the route with all the same parameters.
+    return isset($this->currentRoute) ? $this->currentRoute : \Drupal::service('par_flows.negotiator')->getRoute();
+  }
+
+  /**
+   * Get the current route.
+   */
+  public function setCurrentRouteMatch($route) {
+    // Store the current route.
+    $this->currentRoute = $route;
+  }
+
+  /**
+   * Get the current route name.
    */
   public function getCurrentRoute() {
     // Submit the route with all the same parameters.
-    return $route_params = \Drupal::service('par_flows.negotiator')->getRoute()->getRouteName();
+    return $route_params = $this->getCurrentRouteMatch()->getRouteName();
   }
 
   /**
@@ -160,14 +186,14 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getRouteParams() {
     // Submit the route with all the same parameters.
-    return $route_params = \Drupal::service('par_flows.negotiator')->getRoute()->getRawParameters()->all();
+    return $this->getCurrentRouteMatch()->getRawParameters()->all();
   }
 
   /**
    * Get a specific route parameter.
    */
   public function getRouteParam($key) {
-    return $route_params = \Drupal::service('par_flows.negotiator')->getRoute()->getParameter($key);
+    return $this->getCurrentRouteMatch()->getParameter($key);
   }
 
   /**
