@@ -172,6 +172,6 @@ return shared
       .assert.containsText('#edit-email', 'par_business@example.com')
       .click('#edit-save')
       .clickLinkByPureText('edit laura lansing')
-      .expect.element('#edit-email').to.not.be.present
+      .assert.hidden('#edit-email')
       .click('#edit-cancel')
   });
