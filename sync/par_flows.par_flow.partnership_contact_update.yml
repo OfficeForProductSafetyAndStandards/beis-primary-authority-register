@@ -53,9 +53,8 @@ steps:
     route: par_partnership_contact_update_flows.review
     form_id: par_person_review
     components:
-      contact_locations: {
+      contact_locations:
         weight: 11
-      }
     form_data:
       contact_details: par_add_contact
       choose_account: par_person_choose_account
