@@ -39,6 +39,21 @@ class ParRoleForm extends ParBaseForm {
       $this->getFlowDataHandler()->setParameter('user', $account);
     }
 
+    // We need to remove the roles that cannot be set.
+    if ($type = $this->getFlowDataHandler()->getParameter('type')) {
+      switch ($type) {
+        case 'organisation':
+          $this->getFlowDataHandler()->setFormPermValue("user_has_authority", FALSE);
+
+          break;
+
+        case 'authority':
+          $this->getFlowDataHandler()->setFormPermValue("user_has_organisation", FALSE);
+
+          break;
+      }
+    }
+
     parent::loadData();
   }
 

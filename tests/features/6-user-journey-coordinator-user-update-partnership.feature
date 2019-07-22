@@ -153,10 +153,10 @@ Feature: Coordinator User - Update Partnership
         And I add "078659999999" to the inputfield "#edit-mobile-phone"
         And I click on the button "#edit-next"
         Then the element "h1.heading-xlarge" contains the text "Review contact information"
-        Then the element "#edit-name" contains the text "Mr. Time Whistler"
+        Then the element "#edit-name" contains the text "Mr. Tim Whistler"
         And the element "#edit-work-phone" contains the text "2079999999"
         And the element "#edit-mobile-phone" contains the text "078659999999"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
 
         # CHECK CHANGES
 

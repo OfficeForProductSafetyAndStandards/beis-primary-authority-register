@@ -56,3 +56,6 @@ steps:
       select_organisation: par_add_institution
       role_select: par_choose_role
       invite: par_person_invite
+    redirect:
+      save: 1
+      cancel: 1
