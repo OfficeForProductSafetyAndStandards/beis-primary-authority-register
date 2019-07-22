@@ -167,7 +167,7 @@ return shared
       .assert.containsText('#edit-work-phone', '1234865432')
       .assert.containsText('#edit-mobile-phone', '07877943768')
       .click('#edit-next')
-      .clickLinkByPureText('edit carol parkinson')
+      .clickLinkByPureText('edit laura lansing')
       .clearValue('#edit-email')
       .setValue('#edit-email', 'laura.lansing@example.com')
       .click('#edit-next')

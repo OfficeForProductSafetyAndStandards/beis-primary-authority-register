@@ -21,5 +21,5 @@ Feature: PA User - Update a partnership
 
         # COMPLETE CHANGES
 
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
         Then the element "h1.heading-xlarge" contains the text "Your partnerships"
