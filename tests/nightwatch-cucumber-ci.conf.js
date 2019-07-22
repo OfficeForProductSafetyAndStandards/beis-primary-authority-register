@@ -39,10 +39,10 @@ module.exports = {
             },
             desiredCapabilities: {
                 browserName: 'chrome',
-                resolution: '1200x3000',
+                resolution: '1280x3000',
                 chromeOptions : {
                     binary: '/usr/bin/google-chrome',
-                    args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1280,1280'],
+                    args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1280,3000'],
                 },
                 javascriptEnabled: true,
                 acceptSslCerts: true
