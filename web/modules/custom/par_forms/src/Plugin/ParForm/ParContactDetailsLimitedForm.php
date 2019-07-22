@@ -6,14 +6,19 @@ use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
- * Contact details form plugin.
+ * Contact details form plugin with limited email field.
+ *
+ * This form should be used in any situation the contact details are being
+ * updated indirectly as part of the contact record on another data item and
+ * where new contact records can be added to this data item, for example
+ * when updating the partnership contact records.
  *
  * @ParForm(
  *   id = "contact_details_limited",
  *   title = @Translation("Limited contact details form with no email field.")
  * )
  */
-class ParContactDetailsForm extends ParFormPluginBase {
+class ParContactDetailsLimitedForm extends ParFormPluginBase {
 
   /**
    * {@inheritdoc}
