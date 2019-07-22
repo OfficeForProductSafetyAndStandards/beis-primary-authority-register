@@ -173,9 +173,10 @@ return shared
       .click('#edit-next')
       .assert.containsText('h1.heading-xlarge', 'Invite the person to create an account')
       .assert.containsText('#edit-sender', 'par_business@example.com')
-      .assert.containsText('#edit-recipient', 'another.contact@example.com')
+      .assert.containsText('#edit-recipient', 'laura.lansing@example.com')
       .click('#edit-next')
       .assert.containsText('h1.heading-xlarge', 'Review contact information')
       .assert.containsText('#edit-name', 'Ms Laura Lansing')
-      .assert.containsText('#edit-email', 'another.contact@example.com')
+      .assert.containsText('#edit-email', 'laura.lansing@example.com')
+      .click('#edit-save')
   });

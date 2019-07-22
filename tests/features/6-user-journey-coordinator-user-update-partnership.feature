@@ -144,7 +144,7 @@ Feature: Coordinator User - Update Partnership
 
         # EDIT MAIN ORGANISATION CONTACT
 
-        When I click the link text "edit dolly luettgen"
+        When I click the link text "edit jill langworthy"
         # And I run tota11y against the current page
         And I add "Mr" to the inputfield "#edit-salutation"
         And I add "Tim" to the inputfield "#edit-first-name"
