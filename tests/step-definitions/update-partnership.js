@@ -172,3 +172,10 @@ return shared
       .assert.containsText('#edit-email', 'another.contact@example.com')
       .click('#edit-cancel')
   });
+
+When('I remove an organisation contact', function () {
+return shared
+      .clickLinkByPureText('remove laura lansing from this partnership')
+      .assert.containsText('h1.heading-xlarge', 'Confirm removal of contact ')
+      .click('#edit-next')
+  });
