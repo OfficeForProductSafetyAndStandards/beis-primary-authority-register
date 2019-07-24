@@ -19,6 +19,7 @@ use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
+use Drupal\par_forms\Plugin\ParForm\ParDedupePersonForm;
 use Drupal\par_partnership_contact_add_flows\ParFlowAccessTrait;
 use Drupal\par_partnership_contact_add_flows\ParFormCancelTrait;
 use Drupal\user\Entity\User;
@@ -73,6 +74,15 @@ class ParReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+    $form['partnership'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => 'form-group'],
+      [
+        '#markup' => $this->t('The following person will be added to the @partnership.',
+          ['@partnership' => $this->getFlowDataHandler()->getFormPermValue("partnership")]),
+      ],
+    ];
+
     $form['personal'] = [
       '#type' => 'fieldset',
       'name' => [
@@ -159,6 +169,7 @@ class ParReviewForm extends ParBaseForm {
   public function createEntities() {
     // Get the cache IDs for the various forms that needs needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_add_contact');
+    $contact_dedupe_cid = $this->getFlowNegotiator()->getFormKey('dedupe_contact');
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $cid_invitation = $this->getFlowNegotiator()->getFormKey('invite');
     $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
@@ -169,16 +180,21 @@ class ParReviewForm extends ParBaseForm {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $type = $this->getFlowDataHandler()->getParameter('type');
 
+    $deduped_contact = $this->getFlowDataHandler()->getDefaultValues('contact_record', NULL, $contact_dedupe_cid);
+    $par_data_person = ParDedupePersonForm::getDedupedPerson($deduped_contact);
+
     // Create the new person.
-    $par_data_person = ParDataPerson::create([
-      'type' => 'person',
-      'salutation' => $this->getFlowDataHandler()->getTempDataValue('salutation', $contact_details_cid),
-      'first_name' => $this->getFlowDataHandler()->getTempDataValue('first_name', $contact_details_cid),
-      'last_name' => $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_details_cid),
-      'work_phone' => $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid),
-      'mobile_phone' => $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid),
-      'email' => $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid),
-    ]);
+    if (!$par_data_person) {
+      $par_data_person = ParDataPerson::create([
+        'type' => 'person',
+        'salutation' => $this->getFlowDataHandler()->getTempDataValue('salutation', $contact_details_cid),
+        'first_name' => $this->getFlowDataHandler()->getTempDataValue('first_name', $contact_details_cid),
+        'last_name' => $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_details_cid),
+        'work_phone' => $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid),
+        'mobile_phone' => $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid),
+        'email' => $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid),
+      ]);
+    }
 
     $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
     if (!$account) {

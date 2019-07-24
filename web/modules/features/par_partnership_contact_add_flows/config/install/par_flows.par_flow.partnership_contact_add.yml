@@ -17,6 +17,14 @@ steps:
     components:
       contact_details: {}
   2:
+    route: par_partnership_contact_add_flows.choose_contact
+    form_id: par_person_choose_contact
+    components:
+      person_dedupe:
+        require_existing: true
+    form_data:
+      email_address: par_add_contact
+  3:
     route: par_partnership_contact_add_flows.choose_account
     form_id: par_person_choose_account
     components:
@@ -24,7 +32,7 @@ steps:
         require_user: true
     form_data:
       contact_details: par_add_contact
-  3:
+  4:
     route: par_partnership_contact_add_flows.choose_role
     form_id: par_choose_role
     components:
@@ -36,7 +44,7 @@ steps:
       contact_details: par_add_contact
       user_account: par_person_link
       choose_account: par_person_choose_account
-  4:
+  5:
     route: par_partnership_contact_add_flows.invite_contact
     form_id: par_person_invite
     components:
@@ -45,11 +53,12 @@ steps:
       contact_details: par_add_contact
       user_account: par_person_link
       choose_account: par_person_choose_account
-  5:
+  6:
     route: par_partnership_contact_add_flows.review
     form_id: par_person_review
     form_data:
       contact_details: par_add_contact
+      dedupe_contact: par_person_choose_contact
       choose_account: par_person_choose_account
       select_authority: par_add_institution
       select_organisation: par_add_institution

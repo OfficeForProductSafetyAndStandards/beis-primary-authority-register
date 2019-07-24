@@ -13,6 +13,21 @@ par_partnership_contact_add_flows.create_contact:
       par_data_partnership:
         type: entity:par_data_partnership
 
+par_partnership_contact_add_flows.choose_contact:
+  path: '/partnership/{par_data_partnership}/{type}/contact/add/dedupe'
+  defaults:
+    _form: '\Drupal\par_partnership_contact_add_flows\Form\ParContactDedupeForm'
+    _title_callback: '\Drupal\par_partnership_contact_add_flows\Form\ParContactDedupeForm::titleCallback'
+  requirements:
+    _permission: 'add partnership authority contact+add partnership organisation contact'
+    _custom_access: '\Drupal\par_partnership_contact_add_flows\Form\ParContactDedupeForm::accessCallback'
+    par_data_partnership: \d+
+    type: '(authority|organisation)'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
 par_partnership_contact_add_flows.choose_account:
   path: '/partnership/{par_data_partnership}/{type}/contact/add/account'
   defaults:
