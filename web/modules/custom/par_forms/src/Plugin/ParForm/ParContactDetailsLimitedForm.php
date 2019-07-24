@@ -54,7 +54,11 @@ class ParContactDetailsLimitedForm extends ParFormPluginBase {
       $this->setDefaultValuesByKey("email", $cardinality, $par_data_person->get('email')->getString());
 
       $account = $par_data_person->getUserAccount();
-      if ($account &&
+      $limit_all_users = isset($this->getConfiguration()['limit_all_users']) ? (bool) $this->getConfiguration()['limit_all_users'] : FALSE;
+      if ($limit_all_users) {
+        $this->setDefaultValuesByKey("email_readonly", $cardinality, TRUE);
+      }
+      else if ($account &&
         $account->id() !== $this->getFlowNegotiator()->getCurrentUser()->id() &&
         !$this->getFlowNegotiator()->getCurrentUser()->hasPermission('bypass par_data access')) {
         $this->setDefaultValuesByKey("email_readonly", $cardinality, TRUE);

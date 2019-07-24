@@ -19,7 +19,8 @@ steps:
     route: par_partnership_contact_update_flows.create_contact
     form_id: par_add_contact
     components:
-      contact_details_limited: {}
+      contact_details_limited:
+        limit_all_users: true
   2:
     route: par_partnership_contact_update_flows.choose_account
     form_id: par_person_choose_account
