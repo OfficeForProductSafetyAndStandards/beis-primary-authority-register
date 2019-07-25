@@ -17,7 +17,7 @@ dependencies:
 _core:
   default_config_hash: SY11evCZNodUP24CXAHlPlJ1xihSq8HJlr6mdZOzAk0
 id: helpdesk_dashboard
-label: 'Helpdesk Dashboard'
+label: 'Helpdesk Partnerships'
 module: views
 description: ''
 tag: ''
