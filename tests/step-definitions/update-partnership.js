@@ -175,7 +175,7 @@ return shared
 
 When('I remove an organisation contact', function () {
 return shared
-      .clickLinkByPureText('remove laura lansing from this partnership')
+      .clickLinkByPureText('remove carol parkinson from this partnership')
       .assert.containsText('h1.heading-xlarge', 'Confirm removal of contact ')
       .click('#edit-next')
   });
