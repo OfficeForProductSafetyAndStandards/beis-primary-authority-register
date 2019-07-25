@@ -20,18 +20,16 @@ steps:
       edit_comments: 2
       add_field_premises: 3
       edit_field_premises: 4
-      add_field_organisation_person: 5
-      edit_field_organisation_person: 7
-      add_field_legal_entity: 8
-      edit_field_legal_entity: 9
-      add_trading_name: 10
-      edit_trading_name: 11
-      add_field_sic_code: 12
-      edit_field_sic_code: 13
-      edit_employees_band: 14
-      inspection_plans: 15
-      advice: 16
-      save: 18
+      add_field_legal_entity: 5
+      edit_field_legal_entity: 6
+      add_trading_name: 7
+      edit_trading_name: 8
+      add_field_sic_code: 9
+      edit_field_sic_code: 10
+      edit_employees_band: 11
+      inspection_plans: 12
+      advice: 13
+      save: 15
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
@@ -51,80 +49,60 @@ steps:
       save: 1
       cancel: 1
   5:
-    route: par_partnership_flows.organisation_contact_add
-    form_id: par_partnership_contact_add
-    redirect:
-      next: 6
-      cancel: 1
-  6:
-    route: par_partnership_flows.organisation_contact_add_confirm
-    form_id: par_partnership_contact_suggestion
-    form_data:
-      contact_form: par_partnership_contact_add
-    redirect:
-      save: 1
-      cancel: 1
-  7:
-    route: par_partnership_flows.organisation_contact_edit
-    form_id: par_partnership_contact_edit
-    redirect:
-      save: 1
-      cancel: 1
-  8:
     route: par_partnership_flows.legal_entity_add
     form_id: par_partnership_legal_add
     redirect:
       save: 1
       cancel: 1
-  9:
+  6:
     route: par_partnership_flows.legal_entity_edit
     form_id: par_partnership_legal_edit
     redirect:
       save: 1
       cancel: 1
-  10:
+  7:
     route: par_partnership_flows.trading_name_add
     form_id: par_partnership_trading_name_add
     redirect:
       save: 1
       cancel: 1
-  11:
+  8:
     route: par_partnership_flows.trading_name_edit
     form_id: par_partnership_trading_name_edit
     redirect:
       save: 1
       cancel: 1
-  12:
+  9:
     route: par_partnership_flows.sic_code_add
     form_id: par_partnership_sic_code_add
     redirect:
       save: 1
       cancel: 1
-  13:
+  10:
     route: par_partnership_flows.sic_code_edit
     form_id: par_partnership_sic_code_edit
     redirect:
       save: 1
       cancel: 1
-  14:
+  11:
     route: par_partnership_flows.employee_number
     form_id: par_partnership_employee_number
     redirect:
       save: 1
       cancel: 1
-  15:
+  12:
     route: par_partnership_flows.inspection_plan_view
     redirect:
       next: 1
       cancel: 1
-  16:
+  13:
     route: par_partnership_flows.organisation_advice_list
     redirect:
       done: 1
       cancel: 1
-  17:
+  14:
     route: par_partnership_flows.organisation_advice_details
     redirect:
-      done: 16
-  18:
+      done: 13
+  15:
     route: view.par_user_partnerships.partnerships_page
