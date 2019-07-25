@@ -22,10 +22,8 @@ trait ParFlowAccessTrait {
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataDeviationRequest $par_data_deviation_request = NULL) {
     try {
-      $this->getFlowNegotiator()->setRoute($route_match);
-      $this->getFlowDataHandler()->reset();
-      $this->getFlowDataHandler()->setParameter('par_data_deviation_request', $par_data_deviation_request);
-      $this->loadData();
+      // Get a new flow negotiator that points the the route being checked for access.
+      $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
     } catch (ParFlowException $e) {
 
     }

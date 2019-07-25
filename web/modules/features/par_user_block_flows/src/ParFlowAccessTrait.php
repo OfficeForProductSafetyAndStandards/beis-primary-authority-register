@@ -24,19 +24,14 @@ trait ParFlowAccessTrait {
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPerson $par_data_person = NULL, User $user = NULL) {
     try {
-      $this->getFlowNegotiator()->setRoute($route_match);
-      $this->getFlowDataHandler()->reset();
-
-      $user = $user ?? $this->getFlowDataHandler()->getParameter('user');
-
-      if ($par_data_person) {
-        $this->getFlowDataHandler()
-          ->setParameter('par_data_person', $par_data_person);
-        $user = $user ?? $par_data_person->getUserAccount();
-      }
-      $this->loadData();
+      // Get a new flow negotiator that points the the route being checked for access.
+      $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
     } catch (ParFlowException $e) {
 
+    }
+
+    if ($par_data_person) {
+      $user = $user ?? $par_data_person->getUserAccount();
     }
 
     if (!$user) {
