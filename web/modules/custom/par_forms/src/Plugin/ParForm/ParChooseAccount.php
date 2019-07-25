@@ -38,6 +38,13 @@ class ParChooseAccount extends ParFormPluginBase {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function defaultConfiguration() {
+    return ['require_user' => FALSE] + parent::defaultConfiguration();
+  }
+
+  /**
    * A helper method to extract only the user ids from the selections.
    *
    * @param mixed $value
@@ -67,14 +74,26 @@ class ParChooseAccount extends ParFormPluginBase {
     $cid_contact_details = $this->getFlowNegotiator()->getFormKey('contact_details');
     $contact_email = $this->getFlowDataHandler()->getDefaultValues('email', NULL, $cid_contact_details);
 
+    // Additional configuration to determine if a user is required.
+    $user_required = isset($this->getConfiguration()['require_user']) ? (bool) $this->getConfiguration()['require_user'] : FALSE;
+
     $account_options = [];
 
     // See if we can find a user related to the person being updated.
     if ($par_data_person) {
       $existing_account = $par_data_person->getUserAccount();
+      $total_people = $existing_account ? $this->getParDataManager()->getUserPeople($existing_account) : [];
 
       if ($existing_account) {
         $account_options[$existing_account->id()] = 'Keep the existing account: ' . $existing_account->getEmail();
+
+        // @see PAR-1413: This should be the only option if this is the only
+        // contact for this user, this should stop contact records being orphaned.
+        if ($total_people <= 1) {
+          $this->getFlowDataHandler()->setFormPermValue("account_options", $account_options);
+
+          parent::loadData();
+        }
       }
     }
 
@@ -92,13 +111,15 @@ class ParChooseAccount extends ParFormPluginBase {
       $account_options[self::CREATE] = "Invite $contact_email to create a new account";
     }
 
-    // If there is an existing user then we should give the option to remove it
-    if (!empty($existing_account)) {
-      $account_options[self::DELETE] = 'Remove the user account';
-    }
-    // If there is no existing user then we should give the option not to invite a new user.
-    else {
-      $account_options[self::IGNORE] = 'Do not create a user account';
+    if (!$user_required) {
+      // If there is an existing user then we should give the option to remove it
+      if (!empty($existing_account)) {
+        $account_options[self::DELETE] = 'Remove the user account';
+      }
+      // If there is no existing user then we should give the option not to invite a new user.
+      else {
+        $account_options[self::IGNORE] = 'Do not create a user account';
+      }
     }
 
     // Allow any of the default options to be ignored.

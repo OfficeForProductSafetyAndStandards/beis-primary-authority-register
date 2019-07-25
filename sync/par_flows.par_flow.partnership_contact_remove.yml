@@ -1,0 +1,20 @@
+uuid: a00b1686-8984-46b5-a95d-c07315016a49
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: LrGS_SxfgQLCnAN9Md8PSGV4P0Xc2Se2xoaM1Xc-AV8
+id: partnership_contact_remove
+label: 'Remove Partnership Contact Flow'
+default_title: null
+default_section_title: 'Primary Authority partnership information'
+description: ''
+save_method: end
+states:
+  - par_data_partnership
+  - type
+  - par_data_person
+steps:
+  1:
+    route: par_partnership_contact_remove_flows.remove
+    form_id: par_partnership_contact_review

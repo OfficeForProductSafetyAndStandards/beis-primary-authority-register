@@ -90,6 +90,9 @@ module:
   par_notification: 0
   par_partnership_application_flows: 0
   par_partnership_confirmation_flows: 0
+  par_partnership_contact_add_flows: 0
+  par_partnership_contact_remove_flows: 0
+  par_partnership_contact_update_flows: 0
   par_partnership_flows: 0
   par_person_create_flows: 0
   par_person_update_flows: 0

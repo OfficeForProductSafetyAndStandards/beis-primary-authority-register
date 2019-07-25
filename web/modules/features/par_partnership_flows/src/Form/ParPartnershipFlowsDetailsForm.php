@@ -4,11 +4,14 @@ namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Routing\MatchingRouteNotFoundException;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
  * The partnership form for the partnership details.
@@ -164,6 +167,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     // Display details about the partnership for information.
     $form['about_partnership'] = $this->renderSection('About the partnership', $par_data_partnership, ['about_partnership' => 'about'], ['edit-field']);
 
+
     $form['inspection_plans'] = [
       '#type' => 'fieldset',
       '#title' => t('Inspection plans'),
@@ -172,16 +176,22 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
       '#collapsed' => FALSE,
     ];
 
-    $form['inspection_plans']['link'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlowNegotiator()->getFlow()
-          ->getNextLink('inspection_plans')
-          ->setText('See all Inspection Plans')
-          ->toString(),
-      ]),
-    ];
+    // Add the inspection plan link safely with access checks.
+    try {
+      if ($link = $this->getFlowNegotiator()->getFlow()->getNextLink('inspection_plans', [], [], TRUE)) {
+        $add_inspection_list_link = t('@link', [
+          '@link' => $link->setText('See all Inspection Plans')->toString(),
+        ]);
+        $form['inspection_plans']['link'] = [
+          '#type' => 'markup',
+          '#markup' => $add_inspection_list_link,
+        ];
+      }
+    } catch (ParFlowException $e) {
 
+    }
+
+    // Add the advice link safely with access checks.
     $form['advice'] = [
       '#type' => 'fieldset',
       '#title' => t('Advice and Documents'),
@@ -190,23 +200,251 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
       '#collapsed' => FALSE,
     ];
 
-    $form['advice']['link'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $this->getFlowNegotiator()->getFlow()
-          ->getNextLink('advice')
-          ->setText('See all Advice')
-          ->toString(),
-      ]),
-    ];
+    try {
+      if ($link = $this->getFlowNegotiator()->getFlow()->getNextLink('advice', [], [], TRUE)) {
+        $add_advice_list_link = t('@link', [
+          '@link' => $link->setText('See all Advice')->toString(),
+        ]);
+        $form['advice']['link'] = [
+          '#type' => 'markup',
+          '#markup' => $add_advice_list_link,
+        ];
+      }
+    } catch (ParFlowException $e) {
+
+    }
+
 
     // Display the authority contacts for information.
-    $form['authority_contacts'] = $this->renderSection('Contacts at the Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
+    $authority_contacts = $par_data_partnership->getAuthorityPeople();
 
-    // Display all the legal entities along with the links for the allowed
-    // operations on these.
-    $form['organisation_contacts'] = $this->renderSection('Contacts at the organisation', $par_data_partnership, ['field_organisation_person' => 'detailed'], ['edit-entity', 'add']);
+    // Initialize pager and get current page.
+    $number_per_page = 5;
+    $pager_id = 2534;
+    $current_page = pager_default_initialize(count($authority_contacts), $number_per_page, $pager_id);
 
+    // Get update and remove links.
+    try {
+      $params = $this->getRouteParams() + ['type' => 'authority'];
+      if ($link = $this->getLinkByRoute('par_partnership_contact_add_flows.create_contact', $params, [], TRUE)) {
+        $add_authority_contact_link = t('@link', [
+          '@link' => $link->setText('add another authority contact')->toString(),
+        ]);
+      }
+    } catch (ParFlowException $e) {
+
+    }
+
+    $form['authority_contacts'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Contacts at the Primary Authority'),
+      '#attributes' => ['class' => ['form-group']],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+      'field_authority_person' => [
+        '#type' => 'fieldset',
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+        'items' => [
+          '#type' => 'fieldset',
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+        ],
+        'pager' => [
+          '#type' => 'pager',
+          '#theme' => 'pagerer',
+          '#element' => $pager_id,
+          '#weight' => 100,
+          '#config' => [
+            'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
+          ],
+        ],
+        'operations' => [
+          '#type' => 'fieldset',
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+          'add' => [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => !empty($add_authority_contact_link) ? $add_authority_contact_link : '',
+          ],
+        ],
+      ],
+    ];
+
+    // Split the items up into chunks:
+    $chunks = array_chunk($authority_contacts, $number_per_page);
+    foreach ($chunks[$current_page] as $delta => $entity) {
+      $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
+      $entity_view = $entity_view_builder->view($entity, 'detailed');
+      $rendered_field = $this->getRenderer()->render($entity_view);
+
+      // Get update and remove links.
+      try {
+        $params = $this->getRouteParams() + ['type' => 'authority', 'par_data_person' => $entity->id()];
+        if ($link = $this->getLinkByRoute('par_partnership_contact_update_flows.create_contact', $params, [], TRUE)) {
+          $update_authority_contact_link = t('@link', [
+            '@link' => $link->setText('edit ' . strtolower($entity->label()))->toString(),
+          ]);
+        }
+      } catch (ParFlowException $e) {
+
+      }
+      try {
+        $params = $this->getRouteParams() + ['type' => 'authority', 'par_data_person' => $entity->id()];
+        if ($link = $this->getLinkByRoute('par_partnership_contact_remove_flows.remove', $params, [], TRUE)) {
+          $remove_authority_contact_link = t('@link', [
+            '@link' => $link->setText('remove ' . strtolower($entity->label()) . ' from this partnership')->toString(),
+          ]);
+        }
+      } catch (ParFlowException $e) {
+
+      }
+
+      $form['authority_contacts']['field_authority_person']['items'][$delta] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+        'entity' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#value' => $rendered_field ? $rendered_field : '<p>(none)</p>',
+          '#attributes' => ['class' => ['column-full']],
+        ],
+        'operations' => [
+          'update' => [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => !empty($update_authority_contact_link) ? $update_authority_contact_link : '',
+            '#attributes' => ['class' => ['column-one-third']],
+          ],
+          'remove' => [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => !empty($remove_authority_contact_link) ? $remove_authority_contact_link : '',
+            '#attributes' => ['class' => ['column-two-thirds']],
+          ],
+        ],
+      ];
+    }
+
+
+    // Display all the organisational contacts.
+    $organisation_contacts = $par_data_partnership->getOrganisationPeople();
+
+    // Initialize pager and get current page.
+    $number_per_page = 5;
+    $pager_id = 2810;
+    $current_page = pager_default_initialize(count($organisation_contacts), $number_per_page, $pager_id);
+
+    // Get update and remove links.
+    try {
+      $params = $this->getRouteParams() + ['type' => 'organisation'];
+      if ($link = $this->getLinkByRoute('par_partnership_contact_add_flows.create_contact', $params, [], TRUE)) {
+        $add_organisation_contact_link = t('@link', [
+          '@link' => $link->setText('add another organisation contact')->toString(),
+        ]);
+      }
+    } catch (ParFlowException $e) {
+
+    }
+
+    $form['organisation_contacts'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Contacts at the Organisation'),
+      '#attributes' => ['class' => ['form-group']],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+      'field_organisation_person' => [
+        '#type' => 'fieldset',
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+        'items' => [
+          '#type' => 'fieldset',
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+        ],
+        'pager' => [
+          '#type' => 'pager',
+          '#theme' => 'pagerer',
+          '#element' => $pager_id,
+          '#weight' => 100,
+          '#config' => [
+            'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
+          ],
+        ],
+        'operations' => [
+          '#type' => 'fieldset',
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+          'add' => [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => !empty($add_organisation_contact_link) ? $add_organisation_contact_link : '',
+          ],
+        ],
+      ],
+    ];
+
+    // Split the items up into chunks:
+    $chunks = array_chunk($organisation_contacts, $number_per_page);
+    foreach ($chunks[$current_page] as $delta => $entity) {
+      $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
+      $entity_view = $entity_view_builder->view($entity, 'detailed');
+      $rendered_field = $this->getRenderer()->render($entity_view);
+
+      // Get update and remove links.
+      try {
+        $params = $this->getRouteParams() + ['type' => 'organisation', 'par_data_person' => $entity->id()];
+        if ($link = $this->getLinkByRoute('par_partnership_contact_update_flows.create_contact', $params, [], TRUE)) {
+          $update_organisation_contact_link = t('@link', [
+            '@link' => $link->setText('edit ' . strtolower($entity->label()))->toString(),
+          ]);
+        }
+      } catch (ParFlowException $e) {
+
+      }
+      try {
+        $params = $this->getRouteParams() + ['type' => 'organisation', 'par_data_person' => $entity->id()];
+        if ($link = $this->getLinkByRoute('par_partnership_contact_remove_flows.remove', $params, [], TRUE)) {
+          $remove_organisation_contact_link = t('@link', [
+            '@link' => $link->setText('remove ' . strtolower($entity->label()) . ' from this partnership')->toString(),
+          ]);
+        }
+      } catch (ParFlowException $e) {
+
+      }
+
+      $form['organisation_contacts']['field_organisation_person']['items'][$delta] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+        'entity' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#value' => $rendered_field ? $rendered_field : '<p>(none)</p>',
+          '#attributes' => ['class' => ['column-full']],
+        ],
+        'operations' => [
+          'update' => [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => !empty($update_organisation_contact_link) ? $update_organisation_contact_link : '',
+            '#attributes' => ['class' => ['column-one-third']],
+          ],
+          'remove' => [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => !empty($remove_organisation_contact_link) ? $remove_organisation_contact_link : '',
+            '#attributes' => ['class' => ['column-two-thirds']],
+          ],
+        ],
+      ];
+    }
+
+    // Helptext.
     $form['help_text'] = [
       '#type' => 'markup',
       '#markup' => $this->t('Updating this information may change who recieves notifications for this partnership. Please check everything is correct.'),

@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies: {  }
+id: partnership_contact_remove
+label: 'Remove Partnership Contact Flow'
+default_title: null
+default_section_title: 'Primary Authority partnership information'
+description: ''
+save_method: end
+states:
+  - par_data_partnership
+  - type
+  - par_data_person
+steps:
+  1:
+    route: par_partnership_contact_remove_flows.remove
+    form_id: par_partnership_contact_review
