@@ -452,7 +452,8 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          fields: {  }
+          fields:
+            organisation_name: organisation_name
           plugin_id: combine
       sorts:
         organisation_name:
