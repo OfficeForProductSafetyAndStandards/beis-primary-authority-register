@@ -3273,7 +3273,7 @@ display:
             description: ''
             use_operator: false
             operator: partnership_status_1_op
-            identifier: partnership_status_1
+            identifier: partnership_status
             required: false
             remember: false
             multiple: false
