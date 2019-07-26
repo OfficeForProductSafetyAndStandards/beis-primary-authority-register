@@ -1,14 +1,13 @@
 const { client } = require('nightwatch-cucumber')
 const { Given, Then, When } = require('cucumber')
 const shared = client.page.shared();
-var faker = require('faker/locale/en_GB')
-var title = faker.fake("{{name.prefix}}")
-var firstname = faker.fake("{{name.firstName}}")
-var lastname = faker.fake("{{name.lastName}}")
-var postcode = faker.fake("{{address.zipCode}}")
-var city = faker.fake("{{address.city}}")
-var streetaddress1 = faker.fake("{{address.streetName}}")
-var county = faker.fake("{{address.county}}")
+var title = 'Dr'
+var firstname = 'Jill'
+var lastname = 'Langworthy'
+var postcode = 'SE19JJ'
+var city = 'Ministerworth'
+var streetaddress1 = '66 High St'
+var county = 'Gloucestershire'
 
 When('I complete valid coordinated partnership application details', function () {
   return shared
@@ -29,7 +28,6 @@ When('I complete valid coordinated partnership application details', function ()
 });
   
 Given('I complete valid organisation details for coordinated partnership {string}', function (partnershipname) {
-  console.log(title,' | ' + firstname,' | '+lastname,' | '+postcode,' | '+city,' | '+streetaddress1,' | '+county)
   return client
   .setValue('#edit-organisation-name',partnershipname)
   .click('#edit-next')
@@ -56,6 +54,7 @@ Given('I complete valid organisation details for coordinated partnership {string
   .clearValue( '#edit-work-phone')
   .clearValue( '#edit-mobile-phone')
   .clearValue( '#edit-email')
+  .clearValue( '#edit-notes')
   .setValue( '#edit-salutation',title)
   .setValue( '#edit-first-name',firstname)
   .setValue( '#edit-last-name',lastname)
@@ -65,7 +64,7 @@ Given('I complete valid organisation details for coordinated partnership {string
   .setValue( '#edit-mobile-phone','078659999999')
   .setValue( '#edit-email','par_coordinator@example.com')
   .click('#edit-preferred-contact-communication-mobile')
-  .setValue( '#edit-notes','Some additional notes')
+  .setValue( '#edit-notes','Some additional notes about the updated contact.')
   .click('#edit-next')
 });
 

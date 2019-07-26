@@ -91,8 +91,6 @@ class ParContactDetailsForm extends ParFormPluginBase {
       '#type' => 'email',
       '#title' => $this->t('Enter the email address'),
       '#default_value' => $this->getDefaultValuesByKey('email', $cardinality),
-      // Prevent modifying email if editing an existing user.
-      '#disabled' => !empty($par_data_person),
     ];
 
     return $form;

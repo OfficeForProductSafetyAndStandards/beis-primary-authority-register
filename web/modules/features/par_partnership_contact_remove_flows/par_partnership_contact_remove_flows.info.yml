@@ -1,0 +1,9 @@
+name: 'PAR Partnership Contact Remove Flows'
+type: module
+description: 'Allows contacts to be removed from partnerships.'
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms
