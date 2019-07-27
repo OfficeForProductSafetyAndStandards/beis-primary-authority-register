@@ -1,0 +1,89 @@
+par_partnership_contact_update_flows.create_contact:
+  path: '/partnership/{par_data_partnership}/{type}/contact/{par_data_person}/update'
+  defaults:
+    _form: '\Drupal\par_partnership_contact_update_flows\Form\ParContactForm'
+    _title_callback: '\Drupal\par_partnership_contact_update_flows\Form\ParContactForm::titleCallback'
+  requirements:
+    _permission: 'update partnership authority contact+update partnership organisation contact'
+    _custom_access: '\Drupal\par_partnership_contact_update_flows\Form\ParContactForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_person: \d+
+    type: '(authority|organisation)'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_person:
+        type: entity:par_data_person
+
+par_partnership_contact_update_flows.choose_account:
+  path: '/partnership/{par_data_partnership}/{type}/contact/{par_data_person}/update/account'
+  defaults:
+    _form: '\Drupal\par_partnership_contact_update_flows\Form\ParAccountForm'
+    _title_callback: '\Drupal\par_partnership_contact_update_flows\Form\ParAccountForm::titleCallback'
+  requirements:
+    _permission: 'update partnership authority contact+update partnership organisation contact'
+    _custom_access: '\Drupal\par_partnership_contact_update_flows\Form\ParAccountForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_person: \d+
+    type: '(authority|organisation)'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_person:
+        type: entity:par_data_person
+
+par_partnership_contact_update_flows.choose_role:
+  path: '/partnership/{par_data_partnership}/{type}/contact/{par_data_person}/update/role'
+  defaults:
+    _form: '\Drupal\par_partnership_contact_update_flows\Form\ParRoleForm'
+    _title_callback: '\Drupal\par_partnership_contact_update_flows\Form\ParRoleForm::titleCallback'
+  requirements:
+    _permission: 'update partnership authority contact+update partnership organisation contact'
+    _custom_access: '\Drupal\par_partnership_contact_update_flows\Form\ParRoleForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_person: \d+
+    type: '(authority|organisation)'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_person:
+        type: entity:par_data_person
+
+par_partnership_contact_update_flows.invite_contact:
+  path: '/partnership/{par_data_partnership}/{type}/contact/{par_data_person}/update/invite'
+  defaults:
+    _form: '\Drupal\par_partnership_contact_update_flows\Form\ParInviteForm'
+    _title_callback: '\Drupal\par_partnership_contact_update_flows\Form\ParInviteForm::titleCallback'
+  requirements:
+    _permission: 'update partnership authority contact+update partnership organisation contact'
+    _custom_access: '\Drupal\par_partnership_contact_update_flows\Form\ParInviteForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_person: \d+
+    type: '(authority|organisation)'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_person:
+        type: entity:par_data_person
+
+par_partnership_contact_update_flows.review:
+  path: '/partnership/{par_data_partnership}/{type}/contact/{par_data_person}/update/review'
+  defaults:
+    _form: '\Drupal\par_partnership_contact_update_flows\Form\ParReviewForm'
+    _title_callback: '\Drupal\par_partnership_contact_update_flows\Form\ParReviewForm::titleCallback'
+  requirements:
+    _permission: 'update partnership authority contact+update partnership organisation contact'
+    _custom_access: '\Drupal\par_partnership_contact_update_flows\Form\ParReviewForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_person: \d+
+    type: '(authority|organisation)'
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_person:
+        type: entity:par_data_person

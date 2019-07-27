@@ -23,6 +23,13 @@ class ParSelectRoleForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  public function defaultConfiguration() {
+    return ['roles' => ['par_authority', 'par_organisation', 'par_enforcement', 'par_helpdesk']] + parent::defaultConfiguration();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function loadData($cardinality = 1) {
     if ($this->getFlowDataHandler()->getCurrentUser()->isAuthenticated()) {
       $current_user = User::Load($this->getFlowDataHandler()->getCurrentUser()->id());
@@ -31,6 +38,9 @@ class ParSelectRoleForm extends ParFormPluginBase {
       $current_user = NULL;
     }
 
+    // Additional configuration to determine which roles can be selected.
+    $allowed_roles = isset($this->getConfiguration()['roles']) ? (array) $this->getConfiguration()['roles'] : [];
+
     $account = $this->getFlowDataHandler()->getParameter('user');
     // Some roles can only be set if the user has memberships in an authority
     // or an organisation, it is up to the calling form to determine this.
@@ -38,16 +48,20 @@ class ParSelectRoleForm extends ParFormPluginBase {
     $user_has_authority = $this->getFlowDataHandler()->getFormPermValue("user_has_authority") ?? TRUE;
 
     $roles = [];
-    if ($current_user && $current_user->hasPermission('create organisation user') && $user_has_organisation) {
+    if ($current_user && array_search('par_organisation', $allowed_roles) !== FALSE
+      && $current_user->hasPermission('create organisation user') && $user_has_organisation) {
       $roles['par_organisation'] = Role::load('par_organisation');
     }
-    if ($current_user && $current_user->hasPermission('create authority user') && $user_has_authority) {
+    if ($current_user && array_search('par_authority', $allowed_roles) !== FALSE
+      && $current_user->hasPermission('create authority user') && $user_has_authority) {
       $roles['par_authority'] = Role::load('par_authority');
     }
-    if ($current_user && $current_user->hasPermission('create enforcement user') && $user_has_authority) {
+    if ($current_user && array_search('par_enforcement', $allowed_roles) !== FALSE
+      && $current_user->hasPermission('create enforcement user') && $user_has_authority) {
       $roles['par_enforcement'] = Role::load('par_enforcement');
     }
-    if ($current_user && $current_user->hasPermission('create helpdesk user')) {
+    if ($current_user && array_search('par_helpdesk', $allowed_roles) !== FALSE
+      && $current_user->hasPermission('create helpdesk user')) {
       $roles['par_helpdesk'] = Role::load('par_helpdesk');
     }
 
