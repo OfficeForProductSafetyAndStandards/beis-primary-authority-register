@@ -15,7 +15,7 @@ class PartnershipDeletedSubscriber extends ParNotificationSubscriberBase {
   /**
    * The message template ID created for this notification.
    *
-   * @see /admin/structure/message/manage/partnership_deleted_notificat
+   * @see /admin/structure/message/manage/partnership_deleted_notification
    */
   const MESSAGE_ID = 'partnership_deleted_notification';
 
