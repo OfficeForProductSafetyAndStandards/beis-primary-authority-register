@@ -1,0 +1,17 @@
+uuid: 3d57c797-8095-45e2-bdac-b0a797ca4a7e
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - message.template.partnership_deleted_notification
+id: message.partnership_deleted_notification.mail_subject
+targetEntityType: message
+bundle: partnership_deleted_notification
+mode: mail_subject
+content:
+  partial_0:
+    weight: 0
+    region: content
+hidden:
+  partial_1: true
