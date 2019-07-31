@@ -1436,7 +1436,22 @@ display:
           entity_type: par_data_partnership
           entity_field: revoked
           plugin_id: boolean
-      sorts: {  }
+      sorts:
+        created:
+          id: created
+          table: par_partnerships_field_data
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          granularity: second
+          entity_type: par_data_partnership
+          entity_field: created
+          plugin_id: date
       title: 'Primary Authority Register | Search for a partnership'
       header: {  }
       footer: {  }
@@ -1660,7 +1675,7 @@ display:
           settings:
             thousand_separator: ''
             prefix_suffix: true
-          group_column: entity_id
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1925,7 +1940,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           title: 'Partnership between {{ authority_name }} and {{ organisation_name }}'
-          assistive_text: {  }
+          assistive_text: ''
           link: '/partnership/{{ id_1 }}'
           hidden: 0
           entity_type: par_data_partnership
@@ -1982,7 +1997,7 @@ display:
           type: par_list_formatter
           settings:
             display_original_value: false
-          group_column: entity_id
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -2966,44 +2981,6 @@ display:
             group_items: {  }
           entity_type: par_data_partnership
           plugin_id: par_data_field_allowed_options_filter
-        revoked:
-          id: revoked
-          table: par_partnerships_field_data
-          field: revoked
-          relationship: none
-          group_type: group
-          admin_label: 'PAR Partnership: Is Not Revoked'
-          operator: '='
-          value: '0'
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: par_data_partnership
-          entity_field: revoked
-          plugin_id: boolean
       filter_groups:
         operator: AND
         groups:
