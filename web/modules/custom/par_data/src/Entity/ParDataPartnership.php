@@ -643,6 +643,27 @@ class ParDataPartnership extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
+    // Deleted Reason.
+    $fields['deleted_reason'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Deleted Reason'))
+      ->setDescription(t('Comments about why this partnership was deleted.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ])->setDisplayOptions('form', [
+        'type' => 'text_textarea',
+        'weight' => 13,
+        'settings' => [
+          'rows' => 25,
+        ],
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     // Authority Change Comment.
     $fields['authority_change_comment'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Authority Change Comment'))
