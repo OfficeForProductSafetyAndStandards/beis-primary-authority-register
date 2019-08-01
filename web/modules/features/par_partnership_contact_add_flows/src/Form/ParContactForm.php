@@ -47,7 +47,6 @@ class ParContactForm extends ParBaseForm {
 
       case 'organisation':
         $contacts = $par_data_partnership->getOrganisationPeople();
-
         break;
 
       default:
@@ -59,7 +58,7 @@ class ParContactForm extends ParBaseForm {
       if (!empty($form_state->getValue('email'))
           && $contact->getEmail() === $form_state->getValue('email')) {
         $id = $this->getElementId(['email'], $form);
-        $form_state->setErrorByName($this->getElementName('email'), $this->wrapErrorMessage('This person has already been added, you cannot add the same person again. Please change the e-mail address and try again..', $id));
+        $form_state->setErrorByName($this->getElementName('email'), $this->wrapErrorMessage('This person has already been added, you cannot add the same person again. Please change the e-mail address and try again.', $id));
 
       }
     }
