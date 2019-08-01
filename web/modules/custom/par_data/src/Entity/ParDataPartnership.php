@@ -130,6 +130,29 @@ class ParDataPartnership extends ParDataEntity {
    * {@inheritdoc}
    *
    * @param string $reason
+   *   The reason for deleting this partnership.
+   */
+  public function delete($reason = '', $save = TRUE) {
+
+    if ($this->getTypeEntity()->isDeletable() && !$this->isDeleted() && !$this->isNew()) {
+      // Always revision status changes.
+      $this->setNewRevision(TRUE);
+      // Set the status to unpublished to make filtering from display easier.
+      $this->set('status', 0);
+      // Update par status trigger the partnership deleted (cancelled) notification
+      $this->set(ParDataEntity::DELETE_FIELD, TRUE);
+      // Help desk bug claim protection (dev covering his ass) .
+      $this->set('deleted_reason', $reason);
+
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @param string $reason
    *   The reason for revoking this partnership.
    */
   public function unrevoke($reason = '', $save = TRUE) {
