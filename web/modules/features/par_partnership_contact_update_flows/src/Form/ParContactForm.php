@@ -20,7 +20,7 @@ class ParContactForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = 'Add contact details';
+  protected $pageTitle = 'Edit contact details';
 
   /**
    * {@inheritdoc}
