@@ -119,3 +119,16 @@ par_help_desks_flows.invite_sent:
         type: entity:par_data_partnership
       par_data_person:
         type: entity:par_data_person
+par_help_desks_flows.confirm_delete_partnership:
+  path: '/helpdesk/partnership/{par_data_partnership}/delete'
+  defaults:
+    _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskDeleteConfirmForm'
+    _title_callback: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskDeleteConfirmForm::titleCallback'
+  requirements:
+    _permission: 'delete partnerships'
+    _custom_access: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskDeleteConfirmForm::accessCallback'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
