@@ -13,7 +13,7 @@ use Drupal\par_flows\ParFlowException;
 use Symfony\Component\Routing\Route;
 
 /**
- * The confirming the user is authorised to revoke partnerships.
+ * The confirming the user is authorised to delete partnerships.
  */
 class ParRdHelpDeskDeleteConfirmForm extends ParBaseForm {
 
@@ -126,7 +126,7 @@ class ParRdHelpDeskDeleteConfirmForm extends ParBaseForm {
 
     // We only want to update the status of none active partnerships.
     if ($par_data_partnership->inProgress()) {
-      $deleted = $par_data_partnership->revoke($this->getFlowDataHandler()->getTempDataValue('deletion_reason'));
+      $deleted = $par_data_partnership->delete($this->getFlowDataHandler()->getTempDataValue('deletion_reason'));
 
       if ($deleted) {
         $this->getFlowDataHandler()->deleteStore();
