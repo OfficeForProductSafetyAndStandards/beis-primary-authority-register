@@ -1,0 +1,8 @@
+update partnership authority contact:
+  title: 'Update partnership authority contact'
+  description: 'Update a partnership authority contact.'
+  restrict access: TRUE
+update partnership organisation contact:
+  title: 'Update partnership organisation contact'
+  description: 'Update a partnership organisation contact.'
+  restrict access: TRUE

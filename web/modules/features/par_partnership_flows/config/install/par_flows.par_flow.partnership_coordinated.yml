@@ -17,16 +17,14 @@ steps:
       edit_comments: 2
       add_field_premises: 3
       edit_field_premises: 4
-      add_field_organisation_person: 5
-      edit_field_organisation_person: 7
-      add_field_legal_entity: 8
-      edit_field_legal_entity: 9
-      add_trading_name: 10
-      edit_trading_name: 11
-      edit_size: 12
-      inspection_plans: 15
-      advice: 16
-      save: 18
+      add_field_legal_entity: 5
+      edit_field_legal_entity: 6
+      add_trading_name: 7
+      edit_trading_name: 8
+      edit_size: 9
+      inspection_plans: 10
+      advice: 11
+      save: 13
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
@@ -46,79 +44,48 @@ steps:
       save: 1
       cancel: 1
   5:
-    route: par_partnership_flows.organisation_contact_add
-    form_id: par_partnership_contact_add
-    redirect:
-      next: 6
-      cancel: 1
-  6:
-    route: par_partnership_flows.organisation_contact_add_confirm
-    form_id: par_partnership_contact_suggestion
-    form_data:
-      contact_form: par_partnership_contact_add
-    redirect:
-      save: 1
-      cancel: 1
-  7:
-    route: par_partnership_flows.organisation_contact_edit
-    form_id: par_partnership_contact_edit
-    redirect:
-      save: 1
-      cancel: 1
-  8:
     route: par_partnership_flows.legal_entity_add
     form_id: par_partnership_legal_add
     redirect:
       save: 1
       cancel: 1
-  9:
+  6:
     route: par_partnership_flows.legal_entity_edit
     form_id: par_partnership_legal_edit
     redirect:
       save: 1
       cancel: 1
-  10:
+  7:
     route: par_partnership_flows.trading_name_add
     form_id: par_partnership_trading_name_add
     redirect:
       save: 1
       cancel: 1
-  11:
+  8:
     route: par_partnership_flows.trading_name_edit
     form_id: par_partnership_trading_name_edit
     redirect:
       save: 1
       cancel: 1
-  12:
+  9:
     route: par_partnership_flows.business_size
     form_id: par_partnership_business_size
     redirect:
       save: 1
       cancel: 1
-  13:
-    route: par_partnership_flows.member_upload
-    form_id: par_partnership_member_upload
-    redirect:
-      cancel: 1
-  14:
-    route: par_partnership_flows.member_upload_confirm
-    form_id: par_partnership_member_upload_confirm
-    redirect:
-      save: 1
-      cancel: 13
-  15:
+  10:
     route: par_partnership_flows.inspection_plan_view
     redirect:
       next: 1
       cancel: 1
-  16:
+  11:
     route: par_partnership_flows.organisation_advice_list
     redirect:
       done: 1
       cancel: 1
-  17:
+  12:
     route: par_partnership_flows.organisation_advice_details
     redirect:
-      done: 16
-  18:
-      route: view.par_user_partnerships.partnerships_page
+      done: 13
+  13:
+    route: view.par_user_partnerships.partnerships_page

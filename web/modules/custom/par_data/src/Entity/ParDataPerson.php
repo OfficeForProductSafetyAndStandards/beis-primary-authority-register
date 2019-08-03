@@ -10,6 +10,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
+use Drupal\par_flows\ParFlowException;
 use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
@@ -621,37 +622,46 @@ class ParDataPerson extends ParDataEntity {
       switch ($relationship->getId()) {
         case 'par_data_organisation:field_person':
           $label .= 'Contact at the organisation: ';
+
           break;
 
         case 'par_data_authority:field_person':
           $label .= 'Contact at the authority: ';
+
           break;
         case 'par_data_partnership:field_organisation_person':
           $label .= 'Primary contact for the organisation: ';
+
           break;
 
-        case 'par_data_authority:field_authority_person':
+        case 'par_data_partnership:field_authority_person':
           $label .= 'Primary contact for the authority: ';
+
           break;
 
         case 'par_data_general_enquiry:field_person':
           $label .= 'General enquiry for: ';
+
           break;
 
         case 'par_data_deviation_request:field_person':
           $label .= 'Deviation request for: ';
+
           break;
 
         case 'par_data_inspection_feedback:field_person':
           $label .= 'Inspection feedback for: ';
+
           break;
 
         case 'par_data_enforcement_notice:field_person':
           $label .= 'Enforcement notice for: ';
+
           break;
       }
 
-      $locations[] = ucfirst($label . $relationship->getEntity()->label());
+      $label = ucfirst($label . $relationship->getEntity()->label());
+      $locations[] = $label;
     }
 
     return $locations;

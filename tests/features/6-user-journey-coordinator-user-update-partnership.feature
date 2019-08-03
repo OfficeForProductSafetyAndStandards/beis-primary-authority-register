@@ -144,21 +144,21 @@ Feature: Coordinator User - Update Partnership
 
         # EDIT MAIN ORGANISATION CONTACT
 
-        When I click the link text "edit organisation contact"
+        When I click the link text "edit jill langworthy"
         # And I run tota11y against the current page
+        And I add "Mr" to the inputfield "#edit-salutation"
         And I add "Tim" to the inputfield "#edit-first-name"
         And I add "Whistler" to the inputfield "#edit-last-name"
         And I add "2079999999" to the inputfield "#edit-work-phone"
-        And I add "78659999999" to the inputfield "#edit-mobile-phone"
-        And I click on the radio "#edit-preferred-contact-communication-mobile"
-        And I add "Some additional notes" to the inputfield "#edit-notes"
+        And I add "078659999999" to the inputfield "#edit-mobile-phone"
+        And I click on the button "#edit-next"
+        Then the element "h1.heading-xlarge" contains the text "Review contact information"
+        Then the element "#edit-name" contains the text "Mr Tim Whistler"
+        And the element "#edit-work-phone" contains the text "2079999999"
+        And the element "#edit-mobile-phone" contains the text "078659999999"
         And I click on the button "#edit-save"
-        Then the element "#edit-organisation-contacts" contains the text "Tim"
-        And the element "#edit-organisation-contacts" contains the text "Whistler"
-        And the element "#edit-organisation-contacts" contains the text "2079999999"
-        And the element "#edit-organisation-contacts" contains the text "78659999999"
 
-        # COMPLETE CHANGES
+        # CHECK CHANGES
 
         When I click on the button "#edit-save"
         # And I run tota11y against the current page
