@@ -156,17 +156,20 @@ class ParDashboardsDashboardController extends ControllerBase {
       ];
     }
 
-    // Authority & organisation management links.
-    if ($this->getCurrentUser()->hasPermission('update partnership authority details')
-      || $this->getCurrentUser()->hasPermission('update partnership organisation details')) {
-      $build['institutions'] = [
-        '#lazy_builder' => [
-          'par_dashboards.components:manageInstitutionsComponent',
-          []
-        ],
-        '#create_placeholder' => TRUE
-      ];
-    }
+//    @TODO Added as part of PAR-1439, but these links should only be enabled
+//    when the entire feature is complete.
+//
+//    // Authority & organisation management links.
+//    if ($this->getCurrentUser()->hasPermission('update partnership authority details')
+//      || $this->getCurrentUser()->hasPermission('update partnership organisation details')) {
+//      $build['institutions'] = [
+//        '#lazy_builder' => [
+//          'par_dashboards.components:manageInstitutionsComponent',
+//          []
+//        ],
+//        '#create_placeholder' => TRUE
+//      ];
+//    }
 
     // User management
     if ($this->getCurrentUser()->hasPermission('manage par profile')) {
