@@ -15,11 +15,9 @@ steps:
     form_id: par_partnership_details
     redirect:
       edit_about_partnership: 2
-      add_field_authority_person: 3
-      edit_field_authority_person: 7
-      advice: 8
-      inspection_plans: 14
-      save: 15
+      advice: 4
+      inspection_plans: 3
+      save: 12
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
@@ -27,88 +25,58 @@ steps:
       save: 1
       cancel: 1
   3:
-    route: par_partnership_flows.authority_contact_add
-    form_id: par_partnership_contact_add
+    route: par_partnership_flows.inspection_plan_list
     redirect:
-      save: 4
-      cancel: 1
+      done: 1
   4:
-    route: par_partnership_flows.authority_contact_add_confirm
-    form_id: par_partnership_contact_suggestion
-    form_data:
-      contact_form: par_partnership_contact_add
+    route: par_partnership_flows.authority_advice_list
     redirect:
-      save: 1
+      upload: 5
+      done: 1
       cancel: 1
   5:
-    route: par_partnership_flows.authority_contact_invite
-    form_id: par_partnership_invite
-    redirect:
-      save: 6
-      cancel: 1
-  6:
-    route: par_partnership_flows.authority_contact_invite_sent
-    redirect:
-      done: 1
-  7:
-    route: par_partnership_flows.authority_contact_edit
-    form_id: par_partnership_contact_edit
-    redirect:
-      save: 1
-      cancel: 1
-  8:
-    route: par_partnership_flows.advice_list
-    redirect:
-      upload: 9
-      done: 1
-      cancel: 1
-  9:
     route: par_partnership_flows.advice_warning_declaration
     form_id: par_partnership_confirm_advice_form
     redirect:
-      save: 10
-      cancel: 8
-  10:
+      save: 6
+      cancel: 4
+  6:
     route: par_partnership_flows.advice_upload_documents
     form_id: par_partnership_advice_upload_add
     redirect:
-      upload: 11
-      cancel: 8
-  11:
+      upload: 7
+      cancel: 4
+  7:
     route: par_partnership_flows.advice_add
     form_id: par_partnership_advice_add
     form_data:
       upload: par_partnership_advice_upload_add
     redirect:
-      save: 8
-      cancel: 8
-  12:
+      save: 4
+      cancel: 4
+  8:
     route: par_partnership_flows.advice_edit_documents
     form_id: par_partnership_advice_upload_edit
     redirect:
-      upload: 13
-      cancel: 8
-  13:
+      upload: 9
+      cancel: 4
+  9:
     route: par_partnership_flows.advice_edit
     form_id: par_partnership_advice_edit
     form_data:
       upload: par_partnership_advice_upload_edit
     redirect:
-      save: 8
-      cancel: 8
-  14:
-    route: par_partnership_flows.inspection_plan_list
+      save: 4
+      cancel: 4
+  10:
+    route: par_partnership_flows.authority_advice_details
     redirect:
-      done: 1
-  15:
-    route: view.par_user_partnerships.partnerships_page
-  16:
-    route: par_partnership_flows.advice_details
-    redirect:
-      done: 8
-  17:
+      done: 4
+  11:
     route: par_partnership_flows.advice_archive
     form_id: par_partnership_advice_archive
     redirect:
-      save: 8
-      cancel: 8
+      save: 4
+      cancel: 4
+  12:
+    route: view.par_user_partnerships.partnerships_page

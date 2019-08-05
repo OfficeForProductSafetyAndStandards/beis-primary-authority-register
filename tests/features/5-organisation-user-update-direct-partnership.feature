@@ -31,6 +31,11 @@ Feature: Business User - Update Partnership
 
         And I add and subsequently edit a organisation contact
 
+        # ADD ORGANISATION CONTACT
+
+        And I remove an organisation contact
+        Then the element "#edit-authority-contacts" does not contain the text "laura lansing"
+
         # COMPLETE CHANGES
 
         When I click on the button "#edit-save"

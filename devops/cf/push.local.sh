@@ -534,8 +534,8 @@ fi
 ####################################################################################
 printf "Scaling up the application...\n"
 
-if [[ CF_INSTANCES -gt 1 ]]; then
-    cf scale $TARGET_ENV -i CF_INSTANCES
+if [[ $CF_INSTANCES -gt 1 ]]; then
+    cf scale $TARGET_ENV -i $CF_INSTANCES
 fi
 
 

@@ -4,6 +4,7 @@ namespace Drupal\par_search_partnership_flows\Controller;
 
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Controller\ParBaseController;
+use Drupal\par_flows\ParFlowException;
 
 /**
  * A controller for rendering a specific partner page.
@@ -63,24 +64,43 @@ class ParPartnershipPageController extends ParBaseController {
     $build['about_business'] = $this->renderSection('About the organisation', $par_data_organisation, ['comments' => 'about']);
 
     // Get the link for the first step of the raise enforcement journey.
-    $enforcement_notice_link = $this->getFlowNegotiator()->getFlow('raise_enforcement')->getLinkByStep(1)->setText('Send a notification of a proposed enforcement action')->toString();
+    try {
+      $enforcement_notice_link = $this->getFlowNegotiator()->getFlow('raise_enforcement')->getLinkByStep(1, [], [], TRUE);
+    } catch (ParFlowException $e) {
+      $this->getLogger($this->getLoggerChannel())->notice($e);
+    }
     $message_links['enforcement_notice_link'] = ['#type' => 'markup',
-      '#markup' => $enforcement_notice_link ? $enforcement_notice_link : '<p>(none)</p>',
+      '#markup' => $enforcement_notice_link ? $enforcement_notice_link->setText('Send a notification of a proposed enforcement action')->toString() : '<p>(none)</p>',
     ];
+
     // Get the link for the first step of the deviation request journey.
-    $deviation_request_link = $this->getFlowNegotiator()->getFlow('deviation_request')->getLinkByStep(1)->setText('Request to deviate from the inspection plan')->toString();
+    try {
+      $deviation_request_link = $this->getFlowNegotiator()->getFlow('deviation_request')->getLinkByStep(1, [], [], TRUE);
+    } catch (ParFlowException $e) {
+      $this->getLogger($this->getLoggerChannel())->notice($e);
+    }
     $message_links['deviation_request_link'] = ['#type' => 'markup',
-      '#markup' => $deviation_request_link ? $deviation_request_link : '<p>(none)</p>',
+      '#markup' => $deviation_request_link ? $deviation_request_link->setText('Request to deviate from the inspection plan')->toString() : '<p>(none)</p>',
     ];
+
     // Get the link for the first step of the inspection plan feedback journey.
-    $inspection_feedback_link = $this->getFlowNegotiator()->getFlow('inspection_feedback')->getLinkByStep(1)->setText('Submit feedback following an inspection')->toString();
+    try {
+      $inspection_feedback_link = $this->getFlowNegotiator()->getFlow('inspection_feedback')->getLinkByStep(1, [], [], TRUE);
+    } catch (ParFlowException $e) {
+      $this->getLogger($this->getLoggerChannel())->notice($e);
+    }
     $message_links['inspection_feedback_link'] = ['#type' => 'markup',
-      '#markup' => $inspection_feedback_link ? $inspection_feedback_link : '<p>(none)</p>',
+      '#markup' => $inspection_feedback_link ? $inspection_feedback_link->setText('Submit feedback following an inspection')->toString() : '<p>(none)</p>',
     ];
+
     // Get the link for the first step of the general enquiry journey.
-    $general_enquiry_link = $this->getFlowNegotiator()->getFlow('enquiry')->getLinkByStep(1)->setText('Send a general enquiry to the primary authority')->toString();
+    try {
+      $general_enquiry_link = $this->getFlowNegotiator()->getFlow('enquiry')->getLinkByStep(1, [], [], TRUE);
+    } catch (ParFlowException $e) {
+      $this->getLogger($this->getLoggerChannel())->notice($e);
+    }
     $message_links['general_enquiry_link'] = ['#type' => 'markup',
-      '#markup' => $general_enquiry_link ? $general_enquiry_link : '<p>(none)</p>',
+      '#markup' => $general_enquiry_link ? $general_enquiry_link->setText('Send a general enquiry to the primary authority')->toString() : '<p>(none)</p>',
     ];
 
     // Create a list of links for the actions that can be performed on this partnership.

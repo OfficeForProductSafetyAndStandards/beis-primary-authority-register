@@ -1,5 +1,5 @@
-Feature: upload advice
-  As a user
+Feature: Upload advice
+  As an authority member
   I should be able to upload advice
 
   @upload-advice @ci
@@ -7,7 +7,7 @@ Feature: upload advice
     Given I am logged in as "par_authority@example.com"
     And I navigate to a partially completed partnership "Upper West Side Borough Council"
     And I click "See all Advice"
-    Then I should see advice page
+    Then I should see advice list page
     And I should not see the link "Upload advice"
 
   @upload-advice @ci
@@ -15,7 +15,7 @@ Feature: upload advice
     Given I am logged in as "par_authority@example.com"
     And I navigate to an active partnership "Upper West Side Borough Council"
     And I click "See all Advice"
-    Then I should see advice page
+    Then I should see advice list page
     And I see the link "Upload advice"
 
   @upload-advice @ci
