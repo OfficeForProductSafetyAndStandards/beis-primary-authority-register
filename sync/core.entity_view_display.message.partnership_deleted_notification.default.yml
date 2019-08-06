@@ -1,0 +1,35 @@
+uuid: 1726a60f-d47e-4117-bc27-ed25e5d0c471
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.partnership_deleted_notification.field_message_subject
+    - field.field.message.partnership_deleted_notification.field_partnership
+    - message.template.partnership_deleted_notification
+id: message.partnership_deleted_notification.default
+targetEntityType: message
+bundle: partnership_deleted_notification
+mode: default
+content:
+  field_message_subject:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_partnership:
+    weight: 2
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  partial_0:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }
