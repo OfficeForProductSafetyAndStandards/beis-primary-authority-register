@@ -4,14 +4,23 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.message.mail_subject
+    - field.field.message.partnership_deleted_notification.field_message_subject
+    - field.field.message.partnership_deleted_notification.field_partnership
     - message.template.partnership_deleted_notification
 id: message.partnership_deleted_notification.mail_subject
 targetEntityType: message
 bundle: partnership_deleted_notification
 mode: mail_subject
 content:
-  partial_0:
+  field_message_subject:
+    type: string
     weight: 0
     region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
 hidden:
+  field_partnership: true
+  partial_0: true
   partial_1: true
