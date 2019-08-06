@@ -125,7 +125,7 @@ par_help_desks_flows.confirm_delete_partnership:
     _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskDeleteConfirmForm'
     _title_callback: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskDeleteConfirmForm::titleCallback'
   requirements:
-    _permission: 'revoke partnerships'
+    _permission: 'cancel partnership applications'
     _custom_access: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskDeleteConfirmForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -138,7 +138,7 @@ par_help_desks_flows.delete_partnership:
     _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskDeleteForm'
     _title_callback: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskDeleteForm::titleCallback'
   requirements:
-    _permission: 'revoke partnerships'
+    _permission: 'cancel partnership applications'
     _custom_access: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskDeleteForm::accessCallback'
     par_data_partnership: \d+
   options:
