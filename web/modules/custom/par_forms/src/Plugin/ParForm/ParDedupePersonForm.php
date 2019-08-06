@@ -120,7 +120,7 @@ class ParDedupePersonForm extends ParFormPluginBase {
     }
     $form['contact_record'] = [
       '#type' => 'radios',
-      '#title' => t('Choose which contact record you would like to update'),
+      '#title' => t('Choose which contact record you would like to use'),
       '#options' => $contact_records,
       '#default_value' => $this->getDefaultValuesByKey("contact_record", $cardinality, NULL),
       '#attributes' => ['class' => ['form-group']],
