@@ -17,7 +17,7 @@ dependencies:
 _core:
   default_config_hash: SY11evCZNodUP24CXAHlPlJ1xihSq8HJlr6mdZOzAk0
 id: helpdesk_dashboard
-label: 'Helpdesk Dashboard'
+label: 'Helpdesk Partnerships'
 module: views
 description: ''
 tag: ''
@@ -53,7 +53,7 @@ display:
       exposed_form:
         type: bef
         options:
-          submit_button: Apply
+          submit_button: Search
           reset_button: false
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
@@ -67,12 +67,19 @@ display:
               allow_secondary: false
               secondary_label: 'Advanced options'
               autosubmit: false
+              autosubmit_exclude_textfield: false
               autosubmit_hide: false
-            partnership_status:
+            combine:
               bef_format: default
               more_options:
                 is_secondary: false
                 placeholder_text: ''
+            partnership_status_1:
+              bef_format: default
+              more_options:
+                is_secondary: false
+                rewrite:
+                  filter_rewrite_values: ''
           text_input_required_format: basic_html
       pager:
         type: pagerer
@@ -2155,7 +2162,7 @@ display:
           plugin_id: standard
       arguments: {  }
       display_extenders: {  }
-      css_class: par_rd_helpdesk_dashboard
+      css_class: par_helpdesk_partnership_list
       filter_groups:
         operator: AND
         groups:
@@ -3168,7 +3175,7 @@ display:
           entity_type: par_data_organisation
           entity_field: organisation_name
           plugin_id: field
-      title: 'Help Desk | Dashboard'
+      title: 'Help Desk | Partnership Dashboard'
       filters:
         combine:
           id: combine
