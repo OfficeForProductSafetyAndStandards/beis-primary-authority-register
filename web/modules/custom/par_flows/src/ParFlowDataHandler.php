@@ -16,6 +16,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
 
   const TEMP_PREFIX = 't:';
   const PERM_PREFIX = 'p:';
+  const META_PREFIX = 'm:';
 
   /**
    * The PAR Flow Negotiator.
@@ -219,13 +220,75 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  public function getMetaDataValue($key, $cid = NULL) {
+    $meta_data = $this->getFlowMetaData($cid);
+    $value = NestedArray::getValue($meta_data, (array) $key, $exists);
+    return $value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setMetaDataValue($key, $value, $cid = NULL) {
+    $meta_data = $this->getFlowMetaData($cid);
+    NestedArray::setValue($data, (array) $key, $value, TRUE);
+    $this->setFlowMetaData($data, $cid);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFlowMetaData($cid = NULL) {
+    $cid = empty($cid) ? $this->negotiator->getFlowStateKey() : $cid;
+
+    // Start an anonymous session if required.
+    $this->startAnonymousSession();
+    $data = $this->store->get(self::META_PREFIX . $cid);
+
+    return !empty($data) ? $data : [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setFlowMetaData(array $data, $cid = NULL) {
+    $cid = empty($cid) ? $this->negotiator->getFlowStateKey() : $cid;
+
+    // Start an anonymous session if required.
+    $this->startAnonymousSession();
+
+    if (!$data || !is_array($data)) {
+      return;
+    }
+
+    $this->store->set(self::META_PREFIX . $cid, $data);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function deleteFlowMetaData($cid = NULL) {
+    $cid = empty($cid) ? $this->negotiator->getFlowStateKey() : $cid;
+
+    // Start an anonymous session if required.
+    $this->startAnonymousSession();
+
+    $this->store->delete(self::META_PREFIX . $cid);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function deleteStore() {
     $data = [];
 
+    // Delete the temporary store data for each form.
     foreach ($this->negotiator->getFlow()->getFlowForms() as $form) {
       $cid = $this->negotiator->getFormKey($form);
       $this->deleteFormTempData($cid);
     }
+
+    // Delete the metadata store for the flow.
 
     return $data;
   }

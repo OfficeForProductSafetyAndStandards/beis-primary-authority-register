@@ -196,6 +196,17 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
   /**
    * {@inheritdoc}
    */
+  public function getFlowStateKey($step_id = NULL, $state = NULL, $flow_name = NULL) {
+    $state = !empty($state) ? $state : $this->getState();
+    $flow_name = !empty($flow_name) ? $flow_name : $this->getFlowName();
+
+    $key = implode(':', [$flow_name, $state]);
+    return $this->normalizeKey($key);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getFlowName($reset = FALSE) {
     if ($this->flow_name && !$reset) {
       return $this->flow_name;
