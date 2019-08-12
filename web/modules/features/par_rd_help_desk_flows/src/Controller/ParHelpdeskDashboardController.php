@@ -111,6 +111,31 @@ class ParHelpdeskDashboardController extends ControllerBase {
     ];
 
 
+    // Manage authorities and organisations.
+    $build['institutions'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Authorities & Organisations'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+    $manage_authorities_link = $this->getLinkByRoute('view.helpdesk_authorities.par_helpdesk_authority_page');
+    if ($manage_authorities_link) {
+      $build['institutions']['authorities'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$manage_authorities_link->setText('Manage authorities')->toString()}</p>",
+      ];
+    }
+    $manage_organisations_link = $this->getLinkByRoute('view.helpdesk_organisations.par_helpdesk_organisation_page');
+    if ($manage_organisations_link) {
+      $build['institutions']['organisations'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$manage_organisations_link->setText('Manage organisations')->toString()}</p>",
+      ];
+    }
+
+
+
     // Manage users.
     $build['people'] = [
       '#type' => 'fieldset',
