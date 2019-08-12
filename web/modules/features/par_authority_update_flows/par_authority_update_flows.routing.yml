@@ -1,0 +1,13 @@
+par_authority_update_flows.authority_manage_view:
+  path: '/authority/{par_data_authority}/manage'
+  defaults:
+    _form: '\Drupal\par_authority_update_flows\Form\ParAuthorityDetailsForm'
+    _title_callback: '\Drupal\par_authority_update_flows\Form\ParAuthorityDetailsForm::titleCallback'
+  requirements:
+    _permission: 'manage own authority+manage all authorities'
+    _custom_access: '\Drupal\par_authority_update_flows\Form\ParAuthorityDetailsForm::accessCallback'
+    par_data_authority: \d+
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority

@@ -324,7 +324,8 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    * {@inheritdoc}
    */
   public function getNextRoute($operation = NULL) {
-    return $this->getRouteByStep($this->getNextStep($operation));
+    $next_step = $this->getNextStep($operation);
+    return $next_step ? $this->getRouteByStep($next_step) : $this->getFinalRoute();
   }
 
   /**
@@ -332,6 +333,15 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getPrevRoute($operation = NULL) {
     return $this->getRouteByStep($this->getPrevStep($operation));
+  }
+
+  /**
+   * Get the route to return to once the journey has been completed.
+   */
+  public function getFinalRoute() {
+    // Get the route that we entered on.
+
+    return NULL;
   }
 
   /**

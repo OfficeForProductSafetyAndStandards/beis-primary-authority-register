@@ -1,0 +1,20 @@
+uuid: 35152534-ee28-483f-9821-a2cf9b7d9251
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: uEy6TKg27IvIfAJuA5bJZeI8l51G6yb3ZRM_UQeWiFg
+id: authority_update
+label: 'Auhtority Update Flow'
+default_title: 'Update Authority'
+default_section_title: 'Authority Details'
+description: ''
+save_method: end
+states: null
+steps:
+  1:
+    route: par_authority_update_flows.authority_manage_view
+    components:
+      authority_details: {}
+      authority_addresses: {}
+      authority_contacts: {}

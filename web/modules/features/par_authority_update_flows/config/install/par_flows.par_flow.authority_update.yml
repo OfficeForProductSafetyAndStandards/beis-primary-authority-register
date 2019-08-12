@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies: {  }
+id: authority_update
+label: 'Auhtority Update Flow'
+default_title: 'Update Authority'
+default_section_title: 'Authority Details'
+description: ''
+save_method: end
+steps:
+  1:
+    route: par_authority_update_flows.authority_manage_view
+    components:
+      authority_details: {}
+      authority_addresses: {}
+      authority_contacts: {}

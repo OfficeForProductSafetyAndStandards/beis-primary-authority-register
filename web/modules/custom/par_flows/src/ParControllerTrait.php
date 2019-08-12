@@ -167,6 +167,17 @@ trait ParControllerTrait {
   }
 
   /**
+   * Initialise the flow with required entry points.
+   */
+  public function initializeFlow() {
+    $referer = $this->getRequest()->headers->get('referer');
+    $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
+    if ($referer && !$entry_point) {
+      $this->getFlowDataHandler()->setMetaDataValue(ParFlowDataHandler::ENTRY_POINT, $referer);
+    }
+  }
+
+  /**
    * Load the data for this form.
    */
   public function loadData() {

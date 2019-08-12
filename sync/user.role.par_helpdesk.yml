@@ -136,8 +136,10 @@ permissions:
   - 'enforce organisation'
   - 'invite authority members'
   - invite_type_invite_organisation_member
+  - 'manage all authorities'
   - 'manage my authorities'
   - 'manage my organisations'
+  - 'manage own authority'
   - 'manage par person'
   - 'manage par profile'
   - 'receive new_deviation_request notification'

@@ -1,0 +1,8 @@
+manage own authority:
+  title: 'Manage own authority'
+  description: 'Allow users to manage their own authorities.'
+  restrict access: TRUE
+manage all authorities:
+  title: 'Manage all authorities'
+  description: 'Allow users to manage all authorities.'
+  restrict access: TRUE

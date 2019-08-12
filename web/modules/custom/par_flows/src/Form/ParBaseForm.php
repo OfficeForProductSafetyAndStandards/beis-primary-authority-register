@@ -15,6 +15,7 @@ use Drupal\Core\Url;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParControllerTrait;
+use Drupal\par_flows\ParFlowDataHandler;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
@@ -206,6 +207,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $this->initializeFlow();
+
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
       // If there's is a cardinality parameter present display only this item.
@@ -298,6 +301,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    die('validate');
+
     // Always store the values whenever we submit the form.
     $values = $this->cleanseFormDefaults($form_state->getValues());
     $values = $this->cleanseMultipleValues($values);
@@ -351,6 +356,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    die('submit');
+
     // Always store the values whenever we submit the form.
     $values = $this->cleanseFormDefaults($form_state->getValues());
     $values = $this->cleanseMultipleValues($values);
@@ -378,6 +385,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function multipleItemActionsSubmit(array &$form, FormStateInterface $form_state) {
+    die('multipleActions');
+
     // Ensure that destination query params don't redirect.
     $this->selfRedirect($form_state);
 
@@ -391,6 +400,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function removeItem(array &$form, FormStateInterface $form_state) {
+    die('removeItem');
+
     // Ensure that destination query params don't redirect.
     $this->selfRedirect($form_state);
 
@@ -426,6 +437,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
   public function saveForm(array &$form, FormStateInterface $form_state) {
+    die('save');
 
   }
 
@@ -436,8 +448,16 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
   public function cancelForm(array &$form, FormStateInterface $form_state) {
+    die('cancel');
+
+    var_dump($this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT));
+
+    die;
+
+
     // Delete form storage.
     $this->getFlowDataHandler()->deleteStore();
+
 
     // Go to cancel step.
     $next = $this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel');
@@ -450,6 +470,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @param $form_state
    */
   public function selfRedirect(&$form_state) {
+    die('selfRedirect');
+
     $options = [];
     $query = $this->getRequest()->query;
     if ($query->has('destination')) {

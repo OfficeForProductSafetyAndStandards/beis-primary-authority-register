@@ -18,6 +18,8 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   const PERM_PREFIX = 'p:';
   const META_PREFIX = 'm:';
 
+  const ENTRY_POINT = 'entry_point';
+
   /**
    * The PAR Flow Negotiator.
    *
@@ -231,8 +233,8 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    */
   public function setMetaDataValue($key, $value, $cid = NULL) {
     $meta_data = $this->getFlowMetaData($cid);
-    NestedArray::setValue($data, (array) $key, $value, TRUE);
-    $this->setFlowMetaData($data, $cid);
+    NestedArray::setValue($meta_data, (array) $key, $value, TRUE);
+    $this->setFlowMetaData($meta_data, $cid);
   }
 
   /**
@@ -243,25 +245,25 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
 
     // Start an anonymous session if required.
     $this->startAnonymousSession();
-    $data = $this->store->get(self::META_PREFIX . $cid);
+    $meta_data = $this->store->get(self::META_PREFIX . $cid);
 
-    return !empty($data) ? $data : [];
+    return !empty($meta_data) ? $meta_data : [];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setFlowMetaData(array $data, $cid = NULL) {
+  public function setFlowMetaData(array $meta_data, $cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowStateKey() : $cid;
 
     // Start an anonymous session if required.
     $this->startAnonymousSession();
 
-    if (!$data || !is_array($data)) {
+    if (!$meta_data || !is_array($meta_data)) {
       return;
     }
 
-    $this->store->set(self::META_PREFIX . $cid, $data);
+    $this->store->set(self::META_PREFIX . $cid, $meta_data);
   }
 
   /**
@@ -289,6 +291,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
     }
 
     // Delete the metadata store for the flow.
+    $this->deleteFlowMetaData($this->negotiator->getFormStateKey());
 
     return $data;
   }
