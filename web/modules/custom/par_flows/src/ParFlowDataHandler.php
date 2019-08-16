@@ -291,7 +291,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
     }
 
     // Delete the metadata store for the flow.
-    $this->deleteFlowMetaData($this->negotiator->getFormStateKey());
+    $this->deleteFlowMetaData($this->negotiator->getFlowStateKey());
 
     return $data;
   }

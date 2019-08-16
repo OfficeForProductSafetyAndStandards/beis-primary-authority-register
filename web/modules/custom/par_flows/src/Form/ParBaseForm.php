@@ -13,6 +13,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParFlowDataHandler;
@@ -28,6 +29,7 @@ use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\Core\Access\AccessResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -301,8 +303,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    die('validate');
-
     // Always store the values whenever we submit the form.
     $values = $this->cleanseFormDefaults($form_state->getValues());
     $values = $this->cleanseMultipleValues($values);
@@ -356,8 +356,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    die('submit');
-
     // Always store the values whenever we submit the form.
     $values = $this->cleanseFormDefaults($form_state->getValues());
     $values = $this->cleanseMultipleValues($values);
@@ -366,7 +364,38 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Get the redirect route to the next form based on the flow configuration
     // 'operation' parameter that matches the submit button's name.
     $submit_action = $form_state->getTriggeringElement()['#name'];
-    $next = $this->getFlowNegotiator()->getFlow()->getNextRoute($submit_action);
+    try {
+      // Get the next route from the flow.
+      $route_name = $this->getFlowNegotiator()->getFlow()->progressRoute($submit_action);
+      $route_params = $this->getRouteParams();
+    }
+    catch (ParFlowException $e) {
+
+    }
+    catch (RouteNotFoundException $e) {
+
+    }
+
+    // If the next route could be found in the flow then
+    // return to the entry route if one was specified.
+    if (!isset($route_name) && $url = $this->getEntryUrl()) {
+      $route_name = $url->getRouteName();
+      $route_params = $url->getRouteParameters();
+
+      // Delete form storage.
+      // @TODO We could choose to delete the store if we're completing the journey.
+      // $this->getFlowDataHandler()->deleteStore();
+    }
+
+    // Allow the return route to be altered,
+    // if a route hasn't already been matched.
+    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), \Drupal::routeMatch());
+    $this->getEventDispatcher()->dispatch(ParFlowEvent::FLOW_CANCEL, $event);
+    // @TODO Implement a way to alter the matched routes.
+//    if (!isset($route_name) && $url = $event->getUrl()) {
+//      $route_name = $event->getProceedingRouteName();
+//      $route_params = $event->getProceedingRouteParams();
+//    }
 
     // Determine whether to use the 'destination' query parameter
     // to determine redirection preferences.
@@ -378,15 +407,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     }
 
     // Set the redirection.
-    $form_state->setRedirect($next, $this->getRouteParams(), $options);
+    if (isset($route_name) && isset($route_params)) {
+      $form_state->setRedirect($route_name, $route_params, $options);
+    }
   }
 
   /**
    * {@inheritdoc}
    */
   public function multipleItemActionsSubmit(array &$form, FormStateInterface $form_state) {
-    die('multipleActions');
-
     // Ensure that destination query params don't redirect.
     $this->selfRedirect($form_state);
 
@@ -400,8 +429,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function removeItem(array &$form, FormStateInterface $form_state) {
-    die('removeItem');
-
     // Ensure that destination query params don't redirect.
     $this->selfRedirect($form_state);
 
@@ -437,7 +464,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
   public function saveForm(array &$form, FormStateInterface $form_state) {
-    die('save');
 
   }
 
@@ -448,20 +474,53 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
   public function cancelForm(array &$form, FormStateInterface $form_state) {
-    die('cancel');
+    try {
+      // Get the cancel route from the flow.
+      $route_name = $this->getFlowNegotiator()->getFlow()->progressRoute('cancel');
+      $route_params = $this->getRouteParams();
+    }
+    catch (ParFlowException $e) {
 
-    var_dump($this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT));
+    }
+    catch (RouteNotFoundException $e) {
 
-    die;
+    }
 
+    // If not cancelation route could be found in the flow then
+    // return to the entry route if one was specified.
+    if (!isset($route_name) && $url = $this->getEntryUrl()) {
+      $route_name = $url->getRouteName();
+      $route_params = $url->getRouteParameters();
+    }
+
+    // Allow the return route to be altered,
+    // if a route hasn't already been matched.
+    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), \Drupal::routeMatch());
+    $this->getEventDispatcher()->dispatch(ParFlowEvent::FLOW_CANCEL, $event);
+    // @TODO Implement a way to alter the matched routes.
+//    if (!isset($route_name) && $url = $event->getUrl()) {
+//      $route_name = $event->getProceedingRouteName();
+//      $route_params = $event->getProceedingRouteParams();
+//    }
 
     // Delete form storage.
     $this->getFlowDataHandler()->deleteStore();
 
-
     // Go to cancel step.
-    $next = $this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel');
-    $form_state->setRedirect($next, $this->getRouteParams());
+    if (isset($route_name) && isset($route_params)) {
+      $form_state->setRedirect($route_name, $route_params);
+    }
+  }
+
+  /**
+   * Get the route to return to once the journey has been completed.
+   */
+  public function getFinalRoute() {
+    // Get the route that we entered on.
+    $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
+
+
+    return NULL;
   }
 
   /**
@@ -470,8 +529,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @param $form_state
    */
   public function selfRedirect(&$form_state) {
-    die('selfRedirect');
-
     $options = [];
     $query = $this->getRequest()->query;
     if ($query->has('destination')) {
