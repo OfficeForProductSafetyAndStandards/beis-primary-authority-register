@@ -203,11 +203,13 @@ interface ParFlowInterface {
    *   Additional route parameters to add to the route.
    * @param array $link_options
    *   An array of options to set on the link.
+   * @param bool $access
+   *   Whether or not an access check should be performed on the link.
    *
    * @return Link
    *   A Drupal link object.
    */
-  public function getLinkByStep($index, array $route_params, array $link_options);
+  public function getLinkByStep($index, array $route_params, array $link_options, $access = FALSE);
 
   /**
    * Get link based on an operation on the current step.
@@ -218,11 +220,13 @@ interface ParFlowInterface {
    *   Additional route parameters to add to the route.
    * @param array $link_options
    *   An array of options to set on the link.
+   * @param bool $access
+   *   Whether or not an access check should be performed on the link.
    *
    * @return Link
    *   A Drupal link object.
    */
-  public function getLinkByCurrentOperation($operation, array $route_params, array $link_options);
+  public function getLinkByCurrentOperation($operation, array $route_params, array $link_options, $access = FALSE);
 
   /**
    * Get link based on the next available step.
@@ -233,11 +237,13 @@ interface ParFlowInterface {
    *   Additional route parameters to add to the route.
    * @param array $link_options
    *   An array of options to set on the link.
+   * @param bool $access
+   *   Whether or not an access check should be performed on the link.
    *
    * @return Link
    *   A Drupal link object.
    */
-  public function getNextLink($operation, array $route_params, array $link_options);
+  public function getNextLink($operation, array $route_params, array $link_options, $access = FALSE);
 
   /**
    * Get link based on the previous available step.
@@ -248,11 +254,13 @@ interface ParFlowInterface {
    *   Additional route parameters to add to the route.
    * @param array $link_options
    *   An array of options to set on the link.
+   * @param bool $access
+   *   Whether or not an access check should be performed on the link.
    *
    * @return Link
    *   A Drupal link object.
    */
-  public function getPrevLink($operation, array $route_params, array $link_options);
+  public function getPrevLink($operation, array $route_params, array $link_options, $access = FALSE);
 
   /**
    * Get the components for the current step.

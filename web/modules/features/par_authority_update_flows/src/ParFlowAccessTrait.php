@@ -22,7 +22,17 @@ trait ParFlowAccessTrait {
 
     }
 
-    // @TODO If the user isn't in any authorities...
+    // The authority name cannot be changed if there are active partnerships or enforcements.
+    $entities = $this->getParDataManager()->getRelatedEntities($par_data_authority, [], 1, 'manage');
+    $banned_entities = array_filter($entities, function ($entity) {
+      // Do not follow relationships from secondary people.
+      return (array_search($entity->getEntityTypeId(), ['par_data_partnership']) !== FALSE);
+    });
+
+    if ($route_match->getRouteName() === 'par_authority_update_flows.authority_update_name' && !empty($banned_entities)) {
+      // Set an error if this action has already been reviewed.
+      $this->accessResult = AccessResult::forbidden('This action has already been reviewed.');
+    }
 
     return parent::accessCallback($route, $route_match, $account);
   }

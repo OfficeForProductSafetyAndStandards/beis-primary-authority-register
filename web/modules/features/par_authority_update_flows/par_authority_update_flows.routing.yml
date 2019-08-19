@@ -11,6 +11,19 @@ par_authority_update_flows.authority_update_name:
     parameters:
       par_data_authority:
         type: entity:par_data_authority
+par_authority_update_flows.authority_update_type:
+  path: '/authority/{par_data_authority}/update/type'
+  defaults:
+    _form: '\Drupal\par_authority_update_flows\Form\ParAuthorityTypeForm'
+    _title_callback: '\Drupal\par_authority_update_flows\Form\ParAuthorityTypeForm::titleCallback'
+  requirements:
+    _permission: 'manage own authority+manage all authorities'
+    _custom_access: '\Drupal\par_authority_update_flows\Form\ParAuthorityTypeForm::accessCallback'
+    par_data_authority: \d+
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
 par_authority_update_flows.authority_update_ons:
   path: '/authority/{par_data_authority}/update/ons'
   defaults:

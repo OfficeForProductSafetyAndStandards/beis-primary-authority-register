@@ -508,7 +508,21 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     // Go to cancel step.
     if (isset($route_name) && isset($route_params)) {
-      $form_state->setRedirect($route_name, $route_params);
+      $options = [];
+
+      // Remove the destination parameter if it redirects to a route within the flow,
+      // 'cancel' and 'done' operations should exit out of the flow.
+      $query = $this->getRequest()->query;
+      if ($query->has('destination')) {
+        $destination = $query->get('destination');
+        $url = $this->getPathValidator()->getUrlIfValid($destination);
+
+        if ($url && $url instanceof Url && $url->isRouted() && $this->getFlowNegotiator()->routeInFlow($url->getRouteName())) {
+          $query->remove('destination');
+        }
+      }
+
+      $form_state->setRedirect($route_name, $route_params, $options);
     }
   }
 

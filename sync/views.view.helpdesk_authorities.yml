@@ -454,7 +454,7 @@ display:
           hide_alter_empty: true
           title: 'Manage authority'
           assistive_text: 'Manage {{ authority_name }}'
-          link: '/authority/{{ id }}/manage'
+          link: '/authority/{{ id }}/update/review'
           hidden: 1
           entity_type: par_data_authority
           plugin_id: par_flow_link

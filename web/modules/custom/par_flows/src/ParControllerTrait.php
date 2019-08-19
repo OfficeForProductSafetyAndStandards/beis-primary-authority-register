@@ -103,19 +103,19 @@ trait ParControllerTrait {
       return $this->components;
     }
 
-    try {
-      // Load the plugins used to build this form.
-      foreach ($this->getFlowNegotiator()->getFlow()->getCurrentStepComponents() as $component => $settings) {
-        if ($plugin = $this->getFormBuilder()->createInstance($component, $settings)) {
-          $this->components[] = $plugin;
-        }
+    // Load the plugins used to build this form.
+    foreach ($this->getFlowNegotiator()->getFlow()->getCurrentStepComponents() as $component => $settings) {
+      try {
+          if ($plugin = $this->getFormBuilder()->createInstance($component, $settings)) {
+            $this->components[] = $plugin;
+          }
       }
-    }
-    catch (PluginException $e) {
-      $this->getLogger($this->getLoggerChannel())->error($e);
-    }
-    catch (\TypeError $e) {
-      $this->getLogger($this->getLoggerChannel())->error($e);
+      catch (PluginException $e) {
+        $this->getLogger($this->getLoggerChannel())->error($e);
+      }
+      catch (\TypeError $e) {
+        $this->getLogger($this->getLoggerChannel())->error($e);
+      }
     }
 
     return $this->components;
@@ -219,8 +219,8 @@ trait ParControllerTrait {
     $url = $referer_request && $referer_request->getHost() === $this->getCurrentRequest()->getHost() ?
       $this->getPathValidator()->getUrlIfValid($referer_request->getRequestUri()) : NULL;
 
-    // Check that the url belongs to a drupal route and that it isn't the current page.
-    if ($url && $url instanceof Url && $url->isRouted() && $url->getRouteName() !== $this->getCurrentRoute()) {
+    // Check that the url belongs to a drupal route and that it isn't in the current flow.
+    if ($url && $url instanceof Url && $url->isRouted() && !$this->getFlowNegotiator()->routeInFlow($url->getRouteName())) {
       $this->getFlowDataHandler()->setMetaDataValue(ParFlowDataHandler::ENTRY_POINT, $referer_request->getRequestUri());
     }
   }

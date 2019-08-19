@@ -83,6 +83,8 @@ class ParDataAuthority extends ParDataEntity {
 
   /**
    * Get the allowed regulatory functions for this Authority.
+   *
+   * @deprecated Remove this field.
    */
   public function getAllowedRegulatoryFunction() {
     return $this->get('field_allowed_regulatory_fn')->referencedEntities();
@@ -93,6 +95,12 @@ class ParDataAuthority extends ParDataEntity {
    */
   public function getPremises() {
     return $this->get('field_premises')->referencedEntities();
+  }
+
+  public function getAuthorityType() {
+    $authority_bundle = $this->getParDataManager()->getParBundleEntity('par_data_authority');
+
+    return $authority_bundle->getAllowedFieldlabel('authority_type', $this->get('authority_type')->getString());
   }
 
   /**

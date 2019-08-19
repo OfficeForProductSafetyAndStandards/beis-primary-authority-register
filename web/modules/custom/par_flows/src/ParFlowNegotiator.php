@@ -262,6 +262,18 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
     return $this->flow_name;
   }
 
+  public function routeInFlow($route_name) {
+    $flows = $this->flow_storage->loadByRoute($route_name);
+
+    foreach ($flows as $flow) {
+      if ($flow->id() === $this->getFlow()->id()) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
+  }
+
   /**
    * Get the current route name.
    */

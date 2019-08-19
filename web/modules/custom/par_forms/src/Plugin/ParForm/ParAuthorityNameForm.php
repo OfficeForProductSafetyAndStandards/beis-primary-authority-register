@@ -42,7 +42,7 @@ class ParAuthorityNameForm extends ParFormPluginBase {
 
     $form['name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Provide the business or authority name'),
+      '#title' => $this->t('Provide the authority name'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('name'),
     ];
 

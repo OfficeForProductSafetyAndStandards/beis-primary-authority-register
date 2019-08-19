@@ -9,13 +9,13 @@ use Drupal\par_authority_update_flows\ParFlowAccessTrait;
 /**
  * The regulatory functions update form.
  */
-class ParAuthorityRegulatoryFunctionsForm extends ParBaseForm {
+class ParAuthorityTypeForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
 
   /**
    * Set the page title.
    */
-  protected $pageTitle = 'Provided Regulatory Functions';
+  protected $pageTitle = 'Authority type';
 
 }

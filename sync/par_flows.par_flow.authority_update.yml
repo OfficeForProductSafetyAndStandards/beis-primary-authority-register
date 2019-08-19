@@ -16,17 +16,34 @@ steps:
     route: par_authority_update_flows.authority_update_name
     form_id: par_authority_update_name
     components:
-      authority_name: {}
+      authority_name: {  }
   2:
+    route: par_authority_update_flows.authority_update_type
+    form_id: par_authority_update_type
+    components:
+      authority_type: {  }
+  3:
     route: par_authority_update_flows.authority_update_ons
     form_id: par_authority_update_ons
     components:
-      authority_ons: {}
-  3:
+      authority_ons: {  }
+  4:
     route: par_authority_update_flows.authority_update_regulatory_functions
     form_id: par_authority_update_regulatory_functions
     components:
-      regulatory_functions_select: {}
-  4:
+      regulatory_functions_select: {  }
+  5:
     route: par_authority_update_flows.authority_update_review
     form_id: par_authority_update_review
+    components:
+      authority_display: {  }
+    form_data:
+      authority_name: par_authority_update_name
+      authority_type: par_authority_update_type
+      authority_ons: par_authority_update_ons
+      regulatory_functions: par_authority_update_regulatory_functions
+    redirect:
+      authority_name: 1
+      authority_type: 2
+      authority_ons: 3
+      regulatory_functions: 4
