@@ -13,7 +13,7 @@ use Symfony\Component\EventDispatcher\Event;
 class ParFlowEvent extends Event {
 
   const FLOW_CANCEL = 'par_flows_alter_cancel';
-  const FLOW_SUBMIT = 'par_flows_alter_cancel';
+  const FLOW_SUBMIT = 'par_flows_alter_submit';
 
   /**
    * The par flow.
@@ -45,13 +45,6 @@ class ParFlowEvent extends Event {
   protected $currentStep;
 
   /**
-   * The performed operation.
-   *
-   * @var string
-   */
-  protected $operation;
-
-  /**
    * Constructs the object.
    *
    * @param ParFlowInterface $flow
@@ -60,14 +53,11 @@ class ParFlowEvent extends Event {
    *   The current route.
    * @param Url $url
    *   The matched URL.
-   * @param string $operation
-   *   The operation that is being performed.
    */
-  public function __construct(ParFlowInterface $flow, RouteMatchInterface $route, Url $url = NULL, $operation = NULL) {
+  public function __construct(ParFlowInterface $flow, RouteMatchInterface $route, Url $url = NULL) {
     $this->flow = $flow;
     $this->currentRoute = $route;
     $this->currentStep = $flow->getStepByRoute($route->getRouteName());
-    $this->operation = $operation;
 
     if ($url) {
       $this->setUrl($url);
@@ -113,13 +103,6 @@ class ParFlowEvent extends Event {
    */
   public function setUrl(Url $url) {
     $this->proceedingUrl = $url;
-  }
-
-  /**
-   * Get the performed operation.
-   */
-  public function getOperation() {
-    return $this->operation;
   }
 
 }
