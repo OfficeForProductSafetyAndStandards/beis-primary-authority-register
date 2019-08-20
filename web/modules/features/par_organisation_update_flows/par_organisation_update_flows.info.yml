@@ -1,0 +1,9 @@
+name: 'PAR Partnership Application Flows'
+type: module
+description: 'Creates the flows and components required to apply for a new partnership.'
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

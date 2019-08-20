@@ -89,6 +89,7 @@ module:
   par_member_update_flows: 0
   par_member_upload_flows: 0
   par_notification: 0
+  par_organisation_update_flows: 0
   par_partnership_application_flows: 0
   par_partnership_confirmation_flows: 0
   par_partnership_contact_add_flows: 0
