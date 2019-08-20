@@ -58,14 +58,20 @@ class ParFlowEvent extends Event {
    *   The flow the event was triggered on.
    * @param RouteMatchInterface $route
    *   The current route.
+   * @param Url $url
+   *   The matched URL.
    * @param string $operation
    *   The operation that is being performed.
    */
-  public function __construct(ParFlowInterface $flow, RouteMatchInterface $route, $operation = NULL) {
+  public function __construct(ParFlowInterface $flow, RouteMatchInterface $route, Url $url = NULL, $operation = NULL) {
     $this->flow = $flow;
     $this->currentRoute = $route;
     $this->currentStep = $flow->getStepByRoute($route->getRouteName());
     $this->operation = $operation;
+
+    if ($url) {
+      $this->setUrl($url);
+    }
   }
 
   /**
@@ -107,20 +113,6 @@ class ParFlowEvent extends Event {
    */
   public function setUrl(Url $url) {
     $this->proceedingUrl = $url;
-  }
-
-  /**
-   * Get the current step.
-   */
-  public function getProceedingRouteName() {
-    return $this->getUrl()->getRouteName();
-  }
-
-  /**
-   * Get the current step.
-   */
-  public function getProceedingRouteParams() {
-    return $this->getUrl()->getRouteParams();
   }
 
   /**

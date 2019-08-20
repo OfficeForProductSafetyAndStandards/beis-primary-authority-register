@@ -486,43 +486,43 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     }
 
-    // If not cancelation route could be found in the flow then
+    // If no cancelation route could be found in the flow then
     // return to the entry route if one was specified.
     if (!isset($route_name) && $url = $this->getEntryUrl()) {
       $route_name = $url->getRouteName();
       $route_params = $url->getRouteParameters();
     }
 
-    // Allow the return route to be altered,
-    // if a route hasn't already been matched.
-    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), \Drupal::routeMatch());
+    // We need a backup route in case all else fails.
+    if (!isset($route_name)) {
+      $route_name = 'par_dashboards.dashboard';
+      $route_params = [];
+    }
+
+    // Remove the destination parameter if it redirects to a route within the flow,
+    // 'cancel' and 'done' operations should exit out of the flow.
+    $query = $this->getCurrentRequest()->query;
+    if ($query->has('destination')) {
+      $destination = $query->get('destination');
+      $destination_url = $this->getPathValidator()->getUrlIfValid($destination);
+
+      if ($destination_url && $destination_url instanceof Url && $destination_url->isRouted() && $this->getFlowNegotiator()->routeInFlow($destination_url->getRouteName())) {
+        $query->remove('destination');
+      }
+    }
+
+    // Transform the route into a url so that it can be altered.
+    $current_route = \Drupal::routeMatch();
+    $matched_url = isset($route_name) && isset($route_params) ? Url::fromRoute($route_name, $route_params) : [];
+    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), $current_route, $matched_url, 'cancel');
     $this->getEventDispatcher()->dispatch(ParFlowEvent::FLOW_CANCEL, $event);
-    // @TODO Implement a way to alter the matched routes.
-//    if (!isset($route_name) && $url = $event->getUrl()) {
-//      $route_name = $event->getProceedingRouteName();
-//      $route_params = $event->getProceedingRouteParams();
-//    }
+    $url = $event->getUrl();
 
     // Delete form storage.
     $this->getFlowDataHandler()->deleteStore();
 
-    // Go to cancel step.
-    if (isset($route_name) && isset($route_params)) {
-      $options = [];
-
-      // Remove the destination parameter if it redirects to a route within the flow,
-      // 'cancel' and 'done' operations should exit out of the flow.
-      $query = $this->getRequest()->query;
-      if ($query->has('destination')) {
-        $destination = $query->get('destination');
-        $url = $this->getPathValidator()->getUrlIfValid($destination);
-
-        if ($url && $url instanceof Url && $url->isRouted() && $this->getFlowNegotiator()->routeInFlow($url->getRouteName())) {
-          $query->remove('destination');
-        }
-      }
-
-      $form_state->setRedirect($route_name, $route_params, $options);
+    if ($url && $url instanceof Url) {
+      $form_state->setRedirectUrl($url);
     }
   }
 
