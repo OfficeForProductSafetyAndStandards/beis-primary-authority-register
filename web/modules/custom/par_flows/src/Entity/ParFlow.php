@@ -354,7 +354,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getNextRoute($operation = NULL) {
     $next_step = $this->getNextStep($operation);
-    return $next_step;
+    return $this->getRouteByStep($next_step);
   }
 
   /**
@@ -362,7 +362,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getPrevRoute($operation = NULL) {
     $prev_step = $this->getPrevStep($operation);
-    return $prev_step;
+    return $this->getRouteByStep($prev_step);
   }
 
   /**
