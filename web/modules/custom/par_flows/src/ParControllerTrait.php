@@ -192,7 +192,7 @@ trait ParControllerTrait {
   /**
    * Get the event dispatcher service.
    *
-   * @return \Symfony\Component\HttpFoundation\RequestStack
+   * @return \Symfony\Component\HttpFoundation\Request
    */
   public function getCurrentRequest() {
     return \Drupal::service('request_stack')->getCurrentRequest();
@@ -212,7 +212,7 @@ trait ParControllerTrait {
     $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
 
     // If an entry point is not already get the referer.
-    $referer = !$entry_point ? $this->getRequest()->headers->get('referer') : NULL;
+    $referer = !$entry_point ? $this->getCurrentRequest()->headers->get('referer') : NULL;
 
     // Check the referer request was for the same site, do not redirect to other sites.
     $referer_request = $referer ? Request::create($referer) : NULL;
