@@ -49,7 +49,7 @@ class ParSelectRegulatoryFunctionsForm extends ParFormPluginBase {
       '#type' => 'checkboxes',
       '#title' => 'Choose regulatory functions',
       '#options' => $this->getFlowDataHandler()->getFormPermValue('regulatory_function_options'),
-      '#default_value' => $this->getDefaultValuesByKey('regulatory_functions', $cardinality, NULL),
+      '#default_value' => $this->getDefaultValuesByKey('regulatory_functions', $cardinality, []),
     ];
 
     return $form;

@@ -74,6 +74,11 @@ class ParAuthorityReviewForm extends ParBaseForm {
     // Change the action to save.
     $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
 
+    $form['info'] = [
+      '#type' => 'markup',
+      '#markup' => "<p><strong>Please be aware that changing the name of the authority will affect all past and ongoing partnerships. Only do this with the correct legal authorisation.</strong></p>"
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 

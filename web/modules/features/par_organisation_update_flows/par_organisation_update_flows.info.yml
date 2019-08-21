@@ -1,6 +1,6 @@
-name: 'PAR Partnership Application Flows'
+name: 'PAR Organisation Management Flows'
 type: module
-description: 'Creates the flows and components required to apply for a new partnership.'
+description: 'Creates the flows and components required to manage organisational information.'
 core: 8.x
 package: PAR
 dependencies:

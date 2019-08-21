@@ -67,6 +67,7 @@ permissions:
   - 'invite user'
   - invite_type_invite_organisation_member
   - 'manage my organisations'
+  - 'manage own organisation'
   - 'manage par person'
   - 'manage par profile'
   - 'receive new_partnership_notification notification'

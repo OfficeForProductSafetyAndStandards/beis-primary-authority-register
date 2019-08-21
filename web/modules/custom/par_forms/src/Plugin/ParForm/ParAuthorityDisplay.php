@@ -37,6 +37,10 @@ class ParAuthorityDisplay extends ParFormPluginBase {
         $this->getFlowDataHandler()->setFormPermValue("authority_type", $par_data_authority->getAuthorityType());
       }
 
+      if ($address = $par_data_authority->getPremises(TRUE)) {
+        $this->getFlowDataHandler()->setFormPermValue("authority_address", $address->label());
+      }
+
       if ($par_data_authority->hasField('field_regulatory_function')) {
         $regulatory_functions = $par_data_authority->getRegulatoryFunction();
         $authority_functions = [];
@@ -141,6 +145,44 @@ class ParAuthorityDisplay extends ParFormPluginBase {
     }
     catch (ParFlowException $e) {
 
+    }
+
+    if ($primary_address = $this->getDefaultValuesByKey('authority_address', $cardinality, NULL)) {
+      $form['authority']['address'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['grid-row']],
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h3',
+          '#attributes' => ['class' => ['heading-medium', 'column-full']],
+          '#value' => $this->t('Primary Address'),
+        ],
+        'value' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#attributes' => ['class' => ['column-two-thirds']],
+          '#value' => $primary_address,
+        ],
+      ];
+
+      // Add operation link for updating authority details.
+      try {
+        $link = $this->getFlowNegotiator()->getFlow()
+          ->getLinkByCurrentOperation('authority_address', $params, [], TRUE);
+
+        $form['authority']['address']['change'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#attributes' => ['class' => ['column-one-third']],
+          '#weight' => 99,
+          '#value' => t('@link', [
+            '@link' => $link ? $link->setText('Change the primary address')
+              ->toString() : '',
+          ]),
+        ];
+      } catch (ParFlowException $e) {
+
+      }
     }
 
     $form['authority']['ons'] = [

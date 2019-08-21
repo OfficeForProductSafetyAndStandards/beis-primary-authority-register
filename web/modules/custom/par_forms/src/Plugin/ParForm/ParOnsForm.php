@@ -29,7 +29,7 @@ class ParOnsForm extends ParFormPluginBase {
   public function loadData($cardinality = 1) {
     $par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');
 
-    if ($ons_code = $par_data_authority->get('ons_code')) {
+    if ($par_data_authority && $ons_code = $par_data_authority->get('ons_code')) {
       $this->getFlowDataHandler()->setFormPermValue("ons_code", $ons_code->getString());
     }
 

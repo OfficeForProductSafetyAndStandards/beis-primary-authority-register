@@ -1,0 +1,4 @@
+add authority:
+  title: 'Add an authority'
+  description: 'Allow users to add an authorities.'
+  restrict access: TRUE

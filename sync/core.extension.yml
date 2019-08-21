@@ -62,6 +62,7 @@ module:
   page_cache: 0
   pagerer: 0
   par_actions: 0
+  par_authority_add_flows: 0
   par_authority_update_flows: 0
   par_ckeditor: 0
   par_dashboards: 0
