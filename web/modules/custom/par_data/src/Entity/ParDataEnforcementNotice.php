@@ -149,8 +149,11 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * Get the enforcement actions for this Enforcement Notice.
    */
-  public function getEnforcementActions() {
-    return $this->get('field_enforcement_action')->referencedEntities();
+  public function getEnforcementActions($single = FALSE) {
+    $enforcement_notices = $this->get('field_enforcement_action')->referencedEntities();
+    $enforcement_notice = !empty($enforcement_notices) ? current($enforcement_notices) : NULL;
+
+    return $single ? $enforcement_notice : $enforcement_notices;
   }
 
   /**
