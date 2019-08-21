@@ -350,8 +350,11 @@ trait ParDisplayTrait {
   }
 
   public function renderTable($rows) {
+    // @TODO PAR-1461: Put in more substantial fix to make pagers unique for the page.
+    $pager = rand(0,99);
+
     // Initialize pager and get current page.
-    $current_page = pager_default_initialize(count($rows), $this->numberPerPage, $this->pagerId);
+    $current_page = pager_default_initialize(count($rows), $this->numberPerPage, $pager);
 
     // Split the items up into chunks:
     $chunks = array_chunk($rows, $this->numberPerPage);
@@ -365,7 +368,7 @@ trait ParDisplayTrait {
       'pager' => [
         '#type' => 'pager',
         '#theme' => 'pagerer',
-        '#element' => $this->pagerId,
+        '#element' => $pager,
         '#weight' => 100,
         '#config' => [
           'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
