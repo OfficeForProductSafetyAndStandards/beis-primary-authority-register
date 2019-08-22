@@ -1,4 +1,4 @@
 text:
   -
-    value: "<p>Dear @first_name,</p>\r\n\r\n<p>The enforcement notification against @enforced_organisation has been reviewed.</p>\r\n\r\n<p>You may now enforce any actions approved by the primary authority. Any referred actions may take a further 5 days for review by the new primary authority.</p>\r\n\r\n<p>To view the full details, sign in to your primary authority account.</p>\r\n\r\n<p>^ View enforcement notice: [message:primary-action]</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>The enforcement notification against @enforced_organisation has been reviewed.</p>\r\n\r\n<p><span>Please see the link below to view the full details of this review.</span></p>\r\n\r\n<p>^ View enforcement notice: [message:primary-action]</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html

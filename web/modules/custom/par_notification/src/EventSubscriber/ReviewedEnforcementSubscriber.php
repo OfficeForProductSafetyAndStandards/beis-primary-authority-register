@@ -67,41 +67,53 @@ class ReviewedEnforcementSubscriber extends ParNotificationSubscriberBase {
     /** @var ParDataEntityInterface $par_data_enforcement_notice */
     $par_data_enforcement_notice = $event->getEntity();
 
-    $contacts = $this->getRecipients($event);
-    foreach ($contacts as $contact) {
-      if (!isset($this->recipients[$contact->getEmail()])) {
-        // Record the recipient so that we don't send them the message twice.
-        $this->recipients[$contact->getEmail] = $contact;
-        // Try and get the user account associated with this contact.
-        $account = $contact->getUserAccount();
+    foreach ($par_data_enforcement_notice->getEnforcementActions() as $delta => $par_data_enforcement_action) {
 
-        try {
-          /** @var Message $message */
-          $message = $this->createMessage();
-        }
-        catch (ParNotificationException $e) {
-          break;
-        }
-
-        // Add contextual information to this message.
-        if ($message->hasField('field_enforcement_notice')) {
-          $message->set('field_enforcement_notice', $par_data_enforcement_notice);
-        }
-
-        // Add some custom arguments to this message.
-        $message->setArguments([
-          '@first_name' => $contact->getFirstName(),
-          '@enforced_organisation' => $par_data_enforcement_notice->getEnforcedEntityName(),
-        ]);
-
-        // The owner is the user who this message belongs to.
-        if ($account) {
-          $message->setOwnerId($account->id());
-        }
-
-        // Send the message.
-        $this->sendMessage($message, $contact->getEmail());
+      // Don't notify about referred actions.
+      if ($par_data_enforcement_action->isReferred()) {
+        continue;
       }
+
+      // Get the contacts for this notification and build the message.
+      $contacts = $this->getRecipients($event);
+      foreach ($contacts as $contact) {
+        if (!isset($this->recipients[$contact->getEmail()])) {
+          // Record the recipient so that we don't send them the message twice.
+          $this->recipients[$contact->getEmail] = $contact;
+          // Try and get the user account associated with this contact.
+          $account = $contact->getUserAccount();
+
+          try {
+            /** @var Message $message */
+            $message = $this->createMessage();
+          } catch (ParNotificationException $e) {
+            break;
+          }
+
+          // Add contextual information to this message.
+          if ($message->hasField('field_enforcement_notice')) {
+            $message->set('field_enforcement_notice', $par_data_enforcement_notice);
+          }
+
+          // Add some custom arguments to this message.
+          $message->setArguments([
+            '@first_name' => $contact->getFirstName(),
+            '@enforced_organisation' => $par_data_enforcement_notice->getEnforcedEntityName(),
+          ]);
+
+          // The owner is the user who this message belongs to.
+          if ($account) {
+            $message->setOwnerId($account->id());
+          }
+
+          // Send the message.
+          $this->sendMessage($message, $contact->getEmail());
+        }
+      }
+
+      // Only send the message once per enforcement notice.
+      break;
+
     }
   }
 }
