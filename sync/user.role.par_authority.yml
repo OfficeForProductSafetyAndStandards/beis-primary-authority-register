@@ -27,7 +27,6 @@ permissions:
   - 'access par_data_regulatory_function entities'
   - 'access par_data_sic_code entities'
   - 'access partnerships dashboard'
-  - 'add authority'
   - 'add partnership authority contact'
   - 'apply for partnership'
   - 'approve enforcement notice'

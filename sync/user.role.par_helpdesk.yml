@@ -139,6 +139,7 @@ permissions:
   - invite_type_invite_organisation_member
   - 'manage all authorities'
   - 'manage all organisation'
+  - 'manage all organisations'
   - 'manage my authorities'
   - 'manage my organisations'
   - 'manage own authority'

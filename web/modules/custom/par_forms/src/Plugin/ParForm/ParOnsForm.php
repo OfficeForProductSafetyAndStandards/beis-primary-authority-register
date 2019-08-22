@@ -18,7 +18,7 @@ class ParOnsForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   protected $entityMapping = [
-    ['sic_code', 'par_data_authority', 'ons_code', NULL, NULL, 0, [
+    ['ons_code', 'par_data_authority', 'ons_code', NULL, NULL, 0, [
       'You must fill in the missing information.' => "You must enter an ONS code."
     ]],
   ];

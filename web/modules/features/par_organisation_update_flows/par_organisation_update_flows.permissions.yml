@@ -2,7 +2,7 @@ manage own organisation:
   title: 'Manage own organisation'
   description: 'Allow users to manage their own organisations.'
   restrict access: TRUE
-manage all organisation:
-  title: 'Manage all organisation'
+manage all organisations:
+  title: 'Manage all organisations'
   description: 'Allow users to manage all organisations.'
   restrict access: TRUE
