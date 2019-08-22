@@ -44,7 +44,7 @@ par_organisation_update_flows.organisation_update_sic_codes:
     _title_callback: '\Drupal\par_organisation_update_flows\Form\ParOrganisationSicCodesForm::titleCallback'
   requirements:
     _permission: 'manage own organisation+manage all organisations'
-    _custom_access: '\Drupal\par_organisation_update_flows\Form\ParOrganisationReviewForm::accessCallback'
+    _custom_access: '\Drupal\par_organisation_update_flows\Form\ParOrganisationSicCodesForm::accessCallback'
     par_data_organisation: \d+
   options:
     parameters:
