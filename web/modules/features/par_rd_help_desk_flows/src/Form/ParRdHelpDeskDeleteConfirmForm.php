@@ -103,6 +103,7 @@ class ParRdHelpDeskDeleteConfirmForm extends ParBaseForm {
       '#type' => 'textarea',
       '#rows' => 5,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('revocation_reason', FALSE),
+      '#required' => TRUE,
     ];
 
     return parent::buildForm($form, $form_state);
