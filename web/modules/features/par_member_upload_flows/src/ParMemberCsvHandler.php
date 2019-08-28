@@ -603,7 +603,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     // on whether it is in the UK or outside.
     $nation = $par_data_premises ? $par_data_premises_type->getAllowedFieldlabel('nation', $par_data_premises->get('nation')->getString()) : NULL;
     try {
-      $nation = !$nation && $par_data_premises ? $this->getCountryRepository()->get($par_data_premises->get('address')->first()->get('country_code')->getString()) : '';
+      $address = !$nation && $par_data_premises ? $par_data_premises->get('address')->first() : NULL;
+      $country_code = $address ? $address->get('country_code')->getString() : NULL;
+      $nation = $country_code ? $this->getCountryRepository()->get($country_code) : '';
     }
     catch (UnknownCountryException $exception) {
       $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
@@ -705,7 +707,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       $file->set('field_organisation', $par_data_partnership->getOrganisation(TRUE));
       $file->save();
     }
-    
+
     return $file;
   }
 
