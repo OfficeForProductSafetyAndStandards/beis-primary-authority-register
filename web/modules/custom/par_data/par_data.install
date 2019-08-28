@@ -751,3 +751,42 @@ function par_data_update_8035() {
     }
   }
 }
+
+/**
+ * base field updates for deleting entities.
+ */
+function par_data_update_8036() {
+
+  $entity_definition_manager = \Drupal::service('entity.definition_update_manager');
+  $entity_types = \Drupal::service('par_data.manager')->getParEntityTypes();
+
+// New fields definitions to be added to the partnership entity.
+// @see https://www.drupal.org/node/3034742
+  $storage_definitions = [];
+
+// Partnership delete reason.
+  $storage_definitions['deleted_reason'] = BaseFieldDefinition::create('text_long')
+    ->setLabel(t('Deleted Reason'))
+    ->setDescription(t('Comments about why this partnership was deleted.'))
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'text_processing' => 0,
+    ])->setDisplayOptions('form', [
+      'type' => 'text_textarea',
+      'weight' => 13,
+      'settings' => [
+        'rows' => 25,
+      ],
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ]);
+
+  foreach($entity_types as $entity_type_id => $entity_type) {
+    foreach ($storage_definitions as $field => $definition) {
+      $entity_definition_manager->installFieldStorageDefinition($field, $entity_type_id, $entity_type_id, $definition);
+    }
+  }
+}

@@ -13,6 +13,13 @@ targetEntityType: par_data_person
 bundle: person
 mode: summary
 content:
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   email_pseudo_field:
     weight: 3
     region: content
