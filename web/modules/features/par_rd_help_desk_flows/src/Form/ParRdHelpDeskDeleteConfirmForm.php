@@ -13,22 +13,22 @@ use Drupal\par_flows\ParFlowException;
 use Symfony\Component\Routing\Route;
 
 /**
- * The confirming the user is authorised to revoke partnerships.
+ * The confirming the user is authorised to delete partnerships.
  */
-class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
+class ParRdHelpDeskDeleteConfirmForm extends ParBaseForm {
 
   use ParDisplayTrait;
 
   /**
    * {@inheritdoc}
    */
-  protected $flow = 'revoke_partnership';
+  protected $flow = 'delete_partnership';
 
   /**
    * {@inheritdoc}
    */
   public function titleCallback() {
-    return 'Confirmation | Revoke a partnership';
+    return 'Help Desk | Delete a partnership';
   }
 
   /**
@@ -42,19 +42,19 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
 
     }
 
-    // If partnership has been revoked, we should not be able to re-revoke it.
-    if ($par_data_partnership->isRevoked()) {
-      $this->accessResult = AccessResult::forbidden('The partnership is already revoked.');
-    }
-
-    // If partnership has been deleted, we should not be able to revoke it.
+    // If partnership has been deleted, we should not be able to re-delete it.
     if ($par_data_partnership->isDeleted()) {
-       $this->accessResult = AccessResult::forbidden('The partnership is already deleted.');
+     $this->accessResult = AccessResult::forbidden('The partnership is deleted.');
     }
 
-    // 403 if the partnership is in progress it can't be revoked.
-    if ($par_data_partnership->inProgress()) {
-      $this->accessResult = AccessResult::forbidden('The partnership is not active.');
+    // If partnership has been revoked, we should not be able to delete it.
+    if ($par_data_partnership->isRevoked()) {
+      $this->accessResult = AccessResult::forbidden('The partnership is revoked.');
+    }
+
+    // 403 if the partnership is in active it can't be deleted.
+    if ($par_data_partnership->isActive()) {
+      $this->accessResult = AccessResult::forbidden('The partnership is active.');
     }
 
     return parent::accessCallback($route, $route_match, $account);
@@ -74,11 +74,11 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
-    if ($par_data_partnership && $par_data_partnership->inProgress()) {
+    if ($par_data_partnership && $par_data_partnership->isActive()) {
       $form['partnership_info'] = [
         '#type' => 'markup',
-        '#title' => $this->t('Revocation denied'),
-        '#markup' => $this->t('This partnership cannot be revoked because it is awaiting approval or there are enforcement notices currently awaiting review. Please try again later.'),
+        '#title' => $this->t('Deletion denied'),
+        '#markup' => $this->t('This partnership cannot be deleted because it is active. Please use the revoke process instead.'),
       ];
 
       return parent::buildForm($form, $form_state);
@@ -86,7 +86,7 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
 
     $form['partnership_info'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Revoke the partnership'),
+      '#title' => $this->t('Delete the partnership'),
       '#attributes' => ['class' => 'form-group'],
     ];
 
@@ -97,12 +97,13 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
       '#suffix' => '</p>',
     ];
 
-    // Enter the revokcation reason.
-    $form['revocation_reason'] = [
-      '#title' => $this->t('Enter the reason you are revoking this partnership'),
+    // Enter the deletion reason.
+    $form['deletion_reason'] = [
+      '#title' => $this->t('Enter the reason you are deleting this partnership application'),
       '#type' => 'textarea',
       '#rows' => 5,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('revocation_reason', FALSE),
+      '#required' => TRUE,
     ];
 
     return parent::buildForm($form, $form_state);
@@ -124,15 +125,15 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
 
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
-    // We only want to update the status of active partnerships.
-    if (!$par_data_partnership->isRevoked()) {
-      $revoked = $par_data_partnership->revoke($this->getFlowDataHandler()->getTempDataValue('revocation_reason'));
+    // We only want to update the status of none active partnerships.
+    if ($par_data_partnership->inProgress()) {
+      $deleted = $par_data_partnership->delete($this->getFlowDataHandler()->getTempDataValue('deletion_reason'));
 
-      if ($revoked) {
+      if ($deleted) {
         $this->getFlowDataHandler()->deleteStore();
       }
       else {
-        $message = $this->t('Revocation reason could not be saved for %form_id');
+        $message = $this->t('Deletion reason could not be saved for %form_id');
         $replacements = [
           '%form_id' => $this->getFormId(),
         ];

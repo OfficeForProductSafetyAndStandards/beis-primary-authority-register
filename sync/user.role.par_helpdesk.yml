@@ -65,6 +65,7 @@ permissions:
   - 'block user'
   - 'bypass par_data membership'
   - 'bypass partnership journey'
+  - 'cancel partnership applications'
   - 'cease coordinated member'
   - 'confirm partnership'
   - 'create article content'
