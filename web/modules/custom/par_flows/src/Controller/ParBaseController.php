@@ -104,6 +104,8 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function build($build = []) {
+    $this->initializeFlow();
+
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
       // If there's is a cardinality parameter present display only this item.

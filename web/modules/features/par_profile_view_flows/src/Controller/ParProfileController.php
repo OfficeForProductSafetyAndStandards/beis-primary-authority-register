@@ -80,11 +80,11 @@ class ParProfileController extends ParBaseController {
 
     if ($user && $people = $this->getParDataManager()->getUserPeople($user)) {
       $this->getFlowDataHandler()->setParameter('contacts', $people);
-      $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'contact_detail', $people);
+      $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'contact_locations_detail', $people);
     }
     else {
       $this->getFlowDataHandler()->setParameter('contacts', [$par_data_person]);
-      $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'contact_detail', [$par_data_person]);
+      $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'contact_locations_detail', [$par_data_person]);
     }
 
     parent::loadData();

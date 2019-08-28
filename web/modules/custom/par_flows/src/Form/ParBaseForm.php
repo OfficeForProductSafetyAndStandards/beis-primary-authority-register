@@ -13,8 +13,10 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParControllerTrait;
+use Drupal\par_flows\ParFlowDataHandler;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
@@ -27,6 +29,7 @@ use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\Core\Access\AccessResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -206,6 +209,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $this->initializeFlow();
+
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
       // If there's is a cardinality parameter present display only this item.
@@ -359,7 +364,34 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Get the redirect route to the next form based on the flow configuration
     // 'operation' parameter that matches the submit button's name.
     $submit_action = $form_state->getTriggeringElement()['#name'];
-    $next = $this->getFlowNegotiator()->getFlow()->getNextRoute($submit_action);
+    try {
+      // Get the next route from the flow.
+      $route_name = $this->getFlowNegotiator()->getFlow()->progressRoute($submit_action);
+      $route_params = $this->getRouteParams();
+    }
+    catch (ParFlowException $e) {
+
+    }
+    catch (RouteNotFoundException $e) {
+
+    }
+
+    // If the next route could be found in the flow then
+    // return to the entry route if one was specified.
+    if (!isset($route_name) && $url = $this->getEntryUrl()) {
+      $route_name = $url->getRouteName();
+      $route_params = $url->getRouteParameters();
+
+      // Delete form storage.
+      // @TODO We could choose to delete the store if we're completing the journey.
+      // $this->getFlowDataHandler()->deleteStore();
+    }
+
+    // We need a backup route in case all else fails.
+    if (!isset($route_name)) {
+      $route_name = 'par_dashboards.dashboard';
+      $route_params = [];
+    }
 
     // Determine whether to use the 'destination' query parameter
     // to determine redirection preferences.
@@ -370,8 +402,17 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       $query->remove('destination');
     }
 
+    // Transform the route into a url so that it can be altered.
+    $current_route = \Drupal::routeMatch();
+    $matched_url = isset($route_name) && isset($route_params) ? Url::fromRoute($route_name, $route_params) : [];
+    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), $current_route, $matched_url);
+    $this->getEventDispatcher()->dispatch(ParFlowEvent::FLOW_SUBMIT . ":$submit_action", $event);
+    $url = $event->getUrl();
+
     // Set the redirection.
-    $form_state->setRedirect($next, $this->getRouteParams(), $options);
+    if ($url && $url instanceof Url) {
+      $form_state->setRedirectUrl($url);
+    }
   }
 
   /**
@@ -436,12 +477,67 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
   public function cancelForm(array &$form, FormStateInterface $form_state) {
+    try {
+      // Get the cancel route from the flow.
+      $route_name = $this->getFlowNegotiator()->getFlow()->progressRoute('cancel');
+      $route_params = $this->getRouteParams();
+    }
+    catch (ParFlowException $e) {
+
+    }
+    catch (RouteNotFoundException $e) {
+
+    }
+
+    // If no cancelation route could be found in the flow then
+    // return to the entry route if one was specified.
+    if (!isset($route_name) && $url = $this->getEntryUrl()) {
+      $route_name = $url->getRouteName();
+      $route_params = $url->getRouteParameters();
+    }
+
+    // We need a backup route in case all else fails.
+    if (!isset($route_name)) {
+      $route_name = 'par_dashboards.dashboard';
+      $route_params = [];
+    }
+
+    // Remove the destination parameter if it redirects to a route within the flow,
+    // 'cancel' and 'done' operations should exit out of the flow.
+    $query = $this->getCurrentRequest()->query;
+    if ($query->has('destination')) {
+      $destination = $query->get('destination');
+      $destination_url = $this->getPathValidator()->getUrlIfValid($destination);
+
+      if ($destination_url && $destination_url instanceof Url && $destination_url->isRouted() && $this->getFlowNegotiator()->routeInFlow($destination_url->getRouteName())) {
+        $query->remove('destination');
+      }
+    }
+
+    // Transform the route into a url so that it can be altered.
+    $current_route = \Drupal::routeMatch();
+    $matched_url = isset($route_name) && isset($route_params) ? Url::fromRoute($route_name, $route_params) : [];
+    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), $current_route, $matched_url);
+    $this->getEventDispatcher()->dispatch(ParFlowEvent::FLOW_CANCEL, $event);
+    $url = $event->getUrl();
+
     // Delete form storage.
     $this->getFlowDataHandler()->deleteStore();
 
-    // Go to cancel step.
-    $next = $this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel');
-    $form_state->setRedirect($next, $this->getRouteParams());
+    if ($url && $url instanceof Url) {
+      $form_state->setRedirectUrl($url);
+    }
+  }
+
+  /**
+   * Get the route to return to once the journey has been completed.
+   */
+  public function getFinalRoute() {
+    // Get the route that we entered on.
+    $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
+
+
+    return NULL;
   }
 
   /**
