@@ -5,7 +5,9 @@ namespace Drupal\par_flows\Entity;
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Link;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\ParDefaultActionsTrait;
+use Drupal\par_flows\ParFlowDataHandler;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -310,7 +312,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       $prev_step = isset($prev_index) ? $this->getStep($prev_index) : $this->getStep(1);
     }
 
-    // If there is no next step we'll go back to the beginning.
+    // If there is no next step we'Nextll go back to the beginning.
     $step = isset($prev_step) && isset($prev_step['route']) ? $prev_index : NULL;
 
     if (empty($step)) {
@@ -323,15 +325,44 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  public function progressRoute($operation = NULL) {
+    $current_step = $this->getCurrentStep();
+
+    // Operations that should not progress to the next step.
+    $final_operations = ['cancel', 'done'];
+
+    // Check if the operation produced a valid step.
+    if ($redirect = $this->getStepByOperation($current_step, $operation)) {
+      $redirect_step = $this->getStep($redirect);
+    }
+    // If the operation supports progressing to the next step in the journey,
+    // check if there is a next step in the journey.
+    elseif (array_search($operation, $final_operations) === FALSE && $current_step < count($this->getSteps())) {
+      $next_index = ++$current_step;
+      $redirect_step = isset($next_index) ? $this->getStep($next_index) : NULL;
+    }
+
+    if (empty($redirect_step)) {
+      throw new ParFlowException('Could not find the next page.');
+    }
+
+    return isset($redirect_step['route']) ? $redirect_step['route'] : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getNextRoute($operation = NULL) {
-    return $this->getRouteByStep($this->getNextStep($operation));
+    $next_step = $this->getNextStep($operation);
+    return $this->getRouteByStep($next_step);
   }
 
   /**
    * {@inheritdoc}
    */
   public function getPrevRoute($operation = NULL) {
-    return $this->getRouteByStep($this->getPrevStep($operation));
+    $prev_step = $this->getPrevStep($operation);
+    return $this->getRouteByStep($prev_step);
   }
 
   /**
