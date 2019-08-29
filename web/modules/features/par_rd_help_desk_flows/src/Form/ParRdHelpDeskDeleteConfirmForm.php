@@ -103,8 +103,10 @@ class ParRdHelpDeskDeleteConfirmForm extends ParBaseForm {
       '#type' => 'textarea',
       '#rows' => 5,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('revocation_reason', FALSE),
-      '#required' => TRUE,
     ];
+
+    // Change the primary action text.
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Delete');
 
     return parent::buildForm($form, $form_state);
   }
@@ -115,6 +117,11 @@ class ParRdHelpDeskDeleteConfirmForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
+
+    if (!$form_state->getValue('deletion_reason')) {
+      $id = $this->getElementId('deletion_reason', $form);
+      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please supply the reason for cancelling this partnership.', $id));
+    }
   }
 
   /**

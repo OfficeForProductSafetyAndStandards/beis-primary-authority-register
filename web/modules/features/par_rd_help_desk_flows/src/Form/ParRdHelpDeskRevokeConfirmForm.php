@@ -105,6 +105,9 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('revocation_reason', FALSE),
     ];
 
+    // Change the primary action text.
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Revoke');
+
     return parent::buildForm($form, $form_state);
   }
 
