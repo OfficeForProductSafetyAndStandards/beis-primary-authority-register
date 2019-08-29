@@ -91,7 +91,22 @@ interface ParFlowInterface {
   public function getPrevStep($operation);
 
   /**
+   * Progress to the next route given an operation being performed.
+   *
+   * Operations have mildly different impacts within the journey, generally they
+   * either progress to the next step or finish the journey. Within this each
+   * operation may wish to progress to a different step within the journey or
+   * return to a different page entirely.
+   *
+   * @return string|NULL
+   *   The route name to progress to OR NULL if there is no route within the flow to go to.
+   */
+  public function progressRoute($operation = NULL);
+
+  /**
    * Get the next route.
+   *
+   * @deprecated use self::getRouteByOperation() instead.
    *
    * @param string $operation
    *   An optional form operation that can be used to override the redirection.
@@ -103,6 +118,8 @@ interface ParFlowInterface {
 
   /**
    * Get the previous route.
+   *
+   * @deprecated use self::getRouteByOperation() instead.
    *
    * @param string $operation
    *   An optional form operation that can be used to override the redirection.
@@ -186,11 +203,13 @@ interface ParFlowInterface {
    *   Additional route parameters to add to the route.
    * @param array $link_options
    *   An array of options to set on the link.
+   * @param bool $access
+   *   Whether or not an access check should be performed on the link.
    *
    * @return Link
    *   A Drupal link object.
    */
-  public function getLinkByStep($index, array $route_params, array $link_options);
+  public function getLinkByStep($index, array $route_params, array $link_options, $access = FALSE);
 
   /**
    * Get link based on an operation on the current step.
@@ -201,11 +220,13 @@ interface ParFlowInterface {
    *   Additional route parameters to add to the route.
    * @param array $link_options
    *   An array of options to set on the link.
+   * @param bool $access
+   *   Whether or not an access check should be performed on the link.
    *
    * @return Link
    *   A Drupal link object.
    */
-  public function getLinkByCurrentOperation($operation, array $route_params, array $link_options);
+  public function getLinkByCurrentOperation($operation, array $route_params, array $link_options, $access = FALSE);
 
   /**
    * Get link based on the next available step.
@@ -216,11 +237,13 @@ interface ParFlowInterface {
    *   Additional route parameters to add to the route.
    * @param array $link_options
    *   An array of options to set on the link.
+   * @param bool $access
+   *   Whether or not an access check should be performed on the link.
    *
    * @return Link
    *   A Drupal link object.
    */
-  public function getNextLink($operation, array $route_params, array $link_options);
+  public function getNextLink($operation, array $route_params, array $link_options, $access = FALSE);
 
   /**
    * Get link based on the previous available step.
@@ -231,11 +254,13 @@ interface ParFlowInterface {
    *   Additional route parameters to add to the route.
    * @param array $link_options
    *   An array of options to set on the link.
+   * @param bool $access
+   *   Whether or not an access check should be performed on the link.
    *
    * @return Link
    *   A Drupal link object.
    */
-  public function getPrevLink($operation, array $route_params, array $link_options);
+  public function getPrevLink($operation, array $route_params, array $link_options, $access = FALSE);
 
   /**
    * Get the components for the current step.

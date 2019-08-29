@@ -9,10 +9,13 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_authority_person
     - field.field.par_data_partnership.partnership.field_coordinated_business
     - field.field.par_data_partnership.partnership.field_inspection_plan
+    - field.field.par_data_partnership.partnership.field_legal_entity
     - field.field.par_data_partnership.partnership.field_organisation
     - field.field.par_data_partnership.partnership.field_organisation_person
     - field.field.par_data_partnership.partnership.field_regulatory_function
     - par_data.par_data_partnership_type.partnership
+  module:
+    - text
 _core:
   default_config_hash: jzwUticyzaYhBPLycZIuXAN-KVsmA6iFo1_U_qMF8OE
 id: par_data_partnership.partnership.title
@@ -20,6 +23,13 @@ targetEntityType: par_data_partnership
 bundle: partnership
 mode: title
 content:
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   field_authority:
     type: entity_reference_entity_view
     weight: 1

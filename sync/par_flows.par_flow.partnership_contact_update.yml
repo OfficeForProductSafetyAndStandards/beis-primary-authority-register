@@ -45,7 +45,7 @@ steps:
     route: par_partnership_contact_update_flows.invite_contact
     form_id: par_person_invite
     components:
-      invite: {}
+      invite: {  }
     form_data:
       contact_details: par_add_contact
       user_account: par_person_link

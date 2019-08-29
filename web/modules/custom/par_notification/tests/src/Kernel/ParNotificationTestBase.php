@@ -301,6 +301,29 @@ class ParNotificationTestBase extends ParDataTestBase
     return $partnership;
   }
 
+  public function createReferredEnforcement() {
+    $enforcement = $this->createEnforcement();
+
+    // Block the original action.
+    $primary_action = $enforcement->getEnforcementActions(TRUE);
+    if ($primary_action) {
+      $primary_action->block('Test block action.');
+    }
+
+    // We need to create an additional Enforcement Action.
+    $enforcement_action = ParDataEnforcementAction::create($this->getEnforcementActionValues());
+    $enforcement_action->approve(FALSE);
+    $enforcement_action->save();
+    $enforcement->get('field_enforcement_action')->appendItem($enforcement_action);
+
+    // We need to create an additional Enforcement Action.
+    $enforcement_action = ParDataEnforcementAction::create($this->getEnforcementActionValues());
+    $enforcement_action->refer('Test refer action.', FALSE);
+    $enforcement_action->save();
+    $enforcement->get('field_enforcement_action')->appendItem($enforcement_action);
+
+  }
+
   public function createEnforcement() {
     // We need to create an Enforcing Authority first.
     $enforcing_authority = $this->createAuthority('enforcing');

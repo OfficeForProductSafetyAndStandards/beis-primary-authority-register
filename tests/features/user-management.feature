@@ -1,6 +1,6 @@
 Feature: User management
 
-    @user-management @ci @smoke 
+    @user-management @ci @smoke
     Scenario Outline: Verify users have permission to manage people
         Given I am logged in as "<user>"
         Then the element "#content" contains the text "Manage your colleagues"
@@ -155,8 +155,8 @@ Feature: User management
         Then the element "h1.heading-xlarge" contains the text "Sally"
         And the element ".component-user-detail .heading-large" contains the text "User account"
         And the element ".component-user-detail" contains the text "par_user_management_multiple@example.com"
-        And there is "2" occurences of element ".component-contact-detail .component-item"
-        
+        And there is "2" occurences of element ".component-contact-locations-detail .component-item"
+
         # Update the user.
         When I click the link text "Update Dr Sally Michaels"
 
@@ -190,7 +190,7 @@ Feature: User management
 
         Then the element "h1.heading-xlarge" contains the text "Dr Sally McHaels"
         And the element ".component-user-detail" contains the text "par_user_management_multiple@example.com"
-        When there is "1" occurences of element ".component-contact-detail .component-item"
+        When there is "1" occurences of element ".component-contact-locations-detail .component-item"
         And I click on the button ".contact-locations summary"
         Then the element "#contact-detail-locations-1" contains the text "Contact at the authority: Authority for user management test"
         And the element "#contact-detail-locations-1" contains the text "Contact at the authority: Alternate authority for user management test"

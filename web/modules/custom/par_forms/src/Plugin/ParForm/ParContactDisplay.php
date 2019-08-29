@@ -12,14 +12,14 @@ use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
- * Contact details display plugin.
+ * Contact details display.
  *
  * @ParForm(
- *   id = "contact_detail",
+ *   id = "contact_display",
  *   title = @Translation("Contact detail display.")
  * )
  */
-class ParContactDetail extends ParFormPluginBase {
+class ParContactDisplay extends ParFormPluginBase {
 
   /**
    * @return DateFormatterInterface
@@ -28,12 +28,53 @@ class ParContactDetail extends ParFormPluginBase {
     return \Drupal::service('date.formatter');
   }
 
+  public function getContacts() {
+    // Get the configured field to get the contact records from.
+    $contact_field = isset($this->getConfiguration()['contact_field']) ? (string) $this->getConfiguration()['contact_field'] : "field_person";
+
+    // Decide which entity to use.
+    if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
+      switch ($contact_field) {
+        case 'field_authority_person':
+          $contacts = $par_data_partnership->getAuthorityPeople();
+          break;
+
+        case 'field_organisation_person':
+          $contacts = $par_data_partnership->getOrganisationPeople();
+          break;
+
+      }
+    }
+    elseif ($par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority')) {
+      $contacts = $par_data_authority->getPerson();
+    }
+    elseif ($par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation')) {
+      $contacts = $par_data_organisation->getPerson();
+    }
+
+    return isset($contacts) ? $contacts : NULL;
+  }
+
+  /**
+   * Alter the number of items being displayed.
+   */
+  public function countItems($data = NULL) {
+    if ($contacts = $this->getContacts()) {
+      return count($contacts);
+    }
+    else {
+      return parent::countItems($data);
+    }
+  }
+
   /**
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
-    $contacts = $this->getFlowDataHandler()->getParameter('contacts');
-    $contacts = !empty($contacts) ? array_values($contacts) : [];
+    $contacts = $this->getContacts();
+
+    // Reset the array keys so there are no gaps.
+    $contacts = $contacts && !empty($contacts) ? array_values($contacts) : [];
     // Cardinality is not a zero-based index like the stored fields deltas.
     $contact = isset($contacts[$cardinality-1]) ? $contacts[$cardinality-1] : NULL;
 
@@ -43,9 +84,6 @@ class ParContactDetail extends ParFormPluginBase {
       $this->setDefaultValuesByKey("email_preferences", $cardinality, $contact->getEmailWithPreferences());
       $this->setDefaultValuesByKey("work_phone", $cardinality, $contact->getWorkPhone());
       $this->setDefaultValuesByKey("mobile_phone", $cardinality, $contact->getMobilePhone());
-
-      $locations = $contact->getReferencedLocations();
-      $this->setDefaultValuesByKey("locations", $cardinality, implode('<br>', $locations));
 
       $this->setDefaultValuesByKey("person_id", $cardinality, $contact->id());
     }

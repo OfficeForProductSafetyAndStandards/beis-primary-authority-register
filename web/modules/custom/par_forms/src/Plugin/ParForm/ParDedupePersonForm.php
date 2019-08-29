@@ -96,13 +96,13 @@ class ParDedupePersonForm extends ParFormPluginBase {
 
     // If there are no people we should treat it as a new record and skip.
     if (count($contact_records) <= 0) {
-      $this->getFlowDataHandler()->setTempDataValue('user_person', self::ADD_NEW);
+      $this->getFlowDataHandler()->setTempDataValue('contact_record', self::ADD_NEW);
       $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('cancel'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
     // If there is only one person to choose submit the form automatically and go to the next step.
     elseif (count($contact_records) === 1 && $require_existing) {
-      $this->getFlowDataHandler()->setTempDataValue('user_person', key($contact_records));
+      $this->getFlowDataHandler()->setTempDataValue('contact_record', key($contact_records));
       $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
@@ -120,7 +120,7 @@ class ParDedupePersonForm extends ParFormPluginBase {
     }
     $form['contact_record'] = [
       '#type' => 'radios',
-      '#title' => t('Choose which contact record you would like to update'),
+      '#title' => t('Choose which contact record you would like to use'),
       '#options' => $contact_records,
       '#default_value' => $this->getDefaultValuesByKey("contact_record", $cardinality, NULL),
       '#attributes' => ['class' => ['form-group']],

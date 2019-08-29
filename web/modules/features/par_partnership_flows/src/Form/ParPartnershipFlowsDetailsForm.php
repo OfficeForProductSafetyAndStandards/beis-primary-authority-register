@@ -220,7 +220,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     // Initialize pager and get current page.
     $number_per_page = 5;
-    $pager_id = 2534;
+    $pager_id = 9;
     $current_page = pager_default_initialize(count($authority_contacts), $number_per_page, $pager_id);
 
     // Get update and remove links.
@@ -335,7 +335,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     // Initialize pager and get current page.
     $number_per_page = 5;
-    $pager_id = 2810;
+    $pager_id = 8;
     $current_page = pager_default_initialize(count($organisation_contacts), $number_per_page, $pager_id);
 
     // Get update and remove links.

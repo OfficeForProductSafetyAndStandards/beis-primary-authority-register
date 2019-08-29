@@ -1,0 +1,65 @@
+par_organisation_update_flows.organisation_update_name:
+  path: '/organisation/{par_data_organisation}/update/name'
+  defaults:
+    _form: '\Drupal\par_organisation_update_flows\Form\ParOrganisationTitleForm'
+    _title_callback: '\Drupal\par_organisation_update_flows\Form\ParOrganisationTitleForm::titleCallback'
+  requirements:
+    _permission: 'manage own organisation+manage all organisations'
+    _custom_access: '\Drupal\par_organisation_update_flows\Form\ParOrganisationTitleForm::accessCallback'
+    par_data_organisation: \d+
+  options:
+    parameters:
+      par_data_organisation:
+        type: entity:par_data_organisation
+par_organisation_update_flows.organisation_update_about_organisation:
+  path: '/organisation/{par_data_organisation}/update/about'
+  defaults:
+    _form: '\Drupal\par_organisation_update_flows\Form\ParOrganisationAboutForm'
+    _title_callback: '\Drupal\par_organisation_update_flows\Form\ParOrganisationAboutForm::titleCallback'
+  requirements:
+    _permission: 'manage own organisation+manage all organisations'
+    _custom_access: '\Drupal\par_organisation_update_flows\Form\ParOrganisationAboutForm::accessCallback'
+    par_data_organisation: \d+
+  options:
+    parameters:
+      par_data_organisation:
+        type: entity:par_data_organisation
+par_organisation_update_flows.organisation_update_trading_names:
+  path: '/organisation/{par_data_organisation}/update/trading-names'
+  defaults:
+    _form: '\Drupal\par_organisation_update_flows\Form\ParOrganisationTradingNamesForm'
+    _title_callback: '\Drupal\par_organisation_update_flows\Form\ParOrganisationTradingNamesForm::titleCallback'
+  requirements:
+    _permission: 'manage own organisation+manage all organisations'
+    _custom_access: '\Drupal\par_organisation_update_flows\Form\ParOrganisationTradingNamesForm::accessCallback'
+    par_data_organisation: \d+
+  options:
+    parameters:
+      par_data_organisation:
+        type: entity:par_data_organisation
+par_organisation_update_flows.organisation_update_sic_codes:
+  path: '/organisation/{par_data_organisation}/update/sic-codes'
+  defaults:
+    _form: '\Drupal\par_organisation_update_flows\Form\ParOrganisationSicCodesForm'
+    _title_callback: '\Drupal\par_organisation_update_flows\Form\ParOrganisationSicCodesForm::titleCallback'
+  requirements:
+    _permission: 'manage own organisation+manage all organisations'
+    _custom_access: '\Drupal\par_organisation_update_flows\Form\ParOrganisationSicCodesForm::accessCallback'
+    par_data_organisation: \d+
+  options:
+    parameters:
+      par_data_organisation:
+        type: entity:par_data_organisation
+par_organisation_update_flows.organisation_update_review:
+  path: '/organisation/{par_data_organisation}/update/review'
+  defaults:
+    _form: '\Drupal\par_organisation_update_flows\Form\ParOrganisationReviewForm'
+    _title_callback: '\Drupal\par_organisation_update_flows\Form\ParOrganisationReviewForm::titleCallback'
+  requirements:
+    _permission: 'manage own organisation+manage all organisations'
+    _custom_access: '\Drupal\par_organisation_update_flows\Form\ParOrganisationReviewForm::accessCallback'
+    par_data_organisation: \d+
+  options:
+    parameters:
+      par_data_organisation:
+        type: entity:par_data_organisation

@@ -70,6 +70,7 @@ permissions:
   - 'invite user'
   - invite_type_invite_organisation_member
   - 'manage my authorities'
+  - 'manage own authority'
   - 'manage par person'
   - 'manage par profile'
   - 'raise enforcement notice'

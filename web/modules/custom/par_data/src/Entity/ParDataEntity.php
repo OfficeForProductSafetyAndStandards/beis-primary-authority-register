@@ -120,7 +120,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       }
       elseif (!empty($property_name)) {
         $value = $this->get($field_name)->getValue();
-        return $value && isset($value[$property_name]) ? current($value)[$property_name] : '';
+        return $value && isset(current($value)[$property_name]) ? current($value)[$property_name] : '';
       }
       else {
         return $this->get($field_name)->getString();
@@ -251,14 +251,22 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Delete if this entity is deletable and is not new.
    */
-  public function delete() {
+  public function delete($reason = '') {
     if ($this->getTypeEntity()->isDeletable() && !$this->isDeleted()) {
+
       // Set the status to unpublished to make filtering from display easier.
       $this->set('status', 0);
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
 
+      // Update par status trigger deleted (cancelled) notification.
+      $this->set(ParDataEntity::DELETE_FIELD, TRUE);
+
+      // Help desk bug claim protection (dev covering his ass).
+      $this->set('deleted_reason', $reason);
+
+      // calls soft delete function defined in thr ParDataStorage class.
       return parent::delete();
     }
   }
@@ -656,7 +664,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     if (!$reset && isset($relationships)) {
       return $relationships;
     }
-    
+
     // Loading the relationships is costly so caching is necessary.
     $cache = \Drupal::cache('data')->get("par_data_relationships:{$this->uuid()}");
     if ($cache && !$reset) {
@@ -901,7 +909,26 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         'type' => 'hidden',
       ])
       ->setDisplayConfigurable('view', FALSE);
-
+    // Deleted Reason.
+    $fields['deleted_reason'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Deleted Reason'))
+      ->setDescription(t('Comments about why this partnership was deleted.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ])->setDisplayOptions('form', [
+        'type' => 'text_textarea',
+        'weight' => 13,
+        'settings' => [
+          'rows' => 25,
+        ],
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
     return $fields;
   }
 

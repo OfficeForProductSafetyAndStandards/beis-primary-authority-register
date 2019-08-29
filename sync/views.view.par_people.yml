@@ -661,10 +661,10 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          empty: false
+          empty: true
           tokenize: true
           content:
-            value: '{{ par_flow_link_1 }}'
+            value: "{{ par_flow_link_1 }}\r\n"
             format: full_html
           plugin_id: text
       footer: {  }
