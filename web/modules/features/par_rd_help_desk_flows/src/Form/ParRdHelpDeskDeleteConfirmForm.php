@@ -105,6 +105,9 @@ class ParRdHelpDeskDeleteConfirmForm extends ParBaseForm {
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('revocation_reason', FALSE),
     ];
 
+    // Change the primary action text.
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Delete');
+
     return parent::buildForm($form, $form_state);
   }
 
