@@ -156,8 +156,8 @@ class ParDashboardsDashboardController extends ControllerBase {
       ];
     }
 
-//    @TODO Added as part of PAR-1439, but these links should only be enabled
-//    when the entire feature is complete.
+//    // @TODO Added as part of PAR-1439, to discover if users need the ability to
+//    // update their own information.
 //
 //    // Authority & organisation management links.
 //    if ($this->getCurrentUser()->hasPermission('update partnership authority details')

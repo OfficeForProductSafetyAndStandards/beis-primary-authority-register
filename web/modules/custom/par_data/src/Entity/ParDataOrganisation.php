@@ -176,6 +176,19 @@ class ParDataOrganisation extends ParDataEntity {
   /**
    * Get the primary nation for this organisation.
    *
+   * @return bool
+   */
+  public function getTradingNames() {
+    if (!$this->get('trading_name')->isEmpty()) {
+      $trading_names = $this->get('trading_name')->getString();
+    }
+
+    return isset($trading_names) ? $trading_names : '';
+  }
+
+  /**
+   * Get the primary nation for this organisation.
+   *
    * @param string $nation
    *   The nation we want to add, this should be one of the allowed sub-country types.
    *

@@ -15,6 +15,8 @@ configuration:
   entity:
     label_fields:
       - 'address:address_line1'
+      - ', '
+      - 'address:postal_code'
     required_fields:
       address_line1: 'The %field is required.'
       address_line2: 'The %field is required.'

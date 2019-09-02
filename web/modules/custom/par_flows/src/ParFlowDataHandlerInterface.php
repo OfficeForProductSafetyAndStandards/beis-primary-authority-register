@@ -81,14 +81,80 @@ interface ParFlowDataHandlerInterface {
    * Delete the temporary data for a form.
    *
    * @param string $cid
-   *   The cache id to set data for, will use the current form if not set.
+   *   The cache id to delete data for, will use the current form if not set.
    */
   public function deleteFormTempData($cid = NULL);
 
   /**
-   * Get all the data for the current flow state.
+   * Get all the temporary data for the current flow state.
    */
   public function getAllTempData();
+
+  /**
+   * Gets a meta data value for the flow.
+   *
+   * These values can be generic to the whole flow (by default), or a
+   * flow key specific to a given step in the flow can be passed in to
+   * get meta data for that particular step.
+   *
+   * @param string|array $key
+   *   The key to search for.
+   * @param string $cid
+   *   The form_id to get data for, will use the current form if not set.
+   *
+   * @return mixed|null
+   *   The value for this key.
+   */
+  public function getMetaDataValue($key, $cid = NULL);
+
+  /**
+   * Set a meta value for the flow.
+   *
+   * @see self::getMetaDataValue();
+   *
+   * @param string $key
+   *   The key to search for.
+   * @param mixed $value
+   *   The value to store for this key. Can be any string, integer or object.
+   * @param string $cid
+   *   The cache id to get data for, will use the current form if not set.
+   */
+  public function setMetaDataValue($key, $value, $cid = NULL);
+
+  /**
+   * Retrieve the meta data for a flow.
+   *
+   * The meta data can be generic to the whole flow (by default), or a
+   * flow key specific to a given step in the flow can be passed in to
+   * get meta data for that particular step.
+   *
+   * @param string $cid
+   *   The cache id to get data for, will use the current form if not set.
+   *
+   * @return array
+   *   The values stored in the temp meta store.
+   */
+  public function getFlowMetaData($cid = NULL);
+
+  /**
+   * Set the meta data for a flow.
+   *
+   * @see self::getFlowMetaData();
+   *
+   * @param array $data
+   *   The array of data to be saved.
+   * @param string $cid
+   *   The cache id to set data for, will use the current form if not set.
+   */
+  public function setFlowMetaData(array $data, $cid = NULL);
+
+  /**
+   * Delete the meta data for a flow.
+   *
+   * @param string $cid
+   *   The cache id to delete data for, will use the current flow if not set.
+   */
+  public function deleteFlowMetaData($cid = NULL);
 
   /**
    * Delete all the data for the current flow state.
@@ -96,7 +162,7 @@ interface ParFlowDataHandlerInterface {
   public function deleteStore();
 
   public function getParameter($parameter);
-  
+
   public function getParameters();
 
   public function setParameter($parameter, $value);

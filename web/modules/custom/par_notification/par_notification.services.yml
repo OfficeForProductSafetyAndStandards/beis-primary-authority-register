@@ -55,3 +55,7 @@ services:
     class: '\Drupal\par_notification\EventSubscriber\ReviewedEnforcementSubscriber'
     tags:
       - { name: 'event_subscriber' }
+  par_notification.partnership_deleted_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\PartnershipDeletedSubscriber'
+    tags:
+      - { name: 'event_subscriber' }

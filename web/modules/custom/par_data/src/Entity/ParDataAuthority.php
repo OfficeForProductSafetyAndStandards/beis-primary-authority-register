@@ -83,6 +83,8 @@ class ParDataAuthority extends ParDataEntity {
 
   /**
    * Get the allowed regulatory functions for this Authority.
+   *
+   * @deprecated Remove this field.
    */
   public function getAllowedRegulatoryFunction() {
     return $this->get('field_allowed_regulatory_fn')->referencedEntities();
@@ -91,8 +93,34 @@ class ParDataAuthority extends ParDataEntity {
   /**
    * Get the premises for this Authority.
    */
-  public function getPremises() {
-    return $this->get('field_premises')->referencedEntities();
+  public function getPremises($primary = FALSE) {
+    $addresses = $this->get('field_premises')->referencedEntities();
+    $address = !empty($addresses) ? current($addresses) : NULL;
+
+    return $primary ? $address : $addresses;
+  }
+
+  /**
+   * Get the primary nation for this authority.
+   *
+   * @param string $nation
+   *   The nation we want to add, this should be one of the allowed sub-country types.
+   *
+   * @return bool
+   */
+  public function setNation($nation, $force = FALSE) {
+    $entity_type = $this->getParDataManager()->getParBundleEntity($this->getEntityTypeId());
+    $allowed_types = $entity_type->getAllowedValues('nation');
+    if ($nation && isset($allowed_types[$nation])
+      && ($this->get('nation')->isEmpty() || $force)) {
+      $this->set('nation', $nation);
+    }
+  }
+
+  public function getAuthorityType() {
+    $authority_bundle = $this->getParDataManager()->getParBundleEntity('par_data_authority');
+
+    return $authority_bundle->getAllowedFieldlabel('authority_type', $this->get('authority_type')->getString());
   }
 
   /**
