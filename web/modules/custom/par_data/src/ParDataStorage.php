@@ -102,7 +102,8 @@ class ParDataStorage extends TranceStorage {
       \Drupal::cache('data')->delete($hash_key);
     }
 
-    if ($entity->getRawStatus() && !$entity->isNew() && $entity->getRawStatus() !== $entity->original->getRawStatus()) {
+    $original = $entity->original;
+    if ($entity->getRawStatus() && !$entity->isNew() && isset($original) && $entity->getRawStatus() !== $original->getRawStatus()) {
       // Dispatch the an event for every par entity that has a status update.
       $event = new ParDataEvent($entity);
       $event_to_dispatch = ParDataEvent::statusChange($entity->getEntityTypeId(), $entity->getRawStatus());
@@ -130,10 +131,10 @@ class ParDataStorage extends TranceStorage {
     $entities = parent::loadMultiple($ids);
 
     // Do not return any entities that are deleted.
-    // @TODO Open this ticket.
-//    $entities = array_filter($entities, function ($entity) {
-//      return !$entity->isDeleted();
-//    });
+    // @see PAR-1462 - Removing all deleted entities from loading.
+    $entities = array_filter($entities, function ($entity) {
+      return !$entity->isDeleted();
+    });
 
     return $entities;
   }

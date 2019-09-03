@@ -712,7 +712,7 @@ class ParDataManager implements ParDataManagerInterface {
     if (!empty($entities)) {
       return $entities;
     }
-    
+
     $conditions = [
       [
         'AND' => [
@@ -723,13 +723,24 @@ class ParDataManager implements ParDataManagerInterface {
       [
         'AND' => [
           ['email', $account->get('mail')->getString()],
-          ['field_user_account', NULL, 'IS NULL'],
           ['deleted', 1, '<>'],
         ],
       ],
     ];
 
-    return $this->getEntitiesByQuery('par_data_person', $conditions, NULL, NULL, 'ASC', 'OR');
+    $entities = $this->getEntitiesByQuery('par_data_person', $conditions, NULL, NULL, 'ASC', 'OR');
+
+    // There is a need to check that any par_data_person entities returned
+    // do not link to any other active users. This can't be done directly with
+    // a query due to cases where the user account may have been removed.
+    $entities = array_filter($entities, function ($entity) use ($account) {
+      if ($entity->retrieveUserAccount() && $entity->retrieveUserAccount()->id() !== $account->id()) {
+        return FALSE;
+      }
+      return TRUE;
+    });
+
+    return $entities;
   }
 
   /**
