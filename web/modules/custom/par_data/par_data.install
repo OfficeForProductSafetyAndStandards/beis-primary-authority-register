@@ -790,3 +790,10 @@ function par_data_update_8036() {
     }
   }
 }
+
+/**
+ * base field updates for deleting entities.
+ */
+function par_data_update_8037() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
