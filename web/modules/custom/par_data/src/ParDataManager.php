@@ -577,9 +577,17 @@ class ParDataManager implements ParDataManagerInterface {
       return [];
     }
 
-    return $this->entityTypeManager
+    $entities = $this->entityTypeManager
       ->getStorage($type)
       ->loadByProperties([$field => $value]);
+
+    // Do not return any entities that are deleted.
+    // @see PAR-1462 - Removing all deleted entities from loading.
+    $entities = array_filter($entities, function ($entity) {
+      return $entity->access('view', \Drupal::currentUser());
+    });
+
+    return $entities;
   }
 
   /**
@@ -594,9 +602,17 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of entities found with this value.
    */
   public function getEntitiesByType($type, array $ids = NULL) {
-    return $this->entityManager
+    $entities = $this->entityManager
       ->getStorage($type)
       ->loadMultiple($ids);
+
+    // Do not return any entities that are deleted.
+    // @see PAR-1462 - Removing all deleted entities from loading.
+    $entities = array_filter($entities, function ($entity) {
+      return $entity->access('view', \Drupal::currentUser());
+    });
+
+    return $entities;
   }
 
   /**
@@ -649,9 +665,16 @@ class ParDataManager implements ParDataManagerInterface {
       $query->range(0, $limit);
     }
 
-    $entities = $query->execute();
+    $results = $query->execute();
+    $entities = $this->entityManager->getStorage($type)->loadMultiple(array_unique($results));
 
-    return $this->entityManager->getStorage($type)->loadMultiple(array_unique($entities));
+    // Do not return any entities that are deleted.
+    // @see PAR-1462 - Removing all deleted entities from loading.
+    $entities = array_filter($entities, function ($entity) {
+      return $entity->access('view', \Drupal::currentUser());
+    });
+
+    return $entities;
   }
 
   /**
@@ -668,6 +691,10 @@ class ParDataManager implements ParDataManagerInterface {
   public function getEntitiesAsOptions($entities, $options = [], $view_mode = NULL) {
     foreach ($entities as $entity) {
       if ($entity instanceof EntityInterface) {
+        if (!$entity->access('view', \Drupal::currentUser())) {
+          continue;
+        }
+
         if ($view_mode) {
           $view_builder = $this->getViewBuilder($entity->getEntityTypeId());
           $view = $view_builder->view($entity, $view_mode);
