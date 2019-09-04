@@ -378,6 +378,12 @@ class ParDataManager implements ParDataManagerInterface {
       $memberships = $object->getRelatedEntities($person, $memberships, 0, 'manage');
     }
 
+    // Do not return any entities that the account can't view.
+    // @see PAR-1462 - Removing all deleted entities from loading.
+    $memberships = array_filter($memberships, function ($membership) use ($account) {
+      return $membership->getEntity()->access('view', $account);
+    });
+
     return !empty($memberships) ? $memberships : [];
   }
 

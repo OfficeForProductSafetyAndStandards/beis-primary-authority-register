@@ -129,7 +129,7 @@ class ParDataStorage extends TranceStorage {
    */
   public function loadMultiple(array $ids = NULL) {
     $entities = parent::loadMultiple($ids);
-    
+
     return $entities;
   }
 
