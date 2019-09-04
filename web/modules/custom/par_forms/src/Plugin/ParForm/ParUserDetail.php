@@ -45,6 +45,7 @@ class ParUserDetail extends ParFormPluginBase {
       $this->getFlowDataHandler()->setFormPermValue('user_account', $user->getEmail());
       $last_login_date = $this->getDateFormatter()->format($user->getLastLoginTime(), 'gds_date_format');
       $this->setDefaultValuesByKey('user_login', $cardinality, $last_login_date);
+      $this->setDefaultValuesByKey('user_active', $cardinality, (bool) $user->isActive());
 
       $roles = Role::loadMultiple($user->getRoles());
       $user_roles = [];
@@ -116,60 +117,60 @@ class ParUserDetail extends ParFormPluginBase {
         '#value' => '<strong>Type of account</strong><br>' . $this->getDefaultValuesByKey('user_roles', $cardinality, ''),
         '#attributes' => ['class' => ['column-two-thirds']],
       ];
-      $form['user_account']['last_access'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => '<strong>Last sign in</strong><br>' . $this->getDefaultValuesByKey('user_login', $cardinality, ''),
-        '#attributes' => ['class' => ['column-one-third']],
-      ];
 
-      // @TODO There is an access checking bug in the ParFlowAccessTrait whereby
-      // when access is checked it changes the route stored in the flow negotiator
-      // and thus incorrectly invalidates the cache for any components that are
-      // loaded after this point.
-      //
-      // @example
-      //   $this->getFlowNegotiator()->setRoute($route_match);
-      //   $this->getFlowDataHandler()->reset();
-      //   $this->loadData();
-      //
-      // In this case we're using the contact_detail plugin after this plugin and
-      // only the first contact record can be found because it can't identify
-      // the data that was cached in the plugins loadData() method.
-      //
-      // This is being commented out because we don't want to enable this
-      // functionality yet anyway, but needs to be resolved asap.
-      //
-//      $params = $this->getRouteParams() + ['user' => $user_id];
-//      // Try to add a block user link.
-//      try {
-//        $link = $this->getLinkByRoute('par_user_block_flows.block', $params, ['attributes' => ['class' => ['column-full']]]);
-//        if ($link->getUrl()->access()) {
-//          $form['user_account']['block'] = [
-//            '#type' => 'markup',
-//            '#markup' => t('@link', [
-//              '@link' => $link->setText('Block user account')->toString(),
-//            ]),
-//          ];
-//        }
-//      } catch (ParFlowException $e) {
-//
-//      }
-//
-//      // Try to add a block user link.
-//      try {
-//        $link = $this->getLinkByRoute('par_user_block_flows.unblock', $params, ['attributes' => ['class' => ['column-full']]]);
-//        if ($link->getUrl()->access()) {
-//          $form['user_account']['unblock'] = [
-//            '#type' => 'markup',
-//            '#markup' => t('@link', [
-//              '@link' => $link->setText('Re-activate user account')->toString(),
-//            ]),
-//          ];
-//        }
-//      } catch (ParFlowException $e) {
-//
-//      }
+      // Check whether the user is active.
+      $active = $this->getDefaultValuesByKey('user_active', $cardinality, FALSE);
+      if ($active) {
+        $form['user_account']['last_access'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => '<strong>Last sign in</strong><br>' . $this->getDefaultValuesByKey('user_login', $cardinality, ''),
+          '#attributes' => ['class' => ['column-one-third']],
+        ];
+      }
+      else {
+        $form['user_account']['blocked'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => '<strong>The account is no longer active</strong><br>',
+          '#attributes' => ['class' => ['column-one-third']],
+        ];
+      }
+
+      $params = $this->getRouteParams() + ['user' => $user_id];
+      // Try to add a block user link.
+      try {
+        if ($link = $this->getLinkByRoute('par_user_block_flows.block', $params, [], TRUE)) {
+          $block_link = t('@link', [
+            '@link' => $link->setText('Block user account')->toString(),
+          ]);
+          $form['user_account']['block'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => !empty($block_link) ? $block_link : '',
+            '#attributes' => ['class' => ['column-full']],
+          ];
+        }
+      } catch (ParFlowException $e) {
+
+      }
+
+      // Try to add a block user link.
+      try {
+        if ($link = $this->getLinkByRoute('par_user_block_flows.unblock', $params, [], TRUE)) {
+          $unblock_link = t('@link', [
+            '@link' => $link->setText('Re-activate user account')->toString(),
+          ]);
+        }
+        $form['user_account']['unblock'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => !empty($unblock_link) ? $unblock_link : '',
+          '#attributes' => ['class' => ['column-full']],
+        ];
+      } catch (ParFlowException $e) {
+
+      }
 
     }
     elseif ($person_id = $this->getFlowDataHandler()->getFormPermValue('person_id', NULL)) {

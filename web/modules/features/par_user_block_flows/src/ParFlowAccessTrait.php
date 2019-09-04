@@ -38,11 +38,11 @@ trait ParFlowAccessTrait {
       $this->accessResult = AccessResult::forbidden('No user account could be found.');
     }
 
-    if ($this->getFlowNegotiator()->getFlowName() === 'block_user' && $user->isBlocked()) {
+    if ($access_route_negotiator->getFlowName() === 'block_user' && $user->isBlocked()) {
       $this->accessResult = AccessResult::forbidden('This user is already blocked.');
     }
 
-    if ($this->getFlowNegotiator()->getFlowName() === 'unblock_user' && $user->isActive()) {
+    if ($access_route_negotiator->getFlowName() === 'unblock_user' && $user->isActive()) {
       $this->accessResult = AccessResult::forbidden('This user is already active.');
     }
 
