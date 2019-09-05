@@ -7,6 +7,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\ParDataException;
 use Drupal\par_flows\ParFlowException;
 use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
@@ -38,10 +39,31 @@ trait ParFlowAccessTrait {
       $this->accessResult = AccessResult::forbidden('No user account could be found.');
     }
 
+    // Disable blocking of already blocked users.
     if ($access_route_negotiator->getFlowName() === 'block_user' && $user->isBlocked()) {
       $this->accessResult = AccessResult::forbidden('This user is already blocked.');
     }
 
+    // Disable blocking of last user in an authority/organisation.
+    try {
+      $isLastSurvingAuthorityMember = $this->getParDataManager()
+        ->isRoleInAllMemberAuthorities($user, ['par_authority']);
+    }
+    catch (ParDataException $e) {
+      $isLastSurvingAuthorityMember = FALSE;
+    }
+    try {
+      $isLastSurvingOrganisationMember = $this->getParDataManager()
+        ->isRoleInAllMemberOrganisations($user, ['par_organisation']);
+    }
+    catch (ParDataException $e) {
+      $isLastSurvingOrganisationMember = FALSE;
+    }
+    if ($access_route_negotiator->getFlowName() === 'block_user' && ($isLastSurvingAuthorityMember || $isLastSurvingOrganisationMember)) {
+
+    }
+
+    // Disable unblocking of users that are already active.
     if ($access_route_negotiator->getFlowName() === 'unblock_user' && $user->isActive()) {
       $this->accessResult = AccessResult::forbidden('This user is already active.');
     }
