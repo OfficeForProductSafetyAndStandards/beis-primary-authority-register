@@ -47,6 +47,12 @@ class ParContactDetailsForm extends ParFormPluginBase {
       $this->setDefaultValuesByKey("work_phone", $cardinality, $par_data_person->get('work_phone')->getString());
       $this->setDefaultValuesByKey("mobile_phone", $cardinality, $par_data_person->get('mobile_phone')->getString());
       $this->setDefaultValuesByKey("email", $cardinality, $par_data_person->get('email')->getString());
+
+      // Provide an option to limit whether the email address can be entered.
+      $limit_all_users = isset($this->getConfiguration()['limit_all_users']) ? (bool) $this->getConfiguration()['limit_all_users'] : FALSE;
+      if ($limit_all_users) {
+        $this->setDefaultValuesByKey("email_readonly", $cardinality, TRUE);
+      }
     }
 
     parent::loadData();
@@ -87,11 +93,32 @@ class ParContactDetailsForm extends ParFormPluginBase {
       '#default_value' => $this->getDefaultValuesByKey('mobile_phone', $cardinality),
     ];
 
-    $form['email'] = [
-      '#type' => 'email',
-      '#title' => $this->t('Enter the email address'),
-      '#default_value' => $this->getDefaultValuesByKey('email', $cardinality),
-    ];
+    // Prevent modifying of email address when un-editable.
+    if ($this->getDefaultValuesByKey('email_readonly', $cardinality, FALSE)) {
+      $form['email_readonly'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('Email address'),
+        '#description' => $this->t('You cannot update this person\'s email address because they already have an account.'),
+        '#attributes' => ['class' => ['form-group']],
+        'email_address' => [
+          '#type' => 'markup',
+          '#markup' => $this->getDefaultValuesByKey('email', $cardinality),
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
+        ],
+      ];
+      $form['email'] = [
+        '#type' => 'hidden',
+        '#value' => $this->getDefaultValuesByKey('email', $cardinality),
+      ];
+    }
+    else {
+      $form['email'] = [
+        '#type' => 'email',
+        '#title' => $this->t('Enter the email address'),
+        '#default_value' => $this->getDefaultValuesByKey('email', $cardinality),
+      ];
+    }
 
     return $form;
   }
