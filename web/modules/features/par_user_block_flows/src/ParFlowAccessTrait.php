@@ -60,7 +60,7 @@ trait ParFlowAccessTrait {
       $isLastSurvingOrganisationMember = FALSE;
     }
     if ($access_route_negotiator->getFlowName() === 'block_user' && ($isLastSurvingAuthorityMember || $isLastSurvingOrganisationMember)) {
-
+      $this->accessResult = AccessResult::forbidden('This user is the only member of their authority or organisation.');
     }
 
     // Disable unblocking of users that are already active.

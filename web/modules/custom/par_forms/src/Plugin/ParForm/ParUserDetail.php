@@ -4,9 +4,11 @@ namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\ParDataException;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
@@ -46,6 +48,24 @@ class ParUserDetail extends ParFormPluginBase {
       $last_login_date = $this->getDateFormatter()->format($user->getLastLoginTime(), 'gds_date_format');
       $this->setDefaultValuesByKey('user_login', $cardinality, $last_login_date);
       $this->setDefaultValuesByKey('user_active', $cardinality, (bool) $user->isActive());
+
+      // Disable blocking of last user in an authority/organisation.
+      try {
+        $isLastSurvingAuthorityMember = $this->getParDataManager()
+          ->isRoleInAllMemberAuthorities($user, ['par_authority']);
+      }
+      catch (ParDataException $e) {
+        $isLastSurvingAuthorityMember = FALSE;
+      }
+      try {
+        $isLastSurvingOrganisationMember = $this->getParDataManager()
+          ->isRoleInAllMemberOrganisations($user, ['par_organisation']);
+      }
+      catch (ParDataException $e) {
+        $isLastSurvingOrganisationMember = FALSE;
+      }
+      $this->setDefaultValuesByKey('user_unblockable', $cardinality, (bool) ($isLastSurvingAuthorityMember || $isLastSurvingOrganisationMember));
+
 
       $roles = Role::loadMultiple($user->getRoles());
       $user_roles = [];
@@ -120,6 +140,7 @@ class ParUserDetail extends ParFormPluginBase {
 
       // Check whether the user is active.
       $active = $this->getDefaultValuesByKey('user_active', $cardinality, FALSE);
+      $unblockable = $this->getDefaultValuesByKey('user_unblockable', $cardinality, FALSE);
       if ($active) {
         $form['user_account']['last_access'] = [
           '#type' => 'html_tag',
@@ -134,6 +155,15 @@ class ParUserDetail extends ParFormPluginBase {
           '#tag' => 'p',
           '#value' => '<strong>The account is no longer active</strong><br>',
           '#attributes' => ['class' => ['column-one-third']],
+        ];
+      }
+
+      if ($unblockable) {
+        $form['user_account']['blocked'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => 'This user can not be removed because they are the only member of one of their authorities or organisations.<br>',
+          '#attributes' => ['class' => ['column-full']],
         ];
       }
 
