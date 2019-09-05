@@ -1130,7 +1130,7 @@ display:
           is_grouped: true
           group_info:
             label: 'Type of member'
-            description: 'Filter by member statuts'
+            description: 'Filter by member status'
             identifier: revoked
             optional: true
             widget: select
