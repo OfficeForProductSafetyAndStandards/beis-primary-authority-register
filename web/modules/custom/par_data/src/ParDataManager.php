@@ -16,6 +16,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
@@ -500,18 +501,22 @@ class ParDataManager implements ParDataManagerInterface {
    * @return array
    *   An array of member's keyed by authority and then role id.
    */
-  public function getRolesInAuthorities(array $entities, $account = NULL) {
+  public function getRolesInInstitutions(array $entities, $account = NULL) {
     $roles = [];
-    foreach ($entities as $authority) {
-      $members = $authority->getPerson();
+    foreach ($entities as $entity) {
+      // Ignore any entities that aren't authorities or organisations
+      if (!$entity instanceof ParDataAuthority && !$entity instanceof ParDataOrganisation) {
+        continue;
+      }
+      $members = $entity->getPerson();
 
-      $roles[$authority->uuid()] = [];
+      $roles[$entity->uuid()] = [];
       foreach ($members as $member) {
         $user = $member->getUserAccount();
 
         if (isset($user) && (!isset($account) || $user->id() !== $account->id())) {
           foreach ($user->getRoles() as $role) {
-            $roles[$authority->uuid()][$role][] = $member;
+            $roles[$entity->uuid()][$role][] = $member;
           }
         }
       }
@@ -527,21 +532,65 @@ class ParDataManager implements ParDataManagerInterface {
    * role in any of their authorities as this affects whether they can
    * be assigned roles or even removed from the system.
    *
+   * @throws \Drupal\par_data\ParDataException
+   *   If there are no authorities to lookup.
+   *
    * @param AccountInterface $account
    *   The user account to check member authorities by.
    * @param $roles
    *   An array of roles to lookup.
    *
    * @return bool
-   *   If the roles exist in ALL authorities return true, otherwise false.
+   *   If the roles don't exist in ALL authorities return false, otherwise true.
    */
   public function isRoleInAllMemberAuthorities(AccountInterface $account, $roles) {
     $authorities = $this->isMemberOfAuthority($account);
-    $authority_roles = $this->getRolesInAuthorities($authorities, $account);
+    if (empty($authorities)) {
+      throw new ParDataException('The user has no authorities, roles cannot be matched');
+    }
+
+    $authority_roles = $this->getRolesInInstitutions($authorities, $account);
 
     foreach ($roles as $role) {
       foreach ($authority_roles as $authority) {
         if (!isset($authority[$role]) || empty($authority[$role])) {
+          return FALSE;
+        }
+      }
+    }
+
+    return TRUE;
+  }
+
+  /**
+   * Check whether given roles exist in any of the member's organisations.
+   *
+   * Allows determination of whether they are the last user with a given
+   * role in any of their organisations as this affects whether they can
+   * be assigned roles or even removed from the system.
+   *
+   * @throws \Drupal\par_data\ParDataException
+   *   If there are no organisations to lookup.
+   *
+   * @param AccountInterface $account
+   *   The user account to check member organisations by.
+   * @param $roles
+   *   An array of roles to lookup.
+   *
+   * @return bool
+   *   If the roles don't exist in ALL organisations return false, otherwise true.
+   */
+  public function isRoleInAllMemberOrganisations(AccountInterface $account, $roles) {
+    $organisations = $this->isMemberOfOrganisation($account);
+    if (empty($organisations)) {
+      throw new ParDataException('The user has no organisations, roles cannot be matched');
+    }
+
+    $organisation_roles = $this->getRolesInInstitutions($organisations, $account);
+
+    foreach ($roles as $role) {
+      foreach ($organisation_roles as $organisation) {
+        if (!isset($organisation[$role]) || empty($organisation[$role])) {
           return FALSE;
         }
       }
@@ -712,7 +761,7 @@ class ParDataManager implements ParDataManagerInterface {
     if (!empty($entities)) {
       return $entities;
     }
-    
+
     $conditions = [
       [
         'AND' => [
