@@ -388,9 +388,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
           case 'membership_start':
             try {
-              $date_fragments = explode('/', $value);
-              $format = strlen($date_fragments[2]) === 2 ? "d/m/y" : "d/m/Y";
-              $date = DrupalDateTime::createFromFormat($format, $value, NULL, ['validate_format' => FALSE]);
+              $date = DrupalDateTime::createFromFormat(self::DATE_FORMAT, $value, NULL, ['validate_format' => FALSE]);
               $data[$column] = $date->format('Y-m-d');
             }
             catch (\Exception $e) {
@@ -401,12 +399,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
           case 'membership_end':
             try {
-              $date_fragments = explode('/', $value);
-              $format = strlen($date_fragments[2]) === 2 ? "d/m/y" : "d/m/Y";
               // Create the date, setting the time to the last possible time in the day.
-              $cease_date = DrupalDateTime::createFromFormat($format . " H:i:s", $value . " 23:59:59", NULL, ['validate_format' => FALSE]);
-
-              $data[$column] = $cease_date;
+              $cease_date = DrupalDateTime::createFromFormat(self::DATE_FORMAT . " H:i:s", $value . " 23:59:59", NULL, ['validate_format' => FALSE]);
+              $data[$column] = $cease_date->format('Y-m-d');
             }
             catch (\Exception $e) {
 
@@ -466,6 +461,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $par_data_premises_type = $this->getParDataManager()->getParBundleEntity('par_data_premises');
     $par_data_person_type = $this->getParDataManager()->getParBundleEntity('par_data_person');
     $par_data_legal_entity_type = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
+
     // Search this partnership for a similar member.
     $partnership_id = $this->getValue($row, 'partnership_id');
     if ($partnership_id) {
@@ -616,24 +612,6 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     /** @var ParDataLegalEntity[] $par_data_legal_entity */
     extract($entities);
 
-    // There are two possible values for nation depending
-    // on whether it is in the UK or outside.
-    $nation = $par_data_premises ? $par_data_premises_type->getAllowedFieldlabel('nation', $par_data_premises->get('nation')->getString()) : NULL;
-    try {
-      $address = !$nation && $par_data_premises ? $par_data_premises->get('address')->first() : NULL;
-      $country_code = $address ? $address->get('country_code')->getString() : NULL;
-      $nation = $country_code ? $this->getCountryRepository()->get($country_code) : '';
-    }
-    catch (UnknownCountryException $exception) {
-      $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
-    }
-
-    // Convert the datetime to the appropriate format.
-    if ($par_data_coordinated_business) {
-      $start_date = $par_data_coordinated_business->date_membership_began->date();
-      $end_date = $par_data_coordinated_business->date_membership_ceased->date();
-    }
-
     return [
       $this->getMapping('organisation_name') => $par_data_organisation ? $par_data_organisation->get('organisation_name')->getString() : '',
       $this->getMapping('address_line_1') => $par_data_premises ? $par_data_premises->get('address')->first()->get('address_line1')->getString() : '',
@@ -641,27 +619,24 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       $this->getMapping('town') => $par_data_premises ? $par_data_premises->get('address')->first()->get('locality')->getString() : '',
       $this->getMapping('county') => $par_data_premises ? $par_data_premises->get('address')->first()->get('administrative_area')->getString() : '',
       $this->getMapping('postcode') => $par_data_premises ? $par_data_premises->get('address')->first()->get('postal_code')->getString() : '',
-      $this->getMapping('nation') => $nation,
-      $this->getMapping('first_name') => $par_data_person ? $par_data_person->get('first_name')->getString() : '',
-      $this->getMapping('last_name') => $par_data_person ? $par_data_person->get('last_name')->getString() : '',
+      $this->getMapping('nation') => $par_data_premises ? $par_data_premises->getCountry() : '',
+      $this->getMapping('first_name') => $par_data_person ? $par_data_person->getFirstName() : '',
+      $this->getMapping('last_name') => $par_data_person ? $par_data_person->getLastName() : '',
       $this->getMapping('work_phone') => $par_data_person ? $par_data_person->get('work_phone')->getString() : '',
       $this->getMapping('mobile_phone') => $par_data_person ? $par_data_person->get('mobile_phone')->getString() : '',
-      $this->getMapping('email') => $par_data_person ? $par_data_person->get('email')->getString() : '',
-      $this->getMapping('membership_start') => $start_date ? $start_date->format(self::DATE_FORMAT) : '',
-      $this->getMapping('membership_end') => $end_date ? $end_date->format(self::DATE_FORMAT) : '',
-      $this->getMapping('covered') => $par_data_coordinated_business_type->getBooleanFieldLabel($par_data_coordinated_business->getBoolean('covered_by_inspection')),
-      $this->getMapping('legal_entity_name_first') => isset($par_data_legal_entity[0]) ? $par_data_legal_entity[0]->get('registered_name')->getString() : '',
-      $this->getMapping('legal_entity_type_first') => isset($par_data_legal_entity[0]) ?
-        $par_data_premises_type->getAllowedFieldlabel('legal_entity_type', $par_data_legal_entity[0]->get('legal_entity_type')->getString()) : '',
-      $this->getMapping('legal_entity_number_first') => isset($par_data_legal_entity[0]) ? $par_data_legal_entity[0]->get('registered_number')->getString() : '',
-      $this->getMapping('legal_entity_name_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[1]->get('registered_name')->getString() : '',
-      $this->getMapping('legal_entity_type_second') => isset($par_data_legal_entity[1]) ?
-        $par_data_premises_type->getAllowedFieldlabel('legal_entity_type', $par_data_legal_entity[1]->get('legal_entity_type')->getString()) : '',
-      $this->getMapping('legal_entity_type_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[1]->get('registered_number')->getString() : '',
-      $this->getMapping('legal_entity_name_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[2]->get('registered_name')->getString() : '',
-      $this->getMapping('legal_entity_type_third') => isset($par_data_legal_entity[2]) ?
-        $par_data_premises_type->getAllowedFieldlabel('legal_entity_type', $par_data_legal_entity[2]->get('legal_entity_type')->getString()) : '',
-      $this->getMapping('legal_entity_type_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[2]->get('registered_number')->getString() : '',
+      $this->getMapping('email') => $par_data_person ? $par_data_person->getEmail() : '',
+      $this->getMapping('membership_start') => $par_data_coordinated_business ? $par_data_coordinated_business->getStartDate() : '',
+      $this->getMapping('membership_end') => $par_data_coordinated_business ? $par_data_coordinated_business->getEndDate() : '',
+      $this->getMapping('covered') => $par_data_coordinated_business ? $par_data_coordinated_business->getCovered() : '',
+      $this->getMapping('legal_entity_name_first') => isset($par_data_legal_entity[0]) ? $par_data_legal_entity[0]->getName() : '',
+      $this->getMapping('legal_entity_type_first') => isset($par_data_legal_entity[0]) ? $par_data_legal_entity[0]->getType() : '',
+      $this->getMapping('legal_entity_number_first') => isset($par_data_legal_entity[0]) ? $par_data_legal_entity[0]->getRegisteredNumber() : '',
+      $this->getMapping('legal_entity_name_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[1]->getName() : '',
+      $this->getMapping('legal_entity_type_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[0]->getType() : '',
+      $this->getMapping('legal_entity_type_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[1]->getRegisteredNumber() : '',
+      $this->getMapping('legal_entity_name_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[2]->getName() : '',
+      $this->getMapping('legal_entity_type_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[0]->getType() : '',
+      $this->getMapping('legal_entity_type_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[2]->getRegisteredNumber() : '',
     ];
   }
 

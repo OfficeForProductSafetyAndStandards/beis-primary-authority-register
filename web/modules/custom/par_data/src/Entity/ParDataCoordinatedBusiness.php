@@ -73,6 +73,8 @@ use Drupal\par_data\ParDataException;
  */
 class ParDataCoordinatedBusiness extends ParDataEntity {
 
+  const DATE_FORMAT = 'd/m/Y';
+
   /**
    * {@inheritdoc}
    */
@@ -213,6 +215,31 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
    */
   public function getSicCode() {
     return $this->get('field_sic_code')->referencedEntities();
+  }
+
+  /**
+   * Get the value for the covered by field.
+   */
+  public function getCovered() {
+    $value = $this->getBoolean('covered_by_inspection');
+    $covered = !empty($value) ? $this->getTypeEntity()->getBooleanFieldLabel('covered_by_inspection', $value) : NULL;
+    return $covered;
+  }
+
+  /**
+   * Get the member start date.
+   */
+  public function getStartDate() {
+    $date = !$this->get('date_membership_began')->isEmpty() ? $this->date_membership_began->date : NULL;
+    return $date ? $date->format(self::DATE_FORMAT) : NULL;
+  }
+
+  /**
+   * Get the member end date.
+   */
+  public function getEndDate() {
+    $date = !$this->get('date_membership_ceased')->isEmpty() ? $this->date_membership_ceased->date : NULL;
+    return $date ? $date->format(self::DATE_FORMAT) : NULL;
   }
 
   /**
