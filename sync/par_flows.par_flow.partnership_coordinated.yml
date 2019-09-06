@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: Ftai7HgPjHfLFHh_7ItfBjo5vfRv0MToOwNNxLeuIVE
+  default_config_hash: IBWrbC5HEiSU_tBarRN5U3KrgqSj8HMQc4jgtVsZu4o
 id: partnership_coordinated
 label: 'Coordinated Partnership Flow'
 default_title: null
