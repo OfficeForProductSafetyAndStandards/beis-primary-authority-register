@@ -20,7 +20,7 @@ class PastDateValidator extends LessThanOrEqualValidator {
         $convertedValue = new \DateTime($value);
       }
       catch (\Exception $e) {
-        $this->context->buildViolation($constraint->conversion_error)
+        $this->context->buildViolation($constraint->message)
           ->setCode(PastDate::CONVERSION_ERROR)
           ->addViolation();
       }

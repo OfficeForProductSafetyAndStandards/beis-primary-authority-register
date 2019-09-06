@@ -20,7 +20,7 @@ class FutureDateValidator extends GreaterThanOrEqualValidator {
         $convertedValue = new \DateTime($value);
       }
       catch (\Exception $e) {
-        $this->context->buildViolation($constraint->conversion_error)
+        $this->context->buildViolation($constraint->message)
           ->setCode(FutureDate::CONVERSION_ERROR)
           ->addViolation();
       }

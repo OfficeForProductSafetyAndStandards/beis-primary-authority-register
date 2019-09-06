@@ -248,7 +248,8 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $par_data_premises_type = $this->getParDataManager()->getParBundleEntity('par_data_premises');
     $par_data_legal_entity_type = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
-    $start_date = $row[$this->getMapping('membership_start')];
+    // The end date must be greater than the start date @see PAR-1477
+    $start_date = isset($row[$this->getMapping('membership_start')]) ? $row[$this->getMapping('membership_start')] : NULL;
 
     $legal_entity_options = $par_data_legal_entity_type->getAllowedValues('legal_entity_type');
     $country_options = $this->getCountryRepository()->getList(NULL) + $par_data_premises_type->getAllowedValues('nation');
@@ -277,7 +278,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       'membership_end' => [
         new DateTime(['format' => self::DATE_FORMAT]),
         new FutureDate([
-          'value' => $start_date,
+          'value' => $start_date ?? 'today',
           'message' => 'The membership end date should be after the start date.',
         ]),
       ],
