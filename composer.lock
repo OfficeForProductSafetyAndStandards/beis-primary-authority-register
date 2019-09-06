@@ -116,16 +116,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.110.7",
+            "version": "3.110.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "57d9dd171a5afe0b48ce44f05be2d8875c2f7b34"
+                "reference": "705fc1ffe05747e6789b19480764ebcd06995911"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/57d9dd171a5afe0b48ce44f05be2d8875c2f7b34",
-                "reference": "57d9dd171a5afe0b48ce44f05be2d8875c2f7b34",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/705fc1ffe05747e6789b19480764ebcd06995911",
+                "reference": "705fc1ffe05747e6789b19480764ebcd06995911",
                 "shasum": ""
             },
             "require": {
@@ -195,7 +195,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-08-30T18:07:59+00:00"
+            "time": "2019-09-05T18:11:21+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -2305,16 +2305,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.7.6",
+            "version": "8.7.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "39164616332832e1456199d32fc3ed11562f4721"
+                "reference": "32e1d7a67bbc28f07dc43d9ff692c0e90a4aeb92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/39164616332832e1456199d32fc3ed11562f4721",
-                "reference": "39164616332832e1456199d32fc3ed11562f4721",
+                "url": "https://api.github.com/repos/drupal/core/zipball/32e1d7a67bbc28f07dc43d9ff692c0e90a4aeb92",
+                "reference": "32e1d7a67bbc28f07dc43d9ff692c0e90a4aeb92",
                 "shasum": ""
             },
             "require": {
@@ -2364,7 +2364,8 @@
                 "zendframework/zend-feed": "^2.4"
             },
             "conflict": {
-                "drush/drush": "<8.1.10"
+                "drush/drush": "<8.1.10",
+                "symfony/dom-crawler": ">=4"
             },
             "replace": {
                 "drupal/action": "self.version",
@@ -2552,7 +2553,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2019-08-07T19:19:20+00:00"
+            "time": "2019-09-04T10:26:35+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -9552,16 +9553,16 @@
         },
         {
             "name": "zendframework/zend-escaper",
-            "version": "2.6.0",
+            "version": "2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-escaper.git",
-                "reference": "31d8aafae982f9568287cb4dce987e6aff8fd074"
+                "reference": "3801caa21b0ca6aca57fa1c42b08d35c395ebd5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-escaper/zipball/31d8aafae982f9568287cb4dce987e6aff8fd074",
-                "reference": "31d8aafae982f9568287cb4dce987e6aff8fd074",
+                "url": "https://api.github.com/repos/zendframework/zend-escaper/zipball/3801caa21b0ca6aca57fa1c42b08d35c395ebd5f",
+                "reference": "3801caa21b0ca6aca57fa1c42b08d35c395ebd5f",
                 "shasum": ""
             },
             "require": {
@@ -9593,7 +9594,7 @@
                 "escaper",
                 "zf"
             ],
-            "time": "2018-04-25T15:48:53+00:00"
+            "time": "2019-09-05T20:03:20+00:00"
         },
         {
             "name": "zendframework/zend-feed",
