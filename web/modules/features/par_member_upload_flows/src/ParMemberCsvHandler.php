@@ -29,10 +29,14 @@ use Drupal\par_data\ParDataException;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
+use Drupal\par_validation\Plugin\Validation\Constraint\FutureDate;
+use Drupal\par_validation\Plugin\Validation\Constraint\PastDate;
+use Drupal\par_validation\Plugin\Validation\Constraint\PastDateValidator;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Constraints\Choice;
-use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
@@ -62,6 +66,11 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    * The maximum number of rows that can be processed per batch run.
    */
   const BATCH_LIMIT = 100;
+
+  /**
+   * Set the default date format.
+   */
+  const DATE_FORMAT = 'd/m/Y';
 
   /**
    * The symfony serializer.
@@ -234,10 +243,12 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     return $column && isset($row[$column]) ? $row[$column] : $default;
   }
 
-  protected function getConstraints() {
+  protected function getConstraints($row) {
     /** @var ParDataPremisesType $par_data_premises_type */
     $par_data_premises_type = $this->getParDataManager()->getParBundleEntity('par_data_premises');
     $par_data_legal_entity_type = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
+
+    $start_date = $row[$this->getMapping('membership_start')];
 
     $legal_entity_options = $par_data_legal_entity_type->getAllowedValues('legal_entity_type');
     $country_options = $this->getCountryRepository()->getList(NULL) + $par_data_premises_type->getAllowedValues('nation');
@@ -257,13 +268,18 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
         ]),
       ],
       'membership_start' => [
-        new DateTime(['format' => 'd/m/Y']),
+        new DateTime(['format' => self::DATE_FORMAT]),
         new NotBlank([
           'message' => 'The value could not be found.',
         ]),
+        new PastDate(['value' => 'today']),
       ],
       'membership_end' => [
-        new DateTime(['format' => 'd/m/Y']),
+        new DateTime(['format' => self::DATE_FORMAT]),
+        new FutureDate([
+          'value' => $start_date,
+          'message' => 'The membership end date should be after the start date.',
+        ]),
       ],
       'legal_entity_name_first' => [
         new NotBlank([
@@ -512,10 +528,11 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     }
 
     // Set the coordinated member values.
-    $normalized['par_data_coordinated_business']->set('date_membership_began', $this->getValue($data, 'membership_start'));
     $normalized['par_data_coordinated_business']->set('covered_by_inspection', $this->getValue($data, 'covered'));
     $cease_date = $this->getValue($data, 'membership_end');
-    $cease_date_formatted = $cease_date ? $cease_date->format('Y-m-d') : '';
+    $cease_date_formatted = $cease_date ? $cease_date->format('d/m/Y') : '';
+
+    $normalized['par_data_coordinated_business']->set('date_membership_began', $this->getValue($data, 'membership_start'));
     if ($this->getValue($data, 'ceased') && $normalized['par_data_coordinated_business'] instanceof ParDataCoordinatedBusiness) {
       $normalized['par_data_coordinated_business']->cease($this->getValue($data, 'membership_end'), FALSE);
     }
@@ -611,6 +628,12 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
     }
 
+    // Convert the datetime to the appropriate format.
+    if ($par_data_coordinated_business) {
+      $start_date = $par_data_coordinated_business->date_membership_began->date();
+      $end_date = $par_data_coordinated_business->date_membership_ceased->date();
+    }
+
     return [
       $this->getMapping('organisation_name') => $par_data_organisation ? $par_data_organisation->get('organisation_name')->getString() : '',
       $this->getMapping('address_line_1') => $par_data_premises ? $par_data_premises->get('address')->first()->get('address_line1')->getString() : '',
@@ -624,8 +647,8 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       $this->getMapping('work_phone') => $par_data_person ? $par_data_person->get('work_phone')->getString() : '',
       $this->getMapping('mobile_phone') => $par_data_person ? $par_data_person->get('mobile_phone')->getString() : '',
       $this->getMapping('email') => $par_data_person ? $par_data_person->get('email')->getString() : '',
-      $this->getMapping('membership_start') => $par_data_coordinated_business ? $par_data_coordinated_business->get('date_membership_began')->getString() : '',
-      $this->getMapping('membership_end') => $par_data_coordinated_business ? $par_data_coordinated_business->get('date_membership_ceased')->getString() : NULL,
+      $this->getMapping('membership_start') => $start_date ? $start_date->format(self::DATE_FORMAT) : '',
+      $this->getMapping('membership_end') => $end_date ? $end_date->format(self::DATE_FORMAT) : '',
       $this->getMapping('covered') => $par_data_coordinated_business_type->getBooleanFieldLabel($par_data_coordinated_business->getBoolean('covered_by_inspection')),
       $this->getMapping('legal_entity_name_first') => isset($par_data_legal_entity[0]) ? $par_data_legal_entity[0]->get('registered_name')->getString() : '',
       $this->getMapping('legal_entity_type_first') => isset($par_data_legal_entity[0]) ?
@@ -771,7 +794,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       }
 
       $validator = Validation::createValidator();
-      foreach ($this->getConstraints() as $key => $constraints) {
+      foreach ($this->getConstraints($row) as $key => $constraints) {
         $column = $this->getMapping($key);
 
         // Ensure case insensitive validation.
@@ -781,6 +804,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
           // Ensure all strings are validated as case insensitive values.
           $value = is_string($value) ? strtolower($value) : $value;
 
+          // Validate constraints.
           $violations = $validator->validate($value, $constraints);
 
           foreach ($violations as $violation) {
