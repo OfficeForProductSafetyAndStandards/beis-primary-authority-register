@@ -28,10 +28,14 @@ Feature: Coordinator User - Upload Members
         Then the element "#edit-error-list thead" contains the text "Line"
         And the element "#edit-error-list thead" contains the text "Column"
         And the element "#edit-error-list thead" contains the text "Error"
-        And the element "#edit-error-list tbody" contains the text "organisation name"
-        And the element "#edit-error-list tbody" contains the text "membership start date"
-        And the element "#edit-error-list tbody" contains the text "address line 1"
-        And the element "#edit-error-list tbody" contains the text "nation"
+
+        And the element "#edit-error-list .error-line-3.error-column-organisation-name" contains the text "The value could not be found."
+        And the element "#edit-error-list .error-line-3.error-column-membership-start-date" contains the text "The value could not be found."
+        And the element "#edit-error-list .error-line-3.error-column-address-line-1" contains the text "The value could not be found."
+        And the element "#edit-error-list .error-line-3.error-column-nation" contains the text "The value you entered is not a valid selection, please see the Member Guidance Page for a full list of available country codes."
+        And the element "#edit-error-list .error-line-3.error-column-legal-entity-type-first" contains the text "The value you entered is not a valid selection, please see the Member Guidance Page for a full list of legal entity types."
+        And the element "#edit-error-list .error-line-4.error-column-membership-start-date" contains the text "The date should be in the past."
+        And the element "#edit-error-list .error-line-4.error-column-membership-end-date" contains the text "The membership end date should be after the start date."
         When I click on the button "#edit-done"
 
         # CSV PROCESSING

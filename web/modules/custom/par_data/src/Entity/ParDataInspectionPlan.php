@@ -51,6 +51,11 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "langcode" = "langcode",
  *     "status" = "status"
  *   },
+ *   revision_metadata_keys = {
+ *     "revision_user" = "revision_uid",
+ *     "revision_created" = "revision_timestamp",
+ *     "revision_log_message" = "revision_log"
+ *   },
  *   links = {
  *     "collection" = "/admin/content/par_data/par_data_inspection_plan",
  *     "canonical" = "/admin/content/par_data/par_data_inspection_plan/{par_data_inspection_plan}",

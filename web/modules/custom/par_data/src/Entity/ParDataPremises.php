@@ -3,6 +3,7 @@
 namespace Drupal\par_data\Entity;
 
 use CommerceGuys\Addressing\AddressFormat\AddressField;
+use CommerceGuys\Addressing\Exception\UnknownCountryException;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
@@ -52,6 +53,11 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "langcode" = "langcode",
  *     "status" = "status"
  *   },
+ *   revision_metadata_keys = {
+ *     "revision_user" = "revision_uid",
+ *     "revision_created" = "revision_timestamp",
+ *     "revision_log_message" = "revision_log"
+ *   },
  *   links = {
  *     "collection" = "/admin/content/par_data/par_data_premises",
  *     "canonical" = "/admin/content/par_data/par_data_premises/{par_data_premises}",
@@ -64,6 +70,13 @@ use Drupal\Core\Field\BaseFieldDefinition;
  * )
  */
 class ParDataPremises extends ParDataEntity {
+
+  /**
+   * Get the country repository from the address module.
+   */
+  public function getCountryRepository() {
+    return \Drupal::service('address.country_repository');
+  }
 
   /**
    * {@inheritdoc}
@@ -80,16 +93,38 @@ class ParDataPremises extends ParDataEntity {
   }
 
   /**
-   * Get the primary nation for this organisation.
+   * Get the primary nation for this premises.
    *
    * @return bool
    */
   public function getNation() {
-    return !$this->get('nation')->isEmpty() ? $this->get('nation')->getString() : NULL;
+    $nation_code = !$this->get('nation')->isEmpty() ? $this->get('nation')->getString() : NULL;
+    return $nation_code ? $this->getTypeEntity()->getAllowedFieldlabel('nation', $nation_code) : NULL;
   }
 
   /**
-   * Get the primary nation for this organisation.
+   * Get the nation using the address country as the backup.
+   */
+  public function getCountry() {
+    $country = $this->getNation();
+
+    // If a nation was not set get the country from the first address.
+    if (!$country && $address = $this->get('address')->first()) {
+      try {
+        $address_country_code = $address ? $address->get('country_code')->getString() : NULL;
+        $address_country = $address_country_code ? $this->getCountryRepository()->get($address_country_code)->getName() : NULL;
+
+        $country = $address_country ? $address_country->getName() : '';
+      } catch (UnknownCountryException $exception) {
+        $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
+      }
+    }
+
+    return !empty($country) ? $country : NULL;
+  }
+
+  /**
+   * Set the primary nation for this organisation.
    *
    * @param string $nation
    *   The nation we want to add, this should be one of the allowed sub-country types.
@@ -99,6 +134,7 @@ class ParDataPremises extends ParDataEntity {
   public function setNation($nation, $force = FALSE) {
     $entity_type = $this->getParDataManager()->getParBundleEntity($this->getEntityTypeId());
     $allowed_types = $entity_type->getAllowedValues('nation');
+
     if ($nation && isset($allowed_types[$nation])) {
       $this->set('nation', $nation);
     }

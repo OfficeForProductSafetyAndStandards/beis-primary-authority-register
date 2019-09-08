@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use CommerceGuys\Addressing\Exception\UnknownCountryException;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
@@ -50,6 +51,11 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "uid" = "user_id",
  *     "langcode" = "langcode",
  *     "status" = "status"
+ *   },
+ *   revision_metadata_keys = {
+ *     "revision_user" = "revision_uid",
+ *     "revision_created" = "revision_timestamp",
+ *     "revision_log_message" = "revision_log"
  *   },
  *   links = {
  *     "collection" = "/admin/content/par_data/par_data_organisation",
@@ -162,15 +168,29 @@ class ParDataOrganisation extends ParDataEntity {
    * @return bool
    */
   public function getNation() {
-    if (!$this->get('nation')->isEmpty()) {
-      $nation = $this->get('nation')->getString();
-    }
-    else {
-      $premises = $this->getPremises(TRUE);
-      $nation = $premises->getNation(TRUE);
+    $nation_code = !$this->get('nation')->isEmpty() ? $this->get('nation')->getString() : NULL;
+    return $nation_code ? $this->getTypeEntity()->getAllowedFieldlabel('nation', $nation_code) : NULL;
+  }
+
+  /**
+   * Get the primary nation for this organisation.
+   */
+  public function getCountry() {
+    $country = $this->getNation();
+
+    // If a nation was not set get the country from the first address.
+    if (!$country && $address = $this->get('address')->first()) {
+      try {
+        $address_country_code = $address ? $address->get('country_code')->getString() : NULL;
+        $address_country = $address_country_code ? $this->getCountryRepository()->get($address_country_code)->getName() : NULL;
+
+        $country = $address_country ? $address_country->getName() : '';
+      } catch (UnknownCountryException $exception) {
+        $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
+      }
     }
 
-    return $nation;
+    return !empty($country) ? $country : NULL;
   }
 
   /**
