@@ -2,6 +2,7 @@
 
 namespace Drupal\par_validation\Plugin\Validation\Constraint;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\LessThanOrEqualValidator;
 
@@ -17,7 +18,10 @@ class PastDateValidator extends LessThanOrEqualValidator {
     if (\is_string($value)) {
       // Convert the value to a datetime for comparison.
       try {
-        $convertedValue = new \DateTime($value);
+        $date = \DateTime::createFromFormat("d/m/Y H:i:s", $value . " 23:59:59");
+        if (empty($date) || !$date instanceof \DateTimeInterface) {
+          throw new \Exception('The past date validator could not covert the string to a date.');
+        }
       }
       catch (\Exception $e) {
         $this->context->buildViolation($constraint->message)
@@ -26,8 +30,8 @@ class PastDateValidator extends LessThanOrEqualValidator {
       }
     }
 
-    if (isset($convertedValue) && $convertedValue instanceof \DateTimeInterface) {
-      parent::validate($convertedValue, $constraint);
+    if (isset($date) && $date instanceof \DateTimeInterface) {
+      parent::validate($date, $constraint);
     }
   }
 

@@ -28,8 +28,10 @@ Feature: Coordinator User - Upload Members
         Then the element "#edit-error-list thead" contains the text "Line"
         And the element "#edit-error-list thead" contains the text "Column"
         And the element "#edit-error-list thead" contains the text "Error"
+
         And the element "#edit-error-list tbody" contains the text "organisation name"
         And the element "#edit-error-list tbody" contains the text "membership start date"
+        And the element "#edit-error-list tbody" contains the text "membership end date"
         And the element "#edit-error-list tbody" contains the text "address line 1"
         And the element "#edit-error-list tbody" contains the text "nation"
         When I click on the button "#edit-done"
