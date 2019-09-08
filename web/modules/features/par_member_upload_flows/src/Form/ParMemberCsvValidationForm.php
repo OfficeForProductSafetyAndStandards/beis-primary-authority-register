@@ -2,6 +2,7 @@
 
 namespace Drupal\par_member_upload_flows\Form;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
@@ -62,12 +63,15 @@ class ParMemberCsvValidationForm extends ParBaseForm {
     $rows = [];
     if (isset($errors)) {
       foreach ($errors as $index => $error) {
+        $line_class = Html::cleanCssIdentifier("error-line-{$error->getLine()}");
+        $column_class = Html::cleanCssIdentifier("error-column-{$error->getColumn()}");
         $rows[] = [
           'data' => [
             'line' => $error->getLine(),
             'column' => $error->getColumn(),
             'error' => $error->getMessage(),
           ],
+          'class' => [$line_class, $column_class],
         ];
       }
     }

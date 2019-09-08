@@ -34,6 +34,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   use StringTranslationTrait;
   use RevisionLogEntityTrait;
 
+  const PAR_LOGGER_CHANNEL = 'par';
   const DELETE_FIELD = 'deleted';
   const REVOKE_FIELD = 'revoked';
   const ARCHIVE_FIELD = 'archived';
