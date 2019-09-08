@@ -539,16 +539,13 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // Set the coordinated member values.
     $normalized['par_data_coordinated_business']->set('covered_by_inspection', $this->getValue($data, 'covered'));
-    $cease_date = $this->getValue($data, 'membership_end');
-    $cease_date_formatted = $cease_date ? $cease_date->format('d/m/Y') : '';
-
     $normalized['par_data_coordinated_business']->set('date_membership_began', $this->getValue($data, 'membership_start'));
     if ($this->getValue($data, 'ceased') && $normalized['par_data_coordinated_business'] instanceof ParDataCoordinatedBusiness) {
       $normalized['par_data_coordinated_business']->cease($this->getValue($data, 'membership_end'), FALSE);
     }
     else {
       $normalized['par_data_coordinated_business']->reinstate(FALSE);
-      $normalized['par_data_coordinated_business']->set('date_membership_ceased', $cease_date_formatted);
+      $normalized['par_data_coordinated_business']->set('date_membership_ceased', $this->getValue($data, 'membership_end'));
     }
 
     // Set the organisation details.
