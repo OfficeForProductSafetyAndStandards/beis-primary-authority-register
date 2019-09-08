@@ -132,8 +132,8 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
-  public function reinstate($save = TRUE) {
-    $this->set('date_membership_ceased', NULL);
+  public function reinstate(DrupalDateTime $date = NULL, $save = TRUE) {
+    $this->set('date_membership_ceased', !empty($date) ? $date->format('Y-m-d') : $date);
 
     // Reinstating a member has the same implications as unrevoking partnerships
     // so we use the same methods and status.

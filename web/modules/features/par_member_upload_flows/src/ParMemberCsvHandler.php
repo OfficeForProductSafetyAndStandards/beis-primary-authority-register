@@ -68,9 +68,10 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   const BATCH_LIMIT = 100;
 
   /**
-   * Set the default date format.
+   * Set the default date formats.
    */
   const DATE_FORMAT = 'd/m/Y';
+  const DATETIME_FORMAT = 'Y-m-d';
 
   /**
    * The symfony serializer.
@@ -243,6 +244,32 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     return $column && isset($row[$column]) ? $row[$column] : $default;
   }
 
+  /**
+   * A helper function to convert a string date representation to a valid DateTime object.
+   *
+   * @param $string
+   * @param string $format
+   *
+   * @return \Drupal\Core\Datetime\DrupalDateTime|null
+   */
+  public function stringToDate($string, $format = self::DATETIME_FORMAT) {
+    if (isset($string) && !empty($string)) {
+      try {
+        $date = DrupalDateTime::createFromFormat($format . " H:i:s", $string . " 23:59:59", NULL);
+        if (empty($date)) {
+          throw new \Exception('The date entered cannot be converted to a valid date.');
+        }
+
+        return $date;
+      }
+      catch (\Exception $e) {
+        $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning('The date entered cannot be converted to a valid date.');
+      }
+    }
+
+    return NULL;
+  }
+
   protected function getConstraints($row) {
     /** @var ParDataPremisesType $par_data_premises_type */
     $par_data_premises_type = $this->getParDataManager()->getParBundleEntity('par_data_premises');
@@ -253,7 +280,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $start_date_input = isset($row[$this->getMapping('membership_start')]) ? $row[$this->getMapping('membership_start')] : '';
     if ($start_date_input) {
       try {
-        $date = \DateTime::createFromFormat("d/m/Y H:i:s", $start_date_input . " 23:59:59");
+        $date = \DateTime::createFromFormat(self::DATE_FORMAT . " H:i:s", $start_date_input . " 23:59:59");
         if (empty($date) || !$date instanceof \DateTimeInterface) {
           throw new \Exception('The start date cannot be used to compare the end date.');
         }
@@ -403,7 +430,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
           case 'membership_start':
             try {
               $date = DrupalDateTime::createFromFormat(self::DATE_FORMAT, $value, NULL, ['validate_format' => FALSE]);
-              $data[$column] = $date->format('Y-m-d');
+              $data[$column] = $date->format(self::DATETIME_FORMAT);
             }
             catch (\Exception $e) {
 
@@ -415,7 +442,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
             try {
               // Create the date, setting the time to the last possible time in the day.
               $cease_date = DrupalDateTime::createFromFormat(self::DATE_FORMAT . " H:i:s", $value . " 23:59:59", NULL, ['validate_format' => FALSE]);
-              $data[$column] = $cease_date->format('Y-m-d');
+              $data[$column] = $cease_date->format(self::DATETIME_FORMAT);
             }
             catch (\Exception $e) {
 
@@ -539,13 +566,18 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // Set the coordinated member values.
     $normalized['par_data_coordinated_business']->set('covered_by_inspection', $this->getValue($data, 'covered'));
-    $normalized['par_data_coordinated_business']->set('date_membership_began', $this->getValue($data, 'membership_start'));
-    if ($this->getValue($data, 'ceased') && $normalized['par_data_coordinated_business'] instanceof ParDataCoordinatedBusiness) {
-      $normalized['par_data_coordinated_business']->cease($this->getValue($data, 'membership_end'), FALSE);
+
+    $start_date = $this->stringToDate($this->getValue($data, 'membership_start'));
+    $end_date = $this->stringToDate($this->getValue($data, 'membership_end'));
+    if ($start_date) {
+      $normalized['par_data_coordinated_business']->set('date_membership_began', $start_date->format(self::DATETIME_FORMAT));
+    }
+    $ceased = $this->getValue($data, 'ceased');
+    if ($end_date && $ceased) {
+      $normalized['par_data_coordinated_business']->cease($end_date, FALSE);
     }
     else {
-      $normalized['par_data_coordinated_business']->reinstate(FALSE);
-      $normalized['par_data_coordinated_business']->set('date_membership_ceased', $this->getValue($data, 'membership_end'));
+      $normalized['par_data_coordinated_business']->reinstate($end_date, FALSE);
     }
 
     // Set the organisation details.
