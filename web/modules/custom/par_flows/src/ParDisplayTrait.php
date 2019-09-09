@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterInterface;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 
 trait ParDisplayTrait {
 
@@ -114,6 +115,10 @@ trait ParDisplayTrait {
   public function renderReferenceField($section, $field, $view_mode = 'summary', $operations = [], $single = FALSE) {
     $elements = [];
     foreach ($field->referencedEntities() as $delta => $entity) {
+      if ($entity instanceof ParDataEntityInterface && ($entity->isDeleted() || $entity->isRevoked())) {
+        continue;
+      }
+
       $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
       $rendered_entity = $entity_view_builder->view($entity, $view_mode);
       $elements[$delta] = [
@@ -308,8 +313,10 @@ trait ParDisplayTrait {
         else {
           $rows = $this->renderTextField($section, $entity, $field, $view_mode, $operations, $single_item);
         }
+      }
 
-        // Render the rows using a tabulated pager.
+      // Render the rows using a tabulated pager.
+      if (isset($rows) && !empty($rows)) {
         $element[$field_name] = $this->renderTable($rows);
       }
       else {
