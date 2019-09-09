@@ -112,7 +112,7 @@ class ParDataPremises extends ParDataEntity {
     if (!$country && $address = $this->get('address')->first()) {
       try {
         $address_country_code = $address ? $address->get('country_code')->getString() : NULL;
-        $address_country = $address_country_code ? $this->getCountryRepository()->get($address_country_code)->getName() : NULL;
+        $address_country = $address_country_code ? $this->getCountryRepository()->get($address_country_code) : NULL;
 
         $country = $address_country ? $address_country->getName() : '';
       } catch (UnknownCountryException $exception) {
