@@ -70,6 +70,22 @@ use Drupal\par_validation\Plugin\Validation\Constraint\ParRequired;
  */
 class ParDataLegalEntity extends ParDataEntity {
 
+  public function getName() {
+    $name = $this->get('registered_name')->getString();
+    return $name;
+  }
+
+  public function getRegisteredNumber() {
+    $number = $this->get('registered_number')->getString();
+    return $number;
+  }
+
+  public function getType() {
+    $value = $this->get('legal_entity_type')->getString();
+    $type = !empty($value) ? $this->getTypeEntity()->getAllowedFieldlabel('legal_entity_type', $value) : NULL;
+    return $type;
+  }
+
   /**
    * {@inheritdoc}
    */
