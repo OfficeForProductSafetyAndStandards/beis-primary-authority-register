@@ -5,6 +5,7 @@ namespace Drupal\par_data;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\par_data\Entity\ParDataEntity;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\trance\TranceStorage;
 use Drupal\Core\Entity\EntityInterface;
@@ -31,6 +32,10 @@ class ParDataStorage extends TranceStorage {
   public function destroy(array $entities) {
     parent::delete($entities);
   }
+
+//  public function getQuery($conjunction = 'AND') {
+//
+//  }
 
   /**
    * Soft delete all PAR Data entities.
@@ -129,6 +134,12 @@ class ParDataStorage extends TranceStorage {
    */
   public function loadMultiple(array $ids = NULL) {
     $entities = parent::loadMultiple($ids);
+
+    // Do not return any deleted entities.
+    // @see PAR-1462 - Removing all deleted entities from loading.
+    $entities = array_filter($entities, function ($entity) {
+      return (!$entity->isDeleted());
+    });
 
     return $entities;
   }
