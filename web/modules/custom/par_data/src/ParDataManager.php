@@ -669,7 +669,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   An array of entities found with this value.
    */
-  public function getEntitiesByProperty($type, $field, $value) {
+  public function getEntitiesByProperty($type, $field, $value, $access = TRUE) {
     // Check that a value is specified.
     if (is_null($value)) {
       return [];
@@ -681,9 +681,11 @@ class ParDataManager implements ParDataManagerInterface {
 
     // Do not return any entities that are deleted.
     // @see PAR-1462 - Removing all deleted entities from loading.
-    $entities = array_filter($entities, function ($entity) {
-      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
-    });
+    if ($access) {
+      $entities = array_filter($entities, function ($entity) {
+        return $entity->access('view', $this->getCurrentUser());
+      });
+    }
 
     return $entities;
   }
@@ -699,16 +701,18 @@ class ParDataManager implements ParDataManagerInterface {
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   An array of entities found with this value.
    */
-  public function getEntitiesByType($type, array $ids = NULL) {
+  public function getEntitiesByType($type, array $ids = NULL, $access = TRUE) {
     $entities = $this->entityManager
       ->getStorage($type)
       ->loadMultiple($ids);
 
     // Do not return any entities that are deleted.
     // @see PAR-1462 - Removing all deleted entities from loading.
-    $entities = array_filter($entities, function ($entity) {
-      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
-    });
+    if ($access) {
+      $entities = array_filter($entities, function ($entity) {
+        return $entity->access('view', $this->getCurrentUser());
+      });
+    }
 
     return $entities;
   }
@@ -742,7 +746,7 @@ class ParDataManager implements ParDataManagerInterface {
    * ];
    * @endcode
    */
-  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC', $conjunction = 'AND') {
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC', $conjunction = 'AND', $access = TRUE) {
     $entities = [];
 
     $query = $this->getEntityQuery($type, $conjunction);
@@ -768,9 +772,11 @@ class ParDataManager implements ParDataManagerInterface {
 
     // Do not return any entities that are deleted.
     // @see PAR-1462 - Removing all deleted entities from loading.
-    $entities = array_filter($entities, function ($entity) {
-      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
-    });
+    if ($access) {
+      $entities = array_filter($entities, function ($entity) {
+        return $entity->access('view', $this->getCurrentUser());
+      });
+    }
 
     return $entities;
   }
