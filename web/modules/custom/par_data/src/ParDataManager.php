@@ -425,7 +425,7 @@ class ParDataManager implements ParDataManagerInterface {
     // Do not return any deleted entities.
     // @see PAR-1462 - Removing all deleted entities from loading.
     $memberships = array_filter($memberships, function ($membership) {
-      return !$membership->isDeleted();
+      return (!$membership instanceof ParDataEntityInterface || !$membership->isDeleted());
     });
 
     return !empty($memberships) ? $memberships : [];
@@ -682,7 +682,7 @@ class ParDataManager implements ParDataManagerInterface {
     // Do not return any entities that are deleted.
     // @see PAR-1462 - Removing all deleted entities from loading.
     $entities = array_filter($entities, function ($entity) {
-      return !$entity->isDeleted();
+      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
     });
 
     return $entities;
@@ -707,7 +707,7 @@ class ParDataManager implements ParDataManagerInterface {
     // Do not return any entities that are deleted.
     // @see PAR-1462 - Removing all deleted entities from loading.
     $entities = array_filter($entities, function ($entity) {
-      return !$entity->isDeleted();
+      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
     });
 
     return $entities;
@@ -769,7 +769,7 @@ class ParDataManager implements ParDataManagerInterface {
     // Do not return any entities that are deleted.
     // @see PAR-1462 - Removing all deleted entities from loading.
     $entities = array_filter($entities, function ($entity) {
-      return !$entity->isDeleted();
+      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
     });
 
     return $entities;
