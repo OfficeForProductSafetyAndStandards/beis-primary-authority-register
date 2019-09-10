@@ -19,6 +19,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
+use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPerson;
@@ -842,13 +843,13 @@ class ParDataManager implements ParDataManagerInterface {
       [
         'AND' => [
           ['field_user_account', $account->id(), 'IN'],
-          ['deleted', 1, '<>'],
+          [ParDataEntity::DELETE_FIELD, 1, '<>'],
          ],
       ],
       [
         'AND' => [
           ['email', $account->get('mail')->getString()],
-          ['deleted', 1, '<>'],
+          [ParDataEntity::DELETE_FIELD, 1, '<>'],
         ],
       ],
     ];
