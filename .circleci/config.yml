@@ -380,6 +380,9 @@ jobs:
           command: |
             cd web
             ../vendor/bin/drush sql-sanitize @par.paas -y
+      - run:
+          name: "Backup database"
+          command: ./scripts/db-backup.sh production -p -s
 
 workflows:
   version: 2.1
