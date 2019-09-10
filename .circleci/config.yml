@@ -336,7 +336,7 @@ jobs:
           command: |
             cf login -a api.cloud.service.gov.uk -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
             cf target -o office-for-product-safety-and-standards -s primary-authority-register-production
-            cf run-task beis-par-production "./scripts/db-backup.sh production -p" --name DB_ARCHIVE
+            cf run-task beis-par-production "./scripts/db-backup.sh production -p" --name DB_ARCHIVE -k4G
 
   sanitise_database:
     <<: *defaults
