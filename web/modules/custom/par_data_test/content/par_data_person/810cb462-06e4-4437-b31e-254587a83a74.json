@@ -18,11 +18,6 @@
             }
         ]
     },
-    "id": [
-        {
-            "value": 120299
-        }
-    ],
     "type": [
         {
             "target_id": "person"

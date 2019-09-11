@@ -115,7 +115,6 @@ class ParDataStorage extends TranceStorage {
    * {@inheritdoc}
    */
   public function save(EntityInterface $entity) {
-
     // Load the original entity if it already exists.
     if ($this->has($entity->id(), $entity) && !isset($entity->original)) {
       $entity->original = $this->loadUnchanged($entity->id());

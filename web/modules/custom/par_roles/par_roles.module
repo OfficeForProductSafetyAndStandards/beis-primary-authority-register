@@ -64,11 +64,21 @@ function par_roles_user_presave($account) {
 }
 
 function par_roles_user_insert($account) {
+  // Do not run this check for test accounts.
+  if (preg_match('/@example.com$/', $account->getEmail()) === 1) {
+    return;
+  }
+
   $par_data_manager = \Drupal::service('par_data.manager');
   $par_data_manager->linkPeople($account);
 }
 
 function par_roles_user_update($account) {
+  // Do not run this check for test accounts.
+  if (preg_match('/@example.com$/', $account->getEmail()) === 1) {
+    return;
+  }
+
   $par_data_manager = \Drupal::service('par_data.manager');
   $par_data_manager->linkPeople($account);
 }
