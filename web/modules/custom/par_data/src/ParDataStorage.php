@@ -161,9 +161,9 @@ class ParDataStorage extends TranceStorage {
 
     // Do not return any deleted entities.
     // @see PAR-1462 - Removing all deleted entities from loading.
-    $entities = array_filter($entities, function ($entity) {
-      return (!$entity->isDeleted());
-    });
+//    $entities = array_filter($entities, function ($entity) {
+//      return (!$entity->isDeleted());
+//    });
 
     return $entities;
   }
