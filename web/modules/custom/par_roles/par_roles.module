@@ -26,6 +26,11 @@ function par_roles_help($route_name, RouteMatchInterface $route_match) {
 function par_roles_user_presave($account) {
   $par_data_manager = \Drupal::service('par_data.manager');
 
+  // Do not run this check for test accounts.
+  if (preg_match('@example.com$', $account->getEmail()) === 1) {
+    return;
+  }
+
   // Check whether they are the last user with a given role in any of their authorities.
   $authority_member = $par_data_manager->isMemberOfAuthority($account);
 
