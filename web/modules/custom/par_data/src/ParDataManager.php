@@ -359,6 +359,7 @@ class ParDataManager implements ParDataManagerInterface {
 
     // Loop through all relationships.
     foreach ($relationships as $uuid => $relationship) {
+      debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS); die;
       // Lookup any further relationships.
       $entities = $this->getRelatedEntities($relationship->getEntity(), $entities, $iteration, $action, $debug_tree);
     }
