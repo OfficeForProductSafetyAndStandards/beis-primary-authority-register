@@ -790,7 +790,7 @@ class ParDataManager implements ParDataManagerInterface {
   public function getEntitiesAsOptions($entities, $options = [], $view_mode = NULL) {
     foreach ($entities as $entity) {
       if ($entity instanceof EntityInterface) {
-        if ($entity instanceof ParDataEntity && !$entity->access('view', $this->getCurrentUser())) {
+        if ($entity instanceof ParDataEntityInterface && !$entity->access('view', $this->getCurrentUser())) {
           continue;
         }
 
