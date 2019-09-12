@@ -240,12 +240,8 @@ class ParDataPartnership extends ParDataEntity {
    *   The number of active members.
    */
   public function countMembers($i = 0, $include_expired = FALSE) {
-    if ($include_expired) {
-      return $this->get('field_coordinated_business')->count();
-    }
-
     foreach ($this->getCoordinatedMember() as $member) {
-      if ($member->isLiving() && !$member->isRevoked() && !$member->isDeleted()) {
+      if ($include_expired || !$member->isRevoked()) {
         $i++;
       }
     }
@@ -297,6 +293,9 @@ class ParDataPartnership extends ParDataEntity {
    */
   public function getCoordinatedMember($single = FALSE) {
     $members = $this->get('field_coordinated_business')->referencedEntities();
+    $members = array_filter($members, function ($member) {
+      return !$member->isDeleted();
+    });
     $member = !empty($members) ? current($members) : NULL;
 
     return $single ? $member : $members;
