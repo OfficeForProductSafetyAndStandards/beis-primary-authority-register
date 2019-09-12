@@ -98,13 +98,26 @@ class ParDataPerson extends ParDataEntity {
   /**
    * {@inheritdoc}
    *
-   * Internal function only to get the correct user account for a person
+   * Internal function only to get the correct user account for a person.
+   *
    * @see self::getUserAccount()
    */
   public function retrieveUserAccount() {
     $entities = $this->get('field_user_account')->referencedEntities();
 
     return $entities ? current($entities) : NULL;
+  }
+
+  /**
+   * Determine whether the person has a user account set.
+   *
+   * @see self::getUserAccount()
+   *
+   * @return bool
+   *   Whether a user account has been set.
+   */
+  public function hasUserAccount() {
+    return $this->get('field_user_account')->isEmpty();
   }
 
   /**
@@ -253,7 +266,7 @@ class ParDataPerson extends ParDataEntity {
    *   The email address to update.
    * @param User $account
    */
-  public function updateEmail($email, User &$account) {
+  public function updateEmail($email, User &$account = NULL) {
     $this->set('email', $email);
 
     if (!$account) {
