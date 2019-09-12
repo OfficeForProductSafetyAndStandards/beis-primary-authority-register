@@ -29,8 +29,8 @@ fi
 #    VAULT_ADDR - the vault service endpoint
 #    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
 ####################################################################################
-OPTIONS=pd:a:
-LONGOPTS=push,directory:,alias:
+OPTIONS=psd:a:
+LONGOPTS=push,sanitised,directory:,alias:
 
 # -use ! and PIPESTATUS to get exit code with errexit set
 # -temporarily store output to be able to check for errors
@@ -50,10 +50,17 @@ AWS_PUSH=${AWS_PUSH:=n}
 DIRECTORY=${DIRECTORY:="/tmp"}
 DRUPAL_ALIAS=${DRUPAL_ALIAS:="@par.paas"}
 
+# Set the defaults.
+SANITISED=unsanitised
+
 while true; do
     case "$1" in
         -p|--push)
             AWS_PUSH=y
+            shift
+            ;;
+        -s|--sanitised)
+            SANITISED=sanitised
             shift
             ;;
         -d|--directory)
@@ -89,7 +96,7 @@ WEBROOT="${BASH_SOURCE%/*}/../web"
 cd $WEBROOT
 printf "Current working directory: $PWD\n"
 
-FILE_NAME="db-dump-$NAME-unsanitized"
+FILE_NAME="db-dump-$NAME-$SANITISED"
 DATE=$(date +%Y-%m-%d)
 
 mkdir -p $DIRECTORY

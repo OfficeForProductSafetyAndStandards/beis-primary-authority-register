@@ -11,10 +11,15 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
+use Drupal\Core\Messenger\Messenger;
+use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Render\Renderer;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
+use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPerson;
@@ -60,6 +65,27 @@ class ParDataManager implements ParDataManagerInterface {
   protected $entityTypeBundleInfo;
 
   /**
+   * The drupal messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
+   * The renderer service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
    * Iteration limit for recursive membership lookups.
    */
   protected $membershipIterations = 5;
@@ -82,12 +108,21 @@ class ParDataManager implements ParDataManagerInterface {
    *   The entity field manager.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
    *   The entity bundle info service.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer service
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   *   The current user
    */
-  public function __construct(EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info) {
+  public function __construct(EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, MessengerInterface $messenger, RendererInterface $renderer, $current_user) {
     $this->entityManager = $entity_manager;
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
+    $this->messenger = $messenger;
+    $this->renderer = $renderer;
+    $this->currentUser = $current_user;
   }
 
   /**
@@ -96,7 +131,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @return \Drupal\Core\Messenger\MessengerInterface
    */
   public function getMessenger() {
-    return \Drupal::messenger();
+    return $this->messenger;
   }
 
   /**
@@ -104,8 +139,17 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * @return mixed
    */
-  public static function getRenderer() {
-    return \Drupal::service('renderer');
+  public function getRenderer() {
+    return $this->renderer;
+  }
+
+  /**
+   * Get current user.
+   *
+   * @return mixed
+   */
+  public function getCurrentUser() {
+    return $this->currentUser;
   }
 
   /**
@@ -379,6 +423,12 @@ class ParDataManager implements ParDataManagerInterface {
       $memberships = $object->getRelatedEntities($person, $memberships, 0, 'manage');
     }
 
+    // Do not return any deleted entities.
+    // @see PAR-1462 - Removing all deleted entities from loading.
+    $memberships = array_filter($memberships, function ($membership) {
+      return (!$membership instanceof ParDataEntityInterface || !$membership->isDeleted());
+    });
+
     return !empty($memberships) ? $memberships : [];
   }
 
@@ -626,9 +676,17 @@ class ParDataManager implements ParDataManagerInterface {
       return [];
     }
 
-    return $this->entityTypeManager
+    $entities = $this->entityTypeManager
       ->getStorage($type)
       ->loadByProperties([$field => $value]);
+
+    // Do not return any entities that are deleted.
+    // @see PAR-1462 - Removing all deleted entities from loading.
+    $entities = array_filter($entities, function ($entity) {
+      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
+    });
+
+    return $entities;
   }
 
   /**
@@ -643,9 +701,17 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of entities found with this value.
    */
   public function getEntitiesByType($type, array $ids = NULL) {
-    return $this->entityManager
+    $entities = $this->entityManager
       ->getStorage($type)
       ->loadMultiple($ids);
+
+    // Do not return any entities that are deleted.
+    // @see PAR-1462 - Removing all deleted entities from loading.
+    $entities = array_filter($entities, function ($entity) {
+      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
+    });
+
+    return $entities;
   }
 
   /**
@@ -698,9 +764,16 @@ class ParDataManager implements ParDataManagerInterface {
       $query->range(0, $limit);
     }
 
-    $entities = $query->execute();
+    $results = $query->execute();
+    $entities = $this->entityManager->getStorage($type)->loadMultiple(array_unique($results));
 
-    return $this->entityManager->getStorage($type)->loadMultiple(array_unique($entities));
+    // Do not return any entities that are deleted.
+    // @see PAR-1462 - Removing all deleted entities from loading.
+    $entities = array_filter($entities, function ($entity) {
+      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
+    });
+
+    return $entities;
   }
 
   /**
@@ -717,6 +790,10 @@ class ParDataManager implements ParDataManagerInterface {
   public function getEntitiesAsOptions($entities, $options = [], $view_mode = NULL) {
     foreach ($entities as $entity) {
       if ($entity instanceof EntityInterface) {
+        if ($entity instanceof ParDataEntityInterface && !$entity->access('view', $this->getCurrentUser())) {
+          continue;
+        }
+
         if ($view_mode) {
           $view_builder = $this->getViewBuilder($entity->getEntityTypeId());
           $view = $view_builder->view($entity, $view_mode);
@@ -766,19 +843,30 @@ class ParDataManager implements ParDataManagerInterface {
       [
         'AND' => [
           ['field_user_account', $account->id(), 'IN'],
-          ['deleted', 1, '<>'],
+          [ParDataEntity::DELETE_FIELD, 1, '<>'],
          ],
       ],
       [
         'AND' => [
           ['email', $account->get('mail')->getString()],
-          ['field_user_account', NULL, 'IS NULL'],
-          ['deleted', 1, '<>'],
+          [ParDataEntity::DELETE_FIELD, 1, '<>'],
         ],
       ],
     ];
 
-    return $this->getEntitiesByQuery('par_data_person', $conditions, NULL, NULL, 'ASC', 'OR');
+    $entities = $this->getEntitiesByQuery('par_data_person', $conditions, NULL, NULL, 'ASC', 'OR');
+
+    // There is a need to check that any par_data_person entities returned
+    // do not link to any other active users. This can't be done directly with
+    // a query due to cases where the user account may have been removed.
+    $entities = array_filter($entities, function ($entity) use ($account) {
+      if ($entity->retrieveUserAccount() && $entity->retrieveUserAccount()->id() !== $account->id()) {
+        return FALSE;
+      }
+      return TRUE;
+    });
+
+    return $entities;
   }
 
   /**
