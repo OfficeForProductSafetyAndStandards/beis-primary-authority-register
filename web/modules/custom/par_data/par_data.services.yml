@@ -7,7 +7,7 @@ services:
     arguments: ['@par_data.entity_converter.inner', '@entity.manager', '@par_data.manager', '@config.factory']
   par_data.manager:
     class: Drupal\par_data\ParDataManager
-    arguments: ['@entity.manager', '@entity_type.manager', '@entity_field.manager', '@entity_type.bundle.info']
+    arguments: ['@entity.manager', '@entity_type.manager', '@entity_field.manager', '@entity_type.bundle.info', '@messenger', '@renderer', '@current_user']
   par_data.route_subscriber:
       class: Drupal\par_data\Routing\ParDataRoutes
       arguments: ['@par_data.manager']

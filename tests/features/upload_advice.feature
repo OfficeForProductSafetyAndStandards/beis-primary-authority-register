@@ -23,7 +23,6 @@ Feature: Upload advice
     Given I am logged in as "par_authority@example.com"
     And I navigate to an active partnership "Lower East Side Borough Council"
     When I open advice add page
-    Then I should be able to confirm the guidelines
     And I upload the file "files/test.png" to field "#edit-files-upload"
     And I click on the button "#edit-upload"
     And I enter advice title
@@ -38,7 +37,6 @@ Feature: Upload advice
     Given I am logged in as "par_authority@example.com"
     And I navigate to an active partnership "Lower East Side Borough Council"
     When I open advice add page
-    Then I should be able to confirm the guidelines
     And I upload the file "files/test.png" to field "#edit-files-upload"
     And I click on the button "#edit-upload"
     And I enter advice title
@@ -53,7 +51,6 @@ Feature: Upload advice
     Given I am logged in as "par_helpdesk@example.com"
     And I navigate to an active partnership "Lower East Side Borough Council"
     When I open advice add page
-    Then I should be able to confirm the guidelines
     And I upload the file "files/test.png" to field "#edit-files-upload"
     And I click on the button "#edit-upload"
     And I enter advice title

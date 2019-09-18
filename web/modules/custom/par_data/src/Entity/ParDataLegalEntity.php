@@ -52,6 +52,11 @@ use Drupal\par_validation\Plugin\Validation\Constraint\ParRequired;
  *     "langcode" = "langcode",
  *     "status" = "status"
  *   },
+ *   revision_metadata_keys = {
+ *     "revision_user" = "revision_uid",
+ *     "revision_created" = "revision_timestamp",
+ *     "revision_log_message" = "revision_log"
+ *   },
  *   links = {
  *     "collection" = "/admin/content/par_data/par_data_legal_entity",
  *     "canonical" = "/admin/content/par_data/par_data_legal_entity/{par_data_legal_entity}",
@@ -64,6 +69,22 @@ use Drupal\par_validation\Plugin\Validation\Constraint\ParRequired;
  * )
  */
 class ParDataLegalEntity extends ParDataEntity {
+
+  public function getName() {
+    $name = $this->get('registered_name')->getString();
+    return $name;
+  }
+
+  public function getRegisteredNumber() {
+    $number = $this->get('registered_number')->getString();
+    return $number;
+  }
+
+  public function getType() {
+    $value = $this->get('legal_entity_type')->getString();
+    $type = !empty($value) ? $this->getTypeEntity()->getAllowedFieldlabel('legal_entity_type', $value) : NULL;
+    return $type;
+  }
 
   /**
    * {@inheritdoc}
