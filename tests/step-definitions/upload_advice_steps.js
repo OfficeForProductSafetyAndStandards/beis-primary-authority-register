@@ -54,19 +54,11 @@ Given('I open advice add page', function () {
       .clickLinkByPureText('Upload advice')
 });
 
-Then('I should be able to confirm the guidelines', function () {
-  return client
-      .click('#edit-declaration')
-      .click('#edit-save')
-});
-
-
 Then('I able to upload advice document', function () {
   return client
       .setValue('#edit-files-upload', 'files/test.png')
       .click('#edit-upload')
 });
-
 
 Then('I enter advice title', function () {
   return client

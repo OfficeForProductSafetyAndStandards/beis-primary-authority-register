@@ -19,6 +19,12 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
    * {@inheritdoc}
    */
   public function access(EntityInterface $entity, $operation, AccountInterface $account = NULL, $return_as_object = FALSE) {
+    // @see PAR-1462 - Do not allow access to any entities that are deleted.
+    if ($entity->isDeleted()) {
+      $result = AccessResult::forbidden()->cachePerPermissions();
+      return $return_as_object ? $result : $result->isAllowed();
+    }
+
     $account = $this->prepareUser($account);
     if ($account->hasPermission('bypass par_data access')) {
       $result = AccessResult::allowed()->cachePerPermissions();
@@ -37,6 +43,11 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
    * {@inheritdoc}
    */
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
+    // @see PAR-1462 - Do not allow access to any entities that are deleted.
+    if ($entity->isDeleted()) {
+      return AccessResult::forbidden();
+    }
+
     // Access to each par entity depends on whether it is an authority or organisation
     // related to that par person, or whether it is related to one of these authorities
     // or organisations.
