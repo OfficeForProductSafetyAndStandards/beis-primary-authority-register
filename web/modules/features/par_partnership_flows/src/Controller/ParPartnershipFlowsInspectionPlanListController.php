@@ -60,6 +60,31 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
 
     }
 
+    // PAR-1359 only allow advice uploading on active partnerships as only active partnerships have regulatory
+    // functions assigned to them. Hide upload button when user is on the search path.
+    if ($par_data_partnership->isActive() && $this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
+      $build['actions'] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => ['form-group']],
+      ];
+
+      try {
+        $build['actions']['upload'] = [
+          '#type' => 'markup',
+          '#markup' => '<br>' . t('@link', [
+              '@link' => $this->getFlowNegotiator()
+                  ->getFlow()
+                  ->getNextLink('upload', $this->getRouteParams())
+                  ->setText('Upload inspection plan')
+                  ->toString(),
+            ]),
+        ];
+      }
+      catch (ParFlowException $e) {
+
+      }
+    }
+
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
 
