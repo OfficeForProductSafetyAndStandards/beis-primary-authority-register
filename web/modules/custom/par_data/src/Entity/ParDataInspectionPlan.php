@@ -70,6 +70,17 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataInspectionPlan extends ParDataEntity {
 
   /**
+   * Get PAR inspection plan's title.
+   *
+   * @return string
+   *   inspection plan entity title.
+   */
+  public function getTitle() {
+    return $this->get('inspection_plan_title')->getString();
+  }
+
+
+  /**
    * {@inheritdoc}
    */
   public function filterRelationshipsByAction($relationship, $action) {
