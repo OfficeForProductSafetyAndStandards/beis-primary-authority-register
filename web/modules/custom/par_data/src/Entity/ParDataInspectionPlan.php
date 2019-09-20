@@ -80,6 +80,15 @@ class ParDataInspectionPlan extends ParDataEntity {
   }
 
   /**
+   * Get PAR inspection plan's summary.
+   *
+   * @return string
+   *   inspection plan entity summary.
+   */
+  public function getSummary() {
+    return $this->get('summary')->getString();
+  }
+  /**
    * Set PAR inspection plan's title.
    */
   public function setAdviceTitle($inspection_plan__title) {
