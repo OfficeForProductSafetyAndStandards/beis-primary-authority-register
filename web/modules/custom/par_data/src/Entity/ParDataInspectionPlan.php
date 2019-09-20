@@ -76,7 +76,7 @@ class ParDataInspectionPlan extends ParDataEntity {
    *   inspection plan entity title.
    */
   public function getTitle() {
-    return $this->get('inspection_plan_title')->getString();
+    return $this->get('title')->getString();
   }
 
   /**
@@ -88,11 +88,21 @@ class ParDataInspectionPlan extends ParDataEntity {
   public function getSummary() {
     return $this->get('summary')->getString();
   }
+
   /**
    * Set PAR inspection plan's title.
+   *
+   * @param string $title
    */
-  public function setAdviceTitle($inspection_plan__title) {
-    $this->set('inspection_plan_title', $inspection_plan__title);
+  public function setTitle($title) {
+    $this->set('title', $title);
+  }
+
+  /**
+   * Set PAR inspection plan's summary.
+   */
+  public function setSummary($summary) {
+    $this->set('summary', $summary);
   }
 
   /**
@@ -116,7 +126,7 @@ class ParDataInspectionPlan extends ParDataEntity {
     $fields = parent::baseFieldDefinitions($entity_type);
 
     // Inspection plan title.
-    $fields['inspection_plan_title'] = BaseFieldDefinition::create('string')
+    $fields['title'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Inspection plan title'))
       ->setDescription(t('The title of the inspection plan.'))
       ->setRequired(TRUE)
