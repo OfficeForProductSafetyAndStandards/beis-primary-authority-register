@@ -127,6 +127,30 @@ class ParDataInspectionPlan extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
+    // Inspection plan summary.
+    $fields['summary'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Inspection plan summary'))
+      ->setDescription(t('Summary info for this inspection plan.'))
+      ->addConstraint('par_required')
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'text_textarea',
+        'weight' => 2,
+        'settings' => [
+          'rows' => 25,
+        ],
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'text_default',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     // Valid Date.
     $fields['valid_date'] = BaseFieldDefinition::create('daterange')
       ->setLabel(t('Valid Date'))
