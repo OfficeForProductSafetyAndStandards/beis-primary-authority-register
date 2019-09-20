@@ -79,6 +79,12 @@ class ParDataInspectionPlan extends ParDataEntity {
     return $this->get('inspection_plan_title')->getString();
   }
 
+  /**
+   * Set PAR inspection plan's title.
+   */
+  public function setAdviceTitle($inspection_plan__title) {
+    $this->set('inspection_plan_title', $inspection_plan__title);
+  }
 
   /**
    * {@inheritdoc}
