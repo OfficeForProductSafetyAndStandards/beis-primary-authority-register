@@ -89,6 +89,27 @@ class ParDataInspectionPlan extends ParDataEntity {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
+    // Inspection plan title.
+    $fields['inspection_plan_title'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Inspection plan title'))
+      ->setDescription(t('The title of the inspection plan.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     // Valid Date.
     $fields['valid_date'] = BaseFieldDefinition::create('daterange')
       ->setLabel(t('Valid Date'))
