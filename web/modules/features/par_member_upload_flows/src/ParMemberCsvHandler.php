@@ -313,7 +313,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
         new NotBlank([
           'message' => 'The value could not be found.',
         ]),
-        new PastDate(['value' => 'today']),
+        new PastDate(['value' => 'tomorrow']),
       ],
       'membership_end' => [
         new DateTime(['format' => self::DATE_FORMAT]),
@@ -655,14 +655,16 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     /** @var ParDataLegalEntity[] $par_data_legal_entity */
     extract($entities);
 
+    $address = $par_data_premises ? $par_data_premises->get('address')->first() : NULL;
+
     return [
       $this->getMapping('organisation_name') => $par_data_organisation ? $par_data_organisation->get('organisation_name')->getString() : '',
-      $this->getMapping('address_line_1') => $par_data_premises ? $par_data_premises->get('address')->first()->get('address_line1')->getString() : '',
-      $this->getMapping('address_line_2') => $par_data_premises ? $par_data_premises->get('address')->first()->get('address_line2')->getString() : '',
-      $this->getMapping('town') => $par_data_premises ? $par_data_premises->get('address')->first()->get('locality')->getString() : '',
-      $this->getMapping('county') => $par_data_premises ? $par_data_premises->get('address')->first()->get('administrative_area')->getString() : '',
-      $this->getMapping('postcode') => $par_data_premises ? $par_data_premises->get('address')->first()->get('postal_code')->getString() : '',
-      $this->getMapping('nation') => $par_data_premises ? $par_data_premises->getCountry() : '',
+      $this->getMapping('address_line_1') => $address ? $address->get('address_line1')->getString() : '',
+      $this->getMapping('address_line_2') => $address ? $address->get('address_line2')->getString() : '',
+      $this->getMapping('town') => $address ? $address->get('locality')->getString() : '',
+      $this->getMapping('county') => $address ? $address->get('administrative_area')->getString() : '',
+      $this->getMapping('postcode') => $address ? $address->get('postal_code')->getString() : '',
+      $this->getMapping('nation') => $address ? $par_data_premises->getCountry() : '',
       $this->getMapping('first_name') => $par_data_person ? $par_data_person->getFirstName() : '',
       $this->getMapping('last_name') => $par_data_person ? $par_data_person->getLastName() : '',
       $this->getMapping('work_phone') => $par_data_person ? $par_data_person->get('work_phone')->getString() : '',
@@ -675,11 +677,11 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       $this->getMapping('legal_entity_type_first') => isset($par_data_legal_entity[0]) ? $par_data_legal_entity[0]->getType() : '',
       $this->getMapping('legal_entity_number_first') => isset($par_data_legal_entity[0]) ? $par_data_legal_entity[0]->getRegisteredNumber() : '',
       $this->getMapping('legal_entity_name_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[1]->getName() : '',
-      $this->getMapping('legal_entity_type_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[0]->getType() : '',
-      $this->getMapping('legal_entity_type_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[1]->getRegisteredNumber() : '',
+      $this->getMapping('legal_entity_type_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[1]->getType() : '',
+      $this->getMapping('legal_entity_number_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[1]->getRegisteredNumber() : '',
       $this->getMapping('legal_entity_name_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[2]->getName() : '',
-      $this->getMapping('legal_entity_type_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[0]->getType() : '',
-      $this->getMapping('legal_entity_type_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[2]->getRegisteredNumber() : '',
+      $this->getMapping('legal_entity_type_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[2]->getType() : '',
+      $this->getMapping('legal_entity_number_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[2]->getRegisteredNumber() : '',
     ];
   }
 
