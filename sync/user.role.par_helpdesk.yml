@@ -171,6 +171,7 @@ permissions:
   - 'update partnership organisation details'
   - 'update primary authority advice to local authorities'
   - 'upload coordinated member'
+  - 'upload partnership inspection plan'
   - 'use text format basic_html'
   - 'view deviation request'
   - 'view enforcement notice'
