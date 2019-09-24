@@ -88,7 +88,7 @@ class ParPartnershipFlowsInspectionPlanUploadForm extends ParBaseForm {
       '#type' => 'managed_file',
       '#title' => t('Upload file(s)'),
       '#description' => t('Use Ctrl or cmd to select multiple files'),
-      '#upload_location' => 's3private://documents/inspection plan/',
+      '#upload_location' => 's3private://documents/inspection_plan/',
       '#multiple' => TRUE,
       '#required' => TRUE,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("files"),
