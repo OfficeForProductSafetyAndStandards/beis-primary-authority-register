@@ -313,7 +313,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
         new NotBlank([
           'message' => 'The value could not be found.',
         ]),
-        new PastDate(['value' => 'today']),
+        new PastDate(['value' => 'tomorrow']),
       ],
       'membership_end' => [
         new DateTime(['format' => self::DATE_FORMAT]),
