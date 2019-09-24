@@ -677,11 +677,11 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       $this->getMapping('legal_entity_type_first') => isset($par_data_legal_entity[0]) ? $par_data_legal_entity[0]->getType() : '',
       $this->getMapping('legal_entity_number_first') => isset($par_data_legal_entity[0]) ? $par_data_legal_entity[0]->getRegisteredNumber() : '',
       $this->getMapping('legal_entity_name_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[1]->getName() : '',
-      $this->getMapping('legal_entity_type_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[0]->getType() : '',
-      $this->getMapping('legal_entity_type_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[1]->getRegisteredNumber() : '',
+      $this->getMapping('legal_entity_type_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[1]->getType() : '',
+      $this->getMapping('legal_entity_number_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[1]->getRegisteredNumber() : '',
       $this->getMapping('legal_entity_name_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[2]->getName() : '',
-      $this->getMapping('legal_entity_type_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[0]->getType() : '',
-      $this->getMapping('legal_entity_type_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[2]->getRegisteredNumber() : '',
+      $this->getMapping('legal_entity_type_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[2]->getType() : '',
+      $this->getMapping('legal_entity_number_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[2]->getRegisteredNumber() : '',
     ];
   }
 
