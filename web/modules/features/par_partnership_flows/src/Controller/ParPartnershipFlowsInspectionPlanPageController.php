@@ -46,7 +46,7 @@ class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController 
       ];
       $build['inspection_plan_details']['archived'] = [
         '#type' => 'markup',
-        '#markup' => 'Archived advice',
+        '#markup' => 'Inspection plan advice',
         '#prefix' => '<h2>',
         '#suffix' => '</h2>',
       ];
