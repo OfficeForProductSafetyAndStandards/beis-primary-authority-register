@@ -29,7 +29,6 @@ class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController 
     if ($par_data_partnership_inspection_plan) {
       $this->pageTitle = $par_data_partnership_inspection_plan->getAdviceTitle();
     }
-
     return parent::titleCallback();
   }
 
