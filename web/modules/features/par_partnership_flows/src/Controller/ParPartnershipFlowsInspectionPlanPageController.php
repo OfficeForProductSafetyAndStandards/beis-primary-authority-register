@@ -58,7 +58,7 @@ class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController 
 
     $build['valid_date'] = $this->renderSection('The date range this inspection plan is valid for', $par_data_inspection_plan, ['valid_date' => 'full']);
 
-    $build['inspection_plan_link'] = $this->renderSection('Advice documents', $par_data_inspection_plan, ['document' => 'title']);
+    $build['inspection_plan_link'] = $this->renderSection('Inspection plan documents', $par_data_inspection_plan, ['document' => 'title']);
 
     return parent::build($build);
   }
