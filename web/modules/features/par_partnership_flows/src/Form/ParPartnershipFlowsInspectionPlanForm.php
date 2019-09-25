@@ -14,7 +14,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 /**
  * The inspection plan document form.
  */
-class PartnershipFlowsInspectionPlanForm extends ParBaseForm {
+class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
   use ParPartnershipFlowAccessTrait;
@@ -56,10 +56,10 @@ class PartnershipFlowsInspectionPlanForm extends ParBaseForm {
    *
    * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
-   * @param \Drupal\par_data\Entity\ParDataAdvice $par_data_inspection_plan
+   * @param \Drupal\par_data\Entity\ParDataInspectionPlan $par_data_inspection_plan
    *   The inspection plan document being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_inspection_plan = NULL) {
+  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     if ($par_data_inspection_plan) {
       // Partnership Confirmation.
       $allowed_types = $par_data_inspection_plan->getTypeEntity()->getAllowedValues('advice_type');
@@ -92,7 +92,7 @@ class PartnershipFlowsInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_inspection_plan = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_inspection_plan);
     $Inspection_plan_bundle = $this->getParDataManager()->getParBundleEntity('par_data_inspection_plan');
 
@@ -213,7 +213,7 @@ class PartnershipFlowsInspectionPlanForm extends ParBaseForm {
     // Create new inspection plan if needed.
     if (!$par_data_inspection_plan) {
       $request_date = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
-      $par_data_inspection_plan = ParDataAdvice::create([
+      $par_data_inspection_plan = ParDataInspectionPlan::create([
         'type' => 'inspection plan',
         'uid' => 1,
         'issue_date' => $request_date->format("Y-m-d"),
