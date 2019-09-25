@@ -57,7 +57,7 @@ class ParPartnershipFlowsInspectionPlanUploadForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_inspection_plan);
 
-    // PAR-1158 add the required external link for inspection plan templates.
+    // External link for inspection plan templates.
     $par_text = t('For inspection plan templates, go to: ');
     $options = ['attributes' => ['target' => '_blank'],
                'fragment' => 'templates'];
