@@ -54,11 +54,9 @@ class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController 
 
     $build['summary'] = $this->renderSection('About this inspection plan document', $par_data_inspection_plan, ['summary' => 'summary']);
 
-    $build['inspection_plan_type'] = $this->renderSection('The type of advice', $par_data_inspection_plan, ['inspection_plan_type' => 'summary']);
+    $build['inspection_status'] = $this->renderSection('The status of this inspection plan document', $par_data_inspection_plan, ['inspection_status' => 'summary']);
 
-    $build['regulatory_functions'] = $this->renderSection('Regulatory functions', $par_data_inspection_plan, ['field_regulatory_function' => 'full']);
-
-    $build['issue_date'] = $this->renderSection('Issue date', $par_data_inspection_plan, ['issue_date' => 'full']);
+    $build['valid_date'] = $this->renderSection('The date range this inspection plan is valid for', $par_data_inspection_plan, ['valid_date' => 'full']);
 
     $build['inspection_plan_link'] = $this->renderSection('Advice documents', $par_data_inspection_plan, ['document' => 'title']);
 
