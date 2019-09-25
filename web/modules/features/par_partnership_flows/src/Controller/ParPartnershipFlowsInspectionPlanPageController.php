@@ -52,7 +52,7 @@ class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController 
       ];
     }
 
-    $build['notes'] = $this->renderSection('About this advice document', $par_data_inspection_plan, ['notes' => 'summary']);
+    $build['summary'] = $this->renderSection('About this inspection plan document', $par_data_inspection_plan, ['summary' => 'summary']);
 
     $build['inspection_plan_type'] = $this->renderSection('The type of advice', $par_data_inspection_plan, ['inspection_plan_type' => 'summary']);
 
