@@ -17,7 +17,7 @@ steps:
       edit_about_partnership: 2
       advice: 4
       inspection_plans: 3
-      save: 12
+      save: 13
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
@@ -77,4 +77,10 @@ steps:
     redirect:
       done: 4
   12:
+    route: par_partnership_flows.inspection_plan_upload
+    form_id: par_partnership_advice_upload_add
+    redirect:
+      upload: 6
+      cancel: 3
+  13:
     route: view.par_user_partnerships.partnerships_page
