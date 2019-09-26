@@ -71,6 +71,11 @@ trait ParPartnershipFlowAccessTrait {
           $this->accessResult = AccessResult::forbidden('This advice is already has been archived or deleted.');
         }
         break;
+      case 'par_partnership_flows.inspection_plan_upload':
+        if (!$this->getCurrentUser()->hasPermission('upload partnership inspection plan')) {
+          $this->accessResult = AccessResult::forbidden('This advice is already has been archived or deleted.');
+        }
+        break;
       }
 
     return parent::accessCallback($route, $route_match, $account);
