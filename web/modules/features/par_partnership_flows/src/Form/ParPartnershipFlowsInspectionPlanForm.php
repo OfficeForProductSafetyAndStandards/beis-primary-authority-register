@@ -66,11 +66,6 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
       if (isset($notes)) {
         $this->getFlowDataHandler()->setFormPermValue('inspection_plan_summary', $notes);
       }
-
-      // Get Regulatory Functions.
-      $regulatory_functions = $par_data_inspection_plan->get('field_regulatory_function')->referencedEntities();
-      $regulatory_function_options = $this->getParDataManager()->getEntitiesAsOptions($regulatory_functions);
-      $this->getFlowDataHandler()->setFormPermValue('regulatory_functions', $regulatory_function_options);
     }
   }
 
