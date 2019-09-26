@@ -46,19 +46,20 @@ trait ParFlowAccessTrait {
 
     // Disable blocking of last user in an authority/organisation.
     try {
-      $isLastSurvingAuthorityMember = $this->getParDataManager()
+      $isLastSurvingAuthorityMember = !$this->getParDataManager()
         ->isRoleInAllMemberAuthorities($user, ['par_authority']);
     }
     catch (ParDataException $e) {
       $isLastSurvingAuthorityMember = FALSE;
     }
     try {
-      $isLastSurvingOrganisationMember = $this->getParDataManager()
+      $isLastSurvingOrganisationMember = !$this->getParDataManager()
         ->isRoleInAllMemberOrganisations($user, ['par_organisation']);
     }
     catch (ParDataException $e) {
       $isLastSurvingOrganisationMember = FALSE;
     }
+
     if ($access_route_negotiator->getFlowName() === 'block_user' && ($isLastSurvingAuthorityMember || $isLastSurvingOrganisationMember)) {
       $this->accessResult = AccessResult::forbidden('This user is the only member of their authority or organisation.');
     }

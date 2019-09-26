@@ -558,6 +558,7 @@ class ParDataManager implements ParDataManagerInterface {
       if (!$entity instanceof ParDataAuthority && !$entity instanceof ParDataOrganisation) {
         continue;
       }
+
       $members = $entity->getPerson();
 
       $roles[$entity->uuid()] = [];
@@ -591,7 +592,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of roles to lookup.
    *
    * @return bool
-   *   If the roles don't exist in ALL authorities return false, otherwise true.
+   *   If the roles don't exist in ANY authorities return false, otherwise true.
    */
   public function isRoleInAllMemberAuthorities(AccountInterface $account, $roles) {
     $authorities = $this->isMemberOfAuthority($account);
@@ -628,7 +629,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of roles to lookup.
    *
    * @return bool
-   *   If the roles don't exist in ALL organisations return false, otherwise true.
+   *   If the roles don't exist in ANY organisations return false, otherwise true.
    */
   public function isRoleInAllMemberOrganisations(AccountInterface $account, $roles) {
     $organisations = $this->isMemberOfOrganisation($account);
