@@ -63,7 +63,7 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
     // Only allow inspection plan uploading on active partnerships as only active partnerships.
     // Hide upload button when user is on the search path.
     if ($par_data_partnership->isActive() && $this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
-      if ( $this->getCurrentUser()->hasPermission('upload partnership inspection plan')) {
+      if ($this->getCurrentUser()->hasPermission('upload partnership inspection plan')) {
       $build['actions'] = [
         '#type' => 'fieldset',
         '#attributes' => ['class' => ['form-group']],
