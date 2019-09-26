@@ -23,17 +23,11 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
    * {@inheritdoc}
    */
   protected $entityMapping = [
-    ['advice_title', 'par_data_inspection_plan', 'advice_title', NULL, NULL, 0, [
+    ['title', 'par_data_inspection_plan', 'title', NULL, NULL, 0, [
       'This value should not be null.' => 'You must provide a title for this inspection plan document.'
     ]],
-    ['notes', 'par_data_inspection_plan', 'notes', NULL, NULL, 0, [
+    ['summary', 'par_data_inspection_plan', 'summary', NULL, NULL, 0, [
       'This value should not be null.' => 'You must provide a summary for this inspection plan document.'
-    ]],
-    ['advice_type', 'par_data_inspection_plan', 'advice_type', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must choose what type of inspection plan this is.'
-    ]],
-    ['regulatory_functions', 'par_data_inspection_plan', 'field_regulatory_function', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must choose which regulatory functions this inspection plan applies to.'
     ]],
   ];
 
