@@ -74,7 +74,6 @@ steps:
       cancel: 4
   11:
     route: par_partnership_flows.inspection_plan_details
-    form_id: par_partnership_advice_archive
     redirect:
       done: 4
   12:
