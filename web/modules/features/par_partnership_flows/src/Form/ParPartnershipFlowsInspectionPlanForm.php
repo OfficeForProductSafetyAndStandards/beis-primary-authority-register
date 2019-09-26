@@ -146,7 +146,7 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
 
     // Get files from "upload" step.
     $cid = $this->getFlowNegotiator()->getFormKey('upload');
-    $files = $this->getFlowDataHandler()->getDefaultValues('files', [], $cid);
+    $files = $this->getFlowDataHandler()->getDefaultValues('inspection_plan_files', [], $cid);
 
     // Add all the uploaded files from the upload form to the inspection plan and save.
     $files_to_add = [];
@@ -164,30 +164,20 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
     if (!$par_data_inspection_plan) {
       $request_date = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
       $par_data_inspection_plan = ParDataInspectionPlan::create([
-        'type' => 'inspection plan',
+        'type' => 'inspection_plan',
         'uid' => 1,
         'issue_date' => $request_date->format("Y-m-d"),
       ]);
     }
-    $allowed_types = $par_data_inspection_plan->getTypeEntity()->getAllowedValues('advice_type');
 
     // Set the inspection plan title.
-    $par_data_inspection_plan->set('advice_title', $this->getFlowDataHandler()->getTempDataValue('advice_title'));
+    $par_data_inspection_plan->set('title', $this->getFlowDataHandler()->getTempDataValue('inspection_plan_title'));
 
     // Set the inspection plan summary.
-    $par_data_inspection_plan->set('notes', $this->getFlowDataHandler()->getTempDataValue('notes'));
-
-    // Set the inspection plan type.
-    $Inspection_plan_type = $this->getFlowDataHandler()->getTempDataValue('advice_type');
-    if (isset($allowed_types[$Inspection_plan_type])) {
-      $par_data_inspection_plan->set('advice_type', $Inspection_plan_type);
-    }
-
-    // Set regulatory functions.
-    $par_data_inspection_plan->set('field_regulatory_function', $this->getFlowDataHandler()->getTempDataValue('regulatory_functions'));
+    $par_data_inspection_plan->set('summary', $this->getFlowDataHandler()->getTempDataValue('inspection_plan_summary'));
 
     // Set the status to active for the inspection plan entity.
-    $par_data_inspection_plan->setParStatus('active', TRUE);
+    $par_data_inspection_plan->setParStatus('current', TRUE);
 
     // Add files if required.
     if ($files_to_add) {
@@ -197,7 +187,7 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
     // Save and attach new inspection plan entities.
     if ($par_data_inspection_plan->isNew() && $par_data_inspection_plan->save()) {
       $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-      $par_data_partnership->get('field_advice')->appendItem($par_data_inspection_plan->id());
+      $par_data_partnership->get('field_inspection_plan')->appendItem($par_data_inspection_plan->id());
 
       if ($par_data_partnership->save()) {
         $this->getFlowDataHandler()->deleteStore();
