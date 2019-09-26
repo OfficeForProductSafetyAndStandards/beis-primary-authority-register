@@ -827,6 +827,7 @@ function par_data_update_8037() {
   $storage_definitions['summary'] = BaseFieldDefinition::create('text_long')
     ->setLabel(t('Inspection plan summary'))
     ->setDescription(t('Summary info for this inspection plan.'))
+    ->setRequired(TRUE)
     ->addConstraint('par_required')
     ->setRevisionable(TRUE)
     ->setSettings([
