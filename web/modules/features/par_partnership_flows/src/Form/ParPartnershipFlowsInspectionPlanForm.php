@@ -55,25 +55,16 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     if ($par_data_inspection_plan) {
-      // Partnership Confirmation.
-      $allowed_types = $par_data_inspection_plan->getTypeEntity()->getAllowedValues('advice_type');
-      if (!$this->currentUser()->hasPermission('update primary authority inspection plan to local authorities')) {
-        unset($allowed_types['authority_advice']);
-      }
-      $Inspection_plan_type = $par_data_inspection_plan->get('advice_type')->getString();
-      if (isset($allowed_types[$Inspection_plan_type])) {
-        $this->getFlowDataHandler()->setFormPermValue('advice_type', $Inspection_plan_type);
-      }
       // Inspection plan title.
-      $Inspection_plan_title = $par_data_inspection_plan->get('advice_title')->getString();
+      $Inspection_plan_title = $par_data_inspection_plan->get('inspection_plan_title')->getString();
       if (isset($Inspection_plan_title)) {
-        $this->getFlowDataHandler()->setFormPermValue('advice_title', $Inspection_plan_title);
+        $this->getFlowDataHandler()->setFormPermValue('inspection_plan_title', $Inspection_plan_title);
       }
 
       // Inspection plan summary.
-      $notes = $par_data_inspection_plan->get('notes')->getString();
+      $notes = $par_data_inspection_plan->get('inspection_plan_summary')->getString();
       if (isset($notes)) {
-        $this->getFlowDataHandler()->setFormPermValue('notes', $notes);
+        $this->getFlowDataHandler()->setFormPermValue('inspection_plan_summary', $notes);
       }
 
       // Get Regulatory Functions.
@@ -107,29 +98,24 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
       }
     }
 
-    $allowed_types = $Inspection_plan_bundle->getAllowedValues('advice_type');
-    if (!$this->currentUser()->hasPermission('update primary authority inspection plan to local authorities')) {
-      unset($allowed_types['authority_advice']);
-    }
-
     // The inspection plan title.
-    $form['advice_title'] = [
+    $form['inspection_plan_title'] = [
       '#type' => 'textfield',
       '#attributes' => [
         'class' => ['form-group'],
       ],
       '#title' => '<h3 class="heading-medium">' . $this->t('Inspection plan title')  . '</h3>',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_title'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('inspection_plan_title'),
     ];
 
     // The inspection plan summary.
-    $form['notes'] = [
+    $form['inspection_plan_summary'] = [
       '#type' => 'textarea',
       '#attributes' => [
         'class' => ['form-group'],
       ],
       '#title' => '<h3 class="heading-medium">' . $this->t('Provide summarised details of this inspection plan') . '</h3>',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('notes'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('inspection_plan_summary'),
       '#description' => '<p>Use this section to give a brief overview of the inspection plan document, include any information you feel may be useful to someone to search for this inspection plan.</p>',
     ];
 
