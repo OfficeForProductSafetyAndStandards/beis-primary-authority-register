@@ -128,31 +128,6 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_title'),
     ];
 
-    // The inspection plan type.
-    $form['advice_type'] = [
-      '#type' => 'radios',
-      '#attributes' => [
-        'class' => ['form-group'],
-      ],
-      '#title' => $this->t('Type of inspection plan'),
-      '#options' => $allowed_types,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_type'),
-    ];
-
-    // The regulatory functions of the inspection plan entity.
-    $regulatory_function_options = $par_data_partnership->getEntityFieldAsOptions('field_regulatory_function');
-    $default_reg_function = $this->getFlowDataHandler()->getDefaultValues('regulatory_functions', []);
-
-    $form['regulatory_functions'] = [
-      '#type' => 'checkboxes',
-      '#attributes' => [
-        'class' => ['form-group'],
-      ],
-      '#title' => $this->t('Regulatory functions this inspection plan covers'),
-      '#options' => $regulatory_function_options,
-      '#default_value' => array_keys($default_reg_function),
-    ];
-
     // The inspection plan summary.
     $form['notes'] = [
       '#type' => 'textarea',
