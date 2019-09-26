@@ -72,8 +72,9 @@ trait ParPartnershipFlowAccessTrait {
         }
         break;
       case 'par_partnership_flows.inspection_plan_upload':
+      case 'par_partnership_flows.inspection_plan_add':
         if (!$this->getCurrentUser()->hasPermission('upload partnership inspection plan')) {
-          $this->accessResult = AccessResult::forbidden('This advice is already has been archived or deleted.');
+          $this->accessResult = AccessResult::forbidden('This feature is only available to helpdesk users.');
         }
         break;
       }
