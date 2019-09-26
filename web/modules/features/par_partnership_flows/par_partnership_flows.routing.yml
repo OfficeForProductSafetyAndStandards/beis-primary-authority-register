@@ -378,3 +378,16 @@ par_partnership_flows.inspection_plan_upload:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+par_partnership_flows.inspection_plan_add:
+  path: '/partnership/{par_data_partnership}/inspection/add'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm::titleCallback'
+  requirements:
+    _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm::accessCallback'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
