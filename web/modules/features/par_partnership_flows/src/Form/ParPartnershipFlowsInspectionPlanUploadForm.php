@@ -47,7 +47,7 @@ class ParPartnershipFlowsInspectionPlanUploadForm extends ParBaseForm {
       foreach ($files as $file) {
         $ids[] = $file->id();
       }
-      $this->getFlowDataHandler()->setFormPermValue('files', $ids);
+      $this->getFlowDataHandler()->setFormPermValue('upload', $ids);
     }
   }
 
@@ -84,14 +84,14 @@ class ParPartnershipFlowsInspectionPlanUploadForm extends ParBaseForm {
     ];
 
     // Multiple file field.
-    $form['files'] = [
+    $form['inspection_plan_files'] = [
       '#type' => 'managed_file',
       '#title' => t('Upload file(s)'),
       '#description' => t('Use Ctrl or cmd to select multiple files'),
       '#upload_location' => 's3private://documents/inspection_plan/',
       '#multiple' => TRUE,
       '#required' => TRUE,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("files"),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("inspection_plan_files"),
       '#upload_validators' => [
         'file_validate_extensions' => [
           0 => $file_extensions
