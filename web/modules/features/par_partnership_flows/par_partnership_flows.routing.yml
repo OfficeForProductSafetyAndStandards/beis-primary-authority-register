@@ -350,7 +350,7 @@ par_partnership_flows.inspection_plan_view:
       par_data_partnership:
         type: entity:par_data_partnership
 par_partnership_flows.inspection_plan_details:
-  path: '/partnership/{par_data_partnership}/inspection/view/{par_data_inspection_plan}'
+  path: '/partnership/{par_data_partnership}/inspection/{par_data_inspection_plan}'
   defaults:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanPageController::build'
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanPageController::titleCallback'
@@ -365,3 +365,16 @@ par_partnership_flows.inspection_plan_details:
         type: entity:par_data_partnership
       par_data_inspection_plan:
         type: entity:par_data_inspection_plan
+par_partnership_flows.inspection_plan_upload:
+  path: '/partnership/{par_data_partnership}/inspection/upload'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanUploadForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanUploadForm::titleCallback'
+  requirements:
+    _permission: 'Upload inspection plan'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanUploadForm::accessCallback'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
