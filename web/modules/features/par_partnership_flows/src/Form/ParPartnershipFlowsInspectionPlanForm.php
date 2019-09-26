@@ -56,15 +56,15 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     if ($par_data_inspection_plan) {
       // Inspection plan title.
-      $Inspection_plan_title = $par_data_inspection_plan->get('inspection_plan_title')->getString();
-      if (isset($Inspection_plan_title)) {
-        $this->getFlowDataHandler()->setFormPermValue('inspection_plan_title', $Inspection_plan_title);
+      $title = $par_data_inspection_plan->get('title')->getString();
+      if (isset($title)) {
+        $this->getFlowDataHandler()->setFormPermValue('title', $title);
       }
 
       // Inspection plan summary.
-      $notes = $par_data_inspection_plan->get('inspection_plan_summary')->getString();
+      $notes = $par_data_inspection_plan->get('summary')->getString();
       if (isset($notes)) {
-        $this->getFlowDataHandler()->setFormPermValue('inspection_plan_summary', $notes);
+        $this->getFlowDataHandler()->setFormPermValue('summary', $notes);
       }
     }
   }
@@ -94,23 +94,23 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
     }
 
     // The inspection plan title.
-    $form['inspection_plan_title'] = [
+    $form['title'] = [
       '#type' => 'textfield',
       '#attributes' => [
         'class' => ['form-group'],
       ],
       '#title' => '<h3 class="heading-medium">' . $this->t('Inspection plan title')  . '</h3>',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('inspection_plan_title'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('title'),
     ];
 
     // The inspection plan summary.
-    $form['inspection_plan_summary'] = [
+    $form['summary'] = [
       '#type' => 'textarea',
       '#attributes' => [
         'class' => ['form-group'],
       ],
       '#title' => '<h3 class="heading-medium">' . $this->t('Provide summarised details of this inspection plan') . '</h3>',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('inspection_plan_summary'),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('summary'),
       '#description' => '<p>Use this section to give a brief overview of the inspection plan document, include any information you feel may be useful to someone to search for this inspection plan.</p>',
     ];
 
@@ -126,13 +126,6 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
-
-    $submitted_reg_function = $form_state->getValue('regulatory_functions');
-
-    if (empty($submitted_reg_function)) {
-      $id = $this->getElementId(['regulatory_functions'], $form);
-      $form_state->setErrorByName($this->getElementName('regulatory_functions'), $this->wrapErrorMessage('You must select at least one regulatory function.', $id));
-    };
   }
 
   /**
@@ -171,10 +164,10 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
     }
 
     // Set the inspection plan title.
-    $par_data_inspection_plan->set('title', $this->getFlowDataHandler()->getTempDataValue('inspection_plan_title'));
+    $par_data_inspection_plan->set('title', $this->getFlowDataHandler()->getTempDataValue('title'));
 
     // Set the inspection plan summary.
-    $par_data_inspection_plan->set('summary', $this->getFlowDataHandler()->getTempDataValue('inspection_plan_summary'));
+    $par_data_inspection_plan->set('summary', $this->getFlowDataHandler()->getTempDataValue('summary'));
 
     // Set the status to active for the inspection plan entity.
     $par_data_inspection_plan->setParStatus('current', TRUE);
