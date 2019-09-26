@@ -27,7 +27,7 @@ class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController 
 
     $par_data_partnership_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
     if ($par_data_partnership_inspection_plan) {
-      $this->pageTitle = $par_data_partnership_inspection_plan->getAdviceTitle();
+      $this->pageTitle = $par_data_partnership_inspection_plan->getTitle();
     }
     return parent::titleCallback();
   }
