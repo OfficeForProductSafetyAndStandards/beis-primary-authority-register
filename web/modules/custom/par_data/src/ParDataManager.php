@@ -558,6 +558,7 @@ class ParDataManager implements ParDataManagerInterface {
       if (!$entity instanceof ParDataAuthority && !$entity instanceof ParDataOrganisation) {
         continue;
       }
+
       $members = $entity->getPerson();
 
       $roles[$entity->uuid()] = [];
@@ -591,7 +592,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of roles to lookup.
    *
    * @return bool
-   *   If the roles don't exist in ALL authorities return false, otherwise true.
+   *   If the roles don't exist in ANY authorities return false, otherwise true.
    */
   public function isRoleInAllMemberAuthorities(AccountInterface $account, $roles) {
     $authorities = $this->isMemberOfAuthority($account);
@@ -628,7 +629,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of roles to lookup.
    *
    * @return bool
-   *   If the roles don't exist in ALL organisations return false, otherwise true.
+   *   If the roles don't exist in ANY organisations return false, otherwise true.
    */
   public function isRoleInAllMemberOrganisations(AccountInterface $account, $roles) {
     $organisations = $this->isMemberOfOrganisation($account);
@@ -783,14 +784,19 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of entities to turn into options.
    * @param array $options
    *   An optional array of options to append to.
+   * @param string $view_mode
+   *   A view mode to render the entity as.
+   * @param bool $access_check
+   *   Whether to check all entities for access, this is an expensive operation so not enabled by default.
    *
    * @return []
    *   An array of options keyed by entity id.
    */
-  public function getEntitiesAsOptions($entities, $options = [], $view_mode = NULL) {
+  public function getEntitiesAsOptions($entities, $options = [], $view_mode = NULL, $access_check = FALSE) {
     foreach ($entities as $entity) {
       if ($entity instanceof EntityInterface) {
-        if ($entity instanceof ParDataEntityInterface && !$entity->access('view', $this->getCurrentUser())) {
+        if ($entity instanceof ParDataEntityInterface && $entity->isDeleted()
+          && (!$access_check || !$entity->access('view', $this->getCurrentUser()))) {
           continue;
         }
 
