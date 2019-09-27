@@ -102,7 +102,7 @@ steps:
     route: par_partnership_flows.advice_archive
     form_id: par_partnership_advice_archive
     redirect:
-      save: 4
-      cancel: 4
+      save: 3
+      cancel: 3
   16:
     route: view.par_user_partnerships.partnerships_page
