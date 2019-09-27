@@ -51,14 +51,14 @@ class ParUserDetail extends ParFormPluginBase {
 
       // Disable blocking of last user in an authority/organisation.
       try {
-        $isLastSurvingAuthorityMember = $this->getParDataManager()
+        $isLastSurvingAuthorityMember = !$this->getParDataManager()
           ->isRoleInAllMemberAuthorities($user, ['par_authority']);
       }
       catch (ParDataException $e) {
         $isLastSurvingAuthorityMember = FALSE;
       }
       try {
-        $isLastSurvingOrganisationMember = $this->getParDataManager()
+        $isLastSurvingOrganisationMember = !$this->getParDataManager()
           ->isRoleInAllMemberOrganisations($user, ['par_organisation']);
       }
       catch (ParDataException $e) {
