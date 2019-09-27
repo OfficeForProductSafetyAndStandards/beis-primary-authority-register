@@ -407,14 +407,14 @@ par_partnership_flows.inspection_plan_edit:
         type: entity:par_data_partnership
       par_data_inspection_plan:
         type: entity:par_data_inspection_plan
-par_partnership_flows.advice_archive:
+par_partnership_flows.inspection_plan_archive:
   path: '/partnership/{par_data_partnership}/advice/{par_data_inspection_plan}/archive'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveConfirmForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveConfirmForm::titleCallback'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveInspectionPlanForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveInspectionPlanForm::titleCallback'
   requirements:
     _permission: 'Upload inspection plan'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveConfirmForm::accessCallback'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveInspectionPlanForm::accessCallback'
     par_data_partnership: \d+
     par_data_inspection_plan: \d+
   options:
