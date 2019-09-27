@@ -18,6 +18,7 @@ configuration:
     status_field: inspection_status
   inspection_status:
     allowed_values:
+      archived: Archived
       current: Current
       expired: Expired
       in_progress: 'In Progress'
