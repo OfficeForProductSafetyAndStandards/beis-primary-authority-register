@@ -743,7 +743,7 @@ class ParDataManager implements ParDataManagerInterface {
    * ];
    * @endcode
    */
-  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC', $conjunction = 'AND') {
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC', $conjunction = 'AND', $remove_deleted_entities = TRUE) {
     $entities = [];
 
     $query = $this->getEntityQuery($type, $conjunction);
@@ -767,11 +767,14 @@ class ParDataManager implements ParDataManagerInterface {
     $results = $query->execute();
     $entities = $this->entityManager->getStorage($type)->loadMultiple(array_unique($results));
 
-    // Do not return any entities that are deleted.
-    // @see PAR-1462 - Removing all deleted entities from loading.
-    $entities = array_filter($entities, function ($entity) {
-      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
-    });
+    // In some cases we need to return deleted entities mainly for updating legacy data across the system.
+    if ($remove_deleted_entities) {
+      // Do not return any entities that are deleted.
+      // @see PAR-1462 - Removing all deleted entities from loading.
+      $entities = array_filter($entities, function ($entity) {
+        return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
+      });
+    }
 
     return $entities;
   }
