@@ -100,7 +100,7 @@ steps:
       cancel: 3
   15:
     route: par_partnership_flows.inspection_plan_archive
-    form_id: par_partnership_advice_archive
+    form_id: par_partnership_inspection_plan_archive
     redirect:
       save: 3
       cancel: 3
