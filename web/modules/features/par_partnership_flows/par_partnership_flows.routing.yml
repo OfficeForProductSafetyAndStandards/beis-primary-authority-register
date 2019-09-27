@@ -384,37 +384,21 @@ par_partnership_flows.inspection_plan_add:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm'
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm::titleCallback'
   requirements:
-    _permission: 'update partnership authority details'
+    _permission: 'Upload inspection plan'
     _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_partnership_flows.advice_edit:
+par_partnership_flows.inspection_plan_edit:
   path: '/partnership/{par_data_partnership}/inspection/{par_data_inspection_plan}/edit'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::titleCallback'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm::titleCallback'
   requirements:
-    _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsAdviceForm::accessCallback'
-    par_data_partnership: \d+
-    par_data_inspection_plan: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-      par_data_inspection_plan:
-        type: entity:par_data_inspection_plan
-par_partnership_flows.advice_archive:
-  path: '/partnership/{par_data_partnership}/advice/{par_data_advice}/archive'
-  defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveConfirmForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveConfirmForm::titleCallback'
-  requirements:
-    _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveConfirmForm::accessCallback'
+    _permission: 'Upload inspection plan'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm::accessCallback'
     par_data_partnership: \d+
     par_data_inspection_plan: \d+
   options:
