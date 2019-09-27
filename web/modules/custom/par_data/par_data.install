@@ -852,3 +852,37 @@ function par_data_update_8037() {
     $entity_definition_manager->installFieldStorageDefinition($field, 'par_data_inspection_plan', 'par_data_inspection_plan', $definition);
   }
 }
+
+/**
+ * Set default inspection plan title values for legacy entities.
+ */
+function par_data_update_8038() {
+
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  $conditions = [
+    [
+      'AND' => [
+        ['title', NULL, 'IS NULL'],
+      ]
+    ],
+  ];
+
+  $inspection_plan_entities = $par_data_manager->getEntitiesByQuery('par_data_inspection_plan', $conditions, NULL, NULL, 'DESC', 'AND', FALSE);
+
+  foreach ($inspection_plan_entities as $inspection_plan_entity) {
+    $documents = $inspection_plan_entity->get('document')->referencedEntities();
+    $document = !$inspection_plan_entity->get('document')->isEmpty() ? current($documents) : NULL;
+
+
+    if ($document) {
+      /* @var \Drupal\file\Entity\File $document */
+      $filename = $document->getFilename();
+      dd($filename);
+      $sanitised = pathinfo($filename, PATHINFO_FILENAME);
+
+      $inspection_plan_entity->setTitle($sanitised);
+      $inspection_plan_entity->save();
+    }
+  }
+}
