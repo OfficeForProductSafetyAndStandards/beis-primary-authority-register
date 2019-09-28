@@ -60,7 +60,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * This is typically done if we want to group two sets of forms together,
    * in which case we ignore the destination parameter for this form but
    * pass it on to the next route. Once the next form is completed it will be
-   * redirected to the desintation parameter.
+   * redirected to the destination parameter.
    *
    * @var boolean
    */
