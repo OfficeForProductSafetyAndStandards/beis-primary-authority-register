@@ -301,6 +301,14 @@ Feature: User management
         When I click on the button "#edit-next"
         Then the element ".component-user-detail" contains the text "The account is no longer active"
 
+        # Confirm user can't sign in.
+        And I click the link text "Sign out"
+        Given I open the path "/user/login"
+        And I add "par_user_management_officer@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
+        Then the element ".error-summary" contains the text "The username par_user_management_officer has not been activated or is blocked."
+
         # Confirm that this user can be reactivated.
         And I click the link text "Re-activate user account"
         Then the element "h1.heading-xlarge" contains the text "Re-activate this user account"
