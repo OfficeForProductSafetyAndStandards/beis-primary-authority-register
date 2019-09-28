@@ -269,3 +269,41 @@ Feature: User management
         Then the element ".par-invite-review" contains the text "An invitation will be sent to this person to invite them to join the Primary Authority Register."
         When I click on the button "#edit-save"
 
+
+    @user-management @ci @smoke
+    Scenario: User should not be blocked
+        Given I am logged in as "par_helpdesk@example.com"
+
+        When I click the link text "Manage people"
+
+        Then the element "h1.heading-xlarge" contains the text "People"
+        When I add "par_authority_profile@example.com" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-par-people"
+        And I click the link text "Manage contact"
+
+        # Confirm that this user cannot be cancelled.
+        Then the element ".component-user-detail" contains the text "This user can not be removed because they are the only member of one of their authorities or organisations."
+
+    @user-management @ci @smoke
+    Scenario: User can be blocked and reactivated
+        Given I am logged in as "par_helpdesk@example.com"
+
+        When I click the link text "Manage people"
+
+        Then the element "h1.heading-xlarge" contains the text "People"
+        When I add "par_user_management_officer@example.com" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-par-people"
+        And I click the link text "Manage contact"
+
+        # Confirm that this user can be cancelled.
+        And I click the link text "Block user account"
+        Then the element "h1.heading-xlarge" contains the text "Disable this user account"
+        When I click on the button "#edit-next"
+        Then the element ".component-user-detail" contains the text "The account is no longer active"
+
+        # Confirm that this user can be reactivated.
+        And I click the link text "Re-activate user account"
+        Then the element "h1.heading-xlarge" contains the text "Re-activate this user account"
+        When I click on the button "#edit-next"
+        Then the element ".component-user-detail" contains the text "Last sign in"
+
