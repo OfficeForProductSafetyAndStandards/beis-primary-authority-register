@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: c-Ttd6tOGuz5t2K9_2bhgtapQham8i0GchJrhDgOPT0
+  default_config_hash: Op2O5FayIa28cv5_S8Z5zll1U7V5ghRx1nTSWEjuI8M
 id: partnership_authority
 label: 'Authority Partnership Flow'
 default_title: null
@@ -102,4 +102,10 @@ steps:
       save: 3
       cancel: 3
   15:
+    route: par_partnership_flows.inspection_plan_archive
+    form_id: par_partnership_inspection_plan_archive
+    redirect:
+      save: 3
+      cancel: 3
+  16:
     route: view.par_user_partnerships.partnerships_page
