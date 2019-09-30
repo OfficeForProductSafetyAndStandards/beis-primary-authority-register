@@ -94,7 +94,7 @@ steps:
       cancel: 3
   14:
     route: par_partnership_flows.inspection_plan_edit
-    form_id: par_partnership_inspection_plan_add
+    form_id: par_partnership_inspection_plan_edit
     redirect:
       save: 3
       cancel: 3
