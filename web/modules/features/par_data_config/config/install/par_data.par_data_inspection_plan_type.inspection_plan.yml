@@ -7,7 +7,7 @@ description: 'An Inspection Plan is a template for carrying out particular types
 help: ''
 isDeletable: true
 isRevokable: true
-isArchivable: false
+isArchivable: true
 configuration:
   entity:
     label_fields:
@@ -15,6 +15,7 @@ configuration:
     status_field: inspection_status
   inspection_status:
     allowed_values:
+      archived: Archived
       current: Current
       expired: Expired
       in_progress: 'In Progress'
