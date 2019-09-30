@@ -123,8 +123,6 @@ class ParDataInspectionPlan extends ParDataEntity {
     if ($entity_archived = parent::archive($save)) {
       // Set reason for archiving the advice.
       $this->set('archive_reason', $reason);
-      // Set the advice status field.
-      $this->set('inspection_status', 'archived');
 
       if (!$this->save()) {
         return FALSE;
