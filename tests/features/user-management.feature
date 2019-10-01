@@ -291,7 +291,7 @@ Feature: User management
         When I click the link text "Manage people"
 
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_user_management_officer@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_officer_2@example.com" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
@@ -304,10 +304,10 @@ Feature: User management
         # Confirm user can't sign in.
         And I click the link text "Sign out"
         Given I open the path "/user/login"
-        And I add "par_user_management_officer@example.com" to the inputfield "#edit-name"
+        And I add "par_user_management_officer_2@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
-        Then the element ".error-summary" contains the text "The username par_user_management_officer has not been activated or is blocked."
+        Then the element ".error-summary" contains the text "has not been activated or is blocked."
 
         # Confirm that this user can be reactivated.
         And I click the link text "Re-activate user account"
