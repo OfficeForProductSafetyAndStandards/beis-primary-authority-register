@@ -309,7 +309,6 @@ Feature: User management
         When I click on the button "#edit-submit"
         Then the element ".error-summary" contains the text "has not been activated or is blocked."
         
-        When I click the link text "Sign out"
         Given I am logged in as "par_helpdesk@example.com"
         When I click the link text "Manage people"
         When I add "par_user_management_officer_2@example.com" to the inputfield "#edit-keywords"
