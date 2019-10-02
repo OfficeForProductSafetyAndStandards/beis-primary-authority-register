@@ -53,17 +53,17 @@ par_search_partnership_flows.inspection_plan_view:
 
 
 par_search_partnership_flows.inspection_plan_page:
-  path: '/partnership/{par_data_partnership}/inspection/search/{par_data_advice}'
+  path: '/partnership/{par_data_partnership}/inspection/search/{par_data_inspection_plan}'
   defaults:
-    _controller: '\Drupal\par_search_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::build'
-    _title_callback: '\Drupal\par_search_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::titleCallback'
+    _controller: '\Drupal\par_search_partnership_flows\Controller\ParInspectionPlanPageController::build'
+    _title_callback: '\Drupal\par_search_partnership_flows\Controller\ParInspectionPlanPageController::titleCallback'
   requirements:
     _permission: 'search partnerships'
     par_data_partnership: \d+
-    par_data_advice: \d+
+    par_data_inspection_plan: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
       par_data_advice:
-        type: entity:par_data_advice
+        type: entity:par_data_inspection_plan
