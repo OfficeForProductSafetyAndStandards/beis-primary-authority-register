@@ -29,4 +29,8 @@ steps:
     redirect:
       done: 1
   5:
+    route: par_search_partnership_flows.inspection_plan_page
+    redirect:
+      done: 2
+  6:
     route: view.partnership_search.enforcment_flow_search_partnerships
