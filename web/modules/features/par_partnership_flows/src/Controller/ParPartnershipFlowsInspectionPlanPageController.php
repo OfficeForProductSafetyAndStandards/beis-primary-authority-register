@@ -13,7 +13,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
- * The Advice entity details page.
+ * The inspection plan entity details page.
  */
 class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController {
 
@@ -46,7 +46,7 @@ class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController 
       ];
       $build['inspection_plan_details']['archived'] = [
         '#type' => 'markup',
-        '#markup' => 'Inspection plan advice',
+        '#markup' => 'Archived inspection plan',
         '#prefix' => '<h2>',
         '#suffix' => '</h2>',
       ];
