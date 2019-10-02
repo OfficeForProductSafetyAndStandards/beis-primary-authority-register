@@ -41,7 +41,7 @@ par_search_partnership_flows.advice_page:
 par_search_partnership_flows.inspection_plan_view:
   path: '/partnership/{par_data_partnership}/inspection/search'
   defaults:
-    _controller: '\Drupal\par_search_partnership_flows\Controller\ParInspectionPlanController::build'
+    _controller: '\Drupal\par_search_partnership_flows\Controller\ParInspectionPlanController::content'
     _title_callback: '\Drupal\par_search_partnership_flows\Controller\ParInspectionPlanController::titleCallback'
   requirements:
     _permission: 'search partnerships'
