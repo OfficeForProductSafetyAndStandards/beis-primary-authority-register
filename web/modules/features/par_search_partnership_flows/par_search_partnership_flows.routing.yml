@@ -50,8 +50,6 @@ par_search_partnership_flows.inspection_plan_view:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-
-
 par_search_partnership_flows.inspection_plan_page:
   path: '/partnership/{par_data_partnership}/inspection/search/{par_data_inspection_plan}'
   defaults:
