@@ -26,8 +26,6 @@ steps:
       done: 2
   4:
     route: par_search_partnership_flows.inspection_plan_view
-    components:
-      inspection_plan_list: {}
     redirect:
       done: 1
   5:
