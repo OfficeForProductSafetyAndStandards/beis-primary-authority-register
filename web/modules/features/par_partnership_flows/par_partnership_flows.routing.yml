@@ -356,7 +356,7 @@ par_partnership_flows.inspection_plan_details:
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanPageController::titleCallback'
   requirements:
     _permission: 'update partnership authority details'
-    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsAdvicePageController::accessCallback'
+    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanPageController::accessCallback'
     par_data_partnership: \d+
     par_data_inspection_plan: \d+
   options:
