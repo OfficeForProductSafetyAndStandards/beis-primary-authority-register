@@ -6,6 +6,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataAdvice;
+use Drupal\par_data\Entity\ParDataInspectionPlan;
 use Drupal\par_flows\ParFlowException;
 use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
@@ -25,7 +26,7 @@ trait ParPartnershipFlowAccessTrait {
    * the ParPartnershipFlowsLegalEntityForm class and would need to be updated
    * for use with other forms in par_partnership_flows flows.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL ) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
@@ -73,9 +74,15 @@ trait ParPartnershipFlowAccessTrait {
         break;
       case 'par_partnership_flows.inspection_plan_upload':
       case 'par_partnership_flows.inspection_plan_add':
+        if (!$par_data_partnership->isActive()) {
+          $this->accessResult = AccessResult::forbidden('Inspection plans can only be added to active partnerships.');
+        }
+        break;
+      case 'par_partnership_flows.inspection_plan_archive':
       case 'par_partnership_flows.inspection_plan_edit':
-        if (!$this->getCurrentUser()->hasPermission('upload partnership inspection plan')) {
-          $this->accessResult = AccessResult::forbidden('This feature is only available to helpdesk users.');
+        // Restrict editorial access to archived and deleted inspection plan entities.
+        if ($par_data_inspection_plan->isArchived() || $par_data_inspection_plan->isDeleted()) {
+          $this->accessResult = AccessResult::forbidden('This inspection plan has been archived or deleted and therefore cannot be edited.');
         }
         break;
       }
