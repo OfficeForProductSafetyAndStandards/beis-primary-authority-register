@@ -77,7 +77,7 @@ steps:
   11:
     route: par_partnership_flows.inspection_plan_details
     redirect:
-      done: 4
+      done: 3
   12:
     route: par_partnership_flows.inspection_plan_upload
     form_id: par_partnership_inspection_plan_upload_add
