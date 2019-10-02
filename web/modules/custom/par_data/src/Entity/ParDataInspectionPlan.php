@@ -107,7 +107,7 @@ class ParDataInspectionPlan extends ParDataEntity {
 
   /**
    * Archive if the entity is archivable and is not new.
-   * Override main base class function to add custom advice entity logic.
+   * Override main base class function to add custom inspection plan entity logic.
    *
    * @param boolean $save
    *   Whether to save the entity after revoking.
@@ -121,7 +121,7 @@ class ParDataInspectionPlan extends ParDataEntity {
   public function inspection_plan_archive($save = TRUE, $reason) {
 
     if ($entity_archived = parent::archive($save)) {
-      // Set reason for archiving the advice.
+      // Set reason for archiving the inspection plan.
       $this->set('archive_reason', $reason);
 
       if (!$this->save()) {
@@ -283,7 +283,7 @@ class ParDataInspectionPlan extends ParDataEntity {
         'uri_scheme' => 's3private',
         'max_filesize' => '20 MB',
         'file_extensions' => 'jpg jpeg gif png tif pdf txt rdf doc docx odt xls xlsx csv ods ppt pptx odp pot potx pps',
-        'file_directory' => 'documents/advice',
+        'file_directory' => 'documents/inspection_plan',
       ])
       ->setDisplayOptions('form', [
         'weight' => 4,
