@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_partnership_flows\Controller;
+namespace Drupal\par_search_partnership_flows\Controller;
 
 
 use Drupal\Core\Link;
@@ -15,7 +15,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 /**
  * The Advice entity details page.
  */
-class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController {
+class ParInspectionPlanPageController extends ParBaseController {
 
   use ParPartnershipFlowAccessTrait;
   use ParPartnershipFlowsTrait;
