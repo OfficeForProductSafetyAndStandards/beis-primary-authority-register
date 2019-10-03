@@ -1,0 +1,5 @@
+name: Unique pager
+type: module
+description: Identifies all the pagers on a page to ensure they all have distinct pager IDs.
+core: 8.x
+package: User interface

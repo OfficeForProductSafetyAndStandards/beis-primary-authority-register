@@ -1,0 +1,4 @@
+services:
+  unique_pager.unique_pager_service:
+    class: Drupal\unique_pager\UniquePagerService
+    arguments: ['@current_user']
