@@ -77,7 +77,7 @@ trait ParDefaultActionsTrait {
    */
   public function disableAction($action) {
     if (!empty($this->getActions()) && in_array($action, $this->getActions())) {
-      $this->setActions(array_diff($this->getActions(), [$action]));
+      $this->setActions(array_diff(array_values($this->getActions()), [$action]));
     }
   }
 
@@ -89,7 +89,8 @@ trait ParDefaultActionsTrait {
    */
   public function enableAction($action) {
     if (empty($this->getActions()) || !in_array($action, $this->getActions())) {
-      $this->setActions($this->getActions() + [$action]);
+      $merged = array_merge(array_values($this->getActions()), [$action]);
+      $this->setActions($merged);
     }
   }
 
