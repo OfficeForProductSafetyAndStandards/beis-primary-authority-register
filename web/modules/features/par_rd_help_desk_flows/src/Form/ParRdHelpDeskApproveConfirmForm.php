@@ -52,7 +52,7 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
     }
 
     // 403 if the partnership is active/approved by RD.
-    if ($par_data_partnership->getRawStatus() === 'confirmed_rd') {
+    if ($par_data_partnership->getRawStatus() !== 'confirmed_business') {
       $this->accessResult = AccessResult::forbidden('The partnership is active.');
     }
 
