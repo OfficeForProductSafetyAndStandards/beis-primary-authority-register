@@ -38,12 +38,12 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
     ];
 
     switch ($this->getFlowNegotiator()->getFlowName()) {
-      //View that contains actions )edit/revoke
+      //View that contains actions i.e. edit, revoke.
       case 'partnership_authority':
         $inspection_plan_list_block = 'inspection_list_authority_block';
 
         break;
-      //none action view
+      //none action view.
       case 'partnership_direct':
       case 'partnership_coordinated':
         $inspection_plan_list_block = 'inspection_plan_list_org_block';
