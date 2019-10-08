@@ -107,6 +107,9 @@ class ParProfileController extends ParBaseController {
       }
     }
 
+    // Enable the 'done' action instead of the default.
+    $this->getFlowNegotiator()->getFlow()->enableAction('done');
+
     return parent::build($build);
   }
 

@@ -563,9 +563,10 @@ class ParDataManager implements ParDataManagerInterface {
 
       $roles[$entity->uuid()] = [];
       foreach ($members as $member) {
+        /** @var \Drupal\user\Entity\User $user */
         $user = $member->getUserAccount();
 
-        if (isset($user) && (!isset($account) || $user->id() !== $account->id())) {
+        if (isset($user) && $user->isActive() && (!isset($account) || $user->id() !== $account->id())) {
           foreach ($user->getRoles() as $role) {
             $roles[$entity->uuid()][$role][] = $member;
           }

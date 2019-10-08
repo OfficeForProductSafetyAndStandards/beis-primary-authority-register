@@ -889,8 +889,8 @@ function par_data_update_8038() {
     ],
   ];
 
-  // We should ensure deleted inspection plan entities are also setting default titles as the client has a habit of
-  // re-activating deleted system entities.
+  // We should ensure deleted inspection plan entities are also setting default
+  // titles as the client has a habit of re-activating deleted system entities.
   $inspection_plan_entities = $par_data_manager->getEntitiesByQuery('par_data_inspection_plan', $conditions, NULL, NULL, 'DESC', 'AND', FALSE);
 
   foreach ($inspection_plan_entities as $inspection_plan_entity) {
@@ -901,7 +901,6 @@ function par_data_update_8038() {
     if ($document) {
       /* @var \Drupal\file\Entity\File $document */
       $filename = $document->getFilename();
-      dd($filename);
       $sanitised = pathinfo($filename, PATHINFO_FILENAME);
 
       $inspection_plan_entity->setTitle($sanitised);
