@@ -97,9 +97,9 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
     // No validation yet.
     parent::validateForm($form, $form_state);
 
-    if (!$form_state->getValue('archive_reason')) {
-      $id = $this->getElementId('archive_reason', $form);
-      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please supply the reason for archiving this document.', $id));
+    if (!$form_state->getValue('delete_reason')) {
+      $id = $this->getElementId('delete_reason', $form);
+      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please supply the reason for revoking this document.', $id));
     }
   }
 
@@ -114,7 +114,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
     // We only want to update the status of active inspection plan documents.
     if (!$par_data_inspection_plan->isArchived()) {
 
-      $reason = $this->getFlowDataHandler()->getTempDataValue('archive_reason');
+      $reason = $this->getFlowDataHandler()->getTempDataValue('delete_reason');
       $archived = $par_data_inspection_plan->inspection_plan_archive(TRUE, $reason);
 
       if ($archived) {
