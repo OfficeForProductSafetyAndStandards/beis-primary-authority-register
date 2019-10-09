@@ -8,13 +8,30 @@ dependencies:
     - par_data.par_data_advice_type.advice
   module:
     - file_entity
+    - text
 _core:
-  default_config_hash: 9qgRxsWkfiI7bBRQLtHZ3NtGPzzkSMWVzOFoFfPJHQA
+  default_config_hash: AL51cLsfUHh1UchHW4tWajqmoaTRmOnezqr55_rIsek
 id: par_data_advice.advice.title
 targetEntityType: par_data_advice
 bundle: advice
 mode: title
 content:
+  advice_status:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  advice_title:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   archive_reason:
     label: hidden
     weight: 0
@@ -38,10 +55,14 @@ content:
       access_message: 'You don''t have access to download this file.'
       text: 'Download [file:name]'
     third_party_settings: {  }
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
-  advice_status: true
-  advice_summary: true
-  advice_title: true
   advice_type: true
   field_regulatory_function: true
   issue_date: true

@@ -11,13 +11,21 @@ dependencies:
     - par_data.par_data_authority_type.authority
   module:
     - par_data
+    - text
 _core:
-  default_config_hash: 63fKT_sy9nVXWyICykOE2hDWDO-cfVimjSpUc1p-8rU
+  default_config_hash: kmP2X4baPHxhErUx53cXaakfrGlKuVfHv_qKt5X9wdo
 id: par_data_authority.authority.summary
 targetEntityType: par_data_authority
 bundle: authority
 mode: summary
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   authority_name:
     type: string
     weight: 0
@@ -34,6 +42,13 @@ content:
     settings:
       display_original_value: false
     third_party_settings: {  }
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   regulatory_function:
     type: entity_reference_entity_view
     weight: 2
@@ -43,6 +58,13 @@ content:
       view_mode: summary
       link: false
     third_party_settings: {  }
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   allowed_regulatory_function: true
   comments: true

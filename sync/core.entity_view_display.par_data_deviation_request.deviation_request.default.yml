@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_display.comment.par_deviation_request_comments.default
     - field.field.par_data_deviation_request.deviation_request.field_enforcing_authority
     - field.field.par_data_deviation_request.deviation_request.field_inspection_plan
     - field.field.par_data_deviation_request.deviation_request.field_partnership
@@ -15,12 +16,26 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: x0m1_soqJf2WIqm0yOeKMk5_sDW7IO0bqwScVzoSQJ8
+  default_config_hash: P-hBTbUaEASInOiuXkA2G7AsXku6nuvXa16PUHd6zxc
 id: par_data_deviation_request.deviation_request.default
 targetEntityType: par_data_deviation_request
 bundle: deviation_request
 mode: default
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   document:
     label: hidden
     weight: 2
@@ -106,6 +121,13 @@ content:
       format_type: gds_date_format
     third_party_settings: {  }
     type: datetime_default
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   name: true
   user_id: true

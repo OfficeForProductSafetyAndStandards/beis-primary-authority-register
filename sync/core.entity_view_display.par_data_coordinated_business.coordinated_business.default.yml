@@ -10,13 +10,21 @@ dependencies:
     - datetime
     - datetime_range
     - par_data
+    - text
 _core:
-  default_config_hash: wrQCLd0nUJy7r_OzKr59VHEfrL0-OPBdzhlsEI65aYs
+  default_config_hash: dHC5kkujvSk-4U_5t8yV15UPaf1zNVWrdjFBV4Lj2ng
 id: par_data_coordinated_business.coordinated_business.default
 targetEntityType: par_data_coordinated_business
 bundle: coordinated_business
 mode: default
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   covered_by_inspection:
     type: par_boolean_formatter
     weight: 3
@@ -42,6 +50,13 @@ content:
       timezone_override: ''
       format_type: gds_date_format
     third_party_settings: {  }
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   field_legal_entity:
     type: entity_reference_entity_view
     weight: 0
@@ -70,6 +85,13 @@ content:
     third_party_settings: {  }
     type: daterange_custom
     weight: 2
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   name: true
   user_id: true

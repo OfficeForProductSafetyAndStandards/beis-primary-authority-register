@@ -5,13 +5,36 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_sic_code.title
     - par_data.par_data_sic_code_type.sic_code
+  module:
+    - text
 _core:
-  default_config_hash: 1uymVE8bLu_zhTR9V62762ZVZWRzK2OVsdHo4mneq9k
+  default_config_hash: 3lkuJTAhlTcrSWCJN-AdWU60gjx01fe6hCDIgDYp0RM
 id: par_data_sic_code.sic_code.title
 targetEntityType: par_data_sic_code
 bundle: sic_code
 mode: title
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   sic_code:
     type: string
     weight: 0

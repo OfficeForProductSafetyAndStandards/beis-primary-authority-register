@@ -9,8 +9,9 @@ dependencies:
   module:
     - datetime
     - file_entity
+    - text
 _core:
-  default_config_hash: onqltPSQTGsVuko0w8iRGhnIVC1kNT8FxQExM_edPXE
+  default_config_hash: Br_SZ9l3XnsQug75cwUn2fV-IwIm0lC2bTEdohyogCE
 id: par_data_advice.advice.summary
 targetEntityType: par_data_advice
 bundle: advice
@@ -24,13 +25,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-  advice_summary:
-    label: hidden
-    type: text_default
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   advice_title:
     label: hidden
     weight: 0
@@ -71,6 +65,13 @@ content:
       format_type: gds_date_format
     third_party_settings: {  }
     type: datetime_default
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   advice_type: true
   field_regulatory_function: true

@@ -39,6 +39,13 @@ content:
       view_mode: summary
       link: false
     third_party_settings: {  }
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   authority:
     type: entity_reference_entity_view
     weight: 2
@@ -57,6 +64,13 @@ content:
       view_mode: summary
       link: false
     third_party_settings: {  }
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   organisation:
     type: entity_reference_entity_view
     weight: 4

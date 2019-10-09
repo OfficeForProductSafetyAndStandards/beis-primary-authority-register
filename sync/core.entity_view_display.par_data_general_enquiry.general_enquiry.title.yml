@@ -13,12 +13,26 @@ dependencies:
     - file_entity
     - text
 _core:
-  default_config_hash: UK0stNZkF1_8_T8ADpGdRuq-mXu21AzKFVzIHm_chQA
+  default_config_hash: _EV7YQWGucSV0egwQ3q9GjJ23QvA0F89eaH2QQ-L5MI
 id: par_data_general_enquiry.general_enquiry.title
 targetEntityType: par_data_general_enquiry
 bundle: general_enquiry
 mode: title
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   document:
     label: hidden
     weight: 0
@@ -36,6 +50,13 @@ content:
     settings:
       trim_length: 300
     third_party_settings: {  }
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   field_enforcing_authority: true
   field_partnership: true

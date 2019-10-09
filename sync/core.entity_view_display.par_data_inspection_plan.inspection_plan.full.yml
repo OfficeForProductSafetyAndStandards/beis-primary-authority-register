@@ -9,13 +9,28 @@ dependencies:
   module:
     - datetime_range
     - file_entity
+    - text
 _core:
-  default_config_hash: U-Ft6DA_QqGaN0dySFYI9zv927rCBHw6PCPg400ALF8
+  default_config_hash: W77K5OH2FiKY4M_Kn28TpaTH5icRhrUs7xQsE39qTIU
 id: par_data_inspection_plan.inspection_plan.full
 targetEntityType: par_data_inspection_plan
 bundle: inspection_plan
 mode: full
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   document:
     type: file_download_link
     weight: 0
@@ -33,6 +48,28 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  summary:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  title:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   valid_date:
     type: daterange_default
     weight: 1
