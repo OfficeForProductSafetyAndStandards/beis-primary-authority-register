@@ -410,7 +410,7 @@ par_partnership_flows.inspection_plan_edit:
 par_partnership_flows.inspection_plan_revoke:
   path: '/partnership/{par_data_partnership}/inspection/{par_data_inspection_plan}/revoke'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveInspectionPlanForm'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRevokeInspectionPlanForm'
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveInspectionPlanForm::titleCallback'
   requirements:
     _permission: 'Upload inspection plan'
