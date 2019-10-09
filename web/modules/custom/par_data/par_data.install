@@ -848,27 +848,6 @@ function par_data_update_8037() {
     ])
     ->setDisplayConfigurable('view', TRUE);
 
-  // Archive Reason.
-  $storage_definitions['archive_reason'] = BaseFieldDefinition::create('text_long')
-    ->setLabel(t('Archive Reason'))
-    ->setDescription(t('Comments about why this inspection plan document was archived.'))
-    ->setRevisionable(TRUE)
-    ->setSettings([
-      'text_processing' => 0,
-    ])->setDisplayOptions('form', [
-      'type' => 'text_textarea',
-      'weight' => 13,
-      'settings' => [
-        'rows' => 25,
-      ],
-    ])
-    ->setDisplayConfigurable('form', FALSE)
-    ->setDisplayOptions('view', [
-      'label' => 'hidden',
-      'weight' => 0,
-    ])
-    ->setDisplayConfigurable('view', TRUE);
-
   foreach ($storage_definitions as $field => $definition) {
     $entity_definition_manager->installFieldStorageDefinition($field, 'par_data_inspection_plan', 'par_data_inspection_plan', $definition);
   }
@@ -925,6 +904,27 @@ function par_data_update_8039() {
   $storage_definitions['revocation_reason'] = BaseFieldDefinition::create('text_long')
     ->setLabel(t('Revocation Reason'))
     ->setDescription(t('Comments about why this entity was revoked.'))
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'text_processing' => 0,
+    ])->setDisplayOptions('form', [
+      'type' => 'text_textarea',
+      'weight' => 13,
+      'settings' => [
+        'rows' => 25,
+      ],
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  // Archive Reason.
+  $storage_definitions['archive_reason'] = BaseFieldDefinition::create('text_long')
+    ->setLabel(t('Archive Reason'))
+    ->setDescription(t('Comments about why this entity was archived.'))
     ->setRevisionable(TRUE)
     ->setSettings([
       'text_processing' => 0,
