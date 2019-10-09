@@ -124,7 +124,7 @@ trait ParDisplayTrait {
   public function renderReferenceField($section, $field, $view_mode = 'summary', $operations = [], $single = FALSE) {
     $elements = [];
     foreach ($field->referencedEntities() as $delta => $entity) {
-      if ($entity instanceof ParDataEntityInterface && ($entity->isDeleted() || $entity->isRevoked())) {
+      if ($entity instanceof ParDataEntityInterface && $entity->isDeleted()) {
         continue;
       }
 
