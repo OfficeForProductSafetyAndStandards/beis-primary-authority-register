@@ -78,7 +78,7 @@ trait ParPartnershipFlowAccessTrait {
           $this->accessResult = AccessResult::forbidden('Inspection plans can only be added to active partnerships.');
         }
         break;
-      case 'par_partnership_flows.inspection_plan_archive':
+      case 'par_partnership_flows.inspection_plan_revoke':
       case 'par_partnership_flows.inspection_plan_edit':
         // Restrict editorial access to archived and deleted inspection plan entities.
         if ($par_data_inspection_plan->isArchived() || $par_data_inspection_plan->isDeleted()) {
