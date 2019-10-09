@@ -414,7 +414,7 @@ par_partnership_flows.inspection_plan_revoke:
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRevokeInspectionPlanForm::titleCallback'
   requirements:
     _permission: 'Upload inspection plan'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveInspectionPlanForm::accessCallback'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRevokeInspectionPlanForm::accessCallback'
     par_data_partnership: \d+
     par_data_inspection_plan: \d+
   options:
