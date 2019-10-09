@@ -109,7 +109,7 @@ class ParDataAdvice extends ParDataEntity {
    * @return boolean
    *   True if the entity was restored, false for all other results.
    */
-  public function archive($reason, $save = TRUE) {
+  public function archive($reason ='', $save = TRUE) {
 
     if ($entity_archived = parent::archive($reason, $save)) {
       // Set the advice status field.
