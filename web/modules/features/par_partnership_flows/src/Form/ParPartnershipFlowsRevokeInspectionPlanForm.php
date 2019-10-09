@@ -28,8 +28,8 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
    * {@inheritdoc}
    */
   protected $entityMapping = [
-    ['archive_reason', 'par_data_inspection_plan', 'archive_reason', NULL, NULL, 0, [
-      'This value should not be null.' => 'Please supply the reason for archiving this document.'
+    ['revoke_reason', 'par_data_inspection_plan', 'revoke_reason', NULL, NULL, 0, [
+      'This value should not be null.' => 'Please supply the reason for revoking this document.'
     ]],
   ];
 
@@ -114,8 +114,8 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
     // We only want to update the status of active inspection plan documents.
     if (!$par_data_inspection_plan->isRevoked()) {
 
-      $reason = $this->getFlowDataHandler()->getTempDataValue('revoke_reason');
-      $revoked = $par_data_inspection_plan->inspection_plan_archive(TRUE, $reason);
+      $revoke_reason = $this->getFlowDataHandler()->getTempDataValue('revoke_reason');
+      $revoked = $par_data_inspection_plan->revoke($revoke_reason, TRUE);
 
       if ($revoked) {
         $this->getFlowDataHandler()->deleteStore();
