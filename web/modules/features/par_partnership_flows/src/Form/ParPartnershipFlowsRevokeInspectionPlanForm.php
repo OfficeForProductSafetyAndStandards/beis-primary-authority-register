@@ -97,8 +97,8 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
     // No validation yet.
     parent::validateForm($form, $form_state);
 
-    if (!$form_state->getValue('delete_reason')) {
-      $id = $this->getElementId('delete_reason', $form);
+    if (!$form_state->getValue('revoke_reason')) {
+      $id = $this->getElementId('revoke_reason', $form);
       $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please supply the reason for revoking this document.', $id));
     }
   }
