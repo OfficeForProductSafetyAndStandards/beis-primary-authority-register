@@ -79,7 +79,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
       '#suffix' => '</p>',
     ];
 
-    // Enter the delete reason.
+    // Enter the revoke reason.
     $form['revoke_reason'] = [
       '#title' => $this->t('Enter the reason you are revoking this inspection plan'),
       '#type' => 'textarea',
