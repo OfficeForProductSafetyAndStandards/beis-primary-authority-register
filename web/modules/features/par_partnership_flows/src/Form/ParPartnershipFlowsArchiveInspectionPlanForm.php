@@ -18,7 +18,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 /**
  * The confirming the user is authorised to archive partnerships.
  */
-class ParPartnershipFlowsArchiveInspectionPlanForm extends ParBaseForm {
+class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
 
   use ParDisplayTrait;
   use ParPartnershipFlowAccessTrait;
