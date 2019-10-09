@@ -112,13 +112,13 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
     $par_data_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
 
     // We only want to update the status of active inspection plan documents.
-    if (!$par_data_inspection_plan->isArchived()) {
+    if (!$par_data_inspection_plan->isRevoked()) {
 
       $reason = $this->getFlowDataHandler()->getTempDataValue('revoke_reason');
-      $archived = $par_data_inspection_plan->inspection_plan_archive(TRUE, $reason);
+      $revoked = $par_data_inspection_plan->inspection_plan_archive(TRUE, $reason);
 
       if ($archived) {
-        $this->getFlowDataHandler()->deleteStore();
+        $revoked->getFlowDataHandler()->deleteStore();
       }
       else {
         $message = $this->t('Revoke reason could not be saved for %form_id');
