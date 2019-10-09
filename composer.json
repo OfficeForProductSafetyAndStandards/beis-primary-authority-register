@@ -158,9 +158,6 @@
                 "One time login link": "./patches/one_time_login_redirection.patch",
                 "SetOptions on null causing error": "https://www.drupal.org/files/issues/2018-03-09/toolbar_alter_error-2947616-11.patch"
             },
-            "drupal/message": {
-                "Return save status": "https://www.drupal.org/files/issues/2018-10-24/return_save_status-3008879-2.patch"
-            },
             "drupal/password_policy": {
                 "Remove setting of field_last_password_reset on install": "https://www.drupal.org/files/issues/2018-07-03/Do-not-set-user-fields-on-install_2983448_4.patch"
             },
