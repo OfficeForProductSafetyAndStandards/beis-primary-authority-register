@@ -76,6 +76,9 @@ class ParDataPartnership extends ParDataEntity {
    */
   const LOCK_TIMEOUT = 3600.0;
 
+  const ADVICE_REVOKE_REASON = 'Partnership entity revoked';
+  const INSPECTION_PLAN_REVOKE_REASON = 'Partnership entity revoked';
+
   /**
    * Get the time service.
    */
@@ -119,25 +122,24 @@ class ParDataPartnership extends ParDataEntity {
     // Revoke/archive all dependent entities as well.
     $inspection_plans = $this->getInspectionPlan();
     foreach ($inspection_plans as $inspection_plan) {
-      $inspection_plan->revoke($save);
+      // Set default revoke reason when the partnership has initiated the revoke.
+      $inspection_plan->revoke($this::INSPECTION_PLAN_REVOKE_REASON, $save);
     }
 
     $advice_documents = $this->getAdvice();
     foreach ($advice_documents as $advice) {
-      $advice->revoke($save);
+      // Set default revoke reason when the partnership has initiated the revoke.
+      $advice->revoke($this::ADVICE_REVOKE_REASON, $save);
     }
 
-    $this->set('revocation_reason', $reason);
-    return parent::revoke($save);
+    return parent::revoke($reason, $save);
   }
 
   /**
    * {@inheritdoc}
    *
-   * @param string $reason
-   *   The reason for revoking this partnership.
    */
-  public function unrevoke($reason = '', $save = TRUE) {
+  public function unrevoke($save = TRUE) {
     // Revoke/archive all dependent entities as well.
     $inspection_plans = $this->getInspectionPlan();
     foreach ($inspection_plans as $inspection_plan) {
@@ -149,7 +151,6 @@ class ParDataPartnership extends ParDataEntity {
       $advice->unrevoke($save);
     }
 
-    $this->set('revocation_reason', NULL);
     parent::unrevoke($save);
   }
 
@@ -618,27 +619,6 @@ class ParDataPartnership extends ParDataEntity {
       ->setDisplayOptions('form', [
         'type' => 'datetime_default',
         'weight' => 12,
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'weight' => 0,
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Revocation Reason.
-    $fields['revocation_reason'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Revocation Reason'))
-      ->setDescription(t('Comments about why this partnership was revoked.'))
-      ->setRevisionable(TRUE)
-      ->setSettings([
-        'text_processing' => 0,
-      ])->setDisplayOptions('form', [
-        'type' => 'text_textarea',
-        'weight' => 13,
-        'settings' => [
-          'rows' => 25,
-        ],
       ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
