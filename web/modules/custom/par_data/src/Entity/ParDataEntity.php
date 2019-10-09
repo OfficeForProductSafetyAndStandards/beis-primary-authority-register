@@ -276,13 +276,16 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Revoke if this entity is revokable and is not new.
    *
+   *  @param String $reason
+   *   The reason this entity is being revoked.
+   *
    * @param boolean $save
    *   Whether to save the entity after revoking.
    *
    * @return boolean
    *   True if the entity was revoked, false for all other results.
    */
-  public function revoke($save = TRUE) {
+  public function revoke($reason = '', $save = TRUE) {
     if ($this->isNew()) {
       $save = FALSE;
     }
@@ -293,31 +296,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       // Always revision status changes.
       $this->setNewRevision(TRUE);
 
+      $this->set(ParDataEntity::REVOKE_REASON_FIELD, $reason);
+
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
     return FALSE;
-  }
-
-  /**
-   * {@inheritdoc}
-   *
-   * @param string $reason
-   *   The reason for revoking this partnership.
-   */
-  public function revoke($reason = '', $save = TRUE) {
-    // Revoke/archive all dependent entities as well.
-    $inspection_plans = $this->getInspectionPlan();
-    foreach ($inspection_plans as $inspection_plan) {
-      $inspection_plan->revoke($save);
-    }
-
-    $advice_documents = $this->getAdvice();
-    foreach ($advice_documents as $advice) {
-      $advice->revoke($save);
-    }
-
-    $this->set('revocation_reason', $reason);
-    return parent::revoke($save);
   }
 
   /**
@@ -337,6 +320,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     if ($this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
+      $this->set(ParDataEntity::REVOKE_REASON_FIELD, NULL);
 
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
@@ -923,7 +907,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     // Revocation Reason.
     $fields['revocation_reason'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Revocation Reason'))
-      ->setDescription(t('Comments about why this partnership was revoked.'))
+      ->setDescription(t('Comments about why this entity was revoked.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
