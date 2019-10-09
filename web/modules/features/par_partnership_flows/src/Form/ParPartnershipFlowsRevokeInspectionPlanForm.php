@@ -84,7 +84,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
       '#title' => $this->t('Enter the reason you are revoking this inspection plan'),
       '#type' => 'textarea',
       '#rows' => 5,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('archive_reason', FALSE),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('delete_reason', FALSE),
     ];
 
     return parent::buildForm($form, $form_state);
