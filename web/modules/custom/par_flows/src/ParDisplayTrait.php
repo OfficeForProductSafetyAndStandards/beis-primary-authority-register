@@ -33,7 +33,7 @@ trait ParDisplayTrait {
   /**
    * Get unique pager service.
    *
-   * @return mixed
+   * @return \Drupal\unique_pager\UniquePagerService
    */
   public static function getUniquePager() {
     return \Drupal::service('unique_pager.unique_pager_service');

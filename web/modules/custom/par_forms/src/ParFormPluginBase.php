@@ -134,6 +134,15 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
+   * Get unique pager service.
+   *
+   * @return \Drupal\unique_pager\UniquePagerService
+   */
+  public static function getUniquePager() {
+    return \Drupal::service('unique_pager.unique_pager_service');
+  }
+
+  /**
    * Dynamically get url generator service.
    *
    * @return UrlGeneratorInterface
