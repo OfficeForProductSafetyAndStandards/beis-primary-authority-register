@@ -38,6 +38,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   const DELETE_FIELD = 'deleted';
   const REVOKE_FIELD = 'revoked';
   const ARCHIVE_FIELD = 'archived';
+  const REVOKE_REASON_FIELD = 'revoked';
 
   const DEFAULT_RELATIONSHIP = 'default';
 
@@ -295,6 +296,28 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
     return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @param string $reason
+   *   The reason for revoking this partnership.
+   */
+  public function revoke($reason = '', $save = TRUE) {
+    // Revoke/archive all dependent entities as well.
+    $inspection_plans = $this->getInspectionPlan();
+    foreach ($inspection_plans as $inspection_plan) {
+      $inspection_plan->revoke($save);
+    }
+
+    $advice_documents = $this->getAdvice();
+    foreach ($advice_documents as $advice) {
+      $advice->revoke($save);
+    }
+
+    $this->set('revocation_reason', $reason);
+    return parent::revoke($save);
   }
 
   /**
@@ -880,6 +903,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         'type' => 'hidden',
       ])
       ->setDisplayConfigurable('view', FALSE);
+
     $fields['revoked'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Revoked'))
       ->setDescription(t('Whether the entity has been revoked.'))
@@ -895,6 +919,28 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         'type' => 'hidden',
       ])
       ->setDisplayConfigurable('view', FALSE);
+
+    // Revocation Reason.
+    $fields['revocation_reason'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Revocation Reason'))
+      ->setDescription(t('Comments about why this partnership was revoked.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ])->setDisplayOptions('form', [
+        'type' => 'text_textarea',
+        'weight' => 13,
+        'settings' => [
+          'rows' => 25,
+        ],
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     $fields['archived'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Archived'))
       ->setDescription(t('Whether the entity has been archived.'))
@@ -910,6 +956,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         'type' => 'hidden',
       ])
       ->setDisplayConfigurable('view', FALSE);
+
     // Deleted Reason.
     $fields['deleted_reason'] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Deleted Reason'))
@@ -932,5 +979,4 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ->setDisplayConfigurable('view', TRUE);
     return $fields;
   }
-
 }
