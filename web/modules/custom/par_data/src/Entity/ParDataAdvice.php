@@ -92,7 +92,7 @@ class ParDataAdvice extends ParDataEntity {
       parent::revoke($reason, $save);
     }
     else {
-      $this->archive($save);
+      $this->archive('this advice of type cannot be revoked only archived.' ,$save);
     }
   }
 
