@@ -407,7 +407,7 @@ par_partnership_flows.inspection_plan_edit:
         type: entity:par_data_partnership
       par_data_inspection_plan:
         type: entity:par_data_inspection_plan
-par_partnership_flows.inspection_plan_archive:
+par_partnership_flows.inspection_plan_revoke:
   path: '/partnership/{par_data_partnership}/inspection/{par_data_inspection_plan}/archive'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsArchiveInspectionPlanForm'
