@@ -33,6 +33,15 @@ class ParMemberCsvValidationForm extends ParBaseForm {
   }
 
   /**
+   * Get unique pager service.
+   *
+   * @return \Drupal\unique_pager\UniquePagerService
+   */
+  public static function getUniquePager() {
+    return \Drupal::service('unique_pager.unique_pager_service');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
@@ -77,7 +86,8 @@ class ParMemberCsvValidationForm extends ParBaseForm {
     }
 
     // Initialize pager and get current page.
-    $current_page = pager_default_initialize(count($rows), 10, 1);
+    $pager = $this->getUniquePager()->getPager('csv_members_validation');
+    $current_page = pager_default_initialize(count($rows), 10, $pager);
 
     // Split the items up into chunks:
     $chunks = array_chunk($rows, 10);
