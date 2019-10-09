@@ -80,8 +80,8 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
     ];
 
     // Enter the archive reason.
-    $form['archive_reason'] = [
-      '#title' => $this->t('Enter the reason you are archiving this inspection plan'),
+    $form['delete_reason'] = [
+      '#title' => $this->t('Enter the reason you are revoking this inspection plan'),
       '#type' => 'textarea',
       '#rows' => 5,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('archive_reason', FALSE),
