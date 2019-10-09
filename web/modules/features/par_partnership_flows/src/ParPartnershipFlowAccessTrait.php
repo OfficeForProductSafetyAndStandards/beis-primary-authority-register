@@ -82,7 +82,7 @@ trait ParPartnershipFlowAccessTrait {
       case 'par_partnership_flows.inspection_plan_edit':
         // Restrict editorial access to archived and deleted inspection plan entities.
         if ($par_data_inspection_plan->isArchived() || $par_data_inspection_plan->isDeleted()) {
-          $this->accessResult = AccessResult::forbidden('This inspection plan has been archived or deleted and therefore cannot be edited.');
+          $this->accessResult = AccessResult::forbidden('This inspection plan has been revoked or deleted and therefore cannot be edited.');
         }
         break;
       }
