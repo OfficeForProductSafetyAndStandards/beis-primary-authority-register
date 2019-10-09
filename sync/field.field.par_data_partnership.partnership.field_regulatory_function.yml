@@ -7,7 +7,7 @@ dependencies:
     - par_data.par_data_partnership_type.partnership
     - par_data.par_data_regulatory_function_t.regulatory_function
 _core:
-  default_config_hash: 9B-kyOhDTDUyTObqcumz9fQKgnTZfVocckOgy8bGW5U
+  default_config_hash: V2OjhUGy455Mwr3_7838lIdiDCOVKYNVhaBtJOR9UrE
 id: par_data_partnership.partnership.field_regulatory_function
 field_name: field_regulatory_function
 entity_type: par_data_partnership

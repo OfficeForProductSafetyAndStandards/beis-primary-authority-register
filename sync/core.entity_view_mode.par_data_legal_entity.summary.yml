@@ -5,7 +5,7 @@ dependencies:
   module:
     - par_data
 _core:
-  default_config_hash: JP432wgg0NrDmadm58yPtBd_hT2L4EK9lZ2mrq4S-Tc
+  default_config_hash: WX0Th5rb3FiuTPzIAX2prvW-ilNw0QqXyJKQSEog5D0
 id: par_data_legal_entity.summary
 label: Summary
 targetEntityType: par_data_legal_entity

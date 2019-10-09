@@ -7,7 +7,7 @@ dependencies:
     - par_data.par_data_authority_type.authority
     - par_data.par_data_inspection_feedback_type.inspection_feedback
 _core:
-  default_config_hash: LOAIddDIniQNwMa-b-SleQ0qRR6eXBJW3Y4WH3xXrv4
+  default_config_hash: v0PIaui9jEzq3Gv87a2w7myoMSt6EhCkyObgpaWW-hg
 id: par_data_inspection_feedback.inspection_feedback.field_enforcing_authority
 field_name: field_enforcing_authority
 entity_type: par_data_inspection_feedback

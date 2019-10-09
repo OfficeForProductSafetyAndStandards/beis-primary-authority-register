@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: ZCKtGXS0xj3fvD2dfMcJ_FF0F-aQTkneHCdl0eu7S3Q
 id: par_data_inspection_feedback.field_enforcing_authority
 field_name: field_enforcing_authority
 entity_type: par_data_inspection_feedback

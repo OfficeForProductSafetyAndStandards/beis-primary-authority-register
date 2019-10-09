@@ -7,7 +7,7 @@ dependencies:
     - par_data.par_data_inspection_feedback_type.inspection_feedback
     - par_data.par_data_partnership_type.partnership
 _core:
-  default_config_hash: R3GZwJmlebAkF0hEX9x_17WsJXVjTq6H4BGmdcH-S8I
+  default_config_hash: h8Jy0fQfNCAAXJjfDMdNf89p0qoOFDXTG5Zw3Hmd91s
 id: par_data_inspection_feedback.inspection_feedback.field_partnership
 field_name: field_partnership
 entity_type: par_data_inspection_feedback
