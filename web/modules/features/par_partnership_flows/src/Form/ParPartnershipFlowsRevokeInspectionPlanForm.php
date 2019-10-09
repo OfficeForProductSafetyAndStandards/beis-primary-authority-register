@@ -16,7 +16,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 
 /**
- * The confirming the user is authorised to archive partnerships.
+ * The revoke inspection plan form.
  */
 class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
 
@@ -39,7 +39,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    return 'Are you sure you want to archive this inspection plan?';
+    return 'Are you sure you want to revoke this inspection plan?';
   }
 
   /**
@@ -59,8 +59,8 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
     if ($par_data_partnership && $par_data_partnership->inProgress()) {
       $form['inspection_plan_info'] = [
         '#type' => 'markup',
-        '#title' => $this->t('Archive denied'),
-        '#markup' => $this->t('This inspection plan document cannot be archived because the partnership it is awaiting approval or there are enforcement notices currently awaiting review. Please try again later.'),
+        '#title' => $this->t('Revoke denied'),
+        '#markup' => $this->t('This inspection plan document cannot be revoked because the partnership it is awaiting approval or there are enforcement notices currently awaiting review. Please try again later.'),
       ];
 
       return parent::buildForm($form, $form_state);
@@ -68,7 +68,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
 
     $form['inspection_plan_info'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Archive the inspection plan'),
+      '#title' => $this->t('Revoke the inspection plan'),
       '#attributes' => ['class' => 'form-group'],
     ];
 
