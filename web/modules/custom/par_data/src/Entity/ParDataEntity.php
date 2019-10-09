@@ -39,6 +39,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   const REVOKE_FIELD = 'revoked';
   const ARCHIVE_FIELD = 'archived';
   const REVOKE_REASON_FIELD = 'revocation_reason';
+  const ARCHIVE_REASON_FIELD = 'archive_reason';
 
   const DEFAULT_RELATIONSHIP = 'default';
 
@@ -330,19 +331,26 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Archive if the entity is archivable and is not new.
    *
+   * @param String $reason
+   *   Reason for archiving this entity.
+   *
    * @param boolean $save
    *   Whether to save the entity after revoking.
    *
    * @return boolean
-   *   True if the entity was archived, false for all other results.
+   *   True if the entity was restored, false for all other results.
    */
-  public function archive($save = TRUE) {
+  public function archive($reason = '', $save = TRUE) {
     if ($this->isNew()) {
       $save = FALSE;
     }
 
     if (!$this->inProgress() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
+
       $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
+
+      // Set reason for archiving the advice.
+      $this->set(ParDataEntity::ARCHIVE_REASON_FIELD, $reason);
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
@@ -940,6 +948,27 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         'type' => 'hidden',
       ])
       ->setDisplayConfigurable('view', FALSE);
+
+    // Archive Reason.
+    $fields['archive_reason'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Archive Reason'))
+      ->setDescription(t('Comments about why this advice document was archived.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ])->setDisplayOptions('form', [
+        'type' => 'text_textarea',
+        'weight' => 13,
+        'settings' => [
+          'rows' => 25,
+        ],
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
 
     // Deleted Reason.
     $fields['deleted_reason'] = BaseFieldDefinition::create('text_long')
