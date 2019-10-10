@@ -8,6 +8,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
+use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\Core\Access\AccessResult;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParFlowException;
@@ -28,7 +29,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
    * {@inheritdoc}
    */
   protected $entityMapping = [
-    ['revoke_reason', 'par_data_inspection_plan', 'revoke_reason', NULL, NULL, 0, [
+    [ParDataEntity::REVOKE_REASON_FIELD, 'par_data_inspection_plan', ParDataEntity::REVOKE_REASON_FIELD, NULL, NULL, 0, [
       'This value should not be null.' => 'Please supply the reason for revoking this document.'
     ]],
   ];
@@ -80,11 +81,11 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
     ];
 
     // Enter the revoke reason.
-    $form['revoke_reason'] = [
+    $form[ParDataEntity::REVOKE_REASON_FIELD] = [
       '#title' => $this->t('Enter the reason you are revoking this inspection plan'),
       '#type' => 'textarea',
       '#rows' => 5,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('revoke_reason', FALSE),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues(ParDataEntity::REVOKE_REASON_FIELD, FALSE),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -97,8 +98,8 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
     // No validation yet.
     parent::validateForm($form, $form_state);
 
-    if (!$form_state->getValue('revoke_reason')) {
-      $id = $this->getElementId('revoke_reason', $form);
+    if (!$form_state->getValue(ParDataEntity::REVOKE_REASON_FIELD)) {
+      $id = $this->getElementId(ParDataEntity::REVOKE_REASON_FIELD, $form);
       $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please supply the reason for revoking this document.', $id));
     }
   }
@@ -114,7 +115,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
     // We only want to update the status of active inspection plan documents.
     if (!$par_data_inspection_plan->isRevoked()) {
 
-      $revoke_reason = $this->getFlowDataHandler()->getTempDataValue('revoke_reason');
+      $revoke_reason = $this->getFlowDataHandler()->getTempDataValue(ParDataEntity::REVOKE_REASON_FIELD);
       $revoked = $par_data_inspection_plan->revoke(TRUE, $revoke_reason);
 
       if ($revoked) {
