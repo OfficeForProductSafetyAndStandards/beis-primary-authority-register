@@ -18,7 +18,7 @@ steps:
     route: par_partnership_contact_add_flows.create_contact
     form_id: par_add_contact
     components:
-      contact_details: {}
+      contact_details_full: {  }
   2:
     route: par_partnership_contact_add_flows.choose_contact
     form_id: par_person_choose_contact
@@ -51,7 +51,7 @@ steps:
     route: par_partnership_contact_add_flows.invite_contact
     form_id: par_person_invite
     components:
-      invite: {}
+      invite: {  }
     form_data:
       contact_details: par_add_contact
       user_account: par_person_link

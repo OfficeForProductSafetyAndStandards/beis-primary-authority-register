@@ -28,12 +28,12 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v7-repo-{{ .Branch }}-{{ .Revision }}
+        - v8-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v7-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+        - v8-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -98,7 +98,7 @@ jobs:
           name: "Unpacking database"
           command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql.tar.gz
       - save_cache:
-          key: v7-repo-{{ .Branch }}-{{ .Revision }}
+          key: v8-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
@@ -117,7 +117,7 @@ jobs:
             npm run gulp
             cd ./tests && rm -rf node_modules && npm install
       - save_cache:
-          key: v7-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+          key: v8-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
           paths:
             - ./vendor
             - ./web/core
@@ -336,7 +336,7 @@ jobs:
           command: |
             cf login -a api.cloud.service.gov.uk -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
             cf target -o office-for-product-safety-and-standards -s primary-authority-register-production
-            cf run-task beis-par-production "./scripts/db-backup.sh production -p" --name DB_ARCHIVE
+            cf run-task beis-par-production "./scripts/db-backup.sh production -p" --name DB_ARCHIVE -k4G
 
   sanitise_database:
     <<: *defaults
@@ -380,6 +380,9 @@ jobs:
           command: |
             cd web
             ../vendor/bin/drush sql-sanitize @par.paas -y
+      - run:
+          name: "Backup database"
+          command: ./scripts/db-backup.sh production -p -s
 
 workflows:
   version: 2.1

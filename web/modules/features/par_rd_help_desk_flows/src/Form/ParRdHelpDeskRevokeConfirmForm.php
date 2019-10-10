@@ -47,6 +47,11 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
       $this->accessResult = AccessResult::forbidden('The partnership is already revoked.');
     }
 
+    // If partnership has been deleted, we should not be able to revoke it.
+    if ($par_data_partnership->isDeleted()) {
+       $this->accessResult = AccessResult::forbidden('The partnership is already deleted.');
+    }
+
     // 403 if the partnership is in progress it can't be revoked.
     if ($par_data_partnership->inProgress()) {
       $this->accessResult = AccessResult::forbidden('The partnership is not active.');
@@ -99,6 +104,9 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
       '#rows' => 5,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('revocation_reason', FALSE),
     ];
+
+    // Change the primary action text.
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Revoke');
 
     return parent::buildForm($form, $form_state);
   }

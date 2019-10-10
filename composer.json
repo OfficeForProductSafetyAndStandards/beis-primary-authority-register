@@ -63,8 +63,9 @@
         "drupal/twig_field_value": "~1.2.0",
         "drupal/twig_tweak": "~2.3.0",
         "drupal/ultimate_cron": "~2.0.0",
+        "drupal/upgrade_status": "^1.0",
         "drupal/vbo_export": "~3.0.0",
-        "drupal/views_bulk_operations": "~3.0.0",
+        "drupal/views_bulk_operations": "~3.2.0",
         "drupal/views_contextual_filters_or": "~1.1.0",
         "drupal/views_data_export": "~1.0.0",
         "drupal/views_field_view": "~1.0.0",
@@ -156,9 +157,6 @@
             "drupal/login_destination": {
                 "One time login link": "./patches/one_time_login_redirection.patch",
                 "SetOptions on null causing error": "https://www.drupal.org/files/issues/2018-03-09/toolbar_alter_error-2947616-11.patch"
-            },
-            "drupal/message": {
-                "Return save status": "https://www.drupal.org/files/issues/2018-10-24/return_save_status-3008879-2.patch"
             },
             "drupal/password_policy": {
                 "Remove setting of field_last_password_reset on install": "https://www.drupal.org/files/issues/2018-07-03/Do-not-set-user-fields-on-install_2983448_4.patch"

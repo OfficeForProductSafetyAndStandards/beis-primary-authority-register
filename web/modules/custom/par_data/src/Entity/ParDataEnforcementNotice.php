@@ -53,6 +53,11 @@ use Drupal\par_data\ParDataException;
  *     "langcode" = "langcode",
  *     "status" = "status"
  *   },
+ *   revision_metadata_keys = {
+ *     "revision_user" = "revision_uid",
+ *     "revision_created" = "revision_timestamp",
+ *     "revision_log_message" = "revision_log"
+ *   },
  *   links = {
  *     "collection" = "/admin/content/par_data/par_data_enforcement_notice",
  *     "canonical" = "/admin/content/par_data/par_data_enforcement_notice/{par_data_enforcement_notice}",
@@ -149,8 +154,11 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * Get the enforcement actions for this Enforcement Notice.
    */
-  public function getEnforcementActions() {
-    return $this->get('field_enforcement_action')->referencedEntities();
+  public function getEnforcementActions($single = FALSE) {
+    $enforcement_notices = $this->get('field_enforcement_action')->referencedEntities();
+    $enforcement_notice = !empty($enforcement_notices) ? current($enforcement_notices) : NULL;
+
+    return $single ? $enforcement_notice : $enforcement_notices;
   }
 
   /**

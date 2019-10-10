@@ -5,6 +5,7 @@ namespace Drupal\par_data;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\par_data\Entity\ParDataEntity;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\trance\TranceStorage;
 use Drupal\Core\Entity\EntityInterface;
@@ -31,6 +32,34 @@ class ParDataStorage extends TranceStorage {
   public function destroy(array $entities) {
     parent::delete($entities);
   }
+
+  /**
+   * Modification of entity query allows deleted entities to be excluded.
+   *
+   * {@inheritDoc}
+   */
+//  public function getQuery($conjunction = 'AND') {
+//    $query = parent::getQuery($conjunction);
+//
+//    // Do not return deleted entities.
+//    $query->condition(ParDataEntity::DELETE_FIELD, 1, '<>');
+//
+//    return $query;
+//  }
+
+  /**
+   * Modification of entity query allows deleted entities to be excluded.
+   *
+   * {@inheritDoc}
+   */
+//  public function getAggregateQuery($conjunction = 'AND') {
+//    $query = parent::getAggregateQuery($conjunction);
+//
+//    // Do not return deleted entities.
+//    $query->condition(ParDataEntity::DELETE_FIELD, 1, '<>');
+//
+//    return $query;
+//  }
 
   /**
    * Soft delete all PAR Data entities.
@@ -86,7 +115,6 @@ class ParDataStorage extends TranceStorage {
    * {@inheritdoc}
    */
   public function save(EntityInterface $entity) {
-
     // Load the original entity if it already exists.
     if ($this->has($entity->id(), $entity) && !isset($entity->original)) {
       $entity->original = $this->loadUnchanged($entity->id());
@@ -102,7 +130,8 @@ class ParDataStorage extends TranceStorage {
       \Drupal::cache('data')->delete($hash_key);
     }
 
-    if ($entity->getRawStatus() && !$entity->isNew() && $entity->getRawStatus() !== $entity->original->getRawStatus()) {
+    $original = $entity->original;
+    if ($entity->getRawStatus() && !$entity->isNew() && isset($original) && $entity->getRawStatus() !== $original->getRawStatus()) {
       // Dispatch the an event for every par entity that has a status update.
       $event = new ParDataEvent($entity);
       $event_to_dispatch = ParDataEvent::statusChange($entity->getEntityTypeId(), $entity->getRawStatus());
@@ -129,10 +158,10 @@ class ParDataStorage extends TranceStorage {
   public function loadMultiple(array $ids = NULL) {
     $entities = parent::loadMultiple($ids);
 
-    // Do not return any entities that are deleted.
-    // @TODO Open this ticket.
+    // Do not return any deleted entities.
+    // @see PAR-1462 - Removing all deleted entities from loading.
 //    $entities = array_filter($entities, function ($entity) {
-//      return !$entity->isDeleted();
+//      return (!$entity->isDeleted());
 //    });
 
     return $entities;

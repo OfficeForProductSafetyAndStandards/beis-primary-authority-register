@@ -3,7 +3,7 @@ Feature: Enforcement notice management
 
     Background:
 
-    
+
     @ci @PAR1013 @PAR1049 @enforcementnotices
     Scenario: Enforcement notice management
 
@@ -40,7 +40,7 @@ Feature: Enforcement notice management
 
     # @ci @enforcementnotices
     # Scenario: Edit EN Before Submission
- 
+
 @enforcementnotices
     Scenario: Check view of an unapproved enforcement notice approval for HD User
 

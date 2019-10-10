@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterInterface;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 
 trait ParDisplayTrait {
 
@@ -27,6 +28,15 @@ trait ParDisplayTrait {
    */
   public static function getRenderer() {
     return \Drupal::service('renderer');
+  }
+
+  /**
+   * Get unique pager service.
+   *
+   * @return \Drupal\unique_pager\UniquePagerService
+   */
+  public static function getUniquePager() {
+    return \Drupal::service('unique_pager.unique_pager_service');
   }
 
   /**
@@ -114,6 +124,10 @@ trait ParDisplayTrait {
   public function renderReferenceField($section, $field, $view_mode = 'summary', $operations = [], $single = FALSE) {
     $elements = [];
     foreach ($field->referencedEntities() as $delta => $entity) {
+      if ($entity instanceof ParDataEntityInterface && $entity->isDeleted()) {
+        continue;
+      }
+
       $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
       $rendered_entity = $entity_view_builder->view($entity, $view_mode);
       $elements[$delta] = [
@@ -308,9 +322,12 @@ trait ParDisplayTrait {
         else {
           $rows = $this->renderTextField($section, $entity, $field, $view_mode, $operations, $single_item);
         }
+      }
 
-        // Render the rows using a tabulated pager.
-        $element[$field_name] = $this->renderTable($rows);
+      // Render the rows using a tabulated pager.
+      if (isset($rows) && !empty($rows)) {
+        $unique_label = "{$entity->getEntityTypeId()}:$field_name";
+        $element[$field_name] = $this->renderTable($rows, $unique_label);
       }
       else {
         $element[$field_name]['items'] = [
@@ -349,37 +366,55 @@ trait ParDisplayTrait {
     return $element;
   }
 
-  public function renderTable($rows) {
-    // Initialize pager and get current page.
-    $current_page = pager_default_initialize(count($rows), $this->numberPerPage, $this->pagerId);
+  public function renderTable($rows, $id) {
+    // PAR-1461: Ensure pagers are unique per page.
+    if (count($rows) > $this->numberPerPage) {
+      $pager = $this->getUniquePager()->getPager($id);
 
-    // Split the items up into chunks:
-    $chunks = array_chunk($rows, $this->numberPerPage);
+      // Initialize pager and get current page.
+      $current_page = pager_default_initialize(count($rows), $this->numberPerPage, $pager);
 
-    $element = [
-      'items' => [
-        '#type' => 'fieldset',
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ],
-      'pager' => [
-        '#type' => 'pager',
-        '#theme' => 'pagerer',
-        '#element' => $this->pagerId,
-        '#weight' => 100,
-        '#config' => [
-          'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
+      // Split the items up into chunks:
+      $chunks = array_chunk($rows, $this->numberPerPage);
+
+
+      $element = [
+        'items' => [
+          '#type' => 'fieldset',
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
         ],
-      ]
-    ];
+        'pager' => [
+          '#type' => 'pager',
+          '#theme' => 'pagerer',
+          '#element' => $pager,
+          '#weight' => 100,
+          '#config' => [
+            'preset' => $this->config('pagerer.settings')
+              ->get('core_override_preset'),
+          ],
+        ]
+      ];
 
-    // Add the items for our current page to the fieldset.
-    foreach ($chunks[$current_page] as $delta => $item) {
-      $element[$delta] = $item;
+      // Add the items for our current page to the fieldset.
+      foreach ($chunks[$current_page] as $delta => $item) {
+        $element[$delta] = $item;
+      }
     }
+    else {
+      $element = [
+        'items' => [
+          '#type' => 'fieldset',
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+        ],
+      ];
 
-    // Increment the pager ID so that any other pager in this page uses a unique element id.
-    $this->pagerId++;
+      // Add the items for our current page to the fieldset.
+      foreach ($rows as $delta => $item) {
+        $element[$delta] = $item;
+      }
+    }
 
     return $element;
   }

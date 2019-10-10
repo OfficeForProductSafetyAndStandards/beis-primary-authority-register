@@ -60,10 +60,16 @@ class ParReviewForm extends ParBaseForm {
     /** @var Invite $invite */
     $type = $this->getFlowDataHandler()->getParameter('type');
 
-    $this->getFlowDataHandler()->setFormPermValue("full_name", $par_data_person->getFullName());
-    $this->getFlowDataHandler()->setFormPermValue("work_phone", $par_data_person->getWorkPhone());
-    $this->getFlowDataHandler()->setFormPermValue("mobile_phone", $par_data_person->getMobilePhone());
-    $this->getFlowDataHandler()->setFormPermValue("email", $par_data_person->getEmailWithPreferences());
+    if (isset($par_data_person)) {
+      $this->getFlowDataHandler()
+        ->setFormPermValue("full_name", $par_data_person->getFullName());
+      $this->getFlowDataHandler()
+        ->setFormPermValue("work_phone", $par_data_person->getWorkPhone());
+      $this->getFlowDataHandler()
+        ->setFormPermValue("mobile_phone", $par_data_person->getMobilePhone());
+      $this->getFlowDataHandler()
+        ->setFormPermValue("email", $par_data_person->getEmailWithPreferences());
+    }
 
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
@@ -169,6 +175,8 @@ class ParReviewForm extends ParBaseForm {
   }
 
   public function createEntities() {
+    $current_user = $this->getCurrentUser();
+
     // Get the cache IDs for the various forms that needs needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_add_contact');
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
@@ -183,7 +191,7 @@ class ParReviewForm extends ParBaseForm {
 
     if ($par_data_person) {
       // Store the original email to check if it changes.
-      $this->getFlowDataHandler()->setFormPermValue('orginal_email', $par_data_person->getEmail());
+      $this->getFlowDataHandler()->setFormPermValue('orignal_email', $par_data_person->getEmail());
 
       // Update the person record with the new values.
       $par_data_person->set('salutation', $this->getFlowDataHandler()->getTempDataValue('salutation', $contact_details_cid));
@@ -191,7 +199,24 @@ class ParReviewForm extends ParBaseForm {
       $par_data_person->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_details_cid));
       $par_data_person->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid));
       $par_data_person->set('mobile_phone', $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid));
-      $par_data_person->set('email', $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid));
+      $par_data_person->updateEmail($this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid), $current_user);
+
+      if ($communication_notes = $this->getFlowDataHandler()->getTempDataValue('notes', $contact_details_cid)) {
+        $par_data_person->set('communication_notes', $communication_notes);
+      }
+
+      if ($preferred_contact = $this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_details_cid)) {
+        $email_preference_value = isset($preferred_contact['communication_email']) && !empty($preferred_contact['communication_email']);
+        $par_data_person->set('communication_email', $email_preference_value);
+
+        // Save the work phone preference.
+        $work_phone_preference_value = isset($preferred_contact['communication_phone']) && !empty($preferred_contact['communication_phone']);
+        $par_data_person->set('communication_phone', $work_phone_preference_value);
+
+        // Save the mobile phone preference.
+        $mobile_phone_preference_value = isset($preferred_contact['communication_mobile']) && !empty($preferred_contact['communication_mobile']);
+        $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
+      }
     }
 
     $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);

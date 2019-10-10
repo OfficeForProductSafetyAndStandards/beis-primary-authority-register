@@ -107,3 +107,10 @@ function par_login_menu_links_discovered_alter(&$links) {
     //$links['user.page']['route_name'] = 'par_dashboards.dashboard';
   }
 }
+
+function par_login_user_format_name_alter(&$name, \Drupal\Core\Session\AccountInterface $account) {
+  // Display the user's email instead of name.
+  if ($account->isAuthenticated()) {
+    $name = $account->getEmail();
+  }
+}

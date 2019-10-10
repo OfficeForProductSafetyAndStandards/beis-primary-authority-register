@@ -2,6 +2,7 @@
 
 namespace Drupal\par_member_upload_flows\Form;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
@@ -29,6 +30,15 @@ class ParMemberCsvValidationForm extends ParBaseForm {
    */
   public function getCsvHandler() {
     return \Drupal::service('par_member_upload_flows.csv_handler');
+  }
+
+  /**
+   * Get unique pager service.
+   *
+   * @return \Drupal\unique_pager\UniquePagerService
+   */
+  public static function getUniquePager() {
+    return \Drupal::service('unique_pager.unique_pager_service');
   }
 
   /**
@@ -62,18 +72,22 @@ class ParMemberCsvValidationForm extends ParBaseForm {
     $rows = [];
     if (isset($errors)) {
       foreach ($errors as $index => $error) {
+        $line_class = Html::cleanCssIdentifier("error-line-{$error->getLine()}");
+        $column_class = Html::cleanCssIdentifier("error-column-{$error->getColumn()}");
         $rows[] = [
           'data' => [
             'line' => $error->getLine(),
             'column' => $error->getColumn(),
             'error' => $error->getMessage(),
           ],
+          'class' => [$line_class, $column_class],
         ];
       }
     }
 
     // Initialize pager and get current page.
-    $current_page = pager_default_initialize(count($rows), 10, 1);
+    $pager = $this->getUniquePager()->getPager('csv_members_validation');
+    $current_page = pager_default_initialize(count($rows), 10, $pager);
 
     // Split the items up into chunks:
     $chunks = array_chunk($rows, 10);

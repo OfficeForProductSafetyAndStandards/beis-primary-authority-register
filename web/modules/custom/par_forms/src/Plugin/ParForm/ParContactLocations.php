@@ -12,14 +12,11 @@ use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
- * Contact locations display plugin.
- *
- * This form only works on the basis of the url par_data_person context
- * and so can't have multiple iterations.
+ * Contact details display with locations.
  *
  * @ParForm(
- *   id = "contact_locations",
- *   title = @Translation("Contact locations display.")
+ *   id = "contact_locations_detail",
+ *   title = @Translation("Contact detail display with locations.")
  * )
  */
 class ParContactLocations extends ParFormPluginBase {
@@ -35,11 +32,22 @@ class ParContactLocations extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
-    $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
+    $contacts = $this->getFlowDataHandler()->getParameter('contacts');
+    $contacts = !empty($contacts) ? array_values($contacts) : [];
+    // Cardinality is not a zero-based index like the stored fields deltas.
+    $contact = isset($contacts[$cardinality-1]) ? $contacts[$cardinality-1] : NULL;
 
-    if ($par_data_person instanceof ParDataEntityInterface) {
-      $locations = $par_data_person->getReferencedLocations();
-      $this->setDefaultValuesByKey("locations", $cardinality, $locations);
+    if ($contact instanceof ParDataEntityInterface) {
+      $this->setDefaultValuesByKey("name", $cardinality, $contact->getFullName());
+      $this->setDefaultValuesByKey("email", $cardinality, $contact->getEmail());
+      $this->setDefaultValuesByKey("email_preferences", $cardinality, $contact->getEmailWithPreferences());
+      $this->setDefaultValuesByKey("work_phone", $cardinality, $contact->getWorkPhone());
+      $this->setDefaultValuesByKey("mobile_phone", $cardinality, $contact->getMobilePhone());
+
+      $locations = $contact->getReferencedLocations();
+      $this->setDefaultValuesByKey("locations", $cardinality, implode('<br>', $locations));
+
+      $this->setDefaultValuesByKey("person_id", $cardinality, $contact->id());
     }
 
     parent::loadData();
@@ -49,15 +57,94 @@ class ParContactLocations extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
-    if ($locations = $this->getDefaultValuesByKey('locations', $cardinality, NULL)) {
-      $form['locations'] = [
+    if ($cardinality === 1) {
+      $form['message_intro'] = [
+        '#type' => 'fieldset',
+        'title' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#value' => $this->t('Contacts'),
+          '#attributes' => ['class' => ['heading-large']],
+        ],
+        'info' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => 'It is possible for a person to have different contact details depending on the position they hold within an authority or organisation.',
+        ],
+        '#attributes' => ['class' => ['form-group']],
+      ];
+    }
+
+    if ($this->getDefaultValuesByKey('email', $cardinality, NULL)) {
+      $locations = [
+        'summary' => [
+          '#type' => 'html_tag',
+          '#tag' => 'summary',
+          '#attributes' => ['class' => ['form-group'], 'role' => 'button', 'aria-controls' => "contact-detail-locations-$cardinality"],
+          '#value' => '<span class="summary">More information on where this contact is used</span>',
+        ],
+        'details' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => ['class' => ['form-group'], 'id' => "contact-detail-locations-$cardinality"],
+          '#value' => $this->getDefaultValuesByKey('locations', $cardinality, ''),
+        ],
+      ];
+      try {
+        $params = ['par_data_person' => $this->getDefaultValuesByKey('person_id', $cardinality, NULL)];
+        $actions = t('@link', [
+            '@link' => $this->getLinkByRoute('par_person_update_flows.update_contact', $params)
+              ->setText('Update ' . $this->getDefaultValuesByKey('name', $cardinality, 'person'))
+              ->toString(),
+          ]);
+      } catch (ParFlowException $e) {
+
+      }
+
+      $form['contact'] = [
+        '#type' => 'fieldset',
+        '#weight' => 1,
+        '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
+        'name' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->getDefaultValuesByKey('name', $cardinality, NULL),
+          '#attributes' => ['class' => ['column-two-thirds']],
+        ],
+        'actions' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => isset($actions) ? $actions : 'Update contact details',
+          '#attributes' => ['class' => ['column-one-third']],
+        ],
+        'email' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->getDefaultValuesByKey('email_preferences', $cardinality, NULL),
+          '#attributes' => ['class' => ['column-two-thirds']],
+        ],
+        'phone' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#attributes' => ['class' => ['column-one-third']],
+          '#value' => $this->getDefaultValuesByKey('work_phone', $cardinality, NULL) . '<br>' . $this->getDefaultValuesByKey('mobile_phone', $cardinality, NULL),
+        ],
+        'locations' => [
+          '#type' => 'html_tag',
+          '#tag' => 'details',
+          '#attributes' => ['class' => ['column-full', 'contact-locations'], 'role' => 'group'],
+          '#value' => \Drupal::service('renderer')->render($locations),
+        ],
+      ];
+    }
+    else {
+      $form['contact'] = [
         '#type' => 'fieldset',
         '#attributes' => ['class' => ['form-group']],
-        'summary' => [
-          '#theme' => 'item_list',
-          '#title' => $this->t('Please be aware that these details will be updated in all of the following places'),
-          '#items' => $this->getDefaultValuesByKey('locations', $cardinality, []),
-          '#attributes' => ['class' => ['list', 'form-group', 'list-bullet']],
+        'title' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->t('There are no contacts records listed.'),
         ],
       ];
     }

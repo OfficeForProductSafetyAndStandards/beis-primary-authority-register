@@ -53,12 +53,21 @@ class ParReviewForm extends ParBaseForm {
     $type = $this->getFlowDataHandler()->getParameter('type');
 
     $this->getFlowDataHandler()->setFormPermValue("institution", $type);
-    $this->getFlowDataHandler()->setFormPermValue("partnership", lcfirst($par_data_partnership->label()));
+    if ($par_data_partnership) {
+      $this->getFlowDataHandler()
+        ->setFormPermValue("partnership", lcfirst($par_data_partnership->label()));
+    }
 
-    $this->getFlowDataHandler()->setFormPermValue("full_name", $par_data_person->getFullName());
-    $this->getFlowDataHandler()->setFormPermValue("work_phone", $par_data_person->getWorkPhone());
-    $this->getFlowDataHandler()->setFormPermValue("mobile_phone", $par_data_person->getMobilePhone());
-    $this->getFlowDataHandler()->setFormPermValue("email", $par_data_person->getEmailWithPreferences());
+    if (isset($par_data_person)) {
+      $this->getFlowDataHandler()
+        ->setFormPermValue("full_name", $par_data_person->getFullName());
+      $this->getFlowDataHandler()
+        ->setFormPermValue("work_phone", $par_data_person->getWorkPhone());
+      $this->getFlowDataHandler()
+        ->setFormPermValue("mobile_phone", $par_data_person->getMobilePhone());
+      $this->getFlowDataHandler()
+        ->setFormPermValue("email", $par_data_person->getEmailWithPreferences());
+    }
 
     if (isset($account)) {
       $this->getFlowDataHandler()->setFormPermValue("user_status", 'existing');
@@ -167,6 +176,8 @@ class ParReviewForm extends ParBaseForm {
   }
 
   public function createEntities() {
+    $current_user = $this->getCurrentUser();
+
     // Get the cache IDs for the various forms that needs needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_add_contact');
     $contact_dedupe_cid = $this->getFlowNegotiator()->getFormKey('dedupe_contact');
@@ -192,8 +203,25 @@ class ParReviewForm extends ParBaseForm {
         'last_name' => $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_details_cid),
         'work_phone' => $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid),
         'mobile_phone' => $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid),
-        'email' => $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid),
       ]);
+      $par_data_person->updateEmail($this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid), $current_user);
+
+      if ($communication_notes = $this->getFlowDataHandler()->getTempDataValue('notes', $contact_details_cid)) {
+        $par_data_person->set('communication_notes', $communication_notes);
+      }
+
+      if ($preferred_contact = $this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_details_cid)) {
+        $email_preference_value = isset($preferred_contact['communication_email']) && !empty($preferred_contact['communication_email']);
+        $par_data_person->set('communication_email', $email_preference_value);
+
+        // Save the work phone preference.
+        $work_phone_preference_value = isset($preferred_contact['communication_phone']) && !empty($preferred_contact['communication_phone']);
+        $par_data_person->set('communication_phone', $work_phone_preference_value);
+
+        // Save the mobile phone preference.
+        $mobile_phone_preference_value = isset($preferred_contact['communication_mobile']) && !empty($preferred_contact['communication_mobile']);
+        $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
+      }
     }
 
     $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);

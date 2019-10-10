@@ -1,0 +1,65 @@
+par_authority_update_flows.authority_update_name:
+  path: '/authority/{par_data_authority}/update/name'
+  defaults:
+    _form: '\Drupal\par_authority_update_flows\Form\ParAuthorityTitleForm'
+    _title_callback: '\Drupal\par_authority_update_flows\Form\ParAuthorityTitleForm::titleCallback'
+  requirements:
+    _permission: 'manage own authority+manage all authorities'
+    _custom_access: '\Drupal\par_authority_update_flows\Form\ParAuthorityTitleForm::accessCallback'
+    par_data_authority: \d+
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
+par_authority_update_flows.authority_update_type:
+  path: '/authority/{par_data_authority}/update/type'
+  defaults:
+    _form: '\Drupal\par_authority_update_flows\Form\ParAuthorityTypeForm'
+    _title_callback: '\Drupal\par_authority_update_flows\Form\ParAuthorityTypeForm::titleCallback'
+  requirements:
+    _permission: 'manage own authority+manage all authorities'
+    _custom_access: '\Drupal\par_authority_update_flows\Form\ParAuthorityTypeForm::accessCallback'
+    par_data_authority: \d+
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
+par_authority_update_flows.authority_update_ons:
+  path: '/authority/{par_data_authority}/update/ons'
+  defaults:
+    _form: '\Drupal\par_authority_update_flows\Form\ParAuthorityOnsForm'
+    _title_callback: '\Drupal\par_authority_update_flows\Form\ParAuthorityOnsForm::titleCallback'
+  requirements:
+    _permission: 'manage own authority+manage all authorities'
+    _custom_access: '\Drupal\par_authority_update_flows\Form\ParAuthorityOnsForm::accessCallback'
+    par_data_authority: \d+
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
+par_authority_update_flows.authority_update_regulatory_functions:
+  path: '/authority/{par_data_authority}/update/regulatory-functions'
+  defaults:
+    _form: '\Drupal\par_authority_update_flows\Form\ParAuthorityRegulatoryFunctionsForm'
+    _title_callback: '\Drupal\par_authority_update_flows\Form\ParAuthorityRegulatoryFunctionsForm::titleCallback'
+  requirements:
+    _permission: 'manage own authority+manage all authorities'
+    _custom_access: '\Drupal\par_authority_update_flows\Form\ParAuthorityRegulatoryFunctionsForm::accessCallback'
+    par_data_authority: \d+
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
+par_authority_update_flows.authority_update_review:
+  path: '/authority/{par_data_authority}/update/review'
+  defaults:
+    _form: '\Drupal\par_authority_update_flows\Form\ParAuthorityReviewForm'
+    _title_callback: '\Drupal\par_authority_update_flows\Form\ParAuthorityReviewForm::titleCallback'
+  requirements:
+    _permission: 'manage own authority+manage all authorities'
+    _custom_access: '\Drupal\par_authority_update_flows\Form\ParAuthorityReviewForm::accessCallback'
+    par_data_authority: \d+
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority

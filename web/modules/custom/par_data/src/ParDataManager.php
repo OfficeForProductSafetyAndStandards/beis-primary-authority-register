@@ -11,11 +11,17 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
+use Drupal\Core\Messenger\Messenger;
+use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Render\Renderer;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
+use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
@@ -59,6 +65,27 @@ class ParDataManager implements ParDataManagerInterface {
   protected $entityTypeBundleInfo;
 
   /**
+   * The drupal messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
+   * The renderer service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
    * Iteration limit for recursive membership lookups.
    */
   protected $membershipIterations = 5;
@@ -81,12 +108,21 @@ class ParDataManager implements ParDataManagerInterface {
    *   The entity field manager.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
    *   The entity bundle info service.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer service
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   *   The current user
    */
-  public function __construct(EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info) {
+  public function __construct(EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, MessengerInterface $messenger, RendererInterface $renderer, $current_user) {
     $this->entityManager = $entity_manager;
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
+    $this->messenger = $messenger;
+    $this->renderer = $renderer;
+    $this->currentUser = $current_user;
   }
 
   /**
@@ -95,7 +131,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @return \Drupal\Core\Messenger\MessengerInterface
    */
   public function getMessenger() {
-    return \Drupal::messenger();
+    return $this->messenger;
   }
 
   /**
@@ -103,8 +139,17 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * @return mixed
    */
-  public static function getRenderer() {
-    return \Drupal::service('renderer');
+  public function getRenderer() {
+    return $this->renderer;
+  }
+
+  /**
+   * Get current user.
+   *
+   * @return mixed
+   */
+  public function getCurrentUser() {
+    return $this->currentUser;
   }
 
   /**
@@ -378,6 +423,12 @@ class ParDataManager implements ParDataManagerInterface {
       $memberships = $object->getRelatedEntities($person, $memberships, 0, 'manage');
     }
 
+    // Do not return any deleted entities.
+    // @see PAR-1462 - Removing all deleted entities from loading.
+    $memberships = array_filter($memberships, function ($membership) {
+      return (!$membership instanceof ParDataEntityInterface || !$membership->isDeleted());
+    });
+
     return !empty($memberships) ? $memberships : [];
   }
 
@@ -500,18 +551,24 @@ class ParDataManager implements ParDataManagerInterface {
    * @return array
    *   An array of member's keyed by authority and then role id.
    */
-  public function getRolesInAuthorities(array $entities, $account = NULL) {
+  public function getRolesInInstitutions(array $entities, $account = NULL) {
     $roles = [];
-    foreach ($entities as $authority) {
-      $members = $authority->getPerson();
+    foreach ($entities as $entity) {
+      // Ignore any entities that aren't authorities or organisations
+      if (!$entity instanceof ParDataAuthority && !$entity instanceof ParDataOrganisation) {
+        continue;
+      }
 
-      $roles[$authority->uuid()] = [];
+      $members = $entity->getPerson();
+
+      $roles[$entity->uuid()] = [];
       foreach ($members as $member) {
+        /** @var \Drupal\user\Entity\User $user */
         $user = $member->getUserAccount();
 
-        if (isset($user) && (!isset($account) || $user->id() !== $account->id())) {
+        if (isset($user) && $user->isActive() && (!isset($account) || $user->id() !== $account->id())) {
           foreach ($user->getRoles() as $role) {
-            $roles[$authority->uuid()][$role][] = $member;
+            $roles[$entity->uuid()][$role][] = $member;
           }
         }
       }
@@ -527,21 +584,65 @@ class ParDataManager implements ParDataManagerInterface {
    * role in any of their authorities as this affects whether they can
    * be assigned roles or even removed from the system.
    *
+   * @throws \Drupal\par_data\ParDataException
+   *   If there are no authorities to lookup.
+   *
    * @param AccountInterface $account
    *   The user account to check member authorities by.
    * @param $roles
    *   An array of roles to lookup.
    *
    * @return bool
-   *   If the roles exist in ALL authorities return true, otherwise false.
+   *   If the roles don't exist in ANY authorities return false, otherwise true.
    */
   public function isRoleInAllMemberAuthorities(AccountInterface $account, $roles) {
     $authorities = $this->isMemberOfAuthority($account);
-    $authority_roles = $this->getRolesInAuthorities($authorities, $account);
+    if (empty($authorities)) {
+      throw new ParDataException('The user has no authorities, roles cannot be matched');
+    }
+
+    $authority_roles = $this->getRolesInInstitutions($authorities, $account);
 
     foreach ($roles as $role) {
       foreach ($authority_roles as $authority) {
         if (!isset($authority[$role]) || empty($authority[$role])) {
+          return FALSE;
+        }
+      }
+    }
+
+    return TRUE;
+  }
+
+  /**
+   * Check whether given roles exist in any of the member's organisations.
+   *
+   * Allows determination of whether they are the last user with a given
+   * role in any of their organisations as this affects whether they can
+   * be assigned roles or even removed from the system.
+   *
+   * @throws \Drupal\par_data\ParDataException
+   *   If there are no organisations to lookup.
+   *
+   * @param AccountInterface $account
+   *   The user account to check member organisations by.
+   * @param $roles
+   *   An array of roles to lookup.
+   *
+   * @return bool
+   *   If the roles don't exist in ANY organisations return false, otherwise true.
+   */
+  public function isRoleInAllMemberOrganisations(AccountInterface $account, $roles) {
+    $organisations = $this->isMemberOfOrganisation($account);
+    if (empty($organisations)) {
+      throw new ParDataException('The user has no organisations, roles cannot be matched');
+    }
+
+    $organisation_roles = $this->getRolesInInstitutions($organisations, $account);
+
+    foreach ($roles as $role) {
+      foreach ($organisation_roles as $organisation) {
+        if (!isset($organisation[$role]) || empty($organisation[$role])) {
           return FALSE;
         }
       }
@@ -577,9 +678,17 @@ class ParDataManager implements ParDataManagerInterface {
       return [];
     }
 
-    return $this->entityTypeManager
+    $entities = $this->entityTypeManager
       ->getStorage($type)
       ->loadByProperties([$field => $value]);
+
+    // Do not return any entities that are deleted.
+    // @see PAR-1462 - Removing all deleted entities from loading.
+    $entities = array_filter($entities, function ($entity) {
+      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
+    });
+
+    return $entities;
   }
 
   /**
@@ -594,9 +703,17 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of entities found with this value.
    */
   public function getEntitiesByType($type, array $ids = NULL) {
-    return $this->entityManager
+    $entities = $this->entityManager
       ->getStorage($type)
       ->loadMultiple($ids);
+
+    // Do not return any entities that are deleted.
+    // @see PAR-1462 - Removing all deleted entities from loading.
+    $entities = array_filter($entities, function ($entity) {
+      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
+    });
+
+    return $entities;
   }
 
   /**
@@ -649,9 +766,16 @@ class ParDataManager implements ParDataManagerInterface {
       $query->range(0, $limit);
     }
 
-    $entities = $query->execute();
+    $results = $query->execute();
+    $entities = $this->entityManager->getStorage($type)->loadMultiple(array_unique($results));
 
-    return $this->entityManager->getStorage($type)->loadMultiple(array_unique($entities));
+    // Do not return any entities that are deleted.
+    // @see PAR-1462 - Removing all deleted entities from loading.
+    $entities = array_filter($entities, function ($entity) {
+      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
+    });
+
+    return $entities;
   }
 
   /**
@@ -661,13 +785,22 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of entities to turn into options.
    * @param array $options
    *   An optional array of options to append to.
+   * @param string $view_mode
+   *   A view mode to render the entity as.
+   * @param bool $access_check
+   *   Whether to check all entities for access, this is an expensive operation so not enabled by default.
    *
    * @return []
    *   An array of options keyed by entity id.
    */
-  public function getEntitiesAsOptions($entities, $options = [], $view_mode = NULL) {
+  public function getEntitiesAsOptions($entities, $options = [], $view_mode = NULL, $access_check = FALSE) {
     foreach ($entities as $entity) {
       if ($entity instanceof EntityInterface) {
+        if ($entity instanceof ParDataEntityInterface && $entity->isDeleted()
+          && (!$access_check || !$entity->access('view', $this->getCurrentUser()))) {
+          continue;
+        }
+
         if ($view_mode) {
           $view_builder = $this->getViewBuilder($entity->getEntityTypeId());
           $view = $view_builder->view($entity, $view_mode);
@@ -712,24 +845,35 @@ class ParDataManager implements ParDataManagerInterface {
     if (!empty($entities)) {
       return $entities;
     }
-    
+
     $conditions = [
       [
         'AND' => [
           ['field_user_account', $account->id(), 'IN'],
-          ['deleted', 1, '<>'],
+          [ParDataEntity::DELETE_FIELD, 1, '<>'],
          ],
       ],
       [
         'AND' => [
           ['email', $account->get('mail')->getString()],
-          ['field_user_account', NULL, 'IS NULL'],
-          ['deleted', 1, '<>'],
+          [ParDataEntity::DELETE_FIELD, 1, '<>'],
         ],
       ],
     ];
 
-    return $this->getEntitiesByQuery('par_data_person', $conditions, NULL, NULL, 'ASC', 'OR');
+    $entities = $this->getEntitiesByQuery('par_data_person', $conditions, NULL, NULL, 'ASC', 'OR');
+
+    // There is a need to check that any par_data_person entities returned
+    // do not link to any other active users. This can't be done directly with
+    // a query due to cases where the user account may have been removed.
+    $entities = array_filter($entities, function ($entity) use ($account) {
+      if ($entity->retrieveUserAccount() && $entity->retrieveUserAccount()->id() !== $account->id()) {
+        return FALSE;
+      }
+      return TRUE;
+    });
+
+    return $entities;
   }
 
   /**

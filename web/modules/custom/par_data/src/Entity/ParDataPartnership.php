@@ -53,6 +53,11 @@ use Drupal\user\UserInterface;
  *     "langcode" = "langcode",
  *     "status" = "status"
  *   },
+ *   revision_metadata_keys = {
+ *     "revision_user" = "revision_uid",
+ *     "revision_created" = "revision_timestamp",
+ *     "revision_log_message" = "revision_log"
+ *   },
  *   links = {
  *     "collection" = "/admin/content/par_data/par_data_partnership",
  *     "canonical" = "/admin/content/par_data/par_data_partnership/{par_data_partnership}",
@@ -235,12 +240,8 @@ class ParDataPartnership extends ParDataEntity {
    *   The number of active members.
    */
   public function countMembers($i = 0, $include_expired = FALSE) {
-    if ($include_expired) {
-      return $this->get('field_coordinated_business')->count();
-    }
-
     foreach ($this->getCoordinatedMember() as $member) {
-      if ($member->isLiving() && !$member->isRevoked() && !$member->isDeleted()) {
+      if ($include_expired || !$member->isRevoked()) {
         $i++;
       }
     }
@@ -252,6 +253,10 @@ class ParDataPartnership extends ParDataEntity {
    */
   public function getOrganisationPeople($primary = FALSE) {
     $people = $this->get('field_organisation_person')->referencedEntities();
+    $people = array_filter($people, function ($person) {
+      return (!$person instanceof ParDataEntityInterface || !$person->isDeleted());
+    });
+
     $person = !empty($people) ? current($people) : NULL;
 
     return $primary ? $person : $people;
@@ -262,6 +267,10 @@ class ParDataPartnership extends ParDataEntity {
    */
   public function getAuthorityPeople($primary = FALSE) {
     $people = $this->get('field_authority_person')->referencedEntities();
+    $people = array_filter($people, function ($person) {
+      return (!$person instanceof ParDataEntityInterface || !$person->isDeleted());
+    });
+
     $person = !empty($people) ? current($people) : NULL;
 
     return $primary ? $person : $people;
@@ -292,6 +301,9 @@ class ParDataPartnership extends ParDataEntity {
    */
   public function getCoordinatedMember($single = FALSE) {
     $members = $this->get('field_coordinated_business')->referencedEntities();
+    $members = array_filter($members, function ($member) {
+      return !$member->isDeleted();
+    });
     $member = !empty($members) ? current($members) : NULL;
 
     return $single ? $member : $members;
