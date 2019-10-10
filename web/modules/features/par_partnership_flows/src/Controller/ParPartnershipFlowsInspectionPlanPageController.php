@@ -37,24 +37,22 @@ class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController 
    */
   public function build($build = [], ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
 
-    if ($par_data_inspection_plan->isArchived()) {
+    if ($par_data_inspection_plan->isRevoked()) {
       $build['inspection_plan_details'] = [
         '#type' => 'fieldset',
         '#attributes' => ['class' => 'form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
-      $build['inspection_plan_details']['archived'] = [
+      $build['inspection_plan_details']['revoked'] = [
         '#type' => 'markup',
-        '#markup' => 'Archived inspection plan',
+        '#markup' => 'Revoked inspection plan',
         '#prefix' => '<h2>',
         '#suffix' => '</h2>',
       ];
     }
 
     $build['summary'] = $this->renderSection('About this inspection plan document', $par_data_inspection_plan, ['summary' => 'summary']);
-
-    $build['inspection_status'] = $this->renderSection('The status of this inspection plan document', $par_data_inspection_plan, ['inspection_status' => 'summary']);
 
     $build['valid_date'] = $this->renderSection('The date range this inspection plan is valid for', $par_data_inspection_plan, ['valid_date' => 'full']);
 
