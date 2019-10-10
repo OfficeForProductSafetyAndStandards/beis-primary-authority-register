@@ -9,6 +9,8 @@ dependencies:
     - datetime
     - file
     - text
+_core:
+  default_config_hash: CI8cmDXJZksssR3MmubaubHv0TG-TjnTI2vkHUIQH-A
 id: par_data_advice.advice.default
 targetEntityType: par_data_advice
 bundle: advice

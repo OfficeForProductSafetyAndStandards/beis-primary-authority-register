@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: 9NT3y3p7q8t7MuMYOx4hXNGHVsVJG7yNoklCFNcgEaA
 id: par_data_organisation.field_person
 field_name: field_person
 entity_type: par_data_organisation

@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: WIJNi9r0HJoitymTg8qTFZagdNr7zBKqKVVk38k5Z7k
 id: par_data_coordinated_business.field_legal_entity
 field_name: field_legal_entity
 entity_type: par_data_coordinated_business

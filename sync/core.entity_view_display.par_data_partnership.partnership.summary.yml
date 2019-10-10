@@ -17,12 +17,19 @@ dependencies:
   module:
     - text
 _core:
-  default_config_hash: '-l1nAw5kvT4Wu5ecVY8fKa6Vs0VAs5qHJ0EGk85ACEc'
+  default_config_hash: MR-0yz78CMs-jwrV02DTweRWiHjZlBb4nvWIgxj2lXc
 id: par_data_partnership.partnership.summary
 targetEntityType: par_data_partnership
 bundle: partnership
 mode: summary
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   deleted_reason:
     label: hidden
     weight: 0

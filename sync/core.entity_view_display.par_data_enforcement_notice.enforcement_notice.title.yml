@@ -15,13 +15,28 @@ dependencies:
   module:
     - datetime
     - par_data
+    - text
 _core:
-  default_config_hash: FrwYUzlQSKFsmJvRIi4GVgvaq6aEI8jw8yk5vJU55l0
+  default_config_hash: KyJVwFkM2ihZMUw-TEJWFmwO2DGpi2uF__aDf-AIXf4
 id: par_data_enforcement_notice.enforcement_notice.title
 targetEntityType: par_data_enforcement_notice
 bundle: enforcement_notice
 mode: title
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   enforcement_action:
     label: hidden
     region: content
@@ -54,6 +69,13 @@ content:
     settings:
       display_original_value: false
     third_party_settings: {  }
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   enforcing_authority: true
   field_enforcement_action: true

@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: tuVn-iSKtt3PhtkJnLRogJlchGUwydVzknMpOcCsNDM
 id: par_data_authority.field_premises
 field_name: field_premises
 entity_type: par_data_authority

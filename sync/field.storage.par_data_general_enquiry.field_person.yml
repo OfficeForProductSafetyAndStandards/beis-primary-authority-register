@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: 7eANkYsQ-kahDtF9JiyYOxNQazbUlj2rMUQFE8DKNi4
 id: par_data_general_enquiry.field_person
 field_name: field_person
 entity_type: par_data_general_enquiry

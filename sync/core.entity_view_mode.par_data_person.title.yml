@@ -5,7 +5,7 @@ dependencies:
   module:
     - par_data
 _core:
-  default_config_hash: '-IolKgCSeKpB_fTM9sH1QVW7-0MKTbng0rDlt3RnbT4'
+  default_config_hash: yOFbSCvFrCMy_dgIGMDCgPdt9_Mf5CuYkzSeftZyhEg
 id: par_data_person.title
 label: Title
 targetEntityType: par_data_person

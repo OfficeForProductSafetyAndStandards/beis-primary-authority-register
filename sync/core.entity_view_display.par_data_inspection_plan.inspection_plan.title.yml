@@ -8,13 +8,28 @@ dependencies:
     - par_data.par_data_inspection_plan_type.inspection_plan
   module:
     - file_entity
+    - text
 _core:
-  default_config_hash: dNXKqdzYBHaDHxI3gk9LOfOyBD7EJivRjC7kt6r0xiY
+  default_config_hash: Bof9OtoPckSCO-5r_S_jv5fUgJkzaLolUCxXsWeLpQA
 id: par_data_inspection_plan.inspection_plan.title
 targetEntityType: par_data_inspection_plan
 bundle: inspection_plan
 mode: title
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   document:
     type: file_download_link
     weight: 0
@@ -24,6 +39,28 @@ content:
       access_message: 'You don''t have access to download this file.'
       text: 'Download [file:name]'
     third_party_settings: {  }
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  summary:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  title:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
 hidden:
   approved_rd_executive: true
   consulted_national_regulator: true

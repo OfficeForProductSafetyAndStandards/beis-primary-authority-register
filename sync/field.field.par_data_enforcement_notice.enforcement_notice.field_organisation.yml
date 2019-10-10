@@ -6,6 +6,8 @@ dependencies:
     - field.storage.par_data_enforcement_notice.field_organisation
     - par_data.par_data_enforcement_notice_type.enforcement_notice
     - par_data.par_data_organisation_type.organisation
+_core:
+  default_config_hash: grY4BwvTx_h5li_1Duz_HcDf7VJSqpd5nKSENDkap7M
 id: par_data_enforcement_notice.enforcement_notice.field_organisation
 field_name: field_organisation
 entity_type: par_data_enforcement_notice

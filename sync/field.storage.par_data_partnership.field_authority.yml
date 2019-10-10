@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: BT7i-32SjQ-nyQJB_IN9RrRT_SVljuMIZQwx0E4A-QU
 id: par_data_partnership.field_authority
 field_name: field_authority
 entity_type: par_data_partnership
