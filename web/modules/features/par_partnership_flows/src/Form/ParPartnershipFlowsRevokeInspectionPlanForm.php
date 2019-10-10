@@ -16,9 +16,9 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 
 /**
- * The confirming the user is authorised to archive partnerships.
+ * The revoke inspection plan form.
  */
-class ParPartnershipFlowsArchiveInspectionPlanForm extends ParBaseForm {
+class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
 
   use ParDisplayTrait;
   use ParPartnershipFlowAccessTrait;
@@ -28,8 +28,8 @@ class ParPartnershipFlowsArchiveInspectionPlanForm extends ParBaseForm {
    * {@inheritdoc}
    */
   protected $entityMapping = [
-    ['archive_reason', 'par_data_inspection_plan', 'archive_reason', NULL, NULL, 0, [
-      'This value should not be null.' => 'Please supply the reason for archiving this document.'
+    ['revoke_reason', 'par_data_inspection_plan', 'revoke_reason', NULL, NULL, 0, [
+      'This value should not be null.' => 'Please supply the reason for revoking this document.'
     ]],
   ];
 
@@ -39,7 +39,7 @@ class ParPartnershipFlowsArchiveInspectionPlanForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    return 'Are you sure you want to archive this inspection plan?';
+    return 'Are you sure you want to revoke this inspection plan?';
   }
 
   /**
@@ -59,8 +59,8 @@ class ParPartnershipFlowsArchiveInspectionPlanForm extends ParBaseForm {
     if ($par_data_partnership && $par_data_partnership->inProgress()) {
       $form['inspection_plan_info'] = [
         '#type' => 'markup',
-        '#title' => $this->t('Archive denied'),
-        '#markup' => $this->t('This inspection plan document cannot be archived because the partnership it is awaiting approval or there are enforcement notices currently awaiting review. Please try again later.'),
+        '#title' => $this->t('Revoke denied'),
+        '#markup' => $this->t('This inspection plan document cannot be revoked because the partnership it is awaiting approval or there are enforcement notices currently awaiting review. Please try again later.'),
       ];
 
       return parent::buildForm($form, $form_state);
@@ -68,7 +68,7 @@ class ParPartnershipFlowsArchiveInspectionPlanForm extends ParBaseForm {
 
     $form['inspection_plan_info'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Archive the inspection plan'),
+      '#title' => $this->t('Revoke the inspection plan'),
       '#attributes' => ['class' => 'form-group'],
     ];
 
@@ -79,12 +79,12 @@ class ParPartnershipFlowsArchiveInspectionPlanForm extends ParBaseForm {
       '#suffix' => '</p>',
     ];
 
-    // Enter the archive reason.
-    $form['archive_reason'] = [
-      '#title' => $this->t('Enter the reason you are archiving this inspection plan'),
+    // Enter the revoke reason.
+    $form['revoke_reason'] = [
+      '#title' => $this->t('Enter the reason you are revoking this inspection plan'),
       '#type' => 'textarea',
       '#rows' => 5,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('archive_reason', FALSE),
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('revoke_reason', FALSE),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -97,9 +97,9 @@ class ParPartnershipFlowsArchiveInspectionPlanForm extends ParBaseForm {
     // No validation yet.
     parent::validateForm($form, $form_state);
 
-    if (!$form_state->getValue('archive_reason')) {
-      $id = $this->getElementId('archive_reason', $form);
-      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please supply the reason for archiving this document.', $id));
+    if (!$form_state->getValue('revoke_reason')) {
+      $id = $this->getElementId('revoke_reason', $form);
+      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please supply the reason for revoking this document.', $id));
     }
   }
 
@@ -112,16 +112,16 @@ class ParPartnershipFlowsArchiveInspectionPlanForm extends ParBaseForm {
     $par_data_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
 
     // We only want to update the status of active inspection plan documents.
-    if (!$par_data_inspection_plan->isArchived()) {
+    if (!$par_data_inspection_plan->isRevoked()) {
 
-      $reason = $this->getFlowDataHandler()->getTempDataValue('archive_reason');
-      $archived = $par_data_inspection_plan->inspection_plan_archive(TRUE, $reason);
+      $revoke_reason = $this->getFlowDataHandler()->getTempDataValue('revoke_reason');
+      $revoked = $par_data_inspection_plan->revoke($revoke_reason, TRUE);
 
-      if ($archived) {
+      if ($revoked) {
         $this->getFlowDataHandler()->deleteStore();
       }
       else {
-        $message = $this->t('Archive reason could not be saved for %form_id');
+        $message = $this->t('Revoke reason could not be saved for %form_id');
         $replacements = [
           '%form_id' => $this->getFormId(),
         ];
