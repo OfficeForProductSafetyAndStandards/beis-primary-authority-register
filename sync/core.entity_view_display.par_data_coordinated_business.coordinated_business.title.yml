@@ -7,13 +7,29 @@ dependencies:
     - field.field.par_data_coordinated_business.coordinated_business.field_legal_entity
     - field.field.par_data_coordinated_business.coordinated_business.field_organisation
     - par_data.par_data_coordinated_business_type.coordinated_business
+  module:
+    - text
 _core:
-  default_config_hash: wrQCLd0nUJy7r_OzKr59VHEfrL0-OPBdzhlsEI65aYs
+  default_config_hash: 5fhep02rqHnpd5Mydj7vAKjG98XXWxljh7PbY814T2o
 id: par_data_coordinated_business.coordinated_business.title
 targetEntityType: par_data_coordinated_business
 bundle: coordinated_business
 mode: title
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   field_organisation:
     weight: 0
     label: hidden
@@ -23,6 +39,13 @@ content:
     third_party_settings: {  }
     type: entity_reference_entity_view
     region: content
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   covered_by_inspection: true
   date_membership_began: true

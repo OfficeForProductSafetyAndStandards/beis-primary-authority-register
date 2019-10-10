@@ -4,15 +4,25 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_person.summary
+    - field.field.par_data_person.person.field_notification_preferences
     - field.field.par_data_person.person.field_user_account
     - par_data.par_data_person_type.person
+  module:
+    - text
 _core:
-  default_config_hash: 8-2p8CXAz6cBMVV3eNu-5WRk70hTMZsp1rpmmjrOCCc
+  default_config_hash: 28CjlFkqQ0Lm-9UA_-s1F6i6Yr5kkf8UVeq-7_KQCrU
 id: par_data_person.person.summary
 targetEntityType: par_data_person
 bundle: person
 mode: summary
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   deleted_reason:
     label: hidden
     weight: 0
@@ -43,6 +53,13 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   work_phone_pseudo_field:
     weight: 1
     region: content

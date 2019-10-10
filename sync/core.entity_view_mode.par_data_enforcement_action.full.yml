@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: F5-Av3aAJmN6NwPnUJyDuldmDYWNeZq2fGP4_bNo5Ec
 id: par_data_enforcement_action.full
 label: Full
 targetEntityType: par_data_enforcement_action

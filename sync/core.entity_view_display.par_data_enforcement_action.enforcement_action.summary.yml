@@ -13,12 +13,26 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: tu2zE04w1Dsq4qdkz4p0KL0kw7AjuXGaIdUmA4KfjpU
+  default_config_hash: 7m2U3Q7OQ42_y-gJEKu_v_K74msy3i--5TgHC1Mzsb4
 id: par_data_enforcement_action.enforcement_action.summary
 targetEntityType: par_data_enforcement_action
 bundle: enforcement_action
 mode: summary
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   details:
     type: text_default
     weight: 3
@@ -52,6 +66,13 @@ content:
     settings:
       display_original_value: false
     third_party_settings: {  }
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   title:
     type: string
     weight: 0

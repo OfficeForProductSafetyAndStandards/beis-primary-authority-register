@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_display.comment.par_inspection_feedback_comments.default
     - field.field.par_data_inspection_feedback.inspection_feedback.field_enforcing_authority
     - field.field.par_data_inspection_feedback.inspection_feedback.field_inspection_plan
     - field.field.par_data_inspection_feedback.inspection_feedback.field_partnership
@@ -15,12 +16,26 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: bD71-JNePuIGxSYKgsNY7LBORlEP0GQ7wuMkVIAntZ0
+  default_config_hash: SD0XGJfDGEKlm1njDy0Ympp7BVaW1z8Ij7myUk-XYgE
 id: par_data_inspection_feedback.inspection_feedback.default
 targetEntityType: par_data_inspection_feedback
 bundle: inspection_feedback
 mode: default
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   document:
     label: hidden
     weight: 2
@@ -106,6 +121,13 @@ content:
       format_type: gds_date_format
     third_party_settings: {  }
     type: datetime_default
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   name: true
   user_id: true

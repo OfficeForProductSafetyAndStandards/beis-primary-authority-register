@@ -5,13 +5,29 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_regulatory_function.full
     - par_data.par_data_regulatory_function_t.regulatory_function
+  module:
+    - text
 _core:
-  default_config_hash: 0OQczKQGkMITIl85Crxv5b7p0oiVKmUKQeuVmU1Qn-Q
+  default_config_hash: RflgIkQ3_atlb42sHTLuBf4inwIydMf3bA81QnXUqKI
 id: par_data_regulatory_function.regulatory_function.full
 targetEntityType: par_data_regulatory_function
 bundle: regulatory_function
 mode: full
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   function_name:
     type: string
     weight: 0
@@ -20,6 +36,13 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   area_name: true
   name: true

@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: R5G7mHG-wfY8rdAEtkSxw5u35h4d1JD_HO7JyHuk32s
 id: par_data_deviation_request.field_enforcing_authority
 field_name: field_enforcing_authority
 entity_type: par_data_deviation_request

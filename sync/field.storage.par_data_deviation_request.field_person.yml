@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: elnvruNvmTLN03UMb0P6DHw1YVmqeHQ6TshGozdMe08
 id: par_data_deviation_request.field_person
 field_name: field_person
 entity_type: par_data_deviation_request

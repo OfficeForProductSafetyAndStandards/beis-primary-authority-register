@@ -15,12 +15,26 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: QuMyew9yHj3ctgMZ4VxHgrjNXMi6Tn_RVcWAPhPBfVY
+  default_config_hash: JQCsrMfLQoGZ2uIzZLIdV8P0k4UnAjD1YO33hoQz964
 id: par_data_deviation_request.deviation_request.summary
 targetEntityType: par_data_deviation_request
 bundle: deviation_request
 mode: summary
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   document:
     label: hidden
     weight: 0
@@ -54,6 +68,13 @@ content:
       format_type: gds_date_format
     third_party_settings: {  }
     type: datetime_default
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   field_enforcing_authority: true
   field_inspection_plan: true

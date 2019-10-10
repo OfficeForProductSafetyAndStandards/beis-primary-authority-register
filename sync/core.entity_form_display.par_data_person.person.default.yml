@@ -8,6 +8,8 @@ dependencies:
     - par_data.par_data_person_type.person
   module:
     - text
+_core:
+  default_config_hash: 5VtwMehrowSNjvpQOFAkytpn5HzKjn-tIzkRoqnw4Sc
 id: par_data_person.person.default
 targetEntityType: par_data_person
 bundle: person

@@ -6,6 +6,8 @@ dependencies:
     - field.storage.par_data_inspection_plan.field_regulatory_function
     - par_data.par_data_inspection_plan_type.inspection_plan
     - par_data.par_data_regulatory_function_t.regulatory_function
+_core:
+  default_config_hash: WerNqK3zWTcVi80WM1K819_s6lqYCzN4Pjx8xLkpVis
 id: par_data_inspection_plan.inspection_plan.field_regulatory_function
 field_name: field_regulatory_function
 entity_type: par_data_inspection_plan
