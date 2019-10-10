@@ -86,40 +86,14 @@ class ParDataAdvice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
-  public function revoke($reason = '', $save = TRUE) {
+  public function revoke($save = TRUE, $reason = '') {
     // Only advice of type 'authority_advice' can be revoked.
     if ($this->getRawStatus() === 'authority_advice') {
-      parent::revoke($reason, $save);
+      parent::revoke($save, $reason);
     }
     else {
       $this->archive($save);
     }
-  }
-
-  /**
-   * Archive if the entity is archivable and is not new.
-   * Override main base class function to add custom advice entity logic.
-   *
-   * @param String $reason
-   *   Reason for archiving this entity.
-   *
-   * @param boolean $save
-   *   Whether to save the entity after revoking.
-   *
-   * @return boolean
-   *   True if the entity was restored, false for all other results.
-   */
-  public function archive($reason ='', $save = TRUE) {
-
-    if ($entity_archived = parent::archive($reason, $save)) {
-      // Set the advice status field.
-      $this->set('advice_status', 'archived');
-
-      if (!$this->save()) {
-        return FALSE;
-      }
-    }
-    return $entity_archived;
   }
 
   /**

@@ -105,7 +105,7 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
     if (!$par_data_advice->isArchived()) {
 
       $reason = $this->getFlowDataHandler()->getTempDataValue('archive_reason');
-      $archived = $par_data_advice->archive($reason, TRUE);
+      $archived = $par_data_advice->archive(TRUE, $reason);
 
       if ($archived) {
         $this->getFlowDataHandler()->deleteStore();
