@@ -901,7 +901,7 @@ function par_data_update_8039() {
   $storage_definitions = [];
 
   // Revocation Reason.
-  $storage_definitions['revocation_reason'] = BaseFieldDefinition::create('text_long')
+  $storage_definitions[ParDataEntity::REVOKE_REASON_FIELD] = BaseFieldDefinition::create('text_long')
     ->setLabel(t('Revocation Reason'))
     ->setDescription(t('Comments about why this entity was revoked.'))
     ->setRevisionable(TRUE)
@@ -922,7 +922,7 @@ function par_data_update_8039() {
     ->setDisplayConfigurable('view', TRUE);
 
   // Archive Reason.
-  $storage_definitions['archive_reason'] = BaseFieldDefinition::create('text_long')
+  $storage_definitions[ParDataEntity::ARCHIVE_REASON_FIELD] = BaseFieldDefinition::create('text_long')
     ->setLabel(t('Archive Reason'))
     ->setDescription(t('Comments about why this entity was archived.'))
     ->setRevisionable(TRUE)

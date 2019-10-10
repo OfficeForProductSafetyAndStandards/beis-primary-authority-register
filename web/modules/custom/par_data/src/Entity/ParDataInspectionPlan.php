@@ -170,26 +170,6 @@ class ParDataInspectionPlan extends ParDataEntity {
         'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
-    // Archive Reason.
-    $fields['archive_reason'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Archive Reason'))
-      ->setDescription(t('Comments about why this inspection plan document was archived.'))
-      ->setRevisionable(TRUE)
-      ->setSettings([
-        'text_processing' => 0,
-      ])->setDisplayOptions('form', [
-        'type' => 'text_textarea',
-        'weight' => 13,
-        'settings' => [
-          'rows' => 25,
-        ],
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'weight' => 0,
-      ])
-      ->setDisplayConfigurable('view', TRUE);
 
     // Valid Date.
     $fields['valid_date'] = BaseFieldDefinition::create('daterange')

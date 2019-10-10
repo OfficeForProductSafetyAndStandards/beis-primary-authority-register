@@ -377,6 +377,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     if ($this->getTypeEntity()->isRevokable() && $this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
+      $this->set(ParDataEntity::ARCHIVE_REASON_FIELD, NULL);
 
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
