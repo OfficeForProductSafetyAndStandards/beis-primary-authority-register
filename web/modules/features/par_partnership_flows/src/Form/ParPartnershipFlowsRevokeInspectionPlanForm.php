@@ -115,7 +115,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
     if (!$par_data_inspection_plan->isRevoked()) {
 
       $revoke_reason = $this->getFlowDataHandler()->getTempDataValue('revoke_reason');
-      $revoked = $par_data_inspection_plan->revoke($revoke_reason, TRUE);
+      $revoked = $par_data_inspection_plan->revoke(TRUE, $revoke_reason);
 
       if ($revoked) {
         $this->getFlowDataHandler()->deleteStore();

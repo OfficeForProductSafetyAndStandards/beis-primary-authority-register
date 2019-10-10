@@ -38,6 +38,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   const DELETE_FIELD = 'deleted';
   const REVOKE_FIELD = 'revoked';
   const ARCHIVE_FIELD = 'archived';
+  const DELETE_REASON_FIELD = 'deleted_reason';
   const REVOKE_REASON_FIELD = 'revocation_reason';
   const ARCHIVE_REASON_FIELD = 'archive_reason';
 
@@ -267,7 +268,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $this->set(ParDataEntity::DELETE_FIELD, TRUE);
 
       // Help desk bug claim protection (dev covering his ass).
-      $this->set('deleted_reason', $reason);
+      $this->set(self::DELETE_REASON_FIELD, $reason);
 
       // calls soft delete function defined in thr ParDataStorage class.
       return parent::delete();
@@ -286,7 +287,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * @return boolean
    *   True if the entity was revoked, false for all other results.
    */
-  public function revoke($reason = '', $save = TRUE) {
+  public function revoke($save = TRUE, $reason = '') {
     if ($this->isNew()) {
       $save = FALSE;
     }
@@ -340,7 +341,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * @return boolean
    *   True if the entity was restored, false for all other results.
    */
-  public function archive($reason = '', $save = TRUE) {
+  public function archive($save = TRUE, $reason = '') {
     if ($this->isNew()) {
       $save = FALSE;
     }
@@ -913,7 +914,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ->setDisplayConfigurable('view', FALSE);
 
     // Revocation Reason.
-    $fields['revocation_reason'] = BaseFieldDefinition::create('text_long')
+    $fields[self::REVOKE_REASON_FIELD] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Revocation Reason'))
       ->setDescription(t('Comments about why this entity was revoked.'))
       ->setRevisionable(TRUE)
@@ -950,7 +951,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ->setDisplayConfigurable('view', FALSE);
 
     // Archive Reason.
-    $fields['archive_reason'] = BaseFieldDefinition::create('text_long')
+    $fields[self::ARCHIVE_REASON_FIELD] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Archive Reason'))
       ->setDescription(t('Comments about why this advice document was archived.'))
       ->setRevisionable(TRUE)
@@ -971,7 +972,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ->setDisplayConfigurable('view', TRUE);
 
     // Deleted Reason.
-    $fields['deleted_reason'] = BaseFieldDefinition::create('text_long')
+    $fields[self::DELETE_REASON_FIELD] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Deleted Reason'))
       ->setDescription(t('Comments about why this partnership was deleted.'))
       ->setRevisionable(TRUE)

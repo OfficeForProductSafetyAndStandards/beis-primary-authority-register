@@ -106,33 +106,6 @@ class ParDataInspectionPlan extends ParDataEntity {
   }
 
   /**
-   * Archive if the entity is archivable and is not new.
-   * Override main base class function to add custom inspection plan entity logic.
-   *
-   * @param boolean $save
-   *   Whether to save the entity after revoking.
-   *
-   * @param boolean $archive_reason
-   *   Reason for archiving this entity.
-   *
-   * @return boolean
-   *   True if the entity was restored, false for all other results.
-   */
-  public function inspection_plan_archive($save = TRUE, $reason) {
-
-    if ($entity_archived = parent::archive($save)) {
-      // Set reason for archiving the inspection plan.
-      $this->set('archive_reason', $reason);
-
-      if (!$this->save()) {
-        return FALSE;
-      }
-    }
-    return $entity_archived;
-  }
-
-
-  /**
    * {@inheritdoc}
    */
   public function filterRelationshipsByAction($relationship, $action) {
