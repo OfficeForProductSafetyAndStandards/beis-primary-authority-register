@@ -45,7 +45,7 @@ class ParUserDetail extends ParFormPluginBase {
       $cache_tags[] = "user:{$user->id()}";
 
       $this->getFlowDataHandler()->setFormPermValue('user_account', $user->getEmail());
-      $last_login_date = $this->getDateFormatter()->format($user->getLastLoginTime(), 'gds_date_format');
+      $last_login_date = $user->getLastLoginTime() ? $this->getDateFormatter()->format($user->getLastLoginTime(), 'gds_date_format') : NULL;
       $this->setDefaultValuesByKey('user_login', $cardinality, $last_login_date);
       $this->setDefaultValuesByKey('user_active', $cardinality, (bool) $user->isActive());
 
@@ -145,7 +145,7 @@ class ParUserDetail extends ParFormPluginBase {
         $form['user_account']['last_access'] = [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => '<strong>Last sign in</strong><br>' . $this->getDefaultValuesByKey('user_login', $cardinality, ''),
+          '#value' => '<strong>Last sign in</strong><br>' . $this->getDefaultValuesByKey('user_login', $cardinality, 'Never signed in'),
           '#attributes' => ['class' => ['column-one-third']],
         ];
       }

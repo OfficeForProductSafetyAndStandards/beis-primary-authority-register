@@ -130,6 +130,7 @@ module:
   toolbar: 0
   trance: 0
   ultimate_cron: 0
+  unique_pager: 0
   user: 0
   vbo_export: 0
   views_bulk_operations: 0
