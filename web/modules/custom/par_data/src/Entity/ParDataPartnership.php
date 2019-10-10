@@ -254,6 +254,10 @@ class ParDataPartnership extends ParDataEntity {
    */
   public function getOrganisationPeople($primary = FALSE) {
     $people = $this->get('field_organisation_person')->referencedEntities();
+    $people = array_filter($people, function ($person) {
+      return (!$person instanceof ParDataEntityInterface || !$person->isDeleted());
+    });
+
     $person = !empty($people) ? current($people) : NULL;
 
     return $primary ? $person : $people;
@@ -264,6 +268,10 @@ class ParDataPartnership extends ParDataEntity {
    */
   public function getAuthorityPeople($primary = FALSE) {
     $people = $this->get('field_authority_person')->referencedEntities();
+    $people = array_filter($people, function ($person) {
+      return (!$person instanceof ParDataEntityInterface || !$person->isDeleted());
+    });
+
     $person = !empty($people) ? current($people) : NULL;
 
     return $primary ? $person : $people;

@@ -33,7 +33,7 @@ trait ParDisplayTrait {
   /**
    * Get unique pager service.
    *
-   * @return mixed
+   * @return \Drupal\unique_pager\UniquePagerService
    */
   public static function getUniquePager() {
     return \Drupal::service('unique_pager.unique_pager_service');
@@ -124,7 +124,7 @@ trait ParDisplayTrait {
   public function renderReferenceField($section, $field, $view_mode = 'summary', $operations = [], $single = FALSE) {
     $elements = [];
     foreach ($field->referencedEntities() as $delta => $entity) {
-      if ($entity instanceof ParDataEntityInterface && ($entity->isDeleted() || $entity->isRevoked())) {
+      if ($entity instanceof ParDataEntityInterface && $entity->isDeleted()) {
         continue;
       }
 
