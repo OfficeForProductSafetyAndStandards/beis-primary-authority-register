@@ -848,6 +848,46 @@ function par_data_update_8037() {
     ])
     ->setDisplayConfigurable('view', TRUE);
 
+  // Inspection plan start date.
+  $storage_definitions['date_inspection_plan_began'] = BaseFieldDefinition::create('datetime')
+    ->setLabel(t('Inspection plan start date'))
+    ->setDescription(t('The date the inspection plan began.'))
+    ->addConstraint('par_required')
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'datetime_type' => 'date',
+    ])
+    ->setDisplayOptions('form', [
+      'type' => 'datetime_default',
+      'weight' => 3,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  // Inspection plan end date.
+  $storage_definitions['date_inspection_plan_end'] = BaseFieldDefinition::create('datetime')
+    ->setLabel(t('Inspection plan end date'))
+    ->setDescription(t('The date the inspection plan ended.'))
+    ->addConstraint('par_required')
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'datetime_type' => 'date',
+    ])
+    ->setDisplayOptions('form', [
+      'type' => 'datetime_default',
+      'weight' => 3,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
   foreach ($storage_definitions as $field => $definition) {
     $entity_definition_manager->installFieldStorageDefinition($field, 'par_data_inspection_plan', 'par_data_inspection_plan', $definition);
   }
