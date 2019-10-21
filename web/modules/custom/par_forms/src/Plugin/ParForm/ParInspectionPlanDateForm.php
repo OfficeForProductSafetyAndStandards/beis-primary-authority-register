@@ -5,7 +5,7 @@ namespace Drupal\par_forms\Plugin\ParForm;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
- * Member begin date form plugin.
+ * Inspection Plan expire date form plugin.
  *
  * @ParForm(
  *   id = "inspection_plan_date",
