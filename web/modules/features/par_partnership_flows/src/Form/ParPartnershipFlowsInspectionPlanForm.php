@@ -125,6 +125,10 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    if (!$form_state->getValue('inspection_plan_expire')){
+      $id = $this->getElementId('inspection_plan_expire', $form);
+      $form_state->setErrorByName($this->getElementName(['inspection_plan_expire']), $this->wrapErrorMessage('You must enter the date the inspection plan expires e.g. 30 - 01 - 2022', $id));
+    }
     parent::validateForm($form, $form_state);
   }
 
@@ -153,9 +157,10 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
       $files_to_add[] = $file->id();
     }
 
+    $request_date = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
+
     // Create new inspection plan if needed.
     if (!$par_data_inspection_plan) {
-      $request_date = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
       $par_data_inspection_plan = ParDataInspectionPlan::create([
         'type' => 'inspection_plan',
         'uid' => 1,
@@ -176,6 +181,18 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
     if ($files_to_add) {
       $par_data_inspection_plan->set('document', $files_to_add);
     }
+
+    if ($par_data_inspection_plan->isNew()) {
+      $inspection_plan_start_date =  $request_date->format("Y-m-d");
+    }
+    else {
+      $inspection_plan_start_date =  $par_data_inspection_plan->get('valid_date')->value;
+    }
+
+    // set the expire time for inspection plan entities.
+    $inspection_plan_end_date = $this->getFlowDataHandler()->getTempDataValue('inspection_plan_expire');
+    // Set date range values for inspection plans.
+    $par_data_inspection_plan->set('valid_date', ['value' => $inspection_plan_start_date, 'end_value' => $inspection_plan_end_date]);
 
     // Save and attach new inspection plan entities.
     if ($par_data_inspection_plan->isNew() && $par_data_inspection_plan->save()) {
