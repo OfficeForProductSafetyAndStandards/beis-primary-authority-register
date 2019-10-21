@@ -69,6 +69,8 @@ use Drupal\Core\Field\BaseFieldDefinition;
  */
 class ParDataInspectionPlan extends ParDataEntity {
 
+  const DATE_FORMAT = 'd/m/Y';
+
   /**
    * Get PAR inspection plan's title.
    *
@@ -103,6 +105,22 @@ class ParDataInspectionPlan extends ParDataEntity {
    */
   public function setSummary($summary) {
     $this->set('summary', $summary);
+  }
+
+  /**
+   * Get the inspection plan start date.
+   */
+  public function getStartDate() {
+    $date = !$this->get('date_membership_began')->isEmpty() ? $this->date_membership_began->date : NULL;
+    return $date ? $date->format(self::DATE_FORMAT) : NULL;
+  }
+
+  /**
+   * Get the inspection plan end date.
+   */
+  public function getEndDate() {
+    $date = !$this->get('date_membership_ceased')->isEmpty() ? $this->date_membership_ceased->date : NULL;
+    return $date ? $date->format(self::DATE_FORMAT) : NULL;
   }
 
   /**
@@ -177,6 +195,7 @@ class ParDataInspectionPlan extends ParDataEntity {
       ->setDescription(t('The date range this inspection plan is valid for.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
+      ->setRequired(TRUE)
       ->setSettings([
         'datetime_type' => 'date',
       ])
@@ -196,6 +215,7 @@ class ParDataInspectionPlan extends ParDataEntity {
       ->setLabel(t('Approved by RD Executive'))
       ->setDescription(t('Whether this inspection plan has been approved by an RD executive.'))
       ->addConstraint('par_required')
+      ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
