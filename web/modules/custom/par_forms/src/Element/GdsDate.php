@@ -53,6 +53,10 @@ class GdsDate extends FormElement {
   public static function processGdsDate(&$element, FormStateInterface $form_state, &$complete_form) {
     $value = is_array($element['#value']) ? $element['#value'] : [];
 
+    $day = isset($element['#default_value']['day']) ? $element['#default_value']['day'] : NULL;
+    $month = isset($element['#default_value']['month']) ? $element['#default_value']['month'] : NULL;
+    $year = isset($element['#default_value']['year']) ? $element['#default_value']['year'] : NULL;
+
     $element['day'] = [
       '#type' => 'textfield',
       '#title' => 'Day',
@@ -63,7 +67,7 @@ class GdsDate extends FormElement {
         'class' => ['gds-date-sub-element']
       ],
       '#required' => $element['#required'],
-      '#default_value' => isset($value['day']) ? $value['day'] : $element['#default_value']['day'],
+      '#default_value' => isset($value['day']) ? $value['day'] : $day,
     ];
 
     $element['month'] = [
@@ -76,7 +80,7 @@ class GdsDate extends FormElement {
         'class' => ['gds-date-sub-element']
       ],
       '#required' => $element['#required'],
-      '#default_value' => isset($value['month']) ? $value['month'] : $element['#default_value']['month'],
+      '#default_value' => isset($value['month']) ? $value['month'] : $month,
     ];
 
     $element['year'] = [
@@ -89,7 +93,7 @@ class GdsDate extends FormElement {
         'class' => ['gds-date-sub-element']
       ],
       '#required' => $element['#required'],
-      '#default_value' => isset($value['year']) ? $value['year'] : $element['#default_value']['year'],
+      '#default_value' => isset($value['year']) ? $value['year'] : $year,
     ];
 
     // Prep the value.
