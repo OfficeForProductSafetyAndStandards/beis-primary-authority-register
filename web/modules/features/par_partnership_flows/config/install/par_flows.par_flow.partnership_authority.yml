@@ -87,6 +87,8 @@ steps:
   13:
     route: par_partnership_flows.inspection_plan_add
     form_id: par_partnership_inspection_plan_add
+    components:
+      inspection_plan_date: {}
     form_data:
       upload: par_partnership_inspection_plan_upload_add
     redirect:
@@ -95,6 +97,8 @@ steps:
   14:
     route: par_partnership_flows.inspection_plan_edit
     form_id: par_partnership_inspection_plan_edit
+    components:
+      inspection_plan_date: {}
     redirect:
       save: 3
       cancel: 3
