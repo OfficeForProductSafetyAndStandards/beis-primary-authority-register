@@ -31,6 +31,6 @@ Feature: Upload inspection plan
         And I navigate to an active partnership "Lower East Side Borough Council"
         And I click "See all Inspection Plans"
         When I click on revoke against an inspection plan
-        When I enter reason "new advice is ready"
+        When I enter the revoke reason "inspection plan is no longer valid."
         And I click save
         Then I should archive successfully
