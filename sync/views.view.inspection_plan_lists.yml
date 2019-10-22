@@ -1374,9 +1374,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          title: Archive
-          assistive_text: 'Archive {{ title }} '
-          link: '/partnership/{{ id_1 }}/inspection/{{ id }}/archive'
+          title: Revoke
+          assistive_text: 'Revoke {{ title }} '
+          link: '/partnership/{{ id_1 }}/inspection/{{ id }}/revoke'
           hidden: 1
           entity_type: par_data_inspection_plan
           plugin_id: par_flow_link
