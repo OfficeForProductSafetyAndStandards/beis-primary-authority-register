@@ -30,7 +30,7 @@ Feature: Upload inspection plan
         Given I am logged in as "par_helpdesk@example.com"
         And I navigate to an active partnership "Lower East Side Borough Council"
         And I click "See all Inspection Plans"
-        When I click on archive against an advice
+        When I click on revoke against an inspection plan
         When I enter reason "new advice is ready"
         And I click save
         Then I should archive successfully
