@@ -2,7 +2,7 @@ Feature: Upload inspection plan
     As an authority member
     I should be able to upload inspection plans
 
-    @inspection_plan_access @ci @inspection_plans
+    @inspection_plan_features @ci @inspection_plans
     Scenario: Upload-advice type business
         Given I am logged in as "par_helpdesk@example.com"
         And I navigate to an active partnership "Lower East Side Borough Council"
@@ -14,7 +14,7 @@ Feature: Upload inspection plan
         And I click save
         And I see inspection plan uploaded successfully
 
-    @inspection_plan_access @ci @inspection_plans
+    @inspection_plan_features @ci @inspection_plans
     Scenario: Edit inspection plan
         Given I am logged in as "par_helpdesk@example.com"
         And I navigate to an active partnership "Lower East Side Borough Council"
@@ -25,7 +25,7 @@ Feature: Upload inspection plan
         And I click save
         And I see the inspection plan has updated successfully
 
-    @inspection_plan_access @ci @inspection_plans
+    @inspection_plan_features @ci @inspection_plans
     Scenario: Revoke an inspection plan
         Given I am logged in as "par_helpdesk@example.com"
         And I navigate to an active partnership "Lower East Side Borough Council"
