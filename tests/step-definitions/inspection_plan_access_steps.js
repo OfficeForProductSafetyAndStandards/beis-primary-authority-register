@@ -8,3 +8,7 @@ Then('I should see inspection plans list page', function () {
         .assert.containsText('h1.heading-xlarge', 'Inspection plans')
 });
 
+Then('I see the inspection plan link {string}', function (string) {
+    return client
+        .assert.containsText('a.flow-link', string)
+});
