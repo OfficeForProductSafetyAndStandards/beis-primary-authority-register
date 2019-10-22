@@ -1,6 +1,6 @@
 Feature: Inspection plan access
-    As an enforcement officer
-    I should be able to upload inspection plans
+    As a system user
+    I should be able to access inspection plans
 
     @inspection_plan_access @ci @inspection_plan
     Scenario: Upload inspection plan disabled for enforcement offices
