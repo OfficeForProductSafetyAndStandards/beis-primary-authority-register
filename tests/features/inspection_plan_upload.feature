@@ -33,4 +33,4 @@ Feature: Upload inspection plan
         When I click on revoke against an inspection plan
         When I enter the revoke reason "inspection plan is no longer valid."
         And I click save
-        Then I should archive successfully
+        Then I should revoke successfully
