@@ -253,7 +253,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
         'pager' => [
           '#type' => 'pager',
           '#theme' => 'pagerer',
-          '#element' => $pager_id,
+          '#element' => $pager,
           '#weight' => 100,
           '#config' => [
             'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
@@ -368,7 +368,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
         'pager' => [
           '#type' => 'pager',
           '#theme' => 'pagerer',
-          '#element' => $pager_id,
+          '#element' => $pager,
           '#weight' => 100,
           '#config' => [
             'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
