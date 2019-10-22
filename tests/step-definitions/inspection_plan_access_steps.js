@@ -75,7 +75,7 @@ When('I click on revoke against an inspection plan', function () {
 
 When('I enter the revoke reason {string}', function (string) {
     return client
-        .setValue('#edit-archive-reason', string)
+        .setValue('#edit-revocation-reason', string)
 });
 
 
