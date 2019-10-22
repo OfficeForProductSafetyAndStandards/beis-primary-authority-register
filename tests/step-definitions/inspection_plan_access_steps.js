@@ -67,6 +67,12 @@ Then('I see the inspection plan has updated successfully', function () {
         .assert.containsText('#content', 'Auto-inspection-plan-Summary-retest')
 });
 
+When('I click on revoke against an inspection plan', function () {
+    return shared
+        .clickLinkByPureText('Revoke')
+        .assert.containsText('h1.heading-xlarge', 'Are you sure you want to archive this advice?')
+
+});
 
 
 
