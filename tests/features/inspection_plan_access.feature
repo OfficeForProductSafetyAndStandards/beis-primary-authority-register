@@ -13,11 +13,11 @@ Feature: Inspection plan access
     @inspection_plan_access @ci @inspection_plans
     Scenario: Upload inspection plan disabled for business users
         Given I am logged in as "par_business_enquirer@example.com"
-        And I search for an active partnership "Enquirer"
+        And I go to partnership detail page for my partnership "Enquirer" with status "confirmed_rd"
         And I click "See all Inspection Plans"
         Then I should see inspection plans list page
         And I should not see the link "Upload inspection plan"
-        
+
     @inspection_plan_access @ci @inspection_plans
     Scenario: Upload inspection plan enabled for helpdesk/admin users
         Given I am logged in as "par_helpdesk@example.com"
