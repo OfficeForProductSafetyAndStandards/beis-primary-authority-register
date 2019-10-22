@@ -89,6 +89,10 @@ Then('I should revoke successfully', function () {
     //.assert.containsText('.views-field views-field-par-status','Archived')
 });
 
+When('I go to manage the partnership {string} click on {string} and status {string}', function (search, name, status) {
+    return shared
+        .goToManagePartnershipPage(search,name,status)
+});
 
 
 
