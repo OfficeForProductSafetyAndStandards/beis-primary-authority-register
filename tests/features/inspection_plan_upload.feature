@@ -17,7 +17,7 @@ Feature: Upload inspection plan
     @inspection_plan_features @ci @inspection_plans
     Scenario: Edit inspection plan
         Given I am logged in as "par_helpdesk@example.com"
-        And I navigate to an active partnership "Lower East Side Borough Council"
+        And I go to manage the partnership "Partnership nominated by Secretary of State" click on "Upper West Side Borough Council" and status "confirmed_rd"
         And I click "See all Inspection Plans"
         When I click on edit against an inspection plan
         Then I enter new inspection plan title
@@ -28,7 +28,7 @@ Feature: Upload inspection plan
     @inspection_plan_features @ci @inspection_plans
     Scenario: Revoke an inspection plan
         Given I am logged in as "par_helpdesk@example.com"
-        And I navigate to an active partnership "Lower East Side Borough Council"
+        And I go to manage the partnership "Partnership nominated by Secretary of State" click on "Upper West Side Borough Council" and status "confirmed_rd"
         And I click "See all Inspection Plans"
         When I click on revoke against an inspection plan
         When I enter the revoke reason "inspection plan is no longer valid."
