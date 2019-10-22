@@ -7,7 +7,7 @@ Feature: Inspection plan access
         Given I am logged in as "par_enforcement_officer@example.com"
         And I search for an active partnership "Enquirer"
         And I click "See all Inspection Plans"
-        Then I should see inspection plans list page
+        Then I should see inspection plans search list page
         And I should not see the link "Upload inspection plan"
 
     @inspection_plan_access @ci @inspection_plans
