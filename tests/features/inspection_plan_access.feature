@@ -25,11 +25,11 @@ Feature: Inspection plan access
         And I click "See all Inspection Plans"
         Then I should see inspection plans list page
         And I see the inspection plan link "Upload inspection plan"
-        
+
     @inspection_plan_access @ci @inspection_plans
     Scenario: Verify upload inspection plan is not available for non-active partnerships
         Given I am logged in as "par_helpdesk@example.com"
-        And I navigate to a partially completed partnership "Upper West Side Borough Council"
+        And I navigate to a partnership confirmed by the authority "Upper West Side Borough Council"
         And I click "See all Inspection Plans"
         Then I should see inspection plans list page
         And I should not see the link "Upload inspection plan"
