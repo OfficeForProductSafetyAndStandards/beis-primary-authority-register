@@ -56,6 +56,9 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
+    // initialize pager ID prevent PHP warning.
+    $pager_id = NULL;
+
     // Display all the information that can be modified by the organisation.
     $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
 
