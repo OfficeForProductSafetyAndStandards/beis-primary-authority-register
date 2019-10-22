@@ -78,5 +78,12 @@ When('I enter the revoke reason {string}', function (string) {
         .setValue('#edit-revocation-reason', string)
 });
 
+Then('I should revoke successfully', function () {
+    return client
+        .assert.containsText('h1.heading-xlarge', 'Inspection Plans')
+    //.assert.containsText('.views-field views-field-par-status','Archived')
+});
+
+
 
 
