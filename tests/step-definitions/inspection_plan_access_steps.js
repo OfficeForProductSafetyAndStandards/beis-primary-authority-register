@@ -73,5 +73,10 @@ When('I click on revoke against an inspection plan', function () {
         .assert.containsText('h1.heading-xlarge', 'Are you sure you want to revoke this inspection plan?')
 });
 
+When('I enter the revoke reason {string}', function (string) {
+    return client
+        .setValue('#edit-archive-reason', string)
+});
+
 
 
