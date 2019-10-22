@@ -3,7 +3,7 @@ Feature: Upload inspection plan
     I should be able to upload inspection plans
 
     @inspection_plan_features @ci @inspection_plans
-    Scenario: Upload-advice type business
+    Scenario: Upload-inspection plan
         Given I am logged in as "par_helpdesk@example.com"
         And I navigate to an active partnership "Lower East Side Borough Council"
         When I open inspection plan add page
