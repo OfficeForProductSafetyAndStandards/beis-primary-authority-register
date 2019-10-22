@@ -371,7 +371,7 @@ par_partnership_flows.inspection_plan_upload:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanUploadForm'
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanUploadForm::titleCallback'
   requirements:
-    _permission: 'Upload inspection plan'
+    _permission: 'upload partnership inspection plan'
     _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanUploadForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -384,7 +384,7 @@ par_partnership_flows.inspection_plan_add:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm'
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm::titleCallback'
   requirements:
-    _permission: 'Upload inspection plan'
+    _permission: 'upload partnership inspection plan'
     _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm::accessCallback'
     par_data_partnership: \d+
   options:
@@ -397,7 +397,7 @@ par_partnership_flows.inspection_plan_edit:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm'
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm::titleCallback'
   requirements:
-    _permission: 'Upload inspection plan'
+    _permission: 'upload partnership inspection plan'
     _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm::accessCallback'
     par_data_partnership: \d+
     par_data_inspection_plan: \d+
@@ -413,7 +413,7 @@ par_partnership_flows.inspection_plan_revoke:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRevokeInspectionPlanForm'
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRevokeInspectionPlanForm::titleCallback'
   requirements:
-    _permission: 'Upload inspection plan'
+    _permission: 'upload partnership inspection plan'
     _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRevokeInspectionPlanForm::accessCallback'
     par_data_partnership: \d+
     par_data_inspection_plan: \d+
