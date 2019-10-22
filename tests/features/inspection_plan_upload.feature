@@ -1,6 +1,6 @@
 Feature: Upload inspection plan
     As an authority member
-    I should be able to upload inspection plans
+    I should be able to upload, Edit and Revoke Inspection Plans
 
     @inspection_plan_features @ci @inspection_plans
     Scenario: Upload-inspection plan
