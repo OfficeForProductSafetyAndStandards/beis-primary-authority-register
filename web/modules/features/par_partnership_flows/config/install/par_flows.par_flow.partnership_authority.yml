@@ -25,7 +25,7 @@ steps:
       save: 1
       cancel: 1
   3:
-    route: par_partnership_flows.inspection_plan_list
+    route: par_partnership_flows.authority_inspection_plan_list
     redirect:
       upload: 12
       done: 1
@@ -75,7 +75,7 @@ steps:
       save: 4
       cancel: 4
   11:
-    route: par_partnership_flows.inspection_plan_details
+    route: par_partnership_flows.authority_inspection_plan_details
     redirect:
       done: 3
   12:
