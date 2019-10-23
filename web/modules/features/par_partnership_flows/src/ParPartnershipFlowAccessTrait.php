@@ -74,12 +74,14 @@ trait ParPartnershipFlowAccessTrait {
         break;
       case 'par_partnership_flows.inspection_plan_upload':
       case 'par_partnership_flows.inspection_plan_add':
+      case 'par_partnership_flows.inspection_plan_add_date':
         if (!$par_data_partnership->isActive()) {
           $this->accessResult = AccessResult::forbidden('Inspection plans can only be added to active partnerships.');
         }
         break;
       case 'par_partnership_flows.inspection_plan_revoke':
       case 'par_partnership_flows.inspection_plan_edit':
+      case 'par_partnership_flows.inspection_plan_edit_date':
         // Restrict editorial access to revoked and deleted inspection plan entities.
         if ($par_data_inspection_plan->isRevoked() || $par_data_inspection_plan->isDeleted()) {
           $this->accessResult = AccessResult::forbidden('This inspection plan has been revoked or deleted and therefore cannot be edited.');

@@ -124,17 +124,6 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    if (!$form_state->getValue('inspection_plan_expire')){
-      $id = $this->getElementId('inspection_plan_expire', $form);
-      $form_state->setErrorByName($this->getElementName(['inspection_plan_expire']), $this->wrapErrorMessage('You must enter the date the inspection plan expires e.g. 30 - 01 - 2022', $id));
-    }
-    parent::validateForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
