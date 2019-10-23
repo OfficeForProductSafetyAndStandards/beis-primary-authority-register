@@ -18,9 +18,9 @@ class ParInspectionPlanDateForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   protected $entityMapping = [
-  /*  ['inspection_plan_expire', 'par_data_inspection_plan', 'valid_date', NULL, NULL, 0, [
+    ['expire', 'par_data_inspection_plan', 'valid_date', 'end_value', NULL, 0, [
       'This value should not be null.' => 'You must enter the date the inspection plan expires e.g. 2017-9-22.'
-    ]],*/
+    ]],
   ];
 
   /**
@@ -28,7 +28,8 @@ class ParInspectionPlanDateForm extends ParFormPluginBase {
    */
   public function getFormDefaults() {
     return [
-      'inspection_plan_expire' => ['year' => date('Y'), 'month' => date('m'), 'day' => date('d')],
+      'start' => ['year' => date('Y'), 'month' => date('m'), 'day' => date('d')],
+//      'expire' => ['year' => date('Y'), 'month' => date('m'), 'day' => date('d')],
     ];
   }
 
@@ -66,11 +67,11 @@ class ParInspectionPlanDateForm extends ParFormPluginBase {
 
     // Inspection plan begin date.
     if ($this->getFlowDataHandler()->getFormPermValue("start_date_required")) {
-      $form['inspection_plan_begin'] = [
+      $form['start'] = [
         '#type' => 'gds_date',
         '#title' => $this->t('Enter the date the inspection plan is valid from'),
         '#description' => $this->t('For example: 12/01/2019'),
-        '#default_value' => $this->getDefaultValuesByKey('inspection_plan_begin', $cardinality, $this->getFormDefaultByKey('inspection_plan_begin')),
+        '#default_value' => $this->getDefaultValuesByKey('start', $cardinality, $this->getFormDefaultByKey('start')),
       ];
     }
 
