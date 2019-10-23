@@ -108,6 +108,7 @@ steps:
     route: par_partnership_flows.inspection_plan_edit
     form_id: par_partnership_inspection_plan_edit
     redirect:
+      next: 16
       cancel: 3
   16:
     route: par_partnership_flows.inspection_plan_edit_date
@@ -115,6 +116,8 @@ steps:
     components:
       inspection_plan_date:
         start_date: false
+    form_data:
+      details: par_partnership_inspection_plan_edit
     redirect:
       save: 3
       cancel: 3

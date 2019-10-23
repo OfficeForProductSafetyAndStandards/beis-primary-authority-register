@@ -41,7 +41,7 @@ class ParInspectionPlanDateForm extends ParFormPluginBase {
       // Inspection plan start date.
       $start_date = $par_data_inspection_plan->get('valid_date')->value;
       if (isset($start_date)) {
-        $this->getFlowDataHandler()->setFormPermValue('inspection_plan_begin', $start_date);
+        $this->getFlowDataHandler()->setFormPermValue('start', $start_date);
       }
 
       // Inspection plan end date.
