@@ -5,7 +5,7 @@ dependencies:
   module:
     - par_data
 _core:
-  default_config_hash: ZxNehGQwsOzU0BUMe9nk6ik5Df8SLicxEJDrEINwJFY
+  default_config_hash: AwZxYlxKMa2HLPwOLWZw65jUQG1z3zuAJ-DqlJQmSiQ
 id: par_data_inspection_plan.summary
 label: Summary
 targetEntityType: par_data_inspection_plan

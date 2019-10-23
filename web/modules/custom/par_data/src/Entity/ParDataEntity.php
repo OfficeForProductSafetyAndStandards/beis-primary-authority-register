@@ -38,6 +38,9 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   const DELETE_FIELD = 'deleted';
   const REVOKE_FIELD = 'revoked';
   const ARCHIVE_FIELD = 'archived';
+  const DELETE_REASON_FIELD = 'deleted_reason';
+  const REVOKE_REASON_FIELD = 'revocation_reason';
+  const ARCHIVE_REASON_FIELD = 'archive_reason';
 
   const DEFAULT_RELATIONSHIP = 'default';
 
@@ -265,7 +268,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $this->set(ParDataEntity::DELETE_FIELD, TRUE);
 
       // Help desk bug claim protection (dev covering his ass).
-      $this->set('deleted_reason', $reason);
+      $this->set(self::DELETE_REASON_FIELD, $reason);
 
       // calls soft delete function defined in thr ParDataStorage class.
       return parent::delete();
@@ -275,13 +278,16 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Revoke if this entity is revokable and is not new.
    *
+   *  @param String $reason
+   *   The reason this entity is being revoked.
+   *
    * @param boolean $save
    *   Whether to save the entity after revoking.
    *
    * @return boolean
    *   True if the entity was revoked, false for all other results.
    */
-  public function revoke($save = TRUE) {
+  public function revoke($save = TRUE, $reason = '') {
     if ($this->isNew()) {
       $save = FALSE;
     }
@@ -291,6 +297,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
+
+      $this->set(ParDataEntity::REVOKE_REASON_FIELD, $reason);
 
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
@@ -314,6 +322,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     if ($this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
+      $this->set(ParDataEntity::REVOKE_REASON_FIELD, NULL);
 
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
@@ -323,19 +332,26 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Archive if the entity is archivable and is not new.
    *
+   * @param String $reason
+   *   Reason for archiving this entity.
+   *
    * @param boolean $save
    *   Whether to save the entity after revoking.
    *
    * @return boolean
-   *   True if the entity was archived, false for all other results.
+   *   True if the entity was restored, false for all other results.
    */
-  public function archive($save = TRUE) {
+  public function archive($save = TRUE, $reason = '') {
     if ($this->isNew()) {
       $save = FALSE;
     }
 
     if (!$this->inProgress() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
+
       $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
+
+      // Set reason for archiving the advice.
+      $this->set(ParDataEntity::ARCHIVE_REASON_FIELD, $reason);
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
@@ -361,6 +377,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     if ($this->getTypeEntity()->isRevokable() && $this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
+      $this->set(ParDataEntity::ARCHIVE_REASON_FIELD, NULL);
 
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
@@ -880,6 +897,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         'type' => 'hidden',
       ])
       ->setDisplayConfigurable('view', FALSE);
+
     $fields['revoked'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Revoked'))
       ->setDescription(t('Whether the entity has been revoked.'))
@@ -895,6 +913,28 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         'type' => 'hidden',
       ])
       ->setDisplayConfigurable('view', FALSE);
+
+    // Revocation Reason.
+    $fields[self::REVOKE_REASON_FIELD] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Revocation Reason'))
+      ->setDescription(t('Comments about why this entity was revoked.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ])->setDisplayOptions('form', [
+        'type' => 'text_textarea',
+        'weight' => 13,
+        'settings' => [
+          'rows' => 25,
+        ],
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     $fields['archived'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Archived'))
       ->setDescription(t('Whether the entity has been archived.'))
@@ -910,8 +950,30 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         'type' => 'hidden',
       ])
       ->setDisplayConfigurable('view', FALSE);
+
+    // Archive Reason.
+    $fields[self::ARCHIVE_REASON_FIELD] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Archive Reason'))
+      ->setDescription(t('Comments about why this advice document was archived.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ])->setDisplayOptions('form', [
+        'type' => 'text_textarea',
+        'weight' => 13,
+        'settings' => [
+          'rows' => 25,
+        ],
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     // Deleted Reason.
-    $fields['deleted_reason'] = BaseFieldDefinition::create('text_long')
+    $fields[self::DELETE_REASON_FIELD] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Deleted Reason'))
       ->setDescription(t('Comments about why this partnership was deleted.'))
       ->setRevisionable(TRUE)
@@ -932,5 +994,4 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ->setDisplayConfigurable('view', TRUE);
     return $fields;
   }
-
 }

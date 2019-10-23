@@ -22,49 +22,84 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
 
-    $form['inspection_plan_help_text'] = [
+    $par_data_partnership_id = !empty($par_data_partnership) ? $par_data_partnership->id() : NULL;
+
+    $build['partnership'] = [
       '#type' => 'fieldset',
-      '#attributes' => [
-        'class' => ['form-group'],
-      ],
-      '#title' => $this->t('How to upload an Inspection Plan'),
-      '#description' => $this->t('To upload an Inspection Plan, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the organisation it applies to and we’ll get back to you shortly.'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+    $build['partnership']['title'] = [
+      '#type' => 'markup',
+      '#markup' => $par_data_partnership->label(),
+      '#prefix' => '<h2>',
+      '#suffix' => '</h2>',
     ];
 
-    $build['documentation_list'] = [
-      '#theme' => 'table',
-      '#attributes' => ['class' => ['form-group']],
-      '#title' => 'Advice documentation',
-      '#header' => [
-        'Inspection plans',
-        'Status',
-      ],
-      '#empty' => $this->t("There is no documentation for this partnership."),
-    ];
+    switch ($this->getFlowNegotiator()->getFlowName()) {
+      //View that contains actions i.e. edit, revoke.
+      case 'partnership_authority':
+        $inspection_plan_list_block = 'inspection_list_authority_block';
 
-    // Get each Advice document and add as a table row.
-    foreach ($par_data_partnership->getInspectionPlan() as $inspection_plan) {
-      $inspection_plan_view_builder = $this->getParDataManager()->getViewBuilder('par_data_inspection_plan');
+        break;
+      //none action view.
+      case 'partnership_direct':
+      case 'partnership_coordinated':
+        $inspection_plan_list_block = 'inspection_plan_list_org_block';
 
-      // The first column contains a rendered summary of the document.
-      $inspection_plan_summary = $inspection_plan_view_builder->view($inspection_plan, 'summary');
-
-      if ($inspection_plan_summary) {
-        $build['documentation_list']['#rows'][] = [
-          'data' => [
-            'document' => $this->getRenderer()->render($inspection_plan_summary),
-            'status' => $inspection_plan->getParStatus(),
-          ],
-        ];
-      }
-
+        break;
     }
 
+    if ($inspection_plan_list_block) {
+      $inspection_plan_list= views_embed_view('inspection_plan_lists', $inspection_plan_list_block, $par_data_partnership_id);
+      $build['inspection_plan_list'] = $inspection_plan_list;
+    }
+    else {
+      $build['inspection_plan_list'] = [
+        '#type' => 'markup',
+        '#markup' => "Inspection plans can't be listed here. Please contact the helpdesk.",
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
+    }
+
+    // Only allow inspection plan uploading on active partnerships as only active partnerships.
+    // Hide upload button when user is on the search path.
+    if ($par_data_partnership->isActive() && $this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
+      if ($this->getCurrentUser()->hasPermission('upload partnership inspection plan')) {
+      $build['actions'] = [
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => ['form-group']],
+      ];
+
+      try {
+        $build['actions']['upload'] = [
+          '#type' => 'markup',
+          '#markup' => '<br>' . t('@link', [
+              '@link' => $this->getFlowNegotiator()
+                  ->getFlow()
+                  ->getNextLink('upload', $this->getRouteParams())
+                  ->setText('Upload inspection plan')
+                  ->toString(),
+            ]),
+        ];
+      } catch (ParFlowException $e) {
+
+      }
+    } else {
+        // for none help desk users contact the help-desk text.
+        $build['actions'] = [
+          '#type' => 'fieldset',
+          '#type' => 'markup',
+          '#markup' => '<p><b>' . $this->t('To upload an inspection plan please contact the Help Desk.') . '</b></p>',
+        ];
+      }
+    }
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
 
     return parent::build($build);
-
   }
 
 }

@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: 3UG5t9yxuY4IVvK1-Kk8lrVH6DIetDoR6X2zy4qLvmE
 id: par_data_general_enquiry.full
 label: Full
 targetEntityType: par_data_general_enquiry

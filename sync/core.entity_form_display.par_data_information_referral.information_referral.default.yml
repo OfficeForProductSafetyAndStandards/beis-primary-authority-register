@@ -9,7 +9,10 @@ dependencies:
     - par_data.par_data_information_referral_type.information_referral
   module:
     - datetime
+    - file
     - text
+_core:
+  default_config_hash: yIVm0boSLG1MAS_WuX9JC3g7z1rvnDqlFcwx2S9TxO4
 id: par_data_information_referral.information_referral.default
 targetEntityType: par_data_information_referral
 bundle: information_referral

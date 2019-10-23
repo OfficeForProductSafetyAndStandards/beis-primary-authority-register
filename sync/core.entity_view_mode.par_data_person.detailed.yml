@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: ecsIQzQDoLf8rQwK9BjnMTIbvvmRfKyQL0i_QVOIpTI
 id: par_data_person.detailed
 label: Detailed
 targetEntityType: par_data_person

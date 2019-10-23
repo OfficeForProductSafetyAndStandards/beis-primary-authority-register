@@ -5,6 +5,8 @@ dependencies:
   config:
     - field.storage.par_data_person.field_notification_preferences
     - par_data.par_data_person_type.person
+_core:
+  default_config_hash: Hkx0Knbkb_zHG57pZ0VM784HBcUZNR1L18Mi8ITTJV4
 id: par_data_person.person.field_notification_preferences
 field_name: field_notification_preferences
 entity_type: par_data_person

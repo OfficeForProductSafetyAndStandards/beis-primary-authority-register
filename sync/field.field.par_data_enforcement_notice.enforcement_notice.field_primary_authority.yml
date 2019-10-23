@@ -7,7 +7,7 @@ dependencies:
     - par_data.par_data_authority_type.authority
     - par_data.par_data_enforcement_notice_type.enforcement_notice
 _core:
-  default_config_hash: c-Je_0voyajWz4WpONRMMwvyhxHrX-bxhN9E29eiKH4
+  default_config_hash: ehFkEoHiN3pPiBdthlDwfNy8x_hZkEdxuwLGTYn4HGE
 id: par_data_enforcement_notice.enforcement_notice.field_primary_authority
 field_name: field_primary_authority
 entity_type: par_data_enforcement_notice

@@ -6,6 +6,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataAdvice;
+use Drupal\par_data\Entity\ParDataInspectionPlan;
 use Drupal\par_flows\ParFlowException;
 use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
@@ -25,7 +26,7 @@ trait ParPartnershipFlowAccessTrait {
    * the ParPartnershipFlowsLegalEntityForm class and would need to be updated
    * for use with other forms in par_partnership_flows flows.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL ) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
@@ -42,7 +43,6 @@ trait ParPartnershipFlowAccessTrait {
     switch ($route_match->getRouteName()) {
       case 'par_partnership_flows.advice_add':
       case 'par_partnership_flows.advice_upload_documents':
-      case 'par_partnership_flows.advice_warning_declaration':
         // Restrict advice upload to active partnerships only.
         if (!$par_data_partnership->isActive()) {
           $this->accessResult = AccessResult::forbidden('Advice can only be added to active partnerships.');
@@ -70,6 +70,21 @@ trait ParPartnershipFlowAccessTrait {
         // Restrict editorial access to archived and deleted advice entities.
         if ($par_data_advice->isArchived() || $par_data_advice->isDeleted()) {
           $this->accessResult = AccessResult::forbidden('This advice is already has been archived or deleted.');
+        }
+        break;
+      case 'par_partnership_flows.inspection_plan_upload':
+      case 'par_partnership_flows.inspection_plan_add':
+      case 'par_partnership_flows.inspection_plan_add_date':
+        if (!$par_data_partnership->isActive()) {
+          $this->accessResult = AccessResult::forbidden('Inspection plans can only be added to active partnerships.');
+        }
+        break;
+      case 'par_partnership_flows.inspection_plan_revoke':
+      case 'par_partnership_flows.inspection_plan_edit':
+      case 'par_partnership_flows.inspection_plan_edit_date':
+        // Restrict editorial access to revoked and deleted inspection plan entities.
+        if ($par_data_inspection_plan->isRevoked() || $par_data_inspection_plan->isDeleted()) {
+          $this->accessResult = AccessResult::forbidden('This inspection plan has been revoked or deleted and therefore cannot be edited.');
         }
         break;
       }

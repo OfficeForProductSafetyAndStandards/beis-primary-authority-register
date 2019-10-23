@@ -19,7 +19,28 @@ targetEntityType: par_data_organisation
 bundle: organisation
 mode: about
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   comments:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  revocation_reason:
     label: hidden
     weight: 0
     region: content

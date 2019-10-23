@@ -10,6 +10,8 @@ dependencies:
     - par_data.par_data_authority_type.authority
   module:
     - text
+_core:
+  default_config_hash: BHVr6mB9zDZg0HKmbJShtS3rGkYf2AVOO6k8wIRlBAU
 id: par_data_authority.authority.default
 targetEntityType: par_data_authority
 bundle: authority

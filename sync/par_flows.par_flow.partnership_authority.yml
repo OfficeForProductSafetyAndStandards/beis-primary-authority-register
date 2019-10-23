@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: rBYjx8152D9_QuaMxIvSlE5Lfe5wi0SdlIiwl5TzRTs
+  default_config_hash: i4L30Rmlf-ZYSva-sjxqJX901j1EHz5iWzYvN2luDww
 id: partnership_authority
 label: 'Authority Partnership Flow'
 default_title: null
@@ -20,7 +20,7 @@ steps:
       edit_about_partnership: 2
       advice: 4
       inspection_plans: 3
-      save: 11
+      save: 18
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
@@ -30,7 +30,9 @@ steps:
   3:
     route: par_partnership_flows.inspection_plan_list
     redirect:
+      upload: 12
       done: 1
+      cancel: 1
   4:
     route: par_partnership_flows.authority_advice_list
     redirect:
@@ -76,4 +78,57 @@ steps:
       save: 4
       cancel: 4
   11:
+    route: par_partnership_flows.inspection_plan_details
+    redirect:
+      done: 3
+  12:
+    route: par_partnership_flows.inspection_plan_upload
+    form_id: par_partnership_inspection_plan_upload_add
+    redirect:
+      upload: 13
+      cancel: 3
+  13:
+    route: par_partnership_flows.inspection_plan_add
+    form_id: par_partnership_inspection_plan_add
+    form_data:
+      upload: par_partnership_inspection_plan_upload_add
+    redirect:
+      next: 14
+      cancel: 3
+  14:
+    route: par_partnership_flows.inspection_plan_add_date
+    form_id: par_partnership_inspection_plan_add_valid_date
+    components:
+      inspection_plan_date:
+        start_date: false
+    form_data:
+      upload: par_partnership_inspection_plan_upload_add
+      details: par_partnership_inspection_plan_add
+    redirect:
+      save: 3
+      cancel: 3
+  15:
+    route: par_partnership_flows.inspection_plan_edit
+    form_id: par_partnership_inspection_plan_edit
+    redirect:
+      next: 16
+      cancel: 3
+  16:
+    route: par_partnership_flows.inspection_plan_edit_date
+    form_id: par_partnership_inspection_plan_edit_valid_date
+    components:
+      inspection_plan_date:
+        start_date: false
+    form_data:
+      details: par_partnership_inspection_plan_edit
+    redirect:
+      save: 3
+      cancel: 3
+  17:
+    route: par_partnership_flows.inspection_plan_revoke
+    form_id: par_partnership_inspection_plan_revoke
+    redirect:
+      save: 3
+      cancel: 3
+  18:
     route: view.par_user_partnerships.partnerships_page

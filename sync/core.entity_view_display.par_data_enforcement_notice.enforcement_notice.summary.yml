@@ -17,12 +17,26 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: rjrF-rZGT16em4SIx3j2cPiosU5aU6ChiCHb37k6ogs
+  default_config_hash: P4BYGeE9haGv2HfnVUGTW-zhQ5pknnZv2DHylg9tU3k
 id: par_data_enforcement_notice.enforcement_notice.summary
 targetEntityType: par_data_enforcement_notice
 bundle: enforcement_notice
 mode: summary
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   enforcement_action:
     label: hidden
     region: content
@@ -73,6 +87,13 @@ content:
     settings:
       display_original_value: false
     third_party_settings: {  }
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   summary:
     type: text_default
     weight: 2
