@@ -85,7 +85,6 @@ When('I enter the revoke reason {string}', function (string) {
 
 Then('I should revoke successfully', function () {
     return client
-        .assert.containsText('h1.heading-xlarge', 'Inspection Plans')
         .clickLinkByPureText('Auto-test-NewInspectionPlan-retest')
         .assert.containsText('h1.heading-xlarge', 'Auto-test-NewInspectionPlan-retest')
         .assert.containsText('#block-par-theme-content','Revoked inspection plan')
