@@ -4,6 +4,7 @@ namespace Drupal\par_partnership_flows\Controller;
 
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Controller\ParBaseController;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
@@ -90,7 +91,6 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
     } else {
         // for none help desk users contact the help-desk text.
         $build['actions'] = [
-          '#type' => 'fieldset',
           '#type' => 'markup',
           '#markup' => '<p><b>' . $this->t('To upload an inspection plan please contact the Help Desk.') . '</b></p>',
         ];
