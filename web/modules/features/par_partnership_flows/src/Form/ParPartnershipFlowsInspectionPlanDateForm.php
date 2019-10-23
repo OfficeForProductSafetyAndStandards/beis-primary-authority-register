@@ -32,6 +32,29 @@ class ParPartnershipFlowsInspectionPlanDateForm extends ParBaseForm {
     return parent::titleCallback();
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $expiry = $form_state->getValue('expire');
+
+    // Check date is in the future
+    if ($expiry) {
+      $request_date = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
+      $expiry_date = DrupalDateTime::createFromFormat('Y-m-d', $expiry, NULL, ['validate_format' => FALSE]);
+
+      if ($request_date >= $expiry_date) {
+        $id = $this->getElementId('expire', $form);
+        $form_state->setErrorByName($this->getElementName(['expire']), $this->wrapErrorMessage('The inspection plan expiry date must be in the future e.g. 30 - 01 - 2022', $id));
+      }
+    }
+    else {
+      $id = $this->getElementId('expire', $form);
+      $form_state->setErrorByName($this->getElementName(['expire']), $this->wrapErrorMessage('You must enter the date the inspection plan expires e.g. 30 - 01 - 2022', $id));
+    }
+
+    parent::validateForm($form, $form_state);
+  }
 
 
   /**
@@ -55,13 +78,10 @@ class ParPartnershipFlowsInspectionPlanDateForm extends ParBaseForm {
     }
 
     // Set the inspection plan title.
-    $par_data_inspection_plan->set('title', $this->getFlowDataHandler()->getTempDataValue('title'));
+    $par_data_inspection_plan->set('title', $this->getFlowDataHandler()->getDefaultValues('title', '', $inspection_details_cid));
 
     // Set the inspection plan summary.
-    $par_data_inspection_plan->set('summary', $this->getFlowDataHandler()->getTempDataValue('summary'));
-
-    // Set the status to active for the inspection plan entity.
-    $par_data_inspection_plan->setParStatus('current');
+    $par_data_inspection_plan->set('summary', $this->getFlowDataHandler()->getDefaultValues('summary', '', $inspection_details_cid));
 
     // Add files if required.
     $file_ids = $this->getFlowDataHandler()->getDefaultValues('inspection_plan_files', [], $file_upload_cid);
@@ -79,13 +99,15 @@ class ParPartnershipFlowsInspectionPlanDateForm extends ParBaseForm {
     }
 
     // set the expire time for inspection plan entities.
-    $inspection_plan_end_date = $this->getFlowDataHandler()->getTempDataValue('inspection_plan_expire');
+    $inspection_plan_end_date = $this->getFlowDataHandler()->getTempDataValue('expire');
     // Set date range values for inspection plans.
     $par_data_inspection_plan->set('valid_date', ['value' => $inspection_plan_start_date, 'end_value' => $inspection_plan_end_date]);
 
+    $is_new = $par_data_inspection_plan->isNew();
+
     // Save and attach new inspection plan entities.
     if ($par_data_inspection_plan->save()) {
-      if ($par_data_inspection_plan->isNew()) {
+      if ($is_new) {
         $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
         $par_data_partnership->get('field_inspection_plan')->appendItem($par_data_inspection_plan->id());
         $par_data_partnership->save();
