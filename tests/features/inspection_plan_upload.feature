@@ -7,7 +7,7 @@ Feature: Upload inspection plan
         Given I am logged in as "par_helpdesk@example.com"
         And I go to manage the partnership "Partnership nominated by Secretary of State" click on "Upper West Side Borough Council" and status "confirmed_rd"
         When I open inspection plan add page
-        And I upload the file "files/test.png" to field "#edit-files-upload"
+        And I upload the file "files/test.png" to field "#edit-inspection-plan-files-upload"
         And I click on the button "#edit-upload"
         And I enter inspection plan title
         And I enter summary of inspection plan
