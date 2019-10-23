@@ -98,6 +98,9 @@ steps:
     components:
       inspection_plan_date:
         start_date: false
+    form_data:
+      upload: par_partnership_inspection_plan_upload_add
+      details: par_partnership_inspection_plan_add
     redirect:
       save: 3
       cancel: 3
