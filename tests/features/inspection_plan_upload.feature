@@ -35,6 +35,7 @@ Feature: Upload inspection plan
         And I add "28" to the inputfield "#edit-day"
         And I add "11" to the inputfield "#edit-month"
         And I add "2030" to the inputfield "#edit-year"
+        And I click save
         And I see the inspection plan has updated successfully
 
     @inspection_plan_features @ci @inspection_plans
