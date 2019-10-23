@@ -4,7 +4,7 @@ Feature: Coordinator User - Update Partnership
     Scenario: Coordinator User - Update Partnership
 
         #LOGIN
-        
+
         Given I am logged in as "par_coordinator@example.com"
         When I click the link with text "See your partnerships"
         And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
@@ -55,7 +55,7 @@ Feature: Coordinator User - Update Partnership
         And the element "#block-par-theme-content" contains the text "14 January 2018"
         When I click on the button "#edit-save"
         And the element "h1.heading-xlarge" contains the text "Member added"
-        When I click on the button ".button"    
+        When I click on the button ".button"
         # And I run tota11y against the current page
         And the element "h1.heading-xlarge" contains the text "Members list"
         And the element ".table-scroll-wrapper" contains the text "New Member One"
@@ -77,7 +77,7 @@ Feature: Coordinator User - Update Partnership
         Then the element ".table-scroll-wrapper" contains the text "New Member One"
 
         # INSPECTION PLAN STATUS
-        
+
         When I click the link text "New Member One"
         And I click the link text "edit covered by inspection plan"
         And I click on the radio "#edit-covered-by-inspection-1"
@@ -100,7 +100,7 @@ Feature: Coordinator User - Update Partnership
         Then the element "Cease membership" does not exist
         And the element "td.views-field.views-field-date-membership-ceased" contains the text "20 February 2018"
         And I click the link text "◀ Back to partnership"
-       
+
         # EDIT REGISTERED ADDRESS
 
         When  I click the link text "edit address"
