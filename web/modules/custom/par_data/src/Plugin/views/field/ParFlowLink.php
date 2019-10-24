@@ -106,7 +106,7 @@ class ParFlowLink extends FieldPluginBase {
       $title = strip_tags(Html::decodeEntities($this->viewsTokenReplace($this->options['title'] ?: '', $tokens)));
       $assistive_text = strip_tags(Html::decodeEntities($this->viewsTokenReplace($this->options['assistive_text'] ?: '', $tokens)));
 
-      $text = !empty($title) ? t($title) : 'Continue';
+      $text = !empty(trim($title)) ? t($title) : 'Continue';
       $options = !empty($assistive_text) ? ['attributes' => ['aria-label' => $assistive_text]] : [];
       $url = !empty($path) ? Url::fromUserInput($path, $options) : NULL;
 

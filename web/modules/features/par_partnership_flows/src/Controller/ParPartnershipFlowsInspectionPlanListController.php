@@ -96,6 +96,11 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
         ];
       }
     }
+
+    // When new inspection plans are added these can't clear the cache,
+    // for now we will keep this page uncached.
+    $this->killSwitch->trigger();
+
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
 
