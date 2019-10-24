@@ -39,16 +39,16 @@ class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController 
 
     if ($par_data_inspection_plan->isRevoked()) {
       $build['inspection_plan_details'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+        '#type' => 'container',
+        '#attributes' => ['class' => ['form-group', 'notice']],
       ];
       $build['inspection_plan_details']['revoked'] = [
         '#type' => 'markup',
-        '#markup' => 'Revoked inspection plan',
-        '#prefix' => '<h2>',
-        '#suffix' => '</h2>',
+        '#markup' => '<i class="icon icon-important"><span class="visually-hidden">Revoked</span></i>',
+      ];
+      $build['inspection_plan_details']['warning'] = [
+        '#type' => 'markup',
+        '#markup' => '<strong class="bold-small">This inspection plan has been revoked and is for reference only, please do not use it for an inspection.</strong>',
       ];
     }
 
