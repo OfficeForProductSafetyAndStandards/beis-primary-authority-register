@@ -24,10 +24,10 @@ Given('I open inspection plan add page', function () {
         .clickLinkByPureText('Upload inspection plan')
 });
 
-Then('I enter inspection plan title', function () {
+Then('I enter the inspection plan title {string}', function (title) {
     return client
         .clearValue('#edit-title')
-        .setValue('#edit-title', 'Auto-test-NewInspectionPlan')
+        .setValue('#edit-title', title)
 
 });
 
@@ -44,9 +44,11 @@ Then('I see inspection plan uploaded successfully', function () {
         .assert.containsText('.filename', 'test')
 });
 
-When('I click on edit against an inspection plan', function () {
+When('I edit the inspection plan {string}', function (title) {
     return shared
-        .clickLinkByPureText('Edit')
+        .setValue('#edit-keywords', title)
+        .click('#edit-submit-inspection-plan-lists')
+        .clickLinkByPureText('Edit inspection plan')
         .assert.containsText('h1.heading-xlarge', 'Edit inspection plan details')
 
 });
@@ -72,9 +74,11 @@ Then('I see the inspection plan has updated successfully', function () {
         .assert.containsText('#content', 'Auto-inspection-plan-Summary-retest')
 });
 
-When('I click on revoke against an inspection plan', function () {
+When('I revoke the inspection plan {string}', function (title) {
     return shared
-        .clickLinkByPureText('Revoke')
+        .setValue('#edit-keywords', title)
+        .click('#edit-submit-inspection-plan-lists')
+        .clickLinkByPureText('Revoke inspection plan')
         .assert.containsText('h1.heading-xlarge', 'Are you sure you want to revoke this inspection plan?')
 });
 
