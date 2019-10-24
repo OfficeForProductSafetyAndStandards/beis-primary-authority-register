@@ -11,7 +11,7 @@ Feature: Upload inspection plan
         When I upload the file "files/test.png" to field "#edit-inspection-plan-files-upload"
         And I click on the button "#edit-upload"
         Then the element "h1.heading-xlarge" contains the text "Add inspection plan details"
-        When I enter inspection plan title
+        When I enter the inspection plan title "Auto-test-NewInspectionPlan"
         And I enter summary of inspection plan
         And I click save
         Then the element "h1.heading-xlarge" contains the text "When does this inspeciton plan expire?"
@@ -26,9 +26,9 @@ Feature: Upload inspection plan
         Given I am logged in as "par_helpdesk@example.com"
         And I go to manage the partnership "Partnership nominated by Secretary of State" click on "Upper West Side Borough Council" and status "confirmed_rd"
         And I click "See all Inspection Plans"
-        When I click on edit against an inspection plan
+        When I edit the inspection plan "Auto-test-NewInspectionPlan"
         Then the element "h1.heading-xlarge" contains the text "Edit inspection plan details"
-        Then I enter new inspection plan title
+        When I enter the inspection plan title "Auto-test-NewInspectionPlan-retest"
         And I enter new summary for an inspection plan
         And I click save
         Then the element "h1.heading-xlarge" contains the text "Change the expiry date"
@@ -43,7 +43,7 @@ Feature: Upload inspection plan
         Given I am logged in as "par_helpdesk@example.com"
         And I go to manage the partnership "Partnership nominated by Secretary of State" click on "Upper West Side Borough Council" and status "confirmed_rd"
         And I click "See all Inspection Plans"
-        When I click on revoke against an inspection plan
-        When I enter the revoke reason "inspection plan is no longer valid."
+        When I revoke the inspection plan "Auto-test-NewInspectionPlan-retest"
+        And I enter the revoke reason "inspection plan is no longer valid."
         And I click save
         Then I should revoke successfully
