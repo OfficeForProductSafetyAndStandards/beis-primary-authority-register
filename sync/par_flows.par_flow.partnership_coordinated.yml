@@ -82,7 +82,7 @@ steps:
       next: 1
       cancel: 1
   11:
-    route: par_partnership_flows.organisation_advice_list
+    route: par_partnership_flows.organisation_inspection_plan_details
     redirect:
       done: 10
   12:

@@ -1570,8 +1570,8 @@ display:
           field: id
           relationship: none
           group_type: group
-          admin_label: ''
-          label: ''
+          admin_label: 'Partnership ID'
+          label: 'Partnership ID'
           exclude: true
           alter:
             alter_text: false
@@ -1643,8 +1643,8 @@ display:
           field: id
           relationship: field_inspection_plan
           group_type: group
-          admin_label: ''
-          label: ID
+          admin_label: 'Inspection Plan ID'
+          label: 'Inspection Plan ID'
           exclude: true
           alter:
             alter_text: false
@@ -1907,10 +1907,10 @@ display:
           relationship: field_inspection_plan
           group_type: group
           admin_label: ''
-          label: 'Title Link'
+          label: Title
           exclude: false
           alter:
-            alter_text: false
+            alter_text: true
             text: ''
             make_link: false
             path: ''
@@ -1950,8 +1950,8 @@ display:
           hide_alter_empty: true
           title: '{{ title }}'
           assistive_text: 'View {{ title }}'
-          link: '/partnership/{{ id }}/inspection/organisation-list/{{ id_1 }}'
-          hidden: 1
+          link: '/partnership/{{ id_1 }}/inspection/organisation-list/{{ id }}'
+          hidden: 0
           entity_type: par_data_inspection_plan
           plugin_id: par_flow_link
         par_status:
@@ -2079,8 +2079,8 @@ display:
           field: id
           relationship: none
           group_type: group
-          admin_label: ''
-          label: ''
+          admin_label: 'Partnership ID'
+          label: 'Partnership ID'
           exclude: true
           alter:
             alter_text: false
@@ -2152,8 +2152,8 @@ display:
           field: id
           relationship: field_inspection_plan
           group_type: group
-          admin_label: ''
-          label: ID
+          admin_label: 'Inspection Plan ID'
+          label: 'Inspection Plan ID'
           exclude: true
           alter:
             alter_text: false
@@ -2352,10 +2352,10 @@ display:
           relationship: field_inspection_plan
           group_type: group
           admin_label: ''
-          label: 'Title Link'
+          label: Title
           exclude: false
           alter:
-            alter_text: false
+            alter_text: true
             text: ''
             make_link: false
             path: ''
@@ -2395,7 +2395,7 @@ display:
           hide_alter_empty: true
           title: '{{ title }}'
           assistive_text: 'View {{ title }}'
-          link: '/partnership/{{ id }}/inspection/search/{{ id_1 }}'
+          link: '/partnership/{{ id_1 }}/inspection/search/{{ id }}'
           hidden: 0
           entity_type: par_data_inspection_plan
           plugin_id: par_flow_link
