@@ -1907,7 +1907,7 @@ display:
           relationship: field_inspection_plan
           group_type: group
           admin_label: ''
-          label: 'Title Link'
+          label: Title
           exclude: false
           alter:
             alter_text: false
@@ -1951,7 +1951,7 @@ display:
           title: '{{ title }}'
           assistive_text: 'View {{ title }}'
           link: '/partnership/{{ id }}/inspection/organisation-list/{{ id_1 }}'
-          hidden: 1
+          hidden: 0
           entity_type: par_data_inspection_plan
           plugin_id: par_flow_link
         par_status:
@@ -2352,7 +2352,7 @@ display:
           relationship: field_inspection_plan
           group_type: group
           admin_label: ''
-          label: 'Title Link'
+          label: Title
           exclude: false
           alter:
             alter_text: false
