@@ -91,7 +91,7 @@ Then('I should revoke successfully', function () {
     return shared
         .clickLinkByPureText('Auto-test-NewInspectionPlan-retest')
         .assert.containsText('h1.heading-xlarge', 'Auto-test-NewInspectionPlan-retest')
-        .assert.containsText('#block-par-theme-content','Revoked inspection plan')
+        .assert.containsText('#block-par-theme-content','This inspection plan has been revoked and is for reference only, please do not use it for an inspection.')
 });
 
 When('I go to manage the partnership {string} click on {string} and status {string}', function (search, name, status) {
