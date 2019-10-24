@@ -14,12 +14,26 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: oFTSQFM9jcuqgGxqct04DtAdlo_OxGJAEQ6FFKdwcm4
+  default_config_hash: Fm5CQSk-6jd937Ydv5Yu4sHwWdBYcVQDS8Ni9o8QSqs
 id: par_data_information_referral.information_referral.full
 targetEntityType: par_data_information_referral
 bundle: information_referral
 mode: full
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   document:
     label: hidden
     weight: 0
@@ -86,6 +100,13 @@ content:
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   name: true
   user_id: true

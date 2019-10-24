@@ -790,3 +790,168 @@ function par_data_update_8036() {
     }
   }
 }
+
+/**
+ * Set new field definitions for inspection plan entities.
+ */
+function par_data_update_8037() {
+
+  $entity_definition_manager = \Drupal::service('entity.definition_update_manager');
+
+  // New fields definitions to be added to the inspection plan entity.
+  // @see https://www.drupal.org/node/3034742
+  $storage_definitions = [];
+
+  // Inspection plan title.
+  $storage_definitions['title'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Inspection plan title'))
+    ->setDescription(t('The title of the inspection plan.'))
+    ->setRequired(TRUE)
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'max_length' => 255,
+    ])
+    ->setDefaultValue('')
+    ->setDisplayOptions('form', [
+      'type' => 'string_textfield',
+      'weight' => 1,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  // Inspection plan summary.
+  $storage_definitions['summary'] = BaseFieldDefinition::create('text_long')
+    ->setLabel(t('Inspection plan summary'))
+    ->setDescription(t('Summary info for this inspection plan.'))
+    ->setRequired(TRUE)
+    ->addConstraint('par_required')
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'text_processing' => 0,
+    ])
+    ->setDisplayOptions('form', [
+      'type' => 'text_textarea',
+      'weight' => 2,
+      'settings' => [
+        'rows' => 25,
+      ],
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'type' => 'text_default',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  foreach ($storage_definitions as $field => $definition) {
+    $entity_definition_manager->installFieldStorageDefinition($field, 'par_data_inspection_plan', 'par_data_inspection_plan', $definition);
+  }
+}
+
+/**
+ * Set default inspection plan title values for legacy entities.
+ */
+function par_data_update_8038() {
+
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  $conditions = [
+    [
+      'AND' => [
+        ['title', NULL, 'IS NULL'],
+      ]
+    ],
+  ];
+
+  // We should ensure deleted inspection plan entities are also setting default
+  // titles as the client has a habit of re-activating deleted system entities.
+  $inspection_plan_entities = $par_data_manager->getEntitiesByQuery('par_data_inspection_plan', $conditions, NULL, NULL, 'DESC', 'AND', FALSE);
+
+  foreach ($inspection_plan_entities as $inspection_plan_entity) {
+    $documents = $inspection_plan_entity->get('document')->referencedEntities();
+    $document = !$inspection_plan_entity->get('document')->isEmpty() ? current($documents) : NULL;
+
+
+    if ($document) {
+      /* @var \Drupal\file\Entity\File $document */
+      $filename = $document->getFilename();
+      $sanitised = pathinfo($filename, PATHINFO_FILENAME);
+
+      $inspection_plan_entity->setTitle($sanitised);
+      $inspection_plan_entity->save();
+    }
+  }
+}
+
+/**
+ * base field updates for revoking entities.
+ */
+function par_data_update_8039() {
+
+  $entity_definition_manager = \Drupal::service('entity.definition_update_manager');
+  $entity_types = \Drupal::service('par_data.manager')->getParEntityTypes();
+
+// New field definitions to be added to the system entities.
+// @see https://www.drupal.org/node/3034742
+  $storage_definitions = [];
+
+  // Revocation Reason.
+  $storage_definitions[ParDataEntity::REVOKE_REASON_FIELD] = BaseFieldDefinition::create('text_long')
+    ->setLabel(t('Revocation Reason'))
+    ->setDescription(t('Comments about why this entity was revoked.'))
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'text_processing' => 0,
+    ])->setDisplayOptions('form', [
+      'type' => 'text_textarea',
+      'weight' => 13,
+      'settings' => [
+        'rows' => 25,
+      ],
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  // Archive Reason.
+  $storage_definitions[ParDataEntity::ARCHIVE_REASON_FIELD] = BaseFieldDefinition::create('text_long')
+    ->setLabel(t('Archive Reason'))
+    ->setDescription(t('Comments about why this entity was archived.'))
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'text_processing' => 0,
+    ])->setDisplayOptions('form', [
+      'type' => 'text_textarea',
+      'weight' => 13,
+      'settings' => [
+        'rows' => 25,
+      ],
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  foreach($entity_types as $entity_type_id => $entity_type) {
+    foreach ($storage_definitions as $field => $definition) {
+      $entity_definition_manager->installFieldStorageDefinition($field, $entity_type_id, $entity_type_id, $definition);
+    }
+  }
+}
+
+/**
+ * base field updates for revoking entities.
+ */
+function par_data_update_8040() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}

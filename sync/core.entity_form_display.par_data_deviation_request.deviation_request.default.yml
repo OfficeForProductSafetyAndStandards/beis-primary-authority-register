@@ -9,10 +9,12 @@ dependencies:
     - field.field.par_data_deviation_request.deviation_request.field_person
     - par_data.par_data_deviation_request_type.deviation_request
   module:
+    - comment
     - datetime
+    - file
     - text
 _core:
-  default_config_hash: 0BqqZe4QmmVKogKeU9nRbqUDWuzs8XahKU65S6P4it4
+  default_config_hash: f4xH8PKG3VDT7g8wT1E4sTq2bt-gxfuN-8sBs1zBEvA
 id: par_data_deviation_request.deviation_request.default
 targetEntityType: par_data_deviation_request
 bundle: deviation_request

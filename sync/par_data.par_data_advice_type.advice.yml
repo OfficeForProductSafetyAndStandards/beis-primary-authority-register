@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: FQX9A-MZklFfmx74Atoh83elZfkQ1d0bymZUMEzO0D0
+  default_config_hash: kiv5PD74S9g4XiN61BqtDyxjnrrTXLBsFeRLy8W9pRY
 id: advice
 label: Advice
 description: 'Advice is given by a Primary Authority in the context of a Partnership.'

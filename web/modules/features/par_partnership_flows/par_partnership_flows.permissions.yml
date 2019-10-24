@@ -6,3 +6,11 @@ update partnership organisation details:
   title: "Update organisation's details"
   description: "Allow users to update the organisation's details for a partnership."
   restrict access: TRUE
+upload partnership inspection plan:
+  title: "Upload inspection plan"
+  description: "Allow users to upload inspection plans to a partnership."
+  restrict access: TRUE
+revoke partnership inspection plan:
+  title: "Revoke inspection plan"
+  description: "Allow users to revoke inspection plans to a partnership."
+  restrict access: TRUE

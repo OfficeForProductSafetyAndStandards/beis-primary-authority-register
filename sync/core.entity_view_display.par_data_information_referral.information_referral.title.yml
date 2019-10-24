@@ -12,12 +12,26 @@ dependencies:
     - file
     - text
 _core:
-  default_config_hash: 3X5WCqDSSMVzX5biRYeQrfDntmbW-2sEUuSZ37UJAbk
+  default_config_hash: jEm_JAyqvkPn-gohVefxrV1b86OY49nBnSCvQDq3FaU
 id: par_data_information_referral.information_referral.title
 targetEntityType: par_data_information_referral
 bundle: information_referral
 mode: title
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   document:
     label: hidden
     weight: 0
@@ -34,6 +48,13 @@ content:
     settings:
       trim_length: 300
     third_party_settings: {  }
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   field_enforcing_authority: true
   field_person: true

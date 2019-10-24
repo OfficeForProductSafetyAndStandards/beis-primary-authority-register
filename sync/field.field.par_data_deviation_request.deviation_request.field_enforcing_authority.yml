@@ -7,7 +7,7 @@ dependencies:
     - par_data.par_data_authority_type.authority
     - par_data.par_data_deviation_request_type.deviation_request
 _core:
-  default_config_hash: RMtEPvURdnsZ5hpt4Edl_U1Vz5VmjJ069S1OhXrYM-M
+  default_config_hash: Rt8jfApFVmLEGHiqOmgKvt03btwxZlIl7vQkl2hYfcM
 id: par_data_deviation_request.deviation_request.field_enforcing_authority
 field_name: field_enforcing_authority
 entity_type: par_data_deviation_request

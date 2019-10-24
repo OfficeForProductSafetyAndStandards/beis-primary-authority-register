@@ -10,6 +10,8 @@ dependencies:
     - field.field.par_data_organisation.organisation.field_premises
     - field.field.par_data_organisation.organisation.field_sic_code
     - par_data.par_data_organisation_type.organisation
+  module:
+    - text
 _core:
   default_config_hash: MnlkulbvrfFNIrnhH6nnaUjS9FTOqVYnWSdp1_xz_Qw
 id: par_data_organisation.organisation.title
@@ -17,6 +19,20 @@ targetEntityType: par_data_organisation
 bundle: organisation
 mode: title
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   organisation_name:
     label: hidden
     region: content
@@ -25,6 +41,13 @@ content:
     third_party_settings: {  }
     type: string
     weight: 0
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   comments: true
   coordinator_number: true

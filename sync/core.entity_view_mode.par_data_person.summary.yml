@@ -5,7 +5,7 @@ dependencies:
   module:
     - par_data
 _core:
-  default_config_hash: UjMezUDVE0UA3EUb1t750NQQ3sbEeoElQioPz5XgmNk
+  default_config_hash: Xf1t8odLWlq0TMg2JCFzBhEYxZNzzCpUDD-bMWhNbP0
 id: par_data_person.summary
 label: Summary
 targetEntityType: par_data_person

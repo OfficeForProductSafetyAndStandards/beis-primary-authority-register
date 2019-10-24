@@ -6,13 +6,28 @@ dependencies:
     - par_data.par_data_legal_entity_type.legal_entity
   module:
     - par_data
+    - text
 _core:
-  default_config_hash: pX7gmwRikGttoMVFYyN0sV-BUsc8RWBNin2OcMf7z3M
+  default_config_hash: eBNal_9_B_cMMJWW8LHy0bbDFWeWPg45Fqvl4OHrQg0
 id: par_data_legal_entity.legal_entity.default
 targetEntityType: par_data_legal_entity
 bundle: legal_entity
 mode: default
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   legal_entity_type:
     type: par_list_formatter
     weight: 2
@@ -36,6 +51,13 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   name: true
   user_id: true
