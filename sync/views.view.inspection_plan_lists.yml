@@ -2267,7 +2267,7 @@ display:
             timezone_override: ''
             format_type: gds_date_format
             separator: ' - '
-          group_column: end_value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
