@@ -87,7 +87,7 @@ trait ParPartnershipFlowAccessTrait {
           $this->accessResult = AccessResult::forbidden('This inspection plan has been revoked or deleted and therefore cannot be edited.');
         }
         break;
-      }
+    }
 
     return parent::accessCallback($route, $route_match, $account);
   }
