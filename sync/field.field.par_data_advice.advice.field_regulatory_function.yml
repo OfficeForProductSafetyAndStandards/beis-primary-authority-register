@@ -6,6 +6,8 @@ dependencies:
     - field.storage.par_data_advice.field_regulatory_function
     - par_data.par_data_advice_type.advice
     - par_data.par_data_regulatory_function_t.regulatory_function
+_core:
+  default_config_hash: fs6SZgRMkOqmXxWdOFXQH7cdr5r-wLWJLmvWlHhBbl4
 id: par_data_advice.advice.field_regulatory_function
 field_name: field_regulatory_function
 entity_type: par_data_advice

@@ -6,6 +6,8 @@ dependencies:
     - field.storage.par_data_enforcement_notice.field_enforcing_authority
     - par_data.par_data_authority_type.authority
     - par_data.par_data_enforcement_notice_type.enforcement_notice
+_core:
+  default_config_hash: XF24-pxWwy21BbvmhCIE-3NMj90hQiiFWwYPbjXC3Xc
 id: par_data_enforcement_notice.enforcement_notice.field_enforcing_authority
 field_name: field_enforcing_authority
 entity_type: par_data_enforcement_notice

@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: UYSGGS4gLu1WvRPJY83UaNQVOlhxsEDDsh-Mfzz65Qs
 id: par_data_authority.field_allowed_regulatory_fn
 field_name: field_allowed_regulatory_fn
 entity_type: par_data_authority

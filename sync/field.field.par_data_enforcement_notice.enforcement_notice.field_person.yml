@@ -6,6 +6,8 @@ dependencies:
     - field.storage.par_data_enforcement_notice.field_person
     - par_data.par_data_enforcement_notice_type.enforcement_notice
     - par_data.par_data_person_type.person
+_core:
+  default_config_hash: FGYditGXutSVsUsYizp7dGHRfk8HUl7UME1nkiW3wC4
 id: par_data_enforcement_notice.enforcement_notice.field_person
 field_name: field_person
 entity_type: par_data_enforcement_notice

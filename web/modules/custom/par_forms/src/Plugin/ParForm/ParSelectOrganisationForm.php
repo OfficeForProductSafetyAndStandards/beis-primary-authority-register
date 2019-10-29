@@ -60,7 +60,8 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
     if ($organisations) {
       // Initialize pager and get current page.
       $number_of_items = 10;
-      $current_page = pager_default_initialize(count($organisations), $number_of_items, $cardinality);
+      $pager = $this->getUniquePager()->getPager('par_plugin_organisation_select_'.$cardinality);
+      $current_page = pager_default_initialize(count($organisations), $number_of_items, $pager);
 
       // Split the items up into chunks:
       $chunks = array_chunk($organisations, $number_of_items, TRUE);

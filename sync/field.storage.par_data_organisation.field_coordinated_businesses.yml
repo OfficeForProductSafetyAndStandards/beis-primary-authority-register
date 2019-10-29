@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: c8sXA5umVAwWjHy3a1lu4XJKwEdK9lnO6UOZx1rfGUc
 id: par_data_organisation.field_coordinated_businesses
 field_name: field_coordinated_businesses
 entity_type: par_data_organisation

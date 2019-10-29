@@ -13,6 +13,8 @@ dependencies:
     - datetime
     - file
     - text
+_core:
+  default_config_hash: '-DsvJF-_xLhwCnQnY72XhXBaSK8_yDcZNJBysR7ryyc'
 id: par_data_general_enquiry.general_enquiry.default
 targetEntityType: par_data_general_enquiry
 bundle: general_enquiry

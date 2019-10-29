@@ -23,8 +23,8 @@ steps:
       edit_trading_name: 8
       edit_size: 9
       inspection_plans: 10
-      advice: 11
-      save: 13
+      advice: 12
+      save: 14
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
@@ -74,18 +74,22 @@ steps:
       save: 1
       cancel: 1
   10:
-    route: par_partnership_flows.inspection_plan_view
+    route: par_partnership_flows.organisation_inspection_plan_list
     redirect:
       next: 1
       cancel: 1
   11:
+    route: par_partnership_flows.organisation_inspection_plan_details
+    redirect:
+      done: 10
+  12:
     route: par_partnership_flows.organisation_advice_list
     redirect:
       done: 1
       cancel: 1
-  12:
+  13:
     route: par_partnership_flows.organisation_advice_details
     redirect:
-      done: 13
-  13:
+      done: 12
+  14:
     route: view.par_user_partnerships.partnerships_page

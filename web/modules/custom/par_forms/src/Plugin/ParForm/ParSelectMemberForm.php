@@ -59,7 +59,8 @@ class ParSelectMemberForm extends ParFormPluginBase {
 
     // Initialize pager and get current page.
     $number_of_items = 10;
-    $current_page = pager_default_initialize(count($partnership_organisations), $number_of_items, $cardinality);
+    $pager = $this->getUniquePager()->getPager('par_plugin_member_select_'.$cardinality);
+    $current_page = pager_default_initialize(count($partnership_organisations), $number_of_items, $pager);
 
     // Split the items up into chunks:
     $chunks = array_chunk($partnership_organisations, $number_of_items, TRUE);

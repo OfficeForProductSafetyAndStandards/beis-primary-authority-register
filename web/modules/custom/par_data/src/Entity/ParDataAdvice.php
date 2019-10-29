@@ -86,42 +86,14 @@ class ParDataAdvice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
-  public function revoke($save = TRUE) {
+  public function revoke($save = TRUE, $reason = '') {
     // Only advice of type 'authority_advice' can be revoked.
     if ($this->getRawStatus() === 'authority_advice') {
-      parent::revoke($save);
+      parent::revoke($save, $reason);
     }
     else {
-      $this->archive($save);
+      $this->archive('this advice of type cannot be revoked only archived.' ,$save);
     }
-  }
-
-  /**
-   * Archive if the entity is archivable and is not new.
-   * Override main base class function to add custom advice entity logic.
-   *
-   * @param boolean $save
-   *   Whether to save the entity after revoking.
-   *
-   * @param boolean $archive_reason
-   *   Reason for archiving this entity.
-   *
-   * @return boolean
-   *   True if the entity was restored, false for all other results.
-   */
-  public function advice_archive($save = TRUE, $reason) {
-
-    if ($entity_archived = parent::archive($save)) {
-      // Set reason for archiving the advice.
-      $this->set('archive_reason', $reason);
-      // Set the advice status field.
-      $this->set('advice_status', 'archived');
-
-      if (!$this->save()) {
-        return FALSE;
-      }
-    }
-    return $entity_archived;
   }
 
   /**
@@ -364,26 +336,6 @@ class ParDataAdvice extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Archive Reason.
-    $fields['archive_reason'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Archive Reason'))
-      ->setDescription(t('Comments about why this advice document was archived.'))
-      ->setRevisionable(TRUE)
-      ->setSettings([
-        'text_processing' => 0,
-      ])->setDisplayOptions('form', [
-        'type' => 'text_textarea',
-        'weight' => 13,
-        'settings' => [
-          'rows' => 25,
-        ],
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'weight' => 0,
-      ])
-      ->setDisplayConfigurable('view', TRUE);
     return $fields;
   }
 

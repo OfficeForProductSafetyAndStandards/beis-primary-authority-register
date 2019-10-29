@@ -11,7 +11,7 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: rfXJhewplf80EL8QbASGEnF09fSY15R64Op8ZSQrHVc
+  default_config_hash: DmM06v7pmmGuAzSslcNG92h7Yz3lXUlfF48jHjkIWa0
 id: par_data_advice.advice.default
 targetEntityType: par_data_advice
 bundle: advice
@@ -25,13 +25,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-  advice_summary:
-    label: hidden
-    type: text_default
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   advice_title:
     label: hidden
     weight: 0
@@ -104,6 +97,13 @@ content:
       view_mode: title
       link: false
     third_party_settings: {  }
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   name: true
   user_id: true

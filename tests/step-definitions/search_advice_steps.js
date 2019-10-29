@@ -19,3 +19,12 @@ Then('I search for active advice by the title {string}', function (string) {
       .clickLinkByPureText(string)
 });
 
+Given('I navigate to a partnership confirmed by the authority {string}', function (string) {
+    return shared
+        .clickLinkByPureText('Dashboard')
+        .clickLinkByPartialText('Manage partnerships')
+        .setValue('#edit-keywords', string)
+        .click('#edit-partnership-status-1 option[value="confirmed_authority"]')
+        .click('#edit-submit-par-user-partnerships')
+        .clickLinkByPureText(string)
+});

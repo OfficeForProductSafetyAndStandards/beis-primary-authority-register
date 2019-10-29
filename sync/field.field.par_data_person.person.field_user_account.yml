@@ -5,6 +5,8 @@ dependencies:
   config:
     - field.storage.par_data_person.field_user_account
     - par_data.par_data_person_type.person
+_core:
+  default_config_hash: ohWMbzzOg_hwm0aPb4KdP7Td0ErYX_jZJviO3nxhUFg
 id: par_data_person.person.field_user_account
 field_name: field_user_account
 entity_type: par_data_person

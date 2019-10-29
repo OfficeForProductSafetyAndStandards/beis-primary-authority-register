@@ -220,8 +220,8 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     // Initialize pager and get current page.
     $number_per_page = 5;
-    $pager_id = 9;
-    $current_page = pager_default_initialize(count($authority_contacts), $number_per_page, $pager_id);
+    $pager = $this->getUniquePager()->getPager('partnership_manage_authority_contacts');
+    $current_page = pager_default_initialize(count($authority_contacts), $number_per_page, $pager);
 
     // Get update and remove links.
     try {
@@ -253,7 +253,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
         'pager' => [
           '#type' => 'pager',
           '#theme' => 'pagerer',
-          '#element' => $pager_id,
+          '#element' => $pager,
           '#weight' => 100,
           '#config' => [
             'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
@@ -335,8 +335,8 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     // Initialize pager and get current page.
     $number_per_page = 5;
-    $pager_id = 8;
-    $current_page = pager_default_initialize(count($organisation_contacts), $number_per_page, $pager_id);
+    $pager = $this->getUniquePager()->getPager('partnership_manage_organisation_contacts');
+    $current_page = pager_default_initialize(count($organisation_contacts), $number_per_page, $pager);
 
     // Get update and remove links.
     try {
@@ -368,7 +368,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
         'pager' => [
           '#type' => 'pager',
           '#theme' => 'pagerer',
-          '#element' => $pager_id,
+          '#element' => $pager,
           '#weight' => 100,
           '#config' => [
             'preset' => $this->config('pagerer.settings')->get('core_override_preset'),

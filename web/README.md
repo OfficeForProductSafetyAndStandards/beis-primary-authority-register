@@ -19,7 +19,14 @@ You must run these commands every time you switch branch or change the applicati
 
 # Coding Standards
 
-To ensure coding standards are met we have two tools for verifying code compliance before issuing a pull request:
+To ensure coding standards are met we have a few tools for verifying code compliance before issuing a pull request:
+
+## Drupal Check (for Drupal 9 compatability)
+
+To ensure that all deprecated code is updated and compatible with Drupal 9 Drupal Check should be run against all PRs. This uses the PHPStan static analysis tool for checking code correctness.
+
+    ../vendor/bin/drupal-check -ad modules/custom
+    ../vendor/bin/drupal-check -ad modules/features
 
 ## PHP Code Sniffer
 

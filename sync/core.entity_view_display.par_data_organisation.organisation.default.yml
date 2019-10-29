@@ -13,15 +13,29 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: ESvVFe9teg3lvbQdA5AwOPajqLbpJjiRWRnrNmdKFk0
+  default_config_hash: qSq9NMbKVvbmHzXCobwFLrZEtRKKHvV4adwxGiO2DnI
 id: par_data_organisation.organisation.default
 targetEntityType: par_data_organisation
 bundle: organisation
 mode: default
 content:
+  archive_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   comments:
     label: hidden
     weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  deleted_reason:
+    label: hidden
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -58,6 +72,13 @@ content:
     third_party_settings: {  }
     type: string
     weight: 0
+  revocation_reason:
+    label: hidden
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
 hidden:
   coordinator_number: true
   coordinator_type: true

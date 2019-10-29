@@ -128,8 +128,8 @@ par_partnership_flows.advice_archive:
         type: entity:par_data_partnership
       par_data_advice:
         type: entity:par_data_advice
-par_partnership_flows.inspection_plan_list:
-  path: '/partnership/{par_data_partnership}/inspection/list'
+par_partnership_flows.authority_inspection_plan_list:
+  path: '/partnership/{par_data_partnership}/inspection/authority-list'
   defaults:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::content'
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::titleCallback'
@@ -141,6 +141,110 @@ par_partnership_flows.inspection_plan_list:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+par_partnership_flows.authority_inspection_plan_details:
+  path: '/partnership/{par_data_partnership}/inspection/authority-list/{par_data_inspection_plan}'
+  defaults:
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanPageController::build'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanPageController::titleCallback'
+  requirements:
+    _permission: 'update partnership authority details'
+    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanPageController::accessCallback'
+    par_data_partnership: \d+
+    par_data_inspection_plan: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_inspection_plan:
+        type: entity:par_data_inspection_plan
+par_partnership_flows.inspection_plan_upload:
+  path: '/partnership/{par_data_partnership}/inspection/upload'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanUploadForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanUploadForm::titleCallback'
+  requirements:
+    _permission: 'upload partnership inspection plan'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanUploadForm::accessCallback'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.inspection_plan_add:
+  path: '/partnership/{par_data_partnership}/inspection/add'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm::titleCallback'
+  requirements:
+    _permission: 'upload partnership inspection plan'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm::accessCallback'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.inspection_plan_add_date:
+  path: '/partnership/{par_data_partnership}/inspection/add/date'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanDateForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanDateForm::titleCallback'
+  requirements:
+    _permission: 'upload partnership inspection plan'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanDateForm::accessCallback'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.inspection_plan_edit:
+  path: '/partnership/{par_data_partnership}/inspection/{par_data_inspection_plan}/edit'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm::titleCallback'
+  requirements:
+    _permission: 'upload partnership inspection plan'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_inspection_plan: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_inspection_plan:
+        type: entity:par_data_inspection_plan
+par_partnership_flows.inspection_plan_edit_date:
+  path: '/partnership/{par_data_partnership}/inspection/{par_data_inspection_plan}/edit/date'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanDateForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanDateForm::titleCallback'
+  requirements:
+    _permission: 'upload partnership inspection plan'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsInspectionPlanDateForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_inspection_plan: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_inspection_plan:
+        type: entity:par_data_inspection_plan
+par_partnership_flows.inspection_plan_revoke:
+  path: '/partnership/{par_data_partnership}/inspection/{par_data_inspection_plan}/revoke'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRevokeInspectionPlanForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRevokeInspectionPlanForm::titleCallback'
+  requirements:
+    _permission: 'revoke partnership inspection plan'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRevokeInspectionPlanForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_inspection_plan: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_inspection_plan:
+        type: entity:par_data_inspection_plan
+
 
 # PAR Data Organisation Partnership Journey
 par_partnership_flows.organisation_details:
@@ -336,8 +440,8 @@ par_partnership_flows.organisation_advice_details:
         type: entity:par_data_partnership
       par_data_advice:
         type: entity:par_data_advice
-par_partnership_flows.inspection_plan_view:
-  path: '/partnership/{par_data_partnership}/inspection/view'
+par_partnership_flows.organisation_inspection_plan_list:
+  path: '/partnership/{par_data_partnership}/inspection/organisation-list'
   defaults:
     _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::content'
     _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanListController::titleCallback'
@@ -349,3 +453,19 @@ par_partnership_flows.inspection_plan_view:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+par_partnership_flows.organisation_inspection_plan_details:
+  path: '/partnership/{par_data_partnership}/inspection/organisation-list/{par_data_inspection_plan}'
+  defaults:
+    _controller: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanPageController::build'
+    _title_callback: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanPageController::titleCallback'
+  requirements:
+    _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Controller\ParPartnershipFlowsInspectionPlanPageController::accessCallback'
+    par_data_partnership: \d+
+    par_data_inspection_plan: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_inspection_plan:
+        type: entity:par_data_inspection_plan

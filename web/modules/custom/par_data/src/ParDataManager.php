@@ -558,13 +558,15 @@ class ParDataManager implements ParDataManagerInterface {
       if (!$entity instanceof ParDataAuthority && !$entity instanceof ParDataOrganisation) {
         continue;
       }
+
       $members = $entity->getPerson();
 
       $roles[$entity->uuid()] = [];
       foreach ($members as $member) {
+        /** @var \Drupal\user\Entity\User $user */
         $user = $member->getUserAccount();
 
-        if (isset($user) && (!isset($account) || $user->id() !== $account->id())) {
+        if (isset($user) && $user->isActive() && (!isset($account) || $user->id() !== $account->id())) {
           foreach ($user->getRoles() as $role) {
             $roles[$entity->uuid()][$role][] = $member;
           }
@@ -591,7 +593,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of roles to lookup.
    *
    * @return bool
-   *   If the roles don't exist in ALL authorities return false, otherwise true.
+   *   If the roles don't exist in ANY authorities return false, otherwise true.
    */
   public function isRoleInAllMemberAuthorities(AccountInterface $account, $roles) {
     $authorities = $this->isMemberOfAuthority($account);
@@ -628,7 +630,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of roles to lookup.
    *
    * @return bool
-   *   If the roles don't exist in ALL organisations return false, otherwise true.
+   *   If the roles don't exist in ANY organisations return false, otherwise true.
    */
   public function isRoleInAllMemberOrganisations(AccountInterface $account, $roles) {
     $organisations = $this->isMemberOfOrganisation($account);
@@ -743,7 +745,7 @@ class ParDataManager implements ParDataManagerInterface {
    * ];
    * @endcode
    */
-  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC', $conjunction = 'AND') {
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC', $conjunction = 'AND', $remove_deleted_entities = TRUE) {
     $entities = [];
 
     $query = $this->getEntityQuery($type, $conjunction);
@@ -767,11 +769,14 @@ class ParDataManager implements ParDataManagerInterface {
     $results = $query->execute();
     $entities = $this->entityManager->getStorage($type)->loadMultiple(array_unique($results));
 
-    // Do not return any entities that are deleted.
-    // @see PAR-1462 - Removing all deleted entities from loading.
-    $entities = array_filter($entities, function ($entity) {
-      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
-    });
+    // In some cases we need to return deleted entities mainly for updating legacy data across the system.
+    if ($remove_deleted_entities) {
+      // Do not return any entities that are deleted.
+      // @see PAR-1462 - Removing all deleted entities from loading.
+      $entities = array_filter($entities, function ($entity) {
+        return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
+      });
+    }
 
     return $entities;
   }
@@ -783,14 +788,19 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of entities to turn into options.
    * @param array $options
    *   An optional array of options to append to.
+   * @param string $view_mode
+   *   A view mode to render the entity as.
+   * @param bool $access_check
+   *   Whether to check all entities for access, this is an expensive operation so not enabled by default.
    *
    * @return []
    *   An array of options keyed by entity id.
    */
-  public function getEntitiesAsOptions($entities, $options = [], $view_mode = NULL) {
+  public function getEntitiesAsOptions($entities, $options = [], $view_mode = NULL, $access_check = FALSE) {
     foreach ($entities as $entity) {
       if ($entity instanceof EntityInterface) {
-        if ($entity instanceof ParDataEntityInterface && !$entity->access('view', $this->getCurrentUser())) {
+        if ($entity instanceof ParDataEntityInterface && $entity->isDeleted()
+          && (!$access_check || !$entity->access('view', $this->getCurrentUser()))) {
           continue;
         }
 

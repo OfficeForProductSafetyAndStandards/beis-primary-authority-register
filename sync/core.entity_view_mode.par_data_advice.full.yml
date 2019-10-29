@@ -5,7 +5,7 @@ dependencies:
   module:
     - par_data
 _core:
-  default_config_hash: YgLf3sonHrV8df75MLaRC5eSWvt1op-7ZQqMRnZLd-8
+  default_config_hash: clPNlFuujO-aKwTILqnqIqTnjp3jgFfjItSg_ep-0fo
 id: par_data_advice.full
 label: Full
 targetEntityType: par_data_advice

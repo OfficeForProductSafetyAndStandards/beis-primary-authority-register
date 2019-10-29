@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: H3SEJB2akftC7z6XD_q1hVY11BRsp3S5aXac2k75r0Y
 id: par_data_partnership.field_coordinated_business
 field_name: field_coordinated_business
 entity_type: par_data_partnership

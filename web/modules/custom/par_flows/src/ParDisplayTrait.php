@@ -31,6 +31,15 @@ trait ParDisplayTrait {
   }
 
   /**
+   * Get unique pager service.
+   *
+   * @return \Drupal\unique_pager\UniquePagerService
+   */
+  public static function getUniquePager() {
+    return \Drupal::service('unique_pager.unique_pager_service');
+  }
+
+  /**
    * Render field as a rendered markup field.
    * This prevents the form showing view modes w/ incorrect display weights.
    *
@@ -115,7 +124,7 @@ trait ParDisplayTrait {
   public function renderReferenceField($section, $field, $view_mode = 'summary', $operations = [], $single = FALSE) {
     $elements = [];
     foreach ($field->referencedEntities() as $delta => $entity) {
-      if ($entity instanceof ParDataEntityInterface && ($entity->isDeleted() || $entity->isRevoked())) {
+      if ($entity instanceof ParDataEntityInterface && $entity->isDeleted()) {
         continue;
       }
 
@@ -317,7 +326,8 @@ trait ParDisplayTrait {
 
       // Render the rows using a tabulated pager.
       if (isset($rows) && !empty($rows)) {
-        $element[$field_name] = $this->renderTable($rows);
+        $unique_label = "{$entity->getEntityTypeId()}:$field_name";
+        $element[$field_name] = $this->renderTable($rows, $unique_label);
       }
       else {
         $element[$field_name]['items'] = [
@@ -356,40 +366,55 @@ trait ParDisplayTrait {
     return $element;
   }
 
-  public function renderTable($rows) {
-    // @TODO PAR-1461: Put in more substantial fix to make pagers unique for the page.
-    $pager = rand(0,99);
+  public function renderTable($rows, $id) {
+    // PAR-1461: Ensure pagers are unique per page.
+    if (count($rows) > $this->numberPerPage) {
+      $pager = $this->getUniquePager()->getPager($id);
 
-    // Initialize pager and get current page.
-    $current_page = pager_default_initialize(count($rows), $this->numberPerPage, $pager);
+      // Initialize pager and get current page.
+      $current_page = pager_default_initialize(count($rows), $this->numberPerPage, $pager);
 
-    // Split the items up into chunks:
-    $chunks = array_chunk($rows, $this->numberPerPage);
+      // Split the items up into chunks:
+      $chunks = array_chunk($rows, $this->numberPerPage);
 
-    $element = [
-      'items' => [
-        '#type' => 'fieldset',
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
-      ],
-      'pager' => [
-        '#type' => 'pager',
-        '#theme' => 'pagerer',
-        '#element' => $pager,
-        '#weight' => 100,
-        '#config' => [
-          'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
+
+      $element = [
+        'items' => [
+          '#type' => 'fieldset',
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
         ],
-      ]
-    ];
+        'pager' => [
+          '#type' => 'pager',
+          '#theme' => 'pagerer',
+          '#element' => $pager,
+          '#weight' => 100,
+          '#config' => [
+            'preset' => $this->config('pagerer.settings')
+              ->get('core_override_preset'),
+          ],
+        ]
+      ];
 
-    // Add the items for our current page to the fieldset.
-    foreach ($chunks[$current_page] as $delta => $item) {
-      $element[$delta] = $item;
+      // Add the items for our current page to the fieldset.
+      foreach ($chunks[$current_page] as $delta => $item) {
+        $element[$delta] = $item;
+      }
     }
+    else {
+      $element = [
+        'items' => [
+          '#type' => 'fieldset',
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
+        ],
+      ];
 
-    // Increment the pager ID so that any other pager in this page uses a unique element id.
-    $this->pagerId++;
+      // Add the items for our current page to the fieldset.
+      foreach ($rows as $delta => $item) {
+        $element[$delta] = $item;
+      }
+    }
 
     return $element;
   }

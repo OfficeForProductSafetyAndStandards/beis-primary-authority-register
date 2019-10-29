@@ -5,7 +5,7 @@ dependencies:
   module:
     - par_data
 _core:
-  default_config_hash: wKPfFU-tybEgwMv_0l9c9AlZyKuGX6qfitcVWAo4eUk
+  default_config_hash: LbF5y5FFIaxQUu9IMkI8CY0whaMDmZku6fjoNnfcBTI
 id: par_data_enforcement_notice.full
 label: Full
 targetEntityType: par_data_enforcement_notice

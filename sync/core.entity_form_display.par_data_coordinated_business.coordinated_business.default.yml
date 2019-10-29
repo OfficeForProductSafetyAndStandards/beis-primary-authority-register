@@ -8,8 +8,10 @@ dependencies:
     - par_data.par_data_coordinated_business_type.coordinated_business
   module:
     - datetime
+    - datetime_range
+    - text
 _core:
-  default_config_hash: UIzcqswtGbGLErpe7fehjCPCeWu-1JNXXMWOcOztivQ
+  default_config_hash: XBPaJcksexVSytgk_Y131z17HVo2I5fMGJWKr0NazGQ
 id: par_data_coordinated_business.coordinated_business.default
 targetEntityType: par_data_coordinated_business
 bundle: coordinated_business
