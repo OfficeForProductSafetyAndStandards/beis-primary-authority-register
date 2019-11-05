@@ -9,11 +9,15 @@ dependencies:
     - field.storage.par_data_partnership.field_regulatory_function
   module:
     - better_exposed_filters
+    - csv_serialization
     - datetime
     - pagerer
     - par_data
+    - rest
+    - serialization
     - user
     - views_bulk_operations
+    - views_data_export
 _core:
   default_config_hash: SY11evCZNodUP24CXAHlPlJ1xihSq8HJlr6mdZOzAk0
 id: helpdesk_dashboard
@@ -2260,6 +2264,49 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.permissions
+      tags:
+        - 'config:field.storage.par_data_partnership.field_advice'
+        - 'config:field.storage.par_data_partnership.field_authority_person'
+        - 'config:field.storage.par_data_partnership.field_legal_entity'
+        - 'config:field.storage.par_data_partnership.field_regulatory_function'
+  par_partnership_view_data_export:
+    display_plugin: data_export
+    id: par_partnership_view_data_export
+    display_title: par_partnerships_views_data_export
+    position: 3
+    display_options:
+      display_extenders: {  }
+      path: helpdesk/partnerships/views-data-export/csv
+      filename: par_partnership_export.csv
+      style:
+        type: data_export
+        options:
+          formats:
+            csv: csv
+          csv_settings:
+            delimiter: ','
+            enclosure: '"'
+            escape_char: \
+            strip_tags: true
+            trim: true
+            encoding: utf8
+            utf8_bom: '0'
+      display_description: ''
+      title: 'Help Desk | Views Data Export | Partnerships'
+      defaults:
+        title: false
+      pager:
+        type: none
+        options:
+          offset: 0
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - request_format
+        - url
         - user.permissions
       tags:
         - 'config:field.storage.par_data_partnership.field_advice'
