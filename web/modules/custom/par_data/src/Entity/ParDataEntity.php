@@ -331,7 +331,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * @param Array $date_rage_values
    *   An array of date range values to set on the entity date field.
    */
-
   public function setRevokeDateTimestamp($entity_field, $date_rage_values = NULL) {
 
     // If the entity in question is using a date range field we need to construct an associative array.
