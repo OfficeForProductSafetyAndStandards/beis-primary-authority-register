@@ -116,7 +116,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
     if (!$par_data_inspection_plan->isRevoked()) {
 
       $revoke_reason = $this->getFlowDataHandler()->getTempDataValue(ParDataEntity::REVOKE_REASON_FIELD);
-      // Revoke this inspection plan and update the end date value to be inline with the revoke timestamp
+      // Revoke this inspection plan and update the end date value to be inline with the revoke timestamp.
       $revoked = $par_data_inspection_plan->revoke(TRUE, $revoke_reason, 'valid_date', 'end_value');
 
       if ($revoked) {
