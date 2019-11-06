@@ -289,7 +289,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   The field to apply a revoke timestamp to.
    *
    * @param Array $date_rage_values
-   *   The array of the date range values values to set.
+   *   The array of the date range values to set.
    *
    * @return boolean
    *   True if the entity was revoked, false for all other results.
