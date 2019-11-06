@@ -288,13 +288,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * @param String $entity_field
    *   The field to apply a revoke timestamp to.
    *
-   * @param String $date_rage_value
-   *   The array key of the date range field value to set.
+   * @param Array $date_rage_values
+   *   The array of the date range values values to set.
    *
    * @return boolean
    *   True if the entity was revoked, false for all other results.
    */
-  public function revoke($save = TRUE, $reason = '', $entity_field = NULL, $date_rage_value = NULL) {
+  public function revoke($save = TRUE, $reason = '', $entity_field = NULL, $date_rage_values = NULL) {
     if ($this->isNew()) {
       $save = FALSE;
     }
@@ -309,7 +309,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
       // In case a revoke timestamp needs to be applied to an entity date value.
       if (!is_null($entity_field)) {
-        $this->setRevokeDateTimestamp($entity_field, $date_rage_value);
+        $this->setRevokeDateTimestamp($entity_field, $date_rage_values);
       }
 
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
@@ -328,21 +328,19 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   The field name of the entity which will be updated.  This will be a date field that would hold an
    *   timestamp that needs to be updated inline with the revoke date. i.e. inspection plan valid until date.
    *
-   * @param String $date_rage_value
-   *   The key value for the date range field.
+   * @param Array $date_rage_values
+   *   An array of date range values to set on the entity date field.
    */
 
-  public function setRevokeDateTimestamp($entity_field, $date_rage_value = NULL) {
-
-    $revoke_time_stamp = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
-    $revoke_time_stamp =  $revoke_time_stamp->format("Y-m-d");
+  public function setRevokeDateTimestamp($entity_field, $date_rage_values = NULL) {
 
     // If the entity in question is using a date range field we need to construct an associative array.
-    if (is_null($date_rage_value)) {
-      $revoke_time_stamp_value = $revoke_time_stamp;
+    if (is_null($date_rage_values)) {
+      $revoke_time_stamp = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
+      $revoke_time_stamp_value = $revoke_time_stamp->format("Y-m-d");
     }
     else {
-      $revoke_time_stamp_value = [$date_rage_value => $revoke_time_stamp];
+      $revoke_time_stamp_value = $date_rage_values;
     }
     $this->set($entity_field, $revoke_time_stamp_value);
   }
