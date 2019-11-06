@@ -326,7 +326,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *
    *  @param String $entity_field
    *   The field name of the entity which will be updated.  This will be a date field that would hold an
-   *   timestamp that needs to be updated inline with the revoke date.  i.e. inspection plan valid until date.
+   *   timestamp that needs to be updated inline with the revoke date. i.e. inspection plan valid until date.
    *
    * @param String $date_rage_value
    *   The key value for the date range field.
