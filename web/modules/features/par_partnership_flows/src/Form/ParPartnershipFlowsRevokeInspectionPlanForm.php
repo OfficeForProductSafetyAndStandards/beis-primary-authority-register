@@ -3,6 +3,7 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_flows\Form\ParBaseForm;
@@ -114,10 +115,13 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
 
     // We only want to update the status of active inspection plan documents.
     if (!$par_data_inspection_plan->isRevoked()) {
-
       $revoke_reason = $this->getFlowDataHandler()->getTempDataValue(ParDataEntity::REVOKE_REASON_FIELD);
+
       // Revoke this inspection plan and update the end date value to be inline with the revoke timestamp.
-      $revoked = $par_data_inspection_plan->revoke(TRUE, $revoke_reason, 'valid_date', 'end_value');
+      $revoke_time_stamp = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
+      $revoke_time_stamp =  $revoke_time_stamp->format("Y-m-d");
+
+      $revoked = $par_data_inspection_plan->revoke(TRUE, $revoke_reason, 'valid_date', ['value' => $par_data_inspection_plan->get('valid_date')->value, 'end_value' => $revoke_time_stamp]);
 
       if ($revoked) {
         $this->getFlowDataHandler()->deleteStore();
