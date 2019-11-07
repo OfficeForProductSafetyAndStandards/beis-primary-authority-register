@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Datetime\DrupalDateTime;
 
 /**
  * Defines the par_data_inspection_plan entity.
@@ -118,6 +119,59 @@ class ParDataInspectionPlan extends ParDataEntity {
 
     return parent::filterRelationshipsByAction($relationship, $action);
   }
+
+  /**
+   * Revoke if this entity is revokable and is not new.
+   *
+   *  @param String $reason
+   *   The reason this entity is being revoked.
+   *
+   * @param boolean $save
+   *   Whether to save the entity after revoking.
+   *
+   * @param String $entity_field
+   *   The field name of the date field which a revoke timestamp should be applied.
+   *
+   * @param Array $date_rage_values
+   *   The array of the date range values to set.
+   *
+   * @return boolean
+   *   True if the entity was revoked, false for all other results.
+   */
+  public function revoke($save = TRUE, $reason = '') {
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if (!$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
+      $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
+
+      // Always revision status changes.
+      $this->setNewRevision(TRUE);
+
+      $this->set(ParDataEntity::REVOKE_REASON_FIELD, $reason);
+
+      // In case a revoke timestamp needs to be applied to an entity date value.
+      $this->setRevokeDateTimestamp();
+
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Helper function for entities that need to update a date value to be inline with a revoke timestamp of.
+   * There are some cases were we need to ensure that revoked entities are not automatically reactivated
+   * when a parent entity is is re-activated. i.e. when a partnership is revoked and re-activated we want
+   * to ensure that historically revoked inspection plans are not also re-activate.
+   *
+   */
+  public function setRevokeDateTimestamp() {
+    $revoke_time_stamp = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
+    $revoke_time_stamp_value = $revoke_time_stamp->format("Y-m-d");
+    $this->set('valid_date', ['value' => $this->get('valid_date')->value, 'end_value' => $revoke_time_stamp_value]);
+  }
+
 
   /**
    * {@inheritdoc}
