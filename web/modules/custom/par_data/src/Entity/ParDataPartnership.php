@@ -115,7 +115,7 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
-  public function revoke($save = TRUE, $reason = '', $entity_field = NULL, $date_rage_value = NULL) {
+  public function revoke($save = TRUE, $reason = '') {
     // Revoke/archive all dependent entities as well.
     $inspection_plans = $this->getInspectionPlan();
     foreach ($inspection_plans as $inspection_plan) {
