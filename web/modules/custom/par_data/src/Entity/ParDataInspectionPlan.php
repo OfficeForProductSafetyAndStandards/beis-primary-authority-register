@@ -129,9 +129,6 @@ class ParDataInspectionPlan extends ParDataEntity {
    * @param boolean $save
    *   Whether to save the entity after revoking.
    *
-   * @param Array $date_rage_values
-   *   The array of the date range values to set.
-   *
    * @return boolean
    *   True if the entity was revoked, false for all other results.
    */
