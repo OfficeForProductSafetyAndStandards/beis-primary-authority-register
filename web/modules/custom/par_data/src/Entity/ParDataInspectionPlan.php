@@ -155,7 +155,6 @@ class ParDataInspectionPlan extends ParDataEntity {
 
   /**
    * Helper function for entities that need to update a date value to be inline with a revoke timestamp.
-   *  
    */
   public function setRevokeDateTimestamp() {
     $revoke_time_stamp = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
