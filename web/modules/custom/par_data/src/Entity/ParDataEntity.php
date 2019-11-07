@@ -5,7 +5,6 @@ namespace Drupal\par_data\Entity;
 use Drupal\Component\Utility\Random;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
 use Drupal\Core\Entity\EntityInterface;
@@ -285,16 +284,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * @param boolean $save
    *   Whether to save the entity after revoking.
    *
-   * @param String $entity_field
-   *   The field name of the date field which a revoke timestamp should be applied.
-   *
-   * @param Array $date_rage_values
-   *   The array of the date range values to set.
-   *
    * @return boolean
    *   True if the entity was revoked, false for all other results.
    */
-  public function revoke($save = TRUE, $reason = '', $entity_field = NULL, $date_rage_values = NULL) {
+  public function revoke($save = TRUE, $reason = '') {
     if ($this->isNew()) {
       $save = FALSE;
     }
@@ -307,42 +300,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
       $this->set(ParDataEntity::REVOKE_REASON_FIELD, $reason);
 
-      // In case a revoke timestamp needs to be applied to an entity date value.
-      if (!is_null($entity_field)) {
-        $this->setRevokeDateTimestamp($entity_field, $date_rage_values);
-      }
-
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
     return FALSE;
   }
 
-
-  /**
-   * Helper function for entities that need to update a date value to be inline with a revoke timestamp of.
-   * There are some cases were we need to ensure that revoked entities are not automatically reactivated
-   * when a parent entity is is re-activated. i.e. when a partnership is revoked and re-activated we want
-   * to ensure that historically revoked inspection plans are not also re-activate.
-   *
-   *  @param String $entity_field
-   *   The field name of the entity which will be updated.  This will be a date field that would hold an
-   *   timestamp that needs to be updated inline with the revoke date. i.e. inspection plan valid until date.
-   *
-   * @param Array $date_rage_values
-   *   An array of date range values to set on the entity date field.
-   */
-  public function setRevokeDateTimestamp($entity_field, $date_rage_values = NULL) {
-
-    // If the entity in question is using a date range field we need to construct an associative array.
-    if (is_null($date_rage_values)) {
-      $revoke_time_stamp = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
-      $revoke_time_stamp_value = $revoke_time_stamp->format("Y-m-d");
-    }
-    else {
-      $revoke_time_stamp_value = $date_rage_values;
-    }
-    $this->set($entity_field, $revoke_time_stamp_value);
-  }
   /**
    * Unrevoke a revoked entity.
    *
