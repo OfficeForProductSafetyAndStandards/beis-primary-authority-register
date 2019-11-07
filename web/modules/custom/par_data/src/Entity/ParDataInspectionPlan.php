@@ -155,7 +155,7 @@ class ParDataInspectionPlan extends ParDataEntity {
 
   /**
    * Helper function for entities that need to update a date value to be inline with a revoke timestamp.
-   * when a parent entity is is re-activated. i.e. when a partnership is revoked and re-activated we want
+   *  i.e. when a partnership is revoked and re-activated we want
    * to ensure that historically revoked inspection plans are not also re-activate.
    *
    */
