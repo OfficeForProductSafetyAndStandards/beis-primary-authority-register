@@ -123,11 +123,11 @@ class ParDataInspectionPlan extends ParDataEntity {
   /**
    * Revoke if this entity is revokable and is not new.
    *
+   *  @param boolean $save
+   *   Whether to save the entity after revoking.
+   *
    *  @param String $reason
    *   The reason this entity is being revoked.
-   *
-   * @param boolean $save
-   *   Whether to save the entity after revoking.
    *
    * @return boolean
    *   True if the entity was revoked, false for all other results.
