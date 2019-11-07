@@ -134,13 +134,23 @@ class ParDataInspectionPlan extends ParDataEntity {
    */
   public function revoke($save = TRUE, $reason = '') {
 
-   $revoked =  parent::revoke($save, $reason);
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
 
-    if ($revoked) {
+    if (!$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
+
+      $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
+      // Always revision status changes.
+      $this->setNewRevision(TRUE);
+      // Set revoke reason.
+      $this->set(ParDataEntity::REVOKE_REASON_FIELD, $reason);
       // In case a revoke timestamp needs to be applied to an entity date value.
       $this->setRevokeDateTimestamp();
+
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
-    return $revoked;
+    return FALSE;
   }
 
   /**
