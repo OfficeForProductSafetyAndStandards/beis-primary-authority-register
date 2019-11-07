@@ -120,7 +120,7 @@ class ParDataPartnership extends ParDataEntity {
     $inspection_plans = $this->getInspectionPlan();
     foreach ($inspection_plans as $inspection_plan) {
       // Set default revoke reason when the partnership has initiated the revoke.
-      $inspection_plan->revoke($save, $this::INSPECTION_PLAN_REVOKE_REASON, 'valid_date', 'end_value');
+      $inspection_plan->revoke($save, $this::INSPECTION_PLAN_REVOKE_REASON);
     }
 
     $advice_documents = $this->getAdvice();
