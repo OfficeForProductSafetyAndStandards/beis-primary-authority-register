@@ -163,7 +163,6 @@ class ParDataInspectionPlan extends ParDataEntity {
    * {@inheritdoc}
    */
   public function unrevoke($save = TRUE) {
-
     $revoke_time_stamp = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
     $revoke_time_stamp_value = $revoke_time_stamp->format("Y-m-d");
 
