@@ -278,14 +278,14 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Revoke if this entity is revokable and is not new.
    *
-   *  @param String $reason
-   *   The reason this entity is being revoked.
-   *
    * @param boolean $save
-   *   Whether to save the entity after revoking.
+   *  Whether to save the entity after revoking.
+   *
+   * @param String $reason
+   *  The reason this entity is being revoked.
    *
    * @return boolean
-   *   True if the entity was revoked, false for all other results.
+   *  True if the entity was revoked, false for all other results.
    */
   public function revoke($save = TRUE, $reason = '') {
     if ($this->isNew()) {
