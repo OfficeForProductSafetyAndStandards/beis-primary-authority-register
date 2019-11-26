@@ -1,0 +1,20 @@
+par_rd_delete_data_flows.confirm_delete_partnership:
+  path: '/helpdesk/delete/{entity_type}/{entity_id}'
+  defaults:
+    _form: '\Drupal\par_rd_delete_data_flows\Form\ParRdDeleteDataConfirmForm'
+    _title_callback: '\Drupal\par_rd_delete_data_flows\Form\ParRdDeleteDataConfirmForm::titleCallback'
+  requirements:
+    _permission: 'delete par data'
+    _custom_access: '\Drupal\par_rd_delete_data_flows\Form\ParRdDeleteDataConfirmForm::accessCallback'
+    entity_type: '[a-zA-Z0-9_]+'
+    entity_id: \d+
+par_rd_delete_data_flows.delete_partnership:
+  path: '/helpdesk/delete/{entity_type}/{entity_id}/confirmation'
+  defaults:
+    _form: '\Drupal\par_rd_delete_data_flows\Form\ParRdDeleteDataForm'
+    _title_callback: '\Drupal\par_rd_delete_data_flows\Form\ParRdDeleteDataForm::titleCallback'
+  requirements:
+    _permission: 'delete par data'
+    _custom_access: '\Drupal\par_rd_delete_data_flows\Form\ParRdDeleteDataForm::accessCallback'
+      entity_type: '[a-zA-Z0-9_]+'
+      entity_id: \d+
