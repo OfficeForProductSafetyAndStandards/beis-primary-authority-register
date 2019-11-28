@@ -264,21 +264,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function delete($reason = '') {
     if ($this->getTypeEntity()->isDeletable() && !$this->isDeleted()) {
-
-      // Set the status to unpublished to make filtering from display easier.
-      $this->set('status', 0);
-
-      // Always revision status changes.
-      $this->setNewRevision(TRUE);
-
-      // Update par status trigger deleted (cancelled) notification.
-      $this->set(ParDataEntity::DELETE_FIELD, TRUE);
-
-      // Help desk bug claim protection (dev covering his ass).
-      $this->set(self::DELETE_REASON_FIELD, $reason);
-
-      // calls soft delete function defined in thr ParDataStorage class.
-      return parent::delete();
+      // PAR-1507: We are moving away from soft-delete options.
+      return $this->destroy();
     }
   }
 
