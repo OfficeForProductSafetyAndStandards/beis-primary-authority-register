@@ -58,9 +58,75 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     // Display all the information that can be modified by the organisation.
     $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
+    $par_data_authority = $par_data_partnership->getAuthority(TRUE);
 
+    // Partnership Authority Name - component.
+    $form['authority_name'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => "<span class='heading-secondary'>In partnership with</span>" . $par_data_authority->getName(),
+      '#attributes' => ['class' => ['heading-large', 'form-group']],
+    ];
+
+    // Partnership Basic Information - component.
+    $form['partnership_info'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    // Display details about the partnership for information.
+    $about_partnership_display = $par_data_partnership->about_partnership->view(['label' => 'hidden']);
+    $form['partnership_info']['about'] = [
+      '#type' => 'fieldset',
+      '#title' => 'About the partnership',
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+      'details' => [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#value' => $this->getRenderer()->render($about_partnership_display),
+      ],
+    ];
+
+    // Display the regulatory functions and partnership approved date.
+    $approved_date_display = $par_data_partnership->approved_date->view('full');
+    $regulatory_functions = $par_data_partnership->get('field_regulatory_function')->referencedEntities();
+    $form['partnership_info']['details'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['grid-row']],
+      'regulatory_functions' => [
+        '#type' => 'fieldset',
+        '#title' => 'Partnered for',
+        '#attributes' => ['class' => 'column-one-half'],
+        'value' => [
+          '#theme' => 'item_list',
+          '#list_type' => 'ul',
+          '#items' => $this->getParDataManager()->getEntitiesAsOptions($regulatory_functions),
+        ]
+      ],
+      'approved_date' => [
+        '#type' => 'fieldset',
+        '#title' => 'In partnership since',
+        '#attributes' => ['class' => 'column-one-half'],
+        'value' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#value' => $this->getRenderer()->render($approved_date_display),
+        ],
+      ],
+    ];
+
+    // Partnership Organisation Information - component.
+    $form['organisation_info'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => "Information about the organisation",
+      '#attributes' => ['class' => 'heading-large'],
+    ];
     // Display the primary address along with the link to edit it.
-    $form['registered_address'] = $this->renderSection('Organisation address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity', 'add'], TRUE, TRUE);
+    $form['registered_address'] = $this->renderSection('Address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity', 'add'], TRUE, TRUE);
 
     // View and perform operations on the information about the business.
     $form['about_business'] = $this->renderSection('About the organisation', $par_data_organisation, ['comments' => 'about'], ['edit-field']);
@@ -149,25 +215,14 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     // operations on these.
     $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'full'], ['edit-field', 'add']);
 
-    // Everything below is for the authority to edit and add to.
-    $par_data_authority = $par_data_partnership->getAuthority(TRUE);
-    $form['authority'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_authority ? $par_data_authority->get('authority_name')->getString() : '',
-      '#prefix' => '<h1>',
-      '#suffix' => '</h1>',
+    // Partnership Documents - component.
+    $form['documents'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => "Documents",
+      '#attributes' => ['class' => 'heading-large'],
     ];
-
-    // Display details about the partnership for information.
-    $form['partnership_since'] = $this->renderSection('In partnership since', $par_data_partnership, ['approved_date' => 'full']);
-
-    // Display details about the partnership for information.
-    $form['regulatory_functions'] = $this->renderSection('Partnered for', $par_data_partnership, ['field_regulatory_function' => 'full']);
-
-    // Display details about the partnership for information.
-    $form['about_partnership'] = $this->renderSection('About the partnership', $par_data_partnership, ['about_partnership' => 'about'], ['edit-field']);
-
-
+    // Inspection plan link.
     $form['inspection_plans'] = [
       '#type' => 'fieldset',
       '#title' => t('Inspection plans'),
@@ -215,6 +270,14 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     }
 
 
+    // Partnership Contacts - component.
+    $form['Contacts'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => "Contact information",
+      '#attributes' => ['class' => 'heading-large'],
+    ];
+
     // Display the authority contacts for information.
     $authority_contacts = $par_data_partnership->getAuthorityPeople();
 
@@ -237,7 +300,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     $form['authority_contacts'] = [
       '#type' => 'fieldset',
-      '#title' => t('Contacts at the Primary Authority'),
+      '#title' => t('Primary Authority'),
       '#attributes' => ['class' => ['form-group']],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
@@ -352,7 +415,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     $form['organisation_contacts'] = [
       '#type' => 'fieldset',
-      '#title' => t('Contacts at the Organisation'),
+      '#title' => t('Organisation'),
       '#attributes' => ['class' => ['form-group']],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
