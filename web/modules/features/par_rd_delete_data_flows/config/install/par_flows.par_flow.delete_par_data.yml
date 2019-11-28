@@ -12,10 +12,12 @@ states:
   - entity_id
 steps:
   1:
-    route: par_rd_delete_data_flows.confirm_delete_partnership
+    route: par_rd_delete_data_flows.deleted_data_list
     form_id: par_rd_help_desk_delete_confirm
-    redirect:
-      next: 2
   2:
-    route: par_rd_delete_data_flows.delete_partnership
+    route: par_rd_delete_data_flows.delete_data_confirm
     form_id: par_rd_help_desk_delete
+    redirect:
+      delete: 1
+      next: 1
+      save: 1
