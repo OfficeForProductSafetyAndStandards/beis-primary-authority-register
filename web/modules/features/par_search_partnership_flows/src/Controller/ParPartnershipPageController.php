@@ -57,11 +57,66 @@ class ParPartnershipPageController extends ParBaseController {
       ];
     }
 
-    // Display the primary address along with the link to edit it.
-    $build['registered_address'] = $this->renderSection('Registered address', $par_data_organisation, ['field_premises' => 'summary'], [], FALSE, TRUE);
 
-    // View and perform operations on the information about the business.
-    $build['about_business'] = $this->renderSection('About the organisation', $par_data_organisation, ['comments' => 'about']);
+    // Partnership Authority Name - component.
+    $build['authority_name'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => "<span class='heading-secondary'>In partnership with</span>" . $par_data_authority->getName(),
+      '#attributes' => ['class' => ['heading-large', 'form-group']],
+    ];
+
+
+    // Partnership Basic Information - component.
+    $build['partnership_info'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    // Display details about the partnership for information.
+    $about_partnership_display = $par_data_partnership->about_partnership->view(['label' => 'hidden']);
+    $build['partnership_info']['about'] = [
+      '#type' => 'fieldset',
+      '#title' => 'About the partnership',
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+      'details' => [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#value' => $this->getRenderer()->render($about_partnership_display),
+      ],
+    ];
+
+    // Display the regulatory functions and partnership approved date.
+    $approved_date_display = $par_data_partnership->approved_date->view('full');
+    $regulatory_functions = $par_data_partnership->get('field_regulatory_function')->referencedEntities();
+    $build['partnership_info']['details'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['grid-row']],
+      'regulatory_functions' => [
+        '#type' => 'fieldset',
+        '#title' => 'Partnered for',
+        '#attributes' => ['class' => 'column-one-half'],
+        'value' => [
+          '#theme' => 'item_list',
+          '#list_type' => 'ul',
+          '#items' => $this->getParDataManager()->getEntitiesAsOptions($regulatory_functions),
+        ]
+      ],
+      'approved_date' => [
+        '#type' => 'fieldset',
+        '#title' => 'In partnership since',
+        '#attributes' => ['class' => 'column-one-half'],
+        'value' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#value' => $this->getRenderer()->render($approved_date_display),
+        ],
+      ],
+    ];
+
 
     // Get the link for the first step of the raise enforcement journey.
     try {
@@ -112,6 +167,21 @@ class ParPartnershipPageController extends ParBaseController {
       '#attributes' => ['class' => ['list', 'form-group']],
     ];
 
+
+    // Partnership Organisation Information - component.
+    $build['organisation_info'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => "Information about the organisation",
+      '#attributes' => ['class' => 'heading-large'],
+    ];
+    // Display the primary address along with the link to edit it.
+    $build['registered_address'] = $this->renderSection('Address', $par_data_organisation, ['field_premises' => 'summary'], [], TRUE, TRUE);
+
+    // View and perform operations on the information about the business.
+    $build['about_business'] = $this->renderSection('About the organisation', $par_data_organisation, ['comments' => 'about']);
+
+
     // Only show SIC Codes and Employee number if the partnership is a direct partnership.
     if ($par_data_partnership->isDirect()) {
       // Add the SIC Codes with the relevant operational links.
@@ -135,23 +205,14 @@ class ParPartnershipPageController extends ParBaseController {
     // Display all the trading names along with the links for the allowed operations on these.
     $build['trading_names'] = $this->renderSection('Trading Names', $par_data_organisation, ['trading_name' => 'full']);
 
-    // Everything below is for the authority to edit and add to.
-    $build['authority'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_authority->label(),
-      '#prefix' => '<h1>',
-      '#suffix' => '</h1>',
+    
+    // Partnership Documents - component.
+    $build['documents'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => "Documents",
+      '#attributes' => ['class' => 'heading-large'],
     ];
-
-    // Display details about the partnership for information.
-    $build['partnership_since'] = $this->renderSection('In partnership since', $par_data_partnership, ['approved_date' => 'full']);
-
-    // Display details about the partnership for information.
-    $build['regulatory_functions'] = $this->renderSection('Partnered for', $par_data_partnership, ['field_regulatory_function' => 'full']);
-
-    // Display details about the partnership for information.
-    $build['about_partnership'] = $this->renderSection('About the partnership', $par_data_partnership, ['about_partnership' => 'about'], ['edit-field']);
-
     $build['inspection_plans'] = [
       '#type' => 'fieldset',
       '#title' => t('Inspection plans:'),
@@ -180,8 +241,16 @@ class ParPartnershipPageController extends ParBaseController {
       ]),
     ];
 
+
+    // Partnership Contacts - component.
+    $build['Contacts'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => "Contact information",
+      '#attributes' => ['class' => 'heading-large'],
+    ];
     // Display the authority contacts for information.
-    $build['authority_contacts'] = $this->renderSection('Contacts at the Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
+    $build['authority_contacts'] = $this->renderSection('Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
 
     return parent::build($build);
 
