@@ -205,7 +205,7 @@ class ParPartnershipPageController extends ParBaseController {
     // Display all the trading names along with the links for the allowed operations on these.
     $build['trading_names'] = $this->renderSection('Trading Names', $par_data_organisation, ['trading_name' => 'full']);
 
-    
+
     // Partnership Documents - component.
     $build['documents'] = [
       '#type' => 'html_tag',

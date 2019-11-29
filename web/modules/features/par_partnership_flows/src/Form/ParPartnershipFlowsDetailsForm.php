@@ -89,6 +89,18 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
         '#value' => $this->getRenderer()->render($about_partnership_display),
       ],
     ];
+    try {
+      $about_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_about_partnership', [], [], TRUE);
+    }
+    catch (ParFlowException $e) {
+      $this->getLogger($this->getLoggerChannel())->notice($e);
+    }
+    if (isset($about_edit_link)) {
+      $form['partnership_info']['about']['edit'] = [
+        '#type' => 'markup',
+        '#markup' => '<p>' . $about_edit_link->setText("edit about the partnership")->toString() . '</p>',
+      ];
+    }
 
     // Display the regulatory functions and partnership approved date.
     $approved_date_display = $par_data_partnership->approved_date->view('full');
