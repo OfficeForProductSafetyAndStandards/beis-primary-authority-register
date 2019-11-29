@@ -77,7 +77,7 @@ class ParPartnershipPageController extends ParBaseController {
 
     // Display details about the partnership for information.
     $about_partnership_display = $par_data_partnership->about_partnership->view(['label' => 'hidden']);
-    $build['partnership_info']['about'] = [
+    $build['partnership_info']['about_partnership'] = [
       '#type' => 'fieldset',
       '#title' => 'About the partnership',
       '#collapsible' => FALSE,

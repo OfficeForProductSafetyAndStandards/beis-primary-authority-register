@@ -78,7 +78,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     // Display details about the partnership for information.
     $about_partnership_display = $par_data_partnership->about_partnership->view(['label' => 'hidden']);
-    $form['partnership_info']['about'] = [
+    $form['partnership_info']['about_partnership'] = [
       '#type' => 'fieldset',
       '#title' => 'About the partnership',
       '#collapsible' => FALSE,
