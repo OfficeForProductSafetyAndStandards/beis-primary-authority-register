@@ -243,20 +243,18 @@ class ParDataPerson extends ParDataEntity {
           // must be removed before the entity can be deleted.
           $field_items = $relationship->getEntity()->get($relationship->getField()->getName())->getValue();
           if(!empty($field_items)) {
-            foreach($field_items as $field_item) {
-              // Find & remove this person from the referenced entity.
-              $key = array_search($person->id(), array_column($field_items, key($field_item)));
-              if (false !== $key) {
-                $relationship->getEntity()->get($relationship->getField()->getName())->removeItem($key);
-                $relationship->getEntity()->save();
-              }
+            // Find & remove this person from the referenced entity.
+            $key = array_search($person->id(), array_column($field_items, 'target_id'));
+            if (false !== $key && $relationship->getEntity()->get($relationship->getField()->getName())->offsetExists($key)) {
+              $relationship->getEntity()->get($relationship->getField()->getName())->removeItem($key);
+              $relationship->getEntity()->save();
             }
           }
         }
       }
 
       // Remove this person record.
-      $deleted = $person->delete();
+      $person->delete();
     }
 
     // Be sure to make sure that all referenced uids on old person
