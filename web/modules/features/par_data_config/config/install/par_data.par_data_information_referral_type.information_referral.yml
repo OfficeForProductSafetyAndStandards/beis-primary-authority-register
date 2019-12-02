@@ -8,4 +8,4 @@ help: ''
 isDeletable: false
 isRevokable: false
 isArchivable: false
-configuration: false
+configuration: null
