@@ -235,7 +235,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function destroy() {
     if ($this->isDeletable()) {
-      parent::delete();
+      return parent::delete();
     }
   }
 
@@ -253,7 +253,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function isDeletable() {
     // Only some PAR entities can be deleted.
-    if ($this->getTypeEntity()->isDeletable()) {
+    if (!$this->getTypeEntity()->isDeletable()) {
       return FALSE;
     }
 
@@ -271,6 +271,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       // PAR-1507: We are moving away from soft-delete options.
       return $this->destroy();
     }
+
+    return FALSE;
   }
 
   /**

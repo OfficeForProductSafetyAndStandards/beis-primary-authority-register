@@ -205,12 +205,14 @@ class ParDataPerson extends ParDataEntity {
     // Lookup related people.
     $account = $this->getUserAccount();
     $people = $account ? $this->getParDataManager()->getUserPeople($account) : [];
+
     foreach ($people as $person) {
-      // Skip this entity, this is the one we'll leave.
+      // Skip modifications of the current person.
       if ($person->id() === $this->id()) {
         continue;
       }
 
+      // Get any users linked to this person.
       $referenced_users = $person->get('field_user_account')->referencedEntities();
       foreach ($referenced_users as $referenced_user) {
         if (!isset($uids[$referenced_user->id()])) {
@@ -218,9 +220,9 @@ class ParDataPerson extends ParDataEntity {
         }
       }
 
+      // Get all the entities that reference this person.
       $relationships = $person->getRelationships(NULL, NULL, TRUE);
       foreach ($relationships as $relationship) {
-        // Update all entities that reference the soon to be merged person.
         if ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE) {
           // Only update the related entity if it does not already reference the updated record.
           $update = TRUE;
@@ -230,9 +232,23 @@ class ParDataPerson extends ParDataEntity {
             }
           }
 
+          // Update all entities that reference the soon to be merged person.
           if ($update) {
             $relationship->getEntity()->get($relationship->getField()->getName())->appendItem($this->id());
             $relationship->getEntity()->save();
+          }
+
+          // Delete methods check to see if there are any related entities that
+          // require this person, @see ParDataEntity::isDeletable(), all references
+          // must be removed before the entity can be deleted.
+          $field_items = $relationship->getEntity()->get($relationship->getField()->getName())->getValue();
+          if(!empty($field_items)) {
+            foreach($field_items as $field_item) {
+              // Find & remove this person from the referenced entity.
+              $key = array_search($person->id(), array_column($field_items, key($field_item)));
+              $relationship->getEntity()->get($relationship->getField()->getName())->removeItem($key);
+              $relationship->getEntity()->save();
+            }
           }
         }
       }
