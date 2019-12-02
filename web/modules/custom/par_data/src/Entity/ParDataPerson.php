@@ -246,8 +246,10 @@ class ParDataPerson extends ParDataEntity {
             foreach($field_items as $field_item) {
               // Find & remove this person from the referenced entity.
               $key = array_search($person->id(), array_column($field_items, key($field_item)));
-              $relationship->getEntity()->get($relationship->getField()->getName())->removeItem($key);
-              $relationship->getEntity()->save();
+              if (false !== $key) {
+                $relationship->getEntity()->get($relationship->getField()->getName())->removeItem($key);
+                $relationship->getEntity()->save();
+              }
             }
           }
         }
