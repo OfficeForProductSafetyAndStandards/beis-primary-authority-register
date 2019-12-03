@@ -8,9 +8,9 @@ id: deviation_request
 label: 'Deviation Request'
 description: ''
 help: ''
-isDeletable: null
-isRevokable: null
-isArchivable: null
+isDeletable: false
+isRevokable: false
+isArchivable: false
 configuration:
   entity:
     label_fields:

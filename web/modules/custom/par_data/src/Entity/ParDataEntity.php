@@ -234,9 +234,16 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * Destroy and entity, and completely remove.
    */
   public function destroy() {
-    if (!$this->isNew() && $this->isDeletable()) {
-      return $this->entityManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
+    if ($this->isDeletable()) {
+      return parent::delete();
     }
+  }
+
+  /**
+   * Destroy and entity, and completely remove.
+   */
+  public function annihilate() {
+    return $this->entityManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
   }
 
   /**
@@ -245,10 +252,14 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * @TODO Related to PAR-1439, do not use until this is complete.
    */
   public function isDeletable() {
+    // Only some PAR entities can be deleted.
+    if (!$this->getTypeEntity()->isDeletable()) {
+      return FALSE;
+    }
+
     // If there are any relationships whereby another entity requires this one
     // then this entity should not be deleted.
     $relationships = $this->getRequiredRelationships();
-
     return $relationships ? FALSE : TRUE;
   }
 
@@ -256,23 +267,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * Delete if this entity is deletable and is not new.
    */
   public function delete($reason = '') {
-    if ($this->getTypeEntity()->isDeletable() && !$this->isDeleted()) {
-
-      // Set the status to unpublished to make filtering from display easier.
-      $this->set('status', 0);
-
-      // Always revision status changes.
-      $this->setNewRevision(TRUE);
-
-      // Update par status trigger deleted (cancelled) notification.
-      $this->set(ParDataEntity::DELETE_FIELD, TRUE);
-
-      // Help desk bug claim protection (dev covering his ass).
-      $this->set(self::DELETE_REASON_FIELD, $reason);
-
-      // calls soft delete function defined in thr ParDataStorage class.
-      return parent::delete();
+    if (!$this->isDeleted()) {
+      // PAR-1507: We are moving away from soft-delete options.
+      return $this->destroy();
     }
+
+    return FALSE;
   }
 
   /**

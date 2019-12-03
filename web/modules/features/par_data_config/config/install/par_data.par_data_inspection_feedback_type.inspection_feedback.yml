@@ -5,9 +5,9 @@ id: inspection_feedback
 label: 'Inspection Feedback'
 description: ''
 help: ''
-isDeletable: null
-isRevokable: null
-isArchivable: null
+isDeletable: false
+isRevokable: false
+isArchivable: true
 configuration:
   entity:
     label_fields:
