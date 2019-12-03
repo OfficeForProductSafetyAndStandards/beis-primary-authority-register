@@ -118,6 +118,7 @@ module:
   queue_ui: 0
   raven: 0
   rdf: 0
+  real_aes: 0
   redis: 0
   rest: 0
   robotstxt: 0
