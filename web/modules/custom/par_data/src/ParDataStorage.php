@@ -67,20 +67,7 @@ class ParDataStorage extends TranceStorage {
    * {@inheritdoc}
    */
   public function delete(array $entities) {
-    if (!$entities) {
-      // If no IDs or invalid IDs were passed, do nothing.
-      return;
-    }
-
-    // Perform the delete and key the entities correctly.
-    $keyed_entities = [];
-    // Perform a standard entity delete operation on partnership entities.
-    foreach ($entities as $entity) {
-      $entity->set(ParDataEntity::DELETE_FIELD, TRUE)->save();
-      $keyed_entities[$entity->id()] = $entity;
-    }
-    // Reset the static cache for the deleted entities.
-    $this->resetCache(array_keys($keyed_entities));
+    parent::delete($entities);
   }
 
   /**
