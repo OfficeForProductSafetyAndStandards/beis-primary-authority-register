@@ -146,9 +146,8 @@ class ParDataInspectionPlan extends ParDataEntity {
       // Set revoke reason.
       $this->set(ParDataEntity::REVOKE_REASON_FIELD, $reason);
 
-      // In the case that inspection plans are being revoked as a resulted of a partnership being
-      // revoked we want to prevent historical revoked ISP's from being auto activated in the case
-      // of a partnership being restored.
+      // If the inspection plan is being revoked as a the result of a partnership revocation
+      // keep the original revoke date so that the inspection plan can be restored later.
       if (!$reason === ParDataPartnership::INSPECTION_PLAN_REVOKE_REASON) {
         // In case a revoke timestamp needs to be applied to an entity date value.
         $this->setRevokeDateTimestamp();
