@@ -145,12 +145,30 @@ class ParDataInspectionPlan extends ParDataEntity {
       $this->setNewRevision(TRUE);
       // Set revoke reason.
       $this->set(ParDataEntity::REVOKE_REASON_FIELD, $reason);
-      // In case a revoke timestamp needs to be applied to an entity date value.
-      $this->setRevokeDateTimestamp();
+
+      // If the inspection plan is being revoked as a the result of a partnership revocation
+      // keep the original revoke date so that the inspection plan can be restored later.
+      if (!$reason === ParDataPartnership::INSPECTION_PLAN_REVOKE_REASON) {
+        // In case a revoke timestamp needs to be applied to an entity date value.
+        $this->setRevokeDateTimestamp();
+      }
 
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
     return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function unrevoke($save = TRUE) {
+    $revoke_time_stamp = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
+    $revoke_time_stamp_value = $revoke_time_stamp->format("Y-m-d");
+
+    // Only restore inspection plans that have not expired.
+    if ($this->get('valid_date')->end_value > $revoke_time_stamp_value) {
+      parent::unrevoke($save);
+    }
   }
 
   /**
