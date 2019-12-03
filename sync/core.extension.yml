@@ -27,6 +27,7 @@ module:
   dynamic_page_cache: 0
   editor: 0
   email_registration: 0
+  encrypt: 0
   features: 0
   features_ui: 0
   field: 0
@@ -47,6 +48,7 @@ module:
   invite: 0
   invite_by_email: 0
   invite_link: 0
+  key: 0
   language: 0
   link: 0
   locale: 0
@@ -127,6 +129,7 @@ module:
   taxonomy: 0
   telephone: 0
   text: 0
+  tfa: 0
   token: 0
   toolbar: 0
   trance: 0
