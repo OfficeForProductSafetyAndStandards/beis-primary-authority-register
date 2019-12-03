@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies: {  }
+id: delete_par_data
+label: 'Delete PAR Data'
+default_title: null
+default_section_title: null
+description: 'The delete operations for par data.'
+save_method: end
+states:
+  - entity_type
+  - entity_id
+steps:
+  1:
+    route: par_rd_delete_data_flows.deleted_data_list
+    form_id: par_rd_help_desk_delete_confirm
+  2:
+    route: par_rd_delete_data_flows.delete_data_confirm
+    form_id: par_rd_help_desk_delete
+    redirect:
+      delete: 1
+      next: 1
+      save: 1

@@ -672,7 +672,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   An array of entities found with this value.
    */
-  public function getEntitiesByProperty($type, $field, $value) {
+  public function getEntitiesByProperty($type, $field, $value, $deleted = TRUE) {
     // Check that a value is specified.
     if (is_null($value)) {
       return [];
@@ -684,9 +684,11 @@ class ParDataManager implements ParDataManagerInterface {
 
     // Do not return any entities that are deleted.
     // @see PAR-1462 - Removing all deleted entities from loading.
-    $entities = array_filter($entities, function ($entity) {
-      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
-    });
+    if ($deleted) {
+      $entities = array_filter($entities, function ($entity) {
+        return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
+      });
+    }
 
     return $entities;
   }

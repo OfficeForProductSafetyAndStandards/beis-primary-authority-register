@@ -1,0 +1,26 @@
+uuid: f1df0700-3e73-4604-b7e4-46d10c8daf37
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 7wDog9L_GxCL3qIvqrGJ3rP06m7hdXpa6hgyEhVyK0U
+id: delete_par_data
+label: 'Delete PAR Data'
+default_title: null
+default_section_title: null
+description: 'The delete operations for par data.'
+save_method: end
+states:
+  - entity_type
+  - entity_id
+steps:
+  1:
+    route: par_rd_delete_data_flows.deleted_data_list
+    form_id: par_rd_help_desk_delete_confirm
+  2:
+    route: par_rd_delete_data_flows.delete_data_confirm
+    form_id: par_rd_help_desk_delete
+    redirect:
+      delete: 1
+      next: 1
+      save: 1
