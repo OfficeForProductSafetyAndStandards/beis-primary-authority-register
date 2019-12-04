@@ -164,7 +164,7 @@ jobs:
             cd web
             ../vendor/bin/drush cex -n
             ../vendor/bin/drush core-requirements --severity=2
-            ../vendor/bin/drush encrypt-test tfa_tokens;"
+            ../vendor/bin/drush encrypt-test tfa_tokens;
             ../vendor/bin/drush ev "print_r(\Drupal::service('flysystem_factory')->ensure());"
             curl -sD - -o /dev/null http://par.localhost
       - run:
@@ -217,7 +217,7 @@ jobs:
             cd web
             ../vendor/bin/drush cex -n
             ../vendor/bin/drush core-requirements --severity=2
-            ../vendor/bin/drush encrypt-test tfa_tokens;"
+            ../vendor/bin/drush encrypt-test tfa_tokens;
             ../vendor/bin/drush ev "print_r(\Drupal::service('flysystem_factory')->ensure());"
             curl -sD - -o /dev/null http://par.localhost
       - run:
