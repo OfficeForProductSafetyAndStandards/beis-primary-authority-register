@@ -176,6 +176,11 @@ jobs:
             npm install
             npm run selenium-install
       - run:
+          name: "Disable 2FA"
+          command: |
+            cd web
+            ../vendor/bin/drush config-set tfa.settings enabled 0
+      - run:
           name: "Run unit tests"
           command: |
             ./vendor/bin/paratest --processes=16
@@ -232,6 +237,11 @@ jobs:
           name: "Run unit tests"
           command: |
             ./vendor/bin/paratest --processes=16
+      - run:
+          name: "Disable 2FA"
+          command: |
+            cd web
+            ../vendor/bin/drush config-set tfa.settings enabled 0
       - run:
           name: "Run feature tests"
           command: |
