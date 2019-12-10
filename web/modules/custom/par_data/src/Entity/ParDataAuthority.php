@@ -128,6 +128,10 @@ class ParDataAuthority extends ParDataEntity {
     return $authority_bundle->getAllowedFieldlabel('authority_type', $this->get('authority_type')->getString());
   }
 
+  public function getName() {
+    return $this->get('authority_name')->getString();
+  }
+
   /**
    * {@inheritdoc}
    */

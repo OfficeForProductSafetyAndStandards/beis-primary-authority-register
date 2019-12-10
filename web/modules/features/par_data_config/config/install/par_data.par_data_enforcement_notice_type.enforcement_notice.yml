@@ -5,7 +5,7 @@ id: enforcement_notice
 label: 'Enforcement Notice'
 description: 'An Enforcement Notice is a legal document that contains one or more Enforcement Actions.'
 help: ''
-isDeletable: true
+isDeletable: false
 isRevokable: false
 isArchivable: false
 configuration:
