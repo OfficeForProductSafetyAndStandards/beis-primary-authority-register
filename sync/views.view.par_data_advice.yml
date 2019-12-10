@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.storage.par_data_advice.field_regulatory_function
   module:
-    - file_entity
     - pagerer
     - par_data
     - text
@@ -17,7 +16,6 @@ description: 'A list of all Advice documentation in the PAR Data Model'
 tag: ''
 base_table: par_advice_field_data
 base_field: id
-core: 8.x
 display:
   default:
     display_plugin: default
