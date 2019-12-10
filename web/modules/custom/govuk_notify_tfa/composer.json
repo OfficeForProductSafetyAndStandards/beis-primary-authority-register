@@ -1,0 +1,14 @@
+{
+  "name": "drupal/govuk_notify_tfa",
+  "type": "drupal-module",
+  "description": "TFA plugins for Hmac-Based One Time Passwords & Time Based One Time Password with recovery codes as fallback.",
+  "license": "GPL-2.0+",
+  "minimum-stability": "dev",
+  "require": {
+    "drupal/tfa": "~1.0",
+    "drupal/govuk_notify": "~1.0"
+  },
+  "require-dev": {
+    "drupal/tfa": "1.x-dev"
+  }
+}

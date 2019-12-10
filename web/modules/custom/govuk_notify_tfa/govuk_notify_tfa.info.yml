@@ -1,0 +1,7 @@
+name: "GovUK Notify Login"
+type: module
+package: System
+description: "TFA plugins for GovUK Notify SMS."
+# core: 8.x
+dependencies:
+ - tfa (>=8.x-1.0-alpha4)

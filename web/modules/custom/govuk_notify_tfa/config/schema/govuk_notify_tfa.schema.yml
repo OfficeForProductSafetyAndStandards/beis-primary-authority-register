@@ -1,0 +1,41 @@
+fallback.config.tfa_totp:
+  type: default.fallback
+  label: 'Fallback settings'
+
+fallback.config.tfa_hotp:
+  type: default.fallback
+  label: 'Fallback settings'
+
+tfa.validation.plugin.config.tfa_totp:
+  type: mapping
+  label: 'TFA TOTP Settings'
+  mapping:
+    time_skew:
+      type: integer
+      label: 'Number of 30 second chunks to allow TOTP keys between.'
+    site_name_prefix:
+      type: integer
+      label: 'If checked, the site name will be used instead of a static string. This can be useful for multi-site installations.'
+    name_prefix:
+      type: string
+      label: 'Prefix for TOTP QR code names. Suffix is account username.'
+    issuer:
+      type: string
+      label: 'The provider or service this account is associated with.'
+
+tfa.validation.plugin.config.tfa_hotp:
+  type: mapping
+  label: 'TFA TOTP Settings'
+  mapping:
+    counter_window:
+      type: integer
+      label: 'How far ahead from current counter should we check the code.'
+    site_name_prefix:
+      type: integer
+      label: 'If checked, the site name will be used instead of a static string. This can be useful for multi-site installations.'
+    name_prefix:
+      type: string
+      label: 'Prefix for HOTP QR code names. Suffix is account username.'
+    issuer:
+      type: string
+      label: 'The provider or service this account is associated with.'
