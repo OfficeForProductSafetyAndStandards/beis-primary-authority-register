@@ -20,6 +20,7 @@
         "deblan/csv-validator": "dev-master",
         "drupal-composer/drupal-scaffold": "~2.3.0",
         "drupal/address": "~1.6.0",
+        "drupal/audit_log": "^2.0@alpha",
         "drupal/better_exposed_filters": "~3.0.0",
         "drupal/big_pipe_sessionless": "~1.2.0",
         "drupal/chosen": "~2.7.0",
