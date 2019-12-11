@@ -6,6 +6,7 @@ dependencies:
     - better_exposed_filters
     - pagerer
     - par_data
+    - role_delegation
     - user
 _core:
   default_config_hash: wTJRNzsLVTenCALONNlVfgm_pBOlqucSPuVFLOD56ck
@@ -879,7 +880,7 @@ display:
           plugin_id: date
           entity_type: user
           entity_field: created
-      title: 'Helpdesk | Manage Accounts'
+      title: People
       empty:
         area_text_custom:
           id: area_text_custom

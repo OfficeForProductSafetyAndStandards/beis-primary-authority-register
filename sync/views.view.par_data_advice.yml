@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.storage.par_data_advice.field_regulatory_function
   module:
-    - file_entity
     - pagerer
     - par_data
     - text

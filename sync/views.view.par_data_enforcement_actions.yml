@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.storage.par_data_enforcement_action.field_regulatory_function
   module:
-    - file_entity
     - par_data
 id: par_data_enforcement_actions
 label: 'Par Data Enforcement Actions'
