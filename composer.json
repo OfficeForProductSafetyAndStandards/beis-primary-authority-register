@@ -50,7 +50,7 @@
         "drupal/message": "~1.0.0",
         "drupal/message_notify": "~1.0.0",
         "drupal/no_autocomplete": "~1.4.0",
-        "drupal/pagerer": "~1.4.0",
+        "drupal/pagerer": "~1.5.0",
         "drupal/password_policy": "3.x-dev#ef81a55ad49d7d4e18f493fad2284923d28bfe70",
         "drupal/password_strength": "~2.0.0",
         "drupal/queue_ui": "~2.0.0",
