@@ -7,6 +7,8 @@ dependencies:
   enforced:
     module:
       - maillog
+  module:
+    - maillog
 _core:
   default_config_hash: SentX2vMVdSwdCGG33n1_hb9MfAEjswvc8Oyob3KQSA
 id: maillog_overview

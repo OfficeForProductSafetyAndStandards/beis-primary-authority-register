@@ -4,7 +4,6 @@ status: true
 dependencies:
   module:
     - message
-    - system
     - user
 _core:
   default_config_hash: 2Up5NUvwF4aBVoO6eFTPeBXtnpUw_yiexv9I5u6ZD-g

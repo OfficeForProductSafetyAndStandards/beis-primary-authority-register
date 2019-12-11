@@ -735,6 +735,8 @@ display:
               par_enforcement: '0'
               par_organisation: '0'
               par_helpdesk: '0'
+            operator_limit_selection: false
+            operator_list: {  }
             placeholder: ''
             operator_limit_selection: false
             operator_list: {  }
@@ -1134,6 +1136,8 @@ display:
               par_enforcement: '0'
               par_organisation: '0'
               par_helpdesk: '0'
+            operator_limit_selection: false
+            operator_list: {  }
             placeholder: ''
             operator_limit_selection: false
             operator_list: {  }
@@ -1531,6 +1535,8 @@ display:
               par_enforcement: '0'
               par_organisation: '0'
               par_helpdesk: '0'
+            operator_limit_selection: false
+            operator_list: {  }
             placeholder: ''
             operator_limit_selection: false
             operator_list: {  }
