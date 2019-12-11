@@ -1,0 +1,6 @@
+services:
+  par_log.event_subscriber.par_data:
+    class: Drupal\par_log\EventSubscriber\ParData
+    tags:
+      - { name: audit_log_event_subscriber }
+      - { name: par_log_event_subscriber }
