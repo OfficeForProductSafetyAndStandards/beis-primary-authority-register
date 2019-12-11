@@ -8,7 +8,6 @@ When('I create new valid enforcement notification {string} for partnership {stri
     .setValue('#edit-keywords',search)
     .click('#edit-submit-partnership-search')
     .clickLinkByPureText(link)
-    .click('td.views-field.views-field-par-flow-link a')
     // ENFORCEMENT ACTION FORM
     .clickLinkByPureText('Send a notification of a proposed enforcement action')
     .click('#edit-cancel')
