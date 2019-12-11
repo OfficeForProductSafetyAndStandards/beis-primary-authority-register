@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3c46004283801ef0c4d8864c21f7f77",
+    "content-hash": "ba2f65c3ea021f17607e5fe82121cfcc",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -113,16 +113,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.128.1",
+            "version": "3.128.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "b550a939356fb66aadf8f92485b53046e1e60ee4"
+                "reference": "a81485e12b2545aff17134bbf29442037f3fcadb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b550a939356fb66aadf8f92485b53046e1e60ee4",
-                "reference": "b550a939356fb66aadf8f92485b53046e1e60ee4",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a81485e12b2545aff17134bbf29442037f3fcadb",
+                "reference": "a81485e12b2545aff17134bbf29442037f3fcadb",
                 "shasum": ""
             },
             "require": {
@@ -193,7 +193,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-12-09T19:18:49+00:00"
+            "time": "2019-12-10T19:12:09+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -1821,6 +1821,82 @@
             "homepage": "http://drupal.org/project/address",
             "support": {
                 "source": "https://git.drupalcode.org/project/address"
+            }
+        },
+        {
+            "name": "drupal/audit_log",
+            "version": "2.0.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/audit_log.git",
+                "reference": "8.x-2.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/audit_log-8.x-2.0-alpha1.zip",
+                "reference": "8.x-2.0-alpha1",
+                "shasum": "908c50dfdc192c06b1881b964eea69f64f420239"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "require-dev": {
+                "behat/mink-selenium2-driver": "^1.3",
+                "bex/behat-screenshot": "^1.2",
+                "cweagans/composer-patches": "^1.6",
+                "drupal/coder": "^8.2",
+                "drupal/drupal-extension": "master-dev",
+                "phpmd/phpmd": "^2.6",
+                "phpmetrics/phpmetrics": "^2.3"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.0-alpha1",
+                    "datestamp": "1523363583",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Yuriy Boychenko",
+                    "homepage": "https://www.drupal.org/user/829198",
+                    "email": "yuriy.boychenko@ffwagency.com"
+                },
+                {
+                    "name": "Valeriy Garzha",
+                    "homepage": "https://www.drupal.org/user/105002",
+                    "email": "valeriy.garzha@ffwagency.com"
+                },
+                {
+                    "name": "Mariano D'Agostino",
+                    "homepage": "https://www.drupal.org/user/154086",
+                    "email": "dagmar@154086.no-reply.drupal.org"
+                },
+                {
+                    "name": "Shawn Smiley",
+                    "homepage": "https://www.drupal.org/user/122194",
+                    "email": "Shawn_Smiley@317704.no-reply.drupal.org"
+                },
+                {
+                    "name": "spheresh",
+                    "homepage": "https://www.drupal.org/user/624860"
+                }
+            ],
+            "description": "Provides a framework with swappable storage for logging entity audit events.",
+            "homepage": "https://www.drupal.org/project/audit_log",
+            "support": {
+                "source": "https://git.drupalcode.org/project/audit_log"
             }
         },
         {
@@ -6793,16 +6869,16 @@
         },
         {
             "name": "mglaman/phpstan-drupal",
-            "version": "0.11.13",
+            "version": "0.11.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mglaman/phpstan-drupal.git",
-                "reference": "1d73e1acc717a3cfb6ef355535c7940e8c25ce97"
+                "reference": "3458665f7bb579f700c1384d5bc05d879757f76c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mglaman/phpstan-drupal/zipball/1d73e1acc717a3cfb6ef355535c7940e8c25ce97",
-                "reference": "1d73e1acc717a3cfb6ef355535c7940e8c25ce97",
+                "url": "https://api.github.com/repos/mglaman/phpstan-drupal/zipball/3458665f7bb579f700c1384d5bc05d879757f76c",
+                "reference": "3458665f7bb579f700c1384d5bc05d879757f76c",
                 "shasum": ""
             },
             "require": {
@@ -6872,7 +6948,7 @@
                 }
             ],
             "description": "Drupal extension and rules for PHPStan",
-            "time": "2019-12-09T19:26:22+00:00"
+            "time": "2019-12-10T15:17:37+00:00"
         },
         {
             "name": "mtdowling/jmespath.php",
@@ -14396,6 +14472,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "deblan/csv-validator": 20,
+        "drupal/audit_log": 15,
         "drupal/http_response_headers": 20,
         "drupal/invite": 20,
         "drupal/login_destination": 20,
