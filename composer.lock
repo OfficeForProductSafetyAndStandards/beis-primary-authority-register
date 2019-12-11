@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ba2f65c3ea021f17607e5fe82121cfcc",
+    "content-hash": "49051e858cb3650fc075033338cc6a14",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -4338,20 +4338,20 @@
         },
         {
             "name": "drupal/pagerer",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/pagerer.git",
-                "reference": "8.x-1.4"
+                "reference": "8.x-1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/pagerer-8.x-1.4.zip",
-                "reference": "8.x-1.4",
-                "shasum": "9b4eb6899b0927859e7d5198f1fd814a10a66ddb"
+                "url": "https://ftp.drupal.org/files/projects/pagerer-8.x-1.5.zip",
+                "reference": "8.x-1.5",
+                "shasum": "4dc59c77ebcf1d54947024dbe5021b9e3f56a581"
             },
             "require": {
-                "drupal/core": "^8.1"
+                "drupal/core": "^8.5"
             },
             "type": "drupal-module",
             "extra": {
@@ -4359,8 +4359,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.4",
-                    "datestamp": "1522851484",
+                    "version": "8.x-1.5",
+                    "datestamp": "1571388485",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"

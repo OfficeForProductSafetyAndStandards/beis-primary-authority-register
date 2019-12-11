@@ -2,13 +2,12 @@ const { client } = require('nightwatch-cucumber');
 const { Given, Then, When } = require('cucumber');
 const shared = client.page.shared();
 
-// @TODO Fix this search needs to be more targetted.
-When('I create new valid enforcement notification {string} for organisation {string}', function (string, string2) {
+When('I create new valid enforcement notification {string} for partnership {string} against organisation {string}', function (string, link, search) {
   return shared
     .clickLinkByPureText('Search for a partnership')
-    .setValue('#edit-keywords',string2)
+    .setValue('#edit-keywords',search)
     .click('#edit-submit-partnership-search')
-    .click('td.views-field.views-field-par-flow-link a')
+    .clickLinkByPureText(link)
     // ENFORCEMENT ACTION FORM
     .clickLinkByPureText('Send a notification of a proposed enforcement action')
     .click('#edit-cancel')
