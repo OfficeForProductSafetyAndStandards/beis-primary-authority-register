@@ -1,6 +1,6 @@
 #!/bin/bash
-# This script will copy a set of vault secrets from one store to another.
-# Usage: ./update-vault.sh from-environment destination-environment
+# This script will update a single key within a set of vault secrets.
+# Usage: ./update-vault.sh secret-store key value
 
 echo $BASH_VERSION
 
@@ -30,8 +30,9 @@ command -v vault >/dev/null 2>&1 || {
 
 ####################################################################################
 # Set required parameters
-#    FORM_ENV (required) - the secret store to copy from
-#    DEST_ENV (required) - the secret store to copy to
+#    SECRET_STORE (required) - the secret store to update
+#    KEY (required) - the key to update
+#    VALUE (required) - the value to update
 #    VAULT_ADDR - the vault service endpoint
 #    VAULT_UNSEAL (required) - the key used to unseal the vault
 #    VAULT_TOKEN (required) - the master token to unseal the vaule
@@ -83,12 +84,13 @@ while true; do
 done
 
 ## Ensure an environment has been passed
-if [[ $# -ne 2 ]]; then
-    printf "Please specify the environments to copy to and from...\n"
+if [[ $# -ne 3 ]]; then
+    printf "Please specify the secret store and the key to update...\n"
     exit 4
 fi
-FROM_ENV=$1
-DEST_ENV=$2
+SECRET=$1
+KEY=$2
+VALUE=$3
 
 ####################################################################################
 # Allow manual input of missing parameters
@@ -116,19 +118,30 @@ vault operator seal -tls-skip-verify
 vault operator unseal -tls-skip-verify $VAULT_UNSEAL
 
 ## Set the environment variables by generating an .env file
-printf "Copying from vault keystore: '$FROM_ENV'...\n"
+printf "Extracting values from vault keystore: '$SECRET'...\n"
 rm -f .env
-VAULT_VARS=($(vault kv get -tls-skip-verify secret/par/env/$FROM_ENV | awk 'NR > 3 {print $1}'))
+VAULT_VARS=($(vault kv get -tls-skip-verify secret/par/env/$SECRET | awk 'NR > 3 {print $1}'))
+
+## Be sure to add any new keys not in vault
+if (printf '%s\n' "${VAULT_VARS[@]}" | grep -xq $KEY); then
+    printf "Updating an existing key: '$KEY'...\n"
+else
+    printf "Adding a new key: '$KEY'...\n"
+    VAULT_VARS+=($KEY)
+fi
 
 ## Generate the vault variables into a writable string
-## @TODO Allow variables to be overwritted/updated
 VAULT_STRING=''
 for VAR_NAME in "${VAULT_VARS[@]}"
 do
-    VAR="$VAR_NAME='$(vault kv get --field=$VAR_NAME -tls-skip-verify secret/par/env/$FROM_ENV)' "
+    if [[ $VAR_NAME == $KEY ]]; then
+      VAR="$VAR_NAME='$VALUE' "
+    else
+      VAR="$VAR_NAME='$(vault kv get --field=$VAR_NAME -tls-skip-verify secret/par/env/$SECRET)' "
+    fi
     VAULT_STRING+="$VAR"
 done
 
-vault write -tls-skip-verify secret/par/env/$DEST_ENV $VAULT_STRING
+vault write -tls-skip-verify secret/par/env/$SECRET $VAULT_STRING
 
 vault operator seal -tls-skip-verify

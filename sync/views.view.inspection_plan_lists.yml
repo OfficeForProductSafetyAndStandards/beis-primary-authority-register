@@ -17,7 +17,6 @@ description: 'Search for an inspection plan entities assigned to a partnership'
 tag: 'Partnership inspection plan '
 base_table: par_partnerships_field_data
 base_field: id
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -643,6 +642,8 @@ display:
               par_organisation: '0'
               par_helpdesk: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -684,6 +685,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -722,6 +725,8 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -766,6 +771,8 @@ display:
               par_enforcement: '0'
               par_organisation: '0'
               par_helpdesk: '0'
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
