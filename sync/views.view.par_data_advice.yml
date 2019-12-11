@@ -17,7 +17,6 @@ description: 'A list of all Advice documentation in the PAR Data Model'
 tag: ''
 base_table: par_advice_field_data
 base_field: id
-core: 8.x
 display:
   default:
     display_plugin: default

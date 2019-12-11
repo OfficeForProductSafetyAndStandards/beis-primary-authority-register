@@ -14,7 +14,6 @@ description: 'A list of all the inspection plans in PAR'
 tag: ''
 base_table: par_inspection_plans_field_data
 base_field: id
-core: 8.x
 display:
   default:
     display_plugin: default

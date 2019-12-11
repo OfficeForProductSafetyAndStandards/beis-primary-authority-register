@@ -16,7 +16,6 @@ description: ''
 tag: ''
 base_table: maillog
 base_field: idmaillog
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -404,6 +403,8 @@ display:
               par_enforcement: '0'
               par_organisation: '0'
               par_helpdesk: '0'
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -446,6 +447,8 @@ display:
               par_enforcement: '0'
               par_organisation: '0'
               par_helpdesk: '0'
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
