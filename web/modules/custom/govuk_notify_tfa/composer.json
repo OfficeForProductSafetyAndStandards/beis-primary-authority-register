@@ -6,7 +6,8 @@
   "minimum-stability": "dev",
   "require": {
     "drupal/tfa": "~1.0",
-    "drupal/govuk_notify": "~1.0"
+    "drupal/govuk_notify": "~1.0",
+    "christian-riesen/otp": "2.*"
   },
   "require-dev": {
     "drupal/tfa": "1.x-dev"

@@ -41,6 +41,7 @@ module:
   ga_login: 0
   google_analytics: 0
   govuk_notify: 0
+  govuk_notify_tfa: 0
   hal: 0
   health_check: 0
   help: 0

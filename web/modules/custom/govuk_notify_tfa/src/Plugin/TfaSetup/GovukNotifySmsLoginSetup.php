@@ -2,7 +2,8 @@
 
 namespace Drupal\govuk_notify_tfa\Plugin\TfaSetup;
 
-use Drupal\govuk_notify_tfa\Plugin\TfaValidation\GovukNotifySmsLoginSend;
+use Drupal\govuk_notify\NotifyService\NotifyServiceInterface;
+use Drupal\govuk_notify_tfa\Plugin\TfaValidation\GovukNotifySmsLoginValidation;
 use ParagonIE\ConstantTime\Encoding;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
@@ -13,13 +14,12 @@ use Drupal\tfa\Plugin\TfaSetupInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\UserDataInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use chillerlan\QRCode\QRCode;
 /**
  * TOTP setup class to setup TOTP validation.
  *
  * @TfaSetup(
- *   id = "tfa_notify_sms_setup",
- *   label = @Translation("Notify SMS Setup"),
+ *   id = "tfa_sms_setup",
+ *   label = @Translation("Notify SMS"),
  *   description = @Translation("GovUK Notify SMS Setup Plugin"),
  *   setupMessages = {
  *    "saved" = @Translation("Application code verified."),
@@ -27,7 +27,7 @@ use chillerlan\QRCode\QRCode;
  *   }
  * )
  */
-class GovukNotifySmsLoginSetup extends GovukNotifySmsLoginSend implements TfaSetupInterface {
+class GovukNotifySmsLoginSetup extends GovukNotifySmsLoginValidation implements TfaSetupInterface {
   use StringTranslationTrait;
 
   /**
@@ -51,17 +51,31 @@ class GovukNotifySmsLoginSetup extends GovukNotifySmsLoginSend implements TfaSet
    */
   public function getSetupForm(array $form, FormStateInterface $form_state) {
     $form['phone_number'] = [
-      '#type' => 'telephone',
-      '#value' => $this->seed,
+      '#type' => 'textfield',
+      '#title' => 'Mobile phone number',
+      '#value' => $this->getPhone(),
       '#description' => $this->t('Enter your phone number.'),
+      '#required'  => TRUE,
+    ];
+
+    $form['seed'] = [
+      '#type' => 'hidden',
+      '#value' => $this->seed,
     ];
 
     // Include code entry form.
-    $form = $this->getForm($form, $form_state);
-    $form['actions']['login']['#value'] = $this->t('Verify and save');
-
-    // Alter code description.
-    $form['code']['#description'] = $this->t('A verification code will be sent to the telephone number you entered. The verification code is six digits long.');
+    if ($this->getPhone()) {
+      $form = $this->getForm($form, $form_state);
+    }
+    else {
+      $form['actions']['#type'] = 'actions';
+      $form['actions']['send'] = [
+        '#type'  => 'submit',
+        '#name' => 'send',
+        '#value' => t('Send code'),
+        '#limit_validation_errors' => [],
+      ];
+    }
 
     return $form;
   }
@@ -70,6 +84,11 @@ class GovukNotifySmsLoginSetup extends GovukNotifySmsLoginSend implements TfaSet
    * {@inheritdoc}
    */
   public function validateSetupForm(array $form, FormStateInterface $form_state) {
+    // Do not validate if the code is being sent.
+    if ($form_state->getTriggeringElement()['#name'] === 'send') {
+      return TRUE;
+    }
+
     if (!$this->validate($form_state->getValue('code'))) {
       $this->errorMessages['code'] = $this->t('Invalid application code. Please try again.');
       // $form_state->setErrorByName('code', $this->errorMessages['code']);.
@@ -84,7 +103,7 @@ class GovukNotifySmsLoginSetup extends GovukNotifySmsLoginSend implements TfaSet
    */
   protected function validate($code) {
     $code = preg_replace('/\s+/', '', $code);
-    return $this->auth->otp->checkTotp(Encoding::base32DecodeUpper($this->seed), $code, $this->timeSkew);
+    return $this->otp->checkTotp(Encoding::base32DecodeUpper($this->seed), $code, $this->timeSkew);
   }
 
   /**
@@ -93,17 +112,10 @@ class GovukNotifySmsLoginSetup extends GovukNotifySmsLoginSend implements TfaSet
   public function submitSetupForm(array $form, FormStateInterface $form_state) {
     // Write seed for user.
     $this->storeSeed($this->seed);
-    return TRUE;
-  }
 
-  /**
-   * Get a base64 qrcode image uri of seed.
-   *
-   * @return string
-   *   QR-code uri.
-   */
-  protected function getQrCodeUri() {
-    return (new QRCode)->render('otpauth://totp/' . $this->accountName() . '?secret=' . $this->seed . '&issuer=' . $this->issuer);
+    // Store the user phone number.
+    $this->setPhone($form_state->getValue('phone_number'));
+    return TRUE;
   }
 
   /**
@@ -113,7 +125,7 @@ class GovukNotifySmsLoginSetup extends GovukNotifySmsLoginSend implements TfaSet
    *   Un-encrypted seed.
    */
   protected function createSeed() {
-    return $this->auth->ga->generateRandom();
+    return $this->generateRandom();
   }
 
   /**
@@ -124,6 +136,28 @@ class GovukNotifySmsLoginSetup extends GovukNotifySmsLoginSend implements TfaSet
    */
   public function setSeed($seed) {
     $this->seed = $seed;
+  }
+
+  /**
+   * Creates a pseudo random Base32 string
+   *
+   * This could decode into anything. It's located here as a small helper
+   * where code that might need base32 usually also needs something like this.
+   *
+   * @param integer $length Exact length of output string
+   *
+   * @return string Base32 encoded random
+   */
+  public static function generateRandom($length = 16) {
+    $keys = array_merge(range('A','Z'), range(2,7)); // No padding char
+
+    $string = '';
+
+    for ($i = 0; $i < $length; $i++) {
+      $string .= $keys[random_int(0, 31)];
+    }
+
+    return $string;
   }
 
   /**
@@ -161,7 +195,7 @@ class GovukNotifySmsLoginSetup extends GovukNotifySmsLoginSend implements TfaSet
       'description' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t('Generate verification codes from a mobile or desktop application.'),
+        '#value' => $this->t('Generate verification codes to send to a mobile device.'),
       ],
       'link' => [
         '#theme' => 'links',
