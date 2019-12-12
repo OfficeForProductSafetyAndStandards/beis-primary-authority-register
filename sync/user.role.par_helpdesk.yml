@@ -84,6 +84,7 @@ permissions:
   - 'delete own document files'
   - 'delete own image files'
   - 'delete own page content'
+  - 'delete par data'
   - 'delete par_data_advice entities'
   - 'delete par_data_authority entities'
   - 'delete par_data_coordinated_business entities'

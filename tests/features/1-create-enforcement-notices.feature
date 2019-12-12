@@ -4,23 +4,23 @@ Feature: Enforcement Officer - Enforcement Notice Process
     Scenario Outline: Enforcement Officer - Issue enforcement notice (direct and coordinated)
 
         #LOGIN
-        
+
         Given I am logged in as "par_enforcement_officer@example.com"
 
         # CREATE ENFORCEMENT NOTIFICATION
 
-        When I create new valid enforcement notification "<Notification Title>" for organisation "<Organisation>"
+        When I create new valid enforcement notification "<Notification Title>" for partnership "<Partnership>" against organisation "<Organisation>"
 
         # CHECK ENFORCEMENT NOTIFICATION EMAILS
 
         Then the "enforcement creation" email confirmations for "<PARUser>" are processed
 
     Examples:
-        | Notification Title      | Organisation   | PARUser                   |
-        | Enforcement notice 1    | Charlie's Cafe | par_authority@example.com |
-        | Enforcement notice 2    | Charlie's Cafe | par_authority@example.com |
-        | Enforcement notice 3    | Charlie's Cafe | par_authority@example.com |
-        | Enforcement notice 4    | Charlie's Cafe | par_authority@example.com |
+        | Notification Title   | Organisation   | Partnership                                                       | PARUser                   |
+        | Enforcement notice 1 | Charlie's Cafe | Partnership between Upper West Side Borough Council and Charlie's | par_authority@example.com |
+        | Enforcement notice 2 | Charlie's Cafe | Partnership between Upper West Side Borough Council and Charlie's | par_authority@example.com |
+        | Enforcement notice 3 | Charlie's Cafe | Partnership between Upper West Side Borough Council and Charlie's | par_authority@example.com |
+        | Enforcement notice 4 | Charlie's Cafe | Partnership between Upper West Side Borough Council and Charlie's | par_authority@example.com |
 
     @ci @enforcementnotices
     Scenario Outline: Enforcement Officer - Issue enforcement notice with multiple actions
@@ -54,10 +54,10 @@ Feature: Enforcement Officer - Enforcement Notice Process
         When I add "Multiple Action 1" to the inputfield "#edit-par-component-enforcement-action-0-title"
         And I click on the button "#edit-par-component-enforcement-action-0-regulatory-function-1"
         And I add "601" random chars of text to field "#edit-par-component-enforcement-action-0-details"
-        
+
         # ADD ANOTHER ACTION
 
-        And I click the link text "Add another" 
+        And I click the link text "Add another"
         Then the element "h1.heading-xlarge .heading-secondary" contains the text "Raise notice of enforcement action"
         When I add "Multiple Action 2" to the inputfield "#edit-par-component-enforcement-action-1-title"
         And I click on the button "#edit-par-component-enforcement-action-1-regulatory-function-1"
@@ -69,7 +69,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
         And the element "h1.heading-xlarge" contains the text "Review the enforcement notice"
         And the element "#edit-enforced-organisation" contains the text "Legal Entity 4"
 
-        # EDIT AT REVIEW STAGE 
+        # EDIT AT REVIEW STAGE
 
         And I click the link text "Change the enforced organisation"
         And I click on the radio "#edit-legal-entities-select-add-new"
@@ -91,7 +91,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
     Scenario: Issue enforcement notice on Coordinated Partnership with no members
 
         #LOGIN
-        
+
         Given I am logged in as "par_enforcement_officer@example.com"
         And I click the link text "Search for a partnership"
         When I add "Charity Retail Association" to the inputfield "#edit-keywords"
