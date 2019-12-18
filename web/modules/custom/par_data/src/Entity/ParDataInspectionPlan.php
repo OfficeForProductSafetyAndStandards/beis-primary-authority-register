@@ -148,7 +148,7 @@ class ParDataInspectionPlan extends ParDataEntity {
 
       // If the inspection plan is being revoked as a the result of a partnership revocation
       // keep the original revoke date so that the inspection plan can be restored later.
-      if (!$reason === ParDataPartnership::INSPECTION_PLAN_REVOKE_REASON) {
+      if ($reason !== ParDataPartnership::INSPECTION_PLAN_REVOKE_REASON) {
         // In case a revoke timestamp needs to be applied to an entity date value.
         $this->setRevokeDateTimestamp();
       }

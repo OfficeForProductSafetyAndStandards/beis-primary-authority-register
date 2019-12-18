@@ -1,5 +1,6 @@
 module:
   address: 0
+  audit_log: 0
   automated_cron: 0
   better_exposed_filters: 0
   block: 0
@@ -83,6 +84,7 @@ module:
   par_inspection_feedback_view_flows: 0
   par_invite: 0
   par_invite_user_flows: 0
+  par_log: 0
   par_login: 0
   par_member_add_flows: 0
   par_member_cease_flows: 0
@@ -113,6 +115,7 @@ module:
   password_policy_length: 0
   password_strength: 0
   path: 0
+  path_alias: 0
   queue_ui: 0
   raven: 0
   rdf: 0
