@@ -63,7 +63,7 @@ Feature: User management
         And I click on the button "#edit-save"
 
         # Choose authorities for the person
-        Then the element "h1.heading-xlarge" contains the text "You're new person has been created"
+        Then the element "h1.heading-xlarge" contains the text "Your new person has been created"
         And I click the link text "Done"
 
         Examples:
@@ -109,7 +109,7 @@ Feature: User management
         And I click on the button "#edit-save"
 
         # Choose authorities for the person
-        Then the element "h1.heading-xlarge" contains the text "You're new person has been created"
+        Then the element "h1.heading-xlarge" contains the text "Your new person has been created"
         And I click the link text "Done"
 
         Examples:
