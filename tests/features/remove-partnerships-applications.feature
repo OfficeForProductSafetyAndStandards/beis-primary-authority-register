@@ -5,7 +5,7 @@ Feature: Remove partnership appliations
         Given I click the link text "Manage partnerships"
 
 
-    @ci
+    @ci @nonsmoke
     Scenario: Search and remove an incomplete partnership
         When I add "Demolition Experts" to the inputfield "#edit-keywords"
         When I add "Demolition Experts" to the inputfield "#edit-keywords"
@@ -25,5 +25,5 @@ Feature: Remove partnership appliations
         # DELETION CONFIRMATION SCREEN
 
         Then the element "h1.heading-xlarge" contains the text "Partnership deleted"
-        Then the element ".edit-partnership-info" contains the text "The partnership application has been deleted"
+        Then the element "#edit-partnership-info" contains the text "The partnership application has been deleted"
         And I click on the button "#edit-done"
