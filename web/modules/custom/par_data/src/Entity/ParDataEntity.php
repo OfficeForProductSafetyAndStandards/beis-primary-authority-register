@@ -235,8 +235,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function destroy() {
     if ($this->isDeletable()) {
-      return parent::delete();
+      parent::delete();
+
+      return TRUE;
     }
+
+    return FALSE;
   }
 
   /**

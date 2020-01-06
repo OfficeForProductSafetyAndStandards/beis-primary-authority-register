@@ -1819,7 +1819,7 @@ display:
           click_sort_column: value
           type: text_default
           settings: {  }
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1884,7 +1884,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1949,7 +1949,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -2068,7 +2068,7 @@ display:
           type: par_list_formatter
           settings:
             display_original_value: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
