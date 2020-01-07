@@ -5,6 +5,8 @@ namespace Drupal\par_forms\Plugin\ParForm;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\par_actions\Plugin\Factory\BusinessDaysCalculator;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
@@ -72,13 +74,17 @@ class ParEnforcementSendWarning extends ParFormPluginBase {
     // Only display this warning if the enforcement has been approved.
     if ($this->getFlowDataHandler()->getFormPermValue('enforcement_approved')) {
       $send_date = $this->getFlowDataHandler()->getDefaultValues('send_date', '');
+
+      $schedule_url = Url::fromUri('http://www.legislation.gov.uk/ukpga/2008/13/schedule/4A', ['attributes' => ['target' => '_blank']]);
+      $schedule_link = Link::fromTextAndUrl('Schedule 4A of The Regulatory Enforcement Sanctions Act 2008', $schedule_url);
+
       $form['send_warning'] = [
         '#type' => 'container',
         '#attributes' => ['class' => ['form-group', 'notice']],
         'warning' => [
           '#type' => 'html_tag',
           '#tag' => 'strong',
-          '#value' => $this->t("Please note that this enforcement has been approved and a copy of the information held within must be sent to the business by $send_date at the latest."),
+          '#value' => $this->t("Please note that this enforcement notice has been approved. If you intend to proceed with your proposed action you must now notify the business. This notification should be made directly to the business via e-mail. If you require contact details of the business, please obtain these from the Primary Authority. For further information please refer to @link.", ['@link' => $schedule_link->toString()]),
           '#attributes' => ['class' => 'bold-small'],
           '#prefix' => '<i class="icon icon-important"><span class="visually-hidden">Warning</span></i>'
         ],
