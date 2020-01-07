@@ -8,7 +8,7 @@ id: information_referral
 label: 'Information Referral'
 description: ''
 help: ''
-isDeletable: null
-isRevokable: null
-isArchivable: null
+isDeletable: false
+isRevokable: false
+isArchivable: false
 configuration: null
