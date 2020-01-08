@@ -44,26 +44,6 @@ class ParEnforcementSendWarning extends ParFormPluginBase {
         ->setFormPermValue("enforcement_approved", TRUE);
     }
 
-    // Determine the date by which this enforcement must be sent to the business.
-    if ($par_data_enforcement_notice) {
-      $approved_time = $par_data_enforcement_notice->getStatusTime('approved');
-      if ($approved_time) {
-        $approved_date = DrupalDateTime::createFromTimestamp($approved_time, NULL, ['validate_format' => FALSE]);
-
-        // Find date to process.
-        $holidays = array_column(UkBankHolidayFactory::getAll(), 'date', 'date');
-        $calculator = new BusinessDaysCalculator(
-          $approved_date,
-          $holidays,
-          [BusinessDaysCalculator::SATURDAY, BusinessDaysCalculator::SUNDAY]
-        );
-        $calculator->addBusinessDays(10);
-
-        $this->getFlowDataHandler()
-          ->setFormPermValue("send_date", $this->getDateFormatter()->format($calculator->getDate()->getTimestamp(), 'gds_date_format'));
-      }
-    }
-
     parent::loadData($cardinality);
   }
 
@@ -73,8 +53,6 @@ class ParEnforcementSendWarning extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     // Only display this warning if the enforcement has been approved.
     if ($this->getFlowDataHandler()->getFormPermValue('enforcement_approved')) {
-      $send_date = $this->getFlowDataHandler()->getDefaultValues('send_date', '');
-
       $schedule_url = Url::fromUri('http://www.legislation.gov.uk/ukpga/2008/13/schedule/4A', ['attributes' => ['target' => '_blank']]);
       $schedule_link = Link::fromTextAndUrl('Schedule 4A of The Regulatory Enforcement Sanctions Act 2008', $schedule_url);
 
