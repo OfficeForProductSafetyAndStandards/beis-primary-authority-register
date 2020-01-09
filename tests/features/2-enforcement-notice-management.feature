@@ -12,11 +12,9 @@ Feature: Enforcement notice management
         Then the element "h1.heading-xlarge" contains the text "Enforcements"
 
         # APPROVE FORM
-
         And I successfully approve enforcement notice "Enforcement notice 4"
 
         # BLOCK FORM
-
         And I successfully block enforcement notice "Enforcement notice 3"
 
         # REFER FORM
@@ -51,7 +49,7 @@ Feature: Enforcement notice management
 
         # APPROVAL FORM
 
-        And I successfully approve enforcement notice "Enforcement notice 2"
+#        And I successfully approve enforcement notice "Enforcement notice 2"
 
         # CHECK PAR AUTHORITY VIEW
 
@@ -62,10 +60,16 @@ Feature: Enforcement notice management
         When I click the link with text "See your enforcement notices"
         And I click the link text "Enforcement notice 2"
         Then the element "h1.heading-xlarge" contains the text "Respond to notice of enforcement action"
+        Given I am logged in as "par_authority@example.com"
+        When I click the link with text "See your enforcement notices"
+        And I click the link text "Enforcement notice 3"
+        Then the element "h1.heading-xlarge" contains the text "View notification of enforcement action received from"
+        And the element ".component-enforcement-send-warning" does not contain the text "Please note that this enforcement notice has been approved."
         When I click the link text "Dashboard"
         And I click the link with text "See your enforcement notices"
         And I click the link text "Enforcement notice 4"
         Then the element "h1.heading-xlarge" contains the text "View notification of enforcement action received from"
+        And the element ".component-enforcement-send-warning" contains the text "Please note that this enforcement notice has been approved."
 
 
 @enforcementnotices @ci
