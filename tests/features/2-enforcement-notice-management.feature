@@ -60,7 +60,7 @@ Feature: Enforcement notice management
         When I click the link with text "See your enforcement notices"
         And I click the link text "Enforcement notice 2"
         Then the element "h1.heading-xlarge" contains the text "Respond to notice of enforcement action"
-        Given I am logged in as "par_authority@example.com"
+        When I click the link text "Dashboard"
         When I click the link with text "See your enforcement notices"
         And I click the link text "Enforcement notice 3"
         Then the element "h1.heading-xlarge" contains the text "View notification of enforcement action received from"
