@@ -172,9 +172,6 @@
             "drupal/redis": {
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2019-04-11/3004561-5-override-default-scheme-for-predis.patch"
             },
-            "drupal/tfa": {
-                "Create the Send Plugin API": "https://www.drupal.org/files/issues/2018-08-13/enable_tfa_send_plugin.patch"
-            },
             "drupal/vbo_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2018-07-26/allow_configurable_scheme-2988257-5.patch"
             },

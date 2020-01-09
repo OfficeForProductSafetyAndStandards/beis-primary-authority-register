@@ -215,6 +215,36 @@ class ParDataEnforcementNotice extends ParDataEntity {
   }
 
   /**
+   * Whether any part of this enforcement has been approved.
+   *
+   * An enforcement notice can be both blocked and approved simultaneously.
+   */
+  public function isApproved() {
+    foreach ($this->getEnforcementActions() as $action) {
+      if ($action->isApproved()) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Whether any part of this enforcement has been blocked.
+   *
+   * An enforcement notice can be both blocked and approved simultaneously.
+   */
+  public function isBlocked() {
+    foreach ($this->getEnforcementActions() as $action) {
+      if ($action->isBlocked()) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getRawStatus() {

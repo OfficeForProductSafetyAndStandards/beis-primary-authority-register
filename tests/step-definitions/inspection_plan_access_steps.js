@@ -87,6 +87,11 @@ When('I enter the revoke reason {string}', function (string) {
         .setValue('#edit-revocation-reason', string)
 });
 
+When('I enter the deletion reason {string}', function (string) {
+    return client
+        .setValue('#edit-deletion-reason', string)
+});
+
 Then('I should revoke successfully', function () {
     return shared
         .clickLinkByPureText('Auto-test-NewInspectionPlan-retest')
