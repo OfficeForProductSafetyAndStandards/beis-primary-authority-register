@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\Event;
 class ParDataEvent extends Event implements ParDataEventInterface {
 
   /**
-   * The name of the event triggered when an existing par entity is deleted.
+   * The name of the event triggered when an existing par entity is updated.
    *
    * @Event
    *
