@@ -1,0 +1,28 @@
+uuid: 2938fad7-fc8c-4dea-a097-bf7860f49d3a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_partnership
+    - message.template.new_inspection_plan
+    - par_data.par_data_partnership_type.partnership
+id: message.new_inspection_plan.field_partnership
+field_name: field_partnership
+entity_type: message
+bundle: new_inspection_plan
+label: Partnership
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_partnership'
+  handler_settings:
+    target_bundles:
+      partnership: partnership
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
