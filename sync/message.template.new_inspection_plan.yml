@@ -1,0 +1,17 @@
+uuid: 28b7948b-bac8-4578-bb65-f40677a45348
+langcode: en
+status: true
+dependencies: {  }
+template: new_inspection_plan
+label: 'New inspection plan'
+description: 'This notification is sent to the primary authority and the organisation when an inspection plan is created.'
+text:
+  -
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>This message is to inform you that a new inspection plan has been created for your primary authority partnership.</p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
+    format: basic_html
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }
