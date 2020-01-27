@@ -5,8 +5,6 @@ namespace Drupal\par_notification\EventSubscriber;
 use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Event\ParDataEvent;
-use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParNotificationSubscriberBase;
 
