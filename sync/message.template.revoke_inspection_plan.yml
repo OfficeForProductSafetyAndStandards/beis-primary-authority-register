@@ -1,0 +1,17 @@
+uuid: 92b89e03-51f1-47e1-aebf-49646a7a5e6e
+langcode: en
+status: true
+dependencies: {  }
+template: revoke_inspection_plan
+label: 'Revoke Inspection plan'
+description: 'This notification is sent to the primary authority and the organisation when an inspection plan is revoked'
+text:
+  -
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>An inspection plan for @partnership_label has been revoked.</p>\r\n\r\n<p>^</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
+    format: basic_html
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }
