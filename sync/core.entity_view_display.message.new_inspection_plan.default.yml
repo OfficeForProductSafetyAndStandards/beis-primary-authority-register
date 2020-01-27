@@ -3,21 +3,22 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.message.new_inspection_plan.field_inspection_plan
     - field.field.message.new_inspection_plan.field_message_subject
-    - field.field.message.new_inspection_plan.field_partnership
     - message.template.new_inspection_plan
 id: message.new_inspection_plan.default
 targetEntityType: message
 bundle: new_inspection_plan
 mode: default
 content:
-  field_partnership:
+  field_inspection_plan:
     weight: 1
-    label: above
+    label: hidden
     settings:
       link: true
+      view_mode: default
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_entity_view
     region: content
   partial_0:
     weight: 0
