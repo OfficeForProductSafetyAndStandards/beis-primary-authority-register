@@ -34,11 +34,11 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
   /**
    * Get all the recipients for this notification.
    *
-   * @param $event
+   * @param EntityEvent $event
    *
    * @return ParDataPerson[]
    */
-  public function getRecipients(ParDataEventInterface $event) {
+  public function getRecipients(EntityEvent $event) {
     $contacts = [];
 
     /** @var ParDataEntityInterface $entity */
@@ -83,9 +83,9 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
   }
 
   /**
-   * @param ParDataEventInterface $event
+   * @param EntityEvent $event
    */
-  public function onEvent(ParDataEventInterface $event) {
+  public function onEvent(EntityEvent $event) {
     /** @var ParDataEntityInterface par_data_inspection_plan */
     $par_data_inspection_plan = $event->getEntity();
 
