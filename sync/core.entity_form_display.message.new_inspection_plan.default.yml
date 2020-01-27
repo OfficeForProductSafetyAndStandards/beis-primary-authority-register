@@ -3,24 +3,16 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.message.new_inspection_plan.field_inspection_plan
     - field.field.message.new_inspection_plan.field_message_subject
-    - field.field.message.new_inspection_plan.field_partnership
     - message.template.new_inspection_plan
 id: message.new_inspection_plan.default
 targetEntityType: message
 bundle: new_inspection_plan
 mode: default
 content:
-  field_message_subject:
-    weight: 0
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_partnership:
-    weight: 2
+  field_inspection_plan:
+    weight: 1
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -28,5 +20,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_message_subject:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
 hidden: {  }
