@@ -43,9 +43,10 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
 
     /** @var ParDataEntityInterface $entity */
     $entity = $event->getEntity();
+    $par_data_partnership = $entity->getPartnership(TRUE) ? $entity->getPartnership(TRUE) : $entity;
 
     // Always notify the primary authority contacts.
-    if ($primary_authority_contacts = $entity->getAuthorityPeople()) {
+    if ($primary_authority_contacts = $par_data_partnership->getAuthorityPeople()) {
       foreach ($primary_authority_contacts as $contact) {
         if (!isset($contacts[$contact->id()])) {
           $contacts[$contact->id()] = $contact;
@@ -53,7 +54,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
       }
     }
     // Always notify the primary organisation contacts.
-    if ($primary_organisation_contact = $entity->getOrganisationPeople()) {
+    if ($primary_organisation_contact = $par_data_partnership->getOrganisationPeople()) {
       foreach ($primary_organisation_contact as $contact) {
         if (!isset($contacts[$contact->id()])) {
           $contacts[$contact->id()] = $contact;
@@ -62,7 +63,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
     }
 
     // Notify secondary contacts at the authority if there are any.
-    if ($authority = $entity->getAuthority(TRUE)) {
+    if ($authority = $par_data_partnership->getAuthority(TRUE)) {
       foreach ($authority->getPerson() as $contact) {
         if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
           $contacts[$contact->id()] = $contact;
@@ -70,7 +71,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
       }
     }
     // Notify secondary contacts at the organisation if there are any.
-    if ($organisation = $entity->getOrganisation(TRUE)) {
+    if ($organisation = $par_data_partnership->getOrganisation(TRUE)) {
       foreach ($organisation->getPerson() as $contact) {
         if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
           $contacts[$contact->id()] = $contact;
