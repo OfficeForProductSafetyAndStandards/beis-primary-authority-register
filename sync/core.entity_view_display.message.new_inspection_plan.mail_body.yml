@@ -4,8 +4,8 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.message.mail_body
+    - field.field.message.new_inspection_plan.field_inspection_plan
     - field.field.message.new_inspection_plan.field_message_subject
-    - field.field.message.new_inspection_plan.field_partnership
     - message.template.new_inspection_plan
 id: message.new_inspection_plan.mail_body
 targetEntityType: message
@@ -21,5 +21,5 @@ content:
     weight: 0
     region: content
 hidden:
+  field_inspection_plan: true
   field_message_subject: true
-  field_partnership: true
