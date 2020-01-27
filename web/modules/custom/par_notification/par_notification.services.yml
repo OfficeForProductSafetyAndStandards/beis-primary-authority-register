@@ -59,12 +59,12 @@ services:
     class: '\Drupal\par_notification\EventSubscriber\PartnershipDeletedSubscriber'
     tags:
       - { name: 'event_subscriber' }
-par_notification.inspection_plan_created_subscriber:
-  class: '\Drupal\par_notification\EventSubscriber\NewInspectionPlanSubscriber'
-  tags:
-    - { name: 'event_subscriber' }
-par_notification.inspection_plan_revoked_subscriber:
-  class: '\Drupal\par_notification\EventSubscriber\InspectionPlanRevokedSubscriber'
-  tags:
-    - { name: 'event_subscriber' }
+  par_notification.inspection_plan_created_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\NewInspectionPlanSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_notification.inspection_plan_revoked_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\InspectionPlanRevokedSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
 
