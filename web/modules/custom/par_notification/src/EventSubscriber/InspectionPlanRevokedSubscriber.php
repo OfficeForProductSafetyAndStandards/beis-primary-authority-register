@@ -15,7 +15,7 @@ class InspectionPlanRevokedSubscriber extends ParNotificationSubscriberBase {
   /**
    * The message template ID created for this notification.
    *
-   * @see /admin/structure/message/manage/revoke_inspection_plan_notification
+   * @see /admin/structure/message/manage/revoke_inspection_plan
    */
   const MESSAGE_ID = 'revoke_inspection_plan_notification';
 
@@ -27,7 +27,7 @@ class InspectionPlanRevokedSubscriber extends ParNotificationSubscriberBase {
   static function getSubscribedEvents() {
     // Revocation event should fire after most default events to make sure
     // revocation has not been cancelled.
-    $events[ParDataEvent::statusChange('par_data_partnership', 'deleted')][] = ['onEvent', -100];
+    $events[ParDataEvent::statusChange('par_data_inspection_plan', 'revoked')][] = ['onEvent', -100];
 
     return $events;
   }
@@ -86,8 +86,10 @@ class InspectionPlanRevokedSubscriber extends ParNotificationSubscriberBase {
    * @param ParDataEventInterface $event
    */
   public function onEvent(ParDataEventInterface $event) {
-    /** @var ParDataEntityInterface $par_data_partnership */
-    $par_data_partnership = $event->getEntity();
+
+    /** @var ParDataEntityInterface par_data_inspection_plan */
+    $par_data_inspection_plan = $event->getEntity();
+    $par_data_partnership = $par_data_inspection_plan ? $par_data_inspection_plan->getPartnership(TRUE) : NULL;
 
     $contacts = $this->getRecipients($event);
     foreach ($contacts as $contact) {
@@ -106,13 +108,14 @@ class InspectionPlanRevokedSubscriber extends ParNotificationSubscriberBase {
         }
 
         // Add contextual information to this message.
-        if ($message->hasField('field_partnership')) {
-          $message->set('field_partnership', $par_data_partnership);
+        if ($message->hasField('field_inspection_plan')) {
+          $message->set('field_inspection_plan', $par_data_inspection_plan);
         }
 
         // Add some custom arguments to this message.
         $message->setArguments([
           '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
+          '@inspection_plan_title' =>  $par_data_inspection_plan ? strtolower($par_data_inspection_plan->getTitle()) : 'inspection plan',
           '@first_name' => $contact->getFirstName(),
         ]);
 
