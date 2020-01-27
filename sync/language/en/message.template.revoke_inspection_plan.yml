@@ -1,4 +1,4 @@
 text:
   -
-    value: "<p>Dear @first_name,</p>\r\n\r\n<p>An inspection plan for @partnership_label has been revoked.</p>\r\n\r\n<p>^</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>This message is to inform you that the inspection plan \"@inspection_plan_title\"&nbsp; for the @partnership_label has been revoked.</p>\r\n\r\n<p>^</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html
