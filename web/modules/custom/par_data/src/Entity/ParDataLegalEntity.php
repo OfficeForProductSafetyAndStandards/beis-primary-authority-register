@@ -88,7 +88,7 @@ class ParDataLegalEntity extends ParDataEntity {
       return current($legal_entities);
     }
     else {
-      parent::create($values);
+      return parent::create($values);
     }
   }
 
