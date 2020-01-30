@@ -104,30 +104,6 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
       '#required' => TRUE,
     ];
 
-    $regulatory_functions = $this->getParDataManager()->getEntitiesByType('par_data_regulatory_function');
-    $regulatory_function_options = $this->getParDataManager()->getEntitiesAsOptions($regulatory_functions);
-    $form['partnership_regulatory_functions'] = [
-      '#type' => 'checkboxes',
-      '#title' => $this->t('Please choose the regulatory functions of this partnership'),
-      '#options' => $regulatory_function_options,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('partnership_regulatory_functions', []),
-      '#required' => TRUE,
-    ];
-
-    // Defensive coding we are dealing with an approved partnership we are not changing the state of
-    // the entity so avoid confusion by disabling the regulatory functions.
-    if ($par_data_partnership->getRawStatus() == 'confirmed_rd') {
-      $form['partnership_regulatory_functions']['#disabled'] = TRUE;
-      $form['confirm_authorisation_select']['#disabled'] = TRUE;
-
-      $form['approved_partnership'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('This partnership has already been approved.'),
-        '#prefix' => '<div><strong>',
-        '#suffix' => '</strong></div>',
-      ];
-    }
-
     return parent::buildForm($form, $form_state);
   }
 

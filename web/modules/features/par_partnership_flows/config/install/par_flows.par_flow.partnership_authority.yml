@@ -17,7 +17,7 @@ steps:
       edit_about_partnership: 2
       advice: 4
       inspection_plans: 3
-      save: 18
+      save: 19
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
@@ -128,4 +128,12 @@ steps:
       save: 3
       cancel: 3
   18:
+    route: par_partnership_flows.regulatory_function_update
+    form_id: par_partnership_regulatory_function_update
+    components:
+      partnership_regulatory_functions: {}
+    redirect:
+      save: 1
+      cancel: 1
+  19:
     route: view.par_user_partnerships.partnerships_page
