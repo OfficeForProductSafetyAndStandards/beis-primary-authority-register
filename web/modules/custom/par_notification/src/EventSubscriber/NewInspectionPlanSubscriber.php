@@ -113,7 +113,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
 
   //  $par_data_partnership = $par_data_inspection_plan ? $par_data_inspection_plan->getPartnership(TRUE) : NULL;
 
-    $contacts = $this->getRecipients($par_data_partnership);
+    $contacts = $this->getRecipients($event);
     foreach ($contacts as $contact) {
       if (!isset($this->recipients[$contact->getEmail()])) {
         // Record the recipient so that we don't send them the message twice.
