@@ -43,17 +43,9 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
     $contacts = [];
 
     /** @var ParDataEntityInterface $entity */
-    $entity = $event->getEntity();
+    $par_data_inspection_plan = $event->getEntity();
 
-    $par_data_partnership = $entity->getRelationships('par_data_partnership');
-
-    // This is a new inspection plan that has been created on an active partnership.
-    // There cannot be multiple partnerships referenced for this inspection plan.
-    foreach ($par_data_partnership as $uuid => $relationship) {
-      if (is_object($relationship->getEntity())) {
-        $par_data_partnership = $relationship->getEntity();
-      }
-    }
+    $par_data_partnership = $par_data_inspection_plan->getParentPartnership();
 
     // Always notify the primary authority contacts.
     if ($primary_authority_contacts = $par_data_partnership->getAuthorityPeople()) {
@@ -98,18 +90,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
     /** @var ParDataEntityInterface par_data_inspection_plan */
     $par_data_inspection_plan = $event->getEntity();
 
-
-    $par_data_partnership = $par_data_inspection_plan->getRelationships('par_data_partnership');
-
-    // This is a new inspection plan that has been created on an active partnership.
-    // There cannot be multiple partnerships referenced for this inspection plan.
-    foreach ($par_data_partnership as $uuid => $relationship) {
-      if (is_object($relationship->getEntity())) {
-        $par_data_partnership = $relationship->getEntity();
-      }
-    }
-
-  //  $par_data_partnership = $par_data_inspection_plan ? $par_data_inspection_plan->getPartnership(TRUE) : NULL;
+    $par_data_partnership = $par_data_inspection_plan->getParentPartnership();
 
     $contacts = $this->getRecipients($event);
     foreach ($contacts as $contact) {
