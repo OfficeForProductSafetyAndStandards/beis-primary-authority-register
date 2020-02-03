@@ -88,7 +88,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
     $par_data_inspection_plan = $event->getEntity();
 
 
-    $par_data_partnership = $this->getRelationships('par_data_enforcement_notice');
+    $par_data_partnership = $par_data_inspection_plan->getRelationships('par_data_partnership');
 
     // This is a new inspection plan that has been created on an active partnership.
     // There cannot be multiple partnerships referenced for this inspection plan.
