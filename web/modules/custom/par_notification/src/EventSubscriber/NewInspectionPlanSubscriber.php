@@ -34,18 +34,17 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
   /**
    * Get all the recipients for this notification.
    *
-   * @param EntityEvent $event
+   * @param ParDataPartnership $partnership
+   * The partnership associated with the inspection plan entity
    *
    * @return ParDataPerson[]
    */
-  public function getRecipients(EntityEvent $event) {
+  public function getRecipients(ParDataPartnership $partnership) {
     $contacts = [];
 
-    /** @var ParDataEntityInterface $entity */
-    $entity = $event->getEntity();
 
     // Always notify the primary authority contacts.
-    if ($primary_authority_contacts = $entity->getPrimaryAuthorityContacts()) {
+    if ($primary_authority_contacts = $partnership->getPrimaryAuthorityContacts()) {
       foreach ($primary_authority_contacts as $contact) {
         if (!isset($contacts[$contact->id()])) {
           $contacts[$contact->id()] = $contact;
@@ -53,7 +52,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
       }
     }
     // Always notify the primary organisation contacts.
-    if ($primary_organisation_contact = $entity->getOrganisationPeople()) {
+    if ($primary_organisation_contact = $partnership->getOrganisationPeople()) {
       foreach ($primary_organisation_contact as $contact) {
         if (!isset($contacts[$contact->id()])) {
           $contacts[$contact->id()] = $contact;
@@ -62,7 +61,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
     }
 
     // Notify secondary contacts at the authority if there are any.
-    if ($authority = $entity->getAuthority(TRUE)) {
+    if ($authority = $partnership->getAuthority(TRUE)) {
       foreach ($authority->getPerson() as $contact) {
         if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
           $contacts[$contact->id()] = $contact;
@@ -70,7 +69,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
       }
     }
     // Notify secondary contacts at the organisation if there are any.
-    if ($organisation = $entity->getOrganisation(TRUE)) {
+    if ($organisation = $partnership->getOrganisation(TRUE)) {
       foreach ($organisation->getPerson() as $contact) {
         if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
           $contacts[$contact->id()] = $contact;
@@ -88,9 +87,20 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
     /** @var ParDataEntityInterface par_data_inspection_plan */
     $par_data_inspection_plan = $event->getEntity();
 
+
+    $par_data_partnership = $this->getRelationships('par_data_enforcement_notice');
+
+    // This is a new inspection plan that has been created on an active partnership.
+    // There cannot be multiple partnerships referenced for this inspection plan.
+    foreach ($par_data_partnership as $uuid => $relationship) {
+      if (is_object($relationship->getEntity())) {
+        $par_data_partnership = $relationship->getEntity();
+      }
+    }
+
   //  $par_data_partnership = $par_data_inspection_plan ? $par_data_inspection_plan->getPartnership(TRUE) : NULL;
 
-    $contacts = $this->getRecipients($event);
+    $contacts = $this->getRecipients($par_data_partnership);
     foreach ($contacts as $contact) {
       if (!isset($this->recipients[$contact->getEmail()])) {
         // Record the recipient so that we don't send them the message twice.
@@ -113,7 +123,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
 
         // Add some custom arguments to this message.
         $message->setArguments([
-         // '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
+          '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
           '@inspection_plan_title' =>  $par_data_inspection_plan ? strtolower($par_data_inspection_plan->getTitle()) : 'inspection plan',
           '@first_name' => $contact->getFirstName(),
         ]);
