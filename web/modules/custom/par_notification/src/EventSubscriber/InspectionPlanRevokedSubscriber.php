@@ -43,8 +43,8 @@ class InspectionPlanRevokedSubscriber extends ParNotificationSubscriberBase {
     $contacts = [];
 
     /** @var ParDataEntityInterface $entity */
-    $entity = $event->getEntity();
-    $par_data_partnership = $entity->getPartnership(TRUE) ? $entity->getPartnership(TRUE) : $entity;
+    $par_data_inspection_plan = $event->getEntity();
+    $par_data_partnership = $par_data_inspection_plan->getParentPartnership();
 
     // Always notify the primary authority contacts.
     if ($primary_authority_contacts = $par_data_partnership->getAuthorityPeople()) {
@@ -79,7 +79,6 @@ class InspectionPlanRevokedSubscriber extends ParNotificationSubscriberBase {
         }
       }
     }
-
     return $contacts;
   }
 
@@ -90,7 +89,8 @@ class InspectionPlanRevokedSubscriber extends ParNotificationSubscriberBase {
 
     /** @var ParDataEntityInterface par_data_inspection_plan */
     $par_data_inspection_plan = $event->getEntity();
-    $par_data_partnership = $par_data_inspection_plan ? $par_data_inspection_plan->getPartnership(TRUE) : NULL;
+
+    $par_data_partnership = $par_data_inspection_plan->getParentPartnership();
 
     $contacts = $this->getRecipients($event);
     foreach ($contacts as $contact) {
