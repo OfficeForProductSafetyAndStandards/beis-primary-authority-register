@@ -43,10 +43,9 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
 
     /** @var ParDataEntityInterface $entity */
     $entity = $event->getEntity();
-    $par_data_partnership = $entity->getPartnership(TRUE) ? $entity->getPartnership(TRUE) : $entity;
 
     // Always notify the primary authority contacts.
-    if ($primary_authority_contacts = $par_data_partnership->getAuthorityPeople()) {
+    if ($primary_authority_contacts = $entity->getPrimaryAuthorityContacts()) {
       foreach ($primary_authority_contacts as $contact) {
         if (!isset($contacts[$contact->id()])) {
           $contacts[$contact->id()] = $contact;
@@ -54,7 +53,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
       }
     }
     // Always notify the primary organisation contacts.
-    if ($primary_organisation_contact = $par_data_partnership->getOrganisationPeople()) {
+    if ($primary_organisation_contact = $entity->getOrganisationPeople()) {
       foreach ($primary_organisation_contact as $contact) {
         if (!isset($contacts[$contact->id()])) {
           $contacts[$contact->id()] = $contact;
@@ -63,7 +62,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
     }
 
     // Notify secondary contacts at the authority if there are any.
-    if ($authority = $par_data_partnership->getAuthority(TRUE)) {
+    if ($authority = $entity->getAuthority(TRUE)) {
       foreach ($authority->getPerson() as $contact) {
         if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
           $contacts[$contact->id()] = $contact;
@@ -71,7 +70,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
       }
     }
     // Notify secondary contacts at the organisation if there are any.
-    if ($organisation = $par_data_partnership->getOrganisation(TRUE)) {
+    if ($organisation = $entity->getOrganisation(TRUE)) {
       foreach ($organisation->getPerson() as $contact) {
         if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
           $contacts[$contact->id()] = $contact;
@@ -89,7 +88,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
     /** @var ParDataEntityInterface par_data_inspection_plan */
     $par_data_inspection_plan = $event->getEntity();
 
-    $par_data_partnership = $par_data_inspection_plan ? $par_data_inspection_plan->getPartnership(TRUE) : NULL;
+  //  $par_data_partnership = $par_data_inspection_plan ? $par_data_inspection_plan->getPartnership(TRUE) : NULL;
 
     $contacts = $this->getRecipients($event);
     foreach ($contacts as $contact) {
@@ -114,7 +113,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
 
         // Add some custom arguments to this message.
         $message->setArguments([
-          '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
+         // '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
           '@inspection_plan_title' =>  $par_data_inspection_plan ? strtolower($par_data_inspection_plan->getTitle()) : 'inspection plan',
           '@first_name' => $contact->getFirstName(),
         ]);
