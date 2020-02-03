@@ -17,7 +17,7 @@ class InspectionPlanRevokedSubscriber extends ParNotificationSubscriberBase {
    *
    * @see /admin/structure/message/manage/revoke_inspection_plan
    */
-  const MESSAGE_ID = 'revoke_inspection_plan_notification';
+  const MESSAGE_ID = 'revoke_inspection_plan';
 
   /**
    * The events to react to.
