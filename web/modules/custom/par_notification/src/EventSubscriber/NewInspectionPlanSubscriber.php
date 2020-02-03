@@ -55,9 +55,8 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
       }
     }
 
-
     // Always notify the primary authority contacts.
-    if ($primary_authority_contacts = $par_data_partnership->getPrimaryAuthorityContacts()) {
+    if ($primary_authority_contacts = $par_data_partnership->getAuthorityPeople()) {
       foreach ($primary_authority_contacts as $contact) {
         if (!isset($contacts[$contact->id()])) {
           $contacts[$contact->id()] = $contact;
@@ -89,7 +88,6 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
         }
       }
     }
-
     return $contacts;
   }
 
