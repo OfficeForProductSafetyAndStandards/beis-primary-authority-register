@@ -18,7 +18,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
    *
    * @see /admin/structure/message/manage/new_inspection_plan
    */
-  const MESSAGE_ID = 'new_inspection_plan_notification';
+  const MESSAGE_ID = 'new_inspection_plan';
 
   /**
    * The events to react to.
