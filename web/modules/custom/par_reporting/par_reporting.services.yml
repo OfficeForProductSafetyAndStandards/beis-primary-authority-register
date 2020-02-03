@@ -1,0 +1,4 @@
+services:
+  par_reporting.manager:
+    class: Drupal\par_reporting\ParReportingManager
+    arguments: ['@par_data.manager', '@messenger', '@current_user']

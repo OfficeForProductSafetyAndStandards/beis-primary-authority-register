@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_data\Controller;
+namespace Drupal\par_reporting\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -11,7 +11,7 @@ use Drupal\Core\Url;
 /**
 * A controller managing par reporting pages.
 */
-class ParDataReportController extends ControllerBase {
+class ParReportingController extends ControllerBase {
 
   /**
    * The entity manager.
