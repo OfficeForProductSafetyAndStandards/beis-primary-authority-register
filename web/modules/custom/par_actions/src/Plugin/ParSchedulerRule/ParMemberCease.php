@@ -2,7 +2,7 @@
 
 namespace Drupal\par_actions\Plugin\ParSchedulerRule;
 
-use Drupal\par_actions\ParSchedulerRuleBase;
+use Drupal\par_actions\ParStatisticBase;
 
 /**
  * Cease a member.
@@ -18,6 +18,6 @@ use Drupal\par_actions\ParSchedulerRuleBase;
  *   action = "par_action_cease"
  * )
  */
-class ParMemberCease extends ParSchedulerRuleBase {
+class ParMemberCease extends ParStatisticBase {
 
 }
