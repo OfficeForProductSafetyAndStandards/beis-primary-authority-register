@@ -6,8 +6,11 @@ use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\Core\Entity\EntityEvent;
+use Drupal\Core\Entity\EntityEvents;
 use Drupal\par_flows\Form\ParBaseForm;
-
+use Drupal\par_data\Event\ParDataEvent;
+use Drupal\par_data\ParDataException;
 use Drupal\file\Entity\File;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
@@ -111,6 +114,11 @@ class ParPartnershipFlowsInspectionPlanDateForm extends ParBaseForm {
         $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
         $par_data_partnership->get('field_inspection_plan')->appendItem($par_data_inspection_plan->id());
         $par_data_partnership->save();
+
+        // Dispatch a par event.
+        $event = new ParDataEvent($par_data_inspection_plan);
+        $dispatcher = \Drupal::service('event_dispatcher');
+        $dispatcher->dispatch(ParDataEvent::referenceAction($par_data_inspection_plan->getEntityTypeId(), 'create'), $event);
       }
 
       $this->getFlowDataHandler()->deleteStore();
