@@ -192,7 +192,7 @@ class ParDataInspectionPlan extends ParDataEntity {
     $par_data_partnership = $this->getRelationships('par_data_partnership');
     $par_data_partnership =  reset($par_data_partnership);
 
-    return  is_object($par_data_partnership->getEntity()) ? $par_data_partnership->getEntity() : NULL;
+    return  is_object($par_data_partnership) ? $par_data_partnership->getEntity() : NULL;
   }
 
 
