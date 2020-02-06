@@ -4,6 +4,8 @@ namespace Drupal\par_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
+use Drupal\par_data\Event\ParDataEvent;
+use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
@@ -26,8 +28,8 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    // Confirmation event should fire after a partnership has been confirmed.
-    $events[EntityEvents::insert('par_data_inspection_plan')][] = ['onEvent', -101];
+    // React to custom reference event bring dispatched.
+    $events[ParDataEvent::referenceAction('par_data_inspection_plan', 'create')][] = ['onEvent', 800];
 
     return $events;
   }
@@ -35,17 +37,21 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
   /**
    * Get all the recipients for this notification.
    *
-   * @param EntityEvent $event
+   * @param ParDataEventInterface $event
    *
    * @return ParDataPerson[]
    */
-  public function getRecipients(EntityEvent $event) {
+  public function getRecipients(ParDataEventInterface $event) {
     $contacts = [];
 
     /** @var ParDataEntityInterface $entity */
     $par_data_inspection_plan = $event->getEntity();
 
     $par_data_partnership = $par_data_inspection_plan->getParentPartnership();
+
+   if (!is_object($par_data_partnership)) {
+     return;
+   }
 
     // Always notify the primary authority contacts.
     if ($primary_authority_contacts = $par_data_partnership->getAuthorityPeople()) {
@@ -84,9 +90,9 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
   }
 
   /**
-   * @param EntityEvent $event
+   * @param ParDataEventInterface $event
    */
-  public function onEvent(EntityEvent $event) {
+  public function onEvent(ParDataEventInterface $event) {
     /** @var ParDataEntityInterface par_data_inspection_plan */
     $par_data_inspection_plan = $event->getEntity();
 
