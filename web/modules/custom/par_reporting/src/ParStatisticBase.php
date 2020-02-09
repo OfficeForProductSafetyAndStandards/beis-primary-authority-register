@@ -23,28 +23,35 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticBaseIn
    * {@inheritdoc}
    */
   public function getTitle() {
-    return $this->pluginDefinition['title'];
+    return $this->pluginDefinition['title'] ?? '';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDescription() {
+    return $this->pluginDefinition['description'] ?? '';
   }
 
   /**
    * {@inheritdoc}
    */
   public function getWeight() {
-    return $this->pluginDefinition['weight'];
+    return $this->pluginDefinition['weight'] ?? 0;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getStatus() {
-    return $this->pluginDefinition['status'];
+    return $this->pluginDefinition['status'] ?? true;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getStaleness() {
-    return $this->pluginDefinition['staleness'];
+    return $this->pluginDefinition['staleness'] ?? 3600;
   }
 
   /**
@@ -83,6 +90,7 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticBaseIn
       '#attributes' => ['class' => 'column-one-third'],
       '#value' => $this->getStat(),
       '#label' => $this->getTitle(),
+      '#description' => $this->getDescription(),
     ];
   }
 

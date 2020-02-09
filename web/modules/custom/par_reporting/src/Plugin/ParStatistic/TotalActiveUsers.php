@@ -18,7 +18,7 @@ class TotalActiveUsers extends ParStatisticBase {
   public function getStat() {
     $query = $this->getParDataManager()->getEntityQuery('user')
       ->condition('status', 1)
-      ->condition('access', strtotime("-6 months"), '>=');
+      ->condition('access', strtotime("-12 months"), '>=');
 
     return $query->count()->execute();
   }

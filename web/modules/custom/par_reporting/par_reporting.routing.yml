@@ -1,5 +1,5 @@
 par_reporting.reports_page:
-  path: '/admin/reports/par'
+  path: '/helpdesk/statistics'
   defaults:
     _controller: '\Drupal\par_reporting\Controller\ParReportingController::general'
     _title: 'PAR Reporting'

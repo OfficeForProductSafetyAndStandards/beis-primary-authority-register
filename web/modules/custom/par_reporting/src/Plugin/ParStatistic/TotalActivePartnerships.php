@@ -10,6 +10,7 @@ use Drupal\par_reporting\ParStatisticBase;
  * @ParStatistic(
  *   id = "total_active_partnerships",
  *   title = @Translation("Active partnerships."),
+ *   description = @Translation("The number of currently active partnerships."),
  *   status = TRUE,
  * )
  */

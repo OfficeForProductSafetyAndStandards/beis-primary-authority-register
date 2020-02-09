@@ -10,6 +10,7 @@ use Drupal\par_reporting\ParStatisticBase;
  * @ParStatistic(
  *   id = "total_primary_authorities",
  *   title = @Translation("Primary authorities."),
+ *   description = @Translation("The number of authorities with at least one active partnership."),
  *   status = TRUE,
  * )
  */

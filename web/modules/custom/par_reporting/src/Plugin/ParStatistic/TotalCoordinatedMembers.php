@@ -10,6 +10,7 @@ use Drupal\par_reporting\ParStatisticBase;
  * @ParStatistic(
  *   id = "total_coordinated_members",
  *   title = @Translation("Businesses in coordinated partnerships."),
+ *   description = @Translation("The total number of legal entities covered by a coordinated partnerships. If a legal entity is covered by two partnerships it will be counted twice."),
  *   status = TRUE,
  * )
  */

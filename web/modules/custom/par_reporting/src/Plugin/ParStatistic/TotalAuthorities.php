@@ -10,6 +10,7 @@ use Drupal\par_reporting\ParStatisticBase;
  * @ParStatistic(
  *   id = "total_authorities",
  *   title = @Translation("Total authorities."),
+ *   description = @Translation("The total number of authorities in the system."),
  *   status = TRUE,
  * )
  */

@@ -10,6 +10,7 @@ use Drupal\par_reporting\ParStatisticBase;
  * @ParStatistic(
  *   id = "total_direct_businesses",
  *   title = @Translation("Businesses in direct partnerships."),
+ *   description = @Translation("The total number of legal entities covered by a direct partnership. If a legal entity is covered by two partnerships it will be counted twice."),
  *   status = TRUE,
  * )
  */

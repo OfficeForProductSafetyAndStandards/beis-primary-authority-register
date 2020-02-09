@@ -8,17 +8,16 @@ use Drupal\par_reporting\ParStatisticBase;
  * Cease a member.
  *
  * @ParStatistic(
- *   id = "total_pending_partnerships",
- *   title = @Translation("Pending partnerships."),
- *   description = @Translation("The number of partnerships pending approval or completion."),
+ *   id = "total_enquiries",
+ *   title = @Translation("Total enquiries."),
+ *   description = @Translation("The total number of enquiry messages submitted."),
  *   status = TRUE,
  * )
  */
-class TotalPendingPartnerships extends ParStatisticBase {
+class TotalEnquiryMessages extends ParStatisticBase {
 
   public function getStat() {
-    $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
-      ->condition('partnership_status', 'confirmed_rd', '<>');
+    $query = $this->getParDataManager()->getEntityQuery('par_data_general_enquiry');
 
     $revoked = $query
       ->orConditionGroup()

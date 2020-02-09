@@ -83,6 +83,21 @@ class ParReportingController extends ControllerBase {
       '#create_placeholder' => TRUE,
     ];
 
+    // Statistics related to partnership documents.
+    $build['documents'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Partnership documents',
+      '#attributes' => ['class' => ['grid-row', 'form-group']],
+    ];
+    $build['documents']['inspection_plans'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['active_partnerships_with_inspection_plans']],
+      '#create_placeholder' => TRUE,
+    ];
+    $build['documents']['advice'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['active_advice']],
+      '#create_placeholder' => TRUE,
+    ];
+
     // Statistics related to organisations and legal entities.
     $build['covered_organisations'] = [
       '#type' => 'fieldset',
@@ -117,6 +132,21 @@ class ParReportingController extends ControllerBase {
       '#create_placeholder' => TRUE,
     ];
 
+    // Statistics related to organisations and legal entities.
+    $build['messages'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Notifications',
+      '#attributes' => ['class' => ['grid-row', 'form-group']],
+    ];
+    $build['messages']['enforcements'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_enforcement_notices']],
+      '#create_placeholder' => TRUE,
+    ];
+    $build['messages']['enquiries'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_enquiries']],
+      '#create_placeholder' => TRUE,
+    ];
+
     // Statistics related to users.
     $build['users'] = [
       '#type' => 'fieldset',
@@ -129,6 +159,10 @@ class ParReportingController extends ControllerBase {
     ];
     $build['users']['active'] = [
       '#lazy_builder' => ['par_reporting.manager:render', ['active_users']],
+      '#create_placeholder' => TRUE,
+    ];
+    $build['users']['recent'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['recent_users']],
       '#create_placeholder' => TRUE,
     ];
 

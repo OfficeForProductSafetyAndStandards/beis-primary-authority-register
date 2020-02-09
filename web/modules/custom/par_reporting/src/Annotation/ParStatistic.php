@@ -31,6 +31,15 @@ class ParStatistic extends Plugin {
   public $title;
 
   /**
+   * The description of the plugin.
+   *
+   * @var \Drupal\Core\Annotation\Translation
+   *
+   * @ingroup plugin_translatable
+   */
+  public $description;
+
+  /**
    * The plugin weight.
    *
    * The higher the weight the later in the filter order the plugin will be.

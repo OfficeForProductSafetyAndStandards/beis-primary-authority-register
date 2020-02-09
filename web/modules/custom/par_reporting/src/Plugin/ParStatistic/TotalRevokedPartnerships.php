@@ -10,6 +10,7 @@ use Drupal\par_reporting\ParStatisticBase;
  * @ParStatistic(
  *   id = "total_revoked_partnerships",
  *   title = @Translation("Revoked partnerships."),
+ *   description = @Translation("The total number of partnerships that have been revoked."),
  *   status = TRUE,
  * )
  */
