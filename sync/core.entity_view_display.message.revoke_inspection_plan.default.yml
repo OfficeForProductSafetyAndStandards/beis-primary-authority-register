@@ -13,11 +13,12 @@ mode: default
 content:
   field_inspection_plan:
     weight: 1
-    label: above
+    label: hidden
     settings:
-      link: true
+      view_mode: title
+      link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_entity_view
     region: content
   partial_0:
     weight: 0

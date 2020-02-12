@@ -13,7 +13,6 @@ permissions:
   - 'access par journey transition business'
   - 'access par journey transition coordinator'
   - 'access par journey transition partnership details'
-  - 'access par reports'
   - 'access par_data_advice entities'
   - 'access par_data_authority entities'
   - 'access par_data_coordinated_business entities'

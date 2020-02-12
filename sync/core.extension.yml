@@ -3,7 +3,6 @@ module:
   audit_log: 0
   automated_cron: 0
   better_exposed_filters: 0
-  big_pipe: 0
   block: 0
   block_content: 0
   breakpoint: 0
@@ -106,7 +105,6 @@ module:
   par_profile_view_flows: 0
   par_rd_delete_data_flows: 0
   par_rd_help_desk_flows: 0
-  par_reporting: 0
   par_roles: 0
   par_search_partnership_flows: 0
   par_user_block_flows: 0
