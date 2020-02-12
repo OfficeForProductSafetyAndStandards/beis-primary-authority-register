@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - field.field.message.new_inspection_plan.field_inspection_plan
+    - field.field.message.new_inspection_plan.field_message_subject
+    - message.template.new_inspection_plan
+id: message.new_inspection_plan.mail_subject
+targetEntityType: message
+bundle: new_inspection_plan
+mode: mail_subject
+content:
+  field_message_subject:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  field_inspection_plan: true
+  partial_0: true
+  partial_1: true

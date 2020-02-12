@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.full
+    - field.field.message.partnership_deleted_notification.field_message_subject
+    - field.field.message.partnership_deleted_notification.field_partnership
+    - message.template.partnership_deleted_notification
+id: message.partnership_deleted_notification.full
+targetEntityType: message
+bundle: partnership_deleted_notification
+mode: full
+content:
+  field_message_subject:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_partnership:
+    weight: 2
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

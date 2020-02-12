@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.par_deviation_request_comments
+    - comment.type.par_general_enquiry_comments
+    - comment.type.par_inspection_feedback_comments
+    - field.storage.message.field_comment
+    - message.template.new_response
+id: message.new_response.field_comment
+field_name: field_comment
+entity_type: message
+bundle: new_response
+label: Comment
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:comment'
+  handler_settings:
+    target_bundles:
+      par_deviation_request_comments: par_deviation_request_comments
+      par_general_enquiry_comments: par_general_enquiry_comments
+      par_inspection_feedback_comments: par_inspection_feedback_comments
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: par_deviation_request_comments
+field_type: entity_reference

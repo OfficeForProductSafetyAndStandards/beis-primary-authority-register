@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_enforcement_notice
+    - message.template.reviewed_enforcement
+    - par_data.par_data_enforcement_notice_type.enforcement_notice
+id: message.reviewed_enforcement.field_enforcement_notice
+field_name: field_enforcement_notice
+entity_type: message
+bundle: reviewed_enforcement
+label: 'Enforcement Notice'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_enforcement_notice'
+  handler_settings:
+    target_bundles:
+      enforcement_notice: enforcement_notice
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

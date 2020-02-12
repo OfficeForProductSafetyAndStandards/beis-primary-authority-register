@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - field.field.message.new_inspection_feedback.field_inspection_feedback
+    - field.field.message.new_inspection_feedback.field_message_subject
+    - message.template.new_inspection_feedback
+id: message.new_inspection_feedback.mail_body
+targetEntityType: message
+bundle: new_inspection_feedback
+mode: mail_body
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  partial_1:
+    weight: 0
+    region: content
+hidden:
+  field_inspection_feedback: true
+  field_message_subject: true

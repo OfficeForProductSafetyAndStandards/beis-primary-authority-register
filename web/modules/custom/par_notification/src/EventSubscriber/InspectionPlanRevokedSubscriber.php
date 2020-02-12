@@ -6,6 +6,7 @@ use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\ParDataRelationship;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParNotificationException;
@@ -45,10 +46,12 @@ class InspectionPlanRevokedSubscriber extends ParNotificationSubscriberBase {
 
     /** @var ParDataEntityInterface $par_data_inspection_plan */
     $par_data_inspection_plan = $event->getEntity();
-    /** @var ParDataPartnership[] $par_data_partnerships */
-    $par_data_partnerships = $par_data_inspection_plan->getRelationships('par_data_partnership');
+    /** @var ParDataRelationship[] $partnership_relationships */
+    $partnership_relationships = $par_data_inspection_plan->getRelationships('par_data_partnership');
 
-    foreach ($par_data_partnerships as $par_data_partnership) {
+    foreach ($partnership_relationships as $relationship) {
+      $par_data_partnership = $relationship->getEntity();
+
       // Always notify the primary authority contacts.
       if ($primary_authority_contacts = $par_data_partnership->getAuthorityPeople()) {
         foreach ($primary_authority_contacts as $contact) {
@@ -91,11 +94,11 @@ class InspectionPlanRevokedSubscriber extends ParNotificationSubscriberBase {
    * @param ParDataEventInterface $event
    */
   public function onEvent(ParDataEventInterface $event) {
-
     /** @var ParDataEntityInterface par_data_inspection_plan */
     $par_data_inspection_plan = $event->getEntity();
-
-    $par_data_partnership = $par_data_inspection_plan->getParentPartnership();
+    /** @var ParDataRelationship[] $partnership_relationships */
+    $partnership_relationships = $par_data_inspection_plan->getRelationships('par_data_partnership');
+    $par_data_partnership = !empty($partnership_relationships) ? current($partnership_relationships)->getEntity() : NULL;
 
     $contacts = $this->getRecipients($event);
     foreach ($contacts as $contact) {

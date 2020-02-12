@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_general_enquiry
+    - message.template.new_general_enquiry
+    - par_data.par_data_general_enquiry_type.general_enquiry
+id: message.new_general_enquiry.field_general_enquiry
+field_name: field_general_enquiry
+entity_type: message
+bundle: new_general_enquiry
+label: 'General Enquiry'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_general_enquiry'
+  handler_settings:
+    target_bundles:
+      general_enquiry: general_enquiry
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

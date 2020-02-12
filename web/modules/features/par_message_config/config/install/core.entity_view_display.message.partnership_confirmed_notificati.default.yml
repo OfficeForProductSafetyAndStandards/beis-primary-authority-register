@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.partnership_confirmed_notificati.field_message_subject
+    - field.field.message.partnership_confirmed_notificati.field_partnership
+    - message.template.partnership_confirmed_notificati
+id: message.partnership_confirmed_notificati.default
+targetEntityType: message
+bundle: partnership_confirmed_notificati
+mode: default
+content:
+  field_partnership:
+    weight: 1
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_message_subject: true

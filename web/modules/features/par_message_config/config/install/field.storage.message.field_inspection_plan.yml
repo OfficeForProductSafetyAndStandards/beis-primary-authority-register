@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - message
+    - par_data
+id: message.field_inspection_plan
+field_name: field_inspection_plan
+entity_type: message
+type: entity_reference
+settings:
+  target_type: par_data_inspection_plan
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

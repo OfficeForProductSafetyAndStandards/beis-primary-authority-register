@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.full
+    - field.field.message.new_general_enquiry.field_general_enquiry
+    - field.field.message.new_general_enquiry.field_message_subject
+    - message.template.new_general_enquiry
+id: message.new_general_enquiry.full
+targetEntityType: message
+bundle: new_general_enquiry
+mode: full
+content:
+  field_general_enquiry:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_message_subject: true

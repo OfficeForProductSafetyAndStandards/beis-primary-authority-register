@@ -1,0 +1,39 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.full
+    - field.field.message.new_enquiry_response.field_comment
+    - field.field.message.new_enquiry_response.field_general_enquiry
+    - field.field.message.new_enquiry_response.field_message_subject
+    - message.template.new_enquiry_response
+id: message.new_enquiry_response.full
+targetEntityType: message
+bundle: new_enquiry_response
+mode: full
+content:
+  field_comment:
+    weight: 1
+    label: hidden
+    settings:
+      view_mode: full
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  field_general_enquiry:
+    weight: 2
+    label: hidden
+    settings:
+      view_mode: title
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_message_subject: true

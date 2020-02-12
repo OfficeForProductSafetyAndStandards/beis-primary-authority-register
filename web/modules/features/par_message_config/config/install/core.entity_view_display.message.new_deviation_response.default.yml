@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.new_deviation_response.field_comment
+    - field.field.message.new_deviation_response.field_deviation_request
+    - field.field.message.new_deviation_response.field_message_subject
+    - message.template.new_deviation_response
+id: message.new_deviation_response.default
+targetEntityType: message
+bundle: new_deviation_response
+mode: default
+content:
+  field_comment:
+    weight: 1
+    label: above
+    settings:
+      view_mode: full
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  field_deviation_request:
+    type: entity_reference_entity_view
+    weight: 2
+    region: content
+    label: above
+    settings:
+      view_mode: title
+      link: false
+    third_party_settings: {  }
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_message_subject: true

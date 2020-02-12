@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_inspection_feedback
+    - message.template.new_inspection_feedback_response
+    - par_data.par_data_inspection_feedback_type.inspection_feedback
+id: message.new_inspection_feedback_response.field_inspection_feedback
+field_name: field_inspection_feedback
+entity_type: message
+bundle: new_inspection_feedback_response
+label: 'Inspection Feedback'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_inspection_feedback'
+  handler_settings:
+    target_bundles:
+      inspection_feedback: inspection_feedback
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
