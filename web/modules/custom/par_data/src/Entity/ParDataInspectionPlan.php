@@ -188,21 +188,6 @@ class ParDataInspectionPlan extends ParDataEntity {
     $this->set('valid_date', ['value' => $this->get('valid_date')->value, 'end_value' => $revoke_time_stamp_value]);
   }
 
-  /**
-   * Get the partnership associated with the current inspection plan.
-   * Inspection plans will only be created on an active partnership.
-   * There cannot be multiple partnerships referenced for an inspection plan.
-   *
-   *  @return ParDataPartnership|NULL
-   *   The associated ParDataPartnership object or NULL.
-   */
-  public function getParentPartnership() {
-    $par_data_partnership = $this->getRelationships('par_data_partnership');
-    $par_data_partnership =  reset($par_data_partnership);
-
-    return  is_object($par_data_partnership) ? $par_data_partnership->getEntity() : NULL;
-  }
-
 
   /**
    * {@inheritdoc}

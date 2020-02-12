@@ -44,48 +44,48 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
   public function getRecipients(ParDataEventInterface $event) {
     $contacts = [];
 
-    /** @var ParDataEntityInterface $entity */
+
+    /** @var ParDataEntityInterface $par_data_inspection_plan */
     $par_data_inspection_plan = $event->getEntity();
+    /** @var ParDataPartnership[] $par_data_partnerships */
+    $par_data_partnerships = $par_data_inspection_plan->getRelationships('par_data_partnership');
 
-    $par_data_partnership = $par_data_inspection_plan->getParentPartnership();
+    foreach ($par_data_partnerships as $par_data_partnership) {
+      // Always notify the primary authority contacts.
+      if ($primary_authority_contacts = $par_data_partnership->getAuthorityPeople()) {
+        foreach ($primary_authority_contacts as $contact) {
+          if (!isset($contacts[$contact->id()])) {
+            $contacts[$contact->id()] = $contact;
+          }
+        }
+      }
+      // Always notify the primary organisation contacts.
+      if ($primary_organisation_contact = $par_data_partnership->getOrganisationPeople()) {
+        foreach ($primary_organisation_contact as $contact) {
+          if (!isset($contacts[$contact->id()])) {
+            $contacts[$contact->id()] = $contact;
+          }
+        }
+      }
 
-   if (!is_object($par_data_partnership)) {
-     return;
-   }
-
-    // Always notify the primary authority contacts.
-    if ($primary_authority_contacts = $par_data_partnership->getAuthorityPeople()) {
-      foreach ($primary_authority_contacts as $contact) {
-        if (!isset($contacts[$contact->id()])) {
-          $contacts[$contact->id()] = $contact;
+      // Notify secondary contacts at the authority if there are any.
+      if ($authority = $par_data_partnership->getAuthority(TRUE)) {
+        foreach ($authority->getPerson() as $contact) {
+          if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
+            $contacts[$contact->id()] = $contact;
+          }
+        }
+      }
+      // Notify secondary contacts at the organisation if there are any.
+      if ($organisation = $par_data_partnership->getOrganisation(TRUE)) {
+        foreach ($organisation->getPerson() as $contact) {
+          if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
+            $contacts[$contact->id()] = $contact;
+          }
         }
       }
     }
-    // Always notify the primary organisation contacts.
-    if ($primary_organisation_contact = $par_data_partnership->getOrganisationPeople()) {
-      foreach ($primary_organisation_contact as $contact) {
-        if (!isset($contacts[$contact->id()])) {
-          $contacts[$contact->id()] = $contact;
-        }
-      }
-    }
 
-    // Notify secondary contacts at the authority if there are any.
-    if ($authority = $par_data_partnership->getAuthority(TRUE)) {
-      foreach ($authority->getPerson() as $contact) {
-        if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
-          $contacts[$contact->id()] = $contact;
-        }
-      }
-    }
-    // Notify secondary contacts at the organisation if there are any.
-    if ($organisation = $par_data_partnership->getOrganisation(TRUE)) {
-      foreach ($organisation->getPerson() as $contact) {
-        if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
-          $contacts[$contact->id()] = $contact;
-        }
-      }
-    }
     return $contacts;
   }
 

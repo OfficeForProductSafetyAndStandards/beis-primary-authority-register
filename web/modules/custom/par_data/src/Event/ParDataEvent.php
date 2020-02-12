@@ -28,7 +28,7 @@ class ParDataEvent extends Event implements ParDataEventInterface {
    *
    * @var string
    */
-  const ENTITY_REFERENCE_ACTION = 'par_data.entity.reference';
+  const ENTITY_CUSTOM_ACTION = 'par_data.entity.custom_action';
 
   /**
    * The entity being enacted upon.
@@ -59,21 +59,21 @@ class ParDataEvent extends Event implements ParDataEventInterface {
    * @return string
    */
   public static function statusChange($entity_type_id, $status) {
-    return self::STATUS_CHANGE . '.' . $entity_type_id . '.' . $status;
+    return implode('.', [self::STATUS_CHANGE, $entity_type_id, $status]);
   }
 
   /**
-   * Generate the entity status event name for the currently saved entity.
+   * Generate the custom entity action event name for the given entity.
    *
-   * @param string $entity_type_id
+   * @param string $entity_type
    *   The entity type for the event.
-   * @param string $status
-   *   The status changed to.
+   * @param string $action
+   *   The custom action being performed.
    *
    * @return string
    */
-  public static function referenceAction($entity_type_id, $action) {
-    return self::ENTITY_REFERENCE_ACTION . '.' . $entity_type_id . '.' . $action;
+  public static function customAction($entity_type, $action) {
+    return implode('.', [self::ENTITY_CUSTOM_ACTION, $entity_type, $action]);
   }
 
 }
