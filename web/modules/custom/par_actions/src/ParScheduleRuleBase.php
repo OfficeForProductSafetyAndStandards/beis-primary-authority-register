@@ -15,10 +15,10 @@ use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
  *
  * @see \Drupal\par_actions\ParScheduleInterface
  * @see \Drupal\par_actions\ParScheduleManager
- * @see \Drupal\par_actions\Annotation\ParStatistic
+ * @see \Drupal\par_actions\Annotation\ParSchedulerRule
  * @see plugin_api
  */
-abstract class ParScheduleRuleBase extends PluginBase implements ParStatisticBaseInterface {
+abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRuleInterface {
 
   /**
    * {@inheritdoc}
