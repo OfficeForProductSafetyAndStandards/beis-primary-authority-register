@@ -5,6 +5,7 @@ namespace Drupal\par_data\Entity;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\par_data\ParDataException;
 
 /**
  * Defines the par_data_inspection_plan entity.
@@ -141,8 +142,15 @@ class ParDataInspectionPlan extends ParDataEntity {
     if (!$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
 
       $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
-      // Always revision status changes.
-      $this->setNewRevision(TRUE);
+
+      // Set this inspection plans status to expired.
+      try {
+        $this->setParStatus('expired');
+      }
+      catch (ParDataException $exception) {
+
+      }
+
       // Set revoke reason.
       $this->set(ParDataEntity::REVOKE_REASON_FIELD, $reason);
 
