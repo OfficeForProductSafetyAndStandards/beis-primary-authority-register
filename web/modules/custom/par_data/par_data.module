@@ -51,6 +51,7 @@ function par_data_theme() {
       'variables' => [
         'value' => '',
         'label' => '',
+        'description' => '',
         'attributes' => [],
       ],
       'template' => 'gds-data',

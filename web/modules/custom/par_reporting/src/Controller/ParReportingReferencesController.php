@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_data\Controller;
+namespace Drupal\par_reporting\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
@@ -12,7 +12,7 @@ use Drupal\Core\Url;
 /**
 * A controller listing all par reference fields and their purpose.
 */
-class ParDataReferencesController extends ControllerBase {
+class ParReportingReferencesController extends ControllerBase {
 
   /**
    * The entity manager.
