@@ -753,7 +753,7 @@ function par_data_update_8035() {
 }
 
 /**
- * base field updates for deleting entities.
+ * Base field updates for deleting entities.
  */
 function par_data_update_8036() {
 
@@ -889,7 +889,7 @@ function par_data_update_8038() {
 }
 
 /**
- * base field updates for revoking entities.
+ * Base field updates for revoking entities.
  */
 function par_data_update_8039() {
 
@@ -950,8 +950,30 @@ function par_data_update_8039() {
 }
 
 /**
- * base field updates for revoking entities.
+ * Base field updates for revoking entities.
  */
 function par_data_update_8040() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
+
+/**
+ * De-duplication of legal entities.
+ */
+function par_data_update_8041() {
+  $legal_entities = \Drupal::service('par_data.manager')->getEntitiesByType('par_data_legal_entity');
+  $companies_house_ids = [];
+  $duplicate_entities = [];
+
+  foreach ($legal_entities as $legal_entity) {
+    if (in_array($legal_entity->getRegisteredNumber(), $companies_house_ids) && is_numeric($legal_entity->getRegisteredNumber())) {
+      $duplicate_entities[$legal_entity->getRegisteredNumber()] = $legal_entity;
+    }
+
+    $companies_house_ids[] = $legal_entity->getRegisteredNumber();
+  }
+
+  foreach ($duplicate_entities as $registered_number => $duplicate_entity) {
+    $duplicate_entity->mergeLegalEntities();
+  }
+}
+
