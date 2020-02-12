@@ -122,7 +122,7 @@ abstract class ParScheduleRuleBase extends PluginBase implements ParStatisticBas
       [BusinessDaysCalculator::SATURDAY, BusinessDaysCalculator::SUNDAY]
     );
 
-    // Calculate the consituent parts based on the relative time diff.
+    // Calculate the constituent parts based on the relative time diff.
     $diff = $current_time->diff($scheduled_time);
     $days = $diff->format("%a");
     if ($diff->invert) {
@@ -131,7 +131,7 @@ abstract class ParScheduleRuleBase extends PluginBase implements ParStatisticBas
     }
     else {
       $calculator->addBusinessDays($days);
-      $operator = '>=';
+      $operator = '<=';
     }
 
     $query = \Drupal::entityQuery($this->getEntity());
