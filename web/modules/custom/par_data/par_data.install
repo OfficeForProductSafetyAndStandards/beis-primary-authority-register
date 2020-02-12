@@ -6,7 +6,6 @@
 
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -951,7 +950,14 @@ function par_data_update_8039() {
 }
 
 /**
- * base field updates for revoking entities.
+ * Base field updates for revoking entities.
+ */
+function par_data_update_8040() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
+
+/**
+ * De-duplication of legal entities.
  */
 function par_data_update_8041() {
   $legal_entities = \Drupal::service('par_data.manager')->getEntitiesByType('par_data_legal_entity');
@@ -970,3 +976,4 @@ function par_data_update_8041() {
     $duplicate_entity->mergeLegalEntities();
   }
 }
+
