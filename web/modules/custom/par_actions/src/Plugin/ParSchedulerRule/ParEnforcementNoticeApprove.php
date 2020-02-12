@@ -2,7 +2,7 @@
 
 namespace Drupal\par_actions\Plugin\ParSchedulerRule;
 
-use Drupal\par_actions\ParStatisticBase;
+use Drupal\par_actions\ParSchedulerRuleBase;
 
 /**
  * Approve an enforcement notice.
@@ -18,7 +18,7 @@ use Drupal\par_actions\ParStatisticBase;
  *   action = "par_action_approve"
  * )
  */
-class ParEnforcementNoticeApprove extends ParStatisticBase {
+class ParEnforcementNoticeApprove extends ParSchedulerRuleBase {
 
   public function query() {
     $query = parent::query();

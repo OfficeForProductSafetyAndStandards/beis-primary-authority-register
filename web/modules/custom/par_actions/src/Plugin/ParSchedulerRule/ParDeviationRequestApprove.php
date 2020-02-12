@@ -2,7 +2,7 @@
 
 namespace Drupal\par_actions\Plugin\ParSchedulerRule;
 
-use Drupal\par_actions\ParStatisticBase;
+use Drupal\par_actions\ParSchedulerRuleBase;
 
 /**
  * Approve a deviation request.
@@ -18,7 +18,7 @@ use Drupal\par_actions\ParStatisticBase;
  *   action = "par_entity_approve"
  * )
  */
-class ParDeviationRequestApprove extends ParStatisticBase {
+class ParDeviationRequestApprove extends ParSchedulerRuleBase {
 
   public function query() {
     $query = parent::query();

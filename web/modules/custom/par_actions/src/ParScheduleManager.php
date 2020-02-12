@@ -47,8 +47,8 @@ class ParScheduleManager extends DefaultPluginManager {
       'Plugin/ParSchedulerRule',
       $namespaces,
       $module_handler,
-      'Drupal\par_actions\ParStatisticBaseInterface',
-      'Drupal\par_actions\Annotation\ParStatistic'
+      'Drupal\par_actions\ParSchedulerRuleInterface',
+      'Drupal\par_actions\Annotation\ParSchedulerRule'
     );
 
     $this->alterInfo('par_scheduler_info');
@@ -71,7 +71,7 @@ class ParScheduleManager extends DefaultPluginManager {
   /**
    * {@inheritdoc}
    *
-   * @return \Drupal\par_actions\ParStatisticBaseInterface
+   * @return \Drupal\par_actions\ParSchedulerRuleInterface
    */
   public function createInstance($plugin_id, array $configuration = []) {
     return parent::createInstance($plugin_id, $configuration);
