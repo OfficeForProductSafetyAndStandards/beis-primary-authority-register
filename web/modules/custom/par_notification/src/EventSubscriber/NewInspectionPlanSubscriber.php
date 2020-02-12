@@ -30,7 +30,7 @@ class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
    */
   static function getSubscribedEvents() {
     // React to custom reference event bring dispatched.
-    $events[ParDataEvent::referenceAction('par_data_inspection_plan', 'post_create')][] = ['onEvent', 800];
+    $events[ParDataEvent::customAction('par_data_inspection_plan', 'post_create')][] = ['onEvent', 800];
 
     return $events;
   }
