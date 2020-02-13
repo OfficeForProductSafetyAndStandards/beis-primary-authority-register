@@ -111,6 +111,8 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    */
   public function query() {
     $current_time = new DrupalDateTime('now');
+    // Don't use this time, this is just to work out if the time is
+    // greater or lesser than the scheduled time.
     $scheduled_time = new DrupalDateTime($this->getTime());
 
     // Find date to process.
@@ -122,7 +124,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
       [BusinessDaysCalculator::SATURDAY, BusinessDaysCalculator::SUNDAY]
     );
 
-    // Calculate the consituent parts based on the relative time diff.
+    // Calculate the constituent parts based on the relative time diff.
     $diff = $current_time->diff($scheduled_time);
     $days = $diff->format("%a");
     if ($diff->invert) {
@@ -131,7 +133,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
     }
     else {
       $calculator->addBusinessDays($days);
-      $operator = '>=';
+      $operator = '<=';
     }
 
     $query = \Drupal::entityQuery($this->getEntity());

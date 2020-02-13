@@ -1,0 +1,12 @@
+<?php
+/**
+ * @file
+ * Installation hooks for par_reporting module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function par_reporting_install() {
+
+}
