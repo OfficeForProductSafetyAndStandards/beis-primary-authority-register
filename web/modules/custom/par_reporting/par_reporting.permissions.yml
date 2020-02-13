@@ -1,0 +1,4 @@
+access par reports:
+  title: 'Access PAR reports'
+  description: 'A permission to allow accessing of par internal reporting.'
+  restrict access: TRUE

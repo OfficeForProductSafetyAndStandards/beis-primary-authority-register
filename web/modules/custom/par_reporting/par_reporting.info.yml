@@ -1,0 +1,7 @@
+name: PAR Reporting
+type: module
+description: The reporting tools and pages for PAR data.
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
