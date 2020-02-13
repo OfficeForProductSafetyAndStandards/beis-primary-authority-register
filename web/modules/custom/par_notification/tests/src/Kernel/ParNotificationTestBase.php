@@ -42,9 +42,11 @@ class ParNotificationTestBase extends ParDataTestBase
     'new_deviation_response',
     'new_enquiry_response',
     'new_inspection_feedback_response',
+    'new_inspection_plan',
     'partnership_approved_notificatio',
     'partnership_confirmed_notificati',
     'partnership_revocation_notificat',
+    'revoke_inspection_plan',
     'reviewed_deviation_request',
     'reviewed_enforcement',
   ];

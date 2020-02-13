@@ -624,7 +624,7 @@ class ParDataPerson extends ParDataEntity {
    *   The \Drupal\message\Entity\MessageTemplate::id() that indicates the notification type.
    *
    * @return bool
-   *   Whether or not the person has choosen to receive additional notifications.
+   *   Whether or not the person has chosen to receive additional notifications.
    */
   public function hasNotificationPreference($notification_type) {
     $notification_preferences = $this->getNotificationPreferences();
