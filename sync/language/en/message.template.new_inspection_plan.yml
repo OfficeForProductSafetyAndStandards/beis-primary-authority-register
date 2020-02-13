@@ -1,4 +1,4 @@
 text:
   -
-    value: "<p>Dear @first_name,</p>\r\n\r\n<p>This message is to inform you that a new inspection plan \"@inspection_plan_title\" has been created for the partnership @partnership_label.</p>\r\n\r\n<p>^</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>This message is to inform you that a new inspection plan @inspection_plan_title has been created for the partnership @partnership_label.</p>\r\n\r\n<p>^ View inspection plan: [message:primary-action]</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html

@@ -12,7 +12,7 @@ use Drupal\par_actions\ParSchedulerRuleBase;
  *   title = @Translation("Auto-approval of enforcement notices."),
  *   entity = "par_data_enforcement_notice",
  *   property = "notice_date",
- *   time = "-6 days",
+ *   time = "+6 days",
  *   queue = FALSE,
  *   status = TRUE,
  *   action = "par_action_approve"

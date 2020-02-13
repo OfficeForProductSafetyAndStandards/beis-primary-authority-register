@@ -63,6 +63,10 @@ services:
     class: '\Drupal\par_notification\EventSubscriber\NewInspectionPlanSubscriber'
     tags:
       - { name: 'event_subscriber' }
+  par_notification.inspection_plan_expiry_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\InspectionPlanExpiryWarningSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
   par_notification.inspection_plan_revoked_subscriber:
     class: '\Drupal\par_notification\EventSubscriber\InspectionPlanRevokedSubscriber'
     tags:

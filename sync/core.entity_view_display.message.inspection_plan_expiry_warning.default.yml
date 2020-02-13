@@ -1,16 +1,15 @@
-uuid: 37a36d61-8632-4c58-b5dc-28e57c82160d
+uuid: 5049425f-2ebf-462b-9e21-3827c5a98b51
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.message.full
-    - field.field.message.revoke_inspection_plan.field_inspection_plan
-    - field.field.message.revoke_inspection_plan.field_message_subject
-    - message.template.revoke_inspection_plan
-id: message.revoke_inspection_plan.full
+    - field.field.message.inspection_plan_expiry_warning.field_inspection_plan
+    - field.field.message.inspection_plan_expiry_warning.field_message_subject
+    - message.template.inspection_plan_expiry_warning
+id: message.inspection_plan_expiry_warning.default
 targetEntityType: message
-bundle: revoke_inspection_plan
-mode: full
+bundle: inspection_plan_expiry_warning
+mode: default
 content:
   field_inspection_plan:
     weight: 1

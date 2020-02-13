@@ -6,20 +6,20 @@ use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\ParDataRelationship;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
+use Drupal\par_data\ParDataRelationship;
 use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParNotificationSubscriberBase;
 
-class InspectionPlanRevokedSubscriber extends ParNotificationSubscriberBase {
+class InspectionPlanExpiryWarningSubscriber extends ParNotificationSubscriberBase {
 
   /**
    * The message template ID created for this notification.
    *
-   * @see /admin/structure/message/manage/revoke_inspection_plan
+   * @see /admin/structure/message/manage/inspection_plan_expiry_warning
    */
-  const MESSAGE_ID = 'revoke_inspection_plan';
+  const MESSAGE_ID = 'inspection_plan_expiry_warning';
 
   /**
    * The events to react to.
@@ -60,26 +60,10 @@ class InspectionPlanRevokedSubscriber extends ParNotificationSubscriberBase {
           }
         }
       }
-      // Always notify the primary organisation contacts.
-      if ($primary_organisation_contact = $par_data_partnership->getOrganisationPeople()) {
-        foreach ($primary_organisation_contact as $contact) {
-          if (!isset($contacts[$contact->id()])) {
-            $contacts[$contact->id()] = $contact;
-          }
-        }
-      }
 
       // Notify secondary contacts at the authority if there are any.
       if ($authority = $par_data_partnership->getAuthority(TRUE)) {
         foreach ($authority->getPerson() as $contact) {
-          if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
-            $contacts[$contact->id()] = $contact;
-          }
-        }
-      }
-      // Notify secondary contacts at the organisation if there are any.
-      if ($organisation = $par_data_partnership->getOrganisation(TRUE)) {
-        foreach ($organisation->getPerson() as $contact) {
           if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
             $contacts[$contact->id()] = $contact;
           }
