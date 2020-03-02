@@ -177,6 +177,21 @@ class ParDataLegalEntity extends ParDataEntity {
   }
 
   /**
+   *  Helper function to check if a legal entity is referenced by other entities.
+   */
+  public function lookupExistingLegalEntities() {
+
+    $relationships = $this->getRelationships(NULL, NULL, TRUE);
+
+    kint($relationships);
+
+    if (count($relationships) > 1) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
