@@ -183,9 +183,8 @@ class ParDataLegalEntity extends ParDataEntity {
 
     $relationships = $this->getRelationships(NULL, NULL, TRUE);
 
-    kint($relationships);
-
-    if (count($relationships) > 1) {
+    // Standard (new) legal entities have 2 reference objects associated with them.
+    if (count($relationships) > 2) {
       return TRUE;
     }
     return FALSE;
