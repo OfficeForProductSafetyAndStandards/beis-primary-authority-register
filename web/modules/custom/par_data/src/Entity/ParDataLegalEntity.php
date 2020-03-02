@@ -180,9 +180,7 @@ class ParDataLegalEntity extends ParDataEntity {
    *  Helper function to determine if a legal entity is referenced by more then one partnership entities.
    */
   public function lookupExistingLegalEntities() {
-
     $relationships = $this->getRelationships(NULL, NULL, TRUE);
-
     // Standard (new) legal entities have 2 reference objects associated with them.
     if (count($relationships) > 2) {
       return TRUE;
