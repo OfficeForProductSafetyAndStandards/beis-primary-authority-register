@@ -71,6 +71,11 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_legal_entity);
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
+    if ($par_data_legal_entity) {
+      $referenced_legal_entity = $par_data_legal_entity->lookupExistingLegalEntities();
+    } else {
+      $referenced_legal_entity = FALSE;
+    }
     $form['legal_entity_intro_fieldset'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('What is a legal entity?'),
@@ -82,12 +87,14 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     ];
 
     $form['registered_name'] = [
+      '#disabled' => $referenced_legal_entity,
       '#type' => 'textfield',
       '#title' => $this->t('Enter name of the legal entity'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_name"),
     ];
 
     $form['legal_entity_type'] = [
+      '#disabled' => $referenced_legal_entity,
       '#type' => 'select',
       '#title' => $this->t('Select type of Legal Entity'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_legal_entity_type"),
