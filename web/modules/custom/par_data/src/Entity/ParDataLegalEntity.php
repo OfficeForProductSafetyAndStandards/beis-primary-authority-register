@@ -177,7 +177,7 @@ class ParDataLegalEntity extends ParDataEntity {
   }
 
   /**
-   *  Helper function to check if a legal entity is referenced by other entities.
+   *  Helper function to determine if a legal entity is referenced by more then one partnership entities.
    */
   public function lookupExistingLegalEntities() {
 
