@@ -86,6 +86,14 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
     ];
 
+    if ($par_data_legal_entity){
+      $form['legal_entity_disabled']['intro'] = [
+        '#type' => 'markup',
+        '#markup' => "<p><b>" . $this->t("This legal entity cannot be updated as it is being used in another partnership.") . "</b></p>",
+      ];
+
+    }
+
     $form['registered_name'] = [
       '#disabled' => $referenced_legal_entity,
       '#type' => 'textfield',
