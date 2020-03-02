@@ -102,6 +102,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     ];
 
     $form['registered_number'] = [
+      '#disabled' => $referenced_legal_entity,
       '#type' => 'textfield',
       '#title' => $this->t('Provide the registration number'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_number"),
