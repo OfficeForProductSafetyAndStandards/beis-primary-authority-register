@@ -72,7 +72,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
     if ($par_data_legal_entity) {
-      $referenced_legal_entity = $par_data_legal_entity->lookupExistingLegalEntities();
+      $referenced_legal_entity = $par_data_legal_entity->HasExistingPartnershipReferences();
     } else {
       $referenced_legal_entity = FALSE;
     }
