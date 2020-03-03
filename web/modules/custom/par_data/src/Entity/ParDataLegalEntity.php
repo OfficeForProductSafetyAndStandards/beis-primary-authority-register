@@ -183,7 +183,7 @@ class ParDataLegalEntity extends ParDataEntity {
    *   TRUE if the legal entity is being referenced in another partnership.
    *   FALSE if the legal entity has no references.
    */
-  public function HasExistingPartnershipReferences() {
+  public function hasExistingPartnershipReferences() {
     $relationships = $this->getRelationships('par_data_partnership', NULL, TRUE);
     // Standard (new) legal entities should only have one partnership being referenced.
     // If multiple partnerships are being referenced by the same legal entity updates are not permitted.
