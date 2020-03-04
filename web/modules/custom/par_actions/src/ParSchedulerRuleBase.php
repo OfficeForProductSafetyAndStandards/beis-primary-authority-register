@@ -107,10 +107,19 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
   }
 
   /**
+   * Helper function to retrieve the current DateTime.
+   *
+   * Allows tests to modify the current time.
+   */
+  protected function getCurrentTime() {
+    return new DrupalDateTime('now');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function query() {
-    $current_time = new DrupalDateTime('now');
+    $current_time = $this->getCurrentTime();
     $scheduled_time = new DrupalDateTime($this->getTime());
 
     // Find date to process.

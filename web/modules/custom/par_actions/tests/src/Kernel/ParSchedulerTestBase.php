@@ -5,7 +5,10 @@ namespace Drupal\Tests\par_actions\Kernel;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\Entity\File;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
+use Drupal\KernelTests\Core\Plugin\PluginTestBase;
 use Drupal\par_data_test_entity\Entity\ParDataTestEntity;
+use Drupal\par_data_test_entity\Entity\ParDataTestEntityType;
+use Drupal\par_data_test_entity\Plugin\TestSchedulerManager;
 
 /**
  * Tests PAR Actions test base.
@@ -14,27 +17,22 @@ use Drupal\par_data_test_entity\Entity\ParDataTestEntity;
  */
 class ParSchedulerTestBase extends EntityKernelTestBase {
 
-  static $modules = ['language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'par_data_test_entity', 'address', 'datetime'];
+  static $modules = ['user', 'language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'par_data_test_entity', 'par_actions', 'datetime'];
 
   /**
    * @var AccountInterface
    */
   protected $account;
 
-  /** @var  \Drupal\par_actions\ParSchedulerRuleInterface */
-  protected $scheduler;
+  /** @var  \Drupal\par_data_test_entity\Plugin\TestSchedulerManager */
+  protected $schedulerManager;
 
   protected $permissions = [
     'access content',
-    'bypass file access',
     'access par_data_test_entity entities',
   ];
 
   protected $entityTypes = [];
-
-  public function getScheduleManager() {
-    return \Drupal::service('plugin.manager.par_scheduler');
-  }
 
   /**
    * {@inheritdoc}
@@ -45,6 +43,9 @@ class ParSchedulerTestBase extends EntityKernelTestBase {
     //db_query("ALTER DATABASE 'par' SET bytea_output = 'escape';")->execute();
 
     parent::setUp();
+
+    // Setup test scheduler plugin manager.
+    $this->schedulerManager = new TestSchedulerManager();
 
     // Create a new non-admin user.
     $this->account = $this->createUser(['uid' => 2], $this->permissions);
@@ -58,23 +59,13 @@ class ParSchedulerTestBase extends EntityKernelTestBase {
       'par_data_entity_test',
     ];
 
-    foreach ($this->entityTypes as $type) {
-      // Set up schema for par_data.
-      $this->installEntitySchema($type);
-    }
-
     // Install config for par_data if required.
     $this->installConfig('par_data');
-
-    // Create the entity bundles required for testing.
-    $type = ParDataTestEntity::create([
-      'id' => 'test',
-      'label' => 'Test',
-    ]);
-    $type->save();
-
-    // Install the feature config
+    // Install the test entity feature config
     $this->installConfig('par_data_test_entity');
+
+    // Set up entity schema.
+    $this->installEntitySchema('par_data_test_entity');
 
     // Install file config.
     $this->installConfig(['system']);
