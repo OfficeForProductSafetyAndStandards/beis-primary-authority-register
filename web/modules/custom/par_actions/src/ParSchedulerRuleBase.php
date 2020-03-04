@@ -120,6 +120,9 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    */
   public function query() {
     $current_time = $this->getCurrentTime();
+    // Don't use this time, this is just to work out if the time is
+    // greater or lesser than the scheduled time.
+
     $scheduled_time = new DrupalDateTime($this->getTime());
 
     // Find date to process.

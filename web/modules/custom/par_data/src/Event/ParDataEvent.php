@@ -12,13 +12,23 @@ use Symfony\Component\EventDispatcher\Event;
 class ParDataEvent extends Event implements ParDataEventInterface {
 
   /**
-   * The name of the event triggered when an existing par entity is deleted.
+   * The name of the event triggered when an existing par entity is updated.
    *
    * @Event
    *
    * @var string
    */
   const STATUS_CHANGE = 'par_data.entity.status';
+
+
+  /**
+   * The name of the event triggered when entity reference is actioned.
+   *
+   * @Event
+   *
+   * @var string
+   */
+  const ENTITY_CUSTOM_ACTION = 'par_data.entity.custom_action';
 
   /**
    * The entity being enacted upon.
@@ -49,7 +59,21 @@ class ParDataEvent extends Event implements ParDataEventInterface {
    * @return string
    */
   public static function statusChange($entity_type_id, $status) {
-    return self::STATUS_CHANGE . '.' . $entity_type_id . '.' . $status;
+    return implode('.', [self::STATUS_CHANGE, $entity_type_id, $status]);
+  }
+
+  /**
+   * Generate the custom entity action event name for the given entity.
+   *
+   * @param string $entity_type
+   *   The entity type for the event.
+   * @param string $action
+   *   The custom action being performed.
+   *
+   * @return string
+   */
+  public static function customAction($entity_type, $action) {
+    return implode('.', [self::ENTITY_CUSTOM_ACTION, $entity_type, $action]);
   }
 
 }

@@ -1,0 +1,26 @@
+uuid: 41ccfa3a-870a-4363-ad16-5c38e21f564e
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - field.field.message.inspection_plan_expiry_warning.field_inspection_plan
+    - field.field.message.inspection_plan_expiry_warning.field_message_subject
+    - message.template.inspection_plan_expiry_warning
+id: message.inspection_plan_expiry_warning.mail_subject
+targetEntityType: message
+bundle: inspection_plan_expiry_warning
+mode: mail_subject
+content:
+  field_message_subject:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  field_inspection_plan: true
+  partial_0: true
+  partial_1: true
