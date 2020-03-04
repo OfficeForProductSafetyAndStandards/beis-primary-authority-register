@@ -66,6 +66,19 @@ class ParSchedulerRule extends Plugin {
   /**
    * The time relative to the entity/property.
    *
+   * These time properties should be recorded in relative time formats:
+   * https://www.php.net/manual/en/datetime.formats.relative.php
+   *
+   * e.g. "+5 weeks", "1 day", "-12 days", "-7 weekdays", "-1 year"
+   *
+   * A custom relative time format "+5 working days" is also supported.
+   *
+   * Non-number based time formats are also supported but may have unexpected
+   * results because relative times that increase the date "first day of next month"
+   * will fire _before_ the entity date, and times that decrease the date
+   * "2 days ago" will fire _after_ the entity date. As a result these are best
+   * avoided, for example "yesterday" is _not_ equivalent to "-1 day".
+   *
    * @var string
    */
   public $time;

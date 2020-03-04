@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies: {  }
+id: test
+label: Test
+description: 'This is a test entity bundle of generating basic test entities.'
+help: ''
+isDeletable: null
+isRevokable: null
+isArchivable: null
+configuration: null
