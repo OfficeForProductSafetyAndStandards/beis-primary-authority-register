@@ -61,7 +61,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
   public function getTime() {
     $time = $this->pluginDefinition['time'];
 
-    // If using out custom 'working days' relative time format convert this to
+    // If using our custom 'working days' relative time format convert this to
     // a php supported time format before processing.
     return $this->countWorkingDays() ?
       preg_replace('/working day/', 'day', $time) : $time;
