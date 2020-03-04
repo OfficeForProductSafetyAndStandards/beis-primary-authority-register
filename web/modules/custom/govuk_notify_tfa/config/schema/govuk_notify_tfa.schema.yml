@@ -1,0 +1,26 @@
+fallback.config.tfa_sms:
+  type: default.fallback
+  label: 'Fallback settings'
+
+tfa.validation.plugin.config.tfa_sms:
+  type: mapping
+  label: 'TFA SMS Settings'
+  mapping:
+    time_skew:
+      type: integer
+      label: 'Number of 30 second chunks to allow TOTP keys between. For example choosing 10 will give users 5 minutes to enter their codes.'
+    site_name_prefix:
+      type: integer
+      label: 'If checked, the site name will be used instead of a static string. This can be useful for multi-site installations.'
+    name_prefix:
+      type: string
+      label: 'Prefix for OTP code names. Suffix is account username.'
+    issuer:
+      type: string
+      label: 'The provider or service this account is associated with.'
+    template_id:
+      type: string
+      label: 'The Notify template ID to use for sending messages, this can be retrieved from your Notify account.'
+    phone_field:
+      type: string
+      label: 'The user field that stores the phone number. By default this will be stored as user data.'
