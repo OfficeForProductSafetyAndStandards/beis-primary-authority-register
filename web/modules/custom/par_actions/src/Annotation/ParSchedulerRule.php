@@ -71,6 +71,8 @@ class ParSchedulerRule extends Plugin {
    *
    * e.g. "+5 weeks", "1 day", "-12 days", "-7 weekdays", "-1 year"
    *
+   * A custom relative time format "+5 working days" is also supported.
+   *
    * Non-number based time formats are also supported but may have unexpected
    * results because relative times that increase the date "first day of next month"
    * will fire _before_ the entity date, and times that decrease the date
