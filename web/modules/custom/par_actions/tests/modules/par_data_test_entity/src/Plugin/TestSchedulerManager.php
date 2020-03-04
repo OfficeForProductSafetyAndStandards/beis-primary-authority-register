@@ -19,13 +19,49 @@ class TestSchedulerManager extends PluginManagerBase {
     // mock plugins for unit testing.
     $this->discovery = new StaticDiscovery();
 
-    // A simple measure of past events
-    $this->discovery->setDefinition('test_past', [
-      'label' => 'Test Scheduler',
+    // A plugin to test all events that should happen before the entity date.
+    // Note: For the comparison to work the time property should be positive.
+    $this->discovery->setDefinition('test_distant_before', [
+      'label' => 'Test Scheduler Distant Past',
+      'entity' => 'par_data_test_entity',
+      'property' => 'expiry_date',
+      'time' => '+3 months',
+      'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest',
+    ]);
+    // A plugin to test past events.
+    $this->discovery->setDefinition('test_before', [
+      'label' => 'Test Scheduler Past',
+      'entity' => 'par_data_test_entity',
+      'property' => 'expiry_date',
+      'time' => '+6 days',
+      'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest',
+    ]);
+
+    // A plugin to test all past events including those of the present day.
+    $this->discovery->setDefinition('test_current', [
+      'label' => 'Test Scheduler Present',
       'entity' => 'par_data_test_entity',
       'property' => 'expiry_date',
       'time' => '0 days',
-      'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTestPast',
+      'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest',
+    ]);
+
+    // A plugin to test all events that should happen after the entity date.
+    // Note: For the comparison to work the time property should be negative.
+    $this->discovery->setDefinition('test_after', [
+      'label' => 'Test Scheduler Future',
+      'entity' => 'par_data_test_entity',
+      'property' => 'expiry_date',
+      'time' => '-6 days',
+      'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest',
+    ]);
+    // A plugin to test all distant future events.
+    $this->discovery->setDefinition('test_distant_after', [
+      'label' => 'Test Scheduler Future',
+      'entity' => 'par_data_test_entity',
+      'property' => 'expiry_date',
+      'time' => '-3 weeks',
+      'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest',
     ]);
 
     // In addition to finding all of the plugins available for a type, a plugin

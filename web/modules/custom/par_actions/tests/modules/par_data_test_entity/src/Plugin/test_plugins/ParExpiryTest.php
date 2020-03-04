@@ -8,7 +8,7 @@ use Drupal\par_actions\ParSchedulerRuleBase;
 /**
  * Mock implementation of a scheduler rule for testing.
  */
-class ParExpiryTestPast extends ParSchedulerRuleBase {
+class ParExpiryTest extends ParSchedulerRuleBase {
 
   protected $currentTime = 'now';
 

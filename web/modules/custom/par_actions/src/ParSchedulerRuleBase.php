@@ -120,7 +120,9 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    */
   public function query() {
     $current_time = $this->getCurrentTime();
-    $scheduled_time = new DrupalDateTime($this->getTime());
+    // Base the scheduled time off the assigned current time.
+    $scheduled_time = clone $current_time;
+    $scheduled_time->modify($this->getTime());
 
     // Find date to process.
     $holidays = array_column(UkBankHolidayFactory::getAll(), 'date', 'date');
@@ -136,12 +138,16 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
     $days = $diff->format("%a");
     if ($diff->invert) {
       $calculator->removeBusinessDays($days);
-      $operator = '<=';
     }
     else {
       $calculator->addBusinessDays($days);
-      $operator = '<=';
     }
+
+    // The only supported operator at the moment is "<=" meaning that
+    // the modified expiry (calculator) date provided by the 'time' property
+    // must be greater than or equal to the entity's date property.
+    // e.g. $entity->date <= $calculator->date
+    $operator = '<=';
 
     $query = \Drupal::entityQuery($this->getEntity());
     $query->condition($this->getProperty(), $calculator->getDate()->format('Y-m-d'), $operator);
