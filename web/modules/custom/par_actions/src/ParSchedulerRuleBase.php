@@ -59,7 +59,21 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    * {@inheritdoc}
    */
   public function getTime() {
-    return $this->pluginDefinition['time'];
+    $time = $this->pluginDefinition['time'];
+
+    // If using out custom 'working days' relative time format convert this to
+    // a php supported time format before processing.
+    return $this->countWorkingDays() ?
+      preg_replace('/working day/', 'day', $time) : $time;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function countWorkingDays() {
+    $time = $this->pluginDefinition['time'];
+    // If the relative time format contains '+1 working day(s)'.
+    return (preg_match('/^[+-][\d]+ working days?$/', $time) === 1);
   }
 
   /**
@@ -124,23 +138,29 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
     $scheduled_time = clone $current_time;
     $scheduled_time->modify($this->getTime());
 
-    // Find date to process.
-    $holidays = array_column(UkBankHolidayFactory::getAll(), 'date', 'date');
+    // We need to make additional calculations if counting working days only.
+    if ($this->countWorkingDays()) {
+      // Find date to process.
+      $holidays = array_column(UkBankHolidayFactory::getAll(), 'date', 'date');
 
-    $calculator = new BusinessDaysCalculator(
-      $current_time,
-      $holidays,
-      [BusinessDaysCalculator::SATURDAY, BusinessDaysCalculator::SUNDAY]
-    );
+      $calculator = new BusinessDaysCalculator(
+        $current_time,
+        $holidays,
+        [BusinessDaysCalculator::SATURDAY, BusinessDaysCalculator::SUNDAY]
+      );
 
-    // Calculate the constituent parts based on the relative time diff.
-    $diff = $current_time->diff($scheduled_time);
-    $days = $diff->format("%a");
-    if ($diff->invert) {
-      $calculator->removeBusinessDays($days);
-    }
-    else {
-      $calculator->addBusinessDays($days);
+      // Calculate the constituent parts based on the relative time diff.
+      $diff = $current_time->diff($scheduled_time);
+      $days = $diff->format("%a");
+      if ($diff->invert) {
+        $calculator->removeBusinessDays($days);
+      }
+      else {
+        $calculator->addBusinessDays($days);
+      }
+
+      // Replace default scheduled time with working day scheduled time.
+      $scheduled_time = $calculator->getDate();
     }
 
     // The only supported operator at the moment is "<=" meaning that
@@ -150,7 +170,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
     $operator = '<=';
 
     $query = \Drupal::entityQuery($this->getEntity());
-    $query->condition($this->getProperty(), $calculator->getDate()->format('Y-m-d'), $operator);
+    $query->condition($this->getProperty(), $scheduled_time->format('Y-m-d'), $operator);
 
     return $query;
   }

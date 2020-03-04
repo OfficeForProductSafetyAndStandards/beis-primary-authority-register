@@ -29,6 +29,14 @@ class TestSchedulerManager extends PluginManagerBase {
       'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest',
     ]);
     // A plugin to test past events.
+    $this->discovery->setDefinition('test_before_working', [
+      'label' => 'Test Scheduler Past',
+      'entity' => 'par_data_test_entity',
+      'property' => 'expiry_date',
+      'time' => '+6 working days',
+      'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest',
+    ]);
+    // A plugin to test past events.
     $this->discovery->setDefinition('test_before', [
       'label' => 'Test Scheduler Past',
       'entity' => 'par_data_test_entity',
@@ -48,6 +56,14 @@ class TestSchedulerManager extends PluginManagerBase {
 
     // A plugin to test all events that should happen after the entity date.
     // Note: For the comparison to work the time property should be negative.
+    $this->discovery->setDefinition('test_after_working', [
+      'label' => 'Test Scheduler Future',
+      'entity' => 'par_data_test_entity',
+      'property' => 'expiry_date',
+      'time' => '-6 working days',
+      'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest',
+    ]);
+    // A plugin to test all events that should happen after the entity date.
     $this->discovery->setDefinition('test_after', [
       'label' => 'Test Scheduler Future',
       'entity' => 'par_data_test_entity',
