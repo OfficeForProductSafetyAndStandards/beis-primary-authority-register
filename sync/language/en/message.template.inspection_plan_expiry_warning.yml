@@ -1,0 +1,4 @@
+text:
+  -
+    value: "<p><span>Dear </span>@first_name<span>,<br />\r\n<br />\r\nThis message is to inform you that your inspection plan </span>@inspection_plan_title<span> will expire in 3 months for the </span>@partnership_label<span>.<br />\r\n<br />\r\nPlease make the necessary arrangements to replace this inspection plan.</span><br />\r\n<br />\r\n^ View inspection plan: [message:primary-action]<br />\r\n<br />\r\nRegards, Primary Authority Register team</p>\r\n"
+    format: basic_html

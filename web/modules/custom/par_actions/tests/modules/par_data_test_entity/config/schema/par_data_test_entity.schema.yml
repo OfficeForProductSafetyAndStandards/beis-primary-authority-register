@@ -1,0 +1,45 @@
+# The config for all PAR Data entity types.
+par_data_test_entity.par_data_test_entity_type.*:
+  type: config_entity
+  label: 'PAR Data Entity Test type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      label: 'Description'
+    help:
+      type: string
+      label: 'Help'
+    revision:
+      type: boolean
+      label: 'Whether a new revision should be created by default'
+      nullable: true
+    uuid:
+      type: string
+    isDeletable:
+      type: boolean
+      label: 'Whether the entity is deletable.'
+      nullable: true
+    isRevokable:
+      type: boolean
+      label: 'Whether the entity is revokable.'
+      nullable: true
+    isArchivable:
+      type: boolean
+      label: 'Whether the entity is archivable.'
+      nullable: true
+    configuration:
+      type: sequence
+      nullable: true
+      sequence:
+        type: sequence
+        label: 'Element (entity or field name)'
+        nullable: true
+        sequence:
+          type: par_data.configuration_type.[%key]
+          label: 'Configuration rules'

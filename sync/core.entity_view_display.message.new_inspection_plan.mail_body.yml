@@ -1,0 +1,25 @@
+uuid: fd8b38fa-0eb7-4415-826d-9e79e5584fdc
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - field.field.message.new_inspection_plan.field_inspection_plan
+    - field.field.message.new_inspection_plan.field_message_subject
+    - message.template.new_inspection_plan
+id: message.new_inspection_plan.mail_body
+targetEntityType: message
+bundle: new_inspection_plan
+mode: mail_body
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  partial_1:
+    weight: 0
+    region: content
+hidden:
+  field_inspection_plan: true
+  field_message_subject: true

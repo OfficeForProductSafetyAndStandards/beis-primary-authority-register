@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_data\ParDataRelationship;
 use Drupal\par_validation\Plugin\Validation\Constraint\ParRequired;
 
 /**
@@ -70,6 +71,27 @@ use Drupal\par_validation\Plugin\Validation\Constraint\ParRequired;
  */
 class ParDataLegalEntity extends ParDataEntity {
 
+  /**
+   * {@inheritdoc}
+   *
+   * Ensure that we can not create duplicates of legal entities with the same companies house number.
+   */
+  public static function create(array $values = []) {
+    $par_data_manger = \Drupal::service('par_data.manager');
+
+    // Check to see if a legal entity already exists with this number.
+    $legal_entities = !empty($values['registered_number']) ? $par_data_manger->getEntitiesByProperty('par_data_legal_entity', 'registered_number', $values['registered_number']) : NULL;
+
+    // Use the first available legal entity if one is found, otherwise
+    // create a new record.
+    if (!empty($legal_entities)) {
+      return current($legal_entities);
+    }
+    else {
+      return parent::create($values);
+    }
+  }
+
   public function getName() {
     $name = $this->get('registered_name')->getString();
     return $name;
@@ -98,6 +120,77 @@ class ParDataLegalEntity extends ParDataEntity {
     }
 
     return parent::filterRelationshipsByAction($relationship, $action);
+  }
+
+  /**
+   * Merge all legal entities that use the same companies house ID.
+   */
+  public function mergeLegalEntities() {
+    // Lookup related legal entities.
+    $legal_entities = !empty($this->getRegisteredNumber()) ? $this->getParDataManager()->getEntitiesByProperty($this->getEntityTypeId(), 'registered_number', $this->getRegisteredNumber()) : [];
+
+    foreach ($legal_entities as $legal_entity) {
+      // Skip modifications of the current legal entity.
+      if ($legal_entity->id() === $this->id()) {
+        continue;
+      }
+
+      // Get all the entities that reference this legal entity.
+      $relationships = $legal_entity->getRelationships(NULL, NULL, TRUE);
+      foreach ($relationships as $relationship) {
+        if ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE) {
+          // Only update the related entity if it does not already reference the updated record.
+          $update = TRUE;
+          foreach ($relationship->getEntity()->get($relationship->getField()->getName())->referencedEntities() as $e) {
+            if ($e->id() === $this->id()) {
+              $update = FALSE;
+            }
+          }
+
+          // Update all entities that reference the soon to be merged legal entity.
+          if ($update) {
+            $relationship->getEntity()->get($relationship->getField()->getName())->appendItem($this->id());
+            $relationship->getEntity()->save();
+          }
+
+          // Delete methods check to see if there are any related entities that
+          // require this entity, @see ParDataEntity::isDeletable(), all references
+          // must be removed before the entity can be deleted.
+          $field_items = $relationship->getEntity()->get($relationship->getField()->getName())->getValue();
+          if(!empty($field_items)) {
+            // Find & remove this person from the referenced entity.
+            $key = array_search($legal_entity->id(), array_column($field_items, 'target_id'));
+            if (false !== $key && $relationship->getEntity()->get($relationship->getField()->getName())->offsetExists($key)) {
+              $relationship->getEntity()->get($relationship->getField()->getName())->removeItem($key);
+              $relationship->getEntity()->save();
+            }
+          }
+        }
+      }
+
+      // Remove this person record.
+      $legal_entity->delete();
+    }
+
+    // This method will always save the entity.
+    $this->save();
+  }
+
+  /**
+   *  Helper function to determine if a legal entity is referenced by more then one partnership entity.
+   *
+   * @return Boolean
+   *   TRUE if the legal entity is being referenced in another partnership.
+   *   FALSE if the legal entity has no references.
+   */
+  public function hasExistingPartnershipReferences() {
+    $relationships = $this->getRelationships('par_data_partnership', NULL, TRUE);
+    // Standard (new) legal entities should only have one partnership being referenced.
+    // If multiple partnerships are being referenced by the same legal entity updates are not permitted.
+    if (count($relationships) > 1) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
   /**
