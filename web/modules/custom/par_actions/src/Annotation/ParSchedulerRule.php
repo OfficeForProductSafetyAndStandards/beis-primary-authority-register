@@ -73,6 +73,9 @@ class ParSchedulerRule extends Plugin {
    *
    * A custom relative time format "+5 working days" is also supported.
    *
+   * "+ X units" means X many units _before_ the entity's date.
+   * "- X units" means X many units _after_ the entity's date.
+   *
    * Non-number based time formats are also supported but may have unexpected
    * results because relative times that increase the date "first day of next month"
    * will fire _before_ the entity date, and times that decrease the date
