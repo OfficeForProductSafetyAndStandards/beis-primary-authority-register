@@ -382,7 +382,7 @@ jobs:
             ../vendor/bin/drush sql-sanitize @par.paas -y
       - run:
           name: "Backup database"
-          command: ./scripts/db-backup.sh production -p -s -d "./backups"
+          command: ./scripts/db-backup.sh production -p -s -d "../backups"
       - aws-s3/copy:
           from: "backups/db-dump-production-sanitised-latest.tar.gz"
           to: "s3://${S3_ARTIFACTS_BUCKET}/backups/db-dump-production-sanitised-latest.tar.gz"
