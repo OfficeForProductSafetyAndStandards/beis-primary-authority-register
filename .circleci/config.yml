@@ -523,3 +523,13 @@ workflows:
       - sanitise_database:
           requires:
             - compile_code
+
+  db_sanitise_test:
+    jobs:
+      - checkout_code
+      - compile_code:
+          requires:
+            - checkout_code
+      - sanitise_database:
+          requires:
+            - compile_code
