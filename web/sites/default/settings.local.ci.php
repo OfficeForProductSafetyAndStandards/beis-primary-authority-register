@@ -2,7 +2,7 @@
 
 $databases['default']['default'] = array (
   'database' => 'par',
-  'username' => 'root',
+  'username' => 'par',
   'password' => '123456',
   'prefix' => '',
   'host' => 'localhost',
