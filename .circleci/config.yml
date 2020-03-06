@@ -12,6 +12,7 @@ references:
 
       - image: circleci/postgres:9.6.3-alpine
         environment:
+          POSTGRES_ROOT_PASSWORD: 123456
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
           POSTGRES_DB: par
