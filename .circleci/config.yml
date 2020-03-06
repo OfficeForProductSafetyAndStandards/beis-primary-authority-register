@@ -10,7 +10,7 @@ references:
         environment:
           APP_ENV: ci
 
-      - image: postgres:9.6.3
+      - image: circleci/postgres:9.6.3-alpine
         environment:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
