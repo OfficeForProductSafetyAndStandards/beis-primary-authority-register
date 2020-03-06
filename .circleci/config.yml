@@ -382,7 +382,13 @@ jobs:
             ../vendor/bin/drush sql-sanitize @par.paas -y
       - run:
           name: "Backup database"
-          command: ./scripts/db-backup.sh production -p -s
+          command: ./scripts/db-backup.sh production -p -s -d "./backups"
+       - aws-s3/copy:
+         from: "backups/db-dump-production-sanitised-latest.tar.gz"
+         to: "s3://${S3_ARTIFACTS_BUCKET}/backups/db-dump-production-sanitised-latest.tar.gz"
+         arguments: |
+           --region eu-west-1 \
+           --cache-control "max-age=0"
 
 workflows:
   version: 2.1
@@ -509,6 +515,16 @@ workflows:
             branches:
               only:
                 - master
+    jobs:
+      - checkout_code
+      - compile_code:
+          requires:
+            - checkout_code
+      - sanitise_database:
+          requires:
+            - compile_code
+
+  db_sanitise_test:
     jobs:
       - checkout_code
       - compile_code:
