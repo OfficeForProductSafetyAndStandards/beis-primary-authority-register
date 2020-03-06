@@ -19,7 +19,7 @@ references:
     environment:
       TEST_REPORTS: ~/par/tests/reports
       S3_ARTIFACTS_BUCKET: beis-par-artifacts
-      SANITISED_DATABASE: drush-dump-production-sanitized-latest.sql
+      SANITISED_DATABASE: db-dump-production-sanitized
       UNSANITISED_DATABASE: db-dump-production-unsanitized
       SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
 
@@ -89,14 +89,14 @@ jobs:
           command: |
             mkdir -p backups
       - aws-s3/copy:
-          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
-          to: backups/sanitised-db.sql.tar.gz
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
+          to: backups/${SANITISED_DATABASE}-latest.tar.gz
           arguments: |
             --region eu-west-1 \
             --cache-control "max-age=0"
       - run:
           name: "Unpacking database"
-          command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql.tar.gz
+          command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - save_cache:
           key: v8-repo-{{ .Branch }}-{{ .Revision }}
           paths:
@@ -147,7 +147,7 @@ jobs:
       - *configure_webroot
       - run:
           name: "Importing database"
-          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}
+          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}.sql
       - run:
           name: "Setup application"
           command: sh drupal-update.sh
@@ -201,7 +201,7 @@ jobs:
       - *configure_webroot
       - run:
           name: "Importing database"
-          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}
+          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}.sql
       - run:
           name: "Setup application"
           command: sh drupal-update.sh
@@ -277,7 +277,7 @@ jobs:
               echo "Tags can only be deployed from the master branch"
               exit 1
             else
-              ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE} -d /tmp/workspace $DEPLOY_ENV
+              ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
             fi
 
   deploy_prod:
@@ -384,8 +384,8 @@ jobs:
           name: "Backup database"
           command: ./scripts/db-backup.sh production -p -s -d "../backups"
       - aws-s3/copy:
-          from: "backups/db-dump-production-sanitised-latest.tar.gz"
-          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/db-dump-production-sanitised-latest.tar.gz"
+          from: "backups/${SANITISED_DATABASE}-latest.tar.gz"
+          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
           arguments: |
             --region eu-west-1 \
             --cache-control "max-age=0"
@@ -515,16 +515,6 @@ workflows:
             branches:
               only:
                 - master
-    jobs:
-      - checkout_code
-      - compile_code:
-          requires:
-            - checkout_code
-      - sanitise_database:
-          requires:
-            - compile_code
-
-  db_sanitise_test:
     jobs:
       - checkout_code
       - compile_code:
