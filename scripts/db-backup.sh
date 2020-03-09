@@ -103,8 +103,8 @@ mkdir -p $DIRECTORY
 rm -f $DIRECTORY/$FILE_NAME.sql
 
 printf "Exporting database dump...\n"
-printf "Running: drush $DRUPAL_ALIAS sql-dump --result-file='$DIRECTORY/$FILE_NAME_raw.sql'\n"
-../vendor/drush/drush/drush $DRUPAL_ALIAS sql-dump --result-file="$DIRECTORY/$FILE_NAME_raw.sql"
+printf "Running: drush $DRUPAL_ALIAS sql-dump --result-file='$DIRECTORY/${FILE_NAME}.sql'\n"
+../vendor/drush/drush/drush $DRUPAL_ALIAS sql-dump --result-file="$DIRECTORY/${FILE_NAME}_raw.sql"
 
 ## Remove erroneous pg_dump roles applied despite --no-owner flags.
 ## https://stackoverflow.com/questions/60605491/using-pg-dump-with-no-owner-information-still-outputting-role-information
