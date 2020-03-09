@@ -359,7 +359,7 @@ jobs:
           command: cd backups && ls -lah ${UNSANITISED_DATABASE}.sql
       - run:
           name: "Importing database"
-          command: cd web && ../vendor/bin/drush sql-cli -ddd @dev < ../backups/${UNSANITISED_DATABASE}.sql
+          command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${UNSANITISED_DATABASE}.sql | ../vendor/bin/drush sql-cli @dev
       - run:
           name: "Setup application"
           command: sh drupal-update.sh
