@@ -958,6 +958,20 @@ display:
           entity_field: deleted
           plugin_id: boolean
       sorts:
+        archived:
+          id: archived
+          table: par_advice_field_data
+          field: archived
+          relationship: field_advice
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: par_data_advice
+          entity_field: archived
+          plugin_id: standard
         advice_status:
           id: advice_status
           table: par_advice_field_data
@@ -965,12 +979,12 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
-          order: DESC
+          order: ASC
           exposed: false
           expose:
             label: 'PAR Status'
           allowed_values: '1'
-          null_heavy: '1'
+          null_heavy: '0'
           entity_type: par_data_advice
           plugin_id: par_sort_allowed_statuses
         issue_date:
