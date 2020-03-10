@@ -329,10 +329,12 @@ $aliases['dev'] = [
     'sql-dump' => [
       'ordered-dump' => TRUE,
       'structure-tables-key' => 'common',
-      'skip-tables-key' => 'common',
+      'skip-tables-key' => 'test',
+      'extra' => '-O -x -w',
     ],
     'sql-sanitize' => [
-      'sanitize-password' => 'TestPassword'
+      'sanitize-password' => 'TestPassword',
+      'sanitize-email' => 'no',
     ],
   ],
   'root' => '/var/www/html/web',
