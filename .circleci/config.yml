@@ -361,19 +361,19 @@ jobs:
           name: "Importing database"
           command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${UNSANITISED_DATABASE}.sql | ../vendor/bin/drush sql-cli @dev
           environment:
-            APP_ENV: sanitise
+            APP_ENV: ci-sanitise
       - run:
           name: "Setup application"
           command: sh drupal-update.sh
           environment:
-            APP_ENV: sanitise
+            APP_ENV: ci-sanitise
       - run:
           name: "Run cron"
           command: |
             cd web
             ../vendor/bin/drush cron
           environment:
-            APP_ENV: sanitise
+            APP_ENV: ci-sanitise
       - run:
           name: "Application checklist"
           command: |
@@ -382,19 +382,19 @@ jobs:
             ../vendor/bin/drush core-requirements --severity=2
             curl -sD - -o /dev/null http://par.localhost
           environment:
-            APP_ENV: sanitise
+            APP_ENV: ci-sanitise
       - run:
           name: "Sanitise database"
           command: |
             cd web
             ../vendor/bin/drush sql-sanitize @par.paas -y
           environment:
-            APP_ENV: sanitise
+            APP_ENV: ci-sanitise
       - run:
           name: "Backup database"
           command: ./scripts/db-backup.sh production -p -s -d "../backups" -a '@par.dev'
           environment:
-            APP_ENV: sanitise
+            APP_ENV: ci-sanitise
       - aws-s3/copy:
           from: "backups/${SANITISED_DATABASE}-latest.tar.gz"
           to: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
