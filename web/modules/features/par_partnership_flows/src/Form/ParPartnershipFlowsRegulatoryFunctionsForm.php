@@ -11,7 +11,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 /**
  * The partnership form for the about partnership details.
  */
-class ParPartnershipFlowsAboutForm extends ParBaseForm {
+class ParPartnershipFlowsRegulatoryFunctionsForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
   use ParPartnershipFlowAccessTrait;

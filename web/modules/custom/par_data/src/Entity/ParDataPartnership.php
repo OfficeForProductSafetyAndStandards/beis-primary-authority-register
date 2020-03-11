@@ -329,8 +329,11 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get the regulatory functions for this Partnership.
    */
-  public function getRegulatoryFunction() {
-    return $this->get('field_regulatory_function')->referencedEntities();
+  public function getRegulatoryFunction($single = FALSE) {
+    $regulatory_functions = $this->get('field_regulatory_function')->referencedEntities();
+    $regulatory_function = !empty($regulatory_functions) ? current($regulatory_functions) : NULL;
+
+    return $single ? $regulatory_function : $regulatory_functions;
   }
 
   /**
