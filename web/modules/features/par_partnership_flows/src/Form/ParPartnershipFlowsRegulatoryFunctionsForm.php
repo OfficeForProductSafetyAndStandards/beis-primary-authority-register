@@ -26,9 +26,11 @@ class ParPartnershipFlowsRegulatoryFunctionsForm extends ParBaseForm {
 
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
+    $regulatory_functions = array_keys(array_filter($this->getFlowDataHandler()->getTempDataValue('regulatory_functions')));
+
     if ($par_data_partnership) {
       // Save the value for the about_partnership field.
-      $par_data_partnership->set('about_partnership', $this->getFlowDataHandler()->getTempDataValue('about_partnership'));
+      $par_data_partnership->set('field_regulatory_function', $regulatory_functions);
       if ($par_data_partnership->save()) {
         $this->getFlowDataHandler()->deleteStore();
       }

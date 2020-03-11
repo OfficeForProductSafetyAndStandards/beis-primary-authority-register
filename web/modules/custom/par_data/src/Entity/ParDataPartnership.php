@@ -417,7 +417,7 @@ class ParDataPartnership extends ParDataEntity {
    *   An array containing all the regulatory function names associated with the current partnership.
    */
   public function getPartnershipRegulatoryFunctionNames() {
-    $partnership_regulatory_functions = $this->get('field_regulatory_function')->referencedEntities();
+    $partnership_regulatory_functions = $this->getRegulatoryFunction();
 
     $partnership_reg_fun_name_list = array();
 

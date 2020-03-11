@@ -3,6 +3,7 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Render\Element;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -33,6 +34,9 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
       if ($authority = $par_data_partnership->getAuthority(TRUE)) {
         $available_regulatory_functions = $authority->getRegulatoryFunction();
         $this->getFlowDataHandler()->setFormPermValue("regulatory_function_options", $this->getParDataManager()->getEntitiesAsOptions($available_regulatory_functions));
+
+        $default = empty(array_diff(array_keys($available_regulatory_functions), array_keys($existing_selection)));
+        $this->getFlowDataHandler()->setFormPermValue("default", $default);
       }
     }
 
@@ -79,6 +83,9 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
       ],
     ];
 
+    // Default partnerships are those that cover all the regulatory functions
+    // that the authority can offer.
+    $default = $this->getFlowDataHandler()->getDefaultValues('default', TRUE);
     $form['partnership_cover'] = [
       '#type' => 'radios',
       '#title' => 'Is this a sequenced or bespoke partnership?',
@@ -90,7 +97,17 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
         'default' => 'Either for normal partnerships, where the organisation only has one partnership, or for sequenced partnerships, where a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities do not overlap.',
         'bespoke' => 'Bespoke partnerships should only be selected when a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities overlap.',
       ),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('is_local_authority', FALSE),
+      '#default_value' => $default ? 'default' : 'bespoke',
+    ];
+
+    // Set the default regulatory functions to be applied to all default partnerships.
+    $values = [];
+    foreach ($this->getFlowDataHandler()->getFormPermValue('regulatory_function_options') as $key => $option) {
+      $values[$key] = (string) $key;
+    }
+    $form['default_regulatory_functions'] = [
+      '#type' => 'value',
+      '#value' => $values,
     ];
 
     $form['regulatory_functions'] = [
@@ -110,5 +127,21 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
     ];
 
     return $form;
+  }
+
+  /**
+   * Validate date field.
+   */
+  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+    $partnership_cover_key = $this->getElementKey('partnership_cover');
+    $regulatory_functions_key = $this->getElementKey('regulatory_functions');
+    $default_regulatory_functions_key = $this->getElementKey('default_regulatory_functions');
+
+    // For default partnerships the regulatory functions need to be set as the default options.
+    if ($form_state->getValue($partnership_cover_key) === 'default') {
+      $form_state->setValue($regulatory_functions_key, $form_state->getValue($default_regulatory_functions_key));
+    }
+
+    return parent::validate($form, $form_state, $cardinality, $action);
   }
 }
