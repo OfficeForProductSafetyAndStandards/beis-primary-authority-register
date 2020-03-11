@@ -250,6 +250,7 @@ $options['structure-tables']['common'] = array('cache', 'cache_*', 'history', 's
  * example.  You may add new tables to the existing array or add a new element.
  */
 $options['skip-tables']['common'] = array('migration_*', 'test*', 'watchdog', 'webprofiler');
+$options['skip-tables']['test'] = array('migration_*', 'test*');
 
 /**
  * Override specific entries in Drupal's variable system or settings.php (D6/D7 only).

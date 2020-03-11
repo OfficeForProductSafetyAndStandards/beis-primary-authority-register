@@ -69,7 +69,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
 
   /**
    * Whether only working days should be counted.
-   * 
+   *
    * {@inheritdoc}
    */
   public function countWorkingDays() {
