@@ -59,4 +59,45 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
     return parent::accessCallback($route, $route_match, $account);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    parent::submitForm($form, $form_state);
+
+    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+    $selected_regulatory_functions = $this->getFlowDataHandler()->getTempDataValue('partnership_regulatory_functions');
+
+    // We only want to update the status of none active partnerships.
+    if ($partnership->getRawStatus() !== 'confirmed_rd') {
+      try {
+        $partnership->setParStatus('confirmed_rd');
+      }
+      catch (ParDataException $e) {
+        // If the partnership could not be saved the application can't be progressed.
+        // @TODO Find a better way to alert the user without redirecting them away from the form.
+        drupal_set_message('There was an error approving this partnership, please check it is ready to be approved.');
+        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel'));
+        return;
+      }
+
+      $partnership->set('field_regulatory_function', $selected_regulatory_functions);
+
+      // Set approved date to today.
+      $time = new \DateTime();
+      $partnership->set('approved_date', $time->format("Y-m-d"));
+
+      if (!$partnership->save()) {
+
+        $message = $this->t('This %partnership could not be approved for %form_id');
+        $replacements = [
+          '%partnership' => $partnership->id(),
+          '%form_id' => $this->getFormId(),
+        ];
+        $this->getLogger($this->getLoggerChannel())
+          ->error($message, $replacements);
+      }
+    }
+  }
+
 }

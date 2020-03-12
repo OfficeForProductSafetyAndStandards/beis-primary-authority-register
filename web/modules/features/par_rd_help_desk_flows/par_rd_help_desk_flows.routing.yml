@@ -8,6 +8,19 @@ par_help_desks_flows.helpdesk_dashboard:
     _permission: 'access helpdesk'
 
 # PAR Help Desk journey - approve partnership
+par_help_desks_flows.confirm_partnership:
+  path: '/helpdesk/partnership/{par_data_partnership}/confirm'
+  defaults:
+    _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveAuthorisationForm'
+    _title_callback: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveAuthorisationForm::titleCallback'
+  requirements:
+    _permission: 'approve partnerships'
+    _custom_access: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveAuthorisationForm::accessCallback'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_help_desks_flows.regulatory_functions_add:
   path: '/helpdesk/partnership/{par_data_partnership}/regulatory-functions'
   defaults:
@@ -16,19 +29,6 @@ par_help_desks_flows.regulatory_functions_add:
   requirements:
     _permission: 'approve partnerships'
     _custom_access: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveRegulatoryFunctionsForm::accessCallback'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-par_help_desks_flows.confirm_partnership:
-  path: '/helpdesk/partnership/{par_data_partnership}/confirm'
-  defaults:
-    _form: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveConfirmForm'
-    _title_callback: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveConfirmForm::titleCallback'
-  requirements:
-    _permission: 'approve partnerships'
-    _custom_access: '\Drupal\par_rd_help_desk_flows\Form\ParRdHelpDeskApproveConfirmForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:

@@ -18,11 +18,19 @@ steps:
     form_id: par_rd_help_desk_confirm
     redirect:
       next: 2
-      cancel: 3
+      cancel: 4
   2:
+    route: par_help_desks_flows.regulatory_functions_add
+    form_id: par_rd_help_desk_regulatory_functions_add
+    components:
+      partnership_regulatory_functions: {}
+    redirect:
+      next: 3
+      cancel: 4
+  3:
     route: par_help_desks_flows.approve_partnership
     form_id: par_rd_help_desk_approve
     redirect:
       done: 3
-  3:
+  4:
     route: view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page
