@@ -30,13 +30,33 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
       $existing_selection = $par_data_partnership->getRegulatoryFunction();
       $this->getFlowDataHandler()->setFormPermValue("regulatory_functions", array_keys($this->getParDataManager()->getEntitiesAsOptions($existing_selection)));
 
-      // Get the available options.
+      // Get the available options from the authority.
       if ($authority = $par_data_partnership->getAuthority(TRUE)) {
         $available_regulatory_functions = $authority->getRegulatoryFunction();
         $this->getFlowDataHandler()->setFormPermValue("regulatory_function_options", $this->getParDataManager()->getEntitiesAsOptions($available_regulatory_functions));
 
-        $default = empty(array_diff(array_keys($available_regulatory_functions), array_keys($existing_selection)));
+        $default = empty($existing_selection) || empty(array_diff(array_keys($available_regulatory_functions), array_keys($existing_selection)));
+
         $this->getFlowDataHandler()->setFormPermValue("default", $default);
+      }
+
+      // Identify what other partnerships cover this organisation.
+      if ($organisation = $par_data_partnership->getOrganisation(TRUE)) {
+        $relationships = $organisation->getRelationships('par_data_partnership');
+
+        // Ignore the current organisation.
+        $relationships = array_filter($relationships, function ($relationship) use ($par_data_partnership) {
+          return $relationship->getEntity()->id() !== $par_data_partnership->id();
+        });
+
+        // Discover the regulatory functions for these partnerships.
+        $covered_by_other_partnerships = [];
+        foreach ($relationships as $relationship) {
+          $alternative_partnership = $relationship->getEntity();
+          $already_covered_regulatory_functions = $alternative_partnership->getRegulatoryFunction();
+          $covered_by_other_partnerships += $this->getParDataManager()->getEntitiesAsOptions($already_covered_regulatory_functions);
+        }
+        $this->getFlowDataHandler()->setFormPermValue("covered_by_other_partnerships", implode(', ', $covered_by_other_partnerships));
       }
     }
 
@@ -48,6 +68,24 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
    */
   public function getElements($form = [], $cardinality = 1) {
     $renderer = \Drupal::service('renderer');
+
+    // Identify if the organisation is covered by any regulatory
+    // functions through other partnerships.
+    $covered_by_other_partnerships = $this->getFlowDataHandler()->getDefaultValues('covered_by_other_partnerships', TRUE);
+    if ($covered_by_other_partnerships) {
+      $form['covered_by_other_patnerships'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['form-group', 'notice']],
+        'warning' => [
+          '#type' => 'html_tag',
+          '#tag' => 'strong',
+          '#value' => $this->t('This organisation is already covered for %regulatory_functions by other partnerships.', ['%regulatory_functions' => $covered_by_other_partnerships]),
+          '#attributes' => ['class' => 'bold-small'],
+          '#prefix' => '<i class="icon icon-important"><span class="visually-hidden">Warning</span></i>'
+        ],
+      ];
+    }
+
     $default_label = [
       [
         '#type' => 'html_tag',
