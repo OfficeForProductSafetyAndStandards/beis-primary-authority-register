@@ -19,8 +19,8 @@ references:
     environment:
       TEST_REPORTS: ~/par/tests/reports
       S3_ARTIFACTS_BUCKET: beis-par-artifacts
-      SANITISED_DATABASE: drush-dump-production-sanitized-latest.sql
-      UNSANITISED_DATABASE: db-dump-production-unsanitized
+      SANITISED_DATABASE: db-dump-production-sanitised
+      UNSANITISED_DATABASE: db-dump-production-unsanitised
       SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
 
     working_directory: /var/www/html
@@ -89,14 +89,14 @@ jobs:
           command: |
             mkdir -p backups
       - aws-s3/copy:
-          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
-          to: backups/sanitised-db.sql.tar.gz
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
+          to: backups/${SANITISED_DATABASE}-latest.tar.gz
           arguments: |
             --region eu-west-1 \
             --cache-control "max-age=0"
       - run:
           name: "Unpacking database"
-          command: cd backups && tar --no-same-owner -zxvf sanitised-db.sql.tar.gz
+          command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - save_cache:
           key: v8-repo-{{ .Branch }}-{{ .Revision }}
           paths:
@@ -147,7 +147,7 @@ jobs:
       - *configure_webroot
       - run:
           name: "Importing database"
-          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}
+          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}.sql
       - run:
           name: "Setup application"
           command: sh drupal-update.sh
@@ -201,7 +201,7 @@ jobs:
       - *configure_webroot
       - run:
           name: "Importing database"
-          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}
+          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}.sql
       - run:
           name: "Setup application"
           command: sh drupal-update.sh
@@ -277,7 +277,7 @@ jobs:
               echo "Tags can only be deployed from the master branch"
               exit 1
             else
-              ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE} -d /tmp/workspace $DEPLOY_ENV
+              ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
             fi
 
   deploy_prod:
@@ -326,7 +326,7 @@ jobs:
           command: |
             DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE} -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   archive_database:
     <<: *defaults
@@ -359,15 +359,21 @@ jobs:
           command: cd backups && ls -lah ${UNSANITISED_DATABASE}.sql
       - run:
           name: "Importing database"
-          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${UNSANITISED_DATABASE}.sql
+          command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${UNSANITISED_DATABASE}.sql | ../vendor/bin/drush sql-cli @dev
+          environment:
+            APP_ENV: ci-sanitise
       - run:
           name: "Setup application"
           command: sh drupal-update.sh
+          environment:
+            APP_ENV: ci-sanitise
       - run:
           name: "Run cron"
           command: |
             cd web
             ../vendor/bin/drush cron
+          environment:
+            APP_ENV: ci-sanitise
       - run:
           name: "Application checklist"
           command: |
@@ -375,14 +381,26 @@ jobs:
             ../vendor/bin/drush cex -n
             ../vendor/bin/drush core-requirements --severity=2
             curl -sD - -o /dev/null http://par.localhost
+          environment:
+            APP_ENV: ci-sanitise
       - run:
           name: "Sanitise database"
           command: |
             cd web
             ../vendor/bin/drush sql-sanitize @par.paas -y
+          environment:
+            APP_ENV: ci-sanitise
       - run:
           name: "Backup database"
-          command: ./scripts/db-backup.sh production -p -s
+          command: ./scripts/db-backup.sh production -p -s -d "../backups" -a '@par.dev'
+          environment:
+            APP_ENV: ci-sanitise
+      - aws-s3/copy:
+          from: "backups/${SANITISED_DATABASE}-latest.tar.gz"
+          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
+          arguments: |
+            --region eu-west-1 \
+            --cache-control "max-age=0"
 
 workflows:
   version: 2.1

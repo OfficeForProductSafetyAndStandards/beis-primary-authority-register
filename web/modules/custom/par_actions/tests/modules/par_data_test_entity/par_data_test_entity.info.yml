@@ -1,0 +1,9 @@
+name: 'Par Actions Test Data'
+type: module
+description: 'Support module providing test data entities for the actions plugins.'
+package: Testing
+version: VERSION
+core: 8.x
+dependencies:
+  - datetime
+  - par_data
