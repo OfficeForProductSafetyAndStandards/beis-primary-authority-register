@@ -66,7 +66,7 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $selected_regulatory_functions = $this->getFlowDataHandler()->getTempDataValue('regulatory_functions');
+    $selected_regulatory_functions = array_filter($this->getFlowDataHandler()->getTempDataValue('regulatory_functions'));
 
     // We only want to update the status of none active partnerships.
     if ($partnership->getRawStatus() !== 'confirmed_rd') {
@@ -86,7 +86,7 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
       // Set approved date to today.
       $time = new \DateTime();
       $partnership->set('approved_date', $time->format("Y-m-d"));
-die('argh!');
+
       if (!$partnership->save()) {
 
         $message = $this->t('This %partnership could not be approved for %form_id');

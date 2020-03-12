@@ -213,6 +213,14 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
     if ($form_state->getValue($partnership_cover_key) === 'default') {
       $form_state->setValue($regulatory_functions_key, $form_state->getValue($default_regulatory_functions_key));
     }
+    elseif ($form_state->getValue($partnership_cover_key) === 'bespoke') {
+      $regulatory_functions = array_filter($form_state->getValue($regulatory_functions_key));
+      if (empty($regulatory_functions)) {
+        $id_key = $this->getElementKey('regulatory_functions', $cardinality, TRUE);
+        $message = $this->wrapErrorMessage('You must choose at least one regulatory function.', $this->getElementId($id_key, $form));
+        $form_state->setErrorByName($this->getElementName($regulatory_functions_key), $message);
+      }
+    }
 
     return parent::validate($form, $form_state, $cardinality, $action);
   }
