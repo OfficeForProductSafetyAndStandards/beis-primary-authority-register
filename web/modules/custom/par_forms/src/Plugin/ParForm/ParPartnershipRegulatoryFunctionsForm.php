@@ -3,6 +3,7 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Render\Element;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -35,8 +36,14 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
         $available_regulatory_functions = $authority->getRegulatoryFunction();
         $this->getFlowDataHandler()->setFormPermValue("regulatory_function_options", $this->getParDataManager()->getEntitiesAsOptions($available_regulatory_functions));
 
-        $default = empty($existing_selection) || empty(array_diff(array_keys($available_regulatory_functions), array_keys($existing_selection)));
+        // If there are no regulatory functions then we need to get the authority
+        // id required for updating the authority information.
+        if (empty($available_regulatory_functions)) {
+          $this->getFlowDataHandler()->setFormPermValue("partnership_authority_id", $authority->id());
+        }
 
+        // Determine whether this is a default or bespoke partnership.
+        $default = empty($existing_selection) || empty(array_diff(array_keys($available_regulatory_functions), array_keys($existing_selection)));
         $this->getFlowDataHandler()->setFormPermValue("default", $default);
       }
 
@@ -68,6 +75,33 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
    */
   public function getElements($form = [], $cardinality = 1) {
     $renderer = \Drupal::service('renderer');
+
+    // If there are no available regulatory functions then this form should not be displayed.
+    $regulatory_function_options = $this->getFlowDataHandler()->getFormPermValue('regulatory_function_options');
+    if (empty($regulatory_function_options)) {
+      try {
+        $params = ['par_data_authority' => $this->getDefaultValuesByKey('partnership_authority_id', $cardinality, NULL)];
+        $link_options = ['attributes' => ['class' => ['flow-link'], 'target' => '_blank']];
+        $authority_update_link = $this->getLinkByRoute('par_authority_update_flows.authority_update_review', $params, $link_options)
+            ->setText('Update the authority\'s regulatory functions')
+            ->toString();
+      } catch (ParFlowException $e) {
+
+      }
+      $form['no_regulatory_functions'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['form-group', 'notice']],
+        'warning' => [
+          '#type' => 'html_tag',
+          '#tag' => 'strong',
+          '#value' => $this->t('This authority does not provide any regulatory functions, please update the authority before continuing: %link', ['%link' => $authority_update_link]),
+          '#attributes' => ['class' => 'bold-small'],
+          '#prefix' => '<i class="icon icon-important"><span class="visually-hidden">Warning</span></i>'
+        ],
+      ];
+
+      return $form;
+    }
 
     // Identify if the organisation is covered by any regulatory
     // functions through other partnerships.
@@ -102,7 +136,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
         '#theme' => 'item_list',
         '#list_type' => 'ul',
         '#title' => 'The following regulatory functions will be added',
-        '#items' => $this->getFlowDataHandler()->getFormPermValue('regulatory_function_options'),
+        '#items' => $regulatory_function_options,
         '#attributes' => ['class' => ['list', 'list-bullet']],
         '#wrapper_attributes' => ['class' => 'form-group'],
       ]
@@ -140,7 +174,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
 
     // Set the default regulatory functions to be applied to all default partnerships.
     $values = [];
-    foreach ($this->getFlowDataHandler()->getFormPermValue('regulatory_function_options') as $key => $option) {
+    foreach ($regulatory_function_options as $key => $option) {
       $values[$key] = (string) $key;
     }
     $form['default_regulatory_functions'] = [
@@ -151,7 +185,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
       '#title' => '',
-      '#options' => $this->getFlowDataHandler()->getFormPermValue('regulatory_function_options'),
+      '#options' => $regulatory_function_options,
       '#default_value' => $this->getDefaultValuesByKey('regulatory_functions', $cardinality, []),
       '#attributes' => ['class' => ['form-group']],
       '#states' => [

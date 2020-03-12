@@ -101,7 +101,6 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
     $form['partnership_approve']['confirm_authorisation_select'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Yes, I am authorised to approve this partnership'),
-      '#required' => TRUE,
     ];
 
     return parent::buildForm($form, $form_state);
@@ -111,7 +110,12 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // No validation yet.
+    // Validate that the authorisation confirmation has been checked.
+    if (empty($form_state->getValue('confirm_authorisation_select'))) {
+      $id = $this->getElementId(['confirm_authorisation_select'], $form);
+      $form_state->setErrorByName($this->getElementName('confirm_authorisation_select'), $this->wrapErrorMessage('You must confirm you are authorised to approve this partnership.', $id));
+    }
+
     parent::validateForm($form, $form_state);
   }
 }

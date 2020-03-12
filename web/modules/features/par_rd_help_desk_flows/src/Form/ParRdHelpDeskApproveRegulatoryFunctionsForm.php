@@ -86,7 +86,7 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
       // Set approved date to today.
       $time = new \DateTime();
       $partnership->set('approved_date', $time->format("Y-m-d"));
-
+die('argh!');
       if (!$partnership->save()) {
 
         $message = $this->t('This %partnership could not be approved for %form_id');

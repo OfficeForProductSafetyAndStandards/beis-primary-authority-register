@@ -28,6 +28,6 @@ steps:
     route: par_help_desks_flows.approve_partnership
     form_id: par_rd_help_desk_approve
     redirect:
-      done: 3
+      done: 4
   4:
     route: view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page
