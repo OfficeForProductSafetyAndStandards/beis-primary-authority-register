@@ -27,7 +27,6 @@ Feature: Helpdesk approve partnership
         Then the element ".error-summary" contains the text "You must confirm you are authorised to approve this partnership."
         When I click on the radio "#edit-confirm-authorisation-select"
         And I click on the button "#edit-next"
-        #edit-partnership-cover-default
         And I click on the radio "#edit-partnership-cover-bespoke"
         And I click on the button "#edit-next"
         Then the element ".error-summary" contains the text "You must choose at least one regulatory function."
