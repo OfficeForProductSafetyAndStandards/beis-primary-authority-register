@@ -221,6 +221,12 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
         $form_state->setErrorByName($this->getElementName($regulatory_functions_key), $message);
       }
     }
+    else {
+      // In case no partnership type was selected.
+      $id_key = $this->getElementKey('partnership_cover', $cardinality, TRUE);
+      $message = $this->wrapErrorMessage('Please choose whether this is a normal, sequenced or bespoke partnership.', $this->getElementId($id_key, $form));
+      $form_state->setErrorByName($this->getElementName($partnership_cover_key), $message);
+    }
 
     return parent::validate($form, $form_state, $cardinality, $action);
   }
