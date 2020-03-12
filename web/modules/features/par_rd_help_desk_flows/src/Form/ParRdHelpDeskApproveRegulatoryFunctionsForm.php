@@ -26,7 +26,7 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    return 'Confirmation | Is this a bespoke or sequenced partnership?';
+    return 'Confirmation | Choose the regulatory functions';
   }
 
   /**
@@ -66,7 +66,7 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $selected_regulatory_functions = $this->getFlowDataHandler()->getTempDataValue('partnership_regulatory_functions');
+    $selected_regulatory_functions = $this->getFlowDataHandler()->getTempDataValue('regulatory_functions');
 
     // We only want to update the status of none active partnerships.
     if ($partnership->getRawStatus() !== 'confirmed_rd') {
