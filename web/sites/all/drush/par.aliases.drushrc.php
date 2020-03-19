@@ -329,7 +329,7 @@ $aliases['dev'] = [
     'sql-dump' => [
       'ordered-dump' => TRUE,
       'structure-tables-key' => 'common',
-      'skip-tables-key' => 'test',
+      'skip-tables-key' => 'common',
       'extra' => '-O -x -w',
     ],
     'sql-sanitize' => [
