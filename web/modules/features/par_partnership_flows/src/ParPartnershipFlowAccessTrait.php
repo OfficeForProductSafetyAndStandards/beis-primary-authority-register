@@ -81,7 +81,7 @@ trait ParPartnershipFlowAccessTrait {
         if ($par_data_partnership->isActive()) {
           $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
         }
-        // Also restrict business users who have already conirmed their business details.
+        // Also restrict business users who have already confirmed their business details.
         if ($par_data_partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
           $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
         }

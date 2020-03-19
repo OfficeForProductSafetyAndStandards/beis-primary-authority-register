@@ -52,7 +52,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
         Then the element "h1.heading-xlarge .heading-secondary" contains the text "Raise notice of enforcement action"
         And the element "h1.heading-xlarge" contains the text "Add an action to the enforcement notice"
         When I add "Multiple Action 1" to the inputfield "#edit-par-component-enforcement-action-0-title"
-        And I click on the button "#edit-par-component-enforcement-action-0-regulatory-function-1"
+        And I click on the button "#edit-par-component-enforcement-action-0-regulatory-function-14"
         And I add "601" random chars of text to field "#edit-par-component-enforcement-action-0-details"
 
         # ADD ANOTHER ACTION
@@ -60,7 +60,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
         And I click the link text "Add another"
         Then the element "h1.heading-xlarge .heading-secondary" contains the text "Raise notice of enforcement action"
         When I add "Multiple Action 2" to the inputfield "#edit-par-component-enforcement-action-1-title"
-        And I click on the button "#edit-par-component-enforcement-action-1-regulatory-function-1"
+        And I click on the button "#edit-par-component-enforcement-action-1-regulatory-function-14"
         And I add "601" random chars of text to field "#edit-par-component-enforcement-action-1-details"
         And I click on the button "#edit-next"
 
@@ -112,7 +112,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
         Then the element "h1.heading-xlarge .heading-secondary" contains the text "Raise notice of enforcement action"
         And the element "h1.heading-xlarge" contains the text "Add an action to the enforcement notice"
         When I add "An Action 1" to the inputfield "#edit-par-component-enforcement-action-0-title"
-        And I click on the button "#edit-par-component-enforcement-action-0-regulatory-function-1"
+        And I click on the button "#edit-par-component-enforcement-action-0-regulatory-function-14"
         And I add "601" random chars of text to field "#edit-par-component-enforcement-action-0-details"
         And I click on the button "#edit-next"
         Then the element "#par-enforcement-notice-raise-review" contains the text "An Action 1"

@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Route;
 /**
  * The confirming the user is authorised to approve partnerships.
  */
-class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
+class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
 
   /**
    * {@inheritdoc}
@@ -101,32 +101,7 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
     $form['partnership_approve']['confirm_authorisation_select'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Yes, I am authorised to approve this partnership'),
-      '#required' => TRUE,
     ];
-
-    $regulatory_functions = $this->getParDataManager()->getEntitiesByType('par_data_regulatory_function');
-    $regulatory_function_options = $this->getParDataManager()->getEntitiesAsOptions($regulatory_functions);
-    $form['partnership_regulatory_functions'] = [
-      '#type' => 'checkboxes',
-      '#title' => $this->t('Please choose the regulatory functions of this partnership'),
-      '#options' => $regulatory_function_options,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('partnership_regulatory_functions', []),
-      '#required' => TRUE,
-    ];
-
-    // Defensive coding we are dealing with an approved partnership we are not changing the state of
-    // the entity so avoid confusion by disabling the regulatory functions.
-    if ($par_data_partnership->getRawStatus() == 'confirmed_rd') {
-      $form['partnership_regulatory_functions']['#disabled'] = TRUE;
-      $form['confirm_authorisation_select']['#disabled'] = TRUE;
-
-      $form['approved_partnership'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('This partnership has already been approved.'),
-        '#prefix' => '<div><strong>',
-        '#suffix' => '</strong></div>',
-      ];
-    }
 
     return parent::buildForm($form, $form_state);
   }
@@ -135,49 +110,12 @@ class ParRdHelpDeskApproveConfirmForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // No validation yet.
+    // Validate that the authorisation confirmation has been checked.
+    if (empty($form_state->getValue('confirm_authorisation_select'))) {
+      $id = $this->getElementId(['confirm_authorisation_select'], $form);
+      $form_state->setErrorByName($this->getElementName('confirm_authorisation_select'), $this->wrapErrorMessage('You must confirm you are authorised to approve this partnership.', $id));
+    }
+
     parent::validateForm($form, $form_state);
   }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
-
-    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $selected_regulatory_functions = $this->getFlowDataHandler()->getTempDataValue('partnership_regulatory_functions');
-
-    // We only want to update the status of none active partnerships.
-    if ($partnership->getRawStatus() !== 'confirmed_rd') {
-      try {
-        $partnership->setParStatus('confirmed_rd');
-      }
-      catch (ParDataException $e) {
-        // If the partnership could not be saved the application can't be progressed.
-        // @TODO Find a better way to alert the user without redirecting them away from the form.
-        drupal_set_message('There was an error approving this partnership, please check it is ready to be approved.');
-        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel'));
-        return;
-      }
-
-      $partnership->set('field_regulatory_function', $selected_regulatory_functions);
-
-      // Set approved date to today.
-      $time = new \DateTime();
-      $partnership->set('approved_date', $time->format("Y-m-d"));
-
-      if (!$partnership->save()) {
-
-        $message = $this->t('This %partnership could not be approved for %form_id');
-        $replacements = [
-          '%partnership' => $partnership->id(),
-          '%form_id' => $this->getFormId(),
-        ];
-        $this->getLogger($this->getLoggerChannel())
-          ->error($message, $replacements);
-      }
-    }
-  }
-
 }

@@ -129,6 +129,20 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
         ],
       ],
     ];
+    try {
+      $regulatory_functions_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_regulatory_functions', [], [], TRUE);
+    }
+    catch (ParFlowException $e) {
+      $this->getLogger($this->getLoggerChannel())->notice($e);
+    }
+    if (isset($regulatory_functions_edit_link)) {
+      $form['partnership_info']['details']['edit'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $regulatory_functions_edit_link->setText("edit the regulatory functions")->toString(),
+        '#attributes' => ['class' => 'column-full'],
+      ];
+    }
 
     // Partnership Organisation Information - component.
     $form['organisation_info'] = [

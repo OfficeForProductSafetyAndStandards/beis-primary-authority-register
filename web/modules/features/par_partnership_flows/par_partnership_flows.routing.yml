@@ -25,6 +25,19 @@ par_partnership_flows.about_partnership:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+par_partnership_flows.regulatory_function_update:
+  path: '/partnership/{par_data_partnership}/regulatory-functions'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRegulatoryFunctionsForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRegulatoryFunctionsForm::titleCallback'
+  requirements:
+    _permission: 'update partnership helpdesk details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRegulatoryFunctionsForm::accessCallback'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
 par_partnership_flows.authority_advice_list:
   path: '/partnership/{par_data_partnership}/advice/authority-list'
   defaults:
