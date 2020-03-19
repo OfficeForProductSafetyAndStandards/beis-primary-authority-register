@@ -1,3 +1,7 @@
+update partnership helpdesk details:
+  title: "Update restricted partnership details"
+  description: "Allow users to update the restricted details for a partnership."
+  restrict access: TRUE
 update partnership authority details:
   title: "Update authority's details"
   description: "Allow users to update the authority's details for a partnership."

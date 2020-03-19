@@ -32,7 +32,7 @@ steps:
     route: par_partnership_flows.regulatory_function_update
     form_id: par_partnership_regulatory_function_update
     components:
-      partnership_regulatory_functions: {}
+      partnership_regulatory_functions: {  }
     redirect:
       save: 1
       cancel: 1

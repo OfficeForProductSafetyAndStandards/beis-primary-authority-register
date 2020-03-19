@@ -170,6 +170,7 @@ permissions:
   - 'update coordinated member'
   - 'update partnership authority contact'
   - 'update partnership authority details'
+  - 'update partnership helpdesk details'
   - 'update partnership organisation contact'
   - 'update partnership organisation details'
   - 'update primary authority advice to local authorities'
