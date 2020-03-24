@@ -23,8 +23,14 @@ Feature: Helpdesk approve partnership
 
         Then the element "#par-rd-help-desk-confirm" contains the text "Partnership between"
         And the element "#par-rd-help-desk-confirm" contains the text "Organisation For Direct Partnership"
-        And I click on the radio "#edit-confirm-authorisation-select"
-        And I click on the radio "#edit-partnership-regulatory-functions-1"
+        When I click on the button "#edit-next"
+        Then the element ".error-summary" contains the text "You must confirm you are authorised to approve this partnership."
+        When I click on the radio "#edit-confirm-authorisation-select"
+        And I click on the button "#edit-next"
+        And I click on the radio "#edit-partnership-cover-bespoke"
+        And I click on the button "#edit-next"
+        Then the element ".error-summary" contains the text "You must choose at least one regulatory function."
+        And I click on the radio "#edit-partnership-cover-default"
         And I click on the button "#edit-next"
 
         # APPROVAL CONFIRMATION SCREEN
