@@ -8,6 +8,7 @@ dependencies:
   module:
     - datetime_range
     - file_entity
+    - text
 id: par_data_inspection_plan.inspection_plan.summary
 targetEntityType: par_data_inspection_plan
 bundle: inspection_plan
@@ -15,16 +16,32 @@ mode: summary
 content:
   document:
     type: file_download_link
-    weight: 0
+    weight: 2
     region: content
     label: hidden
     settings:
       access_message: 'You don''t have access to download this file.'
       text: 'Download [file:name]'
     third_party_settings: {  }
+  summary:
+    label: hidden
+    type: text_trimmed
+    weight: 1
+    region: content
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+  title:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   valid_date:
     type: daterange_default
-    weight: 1
+    weight: 3
     region: content
     label: hidden
     settings:
@@ -34,8 +51,11 @@ content:
     third_party_settings: {  }
 hidden:
   approved_rd_executive: true
+  archive_reason: true
   consulted_national_regulator: true
+  deleted_reason: true
   field_regulatory_function: true
   inspection_status: true
   name: true
+  revocation_reason: true
   user_id: true

@@ -14,8 +14,6 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_organisation_person
     - field.field.par_data_partnership.partnership.field_regulatory_function
     - par_data.par_data_partnership_type.partnership
-  module:
-    - text
 _core:
   default_config_hash: Nfp6e0jC6UiTiwziI3QPJEcX4qm3e19N6NdXdgPKPNQ
 id: par_data_partnership.partnership.title
@@ -23,20 +21,6 @@ targetEntityType: par_data_partnership
 bundle: partnership
 mode: title
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   field_authority:
     type: entity_reference_entity_view
     weight: 1
@@ -68,6 +52,7 @@ hidden:
   about_partnership: true
   advice: true
   approved_date: true
+  archive_reason: true
   authority: true
   authority_change_comment: true
   authority_person: true
@@ -76,6 +61,7 @@ hidden:
   communication_phone: true
   coordinator_suitable: true
   cost_recovery: true
+  deleted_reason: true
   expertise_details: true
   field_advice: true
   field_authority_person: true

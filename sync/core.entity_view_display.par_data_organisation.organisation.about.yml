@@ -19,13 +19,6 @@ targetEntityType: par_data_organisation
 bundle: organisation
 mode: about
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   comments:
     label: hidden
     weight: 0
@@ -33,23 +26,11 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
 hidden:
+  archive_reason: true
   coordinator_number: true
   coordinator_type: true
+  deleted_reason: true
   employees_band: true
   field_coordinated_businesses: true
   field_legal_entity: true
@@ -60,6 +41,7 @@ hidden:
   nation: true
   organisation_name: true
   premises_mapped: true
+  revocation_reason: true
   size: true
   trading_name: true
   user_id: true
