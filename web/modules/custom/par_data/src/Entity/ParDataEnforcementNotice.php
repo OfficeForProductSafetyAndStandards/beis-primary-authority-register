@@ -186,12 +186,18 @@ class ParDataEnforcementNotice extends ParDataEntity {
       'name' => [
         'AND' => [
           ['field_organisation', $par_data_organisation->id()],
+          ['field_organisation', $par_data_organisation->id()],
         ]
       ],
     ];
 
     $par_data_partnerships = $this->getParDataManager()
       ->getEntitiesByQuery('par_data_partnership', $conditions, 10);
+
+    // Ignore all inactive partnerships.
+    $par_data_partnerships = array_filter($par_data_partnerships, function ($partnership) {
+      return $partnership->isActive();
+    });
 
     // Load all the authorities belonging to these partnerships.
     foreach ($par_data_partnerships as $partnership) {
