@@ -186,7 +186,6 @@ class ParDataEnforcementNotice extends ParDataEntity {
       'name' => [
         'AND' => [
           ['field_organisation', $par_data_organisation->id()],
-          ['field_organisation', $par_data_organisation->id()],
         ]
       ],
     ];
