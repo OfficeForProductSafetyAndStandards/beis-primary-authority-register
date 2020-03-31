@@ -22,6 +22,14 @@ Feature: Enforcement notice review
         Then the element "h1.heading-xlarge" contains the text "Enforcements"
         And I successfully refer enforcement notice "Enforcement notice 1" to "Lower East Side Borough Council"
 
+    @ci
+    Scenario: Enforcement notices against organisations without active partnerships with another authority can be referred
+        Given I am logged in as "par_authority@example.com"
+        When I click the link with text "See your enforcement notices"
+        And I click the link text "Enforcement notice 5"
+        Then the element "h1.heading-xlarge" contains the text "Respond to notice of enforcement action"
+        And the element "#edit-par-component-enforcement-action-review-0-primary-authority-status-referred" does not exist
+
     @ci @smoke
     Scenario: View reviewed enforcement notices
         Given I am logged in as "par_authority@example.com"
