@@ -101,7 +101,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
         And the element "h1.heading-xlarge" contains the text "Enforce member"
         And I see "10" occurences of element "#edit-par-data-organisation-id--wrapper > .multiple-choice"
         And the element ".pagerer-pager-basic" does exist
-        And I see "2" occurences of element ".pager__items > .pager__item"
+        And I see "3" occurences of element ".pagerer-right-pane .pager__items > .pager__item"
 
     @ci @enforcementnotices
     Scenario: Issue enforcement notice on Coordinated Partnership with no members
