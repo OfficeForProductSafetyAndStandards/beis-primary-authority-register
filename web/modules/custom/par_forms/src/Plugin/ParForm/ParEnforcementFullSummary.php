@@ -201,7 +201,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
     if ($enforcing_authority || $enforcing_officer_name) {
       $form['enforcer'] = [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => ['grid-row', 'form-group']],
+        '#attributes' => ['class' => ['grid-row', 'form-group', 'enforcement-officer']],
       ];
 
       if ($enforcing_officer_name) {
@@ -289,7 +289,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
         $form['partnership']['primary_authority'] = [
           '#type' => 'fieldset',
           '#title' => t('Primary authority'),
-          '#attributes' => ['class' => 'column-one-half'],
+          '#attributes' => ['class' => 'column-one-half', 'authority-officer'],
           'primary_authority_name' => [
             '#type' => 'markup',
             '#markup' => $primary_authority,

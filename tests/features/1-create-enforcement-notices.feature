@@ -21,10 +21,10 @@ Feature: Enforcement Officer - Enforcement Notice Process
         | Enforcement notice 2 | Charlie's Cafe | Partnership between Upper West Side Borough Council and Charlie's | par_authority@example.com |
         | Enforcement notice 3 | Charlie's Cafe | Partnership between Upper West Side Borough Council and Charlie's | par_authority@example.com |
         | Enforcement notice 4 | Charlie's Cafe | Partnership between Upper West Side Borough Council and Charlie's | par_authority@example.com |
+        | Enforcement notice 5 | ABCD Mart      | Partnership between Lower East Side Borough Council and ABCD Mart | par_authority@example.com |
 
     @ci @enforcementnotices
-    Scenario Outline: Enforcement Officer - Issue enforcement notice with multiple actions
-
+    Scenario: Enforcement Officer - Issue enforcement notice with multiple actions
         Given I open the path "/user/login"
         When I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
