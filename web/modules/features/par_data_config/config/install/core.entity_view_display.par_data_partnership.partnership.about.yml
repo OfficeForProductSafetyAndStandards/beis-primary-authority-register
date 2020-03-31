@@ -83,12 +83,14 @@ content:
     third_party_settings: {  }
 hidden:
   approved_date: true
+  archive_reason: true
   authority_change_comment: true
   communication_email: true
   communication_notes: true
   communication_phone: true
   coordinator_suitable: true
   cost_recovery: true
+  deleted_reason: true
   expertise_details: true
   field_advice: true
   field_authority: true

@@ -19,20 +19,6 @@ targetEntityType: par_data_deviation_request
 bundle: deviation_request
 mode: title
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   document:
     label: hidden
     weight: 0
@@ -49,14 +35,9 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
 hidden:
+  archive_reason: true
+  deleted_reason: true
   field_enforcing_authority: true
   field_inspection_plan: true
   field_partnership: true
@@ -66,4 +47,5 @@ hidden:
   primary_authority_notes: true
   primary_authority_status: true
   request_date: true
+  revocation_reason: true
   user_id: true

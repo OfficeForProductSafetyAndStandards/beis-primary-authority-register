@@ -9,7 +9,6 @@ dependencies:
     - par_data.par_data_coordinated_business_type.coordinated_business
   module:
     - datetime
-    - text
 _core:
   default_config_hash: HPOqBXoYOCqlJfqCW4ntndlqrVB0SvFVN9pGUnMuFO8
 id: par_data_coordinated_business.coordinated_business.summary
@@ -17,13 +16,6 @@ targetEntityType: par_data_coordinated_business
 bundle: coordinated_business
 mode: summary
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   date_membership_began:
     type: datetime_default
     weight: 1
@@ -33,13 +25,6 @@ content:
       timezone_override: ''
       format_type: gds_date_format
     third_party_settings: {  }
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   field_organisation:
     weight: 0
     label: hidden
@@ -49,17 +34,13 @@ content:
     third_party_settings: {  }
     type: entity_reference_entity_view
     region: content
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
 hidden:
+  archive_reason: true
   covered_by_inspection: true
   date_membership_ceased: true
+  deleted_reason: true
   field_legal_entity: true
   membership_date: true
   name: true
+  revocation_reason: true
   user_id: true

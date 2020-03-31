@@ -18,6 +18,9 @@ content:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
+  archive_reason: true
   area_name: true
+  deleted_reason: true
   name: true
+  revocation_reason: true
   user_id: true

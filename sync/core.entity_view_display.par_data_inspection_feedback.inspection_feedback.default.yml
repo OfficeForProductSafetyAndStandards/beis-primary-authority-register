@@ -22,20 +22,6 @@ targetEntityType: par_data_inspection_feedback
 bundle: inspection_feedback
 mode: default
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   document:
     label: hidden
     weight: 2
@@ -121,13 +107,9 @@ content:
       format_type: gds_date_format
     third_party_settings: {  }
     type: datetime_default
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
 hidden:
+  archive_reason: true
+  deleted_reason: true
   name: true
+  revocation_reason: true
   user_id: true

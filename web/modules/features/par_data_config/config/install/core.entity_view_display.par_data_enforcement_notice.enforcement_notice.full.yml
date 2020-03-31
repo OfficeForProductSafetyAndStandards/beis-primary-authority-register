@@ -47,7 +47,7 @@ content:
     third_party_settings: {  }
   legal_entity_name:
     label: hidden
-    weight: 0
+    weight: 1
     region: content
     settings:
       link_to_entity: false
@@ -55,7 +55,7 @@ content:
     type: string
   notice_date:
     type: datetime_default
-    weight: 1
+    weight: 2
     region: content
     label: hidden
     settings:
@@ -81,12 +81,14 @@ content:
     third_party_settings: {  }
   summary:
     type: text_default
-    weight: 2
+    weight: 3
     region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
 hidden:
+  archive_reason: true
+  deleted_reason: true
   field_enforcement_action: true
   field_enforcing_authority: true
   field_enforcingauthority: true
@@ -96,4 +98,5 @@ hidden:
   field_person: true
   field_primary_authority: true
   name: true
+  revocation_reason: true
   user_id: true
