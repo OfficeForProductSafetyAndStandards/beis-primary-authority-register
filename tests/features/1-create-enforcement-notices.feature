@@ -87,6 +87,22 @@ Feature: Enforcement Officer - Enforcement Notice Process
         When I click on the button ".button"
         And I open the path "/user/logout"
 
+    @ci
+    Scenario: Enforce all members using a paginated list
+    ## Check to see if the pager is showing for enforcement member selection.
+        Given I am logged in as "par_enforcement_officer@example.com"
+        And I click the link text "Search for a partnership"
+        When I add "Member Upload Test Business" to the inputfield "#edit-keywords"
+        And I click on the button "#edit-submit-partnership-search"
+        And I click the link text "Partnership between Upper West Side Borough Council and Member Upload Test Business"
+        When I click the link text "Send a notification of a proposed enforcement action"
+        And the element "h1.heading-xlarge" contains the text "Have you discussed this issue with the Primary Authority?"
+        And I click on the button "#edit-next"
+        And the element "h1.heading-xlarge" contains the text "Enforce member"
+        And I see "10" occurences of element "#edit-par-data-organisation-id--wrapper > .multiple-choice"
+        And the element ".pagerer-pager-basic" does exist
+        And I see "2" occurences of element ".pager__items > .pager__item"
+
     @ci @enforcementnotices
     Scenario: Issue enforcement notice on Coordinated Partnership with no members
 
