@@ -16,7 +16,8 @@ content:
     weight: 1
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      display_original_value: false
     third_party_settings: {  }
   registered_name:
     type: string
@@ -35,5 +36,8 @@ content:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
+  archive_reason: true
+  deleted_reason: true
   name: true
+  revocation_reason: true
   user_id: true
