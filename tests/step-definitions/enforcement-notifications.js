@@ -23,14 +23,20 @@ When('I search for a partnership between {string} and {string}', function (autho
         .assert.containsText('h1.heading-xlarge', organisation)
         .assert.containsText('h2.heading-large.authority-name', authority)
 });
-// Search for a partnership.
-When('I raise a new enforcement {string}', function (authority, organisation) {
-    var partnership = "Partnership between " + authority + " and " + organisation;
+// Raise an enforcement notice.
+When('I start a new enforcement', function () {
     return shared
         .clickLinkByPureText('Send a notification of a proposed enforcement action')
         .assert.containsText('h1.heading-xlarge','Have you discussed this issue with the Primary Authority?')
         .click('#edit-next')
 });
+When('I enter the name of the enforcement officer ', function () {
+    return shared
+        .clickLinkByPureText('Send a notification of a proposed enforcement action')
+        .assert.containsText('h1.heading-xlarge','Have you discussed this issue with the Primary Authority?')
+        .click('#edit-next')
+});
+
 
 
 // @deprecated

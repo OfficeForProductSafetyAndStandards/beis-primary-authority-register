@@ -22,7 +22,7 @@ Feature: Enforcement notice review
         Then the element "h1.heading-xlarge" contains the text "Enforcements"
         And I successfully refer enforcement notice "Enforcement notice 1" to "Lower East Side Borough Council"
 
-    @ci
+    @ci-pending
     Scenario: Enforcement notices against organisations without active partnerships with another authority can be referred
         Given I am logged in as "par_authority@example.com"
         When I click the link with text "See your enforcement notices"
