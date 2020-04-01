@@ -29,7 +29,7 @@
         ],
         "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/field_legal_entity": [
             {
-                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/24308?_format=hal_json",
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/24329?_format=hal_json",
                 "lang": "en"
             }
         ],
@@ -66,7 +66,7 @@
     ],
     "revision_id": [
         {
-            "value": 15055
+            "value": 15059
         }
     ],
     "_embedded": {
@@ -143,7 +143,7 @@
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/24308?_format=hal_json"
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/24329?_format=hal_json"
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/par_data_legal_entity\/legal_entity"
@@ -151,7 +151,7 @@
                 },
                 "uuid": [
                     {
-                        "value": "66a1618f-e4e5-4232-979a-0f8832dd51b0"
+                        "value": "ff938a0f-0bb9-4ef9-a5c6-c1d7721d2401"
                     }
                 ],
                 "lang": "en"
@@ -227,12 +227,12 @@
     ],
     "changed": [
         {
-            "value": 1585674573
+            "value": 1585741933
         }
     ],
     "revision_timestamp": [
         {
-            "value": 1585674573
+            "value": 1585741933
         }
     ],
     "revision_translation_affected": [
@@ -274,9 +274,9 @@
     ],
     "about_partnership": [
         {
-            "value": "This is a test partnership.",
-            "format": null,
-            "processed": "<p>This is a test partnership.<\/p>\n"
+            "value": "<p>This is a test partnership.<\/p>\r\n",
+            "format": "basic_html",
+            "processed": "<p>This is a test partnership.<\/p>"
         }
     ],
     "approved_date": [
@@ -294,12 +294,22 @@
             "value": false
         }
     ],
+    "coordinator_suitable": [
+        {
+            "value": false
+        }
+    ],
     "partnership_info_agreed_authority": [
         {
             "value": true
         }
     ],
     "partnership_info_agreed_business": [
+        {
+            "value": false
+        }
+    ],
+    "written_summary_agreed": [
         {
             "value": false
         }
