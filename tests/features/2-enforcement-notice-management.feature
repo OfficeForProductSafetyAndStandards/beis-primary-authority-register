@@ -20,7 +20,7 @@ Feature: Enforcement notice review
         Given I am logged in as "par_authority@example.com"
         When I click the link with text "See your enforcement notices"
         Then the element "h1.heading-xlarge" contains the text "Enforcements"
-        And I successfully refer enforcement notice "Enforcement notice 1" to "Lower East Side Borough Council"
+        And I successfully refer enforcement notice "Enforcement notice 2" to "Lower East Side Borough Council"
 
     @ci-pending
     Scenario: Enforcement notices against organisations without active partnerships with another authority can be referred
@@ -49,7 +49,7 @@ Feature: Enforcement notice review
     Scenario: Check un-reviewed enforcement notices
         Given I am logged in as "par_authority@example.com"
         When I click the link with text "See your enforcement notices"
-        And the element ".table-scroll-wrapper" contains the text "Enforcement notice 3"
+        And the element ".table-scroll-wrapper" contains the text "Enforcement notice 2"
         When I click the link text "Enforcement notice 2"
         Then the element "h1.heading-xlarge" contains the text "Respond to notice of enforcement action"
 

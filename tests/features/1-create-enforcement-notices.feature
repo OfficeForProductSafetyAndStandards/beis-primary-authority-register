@@ -1,41 +1,25 @@
 Feature: Enforcement Officer - Enforcement Notice Process
 
-    @ci @enforcementnotices
-    Scenario Outline: Enforcement Officer - Issue enforcement notice (direct and coordinated)
-
-        #LOGIN
-
+    @ci
+    Scenario Outline: Raise an enforcement notice
         Given I am logged in as "par_enforcement_officer@example.com"
-
-        # CREATE ENFORCEMENT NOTIFICATION
-
         When I create new valid enforcement notification "<Notification Title>" for partnership "<Partnership>" against organisation "<Organisation>"
-
-        # CHECK ENFORCEMENT NOTIFICATION EMAILS
-
         Then the "enforcement creation" email confirmations for "<PARUser>" are processed
-
     Examples:
         | Notification Title   | Organisation   | Partnership                                                       | PARUser                   |
         | Enforcement notice 1 | Charlie's Cafe | Partnership between Upper West Side Borough Council and Charlie's | par_authority@example.com |
         | Enforcement notice 2 | Charlie's Cafe | Partnership between Upper West Side Borough Council and Charlie's | par_authority@example.com |
-        | Enforcement notice 3 | Charlie's Cafe | Partnership between Upper West Side Borough Council and Charlie's | par_authority@example.com |
-        | Enforcement notice 4 | Charlie's Cafe | Partnership between Upper West Side Borough Council and Charlie's | par_authority@example.com |
+        | Enforcement notice 3 | Charlie's Cafe | Partnership between Lower East Side Borough Council and Charlie's | par_authority@example.com |
+        | Enforcement notice 4 | Charlie's Cafe | Partnership between Lower East Side Borough Council and Charlie's | par_authority@example.com |
 
-    @ci @enforcementnotices
-    Scenario: Enforcement Officer - Issue enforcement notice with multiple actions
-        Given I open the path "/user/login"
-        When I add "par_enforcement_officer@example.com" to the inputfield "#edit-name"
-        And I add "TestPassword" to the inputfield "#edit-pass"
-        And I click on the button "#edit-submit"
-        And I click the link text "Search for a partnership"
-        And I add "Charlie's Cafe" to the inputfield "#edit-keywords"
-        And I click on the button "#edit-submit-partnership-search"
-        And I click on the button "td.views-field.views-field-par-flow-link a"
+    @ci-pending
+    Scenario: Raise an enforcement notice with multiple actions
+        Given I am logged in as "par_enforcement_officer@example.com"
+        When I search for a partnership between "Lower East Side Borough Council" and "Charlie's Cafe"
         And I click the link text "Send a notification of a proposed enforcement action"
         And the element "h1.heading-xlarge" contains the text "Have you discussed this issue with the Primary Authority?"
         And I click on the button "#edit-next"
-        Then the element "h1.heading-xlarge" contains the text "Raise notice of enforcement action"
+        Then the element "h1.heading-xlarge" contains the text "Which authority are you acting on behalf of?"
         And the element "#par-enforce-organisation" contains the text "Choose the member to enforce"
         When I click on the radio "input[name=\"par_data_organisation_id\"]"
         And I click on the button "#edit-next"
@@ -88,7 +72,6 @@ Feature: Enforcement Officer - Enforcement Notice Process
 
     @ci
     Scenario: Enforce all members using a paginated list
-    ## Check to see if the pager is showing for enforcement member selection.
         Given I am logged in as "par_enforcement_officer@example.com"
         And I click the link text "Search for a partnership"
         When I add "Member Upload Test Business" to the inputfield "#edit-keywords"
@@ -102,11 +85,8 @@ Feature: Enforcement Officer - Enforcement Notice Process
         And the element ".pagerer-pager-basic" does exist
         And I see "3" occurences of element ".pagerer-right-pane .pager__items > .pager__item"
 
-    @ci @enforcementnotices
+    @ci
     Scenario: Issue enforcement notice on Coordinated Partnership with no members
-
-        #LOGIN
-
         Given I am logged in as "par_enforcement_officer@example.com"
         And I click the link text "Search for a partnership"
         When I add "Charity Retail Association" to the inputfield "#edit-keywords"
