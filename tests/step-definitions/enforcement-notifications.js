@@ -2,6 +2,38 @@ const { client } = require('nightwatch-cucumber');
 const { Given, Then, When } = require('cucumber');
 const shared = client.page.shared();
 
+// Rules for writing new tests:
+// 1. Small: Use *small*, simple, single purpose, almost atomic steps. No more than 10 functions.
+// 2. Single purpose: Tests should verify one thing only!
+// 3. Assert: There should be an assertion in every step ton confirm it passed.
+// 4. Abstraction: Repeatable user interaction should be framed within specific test functions.
+// 5. Independent: Test scenarios should not rely on data from another.
+// 6. Complexity: Create complex tests from simple steps, allow simple tests to run separately and run first.
+
+// Search for a partnership.
+When('I search for a partnership between {string} and {string}', function (authority, organisation) {
+    var partnership = "Partnership between " + authority + " and " + organisation;
+    return shared
+        .clickDashboardLink()
+        .clickLinkByPureText('Search for a partnership')
+        .assert.containsText('h1.heading-xlarge', 'Search for a partnership')
+        .setValue('#edit-keywords', organisation)
+        .click('#edit-submit-partnership-search')
+        .clickLinkByPureText(partnership)
+        .assert.containsText('h1.heading-xlarge', organisation)
+        .assert.containsText('h2.heading-large.authority-name', authority)
+});
+// Search for a partnership.
+When('I raise a new enforcement {string}', function (authority, organisation) {
+    var partnership = "Partnership between " + authority + " and " + organisation;
+    return shared
+        .clickLinkByPureText('Send a notification of a proposed enforcement action')
+        .assert.containsText('h1.heading-xlarge','Have you discussed this issue with the Primary Authority?')
+        .click('#edit-next')
+});
+
+
+// @deprecated
 When('I create new valid enforcement notification {string} for partnership {string} against organisation {string}', function (string, link, search) {
   return shared
     .clickLinkByPureText('Search for a partnership')
@@ -41,6 +73,7 @@ When('I create new valid enforcement notification {string} for partnership {stri
     .assert.containsText('h1.heading-xlarge','Partnership Search')
 });
 
+// @deprecated
 When('I check that EO can see valid enforcement notification {string}', function (string) {
   // CHECK RECEIVED ENFORCEMENT NOTIFICATIONS
   return shared
