@@ -110,7 +110,7 @@
             {
                 "_links": {
                     "self": {
-                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/20973?_format=hal_json"
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/24329?_format=hal_json"
                     },
                     "type": {
                         "href": "http:\/\/drupal.org\/rest\/type\/par_data_legal_entity\/legal_entity"
