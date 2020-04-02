@@ -18,20 +18,6 @@ targetEntityType: par_data_enforcement_action
 bundle: enforcement_action
 mode: full
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   details:
     type: text_default
     weight: 5
@@ -78,13 +64,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 3
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   title:
     type: string
     weight: 0
@@ -95,7 +74,9 @@ content:
     third_party_settings: {  }
 hidden:
   action_referral: true
+  archive_reason: true
   blocked_advice: true
+  deleted_reason: true
   ea_notes: true
   ea_status: true
   enforcement_notice: true
@@ -107,4 +88,5 @@ hidden:
   pa_status: true
   referral_notes: true
   regulatory_function: true
+  revocation_reason: true
   user_id: true

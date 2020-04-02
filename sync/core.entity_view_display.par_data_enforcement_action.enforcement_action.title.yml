@@ -8,8 +8,6 @@ dependencies:
     - field.field.par_data_enforcement_action.enforcement_action.field_blocked_advice
     - field.field.par_data_enforcement_action.enforcement_action.field_regulatory_function
     - par_data.par_data_enforcement_action_type.enforcement_action
-  module:
-    - text
 _core:
   default_config_hash: KE6XSTkmSdw9BKBWZIfr7iiCiadztNWmvwMQL_P_WWo
 id: par_data_enforcement_action.enforcement_action.title
@@ -17,27 +15,6 @@ targetEntityType: par_data_enforcement_action
 bundle: enforcement_action
 mode: title
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   title:
     type: string
     weight: 0
@@ -48,7 +25,9 @@ content:
     third_party_settings: {  }
 hidden:
   action_referral: true
+  archive_reason: true
   blocked_advice: true
+  deleted_reason: true
   details: true
   document: true
   ea_notes: true
@@ -66,4 +45,5 @@ hidden:
   primary_authority_status: true
   referral_notes: true
   regulatory_function: true
+  revocation_reason: true
   user_id: true
