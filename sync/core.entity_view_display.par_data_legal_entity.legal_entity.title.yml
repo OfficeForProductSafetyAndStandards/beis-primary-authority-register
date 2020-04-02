@@ -5,8 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.par_data_legal_entity.title
     - par_data.par_data_legal_entity_type.legal_entity
-  module:
-    - text
 _core:
   default_config_hash: 2uFFBXj_KrozYWJp4wYZ9kNoNmJBjFaHwtvDAUTEOtw
 id: par_data_legal_entity.legal_entity.title
@@ -14,20 +12,6 @@ targetEntityType: par_data_legal_entity
 bundle: legal_entity
 mode: title
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   registered_name:
     type: string
     weight: 0
@@ -36,15 +20,11 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
 hidden:
+  archive_reason: true
+  deleted_reason: true
   legal_entity_type: true
   name: true
   registered_number: true
+  revocation_reason: true
   user_id: true

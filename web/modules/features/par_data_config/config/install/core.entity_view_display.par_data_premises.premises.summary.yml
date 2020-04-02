@@ -27,6 +27,9 @@ content:
     type: string
     weight: 1
 hidden:
+  archive_reason: true
+  deleted_reason: true
   name: true
   nation: true
+  revocation_reason: true
   user_id: true

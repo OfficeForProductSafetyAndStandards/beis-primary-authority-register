@@ -48,9 +48,11 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  archive_reason: true
   communication_email: true
   communication_mobile: true
   communication_phone: true
+  deleted_reason: true
   email: true
   field_notification_preferences: true
   field_user_account: true
@@ -59,6 +61,7 @@ hidden:
   last_name: true
   mobile_phone: true
   name: true
+  revocation_reason: true
   salutation: true
   user_account: true
   user_id: true
