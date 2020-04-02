@@ -28,7 +28,7 @@ class ParSelectMemberForm extends ParFormPluginBase {
         $organisations = $par_data_partnership->getOrganisation();
       }
       elseif ($par_data_partnership->isCoordinated()) {
-        foreach ($par_data_partnership->getCoordinatedMember() as $coordinated_member) {
+        foreach ($par_data_partnership->getCoordinatedMember(FALSE, TRUE) as $coordinated_member) {
           $coordinated_organisations = $coordinated_member->getOrganisation();
           $organisations = $this->getParDataManager()->getEntitiesAsOptions($coordinated_organisations, $organisations);
         }
