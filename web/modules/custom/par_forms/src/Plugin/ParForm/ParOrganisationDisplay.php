@@ -59,7 +59,7 @@ class ParOrganisationDisplay extends ParFormPluginBase {
         $legal_entities = [];
 
         foreach ($par_data_organisation->getLegalEntity() as $legal_entity) {
-          $legal_entities[$legal_entity->uuid()] = $legal_entity->label();
+          $legal_entities[$legal_entity->uuid()] = "{$legal_entity->label()} ({$legal_entity->getRegisteredNumber()}), {$legal_entity->getType()}";
         }
 
         if (!empty($legal_entities)) {
