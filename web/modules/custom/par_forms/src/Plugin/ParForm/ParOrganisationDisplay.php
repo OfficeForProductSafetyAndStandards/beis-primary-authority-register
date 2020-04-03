@@ -54,6 +54,19 @@ class ParOrganisationDisplay extends ParFormPluginBase {
             ->setFormPermValue("sic_codes", $this->t('This organisation does not provide any SIC codes.'));
         }
       }
+
+      if ($par_data_organisation->hasField('field_legal_entity')) {
+        $legal_entities = [];
+
+        foreach ($par_data_organisation->getLegalEntity() as $legal_entity) {
+          $legal_entities[$legal_entity->uuid()] = $legal_entity->label();
+        }
+
+        if (!empty($legal_entities)) {
+          $this->getFlowDataHandler()
+            ->setFormPermValue("legal_entities", implode(', ', $legal_entities));
+        }
+      }
     }
 
     parent::loadData($cardinality);
@@ -196,7 +209,7 @@ class ParOrganisationDisplay extends ParFormPluginBase {
       ],
     ];
 
-    // Add operation link for updating authority details.
+    // Add operation link for updating sic codes.
     try {
       $link = $this->getFlowNegotiator()->getFlow()
         ->getLinkByCurrentOperation('sic_codes', $params, [], TRUE);
@@ -214,6 +227,29 @@ class ParOrganisationDisplay extends ParFormPluginBase {
     catch (ParFlowException $e) {
 
     }
+
+    $form['organisation']['legal_entities'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['grid-row', 'form-group']],
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['heading-medium', 'column-full']],
+        '#value' => $this->t('Legal entities'),
+      ],
+      'description' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#attributes' => ['class' => ['column-two-thirds', 'form-hint']],
+        '#value' => 'Legal entities cannot be updated for existing organisations.',
+      ],
+      'value' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#attributes' => ['class' => ['column-two-thirds']],
+        '#value' => $this->getDefaultValuesByKey('legal_entities', $cardinality, NULL),
+      ],
+    ];
 
     return $form;
   }
