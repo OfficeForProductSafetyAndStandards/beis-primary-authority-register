@@ -152,6 +152,12 @@ jobs:
           name: "Setup application"
           command: sh drupal-update.sh
       - run:
+          name: "Re-install temporary data @temp"
+          command: |
+            cd web
+            ../vendor/bin/drush pm-uninstall par_data_test -y
+            ../vendor/bin/drush en par_data_test -y
+      - run:
           name: "Run cron"
           command: |
             cd web
@@ -205,6 +211,12 @@ jobs:
       - run:
           name: "Setup application"
           command: sh drupal-update.sh
+      - run:
+          name: "Re-install temporary data @temp"
+            command: |
+              cd web
+              ../vendor/bin/drush pm-uninstall par_data_test -y
+              ../vendor/bin/drush en par_data_test -y
       - run:
           name: "Run cron"
           command: |
