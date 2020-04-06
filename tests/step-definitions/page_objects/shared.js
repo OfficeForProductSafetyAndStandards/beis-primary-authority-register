@@ -17,7 +17,7 @@ module.exports = {
                 }
                 console.log(response.value);
             });
-            return client
+            return this
                 .click('#global-header a[href="/dashboard"]')
         },
         clickLinkByXpath: function (xpathValue) {

@@ -38,6 +38,12 @@ When('I choose an existing legal entity to enforce', function () {
         .assert.containsText('h1.heading-xlarge','Enforce legal entity')
         .click('#edit-next')
 });
+When('I enter a legal entity to enforce', function () {
+    return shared
+        .click('input[name="legal_entities_select"]')
+        .assert.containsText('h1.heading-xlarge','Enforce legal entity')
+        .click('#edit-next')
+});
 When('I enter the details of a proposed enforcement', function () {
     return shared
         .clearValue('#edit-summary')
