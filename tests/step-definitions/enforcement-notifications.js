@@ -103,7 +103,6 @@ When('I search for an enforcement notice {string} against {string}', function (e
         .setValue('#edit-combine', organisation)
         .click('#edit-submit-par-user-enforcements')
         .clickLinkByPureText(enforcement_notice)
-        .assert.containsText('h1.heading-xlarge', enforcement_notice)
 });
 // Review an enforcement notice.
 When('I approve a single enforcement notice', function () {
