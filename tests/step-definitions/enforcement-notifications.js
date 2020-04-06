@@ -88,7 +88,7 @@ When('I add multiple enforcement actions {string}, {string}', function (title_1,
 When('I review the enforcement notice', function () {
     return shared
         .assert.containsText('h1.heading-xlarge','Review the enforcement notice')
-        .click('#edit-next')
+        .click('#edit-save')
         .assert.containsText('h1.heading-xlarge','Enforcement notice sent')
         .click('.button')
 });
