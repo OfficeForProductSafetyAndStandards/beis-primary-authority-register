@@ -32,9 +32,15 @@ When('I raise a new enforcement against a direct partnership', function () {
         .assert.containsText('h1.heading-xlarge','Contact details for enforcement officer')
         .click('#edit-next')
 });
+When('I choose a coordinated member to enforce', function () {
+    return shared
+        .click('input[name="par_data_organisation_id"]:nth-child(1)')
+        .assert.containsText('h1.heading-xlarge','Enforce member')
+        .click('#edit-next')
+});
 When('I choose an existing legal entity to enforce', function () {
     return shared
-        .click('input[name="legal_entities_select"]')
+        .click('input[name="legal_entities_select"]:nth-child(1)')
         .assert.containsText('h1.heading-xlarge','Enforce legal entity')
         .click('#edit-next')
 });

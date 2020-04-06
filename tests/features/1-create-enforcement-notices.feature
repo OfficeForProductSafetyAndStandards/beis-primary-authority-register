@@ -1,11 +1,12 @@
 Feature: Enforcement Officer - Enforcement Notice Process
 
     @ci
-    Scenario Outline: Raise an enforcement notice against a direct partnership
+    Scenario Outline: Raise an enforcement notice against a coordinated partnership
         Given I am logged in as "par_enforcement_officer@example.com"
         When I search for a partnership between "<Authority>" and "<Organisation>"
         And I raise a new enforcement against a direct partnership
-        And I choose an existing legal entity to enforce
+        And I choose a coordinated member to enforce
+        And I enter a legal entity to enforce
         And I enter the details of a proposed enforcement
         And I add an enforcement action "<Notification Title>"
         And I save the enforcement notice
@@ -16,11 +17,11 @@ Feature: Enforcement Officer - Enforcement Notice Process
         | Enforcement notice 2 | Charlie's      | Upper West Side Borough Council | par_authority@example.com |
 
     @ci
-    Scenario Outline: Raise an enforcement notice against a coordinated partnership
+    Scenario Outline: Raise an enforcement notice against a direct partnership
         Given I am logged in as "par_enforcement_officer@example.com"
         When I search for a partnership between "<Authority>" and "<Organisation>"
         And I raise a new enforcement against a direct partnership
-        And I enter a legal entity to enforce
+        And I choose an existing legal entity to enforce
         And I enter the details of a proposed enforcement
         And I add an enforcement action "<Notification Title>"
         And I save the enforcement notice
