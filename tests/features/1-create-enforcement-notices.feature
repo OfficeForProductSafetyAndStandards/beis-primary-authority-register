@@ -45,7 +45,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
     @ci
     Scenario: Enforce all members using a paginated list
         Given I am logged in as "par_enforcement_officer@example.com"
-        When I search for a partnership between "<Authority>" and "<Organisation>"
+        When I search for a partnership between "Upper West Side Borough Council" and "Member Upload Test Business"
         And I raise a new enforcement against a partnership
         And the element "h1.heading-xlarge" contains the text "Enforce member"
         And I see "10" occurences of element "#edit-par-data-organisation-id--wrapper > .multiple-choice"
