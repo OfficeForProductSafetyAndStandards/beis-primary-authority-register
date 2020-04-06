@@ -24,17 +24,49 @@ When('I search for a partnership between {string} and {string}', function (autho
         .assert.containsText('h2.heading-large.authority-name', authority)
 });
 // Raise an enforcement notice.
-When('I start a new enforcement', function () {
+When('I raise a new enforcement against a direct partnership', function () {
     return shared
         .clickLinkByPureText('Send a notification of a proposed enforcement action')
         .assert.containsText('h1.heading-xlarge','Have you discussed this issue with the Primary Authority?')
+        .click('#edit-next')
+        .assert.containsText('h1.heading-xlarge','Contact details for enforcement officer')
         .click('#edit-next')
 });
-When('I enter the name of the enforcement officer ', function () {
+When('I choose an existing legal entity to enforce', function () {
     return shared
-        .clickLinkByPureText('Send a notification of a proposed enforcement action')
-        .assert.containsText('h1.heading-xlarge','Have you discussed this issue with the Primary Authority?')
+        .click('input[name="legal_entities_select"]')
+        .assert.containsText('h1.heading-xlarge','Enforce legal entity')
         .click('#edit-next')
+});
+When('I enter the details of a proposed enforcement', function () {
+    return shared
+        .clearValue('#edit-summary')
+        .setValue('#edit-summary', 'Summary for a test enforcement notice. This enforcement notice is proposed.')
+        .assert.containsText('h1.heading-xlarge','Enforcement details')
+        .click('#edit-next')
+});
+When('I add an enforcement action {string}', function (title) {
+    return shared
+        .clearValue('#edit-summary')
+        .setValue('#edit-summary', 'Summary for a test enforcement notice. This enforcement notice is proposed.')
+        .assert.containsText('h1.heading-xlarge','Enforcement details')
+        .click('#edit-next')
+});
+When('I add multiple enforcement actions {string}, {string}', function (title_1, title_2) {
+    return shared
+        .clearValue('#edit-par-component-enforcement-action-0-title')
+        .setValue('#edit-par-component-enforcement-action-0-title', title)
+        .click('input[name="par_component_enforcement_action[0][regulatory_function]"]')
+        .clearValue('#edit-par-component-enforcement-action-0-details')
+        .setValue('#edit-par-component-enforcement-action-0-details', 'Enforcement action details of infringement for the primary enforcement action.')
+        .assert.containsText('h1.heading-xlarge','Enforcement details')
+        .click('#edit-next')
+});
+When('I save the enforcement notice', function (title_1, title_2) {
+    return shared
+        .assert.containsText('h1.heading-xlarge','Enforcement notice sent')
+        .click('.button')
+        .assert.containsText('h1.heading-xlarge','Partnership Search')
 });
 
 
