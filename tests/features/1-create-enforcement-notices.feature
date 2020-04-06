@@ -12,8 +12,8 @@ Feature: Enforcement Officer - Enforcement Notice Process
         Then the "enforcement creation" email confirmations for "<PARUser>" are processed
     Examples:
         | Notification Title   | Organisation   | Authority                       | PARUser                   |
-        | Enforcement notice 1 | Charlie's Cafe | Upper West Side Borough Council | par_authority@example.com |
-        | Enforcement notice 2 | Charlie's Cafe | Upper West Side Borough Council | par_authority@example.com |
+        | Enforcement notice 1 | Charlie's      | Upper West Side Borough Council | par_authority@example.com |
+        | Enforcement notice 2 | Charlie's      | Upper West Side Borough Council | par_authority@example.com |
 
     @ci
     Scenario Outline: Raise an enforcement notice against a coordinated partnership
@@ -27,8 +27,8 @@ Feature: Enforcement Officer - Enforcement Notice Process
         Then the "enforcement creation" email confirmations for "<PARUser>" are processed
     Examples:
         | Notification Title   | Organisation   | Authority                       | PARUser                   |
-        | Enforcement notice 3 | Charlie's Cafe | Lower East Side Borough Council | par_authority@example.com |
-        | Enforcement notice 4 | Charlie's Cafe | Lower East Side Borough Council | par_authority@example.com |
+        | Enforcement notice 3 | Charlie's      | Lower East Side Borough Council | par_authority@example.com |
+        | Enforcement notice 4 | Charlie's      | Lower East Side Borough Council | par_authority@example.com |
 
     @ci-pending
     Scenario: Raise an enforcement notice against a coordinated partnership with multiple actions
