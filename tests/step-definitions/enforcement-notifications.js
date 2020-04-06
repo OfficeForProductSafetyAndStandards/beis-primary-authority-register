@@ -44,9 +44,10 @@ When('I choose an existing legal entity to enforce', function () {
         .assert.containsText('h1.heading-xlarge','Enforce legal entity')
         .click('#edit-next')
 });
-When('I enter a legal entity to enforce', function () {
+When('I enter a legal entity to enforce', function (legal_entity) {
     return shared
-        .click('input[name="legal_entities_select"]')
+        .clearValue('#edit-alternative-legal-entity')
+        .setValue('#edit-alternative-legal-entity', legal_entity)
         .assert.containsText('h1.heading-xlarge','Enforce legal entity')
         .click('#edit-next')
 });

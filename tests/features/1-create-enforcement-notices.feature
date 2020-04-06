@@ -6,7 +6,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
         When I search for a partnership between "<Authority>" and "<Organisation>"
         And I raise a new enforcement against a direct partnership
         And I choose a coordinated member to enforce
-        And I enter a legal entity to enforce
+        And I enter a legal entity to enforce "Member's legal entity"
         And I enter the details of a proposed enforcement
         And I add an enforcement action "<Notification Title>"
         And I save the enforcement notice
