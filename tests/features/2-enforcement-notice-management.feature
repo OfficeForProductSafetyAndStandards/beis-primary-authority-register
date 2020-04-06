@@ -4,23 +4,23 @@ Feature: Enforcement notice review
     @ci @smoke
     Scenario: Approve an enforcement notice
         Given I am logged in as "par_authority@example.com"
-        When I click the link with text "See your enforcement notices"
-        Then the element "h1.heading-xlarge" contains the text "Enforcements"
-        And I successfully approve enforcement notice "Enforcement notice 4"
+        When I search for an enforcement notice "Enforcement notice 4" against "Charlie's"
+        And I approve a single enforcement notice
+        And I review an enforcement notice submitted by "par_enforcement_officer@example.com"
 
     @ci @smoke
     Scenario: Block an enforcement notice
         Given I am logged in as "par_authority@example.com"
-        When I click the link with text "See your enforcement notices"
-        Then the element "h1.heading-xlarge" contains the text "Enforcements"
-        And I successfully block enforcement notice "Enforcement notice 3"
+        When I search for an enforcement notice "Enforcement notice 3" against "Charlie's"
+        And I block a single enforcement notice
+        And I review an enforcement notice submitted by "par_enforcement_officer@example.com"
 
     @ci
     Scenario: Refer an enforcement notice
         Given I am logged in as "par_authority@example.com"
-        When I click the link with text "See your enforcement notices"
-        Then the element "h1.heading-xlarge" contains the text "Enforcements"
-        And I successfully refer enforcement notice "Enforcement notice 2" to "Lower East Side Borough Council"
+        When I search for an enforcement notice "Enforcement notice 2" against "Charlie's"
+        And I refer a single enforcement notice to "Lower East Side Borough Council"
+        And I review an enforcement notice submitted by "par_enforcement_officer@example.com"
 
     @ci-pending
     Scenario: Enforcement notices against organisations without active partnerships with another authority can be referred

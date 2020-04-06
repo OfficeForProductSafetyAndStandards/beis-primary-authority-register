@@ -14,7 +14,7 @@ return shared
     .assert.containsText('#par-enforcement-notice-approve', 'Enforced organisation')
     .assert.containsText('#par-enforcement-notice-approve', 'Hooper\'s Store')
     .assert.containsText('#par-enforcement-notice-approve', 'Primary authority')
-    .assert.containsText('#par-enforcement-notice-approve', 'par_authority@example.com')
+    .assert.containsText('#edit-enforcement-officer', 'par_authority@example.com')
     .click('#edit-par-component-enforcement-action-review-0-primary-authority-status-approved')
     .click('#edit-next')
     .assert.containsText('h1.heading-xlarge', 'Respond to notice of enforcement action')
