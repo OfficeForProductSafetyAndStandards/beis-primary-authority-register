@@ -11,7 +11,7 @@ module.exports = {
     },
     commands: [{
         clickDashboardLink: function () {
-            browser.url(function (response) {
+            client.url(function (response) {
                 if (!response.value.includes('/dashboard')) {
                     // Only fire click if current page is not the dashboard.
                 }
