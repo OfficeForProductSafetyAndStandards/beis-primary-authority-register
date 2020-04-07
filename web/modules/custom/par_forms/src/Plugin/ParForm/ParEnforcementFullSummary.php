@@ -289,7 +289,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
         $form['partnership']['primary_authority'] = [
           '#type' => 'fieldset',
           '#title' => t('Primary authority'),
-          '#attributes' => ['class' => 'column-one-half', 'authority-officer'],
+          '#attributes' => ['class' => ['column-one-half', 'authority-officer']],
           'primary_authority_name' => [
             '#type' => 'markup',
             '#markup' => $primary_authority,

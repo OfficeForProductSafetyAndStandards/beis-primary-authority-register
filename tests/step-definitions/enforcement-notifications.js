@@ -124,7 +124,7 @@ When('I block a single enforcement notice', function () {
 });
 When('I refer a single enforcement notice to {string}', function (authority) {
     return shared
-        .assert.containsText('h1.heading-xlarge', 'Respond to notice of enforcement actionss')
+        .assert.containsText('h1.heading-xlarge', 'Respond to notice of enforcement action')
         .click('#edit-par-component-enforcement-action-review-0-primary-authority-status-referred')
         .clearValue('#edit-par-component-enforcement-action-review-0-referral-notes')
         .setValue('#edit-par-component-enforcement-action-review-0-referral-notes', 'This enforcement has been referred to an alternative authority.')

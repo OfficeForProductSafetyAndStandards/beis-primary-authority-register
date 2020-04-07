@@ -15,7 +15,7 @@ Feature: Enforcement notice review
         And I block a single enforcement notice
         And I review an enforcement notice submitted by "par_enforcement_officer@example.com"
 
-    @ci
+    @ci-pending
     Scenario: Refer an enforcement notice
         Given I am logged in as "par_authority@example.com"
         When I search for an enforcement notice "Enforcement notice 2" against "Charlie's"
@@ -48,7 +48,7 @@ Feature: Enforcement notice review
     @ci
     Scenario: Check un-reviewed enforcement notices
         Given I am logged in as "par_authority@example.com"
-        When I click the link with text "See your enforcement notices"
+        When I search for an enforcement notice "Enforcement notice 2" against "Charlie's"
         And the element ".table-scroll-wrapper" contains the text "Enforcement notice 2"
         When I click the link text "Enforcement notice 2"
         Then the element "h1.heading-xlarge" contains the text "Respond to notice of enforcement action"
@@ -56,9 +56,9 @@ Feature: Enforcement notice review
     @ci
     Scenario: Check enforcement officer's details are recorded on the enforcement
         Given I am logged in as "par_enforcement_officer@example.com"
-        When I click the link with text "See your enforcement notices"
+        When I search for an enforcement notice "Enforcement notice 4" against "Charlie's"
         And I click the link text "Enforcement notice 4"
         Then the element ".component-enforcement-full-summary .enforcement-officer" contains the text "Grover Muppet"
         Then the element ".component-enforcement-full-summary .enforcement-officer" contains the text "01723456789"
         Then the element ".component-enforcement-full-summary .enforcement-officer" contains the text "par_enforcement_officer@example.com"
-        Then the element ".component-enforcement-full-summary .authority-officer" contains the text "par_enforcement_officer@example.com"
+        Then the element ".component-enforcement-full-summary .authority-officer" contains the text "par_authority@example.com"
