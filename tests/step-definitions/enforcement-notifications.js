@@ -102,6 +102,7 @@ When('I search for an enforcement notice {string} against {string}', function (e
         .clearValue('#edit-combine')
         .setValue('#edit-combine', organisation)
         .click('#edit-submit-par-user-enforcements')
+        .assert.containsText('.table-scroll-wrapper', enforcement_notice)
         .clickLinkByPureText(enforcement_notice)
 });
 // Review an enforcement notice.
