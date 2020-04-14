@@ -277,6 +277,24 @@
                 ]
             }
         ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/field_legal_entity": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/24329?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_legal_entity\/legal_entity"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "ff938a0f-0bb9-4ef9-a5c6-c1d7721d2401"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
         "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/field_organisation": [
             {
                 "_links": {

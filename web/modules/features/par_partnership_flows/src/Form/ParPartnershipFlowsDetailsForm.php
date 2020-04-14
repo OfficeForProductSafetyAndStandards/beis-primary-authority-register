@@ -310,7 +310,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     // Initialize pager and get current page.
     $number_per_page = 5;
     $pager = $this->getUniquePager()->getPager('partnership_manage_authority_contacts');
-    $current_page = pager_default_initialize(count($authority_contacts), $number_per_page, $pager);
+    $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($authority_contacts), $number_per_page, $pager);
 
     // Get update and remove links.
     try {
@@ -363,7 +363,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     // Split the items up into chunks:
     $chunks = array_chunk($authority_contacts, $number_per_page);
-    foreach ($chunks[$current_page] as $delta => $entity) {
+    foreach ($chunks[$current_pager->getCurrentPage()] as $delta => $entity) {
       $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
       $entity_view = $entity_view_builder->view($entity, 'detailed');
       $rendered_field = $this->getRenderer()->render($entity_view);
@@ -425,7 +425,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     // Initialize pager and get current page.
     $number_per_page = 5;
     $pager = $this->getUniquePager()->getPager('partnership_manage_organisation_contacts');
-    $current_page = pager_default_initialize(count($organisation_contacts), $number_per_page, $pager);
+    $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($organisation_contacts), $number_per_page, $pager);
 
     // Get update and remove links.
     try {
@@ -478,7 +478,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     // Split the items up into chunks:
     $chunks = array_chunk($organisation_contacts, $number_per_page);
-    foreach ($chunks[$current_page] as $delta => $entity) {
+    foreach ($chunks[$current_pager->getCurrentPage()] as $delta => $entity) {
       $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
       $entity_view = $entity_view_builder->view($entity, 'detailed');
       $rendered_field = $this->getRenderer()->render($entity_view);
