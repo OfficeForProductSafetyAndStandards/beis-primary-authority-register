@@ -16,40 +16,19 @@ targetEntityType: par_data_inspection_plan
 bundle: inspection_plan
 mode: title
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   document:
     type: file_download_link
-    weight: 0
+    weight: 2
     region: content
     label: hidden
     settings:
       access_message: 'You don''t have access to download this file.'
       text: 'Download [file:name]'
     third_party_settings: {  }
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   summary:
     label: hidden
     type: text_default
-    weight: 0
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -63,9 +42,12 @@ content:
     type: string
 hidden:
   approved_rd_executive: true
+  archive_reason: true
   consulted_national_regulator: true
+  deleted_reason: true
   field_regulatory_function: true
   inspection_status: true
   name: true
+  revocation_reason: true
   user_id: true
   valid_date: true

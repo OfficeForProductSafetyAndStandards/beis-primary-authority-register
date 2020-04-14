@@ -19,7 +19,7 @@ mode: summary
 content:
   advice_status:
     label: hidden
-    weight: 0
+    weight: 3
     region: content
     settings:
       link_to_entity: false
@@ -33,23 +33,9 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   document:
     type: file_download_link
-    weight: 0
+    weight: 2
     region: content
     label: hidden
     settings:
@@ -58,26 +44,29 @@ content:
     third_party_settings: {  }
   issue_date:
     label: hidden
-    weight: 1
+    weight: 4
     region: content
     settings:
       timezone_override: ''
       format_type: gds_date_format
     third_party_settings: {  }
     type: datetime_default
-  revocation_reason:
-    label: hidden
-    weight: 0
+  notes:
+    type: text_trimmed
+    weight: 1
     region: content
-    settings: {  }
+    label: above
+    settings:
+      trim_length: 600
     third_party_settings: {  }
-    type: text_default
 hidden:
   advice_type: true
+  archive_reason: true
+  deleted_reason: true
   field_regulatory_function: true
   name: true
-  notes: true
   regulatory_function: true
+  revocation_reason: true
   user_id: true
   visible_authority: true
   visible_business: true

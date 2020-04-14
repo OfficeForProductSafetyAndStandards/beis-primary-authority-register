@@ -21,23 +21,9 @@ targetEntityType: par_data_deviation_request
 bundle: deviation_request
 mode: full
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   document:
     label: hidden
-    weight: 0
+    weight: 1
     region: content
     settings:
       access_message: 'You don''t have access to download this file.'
@@ -47,20 +33,20 @@ content:
   notes:
     label: hidden
     type: text_default
-    weight: 1
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_notes:
     label: hidden
     type: text_default
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_status:
     label: hidden
-    weight: 2
+    weight: 3
     region: content
     settings:
       display_original_value: false
@@ -75,18 +61,14 @@ content:
       format_type: gds_date_format
     third_party_settings: {  }
     type: datetime_default
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
 hidden:
+  archive_reason: true
+  deleted_reason: true
   field_enforcing_authority: true
   field_inspection_plan: true
   field_partnership: true
   field_person: true
   messages: true
   name: true
+  revocation_reason: true
   user_id: true

@@ -252,6 +252,11 @@ class ParPartnershipPageController extends ParBaseController {
     // Display the authority contacts for information.
     $build['authority_contacts'] = $this->renderSection('Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
 
+    // Make sure changes to the partnership invalidate this page
+    if ($par_data_partnership) {
+      $this->addCacheableDependency($par_data_partnership);
+    }
+
     return parent::build($build);
 
   }
