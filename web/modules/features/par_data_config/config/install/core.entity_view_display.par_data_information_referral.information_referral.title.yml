@@ -17,7 +17,7 @@ mode: title
 content:
   document:
     label: hidden
-    weight: 0
+    weight: 1
     region: content
     settings:
       use_description_as_link_text: true
@@ -32,6 +32,8 @@ content:
       trim_length: 300
     third_party_settings: {  }
 hidden:
+  archive_reason: true
+  deleted_reason: true
   field_enforcing_authority: true
   field_person: true
   field_primary_authority: true
@@ -39,4 +41,5 @@ hidden:
   primary_authority_notes: true
   primary_authority_status: true
   request_date: true
+  revocation_reason: true
   user_id: true

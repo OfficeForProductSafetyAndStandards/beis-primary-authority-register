@@ -18,21 +18,21 @@ mode: default
 content:
   comments:
     label: hidden
-    weight: 1
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
     type: text_default
   employees_band:
     type: par_list_formatter
-    weight: 0
+    weight: 1
     region: content
     label: hidden
     settings:
       display_original_value: true
     third_party_settings: {  }
   field_legal_entity:
-    weight: 2
+    weight: 3
     label: hidden
     settings:
       link: true
@@ -40,7 +40,7 @@ content:
     type: entity_reference_label
     region: content
   field_premises:
-    weight: 3
+    weight: 4
     label: hidden
     settings:
       link: true
@@ -56,14 +56,17 @@ content:
     type: string
     weight: 0
 hidden:
+  archive_reason: true
   coordinator_number: true
   coordinator_type: true
+  deleted_reason: true
   field_coordinated_businesses: true
   field_person: true
   field_sic_code: true
   name: true
   nation: true
   premises_mapped: true
+  revocation_reason: true
   size: true
   trading_name: true
   user_id: true

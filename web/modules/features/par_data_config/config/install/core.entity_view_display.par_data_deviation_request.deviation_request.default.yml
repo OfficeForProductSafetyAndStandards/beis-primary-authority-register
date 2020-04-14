@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_display.comment.par_deviation_request_comments.default
     - field.field.par_data_deviation_request.deviation_request.field_enforcing_authority
     - field.field.par_data_deviation_request.deviation_request.field_inspection_plan
     - field.field.par_data_deviation_request.deviation_request.field_partnership
@@ -104,5 +105,8 @@ content:
     third_party_settings: {  }
     type: datetime_default
 hidden:
+  archive_reason: true
+  deleted_reason: true
   name: true
+  revocation_reason: true
   user_id: true
