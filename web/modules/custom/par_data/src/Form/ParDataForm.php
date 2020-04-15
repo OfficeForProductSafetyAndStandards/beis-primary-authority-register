@@ -173,7 +173,7 @@ class ParDataForm extends ContentEntityForm {
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label content entity.', [
+        $this->messenger()->addMessage($this->t('Saved the %label content entity.', [
           '%label' => $entity->label(),
         ]));
     }
