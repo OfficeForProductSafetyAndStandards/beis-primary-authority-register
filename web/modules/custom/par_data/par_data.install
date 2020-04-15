@@ -978,7 +978,7 @@ function par_data_update_8041() {
 }
 
 /**
- * De-duplication of legal entities.
+ * Removal of old 'soft-deleted' entities.
  */
 function par_data_update_8042() {
   $par_data_manager = \Drupal::service('par_data.manager');
