@@ -191,13 +191,13 @@ class ParDataForm extends ContentEntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        drupal_set_message($this->t('Created the %label content entity.', [
+        $this->messenger()->addMessage($this->t('Created the %label content entity.', [
           '%label' => $entity->label(),
         ]));
         break;
 
       default:
-        drupal_set_message($this->t('Saved the %label content entity.', [
+        $this->messenger()->addMessage($this->t('Saved the %label content entity.', [
           '%label' => $entity->label(),
         ]));
     }
