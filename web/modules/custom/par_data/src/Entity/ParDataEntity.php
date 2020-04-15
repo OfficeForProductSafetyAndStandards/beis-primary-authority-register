@@ -255,9 +255,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
   /**
    * Destroy entity, and completely remove.
+   *
+   * Ignores all the checks that are usually performed.
    */
   public function annihilate() {
-    return $this->entityManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
+    return $this->entityTypeManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
   }
 
   /**
