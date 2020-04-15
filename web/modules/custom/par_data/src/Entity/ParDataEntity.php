@@ -73,6 +73,15 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
+   * Get time service.
+   *
+   * @return \Drupal\Component\Datetime\TimeInterface
+   */
+  public function getTime() {
+    return \Drupal::time();
+  }
+
+  /**
    * Get the type entity.
    */
   public function getTypeEntity() {
@@ -867,7 +876,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     parent::setNewRevision($value);
 
     if (!$this->isNew()) {
-      $this->setRevisionCreationTime(REQUEST_TIME);
+      $this->setRevisionCreationTime($this->getTime()->getRequestTime());
       $this->setRevisionAuthorId(\Drupal::currentUser()->id());
     }
   }
