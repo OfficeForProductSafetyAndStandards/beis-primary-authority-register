@@ -97,7 +97,7 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
 
     }
     else {
-      drupal_set_message("This action can only be performed on PAR people", 'error');
+      $this->messenger()->addMessage("This action can only be performed on PAR people", 'error');
     }
 
     $this->setContext($context);
