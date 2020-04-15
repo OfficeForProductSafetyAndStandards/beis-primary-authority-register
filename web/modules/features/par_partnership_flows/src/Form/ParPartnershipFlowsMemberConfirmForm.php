@@ -169,7 +169,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
 
         $existing_options = [];
         foreach ($properties as $group => $conditions) {
-          $existing_options += \Drupal::entityManager()
+          $existing_options += \Drupal::entityTypeManager()
             ->getStorage('par_data_organisation')
             ->loadByProperties($conditions);
         }
