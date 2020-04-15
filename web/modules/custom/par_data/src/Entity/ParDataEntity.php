@@ -76,7 +76,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Get time service.
    *
-   * @return TimeInterface
+   * @return \Drupal\Component\Datetime\TimeInterface
    */
   public function getTime() {
     return \Drupal::time();

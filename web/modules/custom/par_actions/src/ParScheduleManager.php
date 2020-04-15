@@ -60,7 +60,7 @@ class ParScheduleManager extends DefaultPluginManager {
   /**
    * Get time service.
    *
-   * @return TimeInterface
+   * @return \Drupal\Component\Datetime\TimeInterface
    */
   public function getTime() {
     return \Drupal::time();

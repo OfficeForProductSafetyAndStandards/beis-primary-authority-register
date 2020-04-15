@@ -58,6 +58,8 @@ class ParDataForm extends ContentEntityForm {
    *   The entity manager.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager.
+   * @param \Drupal\Component\Datetime\TimeInterface $time
+   *   The time service.
    */
   public function __construct(EntityManagerInterface $entity_manager, LanguageManagerInterface $language_manager, TimeInterface $time) {
     parent::__construct($entity_manager);
@@ -79,7 +81,7 @@ class ParDataForm extends ContentEntityForm {
   /**
    * Get time service.
    *
-   * @return TimeInterface
+   * @return \Drupal\Component\Datetime\TimeInterface
    */
   public function getTime() {
     if (!isset($this->time)) {
