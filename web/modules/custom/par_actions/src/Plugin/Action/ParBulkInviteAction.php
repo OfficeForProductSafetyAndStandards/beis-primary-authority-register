@@ -91,7 +91,7 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
           }
         }
         catch (\Exception $e) {
-          drupal_set_message("Error occurred executing invitation: {$e->getMessage()}", 'error');
+          $this->messenger()->addMessage("Error occurred executing invitation: {$e->getMessage()}", 'error');
         }
       }
 
