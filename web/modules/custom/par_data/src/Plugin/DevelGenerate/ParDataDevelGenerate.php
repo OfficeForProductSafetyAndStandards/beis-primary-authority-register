@@ -427,8 +427,9 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
    * Retrieve 50 uids from the database.
    */
   protected function getUsers() {
+    $connection = \Drupal::database();
     $users = array();
-    $result = db_query_range("SELECT uid FROM {users}", 0, 50);
+    $result = $connection->queryRange("SELECT uid FROM {users}", 0, 50);
     foreach ($result as $record) {
       $users[] = $record->uid;
     }
