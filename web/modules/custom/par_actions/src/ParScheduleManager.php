@@ -7,7 +7,7 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Logger\LoggerChannelTrait;
-use Drupal\Component\Datetime\Time;
+use Drupal\Component\Datetime\TimeInterface;
 
 /**
  * Provides a PAR Schedule plugin manager.
@@ -60,7 +60,7 @@ class ParScheduleManager extends DefaultPluginManager {
   /**
    * Get time service.
    *
-   * @return \Drupal\Component\Datetime\TimeInterface
+   * @return TimeInterface
    */
   public function getTime() {
     return \Drupal::time();

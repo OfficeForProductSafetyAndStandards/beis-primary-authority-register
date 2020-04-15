@@ -22,6 +22,7 @@ use Drupal\par_data\ParDataException;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
 use Drupal\trance\Trance;
+use Drupal\Component\Datetime\TimeInterface;
 
 /**
  * Defines the PAR entities.
@@ -75,7 +76,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Get time service.
    *
-   * @return \Drupal\Component\Datetime\TimeInterface
+   * @return TimeInterface
    */
   public function getTime() {
     return \Drupal::time();

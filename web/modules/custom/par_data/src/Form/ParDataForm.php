@@ -79,7 +79,7 @@ class ParDataForm extends ContentEntityForm {
   /**
    * Get time service.
    *
-   * @return \Drupal\Component\Datetime\TimeInterface
+   * @return TimeInterface
    */
   public function getTime() {
     if (!isset($this->time)) {
