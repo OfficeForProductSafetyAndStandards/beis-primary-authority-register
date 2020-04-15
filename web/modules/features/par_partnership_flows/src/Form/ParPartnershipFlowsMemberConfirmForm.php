@@ -304,7 +304,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
       // @TODO Log this in a way that errors can be reported to the uploader.
     }
 
-    drupal_set_message(t('The members are being processed, please check back shortly to see the membership list updated.'), 'status');
+    $this->messenger()->addMessage(t('The members are being processed, please check back shortly to see the membership list updated.'), 'status');
   }
 
 }
