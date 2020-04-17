@@ -98,7 +98,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
       $this->submitForm($form, $form_state);
 
       // Pass param PAR Person created in the submit handler to the next step.
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute('save'), $this->getRouteParams() + ['par_data_person' => $this->par_data_person_id]);
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->progressRoute('save'), $this->getRouteParams() + ['par_data_person' => $this->par_data_person_id]);
     }
 
     // Make sure to add the person cacheability data to this form.
