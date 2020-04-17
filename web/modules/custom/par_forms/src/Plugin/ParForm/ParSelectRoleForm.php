@@ -106,7 +106,7 @@ class ParSelectRoleForm extends ParFormPluginBase {
     }
     // If there isn't a choice go to the next page.
     if (count($role_options) <= 1) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('next'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 
