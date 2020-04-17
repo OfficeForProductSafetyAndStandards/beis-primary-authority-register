@@ -41,9 +41,9 @@ class ParSelectInspectionPlanForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    $selected_inspection_plans = $form_state->getValue('inspection_plan_id');
+    $selected_inspection_plans = (array) $form_state->getValue('inspection_plan_id');
 
-    if (empty(array_filter($selected_inspection_plans))) {
+    if (!empty(array_filter($selected_inspection_plans))) {
       $id = $this->getElementId(['inspection_plan_id'], $form);
       $form_state->setErrorByName($this->getElementName('inspection_plan_id'), $this->wrapErrorMessage('You must select at least one inspection plan to feedback on.', $id));
     };

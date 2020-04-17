@@ -14,6 +14,10 @@ const shared = client.page.shared();
     return client.assert.elementCount(string2, string)
   });
 
+  Then('I see {string} occurences of element {string}', function (count, element) {
+    return client.assert.elementCount(element, count)
+  });
+
   Then('I click the link text {string}', function (string) {
     return shared
         .clickLinkByPureText(string).then(function (){
@@ -64,7 +68,7 @@ const shared = client.page.shared();
   When('the element {string} is visible', function (string) {
     return client.waitForElementVisible(string, 10000);
   });
- 
+
   Then('the inputfield {string} contains the text {string}', function (string, string2) {
     return client.assert.containsText(string,string2);
   });
@@ -138,7 +142,7 @@ const shared = client.page.shared();
 
   When('I click new person if suggestions displayed', function () {
     return shared
-      .chooseNewPersonIfOptionPresent('newperson','#edit-par-data-person-id-new') 
+      .chooseNewPersonIfOptionPresent('newperson','#edit-par-data-person-id-new')
    });
 
    When('the {string} email confirmations for {string} are processed', function (emailSubject, user) {
@@ -154,7 +158,7 @@ const shared = client.page.shared();
     return shared
       .runTota11yAgainstCurrentPage()
   });
-  
+
   When('I go to partnership detail page for my partnership {string} with status {string}', function (orgname, status) {
     return shared
       .goToPartnershipDetailPage(orgname,orgname,status)
