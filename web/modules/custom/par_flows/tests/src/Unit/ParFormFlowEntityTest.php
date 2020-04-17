@@ -203,7 +203,7 @@ class ParFlowEntityTest extends UnitTestCase {
     // Check the next step is correct.
     $this->assertEquals('par_test_forms.third', $next_route, "The next route has been correctly identified.");
 
-    $next_route = $this->testFlow->getNextRoute('save');
+    $next_route = $this->testFlow->progressRoute('save');
 
     // Check the next step is correct.
     $this->assertEquals('par_test_forms.fourth', $next_route, "The next route has been correctly identified given an operation.");
