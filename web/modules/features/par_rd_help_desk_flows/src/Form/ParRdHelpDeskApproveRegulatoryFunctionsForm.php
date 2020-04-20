@@ -78,7 +78,7 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
         // If the partnership could not be saved the application can't be progressed.
         // @TODO Find a better way to alert the user without redirecting them away from the form.
         $this->messenger()->addMessage('There was an error approving this partnership, please check it is ready to be approved.');
-        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel'));
+        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->progressRoute('cancel'));
         return;
       }
 
