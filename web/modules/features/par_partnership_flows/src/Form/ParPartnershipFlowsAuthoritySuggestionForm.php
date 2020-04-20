@@ -63,7 +63,7 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
         '%user' => $account->id(),
       ];
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel'), $this->getRouteParams());
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->progressRoute('cancel'), $this->getRouteParams());
     }
     elseif (count($authority_options) === 1) {
       $this->getFlowDataHandler()->setTempDataValue('par_data_authority_id', key($authority_options));
