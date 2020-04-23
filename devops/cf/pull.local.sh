@@ -81,7 +81,7 @@ CF_INSTANCES=${CF_INSTANCES:=1}
 DB_IMPORT=${DB_IMPORT:="$PWD/backups/sanitised-db.sql"}
 DB_RESET=${DB_RESET:=n}
 BUILD_DIR=${BUILD_DIR:=$PWD}
-VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.beis.gov.uk:8200"}
+VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.services:8200"}
 VAULT_UNSEAL=${VAULT_UNSEAL:-}
 VAULT_TOKEN=${VAULT_TOKEN:-}
 
