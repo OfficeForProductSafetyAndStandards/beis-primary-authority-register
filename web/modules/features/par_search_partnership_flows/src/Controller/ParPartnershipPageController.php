@@ -63,7 +63,7 @@ class ParPartnershipPageController extends ParBaseController {
       '#type' => 'html_tag',
       '#tag' => 'h2',
       '#value' => "<span class='heading-secondary'>In partnership with</span>" . $par_data_authority->getName(),
-      '#attributes' => ['class' => ['heading-large', 'form-group']],
+      '#attributes' => ['class' => ['heading-large', 'form-group', 'authority-name']],
     ];
 
 

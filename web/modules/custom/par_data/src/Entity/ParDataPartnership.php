@@ -296,11 +296,20 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get the coordinated members for this Partnership.
    */
-  public function getCoordinatedMember($single = FALSE) {
+  public function getCoordinatedMember($single = FALSE, $active = FALSE) {
     $members = $this->get('field_coordinated_business')->referencedEntities();
+
+    // Ignore deleted members.
     $members = array_filter($members, function ($member) {
       return !$member->isDeleted();
     });
+
+    if ($active) {
+      // Ignore ceased members if only active members have been requested.
+      $members = array_filter($members, function ($member) {
+        return !$member->isCeased();
+      });
+    }
     $member = !empty($members) ? current($members) : NULL;
 
     return $single ? $member : $members;

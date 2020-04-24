@@ -28,7 +28,7 @@ class ParSelectMemberForm extends ParFormPluginBase {
         $organisations = $par_data_partnership->getOrganisation();
       }
       elseif ($par_data_partnership->isCoordinated()) {
-        foreach ($par_data_partnership->getCoordinatedMember() as $coordinated_member) {
+        foreach ($par_data_partnership->getCoordinatedMember(FALSE, TRUE) as $coordinated_member) {
           $coordinated_organisations = $coordinated_member->getOrganisation();
           $organisations = $this->getParDataManager()->getEntitiesAsOptions($coordinated_organisations, $organisations);
         }
@@ -60,7 +60,7 @@ class ParSelectMemberForm extends ParFormPluginBase {
     // Initialize pager and get current page.
     $number_of_items = 10;
     $pager = $this->getUniquePager()->getPager('par_plugin_member_select_'.$cardinality);
-    $current_page = pager_default_initialize(count($partnership_organisations), $number_of_items, $pager);
+    $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($partnership_organisations), $number_of_items, $pager);
 
     // Split the items up into chunks:
     $chunks = array_chunk($partnership_organisations, $number_of_items, TRUE);
@@ -68,14 +68,14 @@ class ParSelectMemberForm extends ParFormPluginBase {
     $form['par_data_organisation_id'] = [
       '#type' => 'radios',
       '#title' => t('Choose the member to enforce'),
-      '#options' => $chunks[$current_page],
+      '#options' => $chunks[$current_pager->getCurrentPage()],
       '#default_value' => $this->getDefaultValuesByKey('par_data_organisation_id', $cardinality, []),
     ];
 
     $form['pager'] = [
       '#type' => 'pager',
       '#theme' => 'pagerer',
-      '#element' => $cardinality,
+      '#element' => $pager,
       '#config' => [
         'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
       ],
