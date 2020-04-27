@@ -203,7 +203,6 @@ printf "Extracting Vault secrets...\n"
 export VAULT_ADDR
 export VAULT_TOKEN
 
-vault operator seal -tls-skip-verify
 vault operator unseal -tls-skip-verify $VAULT_UNSEAL
 
 if [[ $(vault kv list -tls-skip-verify secret/par/env | awk 'NR > 2 {print $1}' | grep $ENV) ]]; then
