@@ -203,7 +203,6 @@ printf "Extracting Vault secrets...\n"
 export VAULT_ADDR
 export VAULT_TOKEN
 
-vault operator seal -tls-skip-verify
 vault operator unseal -tls-skip-verify $VAULT_UNSEAL
 
 if [[ $(vault kv list -tls-skip-verify secret/par/env | awk 'NR > 2 {print $1}' | grep $ENV) ]]; then
@@ -393,6 +392,7 @@ printf "Pushing the application...\n"
 cf push --no-start -f $MANIFEST -p $BUILD_DIR -n $TARGET_ENV $TARGET_ENV
 
 ## Set the cf environment variables directly
+printf "Setting the environment variables...\n"
 for VAR_NAME in "${VAULT_VARS[@]}"
 do
     cf set-env $TARGET_ENV $VAR_NAME ${!VAR_NAME} > /dev/null
