@@ -31,6 +31,11 @@ class ParFlowEntityTest extends UnitTestCase {
   protected $currentRoute = 'par_test_forms.second';
 
   /**
+   * The simulated previous step route for any given test.
+  */
+  protected $previousRoute = 'par_test_forms.first';
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() {
@@ -51,6 +56,7 @@ class ParFlowEntityTest extends UnitTestCase {
           'redirect' => [
             'save' => 4,
             'cancel' => 5,
+            'prev_step' => 1,
           ],
         ],
         3 => [
@@ -213,7 +219,7 @@ class ParFlowEntityTest extends UnitTestCase {
    * @covers ::getPrevRoute
    */
   public function testGetPrevRoute() {
-    $prev_route = $this->testFlow->progressRoute();
+    $prev_route = $this->testFlow->progressRoute('prev_step');
 
     // Check the next step is correct.
     $this->assertEquals('par_test_forms.first', $prev_route, "The previous route has been correctly identified.");
