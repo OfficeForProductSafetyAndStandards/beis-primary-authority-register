@@ -46,7 +46,7 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
 
     // If no suggestions were found cancel out of the journey.
     if ($required && count($organisations) <= 0) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('cancel'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 
