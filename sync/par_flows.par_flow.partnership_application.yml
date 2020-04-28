@@ -1,9 +1,9 @@
-uuid: 40dc7d00-ab76-45a4-9946-1c18d04de59b
+uuid: c4a96b05-a720-43d5-95cb-121f8efedfbc
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: czSdRUN5HFGXVVzkSkGD9lulfIDP2bku96I5rKcHhB8
+  default_config_hash: du_fcxeCG8ZLY0Kwr0O4a5i1mloP892zQCOpMmTvjEg
 id: partnership_application
 label: 'Partnership Application Flow'
 default_title: 'New Partnership Application'
@@ -59,6 +59,7 @@ steps:
       review: 10
       add_contact: 9
       cancel: 13
+      prev_step: 6
   8:
     route: par_partnership_application_flows.partnership_application_organisation_address
     form_id: par_partnership_address
