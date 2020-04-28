@@ -60,9 +60,11 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
+    $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('prev_step'), $this->getRouteParams());
+    return new RedirectResponse($url);
     // Go back to the previous page if there's no search term.
     if (!$this->getFlowDataHandler()->getFormPermValue('organisation_select_search_query')) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('prev_step'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 
