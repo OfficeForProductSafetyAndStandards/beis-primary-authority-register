@@ -204,7 +204,6 @@ printf "Extracting Vault secrets...\n"
 export VAULT_ADDR
 export VAULT_TOKEN
 
-vault operator seal -tls-skip-verify
 vault operator unseal -tls-skip-verify $VAULT_UNSEAL
 
 export AWS_ACCESS_KEY_ID=`vault read -tls-skip-verify -field=AWS_ACCESS_KEY_ID secret/par/deploy/aws`
