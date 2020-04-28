@@ -55,6 +55,7 @@ steps:
       review: 10
       add_contact: 9
       cancel: 13
+      prev_step: 6
   8:
     route: par_partnership_application_flows.partnership_application_organisation_address
     form_id: par_partnership_address
