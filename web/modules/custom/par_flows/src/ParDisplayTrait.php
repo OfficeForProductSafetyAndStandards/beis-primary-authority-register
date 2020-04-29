@@ -372,7 +372,7 @@ trait ParDisplayTrait {
       $pager = $this->getUniquePager()->getPager($id);
 
       // Initialize pager and get current page.
-      $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($rows), $this->numberPerPage, $pager);
+      $current_page = pager_default_initialize(count($rows), $this->numberPerPage, $pager);
 
       // Split the items up into chunks:
       $chunks = array_chunk($rows, $this->numberPerPage);
@@ -397,7 +397,7 @@ trait ParDisplayTrait {
       ];
 
       // Add the items for our current page to the fieldset.
-      foreach ($chunks[$current_pager->getCurrentPage()] as $delta => $item) {
+      foreach ($chunks[$current_page] as $delta => $item) {
         $element[$delta] = $item;
       }
     }

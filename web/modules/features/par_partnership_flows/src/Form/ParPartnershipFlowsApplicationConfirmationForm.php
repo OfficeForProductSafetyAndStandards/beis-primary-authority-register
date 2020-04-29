@@ -3,7 +3,6 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -152,7 +151,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
 
       // If the partnership could not be saved the application can't be progressed.
       // @TODO Find a better way to alert the user without redirecting them away from the form.
-      $this->messenger()->addMessage('There was an error progressing your partnership, please contact the helpdesk for more information.');
+      drupal_set_message('There was an error progressing your partnership, please contact the helpdesk for more information.');
       $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel'));
     }
   }

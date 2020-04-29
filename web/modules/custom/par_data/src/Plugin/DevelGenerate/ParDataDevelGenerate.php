@@ -3,7 +3,6 @@
 namespace Drupal\par_data\Plugin\DevelGenerate;
 
 use Drupal\comment\CommentManagerInterface;
-use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
@@ -80,13 +79,6 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
   protected $parDataManager;
 
   /**
-   * The time service.
-   *
-   * @var \Drupal\Component\Datetime\TimeInterface
-   */
-  protected $time;
-
-  /**
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
    * @param string $plugin_id
@@ -107,7 +99,7 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
    * @param \Drupal\par_data\ParDataManagerInterface
    *   The par data manager service.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, EntityStorageInterface $node_storage, EntityStorageInterface $node_type_storage, ModuleHandlerInterface $module_handler, DateFormatterInterface $date_formatter, ParDataManagerInterface $par_data_manager, TimeInterface $time) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, EntityStorageInterface $node_storage, EntityStorageInterface $node_type_storage, ModuleHandlerInterface $module_handler, DateFormatterInterface $date_formatter, ParDataManagerInterface $par_data_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
     $this->moduleHandler = $module_handler;
@@ -115,7 +107,6 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
     $this->nodeTypeStorage = $node_type_storage;
     $this->dateFormatter = $date_formatter;
     $this->parDataManager = $par_data_manager;
-    $this->time = $time;
   }
 
   /**
@@ -129,22 +120,8 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
       $entity_manager->getStorage('node_type'),
       $container->get('module_handler'),
       $container->get('date.formatter'),
-      $container->get('par_data.manager'),
-      $container->get('datetime.time')
+      $container->get('par_data.manager')
     );
-  }
-
-  /**
-   * Get time service.
-   *
-   * @return \Drupal\Component\Datetime\TimeInterface
-   */
-  public function getTime() {
-    if (!isset($this->time)) {
-      $this->time = \Drupal::time();
-    }
-
-    return $this->time;
   }
 
   /**
@@ -393,7 +370,7 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
       'revision' => mt_rand(0, 1),
       'status' => TRUE,
       'promote' => mt_rand(0, 1),
-      'created' => $this->getTime()->getRequestTime() - mt_rand(0, $results['time_range']),
+      'created' => REQUEST_TIME - mt_rand(0, $results['time_range']),
       'langcode' => $this->getLangcode($results),
     ));
 
@@ -427,9 +404,8 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
    * Retrieve 50 uids from the database.
    */
   protected function getUsers() {
-    $connection = \Drupal::database();
     $users = array();
-    $result = $connection->queryRange("SELECT uid FROM {users}", 0, 50);
+    $result = db_query_range("SELECT uid FROM {users}", 0, 50);
     foreach ($result as $record) {
       $users[] = $record->uid;
     }
