@@ -4,7 +4,6 @@ namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
@@ -169,7 +168,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
 
         $existing_options = [];
         foreach ($properties as $group => $conditions) {
-          $existing_options += \Drupal::entityTypeManager()
+          $existing_options += \Drupal::entityManager()
             ->getStorage('par_data_organisation')
             ->loadByProperties($conditions);
         }
@@ -305,7 +304,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
       // @TODO Log this in a way that errors can be reported to the uploader.
     }
 
-    $this->messenger()->addMessage(t('The members are being processed, please check back shortly to see the membership list updated.'), 'status');
+    drupal_set_message(t('The members are being processed, please check back shortly to see the membership list updated.'), 'status');
   }
 
 }

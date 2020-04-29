@@ -15,7 +15,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
  *
  * @package Drupal\invite\Form
  */
-class ParRdHelpDeskBulkInviteForm extends ParBaseForm {
+class ParPartnershipFlowsInviteForm extends ParBaseForm {
 
   /**
    * {@inheritdoc}

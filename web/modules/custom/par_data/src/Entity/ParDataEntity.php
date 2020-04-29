@@ -22,7 +22,6 @@ use Drupal\par_data\ParDataException;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
 use Drupal\trance\Trance;
-use Drupal\Component\Datetime\TimeInterface;
 
 /**
  * Defines the PAR entities.
@@ -71,15 +70,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function getDateFormatter() {
     return \Drupal::service('date.formatter');
-  }
-
-  /**
-   * Get time service.
-   *
-   * @return \Drupal\Component\Datetime\TimeInterface
-   */
-  public function getTime() {
-    return \Drupal::time();
   }
 
   /**
@@ -257,7 +247,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * Destroy entity, and completely remove.
    */
   public function annihilate() {
-    return $this->entityTypeManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
+    return $this->entityManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
   }
 
   /**
@@ -877,7 +867,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     parent::setNewRevision($value);
 
     if (!$this->isNew()) {
-      $this->setRevisionCreationTime($this->getTime()->getRequestTime());
+      $this->setRevisionCreationTime(REQUEST_TIME);
       $this->setRevisionAuthorId(\Drupal::currentUser()->id());
     }
   }
