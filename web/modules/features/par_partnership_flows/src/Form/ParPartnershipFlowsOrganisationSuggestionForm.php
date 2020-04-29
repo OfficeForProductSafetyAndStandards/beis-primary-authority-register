@@ -39,7 +39,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     // Go to previous step if search query is not specified.
     if (!$searchQuery) {
       // @TODO Find a way to notify the user they have been redirected.
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->getPrevRoute(), $this->getRouteParams());
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->progressRoute('cancel'), $this->getRouteParams());
     }
 
     $conditions = [
