@@ -58,91 +58,6 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     // Display all the information that can be modified by the organisation.
     $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
-    $par_data_authority = $par_data_partnership->getAuthority(TRUE);
-
-    // Partnership Authority Name - component.
-    $form['authority_name'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'h2',
-      '#value' => "<span class='heading-secondary'>In partnership with</span>" . $par_data_authority->getName(),
-      '#attributes' => ['class' => ['heading-large', 'form-group']],
-    ];
-
-    // Partnership Basic Information - component.
-    $form['partnership_info'] = [
-      '#type' => 'container',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
-    // Display details about the partnership for information.
-    $about_partnership_display = $par_data_partnership->about_partnership->view(['label' => 'hidden']);
-    $form['partnership_info']['about_partnership'] = [
-      '#type' => 'fieldset',
-      '#title' => 'About the partnership',
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      'details' => [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#value' => $this->getRenderer()->render($about_partnership_display),
-      ],
-    ];
-    try {
-      $about_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_about_partnership', [], [], TRUE);
-    }
-    catch (ParFlowException $e) {
-      $this->getLogger($this->getLoggerChannel())->notice($e);
-    }
-    if (isset($about_edit_link)) {
-      $form['partnership_info']['about']['edit'] = [
-        '#type' => 'markup',
-        '#markup' => '<p>' . $about_edit_link->setText("edit about the partnership")->toString() . '</p>',
-      ];
-    }
-
-    // Display the regulatory functions and partnership approved date.
-    $approved_date_display = $par_data_partnership->approved_date->view('full');
-    $regulatory_functions = $par_data_partnership->get('field_regulatory_function')->referencedEntities();
-    $form['partnership_info']['details'] = [
-      '#type' => 'container',
-      '#attributes' => ['class' => ['grid-row']],
-      'regulatory_functions' => [
-        '#type' => 'fieldset',
-        '#title' => 'Partnered for',
-        '#attributes' => ['class' => 'column-one-half'],
-        'value' => [
-          '#theme' => 'item_list',
-          '#list_type' => 'ul',
-          '#items' => $this->getParDataManager()->getEntitiesAsOptions($regulatory_functions),
-        ]
-      ],
-      'approved_date' => [
-        '#type' => 'fieldset',
-        '#title' => 'In partnership since',
-        '#attributes' => ['class' => 'column-one-half'],
-        'value' => [
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-          '#value' => $this->getRenderer()->render($approved_date_display),
-        ],
-      ],
-    ];
-    try {
-      $regulatory_functions_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_regulatory_functions', [], [], TRUE);
-    }
-    catch (ParFlowException $e) {
-      $this->getLogger($this->getLoggerChannel())->notice($e);
-    }
-    if (isset($regulatory_functions_edit_link)) {
-      $form['partnership_info']['details']['edit'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $regulatory_functions_edit_link->setText("edit the regulatory functions")->toString(),
-        '#attributes' => ['class' => 'column-full'],
-      ];
-    }
 
     // Partnership Organisation Information - component.
     $form['organisation_info'] = [
@@ -156,7 +71,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
 
     // View and perform operations on the information about the business.
     $form['about_business'] = $this->renderSection('About the organisation', $par_data_organisation, ['comments' => 'about'], ['edit-field']);
-
+var_dump($form['registered_address']); die;
     // Only show SIC Codes and Employee number if the partnership is a direct
     // partnership.
     if ($par_data_partnership->isDirect()) {

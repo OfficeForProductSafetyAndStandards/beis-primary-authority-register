@@ -16,6 +16,10 @@ steps:
   1:
     route: par_partnership_flows.authority_details
     form_id: par_partnership_details
+    components:
+      partnership_information_display: {
+        weight: -10
+      }
     redirect:
       edit_about_partnership: 2
       edit_regulatory_functions: 3

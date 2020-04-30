@@ -15,6 +15,10 @@ states:
 steps:
   1:
     route: par_search_partnership_flows.partnership_page
+    components:
+      partnership_information_display: {
+        weight: -10
+      }
     redirect:
       advice: 2
       inspection_plans: 4
