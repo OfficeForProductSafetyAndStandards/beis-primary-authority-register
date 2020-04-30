@@ -216,21 +216,6 @@ class ParFlowEntityTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::getPrevRoute
-   */
-  public function testGetPrevRoute() {
-    $prev_route = $this->testFlow->getPrevRoute();
-
-    // Check the previous step is correct.
-    $this->assertEquals('par_test_forms.first', $prev_route, "The previous route has been correctly identified.");
-
-    $prev_route = $this->testFlow->getPrevRoute('cancel');
-
-    // Check the a given operation maps correclty.
-    $this->assertEquals('par_test_forms.confirmation', $prev_route, "The previous route has been correctly identified given an operation.");
-  }
-
-  /**
    * @covers ::progressRoute
    */
   public function progressRoute() {
