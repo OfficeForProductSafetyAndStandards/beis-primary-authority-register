@@ -313,7 +313,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       $prev_step = isset($prev_index) ? $this->getStep($prev_index) : $this->getStep(1);
     }
 
-    // If there is no previous step we'll the current route.
+    // If there is no previous step we'll return the current route.
     $step = isset($prev_step) && isset($prev_step['route']) ? $prev_index : NULL;
 
     if (empty($step)) {
