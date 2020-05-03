@@ -60,6 +60,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
   const SAVE_STEP = 'step';
   const SAVE_END = 'end';
+  const BACK_STEP = 'back';
 
   /**
    * The flow ID.
@@ -302,7 +303,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       $prev_index = $redirect;
     }
 
-    // Then fallback to the next step, or the first if already on the last.
+    // Then go back to the previous step, or if we are on the first step we return the current route.
     if (!isset($prev_step) && $current_step === 1) {
       $prev_step = $this->getStep(1);
       $prev_index = 1;
@@ -312,7 +313,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       $prev_step = isset($prev_index) ? $this->getStep($prev_index) : $this->getStep(1);
     }
 
-    // If there is no next step we'Nextll go back to the beginning.
+    // If there is no previous step we'll the current route.
     $step = isset($prev_step) && isset($prev_step['route']) ? $prev_index : NULL;
 
     if (empty($step)) {
@@ -330,6 +331,13 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
     // Operations that should not progress to the next step.
     $final_operations = ['cancel', 'done'];
+
+    // Check if the logic is trying to go back one step on the current journey by passing in a default back operation.
+    if ($operation === ParFlow::BACK_STEP) {
+      // calling getPrevStep() method without passing in an operation parameter will trigger the default back step logic.
+      $prev_step = $this->getPrevStep();
+      return $this->getRouteByStep($prev_step);
+    }
 
     // Check if the operation produced a valid step.
     if ($redirect = $this->getStepByOperation($current_step, $operation)) {
