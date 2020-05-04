@@ -98,6 +98,9 @@ interface ParFlowInterface {
    * operation may wish to progress to a different step within the journey or
    * return to a different page entirely.
    *
+   * @param string $operation
+   *   An optional form operation that can be used to override the redirection.
+   *
    * @return string|NULL
    *   The route name to progress to OR NULL if there is no route within the flow to go to.
    */
