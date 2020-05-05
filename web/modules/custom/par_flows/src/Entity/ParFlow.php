@@ -360,14 +360,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
-  public function getNextRoute($operation = NULL) {
-    $next_step = $this->getNextStep($operation);
-    return $this->getRouteByStep($next_step);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getCurrentStepComponents() {
     return $this->getStepComponents($this->getCurrentStep());
   }
