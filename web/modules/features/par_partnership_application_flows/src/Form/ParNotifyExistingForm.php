@@ -40,7 +40,7 @@ class ParNotifyExistingForm extends ParBaseForm {
 //      ];
 //    }
 //    else {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('next'), $this->getRouteParams());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
       return new RedirectResponse($url);
 //    }
 
