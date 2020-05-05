@@ -107,19 +107,6 @@ interface ParFlowInterface {
   public function progressRoute($operation = NULL);
 
   /**
-   * Get the next route.
-   *
-   * @deprecated use self::getRouteByOperation() instead.
-   *
-   * @param string $operation
-   *   An optional form operation that can be used to override the redirection.
-   *
-   * @return mixed
-   *   A route id for the next step.
-   */
-  public function getNextRoute($operation);
-
-  /**
    * Get a step by the form id.
    *
    * @param string $form ID
