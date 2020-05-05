@@ -14,6 +14,7 @@
     ],
     "require": {
         "php": "^7.0.8",
+        "bjeavons/zxcvbn-php": "~0.4",
         "commerceguys/intl": "^1.0",
         "composer/installers": "^1.2",
         "cweagans/composer-patches": "^1.6",
