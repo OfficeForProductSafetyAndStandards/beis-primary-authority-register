@@ -97,7 +97,7 @@ class ParDedupePersonForm extends ParFormPluginBase {
     // If there are no people we should treat it as a new record and skip.
     if (count($contact_records) <= 0) {
       $this->getFlowDataHandler()->setTempDataValue('contact_record', self::ADD_NEW);
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('cancel'), $this->getRouteParams());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('next'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
     // If there is only one person to choose submit the form automatically and go to the next step.
