@@ -13,29 +13,37 @@ use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
- * Organisation trading name display.
+ * Partnership contact display.
  *
  * @ParForm(
- *   id = "trading_name_display",
- *   title = @Translation("Trading name display.")
+ *   id = "partnership_contacts",
+ *   title = @Translation("Partnership contact display.")
  * )
  */
-class ParTradingNameDisplay extends ParFormPluginBase {
+class ParPartnershipContacts extends ParFormPluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
-    if (!$par_data_organisation && $par_data_partnership instanceof ParDataEntityInterface) {
-      $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
+
+    if ($authority_contacts = $par_data_partnership->getAuthorityPeople()) {
+      $this->setDefaultValuesByKey("authority_people", $cardinality, $authority_contacts);
     }
-    if ($par_data_organisation) {
-      // Get the trading names.
-      $trading_names = $par_data_organisation->extractValues('trading_name');
-      $this->setDefaultValuesByKey("trading_names", $cardinality, $trading_names);
+    if ($organisation_contacts = $par_data_partnership->getOrganisationPeople()) {
+      $this->setDefaultValuesByKey("organisation_people", $cardinality, $organisation_contacts);
     }
+
+    // Set configuration options.
+    $show_title = isset($this->getConfiguration()['show_title']) ? (bool) $this->getConfiguration()['show_title'] : TRUE;
+    $this->getFlowDataHandler()->setFormPermValue("show_title", $show_title);
+
+    $show_authority_contacts = isset($this->getConfiguration()['authority_contacts']) ? (bool) $this->getConfiguration()['authority_contacts'] : TRUE;
+    $this->getFlowDataHandler()->setFormPermValue("show_authority_contacts", $show_authority_contacts);
+
+    $show_organisation_contacts = isset($this->getConfiguration()['organisation_contacts']) ? (bool) $this->getConfiguration()['organisation_contacts'] : TRUE;
+    $this->getFlowDataHandler()->setFormPermValue("show_organisation_contacts", $show_organisation_contacts);
 
     parent::loadData();
   }
@@ -44,46 +52,57 @@ class ParTradingNameDisplay extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
-    // Display the trading_names.
-    $form['trading_names'] = [
+    if ($this->getFlowDataHandler()->getFormPermValue("show_title")) {
+      $form['title'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => "Contacts",
+        '#attributes' => ['class' => 'heading-large'],
+      ];
+    }
+    // Display the legal entities.
+    $form['contacts'] = [
       '#type' => 'fieldset',
-      '#title' => 'Trading names',
+      '#title' => 'Legal entities',
       '#attributes' => ['class' => ['form-group']],
-      'trading_name' => [
+      'legal_entity' => [
         '#type' => 'container',
         '#attributes' => ['class' => ['grid-row']],
       ],
     ];
 
-    $trading_names = $this->getDefaultValuesByKey('trading_names', $cardinality, []);
-    foreach ($trading_names as $delta => $trading_name) {
-      $form['trading_names']['trading_name'][$delta] = [
+    $legal_entities = $this->getDefaultValuesByKey('legal_entities', $cardinality, []);
+    foreach ($legal_entities as $delta => $legal_entity) {
+      $legal_entity_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
+      $legal_entity_summary = $legal_entity_view_builder->view($legal_entity, 'summary');
+
+      $form['legal_entities']['legal_entity'][$delta] = [
         '#type' => 'container',
         '#attributes' => ['class' => 'column-full'],
         'name' => [
           '#type' => 'html_tag',
           '#tag' => 'div',
-          '#value' => $trading_name,
-          '#attributes' => ['class' => 'trading-name'],
+          '#value' => $this->getRenderer()->render($legal_entity_summary),
+          '#attributes' => ['class' => 'legal-entity'],
         ],
       ];
 
       // Generate item operation links.
       $operations = [];
       try {
-        // Edit the trading name.
-        $params['trading_name_delta'] = $delta;
-        $options = ['attributes' => ['aria-label' => $this->t("Edit the trading name @label", ['@label' => strtolower($trading_name)])]];
-        $operations['edit'] = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_trading_name', $params, $options, TRUE);
+        // Edit the legal entity.
+        $params['par_data_legal_entity'] = $legal_entity->id();
+        $options = ['attributes' => ['aria-label' => $this->t("Edit the legal entity @label", ['@label' => strtolower($legal_entity->label())])]];
+        $operations['edit'] = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_field_legal_entity', $params, $options, TRUE);
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
       }
       try {
-        // Remove the trading name.
-        $params['trading_name_delta'] = $delta;
-        $options = ['attributes' => ['aria-label' => $this->t("Remove the trading name @label", ['@label' => strtolower($trading_name)])]];
-        $operations['remove'] = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('remove_trading_name', $params, $options, TRUE);
+        // Remove the legal entity.
+        $params['field_legal_entity_delta'] = $delta;
+        $options = ['attributes' => ['aria-label' => $this->t("Remove the legal entity @label", ['@label' => strtolower($legal_entity->label())])]];
+        $operations['remove'] = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('remove_field_legal_entity', $params, $options, TRUE);
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -91,42 +110,43 @@ class ParTradingNameDisplay extends ParFormPluginBase {
 
       // Display operation links if any are present.
       if (!empty(array_filter($operations))) {
-        $form['trading_names']['trading_name'][$delta]['operations'] = [
+        $form['legal_entities']['legal_entity'][$delta]['operations'] = [
           '#type' => 'container',
           '#attributes' => ['class' => ['grid-row']],
         ];
         if (isset($operations['edit']) && $operations['edit'] instanceof Link) {
-          $form['trading_names']['trading_name'][$delta]['operations']['edit'] = [
+          $form['legal_entities']['legal_entity'][$delta]['operations']['edit'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
-            '#value' => $operations['edit']->setText("edit trading name")->toString(),
-            '#attributes' => ['class' => ['edit-trading-name', 'column-one-third']],
+            '#value' => $operations['edit']->setText("edit legal entity")->toString(),
+            '#attributes' => ['class' => ['edit-legal-entity', 'column-one-third']],
           ];
         }
         if (isset($operations['remove']) && $operations['remove'] instanceof Link) {
-          $form['trading_names']['trading_name'][$delta]['operations']['remove'] = [
+          $form['legal_entities']['legal_entity'][$delta]['operations']['remove'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
-            '#value' => $operations['remove']->setText("remove trading name")->toString(),
-            '#attributes' => ['class' => ['remove-trading-name', 'column-one-third']],
+            '#value' => $operations['remove']->setText("remove legal entity")->toString(),
+            '#attributes' => ['class' => ['remove-legal-entity', 'column-one-third']],
           ];
         }
       }
     }
 
-    // Add a link to add a trading name.
+    // Add a link to add a legal entity.
     try {
-      $link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_trading_name', [], [], TRUE);
-      $trading_name_add_link = $link->setText("add trading name")->toString();
+      $legal_entity_add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_field_legal_entity', [], [], TRUE);
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
     }
-    if (isset($trading_name_add_link) && $trading_name_add_link instanceof Link) {
-      $form['trading_names']['add'] = [
+
+    if (isset($legal_entity_add_link) && $legal_entity_add_link instanceof Link) {
+      $link_label = count($legal_entities) > 1 ? "add another legal entity" : "add a legal entity";
+      $form['legal_entities']['add'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $trading_name_add_link,
+        '#value' => $legal_entity_add_link->setText($link_label)->toString(),
         '#attributes' => ['class' => ['add-trading-name']],
       ];
     }

@@ -6,40 +6,35 @@ use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
- * Organisation information display for partnerships.
+ * Organisation trading name display.
  *
  * @ParForm(
- *   id = "organisation_information_display",
- *   title = @Translation("Organisation information display.")
+ *   id = "trading_name_display",
+ *   title = @Translation("Trading name display.")
  * )
  */
-class ParOrganisationInformationDisplay extends ParFormPluginBase {
+class ParTradingNameDisplay extends ParFormPluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-
-    if ($par_data_partnership instanceof ParDataEntityInterface
-      && $par_data_organisation = $par_data_partnership->getOrganisation(TRUE)) {
-      // Format the address.
-      if ($par_data_organisation->hasField('field_premises')
-        && $address = $par_data_organisation->getPremises(TRUE)) {
-        $this->setDefaultValuesByKey("address", $cardinality, $address);
-      }
-
-      // Get the partnership information.
-      if ($par_data_organisation->hasField('comments')) {
-        $information = $par_data_organisation->comments->view('about');
-        $this->setDefaultValuesByKey("information", $cardinality, $information);
-      }
+    $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
+    if (!$par_data_organisation && $par_data_partnership instanceof ParDataEntityInterface) {
+      $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
+    }
+    if ($par_data_organisation) {
+      // Get the trading names.
+      $trading_names = $par_data_organisation->extractValues('trading_name');
+      $this->setDefaultValuesByKey("trading_names", $cardinality, $trading_names);
     }
 
     parent::loadData();
@@ -49,67 +44,90 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
-    // Partnership Organisation Information - component.
-    $form['organisation_info'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'h2',
-      '#value' => "Information about the organisation",
-      '#attributes' => ['class' => 'heading-large'],
-    ];
-
-    // Display the address.
-    $address = $this->getDefaultValuesByKey('address', $cardinality, NULL);
-    $entity_view_builder = $address ? $this->getParDataManager()->getViewBuilder($address->getEntityTypeId()) : NULL;
-    $address_entity = $entity_view_builder->view($address, 'summary');
-    $form['registered_address'] = [
+    // Display the trading_names.
+    $form['trading_names'] = [
       '#type' => 'fieldset',
-      '#title' => 'Address',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      'field_premises' => [
+      '#title' => 'Trading names',
+      '#attributes' => ['class' => ['form-group']],
+      'trading_name' => [
         '#type' => 'container',
-        'address' => $address_entity,
+        '#attributes' => ['class' => ['grid-row']],
       ],
     ];
 
-    // Add a link to edit the address.
-    try {
-      $params[$address->getEntityTypeId()] = $address->id();
-      $address_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_field_premises', $params, [], TRUE);
-    }
-    catch (ParFlowException $e) {
-      $this->getLogger($this->getLoggerChannel())->notice($e);
-    }
-    if (isset($address_edit_link)) {
-      $form['registered_address']['field_premises']['edit'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $address_edit_link->setText("edit address")->toString(),
-        '#attributes' => ['class' => 'edit-address'],
+    $trading_names = $this->getDefaultValuesByKey('trading_names', $cardinality, []);
+    foreach ($trading_names as $delta => $trading_name) {
+      $form['trading_names']['trading_name'][$delta] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => 'column-full'],
+        'name' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#value' => $trading_name,
+          '#attributes' => ['class' => 'trading-name'],
+        ],
       ];
+
+      // Generate item operation links.
+      $operations = [];
+      try {
+        // Edit the trading name.
+        $params['trading_name_delta'] = $delta;
+        $options = ['attributes' => ['aria-label' => $this->t("Edit the trading name @label", ['@label' => strtolower($trading_name)])]];
+        $operations['edit'] = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_trading_name', $params, $options, TRUE);
+      }
+      catch (ParFlowException $e) {
+        $this->getLogger($this->getLoggerChannel())->notice($e);
+      }
+      try {
+        // Remove the trading name.
+        $params['trading_name_delta'] = $delta;
+        $options = ['attributes' => ['aria-label' => $this->t("Remove the trading name @label", ['@label' => strtolower($trading_name)])]];
+        $operations['remove'] = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('remove_trading_name', $params, $options, TRUE);
+      }
+      catch (ParFlowException $e) {
+        $this->getLogger($this->getLoggerChannel())->notice($e);
+      }
+
+      // Display operation links if any are present.
+      if (!empty(array_filter($operations))) {
+        $form['trading_names']['trading_name'][$delta]['operations'] = [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['grid-row']],
+        ];
+        if (isset($operations['edit']) && $operations['edit'] instanceof Link) {
+          $form['trading_names']['trading_name'][$delta]['operations']['edit'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $operations['edit']->setText("edit trading name")->toString(),
+            '#attributes' => ['class' => ['edit-trading-name', 'column-one-third']],
+          ];
+        }
+        if (isset($operations['remove']) && $operations['remove'] instanceof Link) {
+          $form['trading_names']['trading_name'][$delta]['operations']['remove'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $operations['remove']->setText("remove trading name")->toString(),
+            '#attributes' => ['class' => ['remove-trading-name', 'column-one-third']],
+          ];
+        }
+      }
     }
 
-    // Display details about the partnership for information.
-    $form['about'] = [
-      '#type' => 'fieldset',
-      '#title' => 'About the organisation',
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      'details' => $this->getDefaultValuesByKey('information', $cardinality, NULL),
-    ];
+    // Add a link to add a trading name.
     try {
-      $about_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_comments', [], [], TRUE);
+      $link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_trading_name', [], [], TRUE);
+      $trading_name_add_link = $link->setText("add trading name")->toString();
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
     }
-    if (isset($about_edit_link)) {
-      $form['about']['edit'] = [
+    if (isset($trading_name_add_link) && $trading_name_add_link instanceof Link) {
+      $form['trading_names']['add'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $about_edit_link->setText("edit about the partnership")->toString(),
-        '#attributes' => ['class' => 'edit-about-organisation'],
+        '#value' => $trading_name_add_link,
+        '#attributes' => ['class' => ['add-trading-name']],
       ];
     }
 

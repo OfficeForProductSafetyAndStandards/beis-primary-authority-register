@@ -35,6 +35,9 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     if ($par_data_partnership instanceof ParDataEntityInterface) {
+      // Is the partnership approved?
+      $this->setDefaultValuesByKey("approved", $cardinality, $par_data_partnership->isActive());
+
       // Format the date.
       if ($par_data_partnership->hasField('approved_date')) {
         $date = $par_data_partnership->approved_date->view('full');
@@ -75,21 +78,13 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
       '#attributes' => ['class' => ['heading-large', 'form-group', 'authority-name']],
     ];
 
-
-    // Partnership Basic Information - component.
-    $form['partnership_info'] = [
-      '#type' => 'container',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-
     // Display details about the partnership for information.
-    $form['partnership_info']['about_partnership'] = [
+    $form['about_partnership'] = [
       '#type' => 'fieldset',
       '#title' => 'About the partnership',
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
+      '#attributes' => ['class' => ['form-group']],
       'details' => $this->getDefaultValuesByKey('information', $cardinality, NULL),
     ];
     try {
@@ -99,46 +94,52 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
       $this->getLogger($this->getLoggerChannel())->notice($e);
     }
     if (isset($about_edit_link)) {
-      $form['partnership_info']['about']['edit'] = [
-        '#type' => 'markup',
-        '#markup' => '<p>' . $about_edit_link->setText("edit about the partnership")->toString() . '</p>',
+      $form['about_partnership']['edit'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $about_edit_link->setText("edit about the partnership")->toString(),
+        '#attributes' => ['class' => 'edit-about-partnership'],
+        '#weight' => 100
       ];
     }
 
     // Display the regulatory functions and partnership approved date.
-    $form['partnership_info']['details'] = [
-      '#type' => 'container',
-      '#attributes' => ['class' => ['grid-row']],
-      'regulatory_functions' => [
-        '#type' => 'fieldset',
-        '#title' => 'Partnered for',
-        '#attributes' => ['class' => 'column-one-half'],
-        'value' => [
-          '#theme' => 'item_list',
-          '#list_type' => 'ul',
-          '#items' => $this->getDefaultValuesByKey('regulatory_functions', $cardinality, NULL),
-        ]
-      ],
-      'approved_date' => [
-        '#type' => 'fieldset',
-        '#title' => 'In partnership since',
-        '#attributes' => ['class' => 'column-one-half'],
-        'value' => $this->getDefaultValuesByKey('date', $cardinality, NULL),
-      ],
-    ];
-    try {
-      $regulatory_functions_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_regulatory_functions', [], [], TRUE);
-    }
-    catch (ParFlowException $e) {
-      $this->getLogger($this->getLoggerChannel())->notice($e);
-    }
-    if (isset($regulatory_functions_edit_link)) {
-      $form['partnership_info']['details']['edit'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $regulatory_functions_edit_link->setText("edit the regulatory functions")->toString(),
-        '#attributes' => ['class' => 'column-full'],
+    if ($this->getDefaultValuesByKey('approved', $cardinality, FALSE)) {
+      $form['details'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['grid-row']],
+        'regulatory_functions' => [
+          '#type' => 'fieldset',
+          '#title' => 'Partnered for',
+          '#attributes' => ['class' => 'column-one-half'],
+          'functions' => [
+            '#theme' => 'item_list',
+            '#list_type' => 'ul',
+            '#items' => $this->getDefaultValuesByKey('regulatory_functions', $cardinality, NULL),
+          ]
+        ],
+        'approved_date' => [
+          '#type' => 'fieldset',
+          '#title' => 'In partnership since',
+          '#attributes' => ['class' => 'column-one-half'],
+          'value' => $this->getDefaultValuesByKey('date', $cardinality, NULL),
+        ],
       ];
+
+      try {
+        $regulatory_functions_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_regulatory_functions', [], [], TRUE);
+      }
+      catch (ParFlowException $e) {
+        $this->getLogger($this->getLoggerChannel())->notice($e);
+      }
+      if (isset($regulatory_functions_edit_link)) {
+        $form['details']['regulatory_functions']['edit'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $regulatory_functions_edit_link->setText("edit the regulatory functions")->toString(),
+          '#attributes' => ['class' => ['edit-regulatory-functions']],
+        ];
+      }
     }
 
     return $form;

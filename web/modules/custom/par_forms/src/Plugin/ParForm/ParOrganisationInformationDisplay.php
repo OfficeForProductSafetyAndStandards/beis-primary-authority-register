@@ -65,17 +65,54 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
       '#type' => 'fieldset',
       '#title' => 'Address',
       '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
       'field_premises' => [
         '#type' => 'container',
-        'entity' => $address_entity,
-        'operations' => [
-          '#type' => 'container',
-        ],
-      ],
-      'operations' => [
-        '#type' => 'container',
+        'address' => $address_entity,
       ],
     ];
+
+    // Add a link to edit the address.
+    try {
+      $params[$address->getEntityTypeId()] = $address->id();
+      $address_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_field_premises', $params, [], TRUE);
+    }
+    catch (ParFlowException $e) {
+      $this->getLogger($this->getLoggerChannel())->notice($e);
+    }
+    if (isset($address_edit_link)) {
+      $form['registered_address']['field_premises']['edit'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $address_edit_link->setText("edit address")->toString(),
+        '#attributes' => ['class' => 'edit-address'],
+      ];
+    }
+
+    // Display details about the partnership for information.
+    $form['about'] = [
+      '#type' => 'fieldset',
+      '#title' => 'About the organisation',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+      'details' => $this->getDefaultValuesByKey('information', $cardinality, NULL),
+    ];
+    try {
+      $about_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_comments', [], [], TRUE);
+    }
+    catch (ParFlowException $e) {
+      $this->getLogger($this->getLoggerChannel())->notice($e);
+    }
+    if (isset($about_edit_link)) {
+      $form['about']['edit'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $about_edit_link->setText("edit about the partnership")->toString(),
+        '#attributes' => ['class' => 'edit-about-organisation'],
+      ];
+    }
 
     return $form;
   }

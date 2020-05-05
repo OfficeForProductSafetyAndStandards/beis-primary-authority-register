@@ -6,20 +6,22 @@ use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
- * Organisation trading name display.
+ * Organisation SIC code display.
  *
  * @ParForm(
- *   id = "trading_name_display",
- *   title = @Translation("Trading name display.")
+ *   id = "sic_code_display",
+ *   title = @Translation("SIC code display.")
  * )
  */
-class ParTradingNameDisplay extends ParFormPluginBase {
+class ParSicCodeDisplay extends ParFormPluginBase {
 
   /**
    * {@inheritdoc}
@@ -31,9 +33,9 @@ class ParTradingNameDisplay extends ParFormPluginBase {
       $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
     }
     if ($par_data_organisation) {
-      // Get the trading names.
-      $trading_names = $par_data_organisation->extractValues('trading_name');
-      $this->setDefaultValuesByKey("trading_names", $cardinality, $trading_names);
+      // Get the SIC Codes.
+      $sic_codes = $par_data_organisation->get('field_sic_code')->referencedEntities();
+      $this->setDefaultValuesByKey("sic_codes", $cardinality, $sic_codes);
     }
 
     parent::loadData();
@@ -44,60 +46,92 @@ class ParTradingNameDisplay extends ParFormPluginBase {
    */
   public function getElements($form = [], $cardinality = 1) {
     // Display the trading_names.
-    $form['trading_names'] = [
+    $form['sic_codes'] = [
       '#type' => 'fieldset',
-      '#title' => 'Trading names',
-      'trading_name' => [
+      '#title' => 'Standard industrial classification (SIC) codes',
+      '#attributes' => ['class' => ['form-group']],
+      'sic_code' => [
         '#type' => 'container',
         '#attributes' => ['class' => ['grid-row']],
       ],
     ];
 
-    $trading_names = $this->getDefaultValuesByKey('trading_names', $cardinality, []);
-    foreach ($trading_names as $delta => $trading_name) {
-      $form['trading_names']['trading_name'][$delta] = [
+    $sic_codes = $this->getDefaultValuesByKey('sic_codes', $cardinality, []);
+    foreach ($sic_codes as $delta => $sic) {
+      // If the sic is not an entity display the value as is.
+      $id = $sic instanceof ParDataEntityInterface ? $sic->id() : $sic;
+      $label = $sic instanceof ParDataEntityInterface ? $sic->label() : $sic;
+
+      $form['sic_codes']['sic_code'][$delta] = [
         '#type' => 'container',
         '#attributes' => ['class' => 'column-full'],
-        'name' => [
+        'code' => [
           '#type' => 'html_tag',
           '#tag' => 'div',
-          '#value' => $trading_name,
-          '#attributes' => ['class' => 'trading-name'],
+          '#value' => $label,
+          '#attributes' => ['class' => 'sic-code'],
         ],
       ];
 
-      // Edit the trading name.
+      // Generate item operation links.
+      $operations = [];
       try {
-        $params['trading_name_delta'] = $delta;
-        $trading_name_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_trading_name', $params, [], TRUE);
+        // Edit the SIC code.
+        $params = ['field_sic_code_delta' => $delta];
+        $options = ['attributes' => ['aria-label' => $this->t("Edit the SIC code @label", ['@label' => strtolower($label)])]];
+        $operations['edit'] = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_field_sic_code', $params, $options, TRUE);
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
       }
-      if (isset($trading_name_edit_link)) {
-        $form['trading_names']['trading_name'][$delta]['edit'] = [
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => $trading_name_edit_link->setText($this->t("edit @trading_name", ['@trading_name' => strtolower($trading_name)]))->toString(),
-          '#attributes' => ['class' => 'edit-trading-name'],
+      try {
+        // Remove the SIC code.
+        $params = ['field_sic_code_delta' => $delta];
+        $options = ['attributes' => ['aria-label' => $this->t("Remove the SIC code @label", ['@label' => strtolower($label)])]];
+        $operations['remove'] = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('remove_field_sic_code', $params, $options, TRUE);
+      }
+      catch (ParFlowException $e) {
+        $this->getLogger($this->getLoggerChannel())->notice($e);
+      }
+
+      // Display operation links if any are present.
+      if (!empty(array_filter($operations))) {
+        $form['sic_codes']['sic_code'][$delta]['operations'] = [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['grid-row']],
         ];
+        if (isset($operations['edit']) && $operations['edit'] instanceof Link) {
+          $form['sic_codes']['sic_code'][$delta]['operations']['edit'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $operations['edit']->setText("edit sic code")->toString(),
+            '#attributes' => ['class' => ['edit-sic-code', 'column-one-third']],
+          ];
+        }
+        if (isset($operations['remove']) && $operations['remove'] instanceof Link) {
+          $form['sic_codes']['sic_code'][$delta]['operations']['remove'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $operations['remove']->setText("remove sic code")->toString(),
+            '#attributes' => ['class' => ['remove-sic-code', 'column-one-third']],
+          ];
+        }
       }
     }
 
-    // Add a link to add a trading name.
-    $trading_name_add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_trading_name', [], [], TRUE);
+    // Add a link to add a new sic code.
     try {
-      $trading_name_add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_trading_name', [], [], TRUE);
+      $sic_code_add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_field_sic_code', [], [], TRUE);
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
     }
-    if (isset($trading_name_add_link)) {
-      $form['trading_names']['add'] = [
+    if (isset($sic_code_add_link) && $sic_code_add_link instanceof Link) {
+      $form['sic_codes']['add'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $trading_name_add_link->setText("add trading name")->toString(),
-        '#attributes' => ['class' => ['add-trading-name']],
+        '#value' => $sic_code_add_link->setText("add sic code")->toString(),
+        '#attributes' => ['class' => ['add-sic-code']],
       ];
     }
 
