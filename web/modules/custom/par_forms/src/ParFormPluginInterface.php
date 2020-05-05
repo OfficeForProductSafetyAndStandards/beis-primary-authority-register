@@ -2,7 +2,7 @@
 
 namespace Drupal\par_forms;
 
-use Drupal\Component\Plugin\ConfigurablePluginInterface;
+use Drupal\Component\Plugin\ConfigurableInterface;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * @see plugin_api
  */
-interface ParFormPluginInterface extends PluginInspectionInterface, ConfigurablePluginInterface {
+interface ParFormPluginInterface extends PluginInspectionInterface, ConfigurableInterface {
 
   /**
    * Get's the mapping of each form element to the entity
