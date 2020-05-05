@@ -71,7 +71,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     if (count($radio_options) <= 0) {
       $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', 'new');
       $this->submitForm($form, $form_state);
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->progressRoute('next'), $this->getRouteParams());
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
     }
 
     $form['par_data_organisation_id'] = [
