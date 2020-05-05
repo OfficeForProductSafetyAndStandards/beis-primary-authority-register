@@ -17,15 +17,25 @@ steps:
     route: par_partnership_flows.organisation_details
     form_id: par_partnership_details
     components:
-      partnership_information_display: {
+      partnership_information_display:
         weight: -10
-      }
+      organisation_information_display:
+        weight: -9
+      sic_code_display:
+        weight: -8
+      legal_entity_display:
+        weight: -7
+      trading_name_display:
+        weight: -6
+      partnership_documents:
+        weight: -5
     redirect:
       edit_comments: 2
       add_field_premises: 3
       edit_field_premises: 4
       add_field_legal_entity: 5
       edit_field_legal_entity: 6
+      remove_field_legal_entity: 6
       add_trading_name: 7
       edit_trading_name: 8
       add_field_sic_code: 9

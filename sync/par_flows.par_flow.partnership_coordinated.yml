@@ -17,9 +17,14 @@ steps:
     route: par_partnership_flows.organisation_details
     form_id: par_partnership_details
     components:
-      partnership_information_display: {
+      partnership_information_display:
         weight: -10
-      }
+      organisation_information_display:
+        weight: -9
+      sic_code_display:
+        weight: -8
+      trading_name_display:
+        weight: -7
     redirect:
       edit_comments: 2
       add_field_premises: 3
