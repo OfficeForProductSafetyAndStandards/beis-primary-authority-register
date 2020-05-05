@@ -14,6 +14,7 @@ use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_application_flows\ParFlowAccessTrait;
+use Drupal\Core\Messenger\MessengerInterface;
 
 /**
  * The partnership form for the partnership details.
@@ -245,7 +246,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
       // If the partnership could not be saved the application can't be progressed.
       // @TODO Find a better way to alert the user without redirecting them away from the form.
-      drupal_set_message('There was an error progressing your partnership, please contact the helpdesk for more information.');
+      $this->messenger()->addMessage('There was an error progressing your partnership, please contact the helpdesk for more information.');
       $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel'));
     }
   }
