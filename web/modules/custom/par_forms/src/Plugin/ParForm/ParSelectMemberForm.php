@@ -53,7 +53,7 @@ class ParSelectMemberForm extends ParFormPluginBase {
     }
     // If the partnership is direct or there are not multiple members proceed to the next step.
     if (count($partnership_organisations) <= 1) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('next'), $this->getRouteParams());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 
