@@ -201,21 +201,6 @@ class ParFlowEntityTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::getNextRoute
-   */
-  public function testGetNextRoute() {
-    $next_route = $this->testFlow->progressRoute('next');
-
-    // Check the next step is correct.
-    $this->assertEquals('par_test_forms.third', $next_route, "The next route has been correctly identified.");
-
-    $next_route = $this->testFlow->progressRoute('save');
-
-    // Check the next step is correct.
-    $this->assertEquals('par_test_forms.fourth', $next_route, "The next route has been correctly identified given an operation.");
-  }
-
-  /**
    * @covers ::progressRoute
    */
   public function progressRoute() {
@@ -236,6 +221,16 @@ class ParFlowEntityTest extends UnitTestCase {
 
     // Check the flow progresses correctly for a given operation.
     $this->assertEquals('par_test_forms.first', $prev_route, "The previous route has been correctly identified.");
+
+    $next_route = $this->testFlow->progressRoute('next');
+
+    // Check the next step is correct.
+    $this->assertEquals('par_test_forms.third', $next_route, "The next route has been correctly identified.");
+
+    $next_route = $this->testFlow->progressRoute('save');
+
+    // Check the next step is correct.
+    $this->assertEquals('par_test_forms.fourth', $next_route, "The next route has been correctly identified given an operation.");
   }
   /**
    * @covers ::getStepByFormId
