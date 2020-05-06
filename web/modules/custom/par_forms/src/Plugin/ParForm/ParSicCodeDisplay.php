@@ -45,7 +45,25 @@ class ParSicCodeDisplay extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
-    // Display the trading_names.
+    // Get the SIC codes.
+    $sic_codes = $this->getDefaultValuesByKey('sic_codes', $cardinality, []);
+
+    // Add a link to add a new sic code.
+    try {
+      $sic_code_add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_field_sic_code', [], [], TRUE);
+    }
+    catch (ParFlowException $e) {
+      $this->getLogger($this->getLoggerChannel())->notice($e);
+    }
+
+    // Do not render this plugin if there are no SIC codes and the user isn't
+    // able to add a new SIC code.
+    if (empty($sic_codes) && (!isset($sic_code_add_link) || $sic_code_add_link instanceof Link)) {
+      return $form;
+    }
+
+
+      // Display the trading_names.
     $form['sic_codes'] = [
       '#type' => 'fieldset',
       '#title' => 'Standard industrial classification (SIC) codes',
@@ -56,7 +74,6 @@ class ParSicCodeDisplay extends ParFormPluginBase {
       ],
     ];
 
-    $sic_codes = $this->getDefaultValuesByKey('sic_codes', $cardinality, []);
     foreach ($sic_codes as $delta => $sic) {
       // If the sic is not an entity display the value as is.
       $id = $sic instanceof ParDataEntityInterface ? $sic->id() : $sic;
@@ -120,12 +137,6 @@ class ParSicCodeDisplay extends ParFormPluginBase {
     }
 
     // Add a link to add a new sic code.
-    try {
-      $sic_code_add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_field_sic_code', [], [], TRUE);
-    }
-    catch (ParFlowException $e) {
-      $this->getLogger($this->getLoggerChannel())->notice($e);
-    }
     if (isset($sic_code_add_link) && $sic_code_add_link instanceof Link) {
       $form['sic_codes']['add'] = [
         '#type' => 'html_tag',

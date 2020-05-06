@@ -52,12 +52,17 @@ class ParPartnershipDocuments extends ParFormPluginBase {
       ];
     }
 
+    $form['details'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['grid-row', 'form-group']],
+    ];
+
     // Inspection plan link.
     if ($this->getFlowDataHandler()->getFormPermValue("show_inspection_plans")) {
-      $form['inspection_plans'] = [
+      $form['details']['inspection_plans'] = [
         '#type' => 'fieldset',
         '#title' => t('Inspection plans'),
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => ['column-one-half']],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
@@ -69,7 +74,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
       }
       if (isset($add_inspection_list_link) && $add_inspection_list_link instanceof Link) {
-        $form['inspection_plans']['link'] = [
+        $form['details']['inspection_plans']['link'] = [
           '#type' => 'markup',
           '#markup' => $add_inspection_list_link->setText('See all Inspection Plans')
             ->toString(),
@@ -79,10 +84,10 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
     // Add the advice link safely with access checks.
     if ($this->getFlowDataHandler()->getFormPermValue("show_advice_documents")) {
-      $form['advice'] = [
+      $form['details']['advice'] = [
         '#type' => 'fieldset',
         '#title' => t('Advice and Documents'),
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => ['column-one-half']],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
@@ -95,7 +100,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
       }
       if (isset($add_advice_list_link) && $add_advice_list_link instanceof Link) {
-        $form['advice']['link'] = [
+        $form['details']['advice']['link'] = [
           '#type' => 'markup',
           '#markup' => $add_advice_list_link->setText('See all Advice')
             ->toString(),
