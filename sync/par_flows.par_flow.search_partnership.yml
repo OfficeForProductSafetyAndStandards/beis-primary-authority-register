@@ -15,15 +15,6 @@ states:
 steps:
   1:
     route: par_search_partnership_flows.partnership_page
-    components:
-      partnership_information_display:
-        weight: -10
-      organisation_information_display:
-        weight: -8
-      sic_code_display:
-        weight: -7
-      trading_name_display:
-        weight: -6
     redirect:
       advice: 2
       inspection_plans: 4
