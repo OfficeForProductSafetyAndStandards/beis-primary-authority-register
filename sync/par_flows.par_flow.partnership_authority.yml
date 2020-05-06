@@ -31,8 +31,15 @@ steps:
         weight: -5
       partnership_documents:
         weight: -4
-      partnership_contacts:
+      partnership_authority_contacts:
+        plugin_name: partnership_contacts
+        display: authority
         weight: -3
+      partnership_contacts:
+        plugin_name: partnership_contacts
+        display: organisation
+        show_title: false
+        weight: -2
     redirect:
       edit_about_partnership: 2
       edit_regulatory_functions: 3
