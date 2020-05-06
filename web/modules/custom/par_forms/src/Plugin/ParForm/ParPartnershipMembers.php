@@ -60,6 +60,12 @@ class ParPartnershipMembers extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
+    // This form should only be displayed for coordinated partnerships.
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+    if (!$par_data_partnership instanceof ParDataEntityInterface || !$par_data_partnership->isCoordinated()) {
+      return $form;
+    }
+
     $form['members'] = [
       '#type' => 'fieldset',
       '#title' => t('Number of members'),
