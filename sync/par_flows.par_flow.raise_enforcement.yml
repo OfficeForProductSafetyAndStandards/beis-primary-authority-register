@@ -20,25 +20,30 @@ steps:
     route: par_enforcement_raise_flows.select_authority
     form_id: par_authority_selection
     components:
-      authority_select: {  }
+      authority_select:
+        plugin_name: authority_select
   3:
     route: par_enforcement_raise_flows.officer_details
     form_id: par_enforcement_officer_details
     components:
-      contact_details_basic: {}
+      contact_details_basic:
+        plugin_name: contact_details_basic
     form_data:
       authority_selection: par_authority_selection
   4:
     route: par_enforcement_raise_flows.select_organisation
     form_id: par_enforce_organisation
     components:
-      member_select: {}
+      member_select:
+        plugin_name: member_select
   5:
     route: par_enforcement_raise_flows.select_legal_entity
     form_id: par_enforcement_notice_raise
     components:
-      enforcement_full_summary: {  }
-      select_enforced_legal_entity: {  }
+      enforcement_full_summary:
+        plugin_name: enforcement_full_summary
+      select_enforced_legal_entity:
+        plugin_name: select_enforced_legal_entity
     form_data:
       enforcing_officer: par_enforcement_officer_details
       select_legal: par_enforcement_notice_raise
@@ -48,7 +53,8 @@ steps:
     route: par_enforcement_raise_flows.raise_details
     form_id: par_enforcement_notice_raise_details
     components:
-      enforcement_full_summary: {  }
+      enforcement_full_summary:
+        plugin_name: enforcement_full_summary
     form_data:
       enforcing_officer: par_enforcement_officer_details
       select_legal: par_enforcement_notice_raise
@@ -58,9 +64,11 @@ steps:
     route: par_enforcement_raise_flows.add_action
     form_id: par_enforcement_notice_add_action
     components:
-      enforcement_full_summary: {  }
+      enforcement_full_summary:
+        plugin_name: enforcement_full_summary
       enforcement_action:
         cardinality: -1
+        plugin_name: enforcement_action
     form_data:
       enforcing_officer: par_enforcement_officer_details
       select_legal: par_enforcement_notice_raise
@@ -70,10 +78,13 @@ steps:
     route: par_enforcement_raise_flows.raise_review
     form_id: par_enforcement_notice_raise_review
     components:
-      enforcement_full_summary: {  }
-      enforcement_detail: {  }
+      enforcement_full_summary:
+        plugin_name: enforcement_full_summary
+      enforcement_detail:
+        plugin_name: enforcement_detail
       enforcement_action_detail:
         cardinality: -1
+        plugin_name: enforcement_action_detail
     form_data:
       enforcing_officer: par_enforcement_officer_details
       select_legal: par_enforcement_notice_raise
