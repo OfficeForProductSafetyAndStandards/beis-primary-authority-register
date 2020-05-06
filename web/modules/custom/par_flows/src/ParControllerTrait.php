@@ -7,6 +7,7 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_forms\ParFormPluginInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
@@ -107,10 +108,11 @@ trait ParControllerTrait {
     // Load the plugins used to build this form.
     foreach ($this->getFlowNegotiator()->getFlow()->getCurrentStepComponents() as $key => $settings) {
       try {
-        $plugin_name = $settings[ParFormPluginInterface::NAME_PROPERTY] ?? $key;
-          if ($plugin = $this->getFormBuilder()->createInstance($plugin_name, $settings)) {
-            $this->components[] = $plugin;
-          }
+        $plugin_name = ParFlow::getComponentName($key, $settings);
+
+        if ($plugin = $this->getFormBuilder()->createInstance($plugin_name, $settings)) {
+          $this->components[] = $plugin;
+        }
       }
       catch (PluginException $e) {
         $this->getLogger($this->getLoggerChannel())->error($e);

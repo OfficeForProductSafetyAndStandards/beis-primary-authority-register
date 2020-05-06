@@ -156,11 +156,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     // Then let's go back and set any additional operations.
     $actions = $this->getCurrentStepOperations();
     $this->setActions($actions);
-
-    // We want to initialize the step components with the plugin_name parameter,
-    // by default this is the key, however, there are instances where components
-    // may be used twice so we need to give the option to use a pre-set parameter.
-    $this->prepareComponents();
   }
 
   /**
@@ -254,32 +249,16 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  protected function setStep($index, $step) {
-    $this->steps[$index] = $step;
-  }
-
-  /**
-   * Prepare the step components for processing.
+   * A static helper to get the plugin name based on the configuration options.
    *
-   * Remove components that don't have an associated plugin, and initialize the plugin_name.
+   * @param $key
+   * @param $settings
+   *
+   * @return string
+   *   The plugin name.
    */
-  public function prepareComponents() {
-    // Prepare components for each step.
-    foreach ($this->getSteps() as $index => $step) {
-      // Prepare the step.
-      if (isset($step['components']) && is_array($step['components'])) {
-        foreach ($step['components'] as $plugin_name => $component) {
-          if (!isset($component[ParFormPluginInterface::NAME_PROPERTY])) {
-            // If no plugin_name parameter is found assume the component key.
-            $step['components'][$plugin_name][ParFormPluginInterface::NAME_PROPERTY] = $plugin_name;
-          }
-        }
-
-        $this->setStep($index, $step);
-      }
-    }
+  static function getComponentName($key, $settings) {
+    return $settings[ParFormPluginInterface::NAME_PROPERTY] ?? $key;
   }
 
   /**
