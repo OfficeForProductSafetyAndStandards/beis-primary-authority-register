@@ -11,6 +11,7 @@ use Drupal\par_flows\ParFlowDataHandler;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\par_forms\ParFormPluginInterface;
 
 /**
  * Defines the PAR Form Flow entity.
@@ -155,6 +156,11 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     // Then let's go back and set any additional operations.
     $actions = $this->getCurrentStepOperations();
     $this->setActions($actions);
+
+    // We want to initialize the step components with the plugin_name parameter,
+    // by default this is the key, however, there are instances where components
+    // may be used twice so we need to give the option to use a pre-set parameter.
+    $this->prepareComponents();
   }
 
   /**
@@ -250,6 +256,35 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  protected function setStep($index, $step) {
+    $this->steps[$index] = $step;
+  }
+
+  /**
+   * Prepare the step components for processing.
+   *
+   * Remove components that don't have an associated plugin, and initialize the plugin_name.
+   */
+  public function prepareComponents() {
+    // Prepare components for each step.
+    foreach ($this->getSteps() as $index => $step) {
+      // Prepare the step.
+      if (isset($step['components']) && is_array($step['components'])) {
+        foreach ($step['components'] as $plugin_name => $component) {
+          if (!isset($component[ParFormPluginInterface::NAME_PROPERTY])) {
+            // If no plugin_name parameter is found assume the component key.
+            $step['components'][$plugin_name][ParFormPluginInterface::NAME_PROPERTY] = $plugin_name;
+          }
+        }
+
+        $this->setStep($index, $step);
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getCurrentStep() {
     // Lookup the current step to more accurately determine the next step.
     $current_step = $this->getStepByRoute($this->getCurrentRoute());
@@ -335,15 +370,16 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     if ($redirect = $this->getStepByOperation($current_step, $operation)) {
       $redirect_step = $this->getStep($redirect);
     }
-    // Rule 2) Check if there is a next step in the journey, for operations
+    
+    // Rule 2) Allow other modules to alter the progression rules.
+    // @TODO Add a hook alter to allow additional progression rules per module.
+
+    // Rule 3) Check if there is a next step in the journey, for operations
     // that support progression.
     elseif (array_search($operation, $final_operations) === FALSE && $current_step < count($this->getSteps())) {
       $next_index = ++$current_step;
       $redirect_step = isset($next_index) ? $this->getStep($next_index) : NULL;
     }
-
-    // Rule 3) Allow other modules to alter the redirection rules.
-    // @TODO Add a hook alter to allow additional redirection rules per module.
 
     if (empty($redirect_step)) {
       throw new ParFlowException('Could not find the next page.');
