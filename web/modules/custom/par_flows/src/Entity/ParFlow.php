@@ -370,7 +370,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     if ($redirect = $this->getStepByOperation($current_step, $operation)) {
       $redirect_step = $this->getStep($redirect);
     }
-    
+
     // Rule 2) Allow other modules to alter the progression rules.
     // @TODO Add a hook alter to allow additional progression rules per module.
 

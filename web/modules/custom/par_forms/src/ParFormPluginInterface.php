@@ -15,6 +15,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 interface ParFormPluginInterface extends PluginInspectionInterface, ConfigurableInterface {
 
   /**
+   * Define the name property.
+   */
+  const NAME_PROPERTY = 'plugin_name';
+
+  /**
    * Get's the mapping of each form element to the entity
    * property it will be eventually saved on.
    */
