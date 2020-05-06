@@ -13,6 +13,22 @@ steps:
   1:
     route: par_partnership_flows.organisation_details
     form_id: par_partnership_details
+    components:
+      partnership_information_display:
+        weight: -10
+      organisation_information_display:
+        weight: -9
+      partnership_members:
+        format: member_link_view
+        weight: -8
+      legal_entity_display:
+        weight: -7
+      trading_name_display:
+        weight: -6
+      partnership_documents:
+        weight: -5
+      partnership_contacts:
+        weight: -4
     redirect:
       edit_comments: 2
       add_field_premises: 3
