@@ -84,7 +84,7 @@ class ParInviteForm extends ParBaseForm {
     // Skip the invitation process if a user id has already been matched
     // or the user has choosen not to add a user.
     if (!empty($user_id) || !$role) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 

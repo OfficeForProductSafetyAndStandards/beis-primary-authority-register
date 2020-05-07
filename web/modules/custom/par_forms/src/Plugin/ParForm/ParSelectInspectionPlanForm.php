@@ -52,7 +52,7 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
     }
     elseif (count($inspection_plans) === 1) {
       $this->getFlowDataHandler()->setTempDataValue('inspection_plan_id', key($inspection_plans));
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 

@@ -90,7 +90,7 @@ class ParRoleForm extends ParBaseForm {
       $url = $this->getUrlGenerator()
         ->generateFromRoute($this->getFlowNegotiator()
           ->getFlow()
-          ->getNextRoute('next'), $this->getRouteParams());
+          ->progressRoute(), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 
