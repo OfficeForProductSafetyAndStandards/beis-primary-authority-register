@@ -109,7 +109,7 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
       $form['about']['edit'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $about_edit_link->setText("edit about the partnership")->toString(),
+        '#value' => $about_edit_link->setText("edit about the organisation")->toString(),
         '#attributes' => ['class' => 'edit-about-organisation'],
       ];
     }
