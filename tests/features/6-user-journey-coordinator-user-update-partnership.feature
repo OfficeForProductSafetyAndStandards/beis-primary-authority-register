@@ -123,7 +123,6 @@ Feature: Coordinator User - Update Partnership
         Then the element "h1.heading-xlarge" contains the text "Information about the organisation"
         And I add "Change to the about organisation details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-save"
-        Then the element "h1.heading-xlarge" contains the text "Information about the organisation"
         Then the element "#edit-about" contains the text "Change to the about organisation details section"
 
         # ADD NEW TRADING NAME
