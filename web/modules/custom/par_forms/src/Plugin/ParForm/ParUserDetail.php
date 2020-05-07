@@ -124,7 +124,7 @@ class ParUserDetail extends ParFormPluginBase {
       ];
     }
 
-    if ($user_id = $this->getFlowDataHandler()->getFormPermValue('user_id', $cardinality, NULL)) {
+    if ($user_id = $this->getDefaultValuesByKey('user_id', $cardinality, NULL)) {
       $form['user_account']['email'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
@@ -203,7 +203,7 @@ class ParUserDetail extends ParFormPluginBase {
       }
 
     }
-    elseif ($person_id = $this->getFlowDataHandler()->getFormPermValue('person_id', NULL)) {
+    elseif ($person_id = $this->getDefaultValuesByKey('person_id', NULL)) {
       $form['contact'] = [
         '#type' => 'fieldset',
         '#attributes' => ['class' => ['form-group']],
