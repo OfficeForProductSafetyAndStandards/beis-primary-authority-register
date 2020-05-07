@@ -100,9 +100,8 @@ class ParRdDeletedDataListController extends ControllerBase {
       if ($count > 0) {
         if ($count > $this->numberPerPage) {
           $pager = $this->getUniquePager()->getPager("delete:{$entity_type->id()}");
-
           // Initialize pager and get current page.
-          $current_page = pager_default_initialize($count, $this->numberPerPage, $pager);
+          $current_pager = $this->getUniquePager()->getPagerManager()->createPager($count, $this->numberPerPage, $pager);
 
           // Split the items up into chunks:
           $chunks = array_chunk($deleted_data, $this->numberPerPage);
@@ -129,7 +128,7 @@ class ParRdDeletedDataListController extends ControllerBase {
           ];
 
           // Add the items for our current page to the fieldset.
-          foreach ($chunks[$current_page] as $delta => $entity) {
+          foreach ($chunks[$current_pager->getCurrentPage()] as $delta => $entity) {
             try {
               $route_params['entity_type'] = $entity->getEntityTypeId();
               $route_params['entity_id'] = $entity->id();

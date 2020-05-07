@@ -34,13 +34,13 @@ class ParBaseFormTest extends UnitTestCase {
     $negotiator = $this->getMockBuilder('Drupal\par_flows\ParFlowNegotiatorInterface');
 
     // Mock data handler for flows.
-    $data_handler = $this->getMock('Drupal\par_flows\ParFlowDataHandlerInterface');
+    $data_handler = $this->createMock('Drupal\par_flows\ParFlowDataHandlerInterface');
 
     // Mock par data manager.
-    $par_data_manager = $this->getMock('Drupal\par_data\ParDataManagerInterface');
+    $par_data_manager = $this->createMock('Drupal\par_data\ParDataManagerInterface');
 
     // Mock entity repository.
-    $component_plugin_manager = $this->getMock('Drupal\Component\Plugin\PluginManagerInterface');
+    $component_plugin_manager = $this->createMock('Drupal\Component\Plugin\PluginManagerInterface');
 
     $this->baseForm = $this->getMockBuilder('Drupal\par_flows\Form\ParBaseForm')
       ->setMethods(['getIgnoredValues'])

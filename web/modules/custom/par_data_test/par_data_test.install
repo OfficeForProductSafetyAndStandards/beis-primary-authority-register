@@ -13,6 +13,7 @@ function par_data_test_uninstall() {
   // This should just be used for testing while we
   // have no other content in the database.
   $par_data_manager = \Drupal::service('par_data.manager');
+  $serializer = \Drupal::service('serializer');
 
   $module_folder = \Drupal::moduleHandler()
       ->getModule('par_data_test')
@@ -21,27 +22,63 @@ function par_data_test_uninstall() {
     return $item[0] !== '.';
   });
 
-  $entities = [];
+  // Locate all test data uuids.
+  $uuids = [];
+  $uname = [];
   foreach ($entity_folders as $directory) {
     $entity_uuids = array_filter(scandir($module_folder . '/' . $directory), function($item) {
       return $item[0] !== '.';
     });
 
 
-    $entities[$directory] = [];
-    foreach ($entity_uuids as $uuid) {
-      $entities[$directory][] = rtrim($uuid, '.json');
+    $uuids[$directory] = [];
+    $uname[$directory] = [];
+    foreach ($entity_uuids as $file_name) {
+      $uuid = rtrim($file_name, '.json');
+
+      $uuids[$directory][] = $uuid;
+
+      $file_path = "$module_folder/$directory/$file_name";
+      $contents = file_get_contents($file_path);
+      $decoded = $serializer->decode($contents, 'hal_json');
+
+      if (isset($decoded['name'][0]['value'])) {
+        $uname[$directory][] = $decoded['name'][0]['value'];
+      }
     }
   }
 
   // Permanently delete all entities.
-  foreach ($entities as $entity_type => $uuid) {
+  foreach ($uuids as $entity_type => $uuids) {
     $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
-    $entity = $storage->loadByProperties(['uuid' => $uuid]);
+    $entities = [];
+    foreach ($uuids as $uuid) {
+      $entities += !empty($uuid) ? $storage->loadByProperties(['uuid' => $uuid]) : [];
+    }
 
-    foreach ($entity as $e) {
+    foreach ($entities as $e) {
       if ($e instanceof \Drupal\par_data\Entity\ParDataEntityInterface) {
-        $e->destroy();
+        // We need to bypass all checks and permanently remove this item.
+        $e->annihilate();
+      }
+      else {
+        $e->delete();
+      }
+    }
+  }
+
+  // Also remove any duplicate entities with the same name.
+  foreach ($uname as $entity_type => $names) {
+    $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
+    $entities = [];
+    foreach ($names as $name) {
+      $entities += !empty($uuid) ? $storage->loadByProperties(['name' => $name]) : [];
+    }
+
+    foreach ($entities as $e) {
+      if ($e instanceof \Drupal\par_data\Entity\ParDataEntityInterface) {
+        // We need to bypass all checks and permanently remove this item.
+        $e->annihilate();
       }
       else {
         $e->delete();
