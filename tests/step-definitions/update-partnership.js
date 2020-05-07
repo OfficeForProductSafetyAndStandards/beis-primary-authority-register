@@ -56,14 +56,6 @@ When('I update the SIC code', function () {
       .assert.containsText('#edit-sic-codes', 'Social care activities without accommodation')
     });
 
-When('I update the number of employees', function () {
-  return shared
-    .clickLinkByPureText('edit number of employees')
-    .click('#edit-employees-band option[value="250"]')
-    .click('#edit-save')
-    .assert.containsText('#edit-employee-no', '50 to 249')
-  });
-
 When('I add and subsequently edit a trading name', function () {
     return shared
       .clickLinkByPureText('add another trading name')

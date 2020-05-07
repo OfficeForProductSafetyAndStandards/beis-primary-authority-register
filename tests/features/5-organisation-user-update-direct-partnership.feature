@@ -10,7 +10,7 @@ Feature: Business User - Update Partnership
         # GO TO A PARTNERSHIP PAGE
 
         And I go to partnership detail page for my partnership "Organisation For Direct Partnership" with status "confirmed_business"
-       
+
         # EDIT REGISTERED ADDRESS
 
         When I update the registered address for organisation
@@ -18,10 +18,6 @@ Feature: Business User - Update Partnership
         # ADD SIC CODES
 
         And I update the SIC code
-
-        # ADD EMPLOYEES
-
-        And I update the number of employees
 
         # ADD NEW TRADING NAME
 
