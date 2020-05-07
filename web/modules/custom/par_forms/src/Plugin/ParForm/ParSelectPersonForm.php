@@ -58,13 +58,13 @@ class ParSelectPersonForm extends ParFormPluginBase {
 
     // If there are no people we should create a new record.
     if (count($user_people) <= 0) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('cancel'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
     // If there is only one person to choose submit the form automatically and go to the next step.
     elseif (count($user_people) === 1) {
       $this->getFlowDataHandler()->setTempDataValue('user_person', key($user_people));
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 

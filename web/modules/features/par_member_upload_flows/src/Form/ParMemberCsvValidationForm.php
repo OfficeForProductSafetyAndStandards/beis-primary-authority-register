@@ -54,7 +54,7 @@ class ParMemberCsvValidationForm extends ParBaseForm {
     }
 
     if (!empty($data) && !isset($errors)) {
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
     }
 
     $url = Url::fromUri('internal:/member-upload-guidance', ['attributes' => ['target' => '_blank']]);

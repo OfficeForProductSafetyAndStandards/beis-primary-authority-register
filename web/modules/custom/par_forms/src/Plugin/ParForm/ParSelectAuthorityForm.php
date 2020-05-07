@@ -53,7 +53,7 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
     // If only one authority submit the form automatically and go to the next step.
     elseif ($required && count($authorities) === 1) {
       $this->getFlowDataHandler()->setTempDataValue('par_data_authority_id', key($authorities));
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 

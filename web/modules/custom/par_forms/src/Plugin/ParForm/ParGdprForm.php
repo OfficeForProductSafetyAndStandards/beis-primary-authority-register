@@ -35,7 +35,7 @@ class ParGdprForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     // If this notice has already been reviewed then skip this form.
     if ($this->getDefaultValuesByKey('gdpr_agreement', $cardinality, FALSE)) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 

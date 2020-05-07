@@ -139,7 +139,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
         'par_data_partnership' => $par_data_partnership->id(),
         'par_data_person' => $par_data_person->id()
       ];
-      $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->progressRoute('save'), $route_params);
+      $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('save'), $route_params);
     }
     else {
       $message = $this->t('This %confirm could not be saved for %form_id');
@@ -154,8 +154,6 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
       // @TODO Find a better way to alert the user without redirecting them away from the form.
       $this->messenger()->addMessage('There was an error progressing your partnership, please contact the helpdesk for more information.');
       $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel'));
-      drupal_set_message('There was an error progressing your partnership, please contact the helpdesk for more information.');
-      $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->progressRoute('cancel'));
     }
   }
 

@@ -71,7 +71,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     if (count($radio_options) <= 0) {
       $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', 'new');
       $this->submitForm($form, $form_state);
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
+      return $this->redirect($this->getFlowNegotiator()->getFlow()->getNextRoute(), $this->getRouteParams());
     }
 
     $form['par_data_organisation_id'] = [
@@ -111,11 +111,11 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     }
     if (isset($par_data_organisation)) {
       if (!$par_data_organisation->get('field_person')->isEmpty()) {
-        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->progressRoute('review'), $this->getRouteParams());
+        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('review'), $this->getRouteParams());
       }
       elseif ($par_data_organisation->get('field_person')->isEmpty()
         && !$par_data_organisation->get('field_premises')->isEmpty()) {
-        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->progressRoute('add_contact'), $this->getRouteParams());
+        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('add_contact'), $this->getRouteParams());
       }
     }
   }

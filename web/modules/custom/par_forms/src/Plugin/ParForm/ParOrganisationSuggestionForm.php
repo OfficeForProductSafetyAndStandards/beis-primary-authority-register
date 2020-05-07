@@ -75,7 +75,7 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
       ];
     }
     else {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute(), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 

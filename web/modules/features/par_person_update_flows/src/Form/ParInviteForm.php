@@ -88,7 +88,7 @@ class ParInviteForm extends ParBaseForm {
       $url = $this->getUrlGenerator()
         ->generateFromRoute($this->getFlowNegotiator()
           ->getFlow()
-          ->progressRoute(), $this->getRouteParams());
+          ->getNextRoute('next'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 
