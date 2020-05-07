@@ -99,7 +99,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
             'link' => [
               '#type' => 'html_tag',
               '#tag' => 'p',
-              '#value' => $member_link->setText('Show members list')->toString(),
+              '#value' => $member_link->setText('show members list')->toString(),
               '#attributes' => ['class' => ['member-list', 'member-list-link']],
             ],
           ];
