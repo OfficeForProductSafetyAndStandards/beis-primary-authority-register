@@ -40,9 +40,9 @@ When('I update about the organisation', function () {
 When('I edit about the partnership', function () {
   return shared
     .clickLinkByPureText('edit about the partnership')
-    .clearValue('#edit-about-partnership')
     .assert.containsText('h1.heading-xlarge .heading-secondary', 'Primary Authority partnership information')
     .assert.containsText('h1.heading-xlarge', 'Information about the new partnership')
+    .clearValue('#edit-about-partnership')
     .setValue('#edit-about-partnership','Change to the about partnership details section')
     .click('#edit-save')
     .assert.containsText('#edit-about-partnership', 'Change to the about partnership details section')

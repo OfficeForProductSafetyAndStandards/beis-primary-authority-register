@@ -52,7 +52,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
       // Get the partnership information.
       if ($par_data_partnership->hasField('about_partnership')) {
         $information_display = $par_data_partnership->about_partnership->view('full');
-        $this->setDefaultValuesByKey("information", $cardinality, $information_display);
+        $this->setDefaultValuesByKey("about_partnership", $cardinality, $information_display);
       }
 
       // Get the regulatory functions.
@@ -85,7 +85,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
       '#attributes' => ['class' => ['form-group']],
-      'details' => $this->getDefaultValuesByKey('information', $cardinality, NULL),
+      'details' => $this->getDefaultValuesByKey('about_partnership', $cardinality, NULL),
     ];
     try {
       $about_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_about_partnership', [], [], TRUE);
