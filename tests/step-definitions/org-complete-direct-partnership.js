@@ -42,7 +42,7 @@ var county = faker.fake("{{address.county}}")
 When('I complete about the business', function () {
   return shared
   .assert.containsText('h1.heading-xlarge','Confirm the details about the organisation')
-  .setValue('#edit-about-business','Some information about organisation details')
+  .setValue('#edit-about-organisation','Some information about organisation details')
   .click('#edit-next')
 });
 
@@ -71,7 +71,7 @@ When('I complete the organisation registered address for direct partnership', fu
   .click('#edit-nation option[value="GB-ENG"]')
   .click('#edit-next')
   .assert.containsText('h1.heading-xlarge','Confirm the primary contact details')
-  .click('#edit-next')   
+  .click('#edit-next')
 });
 
 // Starting point: at beginning of this application step
@@ -85,7 +85,7 @@ When('I complete the SIC codes', function () {
 When('I complete the employees', function () {
   return shared
   .click('#edit-employees-band option[value="250"]')
-  .click('#edit-next')  
+  .click('#edit-next')
 });
 
 // Starting point: at beginning of this application step
@@ -153,9 +153,9 @@ When('I change the completed legal entities', function () {
 When('I change the completed about the organisation', function () {
   return shared
   .clickLinkByPureText('Change the details about this partnership')
-  .clearValue('#edit-about-business')
-  .setValue('#edit-about-business', 'Change to the information about organisation details')
-  .click('#edit-next')   
+  .clearValue('#edit-about-organisation')
+  .setValue('#edit-about-organisation', 'Change to the information about organisation details')
+  .click('#edit-next')
   .assert.containsText('h1.heading-xlarge','Check partnership information')
   .assert.containsText('#edit-about-organisation','Change to the information about organisation details')
 });
@@ -172,4 +172,4 @@ When('I submit final confirmation of completion by organisation {string}', funct
    .setValue('#edit-keywords',partnershipname)
    .click('#edit-submit-par-user-partnerships')
    .assert.containsText('.table-scroll-wrapper','Confirmed by the Organisation')
- }); 
+ });
