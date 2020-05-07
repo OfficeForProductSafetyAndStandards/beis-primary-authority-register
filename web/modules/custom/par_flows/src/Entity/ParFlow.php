@@ -340,15 +340,19 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     }
 
     // Check if the operation produced a valid step.
+    // Rule 1) Check if the operation given found a valid step.
     if ($redirect = $this->getStepByOperation($current_step, $operation)) {
       $redirect_step = $this->getStep($redirect);
     }
-    // If the operation supports progressing to the next step in the journey,
-    // check if there is a next step in the journey.
+    // Rule 2) Check if there is a next step in the journey, for operations
+    // that support progression.
     elseif (array_search($operation, $final_operations) === FALSE && $current_step < count($this->getSteps())) {
       $next_index = ++$current_step;
       $redirect_step = isset($next_index) ? $this->getStep($next_index) : NULL;
     }
+
+    // Rule 3) Allow other modules to alter the redirection rules.
+    // @TODO Add a hook alter to allow additional redirection rules per module.
 
     if (empty($redirect_step)) {
       throw new ParFlowException('Could not find the next page.');
