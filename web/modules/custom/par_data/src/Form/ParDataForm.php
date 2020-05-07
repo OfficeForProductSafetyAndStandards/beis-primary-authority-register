@@ -2,7 +2,6 @@
 
 namespace Drupal\par_data\Form;
 
-use Drupal\Component\Datetime\TimeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
@@ -38,13 +37,6 @@ class ParDataForm extends ContentEntityForm {
   protected $languageManager;
 
   /**
-   * The time service.
-   *
-   * @var \Drupal\Component\Datetime\TimeInterface
-   */
-  protected $time;
-
-  /**
    * The content entity.
    *
    * @var \Drupal\par_data\Entity\ParDataEntityInterface
@@ -58,37 +50,21 @@ class ParDataForm extends ContentEntityForm {
    *   The entity manager.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager.
-   * @param \Drupal\Component\Datetime\TimeInterface $time
-   *   The time service.
    */
-  public function __construct(EntityManagerInterface $entity_manager, LanguageManagerInterface $language_manager, TimeInterface $time) {
+  public function __construct(EntityManagerInterface $entity_manager, LanguageManagerInterface $language_manager) {
     parent::__construct($entity_manager);
     $this->languageManager = $language_manager;
-    $this->time = $time;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, $entity_type = '', $entity_bundle_type = '') {
+    $entity_manager = $container->get('entity.manager');
     return new static(
-      $container->get('entity.manager'),
-      $container->get('language_manager'),
-      $container->get('datetime.time')
+      $entity_manager,
+      $container->get('language_manager')
     );
-  }
-
-  /**
-   * Get time service.
-   *
-   * @return \Drupal\Component\Datetime\TimeInterface
-   */
-  public function getTime() {
-    if (!isset($this->time)) {
-      $this->time = \Drupal::time();
-    }
-
-    return $this->time;
   }
 
   /**
@@ -172,7 +148,7 @@ class ParDataForm extends ContentEntityForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-    $this->entity->setRevisionCreationTime($this->getTime()->getRequestTime());
+    $this->entity->setRevisionCreationTime(REQUEST_TIME);
     $this->entity->setRevisionAuthorId(\Drupal::currentUser()->id());
   }
 
@@ -191,13 +167,13 @@ class ParDataForm extends ContentEntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        $this->messenger()->addMessage($this->t('Created the %label content entity.', [
+        drupal_set_message($this->t('Created the %label content entity.', [
           '%label' => $entity->label(),
         ]));
         break;
 
       default:
-        $this->messenger()->addMessage($this->t('Saved the %label content entity.', [
+        drupal_set_message($this->t('Saved the %label content entity.', [
           '%label' => $entity->label(),
         ]));
     }

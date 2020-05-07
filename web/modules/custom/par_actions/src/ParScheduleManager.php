@@ -7,7 +7,6 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Logger\LoggerChannelTrait;
-use Drupal\Component\Datetime\TimeInterface;
 
 /**
  * Provides a PAR Schedule plugin manager.
@@ -58,15 +57,6 @@ class ParScheduleManager extends DefaultPluginManager {
   }
 
   /**
-   * Get time service.
-   *
-   * @return \Drupal\Component\Datetime\TimeInterface
-   */
-  public function getTime() {
-    return \Drupal::time();
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function processDefinition(&$definition, $plugin_id) {
@@ -114,7 +104,7 @@ class ParScheduleManager extends DefaultPluginManager {
       // Ensure that scheduler plugins cannot be run more frequently
       // than the minimum interval time.
       $last_run = $this->getSchedulerLastRun($plugin);
-      if ($last_run >= $this->getTime()->getRequestTime() - self::MIN_INTERVAL) {
+      if ($last_run >= REQUEST_TIME - self::MIN_INTERVAL) {
         return;
       }
 
@@ -147,7 +137,7 @@ class ParScheduleManager extends DefaultPluginManager {
    *   The plugin to check when it last ran.
    */
   public function setSchedulerLastRun($plugin) {
-    \Drupal::state()->set("par_actions.{$plugin->getPluginId()}.last_schedule", $this->getTime()->getRequestTime());
+    \Drupal::state()->set("par_actions.{$plugin->getPluginId()}.last_schedule", REQUEST_TIME);
   }
 
 }
