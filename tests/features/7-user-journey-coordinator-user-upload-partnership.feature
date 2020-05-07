@@ -141,7 +141,7 @@ Feature: Coordinator User - Upload Members
         Given I am logged in as "par_coordinator@example.com"
         And I click the link with text "See your partnerships"
         When I click the link text "Member Upload Test Business"
-        And the element "#edit-members-link" contains the text "13"
+        And the element ".number-of-members" contains the text "There are 13 active members covered by this partnership"
         When I click the link text "show members list"
         And the element ".pagerer-container" contains the text "Showing 1-10 of 15 results"
         And I select the option with the value "1" for element "#edit-revoked"
