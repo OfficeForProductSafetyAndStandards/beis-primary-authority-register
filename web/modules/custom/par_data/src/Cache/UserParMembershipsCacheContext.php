@@ -5,6 +5,7 @@ namespace Drupal\par_data\Cache;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\Context\CalculatedCacheContextInterface;
 use Drupal\Core\Cache\Context\UserCacheContextBase;
+use Drupal\user\Entity\User;
 
 /**
  * Defines the UserParMembershipsCacheContext service, for "per membership" caching.
@@ -25,8 +26,25 @@ class UserParMembershipsCacheContext extends UserCacheContextBase implements Cal
     return t("User's par memberships");
   }
 
+  /**
+   * Get the Par Data Manager service.
+   *
+   * @return \Drupal\par_data\ParDataManagerInterface
+   */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
+  }
+
+  /**
+   * Helper method to load a user.
+   *
+   * @param $id
+   *   The user id to load.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|null
+   */
+  public function userLoad($id) {
+    return User::load($id);
   }
 
   /**
@@ -34,7 +52,7 @@ class UserParMembershipsCacheContext extends UserCacheContextBase implements Cal
    */
   public function getContext($type = NULL) {
     $entities = [];
-    $account = user_load($this->user->id());
+    $account = $this->userLoad($this->user->id());
 
     if ($type === 'authority' || $type === NULL) {
       $authorities = $this->getParDataManager()->isMemberOfAuthority($account);
