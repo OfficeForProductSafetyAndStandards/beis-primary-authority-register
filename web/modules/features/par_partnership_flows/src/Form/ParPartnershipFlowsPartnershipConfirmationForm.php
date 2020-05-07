@@ -142,7 +142,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
         'par_data_person' => $par_data_person->id()
       ];
 
-      $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('save'), $route_params);
+      $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->progressRoute('save'), $route_params);
     }
     else {
       $message = $this->t('This %confirm could not be saved for %form_id');
