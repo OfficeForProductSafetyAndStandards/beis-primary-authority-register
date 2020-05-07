@@ -125,7 +125,7 @@ When('I review the completions for direct partnership {string}', function (partn
    .assert.containsText('#edit-organisation-registered-address','Southwark')
    .assert.containsText('#edit-organisation-registered-address','London')
    .assert.containsText('#edit-organisation-registered-address','SE16 4NX')
-   .assert.containsText('#edit-about-organisation','Some information about organisation details')
+   .assert.containsText('#edit-about','Some information about organisation details')
    .assert.containsText('#edit-sic-code','Social care activities without accommodation')
    .assert.containsText('#edit-legal-entities','New LLP Company')
    .assert.containsText('#edit-legal-entities','Limited Liability Partnership')

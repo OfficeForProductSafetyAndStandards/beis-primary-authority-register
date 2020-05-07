@@ -34,7 +34,7 @@ When('I update about the organisation', function () {
     .clearValue('#edit-about-business')
     .setValue('#edit-about-business','Change to the about organisation details section')
     .click('#edit-save')
-    .assert.containsText('#edit-about-organisation', 'Change to the about organisation details section')
+    .assert.containsText('#edit-about', 'Change to the about organisation details section')
 });
 
 When('I edit about the partnership', function () {
