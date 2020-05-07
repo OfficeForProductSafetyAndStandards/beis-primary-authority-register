@@ -46,6 +46,22 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
+    $legal_entities = $this->getDefaultValuesByKey('legal_entities', $cardinality, []);
+
+    // Generate the link to add a legal entity.
+    try {
+      $legal_entity_add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_field_legal_entity', [], [], TRUE);
+    }
+    catch (ParFlowException $e) {
+      $this->getLogger($this->getLoggerChannel())->notice($e);
+    }
+
+    // Do not render this plugin if there is nothing to display, for example if
+    // there are no legal entities and the user isn't able to add a new legal entity.
+    if (empty($legal_entities) && (!isset($legal_entity_add_link) || $legal_entity_add_link instanceof Link)) {
+      return $form;
+    }
+
     // Display the legal entities.
     $form['legal_entities'] = [
       '#type' => 'fieldset',
@@ -57,7 +73,6 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
       ],
     ];
 
-    $legal_entities = $this->getDefaultValuesByKey('legal_entities', $cardinality, []);
     foreach ($legal_entities as $delta => $legal_entity) {
       $legal_entity_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
       $legal_entity_summary = $legal_entity_view_builder->view($legal_entity, 'summary');
@@ -119,16 +134,10 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
       }
     }
 
-    // Add a link to add a legal entity.
-    try {
-      $legal_entity_add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_field_legal_entity', [], [], TRUE);
-    }
-    catch (ParFlowException $e) {
-      $this->getLogger($this->getLoggerChannel())->notice($e);
-    }
-
+    // Display a link to add a legal entity.
     if (isset($legal_entity_add_link) && $legal_entity_add_link instanceof Link) {
-      $link_label = count($legal_entities) > 1 ? "add another legal entity" : "add a legal entity";
+      $link_label = !empty($legal_entities) && count($legal_entities) >= 1
+        ? "add another legal entity" : "add a legal entity";
       $form['legal_entities']['add'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',

@@ -46,16 +46,16 @@ class ParTradingNameDisplay extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     $trading_names = $this->getDefaultValuesByKey('trading_names', $cardinality, []);
 
+    // Generate the add a trading name link.
     try {
-      $link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_trading_name', [], [], TRUE);
-      $trading_name_add_link = $link->setText("add trading name")->toString();
+      $trading_name_add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_trading_name', [], [], TRUE);
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
     }
 
-    // Do not render this plugin if there are no trading names and the user isn't
-    // able to add a new trading name.
+    // Do not render this plugin if there is nothing to display, for example if
+    // there are no trading names and the user isn't able to add a new trading name.
     if (empty($trading_names) && (!isset($link) || $link instanceof Link)) {
       return $form;
     }
@@ -131,10 +131,12 @@ class ParTradingNameDisplay extends ParFormPluginBase {
 
     // Add a link to add a trading name.
     if (isset($trading_name_add_link) && $trading_name_add_link instanceof Link) {
+      $add_link_label = !empty($trading_names) && count($trading_names) >= 1
+        ? "add another trading name" : "add a trading name";
       $form['trading_names']['add'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $trading_name_add_link,
+        '#value' => $trading_name_add_link->setText($add_link_label)->toString(),
         '#attributes' => ['class' => ['add-trading-name']],
       ];
     }
