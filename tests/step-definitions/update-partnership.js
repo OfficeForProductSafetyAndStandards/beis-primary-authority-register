@@ -29,10 +29,10 @@ When('I update the registered address for organisation', function () {
 When('I update about the organisation', function () {
   return shared
     .clickLinkByPureText('edit about the organisation')
-    .clearValue('#edit-about-organisation')
     .assert.containsText('h1.heading-xlarge .heading-secondary', 'Primary Authority partnership information')
     .assert.containsText('h1.heading-xlarge', 'Information about the organisation')
-    .setValue('#edit-about-organisation','Change to the about organisation details section')
+    .clearValue('#edit-about-business')
+    .setValue('#edit-about-business','Change to the about organisation details section')
     .click('#edit-save')
     .assert.containsText('#edit-about-organisation', 'Change to the about organisation details section')
 });

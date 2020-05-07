@@ -42,7 +42,7 @@ var county = faker.fake("{{address.county}}")
 When('I complete about the business', function () {
   return shared
   .assert.containsText('h1.heading-xlarge','Confirm the details about the organisation')
-  .setValue('#edit-about-organisation','Some information about organisation details')
+  .setValue('#edit-about-business','Some information about organisation details')
   .click('#edit-next')
 });
 
@@ -153,8 +153,8 @@ When('I change the completed legal entities', function () {
 When('I change the completed about the organisation', function () {
   return shared
   .clickLinkByPureText('Change the details about this partnership')
-  .clearValue('#edit-about-organisation')
-  .setValue('#edit-about-organisation', 'Change to the information about organisation details')
+  .clearValue('#edit-about-business')
+  .setValue('#edit-about-business', 'Change to the information about organisation details')
   .click('#edit-next')
   .assert.containsText('h1.heading-xlarge','Check partnership information')
   .assert.containsText('#edit-about-organisation','Change to the information about organisation details')
