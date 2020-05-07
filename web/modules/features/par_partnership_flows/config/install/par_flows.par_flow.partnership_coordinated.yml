@@ -31,7 +31,7 @@ steps:
         plugin_name: partnership_contacts
         display: authority
         weight: -3
-      partnership_contacts:
+      partnership_organisation_contacts:
         plugin_name: partnership_contacts
         display: organisation
         show_title: false

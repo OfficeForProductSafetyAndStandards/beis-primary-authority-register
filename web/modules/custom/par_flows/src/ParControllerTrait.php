@@ -110,6 +110,10 @@ trait ParControllerTrait {
       try {
         $plugin_name = ParFlow::getComponentName($key, $settings);
 
+        // Store the plugin ID and namespace in the settings.
+        $settings[ParFormPluginInterface::NAME_PROPERTY] = $settings[ParFormPluginInterface::NAME_PROPERTY] ?? $plugin_name;
+        $settings[ParFormPluginInterface::NAMESPACE_PROPERTY] = $settings[ParFormPluginInterface::NAMESPACE_PROPERTY] ?? $key;
+
         if ($plugin = $this->getFormBuilder()->createInstance($plugin_name, $settings)) {
           $this->components[] = $plugin;
         }
@@ -130,7 +134,7 @@ trait ParControllerTrait {
    */
   public function getComponent($component_name) {
     foreach ($this->getComponents() as $component) {
-      if ($component->getPluginId() === $component_name) {
+      if ($component->getPluginNamespace() === $component_name) {
         return $component;
       }
     }

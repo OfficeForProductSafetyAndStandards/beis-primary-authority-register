@@ -105,7 +105,7 @@ class ParFormBuilder extends DefaultPluginManager {
    */
   public function getPluginElements($component, &$elements = [], $cardinality = NULL) {
     // Add all the registered components to the form.
-    $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()] = $component->getWrapper();
+    $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginNamespace()] = $component->getWrapper();
 
     // Count the current cardinality.
     $count = $component->getNewCardinality();
@@ -118,15 +118,15 @@ class ParFormBuilder extends DefaultPluginManager {
         return $element;
       }
 
-      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] = $element;
+      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginNamespace()][$i-1] = $element;
 
       // Only show element actions for plugins with multiple cardinality
       if ($element_actions = $component->getElementActions($i)) {
-        $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] += $element_actions;
+        $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginNamespace()][$i-1] += $element_actions;
       }
 
       // Add the component element wrappers.
-      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] += $component->getElementWrapper($i);
+      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginNamespace()][$i-1] += $component->getElementWrapper($i);
     }
 
     // Only show component actions for plugins with multiple cardinality

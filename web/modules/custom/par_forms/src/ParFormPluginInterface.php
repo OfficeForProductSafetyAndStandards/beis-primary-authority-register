@@ -18,6 +18,18 @@ interface ParFormPluginInterface extends PluginInspectionInterface, Configurable
    * Define the name property.
    */
   const NAME_PROPERTY = 'plugin_name';
+  const NAMESPACE_PROPERTY = 'plugin_namespace';
+
+  /**
+   * Get the plugin namespace.
+   *
+   * The namespace allows each instance of a plugin to be referred to by a
+   * different moniker.
+   *
+   * @return string
+   *   The plugin namespace.
+   */
+  public function getPluginNamespace();
 
   /**
    * Get's the mapping of each form element to the entity

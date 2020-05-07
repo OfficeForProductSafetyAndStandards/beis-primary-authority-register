@@ -38,8 +38,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
     $available_formats = [self::AUTHORITY_CONTACTS, self::AUTHORITY_CONTACTS];
     $format = isset($this->getConfiguration()['display']) && array_search($this->getConfiguration()['display'], $available_formats) !== FALSE
       ? $this->getConfiguration()['display'] : self::ORGANISATION_CONTACTS;
-    $this->getFlowDataHandler()->setFormPermValue("contact_format", $format);
-
+    $this->getFlowDataHandler()->setFormPermValue("contact_format", $format, $this);
 
     if ($format === self::AUTHORITY_CONTACTS && $authority_contacts = $par_data_partnership->getAuthorityPeople()) {
       $this->setDefaultValuesByKey("authority_people", $cardinality, $authority_contacts);
@@ -50,7 +49,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
 
     // Set title display options.
     $show_title = isset($this->getConfiguration()['show_title']) ? (bool) $this->getConfiguration()['show_title'] : TRUE;
-    $this->getFlowDataHandler()->setFormPermValue("show_title", $show_title);
+    $this->getFlowDataHandler()->setFormPermValue("show_title", $show_title, $this);
 
     parent::loadData();
   }
@@ -59,7 +58,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
-    if ($this->getFlowDataHandler()->getFormPermValue("show_title")) {
+    if ($this->getFlowDataHandler()->getFormPermValue("show_title", $this)) {
       $form['title'] = [
         '#type' => 'html_tag',
         '#tag' => 'h2',
@@ -68,7 +67,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
       ];
     }
 
-    $contact_format = $this->getFlowDataHandler()->getFormPermValue("contact_format");
+    $contact_format = $this->getFlowDataHandler()->getFormPermValue("contact_format", $this);
     switch ($contact_format) {
       case self::AUTHORITY_CONTACTS:
         $contacts = $this->getDefaultValuesByKey('authority_people', $cardinality, []);
