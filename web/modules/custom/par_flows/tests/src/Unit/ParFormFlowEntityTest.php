@@ -56,7 +56,7 @@ class ParFlowEntityTest extends UnitTestCase {
           'redirect' => [
             'save' => 4,
             'cancel' => 5,
-            'prev_step' => 1,
+            'custom_step' => 1,
           ],
         ],
         3 => [
@@ -206,7 +206,7 @@ class ParFlowEntityTest extends UnitTestCase {
   public function progressRoute() {
 
     // Check previous step via custom redirect operation.
-    $prev_route = $this->testFlow->progressRoute('prev_step');
+    $prev_route = $this->testFlow->progressRoute('custom_step');
 
     // Check the flow progresses correctly for a given operation.
     $this->assertEquals('par_test_forms.first', $prev_route, "The previous route has been correctly identified.");
@@ -217,7 +217,7 @@ class ParFlowEntityTest extends UnitTestCase {
     $this->assertEquals('par_test_forms.confirmation', $prev_route, "The previous route has been correctly identified given an operation.");
 
     // Check the default back operation is producing the expected result.
-    $prev_route = $this->testFlow->progressRoute('back');
+    $prev_route = $this->testFlow->progressRoute(ParFlow::BACK_STEP);
 
     // Check the flow progresses correctly for a given operation.
     $this->assertEquals('par_test_forms.first', $prev_route, "The previous route has been correctly identified.");
