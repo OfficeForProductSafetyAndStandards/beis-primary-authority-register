@@ -10,9 +10,10 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Event that is fired when a user logs in.
  */
-class ParFlowEvent extends Event {
+class ParFlowEvent extends Event implements ParFlowEventInterface {
 
   const FLOW_CANCEL = 'par_flows_alter_cancel';
+  const FLOW_BACK = 'par_flows_alter_back';
   const FLOW_SUBMIT = 'par_flows_alter_submit';
 
   /**
@@ -54,14 +55,35 @@ class ParFlowEvent extends Event {
    * @param Url $url
    *   The matched URL.
    */
-  public function __construct(ParFlowInterface $flow, RouteMatchInterface $route, Url $url = NULL) {
+  public function __construct(ParFlowInterface $flow, RouteMatchInterface $current_route, Url $url = NULL) {
     $this->flow = $flow;
-    $this->currentRoute = $route;
-    $this->currentStep = $flow->getStepByRoute($route->getRouteName());
+    $this->currentRoute = $current_route;
+    $this->currentStep = $flow->getStepByRoute($current_route->getRouteName());
 
     if ($url) {
       $this->setUrl($url);
     }
+  }
+
+  /**
+   * Static method for generating an event name based on the operation.
+   */
+  public static function getCustomEvent($operation) {
+    // Return event names for specific operations.
+    switch ($operation) {
+      case 'back':
+        return self::FLOW_BACK;
+
+        break;
+
+      case 'cancel':
+        return self::FLOW_CANCEL;
+
+        break;
+
+    }
+
+    return implode(':', [self::FLOW_SUBMIT, $operation]);
   }
 
   /**
