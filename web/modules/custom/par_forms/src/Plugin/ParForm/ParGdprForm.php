@@ -4,6 +4,7 @@ namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\Url;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -56,7 +57,7 @@ class ParGdprForm extends ParFormPluginBase {
     $form['privacy_notice'] = [
       '#type' => 'link',
       '#title' => $this->t('Link to full privacy notice'),
-      '#url' => Url::fromUri('https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/711378/safety-and-standards-gdpr-privacy-notice.pdf'),
+      '#url' => Url::fromUri('https://www.gov.uk/government/publications/safety-and-standards-privacy-notice'),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
