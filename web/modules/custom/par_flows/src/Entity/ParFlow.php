@@ -61,6 +61,8 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   const SAVE_STEP = 'step';
   const SAVE_END = 'end';
   const BACK_STEP = 'back';
+  const CANCEL_STEP = 'cancel';
+  const DONE_STEP = 'done';
 
   /**
    * The flow ID.
@@ -330,35 +332,36 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     $current_step = $this->getCurrentStep();
 
     // Operations that should not progress to the next step.
-    $final_operations = ['cancel', 'done'];
-
-    // Check if the logic is trying to go back one step on the current journey by passing in a default back operation.
-    if ($operation === ParFlow::BACK_STEP) {
-      // calling getPrevStep() method without passing in an operation parameter will trigger the default back step logic.
-      $prev_step = $this->getPrevStep();
-      return $this->getRouteByStep($prev_step);
-    }
+    $final_operations = [self::CANCEL_STEP, self::DONE_STEP];
 
     // Rule 1) Check if the operation given found a valid step.
     if ($redirect = $this->getStepByOperation($current_step, $operation)) {
       $redirect_step = $this->getStep($redirect);
     }
-    // Rule 2) Check if there is a next step in the journey, for operations
-    // If the operation supports progressing to the next step in the journey,
-    // that support progression.
+
+    // Rule 2) Check if the logic is trying to go back one step on the current
+    // journey by passing in a default back operation.
+    elseif ($operation === ParFlow::BACK_STEP) {
+      // calling getPrevStep() method without passing in an operation parameter will trigger the default back step logic.
+      $prev_step = $this->getPrevStep();
+      return $this->getRouteByStep($prev_step);
+    }
+
+    // Rule 3) Check if there is a next step in the journey, for operations
+    // that support progressing to the next step in the journey.
     elseif (array_search($operation, $final_operations) === FALSE && $current_step < count($this->getSteps())) {
       $next_index = ++$current_step;
       $redirect_step = isset($next_index) ? $this->getStep($next_index) : NULL;
     }
 
-    // Rule 3) Allow other modules to alter the redirection rules.
+    // Rule 4) Allow other modules to alter the redirection rules.
     // @TODO Add a hook alter to allow additional redirection rules per module.
 
     if (empty($redirect_step)) {
       throw new ParFlowException('Could not find the next page.');
     }
 
-    return isset($redirect_step['route']) ? $redirect_step['route'] : NULL;
+    return $redirect_step['route'] ?? NULL;
   }
 
   /**
