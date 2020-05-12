@@ -387,15 +387,14 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       $redirect_route = $redirect_step['route'] ?? NULL;
     }
 
-    // Rule 4) Allow other modules to alter the redirection rules as a last resort only.
-    if (empty($redirect_route)) {
-      $matched_url = isset($route_name) ? Url::fromRoute($route_name, $this->getRouteParams()) : [];
-      $event = new ParFlowEvent($this, $this->getCurrentRouteMatch(), $matched_url);
-      $this->getEventDispatcher()->dispatch(ParFlowEvent::getCustomEvent($operation), $event);
+    $redirect_url = isset($redirect_route) ? Url::fromRoute($redirect_route, $this->getRouteParams()) : NULL;
 
-      $redirect_url = $event->getUrl();
-      $redirect_route = isset($redirect_url) && ($redirect_url instanceof Url) ? $event->getUrl()->getRouteName() : NULL;
-    }
+    // Rule 4) Allow other modules to alter the redirection rules.
+    $event = new ParFlowEvent($this, $this->getCurrentRouteMatch(), $redirect_url);
+    $this->getEventDispatcher()->dispatch(ParFlowEvent::getCustomEvent($operation), $event);
+    // If this event altered the url we'll need to get the route.
+    $redirect_url = $event->getUrl();
+    $redirect_route = isset($redirect_url) && ($redirect_url instanceof Url) ? $event->getUrl()->getRouteName() : NULL;
 
     if (isset($redirect_route) && $this->getRouter()->getRouteCollection()->get($redirect_route)) {
       return $redirect_route;

@@ -111,6 +111,12 @@ class ParFormBuilder extends DefaultPluginManager {
     $count = $component->getNewCardinality();
 
     for ($i = 1; $i <= $count; $i++) {
+      // @TODO This is the only remaining bit when possible calls to `progressRoute()`
+      // aren't caught. They're used frequently in the form plugins, we need a way to safely
+      // add redirection to plugins with the _same_ fallbacks as `ParBaseForm::submitForm()`
+      // and `ParBaseController::getProceedingUrl()`.
+      // Ideally coverting the hardcoded fallbacks in `ParBaseForm::submitForm()` into
+      // FlowEventListeners so that they happen everywhere this is called.
       $element = $component->getElements([], $i);
 
       // Handle instances where FormBuilderInterface should return a redirect response.
