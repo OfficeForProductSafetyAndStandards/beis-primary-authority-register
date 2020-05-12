@@ -3,81 +3,82 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_data\Entity\ParDataEntity;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * The partnership form for the trading name details.
+ * The partnership form for removing the legal entity.
  */
-class ParPartnershipFlowsTradingForm extends ParBaseForm {
+class ParPartnershipFlowsRemoveLegalEntityForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
   use ParPartnershipFlowAccessTrait;
 
-  /**
-   * {@inheritdoc}
-   */
-  public function titleCallback() {
-    $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
-
-    // Check from the route if we are editing an existing trading name.
-    $action = isset($trading_name_delta) ? 'Edit' : 'Add a';
-
-    $this->pageTitle = "Update partnership information | {$action} trading name for your organisation";
-
-    return $this->pageTitle;
-  }
+  protected $pageTitle = 'Are you sure you want to remove the legal entity?';
 
   /**
-   * Helper to get all the editable values.
-   *
-   * Used for when editing or revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Partnership being retrieved.
-   * @param int $trading_name_delta
-   *   The trading name delta.
+   * Load the data for this form.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $trading_name_delta = NULL) {
+  public function loadData() {
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+    $par_data_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
 
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $bundle = $par_data_organisation->bundle();
-
-    $this->formItems = [
-      "par_data_organisation:{$bundle}" => [
-        'trading_name' => 'trading_name',
-      ],
-    ];
-
-    if (!is_null($trading_name_delta)) {
-      // Store the current value of the sic_code if it's being edited.
-      $trading_name = $par_data_organisation ? $par_data_organisation->get('trading_name')->getValue()[$trading_name_delta] : NULL;
-
-      if ($trading_name) {
-        $this->getFlowDataHandler()->setFormPermValue("trading_name", $trading_name);
+    // Set the legal entity if a value was found for this delta.
+    if ($par_data_partnership && $par_data_legal_entity) {
+      $legal_entities = $par_data_partnership->get('field_legal_entity')->getValue();
+      // Note that this will only return the first instance of this legal_entity,
+      // although this field should be unique so there shouldn't be more than one.
+      $key = array_search($par_data_legal_entity->id(), array_column($legal_entities, 'target_id'));
+      if ($key !== FALSE) {
+        $this->getFlowDataHandler()->setFormPermValue('field_legal_entity_delta', $key);
       }
     }
+
+    parent::loadData();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $trading_name_delta = NULL) {
-    $this->retrieveEditableValues($par_data_partnership, $trading_name_delta);
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $field_legal_entity_delta = NULL) {
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+    $par_data_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
 
-    $form['trading_name_fieldset'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#title' => $this->t('Enter a trading name'),
+    $delta = $this->getFlowDataHandler()->getFormPermValue('field_legal_entity_delta');
+
+    // If there is no legal entity skip this step.
+    // @TODO Monitor PAR-1592. If a PR is submitted for that it will need
+    // applying jto this method call too.
+    if (null === $delta) {
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('cancel'), $this->getRouteParams());
+      return new RedirectResponse($url);
+    }
+
+    // Prohibit removing of the last legal entity.
+    if ($par_data_partnership->get('field_legal_entity')->count() <= 1) {
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('cancel'), $this->getRouteParams());
+      return new RedirectResponse($url);
+    }
+
+    $form['remove'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => $this->t('Are you sure you want to remove the legal entity @legal_entity from the @partnership?', ['@legal_entity' => $par_data_legal_entity->label(), '@partnership' => $par_data_partnership->label()]),
+      '#attributes' => ['class' => ['remove-legal-entity', 'form-group']],
     ];
 
-    $form['trading_name_fieldset']['trading_name'] = [
-      '#type' => 'textfield',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("trading_name"),
-      '#description' => $this->t("<p>Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State any trading names used by the organisation.</p>"),
+    $form['delta'] = [
+      '#type' => 'hidden',
+      '#value' => $delta,
     ];
+
+    // Change the main button title to 'remove'.
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Remove');
 
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
@@ -91,30 +92,33 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the value for the trading name field.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
+    $par_data_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
+    $delta = $this->getFlowDataHandler()->getTempDataValue('delta');
 
-    $items = $par_data_organisation->get('trading_name')->getValue();
-
-    if (!isset($trading_name_delta)) {
-      $items[] = $this->getFlowDataHandler()->getTempDataValue('trading_name');
+    // Remove the field delta.
+    try {
+      if (isset($delta)) {
+        $par_data_partnership->get('field_legal_entity')->removeItem($delta);
+      }
+      else {
+        throw new \InvalidArgumentException('No field delta has been provided.');
+      }
     }
-    else {
-      $items[$trading_name_delta] = $this->getFlowDataHandler()->getTempDataValue('trading_name');
+    catch (\InvalidArgumentException $e) {
+
     }
 
-    $par_data_organisation->set('trading_name', $items);
-
-    if ($par_data_organisation->save()) {
+    // Don't save if there are no more legal entities.
+    if (!$par_data_partnership->get('field_legal_entity')->isEmpty() && $par_data_partnership->save()) {
       $this->getFlowDataHandler()->deleteStore();
     }
     else {
-      $message = $this->t('This %field could not be saved for %form_id');
+      $message = $this->t('The %legal_entity could not be removed from the %field on partnership %partnership');
       $replacements = [
-        '%field' => $this->getFlowDataHandler()->getTempDataValue('trading_name'),
-        '%form_id' => $this->getFormId(),
+        '%legal_entity' => $par_data_legal_entity->label(),
+        '%field' => $this->getFlowDataHandler()->getTempDataValue('field_legal_entity'),
+        '%partnership' => $par_data_partnership->label(),
       ];
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
     }
