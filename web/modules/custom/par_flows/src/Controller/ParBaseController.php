@@ -200,6 +200,11 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
 
     }
 
+    // @TODO, need to convert all these defaults ('destination', 'skipQueryRedirection')
+    // to form listeners so that they can happen within the 'progresRoute()'
+    // method and therefore everywhere we call this method.
+
+
     // Determine whether to use the 'destination' query parameter
     // to determine redirection preferences.
     if ($this->skipQueryRedirection && $query->has('destination')) {
