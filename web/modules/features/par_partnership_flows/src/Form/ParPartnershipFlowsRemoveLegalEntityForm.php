@@ -54,7 +54,7 @@ class ParPartnershipFlowsRemoveLegalEntityForm extends ParBaseForm {
     // If there is no legal entity skip this step.
     // @TODO Monitor PAR-1592. If a PR is submitted for that it will need
     // applying jto this method call too.
-    if (null === $delta) {
+    if ($delta === NULL) {
       $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('cancel'), $this->getRouteParams());
       return new RedirectResponse($url);
     }
