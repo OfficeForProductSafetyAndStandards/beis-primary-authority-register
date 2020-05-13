@@ -883,6 +883,27 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
+   * Helper function to extract field values.
+   *
+   * @return array
+   *   An array of value properties keyed by the field delta.
+   */
+  public function extractValues($field, $property = 'value') {
+    if (!$this->hasField($field)) {
+      return;
+    }
+
+    $values = [];
+    foreach ($this->get($field)->getValue() as $key => $value) {
+      if (isset($value[$property])) {
+        $values[$key] = $value[$property];
+      }
+    }
+
+    return $values;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {

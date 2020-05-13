@@ -7,6 +7,8 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\par_flows\Entity\ParFlow;
+use Drupal\par_forms\ParFormPluginInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -104,11 +106,17 @@ trait ParControllerTrait {
     }
 
     // Load the plugins used to build this form.
-    foreach ($this->getFlowNegotiator()->getFlow()->getCurrentStepComponents() as $component => $settings) {
+    foreach ($this->getFlowNegotiator()->getFlow()->getCurrentStepComponents() as $key => $settings) {
       try {
-          if ($plugin = $this->getFormBuilder()->createInstance($component, $settings)) {
-            $this->components[] = $plugin;
-          }
+        $plugin_name = ParFlow::getComponentName($key, $settings);
+
+        // Store the plugin ID and namespace in the settings.
+        $settings[ParFormPluginInterface::NAME_PROPERTY] = $settings[ParFormPluginInterface::NAME_PROPERTY] ?? $plugin_name;
+        $settings[ParFormPluginInterface::NAMESPACE_PROPERTY] = $settings[ParFormPluginInterface::NAMESPACE_PROPERTY] ?? $key;
+
+        if ($plugin = $this->getFormBuilder()->createInstance($plugin_name, $settings)) {
+          $this->components[] = $plugin;
+        }
       }
       catch (PluginException $e) {
         $this->getLogger($this->getLoggerChannel())->error($e);
@@ -126,7 +134,7 @@ trait ParControllerTrait {
    */
   public function getComponent($component_name) {
     foreach ($this->getComponents() as $component) {
-      if ($component->getPluginId() === $component_name) {
+      if ($component->getPluginNamespace() === $component_name) {
         return $component;
       }
     }

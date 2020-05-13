@@ -16,6 +16,30 @@ steps:
   1:
     route: par_partnership_flows.authority_details
     form_id: par_partnership_details
+    components:
+      partnership_information_display:
+        weight: -10
+      organisation_information_display:
+        weight: -9
+      partnership_members:
+        weight: -8
+      sic_code_display:
+        weight: -7
+      legal_entity_display:
+        weight: -6
+      trading_name_display:
+        weight: -5
+      partnership_documents:
+        weight: -4
+      partnership_authority_contacts:
+        plugin_name: partnership_contacts
+        display: authority
+        weight: -3
+      partnership_organisation_contacts:
+        plugin_name: partnership_contacts
+        display: organisation
+        show_title: false
+        weight: -2
     redirect:
       edit_about_partnership: 2
       edit_regulatory_functions: 3
@@ -32,7 +56,8 @@ steps:
     route: par_partnership_flows.regulatory_function_update
     form_id: par_partnership_regulatory_function_update
     components:
-      partnership_regulatory_functions: {  }
+      partnership_regulatory_functions:
+        plugin_name: partnership_regulatory_functions
     redirect:
       save: 1
       cancel: 1
@@ -106,6 +131,7 @@ steps:
     components:
       inspection_plan_date:
         start_date: false
+        plugin_name: inspection_plan_date
     form_data:
       upload: par_partnership_inspection_plan_upload_add
       details: par_partnership_inspection_plan_add
@@ -124,6 +150,7 @@ steps:
     components:
       inspection_plan_date:
         start_date: false
+        plugin_name: inspection_plan_date
     form_data:
       details: par_partnership_inspection_plan_edit
     redirect:

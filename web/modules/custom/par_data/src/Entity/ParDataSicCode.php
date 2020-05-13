@@ -70,6 +70,24 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class ParDataSicCode extends ParDataEntity {
 
   /**
+   * Get the code.
+   *
+   * @return string
+   */
+  public function getCode() {
+    return $this->get('sic_code')->getString();
+  }
+
+  /**
+   * Get the code.
+   *
+   * @return string
+   */
+  public function getDescription() {
+    return $this->get('description')->getString();
+  }
+
+  /**
    * Allows all relationships to be skipped.
    */
   public function lookupReferencesByAction($action = NULL) {
@@ -107,6 +125,8 @@ class ParDataSicCode extends ParDataEntity {
     // SIC Code.
     $fields['sic_code'] = BaseFieldDefinition::create('string')
       ->setLabel(t('SIC Code'))
+//      @TODO Make this field unique when migration to real SICs is complete.
+//      ->addConstraint('UniqueField')
       ->setDescription(t('The SIC code identification number.'))
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)

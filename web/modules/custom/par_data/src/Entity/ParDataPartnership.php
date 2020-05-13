@@ -226,12 +226,12 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
-   * Get the number of members for this partnership.
+   * Get the number of coordinated members listed for this partnership.
    *
    * @param int $i
    *   The index to start counting from, can be used to add up all members.
    * @param bool $include_expired
-   *   Whether to include expired members.
+   *   Whether to include expired members. By default only active members are returned.
    *
    * @return int
    *   The number of active members.
@@ -243,6 +243,28 @@ class ParDataPartnership extends ParDataEntity {
       }
     }
     return $i;
+  }
+
+  /**
+   * Get the number of members not listed on this partnership.
+   *
+   * Note this is different to self::countMembers(), this method retrieves the number
+   * of members that a coordinator says they have as opposed to the number of members
+   * that they've actually listed on the partnership.
+   *
+   * In some cases these may be different, or they may not have or wish to share
+   * the details of the members up front.
+   */
+  public function numberOfMembers() {
+    // @TODO This data is currently stored on the coordinated organisation.
+    // This is wrong and we need to change this.
+    $par_data_organisation = $this->getOrganisation(TRUE);
+
+    if ($par_data_organisation) {
+      return $par_data_organisation->getMembershipSize();
+    }
+
+    return NULL;
   }
 
   /**
@@ -448,8 +470,11 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get legal entities for this partnership.
    */
-  public function getLegalEntity() {
-    return $this->get('field_legal_entity')->referencedEntities();
+  public function getLegalEntity($single = FALSE) {
+    $legal_entities = $this->get('field_legal_entity')->referencedEntities();
+    $legal_entity = !empty($legal_entities) ? current($legal_entities) : NULL;
+
+    return $single ? $legal_entity : $legal_entities;
   }
 
   /**
