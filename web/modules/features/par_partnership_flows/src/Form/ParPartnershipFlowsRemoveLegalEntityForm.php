@@ -19,7 +19,7 @@ class ParPartnershipFlowsRemoveLegalEntityForm extends ParBaseForm {
   use ParPartnershipFlowsTrait;
   use ParPartnershipFlowAccessTrait;
 
-  protected $pageTitle = 'Are you sure you want to remove the legal entity?';
+  protected $pageTitle = 'Are you sure you want to remove this legal entity?';
 
   /**
    * Load the data for this form.
