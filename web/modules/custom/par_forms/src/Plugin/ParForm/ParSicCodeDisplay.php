@@ -58,7 +58,7 @@ class ParSicCodeDisplay extends ParFormPluginBase {
 
     // Do not render this plugin if there is nothing to display, for example if
     // there are no SIC codes and the user isn't able to add a new SIC code.
-    if (empty($sic_codes) && (!isset($sic_code_add_link) || $sic_code_add_link instanceof Link)) {
+    if (empty($sic_codes) && (!isset($sic_code_add_link) || !$sic_code_add_link instanceof Link)) {
       return $form;
     }
 
