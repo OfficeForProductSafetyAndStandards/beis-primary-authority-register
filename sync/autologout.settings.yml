@@ -1,5 +1,5 @@
 timeout: 21600
-max_timeout: 86400
+max_timeout: 28800
 padding: 30
 role_logout: true
 redirect_url: /user/login
@@ -13,3 +13,11 @@ use_alt_logout_method: false
 use_watchdog: false
 _core:
   default_config_hash: zJS1GknUylh656CJSNXOupqKSqm6Xw200h1cq1eI970
+no_individual_logout_threshold: false
+role_logout_max: false
+dialog_title: 'Primary Authority Register Alert'
+inactivity_message_type: status
+disable_buttons: false
+yes_button: ''
+no_button: ''
+whitelisted_ip_addresses: ''
