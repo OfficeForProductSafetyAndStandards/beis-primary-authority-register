@@ -56,7 +56,7 @@ class ParTradingNameDisplay extends ParFormPluginBase {
 
     // Do not render this plugin if there is nothing to display, for example if
     // there are no trading names and the user isn't able to add a new trading name.
-    if (empty($trading_names) && (!isset($link) || $link instanceof Link)) {
+    if (empty($trading_names) && (!isset($trading_name_add_link) || !$trading_name_add_link instanceof Link)) {
       return $form;
     }
 

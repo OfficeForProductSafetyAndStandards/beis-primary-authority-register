@@ -58,7 +58,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
 
     // Do not render this plugin if there is nothing to display, for example if
     // there are no legal entities and the user isn't able to add a new legal entity.
-    if (empty($legal_entities) && (!isset($legal_entity_add_link) || $legal_entity_add_link instanceof Link)) {
+    if (empty($legal_entities) && (!isset($legal_entity_add_link) || !$legal_entity_add_link instanceof Link)) {
       return $form;
     }
 
@@ -101,7 +101,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
       }
       try {
         // Remove the legal entity.
-        $params['field_legal_entity_delta'] = $delta;
+        $params['par_data_legal_entity'] = $legal_entity->id();
         $options = ['attributes' => ['aria-label' => $this->t("Remove the legal entity @label", ['@label' => strtolower($legal_entity->label())])]];
         $operations['remove'] = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('remove_field_legal_entity', $params, $options, TRUE);
       }

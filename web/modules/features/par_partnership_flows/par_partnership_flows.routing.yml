@@ -316,13 +316,29 @@ par_partnership_flows.address_add:
       par_data_partnership:
         type: entity:par_data_partnership
 par_partnership_flows.legal_entity_edit:
-  path: '/partnership/{par_data_partnership}/legal-entity/{par_data_legal_entity}'
+  path: '/partnership/{par_data_partnership}/legal-entity/{par_data_legal_entity}/edit'
   defaults:
     _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm'
     _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
     _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_legal_entity: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_legal_entity:
+        type: entity:par_data_legal_entity
+par_partnership_flows.legal_entity_remove:
+  path: '/partnership/{par_data_partnership}/legal-entity/{par_data_legal_entity}/remove'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRemoveLegalEntityForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRemoveLegalEntityForm::titleCallback'
+  requirements:
+    _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRemoveLegalEntityForm::accessCallback'
     par_data_partnership: \d+
     par_data_legal_entity: \d+
   options:
