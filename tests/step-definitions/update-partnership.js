@@ -29,20 +29,20 @@ When('I update the registered address for organisation', function () {
 When('I update about the organisation', function () {
   return shared
     .clickLinkByPureText('edit about the organisation')
-    .clearValue('#edit-about-business')
     .assert.containsText('h1.heading-xlarge .heading-secondary', 'Primary Authority partnership information')
     .assert.containsText('h1.heading-xlarge', 'Information about the organisation')
+    .clearValue('#edit-about-business')
     .setValue('#edit-about-business','Change to the about organisation details section')
     .click('#edit-save')
-    .assert.containsText('#edit-about-business', 'Change to the about organisation details section')
+    .assert.containsText('#edit-about', 'Change to the about organisation details section')
 });
 
 When('I edit about the partnership', function () {
   return shared
     .clickLinkByPureText('edit about the partnership')
-    .clearValue('#edit-about-partnership')
     .assert.containsText('h1.heading-xlarge .heading-secondary', 'Primary Authority partnership information')
     .assert.containsText('h1.heading-xlarge', 'Information about the new partnership')
+    .clearValue('#edit-about-partnership')
     .setValue('#edit-about-partnership','Change to the about partnership details section')
     .click('#edit-save')
     .assert.containsText('#edit-about-partnership', 'Change to the about partnership details section')
@@ -55,14 +55,6 @@ When('I update the SIC code', function () {
       .click('#edit-save')
       .assert.containsText('#edit-sic-codes', 'Social care activities without accommodation')
     });
-
-When('I update the number of employees', function () {
-  return shared
-    .clickLinkByPureText('edit number of employees')
-    .click('#edit-employees-band option[value="250"]')
-    .click('#edit-save')
-    .assert.containsText('#edit-employee-no', '50 to 249')
-  });
 
 When('I add and subsequently edit a trading name', function () {
     return shared

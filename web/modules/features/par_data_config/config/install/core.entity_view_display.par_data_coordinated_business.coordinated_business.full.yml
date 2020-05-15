@@ -58,6 +58,9 @@ content:
     type: entity_reference_entity_view
     region: content
 hidden:
+  archive_reason: true
+  deleted_reason: true
   membership_date: true
   name: true
+  revocation_reason: true
   user_id: true

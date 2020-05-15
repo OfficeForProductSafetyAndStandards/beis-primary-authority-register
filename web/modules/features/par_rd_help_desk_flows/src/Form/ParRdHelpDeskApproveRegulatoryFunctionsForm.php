@@ -5,6 +5,7 @@ namespace Drupal\par_rd_help_desk_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -76,7 +77,7 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
       catch (ParDataException $e) {
         // If the partnership could not be saved the application can't be progressed.
         // @TODO Find a better way to alert the user without redirecting them away from the form.
-        drupal_set_message('There was an error approving this partnership, please check it is ready to be approved.');
+        $this->messenger()->addMessage('There was an error approving this partnership, please check it is ready to be approved.');
         $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel'));
         return;
       }

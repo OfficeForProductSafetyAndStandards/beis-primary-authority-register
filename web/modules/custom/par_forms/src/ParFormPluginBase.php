@@ -52,6 +52,13 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   protected $wrapperName = 'item';
 
   /**
+   * {@inheritDoc}
+   */
+  public function getPluginNamespace() {
+    return $this->getConfiguration()[ParFormPluginInterface::NAMESPACE_PROPERTY] ?? $this->getPluginId();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getTitle() {
@@ -201,9 +208,9 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    */
   public function countItems($data = NULL) {
     if ($this->getCardinality() !== 1) {
-      $temp_data = (array) $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId());
-      return isset($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId()]) ?
-        count($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId()]) :
+      $temp_data = (array) $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginNamespace());
+      return isset($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginNamespace()]) ?
+        count($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginNamespace()]) :
         count($temp_data);
     }
 
@@ -271,7 +278,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    */
   public function getPrefix($cardinality = 1, $force = FALSE) {
     if ($this->getCardinality() !== 1 || $cardinality !== 1 || $force) {
-      return [ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId(), $cardinality - 1];
+      return [ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginNamespace(), $cardinality - 1];
     }
 
     return NULL;

@@ -15,8 +15,8 @@ use Drupal\par_forms\ParFormPluginBase;
  * Contact details display with locations.
  *
  * @ParForm(
- *   id = "contact_locations_detail",
- *   title = @Translation("Contact detail display with locations.")
+ *   id = "contact_locations",
+ *   title = @Translation("Display contact locations.")
  * )
  */
 class ParContactLocations extends ParFormPluginBase {
@@ -32,22 +32,13 @@ class ParContactLocations extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
-    $contacts = $this->getFlowDataHandler()->getParameter('contacts');
-    $contacts = !empty($contacts) ? array_values($contacts) : [];
-    // Cardinality is not a zero-based index like the stored fields deltas.
-    $contact = isset($contacts[$cardinality-1]) ? $contacts[$cardinality-1] : NULL;
+    $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
-    if ($contact instanceof ParDataEntityInterface) {
-      $this->setDefaultValuesByKey("name", $cardinality, $contact->getFullName());
-      $this->setDefaultValuesByKey("email", $cardinality, $contact->getEmail());
-      $this->setDefaultValuesByKey("email_preferences", $cardinality, $contact->getEmailWithPreferences());
-      $this->setDefaultValuesByKey("work_phone", $cardinality, $contact->getWorkPhone());
-      $this->setDefaultValuesByKey("mobile_phone", $cardinality, $contact->getMobilePhone());
-
-      $locations = $contact->getReferencedLocations();
+    if ($par_data_person instanceof ParDataEntityInterface) {
+      $locations = $par_data_person->getReferencedLocations();
       $this->setDefaultValuesByKey("locations", $cardinality, implode('<br>', $locations));
 
-      $this->setDefaultValuesByKey("person_id", $cardinality, $contact->id());
+      $this->setDefaultValuesByKey("person_id", $cardinality, $par_data_person->id());
     }
 
     parent::loadData();
@@ -63,13 +54,13 @@ class ParContactLocations extends ParFormPluginBase {
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'h2',
-          '#value' => $this->t('Contacts'),
+          '#value' => $this->t('Contact locations'),
           '#attributes' => ['class' => ['heading-large']],
         ],
         'info' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => 'It is possible for a person to have different contact details depending on the position they hold within an authority or organisation.',
+          '#value' => 'This person may appear on other partnerships and in other places within the Primary Authority Register. Updating their information here will also update their details in all the places listed below.',
         ],
         '#attributes' => ['class' => ['form-group']],
       ];
@@ -90,45 +81,11 @@ class ParContactLocations extends ParFormPluginBase {
           '#value' => $this->getDefaultValuesByKey('locations', $cardinality, ''),
         ],
       ];
-      try {
-        $params = ['par_data_person' => $this->getDefaultValuesByKey('person_id', $cardinality, NULL)];
-        $actions = t('@link', [
-            '@link' => $this->getLinkByRoute('par_person_update_flows.update_contact', $params)
-              ->setText('Update ' . $this->getDefaultValuesByKey('name', $cardinality, 'person'))
-              ->toString(),
-          ]);
-      } catch (ParFlowException $e) {
-
-      }
 
       $form['contact'] = [
         '#type' => 'fieldset',
         '#weight' => 1,
         '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
-        'name' => [
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => $this->getDefaultValuesByKey('name', $cardinality, NULL),
-          '#attributes' => ['class' => ['column-two-thirds']],
-        ],
-        'actions' => [
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => isset($actions) ? $actions : 'Update contact details',
-          '#attributes' => ['class' => ['column-one-third']],
-        ],
-        'email' => [
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => $this->getDefaultValuesByKey('email_preferences', $cardinality, NULL),
-          '#attributes' => ['class' => ['column-two-thirds']],
-        ],
-        'phone' => [
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#attributes' => ['class' => ['column-one-third']],
-          '#value' => $this->getDefaultValuesByKey('work_phone', $cardinality, NULL) . '<br>' . $this->getDefaultValuesByKey('mobile_phone', $cardinality, NULL),
-        ],
         'locations' => [
           '#type' => 'html_tag',
           '#tag' => 'details',

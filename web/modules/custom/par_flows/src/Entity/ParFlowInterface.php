@@ -106,7 +106,7 @@ interface ParFlowInterface {
   /**
    * Get the next route.
    *
-   * @deprecated use self::getRouteByOperation() instead.
+   * @deprecated use self::progressRoute() instead.
    *
    * @param string $operation
    *   An optional form operation that can be used to override the redirection.
@@ -119,7 +119,7 @@ interface ParFlowInterface {
   /**
    * Get the previous route.
    *
-   * @deprecated use self::getRouteByOperation() instead.
+   * @deprecated use self::progressRoute() instead.
    *
    * @param string $operation
    *   An optional form operation that can be used to override the redirection.

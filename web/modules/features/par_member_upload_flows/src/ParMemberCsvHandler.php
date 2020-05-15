@@ -11,6 +11,7 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\file\FileInterface;
@@ -741,7 +742,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     $directory = 's3private://member-csv/';
     $name = str_replace(' ', '_', "Member list for " . lcfirst($par_data_partnership->label()));
-    $file = file_save_data($data, $directory . $name . '.' . self::FILE_EXTENSION, FILE_EXISTS_REPLACE);
+    $file = file_save_data($data, $directory . $name . '.' . self::FILE_EXTENSION, FileSystemInterface::EXISTS_REPLACE);
 
     // Set the reference fields, useful for keeping track of
     // which authorities and organisations the csv belongs to.
