@@ -61,7 +61,6 @@
         "drupal/redis": "~1.4.0",
         "drupal/robotstxt": "~1.1.0",
         "drupal/role_delegation": "~1.0.0",
-        "drupal/session_limit": "^1.0@beta",
         "drupal/swiftmailer": "~1.0.0-beta1",
         "drupal/trance": "~1.1.0",
         "drupal/twig_field_value": "~1.2.0",

@@ -126,7 +126,6 @@ module:
   robotstxt: 0
   role_delegation: 0
   serialization: 0
-  session_limit: 0
   shortcut: 0
   syslog: 0
   system: 0
