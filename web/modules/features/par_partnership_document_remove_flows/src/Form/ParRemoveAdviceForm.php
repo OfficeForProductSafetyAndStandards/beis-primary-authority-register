@@ -111,6 +111,8 @@ class ParRemoveAdviceForm extends ParBaseForm {
     try {
       if (isset($delta)) {
         $par_data_partnership->get('field_advice')->removeItem($delta);
+        $revision_message = $this->t("The advice '@advice' was removed from the partnership.", ['@advice' => $par_data_advice->getAdviceTitle()]);
+        $par_data_partnership->setNewRevision(TRUE, $revision_message);
       }
       else {
         throw new \InvalidArgumentException('No field delta has been provided.');

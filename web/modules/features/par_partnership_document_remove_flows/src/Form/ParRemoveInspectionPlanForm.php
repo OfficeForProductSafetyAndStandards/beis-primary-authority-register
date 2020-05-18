@@ -111,6 +111,8 @@ class ParRemoveInspectionPlanForm extends ParBaseForm {
     try {
       if (isset($delta)) {
         $par_data_partnership->get('field_inspection_plan')->removeItem($delta);
+        $revision_message = $this->t("The inspection plan @inspection_plan was removed from the partnership.", ['@inspection_plan' => $par_data_inspection_plan->getTitle()]);
+        $par_data_partnership->setNewRevision(TRUE, $revision_message);
       }
       else {
         throw new \InvalidArgumentException('No field delta has been provided.');
