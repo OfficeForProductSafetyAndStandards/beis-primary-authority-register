@@ -1537,9 +1537,9 @@ display:
           element_wrapper_class: ''
           element_default_classes: true
           empty: ''
-          hide_empty: true
+          hide_empty: false
           empty_zero: false
-          hide_alter_empty: true
+          hide_alter_empty: false
           title: 'Revoke inspection plan'
           assistive_text: 'Revoke {{ title }} '
           link: '/partnership/{{ id_1 }}/inspection/{{ id }}/revoke'

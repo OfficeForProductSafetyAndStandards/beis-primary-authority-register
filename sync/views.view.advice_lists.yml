@@ -1876,7 +1876,7 @@ display:
           empty: ''
           hide_empty: false
           empty_zero: false
-          hide_alter_empty: true
+          hide_alter_empty: false
           title: Remove
           assistive_text: 'Remove the advice {{ advice_title }}'
           link: '/partnership/{{ id_1 }}/advice/{{ id }}/remove'
