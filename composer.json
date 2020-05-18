@@ -52,11 +52,11 @@
         "drupal/message_notify": "~1.0.0",
         "drupal/no_autocomplete": "~1.4.0",
         "drupal/pagerer": "~1.5.0",
-        "drupal/password_policy": "3.x-dev#ef81a55ad49d7d4e18f493fad2284923d28bfe70",
+        "drupal/password_policy": "~3.0.0",
         "drupal/password_strength": "~2.0.0",
         "drupal/queue_ui": "~2.0.0",
         "drupal/range": "~1.1.0",
-        "drupal/raven": "~2.15.0",
+        "drupal/raven": "~2.25",
         "drupal/redis": "~1.4.0",
         "drupal/robotstxt": "~1.1.0",
         "drupal/role_delegation": "~1.0.0",
@@ -163,7 +163,7 @@
                 "SetOptions on null causing error": "https://www.drupal.org/files/issues/2018-03-09/toolbar_alter_error-2947616-11.patch"
             },
             "drupal/password_policy": {
-                "Remove setting of field_last_password_reset on install": "https://www.drupal.org/files/issues/2018-07-03/Do-not-set-user-fields-on-install_2983448_4.patch"
+                "Remove setting of field_last_password_reset on install": "https://www.drupal.org/files/issues/2020-03-23/Do_not_set_user_fields_on_install-2983448-17.patch"
             },
             "drupal/password_strength": {
                 "Change user notifications to explain reason for password rejection more clearly": "./patches/password_strength_dictionary.patch"
