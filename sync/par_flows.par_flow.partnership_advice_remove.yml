@@ -1,0 +1,20 @@
+uuid: 19795429-966b-4e8d-8811-eab0d584480c
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 2ichEnRJ4LTRpO5ktU6xROoDq7RO5WcJlB1FnWVNu6s
+id: partnership_advice_remove
+label: 'Remove Partnership''s Advice Flow'
+default_title: null
+default_section_title: 'Primary Authority partnership information'
+description: ''
+save_method: end
+states:
+  - par_data_partnership
+  - type
+  - par_data_advice
+steps:
+  1:
+    route: par_partnership_document_remove_flows.remove_advice
+    form_id: par_partnership_advice_remove
