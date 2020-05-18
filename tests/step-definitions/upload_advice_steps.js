@@ -60,10 +60,10 @@ Then('I able to upload advice document', function () {
       .click('#edit-upload')
 });
 
-Then('I enter advice title', function () {
+Then('I enter the advice title {string}', function (title) {
   return client
       .clearValue('#edit-advice-title')
-      .setValue('#edit-advice-title', 'Auto-test-NewAdvice')
+      .setValue('#edit-advice-title', title)
 
 });
 Then('I enter new advice title', function () {
@@ -116,10 +116,9 @@ Then('I select regulatory function', function () {
 });
 
 
-Then('I see advice uploaded successfully', function () {
-  return shared
-      .clickLinkByPureText('Auto-test-NewAdvice')
-
+Then('I see that the advice {string} uploaded successfully', function (advice) {
+  return !shared
+      .clickLinkByPureText(advice)
       .assert.containsText('.filename', 'test')
 });
 
@@ -139,11 +138,19 @@ When('I click on edit against an advice', function () {
 
 });
 
-
 When('I click on archive against an advice', function () {
   return shared
       .clickLinkByPureText('Archive')
       .assert.containsText('h1.heading-xlarge', 'Are you sure you want to archive this advice?')
+
+});
+
+When('I click to remove the advice {string}', function (advice) {
+  return shared
+      .setValue('#edit-keywords', advice)
+      .click('#edit-submit-advice-lists')
+      .clickLinkByPureText('Remove')
+      .assert.containsText('h1.heading-xlarge', 'Are you sure you want to remove this advice?')
 
 });
 
@@ -174,9 +181,9 @@ When('I enter reason {string}', function (string) {
 });
 
 
-Then('I should archive successfully', function () {
+Then('I should not see the removed advice {string}', function (advice) {
   return client
       .assert.containsText('h1.heading-xlarge', 'Advice')
-  //.assert.containsText('.views-field views-field-par-status','Archived')
+      .expect.element('.par-partnership-search').text.to.not.contain(advice)
 });
 

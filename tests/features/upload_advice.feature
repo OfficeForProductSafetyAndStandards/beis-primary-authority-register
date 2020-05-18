@@ -25,12 +25,12 @@ Feature: Upload advice
     When I open advice add page
     And I upload the file "files/test.png" to field "#edit-files-upload"
     And I click on the button "#edit-upload"
-    And I enter advice title
+    And I enter the advice title "Auto-test-NewAdvice"
     And I enter summary of advice
     And I select advice type "business-advice"
     And I select "Cookie control" regulatory function
     And I click save
-    And I see advice uploaded successfully
+    Then I see that the advice "Auto-test-NewAdvice" uploaded successfully
 
   @upload-advice @ci
   Scenario: Upload-advice type background information
@@ -39,12 +39,12 @@ Feature: Upload advice
     When I open advice add page
     And I upload the file "files/test.png" to field "#edit-files-upload"
     And I click on the button "#edit-upload"
-    And I enter advice title
+    And I enter the advice title "Background information for the business"
     And I enter summary of advice
     And I select advice type "background-information"
     And I select "Cookie control" regulatory function
     And I click save
-    And I see advice uploaded successfully
+    Then I see that the advice "Background information for the business" uploaded successfully
 
   @upload-advice
   Scenario: Helpdesk user able to upload advice for an active partnership
@@ -53,12 +53,12 @@ Feature: Upload advice
     When I open advice add page
     And I upload the file "files/test.png" to field "#edit-files-upload"
     And I click on the button "#edit-upload"
-    And I enter advice title
+    And I enter the advice title "Environmental Health advice"
     And I enter summary of advice
     And I select advice type "business-advice"
     And I select "Environmental health" regulatory function
     And I click save
-    And I see advice uploaded successfully
+    Then I see that the advice "Environmental Health advice" uploaded successfully
 
   @upload-advice @ci
   Scenario: Edit advice
@@ -78,12 +78,21 @@ Feature: Upload advice
     And I navigate to an active partnership "Lower East Side Borough Council"
     And I click "See all Advice"
     When I click on archive against an advice
-    When I enter reason "new advice is ready"
     And I click save
     Then I should archive successfully
 
 
-  Scenario: validate error when guidline checkbox is not selected
+  @upload-advice @ci
+  Scenario: Remove advice
+    Given I am logged in as "par_helpdesk@example.com"
+    And I navigate to an active partnership "Lower East Side Borough Council"
+    And I click "See all Advice"
+    When I click to remove the advice "Environmental Health advice"
+    And I click continue
+    Then I should not see the removed advice "Environmental Health advice"
+
+
+    Scenario: validate error when guidline checkbox is not selected
 
   Scenario: valdiate error message when title, summary or type of advice missing
 
