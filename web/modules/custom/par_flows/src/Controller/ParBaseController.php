@@ -26,6 +26,7 @@ use Drupal\Core\Access\AccessResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
+use Drupal\par_flows\Event\ParFlowEvents;
 
 /**
 * A controller for all styleguide page output.
@@ -254,14 +255,15 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
     $current_route = \Drupal::routeMatch();
     $matched_url = isset($route_name) && isset($route_params) ? Url::fromRoute($route_name, $route_params, $route_options) : NULL;
     $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), $current_route, $matched_url);
+
     switch($action) {
       case 'cancel':
-        $this->getEventDispatcher()->dispatch(ParFlowEvent::FLOW_CANCEL, $event);
+        $this->getEventDispatcher()->dispatch(ParFlowEvents::FLOW_CANCEL, $event);
 
         break;
 
       default:
-        $this->getEventDispatcher()->dispatch(ParFlowEvent::FLOW_SUBMIT . ":$action", $event);
+        $this->getEventDispatcher()->dispatch(ParFlowEvents::FLOW_SUBMIT . ":$action", $event);
 
     }
     $url = $event->getUrl();
