@@ -60,7 +60,7 @@ Feature: Upload advice
     And I enter the advice title "Environmental Health advice"
     And I enter summary of advice
     And I select advice type "business-advice"
-    And I select "Environmental health" regulatory function
+    And I select "Cookie control" regulatory function
     And I click save
     Then I see that the advice "Environmental Health advice" uploaded successfully
 
