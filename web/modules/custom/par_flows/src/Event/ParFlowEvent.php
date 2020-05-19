@@ -2,19 +2,16 @@
 
 namespace Drupal\par_flows\Event;
 
+use Symfony\Component\EventDispatcher\Event;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\par_flows\Entity\ParFlowInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Drupal\par_flows\Event\ParFlowEvents;
 
 /**
  * Event that is fired when a user logs in.
  */
 class ParFlowEvent extends Event implements ParFlowEventInterface {
-
-  const FLOW_CANCEL = 'par_flows_alter_cancel';
-  const FLOW_BACK = 'par_flows_alter_back';
-  const FLOW_SUBMIT = 'par_flows_alter_submit';
 
   /**
    * The par flow.
@@ -72,18 +69,18 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
     // Return event names for specific operations.
     switch ($operation) {
       case 'back':
-        return self::FLOW_BACK;
+        return ParFlowEvents::FLOW_BACK;
 
         break;
 
       case 'cancel':
-        return self::FLOW_CANCEL;
+        return ParFlowEvents::FLOW_CANCEL;
 
         break;
 
     }
 
-    return implode(':', [self::FLOW_SUBMIT, $operation]);
+    return implode(':', [ParFlowEvents::FLOW_SUBMIT, $operation]);
   }
 
   /**
