@@ -4,8 +4,8 @@ namespace Drupal\par_flows\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Link;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\Event\ParFlowStepEvent;
 use Drupal\par_flows\ParDefaultActionsTrait;
@@ -13,6 +13,7 @@ use Drupal\par_flows\ParFlowDataHandler;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\par_forms\ParFormPluginInterface;
 
 /**
  * Defines the PAR Form Flow entity.
@@ -62,9 +63,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
   const SAVE_STEP = 'step';
   const SAVE_END = 'end';
-  const BACK_STEP = 'back';
-  const CANCEL_STEP = 'cancel';
-  const DONE_STEP = 'done';
 
   /**
    * The flow ID.
@@ -271,6 +269,19 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   }
 
   /**
+   * A static helper to get the plugin name based on the configuration options.
+   *
+   * @param $key
+   * @param $settings
+   *
+   * @return string
+   *   The plugin name.
+   */
+  static function getComponentName($key, $settings) {
+    return $settings[ParFormPluginInterface::NAME_PROPERTY] ?? $key;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getCurrentStep() {
@@ -325,7 +336,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       $prev_index = $redirect;
     }
 
-    // Then go back to the previous step, or if we are on the first step we return the current route.
+    // Then fallback to the next step, or the first if already on the last.
     if (!isset($prev_step) && $current_step === 1) {
       $prev_step = $this->getStep(1);
       $prev_index = 1;
@@ -335,7 +346,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       $prev_step = isset($prev_index) ? $this->getStep($prev_index) : $this->getStep(1);
     }
 
-    // If there is no previous step we'll return the current route.
+    // If there is no next step we'Nextll go back to the beginning.
     $step = isset($prev_step) && isset($prev_step['route']) ? $prev_index : NULL;
 
     if (empty($step)) {
@@ -352,45 +363,43 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     $current_step = $this->getCurrentStep();
 
     // Operations that should not progress to the next step.
-    $final_operations = [self::CANCEL_STEP, self::DONE_STEP];
+    $final_operations = ['cancel', 'done'];
 
     // Rule 1) Check if the operation given found a valid step.
     if ($redirect = $this->getStepByOperation($current_step, $operation)) {
       $redirect_step = $this->getStep($redirect);
-      $redirect_route = $redirect_step['route'] ?? NULL;
     }
-
-    // Rule 2) Check if the logic is trying to go back one step on the current
-    // journey by passing in a default back operation.
-    if (empty($redirect_route) && $operation === ParFlow::BACK_STEP) {
-      $next_index = --$current_step;
-      $redirect_step = isset($next_index) ? $this->getStep($next_index) : NULL;
-      $redirect_route = $redirect_step['route'] ?? NULL;
-    }
-
-    // Rule 3) Check if there is a next step in the journey, for operations
-    // that support progressing to the next step in the journey.
-    if (empty($redirect_route) && array_search($operation, $final_operations) === FALSE && $current_step < count($this->getSteps())) {
+    // Rule 2) Check if there is a next step in the journey, for operations
+    // that support progression.
+    elseif (array_search($operation, $final_operations) === FALSE && $current_step < count($this->getSteps())) {
       $next_index = ++$current_step;
       $redirect_step = isset($next_index) ? $this->getStep($next_index) : NULL;
-      $redirect_route = $redirect_step['route'] ?? NULL;
     }
 
-    $redirect_url = isset($redirect_route) ? Url::fromRoute($redirect_route, $this->getRouteParams()) : NULL;
+    // Rule 3) Allow other modules to alter the redirection rules.
+    // @TODO Add a hook alter to allow additional redirection rules per module.
 
-    // Rule 4) Allow other modules to alter the redirection rules.
-    $event = new ParFlowEvent($this, $this->getCurrentRouteMatch(), $redirect_url);
-    $this->getEventDispatcher()->dispatch(ParFlowEvent::getCustomEvent($operation), $event);
-    // If this event altered the url we'll need to get the route.
-    $redirect_url = $event->getUrl();
-    $redirect_route = isset($redirect_url) && ($redirect_url instanceof Url) ? $event->getUrl()->getRouteName() : NULL;
-
-    if (isset($redirect_route) && $this->getRouter()->getRouteCollection()->get($redirect_route)) {
-      return $redirect_route;
-    }
-    else {
+    if (empty($redirect_step)) {
       throw new ParFlowException('Could not find the next page.');
     }
+
+    return isset($redirect_step['route']) ? $redirect_step['route'] : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getNextRoute($operation = NULL) {
+    $next_step = $this->getNextStep($operation);
+    return $this->getRouteByStep($next_step);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPrevRoute($operation = NULL) {
+    $prev_step = $this->getPrevStep($operation);
+    return $this->getRouteByStep($prev_step);
   }
 
   /**

@@ -224,6 +224,18 @@ class ParDataOrganisation extends ParDataEntity {
   }
 
   /**
+   * Get the membership size.
+   */
+  public function getMembershipSize() {
+    if (!$this->get('size')->isEmpty()) {
+      $size = $this->get('size')->getString();
+      return is_numeric($size) ? (int) $this->get('size')->getString() : NULL;
+    }
+
+    return  NULL;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {

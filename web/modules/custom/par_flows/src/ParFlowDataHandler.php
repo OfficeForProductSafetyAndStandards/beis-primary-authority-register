@@ -9,6 +9,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\Entity\ParFlowInterface;
+use Drupal\par_forms\ParFormPluginInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\PrivateTempStoreFactory;
 
@@ -336,15 +337,28 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getFormPermValue($key) {
-    return NestedArray::getValue($this->data, (array) $key);
+  public function getFormPermValue($key, ParFormPluginInterface $plugin = NULL) {
+    $key = (array) $key;
+
+    // Allow the plugin namespace to be used as a prefix if a plugin is passed in.
+    if ($plugin && $plugin instanceof ParFormPluginInterface) {
+      array_unshift($key, $plugin->getPluginNamespace());
+    }
+
+    return NestedArray::getValue($this->data, $key);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setFormPermValue($key, $value) {
-    NestedArray::setValue($this->data, (array) $key, $value, TRUE);
+  public function setFormPermValue($key, $value, ParFormPluginInterface $plugin = NULL) {
+    $key = (array) $key;
+    // Allow the plugin namespace to be used as a prefix if a plugin is passed in.
+    if ($plugin && $plugin instanceof ParFormPluginInterface) {
+      array_unshift($key, $plugin->getPluginNamespace());
+    }
+
+    NestedArray::setValue($this->data, $key, $value, TRUE);
   }
 
   /**

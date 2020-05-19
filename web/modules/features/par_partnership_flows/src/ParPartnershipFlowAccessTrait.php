@@ -75,6 +75,13 @@ trait ParPartnershipFlowAccessTrait {
 
         break;
 
+
+      case 'par_partnership_flows.legal_entity_remove':
+        // Prohibit removing of the last item.
+        if ($par_data_partnership->get('field_legal_entity')->count() <= 1) {
+          $this->accessResult = AccessResult::forbidden('The last legal entity can\'t be removed.');
+        }
+
       case 'par_partnership_flows.legal_entity_add':
       case 'par_partnership_flows.legal_entity_edit':
         // Restrict access to partnerships that haven't yet been nominated.
