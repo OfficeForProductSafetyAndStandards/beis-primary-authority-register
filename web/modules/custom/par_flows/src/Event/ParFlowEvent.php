@@ -77,9 +77,7 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
         return ParFlowEvents::FLOW_CANCEL;
 
         break;
-
     }
-
     return implode(':', [ParFlowEvents::FLOW_SUBMIT, $operation]);
   }
 
