@@ -25,7 +25,6 @@ class ProgressRouteCancelOperationSubscriber implements EventSubscriberInterface
   static function getSubscribedEvents() {
 
     $events[ParFlowEvent::getCustomEvent('cancel')][] = ['onEvent', -100];
-
     return $events;
   }
 
@@ -36,14 +35,13 @@ class ProgressRouteCancelOperationSubscriber implements EventSubscriberInterface
   public function onEvent(ParFlowEventInterface $event) {
 
     $redirect_url = $event->getUrl();
-
+    
     // If the redirect URL has already been set by the previous conditions this event subscriber will not set a fallback default.
     if (isset($redirect_url) && ($redirect_url instanceof Url)) {
       return;
     }
 
     $par_flow_obj = $event->getFlow();
-
     $redirect_url = Url::fromRoute($this->cancelRoute, $par_flow_obj->getRouteParams());
 
     // Set the ParFlowEvent URL to the fallback cancel operation.
