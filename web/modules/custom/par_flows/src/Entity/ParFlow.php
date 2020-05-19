@@ -63,6 +63,9 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
   const SAVE_STEP = 'step';
   const SAVE_END = 'end';
+  const BACK_STEP = 'back';
+  const CANCEL_STEP = 'cancel';
+  const DONE_STEP = 'done';
 
   /**
    * The flow ID.
