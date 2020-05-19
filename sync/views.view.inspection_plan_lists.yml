@@ -859,7 +859,7 @@ display:
           plugin_id: standard
       arguments: {  }
       display_extenders: {  }
-      css_class: par_partnership_search
+      css_class: par_inspection_plan_listing
       filter_groups:
         operator: AND
         groups:

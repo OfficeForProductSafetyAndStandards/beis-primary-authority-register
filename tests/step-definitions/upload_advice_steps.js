@@ -191,13 +191,13 @@ Then('I should see the archived advice {string}', function (advice) {
         .clearValue('#edit-advice-title')
         .setValue('#edit-keywords', advice)
         .click('#edit-submit-advice-lists')
-        .assert.containsText('.views-field.views-field-par-status','Archived')
+        .assert.containsText('.par_advice_listing','Archived')
 });
 
 
 Then('I should not see the removed advice {string}', function (advice) {
   return client
       .assert.containsText('h1.heading-xlarge', 'Advice')
-      .expect.element('.par-partnership-search').text.to.not.contain(advice)
+      .expect.element('.par_advice_listing').text.to.not.contain(advice)
 });
 
