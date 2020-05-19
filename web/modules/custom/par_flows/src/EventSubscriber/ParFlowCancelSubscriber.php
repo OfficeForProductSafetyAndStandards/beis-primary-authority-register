@@ -11,7 +11,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 
 
-class ProgressRouteCancelOperationSubscriber implements EventSubscriberInterface {
+class ParFlowCancelSubscriber implements EventSubscriberInterface {
 
 
   protected $cancelRoute = 'par_search_partnership_flows.partnership_page';
