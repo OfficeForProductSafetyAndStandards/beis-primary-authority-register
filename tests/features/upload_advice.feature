@@ -46,7 +46,7 @@ Feature: Upload advice
     And I click save
     Then I see that the advice "Background information for the business" uploaded successfully
 
-  @upload-advice
+  @upload-advice @ci
   Scenario: Helpdesk user able to upload advice for an active partnership
     Given I am logged in as "par_helpdesk@example.com"
     When I click the link text "Manage partnerships"
