@@ -35,7 +35,7 @@ class ProgressRouteCancelOperationSubscriber implements EventSubscriberInterface
   public function onEvent(ParFlowEventInterface $event) {
 
     $redirect_url = $event->getUrl();
-    
+
     // If the redirect URL has already been set by the previous conditions this event subscriber will not set a fallback default.
     if (isset($redirect_url) && ($redirect_url instanceof Url)) {
       return;
