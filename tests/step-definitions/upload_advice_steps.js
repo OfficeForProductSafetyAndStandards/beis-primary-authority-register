@@ -191,7 +191,7 @@ Then('I should see the archived advice {string}', function (advice) {
         .clearValue('#edit-advice-title')
         .setValue('#edit-keywords', advice)
         .click('#edit-submit-advice-lists')
-        .assert.containsText('.views-field views-field-par-status','Archived')
+        .assert.containsText('.views-field.views-field-par-status','Archived')
 });
 
 
