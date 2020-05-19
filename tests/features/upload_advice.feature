@@ -49,8 +49,11 @@ Feature: Upload advice
   @upload-advice
   Scenario: Helpdesk user able to upload advice for an active partnership
     Given I am logged in as "par_helpdesk@example.com"
-    And I navigate to an active partnership "Lower East Side Borough Council"
-    When I open advice add page
+    When I click the link text "Manage partnerships"
+    And I add "Lower East Side Borough Council" to the inputfield "#edit-keywords"
+    And I select the option with the value "confirmed_rd" for element "#edit-partnership-status"
+    And I click on the button "#edit-submit-helpdesk-dashboard"
+    And I open advice add page
     And I upload the file "files/test.png" to field "#edit-files-upload"
     And I click on the button "#edit-upload"
     And I enter the advice title "Environmental Health advice"
@@ -85,21 +88,14 @@ Feature: Upload advice
   @upload-advice @ci
   Scenario: Remove advice
     Given I am logged in as "par_helpdesk@example.com"
-    And I navigate to an active partnership "Lower East Side Borough Council"
+    When I click the link text "Manage partnerships"
+    And I add "Lower East Side Borough Council" to the inputfield "#edit-keywords"
+    And I select the option with the value "confirmed_rd" for element "#edit-partnership-status"
+    And I click on the button "#edit-submit-helpdesk-dashboard"
     And I click "See all Advice"
     When I click to remove the advice "Environmental Health advice"
     And I click continue
     Then I should not see the removed advice "Environmental Health advice"
-
-
-    Scenario: validate error when guidline checkbox is not selected
-
-  Scenario: valdiate error message when title, summary or type of advice missing
-
-  Scenario: Verify search advice
-
-  Scenario: Verify filter advice
-
 
 
 
