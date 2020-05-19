@@ -53,6 +53,7 @@ Feature: Upload advice
     And I add "Lower East Side Borough Council" to the inputfield "#edit-keywords"
     And I select the option with the value "confirmed_rd" for element "#edit-partnership-status"
     And I click on the button "#edit-submit-helpdesk-dashboard"
+    Then I click the link text "Lower East Side Borough Council"
     And I open advice add page
     And I upload the file "files/test.png" to field "#edit-files-upload"
     And I click on the button "#edit-upload"
@@ -92,6 +93,7 @@ Feature: Upload advice
     And I add "Lower East Side Borough Council" to the inputfield "#edit-keywords"
     And I select the option with the value "confirmed_rd" for element "#edit-partnership-status"
     And I click on the button "#edit-submit-helpdesk-dashboard"
+    Then I click the link text "Lower East Side Borough Council"
     And I click "See all Advice"
     When I click to remove the advice "Environmental Health advice"
     And I click continue
