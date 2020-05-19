@@ -4,8 +4,8 @@ namespace Drupal\par_flows\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Link;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\Event\ParFlowStepEvent;
 use Drupal\par_flows\ParDefaultActionsTrait;
