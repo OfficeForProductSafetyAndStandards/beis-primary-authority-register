@@ -410,7 +410,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     }
 
     // Set the redirection.
-    if ($url && $url instanceof Url) {
+    if (isset($url) && $url instanceof Url) {
       $form_state->setRedirectUrl($url);
     }
   }
