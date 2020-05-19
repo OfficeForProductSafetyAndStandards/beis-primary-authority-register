@@ -11,6 +11,7 @@ use Drupal\par_flows\ParFlowDataHandler;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\par_forms\ParFormPluginInterface;
 
 /**
  * Defines the PAR Form Flow entity.
@@ -60,9 +61,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
   const SAVE_STEP = 'step';
   const SAVE_END = 'end';
-  const BACK_STEP = 'back';
-  const CANCEL_STEP = 'cancel';
-  const DONE_STEP = 'done';
 
   /**
    * The flow ID.
@@ -251,6 +249,19 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   }
 
   /**
+   * A static helper to get the plugin name based on the configuration options.
+   *
+   * @param $key
+   * @param $settings
+   *
+   * @return string
+   *   The plugin name.
+   */
+  static function getComponentName($key, $settings) {
+    return $settings[ParFormPluginInterface::NAME_PROPERTY] ?? $key;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getCurrentStep() {
@@ -305,7 +316,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       $prev_index = $redirect;
     }
 
-    // Then go back to the previous step, or if we are on the first step we return the current route.
+    // Then fallback to the next step, or the first if already on the last.
     if (!isset($prev_step) && $current_step === 1) {
       $prev_step = $this->getStep(1);
       $prev_index = 1;
@@ -315,7 +326,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       $prev_step = isset($prev_index) ? $this->getStep($prev_index) : $this->getStep(1);
     }
 
-    // If there is no previous step we'll return the current route.
+    // If there is no next step we'Nextll go back to the beginning.
     $step = isset($prev_step) && isset($prev_step['route']) ? $prev_index : NULL;
 
     if (empty($step)) {
