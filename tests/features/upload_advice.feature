@@ -81,9 +81,9 @@ Feature: Upload advice
     Given I am logged in as "par_authority@example.com"
     And I navigate to an active partnership "Lower East Side Borough Council"
     And I click "See all Advice"
-    When I click on archive against an advice
-    And I click save
-    Then I should archive successfully
+    When I archive the advice "" with the reason "Test archiving this advice."
+    Then I should see the archived advice ""
+
 
 
   @upload-advice @ci
@@ -95,8 +95,7 @@ Feature: Upload advice
     And I click on the button "#edit-submit-helpdesk-dashboard"
     Then I click the link text "Lower East Side Borough Council"
     And I click "See all Advice"
-    When I click to remove the advice "Environmental Health advice"
-    And I click continue
+    When I remove the advice "Environmental Health advice" with the reason "Removing test advice."
     Then I should not see the removed advice "Environmental Health advice"
 
 

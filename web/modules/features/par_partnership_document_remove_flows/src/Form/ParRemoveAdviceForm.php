@@ -83,6 +83,14 @@ class ParRemoveAdviceForm extends ParBaseForm {
       ];
     }
 
+    // Enter the removal reason.
+    $form['remove_reason'] = [
+      '#title' => $this->t('Enter the reason you are removing this advice'),
+      '#type' => 'textarea',
+      '#rows' => 5,
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('remove_reason', FALSE),
+    ];
+
     $form['delta'] = [
       '#type' => 'hidden',
       '#value' => $delta,
@@ -111,7 +119,11 @@ class ParRemoveAdviceForm extends ParBaseForm {
     try {
       if (isset($delta)) {
         $par_data_partnership->get('field_advice')->removeItem($delta);
-        $revision_message = $this->t("The advice '@advice' was removed from the partnership.", ['@advice' => $par_data_advice->getAdviceTitle()]);
+        $remove_reason = $this->getFlowDataHandler()->getDefaultValues('remove_reason', '');
+        $revision_message = $this->t(
+          "The advice '@advice' was removed from the partnership. The reason given was:" . PHP_EOL . "@reason",
+          ['@advice' => $par_data_advice->getAdviceTitle(), '@reason' => $remove_reason]
+        );
         $par_data_partnership->setNewRevision(TRUE, $revision_message);
       }
       else {

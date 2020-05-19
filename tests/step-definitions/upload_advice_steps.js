@@ -138,20 +138,25 @@ When('I click on edit against an advice', function () {
 
 });
 
-When('I click on archive against an advice', function () {
+When('I archive the advice {string} with the reason {string}', function (advice, reason) {
   return shared
+      .setValue('#edit-keywords', advice)
+      .click('#edit-submit-advice-lists')
       .clickLinkByPureText('Archive')
       .assert.containsText('h1.heading-xlarge', 'Are you sure you want to archive this advice?')
+      .setValue('#edit-archive-reason', reason)
+      .click('#edit-save')
 
 });
 
-When('I click to remove the advice {string}', function (advice) {
+When('I remove the advice {string} with the reason {string}', function (advice, reason) {
   return shared
       .setValue('#edit-keywords', advice)
       .click('#edit-submit-advice-lists')
       .clickLinkByPureText('Remove')
       .assert.containsText('h1.heading-xlarge', 'Are you sure you want to remove this advice?')
-
+      .setValue('#edit-remove-reason', reason)
+      .click('#edit-next')
 });
 
 
@@ -178,6 +183,15 @@ Then('I see new file in the advice detail page', function () {
 When('I enter reason {string}', function (string) {
   return client
       .setValue('#edit-archive-reason', string)
+});
+
+Then('I should see the archived advice {string}', function (advice) {
+    return client
+        .assert.containsText('h1.heading-xlarge', 'Advice')
+        .clearValue('#edit-advice-title')
+        .setValue('#edit-keywords', advice)
+        .click('#edit-submit-advice-lists')
+        .assert.containsText('.views-field views-field-par-status','Archived')
 });
 
 
