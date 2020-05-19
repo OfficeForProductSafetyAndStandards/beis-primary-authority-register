@@ -81,8 +81,8 @@ Feature: Upload advice
     Given I am logged in as "par_authority@example.com"
     And I navigate to an active partnership "Lower East Side Borough Council"
     And I click "See all Advice"
-    When I archive the advice "" with the reason "Test archiving this advice."
-    Then I should see the archived advice ""
+    When I archive the advice "Auto-test-NewAdvice-retest" with the reason "Test archiving this advice."
+    Then I should see the archived advice "Auto-test-NewAdvice-retest"
 
 
 
