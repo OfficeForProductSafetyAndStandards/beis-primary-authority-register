@@ -188,7 +188,7 @@ When('I enter reason {string}', function (string) {
 Then('I should see the archived advice {string}', function (advice) {
     return client
         .assert.containsText('h1.heading-xlarge', 'Advice')
-        .clearValue('#edit-advice-title')
+        .clearValue('#edit-keywords')
         .setValue('#edit-keywords', advice)
         .click('#edit-submit-advice-lists')
         .assert.containsText('.par-advice-listing','Archived')
