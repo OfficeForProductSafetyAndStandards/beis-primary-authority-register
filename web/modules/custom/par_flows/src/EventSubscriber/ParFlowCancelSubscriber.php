@@ -12,9 +12,9 @@ use Drupal\Core\Url;
 
 class ParFlowCancelSubscriber implements EventSubscriberInterface {
 
+  protected $cancel_partnership_search = 'par_search_partnership_flows.partnership_page';
 
-  protected $cancelPartnershipSearch = 'par_search_partnership_flows.partnership_page';
-
+  protected $cancel_fallback_dashboard_route = 'par_dashboards.dashboard';
 
   /**
    * The events to react to.
@@ -26,7 +26,6 @@ class ParFlowCancelSubscriber implements EventSubscriberInterface {
     $events[ParFlowEvent::getCustomEvent('cancel')][] = ['onEvent', -100];
     return $events;
   }
-
 
   /**
    * @param ParFlowEventInterface $event
@@ -42,14 +41,16 @@ class ParFlowCancelSubscriber implements EventSubscriberInterface {
 
     $par_flow_obj = $event->getFlow();
 
-    // Get the form ID of the current form being processed.
+    // Get the form ID of the current form being processed so overrides can be set by form.
     $flow_form_processed = $par_flow_obj->getFormIdByStep($par_flow_obj->getCurrentStep());
 
     switch ($flow_form_processed) {
 
       case 'par_authority_selection':
-        $redirect_route  = $this->cancelPartnershipSearch;
+        $redirect_route  = $this->cancel_partnership_search;
         break;
+      default:
+        $redirect_route  = $this->$cancel_fallback_dashboard_route;
     }
 
     $redirect_url = Url::fromRoute($redirect_route, $par_flow_obj->getRouteParams());
