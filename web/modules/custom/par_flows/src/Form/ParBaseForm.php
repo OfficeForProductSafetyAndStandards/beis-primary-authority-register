@@ -367,8 +367,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $submit_action = $form_state->getTriggeringElement()['#name'];
     try {
       // Get the next route from the flow.
-      $route_name = $this->getFlowNegotiator()->getFlow()->progressRoute($submit_action);
-      $route_params = $this->getRouteParams();
+      $url = $this->getFlowNegotiator()->getFlow()->progressRoute($submit_action);
     }
     catch (ParFlowException $e) {
 
@@ -377,40 +376,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     }
 
-    // @TODO, need to convert all these defaults ('getEntryUrl()',
-    // 'par_dashboards.dashboard', 'skipQueryRedirection') to form listeners
-    // so that they can happen within the 'progresRoute()' method and therefore
-    // everywhere we call this method.
-
-
-    // If the next route could be found in the flow then
-    // return to the entry route if one was specified.
-    if (!isset($route_name) && $url = $this->getEntryUrl()) {
-      $route_name = $url->getRouteName();
-      $route_params = $url->getRouteParameters();
-
-      // Delete form storage.
-      // @TODO We could choose to delete the store if we're completing the journey.
-      // $this->getFlowDataHandler()->deleteStore();
-    }
-
-    // We need a backup route in case all else fails.
-    if (!isset($route_name)) {
-      $route_name = 'par_dashboards.dashboard';
-      $route_params = [];
-    }
-
-    // Determine whether to use the 'destination' query parameter
-    // to determine redirection preferences.
-    $options = [];
-    $query = $this->getRequest()->query;
-    if ($this->skipQueryRedirection && $query->has('destination')) {
-      $options['query']['destination'] = $query->get('destination');
-      $query->remove('destination');
-    }
-
     // Set the redirection.
-    if (isset($url) && $url instanceof Url) {
+    if ($url && $url instanceof Url) {
       $form_state->setRedirectUrl($url);
     }
   }
