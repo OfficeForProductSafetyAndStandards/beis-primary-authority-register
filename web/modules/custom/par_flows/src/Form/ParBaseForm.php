@@ -367,7 +367,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $submit_action = $form_state->getTriggeringElement()['#name'];
     try {
       // Get the next route from the flow.
-      $url = $this->getFlowNegotiator()->getFlow()->progressRoute($submit_action);
+      $redirect_route = $this->getFlowNegotiator()->getFlow()->progressRoute($submit_action);
     }
     catch (ParFlowException $e) {
 
@@ -376,6 +376,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     }
 
+    $url = isset($redirect_route) ? Url::fromRoute($redirect_route, $this->getRouteParams()) : NULL;
     // Set the redirection.
     if ($url && $url instanceof Url) {
       $form_state->setRedirectUrl($url);
