@@ -3,7 +3,6 @@
 namespace Drupal\par_flows\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\par_flows\Event\ParFlowEvents;
 use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\Event\ParFlowEventInterface;
 use Symfony\Component\Routing\Route;
@@ -14,7 +13,7 @@ use Drupal\Core\Url;
 class ParFlowCancelSubscriber implements EventSubscriberInterface {
 
 
-  protected $cancelRoute = 'par_search_partnership_flows.partnership_page';
+  protected $cancelPartnershipSearch = 'par_search_partnership_flows.partnership_page';
 
 
   /**
@@ -42,7 +41,18 @@ class ParFlowCancelSubscriber implements EventSubscriberInterface {
     }
 
     $par_flow_obj = $event->getFlow();
-    $redirect_url = Url::fromRoute($this->cancelRoute, $par_flow_obj->getRouteParams());
+
+    // Get the form ID of the current form being processed.
+    $flow_form_processed = $par_flow_obj->getFormIdByStep($par_flow_obj->getCurrentStep());
+
+    switch ($flow_form_processed) {
+
+      case 'par_authority_selection':
+        $redirect_route  = $this->cancelPartnershipSearch;
+        break;
+    }
+
+    $redirect_url = Url::fromRoute($redirect_route, $par_flow_obj->getRouteParams());
 
     // Set the ParFlowEvent URL to the fallback cancel operation.
     $event->setUrl($redirect_url);
