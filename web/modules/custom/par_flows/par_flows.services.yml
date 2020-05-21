@@ -9,3 +9,7 @@ services:
     class: '\Drupal\par_flows\EventSubscriber\ParFlowCancelSubscriber'
     tags:
       - { name: 'event_subscriber' }
+  par_flows.progress_route_cancel_subscriber:
+    class: '\Drupal\par_flows\EventSubscriber\ParFlowSubmitSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
