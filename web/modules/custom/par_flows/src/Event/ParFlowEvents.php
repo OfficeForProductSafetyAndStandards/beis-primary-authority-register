@@ -43,7 +43,7 @@ final class ParFlowEvents {
   /**
    * Name of the event fired when a form is submitted on a journey.
    *
-   * This event allows modules to perform an action whenever a journey on the register is canceled via the forms
+   * This event allows modules to perform an action whenever a journey form on the register submitted is.
    * The event listener method receives a \Drupal\par_flows\Event\ParFlowEven instance.
    *
    * @Event
