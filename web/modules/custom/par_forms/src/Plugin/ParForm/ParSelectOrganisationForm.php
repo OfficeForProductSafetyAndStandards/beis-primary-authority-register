@@ -49,7 +49,7 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
       // Get the flow entry point to use as a fallback link.
       $entry_point = $this->getFinalRoute();
       $entry_point_URL = $this->getPathValidator()->getUrlIfValid($entry_point);
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('cancel', $entry_point), $this->getRouteParams());
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('cancel', $entry_point_URL), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 
