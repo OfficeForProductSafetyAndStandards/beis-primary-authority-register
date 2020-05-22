@@ -43,6 +43,14 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   protected $currentStep;
 
   /**
+   * The url of the entry point to the current journey.
+   *
+   * @var \Drupal\Core\Url
+   *   A Url to use as a redirection fallback for validation errors.
+   */
+  private $entryUrl;
+
+  /**
    * Constructs the object.
    *
    * @param ParFlowInterface $flow
@@ -52,13 +60,17 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
    * @param Url $url
    *   The matched URL.
    */
-  public function __construct(ParFlowInterface $flow, RouteMatchInterface $current_route, Url $url = NULL) {
+  public function __construct(ParFlowInterface $flow, RouteMatchInterface $current_route, Url $url = NULL, Url $entryUrl = NULL) {
     $this->flow = $flow;
     $this->currentRoute = $current_route;
     $this->currentStep = $flow->getStepByRoute($current_route->getRouteName());
 
     if ($url) {
       $this->setUrl($url);
+    }
+
+    if ($entryUrl) {
+      $this->entryUrl = $entryUrl;
     }
   }
 
@@ -100,6 +112,13 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
    */
   public function getCurrentStep() {
     return $this->currentStep;
+  }
+
+  /**
+   * Get entry point URL.
+   */
+  public function getEntryUrl() {
+    return $this->entryUrl;
   }
 
   /**
