@@ -46,7 +46,11 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
 
     // If no suggestions were found cancel out of the journey.
     if ($required && count($authorities) <= 0) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('cancel'), $this->getRouteParams());
+
+      // Get the flow entry point to use as a fallback link.
+      $entry_point = $this->getFinalRoute();
+      $entry_point_URL = $this->getPathValidator()->getUrlIfValid($entry_point);
+      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('cancel', $entry_point_URL), $this->getRouteParams());
       return new RedirectResponse($url);
     }
 
