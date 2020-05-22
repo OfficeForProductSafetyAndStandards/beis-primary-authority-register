@@ -362,7 +362,8 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
-  public function progressRoute($operation = NULL) {
+  public function progressRoute($operation = NULL, $entry_point_URL = NULL) {
+
     $current_step = $this->getCurrentStep();
 
     // Operations that should not progress to the next step.
@@ -393,7 +394,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     $redirect_url = isset($redirect_route) ? Url::fromRoute($redirect_route, $this->getRouteParams()) : NULL;
 
     // Rule 4) Allow other modules to alter the redirection rules.
-    $event = new ParFlowEvent($this, $this->getCurrentRouteMatch(), $redirect_url);
+    $event = new ParFlowEvent($this, $this->getCurrentRouteMatch(), $redirect_url, $entry_point_URL);
     $this->getEventDispatcher()->dispatch(ParFlowEvent::getCustomEvent($operation), $event);
     // If this event altered the url we'll need to get the route.
     $redirect_url = $event->getUrl();
