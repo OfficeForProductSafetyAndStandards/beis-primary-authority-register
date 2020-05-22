@@ -448,34 +448,16 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function cancelForm(array &$form, FormStateInterface $form_state) {
     try {
+      $entry_point = $this->getFinalRoute();
+      $entry_point_URL = $this->getPathValidator()->getUrlIfValid($entry_point);
       // Get the cancel route from the flow.
-      $route_name = $this->getFlowNegotiator()->getFlow()->progressRoute('cancel');
-      $route_params = $this->getRouteParams();
+      $redirect_route = $this->getFlowNegotiator()->getFlow()->progressRoute('cancel', $entry_point_URL);
     }
     catch (ParFlowException $e) {
 
     }
     catch (RouteNotFoundException $e) {
 
-    }
-
-    // @TODO, need to convert all these defaults ('getEntryUrl()',
-    // 'par_dashboards.dashboard', 'skipQueryRedirection') to form listeners
-    // so that they can happen within the 'progresRoute()' method and therefore
-    // everywhere we call this method.
-
-
-    // If no cancellation route could be found in the flow then
-    // return to the entry route if one was specified.
-    if (!isset($route_name) && $url = $this->getEntryUrl()) {
-      $route_name = $url->getRouteName();
-      $route_params = $url->getRouteParameters();
-    }
-
-    // We need a backup route in case all else fails.
-    if (!isset($route_name)) {
-      $route_name = 'par_dashboards.dashboard';
-      $route_params = [];
     }
 
     // Remove the destination parameter if it redirects to a route within the flow,
@@ -493,6 +475,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Delete form storage.
     $this->getFlowDataHandler()->deleteStore();
 
+    $url = isset($redirect_route) ? Url::fromRoute($redirect_route, $this->getRouteParams()) : NULL;
+    
     if ($url && $url instanceof Url) {
       $form_state->setRedirectUrl($url);
     }
