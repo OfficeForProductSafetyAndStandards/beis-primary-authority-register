@@ -12,6 +12,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
+use Drupal\par_flows\ParFlowDataHandler;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_forms\Annotation\ParForm;
@@ -168,6 +169,15 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
+   * Get the event dispatcher service.
+   *
+   * @return \Drupal\Core\Path\PathValidatorInterface
+   */
+  public function getPathValidator() {
+    return \Drupal::service('path.validator');
+  }
+
+  /**
    * Returns the logger channel specific to errors logged by PAR Forms.
    *
    * @return string
@@ -182,6 +192,15 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    */
   public function calculateDependencies() {
     return [];
+  }
+
+  /**
+   * Get the route to return to once the journey has been completed.
+   */
+  public function getFinalRoute() {
+    // Get the route that we entered on.
+    $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
+    return $entry_point;
   }
 
   /**
