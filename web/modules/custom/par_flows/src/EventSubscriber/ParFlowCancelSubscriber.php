@@ -39,21 +39,20 @@ class ParFlowCancelSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $par_flow_obj = $event->getFlow();
-
-    // Get the form ID of the current form being processed so overrides can be set by form.
-    $flow_form_processed = $par_flow_obj->getFormIdByStep($par_flow_obj->getCurrentStep());
-
-    switch ($flow_form_processed) {
-
-      case 'par_authority_selection':
-        $redirect_route  = $this->cancel_partnership_search;
-        break;
-      default:
-        $redirect_route  = $this->$cancel_fallback_dashboard_route;
+    // If the cancel route could be found in the flow then
+    // return to the entry route if one was specified.
+    if (!isset($redirect_url)  && $url = $event->getEntryUrl()) {
+      $redirect_route = $url->getRouteName();
+      $route_params = $url->getRouteParameters();
     }
 
-    $redirect_url = Url::fromRoute($redirect_route, $par_flow_obj->getRouteParams());
+    // We need a backup route in case all else fails.
+    if (!isset($redirect_route)) {
+      $redirect_route = $this->cancel_fallback_dashboard_route;
+      $route_params = [];
+    }
+
+    $redirect_url = Url::fromRoute($redirect_route, $route_params);
 
     // Set the ParFlowEvent URL to the fallback cancel operation.
     $event->setUrl($redirect_url);
