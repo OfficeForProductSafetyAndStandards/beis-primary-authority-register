@@ -32,6 +32,11 @@ interface ParFlowEventInterface {
   public function getUrl();
 
   /**
+   * Get the fallback entry point URL.
+   */
+  public function getEntryUrl();
+
+  /**
    * Set the next url to redirect to.
    *
    * @param \Drupal\Core\Url $url
