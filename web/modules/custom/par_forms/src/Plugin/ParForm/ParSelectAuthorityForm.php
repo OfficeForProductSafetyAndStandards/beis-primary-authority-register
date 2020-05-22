@@ -46,7 +46,6 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
 
     // If no suggestions were found cancel out of the journey.
     if ($required && count($authorities) <= 0) {
-
       // Get the flow entry point to use as a fallback link.
       $entry_point = $this->getFinalRoute();
       $entry_point_URL = $this->getPathValidator()->getUrlIfValid($entry_point);
