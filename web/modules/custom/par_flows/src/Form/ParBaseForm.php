@@ -476,7 +476,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $this->getFlowDataHandler()->deleteStore();
 
     $url = isset($redirect_route) ? Url::fromRoute($redirect_route, $this->getRouteParams()) : NULL;
-    
+
     if ($url && $url instanceof Url) {
       $form_state->setRedirectUrl($url);
     }
