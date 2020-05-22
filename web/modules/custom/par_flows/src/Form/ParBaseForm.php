@@ -362,12 +362,14 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $values = $this->cleanseMultipleValues($values);
     $this->getFlowDataHandler()->setFormTempData($values);
 
-    // Get the redirect route to the next form based on the flow configuration
-    // 'operation' parameter that matches the submit button's name.
-    $submit_action = $form_state->getTriggeringElement()['#name'];
     try {
+      $entry_point = $this->getFinalRoute();
+      $entry_point_URL = $this->getPathValidator()->getUrlIfValid($entry_point);
+      // Get the redirect route to the next form based on the flow configuration
+      // 'operation' parameter that matches the submit button's name.
+      $submit_action = $form_state->getTriggeringElement()['#name'];
       // Get the next route from the flow.
-      $redirect_route = $this->getFlowNegotiator()->getFlow()->progressRoute($submit_action);
+      $redirect_route = $this->getFlowNegotiator()->getFlow()->progressRoute($submit_action, $entry_point_URL);
     }
     catch (ParFlowException $e) {
 
@@ -503,8 +505,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Get the route that we entered on.
     $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
 
-
-    return NULL;
+    return $entry_point;
   }
 
   /**
