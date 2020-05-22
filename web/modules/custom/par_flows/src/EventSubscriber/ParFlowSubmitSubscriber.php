@@ -7,17 +7,12 @@ use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\Event\ParFlowEventInterface;
 use Symfony\Component\Routing\Route;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\par_flows\ParControllerTrait;
 use Drupal\Core\Url;
 
 
 class ParFlowSubmitSubscriber implements EventSubscriberInterface {
 
-  use ParControllerTrait;
-
-
   protected $next_fallback_dashboard_route = 'par_dashboards.dashboard';
-
 
   /**
    * The events to react to.
@@ -45,7 +40,7 @@ class ParFlowSubmitSubscriber implements EventSubscriberInterface {
     }
     // If the next route could be found in the flow then
     // return to the entry route if one was specified.
-    if (!isset($redirect_url)  && $url = $this->getEntryUrl()) {
+    if (!isset($redirect_url) && $url = $event->getEntryUrl()) {
       $route_name = $url->getRouteName();
       $route_params = $url->getRouteParameters();
     }
@@ -56,21 +51,9 @@ class ParFlowSubmitSubscriber implements EventSubscriberInterface {
       $route_params = [];
     }
 
-    // Determine whether to use the 'destination' query parameter
-    // to determine redirection preferences.
-    $options = [];
-  //  $query = $this->getRequest()->query;
-  //  if ($this->skipQueryRedirection && $query->has('destination')) {
-    //  $options['query']['destination'] = $query->get('destination');
-     // $query->remove('destination');
-    //}
-
-
     $redirect_url = isset($route_name) && isset($route_params) ? Url::fromRoute($route_name, $route_params) : [];
 
     // Set the ParFlowEvent URL to the fallback form submission default fallback URL.
     $event->setUrl($redirect_url);
   }
 }
-
-
