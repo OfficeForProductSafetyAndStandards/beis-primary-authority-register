@@ -363,8 +363,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $this->getFlowDataHandler()->setFormTempData($values);
 
     try {
-      $entry_point = $this->getFinalRoute();
-      $entry_point_URL = $this->getPathValidator()->getUrlIfValid($entry_point);
+      $entry_point_URL = $this->geFlowEntryURL();
       // Get the redirect route to the next form based on the flow configuration
       // 'operation' parameter that matches the submit button's name.
       $submit_action = $form_state->getTriggeringElement()['#name'];
@@ -448,8 +447,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function cancelForm(array &$form, FormStateInterface $form_state) {
     try {
-      $entry_point = $this->getFinalRoute();
-      $entry_point_URL = $this->getPathValidator()->getUrlIfValid($entry_point);
+      $entry_point_URL = $this->geFlowEntryURL();
       // Get the cancel route from the flow.
       $redirect_route = $this->getFlowNegotiator()->getFlow()->progressRoute('cancel', $entry_point_URL);
     }
@@ -490,6 +488,16 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
 
     return $entry_point;
+  }
+
+  /**
+   * Get the route to return to once the journey has been completed.
+   */
+  public function geFlowEntryURL() {
+    $entry_point = $this->getFinalRoute();
+    $valid_url = $this->getPathValidator()->getUrlIfValid($entry_point);
+
+    return isset($valid_url) ? $valid_url : NULL;
   }
 
   /**
