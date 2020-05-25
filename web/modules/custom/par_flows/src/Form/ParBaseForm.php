@@ -218,7 +218,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       $index = isset($cardinality) ? (int) $cardinality : NULL;
 
       // Handle instances where FormBuilderInterface should return a redirect response.
-
       $plugin = $this->getFormBuilder()->getPluginElements($component, $form, $index);
       if ($plugin instanceof RedirectResponse) {
         return $plugin;
@@ -364,11 +363,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     try {
       $entry_point_URL = $this->geFlowEntryURL();
+      kint($entry_point_URL);
+      $url = Url::fromRoute("entity.node.canonical", $this->getRouteParams());
+      kint($url);
       // Get the redirect route to the next form based on the flow configuration
       // 'operation' parameter that matches the submit button's name.
       $submit_action = $form_state->getTriggeringElement()['#name'];
       // Get the next route from the flow.
       $redirect_route = $this->getFlowNegotiator()->getFlow()->progressRoute($submit_action, $entry_point_URL);
+      kint($redirect_route);
     }
     catch (ParFlowException $e) {
 
@@ -376,8 +379,12 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     catch (RouteNotFoundException $e) {
 
     }
+    $redirect_route = "par_profile_view_flows.profile";
 
+    kint($this->getRouteParams());
+die();
     $url = isset($redirect_route) ? Url::fromRoute($redirect_route, $this->getRouteParams()) : NULL;
+
     // Set the redirection.
     if ($url && $url instanceof Url) {
       $form_state->setRedirectUrl($url);
@@ -487,17 +494,26 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Get the route that we entered on.
     $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
 
-    return $entry_point;
+    return NULL;
   }
 
   /**
    * Get the route to return to once the journey has been completed.
    */
   public function geFlowEntryURL() {
-    $entry_point = $this->getFinalRoute();
-    $valid_url = $this->getPathValidator()->getUrlIfValid($entry_point);
+    // Get the route that we entered on.
+    $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
+    try {
+      $url = $this->getPathValidator()->getUrlIfValid($entry_point);
+    }
+    catch (\InvalidArgumentException $e) {
 
-    return isset($valid_url) ? $valid_url : NULL;
+    }
+
+    if ($url && $url instanceof Url && $url->isRouted()) {
+      return $url;
+    }
+    return NULL;
   }
 
   /**
