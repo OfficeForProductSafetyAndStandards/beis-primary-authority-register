@@ -200,9 +200,17 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   public function geFlowEntryURL() {
     // Get the route that we entered on.
     $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
-    $valid_url = $this->getPathValidator()->getUrlIfValid($entry_point);
+    try {
+      $url = $this->getPathValidator()->getUrlIfValid($entry_point);
+    }
+    catch (\InvalidArgumentException $e) {
 
-    return isset($valid_url) ? $valid_url : NULL;
+    }
+
+    if ($url && $url instanceof Url && $url->isRouted()) {
+      return $url;
+    }
+    return NULL;
   }
 
   /**
