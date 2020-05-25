@@ -254,7 +254,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
     // 4) Allow flow modules to alter the route as required.
     $current_route = \Drupal::routeMatch();
     $matched_url = isset($route_name) && isset($route_params) ? Url::fromRoute($route_name, $route_params, $route_options) : NULL;
-    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), $current_route, $matched_url);
+    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), $current_route, $matched_url, NULL);
 
     switch($action) {
       case 'cancel':
