@@ -25,12 +25,12 @@ Feature: Upload advice
     When I open advice add page
     And I upload the file "files/test.png" to field "#edit-files-upload"
     And I click on the button "#edit-upload"
-    And I enter advice title
+    And I enter the advice title "Auto-test-NewAdvice"
     And I enter summary of advice
     And I select advice type "business-advice"
     And I select "Cookie control" regulatory function
     And I click save
-    And I see advice uploaded successfully
+    Then I see that the advice "Auto-test-NewAdvice" uploaded successfully
 
   @upload-advice @ci
   Scenario: Upload-advice type background information
@@ -39,26 +39,30 @@ Feature: Upload advice
     When I open advice add page
     And I upload the file "files/test.png" to field "#edit-files-upload"
     And I click on the button "#edit-upload"
-    And I enter advice title
+    And I enter the advice title "Background information for the business"
     And I enter summary of advice
     And I select advice type "background-information"
     And I select "Cookie control" regulatory function
     And I click save
-    And I see advice uploaded successfully
+    Then I see that the advice "Background information for the business" uploaded successfully
 
-  @upload-advice
+  @upload-advice @ci
   Scenario: Helpdesk user able to upload advice for an active partnership
     Given I am logged in as "par_helpdesk@example.com"
-    And I navigate to an active partnership "Lower East Side Borough Council"
-    When I open advice add page
+    When I click the link text "Manage partnerships"
+    And I add "Lower East Side Borough Council" to the inputfield "#edit-keywords"
+    And I select the option with the value "confirmed_rd" for element "#edit-partnership-status"
+    And I click on the button "#edit-submit-helpdesk-dashboard"
+    Then I click the link text "Lower East Side Borough Council"
+    And I open advice add page
     And I upload the file "files/test.png" to field "#edit-files-upload"
     And I click on the button "#edit-upload"
-    And I enter advice title
+    And I enter the advice title "Environmental Health advice"
     And I enter summary of advice
     And I select advice type "business-advice"
-    And I select "Environmental health" regulatory function
+    And I select "Cookie control" regulatory function
     And I click save
-    And I see advice uploaded successfully
+    Then I see that the advice "Environmental Health advice" uploaded successfully
 
   @upload-advice @ci
   Scenario: Edit advice
@@ -77,20 +81,22 @@ Feature: Upload advice
     Given I am logged in as "par_authority@example.com"
     And I navigate to an active partnership "Lower East Side Borough Council"
     And I click "See all Advice"
-    When I click on archive against an advice
-    When I enter reason "new advice is ready"
-    And I click save
-    Then I should archive successfully
+    When I archive the advice "Auto-test-NewAdvice-retest" with the reason "Test archiving this advice."
+    Then I should see the archived advice "Auto-test-NewAdvice-retest"
 
 
-  Scenario: validate error when guidline checkbox is not selected
 
-  Scenario: valdiate error message when title, summary or type of advice missing
-
-  Scenario: Verify search advice
-
-  Scenario: Verify filter advice
-
+  @upload-advice @ci
+  Scenario: Remove advice
+    Given I am logged in as "par_helpdesk@example.com"
+    When I click the link text "Manage partnerships"
+    And I add "Lower East Side Borough Council" to the inputfield "#edit-keywords"
+    And I select the option with the value "confirmed_rd" for element "#edit-partnership-status"
+    And I click on the button "#edit-submit-helpdesk-dashboard"
+    Then I click the link text "Lower East Side Borough Council"
+    And I click "See all Advice"
+    When I remove the advice "Environmental Health advice" with the reason "Removing test advice."
+    Then I should not see the removed advice "Environmental Health advice"
 
 
 

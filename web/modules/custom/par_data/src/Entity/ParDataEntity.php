@@ -873,12 +873,16 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
-  public function setNewRevision($value = TRUE) {
+  public function setNewRevision($value = TRUE, $message = NULL) {
     parent::setNewRevision($value);
 
     if (!$this->isNew()) {
       $this->setRevisionCreationTime($this->getTime()->getRequestTime());
       $this->setRevisionAuthorId(\Drupal::currentUser()->id());
+    }
+
+    if ($message) {
+      $this->setRevisionLogMessage($message);
     }
   }
 

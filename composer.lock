@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6fb4972330645ff2b7139e60d6daf1b8",
+    "content-hash": "6857e2591390ce42e47cd626e439857f",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -113,16 +113,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.138.1",
+            "version": "3.138.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "66df78e714c7ac87a9ea2bbb77cde586649d0141"
+                "reference": "2c9ce7a12991e983e009ac9db453036000188ddd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/66df78e714c7ac87a9ea2bbb77cde586649d0141",
-                "reference": "66df78e714c7ac87a9ea2bbb77cde586649d0141",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2c9ce7a12991e983e009ac9db453036000188ddd",
+                "reference": "2c9ce7a12991e983e009ac9db453036000188ddd",
                 "shasum": ""
             },
             "require": {
@@ -193,7 +193,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2020-05-14T18:17:11+00:00"
+            "time": "2020-05-20T18:12:57+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -1276,16 +1276,16 @@
         },
         {
             "name": "doctrine/common",
-            "version": "2.12.0",
+            "version": "2.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "2053eafdf60c2172ee1373d1b9289ba1db7f1fc6"
+                "reference": "308728eae8d90412d850c155d40b1cfbede549da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/2053eafdf60c2172ee1373d1b9289ba1db7f1fc6",
-                "reference": "2053eafdf60c2172ee1373d1b9289ba1db7f1fc6",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/308728eae8d90412d850c155d40b1cfbede549da",
+                "reference": "308728eae8d90412d850c155d40b1cfbede549da",
                 "shasum": ""
             },
             "require": {
@@ -1295,7 +1295,7 @@
                 "doctrine/event-manager": "^1.0",
                 "doctrine/inflector": "^1.0",
                 "doctrine/lexer": "^1.0",
-                "doctrine/persistence": "^1.1",
+                "doctrine/persistence": "^1.3.3",
                 "doctrine/reflection": "^1.0",
                 "php": "^7.1"
             },
@@ -1355,7 +1355,7 @@
                 "doctrine",
                 "php"
             ],
-            "time": "2020-01-10T15:49:25+00:00"
+            "time": "2020-05-15T05:51:54+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -2645,16 +2645,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "8.8.5",
+            "version": "8.8.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "e22cfc3adf1dac7a92452287a7d8602f3c27b68f"
+                "reference": "a5daf2aa45bbc72da72e1e64d5261f746ffb508c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/e22cfc3adf1dac7a92452287a7d8602f3c27b68f",
-                "reference": "e22cfc3adf1dac7a92452287a7d8602f3c27b68f",
+                "url": "https://api.github.com/repos/drupal/core/zipball/a5daf2aa45bbc72da72e1e64d5261f746ffb508c",
+                "reference": "a5daf2aa45bbc72da72e1e64d5261f746ffb508c",
                 "shasum": ""
             },
             "require": {
@@ -2879,7 +2879,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2020-04-02T19:01:19+00:00"
+            "time": "2020-05-20T08:22:02+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -3513,7 +3513,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/git_deploy.git",
-                "reference": "44b720ea0c5a810a33d1326f766e966e8716d323"
+                "reference": "b93456a4e3be8c6847ce409410234072bb667f5f"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
@@ -3524,8 +3524,8 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.1+3-dev",
-                    "datestamp": "1589127679",
+                    "version": "8.x-2.2+4-dev",
+                    "datestamp": "1589761068",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -3571,7 +3571,7 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/git_deploy"
             },
-            "time": "2020-05-13T17:24:15+00:00"
+            "time": "2020-05-18T01:17:39+00:00"
         },
         {
             "name": "drupal/google_analytics",
@@ -4082,7 +4082,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/maillog.git",
-                "reference": "14fd24cd89e299ad271608cd52706c60b753c26d"
+                "reference": "3ec675bd7842c04bc01860fa8b3f424f95a17d93"
             },
             "require": {
                 "drupal/core": "*"
@@ -4128,7 +4128,7 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/maillog"
             },
-            "time": "2016-08-05T21:18:07+00:00"
+            "time": "2020-05-19T01:33:41+00:00"
         },
         {
             "name": "drupal/mailsystem",
@@ -4807,30 +4807,30 @@
         },
         {
             "name": "drupal/raven",
-            "version": "2.15.0",
+            "version": "2.26.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/raven.git",
-                "reference": "8.x-2.15"
+                "reference": "8.x-2.26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/raven-8.x-2.15.zip",
-                "reference": "8.x-2.15",
-                "shasum": "91efb954d18cd80284a60f96f3803331b250593e"
+                "url": "https://ftp.drupal.org/files/projects/raven-8.x-2.26.zip",
+                "reference": "8.x-2.26",
+                "shasum": "bfc5bb479d337c845b790dbe274868435d6c7010"
             },
             "require": {
-                "drupal/core": "~8.0",
+                "drupal/core": "^8 || ^9",
                 "sentry/sentry": "^1.7.0"
+            },
+            "require-dev": {
+                "drupal/csp": "*"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-2.x": "2.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-2.15",
-                    "datestamp": "1559434981",
+                    "version": "8.x-2.26",
+                    "datestamp": "1584482622",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4844,7 +4844,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4856,7 +4856,7 @@
             "description": "Raven is an exception logging client for Sentry (sentry.io).",
             "homepage": "https://www.drupal.org/project/raven",
             "support": {
-                "source": "http://cgit.drupalcode.org/raven",
+                "source": "https://git.drupalcode.org/project/raven",
                 "issues": "https://www.drupal.org/project/issues/raven"
             }
         },
@@ -6515,16 +6515,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.68",
+            "version": "1.0.69",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "3e4198372276ec99ac3409a21d7c9d1ced9026e4"
+                "reference": "7106f78428a344bc4f643c233a94e48795f10967"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/3e4198372276ec99ac3409a21d7c9d1ced9026e4",
-                "reference": "3e4198372276ec99ac3409a21d7c9d1ced9026e4",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/7106f78428a344bc4f643c233a94e48795f10967",
+                "reference": "7106f78428a344bc4f643c233a94e48795f10967",
                 "shasum": ""
             },
             "require": {
@@ -6595,7 +6595,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2020-05-12T20:33:44+00:00"
+            "time": "2020-05-18T15:13:39+00:00"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
@@ -7234,16 +7234,16 @@
         },
         {
             "name": "nette/di",
-            "version": "v3.0.3",
+            "version": "v3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/di.git",
-                "reference": "77d69061cbf8f9cfb7363dd983136f51213d3e41"
+                "reference": "34d3e47ebe96229b7671664893a3b1128c102213"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/di/zipball/77d69061cbf8f9cfb7363dd983136f51213d3e41",
-                "reference": "77d69061cbf8f9cfb7363dd983136f51213d3e41",
+                "url": "https://api.github.com/repos/nette/di/zipball/34d3e47ebe96229b7671664893a3b1128c102213",
+                "reference": "34d3e47ebe96229b7671664893a3b1128c102213",
                 "shasum": ""
             },
             "require": {
@@ -7301,7 +7301,7 @@
                 "nette",
                 "static"
             ],
-            "time": "2020-01-20T12:14:54+00:00"
+            "time": "2020-05-14T10:29:59+00:00"
         },
         {
             "name": "nette/finder",
