@@ -401,7 +401,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     $redirect_route = isset($redirect_url) && ($redirect_url instanceof Url) ? $event->getUrl()->getRouteName() : NULL;
 
     if (isset($redirect_route) && $this->getRouter()->getRouteCollection()->get($redirect_route)) {
-      return $redirect_route;
+      return $redirect_url;
     }
     else {
       throw new ParFlowException('Could not find the next page.');
