@@ -51,7 +51,7 @@ class ParFlowSubmitSubscriber implements EventSubscriberInterface {
       $route_params = [];
     }
 
-    $redirect_url = isset($route_name) && isset($route_params) ? Url::fromRoute($route_name, $route_params) : [];
+    $redirect_url = isset($route_name) && isset($route_params) ? Url::fromRoute($route_name, $route_params) : NULL;
 
     // Set the ParFlowEvent URL to the fallback form submission default fallback URL.
     $event->setUrl($redirect_url);

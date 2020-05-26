@@ -52,7 +52,7 @@ class ParFlowCancelSubscriber implements EventSubscriberInterface {
       $route_params = [];
     }
 
-    $redirect_url = Url::fromRoute($redirect_route, $route_params);
+    $redirect_url = isset($redirect_route) && isset($route_params) ? Url::fromRoute($redirect_route, $route_params) : NULL;
 
     // Set the ParFlowEvent URL to the fallback cancel operation.
     $event->setUrl($redirect_url);
