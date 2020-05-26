@@ -376,7 +376,18 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     }
 
-    $url = isset($redirect_route) ? $redirect_route : NULL;
+    $route_params = $this->getRouteParams();
+
+    $query = $this->getRequest()->query;
+    // We need a better way of dealing with rare cases which fall back to the entry route as well as having
+    // different route params to the current route (user account activation management).
+    // As we pass a route name of the redirect route instead of the URL object we rely on getRouteParams()
+    //which will not always work.
+    if ($query->has('par_data_person')) {
+      $route_params = ['par_data_person' => $query->get('par_data_person')];
+    }
+
+    $url = isset($redirect_route) ? Url::fromRoute($redirect_route, $route_params) : NULL;
     // Set the redirection.
     if ($url && $url instanceof Url) {
       $form_state->setRedirectUrl($url);
@@ -472,7 +483,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Delete form storage.
     $this->getFlowDataHandler()->deleteStore();
 
-    $url = isset($redirect_route) ? $redirect_route : NULL;
+    $url = isset($redirect_route) ? Url::fromRoute($redirect_route, $this->getRouteParams()) : NULL;
 
     if ($url && $url instanceof Url) {
       $form_state->setRedirectUrl($url);

@@ -229,8 +229,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
     // 2) Get the next available route in the flow.
     try {
       if (!isset($route_name)) {
-        $route_obj = $this->getFlowNegotiator()->getFlow()->progressRoute($action);
-        $route_name = $route_obj->getRouteName();
+        $route_name = $this->getFlowNegotiator()->getFlow()->progressRoute($action);
         $route_params = $this->getRouteParams();
       }
     }
