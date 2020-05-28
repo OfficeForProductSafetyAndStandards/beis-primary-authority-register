@@ -53,7 +53,6 @@ Feature: Upload inspection plan
         Given I am logged in as "par_helpdesk@example.com"
         And I go to manage the partnership "Partnership nominated by Secretary of State" click on "Upper West Side Borough Council" and status "confirmed_rd"
         And I click "See all Inspection Plans"
-        When I remove the inspection plan "Auto-test-NewInspectionPlan-retest"
-        And I enter the remove reason "inspection plan is no longer valid."
+        When I remove the inspection plan "Auto-test-NewInspectionPlan-retest" with the reason "Test removing this inspection plan."
         And I click save
-        Then I should revoke successfully
+        Then I should remove successfully
