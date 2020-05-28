@@ -53,11 +53,11 @@ class ParGdprForm extends ParFormPluginBase {
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
-
+    
     $form['privacy_notice'] = [
       '#type' => 'link',
       '#title' => $this->t('Link to full privacy notice'),
-      '#url' => Url::fromUri('https://www.gov.uk/government/publications/safety-and-standards-privacy-notice'),
+      '#url' => Url::fromUri('https://www.gov.uk/government/publications/safety-and-standards-privacy-notice', ['attributes' => ['target' => '_blank']]),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
