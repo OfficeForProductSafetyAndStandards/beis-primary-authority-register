@@ -95,6 +95,12 @@ When('I remove the inspection plan {string} with the reason {string}', function 
         .click('#edit-next')
 });
 
+Then('I should not see the removed inspection plan {string}', function (inspection_plan) {
+    return client
+        .assert.containsText('h1.heading-xlarge', 'Inspection Plans')
+        .expect.element('.par-inspection-plan-listing').text.to.not.contain(inspection_plan)
+});
+
 When('I enter the revoke reason {string}', function (string) {
     return client
         .setValue('#edit-revocation-reason', string)
