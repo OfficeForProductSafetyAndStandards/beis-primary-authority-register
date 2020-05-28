@@ -89,7 +89,6 @@ class ParRemoveAdviceForm extends ParBaseForm {
       '#type' => 'textarea',
       '#rows' => 5,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('remove_reason', FALSE),
-      '#required' => TRUE,
     ];
 
     $form['delta'] = [
@@ -106,6 +105,18 @@ class ParRemoveAdviceForm extends ParBaseForm {
     return parent::buildForm($form, $form_state);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+
+    parent::validateForm($form, $form_state);
+
+    if (!$form_state->getValue('remove_reason')) {
+      $id = $this->getElementId('remove_reason', $form);
+      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please enter the reason you are removing this advice.', $id));
+    }
+  }
   /**
    * {@inheritdoc}
    */
