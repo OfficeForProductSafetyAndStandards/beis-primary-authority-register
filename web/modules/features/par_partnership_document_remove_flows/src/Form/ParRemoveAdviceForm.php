@@ -89,6 +89,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
       '#type' => 'textarea',
       '#rows' => 5,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('remove_reason', FALSE),
+      '#required' => TRUE,
     ];
 
     $form['delta'] = [
