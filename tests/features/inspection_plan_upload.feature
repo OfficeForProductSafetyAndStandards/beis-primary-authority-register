@@ -55,4 +55,4 @@ Feature: Upload inspection plan
         And I click "See all Inspection Plans"
         When I remove the inspection plan "Auto-test-NewInspectionPlan-retest" with the reason "Test removing this inspection plan."
         And I click save
-        Then I should remove successfully
+        Then I should not see the removed inspection plan "Auto-test-NewInspectionPlan-retest"
