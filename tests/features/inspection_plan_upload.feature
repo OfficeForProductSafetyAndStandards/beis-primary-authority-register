@@ -54,5 +54,4 @@ Feature: Upload inspection plan
         And I go to manage the partnership "Partnership nominated by Secretary of State" click on "Upper West Side Borough Council" and status "confirmed_rd"
         And I click "See all Inspection Plans"
         When I remove the inspection plan "Auto-test-NewInspectionPlan-retest" with the reason "Test removing this inspection plan."
-        And I click save
         Then I should not see the removed inspection plan "Auto-test-NewInspectionPlan-retest"
