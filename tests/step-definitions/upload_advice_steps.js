@@ -156,6 +156,7 @@ When('I remove the advice {string} with the reason {string}', function (advice, 
       .clickLinkByPureText('Remove')
       .assert.containsText('h1.heading-xlarge', 'Are you sure you want to remove this advice?')
       .click('#edit-next')
+      .waitForElementVisible('.error-summary', 1000)
       .setValue('#edit-remove-reason', reason)
       .click('#edit-next')
 });
