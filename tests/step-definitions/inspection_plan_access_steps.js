@@ -82,6 +82,25 @@ When('I revoke the inspection plan {string}', function (title) {
         .assert.containsText('h1.heading-xlarge', 'Are you sure you want to revoke this inspection plan?')
 });
 
+When('I remove the inspection plan {string} with the reason {string}', function (inspection_plan, reason) {
+    return shared
+        .setValue('#edit-keywords', inspection_plan)
+        .click('#edit-submit-inspection-plan-lists')
+        .clickLinkByPureText('Remove inspection plan')
+        .assert.containsText('h1.heading-xlarge', 'Are you sure you want to remove this inspection plan?')
+        .click('#edit-next')
+        .waitForElementVisible('.error-summary', 1000)
+        .assert.containsText('.error-summary', 'Please enter the reason you are removing this inspection plan.')
+        .setValue('#edit-remove-reason', reason)
+        .click('#edit-next')
+});
+
+Then('I should not see the removed inspection plan {string}', function (inspection_plan) {
+    return client
+        .assert.containsText('h1.heading-xlarge', 'Inspection Plans')
+        .expect.element('.par-inspection-plan-listing').text.to.not.contain(inspection_plan)
+});
+
 When('I enter the revoke reason {string}', function (string) {
     return client
         .setValue('#edit-revocation-reason', string)
