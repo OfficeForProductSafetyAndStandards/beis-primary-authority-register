@@ -1,0 +1,11 @@
+uuid: 556147dc-c3ac-48fa-88fe-f25e6a59600c
+langcode: en
+status: true
+dependencies: {  }
+id: senior_administration_officer
+label: 'Senior Administration Officer'
+weight: 7
+is_admin: null
+permissions:
+  - 'remove partnership advice'
+  - 'remove partnership inspection plan'

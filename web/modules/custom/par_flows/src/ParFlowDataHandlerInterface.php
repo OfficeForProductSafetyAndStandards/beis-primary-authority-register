@@ -3,6 +3,7 @@
 namespace Drupal\par_flows;
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\par_forms\ParFormPluginInterface;
 
 /**
 * Interface for the Par Flow Data Handler.
@@ -179,11 +180,13 @@ interface ParFlowDataHandlerInterface {
    *
    * @param string|array $key
    *   The key of the element to search for.
+   * @param ParFormPluginInterface $plugin
+   *   If passed the plugin namespace will be prepended to the key.
    *
    * @return mixed|null
    *   The value for this element
    */
-  public function getFormPermValue($key);
+  public function getFormPermValue($key, ParFormPluginInterface $plugin = NULL);
 
   /**
    * Set a saved value into the local cache.
@@ -195,8 +198,8 @@ interface ParFlowDataHandlerInterface {
    *   The key to search for.
    * @param mixed $value
    *   The value to store for this key. Can be any string, integer or object.
-   * @param mixed $stubbed
-   *   The stubbed value to use instead .
+   * @param ParFormPluginInterface $plugin
+   *   If passed the plugin namespace will be prepended to the key.
    */
-  public function setFormPermValue($key, $value);
+  public function setFormPermValue($key, $value, ParFormPluginInterface $plugin = NULL);
 }

@@ -1,0 +1,23 @@
+timeout: 21600
+max_timeout: 28800
+padding: 30
+role_logout: true
+redirect_url: /user/login
+no_dialog: true
+message: 'You are about to be signed out from the Primary Authority Register. Do you want to continue using this site?'
+inactivity_message: 'You have been signed out due to inactivity.'
+enforce_admin: true
+jstimer_format: '%hours%:%mins%:%secs%'
+jstimer_js_load_option: false
+use_alt_logout_method: false
+use_watchdog: false
+_core:
+  default_config_hash: zJS1GknUylh656CJSNXOupqKSqm6Xw200h1cq1eI970
+no_individual_logout_threshold: false
+role_logout_max: false
+dialog_title: 'Primary Authority Register Alert'
+inactivity_message_type: status
+disable_buttons: false
+yes_button: ''
+no_button: ''
+whitelisted_ip_addresses: ''

@@ -108,10 +108,10 @@ module.exports = {
             })
         },
         clickShowMembersListIfPresent: function () {
-            return this.api.element('css selector', 'edit-members-link p:nth-child(2)', function (result) {
+            return this.api.element('css selector', '.member-list-link', function (result) {
                 if (result.value.ELEMENT) {
                     return this
-                        .clickLinkByPureText('Show members list')
+                        .clickLinkByPureText('show members list')
                 }
                 else {
                     return this

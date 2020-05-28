@@ -873,13 +873,38 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
-  public function setNewRevision($value = TRUE) {
+  public function setNewRevision($value = TRUE, $message = NULL) {
     parent::setNewRevision($value);
 
     if (!$this->isNew()) {
       $this->setRevisionCreationTime($this->getTime()->getRequestTime());
       $this->setRevisionAuthorId(\Drupal::currentUser()->id());
     }
+
+    if ($message) {
+      $this->setRevisionLogMessage($message);
+    }
+  }
+
+  /**
+   * Helper function to extract field values.
+   *
+   * @return array
+   *   An array of value properties keyed by the field delta.
+   */
+  public function extractValues($field, $property = 'value') {
+    if (!$this->hasField($field)) {
+      return;
+    }
+
+    $values = [];
+    foreach ($this->get($field)->getValue() as $key => $value) {
+      if (isset($value[$property])) {
+        $values[$key] = $value[$property];
+      }
+    }
+
+    return $values;
   }
 
   /**

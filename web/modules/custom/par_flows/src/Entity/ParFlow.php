@@ -11,6 +11,7 @@ use Drupal\par_flows\ParFlowDataHandler;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\par_forms\ParFormPluginInterface;
 
 /**
  * Defines the PAR Form Flow entity.
@@ -248,6 +249,19 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   }
 
   /**
+   * A static helper to get the plugin name based on the configuration options.
+   *
+   * @param $key
+   * @param $settings
+   *
+   * @return string
+   *   The plugin name.
+   */
+  static function getComponentName($key, $settings) {
+    return $settings[ParFormPluginInterface::NAME_PROPERTY] ?? $key;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getCurrentStep() {
@@ -335,15 +349,16 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     if ($redirect = $this->getStepByOperation($current_step, $operation)) {
       $redirect_step = $this->getStep($redirect);
     }
-    // Rule 2) Check if there is a next step in the journey, for operations
+
+    // Rule 2) Allow other modules to alter the progression rules.
+    // @TODO Add a hook alter to allow additional progression rules per module.
+
+    // Rule 3) Check if there is a next step in the journey, for operations
     // that support progression.
     elseif (array_search($operation, $final_operations) === FALSE && $current_step < count($this->getSteps())) {
       $next_index = ++$current_step;
       $redirect_step = isset($next_index) ? $this->getStep($next_index) : NULL;
     }
-
-    // Rule 3) Allow other modules to alter the redirection rules.
-    // @TODO Add a hook alter to allow additional redirection rules per module.
 
     if (empty($redirect_step)) {
       throw new ParFlowException('Could not find the next page.');
