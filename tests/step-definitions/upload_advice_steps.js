@@ -155,6 +155,7 @@ When('I remove the advice {string} with the reason {string}', function (advice, 
       .click('#edit-submit-advice-lists')
       .clickLinkByPureText('Remove')
       .assert.containsText('h1.heading-xlarge', 'Are you sure you want to remove this advice?')
+      .click('#edit-next')
       .setValue('#edit-remove-reason', reason)
       .click('#edit-next')
 });
