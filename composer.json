@@ -167,7 +167,7 @@
                 "Remove setting of field_last_password_reset on install": "https://www.drupal.org/files/issues/2020-03-23/Do_not_set_user_fields_on_install-2983448-17.patch"
             },
             "drupal/password_strength": {
-                "Change user notifications to explain reason for password rejection more clearly": "./patches/password_strength_dictionary.patch"
+                "PasswordStrength constraint does not match updated PasswordConstraintInterface": "https://www.drupal.org/files/issues/2020-04-29/password_strength-3131961-function-signature-2.patch"
             },
             "drupal/redis": {
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2019-04-11/3004561-5-override-default-scheme-for-predis.patch"
