@@ -108,6 +108,18 @@ class ParRemoveAdviceForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+
+    parent::validateForm($form, $form_state);
+
+    if (!$form_state->getValue('remove_reason')) {
+      $id = $this->getElementId('remove_reason', $form);
+      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please enter the reason you are removing this advice.', $id));
+    }
+  }
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

@@ -98,5 +98,3 @@ Feature: Upload advice
     When I remove the advice "Environmental Health advice" with the reason "Removing test advice."
     Then I should not see the removed advice "Environmental Health advice"
 
-
-
