@@ -211,6 +211,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $this->initializeFlow();
 
+    // Attach the JS form libraries
+    $form['#attached']['library'][] = 'par_flows/flow_core';
+
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
       // If there's is a cardinality parameter present display only this item.
