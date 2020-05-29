@@ -2248,7 +2248,6 @@ display:
         header: false
         query: false
         fields: false
-        use_ajax: false
       query:
         type: views_query
         options:
@@ -4011,7 +4010,6 @@ display:
           entity_type: par_data_organisation
           entity_field: employees_band
           plugin_id: field
-      use_ajax: false
     cache_metadata:
       max-age: 0
       contexts:
