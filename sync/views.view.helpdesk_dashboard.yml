@@ -2373,7 +2373,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           batch: true
-          batch_size: 200
+          batch_size: 100
           form_step: true
           buttons: true
           clear_on_exposed: false
