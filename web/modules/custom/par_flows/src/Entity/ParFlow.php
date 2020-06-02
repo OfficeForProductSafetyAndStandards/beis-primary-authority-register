@@ -373,6 +373,17 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     // Rule 4) Allow other modules to alter the redirection rules.
     // @TODO Add a hook alter to allow additional redirection rules per module.
 
+    //Fallback of cancel operations which are not mapped in the config.
+    if (!isset($redirect_step) && $operation === self::CANCEL_STEP) {
+      // fallback to the partnership_page if we cannot go back a step.
+      if ($current_step == 1) {
+        return 'par_search_partnership_flows.partnership_page';
+      }
+      // Fallback to the previous step in the flow.
+      $prev_index = --$current_step;
+      $redirect_step = $this->getRouteByStep($prev_index);
+    }
+
     if (empty($redirect_step)) {
       throw new ParFlowException('Could not find the next page.');
     }
