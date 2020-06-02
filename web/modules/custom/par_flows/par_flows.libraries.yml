@@ -1,9 +1,8 @@
 flow_core:
-  version: 1.0
+  version: 2.0
+  js:
+    js/flow-forms.js: {}
   dependencies:
     - core/jquery
-    - core/jquery
     - core/drupal
-    - core/drupal.form
-    - core/jquery.once
 
