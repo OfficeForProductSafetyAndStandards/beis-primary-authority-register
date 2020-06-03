@@ -69,17 +69,6 @@ interface ParFlowInterface {
   public function getCurrentStep();
 
   /**
-   * Go to next step.
-   *
-   * @param string $operation
-   *   An optional form operation that can be used to override the redirection.
-   *
-   * @return mixed
-   *   An key for the next step.
-   */
-  public function getNextStep($operation);
-
-  /**
    * Progress to the next route given an operation being performed.
    *
    * Operations have mildly different impacts within the journey, generally they
