@@ -133,51 +133,6 @@ class ParFlowEntityTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::getNextStep
-   */
-  public function testGetNextStep() {
-    $next_step = $this->testFlow->getNextStep();
-
-    // Check the next step is correct.
-    $this->assertEquals(3, $next_step, "The next step has been correctly identified.");
-
-    // Check that the next step for a given operation is correct.
-    $next_step_save = $this->testFlow->getNextStep('save');
-    $next_step_cancel = $this->testFlow->getNextStep('cancel');
-
-    $this->assertEquals(4, $next_step_save, "The save step has been correctly identified.");
-    $this->assertEquals(5, $next_step_cancel, "The cancel step has been correctly identified.");
-
-    // Check the next step for an incorrect operation.
-    $next_step_fallback = $this->testFlow->getNextStep('non_existant_operation');
-
-    $this->assertEquals(3, $next_step_fallback, "The flow goes to the next step if an incorrect operation is provided.");
-
-    // Check the next step for an incorrect operation on the last step.
-    $this->currentRoute = 'par_test_forms.confirmation';
-    $next_step_last_fallback = $this->testFlow->getNextStep('non_existant_operation');
-
-    $this->assertEquals(1, $next_step_last_fallback, "The flow goes back to the beginning if an incorrect operation is provided.");
-  }
-
-  /**
-   * @covers ::getNextStep
-   * @covers ::getPrevStep
-   *
-   * @expectedException        \Drupal\par_flows\ParFlowException
-   * @expectedExceptionMessage The specified route does not exist.
-   */
-  public function testInvalidSteps() {
-    // Check the next step for an incorrect operation on the last step.
-    $this->currentRoute = 'non_existant.route';
-    $this->testFlow->getNextStep();
-
-    // Check the next step for an incorrect operation on the last step.
-    $this->currentRoute = 'non_existant.route';
-    $this->testFlow->getPrevStep();
-  }
-
-  /**
    * @covers ::progressRoute
    */
   public function progressRoute() {
@@ -188,7 +143,7 @@ class ParFlowEntityTest extends UnitTestCase {
     // Check the flow progresses correctly for a given operation.
     $this->assertEquals('par_test_forms.first', $prev_route, "The previous route has been correctly identified.");
 
-    $prev_route = $this->testFlow->progressRoute('cancel');
+    $prev_route = $this->testFlow->progressRoute('cancel');Å
 
     // Check the flow progresses correctly for a given operation.
     $this->assertEquals('par_test_forms.confirmation', $prev_route, "The previous route has been correctly identified given an operation.");
