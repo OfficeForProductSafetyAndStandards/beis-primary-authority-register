@@ -2,18 +2,16 @@
 
 namespace Drupal\par_flows\Event;
 
+use Symfony\Component\EventDispatcher\Event;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\par_flows\Entity\ParFlowInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Drupal\par_flows\Event\ParFlowEvents;
 
 /**
  * Event that is fired when a user logs in.
  */
-class ParFlowEvent extends Event {
-
-  const FLOW_CANCEL = 'par_flows_alter_cancel';
-  const FLOW_SUBMIT = 'par_flows_alter_submit';
+class ParFlowEvent extends Event implements ParFlowEventInterface {
 
   /**
    * The par flow.
@@ -45,6 +43,14 @@ class ParFlowEvent extends Event {
   protected $currentStep;
 
   /**
+   * The url of the entry point to the current journey.
+   *
+   * @var \Drupal\Core\Url
+   *   A Url to use as a redirection fallback for validation errors.
+   */
+  private $entryUrl;
+
+  /**
    * Constructs the object.
    *
    * @param ParFlowInterface $flow
@@ -54,14 +60,37 @@ class ParFlowEvent extends Event {
    * @param Url $url
    *   The matched URL.
    */
-  public function __construct(ParFlowInterface $flow, RouteMatchInterface $route, Url $url = NULL) {
+  public function __construct(ParFlowInterface $flow, RouteMatchInterface $current_route, Url $url = NULL, Url $entryUrl = NULL) {
     $this->flow = $flow;
-    $this->currentRoute = $route;
-    $this->currentStep = $flow->getStepByRoute($route->getRouteName());
+    $this->currentRoute = $current_route;
+    $this->currentStep = $flow->getStepByRoute($current_route->getRouteName());
 
     if ($url) {
       $this->setUrl($url);
     }
+
+    if ($entryUrl) {
+      $this->entryUrl = $entryUrl;
+    }
+  }
+
+  /**
+   * Static method for generating an event name based on the operation.
+   */
+  public static function getCustomEvent($operation) {
+    // Return event names for specific operations.
+    switch ($operation) {
+      case 'back':
+        return ParFlowEvents::FLOW_BACK;
+
+        break;
+
+      case 'cancel':
+        return ParFlowEvents::FLOW_CANCEL;
+
+        break;
+    }
+    return implode(':', [ParFlowEvents::FLOW_SUBMIT, $operation]);
   }
 
   /**
@@ -83,6 +112,13 @@ class ParFlowEvent extends Event {
    */
   public function getCurrentStep() {
     return $this->currentStep;
+  }
+
+  /**
+   * Get entry point URL.
+   */
+  public function getEntryUrl() {
+    return $this->entryUrl;
   }
 
   /**

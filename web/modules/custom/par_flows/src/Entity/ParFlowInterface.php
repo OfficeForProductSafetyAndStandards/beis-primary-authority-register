@@ -101,10 +101,13 @@ interface ParFlowInterface {
    * @param string $operation
    *   An optional form operation that can be used to override the redirection.
    *
+   * @param \Drupal\Core\Url| $entry_point_URL
+   *   An optional URL object of the entry point of the current flow used as a fallback URL.
+   *
    * @return string|NULL
    *   The route name to progress to OR NULL if there is no route within the flow to go to.
    */
-  public function progressRoute($operation = NULL);
+  public function progressRoute($operation = NULL, $entry_point_URL = NULL);
 
   /**
    * Get a step by the form id.

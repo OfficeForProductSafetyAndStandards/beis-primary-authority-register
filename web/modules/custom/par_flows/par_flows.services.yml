@@ -5,3 +5,11 @@ services:
   par_flows.data_handler:
     class: Drupal\par_flows\ParFlowDataHandler
     arguments: ['@user.private_tempstore', '@par_flows.negotiator', '@par_data.manager', '@session_manager', '@current_user']
+  par_flows.progress_route_cancel_subscriber:
+    class: '\Drupal\par_flows\EventSubscriber\ParFlowCancelSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_flows.progress_route_submit_subscriber:
+    class: '\Drupal\par_flows\EventSubscriber\ParFlowSubmitSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
