@@ -293,38 +293,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     return isset($current_step) ? $current_step : NULL;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getNextStep($operation = NULL) {
-    $current_step = $this->getCurrentStep();
-    $redirect = $this->getStepByOperation($current_step, $operation);
-
-    // First check if the operation produced a valid step.
-    if ($redirect) {
-      $next_step = isset($redirect) && $this->getStep($redirect) ? $this->getStep($redirect) : NULL;
-      $next_index = $redirect;
-    }
-
-    // Then fallback to the next step, or the first if already on the last.
-    if (!isset($next_step) && $current_step === count($this->getSteps())) {
-      $next_step = $this->getStep(1);
-      $next_index = 1;
-    }
-    else if (!isset($next_step) && $current_step) {
-      $next_index = ++$current_step;
-      $next_step = isset($next_index) ? $this->getStep($next_index) : NULL;
-    }
-
-    // If there is no next step we'll go back to the beginning.
-    $step = isset($next_index) && isset($next_step['route']) ? $next_index : NULL;
-
-    if (empty($step)) {
-      throw new ParFlowException('The specified route does not exist.');
-    }
-
-    return $step;
-  }
 
   /**
    * {@inheritdoc}
@@ -571,7 +539,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    * {@inheritdoc}
    */
   public function getNextLink($operation = NULL, array $route_params = [], array $link_options = [], $check_access = FALSE) {
-    $step = $this->getNextStep($operation);
-    return $this->getLinkByStep($step, $route_params, $link_options, $check_access);
+    $route = $this->progressRoute($operation);
+    return $this->getLinkByRoute($route, $route_params, $link_options, $check_access);
   }
 }
