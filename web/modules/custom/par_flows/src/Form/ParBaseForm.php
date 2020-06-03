@@ -372,13 +372,13 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $values = $this->cleanseMultipleValues($values);
     $this->getFlowDataHandler()->setFormTempData($values);
 
-    // Get the redirect route to the next form based on the flow configuration
-    // 'operation' parameter that matches the submit button's name.
-    $submit_action = $form_state->getTriggeringElement()['#name'];
     try {
+      $entry_point_URL = $this->geFlowEntryURL();
+      // Get the redirect route to the next form based on the flow configuration
+      // 'operation' parameter that matches the submit button's name.
+      $submit_action = $form_state->getTriggeringElement()['#name'];
       // Get the next route from the flow.
-      $route_name = $this->getFlowNegotiator()->getFlow()->progressRoute($submit_action);
-      $route_params = $this->getRouteParams();
+      $redirect_route = $this->getFlowNegotiator()->getFlow()->progressRoute($submit_action, $entry_point_URL);
     }
     catch (ParFlowException $e) {
 
@@ -387,39 +387,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     }
 
-    // If the next route could be found in the flow then
-    // return to the entry route if one was specified.
-    if (!isset($route_name) && $url = $this->getEntryUrl()) {
-      $route_name = $url->getRouteName();
-      $route_params = $url->getRouteParameters();
-
-      // Delete form storage.
-      // @TODO We could choose to delete the store if we're completing the journey.
-      // $this->getFlowDataHandler()->deleteStore();
-    }
-
-    // We need a backup route in case all else fails.
-    if (!isset($route_name)) {
-      $route_name = 'par_dashboards.dashboard';
-      $route_params = [];
-    }
-
-    // Determine whether to use the 'destination' query parameter
-    // to determine redirection preferences.
-    $options = [];
-    $query = $this->getRequest()->query;
-    if ($this->skipQueryRedirection && $query->has('destination')) {
-      $options['query']['destination'] = $query->get('destination');
-      $query->remove('destination');
-    }
-
-    // Transform the route into a url so that it can be altered.
-    $current_route = \Drupal::routeMatch();
-    $matched_url = isset($route_name) && isset($route_params) ? Url::fromRoute($route_name, $route_params) : [];
-    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), $current_route, $matched_url);
-    $this->getEventDispatcher()->dispatch(ParFlowEvent::FLOW_SUBMIT . ":$submit_action", $event);
-    $url = $event->getUrl();
-
+    $url = isset($redirect_route) ? Url::fromRoute($redirect_route, $this->getRouteParams()) : NULL;
     // Set the redirection.
     if ($url && $url instanceof Url) {
       $form_state->setRedirectUrl($url);
@@ -489,28 +457,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function cancelForm(array &$form, FormStateInterface $form_state) {
     try {
+      $entry_point_URL = $this->geFlowEntryURL();
       // Get the cancel route from the flow.
-      $route_name = $this->getFlowNegotiator()->getFlow()->progressRoute('cancel');
-      $route_params = $this->getRouteParams();
+      $redirect_route = $this->getFlowNegotiator()->getFlow()->progressRoute('cancel', $entry_point_URL);
     }
     catch (ParFlowException $e) {
 
     }
     catch (RouteNotFoundException $e) {
 
-    }
-
-    // If no cancelation route could be found in the flow then
-    // return to the entry route if one was specified.
-    if (!isset($route_name) && $url = $this->getEntryUrl()) {
-      $route_name = $url->getRouteName();
-      $route_params = $url->getRouteParameters();
-    }
-
-    // We need a backup route in case all else fails.
-    if (!isset($route_name)) {
-      $route_name = 'par_dashboards.dashboard';
-      $route_params = [];
     }
 
     // Remove the destination parameter if it redirects to a route within the flow,
@@ -525,15 +480,10 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       }
     }
 
-    // Transform the route into a url so that it can be altered.
-    $current_route = \Drupal::routeMatch();
-    $matched_url = isset($route_name) && isset($route_params) ? Url::fromRoute($route_name, $route_params) : [];
-    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), $current_route, $matched_url);
-    $this->getEventDispatcher()->dispatch(ParFlowEvent::FLOW_CANCEL, $event);
-    $url = $event->getUrl();
-
     // Delete form storage.
     $this->getFlowDataHandler()->deleteStore();
+
+    $url = isset($redirect_route) ? Url::fromRoute($redirect_route, $this->getRouteParams()) : NULL;
 
     if ($url && $url instanceof Url) {
       $form_state->setRedirectUrl($url);
@@ -547,7 +497,25 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Get the route that we entered on.
     $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
 
+    return NULL;
+  }
 
+  /**
+   * Get the route to return to once the journey has been completed.
+   */
+  public function geFlowEntryURL() {
+    // Get the route that we entered on.
+    $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
+    try {
+      $url = $this->getPathValidator()->getUrlIfValid($entry_point);
+    }
+    catch (\InvalidArgumentException $e) {
+
+    }
+
+    if ($url && $url instanceof Url && $url->isRouted()) {
+      return $url;
+    }
     return NULL;
   }
 

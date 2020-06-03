@@ -26,6 +26,7 @@ use Drupal\Core\Access\AccessResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
+use Drupal\par_flows\Event\ParFlowEvents;
 
 /**
 * A controller for all styleguide page output.
@@ -200,6 +201,11 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
 
     }
 
+    // @TODO, need to convert all these defaults ('destination', 'skipQueryRedirection')
+    // to form listeners so that they can happen within the 'progresRoute()'
+    // method and therefore everywhere we call this method.
+
+
     // Determine whether to use the 'destination' query parameter
     // to determine redirection preferences.
     if ($this->skipQueryRedirection && $query->has('destination')) {
@@ -248,15 +254,16 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
     // 4) Allow flow modules to alter the route as required.
     $current_route = \Drupal::routeMatch();
     $matched_url = isset($route_name) && isset($route_params) ? Url::fromRoute($route_name, $route_params, $route_options) : NULL;
-    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), $current_route, $matched_url);
+    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), $current_route, $matched_url, NULL);
+
     switch($action) {
       case 'cancel':
-        $this->getEventDispatcher()->dispatch(ParFlowEvent::FLOW_CANCEL, $event);
+        $this->getEventDispatcher()->dispatch(ParFlowEvents::FLOW_CANCEL, $event);
 
         break;
 
       default:
-        $this->getEventDispatcher()->dispatch(ParFlowEvent::FLOW_SUBMIT . ":$action", $event);
+        $this->getEventDispatcher()->dispatch(ParFlowEvents::FLOW_SUBMIT . ":$action", $event);
 
     }
     $url = $event->getUrl();
