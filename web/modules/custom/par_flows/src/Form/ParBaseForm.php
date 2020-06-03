@@ -211,6 +211,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $this->initializeFlow();
 
+    // Attach the JS form libraries.
+    $form['#attached']['library'][] = 'par_flows/flow_core';
+
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
       // If there's is a cardinality parameter present display only this item.
@@ -236,7 +239,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Done'),
         '#limit_validation_errors' => [],
         '#attributes' => [
-          'class' => ['cta-submit']
+          'class' => ['cta-submit', 'govuk-button'],
+          'data-prevent-double-click' => 'true',
+          'data-module' => 'govuk-button',
         ],
       ];
     }
@@ -248,7 +253,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#name' => 'upload',
           '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Upload'),
           '#attributes' => [
-            'class' => ['cta-submit']
+            'class' => ['cta-submit', 'govuk-button'],
+            'data-prevent-double-click' => 'true',
+            'data-module' => 'govuk-button',
           ],
         ];
       }
@@ -259,7 +266,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#submit' => ['::submitForm', '::saveForm'],
           '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Save'),
           '#attributes' => [
-            'class' => ['cta-submit']
+            'class' => ['cta-submit', 'govuk-button'],
+            'data-prevent-double-click' => 'true',
+            'data-module' => 'govuk-button',
           ],
         ];
       }
@@ -269,7 +278,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#name' => 'next',
           '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Continue'),
           '#attributes' => [
-            'class' => ['cta-submit']
+            'class' => ['cta-submit', 'govuk-button'],
+            'data-prevent-double-click' => 'true',
+            'data-module' => 'govuk-button',
           ],
         ];
       }

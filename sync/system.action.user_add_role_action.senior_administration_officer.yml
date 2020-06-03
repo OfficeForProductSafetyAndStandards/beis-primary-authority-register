@@ -1,0 +1,14 @@
+uuid: 94d4c2d3-535c-4220-adff-7e159c784f27
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.senior_administration_officer
+  module:
+    - user
+id: user_add_role_action.senior_administration_officer
+label: 'Add the Senior Administration Officer role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: senior_administration_officer

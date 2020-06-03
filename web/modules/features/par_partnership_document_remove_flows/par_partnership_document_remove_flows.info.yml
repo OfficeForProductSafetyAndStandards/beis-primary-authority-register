@@ -1,0 +1,9 @@
+name: 'PAR Partnership Document Remove Flows'
+type: module
+description: 'Allows documents to be removed from partnerships.'
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

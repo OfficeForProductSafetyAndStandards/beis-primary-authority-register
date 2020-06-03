@@ -41,7 +41,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     // Helptext.
     $form['help_text'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('Updating this information may change who recieves notifications for this partnership. Please check everything is correct.'),
+      '#markup' => $this->t('Updating this information may change who receives notifications for this partnership. Please check everything is correct.'),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
