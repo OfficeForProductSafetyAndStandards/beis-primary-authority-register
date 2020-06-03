@@ -226,23 +226,6 @@ interface ParFlowInterface {
   public function getNextLink($operation, array $route_params, array $link_options, $access = FALSE);
 
   /**
-   * Get link based on the previous available step.
-   *
-   * @param string $operation
-   *   The operation to get the redirection link for.
-   * @param array $route_params
-   *   Additional route parameters to add to the route.
-   * @param array $link_options
-   *   An array of options to set on the link.
-   * @param bool $access
-   *   Whether or not an access check should be performed on the link.
-   *
-   * @return Link
-   *   A Drupal link object.
-   */
-  public function getPrevLink($operation, array $route_params, array $link_options, $access = FALSE);
-
-  /**
    * Get the components for the current step.
    */
   public function getCurrentStepComponents();
