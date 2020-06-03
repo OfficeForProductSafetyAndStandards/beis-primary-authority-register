@@ -161,29 +161,6 @@ class ParFlowEntityTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::getPrevStep
-   */
-  public function testGetPrevStep() {
-    $next_step = $this->testFlow->getPrevStep();
-
-    // Check the next step is correct.
-    $this->assertEquals(1, $next_step, "The previous step has been correctly identified.");
-
-    // Check that the next step for a given operation is correct.
-    $prev_step_save = $this->testFlow->getPrevStep('save');
-    $prev_step_cancel = $this->testFlow->getPrevStep('cancel');
-
-    $this->assertEquals(4, $prev_step_save, "The save step has been correctly identified.");
-    $this->assertEquals(5, $prev_step_cancel, "The cancel step has been correctly identified.");
-
-    // Check the next step for an incorrect operation on the first step.
-    $this->currentRoute = 'par_test_forms.first';
-    $next_step_last_fallback = $this->testFlow->getPrevStep();
-
-    $this->assertEquals(1, $next_step_last_fallback, "The flow stays at the first step.");
-  }
-
-  /**
    * @covers ::getNextStep
    * @covers ::getPrevStep
    *
