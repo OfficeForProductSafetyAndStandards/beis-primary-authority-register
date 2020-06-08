@@ -63,7 +63,7 @@ class ParPartnershipPageController extends ParBaseController {
       '#type' => 'html_tag',
       '#tag' => 'h2',
       '#value' => "<span class='heading-secondary'>In partnership with</span>" . $par_data_authority->getName(),
-      '#attributes' => ['class' => ['heading-large', 'form-group']],
+      '#attributes' => ['class' => ['heading-large', 'form-group', 'authority-name']],
     ];
 
 
@@ -251,6 +251,11 @@ class ParPartnershipPageController extends ParBaseController {
     ];
     // Display the authority contacts for information.
     $build['authority_contacts'] = $this->renderSection('Primary Authority', $par_data_partnership, ['field_authority_person' => 'detailed'], ['edit-entity', 'add']);
+
+    // Make sure changes to the partnership invalidate this page
+    if ($par_data_partnership) {
+      $this->addCacheableDependency($par_data_partnership);
+    }
 
     return parent::build($build);
 

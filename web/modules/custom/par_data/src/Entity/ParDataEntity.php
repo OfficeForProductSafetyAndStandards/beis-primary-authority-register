@@ -22,6 +22,7 @@ use Drupal\par_data\ParDataException;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
 use Drupal\trance\Trance;
+use Drupal\Component\Datetime\TimeInterface;
 
 /**
  * Defines the PAR entities.
@@ -70,6 +71,15 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function getDateFormatter() {
     return \Drupal::service('date.formatter');
+  }
+
+  /**
+   * Get time service.
+   *
+   * @return \Drupal\Component\Datetime\TimeInterface
+   */
+  public function getTime() {
+    return \Drupal::time();
   }
 
   /**
@@ -244,10 +254,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Destroy and entity, and completely remove.
+   * Destroy entity, and completely remove.
    */
   public function annihilate() {
-    return $this->entityManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
+    return $this->entityTypeManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
   }
 
   /**
@@ -863,13 +873,38 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
-  public function setNewRevision($value = TRUE) {
+  public function setNewRevision($value = TRUE, $message = NULL) {
     parent::setNewRevision($value);
 
     if (!$this->isNew()) {
-      $this->setRevisionCreationTime(REQUEST_TIME);
+      $this->setRevisionCreationTime($this->getTime()->getRequestTime());
       $this->setRevisionAuthorId(\Drupal::currentUser()->id());
     }
+
+    if ($message) {
+      $this->setRevisionLogMessage($message);
+    }
+  }
+
+  /**
+   * Helper function to extract field values.
+   *
+   * @return array
+   *   An array of value properties keyed by the field delta.
+   */
+  public function extractValues($field, $property = 'value') {
+    if (!$this->hasField($field)) {
+      return;
+    }
+
+    $values = [];
+    foreach ($this->get($field)->getValue() as $key => $value) {
+      if (isset($value[$property])) {
+        $values[$key] = $value[$property];
+      }
+    }
+
+    return $values;
   }
 
   /**

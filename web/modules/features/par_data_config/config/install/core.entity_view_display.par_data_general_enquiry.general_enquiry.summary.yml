@@ -20,7 +20,7 @@ mode: summary
 content:
   document:
     label: hidden
-    weight: 0
+    weight: 1
     region: content
     settings:
       access_message: 'You don''t have access to download this file.'
@@ -28,7 +28,7 @@ content:
     third_party_settings: {  }
     type: file_download_link
   field_person:
-    weight: 3
+    weight: 4
     label: hidden
     settings:
       view_mode: title
@@ -39,13 +39,13 @@ content:
   notes:
     label: hidden
     type: text_default
-    weight: 1
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_status:
     label: hidden
-    weight: 2
+    weight: 3
     region: content
     settings:
       display_original_value: false
@@ -61,10 +61,13 @@ content:
     third_party_settings: {  }
     type: datetime_default
 hidden:
+  archive_reason: true
+  deleted_reason: true
   field_enforcing_authority: true
   field_partnership: true
   field_primary_authority: true
   messages: true
   name: true
   primary_authority_notes: true
+  revocation_reason: true
   user_id: true

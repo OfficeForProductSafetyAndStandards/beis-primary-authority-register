@@ -14,7 +14,7 @@ Feature: Coordinator User - Update Partnership
 
         # ADD MEMBERS
 
-        When I click the link text "Add a member"
+        When I click the link text "add a member"
         And I add "New Member One" to the inputfield "#edit-name"
         And I click on the button "#edit-next"
         And I add "MK43 7AS" to the inputfield "#edit-postcode"
@@ -120,9 +120,10 @@ Feature: Coordinator User - Update Partnership
         # EDIT ABOUT THE ORGANISATION
 
         When I click the link text "edit about the organisation"
+        Then the element "h1.heading-xlarge" contains the text "Information about the organisation"
         And I add "Change to the about organisation details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-save"
-        Then the element "#edit-about-business" contains the text "Change to the about organisation details section"
+        Then the element "#edit-about" contains the text "Change to the about organisation details section"
 
         # ADD NEW TRADING NAME
 

@@ -34,6 +34,8 @@ content:
       trim_length: 300
     third_party_settings: {  }
 hidden:
+  archive_reason: true
+  deleted_reason: true
   field_enforcing_authority: true
   field_inspection_plan: true
   field_partnership: true
@@ -43,4 +45,5 @@ hidden:
   primary_authority_notes: true
   primary_authority_status: true
   request_date: true
+  revocation_reason: true
   user_id: true

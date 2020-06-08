@@ -211,6 +211,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $this->initializeFlow();
 
+    // Attach the JS form libraries.
+    $form['#attached']['library'][] = 'par_flows/flow_core';
+
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
       // If there's is a cardinality parameter present display only this item.
@@ -236,7 +239,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Done'),
         '#limit_validation_errors' => [],
         '#attributes' => [
-          'class' => ['cta-submit']
+          'class' => ['cta-submit', 'govuk-button'],
+          'data-prevent-double-click' => 'true',
+          'data-module' => 'govuk-button',
         ],
       ];
     }
@@ -248,7 +253,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#name' => 'upload',
           '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Upload'),
           '#attributes' => [
-            'class' => ['cta-submit']
+            'class' => ['cta-submit', 'govuk-button'],
+            'data-prevent-double-click' => 'true',
+            'data-module' => 'govuk-button',
           ],
         ];
       }
@@ -259,7 +266,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#submit' => ['::submitForm', '::saveForm'],
           '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Save'),
           '#attributes' => [
-            'class' => ['cta-submit']
+            'class' => ['cta-submit', 'govuk-button'],
+            'data-prevent-double-click' => 'true',
+            'data-module' => 'govuk-button',
           ],
         ];
       }
@@ -269,7 +278,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#name' => 'next',
           '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Continue'),
           '#attributes' => [
-            'class' => ['cta-submit']
+            'class' => ['cta-submit', 'govuk-button'],
+            'data-prevent-double-click' => 'true',
+            'data-module' => 'govuk-button',
           ],
         ];
       }
@@ -440,13 +451,13 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $values = $this->cleanseMultipleValues($values);
     $this->getFlowDataHandler()->setFormTempData($values);
 
-    list($button, $plugin_id, $cardinality) = explode(':', $form_state->getTriggeringElement()['#name']);
-    $values = $form_state->getValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id);
+    list($button, $plugin_namespace, $cardinality) = explode(':', $form_state->getTriggeringElement()['#name']);
+    $values = $form_state->getValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_namespace);
     end($values);
     $last_index = (int) key($values);
-    $component = $this->getComponent($plugin_id);
+    $component = $this->getComponent($plugin_namespace);
 
-    $form_state->unsetValue([ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id, (int) $cardinality - 1]);
+    $form_state->unsetValue([ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_namespace, (int) $cardinality - 1]);
 
     // Validate the components and remove any unvalidated last item.
     $component->validate($form, $form_state, $last_index, ParFormBuilder::PAR_ERROR_CLEAR);
@@ -618,9 +629,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function cleanseMultipleValues(array $data) {
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
-      $values = isset($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginId()]) ?
-        $data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginId()] :
-        NULL;
+      $values = $data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginNamespace()] ?? NULL;
 
       if ($values) {
         // Always remove the 'remove' link.
@@ -645,7 +654,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           }, ARRAY_FILTER_USE_BOTH);
         }
 
-        $data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginId()] = NestedArray::filter($values);
+        $data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginNamespace()] = NestedArray::filter($values);
       }
 
     }

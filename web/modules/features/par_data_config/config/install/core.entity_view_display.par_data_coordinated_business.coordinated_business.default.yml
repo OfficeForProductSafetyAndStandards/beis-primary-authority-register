@@ -68,5 +68,8 @@ content:
     type: daterange_custom
     weight: 2
 hidden:
+  archive_reason: true
+  deleted_reason: true
   name: true
+  revocation_reason: true
   user_id: true

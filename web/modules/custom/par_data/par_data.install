@@ -137,7 +137,16 @@ function par_data_update_8010() {
   $db = \Drupal::database();
 
   // Change the bundle type.
-  foreach (entity_load_multiple_by_properties('par_data_organisation', ['type' => 'business']) as $entity) {
+  $entities = [];
+  try {
+    $entities = \Drupal::entityTypeManager()
+      ->getStorage('par_data_organisation')
+      ->loadByProperties(['type' => 'business']);
+  } catch (\Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException $e) {
+  } catch (\Drupal\Component\Plugin\Exception\PluginNotFoundException $e) {
+  }
+
+  foreach ($entities as $entity) {
     if ($entity->hasField('field_coordinator_number')) {
       $entity->set('coordinator_number', $entity->get('field_coordinator_number')->getString());
     }
@@ -974,6 +983,19 @@ function par_data_update_8041() {
 
   foreach ($duplicate_entities as $registered_number => $duplicate_entity) {
     $duplicate_entity->mergeLegalEntities();
+  }
+}
+
+/**
+ * Removal of old 'soft-deleted' entities.
+ */
+function par_data_update_8042() {
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  foreach ($par_data_manager->getParEntityTypes() as $entity_type_id => $entity_type_definition) {
+    $deleted_data = $par_data_manager->getEntitiesByProperty($entity_type_id, 'deleted', 1, FALSE);
+
+    $par_data_manager->getEntityTypeStorage($entity_type_id)->delete($deleted_data);
   }
 }
 

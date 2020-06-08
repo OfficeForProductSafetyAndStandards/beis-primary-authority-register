@@ -17,23 +17,9 @@ targetEntityType: par_data_inspection_plan
 bundle: inspection_plan
 mode: full
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   document:
     type: file_download_link
-    weight: 0
+    weight: 2
     region: content
     label: hidden
     settings:
@@ -42,23 +28,16 @@ content:
     third_party_settings: {  }
   inspection_status:
     type: string
-    weight: 2
+    weight: 4
     region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   summary:
     label: hidden
     type: text_default
-    weight: 0
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -72,7 +51,7 @@ content:
     type: string
   valid_date:
     type: daterange_default
-    weight: 1
+    weight: 3
     region: content
     label: hidden
     settings:
@@ -82,7 +61,10 @@ content:
     third_party_settings: {  }
 hidden:
   approved_rd_executive: true
+  archive_reason: true
   consulted_national_regulator: true
+  deleted_reason: true
   field_regulatory_function: true
   name: true
+  revocation_reason: true
   user_id: true

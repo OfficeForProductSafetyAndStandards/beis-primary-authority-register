@@ -61,7 +61,7 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
       // Initialize pager and get current page.
       $number_of_items = 10;
       $pager = $this->getUniquePager()->getPager('par_plugin_authority_select_'.$cardinality);
-      $current_page = pager_default_initialize(count($authorities), $number_of_items, $pager);
+      $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($authorities), $number_of_items, $pager);
 
       // Split the items up into chunks:
       $chunks = array_chunk($authorities, $number_of_items, TRUE);

@@ -87,7 +87,7 @@ class ParMemberCsvValidationForm extends ParBaseForm {
 
     // Initialize pager and get current page.
     $pager = $this->getUniquePager()->getPager('csv_members_validation');
-    $current_page = pager_default_initialize(count($rows), 10, $pager);
+    $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($rows), 10, $pager);
 
     // Split the items up into chunks:
     $chunks = array_chunk($rows, 10);
@@ -121,8 +121,8 @@ class ParMemberCsvValidationForm extends ParBaseForm {
     ];
 
     // Add the items for our current page to the fieldset.
-    if (isset($chunks[$current_page])) {
-      foreach ($chunks[$current_page] as $delta => $item) {
+    if (isset($chunks[$current_pager->getCurrentPage()])) {
+      foreach ($chunks[$current_pager->getCurrentPage()] as $delta => $item) {
         $form['error_list']['table']['#rows'][$delta] = $item;
       }
     }
