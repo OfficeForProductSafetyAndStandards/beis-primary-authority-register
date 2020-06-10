@@ -278,6 +278,7 @@ class EntityMergeTest extends ParDataTestBase {
     // Merge the contact records.
     // All authority contacts 2-6 should now be deleted and merged into contact 1.
     $this->people[1]->mergePeople();
+    $storage->resetCache();
 
     // Assert that all 6 records were merged into one.
     $merged_entities = $storage->loadByProperties(['email'=> $person_mail]);

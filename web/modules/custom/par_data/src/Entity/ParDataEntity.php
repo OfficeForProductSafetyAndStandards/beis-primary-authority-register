@@ -839,6 +839,84 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
+   * Merge entities of the same type.
+   *
+   * This will only merge the references for both entities. It will leave all
+   * other field values on the original entity in tact.
+   *
+   * @param \Drupal\par_data\Entity\ParDataEntityInterface $entity
+   *   The entity to merge into the current entity.
+   *
+   * @throws \Drupal\par_data\ParDataException
+   *   Throws a par data exception if these entities cannot be merged.
+   */
+  public function merge(ParDataEntityInterface $entity) {
+    if (!$entity || !$entity instanceof ParDataEntityInterface) {
+      throw new ParDataException('Only PAR entities can be merged into one another.');
+    }
+
+    // Only merge if both entities are the same entity type and bundle,
+    // otherwise the reference fields might be different.
+    if ($this->getEntityTypeId() !== $entity->getEntityTypeId()
+      && $this->bundle() !== $entity->bundle()) {
+      throw new ParDataException('The entity types are not the same and cannoe be merged.');
+    }
+
+    // Do not merge if it's the same entity.
+    if ($this->id() === $entity->id()) {
+      return;
+    }
+
+    // Get all the entities that reference this legal entity.
+    $relationships = $entity->getRelationships(NULL, NULL, TRUE);
+    foreach ($relationships as $relationship) {
+      // Reverse entity reference merge.
+      if ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE) {
+        // Check if this entity is already in this reference field.
+        $current_entity_keys = $this->getParDataManager()->getReferenceValueKeys($relationship->getEntity(), $relationship->getField()->getName(), $this->id());
+        // Only add the current entity to the reference field if it isn't already there.
+        if (!$current_entity_keys) {
+          $relationship->getEntity()->get($relationship->getField()->getName())->appendItem($this->id());
+        }
+
+        // Delete methods check to see if there are any related entities that
+        // require this entity, @see ParDataEntity::isDeletable().
+        // References to the $entity must be removed from all reference fields
+        // before it can be deleted.
+        $keys = $this->getParDataManager()->getReferenceValueKeys($relationship->getEntity(), $relationship->getField()->getName(), $entity->id());
+        $field_items = $relationship->getEntity()->get($relationship->getField()->getName())->getValue();
+        if ($keys) {
+          foreach ($keys as $key) {
+            if ($relationship->getEntity()->get($relationship->getField()->getName())->offsetExists($key)) {
+              $relationship->getEntity()->get($relationship->getField()
+                ->getName())->removeItem($key);
+            }
+          }
+        }
+
+        // Re-order the field items and save the referencing entity.
+        $relationship->getEntity()->get($relationship->getField()->getName())->filterEmptyItems();
+        $relationship->getEntity()->save();
+      }
+      elseif ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_DEFAULT) {
+        // Check if this entity is already in this reference field.
+        $current_entity_keys = $this->getParDataManager()->getReferenceValueKeys($this, $relationship->getField()->getName(), $this->id());
+        // Only add the current entity to the reference field if it isn't already there.
+        if (!$current_entity_keys && $this->hasField($relationship->getField()->getName())) {
+          $this->get($relationship->getField()->getName())->appendItem($relationship->getEntity()->id());
+
+          // Save the current entity with the updated reference.
+          $this->get($relationship->getField()->getName())->filterEmptyItems();
+          $this->save();
+        }
+      }
+    }
+
+    // Remove this person record.
+    $entity->delete();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getRequiredFields() {
