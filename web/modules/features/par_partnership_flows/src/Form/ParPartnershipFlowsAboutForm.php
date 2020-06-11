@@ -46,7 +46,12 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
-      $this->getFlowDataHandler()->setFormPermValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
+      // PAR-1618 ensure that partnerships which have been set with the basic_html formatter via the admin
+      // don't output HTML tags on edit forms. This is resulting in the tags being saved with content updates when users
+      // edit the about text.
+      $value = strip_tags($par_data_partnership->get('about_partnership')->getString());
+      $value = str_replace(', basic_html', '', $value);
+      $this->getFlowDataHandler()->setFormPermValue('about_partnership', $value);
     }
   }
 
@@ -95,5 +100,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
       }
     }
   }
+
+ // function
 
 }
