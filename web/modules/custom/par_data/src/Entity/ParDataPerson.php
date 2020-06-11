@@ -170,12 +170,50 @@ class ParDataPerson extends ParDataEntity {
 
     // Return all similar people.
     if ($account) {
-      $accounts = \Drupal::entityTypeManager()
+      $people = $this->entityTypeManager()
         ->getStorage($this->getEntityTypeId())
         ->loadByProperties(['email' => $account->get('mail')->getString()]);
     }
 
-    return isset($accounts) ? $accounts : [];
+    return isset($people) ? $people : [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAllRelatedPeople($link_up = TRUE) {
+    $email = $this->getEmail();
+
+    // Link this entity to the Drupal User if one exists.
+    $account = $this->retrieveUserAccount();
+    if (!$account && $link_up) {
+      $account = $this->linkAccounts();
+    }
+
+    // Get the entity query.
+    $query = $this->entityTypeManager()
+      ->getStorage($this->getEntityTypeId())
+      ->getQuery('OR');
+
+    $query->condition('email', $email, '=');
+
+    // If there is an account we can search for people liked to this account also.
+    if ($account) {
+      $query->condition('field_user_account', $account->id(), 'IN');
+    }
+
+    $results = $query->execute();
+    $people = $this->entityTypeManager()
+      ->getStorage($this->getEntityTypeId())
+      ->loadMultiple(array_unique($results));
+
+    // @TODO There is a big question here of whether we should exclude records
+    // that match the email address but that are already linked to another user account??
+    $people = array_filter($people, function ($entity) use ($account) {
+      return ($entity->retrieveUserAccount() && $entity->retrieveUserAccount()->id() !== $account->id()) ? FALSE : TRUE;
+    });
+
+    return $people;
   }
 
   /**

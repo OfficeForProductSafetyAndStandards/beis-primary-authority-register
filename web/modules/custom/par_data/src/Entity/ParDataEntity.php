@@ -846,11 +846,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *
    * @param \Drupal\par_data\Entity\ParDataEntityInterface $entity
    *   The entity to merge into the current entity.
+   * @param boolean $save
+   *   Whether to save _this_ entity once the merge is complete.
    *
    * @throws \Drupal\par_data\ParDataException
    *   Throws a par data exception if these entities cannot be merged.
    */
-  public function merge(ParDataEntityInterface $entity) {
+  public function merge(ParDataEntityInterface $entity, $save = TRUE) {
     if (!$entity || !$entity instanceof ParDataEntityInterface) {
       throw new ParDataException('Only PAR entities can be merged into one another.');
     }
@@ -869,6 +871,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     // Get all the entities that reference this legal entity.
     $relationships = $entity->getRelationships(NULL, NULL, TRUE);
+
+    // Allow entity types to modify which relationships to act on.
+    $relationships = array_filter($relationships, function ($relationship) {
+      return ($this->getMergeableRelationships($relationship) === TRUE);
+    });
+
     foreach ($relationships as $relationship) {
       // Reverse entity reference merge.
       if ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE) {
@@ -884,7 +892,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         // References to the $entity must be removed from all reference fields
         // before it can be deleted.
         $keys = $this->getParDataManager()->getReferenceValueKeys($relationship->getEntity(), $relationship->getField()->getName(), $entity->id());
-        $field_items = $relationship->getEntity()->get($relationship->getField()->getName())->getValue();
         if ($keys) {
           foreach ($keys as $key) {
             if ($relationship->getEntity()->get($relationship->getField()->getName())->offsetExists($key)) {
@@ -905,15 +912,34 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         if (!$current_entity_keys && $this->hasField($relationship->getField()->getName())) {
           $this->get($relationship->getField()->getName())->appendItem($relationship->getEntity()->id());
 
-          // Save the current entity with the updated reference.
+          // Re-order the field items.
           $this->get($relationship->getField()->getName())->filterEmptyItems();
-          $this->save();
+          // Merging batches of entities may wish to save after the batch completes.
+          if ($save) {
+            $this->save();
+          }
         }
       }
     }
 
-    // Remove this person record.
+    // Remove this record once all merging is complete.
     $entity->delete();
+  }
+
+  /**
+   * Control which relationships to process when merging an entity.
+   *
+   * This allows the merging entity to choose if there are any entity
+   * references that shouldn't be included when merging another entity.
+   *
+   * @param \Drupal\par_data\ParDataRelationship $relationship
+   *   The relationship to merge.
+   *
+   * @return boolean
+   *   Whether this relationship should be merged.
+   */
+  public function getMergeableRelationships(ParDataRelationship $relationship) {
+    return TRUE;
   }
 
   /**
