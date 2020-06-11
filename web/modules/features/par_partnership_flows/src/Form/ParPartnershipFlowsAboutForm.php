@@ -101,6 +101,4 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
     }
   }
 
- // function
-
 }
