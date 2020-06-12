@@ -2,9 +2,6 @@
 
 namespace Drupal\par_flows\Form;
 
-use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\Xss;
-use Drupal\Component\Render\PlainTextOutput;
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Form\FormBase;
@@ -681,23 +678,5 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function decideBooleanValue($input, $on = 'on', $off = 'off') {
     return ($on === $input || $input === TRUE) ? TRUE : FALSE;
-  }
-
-  /**
-   * Helper function to clean embedded markup stored on some of the partnership entities.
-   * see PAR-1618 for details.
-   *
-   * @param String $data
-   *   The data string to cleanse.
-   *
-   * @return String $value
-   *   the normalized data string to be used in forms.
-   */
-  public function cleanseParOutput(String $value) {
-    $value = Html::normalize(Xss::filter($value));
-    $value = PlainTextOutput::renderFromHtml($value);
-    $value = str_replace(', basic_html', '', $value);
-
-    return $value;
   }
 }
