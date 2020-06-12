@@ -29,7 +29,7 @@ class ParAboutPartnershipForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
-    if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_organisation')) {
+    if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
       $this->getFlowDataHandler()->setFormPermValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
     }
 
