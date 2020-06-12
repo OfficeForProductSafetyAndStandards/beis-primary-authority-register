@@ -31,7 +31,7 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
       // If we want to use values already saved we have to tell
       // the form about them.
       $par_data_organisation = current($par_data_partnership->getOrganisation());
-      $this->getFlowDataHandler()->setFormPermValue('about_business', $par_data_organisation->get('comments')->getString());
+      $this->getFlowDataHandler()->setFormPermValue('about_business', $this->cleanseParOutput($par_data_organisation->get('comments')->getString()));
     }
   }
 
