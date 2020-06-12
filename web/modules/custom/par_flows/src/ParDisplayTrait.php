@@ -2,6 +2,9 @@
 
 namespace Drupal\par_flows;
 
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Xss;
+use Drupal\Component\Render\PlainTextOutput;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
@@ -438,5 +441,23 @@ trait ParDisplayTrait {
     // show a UTF-8 ✔.
     return '✔';
 
+  }
+
+  /**
+   * Helper function to clean embedded markup stored on some of the partnership entities.
+   * see PAR-1618 for details.
+   *
+   * @param String $data
+   *   The data string to cleanse.
+   *
+   * @return String $value
+   *   the normalized data string to be used in forms.
+   */
+  public function cleanseParOutput(String $value) {
+    $value = Html::normalize(Xss::filter($value));
+    $value = PlainTextOutput::renderFromHtml($value);
+    $value = str_replace(', basic_html', '', $value);
+
+    return $value;
   }
 }
