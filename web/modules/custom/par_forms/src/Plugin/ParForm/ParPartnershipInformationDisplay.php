@@ -51,6 +51,8 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
 
       // Get the partnership information.
       if ($par_data_partnership->hasField('about_partnership')) {
+        // Reset the stored string value of the field on output.
+        $par_data_partnership->about_partnership->value = $this->cleanseParOutput($par_data_partnership->about_partnership->value);
         $information_display = $par_data_partnership->about_partnership->view('full');
         $this->setDefaultValuesByKey("about_partnership", $cardinality, $information_display);
       }
