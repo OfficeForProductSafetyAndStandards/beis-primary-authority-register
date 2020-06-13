@@ -53,7 +53,7 @@ class ParMergeConfirmForm extends ParBaseForm {
     $form['info'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => "You are about to mrege {$this->getFlowDataHandler()->getDefaultValues('number_contacts', '0')} contacts, do you want to proceed?",
+      '#value' => "You are about to merge {$this->getFlowDataHandler()->getDefaultValues('number_contacts', '0')} contacts, do you want to proceed?",
       '#attributes' => ['class' => 'form-group'],
     ];
 
@@ -78,18 +78,35 @@ class ParMergeConfirmForm extends ParBaseForm {
     $cid = $this->getFlowNegotiator()->getFormKey('merge');
     $merge_ids = $this->getFlowDataHandler()->getDefaultValues("contacts", [], $cid);
 
-    // There must be more than 2 entities or merging will not be possible.
-    $merges = ParDataPerson::loadMultiple($merge_ids);
-    if ($merges && count($merges) >= 2) {
-      // The first person is used as the primary contact for this merge.
+    // If the $par_data_person is being merged this must be the primary record.
+    // This is important because the $par_data_person is used as a route
+    // parameter and should not be deleted.
+    $primary_key = $par_data_person ? array_search($par_data_person->id(), $merge_ids, TRUE) : FALSE;
+    if ($primary_key !== FALSE) {
+      unset($merge_ids[$primary_key]);
+      $person = $par_data_person;
+      $merges = ParDataPerson::loadMultiple($merge_ids);
+    }
+    // Otherwise take the first entity to be merged as the primary record.
+    else {
+      $merges = ParDataPerson::loadMultiple($merge_ids);
       $person = array_shift($merges);
+    }
+
+    // There must be at least 1 additional entity or merging will not be possible.
+    if ($merges && count($merges) >= 1) {
       foreach ($merges as $merge) {
-        if ($person instanceof ParDataEntityInterface && $merge instanceof ParDataEntityInterface) {
+        if ($person instanceof ParDataEntityInterface) {
           try {
             $person->merge($merge, FALSE);
           }
           catch (ParDataException $e) {
-
+            $replacements = [
+              '@merge' => $merge->id(),
+              '@person' => $person->id(),
+              '@reason' => $e->getMessage()
+            ];
+            $this->getLogger($this->getLoggerChannel())->error('Failed merging @merge into @person. The reason given was: @reason', $replacements);
           }
         }
       }
@@ -101,10 +118,9 @@ class ParMergeConfirmForm extends ParBaseForm {
       }
     }
 
-    $message = $this->t('The contact ids (%ids) could not be merged for %person.');
+    $message = $this->t('The contact ids could not be merged for %person.');
     $replacements = [
       '%person' => $par_data_person->id(),
-      '%ids' => array_keys((array) $merges),
     ];
     $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
   }

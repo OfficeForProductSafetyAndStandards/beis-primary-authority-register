@@ -260,6 +260,10 @@ class ParDataTestBase extends EntityKernelTestBase {
     // Install the feature config
     $this->installConfig('par_data_config');
 
+    // Install comment config.
+    $this->installEntitySchema('comment');
+    $this->installSchema('comment', ['comment_entity_statistics']);
+
     // Install file config.
     $this->installConfig(['system']);
     $this->installEntitySchema('file');

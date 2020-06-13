@@ -273,7 +273,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     // If there are any relationships whereby another entity requires this one
     // then this entity should not be deleted.
-    $relationships = $this->getRequiredRelationships();
+    $relationships = $this->getRequiredRelationships(TRUE);
     return $relationships ? FALSE : TRUE;
   }
 
@@ -662,10 +662,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *
    * @return array|\Drupal\par_data\ParDataRelationship|\Drupal\par_data\ParDataRelationship[]
    */
-  public function getRequiredRelationships() {
+  public function getRequiredRelationships($reset = FALSE) {
     // As a general rule, any entities that reference this entity
     // should stop this entity being deleted.
-    $relationships = $this->getRelationships(NULL, 'dependents');
+    $relationships = $this->getRelationships(NULL, 'dependents', $reset);
     $relationships = array_filter($relationships, function ($relationship) {
       return ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE);
     });
@@ -861,7 +861,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     // otherwise the reference fields might be different.
     if ($this->getEntityTypeId() !== $entity->getEntityTypeId()
       && $this->bundle() !== $entity->bundle()) {
-      throw new ParDataException('The entity types are not the same and cannoe be merged.');
+      throw new ParDataException('The entity types are not the same and cannot be merged.');
     }
 
     // Do not merge if it's the same entity.
@@ -880,10 +880,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     foreach ($relationships as $relationship) {
       // Reverse entity reference merge.
       if ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE) {
-        // Check if this entity is already in this reference field.
-        $current_entity_keys = $this->getParDataManager()->getReferenceValueKeys($relationship->getEntity(), $relationship->getField()->getName(), $this->id());
-        // Only add the current entity to the reference field if it isn't already there.
-        if (!$current_entity_keys) {
+        // Add _this_ entity to the reference field if it's not already referenced.
+        $add_keys = $this->getParDataManager()->getReferenceValueKeys(
+          $relationship->getEntity(), $relationship->getField()->getName(), $this->id()
+        );
+        if (!$add_keys) {
           $relationship->getEntity()->get($relationship->getField()->getName())->appendItem($this->id());
         }
 
@@ -891,9 +892,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         // require this entity, @see ParDataEntity::isDeletable().
         // References to the $entity must be removed from all reference fields
         // before it can be deleted.
-        $keys = $this->getParDataManager()->getReferenceValueKeys($relationship->getEntity(), $relationship->getField()->getName(), $entity->id());
-        if ($keys) {
-          foreach ($keys as $key) {
+        $remove_keys = $this->getParDataManager()->getReferenceValueKeys(
+          $relationship->getEntity(), $relationship->getField()->getName(), $entity->id()
+        );
+        if ($remove_keys) {
+          foreach ($remove_keys as $key) {
             if ($relationship->getEntity()->get($relationship->getField()->getName())->offsetExists($key)) {
               $relationship->getEntity()->get($relationship->getField()
                 ->getName())->removeItem($key);
@@ -903,13 +906,35 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
         // Re-order the field items and save the referencing entity.
         $relationship->getEntity()->get($relationship->getField()->getName())->filterEmptyItems();
-        $relationship->getEntity()->save();
+
+        // Check that all actions were performed.
+        $add_keys = $this->getParDataManager()->getReferenceValueKeys(
+          $relationship->getEntity(), $relationship->getField()->getName(), $this->id()
+        );
+        if (!$add_keys) {
+          $replacements = ['@entity' => $this->label(), '@reference' => $relationship->getEntity()->label()];
+          throw new ParDataException($this->t('@entity could not be added to @reference', $replacements));
+        }
+        $remove_keys = $this->getParDataManager()->getReferenceValueKeys(
+          $relationship->getEntity(), $relationship->getField()->getName(), $entity->id()
+        );
+        if ($remove_keys) {
+          $replacements = ['@entity' => $entity->label(), '@reference' => $relationship->getEntity()->label()];
+          throw new ParDataException($this->t('@entity could not be removed from @reference', $replacements));
+        }
+
+        if (!$relationship->getEntity()->save()) {
+          $replacements = ['@reference' => $relationship->getEntity()->label()];
+          throw new ParDataException($this->t('The reference entity @reference could not be saved', $replacements));
+        }
       }
       elseif ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_DEFAULT) {
         // Check if this entity is already in this reference field.
-        $current_entity_keys = $this->getParDataManager()->getReferenceValueKeys($this, $relationship->getField()->getName(), $this->id());
+        $add_keys = $this->getParDataManager()->getReferenceValueKeys(
+          $this, $relationship->getField()->getName(), $relationship->getEntity()->id()
+        );
         // Only add the current entity to the reference field if it isn't already there.
-        if (!$current_entity_keys && $this->hasField($relationship->getField()->getName())) {
+        if (!$add_keys && $this->hasField($relationship->getField()->getName())) {
           $this->get($relationship->getField()->getName())->appendItem($relationship->getEntity()->id());
 
           // Re-order the field items.
@@ -917,12 +942,25 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
           // Merging batches of entities may wish to save after the batch completes.
           if ($save) {
             $this->save();
+            if (!$this->save()) {
+              $replacements = ['@entity' => $this->label()];
+              throw new ParDataException($this->t('The entity @entity could not be saved', $replacements));
+            }
           }
+        }
+
+        // Check that the appropriate actions were performed.
+        $add_keys = $this->getParDataManager()->getReferenceValueKeys(
+          $this, $relationship->getField()->getName(), $relationship->getEntity()->id()
+        );
+        if (!$add_keys) {
+          $replacements = ['@entity' => $relationship->getEntity()->label(), '@reference' => $this->label()];
+          throw new ParDataException($this->t('A reference to @entity could not be added to @reference', $replacements));
         }
       }
     }
 
-    // Remove this record once all merging is complete.
+    // Delete this record.
     $entity->delete();
   }
 

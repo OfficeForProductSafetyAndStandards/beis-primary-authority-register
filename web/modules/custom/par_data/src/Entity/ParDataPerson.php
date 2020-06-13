@@ -209,9 +209,9 @@ class ParDataPerson extends ParDataEntity {
 
     // @TODO There is a big question here of whether we should exclude records
     // that match the email address but that are already linked to another user account??
-    $people = array_filter($people, function ($entity) use ($account) {
-      return ($entity->retrieveUserAccount() && $entity->retrieveUserAccount()->id() !== $account->id()) ? FALSE : TRUE;
-    });
+//    $people = array_filter($people, function ($entity) use ($account) {
+//      return ($entity->retrieveUserAccount() && $entity->retrieveUserAccount()->id() !== $account->id()) ? FALSE : TRUE;
+//    });
 
     return $people;
   }
