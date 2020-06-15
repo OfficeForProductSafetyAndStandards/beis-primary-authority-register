@@ -259,6 +259,12 @@ class EntityMergeTest extends ParDataTestBase {
     $original_entities = $storage->loadByProperties(['email'=> $person_mail]);
     $this->assertCount(6, $original_entities, t('6 contact records have been created for First Person.'));
 
+    // Assert that the new contact record contains a reference to the user.
+    $user_keys = \Drupal::service('par_data.manager')->getReferenceValueKeys(
+      $this->people[1], 'field_user_account', $this->account->id()
+    );
+    $this->assertTrue(empty($user_keys), t('The user account was not found on person %person.', ['%person' => $this->people[1]->label()]));
+
     // Assert that each of the authorities has the correct number of records.
     for ($i=1; $i<=3; $i++) {
       $original_count = $this->authorities[$i]->get('field_person')->count();
@@ -306,6 +312,12 @@ class EntityMergeTest extends ParDataTestBase {
     // Assert that all 6 records were merged into one.
     $merged_entities = $storage->loadByProperties(['email'=> $person_mail]);
     $this->assertCount(1, $merged_entities, t('Only 1 contact record now exists for First Person, the others have been merged.'));
+
+    // Assert that the new contact record contains a reference to the user.
+    $user_keys = \Drupal::service('par_data.manager')->getReferenceValueKeys(
+      $this->people[1], 'field_user_account', $this->account->id()
+    );
+    $this->assertTrue(!empty($user_keys), t('The user account was found on person %person.', ['%person' => $this->people[1]->label()]));
 
     // Assert that each of the authorities has the correct number of records.
     for ($i=1; $i<=3; $i++) {

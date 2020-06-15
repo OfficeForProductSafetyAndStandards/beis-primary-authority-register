@@ -137,7 +137,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Get renderer service.
    *
-   * @return mixed
+   * @return \Drupal\Core\Render\RendererInterface
    */
   public function getRenderer() {
     return $this->renderer;
@@ -150,6 +150,15 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function getCurrentUser() {
     return $this->currentUser;
+  }
+
+  /**
+   * Get the entity field manager.
+   *
+   * @return \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  public function getEntityFieldManager() {
+    return $this->entityFieldManager;
   }
 
   /**
