@@ -6,6 +6,8 @@ use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
@@ -59,19 +61,23 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
 
     // Display the address.
     $address = $this->getDefaultValuesByKey('address', $cardinality, NULL);
-    $entity_view_builder = $address ? $this->getParDataManager()->getViewBuilder($address->getEntityTypeId()) : NULL;
-    $address_entity = $entity_view_builder->view($address, 'summary');
+    $entity_view_builder = $address instanceof EntityInterface ?
+      $this->getParDataManager()->getViewBuilder($address->getEntityTypeId()) : NULL;
+    $address_entity = $entity_view_builder instanceof EntityViewBuilderInterface ?
+      $entity_view_builder->view($address, 'summary') : NULL;
     $form['registered_address'] = [
       '#type' => 'fieldset',
       '#title' => 'Address',
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
-      'field_premises' => [
+    ];
+    if ($address_entity) {
+      $form['registered_address']['field_premises'] => [
         '#type' => 'container',
         'address' => $address_entity,
-      ],
-    ];
+      ];
+    }
 
     // Add a link to edit the address.
     try {
