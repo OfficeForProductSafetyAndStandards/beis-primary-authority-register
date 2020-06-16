@@ -6,6 +6,8 @@ use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityViewBuilderInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
@@ -59,24 +61,37 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
 
     // Display the address.
     $address = $this->getDefaultValuesByKey('address', $cardinality, NULL);
-    $entity_view_builder = $address ? $this->getParDataManager()->getViewBuilder($address->getEntityTypeId()) : NULL;
-    $address_entity = $entity_view_builder->view($address, 'summary');
+    $entity_view_builder = $address instanceof EntityInterface ?
+      $this->getParDataManager()->getViewBuilder($address->getEntityTypeId()) : NULL;
+    $rendered_address = $entity_view_builder instanceof EntityViewBuilderInterface ?
+      $entity_view_builder->view($address, 'summary') : NULL;
     $form['registered_address'] = [
       '#type' => 'fieldset',
       '#title' => 'Address',
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
-      'field_premises' => [
-        '#type' => 'container',
-        'address' => $address_entity,
-      ],
     ];
+    if ($rendered_address) {
+      $form['registered_address']['field_premises'] = [
+        '#type' => 'container',
+        'address' => $rendered_address,
+      ];
+    }
 
     // Add a link to edit the address.
     try {
-      $params[$address->getEntityTypeId()] = $address->id();
-      $address_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_field_premises', $params, [], TRUE);
+      if ($address instanceof EntityInterface) {
+        $params[$address->getEntityTypeId()] = $address->id();
+        $address_edit_link = $this->getFlowNegotiator()
+          ->getFlow()
+          ->getLinkByCurrentOperation('edit_field_premises', $params, [], TRUE);
+      }
+      else {
+        $address_add_link = $this->getFlowNegotiator()
+          ->getFlow()
+          ->getLinkByCurrentOperation('add_field_premises', [], [], TRUE);
+      }
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -87,6 +102,14 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
         '#tag' => 'p',
         '#value' => $address_edit_link->setText("edit address")->toString(),
         '#attributes' => ['class' => 'edit-address'],
+      ];
+    }
+    elseif (isset($address_add_link)) {
+      $form['registered_address']['add'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $address_add_link->setText("add address")->toString(),
+        '#attributes' => ['class' => 'add-address'],
       ];
     }
 
