@@ -999,3 +999,21 @@ function par_data_update_8042() {
   }
 }
 
+/**
+ * PAR-.
+ */
+function par_data_update_8043() {
+
+  // Get all partnerships that have the format issue within the about field.
+  $query = \Drupal::entityQuery('par_data_partnership');
+  $query->condition('about_partnership', ', basic_html', 'CONTAINS');
+  $entity_ids = $query->execute();
+  $partnership_to_update = \Drupal::entityTypeManager()->getStorage('par_data_partnership')->loadMultiple($entity_ids);
+
+  foreach ($partnership_to_update as $par_data_partnership) {
+    // Strip out the custom format embedded in the text value.
+    $par_data_partnership->about_partnership->value = str_replace(', basic_html', '', $par_data_partnership->about_partnership->value);
+    $par_data_partnership->save();
+  }
+}
+
