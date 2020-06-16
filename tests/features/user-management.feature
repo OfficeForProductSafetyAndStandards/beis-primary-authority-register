@@ -176,7 +176,6 @@ Feature: User management
         Then the element "h1.heading-xlarge" contains the text "Profile review"
         And the element "#edit-personal" contains the text "Dr Sally McHaels"
         And the element "#edit-contact-details" contains the text "01999 888 777"
-        And the element "#par-person-review" contains the text "Would you like to update all contact records with this information?"
         When I click on the button "#edit-save"
 
         Then the element "h1.heading-xlarge" contains the text "Thank you for updating this person"
@@ -190,10 +189,6 @@ Feature: User management
 
         Then the element "h1.heading-xlarge" contains the text "Dr Sally McHaels"
         And the element ".component-user-detail" contains the text "par_user_management_multiple@example.com"
-        When there is "1" occurences of element ".component-contact-locations-detail .component-item"
-        And I click on the button ".contact-locations summary"
-        Then the element "#contact-detail-locations-1" contains the text "Contact at the authority: Authority for user management test"
-        And the element "#contact-detail-locations-1" contains the text "Contact at the authority: Alternate authority for user management test"
 
     @user-management @ci
     Scenario: Check that user email addresses can be updated

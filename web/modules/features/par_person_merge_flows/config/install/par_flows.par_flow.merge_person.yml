@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+id: merge_person
+label: 'Merge Person Flow'
+default_title: null
+default_section_title: 'Merge contact records'
+description: ''
+save_method: end
+states:
+  - par_data_person
+steps:
+  1:
+    route: par_person_merge_flows.merge
+    form_id: par_merge_person
+    components:
+      person_merge: {}
+  2:
+    route: par_person_merge_flows.confirm
+    form_id: par_merge_person_confirm
+    form_data:
+      merge: par_merge_person

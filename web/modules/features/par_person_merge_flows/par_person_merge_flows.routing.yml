@@ -1,0 +1,26 @@
+par_person_merge_flows.merge:
+  path: '/person/{par_data_person}/merge'
+  defaults:
+    _form: '\Drupal\par_person_merge_flows\Form\ParMergePeopleForm'
+    _title_callback: '\Drupal\par_person_merge_flows\Form\ParMergePeopleForm::titleCallback'
+  requirements:
+    _permission: 'merge person'
+    _custom_access: '\Drupal\par_person_merge_flows\Form\ParMergePeopleForm::accessCallback'
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_person:
+        type: entity:par_data_person
+par_person_merge_flows.confirm:
+  path: '/person/{par_data_person}/merge/confirm'
+  defaults:
+    _form: '\Drupal\par_person_merge_flows\Form\ParMergeConfirmForm'
+    _title_callback: '\Drupal\par_person_merge_flows\Form\ParMergeConfirmForm::titleCallback'
+  requirements:
+    _permission: 'merge person'
+    _custom_access: '\Drupal\par_person_merge_flows\Form\ParMergeConfirmForm::accessCallback'
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_person:
+        type: entity:par_data_person
