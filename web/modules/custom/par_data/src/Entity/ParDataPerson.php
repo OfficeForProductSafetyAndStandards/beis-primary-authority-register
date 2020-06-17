@@ -170,12 +170,50 @@ class ParDataPerson extends ParDataEntity {
 
     // Return all similar people.
     if ($account) {
-      $accounts = \Drupal::entityTypeManager()
+      $people = $this->entityTypeManager()
         ->getStorage($this->getEntityTypeId())
         ->loadByProperties(['email' => $account->get('mail')->getString()]);
     }
 
-    return isset($accounts) ? $accounts : [];
+    return isset($people) ? $people : [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAllRelatedPeople($link_up = TRUE) {
+    $email = $this->getEmail();
+
+    // Link this entity to the Drupal User if one exists.
+    $account = $this->retrieveUserAccount();
+    if (!$account && $link_up) {
+      $account = $this->linkAccounts();
+    }
+
+    // Get the entity query.
+    $query = $this->entityTypeManager()
+      ->getStorage($this->getEntityTypeId())
+      ->getQuery('OR');
+
+    $query->condition('email', $email, '=');
+
+    // If there is an account we can search for people liked to this account also.
+    if ($account) {
+      $query->condition('field_user_account', $account->id(), 'IN');
+    }
+
+    $results = $query->execute();
+    $people = $this->entityTypeManager()
+      ->getStorage($this->getEntityTypeId())
+      ->loadMultiple(array_unique($results));
+
+    // @TODO There is a big question here of whether we should exclude records
+    // that match the email address but that are already linked to another user account??
+//    $people = array_filter($people, function ($entity) use ($account) {
+//      return ($entity->retrieveUserAccount() && $entity->retrieveUserAccount()->id() !== $account->id()) ? FALSE : TRUE;
+//    });
+
+    return $people;
   }
 
   /**
@@ -194,85 +232,6 @@ class ParDataPerson extends ParDataEntity {
     }
 
     return $saved ? $account : NULL;
-  }
-
-  /**
-   * Merge all user accounts that share the same e-mail address.
-   */
-  public function mergePeople() {
-    $uids = [];
-
-    // Lookup related people.
-    $account = $this->getUserAccount();
-    $people = $account ? $this->getParDataManager()->getUserPeople($account) : [];
-
-    foreach ($people as $person) {
-      // Skip modifications of the current person.
-      if ($person->id() === $this->id()) {
-        continue;
-      }
-
-      // Get any users linked to this person.
-      $referenced_users = $person->get('field_user_account')->referencedEntities();
-      foreach ($referenced_users as $referenced_user) {
-        if (!isset($uids[$referenced_user->id()])) {
-          $uids[$referenced_user->id()] = $referenced_user;
-        }
-      }
-
-      // Get all the entities that reference this person.
-      $relationships = $person->getRelationships(NULL, NULL, TRUE);
-      foreach ($relationships as $relationship) {
-        if ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE) {
-          // Only update the related entity if it does not already reference the updated record.
-          $update = TRUE;
-          foreach ($relationship->getEntity()->get($relationship->getField()->getName())->referencedEntities() as $e) {
-            if ($e->id() === $this->id()) {
-              $update = FALSE;
-            }
-          }
-
-          // Update all entities that reference the soon to be merged person.
-          if ($update) {
-            $relationship->getEntity()->get($relationship->getField()->getName())->appendItem($this->id());
-            $relationship->getEntity()->save();
-          }
-
-          // Delete methods check to see if there are any related entities that
-          // require this person, @see ParDataEntity::isDeletable(), all references
-          // must be removed before the entity can be deleted.
-          $field_items = $relationship->getEntity()->get($relationship->getField()->getName())->getValue();
-          if(!empty($field_items)) {
-            // Find & remove this person from the referenced entity.
-            $key = array_search($person->id(), array_column($field_items, 'target_id'));
-            if (false !== $key && $relationship->getEntity()->get($relationship->getField()->getName())->offsetExists($key)) {
-              $relationship->getEntity()->get($relationship->getField()->getName())->removeItem($key);
-              $relationship->getEntity()->save();
-            }
-          }
-        }
-      }
-
-      // Remove this person record.
-      $person->delete();
-    }
-
-    // Be sure to make sure that all referenced uids on old person
-    // records are transferred.
-    foreach ($uids as $uid) {
-      $update = TRUE;
-      foreach ($this->get('field_user_account')->referencedEntities() as $e) {
-        if ($e->id() === $this->id()) {
-          $update = FALSE;
-        }
-      }
-      if ($update) {
-        $this->get('field_user_account')->appendItem($uid);
-      }
-    }
-
-    // This method will always save the entity.
-    $this->save();
   }
 
   /**

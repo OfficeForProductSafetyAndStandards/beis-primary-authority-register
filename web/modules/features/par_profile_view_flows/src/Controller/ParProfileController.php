@@ -78,7 +78,7 @@ class ParProfileController extends ParBaseController {
       }
     }
 
-    if ($user && $people = $this->getParDataManager()->getUserPeople($user)) {
+    if ($par_data_person && $people = $par_data_person->getAllRelatedPeople()) {
       $this->getFlowDataHandler()->setParameter('contacts', $people);
       $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'contact_locations_detail', $people);
     }

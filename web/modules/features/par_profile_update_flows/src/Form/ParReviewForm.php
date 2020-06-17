@@ -151,15 +151,6 @@ class ParReviewForm extends ParBaseForm {
       ];
     }
 
-    if ($this->getFlowDataHandler()->getFormPermValue("multiple_people")) {
-      $form['update_all_contacts'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Would you like to update all contact records with this information?'),
-        '#default_value' => TRUE,
-        '#return_value' => 'on',
-      ];
-    }
-
     return parent::buildForm($form, $form_state);
   }
 
@@ -284,8 +275,7 @@ class ParReviewForm extends ParBaseForm {
     }
 
     // Merge all accounts (and save them) or just save the person straight up.
-    if (($this->getFlowDataHandler()->getTempDataValue('update_all_contacts') === 'on' && $par_data_person->mergePeople())
-        || $par_data_person->save()) {
+    if ($par_data_person->save()) {
       // Also save the user if the email has been updated.
       if ($account->getEmail() !== $this->getFlowDataHandler()->getFormPermValue('orginal_email')) {
         $account->save();
@@ -310,7 +300,7 @@ class ParReviewForm extends ParBaseForm {
       // We also need to clear the relationships caches once
       // any new relationships have been saved.
       $par_data_person->getRelationships(NULL, NULL, TRUE);
-      
+
       // Also invalidate the user account cache if there is one.
       if ($account) {
         \Drupal::entityTypeManager()->getStorage('user')->resetCache([$account->id()]);

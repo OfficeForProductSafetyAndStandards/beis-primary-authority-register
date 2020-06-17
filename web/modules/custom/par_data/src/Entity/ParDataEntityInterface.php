@@ -2,12 +2,14 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\trance\TranceInterface;
+
 /**
  * The interface for PAR entities.
  *
  * @ingroup par_data
  */
-interface ParDataEntityInterface {
+interface ParDataEntityInterface extends TranceInterface {
 
   /**
    * Get the view builder for the entity.

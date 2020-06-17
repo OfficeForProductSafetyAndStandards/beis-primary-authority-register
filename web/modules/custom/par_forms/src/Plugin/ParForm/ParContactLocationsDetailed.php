@@ -6,6 +6,7 @@ use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
@@ -163,6 +164,27 @@ class ParContactLocationsDetailed extends ParFormPluginBase {
    * Return no actions for this plugin.
    */
   public function getComponentActions($actions = [], $count = NULL) {
+    $contacts = $this->getFlowDataHandler()->getParameter('contacts');
+
+    try {
+      // Edit the legal entity.
+      $params = ['par_data_person' => !empty($contacts) ? current($contacts)->id() : NULL];
+      $options = ['attributes' => ['aria-label' => $this->t("Merge all the similar contact records")]];
+      $merge_link = $this->getLinkByRoute('par_person_merge_flows.merge', $params, $options, TRUE);
+    }
+    catch (ParFlowException $e) {
+      $this->getLogger($this->getLoggerChannel())->notice($e);
+    }
+
+    if (isset($merge_link) && $merge_link instanceof Link) {
+      $actions['merge'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $merge_link->setText("merge contact records")->toString(),
+        '#attributes' => ['class' => ['merge-people']],
+      ];
+    }
+
     return $actions;
   }
 }
