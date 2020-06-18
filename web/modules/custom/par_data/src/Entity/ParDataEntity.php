@@ -273,7 +273,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     // If there are any relationships whereby another entity requires this one
     // then this entity should not be deleted.
-    $relationships = $this->getRequiredRelationships();
+    $relationships = $this->getRequiredRelationships(TRUE);
     return $relationships ? FALSE : TRUE;
   }
 
@@ -662,10 +662,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *
    * @return array|\Drupal\par_data\ParDataRelationship|\Drupal\par_data\ParDataRelationship[]
    */
-  public function getRequiredRelationships() {
+  public function getRequiredRelationships($reset = FALSE) {
     // As a general rule, any entities that reference this entity
     // should stop this entity being deleted.
-    $relationships = $this->getRelationships(NULL, 'dependents');
+    $relationships = $this->getRelationships(NULL, 'dependents', $reset);
     $relationships = array_filter($relationships, function ($relationship) {
       return ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE);
     });
@@ -719,15 +719,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
             foreach ($fields as $field_name => $field) {
               foreach ($this->get($field_name)->referencedEntities() as $referenced_entity) {
 
-                if (!$referenced_entity->isDeleted()) {
-                  $relationship = new ParDataRelationship($this, $referenced_entity, $field);
+                $relationship = new ParDataRelationship($this, $referenced_entity, $field);
 
-                  // Add relationship and entity tags to cache tags.
-                  $tags[] = $relationship->getEntity()
-                      ->getEntityTypeId() . ':' . $relationship->getEntity()
-                      ->id();
-                  $relationships[$referenced_entity->uuid()] = $relationship;
-                }
+                // Add relationship and entity tags to cache tags.
+                $tags[] = $relationship->getEntity()
+                    ->getEntityTypeId() . ':' . $relationship->getEntity()
+                    ->id();
+                $relationships[$referenced_entity->uuid()] = $relationship;
               }
             }
           }
@@ -740,15 +738,13 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
                 ->getEntitiesByProperty($entity_type, $field_name, $this->id());
               foreach ($referencing_entities as $referenced_entity) {
 
-                if (!$referenced_entity->isDeleted()) {
-                  $relationship = new ParDataRelationship($this, $referenced_entity, $field);
+                $relationship = new ParDataRelationship($this, $referenced_entity, $field);
 
-                  // Add relationship and entity tags to cache tags.
-                  $tags[] = $relationship->getEntity()
-                      ->getEntityTypeId() . ':' . $relationship->getEntity()
-                      ->id();
-                  $relationships[$referenced_entity->uuid()] = $relationship;
-                }
+                // Add relationship and entity tags to cache tags.
+                $tags[] = $relationship->getEntity()
+                    ->getEntityTypeId() . ':' . $relationship->getEntity()
+                    ->id();
+                $relationships[$referenced_entity->uuid()] = $relationship;
               }
             }
           }
@@ -836,6 +832,144 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     }
 
     return TRUE;
+  }
+
+  /**
+   * Merge entities of the same type.
+   *
+   * This will only merge the references for both entities. It will leave all
+   * other field values on the original entity in tact.
+   *
+   * @param \Drupal\par_data\Entity\ParDataEntityInterface $entity
+   *   The entity to merge into the current entity.
+   * @param boolean $save
+   *   Whether to save _this_ entity once the merge is complete.
+   *
+   * @throws \Drupal\par_data\ParDataException
+   *   Throws a par data exception if these entities cannot be merged.
+   */
+  public function merge(ParDataEntityInterface $entity, $save = TRUE) {
+    if (!$entity || !$entity instanceof ParDataEntityInterface) {
+      throw new ParDataException('Only PAR entities can be merged into one another.');
+    }
+
+    // Only merge if both entities are the same entity type and bundle,
+    // otherwise the reference fields might be different.
+    if ($this->getEntityTypeId() !== $entity->getEntityTypeId()
+      && $this->bundle() !== $entity->bundle()) {
+      throw new ParDataException('The entity types are not the same and cannot be merged.');
+    }
+
+    // Do not merge if it's the same entity.
+    if ($this->id() === $entity->id()) {
+      return;
+    }
+
+    // Get all the PAR entities that reference the entity being merged.
+    $relationships = $entity->getRelationships(NULL, 'merge', TRUE);
+    foreach ($relationships as $relationship) {
+      // Reverse entity reference merge.
+      if ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE) {
+        // Delete methods check to see if there are any related entities that
+        // require this entity, @see ParDataEntity::isDeletable().
+        // References to the $entity must be removed from all reference fields
+        // before it can be deleted.
+        $remove_keys = $this->getParDataManager()->getReferenceValueKeys(
+          $relationship->getEntity(), $relationship->getField()->getName(), $entity->id()
+        );
+        if ($remove_keys) {
+          foreach ($remove_keys as $key) {
+            if ($relationship->getEntity()->get($relationship->getField()->getName())->offsetExists($key)) {
+              $relationship->getEntity()->get($relationship->getField()
+                ->getName())->removeItem($key);
+            }
+          }
+        }
+
+        // Add _this_ entity to the reference field if it's not already referenced.
+        $add_keys = $this->getParDataManager()->getReferenceValueKeys(
+          $relationship->getEntity(), $relationship->getField()->getName(), $this->id()
+        );
+        if (!$add_keys) {
+          $relationship->getEntity()->get($relationship->getField()->getName())->appendItem($this->id());
+        }
+
+        // Re-order the field items and save the referencing entity.
+        $relationship->getEntity()->get($relationship->getField()->getName())->filterEmptyItems();
+
+        // Check that all actions were performed.
+        $add_keys = $this->getParDataManager()->getReferenceValueKeys(
+          $relationship->getEntity(), $relationship->getField()->getName(), $this->id()
+        );
+        if (!$add_keys) {
+          $replacements = ['@entity' => $this->label(), '@reference' => $relationship->getEntity()->label()];
+          throw new ParDataException($this->t('@entity could not be added to @reference', $replacements));
+        }
+        $remove_keys = $this->getParDataManager()->getReferenceValueKeys(
+          $relationship->getEntity(), $relationship->getField()->getName(), $entity->id()
+        );
+        if ($remove_keys) {
+          $replacements = ['@entity' => $entity->label(), '@reference' => $relationship->getEntity()->label()];
+          throw new ParDataException($this->t('@entity could not be removed from @reference', $replacements));
+        }
+
+        // Save the related entity.
+        if (!$relationship->getEntity()->save()) {
+          $replacements = ['@reference' => $relationship->getEntity()->label()];
+          throw new ParDataException($this->t('The reference entity @reference could not be saved', $replacements));
+        }
+      }
+    }
+
+    // @TODO Currently we do not have any non-PAR entities that reference a PAR entity.
+    // PAR entities sometimes reference non-PAR entities, but not the other way round.
+    // If any non-PAR entities are given references to PAR entities then this will need
+    // to be accounted for.
+
+    // Act on any references to non-PAR entities such as users or documents.
+    $entity_field_manager = $this->getParDataManager()->getEntityFieldManager();
+    $field_definitions = $entity_field_manager->getFieldDefinitions($entity->getEntityTypeId(), $entity->bundle());
+    foreach ($field_definitions as $field_name => $definition) {
+      if ($definition->getType() === 'entity_reference') {
+
+        // Get all the referenced entities from this reference field.
+        $referenced_entities = $entity->hasField($definition->getName()) ? (array) $entity->get($definition->getName())->referencedEntities() : [];
+        foreach ($referenced_entities as $delta => $reference) {
+          // Check if this entity is already in this reference field.
+          $add_keys = $this->getParDataManager()->getReferenceValueKeys(
+            $this, $definition->getName(), $reference->id()
+          );
+          // Only add the current entity to the reference field if it isn't already there.
+          if (!$add_keys && $this->hasField($definition->getName())) {
+            $this->get($definition->getName())->appendItem($reference->id());
+
+            // Re-order the field items.
+            $this->get($definition->getName())->filterEmptyItems();
+          }
+
+          // Check that the appropriate actions were performed.
+          $add_keys = $this->getParDataManager()->getReferenceValueKeys(
+            $this, $definition->getName(), $reference->id()
+          );
+          if (!$add_keys) {
+            $replacements = ['@entity' => $reference->label(), '@reference' => $this->label()];
+            throw new ParDataException($this->t('A reference to @entity could not be added to @reference', $replacements));
+          }
+        }
+
+        // Merging batches of entities may wish to save after the batch completes.
+        if ($save) {
+          $this->save();
+          if (!$this->save()) {
+            $replacements = ['@entity' => $this->label()];
+            throw new ParDataException($this->t('The entity @entity could not be saved', $replacements));
+          }
+        }
+      }
+    }
+
+    // Delete this record.
+    $entity->delete();
   }
 
   /**
