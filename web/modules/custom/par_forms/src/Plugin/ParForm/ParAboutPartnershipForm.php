@@ -29,6 +29,7 @@ class ParAboutPartnershipForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
+    die('test');
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_organisation')) {
       $this->getFlowDataHandler()->setFormPermValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
     }
@@ -40,6 +41,9 @@ class ParAboutPartnershipForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
+
+    die('ghjghgsjhg');
+
 
     $form['about_partnership'] = [
       '#type' => 'textarea',
