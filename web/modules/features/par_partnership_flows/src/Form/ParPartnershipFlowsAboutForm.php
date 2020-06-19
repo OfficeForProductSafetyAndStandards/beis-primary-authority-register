@@ -46,7 +46,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
-      $this->getFlowDataHandler()->setFormPermValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
+      $this->getFlowDataHandler()->setFormPermValue('about_partnership', $par_data_partnership->get('about_partnership')->value);
     }
   }
 
@@ -58,8 +58,9 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
 
     // Business details.
     $form['about_partnership'] = [
-      '#type' => 'textarea',
+      '#type' => 'text_format',
       '#title' => $this->t('Provide information about the Partnership'),
+      '#format' => 'basic_html',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('about_partnership'),
       '#description' => '<p>Use this section to give a brief overview of the partnership. Include any information you feel may be useful to enforcing authorities.</p>',
     ];
