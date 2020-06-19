@@ -76,7 +76,7 @@ class ParPartnershipPageController extends ParBaseController {
     ];
 
     // Display details about the partnership for information.
-    $about_partnership_display = $par_data_partnership->about_partnership->view(['label' => 'hidden']);
+    $about_partnership_display = $par_data_partnership->about_partnership->value;
     $build['partnership_info']['about_partnership'] = [
       '#type' => 'fieldset',
       '#title' => 'About the partnership',
@@ -85,7 +85,7 @@ class ParPartnershipPageController extends ParBaseController {
       'details' => [
         '#type' => 'html_tag',
         '#tag' => 'div',
-        '#value' => $this->getRenderer()->render($about_partnership_display),
+        '#value' => $about_partnership_display,
       ],
     ];
 
