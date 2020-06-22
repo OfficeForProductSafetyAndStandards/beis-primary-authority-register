@@ -7,6 +7,7 @@
 
 namespace Drupal\par_data\Plugin\views\field;
 
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\user\UserInterface;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
@@ -19,14 +20,20 @@ use Drupal\views\ResultRow;
  *
  * @ViewsField("par_person_account_email")
  */
-class ParPersonEmail extends FieldPluginBase {
+class ParPersonAccountEmail extends FieldPluginBase {
 
   /**
    * @{inheritdoc}
    */
   public function query() {
     // Leave empty to avoid a query on this field.
-    parent::query();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function usesGroupBy() {
+    return TRUE;
   }
 
   /**
@@ -40,7 +47,7 @@ class ParPersonEmail extends FieldPluginBase {
       // then this email address will be used.
       $account = $entity->retrieveUserAccount();
 
-      return $account instanceof UserInterface ? $account->getEmail() : $entity->getEmail();
+      return $account instanceof UserInterface ? strtolower($account->getEmail()) : strtolower($entity->getEmail());
     }
   }
 }

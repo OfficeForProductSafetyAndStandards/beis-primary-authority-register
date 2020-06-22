@@ -77,7 +77,7 @@ use Drupal\user\UserInterface;
  *   field_ui_base_route = "entity.par_data_person_type.edit_form"
  * )
  */
-class ParDataPerson extends ParDataEntity {
+class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
 
   /**
    * {@inheritdoc}

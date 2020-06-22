@@ -9,7 +9,7 @@ use Drupal\user\UserInterface;
  *
  * @ingroup par_data
  */
-interface ParDataPersonInterface {
+interface ParDataPersonInterface extends ParDataEntityInterface {
 
   /**
    * Get the User account.
