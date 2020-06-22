@@ -290,7 +290,7 @@ class EntityMergeTest extends ParDataTestBase {
     }
 
     // Check that the right number of matching people are found.
-    $people = $this->people[1]->getAllRelatedPeople();
+    $people = $this->people[1]->getSimilarPeople();
     $this->assertCount(6, $people, t('There are 6 people that share the same email address.'));
 
     // Merge the contact records.

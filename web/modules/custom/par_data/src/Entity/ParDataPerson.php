@@ -109,18 +109,6 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   }
 
   /**
-   * Determine whether the person has a user account set.
-   *
-   * @see self::getUserAccount()
-   *
-   * @return bool
-   *   Whether a user account has been set.
-   */
-  public function hasUserAccount() {
-    return $this->get('field_user_account')->isEmpty();
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function lookupUserAccount() {
@@ -132,6 +120,23 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   }
 
   /**
+   * Determine whether the person has a user account set.
+   *
+   * Does not include whether a user account can looked up by matching an email
+   * address @see self::lookupUserAccount().
+   *
+   * @see self::getUserAccount()
+   *
+   * @return bool
+   *   Whether a user account has been set.
+   */
+  public function hasUserAccount() {
+    return $this->hasField('field_user_account')
+      && !$this->get('field_user_account')->isEmpty()
+      && !empty($this->get('field_user_account')->referencedEntities());
+  }
+
+  /**
    * {@inheritdoc}
    *
    * A person can be matched to a user account if:
@@ -140,14 +145,8 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
    * @see ParDataManager::getUserPeople()
    */
   public function getUserAccount() {
-    $account = $this->retrieveUserAccount();
-
-    // Lookup the user account if one has not been saved.
-    if (!$account) {
-      $account = $this->lookupUserAccount();
-    }
-
-    return $account;
+    return $this->hasUserAccount() ?
+      $this->retrieveUserAccount() : $this->lookupUserAccount();
   }
 
   /**
@@ -161,34 +160,16 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
    * {@inheritdoc}
    */
   public function getSimilarPeople($link_up = TRUE) {
-    $account = $this->retrieveUserAccount();
+    $account = $this->getUserAccount();
 
     // Link this entity to the Drupal User if one exists.
-    if (!$account && $link_up) {
+    if ($link_up && $account && !$this->hasUserAccount()) {
       $account = $this->linkAccounts();
     }
 
-    // Return all similar people.
-    if ($account) {
-      $people = $this->entityTypeManager()
-        ->getStorage($this->getEntityTypeId())
-        ->loadByProperties(['email' => $account->get('mail')->getString()]);
-    }
-
-    return isset($people) ? $people : [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getAllRelatedPeople($link_up = TRUE) {
-    $email = $this->getEmail();
-
-    // Link this entity to the Drupal User if one exists.
-    $account = $this->retrieveUserAccount();
-    if (!$account && $link_up) {
-      $account = $this->linkAccounts();
-    }
+    // Get the dominant email address, for people with a user account this is
+    // the user account email, for all others it's the email of the person.
+    $email = $account instanceof UserInterface ? $account->getEmail() : $this->getEmail();
 
     // Get the entity query.
     $query = $this->entityTypeManager()
@@ -207,13 +188,19 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
       ->getStorage($this->getEntityTypeId())
       ->loadMultiple(array_unique($results));
 
-    // @TODO There is a big question here of whether we should exclude records
-    // that match the email address but that are already linked to another user account??
-//    $people = array_filter($people, function ($entity) use ($account) {
-//      return ($entity->retrieveUserAccount() && $entity->retrieveUserAccount()->id() !== $account->id()) ? FALSE : TRUE;
-//    });
+    // Do not return people that are already linked to a different user account.
+    $people = array_filter($people, function ($person) use ($account) {
+      if (!$person->hasUserAccount()) {
+        return TRUE;
+      }
+      if ($account && $person->retrieveUserAccount()->id() === $account->id()) {
+        return TRUE;
+      }
 
-    return $people;
+      return FALSE;
+    });
+
+    return isset($people) ? $people : [];
   }
 
   /**
@@ -224,6 +211,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     if (!$account) {
       $account = $this->lookupUserAccount();
     }
+
     $current_user_account = $this->retrieveUserAccount();
     if ($account && (!$current_user_account || $account->id() !== $current_user_account->id())) {
       // Add the user account to this person.
