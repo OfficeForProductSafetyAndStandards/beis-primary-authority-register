@@ -3,9 +3,12 @@
 namespace Drupal\par_data;
 
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\trance\TranceStorage;
 use Drupal\Core\Entity\EntityInterface;
@@ -102,6 +105,18 @@ class ParDataStorage extends TranceStorage {
    * {@inheritdoc}
    */
   public function save(EntityInterface $entity) {
+    // Lowercase all email addresses, these are used in some aggregate functions
+    // and should not be upper case.
+    if ($entity instanceof ParDataPersonInterface && $entity->hasField('email')) {
+      foreach ($entity->get('email') as $delta => $field_item) {
+        if (isset($field_item->getValue()['value'])) {
+          $email = mb_strtolower($field_item->getValue()['value']);
+          $field_item->setValue($email);
+        }
+        $entity->get('email')->set($delta, $field_item);
+      }
+    }
+
     // Load the original entity if it already exists.
     if ($this->has($entity->id(), $entity) && !isset($entity->original)) {
       $entity->original = $this->loadUnchanged($entity->id());
