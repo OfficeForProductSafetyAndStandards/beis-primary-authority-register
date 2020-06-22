@@ -13,6 +13,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPersonType;
 use Drupal\views\ViewExecutable;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 
@@ -90,7 +91,7 @@ function par_data_entity_bundle_field_info_alter(&$fields, \Drupal\Core\Entity\E
  * @param \Drupal\views\ViewExecutable $view
  * @param $query
  */
-function par_data_views_query_alter(ViewExecutable $view, $query) {
+function par_data_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
 
   // PostgreSQL case insensitive query alter.
   foreach ($query->where as $group_key => $group) {
@@ -99,7 +100,7 @@ function par_data_views_query_alter(ViewExecutable $view, $query) {
       // Only apply to combined fields, Views stamps in queries are useful!
       if (preg_match('/:views_combine/', $condition['field'])) {
         // ILIKE is proprietary to PostgreSQL.
-        $query->where[$group_key]['conditions'][$key]['field'] = str_replace('LIKE', 'ILIKE', $condition['field']);
+        $query->where[$group_key]['conditions'][$key]['field'] = str_replace(' LIKE', ' ILIKE', $condition['field']);
       }
 
     }
