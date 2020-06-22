@@ -1022,9 +1022,9 @@ function par_data_update_8043() {
  */
 function par_data_update_8044() {
 
-  // Get all partnerships that have the format issue within the about field.
+  // Get all partnerships that have the format issue within the about business field.
   $query = \Drupal::entityQuery('par_data_organisation');
-  $query->condition('comments', ', basic_html', 'CONTAINS');
+  $query->condition('comments__value', ', basic_html', 'CONTAINS');
   $entity_ids = $query->execute();
   $organisations_to_update = \Drupal::entityTypeManager()->getStorage('par_data_organisation')->loadMultiple($entity_ids);
 
