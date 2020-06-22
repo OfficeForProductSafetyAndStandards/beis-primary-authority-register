@@ -95,6 +95,10 @@ display:
             email: email
             par_flow_link: par_flow_link
             par_flow_link_1: par_flow_link_1
+            authority_name: authority_name
+            organisation_name: organisation_name
+            trading_name_value: trading_name_value
+            par_person_email: par_person_email
           info:
             id:
               sortable: false
@@ -132,6 +136,34 @@ display:
               empty_column: false
               responsive: ''
             par_flow_link_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            authority_name:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            organisation_name:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            trading_name_value:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_person_email:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -339,6 +371,56 @@ display:
           entity_type: par_data_person
           entity_field: last_name
           plugin_id: field
+        par_person_email:
+          id: par_person_email
+          table: par_people_field_data
+          field: par_person_email
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: E-mail
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          entity_type: par_data_person
+          plugin_id: par_person_account_email
         email:
           id: email
           table: par_people_field_data
@@ -347,7 +429,7 @@ display:
           group_type: group
           admin_label: ''
           label: E-mail
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -404,6 +486,73 @@ display:
           field_api_classes: false
           entity_type: par_data_person
           entity_field: email
+          plugin_id: field
+        access:
+          id: access
+          table: users_field_data
+          field: access
+          relationship: field_user_account
+          group_type: group
+          admin_label: ''
+          label: 'Last access'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: timestamp
+          settings:
+            date_format: gds_date_format
+            custom_date_format: ''
+            timezone: ''
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: user
+          entity_field: access
           plugin_id: field
         par_flow_link:
           id: par_flow_link
@@ -708,7 +857,211 @@ display:
           entity_type: par_data_organisation
           entity_field: trading_name
           plugin_id: field
+        mail:
+          id: mail
+          table: users_field_data
+          field: mail
+          relationship: field_user_account
+          group_type: group
+          admin_label: ''
+          label: 'Account Email'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: basic_string
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: user
+          entity_field: mail
+          plugin_id: field
       filters:
+        id_filter:
+          id: id_filter
+          table: par_people_field_data
+          field: id_filter
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: direct
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            operator_limit_selection: false
+            operator_list: {  }
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: par_data_person
+          plugin_id: par_member
+        combine_2:
+          id: combine_2
+          table: views
+          field: combine
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: word
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: combine_2_op
+            label: 'Search for name or email'
+            description: ''
+            use_operator: false
+            operator: combine_2_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: name_email_search
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              par_authority: '0'
+              par_enforcement: '0'
+              par_organisation: '0'
+              par_helpdesk: '0'
+              senior_administration_officer: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          fields:
+            first_name: first_name
+            last_name: last_name
+            email: email
+            mail: mail
+          plugin_id: combine
+        combine_1:
+          id: combine_1
+          table: views
+          field: combine
+          relationship: none
+          group_type: group
+          admin_label: 'Authority or Organisation'
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: combine_1_op
+            label: 'Authority or Organisation'
+            description: 'If you belong to more than one authority or organisation you can filter the list by it.'
+            use_operator: false
+            operator: combine_1_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: authority_organisation_filter
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              par_authority: '0'
+              par_enforcement: '0'
+              par_organisation: '0'
+              par_helpdesk: '0'
+              senior_administration_officer: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          fields:
+            authority_name: authority_name
+            organisation_name: organisation_name
+            trading_name_value: trading_name_value
+          plugin_id: combine
         deleted:
           id: deleted
           table: par_people_field_data
@@ -749,143 +1102,6 @@ display:
           entity_type: par_data_person
           entity_field: deleted
           plugin_id: boolean
-        id_filter:
-          id: id_filter
-          table: par_people_field_data
-          field: id_filter
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '='
-          value: direct
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: par_data_person
-          plugin_id: par_member
-        combine:
-          id: combine
-          table: views
-          field: combine
-          relationship: none
-          group_type: group
-          admin_label: User/Email
-          operator: contains
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: combine_op
-            label: 'First name / Last name / Email'
-            description: ''
-            use_operator: false
-            operator: combine_op
-            identifier: keywords
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              par_authority: '0'
-              par_enforcement: '0'
-              par_organisation: '0'
-              par_helpdesk: '0'
-            placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          fields:
-            first_name: first_name
-            last_name: last_name
-            email: email
-          plugin_id: combine
-        combine_1:
-          id: combine_1
-          table: views
-          field: combine
-          relationship: none
-          group_type: group
-          admin_label: 'Authority or Organisation'
-          operator: contains
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: combine_1_op
-            label: 'Authority or Organisation'
-            description: 'If you belong to more than one authority or organisation you can filter the list accordingly.'
-            use_operator: false
-            operator: combine_1_op
-            identifier: authority_organisation_filter
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              par_authority: '0'
-              par_enforcement: '0'
-              par_organisation: '0'
-              par_helpdesk: '0'
-            placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          fields:
-            authority_name: authority_name
-            organisation_name: organisation_name
-            trading_name_value: trading_name_value
-          plugin_id: combine
       sorts:
         last_name:
           id: last_name
@@ -900,6 +1116,20 @@ display:
             label: ''
           entity_type: par_data_person
           entity_field: last_name
+          plugin_id: standard
+        first_name:
+          id: first_name
+          table: par_people_field_data
+          field: first_name
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: par_data_person
+          entity_field: first_name
           plugin_id: standard
       title: People
       header:
@@ -939,6 +1169,15 @@ display:
           required: false
           entity_type: par_data_person
           plugin_id: entity_reverse
+        field_user_account:
+          id: field_user_account
+          table: par_data_person__field_user_account
+          field: field_user_account
+          relationship: none
+          group_type: group
+          admin_label: 'User Account'
+          required: false
+          plugin_id: standard
       arguments: {  }
       display_extenders: {  }
       filter_groups:
