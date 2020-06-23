@@ -187,7 +187,6 @@ Feature: User management
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
-        Then the element "h1.heading-xlarge" contains the text "Dr Sally McHaels"
         And the element ".component-user-detail" contains the text "par_user_management_multiple@example.com"
 
     @user-management @ci
