@@ -2,7 +2,7 @@ uuid: 5078998f-9c64-4b02-b1e1-608632c7a256
 langcode: en
 status: true
 dependencies: {  }
-id: authority_manager
+id: par_authority_manager
 label: 'Authority Manager'
 weight: -6
 is_admin: null
