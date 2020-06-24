@@ -1,0 +1,14 @@
+uuid: 51371a32-79a9-4e6c-ab4b-8c877ebe8f55
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.authority_manager
+  module:
+    - user
+id: user_add_role_action.authority_manager
+label: 'Add the Authority Manager role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: authority_manager

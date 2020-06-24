@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: senior_administration_officer
 label: 'Senior Administration Officer'
-weight: 7
+weight: -3
 is_admin: null
 permissions:
   - 'remove partnership advice'
