@@ -7,5 +7,11 @@ label: 'Senior Administration Officer'
 weight: -3
 is_admin: null
 permissions:
+  - 'assign par_authority role'
+  - 'assign par_authority_manager role'
+  - 'assign par_enforcement role'
+  - 'assign par_helpdesk role'
+  - 'assign par_organisation role'
+  - 'assign senior_administration_officer role'
   - 'remove partnership advice'
   - 'remove partnership inspection plan'

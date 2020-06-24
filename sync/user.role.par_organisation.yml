@@ -29,6 +29,7 @@ permissions:
   - 'access partnerships dashboard'
   - 'add coordinated member'
   - 'add partnership organisation contact'
+  - 'assign par_organisation role'
   - 'business partnership journey'
   - 'cease coordinated member'
   - 'confirm partnership'

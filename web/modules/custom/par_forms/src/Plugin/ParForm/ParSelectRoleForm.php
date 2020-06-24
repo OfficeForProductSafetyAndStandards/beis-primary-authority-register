@@ -24,7 +24,7 @@ class ParSelectRoleForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function defaultConfiguration() {
-    return ['roles' => ['par_authority', 'par_organisation', 'par_enforcement', 'par_helpdesk']] + parent::defaultConfiguration();
+    return ['roles' => ['par_enforcement', 'par_authority', 'par_authority_manager', 'par_organisation', 'par_helpdesk', 'senior_administration_officer']] + parent::defaultConfiguration();
   }
 
   /**
@@ -49,20 +49,28 @@ class ParSelectRoleForm extends ParFormPluginBase {
 
     $roles = [];
     if ($current_user && array_search('par_organisation', $allowed_roles) !== FALSE
-      && $current_user->hasPermission('create organisation user') && $user_has_organisation) {
+      && $current_user->hasPermission('assign par_organisation role') && $user_has_organisation) {
       $roles['par_organisation'] = Role::load('par_organisation');
     }
     if ($current_user && array_search('par_authority', $allowed_roles) !== FALSE
-      && $current_user->hasPermission('create authority user') && $user_has_authority) {
+      && $current_user->hasPermission('assign par_authority role') && $user_has_authority) {
       $roles['par_authority'] = Role::load('par_authority');
     }
+    if ($current_user && array_search('par_authority', $allowed_roles) !== FALSE
+      && $current_user->hasPermission('assign par_authority_manager role') && $user_has_authority) {
+      $roles['par_authority_manager'] = Role::load('par_authority_manager');
+    }
     if ($current_user && array_search('par_enforcement', $allowed_roles) !== FALSE
-      && $current_user->hasPermission('create enforcement user') && $user_has_authority) {
+      && $current_user->hasPermission('assign par_enforcement role') && $user_has_authority) {
       $roles['par_enforcement'] = Role::load('par_enforcement');
     }
     if ($current_user && array_search('par_helpdesk', $allowed_roles) !== FALSE
-      && $current_user->hasPermission('create helpdesk user')) {
+      && $current_user->hasPermission('assign par_helpdesk role')) {
       $roles['par_helpdesk'] = Role::load('par_helpdesk');
+    }
+    if ($current_user && array_search('senior_administration_officer', $allowed_roles) !== FALSE
+      && $current_user->hasPermission('assign senior_administration_officer role')) {
+      $roles['senior_administration_officer'] = Role::load('senior_administration_officer');
     }
 
     if (!empty($roles)) {
