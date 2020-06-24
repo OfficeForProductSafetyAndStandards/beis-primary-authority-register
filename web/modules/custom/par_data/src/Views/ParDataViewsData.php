@@ -137,6 +137,18 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       ],
     ];
 
+    // Custom filter for grouping people by their user account emails.
+    if ($this->entityType->id() === 'par_data_person') {
+      $data[$this->entityType->getDataTable()]['par_person_email'] = [
+        'title' => t('Person Account Email'),
+        'field' => [
+          'title' => t('Person Account Email'),
+          'help' => t('Displays the email address for this persons account over the email address for the person.'),
+          'id' => 'par_person_account_email',
+        ],
+      ];
+    }
+
     return $data;
   }
 
