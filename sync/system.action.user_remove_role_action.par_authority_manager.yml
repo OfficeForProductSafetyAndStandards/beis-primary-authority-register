@@ -3,12 +3,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - user.role.authority_manager
+    - user.role.par_authority_manager
   module:
     - user
-id: user_remove_role_action.authority_manager
+id: user_remove_role_action.par_authority_manager
 label: 'Remove the Authority Manager role from the selected user(s)'
 type: user
 plugin: user_remove_role_action
 configuration:
-  rid: authority_manager
+  rid: par_authority_manager
