@@ -10,6 +10,7 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_data\Entity\ParDataPersonInterface;
 
 /**
  * Implements hook_install().
@@ -1014,5 +1015,21 @@ function par_data_update_8043() {
     // Strip out the custom format embedded in the text value.
     $par_data_partnership->about_partnership->value = str_replace(', basic_html', '', $par_data_partnership->about_partnership->value);
     $par_data_partnership->save();
+  }
+}
+
+/**
+ * PAR-1624 Make all email addresses on par_data_person entities lowercase.
+ */
+function par_data_update_8045() {
+  $query = \Drupal::database()->query( "SELECT p.id as id FROM par_people_field_data AS p WHERE p.email!=LOWER(email);" );
+  $results = array_keys($query->fetchAllAssoc('id'));
+  if (!empty($results)) {
+    $entities = \Drupal::entityTypeManager()->getStorage('par_data_person')->loadMultiple($results);
+  }
+
+  foreach ($entities as $entity) {
+    // Re-saving the entity will automatically lowercase the email address.
+    $entity->save();
   }
 }
