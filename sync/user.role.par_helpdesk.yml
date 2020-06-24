@@ -61,7 +61,7 @@ permissions:
   - 'approve partnerships'
   - 'approve partnerships via help desk'
   - 'assign all memberships'
-  - 'assign authority_manager role'
+  - 'assign par_authority_manager role'
   - 'assign par_enforcement role'
   - 'assign par_helpdesk role'
   - 'block user'
