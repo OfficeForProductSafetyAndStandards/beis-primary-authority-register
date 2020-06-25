@@ -478,7 +478,7 @@ display:
         trading_name:
           id: trading_name
           table: par_data_organisation__trading_name
-          field: trading_name_value
+          field: trading_name
           relationship: none
           group_type: group
           admin_label: ''
