@@ -179,6 +179,13 @@ trait ParControllerTrait {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getUrlGenerator() {
+    return $this->urlGenerator;
+  }
+
+  /**
    * Get the event dispatcher service.
    *
    * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface
