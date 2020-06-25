@@ -149,6 +149,15 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       ];
     }
 
+    // @see PAR-1631: Link not showing when results list is empty.
+    $data['views']['par_flow_link'] = [
+      'title' => t('PAR Flow Link'),
+      'help' => t('A PAR flow link specifically for global views areas. Includes access checking but cannot use entity tokens.'),
+      'area' => [
+        'id' => 'par_flow_link',
+      ],
+    ];
+
     return $data;
   }
 
