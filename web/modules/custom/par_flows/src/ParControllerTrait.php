@@ -70,6 +70,14 @@ trait ParControllerTrait {
    */
   protected $formBuilder;
 
+
+  /**
+   * The url generator used in par forms.
+   *
+   * @var \Drupal\Core\Routing\UrlGeneratorInterface
+   */
+  protected $urlGenerator;
+
   /**
    * Get the current user account.
    */
