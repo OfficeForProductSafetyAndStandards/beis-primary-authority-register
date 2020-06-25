@@ -33,7 +33,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Drupal\Core\Routing\UrlGeneratorInterface;
 
 /**
  * The base form controller for all PAR forms.

@@ -27,8 +27,6 @@ use Drupal\Core\Access\AccessResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
-use Drupal\Core\Routing\UrlGeneratorInterface;
-
 
 /**
 * A controller for all styleguide page output.
