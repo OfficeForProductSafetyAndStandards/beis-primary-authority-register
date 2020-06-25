@@ -144,6 +144,18 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   }
 
   /**
+   * Dynamically get url generator service.
+   *
+   * Override the standard way the service is being loaded via UrlGeneratorTrait
+   * As this trait is deprecated and will be removed in Drupal 9.
+   *
+   * @return UrlGeneratorInterface
+   */
+  public function getUrlGenerator() {
+    return \Drupal::service('url_generator');
+  }
+
+  /**
    * Get ignored form values.
    *
    * @return array
