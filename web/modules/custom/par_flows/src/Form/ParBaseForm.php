@@ -12,6 +12,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\ParBaseInterface;
@@ -105,11 +106,12 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @param \Drupal\Component\Plugin\PluginManagerInterface $plugin_manager
    *   The par form builder.
    */
-  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager) {
+  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager, UrlGeneratorInterface $url_generator) {
     $this->negotiator = $negotiator;
     $this->flowDataHandler = $data_handler;
     $this->parDataManager = $par_data_manager;
     $this->formBuilder = $plugin_manager;
+    $this->urlGenerator = $url_generator;
 
     $this->setCurrentUser();
 
@@ -132,7 +134,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       $container->get('par_flows.negotiator'),
       $container->get('par_flows.data_handler'),
       $container->get('par_data.manager'),
-      $container->get('plugin.manager.par_form_builder')
+      $container->get('plugin.manager.par_form_builder'),
+      $container->get('url_generator')
     );
   }
 
