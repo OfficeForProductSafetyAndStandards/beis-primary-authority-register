@@ -130,7 +130,7 @@ Feature: User management
         Then the element "h1.heading-xlarge" contains the text "People"
         And the element ".user-management-list .table-scroll-wrapper" is visible
         Then the element ".user-management-list .table-scroll-wrapper thead .views-field-last-name" contains the text "Name"
-        And the element ".user-management-list .table-scroll-wrapper thead .views-field-email" contains the text "E-mail"
+        And the element ".user-management-list .table-scroll-wrapper thead .views-field-par-person-email" contains the text "E-mail"
         And the element ".user-management-list .table-scroll-wrapper thead .views-field-par-flow-link" contains the text "Actions"
 
         # Check the correct users can be managed.
@@ -147,7 +147,7 @@ Feature: User management
         When I click the link text "Manage your colleagues"
 
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_user_management_multiple@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_multiple@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
@@ -183,11 +183,10 @@ Feature: User management
 
         # Check the user details have been updated and the contact records merged.
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_user_management_multiple@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_multiple@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
-        Then the element "h1.heading-xlarge" contains the text "Dr Sally McHaels"
         And the element ".component-user-detail" contains the text "par_user_management_multiple@example.com"
 
     @user-management @ci
@@ -197,7 +196,7 @@ Feature: User management
         When I click the link text "Manage your colleagues"
 
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_user_management_officer@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_officer@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
@@ -241,7 +240,7 @@ Feature: User management
         When I click the link text "Manage your colleagues"
 
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_user_management_contact@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_contact@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
@@ -272,7 +271,7 @@ Feature: User management
         When I click the link text "Manage people"
 
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_authority_profile@example.com" to the inputfield "#edit-keywords"
+        When I add "par_authority_profile@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
@@ -286,7 +285,7 @@ Feature: User management
         When I click the link text "Manage people"
 
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_user_management_officer_2@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_officer_2@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
@@ -306,7 +305,7 @@ Feature: User management
 
         Given I am logged in as "par_helpdesk@example.com"
         When I click the link text "Manage people"
-        When I add "par_user_management_officer_2@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_officer_2@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
