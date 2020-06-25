@@ -12,3 +12,8 @@ invite authority members:
   title: 'Invite authority members to create accounts'
   description: 'Invite authority members that do not have user accounts to register with the system.'
   restrict access: TRUE
+# Permissions related to managing users.
+view user fields:
+  title: 'Allow other users to view user fields'
+  description: 'Allow user to view the fields belonging to other user accounts such as the last login time or email address.'
+  restrict access: TRUE

@@ -28,7 +28,7 @@ class ParMergePeopleForm extends ParBaseForm {
 
   public function loadData() {
     $person = $this->getFlowDataHandler()->getParameter('par_data_person');
-    $people = $person->getAllRelatedPeople();
+    $people = $person->getSimilarPeople();
 
     if ($people) {
       $this->getFlowDataHandler()->setParameter('contacts', $people);
