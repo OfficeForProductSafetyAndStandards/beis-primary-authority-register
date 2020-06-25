@@ -11,6 +11,7 @@ use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_forms\ParFormPluginInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
+use Drupal\Core\Routing\UrlGeneratorInterface;
 
 trait ParControllerTrait {
 
