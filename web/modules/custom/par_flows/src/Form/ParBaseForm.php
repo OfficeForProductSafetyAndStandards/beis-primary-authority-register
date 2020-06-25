@@ -12,6 +12,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\ParBaseInterface;
