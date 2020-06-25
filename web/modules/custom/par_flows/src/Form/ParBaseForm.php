@@ -105,11 +105,12 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @param \Drupal\Component\Plugin\PluginManagerInterface $plugin_manager
    *   The par form builder.
    */
-  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager) {
+  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager, UrlGeneratorInterface $url_generator) {
     $this->negotiator = $negotiator;
     $this->flowDataHandler = $data_handler;
     $this->parDataManager = $par_data_manager;
     $this->formBuilder = $plugin_manager;
+    $this->urlGenerator = $url_generator;
 
     $this->setCurrentUser();
 
@@ -132,7 +133,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       $container->get('par_flows.negotiator'),
       $container->get('par_flows.data_handler'),
       $container->get('par_data.manager'),
-      $container->get('plugin.manager.par_form_builder')
+      $container->get('plugin.manager.par_form_builder'),
+      $container->get('url_generator')
     );
   }
 
@@ -141,18 +143,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function getCacheContexts() {
     return ['user.roles', 'route'];
-  }
-
-  /**
-   * Dynamically get url generator service.
-   *
-   * Override the standard way the service is being loaded via UrlGeneratorTrait
-   * As this trait is deprecated and will be removed in Drupal 9.
-   *
-   * @return UrlGeneratorInterface
-   */
-  public function getUrlGenerator() {
-    return \Drupal::service('url_generator');
   }
 
   /**
