@@ -26,7 +26,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
    * Available display formats.
    */
   const MEMBER_FORMAT_INLINE = 'member_list';
-  const MEMBER_FORMAT_LINK = 'member_link_view';
+  const MEMBER_FORMAT_VIEW = 'member_link_view';
   const MEMBER_FORMAT_REQUEST = 'member_link_request';
 
   /**
@@ -46,7 +46,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
         $this->getFlowDataHandler()->setFormPermValue("number_of_members", $membershipCount);
 
         // Set display configuration options.
-        $available_formats = [self::MEMBER_FORMAT_INLINE, self::MEMBER_FORMAT_LINK];
+        $available_formats = [self::MEMBER_FORMAT_INLINE, self::MEMBER_FORMAT_VIEW];
         $format = isset($this->getConfiguration()['format']) && array_search($this->getConfiguration()['format'], $available_formats) !== FALSE
           ? $this->getConfiguration()['format'] : self::MEMBER_FORMAT_INLINE;
       }
@@ -90,7 +90,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
     $members = $this->getDefaultValuesByKey('members', $cardinality, NULL);
 
     // Show the link to view the full membership list.
-    if ($this->getFlowDataHandler()->getFormPermValue("member_format") === self::MEMBER_FORMAT_LINK) {
+    if ($this->getFlowDataHandler()->getFormPermValue("member_format") === self::MEMBER_FORMAT_VIEW) {
       try {
         $member_link = $this->getLinkByRoute('view.members_list.member_list_coordinator', [], [], TRUE);
       } catch (ParFlowException $e) {
@@ -109,7 +109,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
     elseif ($this->getFlowDataHandler()->getFormPermValue("member_format") === self::MEMBER_FORMAT_INLINE) {
       // Initialize pager and get current page.
       $number_per_page = 5;
-      $pager = $this->getUniquePager()->getPager('partnership_manage_organisation_contacts');
+      $pager = $this->getUniquePager()->getPager('partnership_manage_coordinated_members');
       $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($members), $number_per_page, $pager);
 
       $form['members']['list'] = [
@@ -170,7 +170,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
 
     // Operation links should not be added for the link format, where the update
     // links will be available on the referenced page.
-    if ($this->getFlowDataHandler()->getFormPermValue("member_format") !== self::MEMBER_FORMAT_LINK) {
+    if ($this->getFlowDataHandler()->getFormPermValue("member_format") !== self::MEMBER_FORMAT_VIEW) {
       // Add link to add a new member.
       try {
         $add_member_link = $this->getLinkByRoute('par_member_add_flows.add_organisation_name', [], [], TRUE);
