@@ -113,7 +113,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
       $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($members), $number_per_page, $pager);
 
       $form['members']['list'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#title' => t('Members'),
         '#attributes' => ['class' => ['member-list', 'member-list-inline']],
         'items' => [
@@ -140,7 +140,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
 
         // Display the member.
         $form['members']['list']['items'][$delta] = [
-          '#type' => 'fieldset',
+          '#type' => 'container',
           '#attributes' => ['class' => ['grid-row', 'form-group', 'coordinated-member']],
           '#collapsible' => FALSE,
           '#collapsed' => FALSE,
@@ -156,7 +156,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
     // Show the member list inline.
     elseif ($this->getFlowDataHandler()->getFormPermValue("member_format") === self::MEMBER_FORMAT_REQUEST) {
       $form['members']['list'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#title' => t('Members'),
         '#attributes' => ['class' => 'form-group'],
         'link' => [
