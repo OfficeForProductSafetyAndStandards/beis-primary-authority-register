@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Access\AccessResult;
 
 /**
  * Implements hook_help().
@@ -81,4 +82,22 @@ function par_roles_user_update($account) {
 
   $par_data_manager = \Drupal::service('par_data.manager');
   $par_data_manager->linkPeople($account);
+}
+
+/**
+ * Add a permission to allow other users to see user fields such as last login time.
+ *
+ * Added in PAR-1624 to allow last login time to be displayed in the /members view.
+ * https://www.drupal.org/project/drupal/issues/2799049
+ *
+ * @see \hook_entity_field_access()
+ *
+ * {@inheritDoc}
+ */
+function par_roles_entity_field_access($operation, \Drupal\Core\Field\FieldDefinitionInterface $field_definition, \Drupal\Core\Session\AccountInterface $account, \Drupal\Core\Field\FieldItemListInterface $items = NULL) {
+  if ($operation === 'view' && $field_definition->getTargetEntityTypeId() === 'user') {
+    return AccessResult::allowedIfHasPermission($account, 'view user fields');
+  }
+
+  return AccessResult::neutral();
 }

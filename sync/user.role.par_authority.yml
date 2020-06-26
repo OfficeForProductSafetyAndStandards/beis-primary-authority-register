@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: par_authority
 label: 'Authority Member'
-weight: 3
+weight: -7
 is_admin: null
 permissions:
   - 'access par dashboard'
@@ -30,6 +30,8 @@ permissions:
   - 'add partnership authority contact'
   - 'apply for partnership'
   - 'approve enforcement notice'
+  - 'assign par_authority role'
+  - 'assign par_enforcement role'
   - 'authority partnership journey'
   - 'confirm partnership'
   - 'create authority user'
@@ -125,3 +127,4 @@ permissions:
   - 'view unpublished par_data_premises entities'
   - 'view unpublished par_data_regulatory_function entities'
   - 'view unpublished par_data_sic_code entities'
+  - 'view user fields'
