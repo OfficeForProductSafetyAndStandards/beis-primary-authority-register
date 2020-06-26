@@ -31,7 +31,9 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
       // If we want to use values already saved we have to tell
       // the form about them.
       $par_data_organisation = current($par_data_partnership->getOrganisation());
-      $this->getFlowDataHandler()->setFormPermValue('about_business', $par_data_organisation->get('comments')->value);
+      $information_display = $par_data_organisation->comments->value;
+      $information_display =  check_markup($information_display, 'basic_html');
+      $this->getFlowDataHandler()->setFormPermValue('about_business', $information_display);
     }
   }
 
@@ -56,8 +58,7 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
 
     // Business details.
     $form['about_business_fieldset']['about_business'] = [
-      '#type' => 'text_format',
-      '#format' => 'basic_html',
+      '#type' => 'textarea',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('about_business'),
       '#description' => '<p>Use this section to give a brief overview of the organisation.</p><p>Include any information you feel may be useful to enforcing authorities.</p>',
     ];
