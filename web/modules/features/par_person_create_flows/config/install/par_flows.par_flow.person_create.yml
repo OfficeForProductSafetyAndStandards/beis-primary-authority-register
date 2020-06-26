@@ -43,6 +43,8 @@ steps:
       contact_details: par_add_contact
       user_account: par_person_link
       choose_account: par_person_choose_account
+      select_authority: par_add_institution
+      select_organisation: par_add_institution
     redirect:
       cancel: 8
   5:

@@ -608,60 +608,6 @@ display:
           hidden: 1
           entity_type: par_data_person
           plugin_id: par_flow_link
-        par_flow_link_1:
-          id: par_flow_link_1
-          table: par_people_field_data
-          field: par_flow_link
-          relationship: none
-          group_type: group
-          admin_label: 'Add a person'
-          label: 'PAR Flow Link'
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: false
-          title: 'Add a person'
-          assistive_text: ''
-          link: /person/create/contact
-          hidden: 1
-          entity_type: par_data_person
-          plugin_id: par_flow_link
         authority_name:
           id: authority_name
           table: par_authorities_field_data
@@ -1133,21 +1079,32 @@ display:
           plugin_id: standard
       title: People
       header:
-        area:
-          id: area
+        par_flow_link:
+          id: par_flow_link
           table: views
-          field: area
+          field: par_flow_link
           relationship: none
           group_type: group
           admin_label: ''
           empty: true
-          tokenize: true
-          content:
-            value: "{{ par_flow_link_1 }}\r\n"
-            format: full_html
-          plugin_id: text
+          title: 'Add a person'
+          assistive_text: 'Add a new person'
+          link: /person/create/contact
+          hidden: 1
+          plugin_id: par_flow_link
       footer: {  }
-      empty: {  }
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: 'Sorry, there are no people for your search.'
+          plugin_id: text_custom
       relationships:
         reverse__par_data_authority__field_person:
           id: reverse__par_data_authority__field_person
