@@ -11,6 +11,7 @@ use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_forms\ParFormPluginInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
+use Drupal\Core\Routing\UrlGeneratorInterface;
 
 trait ParControllerTrait {
 
@@ -69,6 +70,14 @@ trait ParControllerTrait {
    * @var \Drupal\par_data\ParDataManagerInterface
    */
   protected $formBuilder;
+
+
+  /**
+   * The url generator used in par forms.
+   *
+   * @var \Drupal\Core\Routing\UrlGeneratorInterface
+   */
+  protected $urlGenerator;
 
   /**
    * Get the current user account.
@@ -168,6 +177,13 @@ trait ParControllerTrait {
    */
   public function getFormBuilder() {
     return $this->formBuilder;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getUrlGenerator() {
+    return $this->urlGenerator;
   }
 
   /**
