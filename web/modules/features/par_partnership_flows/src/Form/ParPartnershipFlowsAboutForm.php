@@ -62,7 +62,6 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
     $form['about_partnership'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide information about the Partnership'),
-      '#format' => 'basic_html',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('about_partnership'),
       '#description' => '<p>Use this section to give a brief overview of the partnership. Include any information you feel may be useful to enforcing authorities.</p>',
     ];
