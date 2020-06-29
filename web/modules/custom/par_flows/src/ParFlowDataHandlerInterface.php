@@ -203,6 +203,8 @@ interface ParFlowDataHandlerInterface {
    * @param string $format
    *   (optional) The machine name of the filter format to be used to filter the
    *   text. Defaults to the par html format.
+   * @param boolean $process_text
+   *   (optional) Weather to apply text filters to the form value..
    */
-  public function setFormPermValue($key, $value, ParFormPluginInterface $plugin = NULL, $format = 'basic_html');
+  public function setFormPermValue($key, $value, ParFormPluginInterface $plugin = NULL, $process_text = FALSE, $format = 'basic_html');
 }
