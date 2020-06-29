@@ -358,7 +358,11 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
       array_unshift($key, $plugin->getPluginNamespace());
     }
 
-    NestedArray::setValue($this->data, $key, check_markup($value, $format), TRUE);
+    if (is_string($value)) {
+      $value = check_markup($value, $format);
+    }
+
+    NestedArray::setValue($this->data, $key, $value, TRUE);
   }
 
   /**
