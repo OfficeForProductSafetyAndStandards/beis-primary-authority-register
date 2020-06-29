@@ -351,14 +351,14 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
-  public function setFormPermValue($key, $value, ParFormPluginInterface $plugin = NULL) {
+  public function setFormPermValue($key, $value, ParFormPluginInterface $plugin = NULL, $format = 'basic_html') {
     $key = (array) $key;
     // Allow the plugin namespace to be used as a prefix if a plugin is passed in.
     if ($plugin && $plugin instanceof ParFormPluginInterface) {
       array_unshift($key, $plugin->getPluginNamespace());
     }
 
-    NestedArray::setValue($this->data, $key, $value, TRUE);
+    NestedArray::setValue($this->data, $key, check_markup($value, $format), TRUE);
   }
 
   /**

@@ -32,7 +32,6 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
       // the form about them.
       $par_data_organisation = current($par_data_partnership->getOrganisation());
       $information_display = $par_data_organisation->comments->value;
-      $information_display =  check_markup($information_display, 'basic_html');
       $this->getFlowDataHandler()->setFormPermValue('about_business', $information_display);
     }
   }

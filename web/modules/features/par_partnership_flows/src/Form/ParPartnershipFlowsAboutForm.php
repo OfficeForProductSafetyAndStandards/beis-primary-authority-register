@@ -47,7 +47,6 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
       $information_display = $par_data_partnership->about_partnership->value;
-      $information_display =  check_markup($information_display, 'basic_html');
       $this->getFlowDataHandler()->setFormPermValue('about_partnership', $information_display);
     }
   }

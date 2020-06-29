@@ -200,6 +200,9 @@ interface ParFlowDataHandlerInterface {
    *   The value to store for this key. Can be any string, integer or object.
    * @param ParFormPluginInterface $plugin
    *   If passed the plugin namespace will be prepended to the key.
+   * @param string $format
+   *   (optional) The machine name of the filter format to be used to filter the
+   *   text. Defaults to the par html format.
    */
-  public function setFormPermValue($key, $value, ParFormPluginInterface $plugin = NULL);
+  public function setFormPermValue($key, $value, ParFormPluginInterface $plugin = NULL, $format = 'basic_html');
 }
