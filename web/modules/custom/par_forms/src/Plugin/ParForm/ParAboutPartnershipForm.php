@@ -42,7 +42,7 @@ class ParAboutPartnershipForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
 
     $form['about_partnership'] = [
-      '#type' => 'text_format',
+      '#type' => 'textarea',
       '#title' => $this->t('Provide information about the partnership'),
       '#default_value' => $this->getDefaultValuesByKey('about_partnership', $cardinality),
       '#description' => '<p>Use this section to give a brief overview of the partnership. Include any information you feel may be useful to enforcing authorities.</p>',
