@@ -1027,18 +1027,27 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   An array of value properties keyed by the field delta.
    */
   public function extractValues($field, $property = 'value') {
-    if (!$this->hasField($field)) {
+    if (!$this->hasField($field) || $this->get($field)->isEmpty()) {
       return;
     }
 
     $values = [];
-    foreach ($this->get($field)->getValue() as $key => $value) {
-      if (isset($value[$property])) {
-        $values[$key] = $value[$property];
+    foreach ($this->get($field) as $key => $field_item) {
+      if (!$field_item->isEmpty()) {
+        $values[$key] = $field_item->get($property)->getValue();
       }
     }
 
     return $values;
+  }
+
+  public function getPlain($field) {
+    if (!$this->hasField($field) || $this->get($field)->isEmpty()) {
+      return;
+    }
+
+    $value = $this->get($field)->first()->get('value')->getValue();
+    return check_markup($value, 'plain_text');
   }
 
   /**
