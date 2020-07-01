@@ -29,10 +29,18 @@ trait ParFlowAccessTrait {
 
     }
 
+    $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
+
     switch ($type) {
       case 'authority':
         if (!$account->hasPermission('add partnership authority contact')) {
           $this->accessResult = AccessResult::forbidden('User does not have permissions to update authority contacts.');
+        }
+
+        // Check the user has permission to manage the current authority.
+        if (!$account->hasPermission('bypass par_data membership')
+          && !$this->getParDataManager()->isMember($par_data_partnership->getAuthority(TRUE), $user)) {
+          $this->accessResult = AccessResult::forbidden('User does not have permissions to remove authority contacts from this partnership.');
         }
 
         break;
@@ -40,6 +48,12 @@ trait ParFlowAccessTrait {
       case 'organisation':
         if (!$account->hasPermission('add partnership organisation contact')) {
           $this->accessResult = AccessResult::forbidden('User does not have permissions to update organisation contacts.');
+        }
+
+        // Check the user has permission to manage the current authority.
+        if (!$account->hasPermission('bypass par_data membership')
+          && !$this->getParDataManager()->isMember($par_data_partnership->getOrganisation(TRUE), $user)) {
+          $this->accessResult = AccessResult::forbidden('User does not have permissions to remove authority contacts from this partnership.');
         }
 
         break;
