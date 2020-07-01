@@ -176,8 +176,6 @@ class ParReviewForm extends ParBaseForm {
   }
 
   public function createEntities() {
-    $current_user = $this->getCurrentUser();
-
     // Get the cache IDs for the various forms that needs needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_add_contact');
     $contact_dedupe_cid = $this->getFlowNegotiator()->getFormKey('dedupe_contact');
@@ -204,7 +202,7 @@ class ParReviewForm extends ParBaseForm {
         'work_phone' => $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid),
         'mobile_phone' => $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid),
       ]);
-      $par_data_person->updateEmail($this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid), $current_user);
+      $par_data_person->updateEmail($this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid), $account);
 
       if ($communication_notes = $this->getFlowDataHandler()->getTempDataValue('notes', $contact_details_cid)) {
         $par_data_person->set('communication_notes', $communication_notes);
