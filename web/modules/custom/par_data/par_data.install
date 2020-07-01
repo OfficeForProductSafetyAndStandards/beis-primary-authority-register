@@ -1001,9 +1001,25 @@ function par_data_update_8042() {
 }
 
 /**
- * PAR-1618 clean all par entity long text fields.
+ * PAR-1624 Make all email addresses on par_data_person entities lowercase.
  */
 function par_data_update_8043() {
+  $query = \Drupal::database()->query( "SELECT p.id as id FROM par_people_field_data AS p WHERE p.email!=LOWER(email);" );
+  $results = array_keys($query->fetchAllAssoc('id'));
+  if (!empty($results)) {
+    $entities = \Drupal::entityTypeManager()->getStorage('par_data_person')->loadMultiple($results);
+  }
+
+  foreach ($entities as $entity) {
+    // Re-saving the entity will automatically lowercase the email address.
+    $entity->save();
+  }
+}
+
+/**
+ * PAR-1618 clean all par entity long text fields.
+ */
+function par_data_update_8044() {
   $par_data_manager = \Drupal::service('par_data.manager');
 
   foreach ($par_data_manager->getParEntityTypes() as $entity_type_id => $entity_type_definition) {
@@ -1026,21 +1042,5 @@ function par_data_update_8043() {
         }
       }
     }
-  }
-}
-
-/**
- * PAR-1624 Make all email addresses on par_data_person entities lowercase.
- */
-function par_data_update_8044() {
-  $query = \Drupal::database()->query( "SELECT p.id as id FROM par_people_field_data AS p WHERE p.email!=LOWER(email);" );
-  $results = array_keys($query->fetchAllAssoc('id'));
-  if (!empty($results)) {
-    $entities = \Drupal::entityTypeManager()->getStorage('par_data_person')->loadMultiple($results);
-  }
-
-  foreach ($entities as $entity) {
-    // Re-saving the entity will automatically lowercase the email address.
-    $entity->save();
   }
 }
