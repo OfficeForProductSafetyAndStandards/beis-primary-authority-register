@@ -50,7 +50,7 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
       $this->setDefaultValuesByKey("work_phone", $cardinality, $par_data_person->get('work_phone')->getString());
       $this->setDefaultValuesByKey("mobile_phone", $cardinality, $par_data_person->get('mobile_phone')->getString());
       $this->setDefaultValuesByKey("email", $cardinality, $par_data_person->get('email')->getString());
-      $this->setDefaultValuesByKey("notes", $cardinality, $par_data_person->get('communication_notes')->getString());
+      $this->setDefaultValuesByKey("notes", $cardinality, $par_data_person->getPlain('communication_notes'));
 
       // Get preferred contact methods.
       $contact_options = [
