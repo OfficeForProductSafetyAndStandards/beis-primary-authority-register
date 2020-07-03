@@ -37,20 +37,23 @@ function par_roles_user_presave($account) {
 
   // Add the relevant authority role if they are an authority member.
   if ($authority_member) {
-    $secondary_user = $par_data_manager->isRoleInAllMemberAuthorities($account, ['par_authority']);
+    $authority_member = $par_data_manager->isRoleInAllMemberAuthorities($account, ['par_authority']);
+    $authority_manager = $par_data_manager->isRoleInAllMemberAuthorities($account, ['par_authority_manager']);
 
     // If there are no other primary authority users in any of the member's
     // authorities then assign them the primary authority role.
-    if (!$secondary_user) {
+    if (!$authority_member && !$authority_manager) {
       $account->addRole('par_authority');
       $account->removeRole('par_enforcement');
     }
-    elseif ((!$account->hasRole('par_authority') && !$account->hasRole('par_enforcement'))) {
-      $account->addRole('par_enforcement');
-      $account->removeRole('par_authority');
+    elseif (!$account->hasRole('par_authority_manager')
+      && !$account->hasRole('par_authority')
+      && !$account->hasRole('par_enforcement')) {
+      $account->addRole('par_authority');
     }
   }
   else {
+    $account->removeRole('par_authority_manager');
     $account->removeRole('par_authority');
     $account->removeRole('par_enforcement');
   }
