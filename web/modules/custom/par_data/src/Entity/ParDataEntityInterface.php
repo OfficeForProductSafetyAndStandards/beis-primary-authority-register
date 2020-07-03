@@ -74,7 +74,7 @@ interface ParDataEntityInterface extends TranceInterface {
   /**
    * Runs the plain_text filter on a piece of text used to format long_text fields correctly.
    *
-   * @param  string $field
+   * @param string $field
    *   The name of the field on the entity to act on.
    *
    * @return \Drupal\Component\Render\MarkupInterface/NULL
