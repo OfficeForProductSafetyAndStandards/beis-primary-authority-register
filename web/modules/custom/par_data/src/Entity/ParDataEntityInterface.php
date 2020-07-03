@@ -9,7 +9,8 @@ use Drupal\trance\TranceInterface;
  *
  * @ingroup par_data
  */
-interface ParDataEntityInterface extends TranceInterface {
+interface ParDataEntityInterface extends TranceInterface
+{
 
   /**
    * Get the view builder for the entity.
@@ -71,4 +72,14 @@ interface ParDataEntityInterface extends TranceInterface {
    */
   public function getCompletionPercentage();
 
+  /**
+   * Runs the plain_text filter on a piece of text used to format long_text fields correctly.
+   *
+   * @param  string $field
+   *   The name of the field on the entity to act on.
+   *
+   * @return \Drupal\Component\Render\MarkupInterface/NULL
+   *   The filtered text
+   */
+  public function getPlain($field);
 }
