@@ -29,7 +29,7 @@ class ParEnquiryForm extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     if ($par_data_general_enquiry = $this->getFlowDataHandler()->getParameter('par_data_general_enquiry')) {
-      $this->getFlowDataHandler()->setFormPermValue('notes', $par_data_general_enquiry->get('notes')->getString());
+      $this->getFlowDataHandler()->setFormPermValue('notes', $par_data_general_enquiry->getPlain('notes'));
     }
 
     parent::loadData();

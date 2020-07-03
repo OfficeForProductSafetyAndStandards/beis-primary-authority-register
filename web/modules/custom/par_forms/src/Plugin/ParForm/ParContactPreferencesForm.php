@@ -28,7 +28,7 @@ class ParContactPreferencesForm extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
-      $this->setDefaultValuesByKey("notes", $cardinality, $par_data_person->get('communication_notes')->getString());
+      $this->setDefaultValuesByKey("notes", $cardinality, $par_data_person->getPlain('communication_notes'));
 
       // Get preferred contact methods.
       $contact_options = [

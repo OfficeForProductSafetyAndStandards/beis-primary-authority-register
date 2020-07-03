@@ -15,6 +15,7 @@ permissions:
   - 'access partnerships dashboard'
   - 'access shortcuts'
   - 'access site-wide contact form'
+  - 'block user'
   - 'manage own par profile'
   - 'post comments'
   - 'search content'

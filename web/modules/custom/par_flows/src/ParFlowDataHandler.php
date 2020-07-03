@@ -351,16 +351,11 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
-  public function setFormPermValue($key, $value, ParFormPluginInterface $plugin = NULL, $process_text = FALSE, $format = 'basic_html') {
+  public function setFormPermValue($key, $value, ParFormPluginInterface $plugin = NULL) {
     $key = (array) $key;
     // Allow the plugin namespace to be used as a prefix if a plugin is passed in.
     if ($plugin && $plugin instanceof ParFormPluginInterface) {
       array_unshift($key, $plugin->getPluginNamespace());
-    }
-
-    // PAR-1618 Run all the enabled filters on a piece a text value.
-    if ($process_text === TRUE && is_string($value)) {
-      $value = check_markup($value, $format);
     }
 
     NestedArray::setValue($this->data, $key, $value, TRUE);

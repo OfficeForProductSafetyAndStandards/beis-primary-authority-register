@@ -20,7 +20,8 @@ class ParMessageForm extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     if ($message = $this->getFlowDataHandler()->getParameter('comment')) {
-      $this->getFlowDataHandler()->setFormPermValue('message', $message->get('comment_body')->getString());
+      $message_value = !$message->get('comment_body')->isEmpty() ? $message->get('comment_body')->first()->get('value')->getValue() : '';
+      $this->getFlowDataHandler()->setFormPermValue('message', $message_value);
       $this->getFlowDataHandler()->setFormPermValue('files', $message->get('field_supporting_document')->getString());
     }
 
