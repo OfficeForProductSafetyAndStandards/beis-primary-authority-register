@@ -70,8 +70,8 @@ class ParUserDetail extends ParFormPluginBase {
       $roles = Role::loadMultiple($user->getRoles());
       $user_roles = [];
       foreach ($roles as $user_role) {
-        if (in_array($user_role->id(), ['par_authority', 'par_enforcement', 'par_organisation', 'par_helpdesk'])) {
-          $user_roles[] = str_replace('PAR ', '', $user_role->label());
+        if (in_array($user_role->id(), ['par_authority', 'par_authority_manager', 'par_enforcement', 'par_organisation', 'par_helpdesk', 'senior_administration_officer'])) {
+          $user_roles[] = $user_role->label();
         }
       }
 
