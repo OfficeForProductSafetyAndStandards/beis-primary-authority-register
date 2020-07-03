@@ -1041,6 +1041,9 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     return $values;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getPlain($field) {
     if (!$this->hasField($field) || $this->get($field)->isEmpty()) {
       return;
