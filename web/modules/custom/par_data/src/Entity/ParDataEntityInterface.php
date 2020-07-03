@@ -9,8 +9,7 @@ use Drupal\trance\TranceInterface;
  *
  * @ingroup par_data
  */
-interface ParDataEntityInterface extends TranceInterface
-{
+interface ParDataEntityInterface extends TranceInterface {
 
   /**
    * Get the view builder for the entity.
