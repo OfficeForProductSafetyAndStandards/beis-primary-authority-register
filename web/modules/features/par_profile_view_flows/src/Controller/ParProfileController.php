@@ -79,7 +79,9 @@ class ParProfileController extends ParBaseController {
     }
 
     if ($par_data_person && $people = $par_data_person->getSimilarPeople()) {
-      $this->getFlowDataHandler()->setParameter('contacts', $people);
+      // We have some legacy data which has caused some people to have over 100 contacts.
+      // An upper limit needs to be set as this can't all be processed within the same page.
+      $this->getFlowDataHandler()->setParameter('contacts', array_slice($people, 0, 100, TRUE));
       $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'contact_locations_detail', $people);
     }
     else {

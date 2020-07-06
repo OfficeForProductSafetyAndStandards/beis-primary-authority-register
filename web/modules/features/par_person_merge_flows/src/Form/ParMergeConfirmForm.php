@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_flows\Form\ParBaseForm;
@@ -78,9 +79,9 @@ class ParMergeConfirmForm extends ParBaseForm {
     $cid = $this->getFlowNegotiator()->getFormKey('merge');
     $merge_ids = $this->getFlowDataHandler()->getDefaultValues("contacts", [], $cid);
 
-    // If the $par_data_person is being merged this must be the primary record.
-    // This is important because the $par_data_person is used as a route
-    // parameter and should not be deleted.
+    // PAR-1619: If the $par_data_person is being merged this must be the primary record.
+    // This is important because the $par_data_person is used as a route parameter
+    // and should not be deleted.
     $primary_key = $par_data_person ? array_search($par_data_person->id(), $merge_ids, TRUE) : FALSE;
     if ($primary_key !== FALSE) {
       unset($merge_ids[$primary_key]);
@@ -98,6 +99,14 @@ class ParMergeConfirmForm extends ParBaseForm {
       foreach ($merges as $merge) {
         if ($person instanceof ParDataEntityInterface) {
           try {
+            // Check that the entity being merged is not in use by the current route.
+            // Merging will remove an entity and have unwanted effects.
+            $params = $this->getFlowDataHandler()->getParameters();
+            foreach ($params as $param) {
+              if ($param instanceof ParDataPersonInterface && $param->id() === $merge->id()) {
+                continue;
+              }
+            }
             $person->merge($merge, FALSE);
           }
           catch (ParDataException $e) {
