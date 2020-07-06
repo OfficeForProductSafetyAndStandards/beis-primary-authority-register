@@ -1,0 +1,8 @@
+uuid: 4add43d2-78ae-4882-a127-501c4b9b54a3
+langcode: en
+status: null
+dependencies: {  }
+id: invite_senior_administration_officer
+label: 'Invite Senior Administration Officer'
+description: ''
+data: 'a:4:{s:11:"use_default";i:1;s:16:"subject_editable";i:0;s:10:"html_email";i:0;s:11:"target_role";s:29:"senior_administration_officer";}'
