@@ -251,11 +251,11 @@ HEREDOC;
    * Validate date field.
    */
   public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
-    $data_policy_key = $this->getElementKey('target_role');
-    if (!$form_state->getValue($data_policy_key)) {
-      $id_key = $this->getElementKey('data_policy', $cardinality, TRUE);
+    $role_key = $this->getElementKey('target_role');
+    if (!$form_state->getValue($role_key)) {
+      $id_key = $this->getElementKey('target_role', $cardinality, TRUE);
       $message = $this->wrapErrorMessage('No role has been selected for this invitation.', $this->getElementId($id_key, $form));
-      $form_state->setErrorByName($this->getElementName($data_policy_key), $message);
+      $form_state->setErrorByName($this->getElementName($role_key), $message);
     }
 
     $email_subject_key = $this->getElementKey('subject');
