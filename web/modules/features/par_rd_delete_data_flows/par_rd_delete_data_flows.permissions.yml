@@ -1,0 +1,4 @@
+delete par data:
+  title: 'Delete PAR data'
+  description: 'Allows users to permanently delete PAR data.'
+  restrict access: TRUE

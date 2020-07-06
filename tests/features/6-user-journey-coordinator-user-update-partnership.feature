@@ -4,7 +4,7 @@ Feature: Coordinator User - Update Partnership
     Scenario: Coordinator User - Update Partnership
 
         #LOGIN
-        
+
         Given I am logged in as "par_coordinator@example.com"
         When I click the link with text "See your partnerships"
         And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
@@ -14,7 +14,7 @@ Feature: Coordinator User - Update Partnership
 
         # ADD MEMBERS
 
-        When I click the link text "Add a member"
+        When I click the link text "add a member"
         And I add "New Member One" to the inputfield "#edit-name"
         And I click on the button "#edit-next"
         And I add "MK43 7AS" to the inputfield "#edit-postcode"
@@ -55,7 +55,7 @@ Feature: Coordinator User - Update Partnership
         And the element "#block-par-theme-content" contains the text "14 January 2018"
         When I click on the button "#edit-save"
         And the element "h1.heading-xlarge" contains the text "Member added"
-        When I click on the button ".button"    
+        When I click on the button ".button"
         # And I run tota11y against the current page
         And the element "h1.heading-xlarge" contains the text "Members list"
         And the element ".table-scroll-wrapper" contains the text "New Member One"
@@ -77,7 +77,7 @@ Feature: Coordinator User - Update Partnership
         Then the element ".table-scroll-wrapper" contains the text "New Member One"
 
         # INSPECTION PLAN STATUS
-        
+
         When I click the link text "New Member One"
         And I click the link text "edit covered by inspection plan"
         And I click on the radio "#edit-covered-by-inspection-1"
@@ -100,7 +100,7 @@ Feature: Coordinator User - Update Partnership
         Then the element "Cease membership" does not exist
         And the element "td.views-field.views-field-date-membership-ceased" contains the text "20 February 2018"
         And I click the link text "◀ Back to partnership"
-       
+
         # EDIT REGISTERED ADDRESS
 
         When  I click the link text "edit address"
@@ -120,9 +120,10 @@ Feature: Coordinator User - Update Partnership
         # EDIT ABOUT THE ORGANISATION
 
         When I click the link text "edit about the organisation"
+        Then the element "h1.heading-xlarge" contains the text "Information about the organisation"
         And I add "Change to the about organisation details section" to the inputfield "#edit-about-business"
         And I click on the button "#edit-save"
-        Then the element "#edit-about-business" contains the text "Change to the about organisation details section"
+        Then the element "#edit-about" contains the text "Change to the about organisation details section"
 
         # ADD NEW TRADING NAME
 
@@ -144,21 +145,21 @@ Feature: Coordinator User - Update Partnership
 
         # EDIT MAIN ORGANISATION CONTACT
 
-        When I click the link text "edit organisation contact"
+        When I click the link text "edit jill langworthy"
         # And I run tota11y against the current page
+        And I add "Mr" to the inputfield "#edit-salutation"
         And I add "Tim" to the inputfield "#edit-first-name"
         And I add "Whistler" to the inputfield "#edit-last-name"
         And I add "2079999999" to the inputfield "#edit-work-phone"
-        And I add "78659999999" to the inputfield "#edit-mobile-phone"
-        And I click on the radio "#edit-preferred-contact-communication-mobile"
-        And I add "Some additional notes" to the inputfield "#edit-notes"
+        And I add "078659999999" to the inputfield "#edit-mobile-phone"
+        And I click on the button "#edit-next"
+        Then the element "h1.heading-xlarge" contains the text "Review contact information"
+        Then the element "#edit-name" contains the text "Mr Tim Whistler"
+        And the element "#edit-work-phone" contains the text "2079999999"
+        And the element "#edit-mobile-phone" contains the text "078659999999"
         And I click on the button "#edit-save"
-        Then the element "#edit-organisation-contacts" contains the text "Tim"
-        And the element "#edit-organisation-contacts" contains the text "Whistler"
-        And the element "#edit-organisation-contacts" contains the text "2079999999"
-        And the element "#edit-organisation-contacts" contains the text "78659999999"
 
-        # COMPLETE CHANGES
+        # CHECK CHANGES
 
         When I click on the button "#edit-save"
         # And I run tota11y against the current page

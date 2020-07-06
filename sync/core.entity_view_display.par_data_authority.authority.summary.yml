@@ -12,7 +12,7 @@ dependencies:
   module:
     - par_data
 _core:
-  default_config_hash: 63fKT_sy9nVXWyICykOE2hDWDO-cfVimjSpUc1p-8rU
+  default_config_hash: kmP2X4baPHxhErUx53cXaakfrGlKuVfHv_qKt5X9wdo
 id: par_data_authority.authority.summary
 targetEntityType: par_data_authority
 bundle: authority
@@ -45,7 +45,9 @@ content:
     third_party_settings: {  }
 hidden:
   allowed_regulatory_function: true
+  archive_reason: true
   comments: true
+  deleted_reason: true
   field_allowed_regulatory_fn: true
   field_person: true
   field_premises: true
@@ -55,4 +57,5 @@ hidden:
   ons_code: true
   person: true
   premises: true
+  revocation_reason: true
   user_id: true

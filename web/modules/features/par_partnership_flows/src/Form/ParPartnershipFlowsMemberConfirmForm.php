@@ -4,6 +4,7 @@ namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
@@ -12,6 +13,7 @@ use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\Entity\File;
+use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
@@ -21,6 +23,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
   use StringTranslationTrait;
+  use ParPartnershipFlowAccessTrait;
 
   /**
    * The column mappings in the CSV.
@@ -166,7 +169,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
 
         $existing_options = [];
         foreach ($properties as $group => $conditions) {
-          $existing_options += \Drupal::entityManager()
+          $existing_options += \Drupal::entityTypeManager()
             ->getStorage('par_data_organisation')
             ->loadByProperties($conditions);
         }
@@ -302,7 +305,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
       // @TODO Log this in a way that errors can be reported to the uploader.
     }
 
-    drupal_set_message(t('The members are being processed, please check back shortly to see the membership list updated.'), 'status');
+    $this->messenger()->addMessage(t('The members are being processed, please check back shortly to see the membership list updated.'), 'status');
   }
 
 }

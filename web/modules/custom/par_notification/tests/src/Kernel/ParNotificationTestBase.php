@@ -42,9 +42,11 @@ class ParNotificationTestBase extends ParDataTestBase
     'new_deviation_response',
     'new_enquiry_response',
     'new_inspection_feedback_response',
+    'new_inspection_plan',
     'partnership_approved_notificatio',
     'partnership_confirmed_notificati',
     'partnership_revocation_notificat',
+    'revoke_inspection_plan',
     'reviewed_deviation_request',
     'reviewed_enforcement',
   ];
@@ -299,6 +301,29 @@ class ParNotificationTestBase extends ParDataTestBase
 
     $partnership->save();
     return $partnership;
+  }
+
+  public function createReferredEnforcement() {
+    $enforcement = $this->createEnforcement();
+
+    // Block the original action.
+    $primary_action = $enforcement->getEnforcementActions(TRUE);
+    if ($primary_action) {
+      $primary_action->block('Test block action.');
+    }
+
+    // We need to create an additional Enforcement Action.
+    $enforcement_action = ParDataEnforcementAction::create($this->getEnforcementActionValues());
+    $enforcement_action->approve(FALSE);
+    $enforcement_action->save();
+    $enforcement->get('field_enforcement_action')->appendItem($enforcement_action);
+
+    // We need to create an additional Enforcement Action.
+    $enforcement_action = ParDataEnforcementAction::create($this->getEnforcementActionValues());
+    $enforcement_action->refer('Test refer action.', FALSE);
+    $enforcement_action->save();
+    $enforcement->get('field_enforcement_action')->appendItem($enforcement_action);
+
   }
 
   public function createEnforcement() {

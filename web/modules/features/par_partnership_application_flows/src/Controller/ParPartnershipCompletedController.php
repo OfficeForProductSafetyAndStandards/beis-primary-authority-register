@@ -37,7 +37,7 @@ class ParPartnershipCompletedController extends ParBaseController {
     ];
     $build['next_steps']['chase'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('If you don\'t receive a notification that the organisation has completed the partnership inormation please get in contact with them.'),
+      '#markup' => $this->t('If you don\'t receive a notification that the organisation has completed the partnership information please get in contact with them.'),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];

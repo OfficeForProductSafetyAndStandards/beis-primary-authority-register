@@ -18,9 +18,5 @@ steps:
     form_id: par_profile
     components:
       user_detail: {  }
-      contact_detail:
+      contact_locations_detail:
         cardinality: -1
-    redirect:
-      done: 2
-  2:
-    route: par_dashboards.dashboard

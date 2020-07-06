@@ -34,13 +34,15 @@ module.exports = {
             screenshots : {
                 enabled : true,
                 on_failure : true,
+                on_error: true,
                 path: 'reports/nightwatch/screenshots'
             },
             desiredCapabilities: {
                 browserName: 'chrome',
+                resolution: '1280x3000',
                 chromeOptions : {
                     binary: '/usr/bin/google-chrome',
-                    args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1280,1280'],
+                    args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1280,3000'],
                 },
                 javascriptEnabled: true,
                 acceptSslCerts: true

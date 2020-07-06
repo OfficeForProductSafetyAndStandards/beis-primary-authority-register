@@ -12,7 +12,6 @@ description: 'A list of all SIC Codes used in PAR'
 tag: ''
 base_table: par_sic_codes_field_data
 base_field: id
-core: 8.x
 display:
   default:
     display_plugin: default

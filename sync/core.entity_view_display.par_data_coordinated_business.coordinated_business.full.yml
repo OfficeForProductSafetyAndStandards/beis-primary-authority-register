@@ -11,7 +11,7 @@ dependencies:
     - datetime
     - par_data
 _core:
-  default_config_hash: wrQCLd0nUJy7r_OzKr59VHEfrL0-OPBdzhlsEI65aYs
+  default_config_hash: QRhMIKfdGXWd0K1ogm4_jDa-gLniS4ohXW6-tuomgCU
 id: par_data_coordinated_business.coordinated_business.full
 targetEntityType: par_data_coordinated_business
 bundle: coordinated_business
@@ -61,6 +61,9 @@ content:
     type: entity_reference_entity_view
     region: content
 hidden:
+  archive_reason: true
+  deleted_reason: true
   membership_date: true
   name: true
+  revocation_reason: true
   user_id: true

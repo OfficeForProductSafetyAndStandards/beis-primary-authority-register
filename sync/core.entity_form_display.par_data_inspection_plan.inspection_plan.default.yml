@@ -8,6 +8,9 @@ dependencies:
   module:
     - datetime_range
     - file
+    - text
+_core:
+  default_config_hash: Coiuitq3CUZkAft_4t1EGxNUH88PxTHNgQYJEjSGnRY
 id: par_data_inspection_plan.inspection_plan.default
 targetEntityType: par_data_inspection_plan
 bundle: inspection_plan
@@ -19,6 +22,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
@@ -44,6 +48,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     region: content
     third_party_settings: {  }
 hidden: {  }

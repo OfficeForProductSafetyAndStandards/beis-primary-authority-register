@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: 8msaVcrnORr1eEisydiSxMyFX1lISw5plgWGUcYejCo
 id: par_data_inspection_feedback.field_partnership
 field_name: field_partnership
 entity_type: par_data_inspection_feedback

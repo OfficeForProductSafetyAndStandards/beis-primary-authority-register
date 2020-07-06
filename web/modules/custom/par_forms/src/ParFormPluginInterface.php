@@ -2,7 +2,7 @@
 
 namespace Drupal\par_forms;
 
-use Drupal\Component\Plugin\ConfigurablePluginInterface;
+use Drupal\Component\Plugin\ConfigurableInterface;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -12,7 +12,24 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * @see plugin_api
  */
-interface ParFormPluginInterface extends PluginInspectionInterface, ConfigurablePluginInterface {
+interface ParFormPluginInterface extends PluginInspectionInterface, ConfigurableInterface {
+
+  /**
+   * Define the name property.
+   */
+  const NAME_PROPERTY = 'plugin_name';
+  const NAMESPACE_PROPERTY = 'plugin_namespace';
+
+  /**
+   * Get the plugin namespace.
+   *
+   * The namespace allows each instance of a plugin to be referred to by a
+   * different moniker.
+   *
+   * @return string
+   *   The plugin namespace.
+   */
+  public function getPluginNamespace();
 
   /**
    * Get's the mapping of each form element to the entity

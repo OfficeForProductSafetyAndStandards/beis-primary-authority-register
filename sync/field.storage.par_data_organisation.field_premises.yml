@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: OTR3vZIVzVb0xKH877rGq7fNFEPLRSxaGPqatlfJ-4M
 id: par_data_organisation.field_premises
 field_name: field_premises
 entity_type: par_data_organisation

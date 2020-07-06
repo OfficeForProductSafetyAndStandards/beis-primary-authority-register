@@ -1,0 +1,4 @@
+merge person:
+  title: 'Merge person'
+  description: 'Allow contact records to be merged.'
+  restrict access: TRUE

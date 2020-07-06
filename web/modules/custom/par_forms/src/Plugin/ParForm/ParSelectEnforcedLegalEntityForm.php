@@ -21,12 +21,18 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+    $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
+
     $select_legal_entities = [];
 
     // Get all the legal entities for the given organisation.
-    if ($par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation')) {
-      $legal_entities = $par_data_organisation->getLegalEntity();
-      $select_legal_entities = $this->getParDataManager()->getEntitiesAsOptions($legal_entities, $select_legal_entities);
+    if ($par_data_partnership && $par_data_organisation) {
+      // We must only show the intersection of legal entities between the partnership and the organisation.
+      $organisation_legal_entities = $this->getParDataManager()->getEntitiesAsOptions($par_data_organisation->getLegalEntity());
+      $partnership_legal_entities = $this->getParDataManager()->getEntitiesAsOptions($par_data_partnership->getLegalEntity());
+
+      $select_legal_entities = array_intersect_key($partnership_legal_entities, $organisation_legal_entities);
     }
 
     $this->getFlowDataHandler()->setFormPermValue('select_legal_entities', $select_legal_entities);

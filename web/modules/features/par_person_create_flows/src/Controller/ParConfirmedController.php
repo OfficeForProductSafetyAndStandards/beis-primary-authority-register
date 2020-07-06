@@ -12,7 +12,7 @@ use Drupal\par_person_create_flows\ParPartnershipFlowsTrait;
  */
 class ParConfirmedController extends ParBaseController {
 
-  protected $pageTitle = 'You\'re new person has been created';
+  protected $pageTitle = 'Your new person has been created';
 
   /**
    * {@inheritdoc}

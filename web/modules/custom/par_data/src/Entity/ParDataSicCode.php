@@ -51,6 +51,11 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "langcode" = "langcode",
  *     "status" = "status"
  *   },
+ *   revision_metadata_keys = {
+ *     "revision_user" = "revision_uid",
+ *     "revision_created" = "revision_timestamp",
+ *     "revision_log_message" = "revision_log"
+ *   },
  *   links = {
  *     "collection" = "/admin/content/par_data/par_data_sic_code",
  *     "canonical" = "/admin/content/par_data/par_data_sic_code/{par_data_sic_code}",
@@ -63,6 +68,24 @@ use Drupal\Core\Field\BaseFieldDefinition;
  * )
  */
 class ParDataSicCode extends ParDataEntity {
+
+  /**
+   * Get the code.
+   *
+   * @return string
+   */
+  public function getCode() {
+    return $this->get('sic_code')->getString();
+  }
+
+  /**
+   * Get the code.
+   *
+   * @return string
+   */
+  public function getDescription() {
+    return $this->get('description')->getString();
+  }
 
   /**
    * Allows all relationships to be skipped.
@@ -102,6 +125,8 @@ class ParDataSicCode extends ParDataEntity {
     // SIC Code.
     $fields['sic_code'] = BaseFieldDefinition::create('string')
       ->setLabel(t('SIC Code'))
+//      @TODO Make this field unique when migration to real SICs is complete.
+//      ->addConstraint('UniqueField')
       ->setDescription(t('The SIC code identification number.'))
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)

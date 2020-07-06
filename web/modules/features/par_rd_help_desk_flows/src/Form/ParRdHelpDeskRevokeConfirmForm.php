@@ -36,20 +36,20 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
     try {
-      $this->getFlowNegotiator()->setRoute($route_match);
-      $this->getFlowDataHandler()->reset();
-      $this->getFlowDataHandler()->setParameter('par_data_partnership', $par_data_partnership);
-      $this->loadData();
+      // Get a new flow negotiator that points the the route being checked for access.
+      $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
     } catch (ParFlowException $e) {
 
     }
 
-    // Get the parameters for this route.
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-
     // If partnership has been revoked, we should not be able to re-revoke it.
     if ($par_data_partnership->isRevoked()) {
       $this->accessResult = AccessResult::forbidden('The partnership is already revoked.');
+    }
+
+    // If partnership has been deleted, we should not be able to revoke it.
+    if ($par_data_partnership->isDeleted()) {
+       $this->accessResult = AccessResult::forbidden('The partnership is already deleted.');
     }
 
     // 403 if the partnership is in progress it can't be revoked.
@@ -105,6 +105,9 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('revocation_reason', FALSE),
     ];
 
+    // Change the primary action text.
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Revoke');
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -126,7 +129,7 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
 
     // We only want to update the status of active partnerships.
     if (!$par_data_partnership->isRevoked()) {
-      $revoked = $par_data_partnership->revoke($this->getFlowDataHandler()->getTempDataValue('revocation_reason'));
+      $revoked = $par_data_partnership->revoke(TRUE, $this->getFlowDataHandler()->getTempDataValue('revocation_reason'));
 
       if ($revoked) {
         $this->getFlowDataHandler()->deleteStore();

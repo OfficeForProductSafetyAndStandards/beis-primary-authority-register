@@ -83,7 +83,7 @@ DB_IMPORT=${DB_IMPORT:="$PWD/backups/sanitised-db.sql"}
 DB_RESET=${DB_RESET:=n}
 DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
 BUILD_DIR=${BUILD_DIR:=$PWD}
-VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.beis.gov.uk:8200"}
+VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.services:8200"}
 VAULT_UNSEAL=${VAULT_UNSEAL:-}
 VAULT_TOKEN=${VAULT_TOKEN:-}
 
@@ -203,7 +203,6 @@ printf "Extracting Vault secrets...\n"
 export VAULT_ADDR
 export VAULT_TOKEN
 
-vault operator seal -tls-skip-verify
 vault operator unseal -tls-skip-verify $VAULT_UNSEAL
 
 if [[ $(vault kv list -tls-skip-verify secret/par/env | awk 'NR > 2 {print $1}' | grep $ENV) ]]; then
@@ -267,6 +266,7 @@ fi
 PG_BACKING_SERVICE="par-pg-$ENV"
 CDN_BACKING_SERVICE="par-cdn-$ENV"
 REDIS_BACKING_SERVICE="par-redis-$ENV"
+LOGGING_BACKING_SERVICE="opss-log-drain"
 
 MANIFEST="${BASH_SOURCE%/*}/manifests/manifest.$ENV.yml"
 if [[ ! -f $MANIFEST ]]; then
@@ -392,6 +392,7 @@ printf "Pushing the application...\n"
 cf push --no-start -f $MANIFEST -p $BUILD_DIR -n $TARGET_ENV $TARGET_ENV
 
 ## Set the cf environment variables directly
+printf "Setting the environment variables...\n"
 for VAR_NAME in "${VAULT_VARS[@]}"
 do
     cf set-env $TARGET_ENV $VAR_NAME ${!VAR_NAME} > /dev/null
@@ -451,17 +452,21 @@ if [[ $ENV != "production" ]]; then
     cf_poll $PG_BACKING_SERVICE
     ## Checking the redis backing services
     cf_poll $REDIS_BACKING_SERVICE
+fi
 
-    # Binding the postgres backing service
-    cf bind-service $TARGET_ENV $PG_BACKING_SERVICE
-    # Binding the redis backing service
-    cf bind-service $TARGET_ENV $REDIS_BACKING_SERVICE
+# Binding the postgres backing service
+cf bind-service $TARGET_ENV $PG_BACKING_SERVICE
+# Binding the redis backing service
+cf bind-service $TARGET_ENV $REDIS_BACKING_SERVICE
+if [[ $ENV == "production" ]] && cf service $LOGGING_BACKING_SERVICE 2>&1; then
+    # Binding the opss logging service
+    cf bind-service $TARGET_ENV $LOGGING_BACKING_SERVICE
+fi
 
-    ## Deployment to no production environments need a database
-    if [[ $DB_RESET == 'y' ]] && [[ ! -f $DB_IMPORT ]]; then
-        printf "Non-production environments need a copy of the database to seed from at '$DB_IMPORT'.\n"
-        exit 5
-    fi
+## Deployment to no production environments need a database
+if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]] && [[ ! -f $DB_IMPORT ]]; then
+    printf "Non-production environments need a copy of the database to seed from at '$DB_IMPORT'.\n"
+    exit 5
 fi
 
 
@@ -529,8 +534,8 @@ fi
 ####################################################################################
 printf "Scaling up the application...\n"
 
-if [[ CF_INSTANCES -gt 1 ]]; then
-    cf scale $TARGET_ENV -i CF_INSTANCES
+if [[ $CF_INSTANCES -gt 1 ]]; then
+    cf scale $TARGET_ENV -i $CF_INSTANCES
 fi
 
 

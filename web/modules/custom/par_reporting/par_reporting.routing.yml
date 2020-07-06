@@ -1,0 +1,19 @@
+par_reporting.reports_page:
+  path: '/helpdesk/statistics'
+  defaults:
+    _controller: '\Drupal\par_reporting\Controller\ParReportingController::general'
+    _title: 'PAR Reporting'
+  requirements:
+    _permission: 'access par reports'
+  options:
+    _admin_route: FALSE
+
+par_reporting.references_list:
+  path: '/admin/reports/fields/par'
+  defaults:
+    _controller: '\Drupal\par_reporting\Controller\ParReportingReferencesController::content'
+    _title: 'PAR Reporting'
+  requirements:
+    _permission: 'access par reports'
+  options:
+    _admin_route: TRUE

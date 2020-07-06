@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: tASm4CfCxy6tilj_etxI1LhNlNyL2-sD2F4MyZUYkY0
 id: par_data_information_referral.summary
 label: Summary
 targetEntityType: par_data_information_referral

@@ -9,6 +9,7 @@ use Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionBase;
 use Drupal\views_bulk_operations\Action\ViewsBulkOperationsPreconfigurationInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 
 /**
  * An example action covering most of the possible options.
@@ -91,13 +92,13 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
           }
         }
         catch (\Exception $e) {
-          drupal_set_message("Error occurred executing invitation: {$e->getMessage()}", 'error');
+          $this->messenger()->addMessage("Error occurred executing invitation: {$e->getMessage()}", 'error');
         }
       }
 
     }
     else {
-      drupal_set_message("This action can only be performed on PAR people", 'error');
+      $this->messenger()->addMessage("This action can only be performed on PAR people", 'error');
     }
 
     $this->setContext($context);

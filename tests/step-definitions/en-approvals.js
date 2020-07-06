@@ -14,16 +14,12 @@ return shared
     .assert.containsText('#par-enforcement-notice-approve', 'Enforced organisation')
     .assert.containsText('#par-enforcement-notice-approve', 'Hooper\'s Store')
     .assert.containsText('#par-enforcement-notice-approve', 'Primary authority')
-    .assert.containsText('#par-enforcement-notice-approve', 'par_authority@example.com')
+    .assert.containsText('#edit-enforcement-officer', 'par_authority@example.com')
     .click('#edit-par-component-enforcement-action-review-0-primary-authority-status-approved')
     .click('#edit-next')
     .assert.containsText('h1.heading-xlarge', 'Respond to notice of enforcement action')
     .assert.containsText('h1.heading-xlarge', 'Review')
     .click('#edit-save')
-    // .assert.containsText('#par-enforcement-notice-approve', 'Type of enforcement notice')
-    // .assert.containsText('#par-enforcement-notice-approve', 'Proposed')
-    // .click('#edit-next')
-    // .click('.button')
     .assert.containsText('h1.heading-xlarge', 'Respond to notice of enforcement action')
     .assert.containsText('h1.heading-xlarge', 'Response to notification of enforcement action sent')
     .clickLinkByPureText('Dashboard')
@@ -33,44 +29,36 @@ return shared
 });
 
 // Starting point: enforcement notifications received dashboard
-When('I successfully block enforcement notice {string}', function (string) {
+When('I successfully block enforcement notice {string}', function (enforcement_notice) {
     return shared
-    .clickLinkByPureText(string)
+    .clickLinkByPureText(enforcement_notice)
     .click('#edit-par-component-enforcement-action-review-0-primary-authority-status-blocked')
     .setValue('#edit-par-component-enforcement-action-review-0-primary-authority-notes', 'Some notes about why enforcement action blocked')
     .click('#edit-next')
     .assert.containsText('h1.heading-xlarge', 'Respond to notice of enforcement action')
     .assert.containsText('h1.heading-xlarge', 'Review')
     .click('#edit-save')
-    // .assert.containsText('#par-enforcement-notice-approve', 'Type of enforcement notice')
-    // .assert.containsText('#par-enforcement-notice-approve', 'Proposed')
-    // .click('#edit-next')
-    // .click('.button')
     .assert.containsText('h1.heading-xlarge', 'Respond to notice of enforcement action')
     .assert.containsText('h1.heading-xlarge', 'Response to notification of enforcement action sent')
     .clickLinkByPureText('Dashboard')
     .clickLinkByPartialText('See your enforcement notices')
-    .assert.containsText('.par-user-enforcement-list', string)
+    .assert.containsText('.par-user-enforcement-list', enforcement_notice)
     .assert.containsText('.par-user-enforcement-list', 'Approved')
 });
 
 // Starting point: enforcement notifications received dashboard
-When('I successfully refer enforcement notice {string}', function (string) {
+When('I successfully refer enforcement notice {string} to {string}', function (enforcement_notice, new_authority) {
     return shared
-    .click('#edit-sort-bef-combine option[value="notice_date DESC"]')
-    .click('#edit-submit-par-user-enforcement-list')
-    .clickLinkByPureText(string)
-    .assert.containsText('h1.heading-xlarge .heading-secondary', 'Make a decision')
-    .assert.containsText('h1.heading-xlarge', 'Proposed enforcement action(s)')
-    .click('#edit-actions-0-primary-authority-status-referred')
-    .setValue('#edit-actions-0-referral-notes', 'Some notes about why enforcement action referred')
-    .click('#edit-actions-next')
-    .click('.form-radio')
+    .clickLinkByPureText(enforcement_notice)
+    .click('#edit-par-component-enforcement-action-review-0-primary-authority-status-referred')
+    .setValue('#edit-par-component-enforcement-action-review-0-referral-notes', 'Some notes about why the enforcement action has been referred')
     .click('#edit-next')
-    .assert.containsText('h1.heading-xlarge', 'Enforcement action decision')
-    .click('#edit-actions-next')
-    .clickLinkByPureText('Dashboard')
-    .clickLinkByPartialText('See your enforcement notices')
-    .assert.containsText('.par-user-enforcement-list', string)
-    .assert.containsText('.par-user-enforcement-list', 'Referred')
-    });
+    .assert.containsText('h1.heading-xlarge', 'Refer Enforcement Notice')
+    .click('#edit-par-component-enforcement-action-refer-0 .multiple-choice .form-radio:nth-child(1)')
+    .click('#edit-save')
+    .assert.containsText('h1.heading-xlarge', 'Respond to notice of enforcement action')
+    .assert.containsText('h1.heading-xlarge', 'Review')
+    .click('#edit-save')
+    .assert.containsText('h1.heading-xlarge', 'Response to notification of enforcement action sent')
+    .clickLinkByPureText('Done')
+});

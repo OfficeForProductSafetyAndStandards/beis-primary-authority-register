@@ -5,7 +5,7 @@ dependencies:
   module:
     - par_data
 _core:
-  default_config_hash: gkFNF0kPwH_iqPQhvOoCP29PZprvGd_OoBeVeaKj39Q
+  default_config_hash: 3LWptrQK0x1caWvTGmGOLo6lXpEPQGoM-kr6a3FatRw
 id: par_data_authority.title
 label: Title
 targetEntityType: par_data_authority

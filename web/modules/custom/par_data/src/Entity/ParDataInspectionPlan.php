@@ -4,6 +4,8 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\par_data\ParDataException;
 
 /**
  * Defines the par_data_inspection_plan entity.
@@ -51,6 +53,11 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "langcode" = "langcode",
  *     "status" = "status"
  *   },
+ *   revision_metadata_keys = {
+ *     "revision_user" = "revision_uid",
+ *     "revision_created" = "revision_timestamp",
+ *     "revision_log_message" = "revision_log"
+ *   },
  *   links = {
  *     "collection" = "/admin/content/par_data/par_data_inspection_plan",
  *     "canonical" = "/admin/content/par_data/par_data_inspection_plan/{par_data_inspection_plan}",
@@ -63,6 +70,42 @@ use Drupal\Core\Field\BaseFieldDefinition;
  * )
  */
 class ParDataInspectionPlan extends ParDataEntity {
+
+  /**
+   * Get PAR inspection plan's title.
+   *
+   * @return string
+   *   inspection plan entity title.
+   */
+  public function getTitle() {
+    return $this->get('title')->getString();
+  }
+
+  /**
+   * Get PAR inspection plan's summary.
+   *
+   * @return string
+   *   inspection plan entity summary.
+   */
+  public function getSummary() {
+    return $this->get('summary')->getString();
+  }
+
+  /**
+   * Set PAR inspection plan's title.
+   *
+   * @param string $title
+   */
+  public function setTitle($title) {
+    $this->set('title', $title);
+  }
+
+  /**
+   * Set PAR inspection plan's summary.
+   */
+  public function setSummary($summary) {
+    $this->set('summary', $summary);
+  }
 
   /**
    * {@inheritdoc}
@@ -79,10 +122,124 @@ class ParDataInspectionPlan extends ParDataEntity {
   }
 
   /**
+   * Revoke if this entity is revokable and is not new.
+   *
+   *  @param boolean $save
+   *   Whether to save the entity after revoking.
+   *
+   *  @param String $reason
+   *   The reason this entity is being revoked.
+   *
+   * @return boolean
+   *   True if the entity was revoked, false for all other results.
+   */
+  public function revoke($save = TRUE, $reason = '') {
+
+    if ($this->isNew()) {
+      $save = FALSE;
+    }
+
+    if (!$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
+
+      $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
+
+      // Set this inspection plans status to expired.
+      try {
+        $this->setParStatus('expired');
+      }
+      catch (ParDataException $exception) {
+
+      }
+
+      // Set revoke reason.
+      $this->set(ParDataEntity::REVOKE_REASON_FIELD, $reason);
+
+      // If the inspection plan is being revoked as a the result of a partnership revocation
+      // keep the original revoke date so that the inspection plan can be restored later.
+      if ($reason !== ParDataPartnership::INSPECTION_PLAN_REVOKE_REASON) {
+        // In case a revoke timestamp needs to be applied to an entity date value.
+        $this->setRevokeDateTimestamp();
+      }
+
+      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function unrevoke($save = TRUE) {
+    $revoke_time_stamp = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
+    $revoke_time_stamp_value = $revoke_time_stamp->format("Y-m-d");
+
+    // Only restore inspection plans that have not expired.
+    if ($this->get('valid_date')->end_value > $revoke_time_stamp_value) {
+      parent::unrevoke($save);
+    }
+  }
+
+  /**
+   * Helper function for entities that need to update a date value to be inline with a revoke timestamp.
+   */
+  public function setRevokeDateTimestamp() {
+    $revoke_time_stamp = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
+    $revoke_time_stamp_value = $revoke_time_stamp->format("Y-m-d");
+    $this->set('valid_date', ['value' => $this->get('valid_date')->value, 'end_value' => $revoke_time_stamp_value]);
+  }
+
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
+
+    // Inspection plan title.
+    $fields['title'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Inspection plan title'))
+      ->setDescription(t('The title of the inspection plan.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Inspection plan summary.
+    $fields['summary'] = BaseFieldDefinition::create('text_long')
+      ->setLabel(t('Inspection plan summary'))
+      ->setDescription(t('Summary info for this inspection plan.'))
+      ->addConstraint('par_required')
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'text_processing' => 0,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'text_textarea',
+        'weight' => 2,
+        'settings' => [
+          'rows' => 25,
+        ],
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'text_default',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
 
     // Valid Date.
     $fields['valid_date'] = BaseFieldDefinition::create('daterange')
@@ -90,6 +247,7 @@ class ParDataInspectionPlan extends ParDataEntity {
       ->setDescription(t('The date range this inspection plan is valid for.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
+      ->setRequired(TRUE)
       ->setSettings([
         'datetime_type' => 'date',
       ])
@@ -149,7 +307,7 @@ class ParDataInspectionPlan extends ParDataEntity {
         'uri_scheme' => 's3private',
         'max_filesize' => '20 MB',
         'file_extensions' => 'jpg jpeg gif png tif pdf txt rdf doc docx odt xls xlsx csv ods ppt pptx odp pot potx pps',
-        'file_directory' => 'documents/advice',
+        'file_directory' => 'documents/inspection_plan',
       ])
       ->setDisplayOptions('form', [
         'weight' => 4,

@@ -7,7 +7,7 @@ dependencies:
     - par_data.par_data_deviation_request_type.deviation_request
     - par_data.par_data_partnership_type.partnership
 _core:
-  default_config_hash: MFDsGGl5VFig4adwe5-cr6N9tLcHnw6X1zsfhyJO864
+  default_config_hash: CWFmkH9hbepT5oN8n9DK77NQT18pn12YlIhBSXYXDWw
 id: par_data_deviation_request.deviation_request.field_partnership
 field_name: field_partnership
 entity_type: par_data_deviation_request

@@ -4,7 +4,6 @@ status: true
 dependencies:
   module:
     - message
-    - system
     - user
 _core:
   default_config_hash: 2Up5NUvwF4aBVoO6eFTPeBXtnpUw_yiexv9I5u6ZD-g
@@ -15,7 +14,6 @@ description: ''
 tag: ''
 base_table: message_field_data
 base_field: mid
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -514,6 +512,8 @@ display:
               anonymous: '0'
               administrator: '0'
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''

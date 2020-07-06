@@ -8,7 +8,7 @@ dependencies:
   module:
     - address
 _core:
-  default_config_hash: EEWX-ePKIiQB_nN2ophCBAKWcEBXmiXjG7BVyvfza3E
+  default_config_hash: oC2kNvLxJWzuwj_COxilyX10jjYyWfikTF70AmmYmGo
 id: par_data_premises.premises.summary
 targetEntityType: par_data_premises
 bundle: premises
@@ -30,6 +30,9 @@ content:
     type: string
     weight: 1
 hidden:
+  archive_reason: true
+  deleted_reason: true
   name: true
   nation: true
+  revocation_reason: true
   user_id: true

@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: ogHsfhcgKIOOcJb-zQvWZo5hPkVj6MYhjl25jQDE2LY
+  default_config_hash: IBWrbC5HEiSU_tBarRN5U3KrgqSj8HMQc4jgtVsZu4o
 id: partnership_coordinated
 label: 'Coordinated Partnership Flow'
 default_title: null
@@ -16,20 +16,42 @@ steps:
   1:
     route: par_partnership_flows.organisation_details
     form_id: par_partnership_details
+    components:
+      partnership_information_display:
+        weight: -10
+      organisation_information_display:
+        weight: -9
+      partnership_members:
+        format: member_link_view
+        weight: -8
+      legal_entity_display:
+        weight: -7
+      trading_name_display:
+        weight: -6
+      partnership_documents:
+        weight: -5
+      partnership_authority_contacts:
+        plugin_name: partnership_contacts
+        display: authority
+        weight: -3
+      partnership_organisation_contacts:
+        plugin_name: partnership_contacts
+        display: organisation
+        show_title: false
+        weight: -2
     redirect:
       edit_comments: 2
       add_field_premises: 3
       edit_field_premises: 4
-      add_field_organisation_person: 5
-      edit_field_organisation_person: 7
-      add_field_legal_entity: 8
-      edit_field_legal_entity: 9
-      add_trading_name: 10
-      edit_trading_name: 11
-      edit_size: 12
-      advice: 15
-      inspection_plans: 16
-      save: 17
+      add_field_legal_entity: 5
+      edit_field_legal_entity: 6
+      remove_field_legal_entity: 7
+      add_trading_name: 8
+      edit_trading_name: 9
+      edit_size: 10
+      inspection_plans: 11
+      advice: 13
+      save: 15
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
@@ -49,75 +71,58 @@ steps:
       save: 1
       cancel: 1
   5:
-    route: par_partnership_flows.organisation_contact_add
-    form_id: par_partnership_contact_add
-    redirect:
-      next: 6
-      cancel: 1
-  6:
-    route: par_partnership_flows.organisation_contact_add_confirm
-    form_id: par_partnership_contact_suggestion
-    form_data:
-      contact_form: par_partnership_contact_add
-    redirect:
-      save: 1
-      cancel: 1
-  7:
-    route: par_partnership_flows.organisation_contact_edit
-    form_id: par_partnership_contact_edit
-    redirect:
-      save: 1
-      cancel: 1
-  8:
     route: par_partnership_flows.legal_entity_add
     form_id: par_partnership_legal_add
     redirect:
       save: 1
       cancel: 1
-  9:
+  6:
     route: par_partnership_flows.legal_entity_edit
     form_id: par_partnership_legal_edit
     redirect:
       save: 1
       cancel: 1
-  10:
+  7:
+    route: par_partnership_flows.legal_entity_remove
+    form_id: par_partnership_legal_remove
+    redirect:
+      save: 1
+      cancel: 1
+  8:
     route: par_partnership_flows.trading_name_add
     form_id: par_partnership_trading_name_add
     redirect:
       save: 1
       cancel: 1
-  11:
+  9:
     route: par_partnership_flows.trading_name_edit
     form_id: par_partnership_trading_name_edit
     redirect:
       save: 1
       cancel: 1
-  12:
+  10:
     route: par_partnership_flows.business_size
     form_id: par_partnership_business_size
     redirect:
       save: 1
       cancel: 1
-  13:
-    route: par_partnership_flows.member_upload
-    form_id: par_partnership_member_upload
+  11:
+    route: par_partnership_flows.organisation_inspection_plan_list
     redirect:
+      next: 1
+      cancel: 1
+  12:
+    route: par_partnership_flows.organisation_inspection_plan_details
+    redirect:
+      done: 11
+  13:
+    route: par_partnership_flows.organisation_advice_list
+    redirect:
+      done: 1
       cancel: 1
   14:
-    route: par_partnership_flows.member_upload_confirm
-    form_id: par_partnership_member_upload_confirm
+    route: par_partnership_flows.organisation_advice_details
     redirect:
-      save: 1
-      cancel: 13
+      done: 13
   15:
-    route: par_partnership_flows.advice_view
-    redirect:
-      next: 1
-      cancel: 1
-  16:
-    route: par_partnership_flows.inspection_plan_view
-    redirect:
-      next: 1
-      cancel: 1
-  17:
     route: view.par_user_partnerships.partnerships_page

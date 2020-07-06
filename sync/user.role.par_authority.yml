@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: par_authority
 label: 'Authority Member'
-weight: 3
+weight: -7
 is_admin: null
 permissions:
   - 'access par dashboard'
@@ -27,8 +27,11 @@ permissions:
   - 'access par_data_regulatory_function entities'
   - 'access par_data_sic_code entities'
   - 'access partnerships dashboard'
+  - 'add partnership authority contact'
   - 'apply for partnership'
   - 'approve enforcement notice'
+  - 'assign par_authority role'
+  - 'assign par_enforcement role'
   - 'authority partnership journey'
   - 'confirm partnership'
   - 'create authority user'
@@ -69,9 +72,11 @@ permissions:
   - 'invite user'
   - invite_type_invite_organisation_member
   - 'manage my authorities'
+  - 'manage own authority'
   - 'manage par person'
   - 'manage par profile'
   - 'raise enforcement notice'
+  - 'receive inspection_plan_expiry_warning notification'
   - 'receive new_deviation_request notification'
   - 'receive new_deviation_response notification'
   - 'receive new_enforcement_notification notification'
@@ -79,18 +84,23 @@ permissions:
   - 'receive new_general_enquiry notification'
   - 'receive new_inspection_feedback notification'
   - 'receive new_inspection_feedback_response notification'
+  - 'receive new_inspection_plan notification'
   - 'receive new_partnership_notification notification'
   - 'receive partnership_approved_notificatio notification'
   - 'receive partnership_confirmed_notificati notification'
+  - 'receive partnership_deleted_notification notification'
   - 'receive partnership_revocation_notificat notification'
   - 'receive reviewed_deviation_request notification'
   - 'receive reviewed_enforcement notification'
+  - 'receive revoke_inspection_plan notification'
+  - 'remove partnership authority contact'
   - 'review deviation request'
   - 'search partnership'
   - 'search partnerships'
   - 'send general enquiry'
   - 'submit deviation request'
   - 'submit inspection feedback'
+  - 'update partnership authority contact'
   - 'update partnership authority details'
   - 'use text format basic_html'
   - 'view authority enquiries'
@@ -118,3 +128,4 @@ permissions:
   - 'view unpublished par_data_premises entities'
   - 'view unpublished par_data_regulatory_function entities'
   - 'view unpublished par_data_sic_code entities'
+  - 'view user fields'

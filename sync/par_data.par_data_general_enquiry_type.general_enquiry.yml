@@ -8,9 +8,9 @@ id: general_enquiry
 label: 'General Enquiry'
 description: ''
 help: ''
-isDeletable: null
-isRevokable: null
-isArchivable: null
+isDeletable: false
+isRevokable: false
+isArchivable: false
 configuration:
   entity:
     label_fields:

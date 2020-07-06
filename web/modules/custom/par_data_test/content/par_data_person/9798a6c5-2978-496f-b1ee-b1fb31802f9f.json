@@ -145,12 +145,12 @@
     ],
     "work_phone": [
         {
-            "value": "99999999902079999999"
+            "value": "02079999999"
         }
     ],
     "mobile_phone": [
         {
-            "value": "1111111111111078659999999"
+            "value": "078659999999"
         }
     ],
     "email": [
@@ -165,9 +165,9 @@
     ],
     "communication_notes": [
         {
-            "value": "Some additional notes",
+            "value": "Some additional notes about Dolly Luettgen",
             "format": null,
-            "processed": "<p>Some additional notes<\/p>\n"
+            "processed": "<p>Some additional notes about Dolly Luettgen<\/p>\n"
         }
     ],
     "default_langcode": [

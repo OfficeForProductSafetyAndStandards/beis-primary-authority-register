@@ -1,0 +1,9 @@
+name: 'PAR Partnership Contact Update Flows'
+type: module
+description: 'Allows partnership contacts to be updated.'
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

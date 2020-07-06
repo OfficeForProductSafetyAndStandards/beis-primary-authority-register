@@ -6,6 +6,8 @@ dependencies:
     - field.storage.par_data_information_referral.field_person
     - par_data.par_data_information_referral_type.information_referral
     - par_data.par_data_person_type.person
+_core:
+  default_config_hash: 9b8Xlg0uS-avfTzbFzXiBcmKMsFF22mQJEaKvDHL_vo
 id: par_data_information_referral.information_referral.field_person
 field_name: field_person
 entity_type: par_data_information_referral

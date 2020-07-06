@@ -1,0 +1,48 @@
+par_authority_add_flows.authority_add_name:
+  path: '/authority/add/name'
+  defaults:
+    _form: '\Drupal\par_authority_add_flows\Form\ParAuthorityTitleForm'
+    _title_callback: '\Drupal\par_authority_add_flows\Form\ParAuthorityTitleForm::titleCallback'
+  requirements:
+    _permission: 'add authority'
+    _custom_access: '\Drupal\par_authority_add_flows\Form\ParAuthorityTitleForm::accessCallback'
+par_authority_add_flows.authority_add_type:
+  path: '/authority/add/type'
+  defaults:
+    _form: '\Drupal\par_authority_add_flows\Form\ParAuthorityTypeForm'
+    _title_callback: '\Drupal\par_authority_add_flows\Form\ParAuthorityTypeForm::titleCallback'
+  requirements:
+    _permission: 'add authority'
+    _custom_access: '\Drupal\par_authority_add_flows\Form\ParAuthorityTypeForm::accessCallback'
+par_authority_add_flows.authority_add_address:
+  path: '/authority/add/address'
+  defaults:
+    _form: '\Drupal\par_authority_add_flows\Form\ParAddressForm'
+    _title_callback: '\Drupal\par_authority_add_flows\Form\ParAddressForm::titleCallback'
+  requirements:
+    _permission: 'add authority'
+    _custom_access: '\Drupal\par_authority_add_flows\Form\ParAddressForm::accessCallback'
+par_authority_add_flows.authority_add_ons:
+  path: '/authority/add/ons'
+  defaults:
+    _form: '\Drupal\par_authority_add_flows\Form\ParAuthorityOnsForm'
+    _title_callback: '\Drupal\par_authority_add_flows\Form\ParAuthorityOnsForm::titleCallback'
+  requirements:
+    _permission: 'add authority'
+    _custom_access: '\Drupal\par_authority_add_flows\Form\ParAuthorityOnsForm::accessCallback'
+par_authority_add_flows.authority_add_regulatory_functions:
+  path: '/authority/add/regulatory-functions'
+  defaults:
+    _form: '\Drupal\par_authority_add_flows\Form\ParAuthorityRegulatoryFunctionsForm'
+    _title_callback: '\Drupal\par_authority_add_flows\Form\ParAuthorityRegulatoryFunctionsForm::titleCallback'
+  requirements:
+    _permission: 'add authority'
+    _custom_access: '\Drupal\par_authority_add_flows\Form\ParAuthorityRegulatoryFunctionsForm::accessCallback'
+par_authority_add_flows.authority_add_review:
+  path: '/authority/add/review'
+  defaults:
+    _form: '\Drupal\par_authority_add_flows\Form\ParAuthorityReviewForm'
+    _title_callback: '\Drupal\par_authority_add_flows\Form\ParAuthorityReviewForm::titleCallback'
+  requirements:
+    _permission: 'add authority'
+    _custom_access: '\Drupal\par_authority_add_flows\Form\ParAuthorityReviewForm::accessCallback'

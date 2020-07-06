@@ -4,15 +4,28 @@ namespace Drupal\par_flows;
 
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteProvider;
+use Drupal\Core\Url;
+use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 trait ParRedirectTrait {
 
   /**
    * Get link for any given step.
    */
-  public function getLinkByRoute($route, $route_params = [], $link_options = []) {
+  public function getLinkByRoute($route, $route_params = [], $link_options = [], $check_access = FALSE) {
     $route_provider = \Drupal::service('router.route_provider');
-    $path_variables = $route_provider->getRouteByName($route)->compile()->getPathVariables();
+    try {
+      $path_variables = $route_provider->getRouteByName($route)
+        ->compile()
+        ->getPathVariables();
+    }
+    catch (RouteNotFoundException $e) {
+      throw new ParFlowException(t('This flow cannot find the route @route', ['@route' => $route]));
+    }
+    catch (MissingMandatoryParametersException $e) {
+      throw new ParFlowException(t('The parameters are missing for the route @route', ['@route' => $route]));
+    }
 
     // Automatically add the route params from the current route if needed.
     foreach ($this->getRouteParams() as $current_route_param => $value) {
@@ -25,7 +38,11 @@ trait ParRedirectTrait {
       'absolute' => TRUE,
       'attributes' => ['class' => 'flow-link']
     ];
-    return Link::createFromRoute('', $route, $route_params, $link_options);
+
+    $url = Url::fromRoute($route, $route_params, $link_options);
+    $link = Link::fromTextAndUrl('', $url);
+
+    return !$check_access || ($url->access() && $url->isRouted()) ? $link : NULL;
   }
 
   /**

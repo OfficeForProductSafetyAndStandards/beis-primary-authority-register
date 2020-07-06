@@ -92,6 +92,18 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
   }
 
   /**
+   * {@inheritDoc}
+   */
+  public function cloneFlowNegotiator(RouteMatchInterface $route) {
+    $new_flow_negotiator = clone $this;
+
+    $new_flow_negotiator->setRoute($route);
+    $new_flow_negotiator->getFlowName(TRUE);
+
+    return $new_flow_negotiator;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getRoute() {
@@ -103,10 +115,6 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
    */
   public function setRoute(RouteMatchInterface $route) {
     $this->route = $route;
-
-    // Because we've changed the route we need to reset the negotiated flow.
-    // and the route parameters
-    $this->getFlowName(TRUE);
   }
 
   /**
@@ -147,6 +155,11 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
       $flow = $this->flow_storage->load($flow_name);
     }
 
+    // The current route must be passed to the flow if set.
+    if ($route = $this->getRoute()) {
+      $flow->setCurrentRouteMatch($route);
+    }
+
     return $flow;
   }
 
@@ -177,6 +190,17 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
     $flow_name = !empty($flow_name) ? $flow_name : $this->getFlowName();
 
     $key = implode(':', [$flow_name, $state, $step_id]);
+    return $this->normalizeKey($key);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFlowStateKey($step_id = NULL, $state = NULL, $flow_name = NULL) {
+    $state = !empty($state) ? $state : $this->getState();
+    $flow_name = !empty($flow_name) ? $flow_name : $this->getFlowName();
+
+    $key = implode(':', [$flow_name, $state]);
     return $this->normalizeKey($key);
   }
 
@@ -236,6 +260,18 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
       }
     }
     return $this->flow_name;
+  }
+
+  public function routeInFlow($route_name) {
+    $flows = $this->flow_storage->loadByRoute($route_name);
+
+    foreach ($flows as $flow) {
+      if ($flow->id() === $this->getFlow()->id()) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
   }
 
   /**

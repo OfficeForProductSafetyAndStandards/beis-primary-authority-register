@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: mysKm4eXcwk4YDUy1VcbGB5kHrJ120GaetgR20hffbg
 id: par_data_enforcement_action.field_blocked_advice
 field_name: field_blocked_advice
 entity_type: par_data_enforcement_action

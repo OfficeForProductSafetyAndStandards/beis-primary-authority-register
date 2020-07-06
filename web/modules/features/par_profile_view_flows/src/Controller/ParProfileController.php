@@ -78,13 +78,15 @@ class ParProfileController extends ParBaseController {
       }
     }
 
-    if ($user && $people = $this->getParDataManager()->getUserPeople($user)) {
-      $this->getFlowDataHandler()->setParameter('contacts', $people);
-      $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'contact_detail', $people);
+    if ($par_data_person && $people = $par_data_person->getSimilarPeople()) {
+      // We have some legacy data which has caused some people to have over 100 contacts.
+      // An upper limit needs to be set as this can't all be processed within the same page.
+      $this->getFlowDataHandler()->setParameter('contacts', array_slice($people, 0, 100, TRUE));
+      $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'contact_locations_detail', $people);
     }
     else {
       $this->getFlowDataHandler()->setParameter('contacts', [$par_data_person]);
-      $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'contact_detail', [$par_data_person]);
+      $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'contact_locations_detail', [$par_data_person]);
     }
 
     parent::loadData();
@@ -106,6 +108,9 @@ class ParProfileController extends ParBaseController {
         $this->addCacheableDependency($contact);
       }
     }
+
+    // Enable the 'done' action instead of the default.
+    $this->getFlowNegotiator()->getFlow()->enableAction('done');
 
     return parent::build($build);
   }

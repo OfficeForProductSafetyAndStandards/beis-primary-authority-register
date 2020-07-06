@@ -6,6 +6,8 @@ dependencies:
     - field.storage.par_data_enforcement_notice.field_legal_entity
     - par_data.par_data_enforcement_notice_type.enforcement_notice
     - par_data.par_data_legal_entity_type.legal_entity
+_core:
+  default_config_hash: 8NjJ0QCU9LgANf4BYHLCgPk7XdMETBwEC6rFpiqpiUk
 id: par_data_enforcement_notice.enforcement_notice.field_legal_entity
 field_name: field_legal_entity
 entity_type: par_data_enforcement_notice

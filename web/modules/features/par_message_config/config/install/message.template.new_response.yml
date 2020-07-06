@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies: {  }
+template: new_response
+label: 'New response'
+description: 'This is a legacy notification that is no longer used.'
+text:
+  -
+    value: "<p>This is a legacy notification, please ignore.</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+    format: basic_html
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }

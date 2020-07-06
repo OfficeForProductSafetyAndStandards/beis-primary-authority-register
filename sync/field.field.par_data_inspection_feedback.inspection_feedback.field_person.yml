@@ -7,7 +7,7 @@ dependencies:
     - par_data.par_data_inspection_feedback_type.inspection_feedback
     - par_data.par_data_person_type.person
 _core:
-  default_config_hash: wqiQBKEGtfjGDUBsdg1lmz-f6vvgoHMlQaS_AHficg8
+  default_config_hash: rnRqe4863OARNqXvmbaJWLu4u2uh8dsbHanr0ss_8bY
 id: par_data_inspection_feedback.inspection_feedback.field_person
 field_name: field_person
 entity_type: par_data_inspection_feedback

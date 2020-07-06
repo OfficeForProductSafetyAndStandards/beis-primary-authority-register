@@ -53,6 +53,11 @@ use Drupal\user\UserInterface;
  *     "langcode" = "langcode",
  *     "status" = "status"
  *   },
+ *   revision_metadata_keys = {
+ *     "revision_user" = "revision_uid",
+ *     "revision_created" = "revision_timestamp",
+ *     "revision_log_message" = "revision_log"
+ *   },
  *   links = {
  *     "collection" = "/admin/content/par_data/par_data_partnership",
  *     "canonical" = "/admin/content/par_data/par_data_partnership/{par_data_partnership}",
@@ -70,6 +75,9 @@ class ParDataPartnership extends ParDataEntity {
    * The length of time to obtain a lock for.
    */
   const LOCK_TIMEOUT = 3600.0;
+
+  const ADVICE_REVOKE_REASON = 'Partnership entity revoked';
+  const INSPECTION_PLAN_REVOKE_REASON = 'Partnership entity revoked';
 
   /**
    * Get the time service.
@@ -106,33 +114,28 @@ class ParDataPartnership extends ParDataEntity {
 
   /**
    * {@inheritdoc}
-   *
-   * @param string $reason
-   *   The reason for revoking this partnership.
    */
-  public function revoke($reason = '', $save = TRUE) {
+  public function revoke($save = TRUE, $reason = '') {
     // Revoke/archive all dependent entities as well.
     $inspection_plans = $this->getInspectionPlan();
     foreach ($inspection_plans as $inspection_plan) {
-      $inspection_plan->revoke($save);
+      // Set default revoke reason when the partnership has initiated the revoke.
+      $inspection_plan->revoke($save, $this::INSPECTION_PLAN_REVOKE_REASON);
     }
 
     $advice_documents = $this->getAdvice();
     foreach ($advice_documents as $advice) {
-      $advice->revoke($save);
+      // Set default revoke reason when the partnership has initiated the revoke.
+      $advice->revoke($save, $this::ADVICE_REVOKE_REASON);
     }
 
-    $this->set('revocation_reason', $reason);
-    return parent::revoke($save);
+    return parent::revoke($save, $reason);
   }
 
   /**
    * {@inheritdoc}
-   *
-   * @param string $reason
-   *   The reason for revoking this partnership.
    */
-  public function unrevoke($reason = '', $save = TRUE) {
+  public function unrevoke($save = TRUE) {
     // Revoke/archive all dependent entities as well.
     $inspection_plans = $this->getInspectionPlan();
     foreach ($inspection_plans as $inspection_plan) {
@@ -144,7 +147,6 @@ class ParDataPartnership extends ParDataEntity {
       $advice->unrevoke($save);
     }
 
-    $this->set('revocation_reason', NULL);
     parent::unrevoke($save);
   }
 
@@ -224,23 +226,19 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
-   * Get the number of members for this partnership.
+   * Get the number of coordinated members listed for this partnership.
    *
    * @param int $i
    *   The index to start counting from, can be used to add up all members.
    * @param bool $include_expired
-   *   Whether to include expired members.
+   *   Whether to include expired members. By default only active members are returned.
    *
    * @return int
    *   The number of active members.
    */
   public function countMembers($i = 0, $include_expired = FALSE) {
-    if ($include_expired) {
-      return $this->get('field_coordinated_business')->count();
-    }
-
     foreach ($this->getCoordinatedMember() as $member) {
-      if ($member->isLiving() && !$member->isRevoked() && !$member->isDeleted()) {
+      if ($include_expired || !$member->isRevoked()) {
         $i++;
       }
     }
@@ -248,10 +246,36 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * Get the number of members not listed on this partnership.
+   *
+   * Note this is different to self::countMembers(), this method retrieves the number
+   * of members that a coordinator says they have as opposed to the number of members
+   * that they've actually listed on the partnership.
+   *
+   * In some cases these may be different, or they may not have or wish to share
+   * the details of the members up front.
+   */
+  public function numberOfMembers() {
+    // @TODO This data is currently stored on the coordinated organisation.
+    // This is wrong and we need to change this.
+    $par_data_organisation = $this->getOrganisation(TRUE);
+
+    if ($par_data_organisation) {
+      return $par_data_organisation->getMembershipSize();
+    }
+
+    return NULL;
+  }
+
+  /**
    * Get the organisation contacts for this Partnership.
    */
   public function getOrganisationPeople($primary = FALSE) {
     $people = $this->get('field_organisation_person')->referencedEntities();
+    $people = array_filter($people, function ($person) {
+      return (!$person instanceof ParDataEntityInterface || !$person->isDeleted());
+    });
+
     $person = !empty($people) ? current($people) : NULL;
 
     return $primary ? $person : $people;
@@ -262,6 +286,10 @@ class ParDataPartnership extends ParDataEntity {
    */
   public function getAuthorityPeople($primary = FALSE) {
     $people = $this->get('field_authority_person')->referencedEntities();
+    $people = array_filter($people, function ($person) {
+      return (!$person instanceof ParDataEntityInterface || !$person->isDeleted());
+    });
+
     $person = !empty($people) ? current($people) : NULL;
 
     return $primary ? $person : $people;
@@ -290,15 +318,27 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get the coordinated members for this Partnership.
    */
-  public function getCoordinatedMember($single = FALSE) {
+  public function getCoordinatedMember($single = FALSE, $active = FALSE) {
     $members = $this->get('field_coordinated_business')->referencedEntities();
+
+    // Ignore deleted members.
+    $members = array_filter($members, function ($member) {
+      return !$member->isDeleted();
+    });
+
+    if ($active) {
+      // Ignore ceased members if only active members have been requested.
+      $members = array_filter($members, function ($member) {
+        return !$member->isCeased();
+      });
+    }
     $member = !empty($members) ? current($members) : NULL;
 
     return $single ? $member : $members;
   }
 
   /**
-   * Get the advice for this Partnership.
+   * Get the advice entities for this Partnership.
    */
   public function getAdvice($single = FALSE) {
     $documents = $this->get('field_advice')->referencedEntities();
@@ -320,8 +360,11 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get the regulatory functions for this Partnership.
    */
-  public function getRegulatoryFunction() {
-    return $this->get('field_regulatory_function')->referencedEntities();
+  public function getRegulatoryFunction($single = FALSE) {
+    $regulatory_functions = $this->get('field_regulatory_function')->referencedEntities();
+    $regulatory_function = !empty($regulatory_functions) ? current($regulatory_functions) : NULL;
+
+    return $single ? $regulatory_function : $regulatory_functions;
   }
 
   /**
@@ -405,7 +448,7 @@ class ParDataPartnership extends ParDataEntity {
    *   An array containing all the regulatory function names associated with the current partnership.
    */
   public function getPartnershipRegulatoryFunctionNames() {
-    $partnership_regulatory_functions = $this->get('field_regulatory_function')->referencedEntities();
+    $partnership_regulatory_functions = $this->getRegulatoryFunction();
 
     $partnership_reg_fun_name_list = array();
 
@@ -427,8 +470,11 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get legal entities for this partnership.
    */
-  public function getLegalEntity() {
-    return $this->get('field_legal_entity')->referencedEntities();
+  public function getLegalEntity($single = FALSE) {
+    $legal_entities = $this->get('field_legal_entity')->referencedEntities();
+    $legal_entity = !empty($legal_entities) ? current($legal_entities) : NULL;
+
+    return $single ? $legal_entity : $legal_entities;
   }
 
   /**
@@ -614,27 +660,6 @@ class ParDataPartnership extends ParDataEntity {
       ->setDisplayOptions('form', [
         'type' => 'datetime_default',
         'weight' => 12,
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'weight' => 0,
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Revocation Reason.
-    $fields['revocation_reason'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Revocation Reason'))
-      ->setDescription(t('Comments about why this partnership was revoked.'))
-      ->setRevisionable(TRUE)
-      ->setSettings([
-        'text_processing' => 0,
-      ])->setDisplayOptions('form', [
-        'type' => 'text_textarea',
-        'weight' => 13,
-        'settings' => [
-          'rows' => 25,
-        ],
       ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [

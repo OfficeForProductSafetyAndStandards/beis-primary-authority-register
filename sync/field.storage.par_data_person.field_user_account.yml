@@ -5,6 +5,8 @@ dependencies:
   module:
     - par_data
     - user
+_core:
+  default_config_hash: yr2XLcB27LTAnXsHJLugtIM2eVRvtiVRQ29CxicTe4M
 id: par_data_person.field_user_account
 field_name: field_user_account
 entity_type: par_data_person

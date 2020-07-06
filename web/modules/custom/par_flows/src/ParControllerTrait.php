@@ -5,7 +5,13 @@ namespace Drupal\par_flows;
 use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\par_flows\Entity\ParFlow;
+use Drupal\par_forms\ParFormPluginInterface;
 use Drupal\user\Entity\User;
+use Symfony\Component\HttpFoundation\Request;
+use Drupal\Core\Routing\UrlGeneratorInterface;
 
 trait ParControllerTrait {
 
@@ -65,6 +71,14 @@ trait ParControllerTrait {
    */
   protected $formBuilder;
 
+
+  /**
+   * The url generator used in par forms.
+   *
+   * @var \Drupal\Core\Routing\UrlGeneratorInterface
+   */
+  protected $urlGenerator;
+
   /**
    * Get the current user account.
    */
@@ -100,19 +114,25 @@ trait ParControllerTrait {
       return $this->components;
     }
 
-    try {
-      // Load the plugins used to build this form.
-      foreach ($this->getFlowNegotiator()->getFlow()->getCurrentStepComponents() as $component => $settings) {
-        if ($plugin = $this->getFormBuilder()->createInstance($component, $settings)) {
+    // Load the plugins used to build this form.
+    foreach ($this->getFlowNegotiator()->getFlow()->getCurrentStepComponents() as $key => $settings) {
+      try {
+        $plugin_name = ParFlow::getComponentName($key, $settings);
+
+        // Store the plugin ID and namespace in the settings.
+        $settings[ParFormPluginInterface::NAME_PROPERTY] = $settings[ParFormPluginInterface::NAME_PROPERTY] ?? $plugin_name;
+        $settings[ParFormPluginInterface::NAMESPACE_PROPERTY] = $settings[ParFormPluginInterface::NAMESPACE_PROPERTY] ?? $key;
+
+        if ($plugin = $this->getFormBuilder()->createInstance($plugin_name, $settings)) {
           $this->components[] = $plugin;
         }
       }
-    }
-    catch (PluginException $e) {
-      $this->getLogger($this->getLoggerChannel())->error($e);
-    }
-    catch (\TypeError $e) {
-      $this->getLogger($this->getLoggerChannel())->error($e);
+      catch (PluginException $e) {
+        $this->getLogger($this->getLoggerChannel())->error($e);
+      }
+      catch (\TypeError $e) {
+        $this->getLogger($this->getLoggerChannel())->error($e);
+      }
     }
 
     return $this->components;
@@ -123,7 +143,7 @@ trait ParControllerTrait {
    */
   public function getComponent($component_name) {
     foreach ($this->getComponents() as $component) {
-      if ($component->getPluginId() === $component_name) {
+      if ($component->getPluginNamespace() === $component_name) {
         return $component;
       }
     }
@@ -160,10 +180,96 @@ trait ParControllerTrait {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getUrlGenerator() {
+    return $this->urlGenerator;
+  }
+
+  /**
+   * Get the event dispatcher service.
+   *
+   * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   */
+  public function getEventDispatcher() {
+    return \Drupal::service('event_dispatcher');
+  }
+
+  /**
+   * Get the event dispatcher service.
+   *
+   * @return \Drupal\Core\Path\PathValidatorInterface
+   */
+  public function getPathValidator() {
+    return \Drupal::service('path.validator');
+  }
+
+  /**
+   * Get the event dispatcher service.
+   *
+   * @return \Drupal\Core\Routing\RouteProviderInterface
+   */
+  public function getRouteProvider() {
+    return \Drupal::service('router.route_provider');
+  }
+
+  /**
+   * Get the event dispatcher service.
+   *
+   * @return \Symfony\Component\HttpFoundation\Request
+   */
+  public function getCurrentRequest() {
+    return \Drupal::service('request_stack')->getCurrentRequest();
+  }
+
+  /**
    * Returns the default title.
    */
   public function getDefaultTitle() {
     return $this->defaultTitle;
+  }
+
+  /**
+   * Initialise the flow with required entry points.
+   */
+  public function initializeFlow() {
+    $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
+
+    // If an entry point is not already get the referer.
+    $referer = !$entry_point ? $this->getCurrentRequest()->headers->get('referer') : NULL;
+
+    // Check the referer request was for the same site, do not redirect to other sites.
+    $referer_request = $referer ? Request::create($referer) : NULL;
+    $url = $referer_request && $referer_request->getHost() === $this->getCurrentRequest()->getHost() ?
+      $this->getPathValidator()->getUrlIfValid($referer_request->getRequestUri()) : NULL;
+
+    // Check that the url belongs to a drupal route and that it isn't in the current flow.
+    if ($url && $url instanceof Url && $url->isRouted() && !$this->getFlowNegotiator()->routeInFlow($url->getRouteName())) {
+      $this->getFlowDataHandler()->setMetaDataValue(ParFlowDataHandler::ENTRY_POINT, $referer_request->getRequestUri());
+    }
+  }
+
+  /**
+   * Get the entry route.
+   *
+   * @return \Drupal\Core\Url|NULL
+   *   A Matched route.
+   */
+  public function getEntryUrl() {
+    $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
+
+    try {
+      $url = $this->getPathValidator()->getUrlIfValid($entry_point);
+    }
+    catch (\InvalidArgumentException $e) {
+
+    }
+
+    if ($url && $url instanceof Url && $url->isRouted()) {
+      return $url;
+    }
+
+    return NULL;
   }
 
   /**

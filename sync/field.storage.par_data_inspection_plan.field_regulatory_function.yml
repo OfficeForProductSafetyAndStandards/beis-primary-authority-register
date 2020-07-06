@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: WXlYZxJp65EskG6-pPAnK8IRxDttZnpSflV1StAtbO0
 id: par_data_inspection_plan.field_regulatory_function
 field_name: field_regulatory_function
 entity_type: par_data_inspection_plan

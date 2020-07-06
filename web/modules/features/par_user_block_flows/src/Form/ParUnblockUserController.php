@@ -12,7 +12,6 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_user_block_flows\ParFlowAccessTrait;
-use Drupal\par_user_block_flows\ParFormCancelTrait;
 use Drupal\user\Entity\User;
 
 /**
@@ -21,7 +20,6 @@ use Drupal\user\Entity\User;
 class ParUnblockUserController extends ParBaseForm {
 
   use ParFlowAccessTrait;
-  use ParFormCancelTrait;
 
   /**
    * @return DateFormatterInterface
@@ -54,9 +52,9 @@ class ParUnblockUserController extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPerson $par_data_person = NULL, User $user = NULL) {
     // Add a message to explain the action being taken.
-    $build['info'] = [
+    $form['info'] = [
       '#type' => 'markup',
-      '#markup' => "<p>You are about to re-activate {$this->getFlowDataHandler()->getDefaultValues('email', 'this user')}. This will grant them access to the Primary Authority Register.</p>"
+      '#markup' => "<p>You are about to <strong>re-activate</strong> {$this->getFlowDataHandler()->getDefaultValues('email', 'this user')}. <br><br>This will grant them access to the Primary Authority Register using their old password.</p>"
     ];
 
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
@@ -77,9 +75,6 @@ class ParUnblockUserController extends ParBaseForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-
-    // Set the correct redirection route.
-    $form_state->setRedirect($this->cancelRoute, $this->getRouteParams());
 
     $user = $this->getFlowDataHandler()->getParameter('user');
 

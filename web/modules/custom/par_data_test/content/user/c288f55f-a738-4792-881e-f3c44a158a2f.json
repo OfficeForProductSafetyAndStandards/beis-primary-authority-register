@@ -1,0 +1,73 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/user\/11899?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+        }
+    },
+    "uid": [
+        {
+            "value": 11895
+        }
+    ],
+    "uuid": [
+        {
+            "value": "c288f55f-a738-4792-881e-f3c44a158a2f"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "mail": [
+        {
+            "value": "par_business_second@example.com"
+        }
+    ],
+    "name": [
+        {
+            "value": "par_business_second"
+        }
+    ],
+    "pass": [
+        {
+            "value": "TestPassword"
+        }
+    ],
+    "roles": [
+        {
+            "target_id": "par_business"
+        }
+    ],
+    "status": [
+        {
+            "value": "1"
+        }
+    ],
+    "created": [
+        {
+            "value": 1544976255
+        }
+    ],
+    "changed": [
+        {
+            "value": 1544978242,
+            "lang": "en"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "field_gdpr": [
+        {
+            "value": true
+        }
+    ]
+}

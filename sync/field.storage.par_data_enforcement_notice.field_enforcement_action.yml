@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: 23XOStNGixQ5tBkb1FkUB1pWUbYTp7vNpe8ddj-rLJ8
 id: par_data_enforcement_notice.field_enforcement_action
 field_name: field_enforcement_action
 entity_type: par_data_enforcement_notice

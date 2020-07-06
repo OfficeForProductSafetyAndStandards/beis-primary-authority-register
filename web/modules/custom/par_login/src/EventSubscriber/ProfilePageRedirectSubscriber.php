@@ -33,7 +33,7 @@ class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $redirect_url = Url::fromUri('par_dashboards.dashboard');
+    $redirect_url = Url::fromRoute('par_dashboards.dashboard');
     $response = new RedirectResponse($redirect_url->toString(), 301);
     $event->setResponse($response);
   }

@@ -188,12 +188,14 @@ content:
       format_type: gds_date_format
     third_party_settings: {  }
 hidden:
+  archive_reason: true
   authority_change_comment: true
   communication_email: true
   communication_notes: true
   communication_phone: true
   coordinator_suitable: true
   cost_recovery: true
+  deleted_reason: true
   field_legal_entity: true
   inspection_plan: true
   name: true

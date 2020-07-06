@@ -24,8 +24,10 @@ content:
     third_party_settings: {  }
     type: text_default
 hidden:
+  archive_reason: true
   coordinator_number: true
   coordinator_type: true
+  deleted_reason: true
   employees_band: true
   field_coordinated_businesses: true
   field_legal_entity: true
@@ -36,6 +38,7 @@ hidden:
   nation: true
   organisation_name: true
   premises_mapped: true
+  revocation_reason: true
   size: true
   trading_name: true
   user_id: true

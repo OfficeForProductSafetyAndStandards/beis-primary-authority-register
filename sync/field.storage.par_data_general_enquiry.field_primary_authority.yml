@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: FPh9isd6IVtDltrlJs-qFJcTXlBtwIY6FqXJjncjvZY
 id: par_data_general_enquiry.field_primary_authority
 field_name: field_primary_authority
 entity_type: par_data_general_enquiry

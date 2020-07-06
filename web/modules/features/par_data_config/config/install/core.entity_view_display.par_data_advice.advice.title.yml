@@ -12,9 +12,25 @@ targetEntityType: par_data_advice
 bundle: advice
 mode: title
 content:
+  advice_status:
+    label: hidden
+    weight: 2
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  advice_title:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   document:
     type: file_download_link
-    weight: 0
+    weight: 1
     region: content
     label: hidden
     settings:
@@ -23,11 +39,14 @@ content:
     third_party_settings: {  }
 hidden:
   advice_type: true
+  archive_reason: true
+  deleted_reason: true
   field_regulatory_function: true
   issue_date: true
   name: true
   notes: true
   regulatory_function: true
+  revocation_reason: true
   user_id: true
   visible_authority: true
   visible_business: true

@@ -5,7 +5,7 @@ dependencies:
   module:
     - par_data
 _core:
-  default_config_hash: IXd_Ymus8nXPO8KP54br1xS184g3sKEgKkaa3zreWm8
+  default_config_hash: VoZDf6C3R0QTIzwKIT_I8pva6OLValIFKTkDhykq-jY
 id: par_data_sic_code.title
 label: Title
 targetEntityType: par_data_sic_code

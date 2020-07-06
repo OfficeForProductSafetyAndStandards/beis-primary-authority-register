@@ -53,6 +53,11 @@ use Drupal\par_data\ParDataException;
  *     "langcode" = "langcode",
  *     "status" = "status"
  *   },
+ *   revision_metadata_keys = {
+ *     "revision_user" = "revision_uid",
+ *     "revision_created" = "revision_timestamp",
+ *     "revision_log_message" = "revision_log"
+ *   },
  *   links = {
  *     "collection" = "/admin/content/par_data/par_data_enforcement_notice",
  *     "canonical" = "/admin/content/par_data/par_data_enforcement_notice/{par_data_enforcement_notice}",
@@ -149,8 +154,11 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * Get the enforcement actions for this Enforcement Notice.
    */
-  public function getEnforcementActions() {
-    return $this->get('field_enforcement_action')->referencedEntities();
+  public function getEnforcementActions($single = FALSE) {
+    $enforcement_notices = $this->get('field_enforcement_action')->referencedEntities();
+    $enforcement_notice = !empty($enforcement_notices) ? current($enforcement_notices) : NULL;
+
+    return $single ? $enforcement_notice : $enforcement_notices;
   }
 
   /**
@@ -185,6 +193,11 @@ class ParDataEnforcementNotice extends ParDataEntity {
     $par_data_partnerships = $this->getParDataManager()
       ->getEntitiesByQuery('par_data_partnership', $conditions, 10);
 
+    // Ignore all inactive partnerships.
+    $par_data_partnerships = array_filter($par_data_partnerships, function ($partnership) {
+      return $partnership->isActive();
+    });
+
     // Load all the authorities belonging to these partnerships.
     foreach ($par_data_partnerships as $partnership) {
       $authority = $partnership->getAuthority(TRUE);
@@ -204,6 +217,36 @@ class ParDataEnforcementNotice extends ParDataEntity {
     foreach ($this->getEnforcementActions() as $action) {
       $action->approve();
     }
+  }
+
+  /**
+   * Whether any part of this enforcement has been approved.
+   *
+   * An enforcement notice can be both blocked and approved simultaneously.
+   */
+  public function isApproved() {
+    foreach ($this->getEnforcementActions() as $action) {
+      if ($action->isApproved()) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Whether any part of this enforcement has been blocked.
+   *
+   * An enforcement notice can be both blocked and approved simultaneously.
+   */
+  public function isBlocked() {
+    foreach ($this->getEnforcementActions() as $action) {
+      if ($action->isBlocked()) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
   }
 
   /**

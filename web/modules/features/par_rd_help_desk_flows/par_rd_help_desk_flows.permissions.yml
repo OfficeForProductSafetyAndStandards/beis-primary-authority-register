@@ -14,3 +14,7 @@ assign all memberships:
   title: 'Assign all memberships'
   description: 'Assign all memberships to any user.'
   restrict access: TRUE
+cancel partnership applications:
+  title: 'cancel a partnership.'
+  description: 'Cancel partnerships that have not been nominated.'
+  restrict access: TRUE

@@ -8,7 +8,7 @@ dependencies:
     - address
     - par_data
 _core:
-  default_config_hash: qvvIlX1z2QBC3xtqnMhxX05Xxmk95BXZt9V_v8w70fU
+  default_config_hash: PPgrYXASgITaQTqJoxUrQ9JrGJW-9uQkG49YzppNXFM
 id: par_data_premises.premises.default
 targetEntityType: par_data_premises
 bundle: premises
@@ -26,7 +26,8 @@ content:
     weight: 1
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      display_original_value: false
     third_party_settings: {  }
   uprn:
     type: string
@@ -37,5 +38,8 @@ content:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
+  archive_reason: true
+  deleted_reason: true
   name: true
+  revocation_reason: true
   user_id: true

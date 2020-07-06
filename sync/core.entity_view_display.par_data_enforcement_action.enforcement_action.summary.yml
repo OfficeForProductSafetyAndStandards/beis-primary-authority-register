@@ -13,7 +13,7 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: tu2zE04w1Dsq4qdkz4p0KL0kw7AjuXGaIdUmA4KfjpU
+  default_config_hash: 7m2U3Q7OQ42_y-gJEKu_v_K74msy3i--5TgHC1Mzsb4
 id: par_data_enforcement_action.enforcement_action.summary
 targetEntityType: par_data_enforcement_action
 bundle: enforcement_action
@@ -62,7 +62,9 @@ content:
     third_party_settings: {  }
 hidden:
   action_referral: true
+  archive_reason: true
   blocked_advice: true
+  deleted_reason: true
   ea_notes: true
   ea_status: true
   enforcement_action_notes: true
@@ -76,4 +78,5 @@ hidden:
   primary_authority_notes: true
   referral_notes: true
   regulatory_function: true
+  revocation_reason: true
   user_id: true

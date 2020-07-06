@@ -6,6 +6,8 @@ dependencies:
     - field.storage.par_data_authority.field_regulatory_function
     - par_data.par_data_authority_type.authority
     - par_data.par_data_regulatory_function_t.regulatory_function
+_core:
+  default_config_hash: KbE3_QfQ8VFIs7L_fJ4DTv-lnOni0S2R6BLk1B4M__Y
 id: par_data_authority.authority.field_regulatory_function
 field_name: field_regulatory_function
 entity_type: par_data_authority

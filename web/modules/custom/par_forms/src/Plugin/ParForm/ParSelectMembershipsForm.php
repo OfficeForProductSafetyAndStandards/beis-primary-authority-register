@@ -25,8 +25,8 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
     $user_organisations = [];
     $user_authorities = [];
 
-    // If the person being edited has a user account get all the user's memberships.
-    // Otherwise use the person being edited if there is one.
+    // If the person being edited has an ordinary user account get all the user's
+    // memberships. Otherwise use the person being edited if there is one.
     if ($account = $this->getFlowDataHandler()->getParameter('user')) {
       $memberships = $this->getParDataManager()->hasMemberships($account, TRUE);
 

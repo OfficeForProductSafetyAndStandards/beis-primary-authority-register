@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: NkNEK5Fwgv5ZN6o5GWU52XjiPovN90W--3nTU4qOAyo
 id: par_data_inspection_feedback.field_person
 field_name: field_person
 entity_type: par_data_inspection_feedback

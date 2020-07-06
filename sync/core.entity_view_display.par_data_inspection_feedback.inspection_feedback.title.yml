@@ -13,7 +13,7 @@ dependencies:
     - file_entity
     - text
 _core:
-  default_config_hash: sWOv7pvdWwA7Xh8RmocLcyP6V0Gm2NEynokgbnqdP3A
+  default_config_hash: 4BAip33cyWyigIhARAHaoCgDm0v4_PeRWXOKlnNnDiQ
 id: par_data_inspection_feedback.inspection_feedback.title
 targetEntityType: par_data_inspection_feedback
 bundle: inspection_feedback
@@ -37,6 +37,8 @@ content:
       trim_length: 300
     third_party_settings: {  }
 hidden:
+  archive_reason: true
+  deleted_reason: true
   field_enforcing_authority: true
   field_inspection_plan: true
   field_partnership: true
@@ -46,4 +48,5 @@ hidden:
   primary_authority_notes: true
   primary_authority_status: true
   request_date: true
+  revocation_reason: true
   user_id: true

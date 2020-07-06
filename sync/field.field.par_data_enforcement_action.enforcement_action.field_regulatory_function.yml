@@ -6,6 +6,8 @@ dependencies:
     - field.storage.par_data_enforcement_action.field_regulatory_function
     - par_data.par_data_enforcement_action_type.enforcement_action
     - par_data.par_data_regulatory_function_t.regulatory_function
+_core:
+  default_config_hash: r_q4f_CvanE5qsUw7yLTk3CpPHV7xoSIZZU2_4TB674
 id: par_data_enforcement_action.enforcement_action.field_regulatory_function
 field_name: field_regulatory_function
 entity_type: par_data_enforcement_action

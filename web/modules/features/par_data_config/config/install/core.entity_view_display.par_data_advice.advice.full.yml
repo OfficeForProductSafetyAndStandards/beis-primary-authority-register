@@ -15,16 +15,33 @@ targetEntityType: par_data_advice
 bundle: advice
 mode: full
 content:
-  advice_type:
-    type: par_list_formatter
+  advice_status:
+    label: hidden
+    weight: 2
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  advice_title:
+    label: hidden
     weight: 0
     region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  advice_type:
+    type: par_list_formatter
+    weight: 1
+    region: content
     label: hidden
-    settings: {  }
+    settings:
+      display_original_value: false
     third_party_settings: {  }
   document:
     type: file_download_link
-    weight: 2
+    weight: 4
     region: content
     label: hidden
     settings:
@@ -33,7 +50,7 @@ content:
     third_party_settings: {  }
   issue_date:
     label: hidden
-    weight: 1
+    weight: 3
     region: content
     settings:
       timezone_override: ''
@@ -41,12 +58,11 @@ content:
     third_party_settings: {  }
     type: datetime_default
   notes:
-    type: text_trimmed
-    weight: 3
+    type: text_default
+    weight: 5
     region: content
     label: hidden
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
   regulatory_function:
     type: entity_reference_entity_view
@@ -58,8 +74,11 @@ content:
       link: false
     third_party_settings: {  }
 hidden:
+  archive_reason: true
+  deleted_reason: true
   field_regulatory_function: true
   name: true
+  revocation_reason: true
   user_id: true
   visible_authority: true
   visible_business: true

@@ -5,8 +5,8 @@ const shared = client.page.shared()
 
 When('I click on {string}', function (string) {
 	return shared
-   .clickLinkByPureText('Apply for a new partnership')
-   .chooseAuthorityIfOptionPresent('input[name="par_data_authority_id"]', '//label[text()="City Enforcement Squad"]');
+   .clickLinkByPureText(string)
+ //  .chooseAuthorityIfOptionPresent('input[name="par_data_authority_id"]', '//label[text()="City Enforcement Squad"]');
     })
 
 When('I select direct partnership', function () {
@@ -23,11 +23,11 @@ When('I select coordinated partnership', function () {
          });
 
  When('I fill in all required fields', function () {
- 	return client 
+ 	return client
  	 	 .click('#edit-confirm')
  	 	 .click('#edit-next')
  	 	 .isVisible('.error-summary', results => {
-      	 if (results.value) { 
+      	 if (results.value) {
       	 	return client
       	 .click('#edit-confirm')
  	 	 .click('#edit-next')
@@ -42,7 +42,7 @@ When('I select coordinated partnership', function () {
          });
 
  When('I enter existing organistaion {string}', function (string) {
-       return client 
+       return client
        .clearValue('#edit-name')
        .setValue('#edit-name',string)
        .click('#edit-next');
@@ -52,13 +52,13 @@ When('I select coordinated partnership', function () {
   	return client
   	 browser.expect.element('#main').text.to.equal('Asda Stores Ltd');
   	//.assert.containsText('#organisation_name','Asda Stores Ltd')
-          
+
          });
 
  	Then('I should be able to see {string}', function (OrgName) {
  		return client
  	 browser.expect.element('#main').text.to.equal(OrgName);
-           
+
          });
 
    When('I select existing organisation {string}', function (string) {
@@ -67,13 +67,13 @@ When('I select coordinated partnership', function () {
    	.click("//div[@class='organisation_name']")
    	.click("//input[@id='edit-next']")
    	.useCss()
-           
+
          });
 
    Then('I should be able to complete partnership', function () {
    	     return client
    	     .waitForElementPresent('h1.heading-xlarge',6000)
    	     .assert.containsText('h1.heading-xlarge','Check partnership information')
-          
+
          });
 

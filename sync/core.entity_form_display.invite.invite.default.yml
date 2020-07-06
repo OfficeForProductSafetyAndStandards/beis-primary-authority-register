@@ -6,6 +6,7 @@ dependencies:
     - field.field.invite.invite.field_invite_email_address
     - field.field.invite.invite.field_invite_email_body
     - field.field.invite.invite.field_invite_email_subject
+    - field.field.invite.invite.field_invite_par_person
   module:
     - invite
 _core:
@@ -46,6 +47,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     region: content
     third_party_settings: {  }
   reg_code:
@@ -71,6 +73,8 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     region: content
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_invite_par_person: true

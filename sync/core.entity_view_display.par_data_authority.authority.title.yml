@@ -4,9 +4,13 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_authority.title
+    - field.field.par_data_authority.authority.field_allowed_regulatory_fn
+    - field.field.par_data_authority.authority.field_person
+    - field.field.par_data_authority.authority.field_premises
+    - field.field.par_data_authority.authority.field_regulatory_function
     - par_data.par_data_authority_type.authority
 _core:
-  default_config_hash: 6ONFzzJy6hO3hAlbZxT4WOWfAnYbmkZMEzYoQ-tWrL8
+  default_config_hash: fk7Rqm4cce1mKXpgLC9x6kAPPqZX8ODlFt4M7pbfNU8
 id: par_data_authority.authority.title
 targetEntityType: par_data_authority
 bundle: authority
@@ -22,8 +26,10 @@ content:
     third_party_settings: {  }
 hidden:
   allowed_regulatory_function: true
+  archive_reason: true
   authority_type: true
   comments: true
+  deleted_reason: true
   field_allowed_regulatory_fn: true
   field_person: true
   field_premises: true
@@ -35,4 +41,5 @@ hidden:
   premises: true
   regulatory_area: true
   regulatory_function: true
+  revocation_reason: true
   user_id: true

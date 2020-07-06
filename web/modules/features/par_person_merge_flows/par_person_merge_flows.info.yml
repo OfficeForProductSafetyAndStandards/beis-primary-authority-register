@@ -1,0 +1,9 @@
+name: 'PAR Merge Contacts'
+type: module
+description: 'Creates the flows required to merge contact records together.'
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

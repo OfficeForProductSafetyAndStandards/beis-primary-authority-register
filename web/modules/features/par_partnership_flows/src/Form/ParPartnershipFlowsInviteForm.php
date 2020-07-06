@@ -7,6 +7,7 @@ use Drupal\invite\Entity\Invite;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\user\Entity\User;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
@@ -18,6 +19,7 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 class ParPartnershipFlowsInviteForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
+  use ParPartnershipFlowAccessTrait;
 
   /** @var invite type */
   protected $invite_type;

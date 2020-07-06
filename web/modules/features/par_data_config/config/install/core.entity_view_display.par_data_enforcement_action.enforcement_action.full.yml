@@ -71,7 +71,9 @@ content:
     third_party_settings: {  }
 hidden:
   action_referral: true
+  archive_reason: true
   blocked_advice: true
+  deleted_reason: true
   ea_notes: true
   ea_status: true
   enforcement_notice: true
@@ -83,4 +85,5 @@ hidden:
   pa_status: true
   referral_notes: true
   regulatory_function: true
+  revocation_reason: true
   user_id: true

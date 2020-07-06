@@ -18,7 +18,7 @@ mode: title
 content:
   document:
     label: hidden
-    weight: 0
+    weight: 1
     region: content
     settings:
       access_message: 'You don''t have access to download this file.'
@@ -34,6 +34,8 @@ content:
       trim_length: 300
     third_party_settings: {  }
 hidden:
+  archive_reason: true
+  deleted_reason: true
   field_enforcing_authority: true
   field_partnership: true
   field_person: true
@@ -43,4 +45,5 @@ hidden:
   primary_authority_notes: true
   primary_authority_status: true
   request_date: true
+  revocation_reason: true
   user_id: true

@@ -1,0 +1,7 @@
+name: PAR Log
+type: module
+description: Configures the audit log module for use within PAR
+core: 8.x
+package: PAR
+dependencies:
+  - audit_log

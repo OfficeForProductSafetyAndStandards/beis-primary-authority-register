@@ -1,7 +1,7 @@
 {
     "_links": {
         "self": {
-            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_partnership\/33856?_format=hal_json"
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_partnership\/34196?_format=hal_json"
         },
         "type": {
             "href": "http:\/\/drupal.org\/rest\/type\/par_data_partnership\/partnership"
@@ -15,6 +15,14 @@
         "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/revision_uid": [
             {
                 "href": "http:\/\/default\/user\/5?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/field_advice": [
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_advice\/4201?_format=hal_json"
+            },
+            {
+                "href": "http:\/\/default\/admin\/content\/par_data\/par_data_advice\/4202?_format=hal_json"
             }
         ],
         "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/field_authority": [
@@ -49,19 +57,12 @@
             },
             {
                 "href": "http:\/\/default\/admin\/content\/par_data\/par_data_regulatory_function\/13?_format=hal_json"
-            },
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
+            }
         ]
     },
     "id": [
         {
-            "value": 33856
+            "value": 34196
         }
     ],
     "type": [
@@ -76,7 +77,7 @@
     ],
     "revision_id": [
         {
-            "value": 11074
+            "value": 13863
         }
     ],
     "_embedded": {
@@ -111,6 +112,38 @@
                 "uuid": [
                     {
                         "value": "46e65664-bf34-4713-ab14-740cbe581538"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_partnership\/partnership\/field_advice": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_advice\/4201?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_advice\/advice"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "fc51439d-faf6-4ae3-b2a8-8c37ccbeddb2"
+                    }
+                ]
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/admin\/content\/par_data\/par_data_advice\/4202?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/par_data_advice\/advice"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "f39a3e89-0cfa-4040-b35e-7ad170beada4"
                     }
                 ]
             }
@@ -231,14 +264,7 @@
                         "value": "3a4c6455-7263-4f0b-966a-24b8dd518f49"
                     }
                 ]
-            },
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
+            }
         ]
     },
     "status": [
@@ -259,7 +285,7 @@
     ],
     "changed": [
         {
-            "value": 1536789076
+            "value": 1562774817
         }
     ],
     "revision_timestamp": [

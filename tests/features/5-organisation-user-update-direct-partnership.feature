@@ -10,7 +10,7 @@ Feature: Business User - Update Partnership
         # GO TO A PARTNERSHIP PAGE
 
         And I go to partnership detail page for my partnership "Organisation For Direct Partnership" with status "confirmed_business"
-       
+
         # EDIT REGISTERED ADDRESS
 
         When I update the registered address for organisation
@@ -19,10 +19,6 @@ Feature: Business User - Update Partnership
 
         And I update the SIC code
 
-        # ADD EMPLOYEES
-
-        And I update the number of employees
-
         # ADD NEW TRADING NAME
 
         And I add and subsequently edit a trading name
@@ -30,6 +26,11 @@ Feature: Business User - Update Partnership
         # ADD ORGANISATION CONTACT
 
         And I add and subsequently edit a organisation contact
+
+        # ADD ORGANISATION CONTACT
+
+        And I remove an organisation contact
+        Then the element "#edit-authority-contacts" does not contain the text "laura lansing"
 
         # COMPLETE CHANGES
 

@@ -71,6 +71,11 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_legal_entity);
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
+    if ($par_data_legal_entity) {
+      $referenced_legal_entity = $par_data_legal_entity->hasExistingPartnershipReferences();
+    } else {
+      $referenced_legal_entity = FALSE;
+    }
     $form['legal_entity_intro_fieldset'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('What is a legal entity?'),
@@ -81,13 +86,23 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
     ];
 
+    if ($par_data_legal_entity){
+      $form['legal_entity_disabled']['intro'] = [
+        '#type' => 'markup',
+        '#markup' => "<p><b>" . $this->t("This legal entity cannot be updated as it is being used in another partnership.") . "</b></p>",
+      ];
+
+    }
+
     $form['registered_name'] = [
+      '#disabled' => $referenced_legal_entity,
       '#type' => 'textfield',
       '#title' => $this->t('Enter name of the legal entity'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_name"),
     ];
 
     $form['legal_entity_type'] = [
+      '#disabled' => $referenced_legal_entity,
       '#type' => 'select',
       '#title' => $this->t('Select type of Legal Entity'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_legal_entity_type"),
@@ -95,6 +110,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     ];
 
     $form['registered_number'] = [
+      '#disabled' => $referenced_legal_entity,
       '#type' => 'textfield',
       '#title' => $this->t('Provide the registration number'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_number"),

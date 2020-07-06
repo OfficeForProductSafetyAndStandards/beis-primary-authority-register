@@ -6,6 +6,8 @@ dependencies:
     - field.storage.par_data_organisation.field_sic_code
     - par_data.par_data_organisation_type.organisation
     - par_data.par_data_sic_code_type.sic_code
+_core:
+  default_config_hash: nDkPXcLg8r_gcl6oUqpb9t5k2tBrkLXVNnOGDyp7A1s
 id: par_data_organisation.organisation.field_sic_code
 field_name: field_sic_code
 entity_type: par_data_organisation

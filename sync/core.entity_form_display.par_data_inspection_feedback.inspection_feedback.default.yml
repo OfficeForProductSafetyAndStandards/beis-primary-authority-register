@@ -9,10 +9,12 @@ dependencies:
     - field.field.par_data_inspection_feedback.inspection_feedback.field_person
     - par_data.par_data_inspection_feedback_type.inspection_feedback
   module:
+    - comment
     - datetime
+    - file
     - text
 _core:
-  default_config_hash: hjq61t7iy-mRtnYg8O95CCnvJGIE3QTHYIR5vSRdEGc
+  default_config_hash: DL9Xx_ayPsCPTQoCjfPAdHA7wNBhJN1KwIbeO-UrQ3c
 id: par_data_inspection_feedback.inspection_feedback.default
 targetEntityType: par_data_inspection_feedback
 bundle: inspection_feedback
@@ -24,6 +26,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
@@ -33,6 +36,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
@@ -42,6 +46,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
@@ -51,6 +56,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
@@ -69,6 +75,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     region: content
     third_party_settings: {  }
 hidden:

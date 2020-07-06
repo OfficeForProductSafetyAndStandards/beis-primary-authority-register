@@ -22,18 +22,11 @@ trait ParFlowAccessTrait {
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataCoordinatedBusiness $par_data_coordinated_business = NULL) {
     try {
-      $this->getFlowNegotiator()->setRoute($route_match);
-      $this->getFlowDataHandler()->reset();
-      $this->getFlowDataHandler()->setParameter('par_data_partnership', $par_data_partnership);
-      $this->getFlowDataHandler()->setParameter('par_data_coordinated_business', $par_data_coordinated_business);
-      $this->loadData();
+      // Get a new flow negotiator that points the the route being checked for access.
+      $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
     } catch (ParFlowException $e) {
 
     }
-
-    // Get the parameters for this route.
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_coordinated_business = $this->getFlowDataHandler()->getParameter('par_data_coordinated_business');
 
     // If the partnership isn't a coordinated one then don't allow update.
     if (!$par_data_partnership->isCoordinated()) {
@@ -45,10 +38,8 @@ trait ParFlowAccessTrait {
       $this->accessResult = AccessResult::forbidden('This member has been ceased you cannot change their details.');
     }
 
-    $locked = FALSE;
-
     // If the member upload is in progress the member list cannot be modified.
-    if ($locked) {
+    if ($par_data_partnership->isMembershipLocked()) {
       $this->accessResult = AccessResult::forbidden('This member list is locked because an upload is in progress.');
     }
 

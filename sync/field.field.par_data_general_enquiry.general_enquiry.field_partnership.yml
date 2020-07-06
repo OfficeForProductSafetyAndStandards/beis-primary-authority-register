@@ -6,6 +6,8 @@ dependencies:
     - field.storage.par_data_general_enquiry.field_partnership
     - par_data.par_data_general_enquiry_type.general_enquiry
     - par_data.par_data_partnership_type.partnership
+_core:
+  default_config_hash: _d-ZDfRjcSF42Z6aBWxnIILokEy0f4KlsqvHDZ5a4Nk
 id: par_data_general_enquiry.general_enquiry.field_partnership
 field_name: field_partnership
 entity_type: par_data_general_enquiry

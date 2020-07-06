@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: hKWp-_rXAUfOYVjh0JJbwcyQwWdLvXCYZtNBk9fJJGw
 id: par_data_deviation_request.field_inspection_plan
 field_name: field_inspection_plan
 entity_type: par_data_deviation_request

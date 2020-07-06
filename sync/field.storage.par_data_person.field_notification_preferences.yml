@@ -5,6 +5,8 @@ dependencies:
   module:
     - message
     - par_data
+_core:
+  default_config_hash: Y0i6OwNeUbaRJjMS_TLYpLPnzLmTrOTOLOB314Z-fRw
 id: par_data_person.field_notification_preferences
 field_name: field_notification_preferences
 entity_type: par_data_person

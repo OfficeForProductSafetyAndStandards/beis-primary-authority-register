@@ -6,7 +6,7 @@ dependencies:
     - core.entity_view_mode.par_data_regulatory_function.title
     - par_data.par_data_regulatory_function_t.regulatory_function
 _core:
-  default_config_hash: RUehvRPVFXt6eOOBRGDKAu2ms4B8-1vwcsIKek6rJKM
+  default_config_hash: 4vreuBaCwETliHdhBvAl0Hvk_YomzIJiqMmchRKdPM0
 id: par_data_regulatory_function.regulatory_function.title
 targetEntityType: par_data_regulatory_function
 bundle: regulatory_function
@@ -29,5 +29,8 @@ content:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
+  archive_reason: true
+  deleted_reason: true
   name: true
+  revocation_reason: true
   user_id: true

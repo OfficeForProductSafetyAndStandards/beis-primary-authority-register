@@ -29,8 +29,8 @@ fi
 #    VAULT_ADDR - the vault service endpoint
 #    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
 ####################################################################################
-OPTIONS=pd:a:
-LONGOPTS=push,directory:,alias:
+OPTIONS=psd:a:
+LONGOPTS=push,sanitised,directory:,alias:
 
 # -use ! and PIPESTATUS to get exit code with errexit set
 # -temporarily store output to be able to check for errors
@@ -50,10 +50,17 @@ AWS_PUSH=${AWS_PUSH:=n}
 DIRECTORY=${DIRECTORY:="/tmp"}
 DRUPAL_ALIAS=${DRUPAL_ALIAS:="@par.paas"}
 
+# Set the defaults.
+SANITISED=unsanitised
+
 while true; do
     case "$1" in
         -p|--push)
             AWS_PUSH=y
+            shift
+            ;;
+        -s|--sanitised)
+            SANITISED=sanitised
             shift
             ;;
         -d|--directory)
@@ -89,7 +96,7 @@ WEBROOT="${BASH_SOURCE%/*}/../web"
 cd $WEBROOT
 printf "Current working directory: $PWD\n"
 
-FILE_NAME="db-dump-$NAME-unsanitized"
+FILE_NAME="db-dump-$NAME-$SANITISED"
 DATE=$(date +%Y-%m-%d)
 
 mkdir -p $DIRECTORY
@@ -97,7 +104,11 @@ rm -f $DIRECTORY/$FILE_NAME.sql
 
 printf "Exporting database dump...\n"
 printf "Running: drush $DRUPAL_ALIAS sql-dump --result-file='$DIRECTORY/$FILE_NAME.sql'\n"
-../vendor/drush/drush/drush $DRUPAL_ALIAS sql-dump --result-file="$DIRECTORY/$FILE_NAME.sql" --verbose
+../vendor/drush/drush/drush $DRUPAL_ALIAS sql-dump --result-file="$DIRECTORY/${FILE_NAME}_raw.sql"
+
+## Remove erroneous pg_dump roles applied despite --no-owner flags.
+## https://stackoverflow.com/questions/60605491/using-pg-dump-with-no-owner-information-still-outputting-role-information
+sed -e '/-- do not execute if not member of manager role/,+4d' $DIRECTORY/${FILE_NAME}_raw.sql > $DIRECTORY/$FILE_NAME.sql
 
 printf "Packaging database dump...\n"
 tar -zcvf $DIRECTORY/$FILE_NAME-latest.tar.gz -C $DIRECTORY "$FILE_NAME.sql"

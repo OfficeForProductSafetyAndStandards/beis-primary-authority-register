@@ -6,7 +6,7 @@ dependencies:
     - core.entity_view_mode.par_data_sic_code.full
     - par_data.par_data_sic_code_type.sic_code
 _core:
-  default_config_hash: gPXRZVCBMvnXpfNfDupb-QC0Ibw7mAhUuPsk2DMmwbA
+  default_config_hash: 9zJ1RZ-OffY_EneLeP0npz8tPGBQPZryJN5W5z-W6RQ
 id: par_data_sic_code.sic_code.full
 targetEntityType: par_data_sic_code
 bundle: sic_code
@@ -29,5 +29,8 @@ content:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
+  archive_reason: true
+  deleted_reason: true
   name: true
+  revocation_reason: true
   user_id: true

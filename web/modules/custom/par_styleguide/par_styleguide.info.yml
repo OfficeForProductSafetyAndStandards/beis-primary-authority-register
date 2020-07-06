@@ -1,7 +1,0 @@
-name: PAR Styleguide
-type: module
-description: Describes all the components and their styles according to the GOV.UK style guidelines
-core: 8.x
-package: PAR
-dependencies:
-  - par_components

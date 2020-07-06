@@ -1,6 +1,6 @@
 Feature: User management
 
-    @user-management @ci @smoke 
+    @user-management @ci @smoke
     Scenario Outline: Verify users have permission to manage people
         Given I am logged in as "<user>"
         Then the element "#content" contains the text "Manage your colleagues"
@@ -63,7 +63,7 @@ Feature: User management
         And I click on the button "#edit-save"
 
         # Choose authorities for the person
-        Then the element "h1.heading-xlarge" contains the text "You're new person has been created"
+        Then the element "h1.heading-xlarge" contains the text "Your new person has been created"
         And I click the link text "Done"
 
         Examples:
@@ -109,7 +109,7 @@ Feature: User management
         And I click on the button "#edit-save"
 
         # Choose authorities for the person
-        Then the element "h1.heading-xlarge" contains the text "You're new person has been created"
+        Then the element "h1.heading-xlarge" contains the text "Your new person has been created"
         And I click the link text "Done"
 
         Examples:
@@ -130,7 +130,7 @@ Feature: User management
         Then the element "h1.heading-xlarge" contains the text "People"
         And the element ".user-management-list .table-scroll-wrapper" is visible
         Then the element ".user-management-list .table-scroll-wrapper thead .views-field-last-name" contains the text "Name"
-        And the element ".user-management-list .table-scroll-wrapper thead .views-field-email" contains the text "E-mail"
+        And the element ".user-management-list .table-scroll-wrapper thead .views-field-par-person-email" contains the text "E-mail"
         And the element ".user-management-list .table-scroll-wrapper thead .views-field-par-flow-link" contains the text "Actions"
 
         # Check the correct users can be managed.
@@ -147,7 +147,7 @@ Feature: User management
         When I click the link text "Manage your colleagues"
 
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_user_management_multiple@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_multiple@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
@@ -155,8 +155,8 @@ Feature: User management
         Then the element "h1.heading-xlarge" contains the text "Sally"
         And the element ".component-user-detail .heading-large" contains the text "User account"
         And the element ".component-user-detail" contains the text "par_user_management_multiple@example.com"
-        And there is "2" occurences of element ".component-contact-detail .component-item"
-        
+        And there is "2" occurences of element ".component-contact-locations-detail .component-item"
+
         # Update the user.
         When I click the link text "Update Dr Sally Michaels"
 
@@ -176,7 +176,6 @@ Feature: User management
         Then the element "h1.heading-xlarge" contains the text "Profile review"
         And the element "#edit-personal" contains the text "Dr Sally McHaels"
         And the element "#edit-contact-details" contains the text "01999 888 777"
-        And the element "#par-person-review" contains the text "Would you like to update all contact records with this information?"
         When I click on the button "#edit-save"
 
         Then the element "h1.heading-xlarge" contains the text "Thank you for updating this person"
@@ -184,16 +183,11 @@ Feature: User management
 
         # Check the user details have been updated and the contact records merged.
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_user_management_multiple@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_multiple@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
-        Then the element "h1.heading-xlarge" contains the text "Dr Sally McHaels"
         And the element ".component-user-detail" contains the text "par_user_management_multiple@example.com"
-        When there is "1" occurences of element ".component-contact-detail .component-item"
-        And I click on the button ".contact-locations summary"
-        Then the element "#contact-detail-locations-1" contains the text "Contact at the authority: Authority for user management test"
-        And the element "#contact-detail-locations-1" contains the text "Contact at the authority: Alternate authority for user management test"
 
     @user-management @ci
     Scenario: Check that user email addresses can be updated
@@ -202,7 +196,7 @@ Feature: User management
         When I click the link text "Manage your colleagues"
 
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_user_management_officer@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_officer@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
@@ -246,7 +240,7 @@ Feature: User management
         When I click the link text "Manage your colleagues"
 
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_user_management_contact@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_contact@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
@@ -268,4 +262,61 @@ Feature: User management
         Then the element "h1.heading-xlarge" contains the text "Invitation review"
         Then the element ".par-invite-review" contains the text "An invitation will be sent to this person to invite them to join the Primary Authority Register."
         When I click on the button "#edit-save"
+
+
+    @user-management @ci @smoke
+    Scenario: User should not be blocked
+        Given I am logged in as "par_helpdesk@example.com"
+
+        When I click the link text "Manage people"
+
+        Then the element "h1.heading-xlarge" contains the text "People"
+        When I add "par_authority_profile@example.com" to the inputfield "#edit-name-email-search"
+        And I click on the button "#edit-submit-par-people"
+        And I click the link text "Manage contact"
+
+        # Confirm that this user cannot be cancelled.
+        Then the element ".component-user-detail" contains the text "This user can not be removed because they are the only member of one of their authorities or organisations."
+
+    @user-management @ci @smoke
+    Scenario: User can be blocked and reactivated
+        Given I am logged in as "par_helpdesk@example.com"
+
+        When I click the link text "Manage people"
+
+        Then the element "h1.heading-xlarge" contains the text "People"
+        When I add "par_user_management_officer_2@example.com" to the inputfield "#edit-name-email-search"
+        And I click on the button "#edit-submit-par-people"
+        And I click the link text "Manage contact"
+
+        # Confirm that this user can be cancelled.
+        And I click the link text "Block user account"
+        Then the element "h1.heading-xlarge" contains the text "Disable this user account"
+        When I click on the button "#edit-next"
+        Then the element ".component-user-detail" contains the text "The account is no longer active"
+
+        # Confirm user can't sign in.
+        And I click the link text "Sign out"
+        Given I open the path "/user/login"
+        And I add "par_user_management_officer_2@example.com" to the inputfield "#edit-name"
+        And I add "TestPassword" to the inputfield "#edit-pass"
+        When I click on the button "#edit-submit"
+        Then the element ".error-summary" contains the text "has not been activated or is blocked."
+
+        Given I am logged in as "par_helpdesk@example.com"
+        When I click the link text "Manage people"
+        When I add "par_user_management_officer_2@example.com" to the inputfield "#edit-name-email-search"
+        And I click on the button "#edit-submit-par-people"
+        And I click the link text "Manage contact"
+
+        # Confirm that this user can be reactivated.
+        And I click the link text "Re-activate user account"
+        Then the element "h1.heading-xlarge" contains the text "Re-activate this user account"
+        When I click on the button "#edit-next"
+        Then the element ".component-user-detail" contains the text "Last sign in"
+
+        # Check user can sign back in.
+        When I click the link text "Sign out"
+        Given I am logged in as "par_user_management_officer_2@example.com"
+
 

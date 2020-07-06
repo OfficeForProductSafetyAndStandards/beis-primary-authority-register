@@ -24,7 +24,7 @@ var county = faker.fake("{{address.county}}")
   return shared
     .clickLinkByPureText('Helpdesk')
     .setValue('#edit-keywords','Specialist Cheesemakers Association')
-    .click('#edit-revoked option[value="0"]')
+    .click('#edit-partnership-status-1 option[value="confirmed_rd"]')
     .click('#edit-submit-helpdesk-dashboard')
     .clickLinkByPureText('Revoke partnership')
     .setValue('#edit-revocation-reason','A reason for revoking')
@@ -32,7 +32,7 @@ var county = faker.fake("{{address.county}}")
     .assert.containsText('#edit-partnership-info','The following partnership has been revoked')
     .click('#edit-done')
     .setValue('#edit-keywords','Specialist Cheesemakers Association')
-    .click('#edit-revoked option[value="1"]')
+    .click('#edit-partnership-status-1 option[value="revoked"]')
     .click('#edit-submit-helpdesk-dashboard')
     .assert.containsText('.table-scroll-wrapper','Specialist Cheesemakers Association')
     .expect.element('#block-par-theme-content > div > div > div > table > tbody > tr:nth-child(2)').to.not.be.present;
@@ -71,7 +71,7 @@ When('I complete the organisation registered address for direct partnership', fu
   .click('#edit-nation option[value="GB-ENG"]')
   .click('#edit-next')
   .assert.containsText('h1.heading-xlarge','Confirm the primary contact details')
-  .click('#edit-next')   
+  .click('#edit-next')
 });
 
 // Starting point: at beginning of this application step
@@ -85,7 +85,7 @@ When('I complete the SIC codes', function () {
 When('I complete the employees', function () {
   return shared
   .click('#edit-employees-band option[value="250"]')
-  .click('#edit-next')  
+  .click('#edit-next')
 });
 
 // Starting point: at beginning of this application step
@@ -125,7 +125,7 @@ When('I review the completions for direct partnership {string}', function (partn
    .assert.containsText('#edit-organisation-registered-address','Southwark')
    .assert.containsText('#edit-organisation-registered-address','London')
    .assert.containsText('#edit-organisation-registered-address','SE16 4NX')
-   .assert.containsText('#edit-about-organisation','Some information about organisation details')
+   .assert.containsText('#edit-about','Some information about organisation details')
    .assert.containsText('#edit-sic-code','Social care activities without accommodation')
    .assert.containsText('#edit-legal-entities','New LLP Company')
    .assert.containsText('#edit-legal-entities','Limited Liability Partnership')
@@ -155,7 +155,7 @@ When('I change the completed about the organisation', function () {
   .clickLinkByPureText('Change the details about this partnership')
   .clearValue('#edit-about-business')
   .setValue('#edit-about-business', 'Change to the information about organisation details')
-  .click('#edit-next')   
+  .click('#edit-next')
   .assert.containsText('h1.heading-xlarge','Check partnership information')
   .assert.containsText('#edit-about-organisation','Change to the information about organisation details')
 });
@@ -172,4 +172,4 @@ When('I submit final confirmation of completion by organisation {string}', funct
    .setValue('#edit-keywords',partnershipname)
    .click('#edit-submit-par-user-partnerships')
    .assert.containsText('.table-scroll-wrapper','Confirmed by the Organisation')
- }); 
+ });

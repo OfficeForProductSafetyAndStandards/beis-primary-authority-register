@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: _OurIfPj2kYxNtb2GEiDrwesH41WzNotDkdyzNqNabE
 id: par_data_enforcement_action.field_action_referral
 field_name: field_action_referral
 entity_type: par_data_enforcement_action

@@ -1,0 +1,8 @@
+remove partnership organisation contact:
+  title: 'Remove partnership organisation contact'
+  description: 'Remove an organisation contact from a partnership.'
+  restrict access: TRUE
+remove partnership authority contact:
+  title: 'Remove partnership authority contact'
+  description: 'Remove an authority contact from a partnership.'
+  restrict access: TRUE

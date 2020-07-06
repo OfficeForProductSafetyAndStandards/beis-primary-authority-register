@@ -28,7 +28,7 @@ content:
     type: entity_reference_label
   legal_entity_name:
     label: hidden
-    weight: 0
+    weight: 1
     region: content
     settings:
       link_to_entity: false
@@ -36,7 +36,7 @@ content:
     type: string
   notice_date:
     type: datetime_default
-    weight: 1
+    weight: 2
     region: content
     label: hidden
     settings:
@@ -52,6 +52,8 @@ content:
       display_original_value: false
     third_party_settings: {  }
 hidden:
+  archive_reason: true
+  deleted_reason: true
   enforcing_authority: true
   field_enforcement_action: true
   field_enforcing_authority: true
@@ -64,5 +66,6 @@ hidden:
   legal_entity: true
   name: true
   primary_authority: true
+  revocation_reason: true
   summary: true
   user_id: true

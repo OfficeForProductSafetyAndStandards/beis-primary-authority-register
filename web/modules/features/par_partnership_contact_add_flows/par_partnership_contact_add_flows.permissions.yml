@@ -1,0 +1,8 @@
+add partnership organisation contact:
+  title: 'Add partnership organisation contact'
+  description: 'Add an organisation contact to a partnership.'
+  restrict access: TRUE
+add partnership authority contact:
+  title: 'Add partnership authority contact'
+  description: 'Add an authority contact to a partnership.'
+  restrict access: TRUE

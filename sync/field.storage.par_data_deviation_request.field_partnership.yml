@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: 5A21JjNAf7Y4sTW7bO4jM-tTdvXHaHpKoh8p6MHN_Lg
 id: par_data_deviation_request.field_partnership
 field_name: field_partnership
 entity_type: par_data_deviation_request

@@ -22,16 +22,14 @@ trait ParFlowAccessTrait {
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataDeviationRequest $par_data_deviation_request = NULL) {
     try {
-      $this->getFlowNegotiator()->setRoute($route_match);
-      $this->getFlowDataHandler()->reset();
-      $this->getFlowDataHandler()->setParameter('par_data_deviation_request', $par_data_deviation_request);
-      $this->loadData();
+      // Get a new flow negotiator that points the the route being checked for access.
+      $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
     } catch (ParFlowException $e) {
 
     }
 
     // Steps 1 & 2 shouldn't be accessed if the deviation request has already been approved.
-    if ($par_data_deviation_request && !$par_data_deviation_request->inProgress() && $this->getFlowNegotiator()->getFlow()->getCurrentStep() <= 1) {
+    if ($par_data_deviation_request && !$par_data_deviation_request->inProgress() && $access_route_negotiator->getFlow()->getCurrentStep() <= 1) {
       // Set an error if this action has already been reviewed.
       $this->accessResult = AccessResult::forbidden('This action has already been reviewed.');
     }

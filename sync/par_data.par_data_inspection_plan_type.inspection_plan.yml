@@ -14,14 +14,18 @@ isArchivable: false
 configuration:
   entity:
     label_fields:
-      - document
+      - title
     status_field: inspection_status
+    status_transitions:
+      current:
+        - default
+      expired:
+        - current
   inspection_status:
     allowed_values:
       current: Current
       expired: Expired
       in_progress: 'In Progress'
-      revoked: Revoked
   approved_rd_executive:
     boolean_values:
       'on': 'Approved by RD executive'

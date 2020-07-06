@@ -3,12 +3,25 @@
 namespace Drupal\par_flows;
 
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\user\UserInterface;
 
 /**
 * Interface for the Par Flow Negotiator.
 */
 interface ParFlowNegotiatorInterface {
+
+  /**
+   * A helper function to clone a new flow negotiator for a different route.
+   *
+   * Required for testing access on routes other than the current route.
+   *
+   * @param RouteMatchInterface $route
+   *   The route match object that is being checked.
+   *
+   * @return ParFlowNegotiatorInterface
+   */
+  public function cloneFlowNegotiator(RouteMatchInterface $route);
 
   /**
    * Returns the current route used to negotiate the flow.
@@ -48,7 +61,7 @@ interface ParFlowNegotiatorInterface {
   public function getFormKey($form_id, $state = NULL, $flow_name = NULL);
 
   /**
-   * Get the key.
+   * Get the key for a given flow step.
    *
    * @param string $step_id
    *   An optional step_id to get the key for.
@@ -61,6 +74,19 @@ interface ParFlowNegotiatorInterface {
    *   The name of the key for the given form.
    */
   public function getFlowKey($step_id = NULL, $state = NULL, $flow_name = NULL);
+
+  /**
+   * Get the key for the flow as a whole, will be the same key on every step of the journey.
+   *
+   * @param string $state
+   *   An optional statestring to get the key for.
+   * @param string $flow_name
+   *   An optional flow_name to get the key for.
+   *
+   * @return string
+   *   The name of the key for the given form.
+   */
+  public function getFlowStateKey($state = NULL, $flow_name = NULL);
 
   /**
    * Get the current route name.

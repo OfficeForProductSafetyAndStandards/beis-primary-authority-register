@@ -172,6 +172,49 @@ class ParDashboardComponents {
     return $build;
   }
 
+  public function manageInstitutionsComponent() {
+    $heading_parts = [];
+
+    // User management link.
+    $manage_authorities_link = $this->getLinkByRoute('view.par_user_authorities.authorities_page', [], [], TRUE);
+    $manage_organisations_link = $this->getLinkByRoute('view.par_user_organisations.organisations_page', [], [], TRUE);
+
+    if ($manage_authorities_link) {
+      $heading_parts[] = 'Authorities';
+    }
+    if ($manage_organisations_link) {
+      $heading_parts[] = 'Organisations';
+    }
+
+    $heading = implode(' & ', $heading_parts);
+
+    if ($manage_authorities_link || $manage_organisations_link) {
+      $build['institutions'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t($heading),
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
+      ];
+    }
+
+    if ($manage_authorities_link) {
+      $build['institutions']['authorities'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$manage_authorities_link->setText('Manage your authorities')->toString()}</p>",
+      ];
+    }
+
+    if ($manage_organisations_link) {
+      $build['institutions']['organisations'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$manage_organisations_link->setText('Manage your organisations')->toString()}</p>",
+      ];
+    }
+
+    return $build;
+  }
+
   public function manageUsersComponent() {
     $build['people'] = [
       '#type' => 'fieldset',

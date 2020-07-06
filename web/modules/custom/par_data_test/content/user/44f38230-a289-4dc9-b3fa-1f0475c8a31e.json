@@ -46,6 +46,9 @@
     "roles": [
         {
             "target_id": "par_helpdesk"
+        },
+        {
+            "target_id": "senior_administration_officer"
         }
     ],
     "created": [

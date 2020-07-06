@@ -1,0 +1,52 @@
+langcode: en
+status: true
+dependencies: {  }
+id: authority_add
+label: 'Authority Add Flow'
+default_title: 'Add Authority'
+default_section_title: 'Authority Details'
+description: ''
+save_method: end
+steps:
+  1:
+    route: par_authority_add_flows.authority_add_name
+    form_id: par_authority_add_name
+    components:
+      authority_name: {  }
+  2:
+    route: par_authority_add_flows.authority_add_type
+    form_id: par_authority_add_type
+    components:
+      authority_type: {  }
+  3:
+    route: par_authority_add_flows.authority_add_address
+    form_id: par_authority_add_address
+    components:
+      address_lookup: {  }
+  4:
+    route: par_authority_add_flows.authority_add_ons
+    form_id: par_authority_add_ons
+    components:
+      authority_ons: {  }
+  5:
+    route: par_authority_add_flows.authority_add_regulatory_functions
+    form_id: par_authority_add_regulatory_functions
+    components:
+      regulatory_functions_select: {  }
+  6:
+    route: par_authority_add_flows.authority_add_review
+    form_id: par_authority_add_review
+    components:
+      authority_display: {  }
+    form_data:
+      authority_name: par_authority_add_name
+      authority_type: par_authority_add_type
+      authority_address: par_authority_add_address
+      authority_ons: par_authority_add_ons
+      regulatory_functions: par_authority_add_regulatory_functions
+    redirect:
+      authority_name: 1
+      authority_type: 2
+      authority_address: 3
+      authority_ons: 4
+      regulatory_functions: 5

@@ -5,7 +5,7 @@ dependencies:
   module:
     - par_data
 _core:
-  default_config_hash: UdodhUN5zTOl7an-3Kte7aB6QwffWe4j5cc6lrUh4UM
+  default_config_hash: kYmtxONpKwcUCf-8RAiD3_OJZeCpSMrbCGgnCxzo7G8
 id: par_data_inspection_feedback.full
 label: Full
 targetEntityType: par_data_inspection_feedback

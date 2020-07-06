@@ -21,10 +21,13 @@ content:
     type: entity_reference_entity_view
     region: content
 hidden:
+  archive_reason: true
   covered_by_inspection: true
   date_membership_began: true
   date_membership_ceased: true
+  deleted_reason: true
   field_legal_entity: true
   membership_date: true
   name: true
+  revocation_reason: true
   user_id: true

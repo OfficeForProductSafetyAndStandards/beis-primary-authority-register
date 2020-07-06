@@ -12,7 +12,6 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_user_block_flows\ParFlowAccessTrait;
-use Drupal\par_user_block_flows\ParFormCancelTrait;
 use Drupal\user\Entity\User;
 
 /**
@@ -21,7 +20,6 @@ use Drupal\user\Entity\User;
 class ParBlockUserController extends ParBaseForm {
 
   use ParFlowAccessTrait;
-  use ParFormCancelTrait;
 
   /**
    * @return DateFormatterInterface
@@ -56,7 +54,7 @@ class ParBlockUserController extends ParBaseForm {
     // Add a message to explain the action being taken.
     $form['info'] = [
       '#type' => 'markup',
-      '#markup' => "<p>You are about to block {$this->getFlowDataHandler()->getDefaultValues('email', 'this user')}. They will no longer be able to access the Primary Authority Register, but their details will remain attached to any authorities or organisations that they are associated with.</p>"
+      '#markup' => "<p>You are about to <strong>block</strong> {$this->getFlowDataHandler()->getDefaultValues('email', 'this user')}. <br><br>They will no longer be able to access the Primary Authority Register, but their details will remain in the system as a record of the activities they carried out on behalf of their authorities or organisations.</p>"
     ];
 
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
@@ -77,9 +75,6 @@ class ParBlockUserController extends ParBaseForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-
-    // Set the correct redirection route.
-    $form_state->setRedirect($this->cancelRoute, $this->getRouteParams());
 
     $user = $this->getFlowDataHandler()->getParameter('user');
 

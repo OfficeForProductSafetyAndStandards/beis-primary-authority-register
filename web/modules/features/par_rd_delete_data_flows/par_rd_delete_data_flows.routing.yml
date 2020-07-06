@@ -1,0 +1,17 @@
+par_rd_delete_data_flows.deleted_data_list:
+  path: '/helpdesk/delete'
+  defaults:
+    _controller: '\Drupal\par_rd_delete_data_flows\Controller\ParRdDeletedDataListController::build'
+    _title_callback: '\Drupal\par_rd_delete_data_flows\Controller\ParRdDeletedDataListController::titleCallback'
+  requirements:
+    _permission: 'delete par data'
+par_rd_delete_data_flows.delete_data_confirm:
+  path: '/helpdesk/delete/{entity_type}/{entity_id}'
+  defaults:
+    _form: '\Drupal\par_rd_delete_data_flows\Form\ParRdDeleteDataConfirmForm'
+    _title_callback: '\Drupal\par_rd_delete_data_flows\Form\ParRdDeleteDataConfirmForm::titleCallback'
+  requirements:
+    _permission: 'delete par data'
+    _custom_access: '\Drupal\par_rd_delete_data_flows\Form\ParRdDeleteDataConfirmForm::accessCallback'
+    entity_type: '[a-zA-Z0-9_]+'
+    entity_id: \d+

@@ -10,6 +10,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
+use Drupal\par_flows\ParFlowException;
 use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
@@ -60,6 +61,11 @@ use Drupal\user\UserInterface;
  *     "langcode" = "langcode",
  *     "status" = "status"
  *   },
+ *   revision_metadata_keys = {
+ *     "revision_user" = "revision_uid",
+ *     "revision_created" = "revision_timestamp",
+ *     "revision_log_message" = "revision_log"
+ *   },
  *   links = {
  *     "collection" = "/admin/content/par_data/par_data_person",
  *     "canonical" = "/admin/content/par_data/par_data_person/{par_data_person}",
@@ -71,7 +77,7 @@ use Drupal\user\UserInterface;
  *   field_ui_base_route = "entity.par_data_person_type.edit_form"
  * )
  */
-class ParDataPerson extends ParDataEntity {
+class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
 
   /**
    * {@inheritdoc}
@@ -92,7 +98,8 @@ class ParDataPerson extends ParDataEntity {
   /**
    * {@inheritdoc}
    *
-   * Internal function only to get the correct user account for a person
+   * Internal function only to get the correct user account for a person.
+   *
    * @see self::getUserAccount()
    */
   public function retrieveUserAccount() {
@@ -113,6 +120,23 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
+   * Determine whether the person has a user account set.
+   *
+   * Does not include whether a user account can looked up by matching an email
+   * address @see self::lookupUserAccount().
+   *
+   * @see self::getUserAccount()
+   *
+   * @return bool
+   *   Whether a user account has been set.
+   */
+  public function hasUserAccount() {
+    return $this->hasField('field_user_account')
+      && !$this->get('field_user_account')->isEmpty()
+      && !empty($this->get('field_user_account')->referencedEntities());
+  }
+
+  /**
    * {@inheritdoc}
    *
    * A person can be matched to a user account if:
@@ -121,14 +145,8 @@ class ParDataPerson extends ParDataEntity {
    * @see ParDataManager::getUserPeople()
    */
   public function getUserAccount() {
-    $account = $this->retrieveUserAccount();
-
-    // Lookup the user account if one has not been saved.
-    if (!$account) {
-      $account = $this->lookupUserAccount();
-    }
-
-    return $account;
+    return $this->hasUserAccount() ?
+      $this->retrieveUserAccount() : $this->lookupUserAccount();
   }
 
   /**
@@ -142,21 +160,47 @@ class ParDataPerson extends ParDataEntity {
    * {@inheritdoc}
    */
   public function getSimilarPeople($link_up = TRUE) {
-    $account = $this->retrieveUserAccount();
+    $account = $this->getUserAccount();
 
     // Link this entity to the Drupal User if one exists.
-    if (!$account && $link_up) {
+    if ($link_up && $account && !$this->hasUserAccount()) {
       $account = $this->linkAccounts();
     }
 
-    // Return all similar people.
+    // Get the dominant email address, for people with a user account this is
+    // the user account email, for all others it's the email of the person.
+    $email = $account instanceof UserInterface ? $account->getEmail() : $this->getEmail();
+
+    // Get the entity query.
+    $query = $this->entityTypeManager()
+      ->getStorage($this->getEntityTypeId())
+      ->getQuery('OR');
+
+    $query->condition('email', $email, '=');
+
+    // If there is an account we can search for people liked to this account also.
     if ($account) {
-      $accounts = \Drupal::entityTypeManager()
-        ->getStorage($this->getEntityTypeId())
-        ->loadByProperties(['email' => $account->get('mail')->getString()]);
+      $query->condition('field_user_account', $account->id(), 'IN');
     }
 
-    return isset($accounts) ? $accounts : [];
+    $results = $query->execute();
+    $people = $this->entityTypeManager()
+      ->getStorage($this->getEntityTypeId())
+      ->loadMultiple(array_unique($results));
+
+    // Do not return people that are already linked to a different user account.
+    $people = array_filter($people, function ($person) use ($account) {
+      if (!$person->hasUserAccount()) {
+        return TRUE;
+      }
+      if ($account && $person->retrieveUserAccount()->id() === $account->id()) {
+        return TRUE;
+      }
+
+      return FALSE;
+    });
+
+    return isset($people) ? $people : [];
   }
 
   /**
@@ -167,6 +211,7 @@ class ParDataPerson extends ParDataEntity {
     if (!$account) {
       $account = $this->lookupUserAccount();
     }
+
     $current_user_account = $this->retrieveUserAccount();
     if ($account && (!$current_user_account || $account->id() !== $current_user_account->id())) {
       // Add the user account to this person.
@@ -178,76 +223,13 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
-   * Merge all user accounts that share the same e-mail address.
-   */
-  public function mergePeople() {
-    $uids = [];
-
-    // Lookup related people.
-    $account = $this->getUserAccount();
-    $people = $account ? $this->getParDataManager()->getUserPeople($account) : [];
-    foreach ($people as $person) {
-      // Skip this entity, this is the one we'll leave.
-      if ($person->id() === $this->id()) {
-        continue;
-      }
-
-      $referenced_users = $person->get('field_user_account')->referencedEntities();
-      foreach ($referenced_users as $referenced_user) {
-        if (!isset($uids[$referenced_user->id()])) {
-          $uids[$referenced_user->id()] = $referenced_user;
-        }
-      }
-
-      $relationships = $person->getRelationships(NULL, NULL, TRUE);
-      foreach ($relationships as $relationship) {
-        // Update all entities that reference the soon to be merged person.
-        if ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE) {
-          // Only update the related entity if it does not already reference the updated record.
-          $update = TRUE;
-          foreach ($relationship->getEntity()->get($relationship->getField()->getName())->referencedEntities() as $e) {
-            if ($e->id() === $this->id()) {
-              $update = FALSE;
-            }
-          }
-
-          if ($update) {
-            $relationship->getEntity()->get($relationship->getField()->getName())->appendItem($this->id());
-            $relationship->getEntity()->save();
-          }
-        }
-      }
-
-      // Remove this person record.
-      $deleted = $person->delete();
-    }
-
-    // Be sure to make sure that all referenced uids on old person
-    // records are transferred.
-    foreach ($uids as $uid) {
-      $update = TRUE;
-      foreach ($this->get('field_user_account')->referencedEntities() as $e) {
-        if ($e->id() === $this->id()) {
-          $update = FALSE;
-        }
-      }
-      if ($update) {
-        $this->get('field_user_account')->appendItem($uid);
-      }
-    }
-
-    // This method will always save the entity.
-    $this->save();
-  }
-
-  /**
    * Updates the person email address, and the user account if there isn't another person registered to it.
    *
    * @param string $email
    *   The email address to update.
    * @param User $account
    */
-  public function updateEmail($email, User &$account) {
+  public function updateEmail($email, User &$account = NULL) {
     $this->set('email', $email);
 
     if (!$account) {
@@ -589,7 +571,7 @@ class ParDataPerson extends ParDataEntity {
    *   The \Drupal\message\Entity\MessageTemplate::id() that indicates the notification type.
    *
    * @return bool
-   *   Whether or not the person has choosen to receive additional notifications.
+   *   Whether or not the person has chosen to receive additional notifications.
    */
   public function hasNotificationPreference($notification_type) {
     $notification_preferences = $this->getNotificationPreferences();
@@ -621,21 +603,46 @@ class ParDataPerson extends ParDataEntity {
       switch ($relationship->getId()) {
         case 'par_data_organisation:field_person':
           $label .= 'Contact at the organisation: ';
+
           break;
 
         case 'par_data_authority:field_person':
           $label .= 'Contact at the authority: ';
+
           break;
         case 'par_data_partnership:field_organisation_person':
           $label .= 'Primary contact for the organisation: ';
+
           break;
 
-        case 'par_data_authority:field_authority_person':
+        case 'par_data_partnership:field_authority_person':
           $label .= 'Primary contact for the authority: ';
+
+          break;
+
+        case 'par_data_general_enquiry:field_person':
+          $label .= 'General enquiry for: ';
+
+          break;
+
+        case 'par_data_deviation_request:field_person':
+          $label .= 'Deviation request for: ';
+
+          break;
+
+        case 'par_data_inspection_feedback:field_person':
+          $label .= 'Inspection feedback for: ';
+
+          break;
+
+        case 'par_data_enforcement_notice:field_person':
+          $label .= 'Enforcement notice for: ';
+
           break;
       }
 
-      $locations[] = ucfirst($label . $relationship->getEntity()->label());
+      $label = ucfirst($label . $relationship->getEntity()->label());
+      $locations[] = $label;
     }
 
     return $locations;

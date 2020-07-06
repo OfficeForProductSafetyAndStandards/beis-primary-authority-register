@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: 9sLINvZ_YkBZOqpqCFHp_SVYUkD_zDSSabbGhUKwJvw
 id: par_data_information_referral.field_primary_authority
 field_name: field_primary_authority
 entity_type: par_data_information_referral

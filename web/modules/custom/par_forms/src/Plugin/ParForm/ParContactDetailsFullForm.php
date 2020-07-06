@@ -61,6 +61,12 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
 
       // Checkboxes works nicely with keys, filtering booleans for "1" value.
       $this->setDefaultValuesByKey('preferred_contact', $cardinality, array_keys($contact_options, 1));
+
+      // Provide an option to limit whether the email address can be entered.
+      $limit_all_users = isset($this->getConfiguration()['limit_all_users']) ? (bool) $this->getConfiguration()['limit_all_users'] : FALSE;
+      if ($limit_all_users) {
+        $this->setDefaultValuesByKey("email_readonly", $cardinality, TRUE);
+      }
     }
 
     parent::loadData();
@@ -101,13 +107,32 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
       '#default_value' => $this->getDefaultValuesByKey('mobile_phone', $cardinality),
     ];
 
-    $form['email'] = [
-      '#type' => 'email',
-      '#title' => $this->t('Enter the email address'),
-      '#default_value' => $this->getDefaultValuesByKey('email', $cardinality),
-      // Prevent modifying email if editing an existing user.
-      '#disabled' => !empty($par_data_person),
-    ];
+    // Prevent modifying of email address when un-editable.
+    if ($this->getDefaultValuesByKey('email_readonly', $cardinality, FALSE)) {
+      $form['email_readonly'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('Email address'),
+        '#description' => $this->t('You cannot update this person\'s email address because they already have an account.'),
+        '#attributes' => ['class' => ['form-group']],
+        'email_address' => [
+          '#type' => 'markup',
+          '#markup' => $this->getDefaultValuesByKey('email', $cardinality),
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
+        ],
+      ];
+      $form['email'] = [
+        '#type' => 'hidden',
+        '#value' => $this->getDefaultValuesByKey('email', $cardinality),
+      ];
+    }
+    else {
+      $form['email'] = [
+        '#type' => 'email',
+        '#title' => $this->t('Enter the email address'),
+        '#default_value' => $this->getDefaultValuesByKey('email', $cardinality),
+      ];
+    }
 
     // Get preferred contact methods labels.
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');

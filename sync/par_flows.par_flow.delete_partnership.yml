@@ -1,0 +1,28 @@
+uuid: a2c85b20-299f-402a-9fb2-73b954907734
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: wxo2LzfwL9SPU5oaHLuiqavn3-KlXbHEp27FYKE_VDo
+id: delete_partnership
+label: 'Delete Partnership'
+default_title: null
+default_section_title: null
+description: 'The delete operations for a given partnership.'
+save_method: end
+states:
+  - par_data_partnership
+steps:
+  1:
+    route: par_help_desks_flows.confirm_delete_partnership
+    form_id: par_rd_help_desk_delete_confirm
+    redirect:
+      next: 2
+      cancel: 3
+  2:
+    route: par_help_desks_flows.delete_partnership
+    form_id: par_rd_help_desk_delete
+    redirect:
+      done: 3
+  3:
+    route: view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page

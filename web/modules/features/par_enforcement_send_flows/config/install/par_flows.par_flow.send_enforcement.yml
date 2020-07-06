@@ -15,6 +15,7 @@ steps:
     form_id: par_enforcement_notice_send
     components:
       enforcement_full_summary: {}
+      enforcement_send_warning: {}
       enforcement_detail: {}
       enforcement_action_detail:
         cardinality: -1

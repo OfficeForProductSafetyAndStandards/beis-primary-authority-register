@@ -12,7 +12,7 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: snNbBl89HVBgPmkLOdDx64ctPFlUe8BqIk_ShKj0IsY
+  default_config_hash: 3zAdRPaI4us5ayMg8H6TTVvNq2wK4eNJCKdBC_rC0XY
 id: par_data_authority.authority.default
 targetEntityType: par_data_authority
 bundle: authority
@@ -36,13 +36,13 @@ content:
     third_party_settings: {  }
   comments:
     type: text_default
-    weight: 5
+    weight: 2
     region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
   field_allowed_regulatory_fn:
-    weight: 10
+    weight: 7
     label: above
     settings:
       link: true
@@ -50,7 +50,7 @@ content:
     type: entity_reference_label
     region: content
   field_person:
-    weight: 8
+    weight: 5
     label: above
     settings:
       link: true
@@ -58,7 +58,7 @@ content:
     type: entity_reference_label
     region: content
   field_premises:
-    weight: 11
+    weight: 8
     label: above
     settings:
       link: true
@@ -66,7 +66,7 @@ content:
     type: entity_reference_label
     region: content
   field_regulatory_function:
-    weight: 9
+    weight: 6
     label: above
     settings:
       link: true
@@ -75,7 +75,7 @@ content:
     region: content
   nation:
     type: string
-    weight: 6
+    weight: 3
     region: content
     label: hidden
     settings:
@@ -83,7 +83,7 @@ content:
     third_party_settings: {  }
   ons_code:
     type: string
-    weight: 7
+    weight: 4
     region: content
     label: hidden
     settings:
@@ -118,5 +118,8 @@ content:
     third_party_settings: {  }
 hidden:
   allowed_regulatory_function: true
+  archive_reason: true
+  deleted_reason: true
   name: true
+  revocation_reason: true
   user_id: true

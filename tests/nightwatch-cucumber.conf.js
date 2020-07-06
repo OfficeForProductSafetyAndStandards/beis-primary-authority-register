@@ -37,9 +37,10 @@ module.exports = {
             },
             desiredCapabilities: {
                 browserName: 'chrome',
+                resolution: '1280x3000',
                 chromeOptions : {
                 //  binary: electron,
-                    args: ['--headless', '--window-size=1280,1280'],
+                    args: ['--headless', '--window-size=1280,3000'],
                   },
                 javascriptEnabled: true,
                 acceptSslCerts: true

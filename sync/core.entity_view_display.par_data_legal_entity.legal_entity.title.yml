@@ -6,7 +6,7 @@ dependencies:
     - core.entity_view_mode.par_data_legal_entity.title
     - par_data.par_data_legal_entity_type.legal_entity
 _core:
-  default_config_hash: 0QEiZMk4OF6CU_DAwhDbHBTsT7iFDmPps7q9RPBxmqg
+  default_config_hash: 2uFFBXj_KrozYWJp4wYZ9kNoNmJBjFaHwtvDAUTEOtw
 id: par_data_legal_entity.legal_entity.title
 targetEntityType: par_data_legal_entity
 bundle: legal_entity
@@ -21,7 +21,10 @@ content:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
+  archive_reason: true
+  deleted_reason: true
   legal_entity_type: true
   name: true
   registered_number: true
+  revocation_reason: true
   user_id: true

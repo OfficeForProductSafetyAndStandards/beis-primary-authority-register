@@ -31,16 +31,11 @@ class ParRdHelpDeskUnrevokeConfirmForm extends ParBaseForm {
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
     try {
-      $this->getFlowNegotiator()->setRoute($route_match);
-      $this->getFlowDataHandler()->reset();
-      $this->getFlowDataHandler()->setParameter('par_data_partnership', $par_data_partnership);
-      $this->loadData();
+      // Get a new flow negotiator that points the the route being checked for access.
+      $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
     } catch (ParFlowException $e) {
 
     }
-
-    // Get the parameters for this route.
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // If partnership has been revoked, we should not be able to re-revoke it.
     if (!$par_data_partnership->isRevoked()) {

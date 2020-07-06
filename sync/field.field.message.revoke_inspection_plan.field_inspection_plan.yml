@@ -1,0 +1,28 @@
+uuid: d869c530-13ea-4c0d-b55a-775800f3c807
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_inspection_plan
+    - message.template.revoke_inspection_plan
+    - par_data.par_data_inspection_plan_type.inspection_plan
+id: message.revoke_inspection_plan.field_inspection_plan
+field_name: field_inspection_plan
+entity_type: message
+bundle: revoke_inspection_plan
+label: 'Inspection Plan'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_inspection_plan'
+  handler_settings:
+    target_bundles:
+      inspection_plan: inspection_plan
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

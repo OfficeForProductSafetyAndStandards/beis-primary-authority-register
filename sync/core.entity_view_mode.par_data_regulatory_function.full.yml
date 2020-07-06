@@ -5,7 +5,7 @@ dependencies:
   module:
     - par_data
 _core:
-  default_config_hash: W8qWTo60a1f9z9us2_21v5PxcM7wqBTmO2pWDNmENQY
+  default_config_hash: EYdYP0kDlDSh4XX9MD1eUNCJNXXcBNAk26wlaQnCqfo
 id: par_data_regulatory_function.full
 label: Full
 targetEntityType: par_data_regulatory_function

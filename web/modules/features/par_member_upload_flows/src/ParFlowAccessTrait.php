@@ -6,6 +6,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\ParFlowException;
+use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
 use Drupal\Core\Routing\RouteMatchInterface;
 
@@ -21,23 +22,23 @@ trait ParFlowAccessTrait {
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
     try {
-      $this->getFlowNegotiator()->setRoute($route_match);
-      $this->getFlowDataHandler()->reset();
-      $this->getFlowDataHandler()->setParameter('par_data_partnership', $par_data_partnership);
-      $this->loadData();
+      // Get a new flow negotiator that points the the route being checked for access.
+      $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
     } catch (ParFlowException $e) {
 
     }
 
-    // Get the parameters for this route.
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-
-//    $lock = \Drupal::lock();
-//    $lock = $lock->acquire('par_data_partnership-lock:{$par_data_partnership->id()}');
+    $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
 
     // If the partnership isn't a coordinated one then don't allow update.
     if (!$par_data_partnership->isCoordinated()) {
       $this->accessResult = AccessResult::forbidden('This is not a coordinated partnership.');
+    }
+
+    // Check the user has permission to manage the current organisation.
+    if (!$account->hasPermission('bypass par_data membership')
+      && !$this->getParDataManager()->isMember($par_data_partnership->getOrganisation(TRUE), $user)) {
+      $this->accessResult = AccessResult::forbidden('User does not have permissions to remove authority contacts from this partnership.');
     }
 
     return parent::accessCallback($route, $route_match, $account);

@@ -11,7 +11,7 @@ dependencies:
     - file
     - text
 _core:
-  default_config_hash: MOIjOeVWdPFYJNHn5SChQrSfLL8PKiyaw8_7LknpDEo
+  default_config_hash: 3fpa8cf0CrYOV443absIVjuqD5gH213St30ZRfyk04w
 id: par_data_enforcement_action.enforcement_action.default
 targetEntityType: par_data_enforcement_action
 bundle: enforcement_action
@@ -26,7 +26,7 @@ content:
     third_party_settings: {  }
   document:
     label: hidden
-    weight: 0
+    weight: 1
     region: content
     settings:
       use_description_as_link_text: true
@@ -104,7 +104,9 @@ content:
     third_party_settings: {  }
 hidden:
   action_referral: true
+  archive_reason: true
   blocked_advice: true
+  deleted_reason: true
   ea_notes: true
   ea_status: true
   enforcement_notice: true
@@ -112,4 +114,5 @@ hidden:
   pa_notes: true
   pa_status: true
   referral_notes: true
+  revocation_reason: true
   user_id: true

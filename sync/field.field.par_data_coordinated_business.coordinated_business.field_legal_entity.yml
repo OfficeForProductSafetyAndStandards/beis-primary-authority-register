@@ -6,6 +6,8 @@ dependencies:
     - field.storage.par_data_coordinated_business.field_legal_entity
     - par_data.par_data_coordinated_business_type.coordinated_business
     - par_data.par_data_legal_entity_type.legal_entity
+_core:
+  default_config_hash: eCeLeYzdZJcEBOhM77jNq3npeIz8_f_lNTEc7cCDB1Q
 id: par_data_coordinated_business.coordinated_business.field_legal_entity
 field_name: field_legal_entity
 entity_type: par_data_coordinated_business

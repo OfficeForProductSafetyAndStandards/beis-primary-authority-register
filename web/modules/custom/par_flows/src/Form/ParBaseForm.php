@@ -12,9 +12,12 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParControllerTrait;
+use Drupal\par_flows\ParFlowDataHandler;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
@@ -27,6 +30,7 @@ use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\Core\Access\AccessResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -57,7 +61,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * This is typically done if we want to group two sets of forms together,
    * in which case we ignore the destination parameter for this form but
    * pass it on to the next route. Once the next form is completed it will be
-   * redirected to the desintation parameter.
+   * redirected to the destination parameter.
    *
    * @var boolean
    */
@@ -102,11 +106,12 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @param \Drupal\Component\Plugin\PluginManagerInterface $plugin_manager
    *   The par form builder.
    */
-  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager) {
+  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager, UrlGeneratorInterface $url_generator) {
     $this->negotiator = $negotiator;
     $this->flowDataHandler = $data_handler;
     $this->parDataManager = $par_data_manager;
     $this->formBuilder = $plugin_manager;
+    $this->urlGenerator = $url_generator;
 
     $this->setCurrentUser();
 
@@ -129,7 +134,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       $container->get('par_flows.negotiator'),
       $container->get('par_flows.data_handler'),
       $container->get('par_data.manager'),
-      $container->get('plugin.manager.par_form_builder')
+      $container->get('plugin.manager.par_form_builder'),
+      $container->get('url_generator')
     );
   }
 
@@ -206,6 +212,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $this->initializeFlow();
+
+    // Attach the JS form libraries.
+    $form['#attached']['library'][] = 'par_flows/flow_core';
+
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
       // If there's is a cardinality parameter present display only this item.
@@ -231,7 +242,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Done'),
         '#limit_validation_errors' => [],
         '#attributes' => [
-          'class' => ['cta-submit']
+          'class' => ['cta-submit', 'govuk-button'],
+          'data-prevent-double-click' => 'true',
+          'data-module' => 'govuk-button',
         ],
       ];
     }
@@ -243,7 +256,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#name' => 'upload',
           '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Upload'),
           '#attributes' => [
-            'class' => ['cta-submit']
+            'class' => ['cta-submit', 'govuk-button'],
+            'data-prevent-double-click' => 'true',
+            'data-module' => 'govuk-button',
           ],
         ];
       }
@@ -254,7 +269,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#submit' => ['::submitForm', '::saveForm'],
           '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Save'),
           '#attributes' => [
-            'class' => ['cta-submit']
+            'class' => ['cta-submit', 'govuk-button'],
+            'data-prevent-double-click' => 'true',
+            'data-module' => 'govuk-button',
           ],
         ];
       }
@@ -264,7 +281,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#name' => 'next',
           '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Continue'),
           '#attributes' => [
-            'class' => ['cta-submit']
+            'class' => ['cta-submit', 'govuk-button'],
+            'data-prevent-double-click' => 'true',
+            'data-module' => 'govuk-button',
           ],
         ];
       }
@@ -359,7 +378,34 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Get the redirect route to the next form based on the flow configuration
     // 'operation' parameter that matches the submit button's name.
     $submit_action = $form_state->getTriggeringElement()['#name'];
-    $next = $this->getFlowNegotiator()->getFlow()->getNextRoute($submit_action);
+    try {
+      // Get the next route from the flow.
+      $route_name = $this->getFlowNegotiator()->getFlow()->progressRoute($submit_action);
+      $route_params = $this->getRouteParams();
+    }
+    catch (ParFlowException $e) {
+
+    }
+    catch (RouteNotFoundException $e) {
+
+    }
+
+    // If the next route could be found in the flow then
+    // return to the entry route if one was specified.
+    if (!isset($route_name) && $url = $this->getEntryUrl()) {
+      $route_name = $url->getRouteName();
+      $route_params = $url->getRouteParameters();
+
+      // Delete form storage.
+      // @TODO We could choose to delete the store if we're completing the journey.
+      // $this->getFlowDataHandler()->deleteStore();
+    }
+
+    // We need a backup route in case all else fails.
+    if (!isset($route_name)) {
+      $route_name = 'par_dashboards.dashboard';
+      $route_params = [];
+    }
 
     // Determine whether to use the 'destination' query parameter
     // to determine redirection preferences.
@@ -370,8 +416,17 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       $query->remove('destination');
     }
 
+    // Transform the route into a url so that it can be altered.
+    $current_route = \Drupal::routeMatch();
+    $matched_url = isset($route_name) && isset($route_params) ? Url::fromRoute($route_name, $route_params) : [];
+    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), $current_route, $matched_url);
+    $this->getEventDispatcher()->dispatch(ParFlowEvent::FLOW_SUBMIT . ":$submit_action", $event);
+    $url = $event->getUrl();
+
     // Set the redirection.
-    $form_state->setRedirect($next, $this->getRouteParams(), $options);
+    if ($url && $url instanceof Url) {
+      $form_state->setRedirectUrl($url);
+    }
   }
 
   /**
@@ -399,13 +454,13 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $values = $this->cleanseMultipleValues($values);
     $this->getFlowDataHandler()->setFormTempData($values);
 
-    list($button, $plugin_id, $cardinality) = explode(':', $form_state->getTriggeringElement()['#name']);
-    $values = $form_state->getValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id);
+    list($button, $plugin_namespace, $cardinality) = explode(':', $form_state->getTriggeringElement()['#name']);
+    $values = $form_state->getValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_namespace);
     end($values);
     $last_index = (int) key($values);
-    $component = $this->getComponent($plugin_id);
+    $component = $this->getComponent($plugin_namespace);
 
-    $form_state->unsetValue([ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_id, (int) $cardinality - 1]);
+    $form_state->unsetValue([ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_namespace, (int) $cardinality - 1]);
 
     // Validate the components and remove any unvalidated last item.
     $component->validate($form, $form_state, $last_index, ParFormBuilder::PAR_ERROR_CLEAR);
@@ -436,12 +491,67 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
   public function cancelForm(array &$form, FormStateInterface $form_state) {
+    try {
+      // Get the cancel route from the flow.
+      $route_name = $this->getFlowNegotiator()->getFlow()->progressRoute('cancel');
+      $route_params = $this->getRouteParams();
+    }
+    catch (ParFlowException $e) {
+
+    }
+    catch (RouteNotFoundException $e) {
+
+    }
+
+    // If no cancelation route could be found in the flow then
+    // return to the entry route if one was specified.
+    if (!isset($route_name) && $url = $this->getEntryUrl()) {
+      $route_name = $url->getRouteName();
+      $route_params = $url->getRouteParameters();
+    }
+
+    // We need a backup route in case all else fails.
+    if (!isset($route_name)) {
+      $route_name = 'par_dashboards.dashboard';
+      $route_params = [];
+    }
+
+    // Remove the destination parameter if it redirects to a route within the flow,
+    // 'cancel' and 'done' operations should exit out of the flow.
+    $query = $this->getCurrentRequest()->query;
+    if ($query->has('destination')) {
+      $destination = $query->get('destination');
+      $destination_url = $this->getPathValidator()->getUrlIfValid($destination);
+
+      if ($destination_url && $destination_url instanceof Url && $destination_url->isRouted() && $this->getFlowNegotiator()->routeInFlow($destination_url->getRouteName())) {
+        $query->remove('destination');
+      }
+    }
+
+    // Transform the route into a url so that it can be altered.
+    $current_route = \Drupal::routeMatch();
+    $matched_url = isset($route_name) && isset($route_params) ? Url::fromRoute($route_name, $route_params) : [];
+    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), $current_route, $matched_url);
+    $this->getEventDispatcher()->dispatch(ParFlowEvent::FLOW_CANCEL, $event);
+    $url = $event->getUrl();
+
     // Delete form storage.
     $this->getFlowDataHandler()->deleteStore();
 
-    // Go to cancel step.
-    $next = $this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel');
-    $form_state->setRedirect($next, $this->getRouteParams());
+    if ($url && $url instanceof Url) {
+      $form_state->setRedirectUrl($url);
+    }
+  }
+
+  /**
+   * Get the route to return to once the journey has been completed.
+   */
+  public function getFinalRoute() {
+    // Get the route that we entered on.
+    $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
+
+
+    return NULL;
   }
 
   /**
@@ -522,9 +632,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   public function cleanseMultipleValues(array $data) {
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
-      $values = isset($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginId()]) ?
-        $data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginId()] :
-        NULL;
+      $values = $data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginNamespace()] ?? NULL;
 
       if ($values) {
         // Always remove the 'remove' link.
@@ -549,7 +657,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           }, ARRAY_FILTER_USE_BOTH);
         }
 
-        $data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginId()] = NestedArray::filter($values);
+        $data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginNamespace()] = NestedArray::filter($values);
       }
 
     }

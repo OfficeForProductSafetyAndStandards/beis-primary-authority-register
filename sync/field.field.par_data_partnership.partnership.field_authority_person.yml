@@ -7,7 +7,7 @@ dependencies:
     - par_data.par_data_partnership_type.partnership
     - par_data.par_data_person_type.person
 _core:
-  default_config_hash: Tn-Ky5Bj6bZRC-xP4kLZckJEpQxLwQUy32d6vX28wY0
+  default_config_hash: FbRhNwsSQy5ugwqphzIKFZbzrchLou0LxoeSeAn36x4
 id: par_data_partnership.partnership.field_authority_person
 field_name: field_authority_person
 entity_type: par_data_partnership

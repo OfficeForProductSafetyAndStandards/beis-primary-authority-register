@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: par_enforcement
 label: 'Enforcement Officer'
-weight: 3
+weight: -8
 is_admin: null
 permissions:
   - 'access par dashboard'

@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: sgf_NpBE0DUFOHEuHzegjWV2nSM1xICgOw__G2iwMAk
 id: par_data_authority.about
 label: About
 targetEntityType: par_data_authority

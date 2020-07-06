@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - par_data
+_core:
+  default_config_hash: qjdLASzq_7Dxcc6yS4eAHchP1aW4BxuVIysUlf_O8Vo
 id: par_data_organisation.field_sic_code
 field_name: field_sic_code
 entity_type: par_data_organisation

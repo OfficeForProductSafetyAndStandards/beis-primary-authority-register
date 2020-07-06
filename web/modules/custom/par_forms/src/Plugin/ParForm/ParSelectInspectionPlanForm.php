@@ -60,10 +60,10 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
     $form['inspection_plan_id'] = [
       '#type' => 'checkboxes',
       '#attributes' => ['class' => ['form-group']],
-      '#title' => t('Choose which inspection plan you\'d like to deviate from'),
+      '#title' => t('Choose which inspection plan you\'re request is related to'),
       '#options' => $inspection_plans,
       // Automatically check all legal entities if no form data is found.
-      '#default_value' => $this->getDefaultValuesByKey('inspection_plan', $cardinality, NULL),
+      '#default_value' => $this->getDefaultValuesByKey('inspection_plan', $cardinality, []),
     ];
 
     return $form;

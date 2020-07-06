@@ -13,7 +13,7 @@ dependencies:
     - par_data
     - text
 _core:
-  default_config_hash: LZrRjdSB7s5BgDtr_wcVceY-sqRN4Bq5qzggdIhqFkU
+  default_config_hash: moiFWVI2bV-nNSBEAyvXjoIS4xzvPoIGz2lvm0raY9o
 id: par_data_authority.authority.full
 targetEntityType: par_data_authority
 bundle: authority
@@ -37,14 +37,14 @@ content:
     third_party_settings: {  }
   comments:
     type: text_default
-    weight: 5
+    weight: 2
     region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
   nation:
     type: string
-    weight: 6
+    weight: 3
     region: content
     label: hidden
     settings:
@@ -52,7 +52,7 @@ content:
     third_party_settings: {  }
   ons_code:
     type: string
-    weight: 7
+    weight: 4
     region: content
     label: hidden
     settings:
@@ -87,9 +87,12 @@ content:
     third_party_settings: {  }
 hidden:
   allowed_regulatory_function: true
+  archive_reason: true
+  deleted_reason: true
   field_allowed_regulatory_fn: true
   field_person: true
   field_premises: true
   field_regulatory_function: true
   name: true
+  revocation_reason: true
   user_id: true

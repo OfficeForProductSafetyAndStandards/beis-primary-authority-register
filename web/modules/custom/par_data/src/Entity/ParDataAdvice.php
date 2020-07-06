@@ -51,6 +51,11 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "langcode" = "langcode",
  *     "status" = "status"
  *   },
+ *   revision_metadata_keys = {
+ *     "revision_user" = "revision_uid",
+ *     "revision_created" = "revision_timestamp",
+ *     "revision_log_message" = "revision_log"
+ *   },
  *   links = {
  *     "collection" = "/admin/content/par_data/par_data_advice",
  *     "canonical" = "/admin/content/par_data/par_data_advice/{par_data_advice}",
@@ -81,13 +86,13 @@ class ParDataAdvice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
-  public function revoke($save = TRUE) {
+  public function revoke($save = TRUE, $reason = '') {
     // Only advice of type 'authority_advice' can be revoked.
     if ($this->getRawStatus() === 'authority_advice') {
-      parent::revoke($save);
+      parent::revoke($save, $reason);
     }
     else {
-      $this->archive($save);
+      $this->archive('this advice of type cannot be revoked only archived.' ,$save);
     }
   }
 
@@ -99,10 +104,75 @@ class ParDataAdvice extends ParDataEntity {
   }
 
   /**
+   * Get PAR Advice's title.
+   *
+   * @return string
+   *   advice entity title.
+   */
+  public function getAdviceTitle() {
+    return $this->get('advice_title')->getString();
+  }
+
+  /**
+   * Set PAR Advice's title.
+   */
+  public function setAdviceTitle($advice_title) {
+    $this->set('advice_title', $advice_title);
+  }
+
+  /**
+   * Get PAR Advice type.
+   *
+   * @return string
+   *   advice entity title.
+   */
+  public function getAdviceType() {
+    return $this->get('advice_type')->getString();
+  }
+
+  /**
+   * Get PAR Advice summary.
+   *
+   * @return string
+   *   advice entity title.
+   */
+  public function getAdviceSummary() {
+    return $this->get('notes')->getString();
+  }
+
+  /**
+   * Get the issue date for this Advice.
+   */
+  public function getIssueDate() {
+    return $this->get('issue_date')->getString();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
+
+    // Advice Title.
+    $fields['advice_title'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Advice Title'))
+      ->setDescription(t('The title of the advice documents.'))
+      ->setRequired(TRUE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
 
     // Advice Type.
     $fields['advice_type'] = BaseFieldDefinition::create('string')
@@ -125,10 +195,10 @@ class ParDataAdvice extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Notes.
+    // Advice Notes.
     $fields['notes'] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Notes'))
-      ->setDescription(t('Notes about this advice.'))
+      ->setLabel(t('Advice Summary'))
+      ->setDescription(t('Summary info for this advice.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
@@ -201,7 +271,7 @@ class ParDataAdvice extends ParDataEntity {
     // Issue Date.
     $fields['issue_date'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Issue Date'))
-      ->setDescription(t('The date this enforcement notice was issued.'))
+      ->setDescription(t('The date this advice was issued.'))
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
@@ -236,6 +306,28 @@ class ParDataAdvice extends ParDataEntity {
         'weight' => 6,
         'default_widget' => "file_generic",
         'default_formatter' => "file_default",
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Advice Status.
+    $fields['advice_status'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Advice Status'))
+      ->setDescription(t('The current status of the advice. For example, active, archived.'))
+      ->addConstraint('par_required')
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
       ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
