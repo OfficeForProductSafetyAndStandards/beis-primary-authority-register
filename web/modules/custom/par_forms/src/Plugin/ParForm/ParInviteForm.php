@@ -121,7 +121,7 @@ HEREDOC;
     if (!empty($par_roles)) {
       $roles = array_filter($par_roles, function ($role_id) use($invitation_type) {
         if ($invitation_type === 'invite_authority_member') {
-          return in_array($role_id, ['par_authority', 'par_enforcement']);
+          return in_array($role_id, ['par_authority_manager', 'par_authority', 'par_enforcement']);
         }
         if ($invitation_type === 'invite_organisation_member') {
           return in_array($role_id, ['par_organisation']);
