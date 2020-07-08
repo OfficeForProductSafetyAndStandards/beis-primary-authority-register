@@ -290,7 +290,7 @@ class ParReviewForm extends ParBaseForm {
       // If some authorities have been selected and either
       // an authority role has been selected or no user is being created.
       $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
-      if ($authority_ids && (in_array($role, ['par_authority', 'par_enforcement']) || !$role)) {
+      if ($authority_ids && (in_array($role, ['par_authority_manager', 'par_authority', 'par_enforcement']) || !$role)) {
         $par_data_person->updateAuthorityMemberships($authority_ids, TRUE);
       }
 
