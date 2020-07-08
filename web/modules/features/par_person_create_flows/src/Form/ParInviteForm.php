@@ -41,11 +41,8 @@ class ParInviteForm extends ParBaseForm {
 
     switch ($role) {
       case 'par_enforcement':
-        $invitation_type = 'invite_enforcement_officer';
-        $role_options = $this->getParDataManager()->getEntitiesAsOptions([Role::load($role)], []);
-
-        break;
       case 'par_authority':
+      case 'par_authority_manager':
         $invitation_type = 'invite_authority_member';
         $role_options = $this->getParDataManager()->getEntitiesAsOptions([Role::load($role)], []);
 

@@ -68,7 +68,9 @@ permissions:
   - invite_type_invite_organisation_member
   - 'manage own authority'
   - 'manage par person'
+  - 'manage par profile'
   - 'raise enforcement notice'
+  - 'receive inspection_plan_expiry_warning notification'
   - 'receive new_deviation_request notification'
   - 'receive new_deviation_response notification'
   - 'receive new_enforcement_notification notification'

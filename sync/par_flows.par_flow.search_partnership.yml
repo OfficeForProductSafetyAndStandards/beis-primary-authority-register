@@ -23,7 +23,6 @@ steps:
       organisation_information_display:
         weight: -8
       partnership_members:
-        format: member_link_view
         weight: -7
       sic_code_display:
         weight: -6
