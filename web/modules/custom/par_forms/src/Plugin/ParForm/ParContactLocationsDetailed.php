@@ -8,6 +8,8 @@ use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
@@ -29,24 +31,25 @@ class ParContactLocationsDetailed extends ParFormPluginBase {
     return \Drupal::service('date.formatter');
   }
 
+  public function getPerson($cardinality = 1) {
+    $contacts = $this->getFlowDataHandler()->getParameter('contacts');
+    $contacts = !empty($contacts) ? array_values($contacts) : [];
+
+    // Cardinality is not a zero-based index like the stored fields deltas.
+    return isset($contacts[$cardinality-1]) ? $contacts[$cardinality-1] : NULL;
+  }
+
   /**
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
-    $contacts = $this->getFlowDataHandler()->getParameter('contacts');
-    $contacts = !empty($contacts) ? array_values($contacts) : [];
-    // Cardinality is not a zero-based index like the stored fields deltas.
-    $contact = isset($contacts[$cardinality-1]) ? $contacts[$cardinality-1] : NULL;
-
+    $contact = $this->getPerson($cardinality);
     if ($contact instanceof ParDataEntityInterface) {
       $this->setDefaultValuesByKey("name", $cardinality, $contact->getFullName());
       $this->setDefaultValuesByKey("email", $cardinality, $contact->getEmail());
       $this->setDefaultValuesByKey("email_preferences", $cardinality, $contact->getEmailWithPreferences());
       $this->setDefaultValuesByKey("work_phone", $cardinality, $contact->getWorkPhone());
       $this->setDefaultValuesByKey("mobile_phone", $cardinality, $contact->getMobilePhone());
-
-      $locations = $contact->getReferencedLocations();
-      $this->setDefaultValuesByKey("locations", $cardinality, implode('<br>', $locations));
 
       $this->setDefaultValuesByKey("person_id", $cardinality, $contact->id());
     }
@@ -77,20 +80,6 @@ class ParContactLocationsDetailed extends ParFormPluginBase {
     }
 
     if ($this->getDefaultValuesByKey('email', $cardinality, NULL)) {
-      $locations = [
-        'summary' => [
-          '#type' => 'html_tag',
-          '#tag' => 'summary',
-          '#attributes' => ['class' => ['form-group'], 'role' => 'button', 'aria-controls' => "contact-detail-locations-$cardinality"],
-          '#value' => '<span class="summary">More information on where this contact is used</span>',
-        ],
-        'details' => [
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-          '#attributes' => ['class' => ['form-group'], 'id' => "contact-detail-locations-$cardinality"],
-          '#value' => $this->getDefaultValuesByKey('locations', $cardinality, ''),
-        ],
-      ];
       try {
         $params = ['par_data_person' => $this->getDefaultValuesByKey('person_id', $cardinality, NULL)];
         $actions = t('@link', [
@@ -131,10 +120,11 @@ class ParContactLocationsDetailed extends ParFormPluginBase {
           '#value' => $this->getDefaultValuesByKey('work_phone', $cardinality, NULL) . '<br>' . $this->getDefaultValuesByKey('mobile_phone', $cardinality, NULL),
         ],
         'locations' => [
-          '#type' => 'html_tag',
-          '#tag' => 'details',
-          '#attributes' => ['class' => ['column-full', 'contact-locations'], 'role' => 'group'],
-          '#value' => \Drupal::service('renderer')->render($locations),
+          '#lazy_builder' => [
+            static::class . '::getContactLocations',
+            [$this->getDefaultValuesByKey('person_id', $cardinality, NULL), $cardinality]
+          ],
+          '#create_placeholder' => TRUE
         ],
       ];
     }
@@ -151,6 +141,41 @@ class ParContactLocationsDetailed extends ParFormPluginBase {
     }
 
     return $form;
+  }
+
+  /**
+   * Lazy loaded contact locations.
+   *
+   * This lookup can take too long to process for users with multiple contacts.
+   */
+  public static function getContactLocations($id, $cardinality) {
+    $contact = $id ? ParDataPerson::load($id) : NULL;
+    $locations = $contact instanceof ParDataEntityInterface ?
+      $contact->getReferencedLocations() : NULL;
+
+    $details = [
+      '#type' => 'html_tag',
+      '#tag' => 'details',
+      '#attributes' => ['class' => ['column-full', 'contact-locations'], 'role' => 'group'],
+      'summary' => [
+        '#type' => 'html_tag',
+        '#tag' => 'summary',
+        '#attributes' => ['class' => ['form-group'], 'role' => 'button', 'aria-controls' => "contact-detail-locations-$cardinality"],
+        '#value' => '<span class="summary">More information on where this contact is used</span>',
+      ],
+      'details' => [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => ['class' => ['form-group'], 'id' => "contact-detail-locations-$cardinality"],
+        '#value' => !empty($locations) ? implode('<br>', $locations) : '',
+      ],
+    ];
+
+
+    return $build = [
+      '#type' => 'markup',
+      '#markup' => \Drupal::service('renderer')->render($details),
+    ];
   }
 
   /**

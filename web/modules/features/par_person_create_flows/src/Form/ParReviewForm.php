@@ -235,6 +235,11 @@ class ParReviewForm extends ParBaseForm {
 
         break;
 
+      case 'par_authority_manager':
+        $invitation_type = 'invite_authority_manager';
+
+        break;
+
       case 'par_organisation':
         $invitation_type = 'invite_organisation_member';
 
@@ -244,9 +249,13 @@ class ParReviewForm extends ParBaseForm {
         $invitation_type = 'invite_processing_team_member';
 
         break;
+
+      case 'senior_administration_officer':
+        $invitation_type = 'invite_senior_administration_officer';
+
+        break;
     }
 
-    // Create invitation if an invitation type has been set and no existing user has been found.
     if (isset($invitation_type) && !$account && $account_selection === ParChooseAccount::CREATE) {
       $invite = Invite::create([
         'type' => $invitation_type,
@@ -281,7 +290,7 @@ class ParReviewForm extends ParBaseForm {
       // If some authorities have been selected and either
       // an authority role has been selected or no user is being created.
       $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
-      if ($authority_ids && (in_array($role, ['par_authority', 'par_enforcement']) || !$role)) {
+      if ($authority_ids && (in_array($role, ['par_authority_manager', 'par_authority', 'par_enforcement']) || !$role)) {
         $par_data_person->updateAuthorityMemberships($authority_ids, TRUE);
       }
 
