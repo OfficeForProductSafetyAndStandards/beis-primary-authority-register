@@ -16,6 +16,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
+use Drupal\Core\Mail\MailFormatHelper;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\ParDataException;
@@ -1050,7 +1051,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     }
 
     $value = $this->get($field)->first()->get('value')->getValue();
-    return check_markup($value, 'plain_text');
+
+    // The mail formatter method is the only way to force a conversion from an
+    // HTML format to plain text. This can only handle limited HTML and so will
+    // not filter out any advanced HTML elements which might have been included.
+    $plain = MailFormatHelper::htmlToText($value);
+    return $plain;
   }
 
   /**
