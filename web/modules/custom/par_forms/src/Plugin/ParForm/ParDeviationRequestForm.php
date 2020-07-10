@@ -32,7 +32,7 @@ class ParDeviationRequestForm extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     if ($par_data_deviation_request = $this->getFlowDataHandler()->getParameter('par_data_deviation_request')) {
-      $this->getFlowDataHandler()->setFormPermValue('notes', $par_data_deviation_request->get('notes')->getString());
+      $this->getFlowDataHandler()->setFormPermValue('notes', $par_data_deviation_request->getPlain('notes'));
     }
 
     parent::loadData();
