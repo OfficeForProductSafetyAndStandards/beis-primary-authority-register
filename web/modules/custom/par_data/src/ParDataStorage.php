@@ -117,6 +117,18 @@ class ParDataStorage extends TranceStorage {
       }
     }
 
+    // Ensure that a format value is selected for all text_long field values.
+    // @SEE PAR-1618: Text formats not being correctly set or retrieved.
+    foreach ($entity->getFieldDefinitions() as $definition) {
+      if ($definition->getType() === 'text_long' && !$entity->get($definition->getName())->isEmpty()) {
+        foreach ($entity->get($definition->getName()) as $delta => $value) {
+          if ($value->get('format')->getValue() === NULL) {
+            $entity->get($definition->getName())->get($delta)->get('format')->setValue('plain_text');
+          }
+        }
+      }
+    }
+
     // Load the original entity if it already exists.
     if ($this->has($entity->id(), $entity) && !isset($entity->original)) {
       $entity->original = $this->loadUnchanged($entity->id());

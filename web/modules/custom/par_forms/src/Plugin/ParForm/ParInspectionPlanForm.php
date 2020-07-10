@@ -31,7 +31,7 @@ class ParInspectionPlanForm extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     if ($par_data_inspection_feedback = $this->getFlowDataHandler()->getParameter('par_data_inspection_feedback')) {
-      $this->getFlowDataHandler()->setFormPermValue('notes', $par_data_inspection_feedback->get('notes')->getString());
+      $this->getFlowDataHandler()->setFormPermValue('notes', $par_data_inspection_feedback->getPlain('notes'));
     }
 
     parent::loadData();
