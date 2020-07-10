@@ -77,7 +77,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       }
 
       // Advice summary.
-      $notes = $par_data_advice->get('notes')->getString();
+      $notes = $par_data_advice->getPlain('notes');
       if (isset($notes)) {
         $this->getFlowDataHandler()->setFormPermValue('notes', $notes);
       }

@@ -46,7 +46,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
-      $this->getFlowDataHandler()->setFormPermValue('about_partnership', $par_data_partnership->get('about_partnership')->getString());
+      $this->getFlowDataHandler()->setFormPermValue('about_partnership', $par_data_partnership->getPlain('about_partnership'));
     }
   }
 
@@ -80,7 +80,10 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
 
     if ($par_data_partnership) {
       // Save the value for the about_partnership field.
-      $par_data_partnership->set('about_partnership', $this->getFlowDataHandler()->getTempDataValue('about_partnership'));
+      $par_data_partnership->get('about_partnership')->setValue([
+        'value' => $this->getFlowDataHandler()->getTempDataValue('about_partnership'),
+        'format' => 'plain_text',
+      ]);
       if ($par_data_partnership->save()) {
         $this->getFlowDataHandler()->deleteStore();
       }
