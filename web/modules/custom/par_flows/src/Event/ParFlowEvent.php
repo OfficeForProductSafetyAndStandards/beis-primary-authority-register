@@ -7,6 +7,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\par_flows\Entity\ParFlowInterface;
 use Drupal\par_flows\Event\ParFlowEvents;
+use Drupal\Core\Session\AccountInterface;
 
 /**
  * Event that is fired when a user logs in.
@@ -67,11 +68,12 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
    * @param Url $url
    *   The matched URL.
    */
-  public function __construct(ParFlowInterface $flow, RouteMatchInterface $current_route, Url $url = NULL, Url $entryUrl = NULL, AccountInterface $current_user) {
+  public function __construct(ParFlowInterface $flow, RouteMatchInterface $current_route, Url $url = NULL, Url $entryUrl = NULL) {
+
     $this->flow = $flow;
     $this->currentRoute = $current_route;
     $this->currentStep = $flow->getStepByRoute($current_route->getRouteName());
-    $this->account = $current_user;
+    $this->account = \Drupal::currentUser();
 
     if ($url) {
       $this->setUrl($url);
