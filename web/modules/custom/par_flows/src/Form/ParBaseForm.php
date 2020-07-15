@@ -376,12 +376,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $this->getFlowDataHandler()->setFormTempData($values);
 
     try {
-      $entry_point_URL = $this->geFlowEntryURL();
       // Get the redirect route to the next form based on the flow configuration
       // 'operation' parameter that matches the submit button's name.
       $submit_action = $form_state->getTriggeringElement()['#name'];
       // Get the next route from the flow.
-      $redirect_route = $this->getFlowNegotiator()->getFlow()->progressRoute($submit_action, $entry_point_URL);
+      $url = $this->getFlowNegotiator()->getFlow()->progress($submit_action);
     }
     catch (ParFlowException $e) {
 
@@ -390,7 +389,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     }
 
-    $url = isset($redirect_route) ? Url::fromRoute($redirect_route, $this->getRouteParams()) : NULL;
     // Set the redirection.
     if ($url && $url instanceof Url) {
       $form_state->setRedirectUrl($url);
@@ -460,9 +458,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function cancelForm(array &$form, FormStateInterface $form_state) {
     try {
-      $entry_point_URL = $this->geFlowEntryURL();
       // Get the cancel route from the flow.
-      $redirect_route = $this->getFlowNegotiator()->getFlow()->progressRoute('cancel', $entry_point_URL);
+      $url = $this->getFlowNegotiator()->getFlow()->progress('cancel');
     }
     catch (ParFlowException $e) {
 
@@ -485,8 +482,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     // Delete form storage.
     $this->getFlowDataHandler()->deleteStore();
-
-    $url = isset($redirect_route) ? Url::fromRoute($redirect_route, $this->getRouteParams()) : NULL;
 
     if ($url && $url instanceof Url) {
       $form_state->setRedirectUrl($url);

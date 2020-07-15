@@ -133,36 +133,36 @@ class ParFlowEntityTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::progressRoute
+   * @covers ::progress
    */
-  public function progressRoute() {
+  public function progress() {
 
     // Check previous step via custom redirect operation.
-    $prev_route = $this->testFlow->progressRoute('custom_step');
+    $prev_url = $this->testFlow->progress('custom_step');
 
     // Check the flow progresses correctly for a given operation.
-    $this->assertEquals('par_test_forms.first', $prev_route, "The previous route has been correctly identified.");
+    $this->assertEquals('par_test_forms.first', $prev_url->getRouteName(), "The previous route has been correctly identified.");
 
-    $prev_route = $this->testFlow->progressRoute('cancel');
+    $prev_url = $this->testFlow->progress('cancel');
 
     // Check the flow progresses correctly for a given operation.
-    $this->assertEquals('par_test_forms.confirmation', $prev_route, "The previous route has been correctly identified given an operation.");
+    $this->assertEquals('par_test_forms.confirmation', $prev_url->getRouteName(), "The previous route has been correctly identified given an operation.");
 
     // Check the default back operation is producing the expected result.
-    $prev_route = $this->testFlow->progressRoute(ParFlow::BACK_STEP);
+    $prev_url = $this->testFlow->progress(ParFlow::BACK_STEP);
 
     // Check the flow progresses correctly for a given operation.
-    $this->assertEquals('par_test_forms.first', $prev_route, "The previous route has been correctly identified.");
+    $this->assertEquals('par_test_forms.first', $prev_url->getRouteName(), "The previous route has been correctly identified.");
 
-    $next_route = $this->testFlow->progressRoute();
-
-    // Check the next step is correct.
-    $this->assertEquals('par_test_forms.third', $next_route, "The next route has been correctly identified.");
-
-    $next_route = $this->testFlow->progressRoute('save');
+    $next_url = $this->testFlow->progress();
 
     // Check the next step is correct.
-    $this->assertEquals('par_test_forms.fourth', $next_route, "The next route has been correctly identified given an operation.");
+    $this->assertEquals('par_test_forms.third', $next_url->getRouteName(), "The next route has been correctly identified.");
+
+    $next_url = $this->testFlow->progress('save');
+
+    // Check the next step is correct.
+    $this->assertEquals('par_test_forms.fourth', $next_url->getRouteName(), "The next route has been correctly identified given an operation.");
   }
   /**
    * @covers ::getStepByFormId

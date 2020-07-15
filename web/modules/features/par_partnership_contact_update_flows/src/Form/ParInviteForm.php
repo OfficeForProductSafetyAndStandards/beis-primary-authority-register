@@ -70,7 +70,7 @@ class ParInviteForm extends ParBaseForm {
     $this->getFlowDataHandler()->setFormPermValue('invitation_type', $invitation_type);
     $this->getFlowDataHandler()->setFormPermValue("roles", $role_options);
 
-    $cid_contact_details = $this->getFlowNegotiator()->getFormKey('par_add_contact');
+    $cid_contact_details = $this->getFlowNegotiator()->getFormKey('par_update_contact');
     if ($email = $this->getFlowDataHandler()->getDefaultValues('email', NULL, $cid_contact_details)) {
       $this->getFlowDataHandler()->setTempDataValue('to', $email);
     }
@@ -91,11 +91,8 @@ class ParInviteForm extends ParBaseForm {
     // Skip the invitation process if a user id has already been matched
     // or the user has chosen not to add a user.
     if ($account_selection !== ParChooseAccount::CREATE) {
-      $url = $this->getUrlGenerator()
-        ->generateFromRoute($this->getFlowNegotiator()
-          ->getFlow()
-          ->progressRoute(), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     // Skip the invitation process if there is already a pending invitation for this user.
@@ -110,11 +107,8 @@ class ParInviteForm extends ParBaseForm {
     if (count($invitations) >= 1) {
       $invite = current($invitations);
       if ($invite->expires->value >= time()) {
-        $url = $this->getUrlGenerator()
-          ->generateFromRoute($this->getFlowNegotiator()
-            ->getFlow()
-            ->progressRoute(), $this->getRouteParams());
-        return new RedirectResponse($url);
+        $url = $this->getFlowNegotiator()->getFlow()->progress();
+        return new RedirectResponse($url->toString());
       }
     }
 

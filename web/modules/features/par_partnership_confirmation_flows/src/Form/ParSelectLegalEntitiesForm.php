@@ -5,6 +5,7 @@ namespace Drupal\par_partnership_confirmation_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_confirmation_flows\ParFlowAccessTrait;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Organisation Legal Entities selection form.
@@ -45,7 +46,8 @@ class ParSelectLegalEntitiesForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     // If there are no existing legal entities we can skip this step.
     if (!$this->getFlowDataHandler()->getParameter('organisation_legal_entities')) {
-      return $this->parRedirect($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     return parent::buildForm($form, $form_state);

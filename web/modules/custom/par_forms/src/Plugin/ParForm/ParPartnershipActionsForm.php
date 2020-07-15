@@ -33,7 +33,7 @@ class ParPartnershipActionsForm extends ParFormPluginBase {
 
     // Enforcement notification link.
     try {
-      $enforcement_notice_link = $this->getFlowNegotiator()->getFlow('raise_enforcement')->getLinkByStep(1, [], [], TRUE);
+      $enforcement_notice_link = $this->getFlowNegotiator()->getFlow('raise_enforcement')->getStartLink();
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -51,7 +51,7 @@ class ParPartnershipActionsForm extends ParFormPluginBase {
 
     // Deviation request link.
     try {
-      $deviation_request_link = $this->getFlowNegotiator()->getFlow('deviation_request')->getLinkByStep(1, [], [], TRUE);
+      $deviation_request_link = $this->getFlowNegotiator()->getFlow('deviation_request')->getStartLink();
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -69,7 +69,7 @@ class ParPartnershipActionsForm extends ParFormPluginBase {
 
     // Inspection feedback link.
     try {
-      $inspection_feedback_link = $this->getFlowNegotiator()->getFlow('inspection_feedback')->getLinkByStep(1, [], [], TRUE);
+      $inspection_feedback_link = $this->getFlowNegotiator()->getFlow('inspection_feedback')->getStartLink();
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -87,7 +87,7 @@ class ParPartnershipActionsForm extends ParFormPluginBase {
 
     // General enquiry link.
     try {
-      $general_enquiry_link = $this->getFlowNegotiator()->getFlow('enquiry')->getLinkByStep(1, [], [], TRUE);
+      $general_enquiry_link = $this->getFlowNegotiator()->getFlow('enquiry')->getStartLink();
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);

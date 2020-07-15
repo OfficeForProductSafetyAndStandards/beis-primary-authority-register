@@ -24,6 +24,9 @@ par_flows.par_flow.*:
     save_method:
       type: string
       label: 'Save Method'
+    final_route:
+      type: string
+      label: 'Exit route'
     states:
       type: sequence
       label: "States (route parameters)"

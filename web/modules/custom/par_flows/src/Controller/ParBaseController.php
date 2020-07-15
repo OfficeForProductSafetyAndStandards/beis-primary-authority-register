@@ -204,10 +204,8 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
 
     }
 
-    // @TODO, need to convert all these defaults ('destination', 'skipQueryRedirection')
-    // to form listeners so that they can happen within the 'progresRoute()'
-    // method and therefore everywhere we call this method.
-
+    // @TODO, can we convert this query destination parameter to a FlowEvent Listener
+    // and move this out of here also???
 
     // Determine whether to use the 'destination' query parameter
     // to determine redirection preferences.
@@ -229,52 +227,8 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
       }
     }
 
-    // 2) Get the next available route in the flow.
-    try {
-      if (!isset($route_name)) {
-        $route_name = $this->getFlowNegotiator()->getFlow()->progressRoute($action);
-        $route_params = $this->getRouteParams();
-      }
-    }
-    catch (ParFlowException $e) {
-
-    }
-    catch (RouteNotFoundException $e) {
-
-    }
-
-    // 3) If the next route could not be found in the flow then
-    // return to the entry route if one was specified.
-    if (!isset($route_name) && $url = $this->getEntryUrl()) {
-      $route_name = $url->getRouteName();
-      $route_params = $url->getRouteParameters();
-
-      // Delete form storage.
-      // @TODO We could choose to delete the store if we're completing the journey.
-      // $this->getFlowDataHandler()->deleteStore();
-    }
-
-    // 4) Allow flow modules to alter the route as required.
-    $current_route = \Drupal::routeMatch();
-    $matched_url = isset($route_name) && isset($route_params) ? Url::fromRoute($route_name, $route_params, $route_options) : NULL;
-    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), $current_route, $matched_url, NULL);
-
-    switch($action) {
-      case 'cancel':
-        $this->getEventDispatcher()->dispatch(ParFlowEvents::FLOW_CANCEL, $event);
-
-        break;
-
-      default:
-        $this->getEventDispatcher()->dispatch(ParFlowEvents::FLOW_SUBMIT . ":$action", $event);
-
-    }
-    $url = $event->getUrl();
-
-    // 5) We need a backup route in case no other routes can be found.
-    if (!$url || !$url instanceof Url) {
-      $url = Url::fromRoute('par_dashboards.dashboard', []);
-    }
+    // Run the default
+    $url = $this->getFlowNegotiator()->getFlow()->progress($action);
 
     // Delete form storage.
     if ($action === 'cancel') {

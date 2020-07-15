@@ -9,6 +9,7 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use Drupal\user\Entity\User;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * The authority selection form.
@@ -63,11 +64,13 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
         '%user' => $account->id(),
       ];
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->progressRoute('cancel'), $this->getRouteParams());
+      $url = $this->getFlowNegotiator()->getFlow()->progress('cancel');
+      return new RedirectResponse($url->toString());
     }
     elseif (count($authority_options) === 1) {
       $this->getFlowDataHandler()->setTempDataValue('par_data_authority_id', key($authority_options));
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     $form['par_data_authority_id'] = [

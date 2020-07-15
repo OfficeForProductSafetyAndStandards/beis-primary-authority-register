@@ -178,7 +178,7 @@ class ParReviewForm extends ParBaseForm {
     $current_user = $this->getCurrentUser();
 
     // Get the cache IDs for the various forms that needs needs to be extracted from.
-    $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_add_contact');
+    $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_update_contact');
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $cid_invitation = $this->getFlowNegotiator()->getFormKey('invite');
     $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');

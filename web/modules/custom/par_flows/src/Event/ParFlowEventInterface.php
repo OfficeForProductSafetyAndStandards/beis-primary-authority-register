@@ -2,6 +2,7 @@
 
 namespace Drupal\par_flows\Event;
 
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 
 /**
@@ -15,14 +16,19 @@ interface ParFlowEventInterface {
   public function getFlow();
 
   /**
-   * @return string
+   * @return \Drupal\Core\Routing\RouteMatchInterface
    */
   public function getCurrentRoute();
 
   /**
-   * @return array
+   * @return int
    */
   public function getCurrentStep();
+
+  /**
+   * @return string
+   */
+  public function getOperation();
 
   /**
    * Get the url to redirect to.
@@ -32,16 +38,19 @@ interface ParFlowEventInterface {
   public function getUrl();
 
   /**
-   * Get the fallback entry point URL.
-   */
-  public function getEntryUrl();
-
-  /**
    * Set the next url to redirect to.
    *
    * @param \Drupal\Core\Url $url
    *   A url object to redirect to.
    */
   public function setUrl(Url $url);
+
+  /**
+   * Get the additional data parameters for use in determining the route.
+   *
+   * @return array
+   *   An array of additional data parameters.
+   */
+  public function getParams();
 
 }

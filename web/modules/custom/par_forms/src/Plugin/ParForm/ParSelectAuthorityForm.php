@@ -46,17 +46,15 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
 
     // If no suggestions were found cancel out of the journey.
     if ($required && count($authorities) <= 0) {
-      // Get the flow entry point to use as a fallback link.
-      $entry_point_URL = $this->geFlowEntryURL();
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('cancel', $entry_point_URL), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress('cancel');
+      return new RedirectResponse($url->toString());
     }
 
     // If only one authority submit the form automatically and go to the next step.
     elseif ($required && count($authorities) === 1) {
       $this->getFlowDataHandler()->setTempDataValue('par_data_authority_id', key($authorities));
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     if ($authorities) {
