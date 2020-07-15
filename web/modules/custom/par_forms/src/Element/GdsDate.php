@@ -62,7 +62,7 @@ class GdsDate extends FormElement {
       '#title' => 'Day',
       '#attributes' => [
         'name' => $element['#name'] ."_day",
-        'pattern' => "([1-9]|[12][0-9]|3[01])",
+        'pattern' => "(0[1-9]|[12]\d|3[01])",
         'size' => 6,
         'class' => ['gds-date-sub-element']
       ],
