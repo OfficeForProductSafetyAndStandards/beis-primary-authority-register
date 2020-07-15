@@ -57,6 +57,13 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   protected $params;
 
   /**
+   * The current user account.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $account;
+
+  /**
    * Constructs the object.
    *
    * @param ParFlowInterface $flow
@@ -112,6 +119,15 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   public function getUrl() {
     $url = $this->proceedingUrl;
     return isset($url) && $url instanceof Url ? $url : NULL;
+  }
+
+  /**
+   * Get's the current user account.
+   *
+   * @return \Drupal\Core\Session\AccountInterface|null
+   */
+  public function getCurrentUser() {
+    return $this->account;
   }
 
   /**
