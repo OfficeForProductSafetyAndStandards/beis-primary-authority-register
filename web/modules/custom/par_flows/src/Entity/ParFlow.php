@@ -583,7 +583,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
-  public function getStartLink($index, $text = '', array $params = [], array $link_options = []) {
+  public function getStartLink($index = 1, $text = '', array $params = [], array $link_options = []) {
     // Get a link specific to the given operation.
     $url = $this->start($index);
 
