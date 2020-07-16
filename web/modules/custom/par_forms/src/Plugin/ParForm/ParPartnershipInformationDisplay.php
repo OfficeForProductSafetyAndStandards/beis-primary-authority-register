@@ -88,7 +88,8 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
       'details' => $this->getDefaultValuesByKey('about_partnership', $cardinality, NULL),
     ];
     try {
-      $about_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_about_partnership', [], [], TRUE);
+      $about_edit_link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('edit_about_partnership', 'edit about the partnership');
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -97,7 +98,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
       $form['about_partnership']['edit'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $about_edit_link->setText("edit about the partnership")->toString(),
+        '#value' => $about_edit_link->toString(),
         '#attributes' => ['class' => 'edit-about-partnership'],
         '#weight' => 100
       ];
@@ -127,7 +128,9 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
       ];
 
       try {
-        $regulatory_functions_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_regulatory_functions', [], [], TRUE);
+        $regulatory_functions_edit_link = $this->getFlowNegotiator()->getFlow()
+          ->getOperationLink('edit_regulatory_functions', 'edit the regulatory functions');
+
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -136,7 +139,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
         $form['details']['regulatory_functions']['edit'] = [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $regulatory_functions_edit_link->setText("edit the regulatory functions")->toString(),
+          '#value' => $regulatory_functions_edit_link->toString(),
           '#attributes' => ['class' => ['edit-regulatory-functions']],
         ];
       }

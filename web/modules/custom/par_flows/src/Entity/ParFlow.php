@@ -338,10 +338,10 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    *
    * @param string $operation
    *   The operation being performed, mandatory.
+   * @param string $params
+   *   Additional params to be used for determining the route.
    * @param string $current_step
    *   An optional step to start from
-   * @param string $data
-   *   Additional params to be used for determining the route.
    *
    * @throws \Drupal\par_flows\ParFlowException
    *
@@ -353,10 +353,10 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       throw new ParFlowException('No operation was provided to redirect to.');
     }
 
-    $current_step = $this->getCurrentStep();
+    $step = $this->getCurrentStep();
 
     // The operation must return a valid route.
-    $redirect_step = $this->getStepByOperation($current_step, $operation);
+    $redirect_step = $this->getStepByOperation($step, $operation);
     $route = $redirect_step ? $this->getRouteByStep($redirect_step) : NULL;
 
     // If no route is found for the operation throw an error.

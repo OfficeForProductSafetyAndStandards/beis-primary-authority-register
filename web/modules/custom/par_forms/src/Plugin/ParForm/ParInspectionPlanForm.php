@@ -46,10 +46,8 @@ class ParInspectionPlanForm extends ParFormPluginBase {
     $file_extensions = $field_definition->getSetting('file_extensions');
 
     // External link for inspection plan templates.
-    $options = ['attributes' => ['target' => '_blank'],
-      'fragment' => 'templates'];
+    $options = ['attributes' => ['target' => '_blank'], 'fragment' => 'templates'];
     $template_url = Url::fromUri('https://www.gov.uk/government/collections/primary-authority-documents', $options);
-
     $link = Link::fromTextAndUrl(t('Primary Authority templates'), $template_url)->toString();
     $help_text = $this->t('For inspection plan templates, go to: @link', ['@link' => $link]);
     $form['inspection_plan__type_help_text_link'] = [
