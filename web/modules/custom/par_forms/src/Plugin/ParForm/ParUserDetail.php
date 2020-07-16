@@ -7,6 +7,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Entity\ParFlow;
@@ -172,12 +173,13 @@ class ParUserDetail extends ParFormPluginBase {
       // Try to add a block user link.
       try {
         $block_flow = ParFlow::load('block_user');
-        $block_link = $block_flow ? $block_flow->getStartLink(1, 'Block user account', $params) : NULL;
-        if ($block_link) {
+        $block_link = $block_flow ?
+          $block_flow->getStartLink(1, 'Block user account', $params) : NULL;
+        if ($block_link && $block_link instanceof Link) {
           $form['user_account']['block'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
-            '#value' => $block_link ? $block_link->toString() : '',
+            '#value' => $block_link->toString(),
             '#attributes' => ['class' => ['column-full']],
           ];
         }
@@ -189,11 +191,11 @@ class ParUserDetail extends ParFormPluginBase {
       try {
         $unblock_flow = ParFlow::load('unblock_user');
         $unblock_link = $unblock_flow ? $unblock_flow->getStartLink(1, 'Re-activate user account', $params) : NULL;
-        if ($unblock_link) {
+        if ($unblock_link && $unblock_link instanceof Link) {
           $form['user_account']['unblock'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
-            '#value' => $unblock_link ? $unblock_link->toString() : '',
+            '#value' => $unblock_link->toString(),
             '#attributes' => ['class' => ['column-full']],
           ];
         }
@@ -221,8 +223,9 @@ class ParUserDetail extends ParFormPluginBase {
         $link_options = ['attributes' => ['class' => ['column-full']]];
         $invite_flow = ParFlow::load('user_invite');
         $link_text = $invitation_expiry ? 'Re-send the invitation' : 'Invite the user to create an account';
-        $invite_link = $invite_flow ? $invite_flow->getStartLink(1, $link_text, $params, $link_options) : NULL;
-        if ($invite_link) {
+        $invite_link = $invite_flow ?
+          $invite_flow->getStartLink(1, $link_text, $params, $link_options) : NULL;
+        if ($invite_link && $invite_link instanceof Link) {
           $form['user_account']['invite'] = [
             '#type' => 'markup',
             '#markup' => t('@link', [

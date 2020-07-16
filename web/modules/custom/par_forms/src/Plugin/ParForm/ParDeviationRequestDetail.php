@@ -75,12 +75,13 @@ class ParDeviationRequestDetail extends ParFormPluginBase {
 
     // Add operation link for updating request details.
     try {
-      $link = $this->getFlowNegotiator()->getFlow()->getOperationLink('request_details', 'Change the details about this request', $params);
+      $link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('request_details', 'Change the details about this request', $params);
       $form['deviation_request']['change_notes'] = [
         '#type' => 'markup',
         '#weight' => 99,
         '#markup' => t('@link', [
-          '@link' => $link->toString(),
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }

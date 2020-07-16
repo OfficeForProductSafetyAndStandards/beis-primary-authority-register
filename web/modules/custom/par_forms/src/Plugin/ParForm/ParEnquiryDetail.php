@@ -65,12 +65,13 @@ class ParEnquiryDetail extends ParFormPluginBase {
 
     // Add operation link for updating notice details.
     try {
-      $link = $this->getFlowNegotiator()->getFlow()->getOperationLink('request_details', 'Change this enquiry', $params);
+      $link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('request_details', 'Change this enquiry', $params);
       $form['general_enquiry']['change_notes'] = [
         '#type' => 'markup',
         '#weight' => 99,
         '#markup' => t('@link', [
-          '@link' => $link->toString(),
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }

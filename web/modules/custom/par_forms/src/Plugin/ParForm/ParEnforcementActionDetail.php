@@ -118,12 +118,13 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
       // Add operation link for updating action details.
       try {
         $title = 'Change the details for ' . $this->getDefaultValuesByKey('action_title', $cardinality);
-        $link = $this->getFlowNegotiator()->getFlow()->getOperationLink('enforcement_action', $title, $params);
+        $link = $this->getFlowNegotiator()->getFlow()
+          ->getOperationLink('enforcement_action', $title, $params);
         $form['change_action'] = [
           '#type' => 'markup',
           '#weight' => 99,
           '#markup' => t('@link', [
-            '@link' => $link->toString(),
+            '@link' => $link ? $link->toString() : '',
           ]),
         ];
       }
@@ -134,12 +135,13 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
       // Add operation link for updating action decision.
       try {
         $title = 'Change response for ' . $this->getDefaultValuesByKey('action_title', $cardinality);
-        $link = $this->getFlowNegotiator()->getFlow()->getOperationLink('action_decision', $title, $params);
+        $link = $this->getFlowNegotiator()->getFlow()
+          ->getOperationLink('action_decision', $title, $params);
         $form['change_decision'] = [
           '#type' => 'markup',
           '#weight' => 99,
           '#markup' => t('@link', [
-            '@link' => $link->toString(),
+            '@link' => $link ? $link->toString() : '',
           ]),
         ];
       }

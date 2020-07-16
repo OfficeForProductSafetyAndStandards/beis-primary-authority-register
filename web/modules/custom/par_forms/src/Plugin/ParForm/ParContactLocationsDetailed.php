@@ -85,9 +85,10 @@ class ParContactLocationsDetailed extends ParFormPluginBase {
         $params = ['par_data_person' => $this->getDefaultValuesByKey('person_id', $cardinality, NULL)];
         $title = 'Update ' . $this->getDefaultValuesByKey('name', $cardinality, 'person');
         $update_flow = ParFlow::load('person_update');
-        $link = $update_flow ? $update_flow->getStartLink(1, $title, $params) : NULL;
+        $link = $update_flow ?
+          $update_flow->getStartLink(1, $title, $params) : NULL;
         $actions = t('@link', [
-          '@link' => $link->toString(),
+          '@link' => $link ? $link->toString() : '',
         ]);
       } catch (ParFlowException $e) {
 

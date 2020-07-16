@@ -50,7 +50,8 @@ class ParSicCodeDisplay extends ParFormPluginBase {
 
     //  Generate the add new SIC code link.
     try {
-      $sic_code_add_link = $this->getFlowNegotiator()->getFlow()->getOperationLink('add_field_sic_code');
+      $sic_code_add_link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('add_field_sic_code');
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);

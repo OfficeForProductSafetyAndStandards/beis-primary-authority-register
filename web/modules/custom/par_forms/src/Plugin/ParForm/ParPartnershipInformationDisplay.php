@@ -98,7 +98,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
       $form['about_partnership']['edit'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $about_edit_link->toString(),
+        '#value' => $about_edit_link ? $about_edit_link->toString() : '',
         '#attributes' => ['class' => 'edit-about-partnership'],
         '#weight' => 100
       ];

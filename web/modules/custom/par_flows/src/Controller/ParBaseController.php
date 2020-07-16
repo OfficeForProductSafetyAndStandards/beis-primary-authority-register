@@ -200,7 +200,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
         break;
 
       default:
-        $route_options = ['attributes' => ['class' => 'button']];
+        $route_options = ['attributes' => ['class' => ['button']]];
 
     }
 
@@ -220,6 +220,10 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
       $destination = $query->get('destination');
       $destination_url = $this->getPathValidator()->getUrlIfValid($destination);
 
+      /**
+       * @TODO PASS THIS.
+       * This logic needs to be in an event subscriber. It's being ignored at the moment.
+       */
       if ($destination_url && $destination_url instanceof Url && $destination_url->isRouted()
         && $this->getFlowNegotiator()->routeInFlow($destination_url->getRouteName())) {
         $route_name = $destination_url->getRouteName();
@@ -233,6 +237,10 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
     // Delete form storage.
     if ($action === 'cancel') {
       $this->getFlowDataHandler()->deleteStore();
+    }
+
+    if ($url && $url instanceof Url) {
+      $url->setOptions($route_options);
     }
 
     return $url;

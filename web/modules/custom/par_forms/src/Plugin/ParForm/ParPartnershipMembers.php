@@ -183,7 +183,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
         $form['members']['add'] = [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $add_member_link->toString(),
+          '#value' => $add_member_link ? $add_member_link->toString() : '',
           '#attributes' => ['class' => ['add-member']],
         ];
       }
@@ -200,7 +200,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
         $form['members']['upload'] = [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $upload_member_link->toString(),
+          '#value' => $upload_member_link ? $upload_member_link->toString() : '',
           '#attributes' => ['class' => ['upload-member']],
         ];
       }

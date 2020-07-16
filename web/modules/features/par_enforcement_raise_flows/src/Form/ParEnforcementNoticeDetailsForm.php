@@ -39,7 +39,7 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
   public function loadData() {
     $cid = $this->getFlowNegotiator()->getFormKey('par_authority_selection');
     $authority_id = $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', NULL, $cid);
-    if ($par_data_authority = ParDataAuthority::load($authority_id)) {
+    if ($authority_id && $par_data_authority = ParDataAuthority::load($authority_id)) {
       $account_id = $this->getFlowDataHandler()->getCurrentUser()->id();
       $account = User::load($account_id);
 

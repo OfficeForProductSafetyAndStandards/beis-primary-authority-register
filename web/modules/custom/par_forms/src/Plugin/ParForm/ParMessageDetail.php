@@ -90,12 +90,13 @@ class ParMessageDetail extends ParFormPluginBase {
 
       // Add operation link for replying to request.
       try {
-        $link = $this->getFlowNegotiator()->getFlow()->getOperationLink('reply', 'Submit a response', $params);
+        $link = $this->getFlowNegotiator()->getFlow()
+          ->getOperationLink('reply', 'Submit a response', $params);
         $form['message_intro']['reply'] = [
           '#type' => 'markup',
           '#weight' => 99,
           '#markup' => t('@link', [
-            '@link' => $link->toString(),
+            '@link' => $link ? $link->toString() : '',
           ]),
         ];
       }

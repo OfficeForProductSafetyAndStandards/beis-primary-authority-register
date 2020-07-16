@@ -103,7 +103,8 @@ class ParOrganisationDisplay extends ParFormPluginBase {
 
     // Add operation link for updating authority details.
     try {
-      $link = $this->getFlowNegotiator()->getFlow()->getOperationLink('organisation_name', 'Change the organisation name', $params);
+      $link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('organisation_name', 'Change the organisation name', $params);
       $form['organisation']['name']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
@@ -137,7 +138,8 @@ class ParOrganisationDisplay extends ParFormPluginBase {
 
     // Add operation link for updating authority details.
     try {
-      $link = $this->getFlowNegotiator()->getFlow()->getOperationLink('organisation_about', 'Change the description', $params);
+      $link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('organisation_about', 'Change the description', $params);
       $form['organisation']['about']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
@@ -171,7 +173,8 @@ class ParOrganisationDisplay extends ParFormPluginBase {
 
     // Add operation link for updating authority details.
     try {
-      $link = $this->getFlowNegotiator()->getFlow()->getOperationLink('trading_name', 'Change the trading names', $params);
+      $link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('trading_name', 'Change the trading names', $params);
       $form['organisation']['trading_name']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
@@ -205,7 +208,8 @@ class ParOrganisationDisplay extends ParFormPluginBase {
 
     // Add operation link for updating sic codes.
     try {
-      $link = $this->getFlowNegotiator()->getFlow()->getOperationLink('sic_codes', 'Change the SIC codes', $params);
+      $link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('sic_codes', 'Change the SIC codes', $params);
       $form['organisation']['sic_codes']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
