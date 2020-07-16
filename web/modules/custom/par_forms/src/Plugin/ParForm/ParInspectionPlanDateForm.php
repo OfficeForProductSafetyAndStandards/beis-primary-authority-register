@@ -70,7 +70,7 @@ class ParInspectionPlanDateForm extends ParFormPluginBase {
       $form['start'] = [
         '#type' => 'gds_date',
         '#title' => $this->t('Enter the date the inspection plan is valid from'),
-        '#description' => $this->t('For example: 12/01/2019'),
+        '#description' => $this->t('For example: 01/01/2019'),
         '#default_value' => $this->getDefaultValuesByKey('start', $cardinality, $this->getFormDefaultByKey('start')),
       ];
     }
