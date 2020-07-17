@@ -348,11 +348,11 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
     $this->parameters->set($parameter, $value);
 
     // Set the raw parameter value, this will need cleansing if an entity was passed.
-    if (is_string($value) || is_integer($value)) {
-      $this->rawParameters->set($parameter, $value);
-    }
     if ($value instanceof EntityInterface) {
       $this->rawParameters->set($parameter, $value->id());
+    }
+    else {
+      $this->rawParameters->set($parameter, $value);
     }
   }
 
