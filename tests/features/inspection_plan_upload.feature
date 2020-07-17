@@ -33,19 +33,16 @@ Feature: Upload inspection plan
         And I click save
          # Test incorrect date format options are not accepted.
         Then the element "h1.heading-xlarge" contains the text "Change the expiry date"
-        And I add "1" to the inputfield "#edit-day"
+        And I add "31" to the inputfield "#edit-day"
         And I click save
         Then the element "h1.heading-xlarge" contains the text "Change the expiry date"
         And I add "01" to the inputfield "#edit-day"
-        And I add "6" to the inputfield "#edit-month"
-        And I click save
-        Then the element "h1.heading-xlarge" contains the text "Change the expiry date"
         And I add "13" to the inputfield "#edit-month"
         And I click save
         Then the element "h1.heading-xlarge" contains the text "Change the expiry date"
         # Test correct specified date format is accepted.
-        And I add "28" to the inputfield "#edit-day"
-        And I add "11" to the inputfield "#edit-month"
+        And I add "01" to the inputfield "#edit-day"
+        And I add "1" to the inputfield "#edit-month"
         And I add "2030" to the inputfield "#edit-year"
         And I click save
         And I see the inspection plan has updated successfully
