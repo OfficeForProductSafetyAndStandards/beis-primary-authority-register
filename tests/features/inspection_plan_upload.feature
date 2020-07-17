@@ -33,7 +33,7 @@ Feature: Upload inspection plan
         And I click save
          # Test incorrect date format options are not accepted.
         Then the element "h1.heading-xlarge" contains the text "Change the expiry date"
-        And I add "31" to the inputfield "#edit-day"
+        And I add "32" to the inputfield "#edit-day"
         And I click save
         Then the element "h1.heading-xlarge" contains the text "Change the expiry date"
         And I add "01" to the inputfield "#edit-day"
