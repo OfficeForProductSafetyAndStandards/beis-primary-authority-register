@@ -82,7 +82,7 @@ steps:
       sic_code: par_partnership_confirmation_sic_code
       employee_number: par_partnership_confirmation_employee_number
       trading_name: par_partnership_confirmation_trading_name
-      legal_select: par_partnership_confirmation_legal_entity
+      legal_select: par_partnership_confirmation_select_legal_entities
     redirect:
       about_business: 2
       address: 3
