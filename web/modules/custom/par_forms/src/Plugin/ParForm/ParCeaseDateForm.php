@@ -52,7 +52,7 @@ class ParCeaseDateForm extends ParFormPluginBase {
     $form['date_membership_ceased'] = [
       '#type' => 'gds_date',
       '#title' => $this->t('Enter the date the membership ended'),
-      '#description' => $this->t('For example: 29/4/2010'),
+      '#description' => $this->t('For example: 01/01/2020'),
       '#default_value' => $this->getDefaultValuesByKey('date_membership_ceased', $cardinality, $this->getFormDefaultByKey('date_membership_ceased')),
     ];
 

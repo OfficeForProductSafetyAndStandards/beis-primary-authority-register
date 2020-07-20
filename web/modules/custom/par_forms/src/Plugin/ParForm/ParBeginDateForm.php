@@ -52,7 +52,7 @@ class ParBeginDateForm extends ParFormPluginBase {
     $form['date_membership_began'] = [
       '#type' => 'gds_date',
       '#title' => $this->t('Enter the date the membership began'),
-      '#description' => $this->t('For example: 29/4/2010'),
+      '#description' => $this->t('For example: 01/01/2010'),
       '#default_value' => $this->getDefaultValuesByKey('date_membership_began', $cardinality, $this->getFormDefaultByKey('date_membership_began')),
     ];
 
