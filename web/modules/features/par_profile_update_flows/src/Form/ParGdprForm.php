@@ -5,6 +5,7 @@ namespace Drupal\par_profile_update_flows\Form;
 use CommerceGuys\Addressing\AddressFormat\AddressField;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPremises;
+use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_profile_update_flows\ParFlowAccessTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -31,7 +32,8 @@ class ParGdprForm extends ParBaseForm {
    */
   public function registrationRedirectCurrentUser() {
     $account = $this->getCurrentUser();
-    $url = $this->getUrlGenerator()->generateFromRoute('par_profile_update_flows.gdpr', $this->getRouteParams() + ['user' => $account->id()]);
+    $params = $this->getRouteParams() + ['user' => $account->id()];
+    $url = ParFlow::load('profile_update')->start(1, $params);
     return new RedirectResponse($url);
   }
 
@@ -44,7 +46,8 @@ class ParGdprForm extends ParBaseForm {
     // All users after the GDPR start time should confirm acceptance
     // of data policy if they haven't done so already.
     if ($account && $account->getCreatedTime() >= self::GDPR_START_TIME && $account->get('field_gdpr')->getString() !== '1') {
-      $url = $this->getUrlGenerator()->generateFromRoute('par_profile_update_flows.gdpr', $this->getRouteParams() + ['user' => $account->id()]);
+      $params = $this->getRouteParams() + ['user' => $account->id()];
+      $url = ParFlow::load('profile_update')->start(1, $params);
     }
     else {
       $url = $this->getUrlGenerator()->generateFromRoute('par_dashboards.dashboard', $this->getRouteParams());
