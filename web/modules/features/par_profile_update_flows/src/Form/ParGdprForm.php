@@ -34,7 +34,7 @@ class ParGdprForm extends ParBaseForm {
     $account = $this->getCurrentUser();
     $params = $this->getRouteParams() + ['user' => $account->id()];
     $url = ParFlow::load('profile_update')->start(1, $params);
-    return new RedirectResponse($url);
+    return new RedirectResponse($url->toString());
   }
 
   /**
@@ -48,11 +48,13 @@ class ParGdprForm extends ParBaseForm {
     if ($account && $account->getCreatedTime() >= self::GDPR_START_TIME && $account->get('field_gdpr')->getString() !== '1') {
       $params = $this->getRouteParams() + ['user' => $account->id()];
       $url = ParFlow::load('profile_update')->start(1, $params);
+      return new RedirectResponse($url->toString());
     }
     else {
       $url = $this->getUrlGenerator()->generateFromRoute('par_dashboards.dashboard', $this->getRouteParams());
+      return new RedirectResponse($url);
     }
-    return new RedirectResponse($url);
+
   }
 
   /**
