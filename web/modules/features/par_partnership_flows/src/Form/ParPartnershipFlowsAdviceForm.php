@@ -26,14 +26,8 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     ['advice_title', 'par_data_advice', 'advice_title', NULL, NULL, 0, [
       'This value should not be null.' => 'You must provide a title for this advice document.'
     ]],
-    ['notes', 'par_data_advice', 'notes', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must provide a summary for this advice document.'
-    ]],
     ['advice_type', 'par_data_advice', 'advice_type', NULL, NULL, 0, [
       'This value should not be null.' => 'You must choose what type of advice this is.'
-    ]],
-    ['regulatory_functions', 'par_data_advice', 'field_regulatory_function', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must choose which regulatory functions this advice applies to.'
     ]],
   ];
 
@@ -177,11 +171,16 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    $submitted_reg_function = $form_state->getValue('regulatory_functions');
-
-    if (empty($submitted_reg_function)) {
+    if (!count(array_filter($form_state->getValue('regulatory_functions'))) > 0) {
       $id = $this->getElementId(['regulatory_functions'], $form);
       $form_state->setErrorByName($this->getElementName('regulatory_functions'), $this->wrapErrorMessage('You must select at least one regulatory function.', $id));
+    };
+
+    $notes = $form_state->getValue('notes');
+
+    if (empty($notes)) {
+      $id = $this->getElementId(['notes'], $form);
+      $form_state->setErrorByName($this->getElementName('notes'), $this->wrapErrorMessage('You must provide a summary for this advice document.', $id));
     };
   }
 
