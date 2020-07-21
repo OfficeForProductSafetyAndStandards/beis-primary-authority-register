@@ -53,4 +53,13 @@ interface ParFlowEventInterface {
    */
   public function getParams();
 
+  /**
+   * Allow route options to be set before whether or not a url has been set.
+   *
+   * @param array $options
+   *   An array of route options.
+   *   See \Drupal\Core\Url::fromUri() for details.
+   */
+  public function setRouteOptions(array $options);
+
 }

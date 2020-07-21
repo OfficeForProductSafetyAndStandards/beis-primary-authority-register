@@ -475,7 +475,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       }
     }
 
-    // If there is no step we'll go back to the beginning.
     return isset($match['step']) ? $match['step'] : NULL;
   }
 

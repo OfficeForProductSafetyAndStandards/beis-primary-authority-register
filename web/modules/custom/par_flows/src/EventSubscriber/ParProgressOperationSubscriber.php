@@ -21,7 +21,7 @@ class ParProgressOperationSubscriber extends ParFlowSubscriberBase {
    */
   static function getSubscribedEvents() {
     foreach (ParFlowEvents::getAlLEvents() as $event) {
-      $events[$event][] = ['onEvent', 300];
+      $events[$event][] = ['onEvent', 200];
     }
     return $events;
   }

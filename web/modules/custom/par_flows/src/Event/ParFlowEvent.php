@@ -2,6 +2,7 @@
 
 namespace Drupal\par_flows\Event;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\par_flows\Event\ParFlowEvents;
 use Symfony\Component\EventDispatcher\Event;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -57,11 +58,11 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   protected $params;
 
   /**
-   * The current user account.
+   * Additional route options to add to any route created.
    *
-   * @var \Drupal\Core\Session\AccountInterface
+   * @var array
    */
-  protected $account;
+  protected $options = [];
 
   /**
    * Constructs the object.
@@ -122,21 +123,13 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   }
 
   /**
-   * Get's the current user account.
-   *
-   * @return \Drupal\Core\Session\AccountInterface|null
-   */
-  public function getCurrentUser() {
-    return $this->account;
-  }
-
-  /**
    * Set the next url to redirect to.
    *
    * @param Url $url
    *   A url object to redirect to.
    */
   public function setUrl(Url $url) {
+    $url->mergeOptions($this->options);
     $this->proceedingUrl = $url;
   }
 
@@ -145,6 +138,13 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
    */
   public function getParams() {
     return (array) $this->params;
+  }
+
+  /**
+   * Get the additional data parameters.
+   */
+  public function setRouteOptions(array $options = []) {
+    $this->options = NestedArray::mergeDeep($this->options, $options);
   }
 
 }

@@ -153,7 +153,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       '#type' => 'markup',
       '#markup' => t('@link', [
         '@link' => $this->getFlowNegotiator()->getFlow()
-          ->getLinkByCurrentOperation('legal_select', [], ['query' => ['destination' => $return_path]])
+          ->getLinkByCurrentOperation('legal_select', [], ['query' => ['destination' => $return_path, 'skip' => 1]])
           ->setText('Change the legal entities')
           ->toString(),
       ]),

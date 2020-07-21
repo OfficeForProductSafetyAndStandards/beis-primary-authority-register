@@ -190,58 +190,24 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   }
 
   public function getProceedingUrl($action) {
-    $query = $this->getCurrentRequest()->query;
+    // Determine the appropriate redirection url.
+    $url = $this->getFlowNegotiator()->getFlow()->progress($action);
 
     // All links other than cancel should display as primary buttons.
     switch($action) {
       case 'cancel':
         $route_options = [];
-
         break;
 
       default:
         $route_options = ['attributes' => ['class' => ['button']]];
-
-    }
-
-    // @TODO, can we convert this query destination parameter to a FlowEvent Listener
-    // and move this out of here also???
-
-    // Determine whether to use the 'destination' query parameter
-    // to determine redirection preferences.
-    if ($this->skipQueryRedirection && $query->has('destination')) {
-      $route_options['query']['destination'] = $query->get('destination');
-      $query->remove('destination');
-    }
-
-    // 1) Use the destination parameter if it redirects to a route within the flow.
-    // This should not apply when cancelling the current flow.
-    if ($query->has('destination')) {
-      $destination = $query->get('destination');
-      $destination_url = $this->getPathValidator()->getUrlIfValid($destination);
-
-      /**
-       * @TODO PASS THIS.
-       * This logic needs to be in an event subscriber. It's being ignored at the moment.
-       */
-      if ($destination_url && $destination_url instanceof Url && $destination_url->isRouted()
-        && $this->getFlowNegotiator()->routeInFlow($destination_url->getRouteName())) {
-        $route_name = $destination_url->getRouteName();
-        $route_params = $destination_url->getRouteParameters();
-      }
-    }
-
-    // Run the default
-    $url = $this->getFlowNegotiator()->getFlow()->progress($action);
-
-    // Delete form storage.
-    if ($action === 'cancel') {
-      $this->getFlowDataHandler()->deleteStore();
     }
 
     if ($url && $url instanceof Url) {
-      $url->setOptions($route_options);
+      $url->mergeOptions($route_options);
     }
+
+    // @TODO Cancelling a flow through a link cannot delete the flow data.
 
     return $url;
   }
