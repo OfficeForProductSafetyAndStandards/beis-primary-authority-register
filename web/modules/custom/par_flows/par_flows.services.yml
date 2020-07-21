@@ -29,3 +29,7 @@ services:
     class: '\Drupal\par_flows\EventSubscriber\ParGlobalFallbackSubscriber'
     tags:
       - { name: 'event_subscriber' }
+  par_flows.par_admin_global_fallback_subscriber:
+    class: '\Drupal\par_flows\EventSubscriber\ParAdminGlobalFallbackSubscriber'
+    tags:
+      - { name: 'event_subscriber' }

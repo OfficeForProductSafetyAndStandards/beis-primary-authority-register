@@ -11,14 +11,14 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 
 
-class ParGlobalFallbackSubscriber extends ParFlowSubscriberBase {
+class ParAdminGlobalFallbackSubscriber extends ParFlowSubscriberBase {
 
   /**
    * The ultimate fallback route.
    *
    * @var string $fallback
    */
-  protected $fallback = 'par_dashboards.dashboard';
+  protected $fallback = 'par_help_desks_flows.helpdesk_dashboard';
 
   /**
    * The events to react to.
@@ -27,7 +27,7 @@ class ParGlobalFallbackSubscriber extends ParFlowSubscriberBase {
    */
   static function getSubscribedEvents() {
     foreach (ParFlowEvents::getAlLEvents() as $event) {
-      $events[$event][] = ['onEvent', -900];
+      $events[$event][] = ['onEvent', -901];
     }
     return $events;
   }

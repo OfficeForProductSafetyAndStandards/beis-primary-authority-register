@@ -129,6 +129,11 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
    *   A url object to redirect to.
    */
   public function setUrl(Url $url) {
+    // The URL should only be set if it is accessible.
+    if (!$url->access() || !$url->isRouted()) {
+      return;
+    }
+
     $url->mergeOptions($this->options);
     $this->proceedingUrl = $url;
   }
