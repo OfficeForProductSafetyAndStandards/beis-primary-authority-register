@@ -99,7 +99,7 @@ class ParReviewForm extends ParBaseForm {
 
     // Change the action to save.
     $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
-    $this->getFlowNegotiator()->getFlow()->setPrimaryAction('Remove');
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Remove');
 
     return parent::buildForm($form, $form_state);
   }

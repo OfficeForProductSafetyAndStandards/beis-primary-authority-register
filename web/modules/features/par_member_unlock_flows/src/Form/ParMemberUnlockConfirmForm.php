@@ -40,7 +40,7 @@ class ParMemberUnlockConfirmForm extends ParBaseForm {
 
     // Change the action to save.
     $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
-    $this->getFlowNegotiator()->getFlow()->setPrimaryAction('Unlock');
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Unlock');
 
     return parent::buildForm($form, $form_state);
   }

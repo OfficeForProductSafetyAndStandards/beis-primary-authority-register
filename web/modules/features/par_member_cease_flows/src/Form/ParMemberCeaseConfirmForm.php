@@ -45,7 +45,7 @@ class ParMemberCeaseConfirmForm extends ParBaseForm {
 
     // Change the action to save.
     $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
-    $this->getFlowNegotiator()->getFlow()->setPrimaryAction('Cease');
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Cease');
 
     return parent::buildForm($form, $form_state);
   }
