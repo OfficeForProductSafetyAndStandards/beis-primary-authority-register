@@ -9,6 +9,8 @@ description: 'The send operations for an enforcement notice.'
 save_method: end
 states:
   - par_data_enforcement_notice
+final_route:
+  - view.par_user_enforcements.enforcement_notices_page
 steps:
   1:
     route: par_enforcement_send_flows.send_enforcement

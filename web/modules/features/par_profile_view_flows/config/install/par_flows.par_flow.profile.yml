@@ -9,6 +9,8 @@ description: ''
 save_method: end
 states:
   - user
+final_route:
+  - view.par_people.people
 steps:
   1:
     route: par_profile_view_flows.profile

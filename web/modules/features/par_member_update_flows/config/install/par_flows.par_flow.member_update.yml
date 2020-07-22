@@ -10,6 +10,8 @@ save_method: end
 states:
   - par_data_partnership
   - par_data_coordinated_business
+final_route:
+  - view.members_list.member_list_coordinator
 steps:
   1:
     route: par_member_update_flows.member_confirm_summary

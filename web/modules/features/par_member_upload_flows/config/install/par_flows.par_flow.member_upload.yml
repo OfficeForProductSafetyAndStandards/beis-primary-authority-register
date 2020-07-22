@@ -9,6 +9,8 @@ description: ''
 save_method: end
 states:
   - par_data_partnership
+final_route:
+  - view.members_list.member_list_coordinator
 steps:
   1:
     route: par_member_upload_flows.member_upload

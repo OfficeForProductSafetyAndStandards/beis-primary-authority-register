@@ -9,6 +9,8 @@ description: ''
 save_method: end
 states:
   - par_data_person
+final_route:
+  - par_profile_view_flows.profile
 steps:
   1:
     route: par_person_update_flows.update_contact
