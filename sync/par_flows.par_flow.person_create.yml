@@ -12,7 +12,7 @@ description: ''
 save_method: end
 states: null
 final_routes:
-  - par_profile_view_flows.profile
+  - view.par_people.people
 steps:
   1:
     route: par_person_create_flows.create_contact
