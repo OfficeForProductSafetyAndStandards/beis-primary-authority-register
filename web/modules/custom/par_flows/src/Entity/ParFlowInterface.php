@@ -34,14 +34,14 @@ interface ParFlowInterface {
   public function getSaveMethod();
 
   /**
-   * Get the return route for this flow.
+   * Get the return routes for this flow.
    *
    * To be directed to once the flow is complete.
    *
-   * @return string
-   *   The return route.
+   * @return array
+   *   The return routes.
    */
-  public function getFinalRoute();
+  public function getFinalRoutes();
 
   /**
    * Get all the states parameters.

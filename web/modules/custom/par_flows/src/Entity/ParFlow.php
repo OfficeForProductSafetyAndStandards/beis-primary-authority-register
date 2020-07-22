@@ -8,7 +8,6 @@ use Drupal\Core\Url;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\Event\ParFlowEvents;
-use Drupal\par_flows\Event\ParFlowStepEvent;
 use Drupal\par_flows\ParDefaultActionsTrait;
 use Drupal\par_flows\ParFlowDataHandler;
 use Drupal\par_flows\ParFlowException;
@@ -121,11 +120,11 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   protected $save_method;
 
   /**
-   * The exit route to return to if the journey completes.
+   * The exit routes to return to if the journey completes.
    *
-   * @var string
+   * @var array
    */
-  protected $final_route;
+  protected $final_routes = [];
 
   /**
    * The route parameters by which this flow can vary.
@@ -262,16 +261,22 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
-  public function getFinalRoute() {
-    try {
-      $route_provider = \Drupal::service('router.route_provider');
-      $route = !empty($this->final_route) ? $route_provider->getRouteByName($this->final_route) : NULL;
-    }
-    catch (RouteNotFoundException $e) {
-      $route = NULL;
+  public function getFinalRoutes() {
+    $routes = [];
+    foreach ($this->final_routes as $final_route) {
+      try {
+        // Check that the route exists before accepting it.
+        $route_provider = \Drupal::service('router.route_provider');
+        if ($route_provider->getRouteByName($final_route)) {
+          $routes[] = $final_route;
+        }
+      }
+      catch (RouteNotFoundException $e) {
+
+      }
     }
 
-    return $route;
+    return $routes;
   }
 
   /**

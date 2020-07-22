@@ -30,23 +30,20 @@ class ParFlowFallbackSubscriber extends ParFlowSubscriberBase {
    * @param ParFlowEventInterface $event
    */
   public function onEvent(ParFlowEventInterface $event) {
-    // Ignore if a redirect url has already been found.
-    if ($event->getUrl()) {
-      return;
-    }
-
     // We need a backup route in case all else fails.
-    try {
-      // getRequiredParams will throw an exception if the route does not exist.
-      $redirect_route = $event->getFlow()->getFinalRoute();
-    }
-    catch (ParFlowException $e) {
+    foreach ($event->getFlow()->getFinalRoutes() as $redirect_route) {
+      try {
+        // Ignore if a redirect url has already been found.
+        if ($event->getUrl()) {
+          continue;
+        }
 
-    }
+        $route_params = $event->getFlow()->getRequiredParams($redirect_route);
+        // Note the URL won't be set if it is not accessible in ParFlowEvent::setUrl()
+        $event->setUrl(Url::fromRoute($redirect_route, $route_params));
+      } catch (ParFlowException $e) {
 
-    if (isset($redirect_route)) {
-      $route_params = $event->getFlow()->getRequiredParams($redirect_route);
-      $event->setUrl(Url::fromRoute($redirect_route, $route_params));
+      }
     }
   }
 
