@@ -161,7 +161,7 @@ Feature: Coordinator User - Update Partnership
 
         # CHECK CHANGES
 
-        When I click on the button "#edit-save"
+        When I click on the button "#edit-done"
         # And I run tota11y against the current page
         And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"
