@@ -37,7 +37,7 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
     }
 
     // Only perform this check for this flow.
-    if ($event->getFlow()->id() === 'partnership_contact_update') {
+    if ($event->getFlow()->id() !== 'partnership_contact_update') {
       return;
     }
 

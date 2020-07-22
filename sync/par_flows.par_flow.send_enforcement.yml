@@ -24,7 +24,3 @@ steps:
       enforcement_detail: {  }
       enforcement_action_detail:
         cardinality: -1
-    redirect:
-      done: 2
-  2:
-    route: view.par_user_enforcements.enforcement_notices_page

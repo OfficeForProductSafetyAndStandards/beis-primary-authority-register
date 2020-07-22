@@ -19,7 +19,3 @@ steps:
   1:
     route: par_member_unlock_flows.member_unlock
     form_id: par_member_unlock
-    redirect:
-      cancel: 2
-  2:
-    route: view.members_list.member_list_coordinator

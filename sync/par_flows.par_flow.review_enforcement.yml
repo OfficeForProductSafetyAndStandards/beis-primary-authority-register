@@ -23,8 +23,6 @@ steps:
       enforcement_detail: {  }
       enforcement_action_review:
         cardinality: -1
-    redirect:
-      cancel: 5
   2:
     route: par_enforcement_review_flows.referred_authority
     form_id: par_enforcement_referred_authority
@@ -33,8 +31,6 @@ steps:
       enforcement_detail: {  }
       enforcement_action_refer:
         cardinality: -1
-    redirect:
-      cancel: 5
   3:
     route: par_enforcement_review_flows.review
     form_id: par_enforcement_notice_approve_confirm
@@ -44,7 +40,6 @@ steps:
       enforcement_action_detail:
         cardinality: -1
     redirect:
-      cancel: 5
       save: 4
       action_decision: 1
     form_data:
@@ -52,7 +47,3 @@ steps:
       referrals: par_enforcement_referred_authority
   4:
     route: par_enforcement_review_flows.completed_enforcement
-    redirect:
-      done: 5
-  5:
-    route: view.par_user_enforcements.enforcement_notices_page

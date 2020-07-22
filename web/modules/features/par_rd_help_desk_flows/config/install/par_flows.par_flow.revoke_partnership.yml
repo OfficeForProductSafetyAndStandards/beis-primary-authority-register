@@ -17,11 +17,6 @@ steps:
     form_id: par_rd_help_desk_revoke_confirm
     redirect:
       next: 2
-      cancel: 3
   2:
     route: par_help_desks_flows.revoke_partnership
     form_id: par_rd_help_desk_revoke
-    redirect:
-      done: 3
-  3:
-    route: view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page

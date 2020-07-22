@@ -27,7 +27,6 @@ steps:
       reply: par_deviation_request_reply
     redirect:
       reply: 2
-      done: 3
   2:
     route: par_deviation_view_flows.reply
     form_id: par_deviation_request_reply
@@ -36,6 +35,3 @@ steps:
         cardinality: 1
     redirect:
       save: 1
-      cancel: 1
-  3:
-    route: view.par_user_deviation_requests.deviation_requests_page

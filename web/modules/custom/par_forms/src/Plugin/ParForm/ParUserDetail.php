@@ -99,10 +99,6 @@ class ParUserDetail extends ParFormPluginBase {
     $invitation_expiry = $this->getFlowDataHandler()->getDefaultValues('invitation_expiration', FALSE);
     $cache_tags = $this->getFlowDataHandler()->getDefaultValues('cache_tags', []);
 
-    // Return path for all redirect links.
-    $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
-    $params = $this->getRouteParams() + ['destination' => $return_path];
-
     $form['user_account'] = [
       '#type' => 'fieldset',
       '#weight' => -1,
@@ -169,7 +165,7 @@ class ParUserDetail extends ParFormPluginBase {
         ];
       }
 
-      $params += ['user' => $user_id];
+      $params = ['user' => $user_id];
       // Try to add a block user link.
       try {
         $block_flow = ParFlow::load('block_user');
@@ -219,7 +215,7 @@ class ParUserDetail extends ParFormPluginBase {
 
       // Try to add an invite link.
       try {
-        $params += ['par_data_person' => $person_id];
+        $params = ['par_data_person' => $person_id];
         $link_options = ['attributes' => ['class' => ['column-full']]];
         $invite_flow = ParFlow::load('user_invite');
         $link_text = $invitation_expiry ? 'Re-send the invitation' : 'Invite the user to create an account';

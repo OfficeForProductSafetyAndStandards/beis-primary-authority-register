@@ -8,15 +8,13 @@ default_section_title: 'Create a new Person'
 description: ''
 save_method: end
 final_routes:
-  - par_profile_view_flows.profile
+  - view.par_people.people
 steps:
   1:
     route: par_person_create_flows.create_contact
     form_id: par_add_contact
     components:
       contact_details: {}
-    redirect:
-      cancel: 8
   2:
     route: par_person_create_flows.choose_account
     form_id: par_person_choose_account
@@ -24,8 +22,6 @@ steps:
       choose_account: {}
     form_data:
       contact_details: par_add_contact
-    redirect:
-      cancel: 8
   3:
     route: par_person_create_flows.choose_institution
     form_id: par_add_institution
@@ -34,8 +30,6 @@ steps:
     form_data:
       choose_account: par_person_choose_account
       contact_details: par_add_contact
-    redirect:
-      cancel: 8
   4:
     route: par_person_create_flows.choose_role
     form_id: par_choose_role
@@ -47,8 +41,6 @@ steps:
       choose_account: par_person_choose_account
       select_authority: par_add_institution
       select_organisation: par_add_institution
-    redirect:
-      cancel: 8
   5:
     route: par_person_create_flows.invite_contact
     form_id: par_person_invite
@@ -58,8 +50,6 @@ steps:
       contact_details: par_add_contact
       user_account: par_person_link
       choose_account: par_person_choose_account
-    redirect:
-      cancel: 8
   6:
     route: par_person_create_flows.review
     form_id: par_person_review
@@ -72,10 +62,5 @@ steps:
       invite: par_person_invite
     redirect:
       save: 7
-      cancel: 8
   7:
     route: par_person_create_flows.completed
-    redirect:
-      done: 8
-  8:
-    route: view.par_people.people

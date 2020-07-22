@@ -20,8 +20,6 @@ steps:
     form_data:
       select_person: par_choose_person
       contact_details: par_profile_update
-    redirect:
-      cancel: 7
   2:
     route: par_invite_user_flows.choose_role
     form_id: par_choose_role
@@ -30,8 +28,6 @@ steps:
     form_data:
       contact_details: par_add_contact
       link_account: par_profile_invite_link
-    redirect:
-      cancel: 7
   3:
     route: par_invite_user_flows.choose_institution
     form_id: par_invite_institution
@@ -41,8 +37,6 @@ steps:
     form_data:
       select_person: par_choose_person
       contact_details: par_profile_update
-    redirect:
-      cancel: 7
   4:
     route: par_invite_user_flows.invite_contact
     form_id: par_invite
@@ -52,8 +46,6 @@ steps:
       select_person: par_choose_person
       contact_details: par_add_contact
       user_account: par_profile_update_link
-    redirect:
-      cancel: 7
   5:
     route: par_invite_user_flows.review
     form_id: par_invite_review
@@ -64,12 +56,5 @@ steps:
       select_authority: par_update_institution
       select_organisation: par_update_institution
       invite: par_profile_invite
-    redirect:
-      save: 7
-      cancel: 7
   6:
     route: par_invite_user_flows.completed
-    redirect:
-      done: 7
-  7:
-    route: view.par_people.people

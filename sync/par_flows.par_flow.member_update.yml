@@ -29,8 +29,6 @@ steps:
       add_field_legal_entity: 8
       edit_field_legal_entity: 9
       edit_covered_by_inspection: 10
-      save: 11
-      cancel: 11
   2:
     route: par_member_update_flows.update_organisation_name
     form_id: par_member_update_organisation_name
@@ -107,5 +105,3 @@ steps:
     redirect:
       save: 1
       cancel: 1
-  11:
-    route: view.members_list.member_list_coordinator
