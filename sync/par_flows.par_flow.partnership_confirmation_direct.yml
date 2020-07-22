@@ -12,6 +12,7 @@ description: ''
 save_method: end
 states:
   - par_data_partnership
+final_routes: {  }
 steps:
   1:
     route: par_partnership_confirmation_flows.partnership_confirmation_authority_checklist

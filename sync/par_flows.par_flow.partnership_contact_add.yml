@@ -13,6 +13,7 @@ save_method: end
 states:
   - par_data_partnership
   - type
+final_routes: {  }
 steps:
   1:
     route: par_partnership_contact_add_flows.create_contact

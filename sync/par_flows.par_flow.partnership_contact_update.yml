@@ -14,6 +14,7 @@ states:
   - par_data_partnership
   - type
   - par_data_person
+final_routes: {  }
 steps:
   1:
     route: par_partnership_contact_update_flows.create_contact

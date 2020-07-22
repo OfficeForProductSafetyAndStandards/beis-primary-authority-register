@@ -12,6 +12,7 @@ description: 'The ability to search for and view a partnership.'
 save_method: end
 states:
   - par_data_partnership
+final_routes: {  }
 steps:
   1:
     route: par_search_partnership_flows.partnership_page

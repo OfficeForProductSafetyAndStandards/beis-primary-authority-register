@@ -12,6 +12,7 @@ description: ''
 save_method: end
 states:
   - user
+final_routes: {  }
 steps:
   1:
     route: par_profile_update_flows.gdpr
