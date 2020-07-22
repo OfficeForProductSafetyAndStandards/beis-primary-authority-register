@@ -82,6 +82,10 @@ class ParInviteForm extends ParBaseForm {
       return new RedirectResponse($url->toString());
     }
 
+    // Change the action to save.
+    $this->getFlowNegotiator()->getFlow()->setActions(['next', 'cancel']);
+    $this->getFlowNegotiator()->getFlow()->setPrimaryAction('Invite');
+
     return parent::buildForm($form, $form_state);
   }
 
