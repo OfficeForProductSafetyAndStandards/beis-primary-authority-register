@@ -277,6 +277,11 @@ div.pagerer-container {
   margin-top: 2em;
 }
 
+/* Flow links */
+
+a.flow-link {
+    display: table;
+}
 
 /* Reset */
 fieldset, legend {
