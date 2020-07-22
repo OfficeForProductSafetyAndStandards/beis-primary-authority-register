@@ -52,6 +52,7 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
  *     "description",
  *     "save_method",
  *     "states",
+ *     "final_routes",
  *     "steps"
  *   }
  * )
