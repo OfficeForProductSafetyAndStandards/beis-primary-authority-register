@@ -1,5 +1,5 @@
 par-kour:
-  version: 1.1
+  version: 2.1
   js:
     javascript/par.js: {}
   css:
@@ -13,7 +13,7 @@ par-kour:
     - par_theme/par-vendor
 
 par-conditionals:
-  version: 1.0
+  version: 2.0
   js:
     javascript/ie.js: { browsers: { IE: 'lt IE 9', '!IE': false }}
   css:
@@ -24,7 +24,7 @@ par-conditionals:
       assets/fonts/fonts-ie8.css: { browsers: { IE: 'lt IE 9', '!IE': false } }
 
 par-vendor:
-  version: 1.0
+  version: 2.0
   js:
     javascript/vendor/console.log-wrapper/consolelog.min.js: {}
     javascript/vendor/console.log-wrapper/consolelog.detailprint.min.js: {}
