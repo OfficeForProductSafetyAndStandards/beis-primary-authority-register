@@ -6,7 +6,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_enforcement_raise_flows\ParFormCancelTrait;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_enforcement_raise_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\User;
@@ -17,7 +16,6 @@ use Drupal\user\Entity\User;
 class ParEnforcementNoticeDetailsForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
-  use ParFormCancelTrait;
 
   /**
    * {@inheritdoc}
