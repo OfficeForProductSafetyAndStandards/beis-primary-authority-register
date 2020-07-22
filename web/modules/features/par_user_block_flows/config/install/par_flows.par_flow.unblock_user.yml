@@ -9,6 +9,8 @@ description: ''
 save_method: end
 states:
   - user
+final_route:
+  - par_profile_view_flows.profile
 steps:
   1:
     route: par_user_block_flows.unblock

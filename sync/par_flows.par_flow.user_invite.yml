@@ -12,6 +12,8 @@ description: ''
 save_method: end
 states:
   - user
+final_route:
+  - par_profile_view_flows.profile
 steps:
   1:
     route: par_invite_user_flows.link_contact

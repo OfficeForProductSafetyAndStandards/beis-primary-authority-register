@@ -2,12 +2,13 @@
 
 namespace Drupal\par_flows\Entity;
 
+use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Link;
 
 /**
  * The interface for all Flow Entities.
  */
-interface ParFlowInterface {
+interface ParFlowInterface extends ConfigEntityInterface {
 
   /**
    * Get the description for this flow.

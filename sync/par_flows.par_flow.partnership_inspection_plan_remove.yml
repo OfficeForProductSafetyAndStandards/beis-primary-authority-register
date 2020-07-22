@@ -14,6 +14,9 @@ states:
   - par_data_partnership
   - type
   - par_data_advice
+final_route:
+  - par_partnership_flows.authority_inspection_plan_list
+  - par_partnership_flows.organisation_inspection_plan_list
 steps:
   1:
     route: par_partnership_document_remove_flows.remove_inspection_plan

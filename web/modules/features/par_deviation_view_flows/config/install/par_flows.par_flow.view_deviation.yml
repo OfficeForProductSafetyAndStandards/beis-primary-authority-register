@@ -9,6 +9,8 @@ description: 'The view operations for a deviation request.'
 save_method: end
 states:
   - par_data_deviation_request
+final_route:
+  - view.par_user_deviation_requests.deviation_requests_page
 steps:
   1:
     route: par_deviation_view_flows.view_deviation

@@ -9,6 +9,9 @@ description: ''
 save_method: step
 states:
   - par_data_partnership
+final_route:
+  - view.par_user_partnerships.partnerships_page
+  - view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page
 steps:
   1:
     route: par_partnership_flows.organisation_details
