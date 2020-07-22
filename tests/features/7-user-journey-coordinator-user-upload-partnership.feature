@@ -11,6 +11,9 @@ Feature: Coordinator User - Upload Members
 
         # UPLOAD MEMBERS
 
+        When I click the link text "show member list"
+        Then the element "h1.heading-xlarge" contains the text "Members list"
+
         When I click the link text "upload a member list (csv)"
         Then the element "h1.heading-xlarge" contains the text "Upload a list of members"
 
