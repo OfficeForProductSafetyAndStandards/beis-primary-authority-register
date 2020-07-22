@@ -9,6 +9,8 @@ description: 'The delete operations for a given partnership.'
 save_method: end
 states:
   - par_data_partnership
+final_route:
+  - view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page
 steps:
   1:
     route: par_help_desks_flows.confirm_delete_partnership

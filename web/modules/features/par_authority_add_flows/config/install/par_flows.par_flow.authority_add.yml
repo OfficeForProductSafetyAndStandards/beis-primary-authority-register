@@ -7,6 +7,8 @@ default_title: 'Add Authority'
 default_section_title: 'Authority Details'
 description: ''
 save_method: end
+final_route:
+  - view.helpdesk_authorities.par_helpdesk_authority_page
 steps:
   1:
     route: par_authority_add_flows.authority_add_name

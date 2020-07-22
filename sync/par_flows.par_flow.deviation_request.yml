@@ -12,6 +12,8 @@ description: ''
 save_method: end
 states:
   - par_data_partnership
+final_route:
+  - par_search_partnership_flows.partnership_page
 steps:
   1:
     route: par_deviation_request_flows.select_inspection_plan
