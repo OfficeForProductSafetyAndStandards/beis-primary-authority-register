@@ -9,7 +9,7 @@ description: 'The view operations for enquiries.'
 save_method: end
 states:
   - par_data_general_enquiry
-final_route:
+final_routes:
   - view.par_user_general_enquiries.general_enquiries_page
 steps:
   1:

@@ -12,7 +12,7 @@ description: ''
 save_method: end
 states:
   - user
-final_route:
+final_routes:
   - par_profile_view_flows.profile
 steps:
   1:

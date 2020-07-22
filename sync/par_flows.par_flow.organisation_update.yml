@@ -11,7 +11,7 @@ default_section_title: 'Organisation Details'
 description: ''
 save_method: end
 states: null
-final_route:
+final_routes:
   - view.helpdesk_organisations.par_helpdesk_organisation_page
 steps:
   1:

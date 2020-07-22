@@ -12,7 +12,7 @@ description: 'The creation flow of an enforcement notice.'
 save_method: end
 states:
   - par_data_partnership
-final_route:
+final_routes:
   - par_search_partnership_flows.partnership_page
 steps:
   1:

@@ -7,7 +7,7 @@ default_title: 'Add Authority'
 default_section_title: 'Authority Details'
 description: ''
 save_method: end
-final_route:
+final_routes:
   - view.helpdesk_authorities.par_helpdesk_authority_page
 steps:
   1:

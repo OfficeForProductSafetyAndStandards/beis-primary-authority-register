@@ -14,7 +14,7 @@ states:
   - par_data_partnership
   - type
   - par_data_advice
-final_route:
+final_routes:
   - par_partnership_flows.authority_inspection_plan_list
   - par_partnership_flows.organisation_inspection_plan_list
 steps:

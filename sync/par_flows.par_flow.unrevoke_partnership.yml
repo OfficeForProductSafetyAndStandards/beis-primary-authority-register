@@ -12,7 +12,7 @@ description: 'The unrevoke operations for a given partnership.'
 save_method: end
 states:
   - par_data_partnership
-final_route:
+final_routes:
   - view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page
 steps:
   1:

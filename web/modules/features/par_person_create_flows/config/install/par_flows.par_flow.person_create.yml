@@ -7,7 +7,7 @@ default_title: null
 default_section_title: 'Create a new Person'
 description: ''
 save_method: end
-final_route:
+final_routes:
   - par_profile_view_flows.profile
 steps:
   1:

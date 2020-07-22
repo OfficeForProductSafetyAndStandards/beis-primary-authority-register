@@ -12,7 +12,7 @@ description: 'The approval flow for an enforcement notice.'
 save_method: end
 states:
   - par_data_enforcement_notice
-final_route:
+final_routes:
   - view.par_user_enforcements.enforcement_notices_page
 steps:
   1:

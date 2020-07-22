@@ -9,7 +9,7 @@ description: ''
 save_method: end
 states:
   - user
-final_route:
+final_routes:
   - view.par_people.people
 steps:
   1:

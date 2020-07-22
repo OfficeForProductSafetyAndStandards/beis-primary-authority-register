@@ -12,7 +12,7 @@ description: 'The view operations for inspection plan feedback.'
 save_method: end
 states:
   - par_data_inspection_feedback
-final_route:
+final_routes:
   - view.par_user_inspection_feedback.inspection_feedback_page
 steps:
   1:
