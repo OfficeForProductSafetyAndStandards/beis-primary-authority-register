@@ -47,6 +47,10 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
       ],
     ];
 
+    // Change the action to save.
+    $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
+    $this->getFlowNegotiator()->getFlow()->setPrimaryAction('Upload');
+
     return parent::buildForm($form, $form_state);
   }
 
