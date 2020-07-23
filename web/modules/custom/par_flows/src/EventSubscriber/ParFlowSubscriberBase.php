@@ -22,9 +22,9 @@ abstract class ParFlowSubscriberBase implements EventSubscriberInterface {
    * Note: This will only get the data for the current page, it is not possible
    * to extract the data for anything other than the current route match.
    *
-   * @return mixed
+   * @return \Drupal\par_flows\ParFlowDataHandlerInterface
    */
-  static function getFlowDataHandler() {
+  protected function getFlowDataHandler() {
     return \Drupal::service('par_flows.data_handler');
   }
 
