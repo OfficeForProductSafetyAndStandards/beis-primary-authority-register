@@ -77,7 +77,7 @@ class ParMemberDetailsForm extends ParBaseForm {
     $form['covered_by_inspection'] = $this->renderSection('Covered by inspection plan', $par_data_coordinated_business, ['covered_by_inspection' => 'default'], ['edit-field']);
 
     // Change the action to save.
-    $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
+    $this->getFlowNegotiator()->getFlow()->setActions(['done', 'cancel']);
 
     return parent::buildForm($form, $form_state);
   }

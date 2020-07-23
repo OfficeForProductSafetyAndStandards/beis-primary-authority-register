@@ -83,7 +83,7 @@ Feature: Coordinator User - Update Partnership
         And I click on the radio "#edit-covered-by-inspection-1"
         And I click on the button "#edit-save"
         And the element "#edit-covered-by-inspection" contains the text "Yes"
-        And I click on the button "#edit-save"
+        And I click on the button "#edit-done"
         Then the element "h1.heading-xlarge" contains the text "Members list"
 
         # CEASE MEMBER
