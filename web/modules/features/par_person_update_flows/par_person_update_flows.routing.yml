@@ -26,20 +26,6 @@ par_person_update_flows.choose_account:
       par_data_person:
         type: entity:par_data_person
 
-par_person_update_flows.choose_institution:
-  path: '/person/{par_data_person}/update/memberships'
-  defaults:
-    _form: '\Drupal\par_person_update_flows\Form\ParUpdateInstitutionForm'
-    _title_callback: '\Drupal\par_person_update_flows\Form\ParUpdateInstitutionForm::titleCallback'
-  requirements:
-    _permission: 'manage par person'
-    _custom_access: '\Drupal\par_person_update_flows\Form\ParUpdateInstitutionForm::accessCallback'
-    par_data_person: \d+
-  options:
-    parameters:
-      par_data_person:
-        type: entity:par_data_person
-
 par_person_update_flows.choose_role:
   path: '/person/{par_data_person}/update/role'
   defaults:
