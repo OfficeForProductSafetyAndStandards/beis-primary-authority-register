@@ -190,6 +190,9 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
+    $regulatory_functions = $this->getFlowDataHandler()->getTempDataValue('regulatory_functions');
+    $assigned_reg_functions = count(array_filter($regulatory_functions));
+
     // Get the advice entity from the URL.
     $par_data_advice = $this->getFlowDataHandler()->getParameter('par_data_advice');
 
@@ -233,7 +236,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     }
 
     // Set regulatory functions.
-    $par_data_advice->set('field_regulatory_function', $this->getFlowDataHandler()->getTempDataValue('regulatory_functions'));
+    $par_data_advice->set('field_regulatory_function', $regulatory_functions);
 
     // Set the status to active for the advice entity.
     $par_data_advice->setParStatus('active', TRUE);
@@ -244,7 +247,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     }
 
     // Save and attach new advice entities.
-    if ($par_data_advice->isNew() && $par_data_advice->save()) {
+    if ($par_data_advice->isNew() && $assigned_reg_functions && $par_data_advice->save()) {
       $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
       $par_data_partnership->get('field_advice')->appendItem($par_data_advice->id());
 
@@ -252,26 +255,29 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
         $this->getFlowDataHandler()->deleteStore();
       }
       else {
-        $message = $this->t('This %advice could not be created for %form_id');
+        $message = $this->t('The advice entity %advice could not be created for %form_id');
         $replacements = [
-          '%advice' => $par_data_advice->label(),
+          '%advice' => $par_data_advice->getAdviceTitle(),
           '%form_id' => $this->getFormId(),
         ];
         $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
       }
     }
     // Save existing advice entities.
-    else if ($par_data_advice->save()) {
+    else if ($assigned_reg_functions && $par_data_advice->save()) {
       $this->getFlowDataHandler()->deleteStore();
     }
     // Log an error.
     else {
-      $message = $this->t('This %advice could not be saved for %form_id');
+      $message = $this->t('The advice entity %advice could not be saved for %form_id');
       $replacements = [
-        '%advice' => $par_data_advice->label(),
+        '%advice' => $par_data_advice->getAdviceTitle(),
         '%form_id' => $this->getFormId(),
       ];
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
+      // We need to delete the temp store if no regulatory functions are selected on form submission.
+      // To prevent incorrect default values being assigned to the field on re-edit.
+      $this->getFlowDataHandler()->deleteStore();
     }
   }
 
