@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: gGaOjuqIklMg-2dzxOfzYEdvPc_tcn_aKsD5UT9RyJY
+  default_config_hash: AqcDMSPWgIe6BHChPuWpwf6e7eBedlvYyUgrT-CHEQk
 id: person_update
 label: 'Person Update Flow'
 default_title: null
@@ -21,7 +21,7 @@ steps:
     form_data:
       select_person: par_choose_person
     redirect:
-      cancel: 8
+      cancel: 7
   2:
     route: par_person_update_flows.choose_account
     form_id: par_person_update_account
@@ -31,18 +31,8 @@ steps:
       contact_details: par_person_update
       user_account: par_person_update_link
     redirect:
-      cancel: 8
+      cancel: 7
   3:
-    route: par_person_update_flows.choose_institution
-    form_id: par_update_institution
-    components:
-      memberships_select: {  }
-    form_data:
-      choose_account: par_person_update_account
-      contact_details: par_person_update
-    redirect:
-      cancel: 8
-  4:
     route: par_person_update_flows.choose_role
     form_id: par_choose_role
     components:
@@ -52,8 +42,8 @@ steps:
       user_account: par_person_update_link
       choose_account: par_person_update_account
     redirect:
-      cancel: 8
-  5:
+      cancel: 7
+  4:
     route: par_person_update_flows.invite_contact
     form_id: par_person_invite
     components:
@@ -63,8 +53,8 @@ steps:
       user_account: par_person_update_link
       choose_account: par_person_update_account
     redirect:
-      cancel: 8
-  6:
+      cancel: 7
+  5:
     route: par_person_update_flows.edit_review
     form_id: par_person_review
     form_data:
@@ -76,11 +66,11 @@ steps:
       role_select: par_choose_role
       invite: par_person_invite
     redirect:
-      save: 7
-      cancel: 8
-  7:
+      save: 6
+      cancel: 7
+  6:
     route: par_person_update_flows.edit_completed
     redirect:
-      done: 8
-  8:
+      done: 7
+  7:
     route: view.par_people.people
