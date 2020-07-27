@@ -44,7 +44,7 @@ trait ParEntityValidationMappingTrait {
         $this->getLogger($this->getLoggerChannel())->critical('An error occurred trying to create entity validation mapping for: @mapping `@details`', ['@mapping' => $this->getSerializer()->serialize($mapping, 'json'), '@details' => $e->getMessage()]);
       }
     }
-    
+
     return $mappings;
   }
 
@@ -140,6 +140,9 @@ trait ParEntityValidationMappingTrait {
         continue;
       }
       $value = NestedArray::getValue($values, (array) $mapping->getElement());
+      // Cleanse the value just a little bit.
+      $value = is_array($value) ? array_filter($value) : $value;
+      $value = is_string($value) ? trim($value) : $value;
 
       if ($mapping->getFieldProperty()) {
         if (!isset($fields[$mapping->getFieldName()])) {
