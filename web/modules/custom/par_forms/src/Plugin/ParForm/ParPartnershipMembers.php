@@ -81,7 +81,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
     $form['members']['count'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => $this->t("There are <strong>@count</strong> active members covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('number_of_members', $cardinality, NULL)]),
+      '#value' => $this->t("There are <strong>@count</strong> active members covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('number_of_members', $cardinality, '0')]),
       '#attributes' => ['class' => ['form-group', 'number-of-members']],
       '#weight' => -5,
     ];
