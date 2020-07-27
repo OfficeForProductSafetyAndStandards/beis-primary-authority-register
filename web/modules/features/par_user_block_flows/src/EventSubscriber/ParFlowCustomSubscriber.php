@@ -42,7 +42,7 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
     }
 
     // Only perform this check for these two flows.
-    if ($event->getFlow()->id() !== 'block_user' || $event->getFlow()->id() !== 'unblock_user') {
+    if ($event->getFlow()->id() !== 'block_user' && $event->getFlow()->id() !== 'unblock_user') {
       return;
     }
 
