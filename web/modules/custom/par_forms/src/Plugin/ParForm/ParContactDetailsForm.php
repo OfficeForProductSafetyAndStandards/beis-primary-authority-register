@@ -85,12 +85,18 @@ class ParContactDetailsForm extends ParFormPluginBase {
       '#type' => 'tel',
       '#title' => $this->t('Enter the work phone number'),
       '#default_value' => $this->getDefaultValuesByKey('work_phone', $cardinality),
+      '#attributes' => [
+        'pattern' => "(\+?\(?\d{2,4}\)?[\d\s-]{3,})",
+      ],
     ];
 
     $form['mobile_phone'] = [
       '#type' => 'tel',
       '#title' => $this->t('Enter the mobile phone number (optional)'),
       '#default_value' => $this->getDefaultValuesByKey('mobile_phone', $cardinality),
+      '#attributes' => [
+        'pattern' => "(\+?\(?\d{2,4}\)?[\d\s-]{3,})",
+      ],
     ];
 
     // Prevent modifying of email address when un-editable.
