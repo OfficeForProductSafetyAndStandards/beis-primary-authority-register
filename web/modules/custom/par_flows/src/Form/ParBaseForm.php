@@ -15,6 +15,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\Event\ParFlowEvent;
+use Drupal\par_flows\Event\ParFlowEvents;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParFlowDataHandler;
@@ -391,6 +392,10 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     // Set the redirection.
     if ($url && $url instanceof Url) {
+      if ($submit_action && $submit_action == ParFlowEvents::FLOW_DONE) {
+        // Delete form storage.
+        $this->getFlowDataHandler()->deleteStore();
+      }
       $form_state->setRedirectUrl($url);
     }
   }
