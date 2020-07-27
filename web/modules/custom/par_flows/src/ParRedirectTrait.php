@@ -2,6 +2,7 @@
 
 namespace Drupal\par_flows;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteProvider;
 use Drupal\Core\Url;
@@ -35,14 +36,27 @@ trait ParRedirectTrait {
       throw new ParFlowException(t('The parameters are missing for the route @route', ['@route' => $route]));
     }
 
-    // Only add the route parameters required by the given route.
-    foreach ($path_variables as $value) {
-      if (!isset($params[$value])) {
-        $params[$value] = \Drupal::service('par_flows.data_handler')->getRawParameter($value);
+    // All parameters must be sanitised.
+    $route_params = [];
+    foreach ($params as $key => $value) {
+      // Note that the raw parameter cannot be set for arrays or any other non-scalar
+      // values other due to lack of a transparent conversion method.
+      if ($value instanceof EntityInterface) {
+        $route_params[$key] = $value->id();
+      }
+      elseif (is_scalar($value)) {
+        $route_params[$key] = $value;
       }
     }
 
-    return $params;
+    // Only add the route parameters required by the given route.
+    foreach ($path_variables as $value) {
+      if (!isset($route_params[$value])) {
+        $route_params[$value] = \Drupal::service('par_flows.data_handler')->getRawParameter($value);
+      }
+    }
+
+    return $route_params;
   }
 
   /**
