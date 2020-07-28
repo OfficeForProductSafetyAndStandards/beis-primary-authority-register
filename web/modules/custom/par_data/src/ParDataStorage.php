@@ -99,12 +99,31 @@ class ParDataStorage extends TranceStorage {
   }
 
   /**
+   * Ensure that all Par Data Entities are valid and have all the required properties before saving.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   */
+  public function validate(EntityInterface $entity) {
+    $field_definitions = $this->entityFieldManager->getFieldDefinitions($entity->getEntityTypeId(), $entity->bundle());
+    foreach ($field_definitions as $field_name => $field_definition) {
+      if ($field_definition->isRequired()
+        && $entity->get($field_definition->getName())->isEmpty()) {
+        $params = ['@field' => $field_name, '@entity' => $entity->getEntityTypeId()];
+        throw new ParDataException($this->t('The field @field is required for entity @entity', $params));
+      }
+    }
+  }
+
+  /**
    * Save entity.
    * This function deletes relationship cache for the new/updated entity refs.
    *
    * {@inheritdoc}
    */
   public function save(EntityInterface $entity) {
+    // Ensure the entity is ready for saving.
+    $this->validate($entity);
+
     // Lowercase all email addresses, these are used in some aggregate functions
     // and should not be upper case.
     if ($entity instanceof ParDataPersonInterface && $entity->hasField('email')) {

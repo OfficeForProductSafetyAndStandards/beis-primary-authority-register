@@ -787,7 +787,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     $fields['email'] = BaseFieldDefinition::create('string')
       ->setLabel(t('E-mail'))
       ->setDescription(t('The e-mail address of this person.'))
-      ->addConstraint('par_required')
+      ->setRequired(TRUE)
       ->addPropertyConstraints('value', [
         'Email' => ['message' => 'You must enter an email address in a valid format.'],
       ])
