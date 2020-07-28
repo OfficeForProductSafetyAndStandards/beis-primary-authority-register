@@ -142,6 +142,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     $type = ParDataAdviceType::create([
       'id' => 'advice',
       'label' => 'Advice',
+      'advice_title' => 'Title for this advice',
     ]);
     $type->save();
 
