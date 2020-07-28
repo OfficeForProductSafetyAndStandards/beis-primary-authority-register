@@ -99,14 +99,16 @@ class ParDataStorage extends TranceStorage {
   }
 
   /**
-   * Ensure that all Par Data Entities are valid and have all the required properties before saving.
+   * Ensure that all the required properties are validated.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    */
   public function validate(EntityInterface $entity) {
     $field_definitions = $this->entityFieldManager->getFieldDefinitions($entity->getEntityTypeId(), $entity->bundle());
     foreach ($field_definitions as $field_name => $field_definition) {
-      if ($field_definition->isRequired()
+      $storage = $field_definition->getFieldStorageDefinition();
+      // Validate all base fields that have been set as required.
+      if ($storage->isBaseField() && $field_definition->isRequired()
         && $entity->get($field_definition->getName())->isEmpty()) {
         $params = ['@field' => $field_name, '@entity' => $entity->getEntityTypeId()];
         throw new ParDataException($this->t('The field @field is required for entity @entity', $params));

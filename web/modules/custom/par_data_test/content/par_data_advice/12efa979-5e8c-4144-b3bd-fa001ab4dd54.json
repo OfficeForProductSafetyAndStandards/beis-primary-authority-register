@@ -159,6 +159,11 @@
             "value": "background_information"
         }
     ],
+    "advice_title": [
+        {
+            "value": "Background information for helping friends"
+        }
+    ],
     "notes": [
         {
             "value": "Always help your friends when they are in need.",
