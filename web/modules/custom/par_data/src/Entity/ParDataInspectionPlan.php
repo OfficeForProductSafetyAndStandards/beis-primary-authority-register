@@ -221,7 +221,6 @@ class ParDataInspectionPlan extends ParDataEntity {
       ->setLabel(t('Inspection plan summary'))
       ->setDescription(t('Summary info for this inspection plan.'))
       ->addConstraint('par_required')
-      ->setRequired(TRUE)
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
