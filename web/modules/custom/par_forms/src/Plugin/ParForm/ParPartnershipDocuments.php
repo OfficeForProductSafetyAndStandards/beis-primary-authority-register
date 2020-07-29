@@ -113,7 +113,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
       if (isset($add_advice_list_link) && $add_advice_list_link instanceof Link) {
         $form['details']['advice']['document_count'] = [
           '#type' => 'html_tag',
-          '#tag' => 'div',
+          '#tag' => 'p',
           '#value' => $this->t("There are <strong>@count</strong> advice documents covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('advice_count', $cardinality, NULL)]),
         ];
 
