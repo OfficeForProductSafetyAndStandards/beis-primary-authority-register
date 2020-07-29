@@ -142,7 +142,6 @@ class ParDataTestBase extends EntityKernelTestBase {
     $type = ParDataAdviceType::create([
       'id' => 'advice',
       'label' => 'Advice',
-      'advice_title' => 'Title for this advice',
     ]);
     $type->save();
 
@@ -303,6 +302,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     $values += [
       'type' => 'advice',
       'advice_type' => 'To Local Authority',
+      'advice_title' => 'Title for this advice',
       'notes' => $this->randomString(1000),
       'visible_authority' => TRUE,
       'visible_coordinator' => TRUE,
