@@ -40,6 +40,9 @@ class ParConfirmedController extends ParBaseController {
     // Display the help contact fo this partnership.
     $build['help_text'] = $this->renderSection('If you have any further questions about how personal information is used within PAR you can contact the primary authority', $par_data_partnership, ['field_authority_person' => 'summary'], [], TRUE, TRUE);
 
+    // Change the action to save.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
+
     return parent::build($build);
   }
 

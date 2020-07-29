@@ -83,14 +83,14 @@ Feature: Coordinator User - Update Partnership
         And I click on the radio "#edit-covered-by-inspection-1"
         And I click on the button "#edit-save"
         And the element "#edit-covered-by-inspection" contains the text "Yes"
-        And I click on the button "#edit-save"
+        And I click on the button "#edit-done"
         Then the element "h1.heading-xlarge" contains the text "Members list"
 
         # CEASE MEMBER
 
         When I click the link text "Cease membership"
         # And I run tota11y against the current page
-        And I add "20" to the inputfield "#edit-day"
+        And I add "2" to the inputfield "#edit-day"
         And I add "2" to the inputfield "#edit-month"
         And I add "2018" to the inputfield "#edit-year"
         And I click on the button "#edit-next"
@@ -98,7 +98,7 @@ Feature: Coordinator User - Update Partnership
         And I click on the button "#edit-save"
         Then the element "a*=New Member One" does not exist
         Then the element "Cease membership" does not exist
-        And the element "td.views-field.views-field-date-membership-ceased" contains the text "20 February 2018"
+        And the element "td.views-field.views-field-date-membership-ceased" contains the text "02 February 2018"
         And I click the link text "◀ Back to partnership"
 
         # EDIT REGISTERED ADDRESS
@@ -161,7 +161,7 @@ Feature: Coordinator User - Update Partnership
 
         # CHECK CHANGES
 
-        When I click on the button "#edit-save"
+        When I click on the button "#edit-done"
         # And I run tota11y against the current page
         And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-par-user-partnerships"

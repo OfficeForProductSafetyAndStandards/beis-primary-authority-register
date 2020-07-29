@@ -24,8 +24,8 @@ class ParUnauthenticatedUser extends ParLinkActionBase {
     // If the user is not logged in, allow them to login first.
     if (!$this->user->isAuthenticated()) {
       // Redirect to user login page with the appended destination query.
-      $login_url = Url::fromRoute('user.login', [], $this->getReturnQuery())->toString();
-      return new RedirectResponse($login_url);
+      $login_url = Url::fromRoute('user.login', [], $this->getReturnQuery());
+      return new RedirectResponse($login_url->toString());
     }
   }
 }

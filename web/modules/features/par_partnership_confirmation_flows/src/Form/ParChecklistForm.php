@@ -48,8 +48,8 @@ class ParChecklistForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Organisation members can skip this form.
     if ($this->getFlowDataHandler()->getDefaultValues('organisation_member', FALSE)) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     $form['confirm'] = [

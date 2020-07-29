@@ -11,43 +11,32 @@ default_section_title: 'New partnership application'
 description: ''
 save_method: end
 states: null
+final_routes: {  }
 steps:
   1:
     route: par_partnership_application_flows.partnership_application_start
     form_id: par_authority_selection
     components:
       authority_select: {  }
-    redirect:
-      cancel: 13
   2:
     route: par_partnership_application_flows.partnership_application_type
     form_id: par_partnership_application_type
-    redirect:
-      cancel: 13
   3:
     route: par_partnership_application_flows.partnership_application_authority_checklist
     form_id: par_partnership_application_authority_checklist
-    redirect:
-      cancel: 13
   4:
     route: par_partnership_application_flows.partnership_application_notify_existing
     form_id: par_partnership_application_notify_existing
-    redirect:
-      cancel: 13
   5:
     route: par_partnership_application_flows.partnership_application_partnership_about
     form_id: par_partnership_about
     components:
       about_partnership: {  }
-    redirect:
-      cancel: 13
   6:
     route: par_partnership_application_flows.partnership_application_organisation_name
     form_id: par_partnership_application_organisation
     components:
       organisation_name: {  }
-    redirect:
-      cancel: 13
   7:
     route: par_partnership_application_flows.partnership_application_organisation_confirm
     form_id: par_partnership_organisation_suggestion
@@ -58,21 +47,16 @@ steps:
     redirect:
       review: 10
       add_contact: 9
-      cancel: 13
   8:
     route: par_partnership_application_flows.partnership_application_organisation_address
     form_id: par_partnership_address
     components:
       address_lookup: {  }
-    redirect:
-      cancel: 13
   9:
     route: par_partnership_application_flows.partnership_application_organisation_contact
     form_id: par_partnership_contact
     components:
       contact_details: {  }
-    redirect:
-      cancel: 13
   10:
     route: par_partnership_application_flows.partnership_application_review
     form_id: par_partnership_application_confirmation
@@ -96,7 +80,6 @@ steps:
       organisation_address: 8
       organisation_contact: 9
       save: 11
-      cancel: 13
   11:
     route: par_partnership_application_flows.partnership_application_invite
     form_id: par_partnership_invite
@@ -106,10 +89,5 @@ steps:
       contact: par_partnership_contact
     redirect:
       next: 12
-      cancel: 13
   12:
     route: par_partnership_application_flows.partnership_application_completed
-    redirect:
-      done: 13
-  13:
-    route: par_dashboards.dashboard

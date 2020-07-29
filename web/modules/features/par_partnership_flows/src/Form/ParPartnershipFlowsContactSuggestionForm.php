@@ -9,6 +9,7 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use Drupal\user\Entity\User;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * The de-duping form.
@@ -97,8 +98,9 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
       $this->getFlowDataHandler()->setTempDataValue('par_data_person_id', 'new');
       $this->submitForm($form, $form_state);
 
-      // Pass param PAR Person created in the submit handler to the next step.
-      return $this->redirect($this->getFlowNegotiator()->getFlow()->progressRoute('save'), $this->getRouteParams() + ['par_data_person' => $this->par_data_person_id]);
+      // The par person parameter should have been set within the submitForm method().
+      $url = $this->getFlowNegotiator()->getFlow()->progress('save');
+      return new RedirectResponse($url->toString());
     }
 
     // Make sure to add the person cacheability data to this form.
@@ -175,6 +177,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     if ($par_data_person && $par_data_person->id()) {
 
       // Set route param for invite form.
+      $this->getFlowDataHandler()->setParameter('par_data_person', $par_data_person->id());
       $this->par_data_person_id = $par_data_person->id();
 
       // Based on the flow we're in we also need to
@@ -203,10 +206,11 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
     if ($par_data_person && $par_data_partnership->save() &&
         $par_data_member_entity->save()) {
-      $this->getFlowDataHandler()->deleteStore();
+        $this->getFlowDataHandler()->deleteStore();
 
       // Inject PAR Person we just created into the next step.
-      $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->progressRoute('save'), $this->getRouteParams() + ['par_data_person' => $this->par_data_person_id]);
+      $this->getFlowDataHandler()->setParameter('par_data_person', $par_data_person->id());
+      $form_state->setRedirectUrl($this->getFlowNegotiator()->getFlow()->progress('save'));
     }
     else {
       $message = $this->t('This %person could not be saved for %form_id');

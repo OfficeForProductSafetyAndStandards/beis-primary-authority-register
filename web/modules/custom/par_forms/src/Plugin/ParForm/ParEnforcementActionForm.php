@@ -24,8 +24,8 @@ class ParEnforcementActionForm extends ParFormPluginBase {
     ['details', 'par_data_enforcement_action', 'details', NULL, NULL, 0, [
       'You must fill in the missing information.' => 'You must enter the details of this enforcement action.'
     ]],
-    ['field_regulatory_function', 'par_data_enforcement_action', 'field_regulatory_function', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must choose which regulatory functions this enforcement action relates to.'
+    ['regulatory_function', 'par_data_enforcement_action', 'field_regulatory_function', NULL, NULL, 0, [
+      'This value should be of the correct primitive type.' => 'You must choose which regulatory functions this enforcement action relates to.'
     ]],
   ];
 

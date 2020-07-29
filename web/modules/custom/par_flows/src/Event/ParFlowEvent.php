@@ -2,12 +2,12 @@
 
 namespace Drupal\par_flows\Event;
 
+use Drupal\Component\Utility\NestedArray;
+use Drupal\par_flows\Event\ParFlowEvents;
 use Symfony\Component\EventDispatcher\Event;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\par_flows\Entity\ParFlowInterface;
-use Drupal\par_flows\Event\ParFlowEvents;
-use Drupal\Core\Session\AccountInterface;
 
 /**
  * Event that is fired when a user logs in.
@@ -29,6 +29,13 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   protected $currentRoute;
 
   /**
+   * The current operation.
+   *
+   * @var string
+   */
+  protected $currentOperation;
+
+  /**
    * The url to redirect to.
    *
    * @var \Drupal\Core\Url
@@ -44,19 +51,18 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   protected $currentStep;
 
   /**
-   * The url of the entry point to the current journey.
+   * Additional parameters for use when deciding the route.
    *
-   * @var \Drupal\Core\Url
-   *   A Url to use as a redirection fallback for validation errors.
+   * @var array
    */
-  private $entryUrl;
+  protected $params;
 
   /**
-   * The current user account.
+   * Additional route options to add to any route created.
    *
-   * @var \Drupal\Core\Session\AccountInterface
+   * @var array
    */
-  protected $account;
+  protected $options = [];
 
   /**
    * Constructs the object.
@@ -65,42 +71,17 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
    *   The flow the event was triggered on.
    * @param RouteMatchInterface $route
    *   The current route.
-   * @param Url $url
-   *   The matched URL.
+   * @param string $operation
+   *   The operation being performed.
+   * @param array $params
+   *   An array of additional data for use determining the route.
    */
-  public function __construct(ParFlowInterface $flow, RouteMatchInterface $current_route, Url $url = NULL, Url $entryUrl = NULL) {
-
+  public function __construct(ParFlowInterface $flow, RouteMatchInterface $current_route, $operation, array $params = []) {
     $this->flow = $flow;
     $this->currentRoute = $current_route;
     $this->currentStep = $flow->getStepByRoute($current_route->getRouteName());
-    $this->account = \Drupal::currentUser();
-
-    if ($url) {
-      $this->setUrl($url);
-    }
-
-    if ($entryUrl) {
-      $this->entryUrl = $entryUrl;
-    }
-  }
-
-  /**
-   * Static method for generating an event name based on the operation.
-   */
-  public static function getCustomEvent($operation) {
-    // Return event names for specific operations.
-    switch ($operation) {
-      case 'back':
-        return ParFlowEvents::FLOW_BACK;
-
-        break;
-
-      case 'cancel':
-        return ParFlowEvents::FLOW_CANCEL;
-
-        break;
-    }
-    return implode(':', [ParFlowEvents::FLOW_SUBMIT, $operation]);
+    $this->currentOperation = $operation;
+    $this->params = $params;
   }
 
   /**
@@ -125,10 +106,10 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   }
 
   /**
-   * Get entry point URL.
+   * Get the operation.
    */
-  public function getEntryUrl() {
-    return $this->entryUrl;
+  public function getOperation() {
+    return $this->currentOperation;
   }
 
   /**
@@ -138,16 +119,7 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
    */
   public function getUrl() {
     $url = $this->proceedingUrl;
-    return isset($url) && $url instanceof Url ? $this->proceedingUrl : NULL;
-  }
-
-  /**
-   * Get's the current user account.
-   *
-   * @return \Drupal\Core\Session\AccountInterface|null
-   */
-  public function getCurrentUser() {
-    return $this->account;
+    return isset($url) && $url instanceof Url ? $url : NULL;
   }
 
   /**
@@ -157,7 +129,27 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
    *   A url object to redirect to.
    */
   public function setUrl(Url $url) {
+    // The URL should only be set if it is accessible.
+    if (!$url->access() || !$url->isRouted()) {
+      return;
+    }
+
+    $url->mergeOptions($this->options);
     $this->proceedingUrl = $url;
+  }
+
+  /**
+   * Get the additional data parameters.
+   */
+  public function getParams() {
+    return (array) $this->params;
+  }
+
+  /**
+   * Get the additional data parameters.
+   */
+  public function setRouteOptions(array $options = []) {
+    $this->options = NestedArray::mergeDeep($this->options, $options);
   }
 
 }

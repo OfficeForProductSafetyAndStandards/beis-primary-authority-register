@@ -5,7 +5,6 @@ namespace Drupal\par_enforcement_raise_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_enforcement_raise_flows\ParFormCancelTrait;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_enforcement_raise_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\User;
@@ -17,7 +16,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ParChecklistForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
-  use ParFormCancelTrait;
 
   /**
    * Set the page title.
@@ -45,8 +43,8 @@ class ParChecklistForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Organisation members can skip this form.
     if ($this->getFlowDataHandler()->getDefaultValues('organisation_member', FALSE)) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     $form['help'] = [

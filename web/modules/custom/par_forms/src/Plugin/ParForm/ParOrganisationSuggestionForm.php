@@ -63,8 +63,8 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     // Go back to the previous page if there's no search term.
     if (!$this->getFlowDataHandler()->getFormPermValue('organisation_select_search_query')) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(ParFlow::BACK_STEP), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress(ParFlow::BACK_STEP);
+      return new RedirectResponse($url->toString());
     }
 
     if ($radio_options = $this->getFlowDataHandler()->getFormPermValue('organisation_options')) {
@@ -76,8 +76,8 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
       ];
     }
     else {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute(), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     return $form;

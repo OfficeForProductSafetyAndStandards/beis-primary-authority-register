@@ -13,6 +13,8 @@ save_method: end
 states:
   - par_data_partnership
   - par_data_person
+final_routes:
+  - par_profile_view_flows.profile
 steps:
   1:
     route: par_help_desks_flows.invite_members

@@ -2,12 +2,13 @@
 
 namespace Drupal\par_flows\Entity;
 
+use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Link;
 
 /**
  * The interface for all Flow Entities.
  */
-interface ParFlowInterface {
+interface ParFlowInterface extends ConfigEntityInterface {
 
   /**
    * Get the description for this flow.
@@ -32,6 +33,16 @@ interface ParFlowInterface {
    *   The save method.
    */
   public function getSaveMethod();
+
+  /**
+   * Get the return routes for this flow.
+   *
+   * To be directed to once the flow is complete.
+   *
+   * @return array
+   *   The return routes.
+   */
+  public function getFinalRoutes();
 
   /**
    * Get all the states parameters.
@@ -79,13 +90,10 @@ interface ParFlowInterface {
    * @param string $operation
    *   An optional form operation that can be used to override the redirection.
    *
-   * @param \Drupal\Core\Url| $entry_point_URL
-   *   An optional URL object of the entry point of the current flow used as a fallback URL.
-   *
-   * @return string|NULL
+   * @return \Drupal\Core\Url|NULL
    *   The route name to progress to OR NULL if there is no route within the flow to go to.
    */
-  public function progressRoute($operation = NULL, $entry_point_URL = NULL);
+  public function progress($operation = NULL);
 
   /**
    * Get a step by the form id.

@@ -34,6 +34,9 @@ class ParMemberUploadSuccessForm extends ParBaseForm {
       ]
     ];
 
+    // In order to redirect to a page outside this flow.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
+
     return parent::buildForm($form, $form_state);
   }
 

@@ -32,11 +32,13 @@ class ParOrganisationSuggestionForm extends ParBaseForm {
     }
     if (isset($par_data_organisation)) {
       if (!$par_data_organisation->get('field_person')->isEmpty()) {
-        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->progressRoute('review'), $this->getRouteParams());
+        $url = $this->getFlowNegotiator()->getFlow()->progress('review');
+        $form_state->setRedirectUrl($url);
       }
       elseif ($par_data_organisation->get('field_person')->isEmpty()
         && !$par_data_organisation->get('field_premises')->isEmpty()) {
-        $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->progressRoute('add_contact'), $this->getRouteParams());
+        $url = $this->getFlowNegotiator()->getFlow()->progress('add_contact');
+        $form_state->setRedirectUrl($url);
       }
     }
   }

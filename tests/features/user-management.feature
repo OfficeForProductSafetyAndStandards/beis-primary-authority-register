@@ -182,6 +182,10 @@ Feature: User management
         And I click the link text "Done"
 
         # Check the user details have been updated and the contact records merged.
+        Then the element "h1.heading-xlarge" contains the text "Profile"
+        Then the element "h1.heading-xlarge" contains the text "Dr Sally McHaels"
+        When I click the link text "Done"
+
         Then the element "h1.heading-xlarge" contains the text "People"
         When I add "par_user_management_multiple@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
