@@ -2,6 +2,7 @@
 
 namespace Drupal\par_error_handling\EventSubscriber;
 
+use Drupal\Core\Site\Settings;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -28,6 +29,8 @@ class ErrorPageSubscriber implements EventSubscriberInterface {
     $file_path = dirname(__FILE__) . '/../../assets/error.html';
     $html = file_get_contents($file_path);
 
+    $error_level = \Drupal::configFactory()->get('system.logging')->get('error_level');
+
     // Log all errors with a custom code.
     $log = \Drupal::logger('par_exception');
     $custom_code = substr(uniqid(), -7, -1);
@@ -35,7 +38,8 @@ class ErrorPageSubscriber implements EventSubscriberInterface {
 
     $html = $html ? preg_replace('/\>990001\</', ">{$custom_code}<", $html) : NULL;
 
-    if ($html) {
+    // Only show friendly error messages if verbose reporting is disabled.
+    if ($html && $error_level !== ERROR_REPORTING_DISPLAY_VERBOSE) {
       return $event->setResponse(new Response($html));
     }
   }
