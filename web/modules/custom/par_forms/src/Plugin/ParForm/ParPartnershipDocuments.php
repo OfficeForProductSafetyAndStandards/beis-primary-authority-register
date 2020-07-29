@@ -82,16 +82,15 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
       }
       if (isset($add_inspection_list_link) && $add_inspection_list_link instanceof Link) {
-        $form['details']['inspection_plans']['link'] = [
-          '#type' => 'markup',
-          '#markup' => $add_inspection_list_link->toString(),
-        ];
-
         $form['details']['inspection_plans']['document_count'] = [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => $this->t("There are <strong>@count</strong> inspection plans covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('isp_count', $cardinality, NULL)]),
+        ];
 
+        $form['details']['inspection_plans']['link'] = [
+          '#type' => 'markup',
+          '#markup' => $add_inspection_list_link->toString(),
         ];
       }
     }
@@ -112,15 +111,15 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
       }
       if (isset($add_advice_list_link) && $add_advice_list_link instanceof Link) {
-        $form['details']['advice']['link'] = [
-          '#type' => 'markup',
-          '#markup' => $add_advice_list_link->toString(),
-        ];
-
         $form['details']['advice']['document_count'] = [
           '#type' => 'html_tag',
           '#tag' => 'div',
           '#value' => $this->t("There are <strong>@count</strong> advice documents covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('advice_count', $cardinality, NULL)]),
+        ];
+
+        $form['details']['advice']['link'] = [
+          '#type' => 'markup',
+          '#markup' => $add_advice_list_link->toString(),
         ];
       }
     }
