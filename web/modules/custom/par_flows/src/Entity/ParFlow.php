@@ -344,10 +344,8 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    *
    * @param string $operation
    *   The operation being performed, mandatory.
-   * @param string $params
+   * @param array $params
    *   Additional params to be used for determining the route.
-   * @param string $current_step
-   *   An optional step to start from
    *
    * @throws \Drupal\par_flows\ParFlowException
    *
