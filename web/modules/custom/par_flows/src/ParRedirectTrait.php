@@ -109,20 +109,4 @@ trait ParRedirectTrait {
     return \Drupal::service('par_flows.data_handler')->getParameter($key);
   }
 
-  /**
-   * PAR specific redirection.
-   */
-  public function parRedirect($route_name, array $route_parameters = [], array $options = [], $status = 302) {
-    // Determine whether to use the 'destination' query parameter
-    // to determine redirection preferences.
-    $options = [];
-    $query = $this->getRequest()->query;
-    if ($this->skipQueryRedirection && $query->has('destination')) {
-      $options['query']['destination'] = $query->get('destination');
-      $query->remove('destination');
-    }
-
-    return $this->redirect($route_name, $route_parameters, $options, $status);
-  }
-
 }

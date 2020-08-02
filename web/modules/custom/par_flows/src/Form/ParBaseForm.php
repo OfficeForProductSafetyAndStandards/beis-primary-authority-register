@@ -57,18 +57,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   protected $accessResult;
 
   /**
-   * Whether to skip redirection based on the 'destination' query parameter.
-   *
-   * This is typically done if we want to group two sets of forms together,
-   * in which case we ignore the destination parameter for this form but
-   * pass it on to the next route. Once the next form is completed it will be
-   * redirected to the destination parameter.
-   *
-   * @var boolean
-   */
-  protected $skipQueryRedirection = FALSE;
-
-  /**
    * Keys to be ignored for the saved data.
    *
    * Example: ['save', 'next', 'cancel'].
