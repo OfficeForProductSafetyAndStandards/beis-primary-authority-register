@@ -42,12 +42,12 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
         $description = $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus(), $par_data_enforcement_action->getParStatus());
       }
       elseif ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::BLOCKED) {
-        $this->setDefaultValuesByKey("action_status_notes", $cardinality, $par_data_enforcement_action->getPrimaryAuthorityNotes());
+        $this->setDefaultValuesByKey("action_status_notes", $cardinality, $par_data_enforcement_action->getPlain('primary_authority_notes'));
 
         $description = $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus(), $par_data_enforcement_action->getParStatus());
       }
       elseif ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::REFERRED) {
-        $this->setDefaultValuesByKey("action_status_notes", $cardinality, $par_data_enforcement_action->getReferralNotes());
+        $this->setDefaultValuesByKey("action_status_notes", $cardinality, $par_data_enforcement_action->getPlain('referral_notes'));
 
         $description = $par_data_enforcement_action->getStatusDescription($par_data_enforcement_action->getRawStatus(), $par_data_enforcement_action->getParStatus());
       }
@@ -182,5 +182,5 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
   public function getComponentActions($actions = [], $count = NULL) {
     return $actions;
   }
-  
+
 }
