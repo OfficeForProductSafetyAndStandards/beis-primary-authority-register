@@ -347,7 +347,7 @@ class ParDataEnforcementAction extends ParDataEntity {
    *
    */
   public function getReferralNotes() {
-    return $this->get('referral_notes')->getString();
+    return $this->getPlain('referral_notes');
   }
 
   /**
@@ -358,7 +358,7 @@ class ParDataEnforcementAction extends ParDataEntity {
    *
    */
   public function getPrimaryAuthorityNotes() {
-    return $this->get('primary_authority_notes')->getString();
+    return $this->getPlain('primary_authority_notes');
   }
 
   /**
