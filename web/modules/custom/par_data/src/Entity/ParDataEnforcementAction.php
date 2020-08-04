@@ -229,13 +229,13 @@ class ParDataEnforcementAction extends ParDataEntity {
   }
 
   /**
-   * Revoke if this entity is revokable and is not new
+   * Block if this entity is can be blocked and is not new.
    *
    * @param string $authority_notes
    *  primary authority notes submitted when the status is updated to blocked in the form.
    *
    * @return boolean
-   *   True if the entity was revoked, false for all other results.
+   *   True if the entity was blocked, false for all other results.
    */
   public function block($authority_notes, $save = TRUE) {
     if ($this->isNew()) {
@@ -245,7 +245,10 @@ class ParDataEnforcementAction extends ParDataEntity {
     if (!$this->isBlocked()) {
       try {
         $this->setParStatus(self::BLOCKED);
-        $this->set('primary_authority_notes', $authority_notes);
+        $this->get('primary_authority_notes')->setValue([
+          'value' => $authority_notes,
+          'format' => 'plain_text',
+        ]);
       }
       catch (ParDataException $e) {
         // If the status could not be updated we want to log this but continue.
@@ -269,7 +272,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   /**
    * Refer an Action of an Enforcement notification.
    *
-   * @param string $authority_notes
+   * @param string $refer_notes
    *  referral notes indicating the reason for the referral status update in the form.
    *
    * @return boolean
@@ -284,7 +287,10 @@ class ParDataEnforcementAction extends ParDataEntity {
     if (!$this->isReferred()) {
       try {
         $this->setParStatus(self::REFERRED);
-        $this->set('referral_notes', $refer_notes);
+        $this->get('referral_notes')->setValue([
+          'value' => $refer_notes,
+          'format' => 'plain_text',
+        ]);
       }
       catch (ParDataException $e) {
         // If the status could not be updated we want to log this but continue.
@@ -337,28 +343,6 @@ class ParDataEnforcementAction extends ParDataEntity {
 
     // Actions can only be referred once.
     return $this->get('field_action_referral')->isEmpty();
-  }
-
-  /**
-   * Get the referred note data from the current action.
-   *
-   * @return String referred_text | NULL
-   *   The referred text stored on the current action or null.
-   *
-   */
-  public function getReferralNotes() {
-    return $this->getPlain('referral_notes');
-  }
-
-  /**
-   * Get the primary authority notes data from the current action.
-   *
-   * @return String primary_authority_notes | NULL
-   *   The referred text stored on the current action or null.
-   *
-   */
-  public function getPrimaryAuthorityNotes() {
-    return $this->getPlain('primary_authority_notes');
   }
 
   /**
