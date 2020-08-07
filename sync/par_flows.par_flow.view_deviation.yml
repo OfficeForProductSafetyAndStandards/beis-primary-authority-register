@@ -35,3 +35,4 @@ steps:
         cardinality: 1
     redirect:
       save: 1
+      cancel: 1

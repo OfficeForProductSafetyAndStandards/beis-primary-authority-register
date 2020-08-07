@@ -41,6 +41,9 @@ class ParEnforcementSendController extends ParBaseController {
       $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_detail', $par_data_enforcement_actions);
     }
 
+    // Change the action to done.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
+
     parent::loadData();
   }
 
