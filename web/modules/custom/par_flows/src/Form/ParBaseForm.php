@@ -63,7 +63,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *
    * @var array
    */
-  protected $ignoreValues = ['save', 'done', 'next', 'cancel'];
+  protected $ignoreValues = ['save', 'done', 'next', 'cancel', 'back'];
 
   /**
    * List the mapping between the entity field and the form field.
@@ -223,7 +223,12 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // so the actions must always come last.
     $form['actions']['#weight'] = 999;
 
-    // Only ever place a 'done' action by itself.
+    // The 'done' is a primary and final action, meaning no other actions should be performed.
+    // The 'upload', 'save' and 'next are all primary actions with varying subtleties.
+    // The 'back' and 'cancel' are secondary actions and can complement a primary action.
+
+    // The done action completes the flow without performing any changes,
+    // removing any remaining persistent data in the process.
     if ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
       $form['actions']['done'] = [
         '#type' => 'submit',
@@ -238,7 +243,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       ];
     }
     else {
-      // Only ever do one of either 'next', 'save', 'upload'.
+      // The upload button indicates that file uploads are being handled,
+      // usually within a flow and progressing to the next step.
       if ($this->getFlowNegotiator()->getFlow()->hasAction('upload')) {
         $form['actions']['upload'] = [
           '#type' => 'submit',
@@ -251,6 +257,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           ],
         ];
       }
+      // The save button is meant to indicate the step makes permanent changes,
+      // usually with the effect of completing the flow and redirecting onwards.
       elseif ($this->getFlowNegotiator()->getFlow()->hasAction('save')) {
         $form['actions']['save'] = [
           '#type' => 'submit',
@@ -264,6 +272,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           ],
         ];
       }
+      // The next action is designed to continue to the next step without
+      // processing any data.
       elseif ($this->getFlowNegotiator()->getFlow()->hasAction('next')) {
         $form['actions']['next'] = [
           '#type' => 'submit',
@@ -277,12 +287,27 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         ];
       }
 
+      // The cancel action is designed to cancel out of the flow completely.
+      // Removing any persistent flow data in the process.
       if ($this->getFlowNegotiator()->getFlow()->hasAction('cancel')) {
         $form['actions']['cancel'] = [
           '#type' => 'submit',
           '#name' => 'cancel',
-          '#value' => $this->t('Cancel'),
+          '#value' => $this->getFlowNegotiator()->getFlow()->getSecondaryActionTitle('Cancel'),
           '#submit' => ['::cancelForm'],
+          '#limit_validation_errors' => [],
+          '#attributes' => [
+            'class' => ['btn-link']
+          ],
+        ];
+      }
+      // The back action is a lesser version of the cancel action regressing
+      // back a step but without removing any persistent data.
+      elseif ($this->getFlowNegotiator()->getFlow()->hasAction('back')) {
+        $form['actions']['cancel'] = [
+          '#type' => 'submit',
+          '#name' => 'cancel',
+          '#value' => $this->getFlowNegotiator()->getFlow()->getSecondaryActionTitle('Back'),
           '#limit_validation_errors' => [],
           '#attributes' => [
             'class' => ['btn-link']
