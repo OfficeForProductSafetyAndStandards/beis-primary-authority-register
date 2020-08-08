@@ -47,7 +47,7 @@ When('I apply for a coordinated partnership', function () {
 })
 When('I enter information about the partnership', function () {
     return shared
-        .assert.containsText('h1.heading-xlarge',' Information about the new partnership')
+        .assert.containsText('h1.heading-xlarge','Information about the new partnership')
         .click('#edit-next')
         .waitForElementVisible('.error-summary', 1000)
         .assert.containsText('.error-summary', 'You must enter some information about this partnership')
