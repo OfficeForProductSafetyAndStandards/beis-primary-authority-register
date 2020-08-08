@@ -12,7 +12,7 @@ use Drupal\par_invite_user_flows\ParPartnershipFlowsTrait;
  */
 class ParConfirmedController extends ParBaseController {
 
-  protected $pageTitle = 'Thank you for updating your profile';
+  protected $pageTitle = 'The invitation has been sent';
 
   /**
    * {@inheritdoc}

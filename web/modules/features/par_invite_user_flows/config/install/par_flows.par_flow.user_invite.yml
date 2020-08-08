@@ -56,5 +56,7 @@ steps:
       select_authority: par_update_institution
       select_organisation: par_update_institution
       invite: par_profile_invite
+    redirect:
+      save: 6
   6:
     route: par_invite_user_flows.completed

@@ -266,6 +266,7 @@ Feature: User management
         Then the element "h1.heading-xlarge" contains the text "Invitation review"
         Then the element ".par-invite-review" contains the text "An invitation will be sent to this person to invite them to join the Primary Authority Register."
         When I click on the button "#edit-save"
+        Then the element "h1.heading-xlarge" contains the text "The invitation has been sent"
 
 
     @user-management @ci @smoke
