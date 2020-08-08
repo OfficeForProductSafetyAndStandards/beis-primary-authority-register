@@ -1,0 +1,204 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_person\/123372?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_person\/person"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/2?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/2?_format=hal_json"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/field_user_account": [
+            {
+                "href": "http:\/\/default\/user\/15595?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 123372
+        }
+    ],
+    "type": [
+        {
+            "target_id": "person"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "7fe49d5e-75fa-4aa2-94f6-ef9e3999aeed"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 40166
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/2?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "1a6dc8cd-fea2-486b-bd0e-12572c6a26ab"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/2?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "1a6dc8cd-fea2-486b-bd0e-12572c6a26ab"
+                    }
+                ]
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_person\/person\/field_user_account": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/15595?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "1639f81a-a0fb-4d51-bd8b-324728b24711"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1596907434
+        }
+    ],
+    "changed": [
+        {
+            "value": 1596909160
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1596907434
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5f2edfaaa620b",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "salutation": [
+        {
+            "value": "Dr"
+        }
+    ],
+    "first_name": [
+        {
+            "value": "Elmo"
+        }
+    ],
+    "last_name": [
+        {
+            "value": "Jones"
+        }
+    ],
+    "work_phone": [
+        {
+            "value": "020 7946 0087"
+        }
+    ],
+    "mobile_phone": [
+        {
+            "value": "07700 900877"
+        }
+    ],
+    "email": [
+        {
+            "value": "business.partnership-apply@example.com"
+        }
+    ],
+    "communication_email": [
+        {
+            "value": true
+        }
+    ],
+    "communication_phone": [
+        {
+            "value": false
+        }
+    ],
+    "communication_mobile": [
+        {
+            "value": false
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

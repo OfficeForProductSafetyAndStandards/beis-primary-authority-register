@@ -17,7 +17,10 @@ class ParPartnershipCompletedController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
-  public function content(ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
+  public function content() {
+    // Get the appropriate form data.
+    $cid_contact = $this->getFlowNegotiator()->getFormKey('organisation_contact');
+    $recipient_email = $this->getFlowDataHandler()->getDefaultValues('email', '', $cid_contact);
 
     $build['next_steps'] = [
       '#title' => $this->t('What happens next?'),
@@ -25,13 +28,13 @@ class ParPartnershipCompletedController extends ParBaseController {
     ];
     $build['next_steps']['notified'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('An email has been sent to %email.', ['%email' => $par_data_person->get('email')->getString()]),
+      '#markup' => $this->t('An email has been sent to %email.', ['%email' => $recipient_email]),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
     $build['next_steps']['info'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('Once they have completed their details the partnership will be eligible for nomination', ['%email' => $par_data_person->get('email')->getString()]),
+      '#markup' => $this->t('Once they have completed their details the partnership will be eligible for nomination'),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
@@ -42,8 +45,13 @@ class ParPartnershipCompletedController extends ParBaseController {
       '#suffix' => '</p>',
     ];
 
-    // Make sure to add the partnership cacheability data to this form.
-    $this->addCacheableDependency($par_data_partnership);
+    // Clear the data once this form is built.
+    $this->getFlowDataHandler()->deleteStore();
+    // These pages can't be cached.
+    $this->killSwitch->trigger();
+
+    // Change the action to done.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
 
     return parent::build($build);
   }

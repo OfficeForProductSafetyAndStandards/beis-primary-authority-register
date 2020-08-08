@@ -1,0 +1,103 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/user\/15595?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+        }
+    },
+    "uid": [
+        {
+            "value": 15595
+        }
+    ],
+    "uuid": [
+        {
+            "value": "1639f81a-a0fb-4d51-bd8b-324728b24711"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "preferred_langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "preferred_admin_langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "business.partnership-apply"
+        }
+    ],
+    "mail": [
+        {
+            "value": "business.partnership-apply@example.com"
+        }
+    ],
+    "timezone": [
+        {
+            "value": "UTC"
+        }
+    ],
+    "pass": [
+        {
+            "value": "TestPassword"
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": 1521559594
+        }
+    ],
+    "changed": [
+        {
+            "value": 1521559594,
+            "lang": "en"
+        }
+    ],
+    "access": [
+        {
+            "value": 1596909139
+        }
+    ],
+    "login": [
+        {
+            "value": 1596909139
+        }
+    ],
+    "init": [
+        {
+            "value": "business.partnership-apply@example.com"
+        }
+    ],
+    "roles": [
+        {
+            "target_id": "par_organisation"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "field_gdpr": [
+        {
+            "value": true
+        }
+    ]
+}

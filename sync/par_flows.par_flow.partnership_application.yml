@@ -41,23 +41,32 @@ steps:
     route: par_partnership_application_flows.partnership_application_organisation_confirm
     form_id: par_partnership_organisation_suggestion
     components:
-      organisation_suggestion: {  }
+      organisation_suggestion: { }
     form_data:
       organisation_select: par_partnership_application_organisation
     redirect:
-      review: 10
+      review: 11
       add_contact: 9
   8:
     route: par_partnership_application_flows.partnership_application_organisation_address
     form_id: par_partnership_address
     components:
-      address_lookup: {  }
+      address_lookup: { }
   9:
     route: par_partnership_application_flows.partnership_application_organisation_contact
     form_id: par_partnership_contact
     components:
-      contact_details: {  }
+      contact_details: { }
   10:
+    route: par_partnership_application_flows.partnership_application_invite
+    form_id: par_partnership_invite
+    components:
+      invite: { }
+    form_data:
+      contact: par_partnership_contact
+    redirect:
+      next: 11
+  11:
     route: par_partnership_application_flows.partnership_application_review
     form_id: par_partnership_application_confirmation
     form_data:
@@ -69,6 +78,7 @@ steps:
       organisation_select: par_partnership_organisation_suggestion
       organisation_address: par_partnership_address
       organisation_contact: par_partnership_contact
+      invite: par_partnership_invite
     redirect:
       authority_select: 1
       application_type: 2
@@ -79,15 +89,8 @@ steps:
       organisation_select: 7
       organisation_address: 8
       organisation_contact: 9
-      save: 11
-  11:
-    route: par_partnership_application_flows.partnership_application_invite
-    form_id: par_partnership_invite
-    components:
-      invite: {  }
-    form_data:
-      contact: par_partnership_contact
-    redirect:
-      next: 12
+      save: 12
   12:
     route: par_partnership_application_flows.partnership_application_completed
+    form_data:
+      organisation_contact: par_partnership_contact
