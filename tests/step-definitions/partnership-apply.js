@@ -13,7 +13,7 @@ const email = faker.fake("{{internet.email}}")
 
 const partnership_information = faker.fake("{{lorem.paragraph}}")
 
-const postcode = faker.fake("{{address.zipCode}}")
+const postcode = 'OX5 3BS' // FakerJS doesn't generate valid postcodes.
 const city = faker.fake("{{address.city}}")
 const streetaddress1 = faker.fake("{{address.streetName}}")
 const streetaddress2 = faker.fake("{{address.state}}")
@@ -65,7 +65,7 @@ When('I enter the business name {string}', function (organisation) {
         .setValue('#edit-name', organisation)
         .click('#edit-next')
 })
-When('I choose an existing business', function (organisation) {
+When('I choose an existing business', function () {
     return shared
         .assert.containsText('h1.heading-xlarge', 'Are you looking for one of these businesses?')
         .click('input[name="par_data_organisation_id"]:nth-child(1)')

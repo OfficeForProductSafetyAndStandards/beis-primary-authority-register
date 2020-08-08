@@ -22,7 +22,7 @@ Feature: Apply for a new partnership
         And I review the partnership application between "Lower East Side Borough Council" and "Business-for-partnership-application"
 
     @ci @coordinated
-    Scenario: New coordinated Partnership
+    Scenario: Apply for a new coordinated Partnership
         When I apply for a coordinated partnership
         And I enter information about the partnership
         And I enter the business name "Coordinator-for-partnership-application"

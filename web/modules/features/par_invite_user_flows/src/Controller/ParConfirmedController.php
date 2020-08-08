@@ -18,7 +18,6 @@ class ParConfirmedController extends ParBaseController {
    * {@inheritdoc}
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
-
     // Information about the next steps.
     $build['next_steps'] = [
       '#title' => $this->t('What happens next?'),
