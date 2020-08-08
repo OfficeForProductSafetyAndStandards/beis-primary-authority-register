@@ -18,6 +18,7 @@ Feature: Apply for a new partnership
         When I apply for a direct partnership
         And I enter information about the partnership
         And I enter the business name "Sesame Street Farming"
+        And I choose an existing business
         And I review the partnership application between "Lower East Side Borough Council" and "Business-for-partnership-application"
 
     @ci @coordinated
