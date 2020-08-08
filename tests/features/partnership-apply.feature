@@ -19,7 +19,7 @@ Feature: Apply for a new partnership
         And I enter information about the partnership
         And I enter the business name "Sesame Street Farming"
         And I choose an existing business
-        And I review the partnership application between "Lower East Side Borough Council" and "Business-for-partnership-application"
+        And I review the partnership application between "Lower East Side Borough Council" and "Sesame Street Farming"
 
     @ci @coordinated
     Scenario: Apply for a new coordinated Partnership
