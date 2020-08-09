@@ -49,6 +49,7 @@ class ParFlowLink extends AreaPluginBase {
     $options['title'] = ['default' => []];
     $options['assistive_text'] = ['default' => []];
     $options['link'] = ['default' => []];
+    $options['class'] = ['default' => []];
 
     return $options;
   }
@@ -79,6 +80,13 @@ class ParFlowLink extends AreaPluginBase {
       '#type' => 'textfield',
       '#default_value' => $this->options['link']  ?: '',
     ];
+
+    $form['class'] = [
+      '#title' => 'Link classes',
+      '#description' => 'Enter any additional classes to be added to the link, separated by a comma. By default `btn-link` will be added to all links.',
+      '#type' => 'textfield',
+      '#default_value' => $this->options['class']  ?: '',
+    ];
   }
 
   /**
@@ -99,11 +107,16 @@ class ParFlowLink extends AreaPluginBase {
    * {@inheritdoc}
    */
   public function render($empty = FALSE) {
-    $path = strip_tags(Html::decodeEntities($this->options['link'] ?: ''));
+    $path = $this->options['link'] ?: '';
+    $classes = explode(',', $this->options['class'] ?: 'btn-link');
     $title = trim(strip_tags(Html::decodeEntities($this->options['title'] ?: '')));
     $assistive_text = strip_tags(Html::decodeEntities($this->options['assistive_text'] ?: ''));
 
-    $options = !empty($assistive_text) ? ['attributes' => ['aria-label' => $assistive_text]] : [];
+    $attributes = ['class' => $classes];
+    if (!empty($assistive_text)) {
+      $attributes['aria-label'] = $assistive_text;
+    }
+    $options = ['attributes' => $attributes];
 
     // Get the route name from the path match.
     $route_matches = $this->getRouteProvier()->getRoutesByPattern($path);

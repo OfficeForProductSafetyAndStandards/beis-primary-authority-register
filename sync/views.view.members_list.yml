@@ -988,9 +988,10 @@ display:
           group_type: group
           admin_label: ''
           empty: true
-          title: '&#9664; Back to partnership'
+          title: 'back to partnership'
           assistive_text: ''
           link: /partnership/%/organisation-details
+          class: link-back
           plugin_id: par_flow_link
       empty:
         area_text_custom:

@@ -2115,7 +2115,33 @@ display:
           plugin_id: date
       title: 'Help Desk | CSV Export | Dashboard'
       header: {  }
-      footer: {  }
+      footer:
+        par_flow_link:
+          id: par_flow_link
+          table: views
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          title: 'back to dashboard'
+          assistive_text: ''
+          link: /dashboard
+          class: link-back
+          plugin_id: par_flow_link
+        par_flow_link_1:
+          id: par_flow_link_1
+          table: views
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          title: 'back to dashboard'
+          assistive_text: ''
+          link: /helpdesk
+          class: link-back
+          plugin_id: par_flow_link
       empty: {  }
       relationships:
         field_authority:
@@ -2230,20 +2256,7 @@ display:
         weight: 0
         context: '0'
         menu_name: account
-      header:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content:
-            value: "Please do not share data exported from the Primary Authority Register with third parties, except for other government departments where the data will be used directly for purposes related to the Primary Authority, such as reporting requirements.\r\n\r\nPlease see the <a href=\"https://www.gov.uk/help/privacy-policy\" target=\"_blank\">Privacy Notice</a> for more information."
-            format: full_html
-          plugin_id: text
+      header: {  }
       defaults:
         header: false
         query: false
@@ -4031,25 +4044,14 @@ display:
     display_options:
       display_extenders: {  }
       path: helpdesk/partnerships
-      footer:
-        area_text_custom:
-          id: area_text_custom
-          table: views
-          field: area_text_custom
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content: '<a href="/helpdesk/partnerships/csv">CSV Report Download</a>'
-          plugin_id: text_custom
       defaults:
-        footer: false
+        footer: true
         empty: false
         fields: false
         title: false
         filters: false
         filter_groups: false
+        header: false
       menu:
         type: none
         title: Dashboard
@@ -5126,6 +5128,19 @@ display:
         operator: AND
         groups:
           1: AND
+      header:
+        par_flow_link:
+          id: par_flow_link
+          table: views
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          title: 'report download (csv)'
+          assistive_text: ''
+          link: /helpdesk/partnerships/csv
+          plugin_id: par_flow_link
     cache_metadata:
       max-age: -1
       contexts:
