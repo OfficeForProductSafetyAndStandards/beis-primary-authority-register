@@ -132,8 +132,6 @@ When('I review the partnership application between {string} and {string}', funct
         .assert.containsText('#edit-about-partnership', partnership_information)
         .assert.containsText('#edit-organisation-name', organisation)
         .assert.containsText('#edit-authority-name', authority)
-        .assert.containsText('#edit-organisation-contact', email)
-        .assert.containsText('#edit-organisation-registered-address', postcode)
         .click('#edit-terms-authority-agreed')
         .click('#edit-save')
 })
