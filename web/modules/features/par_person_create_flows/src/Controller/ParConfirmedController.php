@@ -18,6 +18,12 @@ class ParConfirmedController extends ParBaseController {
    * {@inheritdoc}
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
+    $cid_review = $this->getFlowNegotiator()->getFormKey('review');
+    $par_data_person_id = $this->getFlowDataHandler()->getTempDataValue('par_data_person_id', $cid_review);
+    $par_data_person = $par_data_person_id ? ParDataPerson::load($par_data_person_id) : NULL;
+    if ($par_data_person) {
+      $this->getFlowDataHandler()->setParameter('par_data_person', $par_data_person);
+    }
 
     // Information about the next steps.
     $build['next_steps'] = [
@@ -43,7 +49,13 @@ class ParConfirmedController extends ParBaseController {
     // Change the action to save.
     $this->getFlowNegotiator()->getFlow()->setActions(['done']);
 
-    return parent::build($build);
+    // Data must be deleted after the form has been built.
+    $build = parent::build($build);
+    $this->getFlowDataHandler()->deleteStore();
+    // These pages can't be cached.
+    $this->killSwitch->trigger();
+
+    return $build;
   }
 
 }
