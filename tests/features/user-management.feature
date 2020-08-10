@@ -65,7 +65,7 @@ Feature: User management
         # Choose authorities for the person
         Then the element "h1.heading-xlarge" contains the text "Your new person has been created"
         And I click the link text "Done"
-        Then the element "h1.heading-xlarge" contains the text "<title> <firstname> <lastname>"
+        Then the element "h1.heading-xlarge" contains the text "<title> <first_name> <last_name>"
 
         Examples:
             | email                                             | title | first_name    | last_name | work_phone    | mobile_phone  | role          |
