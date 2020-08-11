@@ -295,6 +295,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#name' => 'cancel',
           '#value' => $this->getFlowNegotiator()->getFlow()->getSecondaryActionTitle('Cancel'),
           '#submit' => ['::cancelForm'],
+          '#validate' => ['::validateCancelForm'],
           '#limit_validation_errors' => [],
           '#attributes' => [
             'class' => ['btn-link']
@@ -309,6 +310,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#name' => 'cancel',
           '#value' => $this->getFlowNegotiator()->getFlow()->getSecondaryActionTitle('Back'),
           '#submit' => ['::backForm'],
+          '#validate' => ['::validateCancelForm'],
           '#limit_validation_errors' => [],
           '#attributes' => [
             'class' => ['btn-link']
@@ -326,6 +328,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     ];
 
     return $form + $cache;
+  }
+
+
+
+  /**
+   * A false validation handler.
+   */
+  public function validateCancelForm(array &$form, FormStateInterface $form_state) {
+    // Do nothing.
   }
 
   /**
