@@ -304,10 +304,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       // The back action is a lesser version of the cancel action regressing
       // back a step but without removing any persistent data.
       elseif ($this->getFlowNegotiator()->getFlow()->hasAction('back')) {
-        $form['actions']['cancel'] = [
+        $form['actions']['back'] = [
           '#type' => 'submit',
           '#name' => 'cancel',
           '#value' => $this->getFlowNegotiator()->getFlow()->getSecondaryActionTitle('Back'),
+          '#submit' => ['::backForm'],
           '#limit_validation_errors' => [],
           '#attributes' => [
             'class' => ['btn-link']
@@ -500,6 +501,29 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     // Delete form storage.
     $this->getFlowDataHandler()->deleteStore();
+
+    if ($url && $url instanceof Url) {
+      $form_state->setRedirectUrl($url);
+    }
+  }
+
+  /**
+   * Back submit handler to progress back preserving the current flow temporary form data.
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   */
+  public function backForm(array &$form, FormStateInterface $form_state) {
+    try {
+      // Get the cancel route from the flow.
+      $url = $this->getFlowNegotiator()->getFlow()->progress('back');
+    }
+    catch (ParFlowException $e) {
+
+    }
+    catch (RouteNotFoundException $e) {
+
+    }
 
     if ($url && $url instanceof Url) {
       $form_state->setRedirectUrl($url);
