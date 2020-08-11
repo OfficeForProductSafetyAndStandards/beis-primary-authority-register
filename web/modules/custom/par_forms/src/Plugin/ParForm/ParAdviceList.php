@@ -90,25 +90,25 @@ class ParAdviceList extends ParFormPluginBase {
 
         // Check permissions before adding the links for all operations.
         if ($this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
-
           // Create custom title element to add context to the edit link.
           $file_list_title = implode(", ", $file_list);
 
           // We need to create an array of all action links.
-          $links = [
-            [
-              '#type' => 'markup',
-              '#markup' => $this->getFlowNegotiator()->getFlow()
-                ->getNextLink(
-                  'edit',
-                  ['par_data_advice' => $advice->id()],
-                  ['attributes' => ['title' => "edit {$file_list_title}"]]
-                )
-                ->setText('edit')
-                ->toString(),
-            ],
-          ];
-          $form['documentation_list']['#rows'][$key]['data']['actions'] = $this->getRenderer()->render($links);
+          try {
+            $params = ['par_data_advice' => $advice->id()];
+            $link_options = ['attributes' => ['title' => "edit {$file_list_title}"]];
+            $link = $this->getFlowNegotiator()->getFlow()->getFlowLink('edit', 'edit', $params, $link_options);
+            $links = [
+              [
+                '#type' => 'markup',
+                '#markup' => $link->toString(),
+              ],
+            ];
+            $form['documentation_list']['#rows'][$key]['data']['actions'] = $this->getRenderer()->render($links);
+          }
+          catch (ParFlowException $e) {
+
+          }
         }
       }
     }

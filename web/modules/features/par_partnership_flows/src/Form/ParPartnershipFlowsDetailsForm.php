@@ -49,6 +49,10 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
 
+    // In order to redirect to a page outside this flow.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Save');
+
     return parent::buildForm($form, $form_state);
   }
 

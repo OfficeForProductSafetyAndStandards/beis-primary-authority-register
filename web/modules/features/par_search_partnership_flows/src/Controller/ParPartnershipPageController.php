@@ -40,6 +40,10 @@ class ParPartnershipPageController extends ParBaseController {
       $this->addCacheableDependency($par_data_partnership);
     }
 
+    // In order to redirect to a page outside this flow.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Save');
+
     return parent::build($build);
 
   }

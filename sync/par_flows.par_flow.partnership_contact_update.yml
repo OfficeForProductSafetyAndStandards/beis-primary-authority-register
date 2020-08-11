@@ -14,10 +14,11 @@ states:
   - par_data_partnership
   - type
   - par_data_person
+final_routes: {  }
 steps:
   1:
     route: par_partnership_contact_update_flows.create_contact
-    form_id: par_add_contact
+    form_id: par_update_contact
     components:
       contact_details_full:
         limit_all_users: true
@@ -28,7 +29,7 @@ steps:
       choose_account:
         require_user: true
     form_data:
-      contact_details: par_add_contact
+      contact_details: par_update_contact
   3:
     route: par_partnership_contact_update_flows.choose_role
     form_id: par_choose_role
@@ -38,16 +39,16 @@ steps:
           - par_authority
           - par_organisation
     form_data:
-      contact_details: par_add_contact
+      contact_details: par_update_contact
       user_account: par_person_link
       choose_account: par_person_choose_account
   4:
     route: par_partnership_contact_update_flows.invite_contact
     form_id: par_person_invite
     components:
-      invite: {  }
+      invite: {}
     form_data:
-      contact_details: par_add_contact
+      contact_details: par_update_contact
       user_account: par_person_link
       choose_account: par_person_choose_account
   5:
@@ -57,12 +58,9 @@ steps:
       contact_locations:
         weight: 11
     form_data:
-      contact_details: par_add_contact
+      contact_details: par_update_contact
       choose_account: par_person_choose_account
       select_authority: par_add_institution
       select_organisation: par_add_institution
       role_select: par_choose_role
       invite: par_person_invite
-    redirect:
-      save: 1
-      cancel: 1

@@ -14,6 +14,9 @@ states:
   - par_data_partnership
   - type
   - par_data_advice
+final_routes:
+  - par_partnership_flows.authority_advice_list
+  - par_partnership_flows.organisation_advice_list
 steps:
   1:
     route: par_partnership_document_remove_flows.remove_advice

@@ -52,8 +52,8 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
     }
     elseif (count($inspection_plans) === 1) {
       $this->getFlowDataHandler()->setTempDataValue('inspection_plan_id', key($inspection_plans));
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     // Checkboxes for inspection plans.
