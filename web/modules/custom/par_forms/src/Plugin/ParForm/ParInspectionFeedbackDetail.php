@@ -65,14 +65,13 @@ class ParInspectionFeedbackDetail extends ParFormPluginBase {
 
     // Add operation link for updating notice details.
     try {
+      $link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('request_details', 'Change the details about this request', $params);
       $form['inspection_feedback']['change_notes'] = [
         '#type' => 'markup',
         '#weight' => 99,
         '#markup' => t('@link', [
-          '@link' => $this->getFlowNegotiator()->getFlow()
-            ->getLinkByCurrentOperation('request_details', $params, [])
-            ->setText('Change the details about this request')
-            ->toString(),
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }

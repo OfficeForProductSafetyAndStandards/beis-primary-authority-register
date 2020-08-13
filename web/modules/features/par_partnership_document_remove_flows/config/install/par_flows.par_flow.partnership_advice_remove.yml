@@ -7,6 +7,9 @@ default_title: null
 default_section_title: 'Primary Authority partnership information'
 description: ''
 save_method: end
+final_routes:
+  - par_partnership_flows.authority_advice_list
+  - par_partnership_flows.organisation_advice_list
 states:
   - par_data_partnership
   - type

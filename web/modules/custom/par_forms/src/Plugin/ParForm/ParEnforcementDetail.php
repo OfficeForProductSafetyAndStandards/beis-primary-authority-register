@@ -68,14 +68,13 @@ class ParEnforcementDetail extends ParFormPluginBase {
 
     // Add operation link for updating notice details.
     try {
+      $link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('enforcement_details', 'Change the summary of this enforcement', $params);
       $form['enforcement_notice']['change_summary'] = [
         '#type' => 'markup',
         '#weight' => 99,
         '#markup' => t('@link', [
-          '@link' => $this->getFlowNegotiator()->getFlow()
-            ->getLinkByCurrentOperation('enforcement_details', $params, [])
-            ->setText('Change the summary of this enforcement')
-            ->toString(),
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }

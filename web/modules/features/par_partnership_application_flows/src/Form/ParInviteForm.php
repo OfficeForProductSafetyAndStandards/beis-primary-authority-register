@@ -30,15 +30,23 @@ class ParInviteForm extends ParBaseForm {
     // The invitation type must be set first.
     $this->getFlowDataHandler()->setFormPermValue('invitation_type', $this->invite_type);
 
+    $cid_contact = $this->getFlowNegotiator()->getFormKey('contact');
+    $recipient_name = $this->getFlowDataHandler()->getDefaultValues('first_name', '', $cid_contact);
+    $recipient_email = $this->getFlowDataHandler()->getDefaultValues('email', '', $cid_contact);
+
+    $this->getFlowDataHandler()->setTempDataValue('to', $recipient_email);
+    $this->getFlowDataHandler()->setFormPermValue("recipient_name", $recipient_name);
+
     parent::loadData();
 
-    $contact = $this->getFlowDataHandler()->getParameter('par_data_person');
+    // This must overwrite the plugin defaults.
     $sender_name = $this->getFlowDataHandler()->getDefaultValues('inviter_name', '');
+    $this->getFlowDataHandler()->getDefaultValues('inviter_name', '');
     $inviting_authority = $this->getFlowDataHandler()->getDefaultValues('inviter_authority', '');
 
     $this->getFlowDataHandler()->setFormPermValue('subject', 'Invitation to complete your Primary Authority partnership application');
     $body = <<<HEREDOC
-Dear {$contact->getFullName()},
+Dear {$recipient_name},
 
 A partnership application has been started for you with {$inviting_authority}. To complete it, please log on to the Primary Authority Register using the following link:
 
@@ -49,60 +57,8 @@ It will be helpful to have basic details on your business to hand, including an 
 Thanks for your help.
 {$sender_name}
 HEREDOC;
+
     $this->getFlowDataHandler()->setFormPermValue('body', $body);
-
-    // Change the primary action title.
-    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Send invite');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
-    $invitation_type = $this->getFlowDataHandler()->getDefaultValues('invitation_type', FALSE);
-
-    // Override invite type if there were multiple roles to choose from.
-    $roles = $this->getFlowDataHandler()->getDefaultValues('roles');
-    $target_role = $this->getFlowDataHandler()->getDefaultValues('target_role');
-    if ($roles && count($roles) > 1) {
-      switch ($target_role) {
-        case 'par_enforcement':
-          $invitation_type = 'invite_enforcement_officer';
-
-          break;
-        case 'par_authority':
-          $invitation_type = 'invite_authority_member';
-
-          break;
-        case 'par_organisation':
-          $invitation_type = 'invite_organisation_member';
-
-          break;
-      }
-    }
-
-    $invite = Invite::create([
-      'type' => $invitation_type,
-      'user_id' => $this->getFlowDataHandler()->getTempDataValue('user_id'),
-      'invitee' => $this->getFlowDataHandler()->getTempDataValue('to'),
-    ]);
-    $invite->set('field_invite_email_address', $this->getFlowDataHandler()->getTempDataValue('to'));
-    $invite->set('field_invite_email_subject', $this->getFlowDataHandler()->getTempDataValue('subject'));
-    $invite->set('field_invite_email_body', $this->getFlowDataHandler()->getTempDataValue('body'));
-    $invite->setPlugin('invite_by_email');
-    if ($invite->save()) {
-      $this->getFlowDataHandler()->deleteStore();
-    }
-    else {
-      $message = $this->t('This invite could not be sent for %person on %form_id');
-      $replacements = [
-        '%invite' => $this->getFlowDataHandler()->getTempDataValue('first_name') . ' ' . $this->getFlowDataHandler()->getTempDataValue('last_name'),
-        '%person' => $this->getFlowDataHandler()->getTempDataValue('recipient_email'),
-        '%form_id' => $this->getFormId(),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-    }
   }
 
 }

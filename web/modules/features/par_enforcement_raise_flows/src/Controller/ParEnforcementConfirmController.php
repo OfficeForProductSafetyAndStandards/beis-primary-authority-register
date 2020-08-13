@@ -29,15 +29,7 @@ class ParEnforcementConfirmController extends ParBaseController {
     // In order to redirect to a page outside this flow.
     $this->getFlowNegotiator()->getFlow()->setActions(['done']);
 
-    $build = parent::build($build);
-
-    $build['done']['#markup'] = t('@link', [
-      '@link' => $this->getLinkByRoute('par_search_partnership_flows.partnership_page', $this->getRouteParams(), ['attributes' => ['class' => 'button']])
-        ->setText('Done')
-        ->toString(),
-    ]);
-
-    return $build;
+    return parent::build($build);
 
   }
 }

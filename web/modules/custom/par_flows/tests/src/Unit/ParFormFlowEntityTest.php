@@ -31,6 +31,11 @@ class ParFlowEntityTest extends UnitTestCase {
   protected $currentRoute = 'par_test_forms.second';
 
   /**
+   * The simulated previous step route for any given test.
+  */
+  protected $previousRoute = 'par_test_forms.first';
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() {
@@ -51,6 +56,7 @@ class ParFlowEntityTest extends UnitTestCase {
           'redirect' => [
             'save' => 4,
             'cancel' => 5,
+            'custom_step' => 1,
           ],
         ],
         3 => [
@@ -127,103 +133,37 @@ class ParFlowEntityTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::getNextStep
+   * @covers ::progress
    */
-  public function testGetNextStep() {
-    $next_step = $this->testFlow->getNextStep();
+  public function progress() {
+
+    // Check previous step via custom redirect operation.
+    $prev_url = $this->testFlow->progress('custom_step');
+
+    // Check the flow progresses correctly for a given operation.
+    $this->assertEquals('par_test_forms.first', $prev_url->getRouteName(), "The previous route has been correctly identified.");
+
+    $prev_url = $this->testFlow->progress('cancel');
+
+    // Check the flow progresses correctly for a given operation.
+    $this->assertEquals('par_test_forms.confirmation', $prev_url->getRouteName(), "The previous route has been correctly identified given an operation.");
+
+    // Check the default back operation is producing the expected result.
+    $prev_url = $this->testFlow->progress(ParFlow::BACK_STEP);
+
+    // Check the flow progresses correctly for a given operation.
+    $this->assertEquals('par_test_forms.first', $prev_url->getRouteName(), "The previous route has been correctly identified.");
+
+    $next_url = $this->testFlow->progress();
 
     // Check the next step is correct.
-    $this->assertEquals(3, $next_step, "The next step has been correctly identified.");
+    $this->assertEquals('par_test_forms.third', $next_url->getRouteName(), "The next route has been correctly identified.");
 
-    // Check that the next step for a given operation is correct.
-    $next_step_save = $this->testFlow->getNextStep('save');
-    $next_step_cancel = $this->testFlow->getNextStep('cancel');
+    $next_url = $this->testFlow->progress('save');
 
-    $this->assertEquals(4, $next_step_save, "The save step has been correctly identified.");
-    $this->assertEquals(5, $next_step_cancel, "The cancel step has been correctly identified.");
-
-    // Check the next step for an incorrect operation.
-    $next_step_fallback = $this->testFlow->getNextStep('non_existant_operation');
-
-    $this->assertEquals(3, $next_step_fallback, "The flow goes to the next step if an incorrect operation is provided.");
-
-    // Check the next step for an incorrect operation on the last step.
-    $this->currentRoute = 'par_test_forms.confirmation';
-    $next_step_last_fallback = $this->testFlow->getNextStep('non_existant_operation');
-
-    $this->assertEquals(1, $next_step_last_fallback, "The flow goes back to the beginning if an incorrect operation is provided.");
+    // Check the next step is correct.
+    $this->assertEquals('par_test_forms.fourth', $next_url->getRouteName(), "The next route has been correctly identified given an operation.");
   }
-
-  /**
-   * @covers ::getPrevStep
-   */
-  public function testGetPrevStep() {
-    $next_step = $this->testFlow->getPrevStep();
-
-    // Check the next step is correct.
-    $this->assertEquals(1, $next_step, "The previous step has been correctly identified.");
-
-    // Check that the next step for a given operation is correct.
-    $prev_step_save = $this->testFlow->getPrevStep('save');
-    $prev_step_cancel = $this->testFlow->getPrevStep('cancel');
-
-    $this->assertEquals(4, $prev_step_save, "The save step has been correctly identified.");
-    $this->assertEquals(5, $prev_step_cancel, "The cancel step has been correctly identified.");
-
-    // Check the next step for an incorrect operation on the first step.
-    $this->currentRoute = 'par_test_forms.first';
-    $next_step_last_fallback = $this->testFlow->getPrevStep();
-
-    $this->assertEquals(1, $next_step_last_fallback, "The flow stays at the first step.");
-  }
-
-  /**
-   * @covers ::getNextStep
-   * @covers ::getPrevStep
-   *
-   * @expectedException        \Drupal\par_flows\ParFlowException
-   * @expectedExceptionMessage The specified route does not exist.
-   */
-  public function testInvalidSteps() {
-    // Check the next step for an incorrect operation on the last step.
-    $this->currentRoute = 'non_existant.route';
-    $this->testFlow->getNextStep();
-
-    // Check the next step for an incorrect operation on the last step.
-    $this->currentRoute = 'non_existant.route';
-    $this->testFlow->getPrevStep();
-  }
-
-  /**
-   * @covers ::getNextRoute
-   */
-  public function testGetNextRoute() {
-    $next_route = $this->testFlow->getNextRoute();
-
-    // Check the next step is correct.
-    $this->assertEquals('par_test_forms.third', $next_route, "The next route has been correctly identified.");
-
-    $next_route = $this->testFlow->getNextRoute('save');
-
-    // Check the next step is correct.
-    $this->assertEquals('par_test_forms.fourth', $next_route, "The next route has been correctly identified given an operation.");
-  }
-
-  /**
-   * @covers ::getPrevRoute
-   */
-  public function testGetPrevRoute() {
-    $prev_route = $this->testFlow->getPrevRoute();
-
-    // Check the next step is correct.
-    $this->assertEquals('par_test_forms.first', $prev_route, "The previous route has been correctly identified.");
-
-    $prev_route = $this->testFlow->getPrevRoute('cancel');
-
-    // Check the next step is correct.
-    $this->assertEquals('par_test_forms.confirmation', $prev_route, "The previous route has been correctly identified given an operation.");
-  }
-
   /**
    * @covers ::getStepByFormId
    */

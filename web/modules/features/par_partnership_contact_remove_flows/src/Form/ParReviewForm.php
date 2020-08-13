@@ -18,7 +18,6 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
 use Drupal\par_partnership_contact_remove_flows\ParFlowAccessTrait;
-use Drupal\par_partnership_contact_remove_flows\ParFormCancelTrait;
 use Drupal\user\Entity\User;
 
 /**
@@ -27,7 +26,6 @@ use Drupal\user\Entity\User;
 class ParReviewForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
-  use ParFormCancelTrait;
 
   /**
    * {@inheritdoc}
@@ -98,6 +96,10 @@ class ParReviewForm extends ParBaseForm {
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
+
+    // Change the action to save.
+    $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Remove');
 
     return parent::buildForm($form, $form_state);
   }
