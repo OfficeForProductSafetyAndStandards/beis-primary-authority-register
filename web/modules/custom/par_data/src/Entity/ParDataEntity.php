@@ -1146,6 +1146,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $fields[self::ARCHIVE_REASON_FIELD] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Archive Reason'))
       ->setDescription(t('Comments about why this advice document was archived.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
