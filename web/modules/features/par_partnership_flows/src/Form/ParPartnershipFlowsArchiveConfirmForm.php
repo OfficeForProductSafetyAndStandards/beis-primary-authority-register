@@ -29,7 +29,7 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
    */
   protected $entityMapping = [
     ['archive_reason', 'par_data_advice', 'archive_reason', NULL, NULL, 0, [
-      'This value should not be null.' => 'Please supply the reason for archiving this document.'
+      'You must fill in the missing information.' => 'Please supply the reason for archiving this document.'
     ]],
   ];
 
