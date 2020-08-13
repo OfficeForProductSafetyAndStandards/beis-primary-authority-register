@@ -1044,3 +1044,10 @@ function par_data_update_8044() {
     }
   }
 }
+
+/**
+ * PAR-1617 refresh archive reason field.
+ */
+function par_data_update_8046() {
+  \Drupal::service('entity.definition_update_manager')->applyUpdates();
+}
