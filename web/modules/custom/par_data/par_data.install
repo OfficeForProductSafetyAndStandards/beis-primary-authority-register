@@ -1044,3 +1044,24 @@ function par_data_update_8044() {
     }
   }
 }
+
+/**
+ * PAR-1617 reset field values on legal entities.
+ */
+function par_data_update_8045() {
+
+  $fields = [];
+  $entity_definition_update_manager = \Drupal::service('entity.definition_update_manager');
+
+  $field_legal_entity_type = $entity_definition_update_manager->getFieldStorageDefinition('legal_entity_type', 'par_data_legal_entity');
+  $field_legal_entity_type->setRequired(TRUE);
+  $fields[] = $field_legal_entity_type;
+
+  $field_registered_number = $entity_definition_update_manager->getFieldStorageDefinition('registered_number', 'par_data_legal_entity');
+  $field_registered_number->setRequired(TRUE);
+  $fields[] = $field_registered_number;
+
+  foreach ($fields as $field) {
+    $entity_definition_update_manager->updateFieldStorageDefinition($field);
+  }
+}
