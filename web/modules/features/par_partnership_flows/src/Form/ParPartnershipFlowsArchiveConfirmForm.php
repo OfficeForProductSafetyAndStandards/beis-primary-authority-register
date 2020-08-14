@@ -64,7 +64,7 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
 
     $form['advice_info']['partnership_text'] = [
       '#type' => 'markup',
-      '#markup' => $par_data_advice->getAdviceTitle(),
+      '#markup' => !$par_data_advice->lable() === '(none)' ? $par_data_advice->lable() : $par_data_advice->getAdviceTitle(),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
