@@ -22,22 +22,13 @@ class ParEnquiryConfirmationForm extends ParBaseController {
    * {@inheritdoc}
    */
   public function build($build = [], ParDataPartnership $par_data_partnership = NULL) {
-
     // Display the help contact fo this partnership.
     $build['help_text'] = $this->renderSection('If you have any questions you can contact', $par_data_partnership, ['field_authority_person' => 'summary'], [], TRUE, TRUE);
 
     // In order to redirect to a page outside this flow.
     $this->getFlowNegotiator()->getFlow()->setActions(['done']);
 
-    $build = parent::build($build);
-
-    $build['done']['#markup'] = t('@link', [
-      '@link' => $this->getLinkByRoute('par_search_partnership_flows.partnership_page', $this->getRouteParams(), ['attributes' => ['class' => 'button']])
-        ->setText('Done')
-        ->toString(),
-    ]);
-
-    return $build;
+    return parent::build($build);
 
   }
 }

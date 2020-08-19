@@ -21,7 +21,6 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
 use Drupal\par_partnership_contact_update_flows\ParFlowAccessTrait;
-use Drupal\par_partnership_contact_update_flows\ParFormCancelTrait;
 use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -31,7 +30,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ParReviewForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
-  use ParFormCancelTrait;
 
   /**
    * {@inheritdoc}
@@ -171,6 +169,9 @@ class ParReviewForm extends ParBaseForm {
         ];
     }
 
+    // Change the action to save.
+    $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -178,7 +179,7 @@ class ParReviewForm extends ParBaseForm {
     $current_user = $this->getCurrentUser();
 
     // Get the cache IDs for the various forms that needs needs to be extracted from.
-    $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_add_contact');
+    $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_update_contact');
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $cid_invitation = $this->getFlowNegotiator()->getFormKey('invite');
     $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');

@@ -13,6 +13,7 @@ save_method: end
 states:
   - entity_type
   - entity_id
+final_routes: {  }
 steps:
   1:
     route: par_rd_delete_data_flows.deleted_data_list

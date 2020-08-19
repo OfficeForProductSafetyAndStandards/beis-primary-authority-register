@@ -5,3 +5,31 @@ services:
   par_flows.data_handler:
     class: Drupal\par_flows\ParFlowDataHandler
     arguments: ['@user.private_tempstore', '@par_flows.negotiator', '@par_data.manager', '@session_manager', '@current_user']
+  par_flows.par_progress_destination_subscriber:
+    class: '\Drupal\par_flows\EventSubscriber\ParProgressDestinationSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_flows.par_progress_operation_subscriber:
+    class: '\Drupal\par_flows\EventSubscriber\ParProgressOperationSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_flows.par_progress_back_subscriber:
+    class: '\Drupal\par_flows\EventSubscriber\ParProgressBackSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_flows.par_progress_next_subscriber:
+    class: '\Drupal\par_flows\EventSubscriber\ParProgressNextSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_flows.par_flow_fallback_subscriber:
+    class: '\Drupal\par_flows\EventSubscriber\ParFlowFallbackSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_flows.par_global_fallback_subscriber:
+    class: '\Drupal\par_flows\EventSubscriber\ParGlobalFallbackSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_flows.par_admin_global_fallback_subscriber:
+    class: '\Drupal\par_flows\EventSubscriber\ParAdminGlobalFallbackSubscriber'
+    tags:
+      - { name: 'event_subscriber' }

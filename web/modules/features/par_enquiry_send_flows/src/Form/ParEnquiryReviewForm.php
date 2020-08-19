@@ -8,7 +8,6 @@ use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataGeneralEnquiry;
-use Drupal\par_enquiry_send_flows\ParFormCancelTrait;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\ParDisplayTrait;
@@ -20,7 +19,6 @@ use Drupal\par_enquiry_send_flows\ParFlowAccessTrait;
 class ParEnquiryReviewForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
-  use ParFormCancelTrait;
 
   /**
    * Set the page title.

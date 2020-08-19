@@ -83,14 +83,12 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
     try {
       if ($address instanceof EntityInterface) {
         $params[$address->getEntityTypeId()] = $address->id();
-        $address_edit_link = $this->getFlowNegotiator()
-          ->getFlow()
-          ->getLinkByCurrentOperation('edit_field_premises', $params, [], TRUE);
+        $address_edit_link = $this->getFlowNegotiator()->getFlow()
+          ->getOperationLink('edit_field_premises', 'edit address', $params);
       }
       else {
-        $address_add_link = $this->getFlowNegotiator()
-          ->getFlow()
-          ->getLinkByCurrentOperation('add_field_premises', [], [], TRUE);
+        $address_add_link = $this->getFlowNegotiator()->getFlow()
+          ->getOperationLink('add_field_premises', 'add address');
       }
     }
     catch (ParFlowException $e) {
@@ -100,7 +98,7 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
       $form['registered_address']['field_premises']['edit'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $address_edit_link->setText("edit address")->toString(),
+        '#value' => $address_edit_link->toString(),
         '#attributes' => ['class' => 'edit-address'],
       ];
     }
@@ -108,7 +106,7 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
       $form['registered_address']['add'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $address_add_link->setText("add address")->toString(),
+        '#value' => $address_add_link->toString(),
         '#attributes' => ['class' => 'add-address'],
       ];
     }
@@ -123,7 +121,8 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
       'details' => $this->getDefaultValuesByKey('information', $cardinality, NULL),
     ];
     try {
-      $about_edit_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_comments', [], [], TRUE);
+      $about_edit_link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('edit_comments', 'edit about the organisation');
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -132,7 +131,7 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
       $form['about']['edit'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $about_edit_link->setText("edit about the organisation")->toString(),
+        '#value' => $about_edit_link->toString(),
         '#attributes' => ['class' => 'edit-about-organisation'],
       ];
     }

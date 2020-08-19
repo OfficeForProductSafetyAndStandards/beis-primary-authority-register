@@ -7,6 +7,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
@@ -130,11 +131,13 @@ class ParContactDisplay extends ParFormPluginBase {
       ];
       try {
         $params = ['par_data_person' => $this->getDefaultValuesByKey('person_id', $cardinality, NULL)];
+        $title = 'Update ' . $this->getDefaultValuesByKey('name', $cardinality, 'person');
+        $update_flow = ParFlow::load('person_update');
+        $link = $update_flow ?
+          $update_flow->getStartLink(1, $title, $params) : NULL;
         $actions = t('@link', [
-            '@link' => $this->getLinkByRoute('par_person_update_flows.update_contact', $params)
-              ->setText('Update ' . $this->getDefaultValuesByKey('name', $cardinality, 'person'))
-              ->toString(),
-          ]);
+          '@link' => $link ? $link->toString() : '',
+        ]);
       } catch (ParFlowException $e) {
 
       }

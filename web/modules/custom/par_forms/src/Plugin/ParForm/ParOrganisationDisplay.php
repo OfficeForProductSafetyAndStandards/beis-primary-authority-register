@@ -104,15 +104,14 @@ class ParOrganisationDisplay extends ParFormPluginBase {
     // Add operation link for updating authority details.
     try {
       $link = $this->getFlowNegotiator()->getFlow()
-        ->getLinkByCurrentOperation('organisation_name', $params, [], TRUE);
-
+        ->getOperationLink('organisation_name', 'Change the organisation name', $params);
       $form['organisation']['name']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#attributes' => ['class' => ['column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
-          '@link' => $link ? $link->setText('Change the organisation name')->toString() : '',
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }
@@ -140,15 +139,14 @@ class ParOrganisationDisplay extends ParFormPluginBase {
     // Add operation link for updating authority details.
     try {
       $link = $this->getFlowNegotiator()->getFlow()
-        ->getLinkByCurrentOperation('organisation_about', $params, [], TRUE);
-
+        ->getOperationLink('organisation_about', 'Change the description', $params);
       $form['organisation']['about']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#attributes' => ['class' => ['column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
-          '@link' => $link ? $link->setText('Change the description')->toString() : '',
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }
@@ -176,15 +174,14 @@ class ParOrganisationDisplay extends ParFormPluginBase {
     // Add operation link for updating authority details.
     try {
       $link = $this->getFlowNegotiator()->getFlow()
-        ->getLinkByCurrentOperation('trading_name', $params, [], TRUE);
-
+        ->getOperationLink('trading_name', 'Change the trading names', $params);
       $form['organisation']['trading_name']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#attributes' => ['class' => ['column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
-          '@link' => $link ? $link->setText('Change the trading names')->toString() : '',
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }
@@ -212,15 +209,14 @@ class ParOrganisationDisplay extends ParFormPluginBase {
     // Add operation link for updating sic codes.
     try {
       $link = $this->getFlowNegotiator()->getFlow()
-        ->getLinkByCurrentOperation('sic_codes', $params, [], TRUE);
-
+        ->getOperationLink('sic_codes', 'Change the SIC codes', $params);
       $form['organisation']['sic_codes']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#attributes' => ['class' => ['column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
-          '@link' => $link ? $link->setText('Change the SIC codes')->toString() : '',
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }

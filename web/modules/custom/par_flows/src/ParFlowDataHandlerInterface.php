@@ -162,8 +162,18 @@ interface ParFlowDataHandlerInterface {
    */
   public function deleteStore();
 
+  /**
+   * @param $parameter
+   *
+   * @return mixed|null
+   *   The requested parameter.
+   */
   public function getParameter($parameter);
 
+  /**
+   * @return array
+   *   An array of all the route parameters.
+   */
   public function getParameters();
 
   public function setParameter($parameter, $value);

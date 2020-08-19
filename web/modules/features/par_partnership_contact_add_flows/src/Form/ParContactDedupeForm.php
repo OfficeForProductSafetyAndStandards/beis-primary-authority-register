@@ -7,7 +7,6 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_contact_add_flows\ParFlowAccessTrait;
-use Drupal\par_partnership_contact_add_flows\ParFormCancelTrait;
 
 /**
  * The partnership contact dedupe form.
@@ -15,7 +14,6 @@ use Drupal\par_partnership_contact_add_flows\ParFormCancelTrait;
 class ParContactDedupeForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
-  use ParFormCancelTrait;
 
   /**
    * Set the page title.

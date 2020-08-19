@@ -12,6 +12,8 @@ description: 'The ability to search for and view a partnership.'
 save_method: end
 states:
   - par_data_partnership
+final_routes:
+  - view.partnership_search.enforcment_flow_search_partnerships
 steps:
   1:
     route: par_search_partnership_flows.partnership_page
@@ -39,7 +41,6 @@ steps:
     redirect:
       advice: 2
       inspection_plans: 4
-      done: 6
   2:
     route: par_search_partnership_flows.advice_view
     redirect:
@@ -56,5 +57,3 @@ steps:
     route: par_search_partnership_flows.inspection_plan_page
     redirect:
       done: 4
-  6:
-    route: view.partnership_search.enforcment_flow_search_partnerships
