@@ -56,8 +56,8 @@ a {
 }
 
 a:focus {
-  background-color: $focus-colour;
-  outline: 3px solid $focus-colour;
+  background-color: #ffdd00;
+  outline: 3px solid #ffdd00 !important;
 }
 
 /* Make skiplinks visible when they are tabbed to */
@@ -67,7 +67,7 @@ a:focus {
   left: -9999em;
 
   /* Default link colour doesn't have enough contrast against $focus-colour */
-  &:focus, 
+  &:focus,
   &:visited {
     color: $text-colour;
   }
@@ -98,14 +98,14 @@ input:focus,
 textarea:focus,
 select:focus,
 button:focus {
-  outline: 3px solid $focus-colour;
+  outline: 3px solid #ffdd00 !important;
   outline-offset: 0;
 }
 
 #global-header {
 
   input[type=search]:focus {
-    outline: 3px solid $focus-colour;
+    outline: 3px solid #ffdd00;
     /* Focus appears inside the input */
     outline-offset: -2px;
   }
