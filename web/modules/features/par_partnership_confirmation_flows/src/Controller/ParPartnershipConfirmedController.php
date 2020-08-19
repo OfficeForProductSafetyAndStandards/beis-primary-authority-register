@@ -43,6 +43,9 @@ class ParPartnershipConfirmedController extends ParBaseController {
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
 
+    // Change the action to save.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
+
     return parent::build($build);
   }
 

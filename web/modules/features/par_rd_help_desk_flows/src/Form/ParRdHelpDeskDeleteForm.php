@@ -46,7 +46,6 @@ class ParRdHelpDeskDeleteForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-
     $form['partnership_info'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('The partnership application has been deleted'),
@@ -55,13 +54,9 @@ class ParRdHelpDeskDeleteForm extends ParBaseForm {
       '#collapsed' => FALSE,
     ];
 
-    return parent::buildForm($form, $form_state);
-  }
+    // Change the action to save.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
 
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
+    return parent::buildForm($form, $form_state);
   }
 }

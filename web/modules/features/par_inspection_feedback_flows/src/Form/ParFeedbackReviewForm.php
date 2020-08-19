@@ -8,7 +8,6 @@ use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataInspectionFeedback;
-use Drupal\par_inspection_feedback_flows\ParFormCancelTrait;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\ParDisplayTrait;
@@ -20,7 +19,6 @@ use Drupal\par_inspection_feedback_flows\ParFlowAccessTrait;
 class ParFeedbackReviewForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
-  use ParFormCancelTrait;
 
   /**
    * Set the page title.

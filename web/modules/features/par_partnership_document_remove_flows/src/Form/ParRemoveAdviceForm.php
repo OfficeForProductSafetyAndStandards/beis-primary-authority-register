@@ -49,12 +49,11 @@ class ParRemoveAdviceForm extends ParBaseForm {
 
     $delta = $this->getFlowDataHandler()->getFormPermValue('field_advice_delta');
 
-    // If there is no advice skip this step.
-    // @TODO Monitor PAR-1592. If a PR is submitted for that it will need
-    // applying jto this method call too.
+    // If there is no advice cancel this journey.
+    // @TODO Find a way to do this whilst telling the user what has happened.
     if ($delta === NULL) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('cancel'), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress('cancel');
+      return new RedirectResponse($url->toString());
     }
 
     $document_view_builder = $this->getParDataManager()->getViewBuilder('file');

@@ -12,6 +12,9 @@ description: ''
 save_method: step
 states:
   - par_data_partnership
+final_routes:
+  - view.par_user_partnerships.partnerships_page
+  - view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page
 steps:
   1:
     route: par_partnership_flows.authority_details
@@ -45,7 +48,6 @@ steps:
       edit_regulatory_functions: 3
       inspection_plans: 4
       advice: 5
-      save: 19
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
@@ -166,5 +168,3 @@ steps:
     route: par_partnership_flows.authority_inspection_plan_details
     redirect:
       done: 4
-  19:
-    route: view.par_user_partnerships.partnerships_page

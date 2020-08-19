@@ -9,6 +9,8 @@ description: ''
 save_method: end
 states:
   - par_data_partnership
+final_routes:
+  - par_search_partnership_flows.partnership_page
 steps:
   1:
     route: par_enquiry_send_flows.select_authority

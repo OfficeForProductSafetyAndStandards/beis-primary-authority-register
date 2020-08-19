@@ -50,7 +50,8 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
 
     // Generate the link to add a legal entity.
     try {
-      $legal_entity_add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_field_legal_entity', [], [], TRUE);
+      $legal_entity_add_link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('add_field_legal_entity');
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -94,7 +95,8 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
         // Edit the legal entity.
         $params['par_data_legal_entity'] = $legal_entity->id();
         $options = ['attributes' => ['aria-label' => $this->t("Edit the legal entity @label", ['@label' => strtolower($legal_entity->label())])]];
-        $operations['edit'] = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_field_legal_entity', $params, $options, TRUE);
+        $operations['edit'] = $this->getFlowNegotiator()->getFlow()
+          ->getOperationLink('edit_field_legal_entity', 'edit legal entity', $params, $options);
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -103,7 +105,8 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
         // Remove the legal entity.
         $params['par_data_legal_entity'] = $legal_entity->id();
         $options = ['attributes' => ['aria-label' => $this->t("Remove the legal entity @label", ['@label' => strtolower($legal_entity->label())])]];
-        $operations['remove'] = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('remove_field_legal_entity', $params, $options, TRUE);
+        $operations['remove'] = $this->getFlowNegotiator()->getFlow()
+          ->getOperationLink('remove_field_legal_entity', 'remove legal entity', $params, $options);
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -119,7 +122,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
           $form['legal_entities']['legal_entity'][$delta]['operations']['edit'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
-            '#value' => $operations['edit']->setText("edit legal entity")->toString(),
+            '#value' => $operations['edit']->toString(),
             '#attributes' => ['class' => ['edit-legal-entity', 'column-one-third']],
           ];
         }

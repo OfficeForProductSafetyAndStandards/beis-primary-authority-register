@@ -126,24 +126,35 @@ class ParDashboardComponents {
       $new_partnerships = count($this->getParDataManager()->hasInProgressMembershipsByType($this->getCurrentUser(), 'par_data_partnership'));
     }
 
+    $can_manage_partnerships = $this->getCurrentUser()->hasPermission('confirm partnership') ||
+      $this->getCurrentUser()->hasPermission('update partnership authority details') ||
+      $this->getCurrentUser()->hasPermission('update partnership organisation details');
+    $can_create_partnerships = $this->getCurrentUser()->hasPermission('apply for partnership');
+
+
     // List of partnerships and pending applications links.
-    $manage_partnerships = $this->getLinkByRoute('view.par_user_partnerships.partnerships_page');
-    $link_text = isset($new_partnerships) && $new_partnerships > 0 ?
-      $this->t('See your partnerships (@count pending)', ['@count' => $new_partnerships]) :
-      $this->t('See your partnerships');
-    $manage_link = $manage_partnerships->setText($link_text)->toString();
-    $build['partnerships']['see'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>{$manage_link}</p>",
-    ];
+    if ($can_manage_partnerships) {
+      $manage_partnerships = $this->getLinkByRoute('view.par_user_partnerships.partnerships_page');
+      $link_text = isset($new_partnerships) && $new_partnerships > 0 ?
+        $this->t('See your partnerships (@count pending)', ['@count' => $new_partnerships]) :
+        $this->t('See your partnerships');
+      $manage_link = $manage_partnerships->setText($link_text)->toString();
+      $build['partnerships']['see'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$manage_link}</p>",
+      ];
+    }
 
     // Partnership application link.
-    $create_partnerships = $this->getLinkByRoute('par_partnership_application_flows.partnership_application_start');
-    $apply_link = $create_partnerships->setText('Apply for a new partnership')->toString();
-    $build['partnerships']['add'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>{$apply_link}</p>",
-    ];
+    if ($can_create_partnerships) {
+      $create_partnerships = $this->getLinkByRoute('par_partnership_application_flows.partnership_application_start');
+      $apply_link = $create_partnerships->setText('Apply for a new partnership')
+        ->toString();
+      $build['partnerships']['add'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$apply_link}</p>",
+      ];
+    }
 
     return $build;
   }
