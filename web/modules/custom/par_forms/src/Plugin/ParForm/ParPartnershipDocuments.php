@@ -26,6 +26,14 @@ class ParPartnershipDocuments extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+
+    $advice_document_count = $par_data_partnership->countReferencedEntity('field_advice', FALSE);
+    $this->getFlowDataHandler()->setFormPermValue("advice_count", $advice_document_count);
+
+    $isp_document_count = $par_data_partnership->countReferencedEntity('field_inspection_plan', FALSE);
+    $this->getFlowDataHandler()->setFormPermValue("isp_count", $isp_document_count);
+
     $show_title = isset($this->getConfiguration()['show_title']) ? (bool) $this->getConfiguration()['show_title'] : TRUE;
     $this->getFlowDataHandler()->setFormPermValue("show_title", $show_title);
 
@@ -74,6 +82,12 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
       }
       if (isset($add_inspection_list_link) && $add_inspection_list_link instanceof Link) {
+        $form['details']['inspection_plans']['document_count'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->t("There are <strong>@count</strong> inspection plans covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('isp_count', $cardinality, NULL)]),
+        ];
+
         $form['details']['inspection_plans']['link'] = [
           '#type' => 'markup',
           '#markup' => $add_inspection_list_link->toString(),
@@ -97,6 +111,12 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
       }
       if (isset($add_advice_list_link) && $add_advice_list_link instanceof Link) {
+        $form['details']['advice']['document_count'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->t("There are <strong>@count</strong> advice documents covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('advice_count', $cardinality, NULL)]),
+        ];
+
         $form['details']['advice']['link'] = [
           '#type' => 'markup',
           '#markup' => $add_advice_list_link->toString(),
