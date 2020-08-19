@@ -1570,6 +1570,7 @@ display:
         filter_groups: false
         css_class: false
         exposed_form: false
+        footer: false
       path: helpdesk/users
       relationships:
         reverse__par_data_person__field_user_account:
@@ -1903,6 +1904,20 @@ display:
                 rewrite:
                   filter_rewrite_values: ''
           text_input_required_format: basic_html
+      footer:
+        par_flow_link:
+          id: par_flow_link
+          table: views
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          title: 'back to dashboard'
+          assistive_text: ''
+          link: /helpdesk
+          class: link-back
+          plugin_id: par_flow_link
     cache_metadata:
       max-age: -1
       contexts:

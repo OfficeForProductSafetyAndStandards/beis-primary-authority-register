@@ -77,7 +77,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
       // Add the inspection plan link safely with access checks.
       try {
-        $add_inspection_list_link = $this->getFlowNegotiator()->getFlow()->getNextLink('inspection_plans', [], [], TRUE);
+        $add_inspection_list_link = $this->getFlowNegotiator()->getFlow()->getFlowLink('inspection_plans', 'See all Inspection Plans');
       } catch (ParFlowException $e) {
 
       }
@@ -90,8 +90,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
         $form['details']['inspection_plans']['link'] = [
           '#type' => 'markup',
-          '#markup' => $add_inspection_list_link->setText('See all Inspection Plans')
-            ->toString(),
+          '#markup' => $add_inspection_list_link->toString(),
         ];
       }
     }
@@ -107,9 +106,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
       ];
 
       try {
-        $add_advice_list_link = $this->getFlowNegotiator()
-          ->getFlow()
-          ->getNextLink('advice', [], [], TRUE);
+        $add_advice_list_link = $this->getFlowNegotiator()->getFlow()->getFlowLink('advice', 'See all Advice');
       } catch (ParFlowException $e) {
 
       }
@@ -122,8 +119,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
         $form['details']['advice']['link'] = [
           '#type' => 'markup',
-          '#markup' => $add_advice_list_link->setText('See all Advice')
-            ->toString(),
+          '#markup' => $add_advice_list_link->toString(),
         ];
       }
     }

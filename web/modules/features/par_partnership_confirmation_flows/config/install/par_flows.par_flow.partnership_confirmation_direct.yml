@@ -9,69 +9,53 @@ description: ''
 save_method: end
 states:
   - par_data_partnership
+final_routes:
+  - view.par_user_partnerships.partnerships_page
 steps:
   1:
     route: par_partnership_confirmation_flows.partnership_confirmation_authority_checklist
     form_id: par_partnership_confirmation_checklist
-    redirect:
-      cancel: 12
   2:
     route: par_partnership_confirmation_flows.confirm_about_business
     form_id: par_partnership_confirmation_about_business
     components:
       about_business: {}
-    redirect:
-      cancel: 12
   3:
     route: par_partnership_confirmation_flows.confirm_address
     form_id: par_partnership_confirmation_address
     components:
       address_lookup: {}
-    redirect:
-      cancel: 12
   4:
     route: par_partnership_confirmation_flows.confirm_contact
     form_id: par_partnership_confirmation_contact
     components:
       contact_details_full: {}
-    redirect:
-      cancel: 12
   5:
     route: par_partnership_confirmation_flows.confirm_sic_code
     form_id: par_partnership_confirmation_sic_code
     components:
       sic_code: {}
-    redirect:
-      cancel: 12
   6:
     route: par_partnership_confirmation_flows.confirm_employee_number
     form_id: par_partnership_confirmation_employee_number
     components:
       employee_number: {}
-    redirect:
-      cancel: 12
   7:
     route: par_partnership_confirmation_flows.confirm_trading_name
     form_id: par_partnership_confirmation_trading_name
     components:
       trading_name: {}
-    redirect:
-      cancel: 12
   8:
     route: par_partnership_confirmation_flows.select_legal_entities
     form_id: par_partnership_confirmation_select_legal_entities
     components:
       select_legal_entities: {}
-    redirect:
-      cancel: 12
   9:
     route: par_partnership_confirmation_flows.add_legal_entity
     form_id: par_partnership_confirmation_add_legal_entity
     components:
       legal_entity:
         cardinality: -1
-    redirect:
-      cancel: 12
   10:
     route: par_partnership_confirmation_flows.partnership_confirm_review
     form_id: par_partnership_confirmation_review
@@ -82,7 +66,7 @@ steps:
       sic_code: par_partnership_confirmation_sic_code
       employee_number: par_partnership_confirmation_employee_number
       trading_name: par_partnership_confirmation_trading_name
-      legal_select: par_partnership_confirmation_legal_entity
+      legal_select: par_partnership_confirmation_select_legal_entities
     redirect:
       about_business: 2
       address: 3
@@ -93,10 +77,5 @@ steps:
       legal_select: 8
       legal_add: 9
       save: 11
-      cancel: 12
   11:
     route: par_partnership_confirmation_flows.partnership_confirmation
-    redirect:
-      done: 12
-  12:
-    route: view.par_user_partnerships.partnerships_page

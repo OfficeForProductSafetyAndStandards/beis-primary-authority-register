@@ -22,7 +22,6 @@ class ParEnforcementConfirmController extends ParBaseController {
    * {@inheritdoc}
    */
   public function build($build = [], ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
-
     // Information about the next steps.
     $build['next_steps'] = [
       '#title' => $this->t('What happens next?'),
@@ -40,9 +39,10 @@ class ParEnforcementConfirmController extends ParBaseController {
       $build['help_text'] = $this->renderSection('If you have any questions you can contact the enforcement officer', $par_data_enforcement_notice, ['field_person' => 'summary'], [], TRUE, TRUE);
     }
 
-    $build = parent::build($build);
+    // Change the action to done.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
 
-    return $build;
+    return parent::build($build);
 
   }
 }

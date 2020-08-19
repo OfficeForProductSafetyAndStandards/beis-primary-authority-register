@@ -169,5 +169,5 @@ When('I remove an organisation contact', function () {
 return shared
       .clickLinkByPureText('remove carol parkinson from this partnership')
       .assert.containsText('h1.heading-xlarge', 'Confirm removal of contact')
-      .click('#edit-next')
+      .click('#edit-save')
   });

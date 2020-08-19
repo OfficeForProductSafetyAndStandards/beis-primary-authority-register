@@ -26,6 +26,13 @@ trait ParDefaultActionsTrait {
   protected $primaryActionTitle;
 
   /**
+   * Secondary action title
+   *
+   * Allows the secondary action title to be overridden.
+   */
+  protected $secondaryActionTitle;
+
+  /**
    * Getter for retrieving the forms actions.
    */
   public function getActions() {
@@ -51,6 +58,20 @@ trait ParDefaultActionsTrait {
    */
   public function setPrimaryActionTitle($title = '') {
     $this->primaryActionTitle = $title;
+  }
+
+  /**
+   * Getter for retrieving the primary action title.
+   */
+  public function getSecondaryActionTitle($fallback = '') {
+    return !empty($this->secondaryActionTitle) ? $this->t($this->secondaryActionTitle) : $this->t($fallback);
+  }
+
+  /**
+   * Setter for the primary action title.
+   */
+  public function setSecondaryActionTitle($title = '') {
+    $this->secondaryActionTitle = $title;
   }
 
   /**

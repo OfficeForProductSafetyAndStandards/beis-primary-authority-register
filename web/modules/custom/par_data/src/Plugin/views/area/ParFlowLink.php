@@ -23,6 +23,24 @@ use Drupal\views\Plugin\views\display\PathPluginBase;
 class ParFlowLink extends AreaPluginBase {
 
   /**
+   * Get the route provider service.
+   *
+   * @return \Drupal\Core\Routing\RouteProviderInterface
+   */
+  protected function getRouteProvier() {
+    return \Drupal::service('router.route_provider');
+  }
+
+  /**
+   * Get the current route.
+   *
+   * @return \Drupal\Core\Routing\RouteMatchInterface
+   */
+  protected function getRouteMatch() {
+    return \Drupal::routeMatch();
+  }
+
+  /**
    * {@inheritdoc}
    */
   protected function defineOptions() {
@@ -31,6 +49,7 @@ class ParFlowLink extends AreaPluginBase {
     $options['title'] = ['default' => []];
     $options['assistive_text'] = ['default' => []];
     $options['link'] = ['default' => []];
+    $options['class'] = ['default' => []];
 
     return $options;
   }
@@ -57,9 +76,16 @@ class ParFlowLink extends AreaPluginBase {
 
     $form['link'] = [
       '#title' => 'Link',
-      '#description' => 'Select the link that you wish to display.',
+      '#description' => 'Select the link that you wish to display. You can use substitutions in the format `/route/%/pattern`, but they must be available in the current route.',
       '#type' => 'textfield',
       '#default_value' => $this->options['link']  ?: '',
+    ];
+
+    $form['class'] = [
+      '#title' => 'Link classes',
+      '#description' => 'Enter any additional classes to be added to the link, separated by a comma. By default `btn-link` will be added to all links.',
+      '#type' => 'textfield',
+      '#default_value' => $this->options['class']  ?: '',
     ];
   }
 
@@ -81,12 +107,25 @@ class ParFlowLink extends AreaPluginBase {
    * {@inheritdoc}
    */
   public function render($empty = FALSE) {
-    $path = strip_tags(Html::decodeEntities($this->options['link'] ?: ''));
+    $path = $this->options['link'] ?: '';
+    $classes = explode(',', $this->options['class'] ?: 'btn-link');
     $title = trim(strip_tags(Html::decodeEntities($this->options['title'] ?: '')));
     $assistive_text = strip_tags(Html::decodeEntities($this->options['assistive_text'] ?: ''));
 
-    $options = !empty($assistive_text) ? ['attributes' => ['aria-label' => $assistive_text]] : [];
-    $url = !empty($path) ? Url::fromUserInput($path, $options) : NULL;
+    $attributes = ['class' => $classes];
+    if (!empty($assistive_text)) {
+      $attributes['aria-label'] = $assistive_text;
+    }
+    $options = ['attributes' => $attributes];
+
+    // Get the route name from the path match.
+    $route_matches = $this->getRouteProvier()->getRoutesByPattern($path);
+    if ($route_matches->count() > 0) {
+      // Route found.
+      $route_name = current(array_keys($route_matches->all()));
+      $route_params = $this->getRouteMatch()->getRawParameters()->all();
+      $url = !empty($path) ? Url::fromRoute($route_name, $route_params, $options) : NULL;
+    }
 
     $link = $url ? Link::fromTextAndUrl($title, $url)->toRenderable() : NULL;
 

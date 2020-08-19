@@ -337,7 +337,7 @@ jobs:
           name: "Deploy to test environment"
           command: |
             DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
-            printf "$DEPLOY_ENV\n"
+            printf "Deploying to test environment: https://beis-par-$DEPLOY_ENV.cloudapps.digital\n"
             ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   archive_database:

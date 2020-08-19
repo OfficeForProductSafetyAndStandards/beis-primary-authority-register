@@ -12,13 +12,12 @@ use Drupal\par_invite_user_flows\ParPartnershipFlowsTrait;
  */
 class ParConfirmedController extends ParBaseController {
 
-  protected $pageTitle = 'Thank you for updating your profile';
+  protected $pageTitle = 'The invitation has been sent';
 
   /**
    * {@inheritdoc}
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
-
     // Information about the next steps.
     $build['next_steps'] = [
       '#title' => $this->t('What happens next?'),
@@ -42,6 +41,9 @@ class ParConfirmedController extends ParBaseController {
 
     // Make sure to add the partnership cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
+
+    // Change the action to save.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
 
     return parent::build($build);
   }

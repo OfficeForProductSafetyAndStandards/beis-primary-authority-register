@@ -95,7 +95,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
     // Add operation link for updating authority details.
     try {
       $link = $this->getFlowNegotiator()->getFlow()
-        ->getLinkByCurrentOperation('authority_name', $params, [], TRUE);
+        ->getOperationLink('authority_name', 'Change the authority name', $params);
 
       $form['authority']['name']['change'] = [
         '#type' => 'html_tag',
@@ -103,7 +103,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
         '#attributes' => ['class' => ['column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
-          '@link' => $link ? $link->setText('Change the authority name')->toString() : '',
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }
@@ -131,7 +131,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
     // Add operation link for updating authority details.
     try {
       $link = $this->getFlowNegotiator()->getFlow()
-        ->getLinkByCurrentOperation('authority_type', $params, [], TRUE);
+        ->getOperationLink('authority_type', 'Change the authority type', $params);
 
       $form['authority']['type']['change'] = [
         '#type' => 'html_tag',
@@ -139,7 +139,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
         '#attributes' => ['class' => ['column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
-          '@link' => $link ? $link->setText('Change the authority type')->toString() : '',
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }
@@ -168,7 +168,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
       // Add operation link for updating authority details.
       try {
         $link = $this->getFlowNegotiator()->getFlow()
-          ->getLinkByCurrentOperation('authority_address', $params, [], TRUE);
+          ->getOperationLink('authority_address', 'Change the primary address', $params);
 
         $form['authority']['address']['change'] = [
           '#type' => 'html_tag',
@@ -176,8 +176,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
           '#attributes' => ['class' => ['column-one-third']],
           '#weight' => 99,
           '#value' => t('@link', [
-            '@link' => $link ? $link->setText('Change the primary address')
-              ->toString() : '',
+            '@link' => $link ? $link->toString() : '',
           ]),
         ];
       } catch (ParFlowException $e) {
@@ -205,7 +204,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
     // Add operation link for updating authority details.
     try {
       $link = $this->getFlowNegotiator()->getFlow()
-        ->getLinkByCurrentOperation('authority_ons', $params, [], TRUE);
+        ->getOperationLink('authority_ons', 'Change the ons code', $params);
 
       $form['authority']['ons']['change'] = [
         '#type' => 'html_tag',
@@ -213,7 +212,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
         '#attributes' => ['class' => ['column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
-          '@link' => $link ? $link->setText('Change the ons code')->toString() : '',
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }
@@ -241,7 +240,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
     // Add operation link for updating authority details.
     try {
       $link = $this->getFlowNegotiator()->getFlow()
-        ->getLinkByCurrentOperation('regulatory_functions', $params, [], TRUE);
+        ->getOperationLink('regulatory_functions', 'Change the regulatory functions', $params);
 
       $form['authority']['regulatory_functions']['change'] = [
         '#type' => 'html_tag',
@@ -249,7 +248,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
         '#attributes' => ['class' => ['column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
-          '@link' => $link ? $link->setText('Change the regulatory functions')->toString() : '',
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }

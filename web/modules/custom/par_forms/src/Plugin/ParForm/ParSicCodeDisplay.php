@@ -50,7 +50,8 @@ class ParSicCodeDisplay extends ParFormPluginBase {
 
     //  Generate the add new SIC code link.
     try {
-      $sic_code_add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_field_sic_code', [], [], TRUE);
+      $sic_code_add_link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('add_field_sic_code');
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -95,7 +96,8 @@ class ParSicCodeDisplay extends ParFormPluginBase {
         // Edit the SIC code.
         $params = ['field_sic_code_delta' => $delta];
         $options = ['attributes' => ['aria-label' => $this->t("Edit the SIC code @label", ['@label' => strtolower($label)])]];
-        $operations['edit'] = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_field_sic_code', $params, $options, TRUE);
+        $operations['edit'] = $this->getFlowNegotiator()->getFlow()
+          ->getOperationLink('edit_field_sic_code', 'edit sic code', $params, $options);
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -104,7 +106,9 @@ class ParSicCodeDisplay extends ParFormPluginBase {
         // Remove the SIC code.
         $params = ['field_sic_code_delta' => $delta];
         $options = ['attributes' => ['aria-label' => $this->t("Remove the SIC code @label", ['@label' => strtolower($label)])]];
-        $operations['remove'] = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('remove_field_sic_code', $params, $options, TRUE);
+        $operations['remove'] = $this->getFlowNegotiator()->getFlow()
+          ->getOperationLink('remove_field_sic_code', 'remove sic code', $params, $options);
+
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -120,7 +124,7 @@ class ParSicCodeDisplay extends ParFormPluginBase {
           $form['sic_codes']['sic_code'][$delta]['operations']['edit'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
-            '#value' => $operations['edit']->setText("edit sic code")->toString(),
+            '#value' => $operations['edit']->toString(),
             '#attributes' => ['class' => ['edit-sic-code', 'column-one-third']],
           ];
         }
