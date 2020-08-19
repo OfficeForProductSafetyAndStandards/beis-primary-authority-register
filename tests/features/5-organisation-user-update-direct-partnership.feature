@@ -34,6 +34,6 @@ Feature: Business User - Update Partnership
 
         # COMPLETE CHANGES
 
-        When I click on the button "#edit-save"
+        When I click on the button "#edit-done"
         And I click on the button "#edit-submit-par-user-partnerships"
         And the element "#block-par-theme-content" contains the text "Organisation For Direct Partnership"

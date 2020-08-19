@@ -3,6 +3,7 @@
 namespace Drupal\par_flows;
 
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Session\AccountInterface;
@@ -26,7 +27,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    *
    * @var \Drupal\par_flows\ParFlowNegotiatorInterface
    */
-  protected $negotiator;
+  public $negotiator;
 
   /**
    * The PAR data manager for acting upon PAR Data.
@@ -64,9 +65,16 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    * Enables route variables to be fetched, but also overridden
    * by the implementing form/controller.
    *
-   * @var array
+   * @var \Symfony\Component\HttpFoundation\ParameterBag
    */
   protected $parameters = [];
+
+  /**
+   * The raw data parameters.
+   *
+   * @var \Symfony\Component\HttpFoundation\ParameterBag
+   */
+  protected $rawParameters = [];
 
   /**
    * Caches data loaded from the permanent store.
@@ -106,6 +114,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
     // The data parameters are set based on the current route
     // but can be overridden when needed (such as access callbacks).
     $this->parameters = $this->negotiator->getRoute()->getParameters();
+    $this->rawParameters = $this->negotiator->getRoute()->getRawParameters();
   }
 
   /**
@@ -306,11 +315,27 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
 
   /**
    * {@inheritdoc}
+   */
+  public function getRawParameter($parameter) {
+    return $this->rawParameters->get($parameter);
+  }
+
+  /**
+   * {@inheritdoc}
    *
-   * @return array|\Symfony\Component\HttpFoundation\ParameterBag
+   * @return array
    */
   public function getParameters() {
     return $this->parameters->all();
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @return array
+   */
+  public function getRawParameters() {
+    return $this->rawParameters->all();
   }
 
   /**
@@ -321,6 +346,16 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    */
   public function setParameter($parameter, $value) {
     $this->parameters->set($parameter, $value);
+
+    // Set the raw parameter value, this will need cleansing if an entity was passed.
+    // Note that the raw parameter cannot be set for arrays or any other non-scalar
+    // values other due to lack of a transparent conversion method.
+    if ($value instanceof EntityInterface) {
+      $this->rawParameters->set($parameter, $value->id());
+    }
+    elseif (is_scalar($value)) {
+      $this->rawParameters->set($parameter, $value);
+    }
   }
 
   /**

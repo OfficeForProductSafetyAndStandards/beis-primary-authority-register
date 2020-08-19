@@ -269,14 +269,13 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
           ],
         ];
         try {
+          $link = $this->getFlowNegotiator()->getFlow()
+            ->getOperationLink('select_legal', 'Change the enforced organisation', $params);
           $form['partnership']['enforced_organisation']['select_legal'] = [
             '#type' => 'markup',
             '#weight' => 99,
             '#markup' => t('@link', [
-              '@link' => $this->getFlowNegotiator()->getFlow()
-                ->getLinkByCurrentOperation('select_legal', $params, [])
-                ->setText('Change the enforced organisation')
-                ->toString(),
+              '@link' => $link ? $link->toString() : '',
             ]),
           ];
         }

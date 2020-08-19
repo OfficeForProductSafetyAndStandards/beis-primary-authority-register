@@ -57,8 +57,8 @@ class ParEnforcementActionReferForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     // If there are no referred actions then skip this form.
     if (!$this->getDefaultValuesByKey('notice_is_referrable', $cardinality, FALSE)) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     if ($summary = $this->getDefaultValuesByKey('summary', $cardinality, NULL)) {

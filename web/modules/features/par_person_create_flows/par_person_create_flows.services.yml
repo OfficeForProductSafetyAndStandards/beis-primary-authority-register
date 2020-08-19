@@ -1,0 +1,5 @@
+services:
+  par_person_create_flows.par_flow_custom_subscriber:
+    class: '\Drupal\par_person_create_flows\EventSubscriber\ParFlowCustomSubscriber'
+    tags:
+      - { name: 'event_subscriber' }

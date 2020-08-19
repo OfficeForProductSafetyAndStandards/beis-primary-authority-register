@@ -55,14 +55,14 @@ class ParPartnershipFlowsRemoveLegalEntityForm extends ParBaseForm {
     // @TODO Monitor PAR-1592. If a PR is submitted for that it will need
     // applying jto this method call too.
     if ($delta === NULL) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('cancel'), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress('cancel');
+      return new RedirectResponse($url->toString());
     }
 
     // Prohibit removing of the last legal entity.
     if ($par_data_partnership->get('field_legal_entity')->count() <= 1) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->progressRoute('cancel'), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress('cancel');
+      return new RedirectResponse($url->toString());
     }
 
     $form['remove'] = [

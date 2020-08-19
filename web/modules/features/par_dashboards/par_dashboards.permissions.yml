@@ -2,3 +2,7 @@ access par dashboard:
   title: 'Access dashboard'
   description: 'Allow users to access their PAR dashboard.'
   restrict access: TRUE
+access user partnerships:
+  title: 'Access your partnerships'
+  description: 'Allow users to access their partnerships.'
+  restrict access: TRUE

@@ -8,6 +8,7 @@ use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
@@ -92,9 +93,9 @@ class ParPartnershipContacts extends ParFormPluginBase {
     // Get update and remove links.
     try {
       $params = ['type' => $contact_format];
-      if ($link = $this->getLinkByRoute('par_partnership_contact_add_flows.create_contact', $params, [], TRUE)) {
-        $add_contact_link = $link->setText("add another {$contact_format} contact")->toString();
-      }
+      $contact_add_flow = ParFlow::load('partnership_contact_add');
+      $add_contact_link = $contact_add_flow ?
+        $contact_add_flow->getStartLink(1, "add another {$contact_format} contact", $params) : NULL;
     } catch (ParFlowException $e) {
 
     }
@@ -130,7 +131,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
           'add' => [
             '#type' => 'html_tag',
             '#tag' => 'p',
-            '#value' => !empty($add_contact_link) ? $add_contact_link : '',
+            '#value' => $add_contact_link ? $add_contact_link->toString() : '',
           ],
         ],
       ],
@@ -146,17 +147,17 @@ class ParPartnershipContacts extends ParFormPluginBase {
       // Get update and remove links.
       try {
         $params = ['type' => $contact_format, 'par_data_person' => $entity->id()];
-        if ($link = $this->getLinkByRoute('par_partnership_contact_update_flows.create_contact', $params, [], TRUE)) {
-          $update_contact_link = $link->setText('edit ' . strtolower($entity->label()))->toString();
-        }
+        $contact_update_flow = ParFlow::load('partnership_contact_update');
+        $update_contact_link = $contact_update_flow ?
+          $contact_update_flow->getStartLink(1, 'edit ' . strtolower($entity->label()), $params) : NULL;
       } catch (ParFlowException $e) {
 
       }
       try {
         $params = ['type' => $contact_format, 'par_data_person' => $entity->id()];
-        if ($link = $this->getLinkByRoute('par_partnership_contact_remove_flows.remove', $params, [], TRUE)) {
-          $remove_contact_link = $link->setText('remove ' . strtolower($entity->label()) . ' from this partnership')->toString();
-        }
+        $contact_remove_flow = ParFlow::load('partnership_contact_remove');
+        $remove_contact_link = $contact_remove_flow ?
+          $contact_remove_flow->getStartLink(1, 'remove ' . strtolower($entity->label()) . ' from this partnership', $params) : NULL;
       } catch (ParFlowException $e) {
 
       }
@@ -176,13 +177,13 @@ class ParPartnershipContacts extends ParFormPluginBase {
           'update' => [
             '#type' => 'html_tag',
             '#tag' => 'p',
-            '#value' => !empty($update_contact_link) ? $update_contact_link : '',
+            '#value' => $update_contact_link ? $update_contact_link->toString() : '',
             '#attributes' => ['class' => ['column-one-third']],
           ],
           'remove' => [
             '#type' => 'html_tag',
             '#tag' => 'p',
-            '#value' => !empty($remove_contact_link) ? $remove_contact_link : '',
+            '#value' => $remove_contact_link ? $remove_contact_link->toString() : '',
             '#attributes' => ['class' => ['column-two-thirds']],
           ],
         ],

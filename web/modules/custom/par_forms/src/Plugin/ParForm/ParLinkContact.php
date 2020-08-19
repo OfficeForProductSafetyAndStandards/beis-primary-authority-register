@@ -92,8 +92,8 @@ class ParLinkContact extends ParFormPluginBase {
     }
     // If there isn't a choice go to the next page.
     if (count($user_accounts) <= 1) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     $form['user_id'] = [
