@@ -53,6 +53,7 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
+    $par_data_advice_title = $par_data_advice->getAdviceTitle();
 
     if ($par_data_partnership && $par_data_partnership->inProgress()) {
       $form['advice_info'] = [
@@ -72,7 +73,7 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
 
     $form['advice_info']['partnership_text'] = [
       '#type' => 'markup',
-      '#markup' => $par_data_advice->label(),
+      '#markup' => !empty($par_data_advice_title) ? $par_data_advice_title : $par_data_advice->label(),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
