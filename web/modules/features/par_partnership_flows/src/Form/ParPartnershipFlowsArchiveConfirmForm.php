@@ -24,6 +24,14 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
   use ParPartnershipFlowAccessTrait;
   use ParPartnershipFlowsTrait;
 
+  /**
+   * {@inheritdoc}
+   */
+  protected $entityMapping = [
+    ['archive_reason', 'par_data_advice', 'archive_reason', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'Please supply the reason for archiving this document.'
+    ]],
+  ];
 
   /**
    * {@inheritdoc}
@@ -87,11 +95,6 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
-
-    if (!$form_state->getValue('archive_reason')) {
-      $id = $this->getElementId('archive_reason', $form);
-      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please supply the reason for archiving this document.', $id));
-    }
   }
 
   /**
