@@ -348,6 +348,33 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * Get the number of referenced entities listed on a partnership.
+   *
+   *  @param String $referenced_entity_field
+   *   The field name (machine name) of type of referenced entity to count.
+   *
+   * @param bool $include_none_active
+   *   Whether to include all other entity states. By default only active entities are counted.
+   *
+   * @return int
+   *   The number of referenced entities.
+   */
+  public function countReferencedEntity($referenced_entity_field, $include_none_active = FALSE) {
+    $i = 0;
+
+    if (!$this->hasField($referenced_entity_field)) {
+      return;
+    }
+
+    foreach ($this->get($referenced_entity_field)->referencedEntities() as $referenced_entity) {
+      if ($include_none_active || $referenced_entity->isActive()) {
+        $i++;
+      }
+    }
+    return $i;
+  }
+
+  /**
    * Get the inspection plans for this Partnership.
    */
   public function getInspectionPlan($single = FALSE) {

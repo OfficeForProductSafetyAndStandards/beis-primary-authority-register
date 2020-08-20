@@ -291,6 +291,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return [
       'uid' => $this->account,
       'type' => 'UNKNOWN',
+      'archive_reason' => "Automated test archive reason"
     ];
   }
 
