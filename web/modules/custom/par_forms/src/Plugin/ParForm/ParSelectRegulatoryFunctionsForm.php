@@ -17,7 +17,11 @@ class ParSelectRegulatoryFunctionsForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected $entityMapping = [];
+  protected $entityMapping = [
+    ['regulatory_functions', 'par_data_authority', 'field_regulatory_function', NULL, NULL, 0, [
+      'This value should not be null.' => 'You must choose which regulatory functions apply to this authority.'
+    ]],
+  ];
 
   /**
    * Load the data for this form.

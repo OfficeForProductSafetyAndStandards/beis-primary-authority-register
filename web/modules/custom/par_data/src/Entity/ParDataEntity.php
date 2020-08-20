@@ -312,8 +312,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
-
-      $this->set(ParDataEntity::REVOKE_REASON_FIELD, $reason);
+      $this->get(ParDataEntity::REVOKE_REASON_FIELD)->setValue([
+        'value' => $reason,
+        'format' => 'plain_text',
+      ]);
 
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
@@ -366,7 +368,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
 
       // Set reason for archiving the advice.
-      $this->set(ParDataEntity::ARCHIVE_REASON_FIELD, $reason);
+      $this->get(ParDataEntity::ARCHIVE_REASON_FIELD)->setValue([
+        'value' => $reason,
+        'format' => 'plain_text',
+      ]);
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
@@ -1146,6 +1151,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $fields[self::ARCHIVE_REASON_FIELD] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Archive Reason'))
       ->setDescription(t('Comments about why this advice document was archived.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,
