@@ -33,7 +33,7 @@ references:
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v9-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+        - v9-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -117,7 +117,7 @@ jobs:
             npm run gulp
             cd ./tests && rm -rf node_modules && npm install
       - save_cache:
-          key: v9-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+          key: v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}
           paths:
             - ./vendor
             - ./web/core
