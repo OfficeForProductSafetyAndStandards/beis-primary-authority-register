@@ -1049,12 +1049,11 @@ function par_data_update_8044() {
  * PAR-1670 reset archive reason on all par entities.
  */
 function par_data_update_8046() {
-
   $entity_definition_update_manager = \Drupal::service('entity.definition_update_manager');
   $entity_types = \Drupal::service('par_data.manager')->getParEntityTypes();
 
   foreach($entity_types as $entity_type_id => $entity_type) {
-    $field_advice_reason = $entity_definition_update_manager->getFieldStorageDefinition(ParDataEntity::ARCHIVE_REASON_FIELD, $entity_type);
+    $field_advice_reason = $entity_definition_update_manager->getFieldStorageDefinition(ParDataEntity::ARCHIVE_REASON_FIELD, $entity_type_id);
     $field_advice_reason->addConstraint('par_required');
     $entity_definition_update_manager->updateFieldStorageDefinition($field_advice_reason);
   }
