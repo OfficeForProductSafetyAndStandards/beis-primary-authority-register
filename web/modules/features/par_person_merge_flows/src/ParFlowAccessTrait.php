@@ -31,7 +31,7 @@ trait ParFlowAccessTrait {
 
     }
 
-    $people = $par_data_person ? $par_data_person->getAllRelatedPeople() : NULL;
+    $people = $par_data_person ? $par_data_person->getSimilarPeople() : NULL;
     if (!$people || count($people) <= 1) {
       $this->accessResult = AccessResult::forbidden('There are not enough matching contact records to merge.');
     }

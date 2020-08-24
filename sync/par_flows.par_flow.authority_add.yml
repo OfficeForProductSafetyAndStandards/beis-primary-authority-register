@@ -11,6 +11,8 @@ default_section_title: 'Authority Details'
 description: ''
 save_method: end
 states: null
+final_routes:
+  - view.helpdesk_authorities.par_helpdesk_authority_page
 steps:
   1:
     route: par_authority_add_flows.authority_add_name

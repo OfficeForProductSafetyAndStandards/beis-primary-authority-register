@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_forms\ParFormPluginBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -62,8 +63,8 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     // Go back to the previous page if there's no search term.
     if (!$this->getFlowDataHandler()->getFormPermValue('organisation_select_search_query')) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getPrevRoute(), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress(ParFlow::BACK_STEP);
+      return new RedirectResponse($url->toString());
     }
 
     if ($radio_options = $this->getFlowDataHandler()->getFormPermValue('organisation_options')) {
@@ -75,8 +76,8 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
       ];
     }
     else {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute(), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     return $form;

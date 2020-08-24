@@ -121,7 +121,7 @@ HEREDOC;
     if (!empty($par_roles)) {
       $roles = array_filter($par_roles, function ($role_id) use($invitation_type) {
         if ($invitation_type === 'invite_authority_member') {
-          return in_array($role_id, ['par_authority', 'par_enforcement']);
+          return in_array($role_id, ['par_authority_manager', 'par_authority', 'par_enforcement']);
         }
         if ($invitation_type === 'invite_organisation_member') {
           return in_array($role_id, ['par_organisation']);
@@ -147,8 +147,8 @@ HEREDOC;
 
     // If the contact has an existing user account skip the invitation.
     if ($this->getFlowDataHandler()->getDefaultValues('existing', FALSE)) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     // There must be a sender and a recipient to continue.
@@ -251,11 +251,11 @@ HEREDOC;
    * Validate date field.
    */
   public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
-    $data_policy_key = $this->getElementKey('target_role');
-    if (!$form_state->getValue($data_policy_key)) {
-      $id_key = $this->getElementKey('data_policy', $cardinality, TRUE);
+    $role_key = $this->getElementKey('target_role');
+    if (!$form_state->getValue($role_key)) {
+      $id_key = $this->getElementKey('target_role', $cardinality, TRUE);
       $message = $this->wrapErrorMessage('No role has been selected for this invitation.', $this->getElementId($id_key, $form));
-      $form_state->setErrorByName($this->getElementName($data_policy_key), $message);
+      $form_state->setErrorByName($this->getElementName($role_key), $message);
     }
 
     $email_subject_key = $this->getElementKey('subject');

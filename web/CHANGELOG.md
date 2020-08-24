@@ -4,9 +4,106 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [41.0.0] - TBD
+### Fixed
+- Incorrect formatting applied to some partnership descriptions.
+
+## [40.0.0] - 2020-07-06
+### Fixed
+- Security update.
+- Corrected missing pagination for members of coordinated partnerships.
+### Updated
+- Improved ability to combine duplicate contact records.
+- Updated partnership search pages with correct information about coordinated partnerships.
+- Improved display of listings with no results.
+
+## [39.0.5] - 2020-06-15
+### Fixed
+- Resolved errors with partnerships that did not have any address registered.
+
+## [39.0.4] - 2020-06-04
+### Fixed
+- Prevented double click submission of forms.
+
+## [39.0.2] - 2020-06-02
+### Fixed
+- Prepared code for major software update (Drupal 9).
+- Support team can remove legal entities from a partnership before nomination.
+### Updated
+- Improved the display of partnership pages, particularly where inconsistent information appeared to different users.
+
+## [38.0.0] - 2020-04-21
+### Fixed
+- Resolved some issues with the partnership reports for the support team.
+- Resolved issues with the password reset functionality.
+- Removed the ability to refer enforcement notices to revoked partnerships.
+- Resolved the ability to enforce members of a coordinated partnership.
+- Resolved performance issues with the partnership pages.
+
+## [37.0.4] - 2020-02-04
+### Updated
+- Duplicate legal entities will now be merged together.
+- Inspection plans now revoked when they pass their expiration date.
+- Archived advice will now appear at the bottom of listings.
+- Approval process for partnerships improved to suggest the appropriate regulatory functions.
+### Added
+- Notifications for when inspection plans expire.
+- Notifications for when new inspection plans are added.
+
+## [36.0.0] - 2019-12-17
+### Updated
+- Partnership page restructured to make important information clearer.
+- Partnerships can now be searched by the text in the about partnership section.
+
+## [35.0.0] - 2019-11-11
+### Added
+- Ability to upload new inspection plans.
+- Inspection plans can have a title and summary to identify them more clearly.
+- Ability to revoke inspection plans.
+
+## [34.1.0] - 2019-10-10
+### Updated
+- All user names replaced with e-mail addresses.
+
+## [34.0.4] - 2019-10-07
+### Updated
+- Filtering of advice on a partnership improved.
+### Added
+- Support team can remove user accounts and block users.
+
+## [33.0.1] - 2019-09-05
+### Added
+- Ability to cancel partnership applications.
+- Support team can view all authorities and organisations.
+- Support team can add new authorities and organisations.
+- Support team can update authorities and organisations.
+
+## [32.0.0] - 2019-08-05
+### Updated
+- Highlight the impact of changing the contact details for a person.
+- Improved adding a contact to a partnership, including de-duplication of similar contacts.
+### Added
+- Contacts can now be removed from a partnership.
+
+## [31.1.0] - 2019-07-11
+### Updated
+- Access to advice locked down.
+
+## [31.0.0] - 2019-07-04
+### Updated
+- Partnership search can find documents by advice titles.
+### Added
+- A summary can be added to advice.
+- Advice on a partnership can be filtered.
+- Advice can be archived.
+
+## [30.1.0] - 2019-06-17
+### Updated
+- Access to partnerships locked down.
+
 ## [30.0.0] - 2019-05-13
 ### Updated
-- Security upgrad for core software.
+- Security upgrade for core software.
 
 ## [29.0.1] - 2019-05-07
 ### Fixed

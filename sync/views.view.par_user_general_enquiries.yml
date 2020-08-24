@@ -513,7 +513,33 @@ display:
           tokenize: false
           content: '<p>To submit an enquiry please <a href="/search/partnerships">search for the partnership</a> this relates to and submit your enquiry there.</p>'
           plugin_id: text_custom
-      footer: {  }
+      footer:
+        par_flow_link:
+          id: par_flow_link
+          table: views
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          title: 'back to dashboard'
+          assistive_text: ''
+          link: /dashboard
+          class: link-back
+          plugin_id: par_flow_link
+        par_flow_link_1:
+          id: par_flow_link_1
+          table: views
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          title: 'back to dashboard'
+          assistive_text: ''
+          link: /helpdesk
+          class: link-back
+          plugin_id: par_flow_link
       empty:
         area_text_custom:
           id: area_text_custom

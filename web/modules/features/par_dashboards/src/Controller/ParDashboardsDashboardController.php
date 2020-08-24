@@ -69,7 +69,7 @@ class ParDashboardsDashboardController extends ControllerBase {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    return $this->getDefaultTitle();
+    return 'Primary Authority Register | Dashboard';
   }
 
   /**

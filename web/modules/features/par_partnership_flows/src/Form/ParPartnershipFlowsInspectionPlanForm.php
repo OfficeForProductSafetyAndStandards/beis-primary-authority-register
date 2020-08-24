@@ -62,7 +62,7 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
       }
 
       // Inspection plan summary.
-      $notes = $par_data_inspection_plan->get('summary')->getString();
+      $notes = $par_data_inspection_plan->getPlain('summary');
       if (isset($notes)) {
         $this->getFlowDataHandler()->setFormPermValue('summary', $notes);
       }

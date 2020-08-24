@@ -21,7 +21,6 @@ use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
 use Drupal\par_forms\Plugin\ParForm\ParDedupePersonForm;
 use Drupal\par_partnership_contact_add_flows\ParFlowAccessTrait;
-use Drupal\par_partnership_contact_add_flows\ParFormCancelTrait;
 use Drupal\user\Entity\User;
 
 /**
@@ -30,7 +29,6 @@ use Drupal\user\Entity\User;
 class ParReviewForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
-  use ParFormCancelTrait;
 
   /**
    * {@inheritdoc}
@@ -172,12 +170,13 @@ class ParReviewForm extends ParBaseForm {
         ];
     }
 
+    // Change the action to save.
+    $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
+
     return parent::buildForm($form, $form_state);
   }
 
   public function createEntities() {
-    $current_user = $this->getCurrentUser();
-
     // Get the cache IDs for the various forms that needs needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_add_contact');
     $contact_dedupe_cid = $this->getFlowNegotiator()->getFormKey('dedupe_contact');
@@ -204,7 +203,7 @@ class ParReviewForm extends ParBaseForm {
         'work_phone' => $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid),
         'mobile_phone' => $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid),
       ]);
-      $par_data_person->updateEmail($this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid), $current_user);
+      $par_data_person->updateEmail($this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid), $account);
 
       if ($communication_notes = $this->getFlowDataHandler()->getTempDataValue('notes', $contact_details_cid)) {
         $par_data_person->set('communication_notes', $communication_notes);

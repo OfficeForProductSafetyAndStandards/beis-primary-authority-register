@@ -36,8 +36,8 @@ class ParGdprForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     // If this notice has already been reviewed then skip this form.
     if ($this->getDefaultValuesByKey('gdpr_agreement', $cardinality, FALSE)) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     $form['notice'] = [
@@ -53,7 +53,7 @@ class ParGdprForm extends ParFormPluginBase {
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];
-    
+
     $form['privacy_notice'] = [
       '#type' => 'link',
       '#title' => $this->t('Link to full privacy notice'),

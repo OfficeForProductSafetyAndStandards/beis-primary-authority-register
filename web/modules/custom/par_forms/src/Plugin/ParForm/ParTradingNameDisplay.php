@@ -48,7 +48,8 @@ class ParTradingNameDisplay extends ParFormPluginBase {
 
     // Generate the add a trading name link.
     try {
-      $trading_name_add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_trading_name', [], [], TRUE);
+      $trading_name_add_link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('add_trading_name');
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -89,7 +90,8 @@ class ParTradingNameDisplay extends ParFormPluginBase {
         // Edit the trading name.
         $params['trading_name_delta'] = $delta;
         $options = ['attributes' => ['aria-label' => $this->t("Edit the trading name @label", ['@label' => strtolower($trading_name)])]];
-        $operations['edit'] = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('edit_trading_name', $params, $options, TRUE);
+        $operations['edit'] = $this->getFlowNegotiator()->getFlow()
+          ->getOperationLink('edit_trading_name', 'edit trading name', $params, $options);
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -98,7 +100,9 @@ class ParTradingNameDisplay extends ParFormPluginBase {
         // Remove the trading name.
         $params['trading_name_delta'] = $delta;
         $options = ['attributes' => ['aria-label' => $this->t("Remove the trading name @label", ['@label' => strtolower($trading_name)])]];
-        $operations['remove'] = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('remove_trading_name', $params, $options, TRUE);
+        $operations['remove'] = $this->getFlowNegotiator()->getFlow()
+          ->getOperationLink('remove_trading_name', 'remove trading name', $params, $options);
+
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -114,7 +118,7 @@ class ParTradingNameDisplay extends ParFormPluginBase {
           $form['trading_names']['trading_name'][$delta]['operations']['edit'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
-            '#value' => $operations['edit']->setText("edit trading name")->toString(),
+            '#value' => $operations['edit']->toString(),
             '#attributes' => ['class' => ['edit-trading-name', 'column-one-third']],
           ];
         }
@@ -122,7 +126,7 @@ class ParTradingNameDisplay extends ParFormPluginBase {
           $form['trading_names']['trading_name'][$delta]['operations']['remove'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
-            '#value' => $operations['remove']->setText("remove trading name")->toString(),
+            '#value' => $operations['remove']->toString(),
             '#attributes' => ['class' => ['remove-trading-name', 'column-one-third']],
           ];
         }

@@ -10,6 +10,7 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_data\Entity\ParDataPersonInterface;
 
 /**
  * Implements hook_install().
@@ -1000,19 +1001,63 @@ function par_data_update_8042() {
 }
 
 /**
- * PAR-1618 clean the about partnership text.
+ * PAR-1624 Make all email addresses on par_data_person entities lowercase.
  */
 function par_data_update_8043() {
+  $query = \Drupal::database()->query( "SELECT p.id as id FROM par_people_field_data AS p WHERE p.email!=LOWER(email);" );
+  $results = array_keys($query->fetchAllAssoc('id'));
+  if (!empty($results)) {
+    $entities = \Drupal::entityTypeManager()->getStorage('par_data_person')->loadMultiple($results);
+  }
 
-  // Get all partnerships that have the format issue within the about field.
-  $query = \Drupal::entityQuery('par_data_partnership');
-  $query->condition('about_partnership__value', ', basic_html', 'CONTAINS');
-  $entity_ids = $query->execute();
-  $partnerships_to_update = \Drupal::entityTypeManager()->getStorage('par_data_partnership')->loadMultiple($entity_ids);
+  foreach ($entities as $entity) {
+    // Re-saving the entity will automatically lowercase the email address.
+    $entity->save();
+  }
+}
 
-  foreach ($partnerships_to_update as $par_data_partnership) {
-    // Strip out the custom format embedded in the text value.
-    $par_data_partnership->about_partnership->value = str_replace(', basic_html', '', $par_data_partnership->about_partnership->value);
-    $par_data_partnership->save();
+/**
+ * PAR-1618 clean all par entity long text fields.
+ */
+function par_data_update_8044() {
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  foreach ($par_data_manager->getParEntityTypes() as $entity_type_id => $entity_type_definition) {
+    foreach (\Drupal::service('entity_field.manager')->getFieldDefinitions($entity_type_id, '') as $field) {
+      if ($field->getType() == 'text_long') {
+
+        $field_name = $field->getName();
+        // Get all partnerships that have the format issue within the about business field.
+        $query = \Drupal::entityQuery($entity_type_id);
+        $query->condition($field_name . '__value', ', basic_html', 'CONTAINS');
+        $entity_ids = $query->execute();
+
+        // Load all entities to be updated.
+        $par_entities_to_update = \Drupal::entityTypeManager()->getStorage($entity_type_id)->loadMultiple($entity_ids);
+
+        foreach ($par_entities_to_update as $par_data_entity) {
+          // Strip out the custom format embedded in the text value.
+          $par_data_entity->$field_name->value = str_replace(', basic_html', '', $par_data_entity->$field_name->value);
+          $par_data_entity->save();
+        }
+      }
+    }
+  }
+}
+
+/**
+ * PAR-1670 reset archive reason on all par entities.
+ */
+function par_data_update_8046() {
+  /** @var \Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface $entity_definition_update_manager */
+  $entity_definition_update_manager = \Drupal::service('entity.definition_update_manager');
+  /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
+  $par_data_manager = \Drupal::service('par_data.manager');
+  $entity_types = $par_data_manager->getParEntityTypes();
+
+  foreach($entity_types as $entity_type_id => $entity_type) {
+    $field_advice_reason = $entity_definition_update_manager->getFieldStorageDefinition(ParDataEntity::ARCHIVE_REASON_FIELD, $entity_type->id());
+    $field_advice_reason->addConstraint('par_required');
+    $entity_definition_update_manager->updateFieldStorageDefinition($field_advice_reason);
   }
 }

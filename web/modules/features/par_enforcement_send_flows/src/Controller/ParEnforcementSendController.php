@@ -44,4 +44,11 @@ class ParEnforcementSendController extends ParBaseController {
     parent::loadData();
   }
 
+  public function build($build = []) {
+    // Change the action to done.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
+
+    return parent::build($build);
+  }
+
 }

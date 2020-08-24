@@ -65,6 +65,7 @@ Feature: User management
         # Choose authorities for the person
         Then the element "h1.heading-xlarge" contains the text "Your new person has been created"
         And I click the link text "Done"
+        Then the element "h1.heading-xlarge" contains the text "<title> <first_name> <last_name>"
 
         Examples:
             | email                                             | title | first_name    | last_name | work_phone    | mobile_phone  | role          |
@@ -130,7 +131,7 @@ Feature: User management
         Then the element "h1.heading-xlarge" contains the text "People"
         And the element ".user-management-list .table-scroll-wrapper" is visible
         Then the element ".user-management-list .table-scroll-wrapper thead .views-field-last-name" contains the text "Name"
-        And the element ".user-management-list .table-scroll-wrapper thead .views-field-email" contains the text "E-mail"
+        And the element ".user-management-list .table-scroll-wrapper thead .views-field-par-person-email" contains the text "E-mail"
         And the element ".user-management-list .table-scroll-wrapper thead .views-field-par-flow-link" contains the text "Actions"
 
         # Check the correct users can be managed.
@@ -147,7 +148,7 @@ Feature: User management
         When I click the link text "Manage your colleagues"
 
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_user_management_multiple@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_multiple@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
@@ -182,12 +183,15 @@ Feature: User management
         And I click the link text "Done"
 
         # Check the user details have been updated and the contact records merged.
+        Then the element "h1.heading-xlarge" contains the text "Profile"
+        Then the element "h1.heading-xlarge" contains the text "Dr Sally McHaels"
+        When I click the link text "Done"
+
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_user_management_multiple@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_multiple@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
-        Then the element "h1.heading-xlarge" contains the text "Dr Sally McHaels"
         And the element ".component-user-detail" contains the text "par_user_management_multiple@example.com"
 
     @user-management @ci
@@ -197,7 +201,7 @@ Feature: User management
         When I click the link text "Manage your colleagues"
 
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_user_management_officer@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_officer@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
@@ -241,7 +245,7 @@ Feature: User management
         When I click the link text "Manage your colleagues"
 
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_user_management_contact@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_contact@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
@@ -263,6 +267,7 @@ Feature: User management
         Then the element "h1.heading-xlarge" contains the text "Invitation review"
         Then the element ".par-invite-review" contains the text "An invitation will be sent to this person to invite them to join the Primary Authority Register."
         When I click on the button "#edit-save"
+        Then the element "h1.heading-xlarge" contains the text "The invitation has been sent"
 
 
     @user-management @ci @smoke
@@ -272,7 +277,7 @@ Feature: User management
         When I click the link text "Manage people"
 
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_authority_profile@example.com" to the inputfield "#edit-keywords"
+        When I add "par_authority_profile@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
@@ -286,7 +291,7 @@ Feature: User management
         When I click the link text "Manage people"
 
         Then the element "h1.heading-xlarge" contains the text "People"
-        When I add "par_user_management_officer_2@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_officer_2@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
@@ -306,7 +311,7 @@ Feature: User management
 
         Given I am logged in as "par_helpdesk@example.com"
         When I click the link text "Manage people"
-        When I add "par_user_management_officer_2@example.com" to the inputfield "#edit-keywords"
+        When I add "par_user_management_officer_2@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 

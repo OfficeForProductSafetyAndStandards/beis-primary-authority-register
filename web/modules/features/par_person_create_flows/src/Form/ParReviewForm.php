@@ -235,6 +235,11 @@ class ParReviewForm extends ParBaseForm {
 
         break;
 
+      case 'par_authority_manager':
+        $invitation_type = 'invite_authority_manager';
+
+        break;
+
       case 'par_organisation':
         $invitation_type = 'invite_organisation_member';
 
@@ -244,9 +249,13 @@ class ParReviewForm extends ParBaseForm {
         $invitation_type = 'invite_processing_team_member';
 
         break;
+
+      case 'senior_administration_officer':
+        $invitation_type = 'invite_senior_administration_officer';
+
+        break;
     }
 
-    // Create invitation if an invitation type has been set and no existing user has been found.
     if (isset($invitation_type) && !$account && $account_selection === ParChooseAccount::CREATE) {
       $invite = Invite::create([
         'type' => $invitation_type,
@@ -272,6 +281,9 @@ class ParReviewForm extends ParBaseForm {
     }
 
     if ($par_data_person->save()) {
+      // Set the person so that it can be used as a redirection on the following page.
+      $this->getFlowDataHandler()->setTempDataValue('par_data_person_id', $par_data_person->id());
+
       $role = $this->getFlowDataHandler()->getTempDataValue('role', $cid_role_select);
 
       if ($account) {
@@ -281,7 +293,7 @@ class ParReviewForm extends ParBaseForm {
       // If some authorities have been selected and either
       // an authority role has been selected or no user is being created.
       $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
-      if ($authority_ids && (in_array($role, ['par_authority', 'par_enforcement']) || !$role)) {
+      if ($authority_ids && (in_array($role, ['par_authority_manager', 'par_authority', 'par_enforcement']) || !$role)) {
         $par_data_person->updateAuthorityMemberships($authority_ids, TRUE);
       }
 
@@ -305,13 +317,11 @@ class ParReviewForm extends ParBaseForm {
       if ($account) {
         \Drupal::entityTypeManager()->getStorage('user')->resetCache([$account->id()]);
       }
-
-      $this->getFlowDataHandler()->deleteStore();
     }
     else {
       $message = $this->t('Person could not be created for: %account');
       $replacements = [
-        '%account' => $par_data_person->id(),
+        '%account' => $par_data_person->label(),
       ];
       $this->getLogger($this->getLoggerChannel())
         ->error($message, $replacements);

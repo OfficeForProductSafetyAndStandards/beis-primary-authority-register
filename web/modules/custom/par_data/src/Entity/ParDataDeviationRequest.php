@@ -198,17 +198,6 @@ class ParDataDeviationRequest extends ParDataEntity {
   }
 
   /**
-   * Get the primary authority notes data from the current action.
-   *
-   * @return String primary_authority_notes | NULL
-   *   The referred text stored on the current action or null.
-   *
-   */
-  public function getPrimaryAuthorityNotes() {
-    return $this->get('primary_authority_notes')->getString();
-  }
-
-  /**
    * Get the message comments.
    */
   public function getReplies($single = FALSE) {

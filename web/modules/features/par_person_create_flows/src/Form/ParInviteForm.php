@@ -41,11 +41,8 @@ class ParInviteForm extends ParBaseForm {
 
     switch ($role) {
       case 'par_enforcement':
-        $invitation_type = 'invite_enforcement_officer';
-        $role_options = $this->getParDataManager()->getEntitiesAsOptions([Role::load($role)], []);
-
-        break;
       case 'par_authority':
+      case 'par_authority_manager':
         $invitation_type = 'invite_authority_member';
         $role_options = $this->getParDataManager()->getEntitiesAsOptions([Role::load($role)], []);
 
@@ -85,12 +82,13 @@ class ParInviteForm extends ParBaseForm {
     // Skip the invitation process if a user id has already been matched
     // or the user has chosen not to add a user.
     if ($account_selection !== ParChooseAccount::CREATE) {
-      $url = $this->getUrlGenerator()
-        ->generateFromRoute($this->getFlowNegotiator()
-          ->getFlow()
-          ->getNextRoute('next'), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
+
+    // Change the action to save.
+    $this->getFlowNegotiator()->getFlow()->setActions(['next', 'cancel']);
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Invite');
 
     return parent::buildForm($form, $form_state);
   }

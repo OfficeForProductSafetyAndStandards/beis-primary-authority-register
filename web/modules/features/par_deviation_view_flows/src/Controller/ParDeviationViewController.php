@@ -46,6 +46,9 @@ class ParDeviationViewController extends ParBaseController {
       $this->addCacheableDependency($par_data_deviation_request);
     }
 
+    // Change the action to done.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
+
     return parent::build($build);
   }
 

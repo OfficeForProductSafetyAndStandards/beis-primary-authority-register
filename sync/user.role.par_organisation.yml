@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: par_organisation
 label: 'Organisation Member'
-weight: 4
+weight: -5
 is_admin: null
 permissions:
   - 'access par dashboard'
@@ -27,8 +27,10 @@ permissions:
   - 'access par_data_regulatory_function entities'
   - 'access par_data_sic_code entities'
   - 'access partnerships dashboard'
+  - 'access user partnerships'
   - 'add coordinated member'
   - 'add partnership organisation contact'
+  - 'assign par_organisation role'
   - 'business partnership journey'
   - 'cease coordinated member'
   - 'confirm partnership'
@@ -103,3 +105,4 @@ permissions:
   - 'view unpublished par_data_premises entities'
   - 'view unpublished par_data_regulatory_function entities'
   - 'view unpublished par_data_sic_code entities'
+  - 'view user fields'

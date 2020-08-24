@@ -28,12 +28,12 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v8-repo-{{ .Branch }}-{{ .Revision }}
+        - v9-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v8-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+        - v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -98,7 +98,7 @@ jobs:
           name: "Unpacking database"
           command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - save_cache:
-          key: v8-repo-{{ .Branch }}-{{ .Revision }}
+          key: v9-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
@@ -117,7 +117,7 @@ jobs:
             npm run gulp
             cd ./tests && rm -rf node_modules && npm install
       - save_cache:
-          key: v8-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+          key: v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}
           paths:
             - ./vendor
             - ./web/core
@@ -337,7 +337,7 @@ jobs:
           name: "Deploy to test environment"
           command: |
             DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
-            printf "$DEPLOY_ENV\n"
+            printf "Deploying to test environment: https://beis-par-$DEPLOY_ENV.cloudapps.digital\n"
             ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   archive_database:
@@ -380,11 +380,10 @@ jobs:
           environment:
             APP_ENV: ci-sanitise
       - run:
-          name: "Re-install temporary data @temp"
+          name: "Un-install temporary data @temp"
           command: |
             cd web
             ../vendor/bin/drush pm-uninstall par_data_test -y
-            ../vendor/bin/drush en par_data_test -y
           environment:
             APP_ENV: ci-sanitise
       - run:

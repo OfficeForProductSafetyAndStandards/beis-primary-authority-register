@@ -29,7 +29,7 @@ class ParAboutBusinessForm extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     if ($par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation')) {
-      $this->getFlowDataHandler()->setFormPermValue('about_business', $par_data_organisation->get('comments')->getString());
+      $this->getFlowDataHandler()->setFormPermValue('about_business', $par_data_organisation->getPlain('comments'));
     }
 
     parent::loadData();

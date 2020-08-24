@@ -1,0 +1,147 @@
+{
+    "_links": {
+        "self": {
+            "href": "http:\/\/default\/admin\/content\/par_data\/par_data_legal_entity\/24407?_format=hal_json"
+        },
+        "type": {
+            "href": "http:\/\/drupal.org\/rest\/type\/par_data_legal_entity\/legal_entity"
+        },
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/user_id": [
+            {
+                "href": "http:\/\/default\/user\/15595?_format=hal_json",
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/revision_uid": [
+            {
+                "href": "http:\/\/default\/user\/15595?_format=hal_json"
+            }
+        ]
+    },
+    "id": [
+        {
+            "value": 24407
+        }
+    ],
+    "type": [
+        {
+            "target_id": "legal_entity"
+        }
+    ],
+    "uuid": [
+        {
+            "value": "8891cf8a-4109-4366-aa87-391f5d1c9df2"
+        }
+    ],
+    "revision_id": [
+        {
+            "value": 9697
+        }
+    ],
+    "_embedded": {
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/user_id": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/15595?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "1639f81a-a0fb-4d51-bd8b-324728b24711"
+                    }
+                ],
+                "lang": "en"
+            }
+        ],
+        "http:\/\/drupal.org\/rest\/relation\/par_data_legal_entity\/legal_entity\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "http:\/\/default\/user\/15595?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "http:\/\/drupal.org\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "1639f81a-a0fb-4d51-bd8b-324728b24711"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en",
+            "lang": "en"
+        }
+    ],
+    "created": [
+        {
+            "value": 1596909266
+        }
+    ],
+    "changed": [
+        {
+            "value": 1596909266
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": 1596909266
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ],
+    "name": [
+        {
+            "value": "5f2ee6d309716",
+            "lang": "en"
+        }
+    ],
+    "deleted": [
+        {
+            "value": false
+        }
+    ],
+    "revoked": [
+        {
+            "value": false
+        }
+    ],
+    "archived": [
+        {
+            "value": false
+        }
+    ],
+    "registered_name": [
+        {
+            "value": "Sesame Street Farming Ltd"
+        }
+    ],
+    "legal_entity_type": [
+        {
+            "value": "other"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "en"
+        }
+    ]
+}

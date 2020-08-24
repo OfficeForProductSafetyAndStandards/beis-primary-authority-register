@@ -28,7 +28,7 @@ par_partnership_application_flows.partnership_application_notify_existing:
     _form: '\Drupal\par_partnership_application_flows\Form\ParNotifyExistingForm'
     _title_callback: '\Drupal\par_partnership_application_flows\Form\ParNotifyExistingForm::titleCallback'
   requirements:
-    _permission: 'manage my authorities'
+    _permission: 'apply for partnership'
     _custom_access: '\Drupal\par_partnership_application_flows\Form\ParNotifyExistingForm::accessCallback'
 par_partnership_application_flows.partnership_application_partnership_about:
   path: '/partnership/apply/about'
@@ -70,6 +70,14 @@ par_partnership_application_flows.partnership_application_organisation_contact:
   requirements:
     _permission: 'apply for partnership'
     _custom_access: '\Drupal\par_partnership_application_flows\Form\ParContactForm::accessCallback'
+par_partnership_application_flows.partnership_application_invite:
+  path: '/partnership/apply/invite'
+  defaults:
+    _form: '\Drupal\par_partnership_application_flows\Form\ParInviteForm'
+    _title_callback: '\Drupal\par_partnership_application_flows\Form\ParInviteForm::titleCallback'
+  requirements:
+    _permission: 'apply for partnership'
+    _custom_access: '\Drupal\par_partnership_application_flows\Form\ParInviteForm::accessCallback'
 par_partnership_application_flows.partnership_application_review:
   path: '/partnership/apply/review'
   defaults:
@@ -78,35 +86,11 @@ par_partnership_application_flows.partnership_application_review:
   requirements:
     _permission: 'apply for partnership'
     _custom_access: '\Drupal\par_partnership_application_flows\Form\ParConfirmationReviewForm::accessCallback'
-par_partnership_application_flows.partnership_application_invite:
-  path: '/partnership/apply/{par_data_partnership}/invite/{par_data_person}'
-  defaults:
-    _form: '\Drupal\par_partnership_application_flows\Form\ParInviteForm'
-    _title_callback: '\Drupal\par_partnership_application_flows\Form\ParInviteForm::titleCallback'
-  requirements:
-    _permission: 'apply for partnership'
-    _custom_access: '\Drupal\par_partnership_application_flows\Form\ParInviteForm::accessCallback'
-    par_data_partnership: \d+
-    par_data_person: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-      par_data_person:
-        type: entity:par_data_person
 par_partnership_application_flows.partnership_application_completed:
-  path: '/partnership/apply/{par_data_partnership}/invite/sent/{par_data_person}'
+  path: '/partnership/apply/invite/sent'
   defaults:
     _controller: '\Drupal\par_partnership_application_flows\Controller\ParPartnershipCompletedController::content'
     _title_callback: '\Drupal\par_partnership_application_flows\Controller\ParPartnershipCompletedController::titleCallback'
   requirements:
     _permission: 'apply for partnership'
     _custom_access: '\Drupal\par_partnership_application_flows\Controller\ParPartnershipCompletedController::accessCallback'
-    par_data_partnership: \d+
-    par_data_person: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-      par_data_person:
-        type: entity:par_data_person

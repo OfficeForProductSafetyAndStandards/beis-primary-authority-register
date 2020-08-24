@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: par_enforcement
 label: 'Enforcement Officer'
-weight: 3
+weight: -8
 is_admin: null
 permissions:
   - 'access par dashboard'
@@ -27,6 +27,7 @@ permissions:
   - 'access par_data_regulatory_function entities'
   - 'access par_data_sic_code entities'
   - 'access partnerships dashboard'
+  - 'access user partnerships'
   - 'authority partnership journey'
   - 'create files'
   - 'delete own document files'

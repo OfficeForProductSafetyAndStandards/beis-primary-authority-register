@@ -12,13 +12,35 @@ description: 'The ability to search for and view a partnership.'
 save_method: end
 states:
   - par_data_partnership
+final_routes:
+  - view.partnership_search.enforcment_flow_search_partnerships
 steps:
   1:
     route: par_search_partnership_flows.partnership_page
+    components:
+      partnership_information_display:
+        weight: -10
+      partnership_actions:
+        weight: -9
+      organisation_information_display:
+        weight: -8
+      partnership_members:
+        weight: -7
+      sic_code_display:
+        weight: -6
+      legal_entity_display:
+        weight: -5
+      trading_name_display:
+        weight: -4
+      partnership_documents:
+        weight: -3
+      partnership_authority_contacts:
+        plugin_name: partnership_contacts
+        display: authority
+        weight: -2
     redirect:
       advice: 2
       inspection_plans: 4
-      done: 6
   2:
     route: par_search_partnership_flows.advice_view
     redirect:
@@ -35,5 +57,3 @@ steps:
     route: par_search_partnership_flows.inspection_plan_page
     redirect:
       done: 4
-  6:
-    route: view.partnership_search.enforcment_flow_search_partnerships
