@@ -31,8 +31,8 @@ class ParPartnershipDocuments extends ParFormPluginBase {
     $advice_document_count = $par_data_partnership->countReferencedEntity('field_advice', FALSE);
     $this->getFlowDataHandler()->setFormPermValue("advice_count", $advice_document_count);
 
-    $isp_document_count = $par_data_partnership->countReferencedEntity('field_inspection_plan', FALSE);
-    $this->getFlowDataHandler()->setFormPermValue("isp_count", $isp_document_count);
+    $inspection_plan_count = $par_data_partnership->countReferencedEntity('field_inspection_plan', FALSE);
+    $this->getFlowDataHandler()->setFormPermValue("isp_count", $inspection_plan_count);
 
     $show_title = isset($this->getConfiguration()['show_title']) ? (bool) $this->getConfiguration()['show_title'] : TRUE;
     $this->getFlowDataHandler()->setFormPermValue("show_title", $show_title);
@@ -85,7 +85,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
         $form['details']['inspection_plans']['document_count'] = [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $this->t("There are <strong>@count</strong> inspection plans covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('isp_count', $cardinality, NULL)]),
+          '#value' => $this->t("There are <strong>@count</strong> inspection plans covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('isp_count', $cardinality, '0')]),
         ];
 
         $form['details']['inspection_plans']['link'] = [
@@ -114,7 +114,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
         $form['details']['advice']['document_count'] = [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $this->t("There are <strong>@count</strong> advice documents covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('advice_count', $cardinality, NULL)]),
+          '#value' => $this->t("There are <strong>@count</strong> advice documents covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('advice_count', $cardinality, '0')]),
         ];
 
         $form['details']['advice']['link'] = [
