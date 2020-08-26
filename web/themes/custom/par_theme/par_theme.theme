@@ -10,7 +10,7 @@ use Drupal\Core\Site\Settings;
  */
 function par_theme_preprocess_html(array &$variables) {
   // As per accessibility issue PAR-1545 page titles must not contain duplicate names.
-  $title_fragments = isset($variables['head_title']['title']) ? explode('|', $variables['head_title']['title']) : [];
+  $title_fragments = isset($variables['head_title']['title']) ? explode('|', $variables['head_title']['title']) : NULL;
   $title_fragments = array_map('trim', $title_fragments);
   $name = (string) $variables['head_title']['name'] ?? '';
   // Remove the duplicate site name from the title.
@@ -22,7 +22,12 @@ function par_theme_preprocess_html(array &$variables) {
     $secondary_title = array_shift($title_fragments);
     array_push($title_fragments, $secondary_title);
   }
-  $variables['head_title']['title'] = implode(' | ', $title_fragments);
+  if (empty($title_fragments)) {
+    unset($variables['head_title']['title']);
+  }
+  else {
+    $variables['head_title']['title'] = implode(' | ', $title_fragments);
+  }
 
   // Add override class to page to display PAR green branded app.
   if (Settings::get('par_branded_header_footer', FALSE)) {
