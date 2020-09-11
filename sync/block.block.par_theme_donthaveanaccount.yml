@@ -9,7 +9,7 @@ dependencies:
     - system
   theme:
     - par_theme
-id: donthaveanaccount
+id: par_theme_donthaveanaccount
 theme: par_theme
 region: content
 weight: 1
