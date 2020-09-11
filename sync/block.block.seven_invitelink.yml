@@ -8,7 +8,7 @@ dependencies:
     - user
   theme:
     - seven
-id: invitelink
+id: seven_invitelink
 theme: seven
 region: content
 weight: -4
