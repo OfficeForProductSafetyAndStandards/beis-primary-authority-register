@@ -8,7 +8,7 @@ dependencies:
     - user
   theme:
     - seven
-id: masquerade
+id: seven_masquerade
 theme: seven
 region: content
 weight: -3
