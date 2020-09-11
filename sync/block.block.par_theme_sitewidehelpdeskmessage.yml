@@ -8,7 +8,7 @@ dependencies:
     - block_content
   theme:
     - par_theme
-id: sitewidehelpdeskmessage
+id: par_theme_sitewidehelpdeskmessage
 theme: par_theme
 region: content
 weight: -7
