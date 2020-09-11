@@ -1,0 +1,9 @@
+govuk_breadcrumb: 1
+search_box: 1
+govuk_cookie: 1
+govuk_phase_banner: alpha
+phase_banner_message:
+  format: full_html
+  value: 'This is a new service – your <a class="govuk-link" href="/contact/feedback">feedback</a> will help us to improve it.'
+_core:
+  default_config_hash: nS-G7Is2pUbuItsDst0AbnICh25x6m3ID0MmgM0mkrc

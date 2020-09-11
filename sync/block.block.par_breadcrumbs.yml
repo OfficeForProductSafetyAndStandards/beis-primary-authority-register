@@ -1,0 +1,22 @@
+uuid: 28a47f94-431b-4cd8-b258-fad53b39346d
+langcode: en
+status: false
+dependencies:
+  module:
+    - system
+  theme:
+    - par
+_core:
+  default_config_hash: oXUb3JZR2WW5VOdw4HrhRicCsq51mCgLfRyvheG68ck
+id: par_breadcrumbs
+theme: par
+region: content
+weight: 2
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

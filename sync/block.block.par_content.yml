@@ -1,0 +1,22 @@
+uuid: eaec40c2-4f88-4eb9-be72-afa2f54f2fdd
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - par
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: par_content
+theme: par
+region: content
+weight: -2
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }
