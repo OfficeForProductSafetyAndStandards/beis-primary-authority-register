@@ -10,7 +10,7 @@ dependencies:
     - user
   theme:
     - par_theme
-id: dashboardlinkfromhomepage
+id: par_theme_dashboardlinkfromhomepage
 theme: par_theme
 region: content
 weight: -1
