@@ -82,10 +82,16 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
       }
       if (isset($add_inspection_list_link) && $add_inspection_list_link instanceof Link) {
+        $isp_count = $this->getDefaultValuesByKey('isp_count', $cardinality, '0');
+
         $form['details']['inspection_plans']['document_count'] = [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $this->t("There are <strong>@count</strong> inspection plans covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('isp_count', $cardinality, '0')]),
+          '#value' => $this->formatPlural($isp_count,
+              'There is <strong>@count</strong> inspection plan covered by this partnership.',
+              'There are <strong>@count</strong> inspection plans covered by this partnership.',
+              ['@count' => $isp_count]
+            ),
         ];
 
         $form['details']['inspection_plans']['link'] = [
@@ -111,10 +117,16 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
       }
       if (isset($add_advice_list_link) && $add_advice_list_link instanceof Link) {
+        $count = $this->getDefaultValuesByKey('advice_count', $cardinality, '0');
+
         $form['details']['advice']['document_count'] = [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $this->t("There are <strong>@count</strong> advice documents covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('advice_count', $cardinality, '0')]),
+          '#value' => $this->formatPlural($count,
+              'There is <strong>@count</strong> advice document covered by this partnership.',
+              'There are <strong>@count</strong> advice documents covered by this partnership.',
+              ['@count' => $count]
+            ),
         ];
 
         $form['details']['advice']['link'] = [
