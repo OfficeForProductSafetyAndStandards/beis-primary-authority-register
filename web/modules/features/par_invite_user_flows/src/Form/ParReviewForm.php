@@ -63,8 +63,8 @@ class ParReviewForm extends ParBaseForm {
 
       // Show the role they've being invited to perform.
       $rid = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
-      $role = Role::load($rid);
-      $role_options = $this->getParDataManager()->getEntitiesAsOptions([$role], []);
+      $role = !empty($rid) ? Role::load($rid) : NULL;
+      $role_options = $role ? $this->getParDataManager()->getEntitiesAsOptions([$role], []) : NULL;
       $this->getFlowDataHandler()->setFormPermValue("role", isset($role_options[$rid]) ? $role_options[$rid]: '(none)');
     }
 
@@ -207,13 +207,13 @@ class ParReviewForm extends ParBaseForm {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
     // Get the cache IDs for the various forms that needs needs to be extracted from.
-    $link_account_cid = $this->getFlowNegotiator()->getFormKey('par_profile_update_link');
+    $link_account_cid = $this->getFlowNegotiator()->getFormKey('par_profile_invite_link');
     $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_invite_institution');
     $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_invite_institution');
 
     // If there is an existing user attach it to this person.
     $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $link_account_cid);
-    $account = $user_id ? User::load($user_id) : $this->getFlowDataHandler()->getParameter('user');
+    $account = !empty($user_id) ? User::load($user_id) : $this->getFlowDataHandler()->getParameter('user');
     if ($account) {
       $par_data_person->setUserAccount($account);
     }

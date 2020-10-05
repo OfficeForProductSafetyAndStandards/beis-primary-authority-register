@@ -37,6 +37,9 @@ class ParRdHelpDeskUnrevokeForm extends ParBaseForm {
       '#suffix' => '</p>',
     ];
 
+    // Change the action to save.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
+
     return parent::buildForm($form, $form_state);
   }
 

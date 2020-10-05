@@ -1047,7 +1047,7 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: 'field_regulatory_function: PAR Regulatory Function'
-          required: true
+          required: false
           plugin_id: standard
       arguments: {  }
       display_extenders: {  }

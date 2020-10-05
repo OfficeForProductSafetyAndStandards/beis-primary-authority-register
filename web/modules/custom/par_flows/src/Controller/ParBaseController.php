@@ -27,6 +27,7 @@ use Drupal\Core\Access\AccessResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
+use Drupal\par_flows\Event\ParFlowEvents;
 
 /**
 * A controller for all styleguide page output.
@@ -50,18 +51,6 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    * @var \Drupal\Core\Access\AccessResult
    */
   protected $accessResult;
-
-  /**
-   * Whether to skip redirection based on the 'destination' query parameter.
-   *
-   * This is typically done if we want to group two sets of forms together,
-   * in which case we ignore the destination parameter for this form but
-   * pass it on to the next route. Once the next form is completed it will be
-   * redirected to the destination parameter.
-   *
-   * @var boolean
-   */
-  protected $skipQueryRedirection = FALSE;
 
   /*
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
@@ -189,90 +178,24 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   }
 
   public function getProceedingUrl($action) {
-    $query = $this->getCurrentRequest()->query;
+    // Determine the appropriate redirection url.
+    $url = $this->getFlowNegotiator()->getFlow()->progress($action);
 
     // All links other than cancel should display as primary buttons.
     switch($action) {
       case 'cancel':
         $route_options = [];
-
         break;
 
       default:
-        $route_options = ['attributes' => ['class' => 'button']];
-
+        $route_options = ['attributes' => ['class' => ['button']]];
     }
 
-    // Determine whether to use the 'destination' query parameter
-    // to determine redirection preferences.
-    if ($this->skipQueryRedirection && $query->has('destination')) {
-      $route_options['query']['destination'] = $query->get('destination');
-      $query->remove('destination');
+    if ($url && $url instanceof Url) {
+      $url->mergeOptions($route_options);
     }
 
-    // 1) Use the destination parameter if it redirects to a route within the flow.
-    // This should not apply when cancelling the current flow.
-    if ($query->has('destination')) {
-      $destination = $query->get('destination');
-      $destination_url = $this->getPathValidator()->getUrlIfValid($destination);
-
-      if ($destination_url && $destination_url instanceof Url && $destination_url->isRouted()
-        && $this->getFlowNegotiator()->routeInFlow($destination_url->getRouteName())) {
-        $route_name = $destination_url->getRouteName();
-        $route_params = $destination_url->getRouteParameters();
-      }
-    }
-
-    // 2) Get the next available route in the flow.
-    try {
-      if (!isset($route_name)) {
-        $route_name = $this->getFlowNegotiator()->getFlow()->progressRoute($action);
-        $route_params = $this->getRouteParams();
-      }
-    }
-    catch (ParFlowException $e) {
-
-    }
-    catch (RouteNotFoundException $e) {
-
-    }
-
-    // 3) If the next route could not be found in the flow then
-    // return to the entry route if one was specified.
-    if (!isset($route_name) && $url = $this->getEntryUrl()) {
-      $route_name = $url->getRouteName();
-      $route_params = $url->getRouteParameters();
-
-      // Delete form storage.
-      // @TODO We could choose to delete the store if we're completing the journey.
-      // $this->getFlowDataHandler()->deleteStore();
-    }
-
-    // 4) Allow flow modules to alter the route as required.
-    $current_route = \Drupal::routeMatch();
-    $matched_url = isset($route_name) && isset($route_params) ? Url::fromRoute($route_name, $route_params, $route_options) : NULL;
-    $event = new ParFlowEvent($this->getFlowNegotiator()->getFlow(), $current_route, $matched_url);
-    switch($action) {
-      case 'cancel':
-        $this->getEventDispatcher()->dispatch(ParFlowEvent::FLOW_CANCEL, $event);
-
-        break;
-
-      default:
-        $this->getEventDispatcher()->dispatch(ParFlowEvent::FLOW_SUBMIT . ":$action", $event);
-
-    }
-    $url = $event->getUrl();
-
-    // 5) We need a backup route in case no other routes can be found.
-    if (!$url || !$url instanceof Url) {
-      $url = Url::fromRoute('par_dashboards.dashboard', []);
-    }
-
-    // Delete form storage.
-    if ($action === 'cancel') {
-      $this->getFlowDataHandler()->deleteStore();
-    }
+    // @TODO Cancelling a flow through a link cannot delete the flow data.
 
     return $url;
   }

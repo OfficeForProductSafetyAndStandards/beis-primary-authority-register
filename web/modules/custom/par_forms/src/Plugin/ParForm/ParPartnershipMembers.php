@@ -8,6 +8,7 @@ use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
@@ -34,8 +35,6 @@ class ParPartnershipMembers extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-
-
 
     if ($par_data_partnership instanceof ParDataEntityInterface && $par_data_partnership->isCoordinated()) {
       // If there is a members list uploaded already.
@@ -82,7 +81,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
     $form['members']['count'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => $this->t("There are <strong>@count</strong> active members covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('number_of_members', $cardinality, NULL)]),
+      '#value' => $this->t("There are <strong>@count</strong> active members covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('number_of_members', $cardinality, '0')]),
       '#attributes' => ['class' => ['form-group', 'number-of-members']],
       '#weight' => -5,
     ];
@@ -173,23 +172,27 @@ class ParPartnershipMembers extends ParFormPluginBase {
     if ($this->getFlowDataHandler()->getFormPermValue("member_format") !== self::MEMBER_FORMAT_VIEW) {
       // Add link to add a new member.
       try {
-        $add_member_link = $this->getLinkByRoute('par_member_add_flows.add_organisation_name', [], [], TRUE);
+        $member_add_flow = ParFlow::load('member_add');
+        $link_label = $members && !empty($members) && count($members) >= 1 ? "add another member" : "add a member";
+        $add_member_link = $member_add_flow ?
+          $member_add_flow->getStartLink(1, $link_label) : NULL;
       } catch (ParFlowException $e) {
 
       }
       if (isset($add_member_link) && $add_member_link instanceof Link) {
-        $link_label = $members && !empty($members) && count($members) >= 1 ? "add another member" : "add a member";
         $form['members']['add'] = [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $add_member_link->setText($link_label)->toString(),
+          '#value' => $add_member_link ? $add_member_link->toString() : '',
           '#attributes' => ['class' => ['add-member']],
         ];
       }
 
       // Add link to upload a new csv member list.
       try {
-        $upload_member_link = $this->getLinkByRoute('par_member_upload_flows.member_upload', [], [], TRUE);
+        $member_upload_flow = ParFlow::load('member_upload');
+        $upload_member_link = $member_upload_flow ?
+          $member_upload_flow->getStartLink(1, 'upload a member list (csv)') : NULL;
       } catch (ParFlowException $e) {
 
       }
@@ -197,8 +200,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
         $form['members']['upload'] = [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $upload_member_link->setText('upload a member list (csv)')
-            ->toString(),
+          '#value' => $upload_member_link ? $upload_member_link->toString() : '',
           '#attributes' => ['class' => ['upload-member']],
         ];
       }

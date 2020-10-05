@@ -8,7 +8,6 @@ use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
 use Drupal\par_partnership_contact_add_flows\ParFlowAccessTrait;
-use Drupal\par_partnership_contact_add_flows\ParFormCancelTrait;
 use Drupal\user\Entity\Role;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -18,7 +17,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ParInviteForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
-  use ParFormCancelTrait;
 
   /**
    * Set the page title.
@@ -87,12 +85,13 @@ class ParInviteForm extends ParBaseForm {
     // Skip the invitation process if a user id has already been matched
     // or the user has chosen not to add a user.
     if ($account_selection !== ParChooseAccount::CREATE) {
-      $url = $this->getUrlGenerator()
-        ->generateFromRoute($this->getFlowNegotiator()
-          ->getFlow()
-          ->getNextRoute('next'), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
+
+    // Change the action to save.
+    $this->getFlowNegotiator()->getFlow()->setActions(['next', 'cancel']);
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Invite');
 
     return parent::buildForm($form, $form_state);
   }

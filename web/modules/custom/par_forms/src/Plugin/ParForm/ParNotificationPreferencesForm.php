@@ -52,8 +52,8 @@ class ParNotificationPreferencesForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     $notification_options = $this->getFlowDataHandler()->getFormPermValue('notification_option');
     if (count($notification_options) <= 0) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     $form['help'] = [

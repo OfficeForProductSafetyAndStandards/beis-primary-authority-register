@@ -152,7 +152,10 @@ class ParDataInspectionPlan extends ParDataEntity {
       }
 
       // Set revoke reason.
-      $this->set(ParDataEntity::REVOKE_REASON_FIELD, $reason);
+      $this->get(ParDataEntity::REVOKE_REASON_FIELD)->setValue([
+        'value' => $reason,
+        'format' => 'plain_text',
+      ]);
 
       // If the inspection plan is being revoked as a the result of a partnership revocation
       // keep the original revoke date so that the inspection plan can be restored later.

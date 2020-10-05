@@ -312,8 +312,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
-
-      $this->set(ParDataEntity::REVOKE_REASON_FIELD, $reason);
+      $this->get(ParDataEntity::REVOKE_REASON_FIELD)->setValue([
+        'value' => $reason,
+        'format' => 'plain_text',
+      ]);
 
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
@@ -366,7 +368,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
 
       // Set reason for archiving the advice.
-      $this->set(ParDataEntity::ARCHIVE_REASON_FIELD, $reason);
+      $this->get(ParDataEntity::ARCHIVE_REASON_FIELD)->setValue([
+        'value' => $reason,
+        'format' => 'plain_text',
+      ]);
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
@@ -625,6 +630,33 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     $entities = $this->get($field_name)->referencedEntities();
     return $this->getParDataManager()->getEntitiesAsOptions($entities);
+  }
+
+  /**
+   * Get the number of referenced entities listed on a partnership.
+   *
+   *  @param String $referenced_entity_field
+   *   The field name (machine name) of type of referenced entity to count.
+   *
+   * @param bool $include_none_active
+   *   Whether to include all other entity states. By default only active entities are counted.
+   *
+   * @return int
+   *   The number of referenced entities.
+   */
+  public function countReferencedEntity($referenced_entity_field, $include_none_active = FALSE) {
+    $i = 0;
+
+    if (!$this->hasField($referenced_entity_field)) {
+      return 0;
+    }
+
+    foreach ($this->get($referenced_entity_field)->referencedEntities() as $referenced_entity) {
+      if ($include_none_active || $referenced_entity->isActive()) {
+        $i++;
+      }
+    }
+    return $i;
   }
 
   /**
@@ -1146,6 +1178,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $fields[self::ARCHIVE_REASON_FIELD] = BaseFieldDefinition::create('text_long')
       ->setLabel(t('Archive Reason'))
       ->setDescription(t('Comments about why this advice document was archived.'))
+      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,

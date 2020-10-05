@@ -65,6 +65,7 @@ Feature: User management
         # Choose authorities for the person
         Then the element "h1.heading-xlarge" contains the text "Your new person has been created"
         And I click the link text "Done"
+        Then the element "h1.heading-xlarge" contains the text "<title> <first_name> <last_name>"
 
         Examples:
             | email                                             | title | first_name    | last_name | work_phone    | mobile_phone  | role          |
@@ -182,6 +183,10 @@ Feature: User management
         And I click the link text "Done"
 
         # Check the user details have been updated and the contact records merged.
+        Then the element "h1.heading-xlarge" contains the text "Profile"
+        Then the element "h1.heading-xlarge" contains the text "Dr Sally McHaels"
+        When I click the link text "Done"
+
         Then the element "h1.heading-xlarge" contains the text "People"
         When I add "par_user_management_multiple@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
@@ -262,6 +267,7 @@ Feature: User management
         Then the element "h1.heading-xlarge" contains the text "Invitation review"
         Then the element ".par-invite-review" contains the text "An invitation will be sent to this person to invite them to join the Primary Authority Register."
         When I click on the button "#edit-save"
+        Then the element "h1.heading-xlarge" contains the text "The invitation has been sent"
 
 
     @user-management @ci @smoke

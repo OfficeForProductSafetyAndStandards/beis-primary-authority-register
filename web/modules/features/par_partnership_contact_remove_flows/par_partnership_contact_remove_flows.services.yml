@@ -1,0 +1,5 @@
+services:
+  par_partnership_contact_remove_flows.par_flow_custom_subscriber:
+    class: '\Drupal\par_partnership_contact_remove_flows\EventSubscriber\ParFlowCustomSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
