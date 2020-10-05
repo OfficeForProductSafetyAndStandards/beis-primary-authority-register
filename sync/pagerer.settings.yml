@@ -1,3 +1,8 @@
 core_override_preset: gds_list_pagination
 _core:
   default_config_hash: tLxrrjzKePIN4ln4AR0auNqMpENEfgQ6F6MVbsoFYsM
+url_querystring:
+  core_override: false
+  querystring_key: pg
+  index_base: 0
+  encode_method: none

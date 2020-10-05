@@ -54,32 +54,43 @@ display:
           text_input_required: 'Select any filter and click on Apply to see results'
           bef:
             general:
-              allow_secondary: false
-              secondary_label: 'Advanced options'
               autosubmit: true
               autosubmit_exclude_textfield: true
               autosubmit_hide: false
+              input_required: false
+              text_input_required: 'Select any filter and click on Apply to see results'
+              text_input_required_format: basic_html
+              allow_secondary: false
+              secondary_label: 'Advanced options'
             sort:
-              bef_format: default
+              plugin_id: default
               advanced:
-                collapsible: false
-                collapsible_label: 'Sort options'
                 combine: true
                 combine_rewrite: "Issue date Desc|Most recent first\r\nIssue date Asc|Oldest first\r\nAdvice title Asc|Alphabetical A -> Z\r\nAdvice title Desc|Alphabetical Z -> A"
                 reset: true
                 reset_label: 'Restore default order'
+                collapsible: false
+                collapsible_label: 'Sort options'
                 is_secondary: false
-            advice_status:
-              bef_format: default
-              more_options:
-                is_secondary: false
-                rewrite:
-                  filter_rewrite_values: ''
-            combine:
-              bef_format: default
-              more_options:
-                is_secondary: false
-                placeholder_text: ''
+            filter:
+              advice_status:
+                plugin_id: default
+                advanced:
+                  collapsible: false
+                  is_secondary: false
+                  placeholder_text: ''
+                  rewrite:
+                    filter_rewrite_values: ''
+                  sort_options: false
+              combine:
+                plugin_id: default
+                advanced:
+                  collapsible: false
+                  is_secondary: false
+                  placeholder_text: ''
+                  rewrite:
+                    filter_rewrite_values: ''
+                  sort_options: false
           text_input_required_format: basic_html
       pager:
         type: pagerer
