@@ -6,7 +6,7 @@ Docker is used by CircleCI and all testing environments as well as being availab
 
 To build changes to the Docker image run the build script.
 ```
-sh ./build.sh
+./build.sh
 ```
 
 Check that the new image tag has been created and check connect to the image to check that everything is good with it.
@@ -17,7 +17,7 @@ docker exec -it beispar/web:latest /bin/bash
 
 When you're ready to tag you can either run the build script again with a version constraint:
 ```
-sh ./build.sh -t [VERSION]
+./build.sh -t [VERSION]
 ```
 or tag the image you created previously:
 ```
