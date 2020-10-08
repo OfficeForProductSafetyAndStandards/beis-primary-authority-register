@@ -4,6 +4,15 @@ FROM php:7.4-apache
 
 WORKDIR /var/www/html
 
+# Debian Jessie is EOL'd and original repos don't work.
+# Switch to the archive mirror until we can get people to
+# switch to Stretch.
+RUN if grep -q Debian /etc/os-release && grep -q jessie /etc/os-release; then \
+	rm /etc/apt/sources.list \
+    && echo "deb http://archive.debian.org/debian/ jessie main" >> /etc/apt/sources.list \
+    && echo "deb http://security.debian.org/debian-security jessie/updates main" >> /etc/apt/sources.list \
+	; fi
+
 # Update & install packages & libraries.
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -143,6 +152,7 @@ RUN export GECKODRIVER_LATEST_RELEASE_URL=$(curl https://api.github.com/repos/mo
      && geckodriver --version
 
 # Install chrome
+RUN sudo apt-get install -y xdg-utils libgbm1 fonts-liberation
 RUN cd /tmp && wget -O google-chrome-stable_current_amd64.deb -t 5 "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" \
     && (sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -fy install)  \
     && rm -rf google-chrome-stable_current_amd64.deb \
