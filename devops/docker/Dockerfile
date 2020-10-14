@@ -96,6 +96,8 @@ RUN buildDeps=" \
 # Configure Apache virtual host
 COPY ./par.localhost.conf /etc/apache2/sites-available/par.localhost.conf
 
+RUN a2ensite par.localhost.conf
+
 # Install composer
 ## Using composer installation from https://getcomposer.org/download/
 RUN cd /tmp \
