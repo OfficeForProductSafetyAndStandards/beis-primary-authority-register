@@ -3,6 +3,7 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\par_forms\ParEntityMapping;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -67,5 +68,20 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
     ];
 
     return $form;
+  }
+
+  /**
+   * Validate date field.
+   */
+  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+    $inspection_plan_key = $this->getElementKey('inspection_plan_id');
+    $inspection_plan_values = array_filter($form_state->getValue($inspection_plan_key));
+    if (!$inspection_plan_values) {
+      $id_key = $this->getElementKey('inspection_plan_id', $cardinality, TRUE);
+      $message = $this->wrapErrorMessage('You must select at least one inspection plan.', $this->getElementId($id_key, $form));
+      $form_state->setErrorByName($this->getElementName($inspection_plan_key), $message);
+    }
+
+    return parent::validate($form, $form_state, $cardinality, $action);
   }
 }
