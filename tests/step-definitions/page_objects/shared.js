@@ -179,7 +179,7 @@ module.exports = {
                 .setValue('#edit-header-to', string2)
                 .click('#edit-submit-maillog-overview')
                 .clickLinkByPureText(emailSubject)
-                .assert.containsText('h1.heading-xlarge', emailSubject)
+                .assert.containsText('h1.page-title', emailSubject)
                 .assert.containsText('#block-par-theme-content', string2)
         },
         goToPartnershipDetailPage: function (search, name, status) {
