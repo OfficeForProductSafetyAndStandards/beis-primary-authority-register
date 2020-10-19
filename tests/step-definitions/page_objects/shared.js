@@ -133,9 +133,9 @@ module.exports = {
             });
         },
         logOut: function() {
-            return this
-                .url(client.launch_url+'/user/logout')
-                .waitForElementVisible('h1', 10000)
+            client.url(client.launch_url+'/user/logout')
+            return this.
+                waitForElementVisible('h1', 10000)
         },
         loggedInAs: function (string) {
             return this
@@ -145,6 +145,11 @@ module.exports = {
                 .click('#edit-submit')
                 .waitForElementVisible('#footer', 15000)
                 .assert.containsText('body', 'Sign out')
+        },
+        viewMailLog: function() {
+            client.url(client.launch_url+'/admin/reports/maillog')
+            return this.
+                waitForElementVisible('h1', 10000)
         },
         checkEmails: function (string, string2) {
             var emailSubject = ''
@@ -169,8 +174,7 @@ module.exports = {
             return this
                 .logOut()
                 .loggedInAs('par_admin@example.com')
-                .url(client.launch_url+'/admin/reports/maillog')
-                .waitForElementVisible('h1', 10000)
+                .viewMailLog()
                 .assert.containsText('h1.heading-xlarge', 'Maillog overview')
                 .setValue('#edit-header-to', string2)
                 .click('#edit-submit-maillog-overview')
