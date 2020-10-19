@@ -180,7 +180,7 @@ module.exports = {
                 .click('#edit-submit-maillog-overview')
                 .clickLinkByPureText(emailSubject)
                 .assert.containsText('h1.page-title', emailSubject)
-                .assert.containsText('#block-par-theme-content', string2)
+                .assert.containsText('.page-content', string2)
         },
         goToPartnershipDetailPage: function (search, name, status) {
             return this
