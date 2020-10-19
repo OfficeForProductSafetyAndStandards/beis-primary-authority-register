@@ -175,7 +175,7 @@ module.exports = {
                 .logOut()
                 .loggedInAs('par_admin@example.com')
                 .viewMailLog()
-                .assert.containsText('h1.heading-xlarge', 'Maillog overview')
+                .assert.containsText('h1.page-title', 'Maillog overview')
                 .setValue('#edit-header-to', string2)
                 .click('#edit-submit-maillog-overview')
                 .clickLinkByPureText(emailSubject)
