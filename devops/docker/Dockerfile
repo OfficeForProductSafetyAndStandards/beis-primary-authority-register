@@ -1,8 +1,17 @@
-# beispar/web:v3.0.0
+# beispar/web:v3.2.0
 
-FROM php:7.3-apache
+FROM php:7.4-apache
 
 WORKDIR /var/www/html
+
+# Debian Jessie is EOL'd and original repos don't work.
+# Switch to the archive mirror until we can get people to
+# switch to Stretch.
+RUN if grep -q Debian /etc/os-release && grep -q jessie /etc/os-release; then \
+	rm /etc/apt/sources.list \
+    && echo "deb http://archive.debian.org/debian/ jessie main" >> /etc/apt/sources.list \
+    && echo "deb http://security.debian.org/debian-security jessie/updates main" >> /etc/apt/sources.list \
+	; fi
 
 # Update & install packages & libraries.
 RUN apt-get update \
@@ -24,13 +33,14 @@ RUN sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debcon
     && apt-key adv --no-tty --fetch-keys https://www.postgresql.org/media/keys/ACCC4CF8.asc \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -f install -y \
-        postgresql-client-10 \
+        postgresql-client-11 \
         software-properties-common \
         libnss3 \
         libgconf-2-4 \
         libfontconfig \
-        unzip \
         python-pip \
+        zip \
+        unzip \
         cf-cli
 
 # Install Vault
@@ -66,14 +76,19 @@ RUN buildDeps=" \
         libxml2-dev \
         libzip-dev \
     " \
+    phpExt=" \
+        exif \
+        gd \
+        intl \
+        opcache \
+        pdo_pgsql \
+        pgsql \
+        zip \
+    " \
     && sudo -E apt-get update && sudo -E DEBIAN_FRONTEND=noninteractive apt-get install -y $buildDeps $runtimeDeps \
-    && sudo -E docker-php-ext-install -j$(nproc) intl mbstring opcache pdo_pgsql pgsql \
-    && sudo -E docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && sudo -E docker-php-ext-install gd \
-    && sudo -E docker-php-ext-install exif \
-    && sudo -E docker-php-ext-install zip \
-    && pecl install mcrypt-1.0.2 \
+    && pecl install mcrypt-1.0.3 \
     && sudo -E docker-php-ext-enable mcrypt \
+    && sudo -E docker-php-ext-install -j$(nproc) $phpExt \
     && apt-get purge -y --auto-remove $buildDeps \
     && rm -r /var/lib/apt/lists/* \
     && a2enmod rewrite
@@ -81,11 +96,13 @@ RUN buildDeps=" \
 # Configure Apache virtual host
 COPY ./par.localhost.conf /etc/apache2/sites-available/par.localhost.conf
 
+RUN a2ensite par.localhost.conf
+
 # Install composer
 ## Using composer installation from https://getcomposer.org/download/
 RUN cd /tmp \
     && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php -r "if (hash_file('sha384', 'composer-setup.php') === '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
+    && php -r "if (hash_file('sha384', 'composer-setup.php') === '795f976fe0ebd8b75f26a6dd68f78fd3453ce79f32ecb33e7fd087d39bfeb978342fb73ac986cd4f54edd0dc902601dc') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
     && php composer-setup.php \
     && php -r "unlink('composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer
@@ -98,24 +115,25 @@ RUN cd /tmp \
     && node --version \
     && npm --version
 
-# Install java 8
-## Using java installation from CircleCi docker images circleci/php:7.3.1-apache-stretch-node-browsers
-RUN if grep -q Debian /etc/os-release && grep -q jessie /etc/os-release; then \
-    echo "deb http://http.us.debian.org/debian/ jessie-backports main" | sudo tee -a /etc/apt/sources.list \
-    && echo "deb-src http://http.us.debian.org/debian/ jessie-backports main" | sudo tee -a /etc/apt/sources.list \
-    && sudo apt-get update; sudo apt-get install -y -t jessie-backports openjdk-8-jre openjdk-8-jre-headless openjdk-8-jdk openjdk-8-jdk-headless \
-  ; elif grep -q Ubuntu /etc/os-release && grep -q Trusty /etc/os-release; then \
-    echo "deb http://ppa.launchpad.net/openjdk-r/ppa/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list \
-    && echo "deb-src http://ppa.launchpad.net/openjdk-r/ppa/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list \
-    && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key DA1A4A13543B466853BAF164EB9B1D8886F44E2A \
-    && sudo apt-get update; sudo apt-get install -y openjdk-8-jre openjdk-8-jre-headless openjdk-8-jdk openjdk-8-jdk-headless \
-  ; else \
-    sudo apt-get update; sudo apt-get install -y openjdk-8-jre openjdk-8-jre-headless openjdk-8-jdk openjdk-8-jdk-headless \
-  ; fi \
-  && sudo apt-get install -y bzip2 libgconf-2-4 # for extracting firefox and running chrome, respectively
+# install jq
+RUN JQ_URL="https://circle-downloads.s3.amazonaws.com/circleci-images/cache/linux-amd64/jq-latest" \
+  && curl --silent --show-error --location --fail --retry 3 --output /usr/bin/jq $JQ_URL \
+  && chmod +x /usr/bin/jq \
+  && jq --version
+
+# Install Java 11 LTS / OpenJDK 11
+# Using java installation from CircleCi docker images circleci/php:7.4.11
+# @see https://github.com/circleci/circleci-images/blob/staging/shared/images/Dockerfile-browsers.template
+RUN if grep -q Debian /etc/os-release && grep -q stretch /etc/os-release; then \
+		echo 'deb http://deb.debian.org/debian stretch-backports main' | sudo tee -a /etc/apt/sources.list.d/stretch-backports.list; \
+	elif grep -q Ubuntu /etc/os-release && grep -q xenial /etc/os-release; then \
+		sudo apt-get update && sudo apt-get install -y software-properties-common && \
+		sudo add-apt-repository -y ppa:openjdk-r/ppa; \
+	fi && \
+	sudo apt-get update && sudo apt-get install -y openjdk-11-jre openjdk-11-jre-headless openjdk-11-jdk openjdk-11-jdk-headless && \
+	sudo apt-get install -y bzip2 libgconf-2-4 # for extracting firefox and running chrome, respectively
 
 # Install firefox
-## Using firefox installation from CircleCi docker images circleci/php:7.3.1-apache-stretch-node-browsers
 RUN FIREFOX_URL="https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US" \
   && ACTUAL_URL=$(curl -Ls -o /dev/null -w %{url_effective} $FIREFOX_URL) \
   && curl --silent --show-error --location --fail --retry 3 --output /tmp/firefox.tar.bz2 $ACTUAL_URL \
@@ -125,23 +143,39 @@ RUN FIREFOX_URL="https://download.mozilla.org/?product=firefox-latest-ssl&os=lin
   && rm -rf /tmp/firefox.* \
   && firefox --version
 
-# Install chrome
-## Using chromedriver isntallation from CircleCi docker images circleci/php:7.3.1-apache-stretch-node-browsers
-RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-      && (sudo dpkg -i /tmp/google-chrome-stable_current_amd64.deb || sudo apt-get -fy install)  \
-      && rm -rf /tmp/google-chrome-stable_current_amd64.deb \
-      && sudo sed -i 's|HERE/chrome"|HERE/chrome" --disable-setuid-sandbox --no-sandbox|g' \
-           "/opt/google/chrome/google-chrome" \
-      && google-chrome --version
+# Install geckodriver
+RUN export GECKODRIVER_LATEST_RELEASE_URL=$(curl https://api.github.com/repos/mozilla/geckodriver/releases/latest | jq -r ".assets[] | select(.name | test(\"linux64.tar.gz$\")) | .browser_download_url") \
+     && curl --silent --show-error --location --fail --retry 3 --output /tmp/geckodriver_linux64.tar.gz "$GECKODRIVER_LATEST_RELEASE_URL" \
+     && cd /tmp \
+     && tar xf geckodriver_linux64.tar.gz \
+     && rm -rf geckodriver_linux64.tar.gz \
+     && sudo mv geckodriver /usr/local/bin/geckodriver \
+     && sudo chmod +x /usr/local/bin/geckodriver \
+     && geckodriver --version
 
-RUN export CHROMEDRIVER_RELEASE=$(curl --location --fail --retry 3 http://chromedriver.storage.googleapis.com/LATEST_RELEASE) \
-      && curl --silent --show-error --location --fail --retry 3 --output /tmp/chromedriver_linux64.zip "http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_RELEASE/chromedriver_linux64.zip" \
-      && cd /tmp \
-      && unzip chromedriver_linux64.zip \
-      && rm -rf chromedriver_linux64.zip \
-      && sudo mv chromedriver /usr/local/bin/chromedriver \
-      && sudo chmod +x /usr/local/bin/chromedriver \
-      && chromedriver --version
+# Install chrome
+RUN sudo apt-get install -y xdg-utils libgbm1 fonts-liberation
+RUN cd /tmp && wget -O google-chrome-stable_current_amd64.deb -t 5 "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" \
+    && (sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -fy install)  \
+    && rm -rf google-chrome-stable_current_amd64.deb \
+    && sudo sed -i 's|HERE/chrome"|HERE/chrome" --disable-setuid-sandbox --no-sandbox|g' \
+        "/opt/google/chrome/google-chrome" \
+    && google-chrome --version
+
+RUN CHROME_VERSION="$(google-chrome --version)" \
+    && export CHROMEDRIVER_RELEASE="$(echo $CHROME_VERSION | sed 's/^Google Chrome //')" && export CHROMEDRIVER_RELEASE=${CHROMEDRIVER_RELEASE%%.*} \
+    && CHROMEDRIVER_VERSION=$(curl --silent --show-error --location --fail --retry 4 --retry-delay 5 http://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROMEDRIVER_RELEASE}) \
+    && curl --silent --show-error --location --fail --retry 4 --retry-delay 5 --output /tmp/chromedriver_linux64.zip "http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" \
+    && cd /tmp \
+    && unzip chromedriver_linux64.zip \
+    && rm -rf chromedriver_linux64.zip \
+    && sudo mv chromedriver /usr/local/bin/chromedriver \
+    && sudo chmod +x /usr/local/bin/chromedriver \
+    && chromedriver --version
+
+# Google Chrome < v85 had libxss1 as a dependency. It no longer does but people
+# have been depending on it so installing manually.
+RUN sudo apt-get install -y libxss1
 
 # Start apache
 CMD apachectl -D FOREGROUND

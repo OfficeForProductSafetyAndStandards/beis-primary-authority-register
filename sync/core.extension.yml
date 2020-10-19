@@ -48,6 +48,11 @@ module:
   invite: 0
   invite_by_email: 0
   invite_link: 0
+  jquery_ui: 0
+  jquery_ui_button: 0
+  jquery_ui_checkboxradio: 0
+  jquery_ui_controlgroup: 0
+  jquery_ui_slider: 0
   language: 0
   link: 0
   locale: 0

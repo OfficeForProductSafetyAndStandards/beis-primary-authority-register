@@ -18,28 +18,28 @@ steps:
     route: par_authority_update_flows.authority_update_name
     form_id: par_authority_update_name
     components:
-      authority_name: { }
+      authority_name: {  }
     redirect:
       back: 5
   2:
     route: par_authority_update_flows.authority_update_type
     form_id: par_authority_update_type
     components:
-      authority_type: { }
+      authority_type: {  }
     redirect:
       back: 5
   3:
     route: par_authority_update_flows.authority_update_ons
     form_id: par_authority_update_ons
     components:
-      authority_ons: { }
+      authority_ons: {  }
     redirect:
       back: 5
   4:
     route: par_authority_update_flows.authority_update_regulatory_functions
     form_id: par_authority_update_regulatory_functions
     components:
-      regulatory_functions_select: { }
+      regulatory_functions_select: {  }
     redirect:
       back: 5
   5:

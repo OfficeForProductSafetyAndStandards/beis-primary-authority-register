@@ -15,7 +15,6 @@ dependencies:
   - message
   - pagerer
   - par_data
-  - par_data_config
   - rest
   - serialization
   - text
