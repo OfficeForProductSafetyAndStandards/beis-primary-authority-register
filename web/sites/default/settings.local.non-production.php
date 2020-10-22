@@ -15,3 +15,10 @@ if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
 
 // Enable tota11y library.
 $settings['enable_tota11y'] = TRUE;
+
+/**
+ * Show all error messages, with backtrace information.
+ *
+ * @TODO Temporary to resolve staging issues.
+ */
+$config['system.logging']['error_level'] = 'verbose';
