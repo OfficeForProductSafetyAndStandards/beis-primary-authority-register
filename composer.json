@@ -77,6 +77,7 @@
         "drupal/xmlsitemap": "~1.0.0",
         "drush/config-extra": "~1.0.0",
         "drush/drush": "~8.4.0",
+        "league/flysystem": "1.0.69",
         "predis/predis": "1.1.1",
         "rapidwebltd/php-uk-bank-holidays": "~5.0.0",
         "vlucas/phpdotenv": "~2.4.0"
@@ -147,6 +148,9 @@
             "drupal/flysystem": {
                 "Add Drush commands for sending and receiving files": "./patches/flysystem-drush-command.patch",
                 "CSS and JS served through the flysystem.serve route can't be downloaded in maintenance mode": "https://www.drupal.org/files/issues/2019-06-13/serve_maintenance_page_assets-3061561-3.patch"
+            },
+            "drupal/flysystem_s3": {
+                "Allow downloading of private files from remote S3 wrappers": "./patches/private_s3_file_download.patch"
             },
             "drupal/govuk_notify": {
                 "Mail body formatting": "./patches/mail_body-govuk_notify.patch"
