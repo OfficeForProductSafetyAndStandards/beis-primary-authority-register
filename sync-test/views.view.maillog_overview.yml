@@ -17,7 +17,7 @@ module: views
 description: ''
 tag: ''
 base_table: maillog
-base_field: id
+base_field: idmaillog
 display:
   default:
     display_plugin: default
@@ -127,15 +127,15 @@ display:
       row:
         type: fields
       fields:
-        id:
-          id: id
+        idmaillog:
+          id: idmaillog
           table: maillog
-          field: id
+          field: idmaillog
           relationship: none
           group_type: group
           admin_label: ''
-          label: Maillog_ID
-          exclude: true
+          label: '#'
+          exclude: false
           alter:
             alter_text: false
             text: ''
@@ -153,7 +153,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: null
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -171,7 +171,7 @@ display:
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: ''
+          empty: 'There are currently no mails to report.'
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
@@ -241,7 +241,7 @@ display:
             alter_text: false
             text: ''
             make_link: true
-            path: '/admin/reports/maillog/details/{{ id }}'
+            path: '/maillog/details/{{idmaillog}}'
             absolute: false
             external: false
             replace_spaces: false
@@ -502,7 +502,7 @@ display:
         - url
         - url.query_args
       cacheable: false
-      max-age: -1
+      max-age: 0
       tags: {  }
   page_1:
     display_plugin: page
@@ -526,5 +526,5 @@ display:
         - url
         - url.query_args
       cacheable: false
-      max-age: -1
+      max-age: 0
       tags: {  }

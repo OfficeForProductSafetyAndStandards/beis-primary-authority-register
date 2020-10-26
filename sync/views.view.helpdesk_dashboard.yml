@@ -63,33 +63,22 @@ display:
           text_input_required: 'Select any filter and click on Apply to see results'
           bef:
             general:
+              allow_secondary: false
+              secondary_label: 'Advanced options'
               autosubmit: false
               autosubmit_exclude_textfield: false
               autosubmit_hide: false
-              input_required: false
-              text_input_required: 'Select any filter and click on Apply to see results'
-              text_input_required_format: basic_html
-              allow_secondary: false
-              secondary_label: 'Advanced options'
-            filter:
-              combine:
-                plugin_id: default
-                advanced:
-                  collapsible: false
-                  is_secondary: false
-                  placeholder_text: ''
-                  rewrite:
-                    filter_rewrite_values: ''
-                  sort_options: false
-              partnership_status_1:
-                plugin_id: default
-                advanced:
-                  collapsible: false
-                  is_secondary: false
-                  placeholder_text: ''
-                  rewrite:
-                    filter_rewrite_values: ''
-                  sort_options: false
+            combine:
+              bef_format: default
+              more_options:
+                is_secondary: false
+                placeholder_text: ''
+            partnership_status_1:
+              bef_format: default
+              more_options:
+                is_secondary: false
+                rewrite:
+                  filter_rewrite_values: ''
           text_input_required_format: basic_html
       pager:
         type: pagerer
@@ -302,13 +291,18 @@ display:
           clear_on_exposed: false
           action_title: Action
           selected_actions:
-            -
-              action_id: vbo_export_generate_csv_action
-              preconfiguration:
-                label_override: 'CSV Download'
-                file_scheme: s3private
-                strip_tags: 1
-                separator: ','
+            comment_delete_action: 0
+            par_bulk_invite: 0
+            vbo_export_generate_csv_action: vbo_export_generate_csv_action
+            vbo_export_generate_xlsx_action: 0
+            views_bulk_operations_delete_entity: 0
+            'entity:save_action:par_data_partnership': 0
+          preconfiguration:
+            vbo_export_generate_csv_action:
+              label_override: 'CSV Download'
+              file_scheme: s3private
+              strip_tags: 1
+              separator: ','
           plugin_id: views_bulk_operations_bulk_form
         id:
           id: id
@@ -2398,13 +2392,18 @@ display:
           clear_on_exposed: false
           action_title: Action
           selected_actions:
-            -
-              action_id: vbo_export_generate_csv_action
-              preconfiguration:
-                label_override: 'CSV Download'
-                file_scheme: s3private
-                strip_tags: 1
-                separator: ','
+            comment_delete_action: 0
+            par_bulk_invite: 0
+            vbo_export_generate_xlsx_action: 0
+            vbo_export_generate_csv_action: vbo_export_generate_csv_action
+            views_bulk_operations_delete_entity: 0
+            'entity:save_action:par_data_partnership': 0
+          preconfiguration:
+            vbo_export_generate_csv_action:
+              label_override: 'CSV Download'
+              file_scheme: s3private
+              strip_tags: 1
+              separator: ','
           plugin_id: views_bulk_operations_bulk_form
         id:
           id: id

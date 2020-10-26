@@ -1,0 +1,122 @@
+diff --git a/core/core.services.yml b/core/core.services.yml
+index 680c23b808..b7b7f10122 100644
+--- a/core/core.services.yml
++++ b/core/core.services.yml
+@@ -921,6 +921,9 @@ services:
+   pgsql.entity.query.sql:
+     class: Drupal\Core\Entity\Query\Sql\pgsql\QueryFactory
+     arguments: ['@database']
++  sqlite.entity.query.sql:
++    class: Drupal\Core\Entity\Query\Sql\sqlite\QueryFactory
++    arguments: ['@database']
+   entity.query.null:
+     class: Drupal\Core\Entity\Query\Null\QueryFactory
+   entity.query.keyvalue:
+diff --git a/core/lib/Drupal/Core/Entity/Query/Sql/pgsql/Condition.php b/core/lib/Drupal/Core/Entity/Query/Sql/pgsql/Condition.php
+index 1b561ed48e..22949f805e 100644
+--- a/core/lib/Drupal/Core/Entity/Query/Sql/pgsql/Condition.php
++++ b/core/lib/Drupal/Core/Entity/Query/Sql/pgsql/Condition.php
+@@ -18,14 +18,13 @@ public static function translateCondition(&$condition, SelectInterface $sql_quer
+       $condition['where'] = 'LOWER(' . $sql_query->escapeField($condition['real_field']) . ') ' . $condition['operator'] . ' (';
+       $condition['where_args'] = [];
+ 
+-      $n = 1;
+       // Only use the array values in case an associative array is passed as an
+       // argument following similar pattern in
+       // \Drupal\Core\Database\Connection::expandArguments().
+       foreach ($condition['value'] as $value) {
+-        $condition['where'] .= 'LOWER(:value' . $n . '),';
+-        $condition['where_args'][':value' . $n] = $value;
+-        $n++;
++        $n = $sql_query->nextPlaceholder();
++        $condition['where'] .= 'LOWER(:db_condition_placeholder' . $n . '),';
++        $condition['where_args'][':db_condition_placeholder' . $n] = $value;
+       }
+       $condition['where'] = trim($condition['where'], ',');
+       $condition['where'] .= ')';
+diff --git a/core/lib/Drupal/Core/Entity/Query/Sql/sqlite/Condition.php b/core/lib/Drupal/Core/Entity/Query/Sql/sqlite/Condition.php
+new file mode 100644
+index 0000000000..283536f122
+--- /dev/null
++++ b/core/lib/Drupal/Core/Entity/Query/Sql/sqlite/Condition.php
+@@ -0,0 +1,36 @@
++<?php
++
++namespace Drupal\Core\Entity\Query\Sql\sqlite;
++
++use Drupal\Core\Database\Query\SelectInterface;
++use Drupal\Core\Entity\Query\Sql\Condition as BaseCondition;
++
++/**
++ * Implements entity query conditions for SQLite databases.
++ */
++class Condition extends BaseCondition {
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function translateCondition(&$condition, SelectInterface $sql_query, $case_sensitive) {
++    if (is_array($condition['value']) && $case_sensitive === FALSE) {
++      $condition['where'] = 'LOWER(' . $sql_query->escapeField($condition['real_field']) . ') ' . $condition['operator'] . ' (';
++      $condition['where_args'] = [];
++
++      // Only use the array values in case an associative array is passed as an
++      // argument following similar pattern in
++      // \Drupal\Core\Database\Connection::expandArguments().
++      foreach ($condition['value'] as $value) {
++        $n = $sql_query->nextPlaceholder();
++        $condition['where'] .= 'LOWER(:db_condition_placeholder' . $n . '),';
++        $condition['where_args'][':db_condition_placeholder' . $n] = $value;
++      }
++      $condition['where'] = trim($condition['where'], ',');
++      $condition['where'] .= ')';
++      return;
++    }
++    parent::translateCondition($condition, $sql_query, $case_sensitive);
++  }
++
++}
+diff --git a/core/lib/Drupal/Core/Entity/Query/Sql/sqlite/QueryFactory.php b/core/lib/Drupal/Core/Entity/Query/Sql/sqlite/QueryFactory.php
+new file mode 100644
+index 0000000000..bfb5550d0e
+--- /dev/null
++++ b/core/lib/Drupal/Core/Entity/Query/Sql/sqlite/QueryFactory.php
+@@ -0,0 +1,24 @@
++<?php
++
++namespace Drupal\Core\Entity\Query\Sql\sqlite;
++
++use Drupal\Core\Entity\Query\Sql\QueryFactory as BaseQueryFactory;
++
++/**
++ * SQLite specific entity query implementation.
++ *
++ * To add a new query implementation extending the default SQL one, add
++ * a service definition like sqlite.entity.query.sql and a factory class like
++ * this. The system will automatically find the relevant Query, QueryAggregate,
++ * Condition, ConditionAggregate, Tables classes in this namespace, in the
++ * namespace of the parent class and so on. So after creating an empty query
++ * factory class like this, it is possible to just drop in a class extending
++ * the base class in this namespace and it will be used automatically but it
++ * is optional: if a class is not extended the relevant default is used.
++ *
++ * @see \Drupal\Core\Entity\Query\QueryBase::getNamespaces()
++ * @see \Drupal\Core\Entity\Query\QueryBase::getClass()
++ */
++class QueryFactory extends BaseQueryFactory {
++
++}
+diff --git a/core/lib/Drupal/Core/Field/Plugin/Field/FieldType/EmailItem.php b/core/lib/Drupal/Core/Field/Plugin/Field/FieldType/EmailItem.php
+index a6801fc229..1817243571 100644
+--- a/core/lib/Drupal/Core/Field/Plugin/Field/FieldType/EmailItem.php
++++ b/core/lib/Drupal/Core/Field/Plugin/Field/FieldType/EmailItem.php
+@@ -28,7 +28,8 @@ class EmailItem extends FieldItemBase {
+   public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
+     $properties['value'] = DataDefinition::create('email')
+       ->setLabel(t('Email'))
+-      ->setRequired(TRUE);
++      ->setRequired(TRUE)
++      ->setSetting('case_sensitive', FALSE);
+ 
+     return $properties;
+   }

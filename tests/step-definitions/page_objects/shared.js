@@ -132,25 +132,6 @@ module.exports = {
                 }
             });
         },
-        logOut: function() {
-            client.url(client.launch_url+'/user/logout')
-            return this.
-                waitForElementVisible('h1', 10000)
-        },
-        loggedInAs: function (string) {
-            return this
-                .clickLinkByPureText('Sign in')
-                .setValue('#edit-name', string)
-                .setValue('#edit-pass', 'TestPassword')
-                .click('#edit-submit')
-                .waitForElementVisible('#footer', 15000)
-                .assert.containsText('body', 'Sign out')
-        },
-        viewMailLog: function() {
-            client.url(client.launch_url+'/admin/reports/maillog')
-            return this.
-                waitForElementVisible('h1', 10000)
-        },
         checkEmails: function (string, string2) {
             var emailSubject = ''
             switch (string) {
@@ -172,15 +153,30 @@ module.exports = {
             }
             console.log(emailSubject)
             return this
-                .logOut()
-                .loggedInAs('par_admin@example.com')
-                .viewMailLog()
-                .assert.containsText('h1.page-title', 'Maillog overview')
+                .click('#block-par-theme-account-menu > ul > li:nth-child(3) > a')
+                .click('#block-par-theme-account-menu > ul > li > a')
+                .setValue('#edit-name', 'par_admin@example.com')
+                .setValue('#edit-pass', 'TestPassword')
+                .click('#edit-submit')
+                .clickLinkByPureText('Reports')
+                .clickLinkByPureText('Maillog')
                 .setValue('#edit-header-to', string2)
                 .click('#edit-submit-maillog-overview')
                 .clickLinkByPureText(emailSubject)
-                .assert.containsText('h1.page-title', emailSubject)
-                .assert.containsText('.page-content', string2)
+                // .click('#block-seven-content > div > div > div.view-content >
+                // table > tbody > tr:nth-child(1) >
+                // td.views-field.views-field-subject > a')
+                .assert.containsText('h1.heading-xlarge', emailSubject)
+                .assert.containsText('#block-par-theme-content', string2)
+        },
+        loggedInAs: function (string) {
+            return this
+                .clickLinkByPureText('Sign in')
+                .setValue('#edit-name', string)
+                .setValue('#edit-pass', 'TestPassword')
+                .click('#edit-submit')
+                .waitForElementVisible('#footer', 15000)
+                .assert.containsText('body', 'Sign out')
         },
         goToPartnershipDetailPage: function (search, name, status) {
             return this
