@@ -18,14 +18,14 @@ steps:
     route: par_organisation_update_flows.organisation_update_name
     form_id: par_organisation_update_name
     components:
-      organisation_name: { }
+      organisation_name: {  }
     redirect:
       back: 5
   2:
     route: par_organisation_update_flows.organisation_update_about_organisation
     form_id: par_organisation_update_about_organisation
     components:
-      about_business: { }
+      about_business: {  }
     redirect:
       back: 5
   3:
