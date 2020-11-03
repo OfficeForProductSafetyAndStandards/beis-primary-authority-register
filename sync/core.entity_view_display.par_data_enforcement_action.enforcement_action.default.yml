@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.par_data_enforcement_action.enforcement_action.field_action_referral
     - field.field.par_data_enforcement_action.enforcement_action.field_blocked_advice
+    - field.field.par_data_enforcement_action.enforcement_action.field_document
     - field.field.par_data_enforcement_action.enforcement_action.field_regulatory_function
     - par_data.par_data_enforcement_action_type.enforcement_action
   module:
@@ -19,7 +20,7 @@ mode: default
 content:
   details:
     type: text_default
-    weight: 6
+    weight: 7
     region: content
     label: hidden
     settings: {  }
@@ -38,7 +39,7 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-    weight: 3
+    weight: 4
   enforcement_action_status:
     label: hidden
     region: content
@@ -46,16 +47,8 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    weight: 2
+    weight: 3
   field_action_referral:
-    weight: 8
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_blocked_advice:
     weight: 9
     label: above
     settings:
@@ -63,8 +56,25 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_blocked_advice:
+    weight: 10
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_document:
+    type: entity_reference_entity_view
+    weight: 2
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
   field_regulatory_function:
-    weight: 7
+    weight: 8
     label: above
     settings:
       link: true
@@ -77,7 +87,7 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-    weight: 5
+    weight: 6
   primary_authority_status:
     label: hidden
     type: string
@@ -85,7 +95,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 4
+    weight: 5
   regulatory_function:
     type: entity_reference_label
     weight: 1
