@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_authority.field_person
+    - par_data.par_data_authority_type.authority
+    - par_data.par_data_person_type.person
+id: par_data_authority.authority.field_person
+field_name: field_person
+entity_type: par_data_authority
+bundle: authority
+label: Person
+description: 'The contacts for this authority. The first person will be the primary contact.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_person'
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

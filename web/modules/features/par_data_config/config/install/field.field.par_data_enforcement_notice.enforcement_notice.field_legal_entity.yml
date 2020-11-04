@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_enforcement_notice.field_legal_entity
+    - par_data.par_data_enforcement_notice_type.enforcement_notice
+    - par_data.par_data_legal_entity_type.legal_entity
+id: par_data_enforcement_notice.enforcement_notice.field_legal_entity
+field_name: field_legal_entity
+entity_type: par_data_enforcement_notice
+bundle: enforcement_notice
+label: 'Legal Entity'
+description: 'The legal entities this enforcement notice is issued to.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_legal_entity'
+  handler_settings:
+    target_bundles:
+      legal_entity: legal_entity
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

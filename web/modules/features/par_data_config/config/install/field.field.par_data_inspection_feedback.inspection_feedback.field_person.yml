@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_inspection_feedback.field_person
+    - par_data.par_data_inspection_feedback_type.inspection_feedback
+    - par_data.par_data_person_type.person
+id: par_data_inspection_feedback.inspection_feedback.field_person
+field_name: field_person
+entity_type: par_data_inspection_feedback
+bundle: inspection_feedback
+label: 'Enforcing Person'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_person'
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

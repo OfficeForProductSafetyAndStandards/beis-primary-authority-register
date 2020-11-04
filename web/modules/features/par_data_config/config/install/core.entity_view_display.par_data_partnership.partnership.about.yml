@@ -1,0 +1,121 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_partnership.about
+    - field.field.par_data_partnership.partnership.field_advice
+    - field.field.par_data_partnership.partnership.field_authority
+    - field.field.par_data_partnership.partnership.field_authority_person
+    - field.field.par_data_partnership.partnership.field_coordinated_business
+    - field.field.par_data_partnership.partnership.field_inspection_plan
+    - field.field.par_data_partnership.partnership.field_legal_entity
+    - field.field.par_data_partnership.partnership.field_organisation
+    - field.field.par_data_partnership.partnership.field_organisation_person
+    - field.field.par_data_partnership.partnership.field_regulatory_function
+    - par_data.par_data_partnership_type.partnership
+  module:
+    - text
+id: par_data_partnership.partnership.about
+targetEntityType: par_data_partnership
+bundle: partnership
+mode: about
+content:
+  about_partnership:
+    type: text_default
+    weight: 0
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  advice:
+    type: entity_reference_entity_view
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  authority:
+    type: entity_reference_entity_view
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  authority_person:
+    type: entity_reference_entity_view
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  organisation:
+    type: entity_reference_entity_view
+    weight: 4
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  organisation_person:
+    type: entity_reference_entity_view
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+  regulatory_function:
+    type: entity_reference_entity_view
+    weight: 6
+    region: content
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+hidden:
+  approved_date: true
+  archive_reason: true
+  authority_change_comment: true
+  communication_email: true
+  communication_notes: true
+  communication_phone: true
+  coordinator_suitable: true
+  cost_recovery: true
+  deleted_reason: true
+  expertise_details: true
+  field_advice: true
+  field_authority: true
+  field_authority_person: true
+  field_coordinated_business: true
+  field_inspection_plan: true
+  field_legal_entity: true
+  field_organisation: true
+  field_organisation_person: true
+  field_regulatory_function: true
+  inspection_plan: true
+  name: true
+  organisation_change_comment: true
+  partnership_info_agreed_authority: true
+  partnership_info_agreed_business: true
+  partnership_status: true
+  partnership_type: true
+  person: true
+  reject_comment: true
+  revocation_date: true
+  revocation_reason: true
+  revocation_source: true
+  tc_authority_agreed: true
+  tc_organisation_agreed: true
+  terms_authority_agreed: true
+  terms_organisation_agreed: true
+  user_id: true
+  written_summary_agreed: true

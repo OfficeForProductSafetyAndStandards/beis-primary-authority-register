@@ -1,0 +1,59 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_inspection_feedback.title
+    - field.field.par_data_inspection_feedback.inspection_feedback.field_document
+    - field.field.par_data_inspection_feedback.inspection_feedback.field_enforcing_authority
+    - field.field.par_data_inspection_feedback.inspection_feedback.field_inspection_plan
+    - field.field.par_data_inspection_feedback.inspection_feedback.field_partnership
+    - field.field.par_data_inspection_feedback.inspection_feedback.field_person
+    - par_data.par_data_inspection_feedback_type.inspection_feedback
+  module:
+    - file_entity
+    - text
+id: par_data_inspection_feedback.inspection_feedback.title
+targetEntityType: par_data_inspection_feedback
+bundle: inspection_feedback
+mode: title
+content:
+  document:
+    label: hidden
+    weight: 1
+    region: content
+    settings:
+      access_message: 'You don''t have access to download this file.'
+      text: 'Download [file:name]'
+    third_party_settings: {  }
+    type: file_download_link
+  field_document:
+    type: entity_reference_entity_view
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
+  notes:
+    type: text_trimmed
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      trim_length: 300
+    third_party_settings: {  }
+hidden:
+  archive_reason: true
+  deleted_reason: true
+  field_enforcing_authority: true
+  field_inspection_plan: true
+  field_partnership: true
+  field_person: true
+  messages: true
+  name: true
+  primary_authority_notes: true
+  primary_authority_status: true
+  request_date: true
+  revocation_reason: true
+  user_id: true

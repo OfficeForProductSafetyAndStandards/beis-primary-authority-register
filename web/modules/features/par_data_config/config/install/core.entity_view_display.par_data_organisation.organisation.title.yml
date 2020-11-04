@@ -1,0 +1,43 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_organisation.title
+    - field.field.par_data_organisation.organisation.field_coordinated_businesses
+    - field.field.par_data_organisation.organisation.field_legal_entity
+    - field.field.par_data_organisation.organisation.field_person
+    - field.field.par_data_organisation.organisation.field_premises
+    - field.field.par_data_organisation.organisation.field_sic_code
+    - par_data.par_data_organisation_type.organisation
+id: par_data_organisation.organisation.title
+targetEntityType: par_data_organisation
+bundle: organisation
+mode: title
+content:
+  organisation_name:
+    label: hidden
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    weight: 0
+hidden:
+  archive_reason: true
+  comments: true
+  coordinator_number: true
+  coordinator_type: true
+  deleted_reason: true
+  employees_band: true
+  field_coordinated_businesses: true
+  field_legal_entity: true
+  field_person: true
+  field_premises: true
+  field_sic_code: true
+  name: true
+  nation: true
+  premises_mapped: true
+  revocation_reason: true
+  size: true
+  trading_name: true
+  user_id: true

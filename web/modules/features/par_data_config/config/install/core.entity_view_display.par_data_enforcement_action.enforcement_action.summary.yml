@@ -1,0 +1,89 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_enforcement_action.summary
+    - field.field.par_data_enforcement_action.enforcement_action.field_action_referral
+    - field.field.par_data_enforcement_action.enforcement_action.field_blocked_advice
+    - field.field.par_data_enforcement_action.enforcement_action.field_document
+    - field.field.par_data_enforcement_action.enforcement_action.field_regulatory_function
+    - par_data.par_data_enforcement_action_type.enforcement_action
+  module:
+    - file_entity
+    - par_data
+    - text
+id: par_data_enforcement_action.enforcement_action.summary
+targetEntityType: par_data_enforcement_action
+bundle: enforcement_action
+mode: summary
+content:
+  details:
+    type: text_default
+    weight: 3
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  document:
+    label: hidden
+    weight: 4
+    region: content
+    settings:
+      access_message: 'You don''t have access to download this file.'
+      text: 'Download [file:name]'
+    third_party_settings: {  }
+    type: file_download_link
+  field_document:
+    type: entity_reference_entity_view
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
+  field_regulatory_function:
+    type: entity_reference_entity_view
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      view_mode: title
+      link: false
+    third_party_settings: {  }
+  primary_authority_status:
+    type: par_list_formatter
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      display_original_value: false
+    third_party_settings: {  }
+  title:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  action_referral: true
+  archive_reason: true
+  blocked_advice: true
+  deleted_reason: true
+  ea_notes: true
+  ea_status: true
+  enforcement_action_notes: true
+  enforcement_action_status: true
+  enforcement_notice: true
+  field_action_referral: true
+  field_blocked_advice: true
+  name: true
+  pa_notes: true
+  pa_status: true
+  primary_authority_notes: true
+  referral_notes: true
+  regulatory_function: true
+  revocation_reason: true
+  user_id: true

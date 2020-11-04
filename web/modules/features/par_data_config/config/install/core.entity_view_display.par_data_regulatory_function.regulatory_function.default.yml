@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - par_data.par_data_regulatory_function_t.regulatory_function
+id: par_data_regulatory_function.regulatory_function.default
+targetEntityType: par_data_regulatory_function
+bundle: regulatory_function
+mode: default
+content:
+  function_name:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  archive_reason: true
+  area_name: true
+  deleted_reason: true
+  name: true
+  revocation_reason: true
+  user_id: true

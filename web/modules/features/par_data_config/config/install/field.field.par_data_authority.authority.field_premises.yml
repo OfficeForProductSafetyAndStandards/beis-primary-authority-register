@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_authority.field_premises
+    - par_data.par_data_authority_type.authority
+    - par_data.par_data_premises_type.premises
+id: par_data_authority.authority.field_premises
+field_name: field_premises
+entity_type: par_data_authority
+bundle: authority
+label: Address
+description: 'The premises of this organisation. The first premises will be the primary premises'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_premises'
+  handler_settings:
+    target_bundles:
+      premises: premises
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies: {  }
+id: information_referral
+label: 'Information Referral'
+description: ''
+help: ''
+isDeletable: false
+isRevokable: false
+isArchivable: false
+configuration: null

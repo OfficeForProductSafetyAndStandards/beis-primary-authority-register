@@ -1,0 +1,42 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_person.title
+    - field.field.par_data_person.person.field_notification_preferences
+    - field.field.par_data_person.person.field_user_account
+    - par_data.par_data_person_type.person
+id: par_data_person.person.title
+targetEntityType: par_data_person
+bundle: person
+mode: title
+content:
+  full_name_pseudo_field:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  archive_reason: true
+  communication_email: true
+  communication_mobile: true
+  communication_notes: true
+  communication_phone: true
+  deleted_reason: true
+  email: true
+  email_pseudo_field: true
+  field_notification_preferences: true
+  field_user_account: true
+  first_name: true
+  job_title: true
+  last_name: true
+  mobile_phone: true
+  mobile_phone_pseudo_field: true
+  name: true
+  person_name: true
+  revocation_reason: true
+  salutation: true
+  user_account: true
+  user_id: true
+  work_phone: true
+  work_phone_pseudo_field: true

@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_organisation.field_premises
+    - par_data.par_data_organisation_type.organisation
+    - par_data.par_data_premises_type.premises
+id: par_data_organisation.organisation.field_premises
+field_name: field_premises
+entity_type: par_data_organisation
+bundle: organisation
+label: Address
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_premises'
+  handler_settings:
+    target_bundles:
+      premises: premises
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_coordinated_business.summary
+label: Summary
+targetEntityType: par_data_coordinated_business
+cache: true

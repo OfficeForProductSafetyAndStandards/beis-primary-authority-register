@@ -1,0 +1,87 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_advice.summary
+    - field.field.par_data_advice.advice.field_document
+    - field.field.par_data_advice.advice.field_regulatory_function
+    - par_data.par_data_advice_type.advice
+  module:
+    - datetime
+    - file
+    - text
+id: par_data_advice.advice.summary
+targetEntityType: par_data_advice
+bundle: advice
+mode: summary
+content:
+  advice_status:
+    label: hidden
+    weight: 4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  advice_title:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  attachment:
+    label: hidden
+    weight: 1
+    region: content
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+  document:
+    type: file_default
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+  field_document:
+    type: entity_reference_entity_view
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
+  issue_date:
+    label: hidden
+    weight: 5
+    region: content
+    settings:
+      timezone_override: ''
+      format_type: gds_date_format
+    third_party_settings: {  }
+    type: datetime_default
+  notes:
+    type: text_trimmed
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+hidden:
+  advice_type: true
+  archive_reason: true
+  deleted_reason: true
+  field_regulatory_function: true
+  name: true
+  regulatory_function: true
+  revocation_reason: true
+  user_id: true
+  visible_authority: true
+  visible_business: true
+  visible_coordinator: true

@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies: {  }
+id: person
+label: Person
+description: 'A Person is a named individual who can feature in a number of different ways within PAR.  A Person may, or may not, be a user of the PAR application.'
+help: ''
+isDeletable: true
+isRevokable: false
+isArchivable: false
+configuration:
+  entity:
+    label_fields:
+      - first_name
+      - last_name
+    required_fields:
+      salutation: 'The %field is required.'
+      first_name: 'The %field is required.'
+      last_name: 'The %field is required.'
+      work_phone: 'The %field is required.'
+      email: 'The %field is required.'
+  communication_email:
+    boolean_values:
+      'on': 'Preferred communication by email'
+      'off': 'Do not communicate by email'
+  communication_phone:
+    boolean_values:
+      'on': 'Preferred communication by work phone'
+      'off': 'Do not communicate by work phone'
+  communication_mobile:
+    boolean_values:
+      'on': 'Preferred communication by mobile phone'
+      'off': 'Do not communicate by mobile phone'

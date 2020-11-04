@@ -1,0 +1,125 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.par_data_enforcement_action.enforcement_action.field_action_referral
+    - field.field.par_data_enforcement_action.enforcement_action.field_blocked_advice
+    - field.field.par_data_enforcement_action.enforcement_action.field_document
+    - field.field.par_data_enforcement_action.enforcement_action.field_regulatory_function
+    - par_data.par_data_enforcement_action_type.enforcement_action
+  module:
+    - file
+    - text
+id: par_data_enforcement_action.enforcement_action.default
+targetEntityType: par_data_enforcement_action
+bundle: enforcement_action
+mode: default
+content:
+  details:
+    type: text_default
+    weight: 7
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  document:
+    label: hidden
+    weight: 1
+    region: content
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+  enforcement_action_notes:
+    label: hidden
+    type: text_default
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+  enforcement_action_status:
+    label: hidden
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    weight: 3
+  field_action_referral:
+    weight: 9
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_blocked_advice:
+    weight: 10
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_document:
+    type: entity_reference_entity_view
+    weight: 2
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_regulatory_function:
+    weight: 8
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  primary_authority_notes:
+    label: hidden
+    type: text_default
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+  primary_authority_status:
+    label: hidden
+    type: string
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 5
+  regulatory_function:
+    type: entity_reference_label
+    weight: 1
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  title:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  action_referral: true
+  archive_reason: true
+  blocked_advice: true
+  deleted_reason: true
+  ea_notes: true
+  ea_status: true
+  enforcement_notice: true
+  name: true
+  pa_notes: true
+  pa_status: true
+  referral_notes: true
+  revocation_reason: true
+  user_id: true
