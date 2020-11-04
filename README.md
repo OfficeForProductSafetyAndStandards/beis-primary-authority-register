@@ -88,8 +88,8 @@ Import the newly downloaded production db:
 ```
 cd ./web
 tar -zxvf ./location/of/downloaded/sql/drush-dump-production-unsanitized-latest.sql.tar.gz
-../vendor/bin/drush @paas sql:drop -y
-../vendor/bin/drush @paas sql:cli < ./location/of/downloaded/sql/drush-dump-production-unsanitized-latest.sql
+../vendor/bin/drush @par.paas sql:drop -y
+../vendor/bin/drush @par.paas sql:cli < ./location/of/downloaded/sql/drush-dump-production-unsanitized-latest.sql
 cd ..
 sh drupal-update.sh
 ```
@@ -97,10 +97,10 @@ sh drupal-update.sh
 Check that the data looks right and then sanitise:
 ```
 cd ./web
-../vendor/bin/drush @paas sql:sanitize -y
+../vendor/bin/drush @par.paas sql:sanitize -y
 ```
 
 Then dump the db, zip it and upload it back to the S3 artifacts bucket with the correct name:
-```../vendor/bin/drush @paas sql-dump --result-file=./drush-dump-production-sanitized-latest.sql --extra="-O -x"
+```../vendor/bin/drush @par.paas sql-dump --result-file=./drush-dump-production-sanitized-latest.sql --extra="-O -x"
 tar -zcvf drush-dump-production-sanitized-latest.sql.tar.gz -C ./ drush-dump-production-sanitized-latest.sql
 ../vendor/bin/drush fsp s3backups drush-dump-production-sanitized-latest.sql.tar.gz drush-dump-production-sanitized-latest.sql.tar.gz```
