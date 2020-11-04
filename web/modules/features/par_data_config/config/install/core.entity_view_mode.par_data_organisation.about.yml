@@ -1,9 +1,0 @@
-langcode: en
-status: true
-dependencies:
-  module:
-    - par_data
-id: par_data_organisation.about
-label: About
-targetEntityType: par_data_organisation
-cache: true
