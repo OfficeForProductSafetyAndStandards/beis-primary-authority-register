@@ -40,7 +40,7 @@ Import the database using drush (note the database should be truncated before re
 ```bash
 cd /var/www/par/web
 tar -zxvf ../backups/drush-dump-production-sanitized-latest.sql.tar.gz ../backups/drush-dump-production-sanitized-latest.sql
-../vendor/bin/drush sql-cli < ../backups/drush-dump-production-sanitized-latest.sql
+../vendor/bin/drush sql:cli < ../backups/drush-dump-production-sanitized-latest.sql
 ```
     
 ## Deployment
@@ -88,8 +88,8 @@ Import the newly downloaded production db:
 ```
 cd ./web
 tar -zxvf ./location/of/downloaded/sql/drush-dump-production-unsanitized-latest.sql.tar.gz
-../vendor/bin/drush @paas sql-drop -y
-../vendor/bin/drush @paas sql-cli < ./location/of/downloaded/sql/drush-dump-production-unsanitized-latest.sql
+../vendor/bin/drush @paas sql:drop -y
+../vendor/bin/drush @paas sql:cli < ./location/of/downloaded/sql/drush-dump-production-unsanitized-latest.sql
 cd ..
 sh drupal-update.sh
 ```
@@ -97,7 +97,7 @@ sh drupal-update.sh
 Check that the data looks right and then sanitise:
 ```
 cd ./web
-../vendor/bin/drush @paas sql-sanitize -y
+../vendor/bin/drush @paas sql:sanitize -y
 ```
 
 Then dump the db, zip it and upload it back to the S3 artifacts bucket with the correct name:

@@ -83,7 +83,7 @@
 // Add a 'pm-clone' to simplify git cloning from drupal.org.
 # $options['shell-aliases']['pm-clone'] = 'pm-download --gitusername=YOURUSERNAME --package-handler=git_drupalorg';
 // Save a sanitized sql dump. Customize alias names and --result-file.
-# $options['shell-aliases']['sql-transfer'] = 'drush sql-sync @source @temp --sanitize && drush @temp sql-dump --result-file=/example && drush @temp sql-drop';
+# $options['shell-aliases']['sql-transfer'] = 'drush sql-sync @source @temp --sanitize && drush @temp sql-dump --result-file=/example && drush @temp sql:drop';
 
 # Drupal 8.
 # $options['shell-aliases']['offline'] = 'drush sset system.maintenance_mode 1 --input-format=integer';
@@ -301,7 +301,7 @@ $options['skip-tables']['test'] = array('migration_*', 'test*');
 # $command_specific['core-cli'] = array('version-history' => TRUE);
 
 // Ensure sanitization commands don't run the email sanitization.
-$command_specific['sql-sanitize'] = ['sanitize-email' => 'no'];
+$command_specific['sql:sanitize'] = ['sanitize-email' => 'no'];
 
 // Ensure drush always has enough memory.
 ini_set('memory_limit', '-1');

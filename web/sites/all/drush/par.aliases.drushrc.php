@@ -332,7 +332,7 @@ $aliases['dev'] = [
       'skip-tables-key' => 'common',
       'extra' => '-O -x -w',
     ],
-    'sql-sanitize' => [
+    'sql:sanitize' => [
       'sanitize-password' => 'TestPassword',
       'sanitize-email' => 'no',
     ],
@@ -348,7 +348,7 @@ $aliases['paas'] = [
       'skip-tables-key' => 'common',
       'extra' => '-O -x -w',
     ],
-    'sql-sanitize' => [
+    'sql:sanitize' => [
       'sanitize-password' => 'TestPassword',
       'sanitize-email' => 'no',
     ],

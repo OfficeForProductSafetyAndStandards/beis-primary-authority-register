@@ -12,5 +12,5 @@ fi
 echo "Current working directory is ${ROOT}/web"
 
 # Set default drush alias.
-cd ${ROOT}/web; ../vendor/drush/drush/drush sql-drop -y;
+cd ${ROOT}/web; ../vendor/drush/drush/drush sql:drop -y;
 
