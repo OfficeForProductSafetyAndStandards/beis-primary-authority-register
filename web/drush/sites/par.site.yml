@@ -1,6 +1,5 @@
 dev:
   user: 1
-  root: /var/www/par/web
   command:
     sql:
       dump:
