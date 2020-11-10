@@ -28,7 +28,7 @@ use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 class ParNotificationTestBase extends ParDataTestBase
 {
 
-  static $modules = ['language', 'content_translation', 'comment', 'trance', 'par_data', 'par_data_config', 'message', 'par_message_config', 'par_notification', 'address', 'datetime', 'datetime_range', 'file_test', 'file', 'file_entity'];
+  static $modules = ['language', 'content_translation', 'comment', 'trance', 'par_data', 'par_data_config', 'message', 'par_message_config', 'par_notification', 'address', 'datetime', 'datetime_range', 'file_test', 'file', 'file_entity', 'media'];
 
   /**
    * Notification types
