@@ -12,7 +12,7 @@ entity_type: par_data_inspection_feedback
 bundle: inspection_feedback
 label: Document
 description: 'Add a document to this inspection feedback.'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

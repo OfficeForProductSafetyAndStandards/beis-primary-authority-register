@@ -11,7 +11,7 @@ entity_type: par_data_advice
 bundle: advice
 label: Document
 description: 'Add a document to this par data entity.'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

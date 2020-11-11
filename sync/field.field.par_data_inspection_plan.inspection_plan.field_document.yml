@@ -12,7 +12,7 @@ entity_type: par_data_inspection_plan
 bundle: inspection_plan
 label: Document
 description: 'Add a document to this inspection plan.'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
