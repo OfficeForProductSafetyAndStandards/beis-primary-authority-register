@@ -5,6 +5,7 @@ namespace Drupal\Tests\par_data\Kernel;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\Entity\File;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
+use Drupal\media\Entity\Media;
 use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataAdviceType;
 use Drupal\par_data\Entity\ParDataAuthority;
@@ -38,6 +39,8 @@ use Drupal\par_data\Entity\ParDataRegulatoryFunction;
 use Drupal\par_data\Entity\ParDataRegulatoryFunctionType;
 use Drupal\par_data\Entity\ParDataSicCode;
 use Drupal\par_data\Entity\ParDataSicCodeType;
+use Drupal\Tests\media\Traits\MediaTypeCreationTrait;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Tests PAR Data test base.
@@ -45,6 +48,8 @@ use Drupal\par_data\Entity\ParDataSicCodeType;
  * @group PAR Data
  */
 class ParDataTestBase extends EntityKernelTestBase {
+
+  use MediaTypeCreationTrait;
 
   static $modules = [
     'user',
@@ -125,7 +130,6 @@ class ParDataTestBase extends EntityKernelTestBase {
     // Must change the bytea_output to the format "escape" before running tests.
     // @see https://www.drupal.org/node/2810049
     //db_query("ALTER DATABASE 'par' SET bytea_output = 'escape';")->execute();
-
     parent::setUp();
 
     // Create a new non-admin user.
@@ -134,6 +138,15 @@ class ParDataTestBase extends EntityKernelTestBase {
 
     // Mimic some of the functionality in \Drupal\Tests\file\Kernel\FileManagedUnitTestBase
     $this->setUpFilesystem();
+
+    // Install media config.
+    $this->installEntitySchema('media');
+    $this->installConfig(['media']);
+
+    // Create document media type.
+    $this->testMediaType = $this->createMediaType('file', ['id' => 'document', 'label' => 'Document']);
+    // Create fake document type that cannot be added to any of the document fields.
+    $this->fakeMediaType = $this->createMediaType('file', ['id' => 'fake', 'label' => 'Fake Document']);
 
     // Install out entity hooks.
     $this->entityTypes = [
@@ -313,6 +326,16 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $file;
   }
 
+  public function getMedia($file) {
+    return Media::create([
+      'bundle' => $this->testMediaType->id(),
+      'name' => $this->randomMachineName(),
+      'field_media_file' => [
+        'target_id' => $file->id(),
+      ],
+    ]);
+  }
+
   public function getBaseValues() {
     return [
       'uid' => $this->account,
@@ -326,6 +349,9 @@ class ParDataTestBase extends EntityKernelTestBase {
     $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryFunctionValues());
     $regulatory_function->save();
 
+    /** @var \Drupal\file\Entity\File $document */
+    $document = $this->createFile();
+
     $values += [
         'type' => 'advice',
         'advice_type' => 'To Local Authority',
@@ -333,8 +359,11 @@ class ParDataTestBase extends EntityKernelTestBase {
         'visible_authority' => TRUE,
         'visible_coordinator' => TRUE,
         'visible_business' => TRUE,
+        'document' => [
+          $document->id()
+        ],
         'field_document' => [
-          '',
+          $this->getMedia($document),
         ],
         'field_regulatory_function' => [
           $regulatory_function->id(),
@@ -490,8 +519,11 @@ class ParDataTestBase extends EntityKernelTestBase {
         'notes' => $this->randomString(1000),
         'primary_authority_status' => 'awaiting',
         'primary_authority_notes' => $this->randomString(1000),
+        'document' => [
+          $document->id()
+        ],
         'field_document' => [
-          $document->id(),
+          $this->getMedia($document),
         ],
         'field_enforcing_authority' => [
           $enforcing_authority->id(),
@@ -526,14 +558,20 @@ class ParDataTestBase extends EntityKernelTestBase {
       ->referencedEntities();
     $inspection_plan = current($inspection_plans);
 
+    /** @var \Drupal\file\Entity\File $document */
+    $document = $this->createFile();
+
     $values += [
         'type' => 'inspection_feedback',
         'request_date' => '2017-10-01',
         'notes' => $this->randomString(1000),
         'primary_authority_status' => 'awaiting',
         'primary_authority_notes' => $this->randomString(1000),
+        'document' => [
+          $document->id()
+        ],
         'field_document' => [
-          '',
+          $this->getMedia($document),
         ],
         'field_enforcing_authority' => [
           $enforcing_authority->id(),
@@ -566,14 +604,20 @@ class ParDataTestBase extends EntityKernelTestBase {
 
     $primary_authority = $partnership->getAuthority(TRUE);
 
+    /** @var \Drupal\file\Entity\File $document */
+    $document = $this->createFile();
+
     $values += [
         'type' => 'general_enquiry',
         'request_date' => '2017-10-01',
         'notes' => $this->randomString(1000),
         'primary_authority_status' => 'awaiting',
         'primary_authority_notes' => $this->randomString(1000),
+        'document' => [
+          $document->id()
+        ],
         'field_document' => [
-          '',
+          $this->getMedia($document),
         ],
         'field_enforcing_authority' => [
           $enforcing_authority->id(),
@@ -596,6 +640,9 @@ class ParDataTestBase extends EntityKernelTestBase {
     $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryFunctionValues());
     $regulatory_function->save();
 
+    /** @var \Drupal\file\Entity\File $document */
+    $document = $this->createFile();
+
     $values += [
         'type' => 'inspection_plan',
         'valid_date' => [
@@ -605,8 +652,11 @@ class ParDataTestBase extends EntityKernelTestBase {
         'approved_rd_executive' => TRUE,
         'consulted_national_regulator' => TRUE,
         'inspection_status' => 'Active',
+        'document' => [
+          $document->id()
+        ],
         'field_document' => [
-          '',
+          $this->getMedia($document),
         ],
         'field_regulatory_function' => [
           $regulatory_function->id(),
