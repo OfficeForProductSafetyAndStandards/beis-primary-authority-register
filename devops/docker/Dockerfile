@@ -24,7 +24,7 @@ RUN sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debcon
     && apt-key adv --no-tty --fetch-keys https://www.postgresql.org/media/keys/ACCC4CF8.asc \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -f install -y \
-        postgresql-client-10 \
+        postgresql:client-10 \
         software-properties-common \
         libnss3 \
         libgconf-2-4 \

@@ -30,14 +30,14 @@
         "drupal/config_readonly": "~1.0.0",
         "drupal/config_split": "~1.4.0",
         "drupal/config_update": "~1.6.0",
-        "drupal/core": "~8.8.0",
+        "drupal/core": "8.8.8",
         "drupal/csv_serialization": "~1.4.0",
         "drupal/default_content": "~1.0.0",
         "drupal/email_registration": "~1.0.0",
         "drupal/features": "~3.8.0",
-        "drupal/file_entity": "~2.0.0",
+        "drupal/file_entity": "2.0.0-beta7",
         "drupal/flysystem": "~1.0.0",
-        "drupal/flysystem_s3": "~1.0.0",
+        "drupal/flysystem_s3": "1.0.0-beta1",
         "drupal/google_analytics": "~2.4.0",
         "drupal/govuk_notify": "~1.2.0",
         "drupal/health_check": "1.0.0",
@@ -51,6 +51,7 @@
         "drupal/menu_link_attributes": "^1.0",
         "drupal/message": "~1.0.0",
         "drupal/message_notify": "~1.0.0",
+        "drupal/migrate_file_to_media": "^2.0",
         "drupal/no_autocomplete": "~1.4.0",
         "drupal/pagerer": "~1.5.0",
         "drupal/password_policy": "~3.0.0",
@@ -74,8 +75,8 @@
         "drupal/views_field_view": "~1.0.0",
         "drupal/xmlsitemap": "~1.0.0",
         "drush/config-extra": "~1.0.0",
-        "drush/drush": "~8.2.3",
-        "predis/predis": "~1.1.0",
+        "drush/drush": "~10.0.0",
+        "predis/predis": "1.1.1",
         "rapidwebltd/php-uk-bank-holidays": "~2.0.0",
         "vlucas/phpdotenv": "~2.4.0"
     },
@@ -83,7 +84,7 @@
         "behat/mink": "1.7.x-dev",
         "behat/mink-goutte-driver": "^1.2",
         "behat/mink-selenium2-driver": "1.3.x-dev",
-        "brianium/paratest": "^1.1",
+        "brianium/paratest": "1.1.0",
         "drupal/coder": "^8.2.12",
         "drupal/config_inspector": "^1.0",
         "drupal/console": "~1.8.0",
@@ -94,10 +95,10 @@
         "mglaman/drupal-check": "^1.0",
         "mikey179/vfsStream": "^1.2",
         "phpspec/prophecy": "^1.4",
-        "phpunit/phpunit": "^6.5",
+        "phpunit/phpunit": "6.5.14",
         "symfony/css-selector": "^3.4.0",
         "symfony/debug": "^3.4.0",
-        "symfony/phpunit-bridge": "^3.4.3"
+        "symfony/phpunit-bridge": "3.4.42"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -174,10 +175,6 @@
             },
             "drupal/vbo_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2018-07-26/allow_configurable_scheme-2988257-5.patch"
-            },
-            "drush/drush": {
-                "Fix SQL dump problem where extra params are passed when trying only to list tables": "./patches/3321-sql-dump-no-extra-fix.patch",
-                "PGPASSFILE not getting passed to sql-dump": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/4023.patch"
             }
         }
     },

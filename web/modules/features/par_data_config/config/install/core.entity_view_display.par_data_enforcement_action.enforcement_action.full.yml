@@ -5,6 +5,7 @@ dependencies:
     - core.entity_view_mode.par_data_enforcement_action.full
     - field.field.par_data_enforcement_action.enforcement_action.field_action_referral
     - field.field.par_data_enforcement_action.enforcement_action.field_blocked_advice
+    - field.field.par_data_enforcement_action.enforcement_action.field_document
     - field.field.par_data_enforcement_action.enforcement_action.field_regulatory_function
     - par_data.par_data_enforcement_action_type.enforcement_action
   module:
@@ -46,6 +47,15 @@ content:
     third_party_settings: {  }
     type: string
     weight: 1
+  field_document:
+    type: entity_reference_entity_view
+    weight: 7
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
   primary_authority_notes:
     label: hidden
     type: text_default

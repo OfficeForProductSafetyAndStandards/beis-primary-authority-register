@@ -21,6 +21,7 @@ class EntityParDeviationRequestTest extends ParDataTestBase {
    */
   public function testEntityValidate() {
     $entity = ParDataDeviationRequest::create($this->getDeviationRequestValues());
+    /** @var \Drupal\Core\Entity\EntityConstraintViolationListInterface $violations */
     $violations = $entity->validate();
     $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default Par Deviation Request entity.');
   }

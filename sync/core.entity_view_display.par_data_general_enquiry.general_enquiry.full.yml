@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_general_enquiry.full
+    - field.field.par_data_general_enquiry.general_enquiry.field_document
     - field.field.par_data_general_enquiry.general_enquiry.field_enforcing_authority
     - field.field.par_data_general_enquiry.general_enquiry.field_partnership
     - field.field.par_data_general_enquiry.general_enquiry.field_person
@@ -30,16 +31,16 @@ content:
       text: 'Download [file:name]'
     third_party_settings: {  }
     type: file_download_link
-  field_enforcing_authority:
-    weight: 5
+  field_document:
+    type: entity_reference_entity_view
+    weight: 2
+    region: content
     label: hidden
     settings:
-      view_mode: title
-      link: false
+      link: true
+      view_mode: default
     third_party_settings: {  }
-    type: entity_reference_entity_view
-    region: content
-  field_person:
+  field_enforcing_authority:
     weight: 6
     label: hidden
     settings:
@@ -48,8 +49,17 @@ content:
     third_party_settings: {  }
     type: entity_reference_entity_view
     region: content
-  field_primary_authority:
+  field_person:
     weight: 7
+    label: hidden
+    settings:
+      view_mode: title
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  field_primary_authority:
+    weight: 8
     label: hidden
     settings:
       view_mode: title
@@ -60,20 +70,20 @@ content:
   notes:
     label: hidden
     type: text_default
-    weight: 2
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_notes:
     label: hidden
     type: text_default
-    weight: 4
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_status:
     label: hidden
-    weight: 3
+    weight: 4
     region: content
     settings:
       display_original_value: false

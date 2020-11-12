@@ -4,11 +4,12 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_advice.full
+    - field.field.par_data_advice.advice.field_document
     - field.field.par_data_advice.advice.field_regulatory_function
     - par_data.par_data_advice_type.advice
   module:
     - datetime
-    - file_entity
+    - file
     - par_data
     - text
 _core:
@@ -20,7 +21,7 @@ mode: full
 content:
   advice_status:
     label: hidden
-    weight: 2
+    weight: 4
     region: content
     settings:
       link_to_entity: false
@@ -36,24 +37,40 @@ content:
     type: string
   advice_type:
     type: par_list_formatter
-    weight: 1
+    weight: 3
     region: content
     label: hidden
     settings:
       display_original_value: false
     third_party_settings: {  }
+  attachment:
+    label: hidden
+    weight: 1
+    region: content
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
   document:
-    type: file_download_link
-    weight: 4
+    type: file_default
+    weight: 1
     region: content
     label: hidden
     settings:
-      access_message: 'You don''t have access to download this file.'
-      text: 'Download [file:name]'
+      use_description_as_link_text: true
+    third_party_settings: {  }
+  field_document:
+    type: entity_reference_entity_view
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
     third_party_settings: {  }
   issue_date:
     label: hidden
-    weight: 3
+    weight: 5
     region: content
     settings:
       timezone_override: ''
@@ -62,7 +79,7 @@ content:
     type: datetime_default
   notes:
     type: text_default
-    weight: 5
+    weight: 6
     region: content
     label: hidden
     settings: {  }
