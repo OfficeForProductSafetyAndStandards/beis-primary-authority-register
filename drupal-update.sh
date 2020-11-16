@@ -14,27 +14,27 @@ echo "Current working directory is ${ROOT}/web"
 # cd ${ROOT}/web; ../vendor/drush/drush/drush site-set @{{ENV}};
 # Put the site in maintenance mode.
 printf "Enabling maintenance mode...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush sset system.maintenance_mode 1;
+cd ${ROOT}/web; ../vendor/drush/drush/drush state:set system.maintenance_mode 1;
 # Clear cache
 printf "Clearing cache...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush cr;
+cd ${ROOT}/web; ../vendor/drush/drush/drush cache:rebuild;
 
 # Run db updates.
 printf "Running database updates...\n"
 cd ${ROOT}/web; ../vendor/drush/drush/drush updb -y;
 # Import configuration twice to fix a problem with config import when new modules are added to 'core.extensions.yml'.
 printf "Importing config...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush cim -y; ../vendor/drush/drush/drush cim -y;
+cd ${ROOT}/web; ../vendor/drush/drush/drush config:import -y; ../vendor/drush/drush/drush cim -y;
 # To doubly make sure drush registers features commands.
 printf "Clearing drush caches...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush cc drush;
+cd ${ROOT}/web; ../vendor/drush/drush/drush cache:clear drush;
 # Revert all features
 printf "Reverting features...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush fra -y;
+cd ${ROOT}/web; ../vendor/drush/drush/drush features:import:all -y;
 
 # Take the site out of maintenance mode.
 printf "Disabling maintenance mode...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush sset system.maintenance_mode 0;
+cd ${ROOT}/web; ../vendor/drush/drush/drush state:set system.maintenance_mode 0;
 # Clear cache.
 printf "Clearing final cache...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush cr;
+cd ${ROOT}/web; ../vendor/drush/drush/drush cache:rebuild;
