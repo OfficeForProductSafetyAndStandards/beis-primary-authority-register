@@ -256,7 +256,6 @@ jobs:
 
   deploy_stage:
     <<: *defaults
-
     steps:
       - *attach_workspace
       - *restore_code
@@ -273,6 +272,10 @@ jobs:
             rm -fr backups
             echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
             tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
+      - run:
+          name: "Examine asset bundle."
+          command: |
+            ls -lah /tmp/workspace
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
