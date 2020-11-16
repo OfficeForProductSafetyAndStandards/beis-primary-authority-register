@@ -416,12 +416,12 @@ printf "Checking and enabling backing services...\n"
 
 ## Ensure the right service plan is selected
 if [[ $ENV = "production" ]] || [[ $ENV = "staging" ]]; then
-    PG_PLAN='medium-ha-9.5'
-    REDIS_PLAN='medium-ha-3.2'
+    PG_PLAN='medium-ha-11'
+    REDIS_PLAN='medium-ha-5.x'
 else
     ## The free plan can be used for any non-critical environments
-    PG_PLAN='tiny-unencrypted-9.5'
-    REDIS_PLAN='tiny-3.2'
+    PG_PLAN='tiny-unencrypted-11'
+    REDIS_PLAN='tiny-5.x'
 fi
 
 if [[ $ENV != "production" ]]; then

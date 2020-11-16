@@ -1,6 +1,5 @@
 {
       "PHP_VERSION": "{PHP_73_LATEST}",
       "PHP_MODULES": ["cli"],
-      "PHP_EXTENSIONS":["bz2","zip","zlib","curl","mcrypt","exif","openssl","gd","yaml","igbinary","redis","pdo","pdo_pgsql","fileinfo"],
       "WEBDIR": "web"
 }
