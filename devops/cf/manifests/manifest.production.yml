@@ -1,10 +1,12 @@
 applications:
-- name: beis-par-production
-memory: 2G
-disk_quota: 2048M
-host: beis-par-production
-buildpack: php_buildpack
-services:
-- par-pg-production
-- par-redis-production
-- opss-log-drain
+  - name: beis-par-production
+    routes:
+      - route: primary-authority.beis.gov.uk
+    buildpack: php_buildpack
+    memory: 2G
+    disk_quota: 2048M
+    timeout: 120
+    services:
+      - par-pg-production
+      - par-redis-production
+      - opss-log-drain

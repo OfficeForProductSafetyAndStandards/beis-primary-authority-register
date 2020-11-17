@@ -265,11 +265,6 @@ jobs:
           name: "Make asset bundle"
           command: |
             cd /tmp/workspace
-            rm -f .env
-            rm -fr .git
-            rm -fr tests
-            rm -fr clamav
-            rm -fr backups
             echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
             tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
       - run:
@@ -291,7 +286,7 @@ jobs:
               echo "Tags can only be deployed from the master branch"
               exit 1
             else
-              ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+              ./devops/cf/push.local.sh -d . beis-par-staging -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
             fi
 
   deploy_prod:
@@ -301,6 +296,21 @@ jobs:
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
+      - run:
+          name: "Make asset bundle"
+          command: |
+            cd /tmp/workspace
+            rm -f .env
+            rm -fr .git
+            rm -fr tests
+            rm -fr clamav
+            rm -fr backups
+            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
+            tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
+      - run:
+          name: "Examine asset bundle."
+          command: |
+            ls -lah /tmp/workspace
       - run:
           name: "Deploy to production environment"
           command: |
