@@ -389,7 +389,8 @@ cf_poll $REDIS_BACKING_SERVICE
 ####################################################################################
 printf "Pushing the application...\n"
 
-cf push --no-start -f $MANIFEST -p $BUILD_DIR -n $TARGET_ENV $TARGET_ENV
+export COMPOSER_VENDOR_DIR={BUILD_DIR}/vendor
+cf push --no-start -f $MANIFEST -p $BUILD_DIR --var app=$TARGET_ENV $TARGET_ENV
 
 ## Set the cf environment variables directly
 printf "Setting the environment variables...\n"

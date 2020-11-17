@@ -1,3 +1,8 @@
-memory: 2G
-disk_quota: 2048M
-buildpack: php_buildpack
+applications:
+  - name: ((app))
+    routes:
+      - route: ((app)).cloudapps.digital
+    buildpack: php_buildpack
+    memory: 2G
+    disk_quota: 2048M
+    timeout: 120
