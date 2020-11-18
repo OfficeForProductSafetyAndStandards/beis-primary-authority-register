@@ -286,7 +286,7 @@ jobs:
               echo "Tags can only be deployed from the master branch"
               exit 1
             else
-              ./devops/cf/push.local.sh -d . beis-par-staging -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+              ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
             fi
 
   deploy_prod:
