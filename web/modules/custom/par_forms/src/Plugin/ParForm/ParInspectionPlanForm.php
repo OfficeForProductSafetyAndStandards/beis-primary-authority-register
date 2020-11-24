@@ -41,9 +41,7 @@ class ParInspectionPlanForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
-    $par_data_inspection_plan_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_inspection_plan', 'document');
-    $field_definition = $par_data_inspection_plan_fields['document'];
-    $file_extensions = $field_definition->getSetting('file_extensions');
+    $file_extensions = $this->getParDataManager()->getAllowedDocumentTypes();
 
     // External link for inspection plan templates.
     $options = ['attributes' => ['target' => '_blank'], 'fragment' => 'templates'];

@@ -55,7 +55,7 @@ class ParAdviceList extends ParFormPluginBase {
       foreach ($advice_list as $key => $advice) {
         $file_list = [];
 
-        $advice_files = $advice->get('document')->referencedEntities();
+        $advice_files = $advice->getDocuments();
 
         foreach ($advice_files as $file) {
           $file_list[] = $file->getFileName();
