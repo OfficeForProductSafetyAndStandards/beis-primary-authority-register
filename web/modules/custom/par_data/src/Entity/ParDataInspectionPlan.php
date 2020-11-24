@@ -5,6 +5,7 @@ namespace Drupal\par_data\Entity;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\media\Entity\Media;
 use Drupal\par_data\ParDataException;
 
 /**
@@ -191,6 +192,62 @@ class ParDataInspectionPlan extends ParDataEntity {
     $this->set('valid_date', ['value' => $this->get('valid_date')->value, 'end_value' => $revoke_time_stamp_value]);
   }
 
+  /**
+   * Create a media entity based on this file.
+   *
+   * @param \Drupal\file\FileInterface $file
+   *   The file to create a media entity for.
+   * @param bool $save
+   *   Whether to save the media entity (the file entity must be saved).
+   */
+  public function generateMedia($file, $save = TRUE) {
+    // The file must be saved before adding to the media entity.
+    if ($file->isTemporary()) {
+      $file->setPermanent();
+      $file->save();
+    }
+
+    $media = Media::create([
+      'bundle'           => 'document',
+      'uid'              => \Drupal::currentUser()->id(),
+      'field_media_file' => [
+        'target_id' => $file->id(),
+      ],
+    ]);
+
+    // Save the media file.
+    if ($save) {
+      $media->setName($file->getFilename())->setPublished(TRUE)->save();
+    }
+
+    return $media;
+  }
+
+  /**
+   * Get the document.
+   */
+  public function hasDocuments($files = []) {
+    return $this->hasField('field_document') && !$this->get('field_document')->isEmpty();
+  }
+
+  /**
+   * Get the document.
+   *
+   * @param array $files
+   */
+  public function getDocuments($files = []) {
+    /** @var \Drupal\media\MediaInterface[] $media */
+    $media = $this->hasDocuments() ? $this->get('field_document')->referencedEntities() : [];
+
+    foreach ($media as $id => $entity) {
+      // Return documents for document media types only.
+      if ($entity->bundle() === 'document' && $entity->hasField('field_media_document')) {
+        $files[$id] = $entity->get('field_media_document')->getValue();
+      }
+    }
+
+    return $files;
+  }
 
   /**
    * {@inheritdoc}

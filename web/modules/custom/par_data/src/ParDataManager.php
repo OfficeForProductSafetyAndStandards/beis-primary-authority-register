@@ -260,6 +260,19 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
+   * Identify the allowed file types (extensions) for the document media type.
+   *
+   * @return string
+   *   A comma separated string of allowed file extensions.
+   */
+  public function getAllowedDocumentTypes($field = 'field_media_document') {
+    $field_definitions = $this->getEntityFieldManager()->getFieldDefinitions('media', 'document');
+
+    return isset($field_definitions[$field]) ?
+      $field_definitions[$field]->getSetting('file_extensions') : NULL;
+  }
+
+  /**
    * Get all references for a given entity.
    *
    * @param string $type
