@@ -186,18 +186,13 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
     // Get files from "upload" step.
     $cid = $this->getFlowNegotiator()->getFormKey('upload');
-    $files = $this->getFlowDataHandler()->getDefaultValues('files', [], $cid);
+    $file_ids = $this->getFlowDataHandler()->getDefaultValues('files', [], $cid);
 
     // Add all the uploaded files from the upload form to the advice and save.
-    $files_to_add = [];
-
-    foreach ($files as $file) {
+    $media = [];
+    foreach ($file_ids as $file) {
       $file = File::load($file);
-      if ($file->isTemporary()) {
-        $file->setPermanent();
-        $file->save();
-      }
-      $files_to_add[] = $file->id();
+      $media[] = $par_data_advice->generateMedia($file);
     }
 
     // Create new advice if needed.
@@ -230,8 +225,8 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     $par_data_advice->setParStatus('active', TRUE);
 
     // Add files if required.
-    if ($files_to_add) {
-      $par_data_advice->set('document', $files_to_add);
+    if ($media) {
+      $par_data_advice->set('field_document', $media);
     }
 
     // Save and attach new advice entities.

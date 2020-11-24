@@ -59,7 +59,7 @@ class ParPartnershipFlowsAdvicePageController extends ParBaseController {
 
     $build['issue_date'] = $this->renderSection('Issue date', $par_data_advice, ['issue_date' => 'full']);
 
-    $build['advice_link'] = $this->renderSection('Advice documents', $par_data_advice, ['document' => 'title']);
+    $build['advice_link'] = $this->renderSection('Advice documents', $par_data_advice, ['field_document' => 'title']);
 
     return parent::build($build);
   }

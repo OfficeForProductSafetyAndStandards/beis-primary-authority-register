@@ -88,9 +88,17 @@ class ParPartnershipFlowsInspectionPlanDateForm extends ParBaseForm {
 
     // Add files if required.
     $file_ids = $this->getFlowDataHandler()->getDefaultValues('inspection_plan_files', [], $file_upload_cid);
-    $files = !empty($file_ids) ? File::loadMultiple((array) $file_ids) : NULL;
-    if ($files) {
-      $par_data_inspection_plan->set('document', $files);
+
+    // Add all the uploaded files from the upload form to the advice and save.
+    $media = [];
+    foreach ($file_ids as $file) {
+      $file = File::load($file);
+      $media[] = $par_data_inspection_plan->generateMedia($file);
+    }
+
+    // Add files if required.
+    if ($media) {
+      $par_data_inspection_plan->set('field_document', $media);
     }
 
     $request_date = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);

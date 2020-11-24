@@ -55,8 +55,8 @@ class ParRemoveInspectionPlanForm extends ParBaseForm {
     }
 
     $document_view_builder = $this->getParDataManager()->getViewBuilder('file');
-    $documents = $par_data_inspection_plan && $par_data_inspection_plan->hasField('document') && !$par_data_inspection_plan->get('document')->isEmpty()
-      ? $document_view_builder->viewMultiple($par_data_inspection_plan->get('document')->referencedEntities(), 'title') : NULL;
+    $documents = $par_data_inspection_plan && $par_data_inspection_plan->hasDocument()
+      ? $document_view_builder->viewMultiple($par_data_inspection_plan->getDocument(), 'title') : NULL;
 
     $form['remove'] = [
       '#type' => 'html_tag',

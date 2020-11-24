@@ -42,7 +42,7 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
     if (isset($par_data_advice)) {
-      $files = $par_data_advice->get('document')->referencedEntities();
+      $files = $par_data_advice->getDocuments();
       $ids = [];
       foreach ($files as $file) {
         $ids[] = $file->id();
@@ -70,9 +70,7 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
       '#markup' => "<p>{$output}</p>",
     ];
 
-    $par_data_advice_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_advice', 'document');
-    $field_definition = $par_data_advice_fields['document'];
-    $file_extensions = $field_definition->getSetting('file_extensions');
+    $file_extensions = $this->getParDataManager()->getAllowedDocumentTypes();
 
     $form['advice_type_help_text'] = [
       '#type' => 'fieldset',

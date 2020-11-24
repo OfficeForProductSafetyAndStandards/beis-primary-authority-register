@@ -57,8 +57,8 @@ class ParRemoveAdviceForm extends ParBaseForm {
     }
 
     $document_view_builder = $this->getParDataManager()->getViewBuilder('file');
-    $documents = $par_data_advice && $par_data_advice->hasField('document') && !$par_data_advice->get('document')->isEmpty()
-      ? $document_view_builder->viewMultiple($par_data_advice->get('document')->referencedEntities(), 'title') : NULL;
+    $documents = $par_data_advice && $par_data_advice->hasDocuments()
+      ? $document_view_builder->viewMultiple($par_data_advice->getDocuments(), 'title') : NULL;
 
     $form['remove'] = [
       '#type' => 'html_tag',

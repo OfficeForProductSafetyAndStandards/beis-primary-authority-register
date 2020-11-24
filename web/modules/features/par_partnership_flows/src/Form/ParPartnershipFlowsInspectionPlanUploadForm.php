@@ -42,7 +42,7 @@ class ParPartnershipFlowsInspectionPlanUploadForm extends ParBaseForm {
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     if (isset($par_data_inspection_plan)) {
-      $files = $par_data_inspection_plan->get('document')->referencedEntities();
+      $files = $par_data_inspection_plan->getDocuments();
       $ids = [];
       foreach ($files as $file) {
         $ids[] = $file->id();
@@ -70,9 +70,7 @@ class ParPartnershipFlowsInspectionPlanUploadForm extends ParBaseForm {
       '#markup' => "<p>{$output}</p>",
     ];
 
-    $par_data_inspection_plan_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_inspection_plan', 'document');
-    $field_definition = $par_data_inspection_plan_fields['document'];
-    $file_extensions = $field_definition->getSetting('file_extensions');
+    $file_extensions = $this->getParDataManager()->getAllowedDocumentTypes();
 
     $form['inspection_plan_type_help_text'] = [
       '#type' => 'fieldset',
