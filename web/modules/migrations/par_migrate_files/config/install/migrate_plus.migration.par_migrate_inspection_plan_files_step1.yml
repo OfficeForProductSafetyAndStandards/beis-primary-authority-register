@@ -1,0 +1,50 @@
+# File to Media Migration configuration for PAR Migrate Inspection Plan Files migration
+
+id: par_migrate_inspection_plan_files_step1
+label: PAR Migrate Inspection Plan Files Media
+migration_group: media
+source:
+  plugin: media_entity_generator
+  entity_type: par_data_inspection_plan
+  bundle: inspection_plan
+  langcode: en
+  field_names:
+    - document
+
+destination:
+  plugin: entity:media
+
+process:
+  bundle:
+    plugin: default_value
+    default_value: document
+
+  # Using the alt tag if available, else the file name.
+  name:
+    plugin: media_name
+    source: file_name
+
+  # This process plugin will skip the whole row if a existing media is found.
+  existing_media_file:
+    plugin: check_media_duplicate
+    source: target_id
+
+  # This process plugin will skip the whole row if a duplicate image is found.
+  unique_file_id:
+    plugin: check_duplicate
+    source: target_id
+
+
+  # Map the field document
+  field_document/target_id: target_id
+
+  langcode: langcode
+  uid: uid
+
+
+dependencies:
+  module:
+    - par_migrate_files
+  enforced:
+    module:
+      - par_migrate_files
