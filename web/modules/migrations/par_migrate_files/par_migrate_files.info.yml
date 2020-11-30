@@ -1,0 +1,5 @@
+name: PAR Migrate files
+type: module
+description: Migrates advice and inspection plan files to media entities.
+core: 8.x
+package: PAR
