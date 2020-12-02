@@ -1,4 +1,3 @@
-uuid: 4fdcdf7d-ced7-4fd9-a492-62f09a6d70eb
 langcode: en
 status: true
 dependencies:
@@ -7,19 +6,24 @@ dependencies:
       - media
   module:
     - file
+    - image
     - media
-_core:
-  default_config_hash: rQoPQKvhehKl_xDCFHeMJ5nA5i6bxUSdrNxazOSPGTg
-id: media.field_media_document
-field_name: field_media_document
+id: media.field_media_image
+field_name: field_media_image
 entity_type: media
-type: file
+type: image
 settings:
+  uri_scheme: s3private
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+  target_type: file
   display_field: false
   display_default: false
-  uri_scheme: s3private
-  target_type: file
-module: file
+module: image
 locked: false
 cardinality: 1
 translatable: true

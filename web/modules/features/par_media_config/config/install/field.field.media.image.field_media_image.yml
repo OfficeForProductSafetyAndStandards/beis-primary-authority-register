@@ -1,4 +1,3 @@
-uuid: d9539202-6e6e-407e-80ba-7aebb9d28e00
 langcode: en
 status: true
 dependencies:
@@ -17,8 +16,6 @@ third_party_settings:
       alt: alt
       title: title
       file: '0'
-_core:
-  default_config_hash: pzPA-2JwyxlJ3qMb4L9viAnhNhbEhl2couH8A3FO020
 id: media.image.field_media_image
 field_name: field_media_image
 entity_type: media
