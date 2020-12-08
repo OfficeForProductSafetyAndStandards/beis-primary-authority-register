@@ -271,9 +271,12 @@ class ParDataPartnership extends ParDataEntity {
    * Get the organisation contacts for this Partnership.
    */
   public function getOrganisationPeople($primary = FALSE) {
+    /** @var \Drupal\par_data\Entity\ParDataPersonInterface[] $people */
     $people = $this->get('field_organisation_person')->referencedEntities();
+
+    // PAR-1690: Filter out any contact records that are empty.
     $people = array_filter($people, function ($person) {
-      return (!$person instanceof ParDataEntityInterface || !$person->isDeleted());
+      return ($person instanceof ParDataEntityInterface && empty($person->getEmail()));
     });
 
     $person = !empty($people) ? current($people) : NULL;
@@ -285,9 +288,12 @@ class ParDataPartnership extends ParDataEntity {
    * Get the authority contacts for this Partnership.
    */
   public function getAuthorityPeople($primary = FALSE) {
+    /** @var \Drupal\par_data\Entity\ParDataPersonInterface[] $people */
     $people = $this->get('field_authority_person')->referencedEntities();
+
+    // PAR-1690: Filter out any contact records that are empty.
     $people = array_filter($people, function ($person) {
-      return (!$person instanceof ParDataEntityInterface || !$person->isDeleted());
+      return ($person instanceof ParDataPersonInterface && !empty($person->getEmail()));
     });
 
     $person = !empty($people) ? current($people) : NULL;
