@@ -2,12 +2,13 @@
 
 namespace Drupal\par_flows\Entity;
 
+use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Link;
 
 /**
  * The interface for all Flow Entities.
  */
-interface ParFlowInterface {
+interface ParFlowInterface extends ConfigEntityInterface {
 
   /**
    * Get the description for this flow.
@@ -32,6 +33,16 @@ interface ParFlowInterface {
    *   The save method.
    */
   public function getSaveMethod();
+
+  /**
+   * Get the return routes for this flow.
+   *
+   * To be directed to once the flow is complete.
+   *
+   * @return array
+   *   The return routes.
+   */
+  public function getFinalRoutes();
 
   /**
    * Get all the states parameters.
@@ -69,28 +80,6 @@ interface ParFlowInterface {
   public function getCurrentStep();
 
   /**
-   * Go to next step.
-   *
-   * @param string $operation
-   *   An optional form operation that can be used to override the redirection.
-   *
-   * @return mixed
-   *   An key for the next step.
-   */
-  public function getNextStep($operation);
-
-  /**
-   * Go to previous step.
-   *
-   * @param string $operation
-   *   An optional form operation that can be used to override the redirection.
-   *
-   * @return mixed
-   *   An key for the previous step.
-   */
-  public function getPrevStep($operation);
-
-  /**
    * Progress to the next route given an operation being performed.
    *
    * Operations have mildly different impacts within the journey, generally they
@@ -98,36 +87,13 @@ interface ParFlowInterface {
    * operation may wish to progress to a different step within the journey or
    * return to a different page entirely.
    *
-   * @return string|NULL
+   * @param string $operation
+   *   An optional form operation that can be used to override the redirection.
+   *
+   * @return \Drupal\Core\Url|NULL
    *   The route name to progress to OR NULL if there is no route within the flow to go to.
    */
-  public function progressRoute($operation = NULL);
-
-  /**
-   * Get the next route.
-   *
-   * @deprecated use self::getRouteByOperation() instead.
-   *
-   * @param string $operation
-   *   An optional form operation that can be used to override the redirection.
-   *
-   * @return mixed
-   *   A route id for the next step.
-   */
-  public function getNextRoute($operation);
-
-  /**
-   * Get the previous route.
-   *
-   * @deprecated use self::getRouteByOperation() instead.
-   *
-   * @param string $operation
-   *   An optional form operation that can be used to override the redirection.
-   *
-   * @return mixed
-   *   A route id for the previous step.
-   */
-  public function getPrevRoute($operation);
+  public function progress($operation = NULL);
 
   /**
    * Get a step by the form id.
@@ -244,23 +210,6 @@ interface ParFlowInterface {
    *   A Drupal link object.
    */
   public function getNextLink($operation, array $route_params, array $link_options, $access = FALSE);
-
-  /**
-   * Get link based on the previous available step.
-   *
-   * @param string $operation
-   *   The operation to get the redirection link for.
-   * @param array $route_params
-   *   Additional route parameters to add to the route.
-   * @param array $link_options
-   *   An array of options to set on the link.
-   * @param bool $access
-   *   Whether or not an access check should be performed on the link.
-   *
-   * @return Link
-   *   A Drupal link object.
-   */
-  public function getPrevLink($operation, array $route_params, array $link_options, $access = FALSE);
 
   /**
    * Get the components for the current step.

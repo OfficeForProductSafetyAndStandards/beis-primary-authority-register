@@ -137,7 +137,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Get renderer service.
    *
-   * @return mixed
+   * @return \Drupal\Core\Render\RendererInterface
    */
   public function getRenderer() {
     return $this->renderer;
@@ -150,6 +150,15 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function getCurrentUser() {
     return $this->currentUser;
+  }
+
+  /**
+   * Get the entity field manager.
+   *
+   * @return \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  public function getEntityFieldManager() {
+    return $this->entityFieldManager;
   }
 
   /**
@@ -820,6 +829,46 @@ class ParDataManager implements ParDataManagerInterface {
     return $options;
   }
 
+  /**
+   * Search for a given entity value within an entity reference field and return
+   * any deltas if the entity was found.
+   *
+   * @param EntityInterface $entity
+   *  The entity to search for the given value.
+   * @param $field
+   *  The field name to search for the given value.
+   * @param $value
+   *  The entity id to search for.
+   * @param string $property
+   *  The field property to search under.
+   *
+   * @return array|null
+   *  An array of deltas if the value was found, or otherwise null.
+   */
+  public function getReferenceValueKeys($entity, $field, $value, $property = 'target_id') {
+    if (!$entity instanceof EntityInterface) {
+      return NULL;
+    }
+
+    // Extract all the raw field values.
+    $field_values = $entity->hasField($field) ? $entity->get($field)->getValue() : NULL;
+
+    // Search the return values array.
+    $keys = $field_values ? array_keys(array_column($field_values, $property), $value, TRUE) : NULL;
+
+    return !empty($keys) ? $keys : NULL;
+  }
+
+  /**
+   * Render an entity.
+   *
+   * @param $entiy_type
+   * @param $entity_id
+   * @param $view_mode
+   *
+   * @return array
+   *  A render array.
+   */
   public function renderEntityCallback($entiy_type, $entity_id, $view_mode) {
     $view_builder = $this->getViewBuilder($entiy_type);
     $entities = $this->getEntitiesByType($entiy_type, [$entity_id]);

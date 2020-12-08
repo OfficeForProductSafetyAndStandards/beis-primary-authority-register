@@ -1,0 +1,32 @@
+uuid: ff85e83b-1b25-4472-8ab2-f8453cbd9517
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.inspection_plan_expiry_warning.field_inspection_plan
+    - field.field.message.inspection_plan_expiry_warning.field_message_subject
+    - message.template.inspection_plan_expiry_warning
+id: message.inspection_plan_expiry_warning.default
+targetEntityType: message
+bundle: inspection_plan_expiry_warning
+mode: default
+content:
+  field_inspection_plan:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_message_subject:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden: {  }

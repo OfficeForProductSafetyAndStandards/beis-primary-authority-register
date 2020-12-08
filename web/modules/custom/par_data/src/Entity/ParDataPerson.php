@@ -77,7 +77,7 @@ use Drupal\user\UserInterface;
  *   field_ui_base_route = "entity.par_data_person_type.edit_form"
  * )
  */
-class ParDataPerson extends ParDataEntity {
+class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
 
   /**
    * {@inheritdoc}
@@ -109,18 +109,6 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
-   * Determine whether the person has a user account set.
-   *
-   * @see self::getUserAccount()
-   *
-   * @return bool
-   *   Whether a user account has been set.
-   */
-  public function hasUserAccount() {
-    return $this->get('field_user_account')->isEmpty();
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function lookupUserAccount() {
@@ -132,6 +120,23 @@ class ParDataPerson extends ParDataEntity {
   }
 
   /**
+   * Determine whether the person has a user account set.
+   *
+   * Does not include whether a user account can looked up by matching an email
+   * address @see self::lookupUserAccount().
+   *
+   * @see self::getUserAccount()
+   *
+   * @return bool
+   *   Whether a user account has been set.
+   */
+  public function hasUserAccount() {
+    return $this->hasField('field_user_account')
+      && !$this->get('field_user_account')->isEmpty()
+      && !empty($this->get('field_user_account')->referencedEntities());
+  }
+
+  /**
    * {@inheritdoc}
    *
    * A person can be matched to a user account if:
@@ -140,14 +145,8 @@ class ParDataPerson extends ParDataEntity {
    * @see ParDataManager::getUserPeople()
    */
   public function getUserAccount() {
-    $account = $this->retrieveUserAccount();
-
-    // Lookup the user account if one has not been saved.
-    if (!$account) {
-      $account = $this->lookupUserAccount();
-    }
-
-    return $account;
+    return $this->hasUserAccount() ?
+      $this->retrieveUserAccount() : $this->lookupUserAccount();
   }
 
   /**
@@ -161,21 +160,47 @@ class ParDataPerson extends ParDataEntity {
    * {@inheritdoc}
    */
   public function getSimilarPeople($link_up = TRUE) {
-    $account = $this->retrieveUserAccount();
+    $account = $this->getUserAccount();
 
     // Link this entity to the Drupal User if one exists.
-    if (!$account && $link_up) {
+    if ($link_up && $account && !$this->hasUserAccount()) {
       $account = $this->linkAccounts();
     }
 
-    // Return all similar people.
+    // Get the dominant email address, for people with a user account this is
+    // the user account email, for all others it's the email of the person.
+    $email = $account instanceof UserInterface ? $account->getEmail() : $this->getEmail();
+
+    // Get the entity query.
+    $query = $this->entityTypeManager()
+      ->getStorage($this->getEntityTypeId())
+      ->getQuery('OR');
+
+    $query->condition('email', $email, '=');
+
+    // If there is an account we can search for people liked to this account also.
     if ($account) {
-      $accounts = \Drupal::entityTypeManager()
-        ->getStorage($this->getEntityTypeId())
-        ->loadByProperties(['email' => $account->get('mail')->getString()]);
+      $query->condition('field_user_account', $account->id(), 'IN');
     }
 
-    return isset($accounts) ? $accounts : [];
+    $results = $query->execute();
+    $people = $this->entityTypeManager()
+      ->getStorage($this->getEntityTypeId())
+      ->loadMultiple(array_unique($results));
+
+    // Do not return people that are already linked to a different user account.
+    $people = array_filter($people, function ($person) use ($account) {
+      if (!$person->hasUserAccount()) {
+        return TRUE;
+      }
+      if ($account && $person->retrieveUserAccount()->id() === $account->id()) {
+        return TRUE;
+      }
+
+      return FALSE;
+    });
+
+    return isset($people) ? $people : [];
   }
 
   /**
@@ -186,6 +211,7 @@ class ParDataPerson extends ParDataEntity {
     if (!$account) {
       $account = $this->lookupUserAccount();
     }
+
     $current_user_account = $this->retrieveUserAccount();
     if ($account && (!$current_user_account || $account->id() !== $current_user_account->id())) {
       // Add the user account to this person.
@@ -194,85 +220,6 @@ class ParDataPerson extends ParDataEntity {
     }
 
     return $saved ? $account : NULL;
-  }
-
-  /**
-   * Merge all user accounts that share the same e-mail address.
-   */
-  public function mergePeople() {
-    $uids = [];
-
-    // Lookup related people.
-    $account = $this->getUserAccount();
-    $people = $account ? $this->getParDataManager()->getUserPeople($account) : [];
-
-    foreach ($people as $person) {
-      // Skip modifications of the current person.
-      if ($person->id() === $this->id()) {
-        continue;
-      }
-
-      // Get any users linked to this person.
-      $referenced_users = $person->get('field_user_account')->referencedEntities();
-      foreach ($referenced_users as $referenced_user) {
-        if (!isset($uids[$referenced_user->id()])) {
-          $uids[$referenced_user->id()] = $referenced_user;
-        }
-      }
-
-      // Get all the entities that reference this person.
-      $relationships = $person->getRelationships(NULL, NULL, TRUE);
-      foreach ($relationships as $relationship) {
-        if ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE) {
-          // Only update the related entity if it does not already reference the updated record.
-          $update = TRUE;
-          foreach ($relationship->getEntity()->get($relationship->getField()->getName())->referencedEntities() as $e) {
-            if ($e->id() === $this->id()) {
-              $update = FALSE;
-            }
-          }
-
-          // Update all entities that reference the soon to be merged person.
-          if ($update) {
-            $relationship->getEntity()->get($relationship->getField()->getName())->appendItem($this->id());
-            $relationship->getEntity()->save();
-          }
-
-          // Delete methods check to see if there are any related entities that
-          // require this person, @see ParDataEntity::isDeletable(), all references
-          // must be removed before the entity can be deleted.
-          $field_items = $relationship->getEntity()->get($relationship->getField()->getName())->getValue();
-          if(!empty($field_items)) {
-            // Find & remove this person from the referenced entity.
-            $key = array_search($person->id(), array_column($field_items, 'target_id'));
-            if (false !== $key && $relationship->getEntity()->get($relationship->getField()->getName())->offsetExists($key)) {
-              $relationship->getEntity()->get($relationship->getField()->getName())->removeItem($key);
-              $relationship->getEntity()->save();
-            }
-          }
-        }
-      }
-
-      // Remove this person record.
-      $person->delete();
-    }
-
-    // Be sure to make sure that all referenced uids on old person
-    // records are transferred.
-    foreach ($uids as $uid) {
-      $update = TRUE;
-      foreach ($this->get('field_user_account')->referencedEntities() as $e) {
-        if ($e->id() === $this->id()) {
-          $update = FALSE;
-        }
-      }
-      if ($update) {
-        $this->get('field_user_account')->appendItem($uid);
-      }
-    }
-
-    // This method will always save the entity.
-    $this->save();
   }
 
   /**
@@ -624,7 +571,7 @@ class ParDataPerson extends ParDataEntity {
    *   The \Drupal\message\Entity\MessageTemplate::id() that indicates the notification type.
    *
    * @return bool
-   *   Whether or not the person has choosen to receive additional notifications.
+   *   Whether or not the person has chosen to receive additional notifications.
    */
   public function hasNotificationPreference($notification_type) {
     $notification_preferences = $this->getNotificationPreferences();

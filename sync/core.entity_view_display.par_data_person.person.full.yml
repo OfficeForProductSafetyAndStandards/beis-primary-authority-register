@@ -16,13 +16,6 @@ targetEntityType: par_data_person
 bundle: person
 mode: full
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   communication_notes:
     type: text_default
     weight: 4
@@ -30,13 +23,6 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   email_pseudo_field:
     weight: 3
     region: content
@@ -52,22 +38,17 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   work_phone_pseudo_field:
     weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
+  archive_reason: true
   communication_email: true
   communication_mobile: true
   communication_phone: true
+  deleted_reason: true
   email: true
   field_notification_preferences: true
   field_user_account: true
@@ -77,6 +58,7 @@ hidden:
   mobile_phone: true
   name: true
   person_name: true
+  revocation_reason: true
   salutation: true
   user_account: true
   user_id: true

@@ -2,11 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.par_data_advice.advice.field_document
     - field.field.par_data_advice.advice.field_regulatory_function
     - par_data.par_data_advice_type.advice
   module:
     - datetime
-    - file_entity
+    - file
     - par_data
     - text
 id: par_data_advice.advice.default
@@ -14,46 +15,80 @@ targetEntityType: par_data_advice
 bundle: advice
 mode: default
 content:
-  advice_type:
+  advice_status:
+    label: hidden
+    weight: 4
+    region: content
+    settings:
+      display_original_value: false
+    third_party_settings: {  }
     type: par_list_formatter
+  advice_title:
+    label: hidden
     weight: 0
     region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-  document:
-    type: file_download_link
-    weight: 2
-    region: content
-    label: hidden
     settings:
-      access_message: 'You don''t have access to download this file.'
-      text: 'Download [file:name]'
+      link_to_entity: false
     third_party_settings: {  }
-  field_regulatory_function:
-    weight: 4
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  issue_date:
-    label: hidden
-    weight: 1
-    region: content
-    settings:
-      timezone_override: ''
-      format_type: gds_date_format
-    third_party_settings: {  }
-    type: datetime_default
-  notes:
-    type: text_trimmed
+    type: string
+  advice_type:
+    type: par_list_formatter
     weight: 3
     region: content
     label: hidden
     settings:
-      trim_length: 600
+      display_original_value: false
+    third_party_settings: {  }
+  attachment:
+    label: hidden
+    weight: 1
+    region: content
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+  document:
+    type: file_default
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+  field_document:
+    type: entity_reference_entity_view
+    weight: 2
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_regulatory_function:
+    weight: 7
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  issue_date:
+    label: hidden
+    weight: 5
+    region: content
+    settings:
+      future_format: '@interval hence'
+      past_format: '@interval ago'
+      granularity: 2
+    third_party_settings: {  }
+    type: datetime_time_ago
+  notes:
+    type: text_default
+    weight: 6
+    region: content
+    label: hidden
+    settings: {  }
     third_party_settings: {  }
   regulatory_function:
     type: entity_reference_entity_view
@@ -64,9 +99,20 @@ content:
       view_mode: title
       link: false
     third_party_settings: {  }
+  user_id:
+    type: entity_reference_entity_view
+    weight: 8
+    region: content
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
 hidden:
+  archive_reason: true
+  deleted_reason: true
   name: true
-  user_id: true
+  revocation_reason: true
   visible_authority: true
   visible_business: true
   visible_coordinator: true

@@ -12,6 +12,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
+use Drupal\par_flows\ParFlowDataHandler;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_forms\Annotation\ParForm;
@@ -50,6 +51,13 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    * Wrapper name used to identify this component to users.
    */
   protected $wrapperName = 'item';
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getPluginNamespace() {
+    return $this->getConfiguration()[ParFormPluginInterface::NAMESPACE_PROPERTY] ?? $this->getPluginId();
+  }
 
   /**
    * {@inheritdoc}
@@ -161,6 +169,15 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
+   * Get the event dispatcher service.
+   *
+   * @return \Drupal\Core\Path\PathValidatorInterface
+   */
+  public function getPathValidator() {
+    return \Drupal::service('path.validator');
+  }
+
+  /**
    * Returns the logger channel specific to errors logged by PAR Forms.
    *
    * @return string
@@ -175,6 +192,25 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    */
   public function calculateDependencies() {
     return [];
+  }
+
+  /**
+   * Get the route to return to once the journey has been completed.
+   */
+  public function geFlowEntryURL() {
+    // Get the route that we entered on.
+    $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
+    try {
+      $url = $this->getPathValidator()->getUrlIfValid($entry_point);
+    }
+    catch (\InvalidArgumentException $e) {
+
+    }
+
+    if ($url && $url instanceof Url && $url->isRouted()) {
+      return $url;
+    }
+    return NULL;
   }
 
   /**
@@ -201,9 +237,9 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    */
   public function countItems($data = NULL) {
     if ($this->getCardinality() !== 1) {
-      $temp_data = (array) $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId());
-      return isset($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId()]) ?
-        count($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId()]) :
+      $temp_data = (array) $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginNamespace());
+      return isset($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginNamespace()]) ?
+        count($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginNamespace()]) :
         count($temp_data);
     }
 
@@ -271,7 +307,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    */
   public function getPrefix($cardinality = 1, $force = FALSE) {
     if ($this->getCardinality() !== 1 || $cardinality !== 1 || $force) {
-      return [ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginId(), $cardinality - 1];
+      return [ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginNamespace(), $cardinality - 1];
     }
 
     return NULL;

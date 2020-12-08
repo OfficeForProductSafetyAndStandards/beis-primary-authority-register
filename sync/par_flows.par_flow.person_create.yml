@@ -11,14 +11,14 @@ default_section_title: 'Create a new Person'
 description: ''
 save_method: end
 states: null
+final_routes:
+  - view.par_people.people
 steps:
   1:
     route: par_person_create_flows.create_contact
     form_id: par_add_contact
     components:
       contact_details: {  }
-    redirect:
-      cancel: 8
   2:
     route: par_person_create_flows.choose_account
     form_id: par_person_choose_account
@@ -26,8 +26,6 @@ steps:
       choose_account: {  }
     form_data:
       contact_details: par_add_contact
-    redirect:
-      cancel: 8
   3:
     route: par_person_create_flows.choose_institution
     form_id: par_add_institution
@@ -36,8 +34,6 @@ steps:
     form_data:
       choose_account: par_person_choose_account
       contact_details: par_add_contact
-    redirect:
-      cancel: 8
   4:
     route: par_person_create_flows.choose_role
     form_id: par_choose_role
@@ -47,8 +43,8 @@ steps:
       contact_details: par_add_contact
       user_account: par_person_link
       choose_account: par_person_choose_account
-    redirect:
-      cancel: 8
+      select_authority: par_add_institution
+      select_organisation: par_add_institution
   5:
     route: par_person_create_flows.invite_contact
     form_id: par_person_invite
@@ -58,8 +54,6 @@ steps:
       contact_details: par_add_contact
       user_account: par_person_link
       choose_account: par_person_choose_account
-    redirect:
-      cancel: 8
   6:
     route: par_person_create_flows.review
     form_id: par_person_review
@@ -72,10 +66,7 @@ steps:
       invite: par_person_invite
     redirect:
       save: 7
-      cancel: 8
   7:
     route: par_person_create_flows.completed
-    redirect:
-      done: 8
-  8:
-    route: view.par_people.people
+    form_data:
+      review: par_person_review

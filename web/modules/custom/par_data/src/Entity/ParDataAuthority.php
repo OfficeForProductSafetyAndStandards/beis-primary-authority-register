@@ -80,19 +80,13 @@ class ParDataAuthority extends ParDataEntity {
   }
 
   /**
-   * Get the regulatory functions for this Authority.
+   * Get the regulatory functions for this Partnership.
    */
-  public function getRegulatoryFunction() {
-    return $this->get('field_regulatory_function')->referencedEntities();
-  }
+  public function getRegulatoryFunction($single = FALSE) {
+    $regulatory_functions = $this->get('field_regulatory_function')->referencedEntities();
+    $regulatory_function = !empty($regulatory_functions) ? current($regulatory_functions) : NULL;
 
-  /**
-   * Get the allowed regulatory functions for this Authority.
-   *
-   * @deprecated Remove this field.
-   */
-  public function getAllowedRegulatoryFunction() {
-    return $this->get('field_allowed_regulatory_fn')->referencedEntities();
+    return $single ? $regulatory_function : $regulatory_functions;
   }
 
   /**

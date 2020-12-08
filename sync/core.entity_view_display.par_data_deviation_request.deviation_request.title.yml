@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_deviation_request.title
+    - field.field.par_data_deviation_request.deviation_request.field_document
     - field.field.par_data_deviation_request.deviation_request.field_enforcing_authority
     - field.field.par_data_deviation_request.deviation_request.field_inspection_plan
     - field.field.par_data_deviation_request.deviation_request.field_partnership
@@ -19,20 +20,6 @@ targetEntityType: par_data_deviation_request
 bundle: deviation_request
 mode: title
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   document:
     label: hidden
     weight: 0
@@ -42,21 +29,25 @@ content:
       text: 'Download [file:name]'
     third_party_settings: {  }
     type: file_download_link
+  field_document:
+    type: entity_reference_entity_view
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
   notes:
     label: hidden
     type: text_default
-    weight: 1
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
 hidden:
+  archive_reason: true
+  deleted_reason: true
   field_enforcing_authority: true
   field_inspection_plan: true
   field_partnership: true
@@ -66,4 +57,5 @@ hidden:
   primary_authority_notes: true
   primary_authority_status: true
   request_date: true
+  revocation_reason: true
   user_id: true

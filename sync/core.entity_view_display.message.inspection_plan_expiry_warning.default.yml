@@ -1,0 +1,29 @@
+uuid: 5049425f-2ebf-462b-9e21-3827c5a98b51
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.inspection_plan_expiry_warning.field_inspection_plan
+    - field.field.message.inspection_plan_expiry_warning.field_message_subject
+    - message.template.inspection_plan_expiry_warning
+id: message.inspection_plan_expiry_warning.default
+targetEntityType: message
+bundle: inspection_plan_expiry_warning
+mode: default
+content:
+  field_inspection_plan:
+    weight: 1
+    label: hidden
+    settings:
+      view_mode: title
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_message_subject: true

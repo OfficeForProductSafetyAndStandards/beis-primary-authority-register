@@ -1,0 +1,37 @@
+# This migration links the newly created media entities with entity reference field on the target bundle.
+
+id: par_migrate_inspection_plan_files_step2
+label: PAR Migrate Inspection Plan Files Mapping
+migration_group: media
+source:
+  plugin: content_entity:par_data_inspection_plan
+  bundle: inspection_plan
+  include_translations: false
+
+destination:
+  plugin: entity:par_data_inspection_plan
+
+process:
+  id: id
+
+  type:
+    plugin: default_value
+    default_value: inspection_plan
+
+  document_media:
+    plugin: file_id_lookup
+    source: document
+    migration: par_migrate_inspection_plan_files_step1
+    no_stub: true
+
+
+migration_dependencies:
+  optional:
+  - par_migrate_inspection_plan_files_step1
+
+dependencies:
+  module:
+    - par_migrate_files
+  enforced:
+    module:
+      - par_migrate_files

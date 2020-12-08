@@ -2,6 +2,7 @@
 
 namespace Drupal\unique_pager;
 
+use Drupal\Core\Pager\PagerManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 
 class UniquePagerService {
@@ -29,13 +30,23 @@ class UniquePagerService {
   protected $account;
 
   /**
+   * The pager manager service.
+   *
+   * @var \Drupal\Core\Pager\PagerManagerInterface
+   */
+  protected $pagerManager;
+
+  /**
    * Constructs a ParFlowDataHandler instance.
    *
    * @param \Drupal\Core\Session\AccountInterface $current_user
-   *   The entity bundle info service.
+   *   The current user account.
+   * @param \Drupal\Core\Pager\PagerManagerInterface $pager_manager
+   *   The pager manager service.
    */
-  public function __construct(AccountInterface $current_user) {
+  public function __construct(AccountInterface $current_user, PagerManagerInterface $pager_manager) {
     $this->account = $current_user;
+    $this->pagerManager = $pager_manager;
   }
 
   /**
@@ -45,6 +56,15 @@ class UniquePagerService {
    */
   public function getCurrentUser() {
     return $this->account;
+  }
+
+  /**
+   * Get's the pager manager service.
+   *
+   * @return \Drupal\Core\Pager\PagerManagerInterface
+   */
+  public function getPagerManager() {
+    return $this->pagerManager;
   }
 
   /**

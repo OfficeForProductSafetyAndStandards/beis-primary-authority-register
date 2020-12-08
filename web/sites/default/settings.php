@@ -790,11 +790,11 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  * example.org, with all subdomains included.
  */
 
-$appEnv = getenv('APP_ENV');
+$app_env = getenv('APP_ENV');
 
 $settings['trusted_host_patterns'] = [
-  '^beis-par-' . $appEnv . '\.cloudapps\.digital',
-  $appEnv . '-cdn.par-beta.net',
+  '^beis-par-' . $app_env . '\.cloudapps\.digital',
+  $app_env . '-cdn.par-beta.net',
 ];
 
 /**
@@ -1030,9 +1030,9 @@ $config['config_split.config_split.test_config']['status'] = FALSE;
  *
  * Load specific settings for each app environment.
  */
-if (!empty($appEnv)) {
-  if (file_exists("{$app_root}/{$site_path}/settings.local.{$appEnv}.php")) {
-    include "{$app_root}/{$site_path}/settings.local.{$appEnv}.php";
+if (!empty($app_env)) {
+  if (file_exists("{$app_root}/{$site_path}/settings.local.{$app_env}.php")) {
+    include "{$app_root}/{$site_path}/settings.local.{$app_env}.php";
   }
   else {
     include "{$app_root}/{$site_path}/settings.local.non-production.php";

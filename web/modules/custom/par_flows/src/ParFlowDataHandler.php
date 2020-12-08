@@ -3,12 +3,14 @@
 namespace Drupal\par_flows;
 
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\Entity\ParFlowInterface;
+use Drupal\par_forms\ParFormPluginInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\PrivateTempStoreFactory;
 
@@ -25,7 +27,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    *
    * @var \Drupal\par_flows\ParFlowNegotiatorInterface
    */
-  protected $negotiator;
+  public $negotiator;
 
   /**
    * The PAR data manager for acting upon PAR Data.
@@ -63,9 +65,16 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    * Enables route variables to be fetched, but also overridden
    * by the implementing form/controller.
    *
-   * @var array
+   * @var \Symfony\Component\HttpFoundation\ParameterBag
    */
   protected $parameters = [];
+
+  /**
+   * The raw data parameters.
+   *
+   * @var \Symfony\Component\HttpFoundation\ParameterBag
+   */
+  protected $rawParameters = [];
 
   /**
    * Caches data loaded from the permanent store.
@@ -105,6 +114,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
     // The data parameters are set based on the current route
     // but can be overridden when needed (such as access callbacks).
     $this->parameters = $this->negotiator->getRoute()->getParameters();
+    $this->rawParameters = $this->negotiator->getRoute()->getRawParameters();
   }
 
   /**
@@ -305,11 +315,27 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
 
   /**
    * {@inheritdoc}
+   */
+  public function getRawParameter($parameter) {
+    return $this->rawParameters->get($parameter);
+  }
+
+  /**
+   * {@inheritdoc}
    *
-   * @return array|\Symfony\Component\HttpFoundation\ParameterBag
+   * @return array
    */
   public function getParameters() {
     return $this->parameters->all();
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @return array
+   */
+  public function getRawParameters() {
+    return $this->rawParameters->all();
   }
 
   /**
@@ -320,6 +346,16 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    */
   public function setParameter($parameter, $value) {
     $this->parameters->set($parameter, $value);
+
+    // Set the raw parameter value, this will need cleansing if an entity was passed.
+    // Note that the raw parameter cannot be set for arrays or any other non-scalar
+    // values other due to lack of a transparent conversion method.
+    if ($value instanceof EntityInterface) {
+      $this->rawParameters->set($parameter, $value->id());
+    }
+    elseif (is_scalar($value)) {
+      $this->rawParameters->set($parameter, $value);
+    }
   }
 
   /**
@@ -336,15 +372,28 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getFormPermValue($key) {
-    return NestedArray::getValue($this->data, (array) $key);
+  public function getFormPermValue($key, ParFormPluginInterface $plugin = NULL) {
+    $key = (array) $key;
+
+    // Allow the plugin namespace to be used as a prefix if a plugin is passed in.
+    if ($plugin && $plugin instanceof ParFormPluginInterface) {
+      array_unshift($key, $plugin->getPluginNamespace());
+    }
+
+    return NestedArray::getValue($this->data, $key);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setFormPermValue($key, $value) {
-    NestedArray::setValue($this->data, (array) $key, $value, TRUE);
+  public function setFormPermValue($key, $value, ParFormPluginInterface $plugin = NULL) {
+    $key = (array) $key;
+    // Allow the plugin namespace to be used as a prefix if a plugin is passed in.
+    if ($plugin && $plugin instanceof ParFormPluginInterface) {
+      array_unshift($key, $plugin->getPluginNamespace());
+    }
+
+    NestedArray::setValue($this->data, $key, $value, TRUE);
   }
 
   /**

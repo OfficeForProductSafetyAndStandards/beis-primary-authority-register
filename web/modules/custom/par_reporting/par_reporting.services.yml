@@ -1,0 +1,4 @@
+services:
+  par_reporting.manager:
+    class: Drupal\par_reporting\ParReportingManager
+    parent: default_plugin_manager

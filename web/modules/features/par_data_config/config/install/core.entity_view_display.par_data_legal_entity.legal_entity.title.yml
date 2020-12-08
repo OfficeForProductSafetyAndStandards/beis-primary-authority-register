@@ -18,7 +18,10 @@ content:
       link_to_entity: false
     third_party_settings: {  }
 hidden:
+  archive_reason: true
+  deleted_reason: true
   legal_entity_type: true
   name: true
   registered_number: true
+  revocation_reason: true
   user_id: true

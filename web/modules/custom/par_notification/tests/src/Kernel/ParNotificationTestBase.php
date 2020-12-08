@@ -28,7 +28,34 @@ use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 class ParNotificationTestBase extends ParDataTestBase
 {
 
-  static $modules = ['language', 'content_translation', 'comment', 'trance', 'par_data', 'par_data_config', 'message', 'par_message_config', 'par_notification', 'address', 'datetime', 'datetime_range', 'file_test', 'file', 'file_entity'];
+  static $modules = [
+    'user',
+    'system',
+    'field',
+    'text',
+    'filter',
+    'entity_test',
+    'language',
+    'content_translation',
+    'comment',
+    'trance',
+    'par_data',
+    'par_data_config',
+    'message',
+    'par_message_config',
+    'par_notification',
+    'address',
+    'datetime',
+    'datetime_range',
+    'file_test',
+    'file',
+    'image',
+    'media',
+    'media_library',
+    'views',
+    'media_test_views',
+    'file_entity',
+  ];
 
   /**
    * Notification types
@@ -42,9 +69,11 @@ class ParNotificationTestBase extends ParDataTestBase
     'new_deviation_response',
     'new_enquiry_response',
     'new_inspection_feedback_response',
+    'new_inspection_plan',
     'partnership_approved_notificatio',
     'partnership_confirmed_notificati',
     'partnership_revocation_notificat',
+    'revoke_inspection_plan',
     'reviewed_deviation_request',
     'reviewed_enforcement',
   ];

@@ -19,21 +19,22 @@ mode: full
 content:
   comments:
     type: text_default
-    weight: 0
+    weight: 2
     region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
   employees_band:
     type: par_list_formatter
-    weight: 0
+    weight: 1
     region: content
     label: hidden
-    settings: {  }
+    settings:
+      display_original_value: false
     third_party_settings: {  }
   field_legal_entity:
     type: entity_reference_entity_view
-    weight: 0
+    weight: 3
     region: content
     label: hidden
     settings:
@@ -42,7 +43,7 @@ content:
     third_party_settings: {  }
   field_person:
     type: entity_reference_entity_view
-    weight: 0
+    weight: 4
     region: content
     label: hidden
     settings:
@@ -50,7 +51,7 @@ content:
       link: false
     third_party_settings: {  }
   field_premises:
-    weight: 4
+    weight: 5
     label: hidden
     settings:
       view_mode: summary
@@ -67,13 +68,16 @@ content:
     type: string
     weight: 0
 hidden:
+  archive_reason: true
   coordinator_number: true
   coordinator_type: true
+  deleted_reason: true
   field_coordinated_businesses: true
   field_sic_code: true
   name: true
   nation: true
   premises_mapped: true
+  revocation_reason: true
   size: true
   trading_name: true
   user_id: true

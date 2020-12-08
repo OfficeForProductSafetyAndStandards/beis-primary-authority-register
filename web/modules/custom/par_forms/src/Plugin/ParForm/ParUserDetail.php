@@ -7,8 +7,10 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\ParDataException;
+use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
@@ -70,8 +72,8 @@ class ParUserDetail extends ParFormPluginBase {
       $roles = Role::loadMultiple($user->getRoles());
       $user_roles = [];
       foreach ($roles as $user_role) {
-        if (in_array($user_role->id(), ['par_authority', 'par_enforcement', 'par_organisation', 'par_helpdesk'])) {
-          $user_roles[] = str_replace('PAR ', '', $user_role->label());
+        if (in_array($user_role->id(), ['par_authority', 'par_authority_manager', 'par_enforcement', 'par_organisation', 'par_helpdesk', 'senior_administration_officer'])) {
+          $user_roles[] = $user_role->label();
         }
       }
 
@@ -97,10 +99,6 @@ class ParUserDetail extends ParFormPluginBase {
     $invitation_expiry = $this->getFlowDataHandler()->getDefaultValues('invitation_expiration', FALSE);
     $cache_tags = $this->getFlowDataHandler()->getDefaultValues('cache_tags', []);
 
-    // Return path for all redirect links.
-    $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
-    $params = $this->getRouteParams() + ['destination' => $return_path];
-
     $form['user_account'] = [
       '#type' => 'fieldset',
       '#weight' => -1,
@@ -124,7 +122,7 @@ class ParUserDetail extends ParFormPluginBase {
       ];
     }
 
-    if ($user_id = $this->getFlowDataHandler()->getFormPermValue('user_id', $cardinality, NULL)) {
+    if ($user_id = $this->getFlowDataHandler()->getFormPermValue('user_id')) {
       $form['user_account']['email'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
@@ -167,17 +165,17 @@ class ParUserDetail extends ParFormPluginBase {
         ];
       }
 
-      $params = $this->getRouteParams() + ['user' => $user_id];
+      $params = ['user' => $user_id];
       // Try to add a block user link.
       try {
-        if ($link = $this->getLinkByRoute('par_user_block_flows.block', $params, [], TRUE)) {
-          $block_link = t('@link', [
-            '@link' => $link->setText('Block user account')->toString(),
-          ]);
+        $block_flow = ParFlow::load('block_user');
+        $block_link = $block_flow ?
+          $block_flow->getStartLink(1, 'Block user account', $params) : NULL;
+        if ($block_link && $block_link instanceof Link) {
           $form['user_account']['block'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
-            '#value' => !empty($block_link) ? $block_link : '',
+            '#value' => $block_link->toString(),
             '#attributes' => ['class' => ['column-full']],
           ];
         }
@@ -187,23 +185,22 @@ class ParUserDetail extends ParFormPluginBase {
 
       // Try to add a block user link.
       try {
-        if ($link = $this->getLinkByRoute('par_user_block_flows.unblock', $params, [], TRUE)) {
-          $unblock_link = t('@link', [
-            '@link' => $link->setText('Re-activate user account')->toString(),
-          ]);
+        $unblock_flow = ParFlow::load('unblock_user');
+        $unblock_link = $unblock_flow ? $unblock_flow->getStartLink(1, 'Re-activate user account', $params) : NULL;
+        if ($unblock_link && $unblock_link instanceof Link) {
+          $form['user_account']['unblock'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $unblock_link->toString(),
+            '#attributes' => ['class' => ['column-full']],
+          ];
         }
-        $form['user_account']['unblock'] = [
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => !empty($unblock_link) ? $unblock_link : '',
-          '#attributes' => ['class' => ['column-full']],
-        ];
       } catch (ParFlowException $e) {
 
       }
 
     }
-    elseif ($person_id = $this->getFlowDataHandler()->getFormPermValue('person_id', NULL)) {
+    elseif ($person_id = $this->getFlowDataHandler()->getFormPermValue('person_id')) {
       $form['contact'] = [
         '#type' => 'fieldset',
         '#attributes' => ['class' => ['form-group']],
@@ -218,15 +215,17 @@ class ParUserDetail extends ParFormPluginBase {
 
       // Try to add an invite link.
       try {
-        $params = $this->getRouteParams() + ['par_data_person' => $person_id];
-        $link = $this->getLinkByRoute('par_invite_user_flows.link_contact', $params, ['attributes' => ['class' => ['column-full']]]);
-        if ($link->getUrl()->access()) {
+        $params = ['par_data_person' => $person_id];
+        $link_options = ['attributes' => ['class' => ['column-full']]];
+        $invite_flow = ParFlow::load('user_invite');
+        $link_text = $invitation_expiry ? 'Re-send the invitation' : 'Invite the user to create an account';
+        $invite_link = $invite_flow ?
+          $invite_flow->getStartLink(1, $link_text, $params, $link_options) : NULL;
+        if ($invite_link && $invite_link instanceof Link) {
           $form['user_account']['invite'] = [
             '#type' => 'markup',
             '#markup' => t('@link', [
-              '@link' => $link->setText($invitation_expiry ?
-                'Re-send the invitation' :
-                'Invite the user to create an account')->toString(),
+              '@link' => $invite_link->toString(),
             ]),
           ];
         }

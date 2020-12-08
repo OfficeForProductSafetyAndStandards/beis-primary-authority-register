@@ -2,13 +2,25 @@
 search public register:
   title: 'Search public register'
   description: 'A permission to allow searching of the public register of partnerships.'
+
+manage par profile:
+  title: 'Manage user profiles'
+  description: 'Allow users to manage their people.'
   restrict access: TRUE
-# Permissions related to all helpdesk activities.
-update primary authority advice to local authorities:
-  title: 'Update Primary Authority advice to Local Authorities'
-  description: 'Update primary authority advice to local authorities.'
+view user fields:
+  title: "Allow other users to view other user's fields"
+  description: 'Allow user to view the fields belonging to other user accounts such as the last login time or email address.'
   restrict access: TRUE
 invite authority members:
   title: 'Invite authority members to create accounts'
   description: 'Invite authority members that do not have user accounts to register with the system.'
   restrict access: TRUE
+
+manage own par profile:
+  title: 'Manage own profile'
+  description: 'Allow users to manage their own user profile.'
+
+# Permissions related to all helpdesk activities.
+update primary authority advice to local authorities:
+  title: 'Update Primary Authority advice to Local Authorities'
+  description: 'Update primary authority advice to local authorities.'

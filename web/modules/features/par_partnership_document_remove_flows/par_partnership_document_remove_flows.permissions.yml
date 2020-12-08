@@ -1,0 +1,8 @@
+remove partnership advice:
+  title: 'Remove partnership advice'
+  description: 'Remove a piece of advice from a partnership.'
+  restrict access: TRUE
+remove partnership inspection plan:
+  title: 'Remove partnership inspection plans'
+  description: 'Remove an inspection plan from a partnership.'
+  restrict access: TRUE

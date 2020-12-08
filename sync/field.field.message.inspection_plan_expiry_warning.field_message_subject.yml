@@ -1,0 +1,21 @@
+uuid: 5e8e4b38-828f-4592-b85b-bb3e1f8afb3c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_message_subject
+    - message.template.inspection_plan_expiry_warning
+id: message.inspection_plan_expiry_warning.field_message_subject
+field_name: field_message_subject
+entity_type: message
+bundle: inspection_plan_expiry_warning
+label: 'Message Subject'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 'Primary Authority: Notification of Expiring Inspection Plan'
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_information_referral.full
+    - field.field.par_data_information_referral.information_referral.field_document
     - field.field.par_data_information_referral.information_referral.field_enforcing_authority
     - field.field.par_data_information_referral.information_referral.field_person
     - field.field.par_data_information_referral.information_referral.field_primary_authority
@@ -19,14 +20,23 @@ mode: full
 content:
   document:
     label: hidden
-    weight: 0
+    weight: 1
     region: content
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
     type: file_default
+  field_document:
+    type: entity_reference_entity_view
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
   field_enforcing_authority:
-    weight: 4
+    weight: 6
     label: hidden
     settings:
       view_mode: title
@@ -35,7 +45,7 @@ content:
     type: entity_reference_entity_view
     region: content
   field_person:
-    weight: 5
+    weight: 7
     label: hidden
     settings:
       view_mode: title
@@ -44,7 +54,7 @@ content:
     type: entity_reference_entity_view
     region: content
   field_primary_authority:
-    weight: 6
+    weight: 8
     label: hidden
     settings:
       view_mode: title
@@ -55,20 +65,20 @@ content:
   notes:
     label: hidden
     type: text_default
-    weight: 1
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_notes:
     label: hidden
     type: text_default
-    weight: 3
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_status:
     label: hidden
-    weight: 2
+    weight: 4
     region: content
     settings:
       display_original_value: false
@@ -84,5 +94,8 @@ content:
     third_party_settings: {  }
     type: datetime_default
 hidden:
+  archive_reason: true
+  deleted_reason: true
   name: true
+  revocation_reason: true
   user_id: true

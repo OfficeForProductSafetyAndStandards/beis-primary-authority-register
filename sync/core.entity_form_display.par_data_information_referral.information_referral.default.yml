@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.par_data_information_referral.information_referral.field_document
     - field.field.par_data_information_referral.information_referral.field_enforcing_authority
     - field.field.par_data_information_referral.information_referral.field_person
     - field.field.par_data_information_referral.information_referral.field_primary_authority
@@ -10,6 +11,7 @@ dependencies:
   module:
     - datetime
     - file
+    - media_library
     - text
 _core:
   default_config_hash: yIVm0boSLG1MAS_WuX9JC3g7z1rvnDqlFcwx2S9TxO4
@@ -18,6 +20,13 @@ targetEntityType: par_data_information_referral
 bundle: information_referral
 mode: default
 content:
+  field_document:
+    type: media_library_widget
+    weight: 29
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
   field_enforcing_authority:
     weight: 26
     settings:

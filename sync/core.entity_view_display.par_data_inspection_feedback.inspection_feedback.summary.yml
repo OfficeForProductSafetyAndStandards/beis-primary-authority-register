@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_inspection_feedback.summary
+    - field.field.par_data_inspection_feedback.inspection_feedback.field_document
     - field.field.par_data_inspection_feedback.inspection_feedback.field_enforcing_authority
     - field.field.par_data_inspection_feedback.inspection_feedback.field_inspection_plan
     - field.field.par_data_inspection_feedback.inspection_feedback.field_partnership
@@ -21,39 +22,34 @@ targetEntityType: par_data_inspection_feedback
 bundle: inspection_feedback
 mode: summary
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   document:
     label: hidden
-    weight: 0
+    weight: 1
     region: content
     settings:
       access_message: 'You don''t have access to download this file.'
       text: 'Download [file:name]'
     third_party_settings: {  }
     type: file_download_link
+  field_document:
+    type: entity_reference_entity_view
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
   notes:
     label: hidden
     type: text_default
-    weight: 1
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_status:
     label: hidden
-    weight: 2
+    weight: 4
     region: content
     settings:
       display_original_value: false
@@ -68,14 +64,9 @@ content:
       format_type: gds_date_format
     third_party_settings: {  }
     type: datetime_default
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
 hidden:
+  archive_reason: true
+  deleted_reason: true
   field_enforcing_authority: true
   field_inspection_plan: true
   field_partnership: true
@@ -83,4 +74,5 @@ hidden:
   messages: true
   name: true
   primary_authority_notes: true
+  revocation_reason: true
   user_id: true

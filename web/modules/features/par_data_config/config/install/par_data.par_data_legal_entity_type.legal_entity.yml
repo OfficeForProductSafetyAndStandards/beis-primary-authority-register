@@ -5,7 +5,7 @@ id: legal_entity
 label: 'Legal Entity'
 description: 'A Legal Entity is a representation of an Organisation via some formal method of registration or else a less formal declaration.'
 help: ''
-isDeletable: false
+isDeletable: true
 isRevokable: false
 isArchivable: false
 configuration:

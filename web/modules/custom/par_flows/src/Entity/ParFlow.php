@@ -4,13 +4,17 @@ namespace Drupal\par_flows\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_flows\Event\ParFlowEvent;
+use Drupal\par_flows\Event\ParFlowEvents;
 use Drupal\par_flows\ParDefaultActionsTrait;
 use Drupal\par_flows\ParFlowDataHandler;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\par_forms\ParFormPluginInterface;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
  * Defines the PAR Form Flow entity.
@@ -48,6 +52,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
  *     "description",
  *     "save_method",
  *     "states",
+ *     "final_routes",
  *     "steps"
  *   }
  * )
@@ -60,6 +65,9 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
   const SAVE_STEP = 'step';
   const SAVE_END = 'end';
+  const BACK_STEP = 'back';
+  const CANCEL_STEP = 'cancel';
+  const DONE_STEP = 'done';
 
   /**
    * The flow ID.
@@ -113,6 +121,13 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   protected $save_method;
 
   /**
+   * The exit routes to return to if the journey completes.
+   *
+   * @var array
+   */
+  protected $final_routes = [];
+
+  /**
    * The route parameters by which this flow can vary.
    *
    * Typically used to distinguish individual instances of
@@ -155,6 +170,24 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     // Then let's go back and set any additional operations.
     $actions = $this->getCurrentStepOperations();
     $this->setActions($actions);
+  }
+
+  /**
+   * Get the event dispatcher service.
+   *
+   * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   */
+  public function getEventDispatcher() {
+    return \Drupal::service('event_dispatcher');
+  }
+
+  /**
+   * Get the router service.
+   *
+   * @return \Drupal\Core\Routing\AccessAwareRouterInterface
+   */
+  public function getRouter() {
+    return \Drupal::service('router');
   }
 
   /**
@@ -229,6 +262,27 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  public function getFinalRoutes() {
+    $routes = [];
+    foreach ($this->final_routes as $final_route) {
+      try {
+        // Check that the route exists before accepting it.
+        $route_provider = \Drupal::service('router.route_provider');
+        if ($route_provider->getRouteByName($final_route)) {
+          $routes[] = $final_route;
+        }
+      }
+      catch (RouteNotFoundException $e) {
+
+      }
+    }
+
+    return $routes;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getStates() {
     return !empty($this->states) ? $this->states : [];
   }
@@ -248,6 +302,19 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   }
 
   /**
+   * A static helper to get the plugin name based on the configuration options.
+   *
+   * @param $key
+   * @param $settings
+   *
+   * @return string
+   *   The plugin name.
+   */
+  static function getComponentName($key, $settings) {
+    return $settings[ParFormPluginInterface::NAME_PROPERTY] ?? $key;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getCurrentStep() {
@@ -257,112 +324,68 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   }
 
   /**
-   * {@inheritdoc}
+   * Start the journey.
+   *
+   * @return \Drupal\Core\Url
    */
-  public function getNextStep($operation = NULL) {
-    $current_step = $this->getCurrentStep();
-    $redirect = $this->getStepByOperation($current_step, $operation);
+  public function start($step = 1, $params = []) {
+    $route = $this->getRouteByStep($step);
 
-    // First check if the operation produced a valid step.
-    if ($redirect) {
-      $next_step = isset($redirect) && $this->getStep($redirect) ? $this->getStep($redirect) : NULL;
-      $next_index = $redirect;
+    if (!isset($route)) {
+      throw new ParFlowException('The start page for this journey could not be located');
     }
 
-    // Then fallback to the next step, or the first if already on the last.
-    if (!isset($next_step) && $current_step === count($this->getSteps())) {
-      $next_step = $this->getStep(1);
-      $next_index = 1;
-    }
-    else if (!isset($next_step) && $current_step) {
-      $next_index = ++$current_step;
-      $next_step = isset($next_index) ? $this->getStep($next_index) : NULL;
-    }
-
-    // If there is no next step we'll go back to the beginning.
-    $step = isset($next_index) && isset($next_step['route']) ? $next_index : NULL;
-
-    if (empty($step)) {
-      throw new ParFlowException('The specified route does not exist.');
-    }
-
-    return $step;
+    $route_params = $this->getRequiredParams($route, $params);
+    return Url::fromRoute($route, $route_params);
   }
+
+  /**
+   * Provide the url for a given step within the flow.
+   *
+   * @param string $operation
+   *   The operation being performed, mandatory.
+   * @param array $params
+   *   Additional params to be used for determining the route.
+   *
+   * @throws \Drupal\par_flows\ParFlowException
+   *
+   * @return \Drupal\Core\Url|NULL
+   */
+  public function goto($operation, $params = []) {
+    // Don't process if no operation has been set.
+    if (NULL === $operation) {
+      throw new ParFlowException('No operation was provided to redirect to.');
+    }
+
+    $step = $this->getCurrentStep();
+
+    // The operation must return a valid route.
+    $redirect_step = $this->getStepByOperation($step, $operation);
+    $route = $redirect_step ? $this->getRouteByStep($redirect_step) : NULL;
+
+    // If no route is found for the operation throw an error.
+    if (!$route) {
+      throw new ParFlowException('No route could be found for the given operation.');
+    }
+
+    $route_params = $this->getRequiredParams($route, $params);
+    return Url::fromRoute($route, $route_params);
+  }
+
 
   /**
    * {@inheritdoc}
    */
-  public function getPrevStep($operation = NULL) {
-    $current_step = $this->getCurrentStep();
-    $redirect = $this->getStepByOperation($current_step, $operation);
+  public function progress($operation = NULL, $params = []) {
+    // Run the event dispatcher to determine the order of precedence to determine the next route.
+    $event = new ParFlowEvent($this, $this->getCurrentRouteMatch(), $operation, $params);
+    $this->getEventDispatcher()->dispatch(ParFlowEvents::getEventByAction($operation), $event);
 
-    // First check if the operation produced a valid step.
-    if ($redirect) {
-      $prev_step = isset($redirect) && $this->getStep($redirect) ? $this->getStep($redirect) : NULL;
-      $prev_index = $redirect;
+    if (!$event->getUrl() instanceof Url) {
+      throw new ParFlowException('Could not find an appropriate page to progress to.');
     }
 
-    // Then fallback to the next step, or the first if already on the last.
-    if (!isset($prev_step) && $current_step === 1) {
-      $prev_step = $this->getStep(1);
-      $prev_index = 1;
-    }
-    else if (!isset($prev_step)){
-      $prev_index = --$current_step;
-      $prev_step = isset($prev_index) ? $this->getStep($prev_index) : $this->getStep(1);
-    }
-
-    // If there is no next step we'Nextll go back to the beginning.
-    $step = isset($prev_step) && isset($prev_step['route']) ? $prev_index : NULL;
-
-    if (empty($step)) {
-      throw new ParFlowException('The specified route does not exist.');
-    }
-
-    return $step;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function progressRoute($operation = NULL) {
-    $current_step = $this->getCurrentStep();
-
-    // Operations that should not progress to the next step.
-    $final_operations = ['cancel', 'done'];
-
-    // Check if the operation produced a valid step.
-    if ($redirect = $this->getStepByOperation($current_step, $operation)) {
-      $redirect_step = $this->getStep($redirect);
-    }
-    // If the operation supports progressing to the next step in the journey,
-    // check if there is a next step in the journey.
-    elseif (array_search($operation, $final_operations) === FALSE && $current_step < count($this->getSteps())) {
-      $next_index = ++$current_step;
-      $redirect_step = isset($next_index) ? $this->getStep($next_index) : NULL;
-    }
-
-    if (empty($redirect_step)) {
-      throw new ParFlowException('Could not find the next page.');
-    }
-
-    return isset($redirect_step['route']) ? $redirect_step['route'] : NULL;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getNextRoute($operation = NULL) {
-    $next_step = $this->getNextStep($operation);
-    return $this->getRouteByStep($next_step);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getPrevRoute($operation = NULL) {
-    $prev_step = $this->getPrevStep($operation);
-    return $this->getRouteByStep($prev_step);
+    return $event->getUrl();
   }
 
   /**
@@ -456,7 +479,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       }
     }
 
-    // If there is no step we'll go back to the beginning.
     return isset($match['step']) ? $match['step'] : NULL;
   }
 
@@ -476,7 +498,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     $step = $this->getStep($index);
     $redirects = isset($step['redirect']) ? $step['redirect'] : [];
 
-    // If there is no matching step then we'll just return the original step.
     return isset($redirects[$operation]) ? $redirects[$operation] : NULL;
   }
 
@@ -527,6 +548,8 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @deprecated Use ParFlow::getStartLink() instead.
    */
   public function getLinkByStep($index, array $route_params = [], array $link_options = [], $check_access = FALSE) {
     $step = $this->getStep($index);
@@ -544,32 +567,49 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
   /**
    * {@inheritdoc}
-   */
-  protected function getLinkByOperation($index, $operation, array $route_params = [], array $link_options = [], $check_access = FALSE) {
-    $step = $this->getStepByOperation($index, $operation);
-    return $this->getLinkByStep($step, $route_params, $link_options, $check_access);
-  }
-
-  /**
-   * {@inheritdoc}
+   *
+   * @deprecated
    */
   public function getLinkByCurrentOperation($operation, array $route_params = [], array $link_options = [], $check_access = FALSE) {
-    return $this->getLinkByOperation($this->getCurrentStep(), $operation, $route_params, $link_options, $check_access);
+    return $this->getOperationLink($operation, '', $route_params, $link_options);
   }
 
   /**
    * {@inheritdoc}
+   *
+   * @deprecated Use ParFlow::getFlowLink() instead.
    */
   public function getNextLink($operation = NULL, array $route_params = [], array $link_options = [], $check_access = FALSE) {
-    $step = $this->getNextStep($operation);
-    return $this->getLinkByStep($step, $route_params, $link_options, $check_access);
+    return $this->getFlowLink($operation, '', $route_params, $link_options);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getPrevLink($operation = NULL, array $route_params = [], array $link_options = [], $check_access = FALSE) {
-    $step = $this->getPrevStep($operation);
-    return $this->getLinkByStep($step, $route_params, $link_options, $check_access);
+  public function getStartLink($index = 1, $text = '', array $params = [], array $link_options = []) {
+    // Get a link specific to the given operation.
+    $url = $this->start($index, $params);
+
+    return $this->getLinkByUrl($url, $text, $link_options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOperationLink($operation, $text = '', array $params = [], array $link_options = []) {
+    // Get a link specific to the given operation.
+    $url = $this->goto($operation, $params);
+
+    return $this->getLinkByUrl($url, $text, $link_options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFlowLink($operation, $text = '', array $params = [], array $link_options = []) {
+    // Get the next best link.
+    $url = $this->progress($operation, $params);
+
+    return $this->getLinkByUrl($url, $text, $link_options);
   }
 }

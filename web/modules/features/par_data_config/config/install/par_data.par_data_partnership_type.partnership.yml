@@ -5,7 +5,7 @@ id: partnership
 label: Partnership
 description: 'A Partnership is a relationship between a Primary Authority and either a Business ("direct partnership") or a Co-ordinator ("co-ordinated partnership").  Note that in the latter case, the Business records may or may not be held in the PAR3 database.'
 help: ''
-isDeletable: false
+isDeletable: true
 isRevokable: true
 isArchivable: false
 configuration:

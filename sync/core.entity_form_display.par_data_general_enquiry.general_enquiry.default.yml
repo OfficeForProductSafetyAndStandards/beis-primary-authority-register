@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.par_data_general_enquiry.general_enquiry.field_document
     - field.field.par_data_general_enquiry.general_enquiry.field_enforcing_authority
     - field.field.par_data_general_enquiry.general_enquiry.field_partnership
     - field.field.par_data_general_enquiry.general_enquiry.field_person
@@ -12,6 +13,7 @@ dependencies:
     - comment
     - datetime
     - file
+    - media_library
     - text
 _core:
   default_config_hash: '-DsvJF-_xLhwCnQnY72XhXBaSK8_yDcZNJBysR7ryyc'
@@ -20,6 +22,13 @@ targetEntityType: par_data_general_enquiry
 bundle: general_enquiry
 mode: default
 content:
+  field_document:
+    type: media_library_widget
+    weight: 30
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
   field_enforcing_authority:
     weight: 26
     settings:

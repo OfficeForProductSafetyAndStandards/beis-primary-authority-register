@@ -1,0 +1,32 @@
+par_partnership_document_remove_flows.remove_advice:
+  path: '/partnership/{par_data_partnership}/advice/{par_data_advice}/remove'
+  defaults:
+    _form: '\Drupal\par_partnership_document_remove_flows\Form\ParRemoveAdviceForm'
+    _title_callback: '\Drupal\par_partnership_document_remove_flows\Form\ParRemoveAdviceForm::titleCallback'
+  requirements:
+    _permission: 'remove partnership advice'
+    _custom_access: '\Drupal\par_partnership_document_remove_flows\Form\ParRemoveAdviceForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_advice: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_advice:
+        type: entity:par_data_advice
+par_partnership_document_remove_flows.remove_inspection_plan:
+  path: '/partnership/{par_data_partnership}/inspection-plan/{par_data_inspection_plan}/remove'
+  defaults:
+    _form: '\Drupal\par_partnership_document_remove_flows\Form\ParRemoveInspectionPlanForm'
+    _title_callback: '\Drupal\par_partnership_document_remove_flows\Form\ParRemoveInspectionPlanForm::titleCallback'
+  requirements:
+    _permission: 'remove partnership inspection plan'
+    _custom_access: '\Drupal\par_partnership_document_remove_flows\Form\ParRemoveInspectionPlanForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_inspection_plan: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_inspection_plan:
+        type: entity:par_data_inspection_plan

@@ -75,13 +75,20 @@ trait ParPartnershipFlowAccessTrait {
 
         break;
 
+
+      case 'par_partnership_flows.legal_entity_remove':
+        // Prohibit removing of the last item.
+        if ($par_data_partnership->get('field_legal_entity')->count() <= 1) {
+          $this->accessResult = AccessResult::forbidden('The last legal entity can\'t be removed.');
+        }
+
       case 'par_partnership_flows.legal_entity_add':
       case 'par_partnership_flows.legal_entity_edit':
         // Restrict access to partnerships that haven't yet been nominated.
         if ($par_data_partnership->isActive()) {
           $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
         }
-        // Also restrict business users who have already conirmed their business details.
+        // Also restrict business users who have already confirmed their business details.
         if ($par_data_partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
           $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
         }

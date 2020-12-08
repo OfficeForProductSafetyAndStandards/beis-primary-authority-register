@@ -6,6 +6,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -152,7 +153,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       '#type' => 'markup',
       '#markup' => t('@link', [
         '@link' => $this->getFlowNegotiator()->getFlow()
-          ->getLinkByCurrentOperation('legal_select', [], ['query' => ['destination' => $return_path]])
+          ->getLinkByCurrentOperation('legal_select', [], ['query' => ['destination' => $return_path, 'skip' => 1]])
           ->setText('Change the legal entities')
           ->toString(),
       ]),
@@ -395,8 +396,8 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
       // If the partnership could not be saved the application can't be progressed.
       // @TODO Find a better way to alert the user without redirecting them away from the form.
-      drupal_set_message('There was an error progressing your partnership, please contact the helpdesk for more information.');
-      $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel'));
+      $this->messenger()->addMessage('There was an error progressing your partnership, please contact the helpdesk for more information.');
+      $form_state->setRedirectUrl($this->getFlowNegotiator()->getFlow()->progress('cancel'));
     }
 
   }

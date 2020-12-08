@@ -105,12 +105,18 @@ class ParFormBuilder extends DefaultPluginManager {
    */
   public function getPluginElements($component, &$elements = [], $cardinality = NULL) {
     // Add all the registered components to the form.
-    $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()] = $component->getWrapper();
+    $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginNamespace()] = $component->getWrapper();
 
     // Count the current cardinality.
     $count = $component->getNewCardinality();
 
     for ($i = 1; $i <= $count; $i++) {
+      // @TODO This is the only remaining bit when possible calls to `progress()`
+      // aren't caught. They're used frequently in the form plugins, we need a way to safely
+      // add redirection to plugins with the _same_ fallbacks as `ParBaseForm::submitForm()`
+      // and `ParBaseController::getProceedingUrl()`.
+      // Ideally coverting the hardcoded fallbacks in `ParBaseForm::submitForm()` into
+      // FlowEventListeners so that they happen everywhere this is called.
       $element = $component->getElements([], $i);
 
       // Handle instances where FormBuilderInterface should return a redirect response.
@@ -118,15 +124,15 @@ class ParFormBuilder extends DefaultPluginManager {
         return $element;
       }
 
-      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] = $element;
+      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginNamespace()][$i-1] = $element;
 
       // Only show element actions for plugins with multiple cardinality
       if ($element_actions = $component->getElementActions($i)) {
-        $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] += $element_actions;
+        $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginNamespace()][$i-1] += $element_actions;
       }
 
       // Add the component element wrappers.
-      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginId()][$i-1] += $component->getElementWrapper($i);
+      $elements[self::PAR_COMPONENT_PREFIX . $component->getPluginNamespace()][$i-1] += $component->getElementWrapper($i);
     }
 
     // Only show component actions for plugins with multiple cardinality

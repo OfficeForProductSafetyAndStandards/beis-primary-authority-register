@@ -17,7 +17,7 @@ module: views
 description: ''
 tag: ''
 base_table: maillog
-base_field: idmaillog
+base_field: id
 display:
   default:
     display_plugin: default
@@ -127,15 +127,15 @@ display:
       row:
         type: fields
       fields:
-        idmaillog:
-          id: idmaillog
+        id:
+          id: id
           table: maillog
-          field: idmaillog
+          field: id
           relationship: none
           group_type: group
           admin_label: ''
-          label: '#'
-          exclude: false
+          label: Maillog_ID
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -153,7 +153,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: null
+            max_length: 0
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -167,11 +167,11 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: 'There are currently no mails to report.'
+          empty: ''
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
@@ -241,7 +241,7 @@ display:
             alter_text: false
             text: ''
             make_link: true
-            path: '/maillog/details/{{idmaillog}}'
+            path: '/admin/reports/maillog/details/{{ id }}'
             absolute: false
             external: false
             replace_spaces: false
@@ -502,7 +502,7 @@ display:
         - url
         - url.query_args
       cacheable: false
-      max-age: 0
+      max-age: -1
       tags: {  }
   page_1:
     display_plugin: page
@@ -526,5 +526,5 @@ display:
         - url
         - url.query_args
       cacheable: false
-      max-age: 0
+      max-age: -1
       tags: {  }

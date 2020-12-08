@@ -69,6 +69,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
     // Display whether this is covered by an inspeciton plan.
     $form['covered_by_inspection'] = $this->renderSection('Covered by inspection plan', $par_data_coordinated_business, ['covered_by_inspection' => 'default']);
 
+    // Change the action to save.
+    $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
+
     return parent::buildForm($form, $form_state);
   }
 

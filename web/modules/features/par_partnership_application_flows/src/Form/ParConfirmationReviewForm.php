@@ -6,6 +6,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\invite\Entity\Invite;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -14,6 +15,7 @@ use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_application_flows\ParFlowAccessTrait;
+use Drupal\Core\Messenger\MessengerInterface;
 
 /**
  * The partnership form for the partnership details.
@@ -31,7 +33,6 @@ class ParConfirmationReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-
     // Set the data values on the entities
     $entities = $this->createEntities();
     extract($entities);
@@ -41,6 +42,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     /** @var ParDataPerson $primary_authority_contact */
     /** @var ParDataPerson $organisation_contact */
     /** @var ParDataPremises $par_data_premises */
+    /** @var Invite $invite */
 
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
@@ -104,7 +106,6 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
         // Display contacts at the organisation.
         $form['partnership']['organisation']['organisation_contact'] =  $this->renderEntities('Contact at the organisation', [$organisation_contact]);
-
       }
 
       // Show the primary authority name.
@@ -175,7 +176,6 @@ class ParConfirmationReviewForm extends ParBaseForm {
     if (!$form_state->getValue('terms_authority_agreed')) {
       $message = $this->wrapErrorMessage('Please confirm you have read the terms & conditions.', $this->getElementId('terms_authority_agreed', $form));
       $form_state->setErrorByName($this->getElementName('terms_authority_agreed'), $message);
-
     }
   }
 
@@ -194,6 +194,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     /** @var ParDataPerson $primary_authority_contact */
     /** @var ParDataPerson $organisation_contact */
     /** @var ParDataPremises $par_data_premises */
+    /** @var Invite $invite */
 
     // Set the premises and contact information on organisation and partnership.
     if ($primary_authority_contact && $organisation_contact->save() && $par_data_premises->save()) {
@@ -225,19 +226,17 @@ class ParConfirmationReviewForm extends ParBaseForm {
         ->error($message, $replacements);
     }
 
-    if ($par_data_partnership && $par_data_authority && $par_data_organisation && $par_data_partnership->save()) {
-      $this->getFlowDataHandler()->deleteStore();
-
-      $route_params = [
-        'par_data_partnership' => $par_data_partnership->id(),
-        'par_data_person' => $organisation_contact->id()
-      ];
-      $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getNextRoute('save'), $route_params);
+    if ($par_data_partnership && $par_data_authority && $par_data_organisation) {
+      $save = $par_data_partnership->save();
+      if ($save && $invite instanceof Invite) {
+        // @TODO Make sure partnership notification isn't sent for users that don't have accounts.
+        $invite->save();
+      }
     }
     else {
-      $message = $this->t('This %confirm could not be saved for %form_id');
+      $message = $this->t('%partnership could not be saved for %form_id');
       $replacements = [
-        '%confirm' => $par_data_partnership->get('partnership_info_agreed_authority')->toString(),
+        '%partnership' => $par_data_partnership->label(),
         '%form_id' => $this->getFormId(),
       ];
       $this->getLogger($this->getLoggerChannel())
@@ -245,12 +244,10 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
       // If the partnership could not be saved the application can't be progressed.
       // @TODO Find a better way to alert the user without redirecting them away from the form.
-      drupal_set_message('There was an error progressing your partnership, please contact the helpdesk for more information.');
-      $form_state->setRedirect($this->getFlowNegotiator()->getFlow()->getPrevRoute('cancel'));
+      $this->messenger()->addMessage('There was an error progressing your partnership, please contact the helpdesk for more information.');
+      $form_state->setRedirectUrl($this->getFlowNegotiator()->getFlow()->progress('cancel'));
     }
   }
-
-
 
   public function createEntities() {
     // Load the Authority.
@@ -335,6 +332,43 @@ class ParConfirmationReviewForm extends ParBaseForm {
       'partnership_info_agreed_authority' => 1,
     ]);
 
+    // Create the invitation.
+    $cid_invite = $this->getFlowNegotiator()->getFormKey('invite');
+    $invitation_type = $this->getFlowDataHandler()->getDefaultValues('invitation_type', FALSE, $cid_invite);
+    // Override invite type if there were multiple roles to choose from.
+    $roles = $this->getFlowDataHandler()->getDefaultValues('roles', [], $cid_invite);
+    $target_role = $this->getFlowDataHandler()->getDefaultValues('target_role', FALSE, $cid_invite);
+    if ($roles && count($roles) > 1) {
+      switch ($target_role) {
+        case 'par_enforcement':
+          $invitation_type = 'invite_enforcement_officer';
+
+          break;
+        case 'par_authority':
+          $invitation_type = 'invite_authority_member';
+
+          break;
+        case 'par_organisation':
+          $invitation_type = 'invite_organisation_member';
+
+          break;
+      }
+    }
+
+    if ($invitation_type) {
+      $invite = Invite::create([
+        'type' => $invitation_type,
+        'user_id' => $this->getFlowDataHandler()
+          ->getTempDataValue('user_id', $cid_invite),
+        'invitee' => $this->getFlowDataHandler()
+          ->getTempDataValue('to', $cid_invite),
+      ]);
+      $invite->set('field_invite_email_address', $this->getFlowDataHandler()->getTempDataValue('to', $cid_invite));
+      $invite->set('field_invite_email_subject', $this->getFlowDataHandler()->getTempDataValue('subject', $cid_invite));
+      $invite->set('field_invite_email_body', $this->getFlowDataHandler()->getTempDataValue('body', $cid_invite));
+      $invite->setPlugin('invite_by_email');
+    }
+
     return [
       'par_data_partnership' => isset($par_data_partnership) ? $par_data_partnership : NULL,
       'par_data_organisation' => isset($par_data_organisation) ? $par_data_organisation : NULL,
@@ -342,6 +376,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       'primary_authority_contact' => isset($primary_authority_contact) ? $primary_authority_contact : NULL,
       'organisation_contact' => isset($organisation_contact) ? $organisation_contact : NULL,
       'par_data_premises' => isset($par_data_premises) ? $par_data_premises : NULL,
+      'invite' => isset($invite) ? $invite : NULL,
     ];
   }
 

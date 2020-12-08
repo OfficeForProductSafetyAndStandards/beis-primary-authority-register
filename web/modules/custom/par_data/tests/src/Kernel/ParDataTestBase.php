@@ -5,6 +5,7 @@ namespace Drupal\Tests\par_data\Kernel;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\Entity\File;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
+use Drupal\media\Entity\Media;
 use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataAdviceType;
 use Drupal\par_data\Entity\ParDataAuthority;
@@ -38,6 +39,8 @@ use Drupal\par_data\Entity\ParDataRegulatoryFunction;
 use Drupal\par_data\Entity\ParDataRegulatoryFunctionType;
 use Drupal\par_data\Entity\ParDataSicCode;
 use Drupal\par_data\Entity\ParDataSicCodeType;
+use Drupal\Tests\media\Traits\MediaTypeCreationTrait;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Tests PAR Data test base.
@@ -46,7 +49,35 @@ use Drupal\par_data\Entity\ParDataSicCodeType;
  */
 class ParDataTestBase extends EntityKernelTestBase {
 
-  static $modules = ['language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'message', 'address', 'datetime', 'datetime_range', 'file_test', 'file', 'file_entity'];
+  use MediaTypeCreationTrait;
+
+  static $modules = [
+    'user',
+    'system',
+    'field',
+    'text',
+    'filter',
+    'entity_test',
+    'language',
+    'content_translation',
+    'comment',
+    'trance',
+    'par_validation',
+    'par_data',
+    'par_data_config',
+    'message',
+    'address',
+    'datetime',
+    'datetime_range',
+    'file_test',
+    'file',
+    'image',
+    'media',
+    'media_library',
+    'views',
+    'media_test_views',
+    'file_entity',
+  ];
 
   /**
    * @var AccountInterface
@@ -99,7 +130,6 @@ class ParDataTestBase extends EntityKernelTestBase {
     // Must change the bytea_output to the format "escape" before running tests.
     // @see https://www.drupal.org/node/2810049
     //db_query("ALTER DATABASE 'par' SET bytea_output = 'escape';")->execute();
-
     parent::setUp();
 
     // Create a new non-admin user.
@@ -108,6 +138,15 @@ class ParDataTestBase extends EntityKernelTestBase {
 
     // Mimic some of the functionality in \Drupal\Tests\file\Kernel\FileManagedUnitTestBase
     $this->setUpFilesystem();
+
+    // Install media config.
+    $this->installEntitySchema('media');
+    $this->installConfig(['media']);
+
+    // Create document media type.
+    $this->testMediaType = $this->createMediaType('file', ['id' => 'document', 'label' => 'Document']);
+    // Create fake document type that cannot be added to any of the document fields.
+    $this->fakeMediaType = $this->createMediaType('file', ['id' => 'fake', 'label' => 'Fake Document']);
 
     // Install out entity hooks.
     $this->entityTypes = [
@@ -260,6 +299,10 @@ class ParDataTestBase extends EntityKernelTestBase {
     // Install the feature config
     $this->installConfig('par_data_config');
 
+    // Install comment config.
+    $this->installEntitySchema('comment');
+    $this->installSchema('comment', ['comment_entity_statistics']);
+
     // Install file config.
     $this->installConfig(['system']);
     $this->installEntitySchema('file');
@@ -283,35 +326,54 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $file;
   }
 
+  public function getMedia($file) {
+    return Media::create([
+      'bundle' => $this->testMediaType->id(),
+      'name' => $this->randomMachineName(),
+      'field_media_file' => [
+        'target_id' => $file->id(),
+      ],
+    ]);
+  }
+
   public function getBaseValues() {
     return [
       'uid' => $this->account,
       'type' => 'UNKNOWN',
+      'archive_reason' => "Automated test archive reason",
     ];
   }
 
-  public function getAdviceValues() {
+  public function getAdviceValues($values = []) {
     // We need to create a Regulatory Function first.
     $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryFunctionValues());
     $regulatory_function->save();
 
-    return [
-      'type' => 'advice',
-      'advice_type' => 'To Local Authority',
-      'notes' => $this->randomString(1000),
-      'visible_authority' => TRUE,
-      'visible_coordinator' => TRUE,
-      'visible_business' => TRUE,
-      'document' => [
-        ''
-      ],
-      'field_regulatory_function' => [
-        $regulatory_function->id(),
-      ],
-    ] + $this->getBaseValues();
+    /** @var \Drupal\file\Entity\File $document */
+    $document = $this->createFile();
+
+    $values += [
+        'type' => 'advice',
+        'advice_type' => 'To Local Authority',
+        'notes' => $this->randomString(1000),
+        'visible_authority' => TRUE,
+        'visible_coordinator' => TRUE,
+        'visible_business' => TRUE,
+        'document' => [
+          $document->id()
+        ],
+        'field_document' => [
+          $this->getMedia($document),
+        ],
+        'field_regulatory_function' => [
+          $regulatory_function->id(),
+        ],
+      ] + $this->getBaseValues();
+
+    return $values;
   }
 
-  public function getAuthorityValues() {
+  public function getAuthorityValues($values = []) {
     // We need to create a Person first.
     $person = ParDataPerson::create($this->getPersonValues());
     $person->save();
@@ -324,29 +386,31 @@ class ParDataTestBase extends EntityKernelTestBase {
     $premises = ParDataPremises::create($this->getPremisesValues());
     $premises->save();
 
-    return [
-      'type' => 'authority',
-      'authority_name' => 'Test Authority',
-      'authority_type' => 'Local Authority',
-      'nation' => 'Wales',
-      'ons_code' => '123456',
-      'comments' => $this->randomString(1000),
-      'field_person' => [
-        $person->id(),
-      ],
-      'field_regulatory_function' => [
-        $regulatory_function->id(),
-      ],
-      'field_allowed_regulatory_fn' => [
-        $regulatory_function->id(),
-      ],
-      'field_premises' => [
-        $premises->id(),
-      ]
-    ] + $this->getBaseValues();
+    $values += [
+        'type' => 'authority',
+        'authority_name' => 'Test Authority',
+        'authority_type' => 'Local Authority',
+        'nation' => 'Wales',
+        'ons_code' => '123456',
+        'comments' => $this->randomString(1000),
+        'field_person' => [
+          $person->id(),
+        ],
+        'field_regulatory_function' => [
+          $regulatory_function->id(),
+        ],
+        'field_allowed_regulatory_fn' => [
+          $regulatory_function->id(),
+        ],
+        'field_premises' => [
+          $premises->id(),
+        ],
+      ] + $this->getBaseValues();
+
+    return $values;
   }
 
-  public function getEnforcementActionValues() {
+  public function getEnforcementActionValues($values = []) {
     // We need to create an Advice first.
     $advice = ParDataAdvice::create($this->getAdviceValues());
     $advice->save();
@@ -355,7 +419,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryFunctionValues());
     $regulatory_function->save();
 
-    return [
+    $values += [
         'type' => 'enforcement_action',
         'title' => 'Test Enforcement Action',
         'details' => $this->randomString(1000),
@@ -372,9 +436,10 @@ class ParDataTestBase extends EntityKernelTestBase {
         ],
       ] + $this->getBaseValues();
 
+    return $values;
   }
 
-  public function getEnforcementNoticeValues() {
+  public function getEnforcementNoticeValues($values = []) {
     // We need to create an Enforcing Authority first.
     $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
     $enforcing_authority->save();
@@ -397,37 +462,39 @@ class ParDataTestBase extends EntityKernelTestBase {
     $person = ParDataPerson::create($this->getPersonValues());
     $person->save();
 
-    return [
-      'type' => 'enforcement_notice',
-      'notice_type' => 'Closure',
-      'notice_date' => '2017-10-01',
-      'legal_entity_name' => 'Unassigned Legal Entity Ltd',
-      'summary' => $this->randomString(1000),
-      'field_enforcing_authority' => [
-        $enforcing_authority->id(),
-      ],
-      'field_organisation' => [
-        $organisation->id(),
-      ],
-      'field_partnership' => [
-        $partnership->id(),
-      ],
-      'field_primary_authority' => [
-        $primary_authority->id(),
-      ],
-      'field_legal_entity' => [
-        $legal_entity->id(),
-      ],
-      'field_enforcement_action' => [
-        $enforcement_action->id(),
-      ],
-      'field_person' => [
-        $person->id(),
-      ],
-    ] + $this->getBaseValues();
+    $values += [
+        'type' => 'enforcement_notice',
+        'notice_type' => 'Closure',
+        'notice_date' => '2017-10-01',
+        'legal_entity_name' => 'Unassigned Legal Entity Ltd',
+        'summary' => $this->randomString(1000),
+        'field_enforcing_authority' => [
+          $enforcing_authority->id(),
+        ],
+        'field_organisation' => [
+          $organisation->id(),
+        ],
+        'field_partnership' => [
+          $partnership->id(),
+        ],
+        'field_primary_authority' => [
+          $primary_authority->id(),
+        ],
+        'field_legal_entity' => [
+          $legal_entity->id(),
+        ],
+        'field_enforcement_action' => [
+          $enforcement_action->id(),
+        ],
+        'field_person' => [
+          $person->id(),
+        ],
+      ] + $this->getBaseValues();
+
+    return $values;
   }
 
-  public function getDeviationRequestValues() {
+  public function getDeviationRequestValues($values = []) {
     // We need to create an Enforcing Authority first.
     $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
     $enforcing_authority->save();
@@ -439,38 +506,43 @@ class ParDataTestBase extends EntityKernelTestBase {
     $partnership = ParDataPartnership::create($this->getDirectPartnershipValues());
     $partnership->save();
 
-    $inspection_plans = $partnership->get('field_inspection_plan')->referencedEntities();
+    $inspection_plans = $partnership->get('field_inspection_plan')
+      ->referencedEntities();
     $inspection_plan = current($inspection_plans);
 
     /** @var \Drupal\file\Entity\File $document */
     $document = $this->createFile();
 
-    return [
-      'type' => 'deviation_request',
-      'request_date' => '2017-10-01',
-      'notes' => $this->randomString(1000),
-      'primary_authority_status' => 'awaiting',
-      'primary_authority_notes' => $this->randomString(1000),
-      'document' => [
-        $document->id(),
-      ],
-      'field_enforcing_authority' => [
-        $enforcing_authority->id(),
-      ],
-      'field_partnership' => [
-        $partnership->id(),
-      ],
-      'field_inspection_plan' => [
-        $inspection_plan->id(),
-      ],
-      'field_person' => [
-        $person->id(),
-      ],
-    ] + $this->getBaseValues();
+    $values += [
+        'type' => 'deviation_request',
+        'request_date' => '2017-10-01',
+        'notes' => $this->randomString(1000),
+        'primary_authority_status' => 'awaiting',
+        'primary_authority_notes' => $this->randomString(1000),
+        'document' => [
+          $document->id()
+        ],
+        'field_document' => [
+          $this->getMedia($document),
+        ],
+        'field_enforcing_authority' => [
+          $enforcing_authority->id(),
+        ],
+        'field_partnership' => [
+          $partnership->id(),
+        ],
+        'field_inspection_plan' => [
+          $inspection_plan->id(),
+        ],
+        'field_person' => [
+          $person->id(),
+        ],
+      ] + $this->getBaseValues();
 
+    return $values;
   }
 
-  public function getInspectionFeedbackValues() {
+  public function getInspectionFeedbackValues($values = []) {
     // We need to create an Enforcing Authority first.
     $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
     $enforcing_authority->save();
@@ -482,35 +554,43 @@ class ParDataTestBase extends EntityKernelTestBase {
     $partnership = ParDataPartnership::create($this->getDirectPartnershipValues());
     $partnership->save();
 
-    $inspection_plans = $partnership->get('field_inspection_plan')->referencedEntities();
+    $inspection_plans = $partnership->get('field_inspection_plan')
+      ->referencedEntities();
     $inspection_plan = current($inspection_plans);
 
-    return [
-      'type' => 'inspection_feedback',
-      'request_date' => '2017-10-01',
-      'notes' => $this->randomString(1000),
-      'primary_authority_status' => 'awaiting',
-      'primary_authority_notes' => $this->randomString(1000),
-      'document' => [
-        ''
-      ],
-      'field_enforcing_authority' => [
-        $enforcing_authority->id(),
-      ],
-      'field_partnership' => [
-        $partnership->id(),
-      ],
-      'field_inspection_plan' => [
-        $inspection_plan->id(),
-      ],
-      'field_person' => [
-        $person->id(),
-      ],
-    ] + $this->getBaseValues();
+    /** @var \Drupal\file\Entity\File $document */
+    $document = $this->createFile();
 
+    $values += [
+        'type' => 'inspection_feedback',
+        'request_date' => '2017-10-01',
+        'notes' => $this->randomString(1000),
+        'primary_authority_status' => 'awaiting',
+        'primary_authority_notes' => $this->randomString(1000),
+        'document' => [
+          $document->id()
+        ],
+        'field_document' => [
+          $this->getMedia($document),
+        ],
+        'field_enforcing_authority' => [
+          $enforcing_authority->id(),
+        ],
+        'field_partnership' => [
+          $partnership->id(),
+        ],
+        'field_inspection_plan' => [
+          $inspection_plan->id(),
+        ],
+        'field_person' => [
+          $person->id(),
+        ],
+      ] + $this->getBaseValues();
+
+    return $values;
   }
 
-  public function getGeneralEnquiryValues() {
+  public function getGeneralEnquiryValues($values = []) {
     // We need to create an Enforcing Authority first.
     $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
     $enforcing_authority->save();
@@ -524,63 +604,80 @@ class ParDataTestBase extends EntityKernelTestBase {
 
     $primary_authority = $partnership->getAuthority(TRUE);
 
-    return [
-      'type' => 'general_enquiry',
-      'request_date' => '2017-10-01',
-      'notes' => $this->randomString(1000),
-      'primary_authority_status' => 'awaiting',
-      'primary_authority_notes' => $this->randomString(1000),
-      'document' => [
-        ''
-      ],
-      'field_enforcing_authority' => [
-        $enforcing_authority->id(),
-      ],
-      'field_partnership' => [
-        $partnership->id(),
-      ],
-      'field_primary_authority' => [
-        $primary_authority->id(),
-      ],
-      'field_person' => [
-        $person->id(),
-      ],
-    ] + $this->getBaseValues();
+    /** @var \Drupal\file\Entity\File $document */
+    $document = $this->createFile();
 
+    $values += [
+        'type' => 'general_enquiry',
+        'request_date' => '2017-10-01',
+        'notes' => $this->randomString(1000),
+        'primary_authority_status' => 'awaiting',
+        'primary_authority_notes' => $this->randomString(1000),
+        'document' => [
+          $document->id()
+        ],
+        'field_document' => [
+          $this->getMedia($document),
+        ],
+        'field_enforcing_authority' => [
+          $enforcing_authority->id(),
+        ],
+        'field_partnership' => [
+          $partnership->id(),
+        ],
+        'field_primary_authority' => [
+          $primary_authority->id(),
+        ],
+        'field_person' => [
+          $person->id(),
+        ],
+      ] + $this->getBaseValues();
+
+    return $values;
   }
 
-  public function getInspectionPlanValues() {
+  public function getInspectionPlanValues($values = []) {
     $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryFunctionValues());
     $regulatory_function->save();
 
-    return [
-      'type' => 'inspection_plan',
-      'valid_date' => [
-        'value' => '2016-01-01',
-        'end_value' => '2018-01-01',
-      ],
-      'approved_rd_executive' => TRUE,
-      'consulted_national_regulator' => TRUE,
-      'inspection_status' => 'Active',
-      'document' => [
-        ''
-      ],
-      'field_regulatory_function' => [
-        $regulatory_function->id(),
-      ],
-    ] + $this->getBaseValues();
+    /** @var \Drupal\file\Entity\File $document */
+    $document = $this->createFile();
+
+    $values += [
+        'type' => 'inspection_plan',
+        'valid_date' => [
+          'value' => '2016-01-01',
+          'end_value' => '2018-01-01',
+        ],
+        'approved_rd_executive' => TRUE,
+        'consulted_national_regulator' => TRUE,
+        'inspection_status' => 'Active',
+        'document' => [
+          $document->id()
+        ],
+        'field_document' => [
+          $this->getMedia($document),
+        ],
+        'field_regulatory_function' => [
+          $regulatory_function->id(),
+        ],
+      ] + $this->getBaseValues();
+
+    return $values;
   }
 
-  public function getLegalEntityValues() {
-    return [
-      'type' => 'legal_entity',
-      'registered_name' => 'Jo\' Coffee Ltd',
-      'registered_number' => '0123456789',
-      'legal_entity_type' => 'Limited Company',
-    ] + $this->getBaseValues();
+  public function getLegalEntityValues($values = []) {
+    $values += [
+        'type' => 'legal_entity',
+        'registered_name' => 'Jo\' Coffee Ltd',
+        'registered_number' => '0123456789',
+        'legal_entity_type' => 'Limited Company',
+      ] + $this->getBaseValues();
+
+    return $values;
   }
 
-  public function getOrganisationValues() {
+  public function getOrganisationValues($values = []) {
     // We need to create an SIC Code first.
     $sic_code = ParDataSicCode::create($this->getSicCodeValues());
     $sic_code->save();
@@ -597,42 +694,44 @@ class ParDataTestBase extends EntityKernelTestBase {
     $legal_entity = ParDataLegalEntity::create($this->getLegalEntityValues());
     $legal_entity->save();
 
-    return [
-      'type' => 'organisation',
-      'organisation_name' => 'Test Organisation',
-      'size' => 'Enormous',
-      'employees_band' => '10-50',
-      'nation' => 'Wales',
-      'comments' => $long_string = $this->randomString(1000),
-      'premises_mapped' => TRUE,
-      'trading_name' => [
-        $this->randomString(255),
-        $this->randomString(255),
-        $this->randomString(255),
-      ],
-      'field_sic_code' => [
-        $sic_code->id(),
-      ],
-      'field_person' => [
-        $person->id(),
-      ],
-      'field_premises' => [
-        $premises->id(),
-      ],
-      'field_legal_entity' => [
-        $legal_entity->id(),
-      ],
-      'coordinator_number' => '12345',
-      'coordinator_type' => 'Franchise',
-    ] + $this->getBaseValues();
+    $values += [
+        'type' => 'organisation',
+        'organisation_name' => 'Test Organisation',
+        'size' => 'Enormous',
+        'employees_band' => '10-50',
+        'nation' => 'Wales',
+        'comments' => $long_string = $this->randomString(1000),
+        'premises_mapped' => TRUE,
+        'trading_name' => [
+          $this->randomString(255),
+          $this->randomString(255),
+          $this->randomString(255),
+        ],
+        'field_sic_code' => [
+          $sic_code->id(),
+        ],
+        'field_person' => [
+          $person->id(),
+        ],
+        'field_premises' => [
+          $premises->id(),
+        ],
+        'field_legal_entity' => [
+          $legal_entity->id(),
+        ],
+        'coordinator_number' => '12345',
+        'coordinator_type' => 'Franchise',
+      ] + $this->getBaseValues();
+
+    return $values;
   }
 
-  public function getCoordinatedBusinessValues() {
+  public function getCoordinatedBusinessValues($values = []) {
     // We need to create an Organisation Member first.
-    $organisation_1 = ParDataOrganisation::create(['organisation_name' => 'Member ' . rand(0,1)] + $this->getOrganisationValues());
+    $organisation_1 = ParDataOrganisation::create(['organisation_name' => 'Member ' . rand(0, 1)] + $this->getOrganisationValues());
     $organisation_1->save();
 
-    return [
+    $values += [
         'type' => 'coordinated_business',
         'valid_date' => [
           'value' => '2016-01-01',
@@ -642,9 +741,11 @@ class ParDataTestBase extends EntityKernelTestBase {
           $organisation_1->id(),
         ],
       ] + $this->getBaseValues();
+
+    return $values;
   }
 
-  public function getDirectPartnershipValues() {
+  public function getDirectPartnershipValues($values = []) {
     // We need to create an Organisation first.
     $organisation = ParDataOrganisation::create($this->getOrganisationValues());
     $organisation->save();
@@ -673,10 +774,10 @@ class ParDataTestBase extends EntityKernelTestBase {
     $person_2 = ParDataPerson::create($this->getPersonValues());
     $person_2->save();
 
-    return [
+    $values += [
         'type' => 'partnership',
         'partnership_type' => 'direct',
-        'partnership_status' => 'Current',
+        'partnership_status' => 'confirmed_rd',
         'about_partnership' => $this->randomString(1000),
         'approved_date' => '2017-06-01',
         'cost_recovery' => 'Cost recovery from partnership',
@@ -712,11 +813,13 @@ class ParDataTestBase extends EntityKernelTestBase {
         ],
         'field_organisation_person' => [
           $person_2->id(),
-        ]
+        ],
       ] + $this->getBaseValues();
+
+    return $values;
   }
 
-  public function getCoordinatedPartnershipValues() {
+  public function getCoordinatedPartnershipValues($values = []) {
     // We need to create an Organisation first.
     $organisation = ParDataOrganisation::create($this->getOrganisationValues());
     $organisation->save();
@@ -753,7 +856,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     $person_2 = ParDataPerson::create($this->getPersonValues());
     $person_2->save();
 
-    return [
+    $values += [
         'type' => 'partnership',
         'partnership_type' => 'coordinated',
         'partnership_status' => 'Current',
@@ -797,59 +900,69 @@ class ParDataTestBase extends EntityKernelTestBase {
         ],
         'field_organisation_person' => [
           $person_2->id(),
-        ]
+        ],
       ] + $this->getBaseValues();
+
+    return $values;
   }
 
-  public function   getPersonValues() {
-    return [
-      'type' => 'person',
-      'salutation' => 'Mrs',
-      'first_name' => 'Smith',
-      'last_name' => 'Smith',
-      'job_title' => 'Senior Telephone Sanitisation Engineer',
-      'work_phone' => '01723456789',
-      'mobile_phone' => '0777777777',
-      'email' => $this->randomMachineName(20) . '@example.com',
-      'communication_email' => TRUE,
-      'communication_phone' => TRUE,
-      'communication_mobile' => TRUE,
-      'communication_notes' => $this->randomString(1000),
-      'field_user_account' => [
-        $this->account->id(),
-      ],
-      'field_notification_preferences' => []
-    ] + $this->getBaseValues();
+  public function getPersonValues($values = []) {
+    $values += [
+        'type' => 'person',
+        'salutation' => 'Mrs',
+        'first_name' => 'Smith',
+        'last_name' => 'Smith',
+        'job_title' => 'Senior Telephone Sanitisation Engineer',
+        'work_phone' => '01723456789',
+        'mobile_phone' => '0777777777',
+        'email' => $this->randomMachineName(20) . '@example.com',
+        'communication_email' => TRUE,
+        'communication_phone' => TRUE,
+        'communication_mobile' => TRUE,
+        'communication_notes' => $this->randomString(1000),
+        'field_user_account' => [
+          $this->account->id(),
+        ],
+        'field_notification_preferences' => [],
+      ] + $this->getBaseValues();
+
+    return $values;
   }
 
-  public function getPremisesValues() {
-    return [
-      'type' => 'premises',
-      'address' => [
-        'country_code' => 'GB',
-        'address_line1' => '1 High St',
-        'address_line2' => 'London',
-        'locality' => 'Greater London',
-        'administrative_area' => 'GB-GB',
-        'postal_code' => 'N11AA',
-      ],
-      'nation' => 'Wales',
-      'uprn' => '10012330060',
-    ] + $this->getBaseValues();
+  public function getPremisesValues($values = []) {
+    $values += [
+        'type' => 'premises',
+        'address' => [
+          'country_code' => 'GB',
+          'address_line1' => '1 High St',
+          'address_line2' => 'London',
+          'locality' => 'Greater London',
+          'administrative_area' => 'GB-GB',
+          'postal_code' => 'N11AA',
+        ],
+        'nation' => 'Wales',
+        'uprn' => '10012330060',
+      ] + $this->getBaseValues();
+
+    return $values;
   }
 
-  public function getRegulatoryFunctionValues() {
-    return [
-      'type' => 'regulatory_function',
-      'function_name' => 'Health and Safety',
-    ] + $this->getBaseValues();
+  public function getRegulatoryFunctionValues($values = []) {
+    $values += [
+        'type' => 'regulatory_function',
+        'function_name' => 'Health and Safety',
+      ] + $this->getBaseValues();
+
+    return $values;
   }
 
-  public function getSicCodeValues() {
-    return [
-      'type' => 'sic_code',
-      'sic_code' => '012345',
-      'description' => 'This is an example SIC Code.'
-    ] + $this->getBaseValues();
+  public function getSicCodeValues($values = []) {
+    $values += [
+        'type' => 'sic_code',
+        'sic_code' => '012345',
+        'description' => 'This is an example SIC Code.',
+      ] + $this->getBaseValues();
+
+    return $values;
   }
 }

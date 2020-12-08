@@ -7,7 +7,7 @@ description: ''
 help: ''
 isDeletable: false
 isRevokable: false
-isArchivable: true
+isArchivable: false
 configuration:
   entity:
     label_fields:

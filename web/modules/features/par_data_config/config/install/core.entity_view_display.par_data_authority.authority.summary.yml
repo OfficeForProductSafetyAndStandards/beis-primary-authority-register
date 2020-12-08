@@ -42,7 +42,9 @@ content:
     third_party_settings: {  }
 hidden:
   allowed_regulatory_function: true
+  archive_reason: true
   comments: true
+  deleted_reason: true
   field_allowed_regulatory_fn: true
   field_person: true
   field_premises: true
@@ -52,4 +54,5 @@ hidden:
   ons_code: true
   person: true
   premises: true
+  revocation_reason: true
   user_id: true

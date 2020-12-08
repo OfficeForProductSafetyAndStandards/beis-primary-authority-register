@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_information_referral.title
+    - field.field.par_data_information_referral.information_referral.field_document
     - field.field.par_data_information_referral.information_referral.field_enforcing_authority
     - field.field.par_data_information_referral.information_referral.field_person
     - field.field.par_data_information_referral.information_referral.field_primary_authority
@@ -17,12 +18,21 @@ mode: title
 content:
   document:
     label: hidden
-    weight: 0
+    weight: 1
     region: content
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
     type: file_default
+  field_document:
+    type: entity_reference_entity_view
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
   notes:
     type: text_trimmed
     weight: 0
@@ -32,6 +42,8 @@ content:
       trim_length: 300
     third_party_settings: {  }
 hidden:
+  archive_reason: true
+  deleted_reason: true
   field_enforcing_authority: true
   field_person: true
   field_primary_authority: true
@@ -39,4 +51,5 @@ hidden:
   primary_authority_notes: true
   primary_authority_status: true
   request_date: true
+  revocation_reason: true
   user_id: true

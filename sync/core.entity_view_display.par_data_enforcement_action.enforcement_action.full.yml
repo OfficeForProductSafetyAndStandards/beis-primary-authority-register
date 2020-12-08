@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.par_data_enforcement_action.full
     - field.field.par_data_enforcement_action.enforcement_action.field_action_referral
     - field.field.par_data_enforcement_action.enforcement_action.field_blocked_advice
+    - field.field.par_data_enforcement_action.enforcement_action.field_document
     - field.field.par_data_enforcement_action.enforcement_action.field_regulatory_function
     - par_data.par_data_enforcement_action_type.enforcement_action
   module:
@@ -18,20 +19,6 @@ targetEntityType: par_data_enforcement_action
 bundle: enforcement_action
 mode: full
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   details:
     type: text_default
     weight: 5
@@ -63,6 +50,15 @@ content:
     third_party_settings: {  }
     type: string
     weight: 1
+  field_document:
+    type: entity_reference_entity_view
+    weight: 7
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
   primary_authority_notes:
     label: hidden
     type: text_default
@@ -78,13 +74,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 3
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   title:
     type: string
     weight: 0
@@ -95,7 +84,9 @@ content:
     third_party_settings: {  }
 hidden:
   action_referral: true
+  archive_reason: true
   blocked_advice: true
+  deleted_reason: true
   ea_notes: true
   ea_status: true
   enforcement_notice: true
@@ -107,4 +98,5 @@ hidden:
   pa_status: true
   referral_notes: true
   regulatory_function: true
+  revocation_reason: true
   user_id: true

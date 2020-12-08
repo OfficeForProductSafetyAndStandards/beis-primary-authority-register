@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: {  }
+id: partnership_advice_remove
+label: "Remove Partnership's Advice Flow"
+default_title: null
+default_section_title: 'Primary Authority partnership information'
+description: ''
+save_method: end
+final_routes:
+  - par_partnership_flows.authority_advice_list
+  - par_partnership_flows.organisation_advice_list
+states:
+  - par_data_partnership
+  - type
+  - par_data_advice
+steps:
+  1:
+    route: par_partnership_document_remove_flows.remove_advice
+    form_id: par_partnership_advice_remove

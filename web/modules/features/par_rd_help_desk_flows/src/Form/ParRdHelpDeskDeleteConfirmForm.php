@@ -52,9 +52,14 @@ class ParRdHelpDeskDeleteConfirmForm extends ParBaseForm {
       $this->accessResult = AccessResult::forbidden('The partnership is revoked.');
     }
 
-    // 403 if the partnership is in active it can't be deleted.
+    // If the partnership is in active it can't be deleted.
     if ($par_data_partnership->isActive()) {
       $this->accessResult = AccessResult::forbidden('The partnership is active.');
+    }
+
+    // If the partnership is not deletable.
+    if (!$par_data_partnership->isDeletable()) {
+      $this->accessResult = AccessResult::forbidden('The partnership is not deletable.');
     }
 
     return parent::accessCallback($route, $route_match, $account);

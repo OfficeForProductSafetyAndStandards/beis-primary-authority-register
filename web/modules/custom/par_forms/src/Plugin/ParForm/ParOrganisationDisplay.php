@@ -54,6 +54,19 @@ class ParOrganisationDisplay extends ParFormPluginBase {
             ->setFormPermValue("sic_codes", $this->t('This organisation does not provide any SIC codes.'));
         }
       }
+
+      if ($par_data_organisation->hasField('field_legal_entity')) {
+        $legal_entities = [];
+
+        foreach ($par_data_organisation->getLegalEntity() as $legal_entity) {
+          $legal_entities[$legal_entity->uuid()] = "{$legal_entity->label()} ({$legal_entity->getRegisteredNumber()}), {$legal_entity->getType()}";
+        }
+
+        if (!empty($legal_entities)) {
+          $this->getFlowDataHandler()
+            ->setFormPermValue("legal_entities", implode(', ', $legal_entities));
+        }
+      }
     }
 
     parent::loadData($cardinality);
@@ -91,15 +104,14 @@ class ParOrganisationDisplay extends ParFormPluginBase {
     // Add operation link for updating authority details.
     try {
       $link = $this->getFlowNegotiator()->getFlow()
-        ->getLinkByCurrentOperation('organisation_name', $params, [], TRUE);
-
+        ->getOperationLink('organisation_name', 'Change the organisation name', $params);
       $form['organisation']['name']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#attributes' => ['class' => ['column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
-          '@link' => $link ? $link->setText('Change the organisation name')->toString() : '',
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }
@@ -127,15 +139,14 @@ class ParOrganisationDisplay extends ParFormPluginBase {
     // Add operation link for updating authority details.
     try {
       $link = $this->getFlowNegotiator()->getFlow()
-        ->getLinkByCurrentOperation('organisation_about', $params, [], TRUE);
-
+        ->getOperationLink('organisation_about', 'Change the description', $params);
       $form['organisation']['about']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#attributes' => ['class' => ['column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
-          '@link' => $link ? $link->setText('Change the description')->toString() : '',
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }
@@ -163,15 +174,14 @@ class ParOrganisationDisplay extends ParFormPluginBase {
     // Add operation link for updating authority details.
     try {
       $link = $this->getFlowNegotiator()->getFlow()
-        ->getLinkByCurrentOperation('trading_name', $params, [], TRUE);
-
+        ->getOperationLink('trading_name', 'Change the trading names', $params);
       $form['organisation']['trading_name']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#attributes' => ['class' => ['column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
-          '@link' => $link ? $link->setText('Change the trading names')->toString() : '',
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }
@@ -196,24 +206,46 @@ class ParOrganisationDisplay extends ParFormPluginBase {
       ],
     ];
 
-    // Add operation link for updating authority details.
+    // Add operation link for updating sic codes.
     try {
       $link = $this->getFlowNegotiator()->getFlow()
-        ->getLinkByCurrentOperation('sic_codes', $params, [], TRUE);
-
+        ->getOperationLink('sic_codes', 'Change the SIC codes', $params);
       $form['organisation']['sic_codes']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#attributes' => ['class' => ['column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
-          '@link' => $link ? $link->setText('Change the SIC codes')->toString() : '',
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }
     catch (ParFlowException $e) {
 
     }
+
+    $form['organisation']['legal_entities'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['grid-row', 'form-group']],
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['heading-medium', 'column-full']],
+        '#value' => $this->t('Legal entities'),
+      ],
+      'description' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#attributes' => ['class' => ['column-two-thirds', 'form-hint']],
+        '#value' => 'Legal entities cannot be updated for existing organisations.',
+      ],
+      'value' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#attributes' => ['class' => ['column-two-thirds']],
+        '#value' => $this->getDefaultValuesByKey('legal_entities', $cardinality, NULL),
+      ],
+    ];
 
     return $form;
   }

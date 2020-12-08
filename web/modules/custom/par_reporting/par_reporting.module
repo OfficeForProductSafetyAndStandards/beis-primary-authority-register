@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains par_reporting.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function par_reporting_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the par_reporting module.
+    case 'help.page.par_reporting':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The reporting tools for PAR data.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

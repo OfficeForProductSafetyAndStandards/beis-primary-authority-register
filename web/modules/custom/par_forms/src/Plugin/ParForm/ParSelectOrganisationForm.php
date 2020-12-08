@@ -46,22 +46,22 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
 
     // If no suggestions were found cancel out of the journey.
     if ($required && count($organisations) <= 0) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getPrevRoute('prev'), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress('cancel');
+      return new RedirectResponse($url->toString());
     }
 
     // If only one authority submit the form automatically and go to the next step.
     elseif ($required && count($organisations) === 1) {
       $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', key($organisations));
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     if ($organisations) {
       // Initialize pager and get current page.
       $number_of_items = 10;
       $pager = $this->getUniquePager()->getPager('par_plugin_organisation_select_'.$cardinality);
-      $current_page = pager_default_initialize(count($organisations), $number_of_items, $pager);
+      $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($organisations), $number_of_items, $pager);
 
       // Split the items up into chunks:
       $chunks = array_chunk($organisations, $number_of_items, TRUE);

@@ -1,9 +1,9 @@
-uuid: 40dc7d00-ab76-45a4-9946-1c18d04de59b
+uuid: c4a96b05-a720-43d5-95cb-121f8efedfbc
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: czSdRUN5HFGXVVzkSkGD9lulfIDP2bku96I5rKcHhB8
+  default_config_hash: du_fcxeCG8ZLY0Kwr0O4a5i1mloP892zQCOpMmTvjEg
 id: partnership_application
 label: 'Partnership Application Flow'
 default_title: 'New Partnership Application'
@@ -11,43 +11,32 @@ default_section_title: 'New partnership application'
 description: ''
 save_method: end
 states: null
+final_routes: {  }
 steps:
   1:
     route: par_partnership_application_flows.partnership_application_start
     form_id: par_authority_selection
     components:
       authority_select: {  }
-    redirect:
-      cancel: 13
   2:
     route: par_partnership_application_flows.partnership_application_type
     form_id: par_partnership_application_type
-    redirect:
-      cancel: 13
   3:
     route: par_partnership_application_flows.partnership_application_authority_checklist
     form_id: par_partnership_application_authority_checklist
-    redirect:
-      cancel: 13
   4:
     route: par_partnership_application_flows.partnership_application_notify_existing
     form_id: par_partnership_application_notify_existing
-    redirect:
-      cancel: 13
   5:
     route: par_partnership_application_flows.partnership_application_partnership_about
     form_id: par_partnership_about
     components:
       about_partnership: {  }
-    redirect:
-      cancel: 13
   6:
     route: par_partnership_application_flows.partnership_application_organisation_name
     form_id: par_partnership_application_organisation
     components:
       organisation_name: {  }
-    redirect:
-      cancel: 13
   7:
     route: par_partnership_application_flows.partnership_application_organisation_confirm
     form_id: par_partnership_organisation_suggestion
@@ -56,24 +45,28 @@ steps:
     form_data:
       organisation_select: par_partnership_application_organisation
     redirect:
-      review: 10
+      review: 11
       add_contact: 9
-      cancel: 13
   8:
     route: par_partnership_application_flows.partnership_application_organisation_address
     form_id: par_partnership_address
     components:
       address_lookup: {  }
-    redirect:
-      cancel: 13
   9:
     route: par_partnership_application_flows.partnership_application_organisation_contact
     form_id: par_partnership_contact
     components:
       contact_details: {  }
-    redirect:
-      cancel: 13
   10:
+    route: par_partnership_application_flows.partnership_application_invite
+    form_id: par_partnership_invite
+    components:
+      invite: {  }
+    form_data:
+      contact: par_partnership_contact
+    redirect:
+      next: 11
+  11:
     route: par_partnership_application_flows.partnership_application_review
     form_id: par_partnership_application_confirmation
     form_data:
@@ -85,6 +78,7 @@ steps:
       organisation_select: par_partnership_organisation_suggestion
       organisation_address: par_partnership_address
       organisation_contact: par_partnership_contact
+      invite: par_partnership_invite
     redirect:
       authority_select: 1
       application_type: 2
@@ -95,21 +89,8 @@ steps:
       organisation_select: 7
       organisation_address: 8
       organisation_contact: 9
-      save: 11
-      cancel: 13
-  11:
-    route: par_partnership_application_flows.partnership_application_invite
-    form_id: par_partnership_invite
-    components:
-      invite: {  }
-    form_data:
-      contact: par_partnership_contact
-    redirect:
-      next: 12
-      cancel: 13
+      save: 12
   12:
     route: par_partnership_application_flows.partnership_application_completed
-    redirect:
-      done: 13
-  13:
-    route: par_dashboards.dashboard
+    form_data:
+      organisation_contact: par_partnership_contact

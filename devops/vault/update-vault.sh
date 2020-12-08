@@ -54,7 +54,7 @@ fi
 eval set -- "$PARSED"
 
 # Defaults
-VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.beis.gov.uk:8200"}
+VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.services:8200"}
 VAULT_UNSEAL=${VAULT_UNSEAL:-}
 VAULT_TOKEN=${VAULT_TOKEN:-}
 

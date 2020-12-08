@@ -1,0 +1,14 @@
+uuid: 38f17b92-0951-4d26-9263-bea047bc8f76
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.senior_administration_officer
+  module:
+    - user
+id: user_remove_role_action.senior_administration_officer
+label: 'Remove the Senior Administration Officer role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: senior_administration_officer

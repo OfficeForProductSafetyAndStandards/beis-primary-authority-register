@@ -141,6 +141,13 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   }
 
   /**
+   * Check if a member is ceased.
+   */
+  public function isCeased() {
+    return parent::isRevoked();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function destroy() {

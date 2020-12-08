@@ -193,6 +193,11 @@ class ParDataEnforcementNotice extends ParDataEntity {
     $par_data_partnerships = $this->getParDataManager()
       ->getEntitiesByQuery('par_data_partnership', $conditions, 10);
 
+    // Ignore all inactive partnerships.
+    $par_data_partnerships = array_filter($par_data_partnerships, function ($partnership) {
+      return $partnership->isActive();
+    });
+
     // Load all the authorities belonging to these partnerships.
     foreach ($par_data_partnerships as $partnership) {
       $authority = $partnership->getAuthority(TRUE);
@@ -212,6 +217,36 @@ class ParDataEnforcementNotice extends ParDataEntity {
     foreach ($this->getEnforcementActions() as $action) {
       $action->approve();
     }
+  }
+
+  /**
+   * Whether any part of this enforcement has been approved.
+   *
+   * An enforcement notice can be both blocked and approved simultaneously.
+   */
+  public function isApproved() {
+    foreach ($this->getEnforcementActions() as $action) {
+      if ($action->isApproved()) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Whether any part of this enforcement has been blocked.
+   *
+   * An enforcement notice can be both blocked and approved simultaneously.
+   */
+  public function isBlocked() {
+    foreach ($this->getEnforcementActions() as $action) {
+      if ($action->isBlocked()) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
   }
 
   /**

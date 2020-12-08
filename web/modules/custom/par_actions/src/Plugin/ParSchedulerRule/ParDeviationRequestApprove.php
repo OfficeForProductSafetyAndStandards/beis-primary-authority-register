@@ -12,7 +12,7 @@ use Drupal\par_actions\ParSchedulerRuleBase;
  *   title = @Translation("Auto-approval of deviation requests."),
  *   entity = "par_data_deviation_request",
  *   property = "request_date",
- *   time = "-6 days",
+ *   time = "-6 working days",
  *   queue = FALSE,
  *   status = TRUE,
  *   action = "par_entity_approve"

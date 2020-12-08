@@ -38,8 +38,8 @@ class ParDeviationRequestDetail extends ParFormPluginBase {
       }
       $this->setDefaultValuesByKey("deviation_status", $cardinality, $par_data_deviation_request->getParStatus());
 
-      if ($notes = $par_data_deviation_request->getPrimaryAuthorityNotes()) {
-        $this->setDefaultValuesByKey("deviation_status_notes", $cardinality, ' (' . $par_data_deviation_request->getPrimaryAuthorityNotes() . ')');
+      if ($notes = $par_data_deviation_request->getPlain('primary_authority_notes')) {
+        $this->setDefaultValuesByKey("deviation_status_notes", $cardinality, $notes);
       }
     }
 
@@ -75,14 +75,13 @@ class ParDeviationRequestDetail extends ParFormPluginBase {
 
     // Add operation link for updating request details.
     try {
+      $link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('request_details', 'Change the details about this request', $params);
       $form['deviation_request']['change_notes'] = [
         '#type' => 'markup',
         '#weight' => 99,
         '#markup' => t('@link', [
-          '@link' => $this->getFlowNegotiator()->getFlow()
-            ->getLinkByCurrentOperation('request_details', $params, [])
-            ->setText('Change the details about this request')
-            ->toString(),
+          '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }

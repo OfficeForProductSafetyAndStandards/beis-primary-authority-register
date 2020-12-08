@@ -83,7 +83,7 @@ DB_IMPORT=${DB_IMPORT:="$PWD/backups/sanitised-db.sql"}
 DB_RESET=${DB_RESET:=n}
 DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
 BUILD_DIR=${BUILD_DIR:=$PWD}
-VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.beis.gov.uk:8200"}
+VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.services:8200"}
 VAULT_UNSEAL=${VAULT_UNSEAL:-}
 VAULT_TOKEN=${VAULT_TOKEN:-}
 
@@ -203,7 +203,6 @@ printf "Extracting Vault secrets...\n"
 export VAULT_ADDR
 export VAULT_TOKEN
 
-vault operator seal -tls-skip-verify
 vault operator unseal -tls-skip-verify $VAULT_UNSEAL
 
 if [[ $(vault kv list -tls-skip-verify secret/par/env | awk 'NR > 2 {print $1}' | grep $ENV) ]]; then
@@ -390,9 +389,11 @@ cf_poll $REDIS_BACKING_SERVICE
 ####################################################################################
 printf "Pushing the application...\n"
 
-cf push --no-start -f $MANIFEST -p $BUILD_DIR -n $TARGET_ENV $TARGET_ENV
+export COMPOSER_VENDOR_DIR={BUILD_DIR}/vendor
+cf push --no-start -f $MANIFEST -p $BUILD_DIR --var app=$TARGET_ENV $TARGET_ENV
 
 ## Set the cf environment variables directly
+printf "Setting the environment variables...\n"
 for VAR_NAME in "${VAULT_VARS[@]}"
 do
     cf set-env $TARGET_ENV $VAR_NAME ${!VAR_NAME} > /dev/null
@@ -416,12 +417,12 @@ printf "Checking and enabling backing services...\n"
 
 ## Ensure the right service plan is selected
 if [[ $ENV = "production" ]] || [[ $ENV = "staging" ]]; then
-    PG_PLAN='medium-ha-9.5'
-    REDIS_PLAN='medium-ha-3.2'
+    PG_PLAN='medium-ha-11'
+    REDIS_PLAN='medium-ha-5.x'
 else
     ## The free plan can be used for any non-critical environments
-    PG_PLAN='tiny-unencrypted-9.5'
-    REDIS_PLAN='tiny-3.2'
+    PG_PLAN='tiny-unencrypted-11'
+    REDIS_PLAN='tiny-5.x'
 fi
 
 if [[ $ENV != "production" ]]; then

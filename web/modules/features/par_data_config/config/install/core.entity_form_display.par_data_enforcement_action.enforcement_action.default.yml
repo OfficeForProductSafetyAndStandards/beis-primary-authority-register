@@ -4,10 +4,12 @@ dependencies:
   config:
     - field.field.par_data_enforcement_action.enforcement_action.field_action_referral
     - field.field.par_data_enforcement_action.enforcement_action.field_blocked_advice
+    - field.field.par_data_enforcement_action.enforcement_action.field_document
     - field.field.par_data_enforcement_action.enforcement_action.field_regulatory_function
     - par_data.par_data_enforcement_action_type.enforcement_action
   module:
     - file
+    - media_library
     - text
 id: par_data_enforcement_action.enforcement_action.default
 targetEntityType: par_data_enforcement_action
@@ -20,6 +22,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
@@ -29,8 +32,16 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_document:
+    type: media_library_widget
+    weight: 29
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
     region: content
   field_regulatory_function:
     weight: 26
@@ -38,6 +49,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
@@ -63,6 +75,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     region: content
     third_party_settings: {  }
 hidden: {  }

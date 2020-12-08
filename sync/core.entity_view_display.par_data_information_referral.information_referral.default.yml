@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.par_data_information_referral.information_referral.field_document
     - field.field.par_data_information_referral.information_referral.field_enforcing_authority
     - field.field.par_data_information_referral.information_referral.field_person
     - field.field.par_data_information_referral.information_referral.field_primary_authority
@@ -19,30 +20,25 @@ targetEntityType: par_data_information_referral
 bundle: information_referral
 mode: default
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   document:
     label: hidden
-    weight: 0
+    weight: 1
     region: content
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
     type: file_default
+  field_document:
+    type: entity_reference_entity_view
+    weight: 2
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
   field_enforcing_authority:
-    weight: 4
+    weight: 6
     label: hidden
     settings:
       view_mode: title
@@ -51,7 +47,7 @@ content:
     type: entity_reference_entity_view
     region: content
   field_person:
-    weight: 5
+    weight: 7
     label: hidden
     settings:
       view_mode: title
@@ -60,7 +56,7 @@ content:
     type: entity_reference_entity_view
     region: content
   field_primary_authority:
-    weight: 6
+    weight: 8
     label: hidden
     settings:
       view_mode: title
@@ -71,20 +67,20 @@ content:
   notes:
     label: hidden
     type: text_default
-    weight: 1
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_notes:
     label: hidden
     type: text_default
-    weight: 3
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_status:
     label: hidden
-    weight: 2
+    weight: 4
     region: content
     settings:
       display_original_value: false
@@ -99,13 +95,9 @@ content:
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
 hidden:
+  archive_reason: true
+  deleted_reason: true
   name: true
+  revocation_reason: true
   user_id: true

@@ -1,5 +1,6 @@
 {
-      "PHP_VERSION": "{PHP_DEFAULT}",
+      "PHP_VERSION": "{PHP_74_LATEST}",
       "PHP_MODULES": ["cli"],
-      "WEBDIR": "web"
+      "WEBDIR": "web",
+      "COMPOSER_VENDOR_DIR": "vendor"
 }

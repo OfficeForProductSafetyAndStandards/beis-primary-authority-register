@@ -46,6 +46,9 @@ class ParEnquiryViewController extends ParBaseController {
       $this->addCacheableDependency($par_data_general_enquiry);
     }
 
+    // Change the action to done.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
+
     return parent::build($build);
   }
 

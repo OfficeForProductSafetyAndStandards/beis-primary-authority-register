@@ -4,6 +4,7 @@ namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\Url;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -35,8 +36,8 @@ class ParGdprForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     // If this notice has already been reviewed then skip this form.
     if ($this->getDefaultValuesByKey('gdpr_agreement', $cardinality, FALSE)) {
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     $form['notice'] = [
@@ -56,7 +57,7 @@ class ParGdprForm extends ParFormPluginBase {
     $form['privacy_notice'] = [
       '#type' => 'link',
       '#title' => $this->t('Link to full privacy notice'),
-      '#url' => Url::fromUri('https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/711378/safety-and-standards-gdpr-privacy-notice.pdf'),
+      '#url' => Url::fromUri('https://www.gov.uk/government/publications/safety-and-standards-privacy-notice', ['attributes' => ['target' => '_blank']]),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];

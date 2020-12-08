@@ -18,13 +18,6 @@ targetEntityType: par_data_authority
 bundle: authority
 mode: about
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   comments:
     type: text_default
     weight: 0
@@ -32,13 +25,6 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   person:
     type: entity_reference_entity_view
     weight: 3
@@ -66,17 +52,12 @@ content:
       view_mode: title
       link: false
     third_party_settings: {  }
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
 hidden:
   allowed_regulatory_function: true
+  archive_reason: true
   authority_name: true
   authority_type: true
+  deleted_reason: true
   field_allowed_regulatory_fn: true
   field_person: true
   field_premises: true
@@ -84,4 +65,5 @@ hidden:
   name: true
   nation: true
   ons_code: true
+  revocation_reason: true
   user_id: true

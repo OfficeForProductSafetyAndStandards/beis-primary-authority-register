@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 id: par_helpdesk
 label: 'Processing Team Member'
-weight: 6
+weight: -4
 is_admin: null
 permissions:
   - 'access content overview'
@@ -13,6 +13,7 @@ permissions:
   - 'access par journey transition business'
   - 'access par journey transition coordinator'
   - 'access par journey transition partnership details'
+  - 'access par reports'
   - 'access par_data_advice entities'
   - 'access par_data_authority entities'
   - 'access par_data_coordinated_business entities'
@@ -60,8 +61,11 @@ permissions:
   - 'approve partnerships'
   - 'approve partnerships via help desk'
   - 'assign all memberships'
+  - 'assign par_authority role'
+  - 'assign par_authority_manager role'
   - 'assign par_enforcement role'
   - 'assign par_helpdesk role'
+  - 'assign par_organisation role'
   - 'block user'
   - 'bypass par_data membership'
   - 'bypass partnership journey'
@@ -84,6 +88,7 @@ permissions:
   - 'delete own document files'
   - 'delete own image files'
   - 'delete own page content'
+  - 'delete par data'
   - 'delete par_data_advice entities'
   - 'delete par_data_authority entities'
   - 'delete par_data_coordinated_business entities'
@@ -147,6 +152,8 @@ permissions:
   - 'manage own organisation'
   - 'manage par person'
   - 'manage par profile'
+  - 'merge person'
+  - 'receive inspection_plan_expiry_warning notification'
   - 'receive new_deviation_request notification'
   - 'receive new_enforcement_notification notification'
   - 'receive new_general_enquiry notification'
@@ -168,6 +175,7 @@ permissions:
   - 'update coordinated member'
   - 'update partnership authority contact'
   - 'update partnership authority details'
+  - 'update partnership helpdesk details'
   - 'update partnership organisation contact'
   - 'update partnership organisation details'
   - 'update primary authority advice to local authorities'
@@ -200,3 +208,4 @@ permissions:
   - 'view unpublished par_data_premises entities'
   - 'view unpublished par_data_regulatory_function entities'
   - 'view unpublished par_data_sic_code entities'
+  - 'view user fields'

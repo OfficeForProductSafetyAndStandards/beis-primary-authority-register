@@ -31,9 +31,18 @@ Feature: Upload inspection plan
         When I enter the inspection plan title "Auto-test-NewInspectionPlan-retest"
         And I enter new summary for an inspection plan
         And I click save
+         # Test incorrect date format options are not accepted.
         Then the element "h1.heading-xlarge" contains the text "Change the expiry date"
-        And I add "28" to the inputfield "#edit-day"
-        And I add "11" to the inputfield "#edit-month"
+        And I add "32" to the inputfield "#edit-day"
+        And I click save
+        Then the element "h1.heading-xlarge" contains the text "Change the expiry date"
+        And I add "01" to the inputfield "#edit-day"
+        And I add "13" to the inputfield "#edit-month"
+        And I click save
+        Then the element "h1.heading-xlarge" contains the text "Change the expiry date"
+        # Test correct specified date format is accepted.
+        And I add "01" to the inputfield "#edit-day"
+        And I add "1" to the inputfield "#edit-month"
         And I add "2030" to the inputfield "#edit-year"
         And I click save
         And I see the inspection plan has updated successfully
@@ -47,3 +56,11 @@ Feature: Upload inspection plan
         And I enter the revoke reason "inspection plan is no longer valid."
         And I click save
         Then I should revoke successfully
+
+    @inspection_plan_features @ci @inspection_plans
+    Scenario: Remove an inspection plan
+        Given I am logged in as "par_helpdesk@example.com"
+        And I go to manage the partnership "Partnership nominated by Secretary of State" click on "Upper West Side Borough Council" and status "confirmed_rd"
+        And I click "See all Inspection Plans"
+        When I remove the inspection plan "Auto-test-NewInspectionPlan-retest" with the reason "Test removing this inspection plan."
+        Then I should not see the removed inspection plan "Auto-test-NewInspectionPlan-retest"

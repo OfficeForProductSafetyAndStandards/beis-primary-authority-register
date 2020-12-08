@@ -5,7 +5,7 @@ const shared = client.page.shared();
 
  Given('I login as {string}"', function (string) {
           return shared
-      .loggedInAs(string) 
+      .loggedInAs(string)
          });
 Then('I should not see {string}', function (string) {
            return client
@@ -14,7 +14,7 @@ Then('I should not see {string}', function (string) {
 
  When('I click {string}', function (string) {
  	   return shared
-      .clickLinkByPureText(string)         
+      .clickLinkByPureText(string)
          });
 
   When('I fill in add new person form', function () {
@@ -52,6 +52,11 @@ Then('I should not see {string}', function (string) {
            .click('#edit-save')
 
          });
+  When('I click continue', function () {
+          return client
+           .click('#edit-next')
+
+         });
 
    Then('I should see confirmation message {string}', function (string) {
            return client
@@ -74,7 +79,7 @@ Then('I should not see {string}', function (string) {
          });
 
   Then('I should be able to save updated changes', function () {
-           return client 
+           return client
            .click('#edit-save')
 
          });

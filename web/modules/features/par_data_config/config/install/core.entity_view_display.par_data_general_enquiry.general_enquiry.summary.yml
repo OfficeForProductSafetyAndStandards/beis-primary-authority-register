@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_general_enquiry.summary
+    - field.field.par_data_general_enquiry.general_enquiry.field_document
     - field.field.par_data_general_enquiry.general_enquiry.field_enforcing_authority
     - field.field.par_data_general_enquiry.general_enquiry.field_partnership
     - field.field.par_data_general_enquiry.general_enquiry.field_person
@@ -20,15 +21,24 @@ mode: summary
 content:
   document:
     label: hidden
-    weight: 0
+    weight: 1
     region: content
     settings:
       access_message: 'You don''t have access to download this file.'
       text: 'Download [file:name]'
     third_party_settings: {  }
     type: file_download_link
+  field_document:
+    type: entity_reference_entity_view
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
   field_person:
-    weight: 3
+    weight: 5
     label: hidden
     settings:
       view_mode: title
@@ -39,13 +49,13 @@ content:
   notes:
     label: hidden
     type: text_default
-    weight: 1
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_status:
     label: hidden
-    weight: 2
+    weight: 4
     region: content
     settings:
       display_original_value: false
@@ -61,10 +71,13 @@ content:
     third_party_settings: {  }
     type: datetime_default
 hidden:
+  archive_reason: true
+  deleted_reason: true
   field_enforcing_authority: true
   field_partnership: true
   field_primary_authority: true
   messages: true
   name: true
   primary_authority_notes: true
+  revocation_reason: true
   user_id: true

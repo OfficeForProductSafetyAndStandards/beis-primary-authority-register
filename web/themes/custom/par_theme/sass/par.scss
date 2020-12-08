@@ -6,6 +6,8 @@
 // ==========================================================================
 @import 'par/manifest';
 
+@use 'accessibility';
+
 /*
 main#content {
   display: block;
@@ -280,13 +282,14 @@ div.pagerer-container {
 /* Flow links */
 
 a.flow-link {
-    display: block;
+    display: table;
 }
 
 /* Reset */
 fieldset, legend {
   margin: 0px;
   padding: 0px;
+  max-width: 100%;
 }
 
 .heading-medium.fieldset-legend {

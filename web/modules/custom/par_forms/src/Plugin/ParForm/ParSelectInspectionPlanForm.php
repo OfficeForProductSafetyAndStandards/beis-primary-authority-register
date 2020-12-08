@@ -3,6 +3,7 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\par_forms\ParEntityMapping;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -52,20 +53,35 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
     }
     elseif (count($inspection_plans) === 1) {
       $this->getFlowDataHandler()->setTempDataValue('inspection_plan_id', key($inspection_plans));
-      $url = $this->getUrlGenerator()->generateFromRoute($this->getFlowNegotiator()->getFlow()->getNextRoute('next'), $this->getRouteParams());
-      return new RedirectResponse($url);
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     // Checkboxes for inspection plans.
     $form['inspection_plan_id'] = [
       '#type' => 'checkboxes',
       '#attributes' => ['class' => ['form-group']],
-      '#title' => t('Choose which inspection plan you\'d like to deviate from'),
+      '#title' => t('Choose which inspection plan you\'re request is related to'),
       '#options' => $inspection_plans,
       // Automatically check all legal entities if no form data is found.
-      '#default_value' => $this->getDefaultValuesByKey('inspection_plan', $cardinality, NULL),
+      '#default_value' => $this->getDefaultValuesByKey('inspection_plan', $cardinality, []),
     ];
 
     return $form;
+  }
+
+  /**
+   * Validate date field.
+   */
+  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+    $inspection_plan_key = $this->getElementKey('inspection_plan_id');
+    $inspection_plan_values = array_filter($form_state->getValue($inspection_plan_key));
+    if (!$inspection_plan_values) {
+      $id_key = $this->getElementKey('inspection_plan_id', $cardinality, TRUE);
+      $message = $this->wrapErrorMessage('You must select at least one inspection plan.', $this->getElementId($id_key, $form));
+      $form_state->setErrorByName($this->getElementName($inspection_plan_key), $message);
+    }
+
+    return parent::validate($form, $form_state, $cardinality, $action);
   }
 }

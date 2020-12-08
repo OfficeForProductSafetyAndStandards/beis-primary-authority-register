@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.par_data_general_enquiry.general_enquiry.field_document
     - field.field.par_data_general_enquiry.general_enquiry.field_enforcing_authority
     - field.field.par_data_general_enquiry.general_enquiry.field_partnership
     - field.field.par_data_general_enquiry.general_enquiry.field_person
@@ -18,15 +19,24 @@ mode: default
 content:
   document:
     label: hidden
-    weight: 0
+    weight: 1
     region: content
     settings:
       access_message: 'You don''t have access to download this file.'
       text: 'Download [file:name]'
     third_party_settings: {  }
     type: file_download_link
+  field_document:
+    type: entity_reference_entity_view
+    weight: 2
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
   field_enforcing_authority:
-    weight: 3
+    weight: 5
     label: hidden
     settings:
       view_mode: title
@@ -35,7 +45,7 @@ content:
     type: entity_reference_entity_view
     region: content
   field_partnership:
-    weight: 6
+    weight: 8
     label: above
     settings:
       link: true
@@ -43,7 +53,7 @@ content:
     type: entity_reference_label
     region: content
   field_person:
-    weight: 4
+    weight: 6
     label: hidden
     settings:
       view_mode: title
@@ -52,7 +62,7 @@ content:
     type: entity_reference_entity_view
     region: content
   field_primary_authority:
-    weight: 5
+    weight: 7
     label: hidden
     settings:
       view_mode: title
@@ -70,20 +80,23 @@ content:
   primary_authority_notes:
     label: hidden
     type: text_default
-    weight: 2
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_status:
     label: hidden
-    weight: 1
+    weight: 3
     region: content
     settings:
       display_original_value: false
     third_party_settings: {  }
     type: par_list_formatter
 hidden:
+  archive_reason: true
+  deleted_reason: true
   messages: true
   name: true
   request_date: true
+  revocation_reason: true
   user_id: true

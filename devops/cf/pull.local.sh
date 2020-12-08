@@ -81,7 +81,7 @@ CF_INSTANCES=${CF_INSTANCES:=1}
 DB_IMPORT=${DB_IMPORT:="$PWD/backups/sanitised-db.sql"}
 DB_RESET=${DB_RESET:=n}
 BUILD_DIR=${BUILD_DIR:=$PWD}
-VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.beis.gov.uk:8200"}
+VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.services:8200"}
 VAULT_UNSEAL=${VAULT_UNSEAL:-}
 VAULT_TOKEN=${VAULT_TOKEN:-}
 
@@ -204,7 +204,6 @@ printf "Extracting Vault secrets...\n"
 export VAULT_ADDR
 export VAULT_TOKEN
 
-vault operator seal -tls-skip-verify
 vault operator unseal -tls-skip-verify $VAULT_UNSEAL
 
 export AWS_ACCESS_KEY_ID=`vault read -tls-skip-verify -field=AWS_ACCESS_KEY_ID secret/par/deploy/aws`

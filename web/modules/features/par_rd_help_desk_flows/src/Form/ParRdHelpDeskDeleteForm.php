@@ -31,7 +31,7 @@ class ParRdHelpDeskDeleteForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
@@ -39,50 +39,24 @@ class ParRdHelpDeskDeleteForm extends ParBaseForm {
 
     }
 
-    // If partnership has been deleted, we should not be able to re-delete it.
-    if (!$par_data_partnership->isDeleted()) {
-       $this->accessResult = AccessResult::forbidden('The partnership must be deleted to access this page.');
-    }
-
     return parent::accessCallback($route, $route_match, $account);
-  }
-
-  /**
-   * Helper to get all the editable values when editing or
-   * revisiting a previously edited page.
-   */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-    $this->retrieveEditableValues($par_data_partnership);
-
-    $form['partnership_info'] =[
+  public function buildForm(array $form, FormStateInterface $form_state) {
+    $form['partnership_info'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('The following partnership application has been deleted'),
+      '#title' => $this->t('The partnership application has been deleted'),
       '#attributes' => ['class' => 'form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
 
-    $form['partnership_info']['partnership_between'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_partnership->label(),
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
-    ];
+    // Change the action to save.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
 
     return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
   }
 }

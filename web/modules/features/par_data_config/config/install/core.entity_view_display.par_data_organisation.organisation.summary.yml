@@ -15,7 +15,7 @@ bundle: organisation
 mode: summary
 content:
   field_premises:
-    weight: 4
+    weight: 1
     label: hidden
     settings:
       view_mode: summary
@@ -32,9 +32,11 @@ content:
     type: string
     weight: 0
 hidden:
+  archive_reason: true
   comments: true
   coordinator_number: true
   coordinator_type: true
+  deleted_reason: true
   employees_band: true
   field_coordinated_businesses: true
   field_legal_entity: true
@@ -43,6 +45,7 @@ hidden:
   name: true
   nation: true
   premises_mapped: true
+  revocation_reason: true
   size: true
   trading_name: true
   user_id: true

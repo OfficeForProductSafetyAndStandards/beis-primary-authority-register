@@ -7,8 +7,6 @@ dependencies:
     - field.field.par_data_person.person.field_notification_preferences
     - field.field.par_data_person.person.field_user_account
     - par_data.par_data_person_type.person
-  module:
-    - text
 _core:
   default_config_hash: dHfg-GhFknT2WJf6jMPSAPWcy22nNVu3flxrZJudiqM
 id: par_data_person.person.title
@@ -16,37 +14,18 @@ targetEntityType: par_data_person
 bundle: person
 mode: title
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   full_name_pseudo_field:
     weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
 hidden:
+  archive_reason: true
   communication_email: true
   communication_mobile: true
   communication_notes: true
   communication_phone: true
+  deleted_reason: true
   email: true
   email_pseudo_field: true
   field_notification_preferences: true
@@ -58,6 +37,7 @@ hidden:
   mobile_phone_pseudo_field: true
   name: true
   person_name: true
+  revocation_reason: true
   salutation: true
   user_account: true
   user_id: true

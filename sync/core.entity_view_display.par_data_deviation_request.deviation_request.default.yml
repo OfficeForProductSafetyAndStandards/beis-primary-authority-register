@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_display.comment.par_deviation_request_comments.default
+    - field.field.par_data_deviation_request.deviation_request.field_document
     - field.field.par_data_deviation_request.deviation_request.field_enforcing_authority
     - field.field.par_data_deviation_request.deviation_request.field_inspection_plan
     - field.field.par_data_deviation_request.deviation_request.field_partnership
@@ -22,20 +23,6 @@ targetEntityType: par_data_deviation_request
 bundle: deviation_request
 mode: default
 content:
-  archive_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-  deleted_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   document:
     label: hidden
     weight: 2
@@ -45,16 +32,16 @@ content:
       text: 'Download [file:name]'
     third_party_settings: {  }
     type: file_download_link
-  field_enforcing_authority:
-    weight: 5
+  field_document:
+    type: entity_reference_entity_view
+    weight: 3
     label: hidden
     settings:
-      view_mode: title
+      view_mode: default
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
     region: content
-  field_inspection_plan:
+  field_enforcing_authority:
     weight: 6
     label: hidden
     settings:
@@ -63,7 +50,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_entity_view
     region: content
-  field_partnership:
+  field_inspection_plan:
     weight: 7
     label: hidden
     settings:
@@ -72,8 +59,17 @@ content:
     third_party_settings: {  }
     type: entity_reference_entity_view
     region: content
-  field_person:
+  field_partnership:
     weight: 8
+    label: hidden
+    settings:
+      view_mode: title
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  field_person:
+    weight: 9
     label: hidden
     settings:
       view_mode: title
@@ -83,7 +79,7 @@ content:
     region: content
   messages:
     type: comment_default
-    weight: 9
+    weight: 10
     region: content
     label: hidden
     settings:
@@ -100,13 +96,13 @@ content:
   primary_authority_notes:
     label: hidden
     type: text_default
-    weight: 4
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_status:
     label: hidden
-    weight: 3
+    weight: 4
     region: content
     settings:
       display_original_value: false
@@ -121,13 +117,9 @@ content:
       format_type: gds_date_format
     third_party_settings: {  }
     type: datetime_default
-  revocation_reason:
-    label: hidden
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
 hidden:
+  archive_reason: true
+  deleted_reason: true
   name: true
+  revocation_reason: true
   user_id: true

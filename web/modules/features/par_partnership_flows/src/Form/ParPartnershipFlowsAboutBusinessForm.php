@@ -27,11 +27,8 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
    *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-    if ($par_data_partnership) {
-      // If we want to use values already saved we have to tell
-      // the form about them.
-      $par_data_organisation = current($par_data_partnership->getOrganisation());
-      $this->getFlowDataHandler()->setFormPermValue('about_business', $par_data_organisation->get('comments')->getString());
+    if ($par_data_partnership && $par_data_organisation = $par_data_partnership->getOrganisation(TRUE)) {
+      $this->getFlowDataHandler()->setFormPermValue('about_business', $par_data_organisation->getPlain('comments'));
     }
   }
 
@@ -76,7 +73,10 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
     // Save the value for the about_partnership field.
     $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = current($partnership->getOrganisation());
-    $par_data_organisation->set('comments', $this->getFlowDataHandler()->getTempDataValue('about_business'));
+    $par_data_organisation->get('comments')->setValue([
+      'value' => $this->getFlowDataHandler()->getTempDataValue('about_business'),
+      'format' => 'plain_text',
+    ]);
     if ($par_data_organisation->save()) {
       $this->getFlowDataHandler()->deleteStore();
     }
