@@ -1,0 +1,60 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_advice
+  uuid: a8e472b0-3853-4437-b987-263c0e054b99
+  bundle: advice
+  default_langcode: en
+  depends:
+    ff3467db-0814-4dbf-8212-2f1a1e2f44c4: file
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282ca98ef
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  advice_type:
+    -
+      value: background_information
+  notes:
+    -
+      value: 'It is very important to count your numbers correctly.'
+      format: plain_text
+  visible_authority:
+    -
+      value: true
+  visible_coordinator:
+    -
+      value: true
+  visible_business:
+    -
+      value: true
+  document:
+    -
+      entity: ff3467db-0814-4dbf-8212-2f1a1e2f44c4
+      display: false
+      description: ''
+  advice_status:
+    -
+      value: active
