@@ -276,7 +276,7 @@ class ParDataPartnership extends ParDataEntity {
 
     // PAR-1690: Filter out any contact records that are empty.
     $people = array_filter($people, function ($person) {
-      return ($person instanceof ParDataEntityInterface && empty($person->getEmail()));
+      return ($person instanceof ParDataEntityInterface && !empty($person->getEmail()));
     });
 
     $person = !empty($people) ? current($people) : NULL;
