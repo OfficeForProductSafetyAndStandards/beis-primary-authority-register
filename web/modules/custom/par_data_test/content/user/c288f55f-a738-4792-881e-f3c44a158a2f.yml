@@ -1,0 +1,50 @@
+_meta:
+  version: '1.0'
+  entity_type: user
+  uuid: c288f55f-a738-4792-881e-f3c44a158a2f
+  default_langcode: en
+default:
+  preferred_langcode:
+    -
+      value: en
+  name:
+    -
+      value: par_business_second
+  pass:
+    -
+      value: $S$ECpEpaZ.M76RmWInl/Sp34s131xq44jd2bGBcD.nFhVz6jN23Vn3
+      existing: ''
+      pre_hashed: false
+  mail:
+    -
+      value: par_business_second@example.com
+  timezone:
+    -
+      value: UTC
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1544976255
+  access:
+    -
+      value: 0
+  login:
+    -
+      value: 0
+  roles:
+    -
+      target_id: par_business
+  role_change:
+    -
+      target_id: __role_delegation_empty_field_value__
+  field_gdpr:
+    -
+      value: true
+  field_last_password_reset:
+    -
+      value: '2020-12-10T13:32:49'
+  field_password_expiration:
+    -
+      value: false

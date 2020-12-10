@@ -1,0 +1,50 @@
+_meta:
+  version: '1.0'
+  entity_type: user
+  uuid: 46e65664-bf34-4713-ab14-740cbe581538
+  default_langcode: en
+default:
+  preferred_langcode:
+    -
+      value: en
+  name:
+    -
+      value: par_admin@example.com
+  pass:
+    -
+      value: $S$EV.5sKgaULN/HfxuSvSswd92qaDacgRC675iJZnHsQeEEG83aIrn
+      existing: ''
+      pre_hashed: false
+  mail:
+    -
+      value: par_admin@example.com
+  timezone:
+    -
+      value: UTC
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521468935
+  access:
+    -
+      value: 1607613055
+  login:
+    -
+      value: 1607608839
+  roles:
+    -
+      target_id: administrator
+  role_change:
+    -
+      target_id: __role_delegation_empty_field_value__
+  field_gdpr:
+    -
+      value: true
+  field_last_password_reset:
+    -
+      value: '2020-12-10T13:33:30'
+  field_password_expiration:
+    -
+      value: false

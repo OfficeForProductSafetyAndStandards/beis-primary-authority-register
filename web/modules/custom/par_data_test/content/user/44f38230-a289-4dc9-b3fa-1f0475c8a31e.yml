@@ -1,0 +1,52 @@
+_meta:
+  version: '1.0'
+  entity_type: user
+  uuid: 44f38230-a289-4dc9-b3fa-1f0475c8a31e
+  default_langcode: en
+default:
+  preferred_langcode:
+    -
+      value: en
+  name:
+    -
+      value: par_helpdesk@example.com
+  pass:
+    -
+      value: $S$EdLdKjArsEPyHNBeSnB5TCuHM1v6riLYjc9Cjdh1C21xkJ4lNcrk
+      existing: ''
+      pre_hashed: false
+  mail:
+    -
+      value: par_helpdesk@example.com
+  timezone:
+    -
+      value: UTC
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521468935
+  access:
+    -
+      value: 0
+  login:
+    -
+      value: 0
+  roles:
+    -
+      target_id: par_helpdesk
+    -
+      target_id: senior_administration_officer
+  role_change:
+    -
+      target_id: __role_delegation_empty_field_value__
+  field_gdpr:
+    -
+      value: true
+  field_last_password_reset:
+    -
+      value: '2020-12-10T13:32:49'
+  field_password_expiration:
+    -
+      value: false
