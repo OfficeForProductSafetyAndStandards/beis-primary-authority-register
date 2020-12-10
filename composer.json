@@ -33,7 +33,7 @@
         "drupal/config_update": "~1.6.0",
         "drupal/core": "8.8.8",
         "drupal/csv_serialization": "~1.4.0",
-        "drupal/default_content": "~1.0.0",
+        "drupal/default_content": "~2.0.0",
         "drupal/email_registration": "~1.0.0",
         "drupal/features": "~3.8.0",
         "drupal/file_entity": "2.0.0-beta7",
@@ -91,7 +91,7 @@
         "drupal/coder": "^8.2.12",
         "drupal/config_inspector": "^1.0",
         "drupal/console": "~1.8.0",
-        "drupal/devel": "~2.1.0",
+        "drupal/devel": "~4.0.0",
         "drupal/examples": "dev-1.x",
         "jcalderonzumba/gastonjs": "^1.0.2",
         "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
@@ -139,10 +139,6 @@
                 "Form API #ajax not working on link element": "https://www.drupal.org/files/issues/2018-03-12/core-allow-form-ajax-for-links-2915954-9.patch",
                 "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2019-05-23/2551893-entity-hooks-71.patch",
                 "Non-exposed and exposed sorts cause issues with the default sort order": "https://www.drupal.org/files/issues/2020-03-19/exposed_and_non_exposed_sort_issues-3120847-2.patch"
-            },
-            "drupal/default_content": {
-                "Do not reimport existing entities": "https://www.drupal.org/files/issues/default_content-dont-reimport-existing-entities-2698425-99.patch",
-                "Allow manual imports": "https://www.drupal.org/files/issues/allow_manual_imports-2640734-67.patch"
             },
             "drupal/file_entity": {
                 "Provides support for s3 response objects": "./patches/file_entity_s3_file_support.patch"
