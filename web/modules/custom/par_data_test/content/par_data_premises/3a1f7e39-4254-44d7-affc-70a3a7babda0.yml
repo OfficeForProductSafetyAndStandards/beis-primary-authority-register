@@ -1,0 +1,49 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_premises
+  uuid: 3a1f7e39-4254-44d7-affc-70a3a7babda0
+  bundle: premises
+  default_langcode: en
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282cead11
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  address:
+    -
+      langcode: ''
+      country_code: GB
+      administrative_area: US-NY
+      locality: 'New York State'
+      dependent_locality: ''
+      postal_code: 'IG2 7LF'
+      sorting_code: ''
+      address_line1: '7 sesame St'
+      address_line2: Birmingham
+      organization: ''
+      given_name: ''
+      additional_name: ''
+      family_name: ''

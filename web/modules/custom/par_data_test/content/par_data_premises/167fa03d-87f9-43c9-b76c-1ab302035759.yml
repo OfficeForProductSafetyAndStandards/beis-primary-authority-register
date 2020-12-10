@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_premises
+  uuid: 167fa03d-87f9-43c9-b76c-1ab302035759
+  bundle: premises
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1578121175
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5e1037d7e2620
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  address:
+    -
+      langcode: ''
+      country_code: US
+      administrative_area: ''
+      locality: 'New York'
+      dependent_locality: ''
+      postal_code: '10076'
+      sorting_code: ''
+      address_line1: '1 Sessame St'
+      address_line2: ''
+      organization: ''
+      given_name: ''
+      additional_name: ''
+      family_name: ''

@@ -1,0 +1,42 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_coordinated_business
+  uuid: c71959cf-00f4-4a6b-8064-15cc2f8e46f1
+  bundle: coordinated_business
+  default_langcode: en
+  depends:
+    4f7d1444-4503-44b0-8af2-3d3efd8015f9: par_data_organisation
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282d98cb6
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  covered_by_inspection:
+    -
+      value: true
+  field_organisation:
+    -
+      entity: 4f7d1444-4503-44b0-8af2-3d3efd8015f9
