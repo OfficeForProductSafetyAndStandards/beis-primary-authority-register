@@ -1,0 +1,45 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_legal_entity
+  uuid: f7ba58f5-ab8c-45b2-9b42-1f464cc15484
+  bundle: legal_entity
+  default_langcode: en
+  depends:
+    46e65664-bf34-4713-ab14-740cbe581538: user
+default:
+  user_id:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311475
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3d740574f
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  registered_name:
+    -
+      value: 'General Store Ltd'
+  registered_number:
+    -
+      value: '2359823509'
+  legal_entity_type:
+    -
+      value: public_limited_company

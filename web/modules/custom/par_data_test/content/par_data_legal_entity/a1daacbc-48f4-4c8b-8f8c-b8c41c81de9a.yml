@@ -1,0 +1,45 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_legal_entity
+  uuid: a1daacbc-48f4-4c8b-8f8c-b8c41c81de9a
+  bundle: legal_entity
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563456388
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d307384a7f93
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  registered_name:
+    -
+      value: 'Confirmed by the Organisation Ltd'
+  registered_number:
+    -
+      value: '43597823'
+  legal_entity_type:
+    -
+      value: public_limited_company
