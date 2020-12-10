@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: 6fa3204e-4276-4250-8110-f65e323c44e8
+  bundle: person
+  default_langcode: en
+  depends:
+    46e65664-bf34-4713-ab14-740cbe581538: user
+default:
+  user_id:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311475
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3d9f39c4f
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  first_name:
+    -
+      value: Mr
+  last_name:
+    -
+      value: Snuffleupagus
+  work_phone:
+    -
+      value: '01272 531740'
+  mobile_phone:
+    -
+      value: '07 77777777'
+  email:
+    -
+      value: par_member_immutable_14@example.com
