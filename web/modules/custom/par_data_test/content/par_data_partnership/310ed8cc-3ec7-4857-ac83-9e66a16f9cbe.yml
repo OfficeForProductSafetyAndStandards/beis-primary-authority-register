@@ -1,0 +1,68 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_partnership
+  uuid: 310ed8cc-3ec7-4857-ac83-9e66a16f9cbe
+  bundle: partnership
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    19e05a57-741d-4a78-85b4-6d04349b9b81: par_data_authority
+    512ccfa3-496d-47aa-9a46-6abfa8922625: par_data_person
+    b70654f7-4970-4eb5-860c-2fad78ea52fc: par_data_organisation
+    9798a6c5-2978-496f-b1ee-b1fb31802f9f: par_data_person
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1527001844
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5b0432f571e04
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  partnership_type:
+    -
+      value: coordinated
+  partnership_status:
+    -
+      value: confirmed_authority
+  about_partnership:
+    -
+      value: 'About the partnership detail'
+      format: plain_text
+  terms_authority_agreed:
+    -
+      value: true
+  partnership_info_agreed_authority:
+    -
+      value: true
+  field_authority:
+    -
+      entity: 19e05a57-741d-4a78-85b4-6d04349b9b81
+  field_authority_person:
+    -
+      entity: 512ccfa3-496d-47aa-9a46-6abfa8922625
+  field_organisation:
+    -
+      entity: b70654f7-4970-4eb5-860c-2fad78ea52fc
+  field_organisation_person:
+    -
+      entity: 9798a6c5-2978-496f-b1ee-b1fb31802f9f
