@@ -1,0 +1,54 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: 4b711352-cc86-4510-a333-a7385f114cac
+  bundle: organisation
+  default_langcode: en
+  depends:
+    46e65664-bf34-4713-ab14-740cbe581538: user
+    50fdb19e-fe21-4271-aa2c-b28743500e85: par_data_legal_entity
+    8f605248-1857-499a-ab23-f6028b2c5471: par_data_legal_entity
+    a6021951-db98-4412-955d-cf321129b9d9: par_data_person
+    7ef646af-f47b-44aa-89ce-d623b7e1698a: par_data_premises
+default:
+  user_id:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311475
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3d93e6766
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: Cafe
+  field_legal_entity:
+    -
+      entity: 50fdb19e-fe21-4271-aa2c-b28743500e85
+    -
+      entity: 8f605248-1857-499a-ab23-f6028b2c5471
+  field_person:
+    -
+      entity: a6021951-db98-4412-955d-cf321129b9d9
+  field_premises:
+    -
+      entity: 7ef646af-f47b-44aa-89ce-d623b7e1698a

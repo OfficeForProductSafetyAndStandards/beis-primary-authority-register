@@ -1,0 +1,65 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: ab764754-577f-4c8b-9032-8d694875bbfe
+  bundle: organisation
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    a1daacbc-48f4-4c8b-8f8c-b8c41c81de9a: par_data_legal_entity
+    2a41ea56-3fd9-4b66-b345-90f636d591f6: par_data_person
+    8bf1c01c-0b2a-4efb-946a-fe5cfd1b14ed: par_data_premises
+    86bcff9c-882e-46d1-b768-68eb5b311f2c: par_data_sic_code
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563456106
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d30726ac9f34
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'Partnership confirmed by organisation'
+  employees_band:
+    -
+      value: '50'
+  comments:
+    -
+      value: 'This organisation is for test purposes only. This organisation may only be used in partnerships that have been confirmed by the authority and organisation only and are not active.'
+      format: plain_text
+  trading_name:
+    -
+      value: 'Confirmed by organisation'
+  field_legal_entity:
+    -
+      entity: a1daacbc-48f4-4c8b-8f8c-b8c41c81de9a
+  field_person:
+    -
+      entity: 2a41ea56-3fd9-4b66-b345-90f636d591f6
+  field_premises:
+    -
+      entity: 8bf1c01c-0b2a-4efb-946a-fe5cfd1b14ed
+  field_sic_code:
+    -
+      entity: 86bcff9c-882e-46d1-b768-68eb5b311f2c

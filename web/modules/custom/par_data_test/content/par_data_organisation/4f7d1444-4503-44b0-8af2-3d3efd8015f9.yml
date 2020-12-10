@@ -1,0 +1,75 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: 4f7d1444-4503-44b0-8af2-3d3efd8015f9
+  bundle: organisation
+  default_langcode: en
+  depends:
+    48866a78-7f49-4ec7-86d9-8bd538079926: par_data_legal_entity
+    2a81f02e-2859-41f0-99cb-de2e7bcbdd62: par_data_person
+    3a1f7e39-4254-44d7-affc-70a3a7babda0: par_data_premises
+    59f0b396-cb0c-40d3-841d-bcf047e51c2b: par_data_sic_code
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282d7d23a
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: Laundromat
+  size:
+    -
+      value: Medium
+  employees_band:
+    -
+      value: 10-50
+  nation:
+    -
+      value: USA
+  comments:
+    -
+      value: 'Where residents can do their laundry.'
+      format: plain_text
+  premises_mapped:
+    -
+      value: true
+  trading_name:
+    -
+      value: Laundromat
+    -
+      value: 'Sesame Street Laundromat'
+  field_legal_entity:
+    -
+      entity: 48866a78-7f49-4ec7-86d9-8bd538079926
+  field_person:
+    -
+      entity: 2a81f02e-2859-41f0-99cb-de2e7bcbdd62
+  field_premises:
+    -
+      entity: 3a1f7e39-4254-44d7-affc-70a3a7babda0
+  field_sic_code:
+    -
+      entity: 59f0b396-cb0c-40d3-841d-bcf047e51c2b
