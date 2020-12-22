@@ -131,7 +131,8 @@
             "symlink": true,
             "overwrite": true,
             "file-mapping": {
-                "[web-root]/.htaccess": false,
+                "[web-root]/robots.txt": false,
+                "[web-root]/.ht.router.php": false,
                 "[web-root]/web.config": false
             }
         },

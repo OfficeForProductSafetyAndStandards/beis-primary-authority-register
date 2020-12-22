@@ -45,7 +45,7 @@ references:
     run:
       name: "Configure web root"
       command: |
-        sudo chown -R -L www-data:www-data /var/www/html/web
+        sudo chown -RhL www-data:www-data /var/www/html/web
         ls -lah /var/www/html/web
         a2ensite par.localhost
         service apache2 restart
