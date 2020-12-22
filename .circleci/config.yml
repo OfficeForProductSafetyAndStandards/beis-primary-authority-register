@@ -155,12 +155,6 @@ jobs:
       - *configure_webroot
       - *import_database
       - run:
-          name: "Ensure temporary data is installed"
-          command: |
-            cd web
-            ../vendor/bin/drush pm-uninstall par_data_test -y
-            ../vendor/bin/drush en par_data_test -y
-      - run:
           name: "Run cron"
           command: |
             cd web
@@ -209,12 +203,6 @@ jobs:
       - *restore_scaffold
       - *configure_webroot
       - *import_database
-      - run:
-          name: "Ensure temporary data is installed"
-          command: |
-            cd web
-            ../vendor/bin/drush pm-uninstall par_data_test -y
-            ../vendor/bin/drush en par_data_test -y
       - run:
           name: "Run cron"
           command: |
