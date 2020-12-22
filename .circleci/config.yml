@@ -210,12 +210,6 @@ jobs:
       - *configure_webroot
       - *import_database
       - run:
-          name: "Importing database"
-          command: cd web && ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
-      - run:
-          name: "Setup application"
-          command: sh drupal-update.sh
-      - run:
           name: "Ensure temporary data is installed"
           command: |
             cd web
