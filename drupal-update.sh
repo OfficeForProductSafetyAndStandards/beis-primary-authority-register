@@ -1,5 +1,8 @@
+#!/bin/bash
 ## Commands that must be run to update a drupal instance.
 ## Use as `./drupal-update.sh`
+echo $BASH_VERSION
+set -o errexit -euo pipefail -o noclobber -o nounset
 
 ROOT="${BASH_SOURCE%/*}/web"
 cd $ROOT
