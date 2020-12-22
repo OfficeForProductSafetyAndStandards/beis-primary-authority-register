@@ -12,7 +12,7 @@ default:
       value: par_coordinator@example.com
   pass:
     -
-      value: $S$EvwR9rsHCEqpFXIADOcuF5kixN8ZSTenj2FB6cDpn7NNFEDboBnl
+      value: TestPassword
       existing: ''
       pre_hashed: false
   mail:

@@ -15,7 +15,7 @@ default:
       value: business.partnership-apply
   pass:
     -
-      value: $S$E67.E17ieG6cB7.ufqurxONwOFWVb2cv3BLShK44TWPzwfQPcPvK
+      value: TestPassword
       existing: ''
       pre_hashed: false
   mail:

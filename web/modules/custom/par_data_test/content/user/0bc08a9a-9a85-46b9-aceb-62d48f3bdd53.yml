@@ -15,7 +15,7 @@ default:
       value: par_business_enquirer@example.com
   pass:
     -
-      value: $S$EZIoWSeScIDe/ExaH3D5eqNXVX/qq8MlCLSrWeWlKbWCsaSoBw19
+      value: TestPassword
       existing: ''
       pre_hashed: false
   mail:

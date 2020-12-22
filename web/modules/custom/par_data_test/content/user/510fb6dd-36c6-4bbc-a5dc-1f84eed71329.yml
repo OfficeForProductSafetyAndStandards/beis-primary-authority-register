@@ -12,7 +12,7 @@ default:
       value: par_user_management_multiple@example.com
   pass:
     -
-      value: $S$E7FtB8wC7lJQ2oesqBM6ty59odSzE2Fh7HcJPSl/h2ar0g8H2tuv
+      value: TestPassword
       existing: ''
       pre_hashed: false
   mail:

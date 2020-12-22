@@ -12,7 +12,7 @@ default:
       value: par_business@example.com
   pass:
     -
-      value: $S$EGyxZvEJpzCuO3WLlqBawoFFBTgGoj6IAOcUwBnr4g3BFzBN6Tec
+      value: TestPassword
       existing: ''
       pre_hashed: false
   mail:

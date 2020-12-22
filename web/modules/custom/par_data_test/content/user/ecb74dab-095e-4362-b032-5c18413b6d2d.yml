@@ -12,7 +12,7 @@ default:
       value: par_organisation_user_management
   pass:
     -
-      value: $S$ElRLKbngTjv78yi3igK78H23sZi8pJFbhndU582wBXT5E.lpMJ6.
+      value: TestPassword
       existing: ''
       pre_hashed: false
   mail:

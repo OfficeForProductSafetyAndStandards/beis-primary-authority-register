@@ -12,7 +12,7 @@ default:
       value: par_admin@example.com
   pass:
     -
-      value: $S$EV.5sKgaULN/HfxuSvSswd92qaDacgRC675iJZnHsQeEEG83aIrn
+      value: TestPassword
       existing: ''
       pre_hashed: false
   mail:

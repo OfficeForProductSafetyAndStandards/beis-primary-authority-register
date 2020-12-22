@@ -12,7 +12,7 @@ default:
       value: par_helpdesk@example.com
   pass:
     -
-      value: $S$EdLdKjArsEPyHNBeSnB5TCuHM1v6riLYjc9Cjdh1C21xkJ4lNcrk
+      value: TestPassword
       existing: ''
       pre_hashed: false
   mail:

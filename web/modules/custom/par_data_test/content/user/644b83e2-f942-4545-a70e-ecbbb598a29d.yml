@@ -12,7 +12,7 @@ default:
       value: par_authority_gdpr_old_login@example.com
   pass:
     -
-      value: $S$E7YWV9sJzvIUQX3NMgXLRe7nOeggvGEbGWAYIMD81D5K8fG0k2Lr
+      value: TestPassword
       existing: ''
       pre_hashed: false
   mail:

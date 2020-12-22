@@ -12,7 +12,7 @@ default:
       value: par_enforcement_officer@example.com
   pass:
     -
-      value: $S$En3S5suNM0TzctTjSoXG4FO3wJSf2zRoqZsIL2yjpFGrEHDCKOr5
+      value: TestPassword
       existing: ''
       pre_hashed: false
   mail:

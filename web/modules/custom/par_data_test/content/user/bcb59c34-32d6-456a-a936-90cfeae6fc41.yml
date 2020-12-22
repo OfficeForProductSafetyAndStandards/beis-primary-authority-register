@@ -12,7 +12,7 @@ default:
       value: par_authority_user_management
   pass:
     -
-      value: $S$EKyzVBZJZ3w6JKj3IJABSzaONs518ADIbwJbHEaZdf.E99r7SBFV
+      value: TestPassword
       existing: ''
       pre_hashed: false
   mail:

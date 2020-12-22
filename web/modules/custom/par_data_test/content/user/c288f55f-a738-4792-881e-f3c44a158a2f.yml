@@ -12,7 +12,7 @@ default:
       value: par_business_second
   pass:
     -
-      value: $S$ECpEpaZ.M76RmWInl/Sp34s131xq44jd2bGBcD.nFhVz6jN23Vn3
+      value: TestPassword
       existing: ''
       pre_hashed: false
   mail:

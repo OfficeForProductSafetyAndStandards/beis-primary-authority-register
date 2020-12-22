@@ -12,7 +12,7 @@ default:
       value: par_user_management_officer
   pass:
     -
-      value: $S$EdCeP8qPyntDSYhnYC213LIv7EQj65yyCQkPEcaqJRfREH/O0Pvu
+      value: TestPassword
       existing: ''
       pre_hashed: false
   mail:
