@@ -96,7 +96,7 @@
         "jcalderonzumba/gastonjs": "^1.0.2",
         "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
         "mglaman/drupal-check": "^1.0",
-        "mikey179/vfsStream": "^1.2",
+        "mikey179/vfsstream": "^1.2",
         "phpspec/prophecy": "^1.4",
         "phpunit/phpunit": "6.5.14",
         "symfony/css-selector": "^3.4.0",
