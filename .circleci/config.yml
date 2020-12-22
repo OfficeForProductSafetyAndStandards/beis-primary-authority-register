@@ -423,7 +423,7 @@ jobs:
             APP_ENV: ci-sanitise
       - run:
           name: "Backup database"
-          command: ./scripts/db-backup.sh production -p -s -d "../backups" -a '@par.dev'
+          command: ./scripts/db-backup.sh production -s -d "../backups" -a '@par.dev'
           environment:
             APP_ENV: ci-sanitise
       - aws-s3/copy:
