@@ -19,12 +19,13 @@ cd ${ROOT}/web; ../vendor/drush/drush/drush state:set system.maintenance_mode 1;
 printf "Clearing cache...\n"
 cd ${ROOT}/web; ../vendor/drush/drush/drush cache:rebuild;
 
-# Run db updates.
-printf "Running database updates...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush updb -y;
 # Test data must be removed before proceeding.
 printf "Uninstalling test data...\n"
 cd ${ROOT}/web; ../vendor/drush/drush/drush pm-uninstall par_data_test -y;
+
+# Run db updates.
+printf "Running database updates...\n"
+cd ${ROOT}/web; ../vendor/drush/drush/drush updb -y;
 # Import configuration twice to fix a problem with config import when new modules are added to 'core.extensions.yml'.
 printf "Importing config...\n"
 cd ${ROOT}/web; ../vendor/drush/drush/drush config:import -y; ../vendor/drush/drush/drush cim -y;
