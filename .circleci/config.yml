@@ -34,6 +34,7 @@ references:
     restore_cache:
       keys:
         - v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+
   restore_scaffold: &restore_scaffold
     run:
       name: "Install drupal scaffold files"
@@ -50,6 +51,14 @@ references:
         service apache2 restart
         echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
         cat /etc/hosts
+
+  import_database: &import_database
+    run:
+      name: "Import & set up the database"
+      command: |
+        cd web
+        ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
+        ./drupal-update.sh
 
   workspace_root: &workspace_root
     /tmp/workspace
@@ -144,12 +153,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - run:
-          name: "Importing database"
-          command: cd web && ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
-      - run:
-          name: "Setup application"
-          command: sh drupal-update.sh
+      - *import_database
       - run:
           name: "Re-install temporary data @temp"
           command: |
@@ -204,6 +208,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *import_database
       - run:
           name: "Importing database"
           command: cd web && ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
@@ -261,6 +266,8 @@ jobs:
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
+      - *configure_webroot
+      - *import_database
       - run:
           name: "Make asset bundle"
           command: |
@@ -296,6 +303,8 @@ jobs:
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
+      - *configure_webroot
+      - *import_database
       - run:
           name: "Make asset bundle"
           command: |
@@ -330,6 +339,8 @@ jobs:
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
+      - *configure_webroot
+      - *import_database
       - run:
           name: "Make asset bundle"
           command: |
