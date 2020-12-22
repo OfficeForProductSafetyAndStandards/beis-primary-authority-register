@@ -58,7 +58,7 @@ references:
       command: |
         cd web
         ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
-        ./drupal-update.sh
+        ../drupal-update.sh
 
   workspace_root: &workspace_root
     /tmp/workspace
@@ -155,7 +155,7 @@ jobs:
       - *configure_webroot
       - *import_database
       - run:
-          name: "Re-install temporary data @temp"
+          name: "Ensure temporary data is installed"
           command: |
             cd web
             ../vendor/bin/drush pm-uninstall par_data_test -y
@@ -216,7 +216,7 @@ jobs:
           name: "Setup application"
           command: sh drupal-update.sh
       - run:
-          name: "Re-install temporary data @temp"
+          name: "Ensure temporary data is installed"
           command: |
             cd web
             ../vendor/bin/drush pm-uninstall par_data_test -y
