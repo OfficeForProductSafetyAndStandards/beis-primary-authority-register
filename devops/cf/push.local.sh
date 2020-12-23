@@ -485,7 +485,9 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
         exit 6
     fi
 
-    cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/import_fresh_db.py -f ./backups/sanitised-db.sql && rm -f ./backups/sanitised-db.sql"
+    # Running a python script instead of bash because python has immediate
+    # access to all of the environment variables and configuration.
+    cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/import_fresh_db.py -f $BUILD_DIR/backups/sanitised-db.sql && rm -f $BUILD_DIR/backups/sanitised-db.sql"
 fi
 
 cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/post_deploy.py"
