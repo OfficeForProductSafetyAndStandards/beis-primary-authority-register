@@ -1,0 +1,56 @@
+_meta:
+  version: '1.0'
+  entity_type: user
+  uuid: 0bc08a9a-9a85-46b9-aceb-62d48f3bdd53
+  default_langcode: en
+default:
+  preferred_langcode:
+    -
+      value: en
+  preferred_admin_langcode:
+    -
+      value: en
+  name:
+    -
+      value: par_business_enquirer@example.com
+  pass:
+    -
+      value: TestPassword
+      existing: ''
+      pre_hashed: false
+  mail:
+    -
+      value: par_business_enquirer@example.com
+  timezone:
+    -
+      value: UTC
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1562872704
+  access:
+    -
+      value: 0
+  login:
+    -
+      value: 0
+  init:
+    -
+      value: par_business_enquirer@example.com
+  roles:
+    -
+      target_id: par_organisation
+  role_change:
+    -
+      target_id: __role_delegation_empty_field_value__
+  field_gdpr:
+    -
+      value: true
+  field_last_password_reset:
+    -
+      value: '2020-12-10T13:31:49'
+  field_password_expiration:
+    -
+      value: false

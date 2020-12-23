@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: 134fbe1d-a285-4b86-b04a-c81e1bc0e56d
+  bundle: person
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563455883
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d30718b784c8
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  salutation:
+    -
+      value: Dr
+  first_name:
+    -
+      value: Ruth
+  last_name:
+    -
+      value: Strong
+  work_phone:
+    -
+      value: '0923402934'
+  email:
+    -
+      value: par_business@example.com

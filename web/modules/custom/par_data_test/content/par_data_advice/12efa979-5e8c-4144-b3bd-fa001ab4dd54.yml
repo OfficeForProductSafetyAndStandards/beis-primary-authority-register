@@ -1,0 +1,60 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_advice
+  uuid: 12efa979-5e8c-4144-b3bd-fa001ab4dd54
+  bundle: advice
+  default_langcode: en
+  depends:
+    a21cdc08-68f6-49ac-9a36-884a44888f0a: file
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282caded2
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  advice_type:
+    -
+      value: background_information
+  notes:
+    -
+      value: 'Always help your friends when they are in need.'
+      format: plain_text
+  visible_authority:
+    -
+      value: true
+  visible_coordinator:
+    -
+      value: true
+  visible_business:
+    -
+      value: true
+  document:
+    -
+      entity: a21cdc08-68f6-49ac-9a36-884a44888f0a
+      display: false
+      description: ''
+  advice_status:
+    -
+      value: active

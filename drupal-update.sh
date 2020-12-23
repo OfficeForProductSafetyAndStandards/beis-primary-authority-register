@@ -1,40 +1,42 @@
+#!/bin/bash
 ## Commands that must be run to update a drupal instance.
-## Use as `sh ./drupal-update.sh /var/www/html`
+## Use as `./drupal-update.sh`
+echo $BASH_VERSION
+set -o errexit -euo pipefail -o noclobber -o nounset
 
-# Pass in the root of the project.
-if [ -n "$1" ]; then
-  ROOT=$1
-else
-  ROOT=$PWD
-fi
-
-echo "Current working directory is ${ROOT}/web"
+ROOT="${BASH_SOURCE%/*}/web"
+cd $ROOT
+echo "Current working directory is ${PWD}"
 
 # Set default drush alias.
 # cd ${ROOT}/web; ../vendor/drush/drush/drush site-set @{{ENV}};
 # Put the site in maintenance mode.
 printf "Enabling maintenance mode...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush state:set system.maintenance_mode 1;
+../vendor/drush/drush/drush state:set system.maintenance_mode 1;
 # Clear cache
 printf "Clearing cache...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush cache:rebuild;
+../vendor/drush/drush/drush cache:rebuild;
+
+# Test data must be removed before proceeding.
+printf "Uninstalling test data...\n"
+../vendor/drush/drush/drush pm-uninstall par_data_test -y;
 
 # Run db updates.
 printf "Running database updates...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush updb -y;
+../vendor/drush/drush/drush updb -y;
 # Import configuration twice to fix a problem with config import when new modules are added to 'core.extensions.yml'.
 printf "Importing config...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush config:import -y; ../vendor/drush/drush/drush cim -y;
+../vendor/drush/drush/drush config:import -y; ../vendor/drush/drush/drush cim -y;
 # To doubly make sure drush registers features commands.
 printf "Clearing drush caches...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush cache:clear drush;
+../vendor/drush/drush/drush cache:clear drush;
 # Revert all features
 printf "Reverting features...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush features:import:all -y;
+../vendor/drush/drush/drush features:import:all -y;
 
 # Take the site out of maintenance mode.
 printf "Disabling maintenance mode...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush state:set system.maintenance_mode 0;
+../vendor/drush/drush/drush state:set system.maintenance_mode 0;
 # Clear cache.
 printf "Clearing final cache...\n"
-cd ${ROOT}/web; ../vendor/drush/drush/drush cache:rebuild;
+../vendor/drush/drush/drush cache:rebuild;

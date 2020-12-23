@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: 706fd108-d978-4ad1-8753-534f4fa09482
+  bundle: person
+  default_langcode: en
+  depends:
+    bcb59c34-32d6-456a-a936-90cfeae6fc41: user
+default:
+  user_id:
+    -
+      entity: bcb59c34-32d6-456a-a936-90cfeae6fc41
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1545047134
+  revision_uid:
+    -
+      entity: bcb59c34-32d6-456a-a936-90cfeae6fc41
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5c178c5f0ea96
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  salutation:
+    -
+      value: Mr
+  first_name:
+    -
+      value: Jacob
+  last_name:
+    -
+      value: Pilcher
+  work_phone:
+    -
+      value: '01345991589'
+  email:
+    -
+      value: par_user_management_contact@example.com

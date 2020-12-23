@@ -6,6 +6,7 @@ set -o errexit -euo pipefail -o noclobber -o nounset
 
 WEBROOT="${BASH_SOURCE%/*}/../web"
 cd $WEBROOT
+echo "Current working directory is ${PWD}"
 
 ../vendor/drush/drush/drush pcw par_data_partnership
 ../vendor/drush/drush/drush pcw par_data_authority

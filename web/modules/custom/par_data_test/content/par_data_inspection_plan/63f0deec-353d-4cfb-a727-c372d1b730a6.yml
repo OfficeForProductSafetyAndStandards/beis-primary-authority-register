@@ -1,0 +1,61 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_inspection_plan
+  uuid: 63f0deec-353d-4cfb-a727-c372d1b730a6
+  bundle: inspection_plan
+  default_langcode: en
+  depends:
+    0cc3961f-895f-4a87-94db-ad3aadf5635a: file
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282cb453b
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  title:
+    -
+      value: ' SS47 Press Release Final 10.14.16'
+  summary:
+    -
+      value: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n"
+      format: basic_html
+  valid_date:
+    -
+      value: '2016-01-01'
+      end_value: '2018-01-01'
+  approved_rd_executive:
+    -
+      value: true
+  consulted_national_regulator:
+    -
+      value: true
+  document:
+    -
+      entity: 0cc3961f-895f-4a87-94db-ad3aadf5635a
+      display: false
+      description: ''
+  inspection_status:
+    -
+      value: in_progress

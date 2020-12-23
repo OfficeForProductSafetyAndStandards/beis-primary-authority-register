@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: ccf2a4aa-209c-4da9-9807-4ce555c066fb
+  bundle: organisation
+  default_langcode: en
+  depends:
+    46e65664-bf34-4713-ab14-740cbe581538: user
+    ecccb93f-e904-4268-ad7e-01a515485a62: par_data_legal_entity
+    d613b90d-020b-4a16-a6f1-07b0d297800e: par_data_person
+    3fdf23cc-8c4d-4c20-9489-94ba2ccec5cf: par_data_premises
+default:
+  user_id:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311475
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3d7bbc8c1
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: Groceries
+  field_legal_entity:
+    -
+      entity: ecccb93f-e904-4268-ad7e-01a515485a62
+  field_person:
+    -
+      entity: d613b90d-020b-4a16-a6f1-07b0d297800e
+  field_premises:
+    -
+      entity: 3fdf23cc-8c4d-4c20-9489-94ba2ccec5cf

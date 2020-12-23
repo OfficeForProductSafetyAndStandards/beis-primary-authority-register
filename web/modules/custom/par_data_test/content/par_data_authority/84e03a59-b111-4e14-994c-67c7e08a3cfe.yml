@@ -1,0 +1,70 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_authority
+  uuid: 84e03a59-b111-4e14-994c-67c7e08a3cfe
+  bundle: authority
+  default_langcode: en
+  depends:
+    bcb59c34-32d6-456a-a936-90cfeae6fc41: user
+    46e65664-bf34-4713-ab14-740cbe581538: user
+    5e0977f0-29de-4904-9a86-c697252e8bc5: par_data_person
+    2d36609d-7212-4eba-baa9-530e33e98c84: par_data_person
+    706fd108-d978-4ad1-8753-534f4fa09482: par_data_person
+    ae019a34-6345-4db1-a02e-abda4ccd2c19: par_data_person
+    15660610-03e4-47f4-b26e-159d0cd4d86a: par_data_regulatory_function
+default:
+  user_id:
+    -
+      entity: bcb59c34-32d6-456a-a936-90cfeae6fc41
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1544978235
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5c167e7847092
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  authority_name:
+    -
+      value: 'Authority for user management test'
+  authority_type:
+    -
+      value: metropolitan_district
+  nation:
+    -
+      value: EN-WLS
+  ons_code:
+    -
+      value: '123456'
+  comments:
+    -
+      value: "<p>This is an authority for testing purposes only.</p>\r\n"
+      format: basic_html
+  field_person:
+    -
+      entity: 5e0977f0-29de-4904-9a86-c697252e8bc5
+    -
+      entity: 2d36609d-7212-4eba-baa9-530e33e98c84
+    -
+      entity: 706fd108-d978-4ad1-8753-534f4fa09482
+    -
+      entity: ae019a34-6345-4db1-a02e-abda4ccd2c19
+  field_regulatory_function:
+    -
+      entity: 15660610-03e4-47f4-b26e-159d0cd4d86a

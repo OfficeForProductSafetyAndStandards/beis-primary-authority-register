@@ -1,0 +1,54 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: 9737ee2e-7d08-4364-a344-2662a76cdb8b
+  bundle: organisation
+  default_langcode: en
+  depends:
+    46e65664-bf34-4713-ab14-740cbe581538: user
+    81ccab4f-2e88-4a91-beeb-b7313f68c39c: par_data_legal_entity
+    8a41afb4-3670-4d5c-a77d-36311e011c9e: par_data_legal_entity
+    e5567721-bc7f-44f1-a64d-73d59cf7fafe: par_data_person
+    89d708c8-ded9-4059-9d29-e4d63950cbf0: par_data_premises
+default:
+  user_id:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311475
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3d8152139
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'Fish ‘n’ Chips'
+  field_legal_entity:
+    -
+      entity: 81ccab4f-2e88-4a91-beeb-b7313f68c39c
+    -
+      entity: 8a41afb4-3670-4d5c-a77d-36311e011c9e
+  field_person:
+    -
+      entity: e5567721-bc7f-44f1-a64d-73d59cf7fafe
+  field_premises:
+    -
+      entity: 89d708c8-ded9-4059-9d29-e4d63950cbf0

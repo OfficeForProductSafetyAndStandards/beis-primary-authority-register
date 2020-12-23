@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: 2705c28a-8ee6-4b4d-be80-93b11be48937
+  bundle: person
+  default_langcode: en
+  depends:
+    091031a0-6f43-4632-ac3d-67d635a6fa5a: user
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282d1a022
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  salutation:
+    -
+      value: Dr
+  first_name:
+    -
+      value: Grover
+  last_name:
+    -
+      value: Muppet
+  work_phone:
+    -
+      value: '01723456789'
+  mobile_phone:
+    -
+      value: '0777777777'
+  email:
+    -
+      value: par_enforcement_officer@example.com
+  field_user_account:
+    -
+      entity: 091031a0-6f43-4632-ac3d-67d635a6fa5a

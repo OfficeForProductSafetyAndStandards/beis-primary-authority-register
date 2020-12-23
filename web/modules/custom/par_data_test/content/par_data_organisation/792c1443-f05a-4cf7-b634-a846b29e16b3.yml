@@ -1,0 +1,65 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: 792c1443-f05a-4cf7-b634-a846b29e16b3
+  bundle: organisation
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    f7fe21f8-6059-49ae-861c-2cbef8f51377: par_data_legal_entity
+    faf103d7-c0ce-406e-a8f3-4aeea73aaedd: par_data_person
+    93c6c3b6-a32b-439a-b00e-770085a8edc9: par_data_premises
+    0f59d76d-3062-4c5e-8b26-b0a798a7104c: par_data_sic_code
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563456225
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d3072e22049d
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'Partnership nominated by Secretary of State'
+  employees_band:
+    -
+      value: '50'
+  comments:
+    -
+      value: "This organisation is for test purposes and should only be involved with active partnerships.\r\n\r\nDetails of this organisation should not be updated during test runs."
+      format: plain_text
+  trading_name:
+    -
+      value: 'Active organisation'
+  field_legal_entity:
+    -
+      entity: f7fe21f8-6059-49ae-861c-2cbef8f51377
+  field_person:
+    -
+      entity: faf103d7-c0ce-406e-a8f3-4aeea73aaedd
+  field_premises:
+    -
+      entity: 93c6c3b6-a32b-439a-b00e-770085a8edc9
+  field_sic_code:
+    -
+      entity: 0f59d76d-3062-4c5e-8b26-b0a798a7104c

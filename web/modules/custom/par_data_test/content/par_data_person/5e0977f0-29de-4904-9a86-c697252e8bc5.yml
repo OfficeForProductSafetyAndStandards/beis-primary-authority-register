@@ -1,0 +1,67 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: 5e0977f0-29de-4904-9a86-c697252e8bc5
+  bundle: person
+  default_langcode: en
+  depends:
+    46e65664-bf34-4713-ab14-740cbe581538: user
+    bcb59c34-32d6-456a-a936-90cfeae6fc41: user
+default:
+  user_id:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1544976232
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 'Authority person for user management test'
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  salutation:
+    -
+      value: Dr
+  first_name:
+    -
+      value: Susan
+  last_name:
+    -
+      value: Green
+  work_phone:
+    -
+      value: '01865797334'
+  mobile_phone:
+    -
+      value: '07383772987'
+  email:
+    -
+      value: par_authority_user_management@example.com
+  communication_email:
+    -
+      value: true
+  communication_phone:
+    -
+      value: false
+  communication_mobile:
+    -
+      value: false
+  field_user_account:
+    -
+      entity: bcb59c34-32d6-456a-a936-90cfeae6fc41

@@ -1,0 +1,37 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_regulatory_function
+  uuid: 15660610-03e4-47f4-b26e-159d0cd4d86a
+  bundle: regulatory_function
+  default_langcode: en
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282da8fce
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  function_name:
+    -
+      value: 'Alphabet learning'

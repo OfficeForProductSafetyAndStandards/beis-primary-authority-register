@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_premises
+  uuid: 33ac68c2-df99-49dd-b2c0-6d536b83741a
+  bundle: premises
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1536788947
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5b9989d3e1d8c
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  address:
+    -
+      langcode: ''
+      country_code: GB
+      administrative_area: ''
+      locality: 'Enquiry Town'
+      dependent_locality: ''
+      postal_code: 'N1 9ZZ'
+      sorting_code: ''
+      address_line1: '1 Enquiry St'
+      address_line2: 'Enquiry Borough'
+      organization: ''
+      given_name: ''
+      additional_name: ''
+      family_name: ''

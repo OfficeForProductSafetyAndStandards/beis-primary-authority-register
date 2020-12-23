@@ -1,0 +1,65 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: e38b9709-76ba-4fac-8ebc-e6b239acadd6
+  bundle: organisation
+  default_langcode: en
+  depends:
+    bcb59c34-32d6-456a-a936-90cfeae6fc41: user
+    547056e8-1773-4019-9fd8-32354897eff7: par_data_legal_entity
+    ce56ad28-b986-4860-8bd7-aad0d33778bb: par_data_person
+    2bf86c69-4290-414a-a55d-bc2f8aa264c9: par_data_premises
+    86bcff9c-882e-46d1-b768-68eb5b311f2c: par_data_sic_code
+default:
+  user_id:
+    -
+      entity: bcb59c34-32d6-456a-a936-90cfeae6fc41
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1544978395
+  revision_uid:
+    -
+      entity: bcb59c34-32d6-456a-a936-90cfeae6fc41
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5c167fdba7cc4
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'Organisation for user management test'
+  employees_band:
+    -
+      value: '10'
+  comments:
+    -
+      value: 'This is a test organisation for user management testing.'
+      format: plain_text
+  trading_name:
+    -
+      value: 'Organisation for user management test'
+  field_legal_entity:
+    -
+      entity: 547056e8-1773-4019-9fd8-32354897eff7
+  field_person:
+    -
+      entity: ce56ad28-b986-4860-8bd7-aad0d33778bb
+  field_premises:
+    -
+      entity: 2bf86c69-4290-414a-a55d-bc2f8aa264c9
+  field_sic_code:
+    -
+      entity: 86bcff9c-882e-46d1-b768-68eb5b311f2c
