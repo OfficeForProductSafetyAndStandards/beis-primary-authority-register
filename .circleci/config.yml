@@ -60,6 +60,14 @@ references:
         ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
         ../drupal-update.sh
 
+  build_assets: &build_assets
+    run:
+      name: "Make asset bundle"
+      command: |
+        cd /tmp/workspace
+        echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
+        tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
+
   workspace_root: &workspace_root
     /tmp/workspace
 
@@ -250,12 +258,7 @@ jobs:
       - *restore_scaffold
       - *configure_webroot
       - *import_database
-      - run:
-          name: "Make asset bundle"
-          command: |
-            cd /tmp/workspace
-            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
-            tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
+      - *build_assets
       - run:
           name: "Examine asset bundle."
           command: |
@@ -288,18 +291,13 @@ jobs:
       - *configure_webroot
       - *import_database
       - run:
-          name: "Make asset bundle"
+          name: "Remove additional sensitive assets"
           command: |
             cd /tmp/workspace
-            rm -f .env
-            rm -fr .git
-            rm -fr tests
-            rm -fr clamav
             rm -fr backups
-            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
-            tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
+      - *build_assets
       - run:
-          name: "Examine asset bundle."
+          name: "Examine asset bundle"
           command: |
             ls -lah /tmp/workspace
       - run:
@@ -323,17 +321,7 @@ jobs:
       - *restore_scaffold
       - *configure_webroot
       - *import_database
-      - run:
-          name: "Make asset bundle"
-          command: |
-            cd /tmp/workspace
-            rm -f .env
-            rm -fr .git
-            rm -fr tests
-            rm -fr clamav
-            rm -fr backups
-            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
-            tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
+      - *build_assets
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"

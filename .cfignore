@@ -10,13 +10,15 @@ manifest.yml
 .env
 *.env
 
+# Ignore temporary assets
+*.tar.gz
+
 # Ignore non-app files
 /devops/dashboard/
 /devops/docker/
 /devops/vault/
 /clamav/
 /tests/
-/backups/
 /vendor/
 
 # Ignore package files
@@ -24,7 +26,3 @@ phpunit.xml
 
 # Ignore local only files
 /web/sites/default/settings.local.php
-
-# Ignore temporary assets
-*.tar.gz
-
