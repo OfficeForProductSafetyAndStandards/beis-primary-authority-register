@@ -373,13 +373,6 @@ jobs:
           environment:
             APP_ENV: ci-sanitise
       - run:
-          name: "Un-install temporary data @temp"
-          command: |
-            cd web
-            ../vendor/bin/drush pm-uninstall par_data_test -y
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
           name: "Run cron"
           command: |
             cd web
@@ -393,6 +386,21 @@ jobs:
             ../vendor/bin/drush cex -n
             ../vendor/bin/drush core-requirements --severity=2
             curl -sD - -o /dev/null http://par.localhost
+          environment:
+            APP_ENV: ci-sanitise
+      - run:
+          name: "Un-install temporary data @temp"
+          command: |
+            cd web
+            ../vendor/bin/drush pm-uninstall par_data_test -y
+          environment:
+            APP_ENV: ci-sanitise
+      - run:
+          name: "Un-install dev modules data"
+          command: |
+            cd web
+            ../vendor/bin/drush pm-uninstall webprofiler -y
+            ../vendor/bin/drush pm-uninstall maillog -y
           environment:
             APP_ENV: ci-sanitise
       - run:
