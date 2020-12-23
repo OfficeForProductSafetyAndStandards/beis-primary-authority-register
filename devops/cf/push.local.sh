@@ -80,6 +80,7 @@ GOVUK_CF_USER=${GOVUK_CF_USER:-}
 GOVUK_CF_PWD=${GOVUK_CF_PWD:-}
 CF_INSTANCES=${CF_INSTANCES:=1}
 BUILD_DIR=${BUILD_DIR:=$PWD}
+REMOTE_BUILD_DIR=${REMOTE_BUILD_DIR:="/home/vcap/app"}
 DB_IMPORT=${DB_IMPORT:="$PWD/backups/sanitised-db.sql"}
 DB_RESET=${DB_RESET:=n}
 DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
@@ -480,14 +481,14 @@ cf start $TARGET_ENV
 
 ## Import the seed database and then delete it.
 if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
-    if [[ ! -f $DB_IMPORT ]]; then
-        printf "Seed database required, but could not find one at '$DB_IMPORT'.\n"
+    if [[ ! -f "$BUILD_DIR/backups/sanitised-db.sql" ]]; then
+        printf "Seed database required, but could not find one at '$BUILD_DIR/backups/sanitised-db.sql'.\n"
         exit 6
     fi
 
     # Running a python script instead of bash because python has immediate
     # access to all of the environment variables and configuration.
-    cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/import_fresh_db.py -f $DB_IMPORT && rm -f $DB_IMPORT"
+    cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/import_fresh_db.py -f $REMOTE_BUILD_DIR/backups/sanitised-db.sql && rm -f $REMOTE_BUILD_DIR/backups/sanitised-db.sql"
 fi
 
 cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/post_deploy.py"
