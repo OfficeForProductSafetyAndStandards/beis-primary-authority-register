@@ -42,23 +42,23 @@ cd /var/www/par/web
 tar -zxvf ../backups/drush-dump-production-sanitized-latest.sql.tar.gz ../backups/drush-dump-production-sanitized-latest.sql
 ../vendor/bin/drush sql:cli < ../backups/drush-dump-production-sanitized-latest.sql
 ```
-    
+
 ## Deployment
 
 Tagging the master branch will cause the build to be packaged and stored in S3
 
     git tag v0.0.31
     git push --tags
-    
+
 Once a build has been packaged, it can be deployed to another environment as follows:
 
     cd cf
     ./push.sh ENV_NAME VERSION
-    
+
 e.g.
 
-    ./push.sh staging v0.0.31    
-    
+    ./push.sh staging v0.0.31
+
 Full instructions on setting AWS keys and environment variables for the target environment can be found in the push.sh script itself.
 
 #### Prerequisites
@@ -91,7 +91,7 @@ tar -zxvf ./location/of/downloaded/sql/drush-dump-production-unsanitized-latest.
 ../vendor/bin/drush @par.paas sql:drop -y
 ../vendor/bin/drush @par.paas sql:cli < ./location/of/downloaded/sql/drush-dump-production-unsanitized-latest.sql
 cd ..
-sh drupal-update.sh
+./drupal-update.sh
 ```
 
 Check that the data looks right and then sanitise:

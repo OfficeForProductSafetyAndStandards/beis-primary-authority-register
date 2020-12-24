@@ -369,7 +369,7 @@ jobs:
             APP_ENV: ci-sanitise
       - run:
           name: "Setup application"
-          command: sh drupal-update.sh
+          command: ./drupal-update.sh
           environment:
             APP_ENV: ci-sanitise
       - run:
