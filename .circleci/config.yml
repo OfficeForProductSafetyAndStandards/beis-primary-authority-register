@@ -396,11 +396,12 @@ jobs:
           environment:
             APP_ENV: ci-sanitise
       - run:
-          name: "Un-install dev modules data"
+          name: "Un-install dev only modules"
           command: |
             cd web
             ../vendor/bin/drush pm-uninstall webprofiler -y
             ../vendor/bin/drush pm-uninstall maillog -y
+            ../vendor/bin/drush pm-uninstall dblog -y
           environment:
             APP_ENV: ci-sanitise
       - run:
