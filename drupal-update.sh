@@ -24,9 +24,25 @@ printf "Uninstalling test data...\n"
 # Run db updates.
 printf "Running database updates...\n"
 ../vendor/drush/drush/drush updb -y;
-# Import configuration twice to fix a problem with config import when new modules are added to 'core.extensions.yml'.
+
+## CONFIG IMPORT
+configImport() {
+  ../vendor/drush/drush/drush config:import -y;
+}
 printf "Importing config...\n"
-../vendor/drush/drush/drush config:import -y; ../vendor/drush/drush/drush cim -y;
+retries=5; counter=0;
+until configImport
+do
+  sleep 2;
+  [[ counter -eq $retries ]] && echo "Failed running config import #$counter!" && exit 1
+  echo "Trying again. Try #$counter"
+  ((counter++))
+done
+# Run config import a second time to avoid installed
+# module config overriding saved config.
+printf "Re-importing config...\n"
+configImport
+
 # To doubly make sure drush registers features commands.
 printf "Clearing drush caches...\n"
 ../vendor/drush/drush/drush cache:clear drush;
