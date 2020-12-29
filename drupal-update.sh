@@ -27,7 +27,7 @@ printf "Running database updates...\n"
 printf "Importing config...\n"
 counter=1;
 # Check that there's no remaining config diff.
-until ../vendor/bin/drush config:export -n &> /dev/null
+until ../vendor/bin/drush --no config:export &> /dev/null
 do
   if [ $counter -gt 5 ]; then
       break
