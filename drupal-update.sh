@@ -5,11 +5,9 @@ echo $BASH_VERSION
 set -o errexit -euo pipefail -o noclobber -o nounset
 
 ROOT="${BASH_SOURCE%/*}/web"
-cd $ROOT
+cd $ROOT;
 echo "Current working directory is ${PWD}"
 
-# Set default drush alias.
-# cd ${ROOT}/web; ../vendor/drush/drush/drush site-set @{{ENV}};
 # Put the site in maintenance mode.
 printf "Enabling maintenance mode...\n"
 ../vendor/drush/drush/drush state:set system.maintenance_mode 1;
@@ -26,22 +24,23 @@ printf "Running database updates...\n"
 ../vendor/drush/drush/drush updb -y;
 
 ## CONFIG IMPORT
-configImport() {
-  ../vendor/drush/drush/drush config:import -y;
-}
 printf "Importing config...\n"
-retries=5; counter=0;
-until configImport
+counter=1;
+# Check that there's no remaining config diff.
+until ../vendor/bin/drush config:export -n &> /dev/null
 do
-  sleep 2;
-  [[ counter -eq $retries ]] && echo "Failed running config import #$counter!" && exit 1
-  echo "Trying again. Try #$counter"
+  if [ $counter -gt 5 ]; then
+      break
+  fi
+  echo "Trying import: #$counter"
+  ../vendor/drush/drush/drush config:import -y
   ((counter++))
+  sleep 2;
 done
 # Run config import a second time to avoid installed
 # module config overriding saved config.
 printf "Re-importing config...\n"
-configImport
+../vendor/drush/drush/drush config:import -y
 
 # To doubly make sure drush registers features commands.
 printf "Clearing drush caches...\n"
@@ -53,6 +52,7 @@ printf "Reverting features...\n"
 # Take the site out of maintenance mode.
 printf "Disabling maintenance mode...\n"
 ../vendor/drush/drush/drush state:set system.maintenance_mode 0;
+
 # Clear cache.
 printf "Clearing final cache...\n"
 ../vendor/drush/drush/drush cache:rebuild;
