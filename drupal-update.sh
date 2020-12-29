@@ -25,11 +25,12 @@ printf "Running database updates...\n"
 
 ## CONFIG IMPORT
 printf "Importing config...\n"
-counter=1;
+COUNTER=1;
 # Check that there's no remaining config diff.
 until $(../vendor/bin/drush --quiet --no config:export)
 do
-  if [ $counter -gt 5 ]; then
+  if [ $COUNTER -gt 5 ]; then
+      echo "Config successfully imported after #$COUNTER tries"
       break
   fi
   echo "Trying import: #$counter"
