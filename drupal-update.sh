@@ -34,7 +34,8 @@ do
       break
   fi
   echo "Trying import: #$counter"
-  ../vendor/drush/drush/drush config:import -y
+  # This import is allowed to fail.
+  ../vendor/drush/drush/drush config:import -y || true
   ((counter++))
   sleep 1;
 done
