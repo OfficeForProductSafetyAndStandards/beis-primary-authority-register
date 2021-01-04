@@ -84,6 +84,7 @@ module:
   par_enforcement_send_flows: 0
   par_enquiry_send_flows: 0
   par_enquiry_view_flows: 0
+  par_error_handling: 0
   par_flows: 0
   par_forms: 0
   par_header: 0
