@@ -1,0 +1,5 @@
+services:
+  par_error_handling.error_page:
+    class: '\Drupal\par_error_handling\EventSubscriber\ErrorPageSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
