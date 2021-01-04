@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_premises
+  uuid: 8bf1c01c-0b2a-4efb-946a-fe5cfd1b14ed
+  bundle: premises
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563456106
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d30726acaf06
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  address:
+    -
+      langcode: ''
+      country_code: GB
+      administrative_area: ''
+      locality: London
+      dependent_locality: ''
+      postal_code: 'SE5 9EZ'
+      sorting_code: ''
+      address_line1: '6 Lowth Road'
+      address_line2: ''
+      organization: ''
+      given_name: ''
+      additional_name: ''
+      family_name: ''

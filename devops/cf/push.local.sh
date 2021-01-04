@@ -79,10 +79,11 @@ ENV_ONLY=${ENV_ONLY:=n}
 GOVUK_CF_USER=${GOVUK_CF_USER:-}
 GOVUK_CF_PWD=${GOVUK_CF_PWD:-}
 CF_INSTANCES=${CF_INSTANCES:=1}
+BUILD_DIR=${BUILD_DIR:=$PWD}
+REMOTE_BUILD_DIR=${REMOTE_BUILD_DIR:="/home/vcap/app"}
 DB_IMPORT=${DB_IMPORT:="$PWD/backups/sanitised-db.sql"}
 DB_RESET=${DB_RESET:=n}
 DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
-BUILD_DIR=${BUILD_DIR:=$PWD}
 VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.services:8200"}
 VAULT_UNSEAL=${VAULT_UNSEAL:-}
 VAULT_TOKEN=${VAULT_TOKEN:-}
@@ -389,7 +390,8 @@ cf_poll $REDIS_BACKING_SERVICE
 ####################################################################################
 printf "Pushing the application...\n"
 
-cf push --no-start -f $MANIFEST -p $BUILD_DIR -n $TARGET_ENV $TARGET_ENV
+export COMPOSER_VENDOR_DIR={BUILD_DIR}/vendor
+cf push --no-start -f $MANIFEST -p $BUILD_DIR --var app=$TARGET_ENV $TARGET_ENV
 
 ## Set the cf environment variables directly
 printf "Setting the environment variables...\n"
@@ -416,12 +418,12 @@ printf "Checking and enabling backing services...\n"
 
 ## Ensure the right service plan is selected
 if [[ $ENV = "production" ]] || [[ $ENV = "staging" ]]; then
-    PG_PLAN='medium-ha-9.5'
-    REDIS_PLAN='medium-ha-3.2'
+    PG_PLAN='medium-ha-11'
+    REDIS_PLAN='medium-ha-5.x'
 else
     ## The free plan can be used for any non-critical environments
-    PG_PLAN='tiny-unencrypted-9.5'
-    REDIS_PLAN='tiny-3.2'
+    PG_PLAN='tiny-unencrypted-11'
+    REDIS_PLAN='tiny-5.x'
 fi
 
 if [[ $ENV != "production" ]]; then
@@ -484,7 +486,9 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
         exit 6
     fi
 
-    cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/import_fresh_db.py -f ./backups/sanitised-db.sql && rm -f ./backups/sanitised-db.sql"
+    # Running a python script instead of bash because python has immediate
+    # access to all of the environment variables and configuration.
+    cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/import_fresh_db.py -f $REMOTE_BUILD_DIR/backups/sanitised-db.sql && rm -f $REMOTE_BUILD_DIR/backups/sanitised-db.sql"
 fi
 
 cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/post_deploy.py"

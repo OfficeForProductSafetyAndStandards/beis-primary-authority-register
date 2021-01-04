@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: d2f48b3a-799c-43ca-ae08-8df30ecbbfbc
+  bundle: person
+  default_langcode: en
+  depends:
+    29eff252-81b3-4e73-afd1-8b902e19e66b: user
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282d151be
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  salutation:
+    -
+      value: Mr
+  first_name:
+    -
+      value: Oscar
+  last_name:
+    -
+      value: 'the Grouch'
+  work_phone:
+    -
+      value: '01723456789'
+  mobile_phone:
+    -
+      value: '0777777777'
+  email:
+    -
+      value: par_coordinator@example.com
+  field_user_account:
+    -
+      entity: 29eff252-81b3-4e73-afd1-8b902e19e66b

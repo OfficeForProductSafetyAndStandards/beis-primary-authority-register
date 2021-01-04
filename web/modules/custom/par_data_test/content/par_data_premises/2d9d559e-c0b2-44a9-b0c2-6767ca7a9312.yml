@@ -1,0 +1,54 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_premises
+  uuid: 2d9d559e-c0b2-44a9-b0c2-6767ca7a9312
+  bundle: premises
+  default_langcode: en
+  depends:
+    46e65664-bf34-4713-ab14-740cbe581538: user
+default:
+  user_id:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311475
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3d9644b1d
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  address:
+    -
+      langcode: ''
+      country_code: GB
+      administrative_area: ''
+      locality: Leeds
+      dependent_locality: ''
+      postal_code: 'LS4 2BD'
+      sorting_code: ''
+      address_line1: '65 Burley Hill Drive'
+      address_line2: ''
+      organization: ''
+      given_name: ''
+      additional_name: ''
+      family_name: ''
+  nation:
+    -
+      value: GB-ENG

@@ -1,0 +1,43 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_legal_entity
+  uuid: e0d9b503-0782-490a-bdb2-5c3eef176d1b
+  bundle: legal_entity
+  default_langcode: en
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282ccb8c3
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  registered_name:
+    -
+      value: 'Big Bird''s syndicate'
+  registered_number:
+    -
+      value: '0123456789'
+  legal_entity_type:
+    -
+      value: sole_trader

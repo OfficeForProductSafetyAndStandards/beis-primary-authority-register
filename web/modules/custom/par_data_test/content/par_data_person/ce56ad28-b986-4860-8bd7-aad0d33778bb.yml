@@ -1,0 +1,64 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: ce56ad28-b986-4860-8bd7-aad0d33778bb
+  bundle: person
+  default_langcode: en
+  depends:
+    bcb59c34-32d6-456a-a936-90cfeae6fc41: user
+    ecb74dab-095e-4362-b032-5c18413b6d2d: user
+default:
+  user_id:
+    -
+      entity: bcb59c34-32d6-456a-a936-90cfeae6fc41
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1544978395
+  revision_uid:
+    -
+      entity: bcb59c34-32d6-456a-a936-90cfeae6fc41
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5c167fdba9019
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  salutation:
+    -
+      value: Dr
+  first_name:
+    -
+      value: Wesley
+  last_name:
+    -
+      value: Thurlow
+  work_phone:
+    -
+      value: '02028994485'
+  email:
+    -
+      value: par_organisation_user_management@example.com
+  communication_email:
+    -
+      value: false
+  communication_phone:
+    -
+      value: true
+  communication_mobile:
+    -
+      value: false
+  field_user_account:
+    -
+      entity: ecb74dab-095e-4362-b032-5c18413b6d2d

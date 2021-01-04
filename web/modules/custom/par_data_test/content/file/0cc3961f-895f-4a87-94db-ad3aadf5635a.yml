@@ -1,0 +1,28 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: 0cc3961f-895f-4a87-94db-ad3aadf5635a
+  bundle: document
+  default_langcode: en
+default:
+  uid:
+    -
+      target_id: 1
+  filename:
+    -
+      value: SS47_Press_Release_Final_10.14.16.pdf
+  uri:
+    -
+      value: 's3private://par-data-test/SS47_Press_Release_Final_10.14.16_33_40.pdf'
+  filemime:
+    -
+      value: application/pdf
+  filesize:
+    -
+      value: 75140
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594

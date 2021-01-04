@@ -64,6 +64,100 @@ interface ParDataEntityInterface extends TranceInterface {
   public function inProgress();
 
   /**
+   * Whether this entity is revoked.
+   *
+   * @return bool
+   *   TRUE if entity has been revoked.
+   */
+  public function isRevoked();
+
+  /**
+   * Whether this entity is archived.
+   *
+   * @return bool
+   *   TRUE if entity has been archived.
+   */
+  public function isArchived();
+
+  /**
+   * Check whether an entity can be deleted. Will first check whether the entity
+   * type is protected followed by checks to make sure this entity doesn't
+   * have any protected relationships to existing entities that would require it
+   * to remain in the system.
+   *
+   * @return bool
+   *   TRUE if entity can be deleted.
+   */
+  public function isDeletable();
+
+  /**
+   * Delete if this entity is deletable and is not new.
+   *
+   * @param string $reason
+   *   The reason for deleting this entity.
+   *
+   * @return bool
+   *   TRUE if the entity can be deleted
+   *   FALSE if the entity cannot be deleted, or it has already been removed.
+   */
+  public function delete($reason = '');
+
+  /**
+   * Destroy and entity, and completely remove from the system without checking
+   * whether the entity can be deleted. Use with caution.
+   */
+  public function annihilate();
+
+  /**
+   * Revoke if this entity is revokable and is not new.
+   *
+   * @param boolean $save
+   *  Whether to save the entity after revoking.
+   * @param String $reason
+   *  The reason this entity is being revoked.
+   *
+   * @return boolean
+   *  TRUE if the entity was revoked, FALSE for all other results.
+   */
+  public function revoke($save = TRUE, $reason = '');
+
+  /**
+   * Unrevoke a revoked entity.
+   *
+   * @param boolean $save
+   *   Whether to save the entity after revoking.
+   *
+   * @return boolean
+   *   True if the entity was unrevoked, false for all other results.
+   *
+   */
+  public function unrevoke($save = TRUE);
+
+  /**
+   * Archive if the entity is archivable and is not new.
+   *
+   * @param String $reason
+   *   Reason for archiving this entity.
+   * @param boolean $save
+   *   Whether to save the entity after revoking.
+   *
+   * @return boolean
+   *   True if the entity was restored, false for all other results.
+   */
+  public function archive($save = TRUE, $reason = '');
+
+  /**
+   * Restore an archived entity.
+   *
+   * @param boolean $save
+   *   Whether to save the entity after revoking.
+   *
+   * @return boolean
+   *   True if the entity was restored, false for all other results.
+   */
+  public function restore($save = TRUE);
+
+  /**
    * Get the level of completion of this entity.
    *
    * @return NULL|integer

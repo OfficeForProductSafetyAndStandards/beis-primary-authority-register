@@ -1,0 +1,20 @@
+uuid: bfb16f32-1a21-4a23-93e7-c0b0da70a56a
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+    - par_data
+id: par_data_deviation_request.field_document
+field_name: field_document
+entity_type: par_data_deviation_request
+type: entity_reference
+settings:
+  target_type: media
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

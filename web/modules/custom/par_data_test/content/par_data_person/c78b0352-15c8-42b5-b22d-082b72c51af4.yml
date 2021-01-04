@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: c78b0352-15c8-42b5-b22d-082b72c51af4
+  bundle: person
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282ceee4c
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  salutation:
+    -
+      value: Mrs
+  first_name:
+    -
+      value: Big
+  last_name:
+    -
+      value: Bird
+  work_phone:
+    -
+      value: '01723456789'
+  mobile_phone:
+    -
+      value: '0777777777'
+  email:
+    -
+      value: par_authority@example.com
+  field_user_account:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab

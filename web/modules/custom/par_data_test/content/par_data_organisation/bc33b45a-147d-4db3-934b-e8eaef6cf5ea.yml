@@ -1,0 +1,58 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: bc33b45a-147d-4db3-934b-e8eaef6cf5ea
+  bundle: organisation
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    4a46ac19-ecb4-4e1b-ae20-07180dba261e: par_data_legal_entity
+    f7ba6111-932a-494b-a614-680525ac6aca: par_data_person
+    38ba3c17-b896-494f-9c68-924f526c5082: par_data_premises
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311050
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3bcaf329f
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'Member Upload Test Business'
+  comments:
+    -
+      value: 'This organisation is for testing Member Upload features.'
+      format: plain_text
+  trading_name:
+    -
+      value: 'Member Upload Tester'
+  field_legal_entity:
+    -
+      entity: 4a46ac19-ecb4-4e1b-ae20-07180dba261e
+  field_person:
+    -
+      entity: f7ba6111-932a-494b-a614-680525ac6aca
+  field_premises:
+    -
+      entity: 38ba3c17-b896-494f-9c68-924f526c5082

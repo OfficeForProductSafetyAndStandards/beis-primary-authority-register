@@ -1,6 +1,8 @@
 applications:
-- name: beis-par-staging
-memory: 2G
-disk_quota: 2048M
-host: beis-par-staging
-buildpack: php_buildpack
+  - name: beis-par-staging
+    routes:
+      - route: beis-par-staging.cloudapps.digital
+    buildpack: php_buildpack
+    memory: 2G
+    disk_quota: 2048M
+    timeout: 120

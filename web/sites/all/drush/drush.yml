@@ -1,0 +1,56 @@
+drush:
+  paths:
+    config:
+      - ${env.HOME}/.drush/config/drush.yml
+    include:
+      - '${env.HOME}/.drush/commands'
+      - /usr/share/drush/commands
+    alias-path:
+      - '${env.HOME}/.drush/sites'
+      - /etc/drush/sites
+
+options:
+  verbose: true
+
+command:
+  sql:
+    dump:
+      options:
+        ordered-dump: true
+        structure-tables-key: common
+        skip-tables-key: common
+        extra: '-O -x -w'
+    sanitize:
+      options:
+        sanitize-password: 'TestPassword'
+        sanitize-email: 'no'
+
+sql:
+  tables:
+    common:
+      - user
+      - permissions
+      - role_permissions
+      - role
+  structure-tables:
+    common:
+      - cache
+      - 'cache_*'
+      - history
+      - 'search_*'
+      - 'sessions'
+      - 'watchdog'
+      - 'flood'
+  skip-tables:
+    common:
+      - 'migration_*'
+      - 'test*'
+      - 'watchdog'
+      - 'webprofiler'
+    test:
+      - 'migration_*'
+      - 'test*'
+
+ssh:
+  options: '-o PasswordAuthentication=no'
+  pipefail: 'set -o pipefail; '

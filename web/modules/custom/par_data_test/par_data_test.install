@@ -4,6 +4,8 @@
  * Installation hooks for par_data_test module.
  */
 
+use Drupal\Core\Serialization\Yaml;
+
 /**
  * Implements hook_uninstall().
  */
@@ -30,20 +32,39 @@ function par_data_test_uninstall() {
       return $item[0] !== '.';
     });
 
-
     $uuids[$directory] = [];
     $uname[$directory] = [];
     foreach ($entity_uuids as $file_name) {
-      $uuid = rtrim($file_name, '.json');
-
-      $uuids[$directory][] = $uuid;
-
       $file_path = "$module_folder/$directory/$file_name";
       $contents = file_get_contents($file_path);
-      $decoded = $serializer->decode($contents, 'hal_json');
+      $extension = pathinfo($file_path, PATHINFO_EXTENSION);
 
-      if (isset($decoded['name'][0]['value'])) {
-        $uname[$directory][] = $decoded['name'][0]['value'];
+      // Allowing for the new version 2.x of default_content,
+      // which supports yaml normalized entities.
+      if ($extension == 'json') {
+        $decoded = $serializer->decode($contents, 'hal_json');
+        // Get the UUID to this entity.
+        $uuids[$directory][] = $decoded['uuid'][0]['value'];
+        // All PAR entities have a unique 'name' property that
+        // should also be looked up.
+        if (isset($decoded['default']['name'])) {
+          $uname[$directory][] = $decoded['name'][0]['value'];
+        }
+      }
+      elseif ($extension == 'yml') {
+        $decoded = Yaml::decode($contents);
+        // Get the UUID to this entity.
+        $uuids[$directory][] = $decoded['_meta']['uuid'];
+        // All PAR entities have a unique 'name' property that
+        // should also be looked up.
+        if (isset($decoded['default']['name'])) {
+          $uname[$directory][] = $decoded['default']['name'][0]['value'];
+        }
+      }
+      else {
+        // Files are now stored in the default content folders and should
+        // be ignored from importing directly.
+        continue;
       }
     }
   }

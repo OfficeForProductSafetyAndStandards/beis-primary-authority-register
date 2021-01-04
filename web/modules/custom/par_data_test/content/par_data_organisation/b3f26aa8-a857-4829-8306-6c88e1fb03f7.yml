@@ -1,0 +1,81 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: b3f26aa8-a857-4829-8306-6c88e1fb03f7
+  bundle: organisation
+  default_langcode: en
+  depends:
+    ff938a0f-0bb9-4ef9-a5c6-c1d7721d2401: par_data_legal_entity
+    b36d8ee5-b8ff-4dd7-9851-303c66a3497a: par_data_person
+    8cbcde93-3a33-45ff-9503-02ce78d9a46f: par_data_person
+    d2f48b3a-799c-43ca-ae08-8df30ecbbfbc: par_data_person
+    30fe2400-4deb-411c-98a2-a5935615bd98: par_data_premises
+    0f59d76d-3062-4c5e-8b26-b0a798a7104c: par_data_sic_code
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282d46097
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'Charlie''s'
+  size:
+    -
+      value: Small
+  employees_band:
+    -
+      value: 5-10
+  nation:
+    -
+      value: USA
+  comments:
+    -
+      value: 'Charlie''s is a restaurant featured in a series of Sesame Street sketches involving Grover working as a waiter at the restaurant.'
+      format: plain_text
+  premises_mapped:
+    -
+      value: true
+  trading_name:
+    -
+      value: 'Charlie''s'
+    -
+      value: 'Charlie''s Cafe'
+  field_legal_entity:
+    -
+      entity: ff938a0f-0bb9-4ef9-a5c6-c1d7721d2401
+  field_person:
+    -
+      entity: b36d8ee5-b8ff-4dd7-9851-303c66a3497a
+    -
+      entity: 8cbcde93-3a33-45ff-9503-02ce78d9a46f
+    -
+      entity: d2f48b3a-799c-43ca-ae08-8df30ecbbfbc
+  field_premises:
+    -
+      entity: 30fe2400-4deb-411c-98a2-a5935615bd98
+  field_sic_code:
+    -
+      entity: 0f59d76d-3062-4c5e-8b26-b0a798a7104c

@@ -22,4 +22,5 @@ permissions:
   - 'search public register'
   - 'skip comment approval'
   - 'view files'
+  - 'view media'
   - 'view own par profile'

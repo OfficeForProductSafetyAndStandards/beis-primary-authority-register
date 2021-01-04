@@ -1,0 +1,73 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: 18532baf-c4a5-4e3d-9f39-7ba7e2e4db9f
+  bundle: organisation
+  default_langcode: en
+  depends:
+    94bf4ebd-d80e-400c-b205-491ed7951b35: par_data_legal_entity
+    728a3fa0-49c9-479a-863e-49c88f224e14: par_data_person
+    7c3f359d-1ef9-43a3-be5e-883f3beb30cf: par_data_premises
+    59f0b396-cb0c-40d3-841d-bcf047e51c2b: par_data_sic_code
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282d5831f
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'Hooper''s Store'
+  size:
+    -
+      value: Large
+  employees_band:
+    -
+      value: 10-50
+  nation:
+    -
+      value: USA
+  comments:
+    -
+      value: 'Hooper''s Store is a candy store located on Sesame Street between the Fix-It Shop (or present-day Laundromat) and the courtyard.'
+      format: plain_text
+  premises_mapped:
+    -
+      value: true
+  trading_name:
+    -
+      value: 'Hooper''s'
+  field_legal_entity:
+    -
+      entity: 94bf4ebd-d80e-400c-b205-491ed7951b35
+  field_person:
+    -
+      entity: 728a3fa0-49c9-479a-863e-49c88f224e14
+  field_premises:
+    -
+      entity: 7c3f359d-1ef9-43a3-be5e-883f3beb30cf
+  field_sic_code:
+    -
+      entity: 59f0b396-cb0c-40d3-841d-bcf047e51c2b

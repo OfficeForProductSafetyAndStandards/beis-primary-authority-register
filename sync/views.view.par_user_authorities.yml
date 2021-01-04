@@ -53,24 +53,16 @@ display:
           text_input_required: 'Select any filter and click on Apply to see results'
           bef:
             general:
+              allow_secondary: false
+              secondary_label: 'Advanced options'
               autosubmit: false
               autosubmit_exclude_textfield: false
               autosubmit_hide: false
-              input_required: false
-              text_input_required: 'Select any filter and click on Apply to see results'
-              text_input_required_format: basic_html
-              allow_secondary: false
-              secondary_label: 'Advanced options'
-            filter:
-              authority_name:
-                plugin_id: default
-                advanced:
-                  collapsible: false
-                  is_secondary: false
-                  placeholder_text: ''
-                  rewrite:
-                    filter_rewrite_values: ''
-                  sort_options: false
+            authority_name:
+              bef_format: default
+              more_options:
+                is_secondary: false
+                placeholder_text: ''
           text_input_required_format: basic_html
       pager:
         type: pagerer

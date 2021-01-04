@@ -1,0 +1,30 @@
+_meta:
+  version: '1.0'
+  entity_type: file
+  uuid: a0520f9d-c864-4008-b866-80168f2577c4
+  bundle: document
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+default:
+  uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  filename:
+    -
+      value: 'Advice Issued - 01 - Attic Descriptions v2_1_0.pdf'
+  uri:
+    -
+      value: 's3private://documents/advice/Advice Issued - 01 - Attic Descriptions v2_1_0_59.pdf'
+  filemime:
+    -
+      value: application/pdf
+  filesize:
+    -
+      value: 108432
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1562774643
