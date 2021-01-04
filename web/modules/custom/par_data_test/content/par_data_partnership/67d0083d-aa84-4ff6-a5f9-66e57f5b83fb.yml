@@ -1,0 +1,68 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_partnership
+  uuid: 67d0083d-aa84-4ff6-a5f9-66e57f5b83fb
+  bundle: partnership
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    5385e5cf-1b98-43ae-9a3e-e369091a61ef: par_data_authority
+    c78b0352-15c8-42b5-b22d-082b72c51af4: par_data_person
+    12392d50-57dc-48c8-9480-85f44c9b2903: par_data_organisation
+    26db3fbe-d4a6-4a6a-ad69-108b54e1e4c5: par_data_person
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1561630326
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d149676779be
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  partnership_type:
+    -
+      value: direct
+  partnership_status:
+    -
+      value: confirmed_authority
+  about_partnership:
+    -
+      value: 'This is a test partnership for Uploading Advice.'
+      format: plain_text
+  terms_authority_agreed:
+    -
+      value: false
+  partnership_info_agreed_authority:
+    -
+      value: true
+  field_authority:
+    -
+      entity: 5385e5cf-1b98-43ae-9a3e-e369091a61ef
+  field_authority_person:
+    -
+      entity: c78b0352-15c8-42b5-b22d-082b72c51af4
+  field_organisation:
+    -
+      entity: 12392d50-57dc-48c8-9480-85f44c9b2903
+  field_organisation_person:
+    -
+      entity: 26db3fbe-d4a6-4a6a-ad69-108b54e1e4c5

@@ -1,0 +1,49 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: 6851e89b-ba24-4cdb-8f42-6d14808bd24a
+  bundle: person
+  default_langcode: en
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 'Authority Person with multiple contacts for Authority for Profile Test'
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  salutation:
+    -
+      value: Mrs
+  first_name:
+    -
+      value: Joe
+  work_phone:
+    -
+      value: '0000000000'
+  mobile_phone:
+    -
+      value: '0777777777'
+  email:
+    -
+      value: par_authority_multiple_contacts_profile@example.com

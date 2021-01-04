@@ -18,3 +18,4 @@ permissions:
   - 'search public register'
   - 'use text format restricted_html'
   - 'view files'
+  - 'view media'

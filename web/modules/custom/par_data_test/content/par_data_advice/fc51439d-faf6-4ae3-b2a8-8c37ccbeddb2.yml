@@ -1,0 +1,62 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_advice
+  uuid: fc51439d-faf6-4ae3-b2a8-8c37ccbeddb2
+  bundle: advice
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    a0520f9d-c864-4008-b866-80168f2577c4: file
+    3a4c6455-7263-4f0b-966a-24b8dd518f49: par_data_regulatory_function
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1562774693
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d260ca6b198b
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  advice_title:
+    -
+      value: 'Cookie Quotas'
+  advice_type:
+    -
+      value: background_information
+  notes:
+    -
+      value: 'This advice is related to making sure the cookie monster cannot have more than one cookie a day. Control of cookie related products is mandatory.'
+      format: plain_text
+  issue_date:
+    -
+      value: '2019-07-10'
+  document:
+    -
+      entity: a0520f9d-c864-4008-b866-80168f2577c4
+      display: false
+      description: ''
+  advice_status:
+    -
+      value: active
+  field_regulatory_function:
+    -
+      entity: 3a4c6455-7263-4f0b-966a-24b8dd518f49

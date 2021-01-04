@@ -1,0 +1,61 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: 9798a6c5-2978-496f-b1ee-b1fb31802f9f
+  bundle: person
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1527001844
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5b0432f561d94
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  salutation:
+    -
+      value: Mrs.
+  first_name:
+    -
+      value: Dolly
+  last_name:
+    -
+      value: Luettgen
+  work_phone:
+    -
+      value: '02079999999'
+  mobile_phone:
+    -
+      value: '078659999999'
+  email:
+    -
+      value: par_coordinator@example.com
+  communication_mobile:
+    -
+      value: true
+  communication_notes:
+    -
+      value: 'Some additional notes about Dolly Luettgen'
+      format: plain_text

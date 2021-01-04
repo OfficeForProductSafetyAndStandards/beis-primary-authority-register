@@ -1,0 +1,89 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_partnership
+  uuid: 9e194283-ef5a-422c-b3a1-b7496b303f83
+  bundle: partnership
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    46e65664-bf34-4713-ab14-740cbe581538: user
+    5385e5cf-1b98-43ae-9a3e-e369091a61ef: par_data_authority
+    c78b0352-15c8-42b5-b22d-082b72c51af4: par_data_person
+    f7fe21f8-6059-49ae-861c-2cbef8f51377: par_data_legal_entity
+    792c1443-f05a-4cf7-b634-a846b29e16b3: par_data_organisation
+    faf103d7-c0ce-406e-a8f3-4aeea73aaedd: par_data_person
+    15660610-03e4-47f4-b26e-159d0cd4d86a: par_data_regulatory_function
+    3a4c6455-7263-4f0b-966a-24b8dd518f49: par_data_regulatory_function
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563456225
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d3072e2240a0
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  partnership_type:
+    -
+      value: direct
+  partnership_status:
+    -
+      value: confirmed_rd
+  about_partnership:
+    -
+      value: 'This partnership has been nominated by the secretary of state and is currently active for test purposes only.'
+      format: plain_text
+  approved_date:
+    -
+      value: '2019-07-18'
+  terms_organisation_agreed:
+    -
+      value: true
+  terms_authority_agreed:
+    -
+      value: false
+  partnership_info_agreed_authority:
+    -
+      value: true
+  partnership_info_agreed_business:
+    -
+      value: false
+  field_authority:
+    -
+      entity: 5385e5cf-1b98-43ae-9a3e-e369091a61ef
+  field_authority_person:
+    -
+      entity: c78b0352-15c8-42b5-b22d-082b72c51af4
+  field_legal_entity:
+    -
+      entity: f7fe21f8-6059-49ae-861c-2cbef8f51377
+  field_organisation:
+    -
+      entity: 792c1443-f05a-4cf7-b634-a846b29e16b3
+  field_organisation_person:
+    -
+      entity: faf103d7-c0ce-406e-a8f3-4aeea73aaedd
+  field_regulatory_function:
+    -
+      entity: 15660610-03e4-47f4-b26e-159d0cd4d86a
+    -
+      entity: 3a4c6455-7263-4f0b-966a-24b8dd518f49

@@ -1,0 +1,46 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_coordinated_business
+  uuid: 8e479bd8-e0f4-4507-ba41-ab0434e33932
+  bundle: coordinated_business
+  default_langcode: en
+  depends:
+    46e65664-bf34-4713-ab14-740cbe581538: user
+    9737ee2e-7d08-4364-a344-2662a76cdb8b: par_data_organisation
+default:
+  user_id:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311475
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3d8151268
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  covered_by_inspection:
+    -
+      value: true
+  date_membership_began:
+    -
+      value: '2013-04-01'
+  field_organisation:
+    -
+      entity: 9737ee2e-7d08-4364-a344-2662a76cdb8b

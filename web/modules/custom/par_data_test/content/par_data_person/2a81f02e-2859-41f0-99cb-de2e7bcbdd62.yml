@@ -1,0 +1,52 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: 2a81f02e-2859-41f0-99cb-de2e7bcbdd62
+  bundle: person
+  default_langcode: en
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282d24e38
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  salutation:
+    -
+      value: Mr
+  first_name:
+    -
+      value: Animal
+  last_name:
+    -
+      value: Muppet
+  work_phone:
+    -
+      value: '01723456789'
+  mobile_phone:
+    -
+      value: '0777777777'
+  email:
+    -
+      value: par_member_3@example.com

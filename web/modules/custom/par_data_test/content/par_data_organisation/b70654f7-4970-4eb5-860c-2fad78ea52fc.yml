@@ -1,0 +1,47 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: b70654f7-4970-4eb5-860c-2fad78ea52fc
+  bundle: organisation
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    9798a6c5-2978-496f-b1ee-b1fb31802f9f: par_data_person
+    7b24f86d-784d-444a-be17-90ee3331ab66: par_data_premises
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1527001844
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5b0432f54c6fc
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'Organisation For Coordinated Partnership'
+  field_person:
+    -
+      entity: 9798a6c5-2978-496f-b1ee-b1fb31802f9f
+  field_premises:
+    -
+      entity: 7b24f86d-784d-444a-be17-90ee3331ab66

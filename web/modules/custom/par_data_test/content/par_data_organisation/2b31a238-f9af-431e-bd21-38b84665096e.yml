@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: 2b31a238-f9af-431e-bd21-38b84665096e
+  bundle: organisation
+  default_langcode: en
+  depends:
+    46e65664-bf34-4713-ab14-740cbe581538: user
+    0f4856a6-6390-49f1-84e9-5320a58124f4: par_data_legal_entity
+    3a827081-94f2-4ad7-ae24-8b04b0d57cdd: par_data_person
+    cf2bd09c-dfb8-4fb8-8344-b0dd966b001b: par_data_premises
+default:
+  user_id:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311475
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3d79ec8bb
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'DIY shop'
+  field_legal_entity:
+    -
+      entity: 0f4856a6-6390-49f1-84e9-5320a58124f4
+  field_person:
+    -
+      entity: 3a827081-94f2-4ad7-ae24-8b04b0d57cdd
+  field_premises:
+    -
+      entity: cf2bd09c-dfb8-4fb8-8344-b0dd966b001b

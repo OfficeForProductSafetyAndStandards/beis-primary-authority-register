@@ -1,0 +1,68 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_partnership
+  uuid: 8cc4659d-862e-4244-9d4d-9a7d42aa07eb
+  bundle: partnership
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    5385e5cf-1b98-43ae-9a3e-e369091a61ef: par_data_authority
+    c78b0352-15c8-42b5-b22d-082b72c51af4: par_data_person
+    26fd0777-64d3-49a1-b8b6-a2125bb76172: par_data_organisation
+    804be6cc-9a93-49de-9175-803105e45a4c: par_data_person
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1578121175
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5e1037d7e3863
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  partnership_type:
+    -
+      value: direct
+  partnership_status:
+    -
+      value: confirmed_authority
+  about_partnership:
+    -
+      value: 'This is an incomplete partnership for the purposes of testing application deletion.'
+      format: plain_text
+  terms_authority_agreed:
+    -
+      value: false
+  partnership_info_agreed_authority:
+    -
+      value: true
+  field_authority:
+    -
+      entity: 5385e5cf-1b98-43ae-9a3e-e369091a61ef
+  field_authority_person:
+    -
+      entity: c78b0352-15c8-42b5-b22d-082b72c51af4
+  field_organisation:
+    -
+      entity: 26fd0777-64d3-49a1-b8b6-a2125bb76172
+  field_organisation_person:
+    -
+      entity: 804be6cc-9a93-49de-9175-803105e45a4c

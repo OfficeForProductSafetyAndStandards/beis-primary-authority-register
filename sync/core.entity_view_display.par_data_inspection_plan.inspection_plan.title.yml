@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_inspection_plan.title
+    - field.field.par_data_inspection_plan.inspection_plan.field_document
     - field.field.par_data_inspection_plan.inspection_plan.field_regulatory_function
     - par_data.par_data_inspection_plan_type.inspection_plan
   module:
@@ -24,6 +25,15 @@ content:
     settings:
       access_message: 'You don''t have access to download this file.'
       text: 'Download [file:name]'
+    third_party_settings: {  }
+  field_document:
+    type: entity_reference_entity_view
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
     third_party_settings: {  }
   summary:
     label: hidden

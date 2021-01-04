@@ -1,0 +1,57 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: 512ccfa3-496d-47aa-9a46-6abfa8922625
+  bundle: person
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282d021c2
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  salutation:
+    -
+      value: Mr
+  first_name:
+    -
+      value: Kermit
+  last_name:
+    -
+      value: 'the Frog'
+  work_phone:
+    -
+      value: '01723456789'
+  mobile_phone:
+    -
+      value: '0777777777'
+  email:
+    -
+      value: par_authority@example.com
+  field_user_account:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab

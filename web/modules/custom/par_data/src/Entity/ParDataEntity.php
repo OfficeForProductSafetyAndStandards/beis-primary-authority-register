@@ -179,9 +179,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Whether this entity is revoked.
-   *
-   * @return bool
+   * {@inheritdoc}
    */
   public function isRevoked() {
     if ($this->getTypeEntity()->isRevokable() && $this->getBoolean(self::REVOKE_FIELD)) {
@@ -192,9 +190,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Whether this entity is archived.
-   *
-   * @return bool
+   * {@inheritdoc}
    */
   public function isArchived() {
     if ($this->getTypeEntity()->isArchivable() && $this->getBoolean(self::ARCHIVE_FIELD)) {
@@ -255,16 +251,14 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Destroy entity, and completely remove.
+   * {@inheritdoc}
    */
   public function annihilate() {
     return $this->entityTypeManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
   }
 
   /**
-   * Check whether this entity is destroyable.
-   *
-   * @TODO Related to PAR-1439, do not use until this is complete.
+   * {@inheritdoc}
    */
   public function isDeletable() {
     // Only some PAR entities can be deleted.
@@ -279,7 +273,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Delete if this entity is deletable and is not new.
+   * {@inheritdoc}
    */
   public function delete($reason = '') {
     if (!$this->isDeleted()) {
@@ -291,16 +285,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Revoke if this entity is revokable and is not new.
-   *
-   * @param boolean $save
-   *  Whether to save the entity after revoking.
-   *
-   * @param String $reason
-   *  The reason this entity is being revoked.
-   *
-   * @return boolean
-   *  True if the entity was revoked, false for all other results.
+   * {@inheritdoc}
    */
   public function revoke($save = TRUE, $reason = '') {
     if ($this->isNew()) {
@@ -323,14 +308,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Unrevoke a revoked entity.
-   *
-   * @param boolean $save
-   *   Whether to save the entity after revoking.
-   *
-   * @return boolean
-   *   True if the entity was unrevoked, false for all other results.
-   *
+   * {@inheritdoc}
    */
   public function unrevoke($save = TRUE) {
     if ($this->isNew()) {
@@ -347,16 +325,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Archive if the entity is archivable and is not new.
-   *
-   * @param String $reason
-   *   Reason for archiving this entity.
-   *
-   * @param boolean $save
-   *   Whether to save the entity after revoking.
-   *
-   * @return boolean
-   *   True if the entity was restored, false for all other results.
+   * {@inheritdoc}
    */
   public function archive($save = TRUE, $reason = '') {
     if ($this->isNew()) {
@@ -382,13 +351,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Restore an archived entity.
-   *
-   * @param boolean $save
-   *   Whether to save the entity after revoking.
-   *
-   * @return boolean
-   *   True if the entity was restored, false for all other results.
+   * {@inheritdoc}
    */
   public function restore($save = TRUE) {
     if ($this->isNew()) {

@@ -1,0 +1,50 @@
+_meta:
+  version: '1.0'
+  entity_type: user
+  uuid: be90c88d-30dc-4694-b29e-26927c07983e
+  default_langcode: en
+default:
+  preferred_langcode:
+    -
+      value: en
+  name:
+    -
+      value: par_user_management_officer
+  pass:
+    -
+      value: TestPassword
+      existing: ''
+      pre_hashed: false
+  mail:
+    -
+      value: par_user_management_officer@example.com
+  timezone:
+    -
+      value: UTC
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1545046309
+  access:
+    -
+      value: 0
+  login:
+    -
+      value: 0
+  roles:
+    -
+      target_id: par_enforcement
+  role_change:
+    -
+      target_id: __role_delegation_empty_field_value__
+  field_gdpr:
+    -
+      value: false
+  field_last_password_reset:
+    -
+      value: '2020-12-10T13:33:39'
+  field_password_expiration:
+    -
+      value: false

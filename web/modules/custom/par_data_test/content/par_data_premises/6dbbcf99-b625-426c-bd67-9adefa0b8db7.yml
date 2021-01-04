@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_premises
+  uuid: 6dbbcf99-b625-426c-bd67-9adefa0b8db7
+  bundle: premises
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1596907434
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5f2edfaaa5905
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  address:
+    -
+      langcode: ''
+      country_code: GB
+      administrative_area: 'Test County'
+      locality: 'Test Town'
+      dependent_locality: ''
+      postal_code: 'SW1W 0NY'
+      sorting_code: ''
+      address_line1: 'Farm House'
+      address_line2: '5 Sesame St'
+      organization: ''
+      given_name: ''
+      additional_name: ''
+      family_name: ''

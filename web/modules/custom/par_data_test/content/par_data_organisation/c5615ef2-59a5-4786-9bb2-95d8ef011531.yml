@@ -1,0 +1,47 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: c5615ef2-59a5-4786-9bb2-95d8ef011531
+  bundle: organisation
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    42f41471-4b62-432b-8ca3-bf3b34b5fdd1: par_data_person
+    a81765cb-8b61-4641-8732-08ac68606041: par_data_premises
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1527001797
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5b0432c62080c
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'Organisation For Direct Partnership'
+  field_person:
+    -
+      entity: 42f41471-4b62-432b-8ca3-bf3b34b5fdd1
+  field_premises:
+    -
+      entity: a81765cb-8b61-4641-8732-08ac68606041

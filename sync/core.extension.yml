@@ -53,10 +53,17 @@ module:
   locale: 0
   login_destination: 0
   masquerade: 0
+  media: 0
+  media_library: 0
   menu_link_attributes: 0
   menu_ui: 0
   message: 0
   message_notify: 0
+  migrate: 0
+  migrate_drupal: 0
+  migrate_file_to_media: 0
+  migrate_plus: 0
+  migrate_tools: 0
   no_autocomplete: 0
   node: 0
   options: 0
@@ -91,6 +98,7 @@ module:
   par_member_unlock_flows: 0
   par_member_update_flows: 0
   par_member_upload_flows: 0
+  par_migrate_files: 0
   par_notification: 0
   par_organisation_update_flows: 0
   par_partnership_application_flows: 0

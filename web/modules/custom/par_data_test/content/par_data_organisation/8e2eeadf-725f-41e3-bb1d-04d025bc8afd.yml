@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: 8e2eeadf-725f-41e3-bb1d-04d025bc8afd
+  bundle: organisation
+  default_langcode: en
+  depends:
+    46e65664-bf34-4713-ab14-740cbe581538: user
+    b0398d82-732b-4f9b-ac56-659d368bd266: par_data_legal_entity
+    5ab0a0b6-5a23-4771-8664-c76cb2d0876e: par_data_person
+    a37f7fcc-1b38-40b4-9741-2c587de88e85: par_data_premises
+default:
+  user_id:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311475
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3d891ed65
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: Library
+  field_legal_entity:
+    -
+      entity: b0398d82-732b-4f9b-ac56-659d368bd266
+  field_person:
+    -
+      entity: 5ab0a0b6-5a23-4771-8664-c76cb2d0876e
+  field_premises:
+    -
+      entity: a37f7fcc-1b38-40b4-9741-2c587de88e85

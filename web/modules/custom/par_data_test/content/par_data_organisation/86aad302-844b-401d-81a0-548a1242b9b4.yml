@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: 86aad302-844b-401d-81a0-548a1242b9b4
+  bundle: organisation
+  default_langcode: en
+  depends:
+    46e65664-bf34-4713-ab14-740cbe581538: user
+    2665d5c0-b64d-4ae1-a8ec-b46dad0fc978: par_data_legal_entity
+    be8ab920-aca4-48d7-82bd-711c3394b15a: par_data_person
+    44030c48-6f56-4a5e-862b-dc23a9681c8b: par_data_premises
+default:
+  user_id:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311475
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3d9a57484
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'Corner Shop'
+  field_legal_entity:
+    -
+      entity: 2665d5c0-b64d-4ae1-a8ec-b46dad0fc978
+  field_person:
+    -
+      entity: be8ab920-aca4-48d7-82bd-711c3394b15a
+  field_premises:
+    -
+      entity: 44030c48-6f56-4a5e-862b-dc23a9681c8b

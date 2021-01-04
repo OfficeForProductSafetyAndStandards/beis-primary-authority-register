@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_general_enquiry.field_document
+    - media.type.document
+    - par_data.par_data_general_enquiry_type.general_enquiry
+id: par_data_general_enquiry.general_enquiry.field_document
+field_name: field_document
+entity_type: par_data_general_enquiry
+bundle: general_enquiry
+label: Document
+description: 'Add a document to this general enquiry.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      document: document
+    sort:
+      field: status
+      direction: DESC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

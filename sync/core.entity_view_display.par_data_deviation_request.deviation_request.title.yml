@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_deviation_request.title
+    - field.field.par_data_deviation_request.deviation_request.field_document
     - field.field.par_data_deviation_request.deviation_request.field_enforcing_authority
     - field.field.par_data_deviation_request.deviation_request.field_inspection_plan
     - field.field.par_data_deviation_request.deviation_request.field_partnership
@@ -28,10 +29,19 @@ content:
       text: 'Download [file:name]'
     third_party_settings: {  }
     type: file_download_link
+  field_document:
+    type: entity_reference_entity_view
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
+    third_party_settings: {  }
   notes:
     label: hidden
     type: text_default
-    weight: 1
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }

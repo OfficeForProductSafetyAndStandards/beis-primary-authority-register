@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_advice.title
+    - field.field.par_data_advice.advice.field_document
     - field.field.par_data_advice.advice.field_regulatory_function
     - par_data.par_data_advice_type.advice
   module:
@@ -14,7 +15,7 @@ mode: title
 content:
   advice_status:
     label: hidden
-    weight: 2
+    weight: 3
     region: content
     settings:
       link_to_entity: false
@@ -28,6 +29,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+  attachment:
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
   document:
     type: file_download_link
     weight: 1
@@ -36,6 +45,15 @@ content:
     settings:
       access_message: 'You don''t have access to download this file.'
       text: 'Download [file:name]'
+    third_party_settings: {  }
+  field_document:
+    type: entity_reference_entity_view
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link: true
+      view_mode: default
     third_party_settings: {  }
 hidden:
   advice_type: true

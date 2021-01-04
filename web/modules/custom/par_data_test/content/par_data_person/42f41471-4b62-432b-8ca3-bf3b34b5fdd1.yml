@@ -1,0 +1,61 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: 42f41471-4b62-432b-8ca3-bf3b34b5fdd1
+  bundle: person
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1527001797
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5b0432c637b7d
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  salutation:
+    -
+      value: Ms.
+  first_name:
+    -
+      value: Claude
+  last_name:
+    -
+      value: Grady
+  work_phone:
+    -
+      value: '99999999902079999999'
+  mobile_phone:
+    -
+      value: '1111111111111078659999999'
+  email:
+    -
+      value: par_business@example.com
+  communication_mobile:
+    -
+      value: true
+  communication_notes:
+    -
+      value: 'Some additional notes'
+      format: plain_text

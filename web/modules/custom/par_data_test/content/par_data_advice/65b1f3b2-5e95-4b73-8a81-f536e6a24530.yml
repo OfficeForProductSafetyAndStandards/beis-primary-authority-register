@@ -1,0 +1,60 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_advice
+  uuid: 65b1f3b2-5e95-4b73-8a81-f536e6a24530
+  bundle: advice
+  default_langcode: en
+  depends:
+    efb8c61a-3df6-439d-a1d8-a05c337157d3: file
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282c89f14
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  advice_type:
+    -
+      value: background_information
+  notes:
+    -
+      value: 'Cookie Monster Is The Life Coach You Never Knew You Needed. See http://bzfd.it/2tD0DlO for more information.'
+      format: plain_text
+  visible_authority:
+    -
+      value: true
+  visible_coordinator:
+    -
+      value: true
+  visible_business:
+    -
+      value: true
+  document:
+    -
+      entity: efb8c61a-3df6-439d-a1d8-a05c337157d3
+      display: false
+      description: ''
+  advice_status:
+    -
+      value: active

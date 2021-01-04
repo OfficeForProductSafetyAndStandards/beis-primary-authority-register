@@ -1,0 +1,28 @@
+uuid: 4fdcdf7d-ced7-4fd9-a492-62f09a6d70eb
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - media
+  module:
+    - file
+    - media
+_core:
+  default_config_hash: rQoPQKvhehKl_xDCFHeMJ5nA5i6bxUSdrNxazOSPGTg
+id: media.field_media_document
+field_name: field_media_document
+entity_type: media
+type: file
+settings:
+  display_field: false
+  display_default: false
+  uri_scheme: s3private
+  target_type: file
+module: file
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

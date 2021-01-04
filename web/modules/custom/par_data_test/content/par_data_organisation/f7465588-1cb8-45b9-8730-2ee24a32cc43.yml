@@ -1,0 +1,75 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: f7465588-1cb8-45b9-8730-2ee24a32cc43
+  bundle: organisation
+  default_langcode: en
+  depends:
+    e0d9b503-0782-490a-bdb2-5c3eef176d1b: par_data_legal_entity
+    262afcb1-ce1d-4315-8750-82765dbbc442: par_data_person
+    3c950b74-8fd8-43c4-ad78-37683813cca3: par_data_premises
+    59f0b396-cb0c-40d3-841d-bcf047e51c2b: par_data_sic_code
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282d6b4e1
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'Fix-It Shop'
+  size:
+    -
+      value: Small
+  employees_band:
+    -
+      value: 1-4
+  nation:
+    -
+      value: USA
+  comments:
+    -
+      value: 'Fix-It Shop is run by married couple Luis and Maria. They can repair just about anything, though toasters are their specialty.'
+      format: plain_text
+  premises_mapped:
+    -
+      value: true
+  trading_name:
+    -
+      value: 'Fix-It Shop'
+    -
+      value: Fix-It
+  field_legal_entity:
+    -
+      entity: e0d9b503-0782-490a-bdb2-5c3eef176d1b
+  field_person:
+    -
+      entity: 262afcb1-ce1d-4315-8750-82765dbbc442
+  field_premises:
+    -
+      entity: 3c950b74-8fd8-43c4-ad78-37683813cca3
+  field_sic_code:
+    -
+      entity: 59f0b396-cb0c-40d3-841d-bcf047e51c2b

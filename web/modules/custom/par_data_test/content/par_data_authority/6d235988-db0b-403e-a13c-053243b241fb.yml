@@ -1,0 +1,59 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_authority
+  uuid: 6d235988-db0b-403e-a13c-053243b241fb
+  bundle: authority
+  default_langcode: en
+  depends:
+    dce54409-e49b-42cf-8751-7e22e24518d3: par_data_person
+    4db1022a-b0f5-4369-b9ec-d8cbb4e9e748: par_data_premises
+    3a4c6455-7263-4f0b-966a-24b8dd518f49: par_data_regulatory_function
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282dacf46
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  authority_name:
+    -
+      value: 'Authority for Profile Test'
+  authority_type:
+    -
+      value: council
+  nation:
+    -
+      value: EN-WLS
+  ons_code:
+    -
+      value: '123456'
+  field_person:
+    -
+      entity: dce54409-e49b-42cf-8751-7e22e24518d3
+  field_premises:
+    -
+      entity: 4db1022a-b0f5-4369-b9ec-d8cbb4e9e748
+  field_regulatory_function:
+    -
+      entity: 3a4c6455-7263-4f0b-966a-24b8dd518f49

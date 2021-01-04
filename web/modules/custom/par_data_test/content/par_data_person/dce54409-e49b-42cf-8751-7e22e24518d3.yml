@@ -1,0 +1,52 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: dce54409-e49b-42cf-8751-7e22e24518d3
+  bundle: person
+  default_langcode: en
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 'Authority Person for Authority for Profile Test'
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  salutation:
+    -
+      value: Mr
+  first_name:
+    -
+      value: Harry
+  last_name:
+    -
+      value: Noname
+  work_phone:
+    -
+      value: '0000000000'
+  mobile_phone:
+    -
+      value: '0777777777'
+  email:
+    -
+      value: par_authority_profile@example.com

@@ -1,0 +1,52 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_premises
+  uuid: 7f3b87cd-4406-4f07-a562-ee6876774b16
+  bundle: premises
+  default_langcode: en
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282cd2bcd
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  address:
+    -
+      langcode: ''
+      country_code: GB
+      administrative_area: US-NY
+      locality: 'New York State'
+      dependent_locality: ''
+      postal_code: 'MK6 2LY'
+      sorting_code: ''
+      address_line1: '1 sesame St'
+      address_line2: 'New York'
+      organization: ''
+      given_name: ''
+      additional_name: ''
+      family_name: ''
+  nation:
+    -
+      value: GB-WLS

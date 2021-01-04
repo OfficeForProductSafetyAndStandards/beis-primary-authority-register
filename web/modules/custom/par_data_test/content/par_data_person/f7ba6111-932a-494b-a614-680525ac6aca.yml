@@ -1,0 +1,54 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: f7ba6111-932a-494b-a614-680525ac6aca
+  bundle: person
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311050
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3bcb002d8
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  salutation:
+    -
+      value: Dr
+  first_name:
+    -
+      value: Julian
+  last_name:
+    -
+      value: Smith
+  work_phone:
+    -
+      value: '02098475983'
+  mobile_phone:
+    -
+      value: '0727627365'
+  email:
+    -
+      value: par_coordinator@example.com

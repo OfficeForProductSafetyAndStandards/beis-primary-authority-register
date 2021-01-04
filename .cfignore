@@ -7,6 +7,11 @@ _darcs
 .hg
 manifest.yml
 .svn
+.env
+*.env
+
+# Ignore temporary assets
+*.tar.gz
 
 # Ignore non-app files
 /devops/dashboard/
@@ -14,17 +19,10 @@ manifest.yml
 /devops/vault/
 /clamav/
 /tests/
+/vendor/
 
 # Ignore package files
-composer.json
-composer.lock
-package.json
-package-lock.json
 phpunit.xml
 
 # Ignore local only files
 /web/sites/default/settings.local.php
-
-# Ignore temporary assets
-*.tar.gz
-
