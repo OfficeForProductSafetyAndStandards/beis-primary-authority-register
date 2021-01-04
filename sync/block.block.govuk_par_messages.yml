@@ -5,11 +5,11 @@ dependencies:
   module:
     - system
   theme:
-    - par
+    - govuk_par
 _core:
   default_config_hash: KHQIJ7Vfl25lTjzIc7qIvnuistt-Mw2O0kG4jCofmkI
-id: par_messages
-theme: par
+id: govuk_par_messages
+theme: govuk_par
 region: content
 weight: -8
 provider: null

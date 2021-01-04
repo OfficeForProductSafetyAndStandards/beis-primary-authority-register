@@ -1,4 +1,4 @@
-par:
+par-core:
   version: 1.0
   js:
     js/par.js: {}
@@ -6,7 +6,7 @@ par:
     theme:
       css/par.css: {}
   dependencies:
-    - par/par-vendor
+    - govuk_par/par-vendor
 
 par-vendor:
   version: 1.0

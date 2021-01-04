@@ -7,11 +7,11 @@ dependencies:
   module:
     - system
   theme:
-    - par
+    - govuk_par
 _core:
   default_config_hash: kkISXE1LT2FJEoYnqCrCpeFB-2pmGmMxMklVk7rQcfg
-id: par_footer
-theme: par
+id: govuk_par_footer
+theme: govuk_par
 region: header
 weight: -3
 provider: null

@@ -8,9 +8,9 @@ dependencies:
     - block_content
     - system
   theme:
-    - par
-id: par_donthaveanaccount
-theme: par
+    - govuk_par
+id: govuk_par_donthaveanaccount
+theme: govuk_par
 region: content
 weight: 1
 provider: null

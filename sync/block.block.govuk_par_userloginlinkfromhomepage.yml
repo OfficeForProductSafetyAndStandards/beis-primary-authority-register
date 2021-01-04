@@ -9,9 +9,9 @@ dependencies:
     - system
     - user
   theme:
-    - par
-id: par_userloginlinkfromhomepage
-theme: par
+    - govuk_par
+id: govuk_par_userloginlinkfromhomepage
+theme: govuk_par
 region: content
 weight: 0
 provider: null

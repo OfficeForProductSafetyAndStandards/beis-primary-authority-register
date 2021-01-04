@@ -5,11 +5,11 @@ dependencies:
   module:
     - system
   theme:
-    - par
+    - govuk_par
 _core:
   default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
-id: par_local_tasks
-theme: par
+id: govuk_par_local_tasks
+theme: govuk_par
 region: content
 weight: -5
 provider: null

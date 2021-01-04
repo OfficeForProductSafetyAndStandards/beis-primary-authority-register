@@ -6,7 +6,7 @@ description: A Drupal 8 theme based on the GDS GOV.UK Frontend inherrited from g
 core: 8.x
 base theme: govuk
 libraries:
-  - par/par
+  - par_gds/par-core
 regions:
   header: 'Header'
   navigation: 'Navigation'

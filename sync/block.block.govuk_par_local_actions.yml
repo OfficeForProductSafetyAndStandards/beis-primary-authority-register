@@ -3,11 +3,11 @@ langcode: en
 status: true
 dependencies:
   theme:
-    - par
+    - govuk_par
 _core:
   default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
-id: par_local_actions
-theme: par
+id: govuk_par_local_actions
+theme: govuk_par
 region: content
 weight: -3
 provider: null

@@ -163,7 +163,7 @@ theme:
   seven: 0
   par_theme: 0
   govuk: 0
-  par: 0
+  govuk_par: 0
 profile: standard
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc

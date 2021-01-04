@@ -5,11 +5,11 @@ dependencies:
   module:
     - system
   theme:
-    - par
+    - govuk_par
 _core:
   default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
-id: par_content
-theme: par
+id: govuk_par_content
+theme: govuk_par
 region: content
 weight: -2
 provider: null

@@ -7,9 +7,9 @@ dependencies:
   module:
     - block_content
   theme:
-    - par
-id: par_sitewidehelpdeskmessage
-theme: par
+    - govuk_par
+id: govuk_par_sitewidehelpdeskmessage
+theme: govuk_par
 region: content
 weight: -7
 provider: null
