@@ -29,7 +29,7 @@
         "drupal/chosen": "~2.7.0",
         "drupal/clamav": "~1.1.0",
         "drupal/config_readonly": "~1.0.0",
-        "drupal/config_split": "~1.4.0",
+        "drupal/config_split": "~1.7.0",
         "drupal/config_update": "~1.6.0",
         "drupal/core": "~8.9.0",
         "drupal/csv_serialization": "~1.4.0",

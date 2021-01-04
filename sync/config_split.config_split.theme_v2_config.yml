@@ -1,0 +1,16 @@
+uuid: 8fa5abcd-834c-42de-bade-ec1653bdd26f
+langcode: en
+status: true
+dependencies: {  }
+id: theme_v2_config
+label: 'Theme v2 Config'
+description: 'Enables and configures the upgraded govuk par theme.'
+folder: ../sync-theme-v2
+module: {  }
+theme: {  }
+blacklist: {  }
+graylist:
+  - system.theme
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 0
