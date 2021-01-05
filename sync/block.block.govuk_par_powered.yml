@@ -11,7 +11,7 @@ _core:
 id: govuk_par_powered
 theme: govuk_par
 region: header
-weight: -5
+weight: -8
 provider: null
 plugin: system_powered_by_block
 settings:
