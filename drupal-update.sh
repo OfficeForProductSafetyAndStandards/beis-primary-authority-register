@@ -10,7 +10,7 @@ echo "Current working directory is ${PWD}"
 
 # Put the site in maintenance mode.
 printf "Enabling maintenance mode...\n"
-../vendor/drush/drush/drush cache:clear drush;
+../vendor/drush/drush/drush cache:rebuild;
 ../vendor/drush/drush/drush state:set system.maintenance_mode 1;
 # Clear cache
 printf "Clearing cache...\n"
