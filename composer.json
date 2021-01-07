@@ -60,7 +60,7 @@
         "drupal/password_strength": "~2.0.0",
         "drupal/queue_ui": "~2.0.0",
         "drupal/range": "~1.1.0",
-        "drupal/raven": "~2.26",
+        "drupal/raven": "~3.1.0",
         "drupal/redis": "~1.4.0",
         "drupal/robotstxt": "~1.1.0",
         "drupal/role_delegation": "~1.0.0",
@@ -143,7 +143,6 @@
                 "Add support for ClamAV via a REST daemon": "./patches/clamav_add_rest_client.patch"
             },
             "drupal/core": {
-                "User email should not be case sensitive": "./patches/case_insensitive_login-2490294-31.patch",
                 "Ensure the table alias is no longer than 60 characters long": "https://www.drupal.org/files/issues/drupal-571548-107-d8_0.patch",
                 "Form API #ajax not working on link element": "https://www.drupal.org/files/issues/2018-03-12/core-allow-form-ajax-for-links-2915954-9.patch",
                 "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2019-05-23/2551893-entity-hooks-71.patch",

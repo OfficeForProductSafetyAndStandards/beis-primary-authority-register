@@ -143,7 +143,7 @@ module.exports = {
                 .setValue('#edit-name', string)
                 .setValue('#edit-pass', 'TestPassword')
                 .click('#edit-submit')
-                .waitForElementVisible('#footer', 15000)
+                .waitForElementVisible('footer', 15000)
                 .assert.containsText('body', 'Sign out')
         },
         viewMailLog: function() {
