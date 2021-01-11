@@ -555,4 +555,4 @@ printf "Running the post deployment scripts...\n"
 cf ssh $TARGET_ENV -c "cd app/devops/tools && python cron_runner.py"
 
 ## Run the cache warmer asynchronously with lots of memory
-cf run-task $TARGET_ENV "./scripts/cache-warmer.sh" -m 4G --name CACHE_WARMER
+cf run-task $TARGET_ENV "./scripts/cache-warmer.sh" -m 4G -k 4G --name CACHE_WARMER
