@@ -1,0 +1,10 @@
+uuid: 9269603d-6ad4-4bf8-8c18-efba9aa6b314
+langcode: en
+status: true
+dependencies: {  }
+id: permissions_policy
+label: 'Permissions Policy'
+description: 'Set which api features can be used on primary authority websites.'
+group: Security
+name: Permissions-Policy
+value: 'accelerometer=(), autoplay=(), camera=(), display-capture(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), sync-xhr(self), usb=(self)'
