@@ -25,6 +25,10 @@ printf "Running database updates...\n"
 ../vendor/drush/drush/drush updb -y;
 
 ## CONFIG IMPORT
+# Enable any new modules first.
+printf "Enabling modules...\n"
+../vendor/drush/drush/drush --quiet config:import --partial --source=sync/core.extension.yml || true
+
 printf "Importing config...\n"
 counter=1;
 # Check that there's no remaining config diff.
