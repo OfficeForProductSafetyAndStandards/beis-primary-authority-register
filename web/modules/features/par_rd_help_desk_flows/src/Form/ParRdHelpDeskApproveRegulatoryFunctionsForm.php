@@ -47,11 +47,6 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
       $this->accessResult = AccessResult::forbidden('The partnership has been revoked.');
     }
 
-    // If partnership has been deleted, we should not be able to revoke it.
-    if ($par_data_partnership->isDeleted()) {
-      $this->accessResult = AccessResult::forbidden('The partnership is already deleted.');
-    }
-
     // 403 if the partnership is active/approved by RD.
     if ($par_data_partnership->getRawStatus() !== 'confirmed_business') {
       $this->accessResult = AccessResult::forbidden('The partnership is active.');

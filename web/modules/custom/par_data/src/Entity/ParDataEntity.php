@@ -156,29 +156,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Will return true if the entity is allowed to exist within the system.
-   * Or false if it has been soft-removed.
-   *
-   * @return bool
-   */
-  public function isLiving() {
-    return !$this->isDeleted() && $this->isTransitioned() && $this->getBoolean('status');
-  }
-
-  /**
-   * Whether this entity is deleted.
-   *
-   * @return bool
-   */
-  public function isDeleted() {
-    if ($this->getTypeEntity()->isDeletable() && $this->getBoolean(self::DELETE_FIELD)) {
-      return TRUE;
-    }
-
-    return FALSE;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function isRevoked() {
@@ -200,19 +177,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     return FALSE;
   }
 
-  /*
-   * Whether the entity was transitioned from the old
-   * PAR2 system on 1 October 2017.
-   */
-  public function isTransitioned() {
-    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-
-    if (isset($field_name) && $this->hasField($field_name) && !$this->get($field_name)->isEmpty() && $this->get($field_name)->getString() === 'n/a') {
-      return FALSE;
-    }
-    return TRUE;
-  }
-
   /**
    * Invalidate entities so that they are not transitioned to PAR3.
    */
@@ -221,7 +185,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     if (!in_array($this->getEntityTypeId(), ['par_data_partnership', 'par_data_advice', 'par_data_inspection_plan'])) {
       return FALSE;
     }
-    if (!$this->isNew() && $this->isTransitioned()) {
+    if (!$this->isNew()) {
       // Set the status to unpublished to make filtering from display easier.
       $this->delete();
 
@@ -276,12 +240,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function delete($reason = '') {
-    if (!$this->isDeleted()) {
-      // PAR-1507: We are moving away from soft-delete options.
-      return $this->destroy();
-    }
-
-    return FALSE;
+    // PAR-1507: We are moving away from soft-delete options.
+    return $this->destroy();
   }
 
   /**
@@ -379,7 +339,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function isActive() {
-    if ($this->isDeleted() || $this->isRevoked() || $this->isArchived() || !$this->isTransitioned()) {
+    if ($this->isRevoked() || $this->isArchived()) {
       return FALSE;
     }
 
@@ -390,17 +350,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function getRawStatus() {
-    if ($this->isDeleted()) {
-      return 'deleted';
-    }
     if ($this->isRevoked()) {
       return 'revoked';
     }
     if ($this->isArchived()) {
       return 'archived';
-    }
-    if (!$this->isTransitioned()) {
-      return 'n/a';
     }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
@@ -416,17 +370,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function getParStatus() {
-    if ($this->isDeleted()) {
-      return 'Deleted';
-    }
     if ($this->isRevoked()) {
       return 'Revoked';
     }
     if ($this->isArchived()) {
       return 'Archived';
-    }
-    if (!$this->isTransitioned()) {
-      return 'Not transitioned from PAR2';
     }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');

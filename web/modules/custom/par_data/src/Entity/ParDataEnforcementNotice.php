@@ -202,7 +202,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
     foreach ($par_data_partnerships as $partnership) {
       $authority = $partnership->getAuthority(TRUE);
 
-      if ($partnership->isLiving() && $authority->isLiving() && $authority->id() != $primary_authority->id()) {
+      if ($partnership instanceof ParDataEntityInterface && $authority instanceof ParDataEntityInterface && $authority->id() != $primary_authority->id()) {
         $authorities[$authority->id()] = $authority->label();
       }
     }
@@ -253,17 +253,11 @@ class ParDataEnforcementNotice extends ParDataEntity {
    * {@inheritdoc}
    */
   public function getRawStatus() {
-    if ($this->isDeleted()) {
-      return 'deleted';
-    }
     if ($this->isRevoked()) {
       return 'revoked';
     }
     if ($this->isArchived()) {
       return 'archived';
-    }
-    if (!$this->isTransitioned()) {
-      return 'n/a';
     }
 
     // Loop through all actions to determine status.
@@ -283,17 +277,11 @@ class ParDataEnforcementNotice extends ParDataEntity {
    * {@inheritdoc}
    */
   public function getParStatus() {
-    if ($this->isDeleted()) {
-      return 'Deleted';
-    }
     if ($this->isRevoked()) {
       return 'Revoked';
     }
     if ($this->isArchived()) {
       return 'Archived';
-    }
-    if (!$this->isTransitioned()) {
-      return 'Not transitioned from PAR2';
     }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');

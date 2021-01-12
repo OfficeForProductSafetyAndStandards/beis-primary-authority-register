@@ -327,11 +327,6 @@ class ParDataPartnership extends ParDataEntity {
   public function getCoordinatedMember($single = FALSE, $active = FALSE) {
     $members = $this->get('field_coordinated_business')->referencedEntities();
 
-    // Ignore deleted members.
-    $members = array_filter($members, function ($member) {
-      return !$member->isDeleted();
-    });
-
     if ($active) {
       // Ignore ceased members if only active members have been requested.
       $members = array_filter($members, function ($member) {

@@ -42,11 +42,6 @@ class ParRdHelpDeskDeleteConfirmForm extends ParBaseForm {
 
     }
 
-    // If partnership has been deleted, we should not be able to re-delete it.
-    if ($par_data_partnership->isDeleted()) {
-     $this->accessResult = AccessResult::forbidden('The partnership is deleted.');
-    }
-
     // If partnership has been revoked, we should not be able to delete it.
     if ($par_data_partnership->isRevoked()) {
       $this->accessResult = AccessResult::forbidden('The partnership is revoked.');

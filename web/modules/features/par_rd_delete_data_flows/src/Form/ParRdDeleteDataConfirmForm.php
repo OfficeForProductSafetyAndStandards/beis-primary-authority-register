@@ -49,7 +49,7 @@ class ParRdDeleteDataConfirmForm extends ParBaseForm {
     $entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id);
 
     // If partnership has been deleted, we should not be able to re-delete it.
-    if (!$entity instanceof ParDataEntityInterface && !$entity->isDeleted()) {
+    if (!$entity instanceof ParDataEntityInterface) {
        $this->accessResult = AccessResult::forbidden('The partnership must be deleted to access this page.');
     }
 
