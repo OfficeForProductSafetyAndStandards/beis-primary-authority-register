@@ -6,6 +6,11 @@ if (file_exists($root_path . '.env')) {
     $dotenv->load();
 }
 
+# Allow php to run with increased memory from the CLI.
+if (PHP_SAPI === 'cli') {
+  ini_set('memory_limit', '2G');
+}
+
 /**
  * @file
  * Drupal site-specific configuration file.
