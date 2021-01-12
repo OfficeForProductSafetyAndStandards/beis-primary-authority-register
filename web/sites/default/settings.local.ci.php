@@ -42,6 +42,7 @@ $settings['skip_permissions_hardening'] = TRUE;
 
 $config['config_split.config_split.dev_config']['status'] = TRUE;
 $config['config_split.config_split.test_config']['status'] = TRUE;
+$config['config_split.config_split.theme_v2_config']['status'] = FALSE;
 
 if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
   $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.yml';
