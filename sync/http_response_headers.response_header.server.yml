@@ -1,0 +1,10 @@
+uuid: ee5cdf89-064f-4b11-a909-4c18502e8c31
+langcode: en
+status: true
+dependencies: {  }
+id: server
+label: Server
+description: 'The Server header describes the software used by the origin server'
+group: Security
+name: Server
+value: ''
