@@ -435,7 +435,7 @@ class ParDataManager implements ParDataManagerInterface {
     // Do not return any deleted entities.
     // @see PAR-1462 - Removing all deleted entities from loading.
     $memberships = array_filter($memberships, function ($membership) {
-      return (!$membership instanceof ParDataEntityInterface || !$membership->isDeleted());
+      return (!$membership instanceof ParDataEntityInterface);
     });
 
     return !empty($memberships) ? $memberships : [];
@@ -695,7 +695,7 @@ class ParDataManager implements ParDataManagerInterface {
     // @see PAR-1462 - Removing all deleted entities from loading.
     if ($deleted) {
       $entities = array_filter($entities, function ($entity) {
-        return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
+        return (!$entity instanceof ParDataEntityInterface);
       });
     }
 
@@ -721,7 +721,7 @@ class ParDataManager implements ParDataManagerInterface {
     // Do not return any entities that are deleted.
     // @see PAR-1462 - Removing all deleted entities from loading.
     $entities = array_filter($entities, function ($entity) {
-      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
+      return (!$entity instanceof ParDataEntityInterface);
     });
 
     return $entities;
@@ -785,7 +785,7 @@ class ParDataManager implements ParDataManagerInterface {
       // Do not return any entities that are deleted.
       // @see PAR-1462 - Removing all deleted entities from loading.
       $entities = array_filter($entities, function ($entity) {
-        return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
+        return (!$entity instanceof ParDataEntityInterface);
       });
     }
 
@@ -810,8 +810,7 @@ class ParDataManager implements ParDataManagerInterface {
   public function getEntitiesAsOptions($entities, $options = [], $view_mode = NULL, $access_check = FALSE) {
     foreach ($entities as $entity) {
       if ($entity instanceof EntityInterface) {
-        if ($entity instanceof ParDataEntityInterface && $entity->isDeleted()
-          && (!$access_check || !$entity->access('view', $this->getCurrentUser()))) {
+        if (!$access_check || !$entity->access('view', $this->getCurrentUser())) {
           continue;
         }
 
