@@ -37,10 +37,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   use RevisionLogEntityTrait;
 
   const PAR_LOGGER_CHANNEL = 'par';
-  const DELETE_FIELD = 'deleted';
   const REVOKE_FIELD = 'revoked';
   const ARCHIVE_FIELD = 'archived';
-  const DELETE_REASON_FIELD = 'deleted_reason';
   const REVOKE_REASON_FIELD = 'revocation_reason';
   const ARCHIVE_REASON_FIELD = 'archive_reason';
 
@@ -1014,24 +1012,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         'text_processing' => 0,
       ]);
 
-    // We will apply action state fields to all par entities for consistency
-    // but will only use certain actions on certain entities.
-    $fields['deleted'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Deleted'))
-      ->setDescription(t('Whether the entity has been deleted.'))
-      ->setRevisionable(TRUE)
-      ->setDefaultValue(FALSE)
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'weight' => 3,
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'type' => 'hidden',
-      ])
-      ->setDisplayConfigurable('view', FALSE);
-
     $fields['revoked'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Revoked'))
       ->setDescription(t('Whether the entity has been revoked.'))
@@ -1090,27 +1070,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ->setLabel(t('Archive Reason'))
       ->setDescription(t('Comments about why this advice document was archived.'))
       ->addConstraint('par_required')
-      ->setRevisionable(TRUE)
-      ->setSettings([
-        'text_processing' => 0,
-      ])->setDisplayOptions('form', [
-        'type' => 'text_textarea',
-        'weight' => 13,
-        'settings' => [
-          'rows' => 25,
-        ],
-      ])
-      ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'weight' => 0,
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    // Deleted Reason.
-    $fields[self::DELETE_REASON_FIELD] = BaseFieldDefinition::create('text_long')
-      ->setLabel(t('Deleted Reason'))
-      ->setDescription(t('Comments about why this partnership was deleted.'))
       ->setRevisionable(TRUE)
       ->setSettings([
         'text_processing' => 0,

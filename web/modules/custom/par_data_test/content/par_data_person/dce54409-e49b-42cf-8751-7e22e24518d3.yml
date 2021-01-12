@@ -23,9 +23,6 @@ default:
   name:
     -
       value: 'Authority Person for Authority for Profile Test'
-  deleted:
-    -
-      value: false
   revoked:
     -
       value: false

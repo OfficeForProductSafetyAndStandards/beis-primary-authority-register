@@ -26,9 +26,6 @@ default:
   name:
     -
       value: 'Authority person for user management test'
-  deleted:
-    -
-      value: false
   revoked:
     -
       value: false

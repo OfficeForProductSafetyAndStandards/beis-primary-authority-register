@@ -23,9 +23,6 @@ default:
   name:
     -
       value: 'Premises for Authority for Proile Test'
-  deleted:
-    -
-      value: false
   revoked:
     -
       value: false

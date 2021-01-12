@@ -29,9 +29,6 @@ default:
   name:
     -
       value: 5d2e3d93e6766
-  deleted:
-    -
-      value: false
   revoked:
     -
       value: false
