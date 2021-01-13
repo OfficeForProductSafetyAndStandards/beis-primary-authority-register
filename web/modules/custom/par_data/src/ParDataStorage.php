@@ -37,34 +37,6 @@ class ParDataStorage extends TranceStorage {
   }
 
   /**
-   * Modification of entity query allows deleted entities to be excluded.
-   *
-   * {@inheritDoc}
-   */
-//  public function getQuery($conjunction = 'AND') {
-//    $query = parent::getQuery($conjunction);
-//
-//    // Do not return deleted entities.
-//    $query->condition(ParDataEntity::DELETE_FIELD, 1, '<>');
-//
-//    return $query;
-//  }
-
-  /**
-   * Modification of entity query allows deleted entities to be excluded.
-   *
-   * {@inheritDoc}
-   */
-//  public function getAggregateQuery($conjunction = 'AND') {
-//    $query = parent::getAggregateQuery($conjunction);
-//
-//    // Do not return deleted entities.
-//    $query->condition(ParDataEntity::DELETE_FIELD, 1, '<>');
-//
-//    return $query;
-//  }
-
-  /**
    * Soft delete all PAR Data entities.
    *
    * {@inheritdoc}
