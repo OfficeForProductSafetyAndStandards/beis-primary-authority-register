@@ -870,6 +870,9 @@ if (isset($redis_credentials)) {
   $settings['redis.connection']['port'] = $redis_credentials->port;
   $settings['redis.connection']['password'] = $redis_credentials->password;
   $settings['cache']['default'] = 'cache.backend.redis';
+  // PAR-1695: par_data bin sits within a persistent backend.
+  $settings['cache']['bins']['par_data'] = 'cache.backend.par_data.redis';
+  $settings['cache']['bins']['par_flows'] = 'cache.backend.par_data.redis';
 
   // Apply changes to the container configuration to better leverage Redis.
   // This includes using Redis for the lock and flood control systems, as well

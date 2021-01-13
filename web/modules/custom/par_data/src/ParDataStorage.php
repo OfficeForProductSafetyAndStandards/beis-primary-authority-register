@@ -37,34 +37,6 @@ class ParDataStorage extends TranceStorage {
   }
 
   /**
-   * Modification of entity query allows deleted entities to be excluded.
-   *
-   * {@inheritDoc}
-   */
-//  public function getQuery($conjunction = 'AND') {
-//    $query = parent::getQuery($conjunction);
-//
-//    // Do not return deleted entities.
-//    $query->condition(ParDataEntity::DELETE_FIELD, 1, '<>');
-//
-//    return $query;
-//  }
-
-  /**
-   * Modification of entity query allows deleted entities to be excluded.
-   *
-   * {@inheritDoc}
-   */
-//  public function getAggregateQuery($conjunction = 'AND') {
-//    $query = parent::getAggregateQuery($conjunction);
-//
-//    // Do not return deleted entities.
-//    $query->condition(ParDataEntity::DELETE_FIELD, 1, '<>');
-//
-//    return $query;
-//  }
-
-  /**
    * Soft delete all PAR Data entities.
    *
    * {@inheritdoc}
@@ -140,8 +112,8 @@ class ParDataStorage extends TranceStorage {
     // Loop through relationships and delete appropriate relationship cache records.
     foreach ($relationships as $uuid => $relationship) {
       // Delete cache record for new/updated references.
-      $hash_key = "par_data_relationships:{$relationship->getEntity()->uuid()}";
-      \Drupal::cache('data')->delete($hash_key);
+      $hash_key = "relationships:{$relationship->getEntity()->uuid()}";
+      \Drupal::cache('par_data')->delete($hash_key);
     }
 
     $original = $entity->original;
@@ -171,12 +143,6 @@ class ParDataStorage extends TranceStorage {
    */
   public function loadMultiple(array $ids = NULL) {
     $entities = parent::loadMultiple($ids);
-
-    // Do not return any deleted entities.
-    // @see PAR-1462 - Removing all deleted entities from loading.
-//    $entities = array_filter($entities, function ($entity) {
-//      return (!$entity->isDeleted());
-//    });
 
     return $entities;
   }
