@@ -11,6 +11,7 @@ use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\Entity\ParDataPersonInterface;
+use Drupal\par_data\Entity\ParDataPremises;
 
 /**
  * Implements hook_install().
@@ -1059,5 +1060,39 @@ function par_data_update_8046() {
     $field_advice_reason = $entity_definition_update_manager->getFieldStorageDefinition(ParDataEntity::ARCHIVE_REASON_FIELD, $entity_type->id());
     $field_advice_reason->addConstraint('par_required');
     $entity_definition_update_manager->updateFieldStorageDefinition($field_advice_reason);
+  }
+}
+
+/**
+ * PAR-1694 remove all superfluous address records.
+ */
+function par_data_update_8047() {
+  /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
+  $par_data_manager = \Drupal::service('par_data.manager');
+  /** @var \Drupal\par_data\Entity\ParDataEntityInterface[] $authorities */
+  /** @var \Drupal\par_data\Entity\ParDataEntityInterface[] $organisations */
+  $authorities = $par_data_manager->getEntitiesByType('par_data_authority');
+  $organisations = $par_data_manager->getEntitiesByType('par_data_organisation');
+
+  $primary_addresses = [];
+  foreach($authorities as $id => $entity) {
+    if ($entity->hasField('field_premises') && !$entity->get('field_premises')->isEmpty()) {
+      $primary_addresses[] = $entity->get('field_premises')->first()->target_id;
+    }
+  }
+  foreach($organisations as $id => $entity) {
+    if ($entity->hasField('field_premises') && !$entity->get('field_premises')->isEmpty()) {
+      $primary_addresses[] = $entity->get('field_premises')->first()->target_id;
+    }
+  }
+
+  $query = $par_data_manager->getEntityQuery('par_data_premises');
+  $query->condition('id', $primary_addresses, 'NOT IN');
+  $results = array_unique($query->execute());
+
+  // Delete the secondary addresses.
+  foreach ($results as $result) {
+    $entity = ParDataPremises::load($result);
+    $entity->annihilate();
   }
 }
