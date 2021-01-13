@@ -718,12 +718,6 @@ class ParDataManager implements ParDataManagerInterface {
       ->getStorage($type)
       ->loadMultiple($ids);
 
-    // Do not return any entities that are deleted.
-    // @see PAR-1462 - Removing all deleted entities from loading.
-    $entities = array_filter($entities, function ($entity) {
-      return (!$entity instanceof ParDataEntityInterface);
-    });
-
     return $entities;
   }
 
