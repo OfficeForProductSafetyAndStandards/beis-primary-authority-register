@@ -1112,8 +1112,7 @@ function par_data_update_8047(&$sandbox) {
   $sandbox['current']++;
 
   $results_removed = ($batch_size * $sandbox['current']);
-  $max = ini_get('max_execution_time');
-  $message = PHP_SAPI.":$max: $results_removed secondary addresses removed, batch {$sandbox['current']} complete.";
+  $message = "$results_removed secondary addresses removed, batch {$sandbox['current']} complete.";
 
   if ($sandbox['total'] == 0) {
     $sandbox['#finished'] = 1;

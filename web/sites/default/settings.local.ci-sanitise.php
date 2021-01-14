@@ -12,7 +12,3 @@ $databases['default']['default'] = array (
 );
 
 $settings['trusted_host_patterns'] = [''];
-
-// Ensure travis always runs with the same memory that other environments do.
-ini_set('memory_limit', '2048M');
-ini_set('max_execution_time', 300);
