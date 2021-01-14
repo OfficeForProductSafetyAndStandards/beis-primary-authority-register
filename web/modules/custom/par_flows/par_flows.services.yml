@@ -5,6 +5,16 @@ services:
   par_flows.data_handler:
     class: Drupal\par_flows\ParFlowDataHandler
     arguments: ['@user.private_tempstore', '@par_flows.negotiator', '@par_data.manager', '@session_manager', '@current_user']
+
+  # Cache bin for par_flows form data.
+  cache.par_flows:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin, default_backend: cache.backend.par_cache.database }
+    factory: cache_factory:get
+    arguments: [ par_flows ]
+
+  # Flow route progression subscribers.
   par_flows.par_progress_destination_subscriber:
     class: '\Drupal\par_flows\EventSubscriber\ParProgressDestinationSubscriber'
     tags:

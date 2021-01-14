@@ -861,6 +861,12 @@ if (isset($db_credentials)) {
   ];
 }
 
+// Allow persistent cache bins to be used before par_cache module is enabled.
+$settings['container_yamls'][] = 'modules/custom/par_cache/par_cache.services.yml';
+// Manually add the classloader path, this is required for the container cache bin definition below
+// and allows to use it without the redis module being enabled.
+$class_loader->addPsr4('Drupal\\par_cache\\', 'modules/custom/par_cache/src');
+
 // Set the Paas redis conneciton credentials.
 if (isset($redis_credentials)) {
   // Enable Redis services.
@@ -871,8 +877,8 @@ if (isset($redis_credentials)) {
   $settings['redis.connection']['password'] = $redis_credentials->password;
   $settings['cache']['default'] = 'cache.backend.redis';
   // PAR-1695: par_data bin sits within a persistent backend.
-  $settings['cache']['bins']['par_data'] = 'cache.backend.par_data.redis';
-  $settings['cache']['bins']['par_flows'] = 'cache.backend.par_data.redis';
+  $settings['cache']['bins']['par_data'] = 'cache.backend.par_cache.redis';
+  $settings['cache']['bins']['par_flows'] = 'cache.backend.par_cache.redis';
 
   // Apply changes to the container configuration to better leverage Redis.
   // This includes using Redis for the lock and flood control systems, as well

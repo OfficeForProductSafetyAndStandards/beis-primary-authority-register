@@ -22,3 +22,10 @@ services:
     arguments: ['@current_user']
     tags:
       - { name: cache.context}
+  # Cache bin for par_data relationships.
+  cache.par_data:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin, default_backend: cache.backend.par_cache.database }
+    factory: cache_factory:get
+    arguments: [ par_data ]
