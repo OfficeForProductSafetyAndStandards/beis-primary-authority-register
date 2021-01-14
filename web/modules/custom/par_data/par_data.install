@@ -1069,7 +1069,7 @@ function par_data_update_8046() {
 function par_data_update_8047(&$sandbox) {
   /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
   $par_data_manager = \Drupal::service('par_data.manager');
-  $batch_size = 500;
+  $batch_size = 250;
 
   // Initialize some variables during the first pass through.
   if (!isset($sandbox['total'])) {
@@ -1112,7 +1112,8 @@ function par_data_update_8047(&$sandbox) {
   $sandbox['current']++;
 
   $results_removed = ($batch_size * $sandbox['current']);
-  $message = PHP_SAPI.": $results_removed secondary addresses removed, batch {$sandbox['current']} complete.";
+  $max = ini_get('max_execution_time');
+  $message = PHP_SAPI.":$max: $results_removed secondary addresses removed, batch {$sandbox['current']} complete.";
 
   if ($sandbox['total'] == 0) {
     $sandbox['#finished'] = 1;
