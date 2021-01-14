@@ -6,12 +6,6 @@ if (file_exists($root_path . '.env')) {
     $dotenv->load();
 }
 
-# Allow php to run with increased memory from the CLI.
-if (PHP_SAPI === 'cli') {
-  ini_set('memory_limit', '4G');
-  ini_set('max_execution_time', '3600');
-}
-
 /**
  * @file
  * Drupal site-specific configuration file.
@@ -1059,3 +1053,8 @@ if (file_exists("{$app_root}/{$site_path}/settings.local.php")) {
   include "{$app_root}/{$site_path}/settings.local.php";
 }
 
+# Allow php to run with increased memory from the CLI.
+if (PHP_SAPI === 'cli') {
+  ini_set('memory_limit', '4G');
+  ini_set('max_execution_time', '3600');
+}
