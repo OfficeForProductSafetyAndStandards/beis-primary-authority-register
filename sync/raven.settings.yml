@@ -17,3 +17,10 @@ javascript_error_handler: true
 public_dsn: SENTRY_DSN_PUBLIC
 _core:
   default_config_hash: EJsMMn516WDvtSeOL9Dx7ulP0PnE5dNVCv6AcXolnKg
+drush_error_handler: false
+send_user_data: false
+send_request_body: false
+rate_limit: null
+ignored_channels: {  }
+environment: ''
+release: ''

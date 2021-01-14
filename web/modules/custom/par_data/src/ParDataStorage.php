@@ -112,8 +112,8 @@ class ParDataStorage extends TranceStorage {
     // Loop through relationships and delete appropriate relationship cache records.
     foreach ($relationships as $uuid => $relationship) {
       // Delete cache record for new/updated references.
-      $hash_key = "par_data_relationships:{$relationship->getEntity()->uuid()}";
-      \Drupal::cache('data')->delete($hash_key);
+      $hash_key = "relationships:{$relationship->getEntity()->uuid()}";
+      \Drupal::cache('par_data')->delete($hash_key);
     }
 
     $original = $entity->original;

@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Contains par_cache.module.
+ */
+
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function par_cache_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the par_cache module.
+    case 'help.page.par_cache':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides persistent cache backends not cleared during standard cache rebuilds.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
