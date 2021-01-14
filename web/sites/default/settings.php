@@ -8,7 +8,9 @@ if (file_exists($root_path . '.env')) {
 
 # Allow php to run with increased memory from the CLI.
 if (PHP_SAPI === 'cli') {
-  ini_set('memory_limit', '2G');
+  // Set a very high limit for drush and command line execution.
+  ini_set('memory_limit', '4G');
+  ini_set('max_execution_time', '3600');
 }
 
 /**
