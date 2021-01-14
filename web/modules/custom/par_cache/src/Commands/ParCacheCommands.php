@@ -50,7 +50,7 @@ class ParCacheCommands extends DrushCommands {
         $this->logger()->success(dt('Deleted all cache for @bin.', ['@bin' => $bin]));
       }
       else {
-        $this->logger()->error(dt('@bin bin is not using pcb.', ['@bin' => $bin]));
+        $this->logger()->error(dt('@bin bin is not using par cache backend.', ['@bin' => $bin]));
       }
     }
     catch (\Exception $e) {
