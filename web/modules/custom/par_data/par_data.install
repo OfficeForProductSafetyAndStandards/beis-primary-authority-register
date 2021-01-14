@@ -1069,7 +1069,7 @@ function par_data_update_8046() {
 function par_data_update_8047(&$sandbox) {
   /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
   $par_data_manager = \Drupal::service('par_data.manager');
-  $batch_size = 250;
+  $batch_size = 1000;
 
   // Initialize some variables during the first pass through.
   if (!isset($sandbox['total'])) {
