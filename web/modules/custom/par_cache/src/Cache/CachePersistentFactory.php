@@ -75,7 +75,7 @@ class CachePersistentFactory implements CacheFactoryInterface, ContainerAwareInt
       }
 
       $cache_backend = $this->cacheFactory->get($bin);
-      if ($lifecycle === self::CACHE_LIFECYCLE_PERSIST) {
+      if (isset($lifecycle) && $lifecycle === self::CACHE_LIFECYCLE_PERSIST) {
         $this->cacheBackends[$bin] = new CachePersistentBackendWrapper($cache_backend, $bin);
       }
       else {
