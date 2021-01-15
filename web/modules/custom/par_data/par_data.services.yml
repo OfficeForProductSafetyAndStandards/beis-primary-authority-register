@@ -26,6 +26,6 @@ services:
   cache.par_data:
     class: Drupal\Core\Cache\CacheBackendInterface
     tags:
-      - { name: cache.bin, default_backend: cache.backend.par_cache.database }
+      - { name: cache.bin, lifecycle: persistent }
     factory: cache_factory:get
     arguments: [ par_data ]
