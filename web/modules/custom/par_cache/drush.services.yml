@@ -1,8 +1,7 @@
 services:
   par_cache.commands:
     class: \Drupal\par_cache\Commands\ParCacheCommands
-    arguments:
-      - '@cache_factory'
+    arguments: ['@par_cache.persistent.cache_factory.inner', '%cache_lifecycle_bins%']
     tags:
       - { name: drush.command }
 

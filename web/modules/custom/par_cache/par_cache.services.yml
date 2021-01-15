@@ -1,10 +1,9 @@
 services:
-  # Modified cache backends.
-  cache.backend.par_cache.database:
-    class: Drupal\par_cache\Cache\DatabaseBackendFactory
-    arguments: ['@database', '@cache_tags.invalidator.checksum', '@settings']
-  cache.backend.par_cache.redis:
-    class: Drupal\redis\Cache\CacheBackendFactory
-    arguments: ['@par_cache.redis_factory', '@cache_tags.invalidator.checksum', '@serialization.phpserialize']
-  par_cache.redis_factory:
-    class: Drupal\par_cache\Cache\RedisClientFactory
+  par_cache.persistent.cache_factory:
+    class: Drupal\par_cache\Cache\CachePersistentFactory
+    public: false
+    decorates: cache_factory
+    decoration_priority: 10
+    arguments: ['@par_cache.persistent.cache_factory.inner', '@settings', '%cache_lifecycle_bins%']
+    properties:
+      _serviceId: 'cache_factory'

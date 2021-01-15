@@ -21,6 +21,13 @@ class ParCacheCommands extends DrushCommands {
   private $cacheFactory;
 
   /**
+   * A list of cache bins that use backend wrapper with alternative lifecycles.
+   *
+   * @var array
+   */
+  protected $cacheLifecycleBins = [];
+
+  /**
    * ParCacheCommands constructor.
    *
    * @param \Drupal\Core\Cache\CacheFactoryInterface $cache_factory
@@ -45,6 +52,7 @@ class ParCacheCommands extends DrushCommands {
   public function clear(string $bin) {
     try {
       $cache = $this->cacheFactory->get($bin);
+
       if (method_exists($cache, 'deleteAllPermanent')) {
         $cache->deleteAllPermanent();
         $this->logger()->success(dt('Deleted all cache for @bin.', ['@bin' => $bin]));
@@ -56,49 +64,6 @@ class ParCacheCommands extends DrushCommands {
     catch (\Exception $e) {
       $this->logger()->error(dt('@bin not a valid cache bin.', ['@bin' => $bin]));
     }
-  }
-
-  /**
-   * Flush cache for all bins using permanent cache backend.
-   *
-   * @usage par-cache:clear-all
-   *   Flush cache for all permanent cache backends.
-   *
-   * @command par-cache:clear-all
-   * @aliases pcca
-   */
-  public function clearAll() {
-    if (!$this->io()->confirm(dt('Are you sure you want to flush all permanent cache bins?'))) {
-      throw new UserAbortException();
-    }
-
-    foreach (Cache::getBins() as $bin => $backend) {
-      if (method_exists($backend, 'deleteAllPermanent')) {
-        $backend->deleteAllPermanent();
-        $this->logger()->success(dt('Flushed all cache for @bin.', ['@bin' => $bin]));
-      }
-    }
-  }
-
-  /**
-   * List permanent cache bins.
-   *
-   * @usage par-cache:list
-   *   List all bins using permanent backends.
-   *
-   * @command par-cache:list
-   * @aliases pcl
-   */
-  public function listBins() {
-    $bins = Cache::getBins();
-
-    foreach ($bins as $bin => $object) {
-      if (method_exists($object, 'deleteAllPermanent')) {
-        $this->io()->writeln($bin);
-      }
-    }
-
-    $this->io()->writeln('');
   }
 
 }
