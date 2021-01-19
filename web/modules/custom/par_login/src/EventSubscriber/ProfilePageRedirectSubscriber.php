@@ -64,7 +64,8 @@ class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
 
     // Compare the page routes and redirect users without permission
     // to view their profile pages.
-    if (!$this->account->hasPermission('administer users') &&
+    if ($this->account->isAuthenticated() && $profile_page &&
+      !$this->account->hasPermission('administer users') &&
       ltrim($request->getPathInfo(), '/') === ltrim($profile_page->getInternalPath(), '/')) {
 
       // Log the denied request as well as the referer for information.
