@@ -14,7 +14,6 @@ class ParUserRouteSubscriber extends RouteSubscriberBase {
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection) {
-
     // View user
     if ($route = $collection->get('entity.user.canonical')) {
       $route->setRequirement('_permission', 'administer users');
