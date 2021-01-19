@@ -5,6 +5,6 @@ services:
       - { name: event_subscriber }
   par_login.user_redirect_subscriber:
     class: Drupal\par_login\EventSubscriber\ProfilePageRedirectSubscriber
-    arguments: ['@current_user']
+    arguments: ['@current_user', '@logger.channel.par']
     tags:
       - { name: event_subscriber }
