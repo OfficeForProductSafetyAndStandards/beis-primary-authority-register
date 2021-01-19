@@ -11,6 +11,11 @@ use Drupal\user\Entity\User;
 /**
  * Ensure that login works as expected.
  *
+ * This test is part of the case insensitive login patch. Adding the test
+ * directly to PAR ensures that this functionality is tested regardless of
+ * whether the patch has been applied.
+ * @see https://www.drupal.org/project/drupal/issues/2490294
+ *
  * @group user
  */
 class UserLoginTest extends BrowserTestBase {
