@@ -74,9 +74,18 @@ class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
         ['%user' => $this->account->id(), '%redirected' => $referer]
       );
 
-      $redirect_url = Url::fromRoute('par_dashboards.dashboard');
-      $response = new RedirectResponse($redirect_url->toString(), 301);
-      $event->setResponse($response);
+      // Determine which dashboard the user should be directed to.
+      if ($this->account->hasPermission('access helpdesk')) {
+        $dashboard = 'par_help_desks_flows.helpdesk_dashboard';
+      }
+      else if ($this->account->hasPermission('access par dashboard')) {
+        $dashboard = 'par_dashboards.dashboard';
+      }
+      if (isset($dashboard)) {
+        $redirect_url = Url::fromRoute($dashboard);
+        $response = new RedirectResponse($redirect_url->toString(), 301);
+        $event->setResponse($response);
+      }
     }
   }
 
