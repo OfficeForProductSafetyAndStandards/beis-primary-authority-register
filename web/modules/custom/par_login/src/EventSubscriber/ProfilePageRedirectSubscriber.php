@@ -32,9 +32,9 @@ class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    // This needs to run before RouterListener::onKernelRequest(), to ensure
-    // the correct route is resolved.
-    $events[KernelEvents::REQUEST][] = ['redirectProfilePage', 33];
+    // This MUST run before RouterListener::onKernelRequest(), to ensure
+    // the redirection doesn't recursively resolve.
+    $events[KernelEvents::REQUEST][] = ['redirectProfilePage', 34];
     return $events;
   }
 
