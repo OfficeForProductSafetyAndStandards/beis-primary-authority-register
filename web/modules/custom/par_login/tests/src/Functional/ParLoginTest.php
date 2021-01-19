@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\user\Functional;
+namespace Drupal\Tests\par_login\Functional;
 
 use Drupal\Core\Url;
 use Drupal\Tests\BrowserTestBase;
