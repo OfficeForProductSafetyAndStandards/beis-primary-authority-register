@@ -59,14 +59,6 @@ class ParLoginTestBase extends EntityKernelTestBase {
     $emailcase_email = "$lowercase_username@ExAmPlE.com";
 
     $this->drupalCreateUser([], $uppercase_username, ['mail' => $uppercase_email]);
-    try {
-      $lowercase_account = $this->drupalCreateUser([], $lowercase_username, ['mail' => $uppercase_email]);
-      // This assertion should never be reached, an exception _should_ be thrown.
-      $this->assertFalse($lowercase_account, new FormattableMarkup('The user account could not be created because this email %email already exists.', ['%email' => $lowercase_email]));
-    }
-    catch (EntityStorageException $e) {
-      $this->assertTrue(true, new FormattableMarkup('The user account could not be created because this email %email already exists.', ['%email' => $lowercase_email]));
-    }
 
     $uppercase_users = $this->entityTypeManager->getStorage('user')
       ->loadByProperties(['mail' => $uppercase_email]);
