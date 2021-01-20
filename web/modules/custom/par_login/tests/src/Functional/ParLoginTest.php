@@ -26,28 +26,9 @@ class UserLoginTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * Extending the default login test to take care of the GOV UK sign in form.
-   *
-   * @param \Drupal\Core\Session\AccountInterface $account
+   * {@inheritdoc}
    */
-  protected function parLogin(AccountInterface $account) {
-    if ($this->loggedInUser) {
-      $this->drupalLogout();
-    }
-
-    $this->drupalGet(Url::fromRoute('user.login'));
-    $this->submitForm([
-      'name' => $account->getAccountName(),
-      'pass' => $account->passRaw,
-    ], t('Sign in'));
-
-    // @see ::drupalUserIsLoggedIn()
-    $account->sessionId = $this->getSession()->getCookie(\Drupal::service('session_configuration')->getOptions(\Drupal::request())['name']);
-    $this->assertTrue($this->drupalUserIsLoggedIn($account), new FormattableMarkup('User %name successfully logged in.', ['%name' => $account->getAccountName()]));
-
-    $this->loggedInUser = $account;
-    $this->container->get('current_user')->setAccount($account);
-  }
+  protected static $modules = ['email_registration'];
 
   /**
    * Test the login is case insensitive.
@@ -57,18 +38,12 @@ class UserLoginTest extends BrowserTestBase {
    * @see https://www.drupal.org/project/drupal/issues/2490294
    */
   public function testCaseInsensitiveLogin() {
-    $translations = [
-      'en' => [
-        'Log in' => 'Sign in',
-        'Log out' => 'Sign out',
-      ]
-    ];
-
     $username = 'SENSITİVEKINDĄCASE';
-    $user1 = $this->drupalCreateUser([], $username);
+    $email = "$username@EXAMPLE.com";
+    $user1 = $this->drupalCreateUser([], $username, ['mail' => $email]);
     // Change username to lowercase without saving to test case insensitive login.
     $user1->name = mb_strtolower($username);
-    $this->parLogin($user1);
+    $this->drupalLogin($user1);
 
     $this->drupalLogout();
   }
