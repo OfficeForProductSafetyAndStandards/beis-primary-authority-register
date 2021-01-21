@@ -475,7 +475,8 @@ workflows:
             tags:
               only: /.*/
             branches:
-              ignore: /.*/
+              ignore:
+                - master
 
   build_test_deploy:
     jobs:
