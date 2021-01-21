@@ -3,6 +3,7 @@
 namespace Drupal\par_error_handling\EventSubscriber;
 
 use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\Utility\Error;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -12,6 +13,42 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class ErrorPageSubscriber implements EventSubscriberInterface {
+
+  /**
+   * @var string
+   *
+   * One of the error level constants defined in bootstrap.inc.
+   */
+  protected $errorLevel;
+
+  /**
+   * The config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * Constructs a new FinalExceptionSubscriber.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration factory.
+   */
+  public function __construct(ConfigFactoryInterface $config_factory) {
+    $this->configFactory = $config_factory;
+  }
+
+  /**
+   * Gets the configured error level.
+   *
+   * @return string
+   */
+  protected function getErrorLevel() {
+    if (!isset($this->errorLevel)) {
+      $this->errorLevel = $this->configFactory->get('system.logging')->get('error_level');
+    }
+    return $this->errorLevel;
+  }
 
   /**
    * The events to react to.

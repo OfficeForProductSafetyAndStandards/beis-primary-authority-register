@@ -1012,7 +1012,7 @@ $config['govuk_notify.settings']['default_template_id'] = getenv('PAR_GOVUK_NOTI
 $settings['ideal_postcodes_api_key'] = getenv('IDEAL_POSTCODES_API_KEY');
 
 /**
- * Set the Raven Sentry keys.
+ * Set the Raven Sentry keys and default error settings.
  *
  * These are confidential and should be set with ENV variables.
  *
@@ -1020,6 +1020,8 @@ $settings['ideal_postcodes_api_key'] = getenv('IDEAL_POSTCODES_API_KEY');
  */
 $config['raven.settings']['client_key'] = getenv('SENTRY_DSN');
 $config['raven.settings']['public_dsn'] = getenv('SENTRY_DSN_PUBLIC');
+
+$config['system.logging']['error_level'] = ERROR_REPORTING_HIDE;
 
 // Ensure all environments use production config unless overwritten.
 $config['config_split.config_split.dev_config']['status'] = FALSE;
@@ -1058,3 +1060,8 @@ if (file_exists("{$app_root}/{$site_path}/settings.local.php")) {
   include "{$app_root}/{$site_path}/settings.local.php";
 }
 
+# Allow php to run with increased memory from the CLI.
+if (PHP_SAPI === 'cli') {
+  ini_set('memory_limit', '4G');
+  ini_set('max_execution_time', '3600');
+}

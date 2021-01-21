@@ -52,6 +52,15 @@ references:
         echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
         cat /etc/hosts
 
+  configure_theme: &configure_theme
+    run:
+      name: "Configure the appropriate theme."
+      command: |
+        echo "THEME_VERSION=<<parameters.theme_version>>" >> .env
+        echo "Enabled theme: $THEME_VERSION"
+      environment:
+        THEME_VERSION: <<parameters.theme_version>>
+
   import_database: &import_database
     run:
       name: "Import & set up the database"
@@ -161,6 +170,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *configure_theme
       - *import_database
       - run:
           name: "Run cron"
@@ -193,6 +203,7 @@ jobs:
           name: "Run feature tests"
           command: |
             cd tests
+            echo "Running tests against theme: $THEME_VERSION"
             npm run ci -- --tag ci
             npm run generate-report
       # Save artifacts
@@ -205,11 +216,17 @@ jobs:
 
   test_full:
     <<: *defaults
+    parameters:
+      theme_version:
+        description: "The theme version to test."
+        default: v1
+        type: string
     steps:
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *configure_theme
       - *import_database
       - run:
           name: "Run cron"
@@ -239,6 +256,7 @@ jobs:
           name: "Run feature tests"
           command: |
             cd tests
+            echo "Running tests against theme: $THEME_VERSION"
             npm run ci -- --tag ci
             npm run generate-report
       # Save artifacts
@@ -341,7 +359,7 @@ jobs:
           command: |
             cf login -a api.cloud.service.gov.uk -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
             cf target -o office-for-product-safety-and-standards -s primary-authority-register-production
-            cf run-task beis-par-production "./scripts/db-backup.sh production -p" --name DB_ARCHIVE -k4G
+            cf run-task beis-par-production "./scripts/db-backup.sh production -p" --name DB_ARCHIVE -k 4G -m 4G
 
   sanitise_database:
     <<: *defaults
@@ -425,6 +443,37 @@ jobs:
 
 workflows:
   version: 2.1
+  theme_v2_test:
+    jobs:
+      - checkout_code:
+          theme_version: v2
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore:
+                - master
+      - compile_code:
+          theme_version: v2
+          requires:
+            - checkout_code
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore:
+                - master
+      - test_full:
+          name: test_theme
+          theme_version: v2
+          requires:
+            - compile_code
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/
+
   build_test_deploy:
     jobs:
       - checkout_code:

@@ -1,0 +1,9 @@
+services:
+  par_cache.persistent.cache_factory:
+    class: Drupal\par_cache\Cache\CachePersistentFactory
+    public: false
+    decorates: cache_factory
+    decoration_priority: 10
+    arguments: ['@par_cache.persistent.cache_factory.inner', '@settings', '%cache_lifecycle_bins%']
+    properties:
+      _serviceId: 'cache_factory'
