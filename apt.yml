@@ -1,0 +1,8 @@
+truncatesources: true
+cleancache: true
+keys:
+  - https://www.postgresql.org/media/keys/ACCC4CF8.asc
+repos:
+  - deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main main
+packages:
+  - postgresql-client-11

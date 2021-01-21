@@ -2,7 +2,9 @@ applications:
   - name: beis-par-staging
     routes:
       - route: beis-par-staging.cloudapps.digital
-    buildpack: php_buildpack
+    buildpacks:
+      - https://github.com/cloudfoundry/apt-buildpack#v0.2.3
+      - php_buildpack
     memory: 2G
     disk_quota: 4096M
     timeout: 120

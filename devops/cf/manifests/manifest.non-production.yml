@@ -2,7 +2,9 @@ applications:
   - name: ((app))
     routes:
       - route: ((app)).cloudapps.digital
-    buildpack: php_buildpack
+    buildpacks:
+      - https://github.com/cloudfoundry/apt-buildpack#v0.2.3
+      - php_buildpack
     memory: 2G
     disk_quota: 2048M
     timeout: 120
