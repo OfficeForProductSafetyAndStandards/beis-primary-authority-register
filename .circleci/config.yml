@@ -446,7 +446,6 @@ workflows:
   theme_v2_test:
     jobs:
       - checkout_code:
-          theme_version: v2
           filters:
             tags:
               only: /.*/
@@ -454,7 +453,6 @@ workflows:
               ignore:
                 - master
       - compile_code:
-          theme_version: v2
           requires:
             - checkout_code
           filters:
