@@ -208,7 +208,7 @@ jobs:
           name: "Run feature tests"
           command: |
             cd tests
-            echo "Running tests against theme: $THEME_VERSION"
+            echo "Running tests against theme: <<parameters.theme_version>>"
             npm run ci-<<parameters.theme_version>> -- --tag ci
             npm run generate-report
       # Save artifacts
@@ -261,7 +261,7 @@ jobs:
           name: "Run feature tests"
           command: |
             cd tests
-            echo "Running tests against theme: $THEME_VERSION"
+            echo "Running tests against theme: <<parameters.theme_version>>"
             npm run ci-<<parameters.theme_version>> -- --tag ci
             npm run generate-report
       # Save artifacts
