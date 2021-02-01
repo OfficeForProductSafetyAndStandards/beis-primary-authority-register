@@ -8,8 +8,8 @@
     "selenium-install": "node_modules/.bin/selenium-standalone install",
     "selenium": "node_modules/.bin/selenium-standalone start",
     "ci": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber-ci.conf.js",
-    "ci-v1": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber-ci.conf.js",
-    "ci-v2": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber-ci-v2.conf.js",
+    "ci-v1": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber-ci.conf.js -- --tag ci --tag v1",
+    "ci-v2": "node_modules/.bin/nightwatch -c ./nightwatch-cucumber-ci-v2.conf.js -- --tag ci --tag v2",
     "generate-report": "node generate-report.js"
   },
   "dependencies": {
