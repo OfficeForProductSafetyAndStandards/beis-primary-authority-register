@@ -5,7 +5,7 @@ Feature: Remove partnership appliations
         Given I click the link text "Manage partnerships"
 
 
-    @ci @nonsmoke
+    @v1 @ci @nonsmoke
     Scenario: Search and remove an incomplete partnership
         When I add "Demolition Experts" to the inputfield "#edit-keywords"
         When I add "Demolition Experts" to the inputfield "#edit-keywords"

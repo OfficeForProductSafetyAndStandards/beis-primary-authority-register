@@ -209,7 +209,7 @@ jobs:
           command: |
             cd tests
             echo "Running tests against theme: <<parameters.theme_version>>"
-            npm run ci-<<parameters.theme_version>> -- --tag ci
+            npm run ci-<<parameters.theme_version>> -- --tag ci --tag <<parameters.theme_version>>
             npm run generate-report
       # Save artifacts
       - store_artifacts:
@@ -262,7 +262,7 @@ jobs:
           command: |
             cd tests
             echo "Running tests against theme: <<parameters.theme_version>>"
-            npm run ci-<<parameters.theme_version>> -- --tag ci
+            npm run ci-<<parameters.theme_version>> -- --tag ci --tag <<parameters.theme_version>>
             npm run generate-report
       # Save artifacts
       - store_artifacts:

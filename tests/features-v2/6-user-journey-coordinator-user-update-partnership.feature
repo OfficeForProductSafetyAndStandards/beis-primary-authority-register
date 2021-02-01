@@ -1,6 +1,6 @@
 Feature: Coordinator User - Update Partnership
 
-    @coordinatedpartnership @ci @PAR790
+    @coordinatedpartnership @v2 @ci-pending @PAR790
     Scenario: Coordinator User - Update Partnership
 
         #LOGIN

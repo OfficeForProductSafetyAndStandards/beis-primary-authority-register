@@ -9,7 +9,7 @@ Feature: Helpdesk approve partnership
         And I click on the button "#edit-submit"
 
 
-    @ci @directpartnership @iostest
+    @v2 @ci-pending @directpartnership @iostest
     Scenario: Helpdesk approve direct partnership
 
         Given I click the link text "Manage partnerships"
@@ -41,7 +41,7 @@ Feature: Helpdesk approve partnership
 
         # GO BACK TO HELPDESK
 
-    @ci @directpartnership @iostest
+    @v2 @ci-pending @directpartnership @iostest
     Scenario: Helpdesk revoke partnership
 
         # REVOKE DIRECT PARTNERSHIP

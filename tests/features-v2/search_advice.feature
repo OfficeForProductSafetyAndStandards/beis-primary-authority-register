@@ -2,7 +2,7 @@ Feature: Search advice
   As an enforcement officer
   I should be able to search advice
 
-  @upload-advice @ci
+  @upload-advice @v2 @ci-pending
   Scenario: Search for advice on other partnerships
     Given I am logged in as "par_enforcement_officer@example.com"
     And I search for an active partnership "Enquirer"

@@ -2,7 +2,7 @@ Feature: Upload inspection plan
     As an authority member
     I should be able to upload, Edit and Revoke Inspection Plans
 
-    @inspection_plan_features @ci @inspection_plans
+    @inspection_plan_features @v2 @ci-pending @inspection_plans
     Scenario: Upload-inspection plan
         Given I am logged in as "par_helpdesk@example.com"
         And I go to manage the partnership "Partnership nominated by Secretary of State" click on "Upper West Side Borough Council" and status "confirmed_rd"
@@ -21,7 +21,7 @@ Feature: Upload inspection plan
         And I click save
         And I see inspection plan uploaded successfully
 
-    @inspection_plan_features @ci @inspection_plans
+    @inspection_plan_features @v2 @ci-pending @inspection_plans
     Scenario: Edit inspection plan
         Given I am logged in as "par_helpdesk@example.com"
         And I go to manage the partnership "Partnership nominated by Secretary of State" click on "Upper West Side Borough Council" and status "confirmed_rd"
@@ -47,7 +47,7 @@ Feature: Upload inspection plan
         And I click save
         And I see the inspection plan has updated successfully
 
-    @inspection_plan_features @ci @inspection_plans
+    @inspection_plan_features @v2 @ci-pending @inspection_plans
     Scenario: Revoke an inspection plan
         Given I am logged in as "par_helpdesk@example.com"
         And I go to manage the partnership "Partnership nominated by Secretary of State" click on "Upper West Side Borough Council" and status "confirmed_rd"
@@ -57,7 +57,7 @@ Feature: Upload inspection plan
         And I click save
         Then I should revoke successfully
 
-    @inspection_plan_features @ci @inspection_plans
+    @inspection_plan_features @v2 @ci-pending @inspection_plans
     Scenario: Remove an inspection plan
         Given I am logged in as "par_helpdesk@example.com"
         And I go to manage the partnership "Partnership nominated by Secretary of State" click on "Upper West Side Borough Council" and status "confirmed_rd"

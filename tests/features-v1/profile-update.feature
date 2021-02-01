@@ -1,6 +1,6 @@
 Feature: New Direct Partnership For PA To Approve
 
-    @profileupdate @ci @smoke
+    @profileupdate @v1 @ci @smoke
     Scenario: Update profile with one contact record
 
         Given I am logged in as "par_authority_profile@example.com"
@@ -48,7 +48,7 @@ Feature: New Direct Partnership For PA To Approve
         Then the element "h1.heading-xlarge" contains the text "Thank you for updating your profile"
         And I click the link text "Done"
 
-    @profileupdate @ci
+    @profileupdate @v1 @ci
     Scenario: Update and merge profile with multiple contact records
 
         Given I am logged in as "par_authority_multiple_contacts_profile@example.com"
@@ -90,7 +90,7 @@ Feature: New Direct Partnership For PA To Approve
         Then the element "h1.heading-xlarge" contains the text "Thank you for updating your profile"
         And I click the link text "Done"
 
-    @profileupdate @ci
+    @profileupdate @v1 @ci
     Scenario: Login with old user for the first time
 
         Given I am logged in as "par_authority_gdpr_old_login@example.com"
