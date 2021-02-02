@@ -4,11 +4,13 @@ const electron = require('electron-prebuilt');
 
 require('nightwatch-cucumber')({
     cucumberArgs: [
-            '--require', 'step-definitions-v1',
-            '--require', 'support',
-            '--format', 'node_modules/cucumber-pretty',
-            '--format', 'json:reports/cucumber.json'
-        ]
+        '--require', 'step-definitions-v1',
+        '--require', 'support',
+        '--format', 'node_modules/cucumber-pretty',
+        '--format', 'json:reports/cucumber.json',
+        '--tag', 'ci', '--tag', 'v2',
+        'features-v1'
+    ]
 })
 
 module.exports = {
@@ -29,16 +31,16 @@ module.exports = {
             launch_url: 'http://par.localhost',
             selenium_port: 4444,
             // selenium_host: 'localhost',
-            screenshots : {
-                enabled : true,
-                on_failure : true,
+            screenshots: {
+                enabled: true,
+                on_failure: true,
                 on_error: true,
                 path: 'reports/nightwatch/screenshots'
             },
             desiredCapabilities: {
                 browserName: 'chrome',
                 resolution: '1280x3000',
-                chromeOptions : {
+                chromeOptions: {
                     binary: '/usr/bin/google-chrome',
                     args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1280,3000'],
                 },
