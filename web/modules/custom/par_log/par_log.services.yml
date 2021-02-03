@@ -4,3 +4,6 @@ services:
     tags:
       - { name: audit_log_event_subscriber }
       - { name: par_log_event_subscriber }
+  logger.channel.par:
+    parent: logger.channel_base
+    arguments: ['par']

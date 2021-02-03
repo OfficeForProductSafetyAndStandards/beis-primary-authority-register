@@ -52,14 +52,15 @@ command -v cf >/dev/null 2>&1 || {
 ####################################################################################
 # Set required parameters
 #    ENV (required) - the password for the user account
+#    BUILD_VER (optional) - the build tag being pushed
 #    GOVUK_CF_USER (required) - the user deploying the script
 #    GOVUK_CF_PWD (required) - the password for the user account
 #    BUILD_DIR - the directory containing the build assets
 #    VAULT_ADDR - the vault service endpoint
 #    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
 ####################################################################################
-OPTIONS=su:p:i:b:rd:v:u:t:x
-LONGOPTS=single,user:,password:,instances:,database:,refresh-database,directory:,vault:,unseal:,token:,deploy-production
+OPTIONS=sT:u:p:i:b:rd:v:u:t:x
+LONGOPTS=single,build-tag:,user:,password:,instances:,database:,refresh-database,directory:,vault:,unseal:,token:,deploy-production
 
 # -use ! and PIPESTATUS to get exit code with errexit set
 # -temporarily store output to be able to check for errors
@@ -79,6 +80,7 @@ ENV_ONLY=${ENV_ONLY:=n}
 GOVUK_CF_USER=${GOVUK_CF_USER:-}
 GOVUK_CF_PWD=${GOVUK_CF_PWD:-}
 CF_INSTANCES=${CF_INSTANCES:=1}
+BUILD_VER=${BUILD_VER:-}
 BUILD_DIR=${BUILD_DIR:=$PWD}
 REMOTE_BUILD_DIR=${REMOTE_BUILD_DIR:="/home/vcap/app"}
 DB_IMPORT=${DB_IMPORT:="$PWD/backups/sanitised-db.sql"}
@@ -93,6 +95,10 @@ while true; do
         -s|--single)
             ENV_ONLY=y
             shift
+            ;;
+        -T|--build-tag)
+            BUILD_VER="$2"
+            shift 2
             ;;
         -u|--user)
             GOVUK_CF_USER="$2"
@@ -399,7 +405,15 @@ for VAR_NAME in "${VAULT_VARS[@]}"
 do
     cf set-env $TARGET_ENV $VAR_NAME ${!VAR_NAME} > /dev/null
 done
+# Set the additional app_env variables.
 cf set-env $TARGET_ENV APP_ENV $ENV
+cf set-env $TARGET_ENV SENTRY_ENVIRONMENT $ENV
+
+# Ensure that the sentry release is also set.
+if [[ ! -z "${BUILD_VER}" ]]; then
+  cf set-env $TARGET_ENV BUILD_VERSION $ENV
+  cf set-env $TARGET_ENV SENTRY_RELEASE $ENV
+fi
 
 
 ####################################################################################
