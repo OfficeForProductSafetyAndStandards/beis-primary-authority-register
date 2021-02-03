@@ -1,6 +1,6 @@
 Feature: Enforcement Officer - Enforcement Notice Process
 
-    @v1 @ci @smoke
+    @v1-ci @smoke
     Scenario Outline: Raise an enforcement notice against a coordinated partnership
         Given I am logged in as "par_enforcement_officer@example.com"
         When I search for a partnership between "<Authority>" and "<Organisation>"
@@ -16,7 +16,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
         | Enforcement notice 1 | Charlie's      | Upper West Side Borough Council | par_authority@example.com |
         | Enforcement notice 2 | Charlie's      | Upper West Side Borough Council | par_authority@example.com |
 
-    @v1 @ci @smoke
+    @v1-ci @smoke
     Scenario Outline: Raise an enforcement notice against a direct partnership
         Given I am logged in as "par_enforcement_officer@example.com"
         When I search for a partnership between "<Authority>" and "<Organisation>"
@@ -31,7 +31,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
         | Enforcement notice 3 | Charlie's      | Lower East Side Borough Council | par_authority@example.com |
         | Enforcement notice 4 | Charlie's      | Lower East Side Borough Council | par_authority@example.com |
 
-    @v1 @ci
+    @v1-ci
     Scenario: Raise an enforcement notice against a direct partnership with multiple actions
         Given I am logged in as "par_enforcement_officer@example.com"
         When I search for a partnership between "Lower East Side Borough Council" and "Charlie's"
@@ -42,7 +42,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
         And I review the enforcement notice
         Then the "enforcement creation" email confirmations for "par_authority@example.com" are processed
 
-    @v1 @ci
+    @v1-ci
     Scenario: Enforce all members using a paginated list
         Given I am logged in as "par_enforcement_officer@example.com"
         When I search for a partnership between "Upper West Side Borough Council" and "Member Upload Test Business"

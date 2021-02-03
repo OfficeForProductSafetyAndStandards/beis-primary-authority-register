@@ -1,6 +1,6 @@
 Feature: Coordinator User - Complete organisation details
 
-    @coordinatedpartnership @v2 @ci-pending
+    @coordinatedpartnership @v2-ci-pending
     Scenario: Coordinator User - Complete organisation details
 
         #LOGIN

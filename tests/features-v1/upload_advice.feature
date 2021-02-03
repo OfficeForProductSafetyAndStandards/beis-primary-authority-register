@@ -2,7 +2,7 @@ Feature: Upload advice
   As an authority member
   I should be able to upload advice
 
-  @upload-advice @v1 @ci
+  @upload-advice @v1-ci
   Scenario: Verify upload advice is not available for non-active partnerships
     Given I am logged in as "par_authority@example.com"
     And I navigate to a partially completed partnership "Upper West Side Borough Council"
@@ -10,7 +10,7 @@ Feature: Upload advice
     Then I should see advice list page
     And I should not see the link "Upload advice"
 
-  @upload-advice @v1 @ci
+  @upload-advice @v1-ci
   Scenario: Verify upload advice is available for active partnerships only
     Given I am logged in as "par_authority@example.com"
     And I navigate to an active partnership "Upper West Side Borough Council"
@@ -18,7 +18,7 @@ Feature: Upload advice
     Then I should see advice list page
     And I see the link "Upload advice"
 
-  @upload-advice @v1 @ci
+  @upload-advice @v1-ci
   Scenario: Upload-advice type business
     Given I am logged in as "par_authority@example.com"
     And I navigate to an active partnership "Lower East Side Borough Council"
@@ -32,7 +32,7 @@ Feature: Upload advice
     And I click save
     Then I see that the advice "Auto-test-NewAdvice" uploaded successfully
 
-  @upload-advice @v1 @ci
+  @upload-advice @v1-ci
   Scenario: Upload-advice type background information
     Given I am logged in as "par_authority@example.com"
     And I navigate to an active partnership "Lower East Side Borough Council"
@@ -46,7 +46,7 @@ Feature: Upload advice
     And I click save
     Then I see that the advice "Background information for the business" uploaded successfully
 
-  @upload-advice @v1 @ci
+  @upload-advice @v1-ci
   Scenario: Helpdesk user able to upload advice for an active partnership
     Given I am logged in as "par_helpdesk@example.com"
     When I click the link text "Manage partnerships"
@@ -64,7 +64,7 @@ Feature: Upload advice
     And I click save
     Then I see that the advice "Environmental Health advice" uploaded successfully
 
-  @upload-advice @v1 @ci
+  @upload-advice @v1-ci
   Scenario: Edit advice
     Given I am logged in as "par_authority@example.com"
     And I navigate to an active partnership "Lower East Side Borough Council"
@@ -76,7 +76,7 @@ Feature: Upload advice
     And I see advice updated successfully
 
 
-  @upload-advice @v1 @ci
+  @upload-advice @v1-ci
   Scenario: Archive advice
     Given I am logged in as "par_authority@example.com"
     And I navigate to an active partnership "Lower East Side Borough Council"
@@ -86,7 +86,7 @@ Feature: Upload advice
 
 
 
-  @upload-advice @v1 @ci
+  @upload-advice @v1-ci
   Scenario: Remove advice
     Given I am logged in as "par_helpdesk@example.com"
     When I click the link text "Manage partnerships"

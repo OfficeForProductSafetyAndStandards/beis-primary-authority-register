@@ -1,6 +1,6 @@
 Feature: User management
 
-    @user-management @v1 @ci @smoke
+    @user-management @v1-ci @smoke
     Scenario Outline: Verify users have permission to manage people
         Given I am logged in as "<user>"
         Then the element "#content" contains the text "Manage your colleagues"
@@ -10,12 +10,12 @@ Feature: User management
             | par_business@example.com	|
             | par_authority@example.com	|
 
-    @user-management @v1 @ci
+    @user-management @v1-ci
     Scenario: Verify an enforcement officer cannot added new person
         Given I am logged in as "par_enforcement_officer@example.com"
         Then the element "#content" does not contain the text "Manage your colleagues"
 
-    @user-management @v1 @ci @smoke
+    @user-management @v1-ci @smoke
     Scenario Outline: Add new person and invite user
         Given I am logged in as "par_authority_user_management@example.com"
         When I click the link text "Manage your colleagues"
@@ -72,7 +72,7 @@ Feature: User management
             | par_user_management_second_officer@example.com    | Mr    | Joe           | Smith     | 01899 190 708 | 07111 000 111 | enforcement   |
             | par_user_management_second_contact@example.com    | Ms    | Hermione      | Ruth      | 01000 200 300 | 07999 999 999 | authority     |
 
-    @user-management @v1 @ci
+    @user-management @v1-ci
     Scenario Outline: Add new person without inviting the user
         Given I am logged in as "par_authority_user_management@example.com"
         When I click the link text "Manage your colleagues"
@@ -118,7 +118,7 @@ Feature: User management
             | par_user_management_no_user@example.com           | Mrs   | Alex          | Welsh     | 01212 473 339 | 07824 994 544 |
 
 
-    @user-management @v1 @ci
+    @user-management @v1-ci
     Scenario: Check correct users can be managed
         Given I am logged in as "par_authority_user_management@example.com"
 
@@ -141,7 +141,7 @@ Feature: User management
         And the element ".user-management-list .table-scroll-wrapper tbody" does not contain the text "par_organisation_user_management@example.com"
 
 
-    @user-management @v1 @ci
+    @user-management @v1-ci
     Scenario: Check that users can be updated
         Given I am logged in as "par_authority_user_management@example.com"
 
@@ -194,7 +194,7 @@ Feature: User management
 
         And the element ".component-user-detail" contains the text "par_user_management_multiple@example.com"
 
-    @user-management @v1 @ci
+    @user-management @v1-ci
     Scenario: Check that user email addresses can be updated
         Given I am logged in as "par_authority_user_management@example.com"
 
@@ -238,7 +238,7 @@ Feature: User management
         And I click the link text "Done"
 
 
-    @user-management @v1 @ci @smoke
+    @user-management @v1-ci @smoke
     Scenario: Check that existing contacts can be invited
         Given I am logged in as "par_authority_user_management@example.com"
 
@@ -270,7 +270,7 @@ Feature: User management
         Then the element "h1.heading-xlarge" contains the text "The invitation has been sent"
 
 
-    @user-management @v1 @ci @smoke
+    @user-management @v1-ci @smoke
     Scenario: User should not be blocked
         Given I am logged in as "par_helpdesk@example.com"
 
@@ -284,7 +284,7 @@ Feature: User management
         # Confirm that this user cannot be cancelled.
         Then the element ".component-user-detail" contains the text "This user can not be removed because they are the only member of one of their authorities or organisations."
 
-    @user-management @v1 @ci @smoke
+    @user-management @v1-ci @smoke
     Scenario: User can be blocked and reactivated
         Given I am logged in as "par_helpdesk@example.com"
 
