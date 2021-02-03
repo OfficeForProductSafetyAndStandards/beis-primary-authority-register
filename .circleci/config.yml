@@ -9,6 +9,7 @@ references:
         name: web
         environment:
           APP_ENV: ci
+          SENTRY_ENVIRONMENT: ci
 
       - image: postgres:9.6.3
         environment:
@@ -75,6 +76,7 @@ references:
       command: |
         cd /tmp/workspace
         echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
+        echo "SENTRY_RELEASE=$CIRCLE_TAG" >> .env
         tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
 
   workspace_root: &workspace_root
@@ -103,6 +105,7 @@ jobs:
             echo "S3_BUCKET_PUBLIC=$S3_BUCKET_PUBLIC" >> .env
             echo "PAR_HASH_SALT=$PAR_HASH_SALT" >> .env
             echo "APP_ENV=$APP_ENV" >> .env
+            echo "SENTRY_ENVIRONMENT=$APP_ENV" >> .env
             echo "SENTRY_DSN=$SENTRY_DSN" >> .env
             echo "SENTRY_DSN_PUBLIC=$SENTRY_DSN_PUBLIC" >> .env
             echo "PAR_GOVUK_NOTIFY_KEY=$PAR_GOVUK_NOTIFY_KEY" >> .env
@@ -301,7 +304,7 @@ jobs:
               echo "Tags can only be deployed from the master branch"
               exit 1
             else
-              ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+              ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
             fi
 
   deploy_prod:
@@ -332,7 +335,7 @@ jobs:
               echo "Tags can only be deployed from the master branch"
               exit 1
             else
-              ./devops/cf/push.local.sh -u $GOVUK_CF_USER -p $GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
+              ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $GOVUK_CF_USER -p $GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
             fi
 
   deploy_test:
@@ -354,7 +357,7 @@ jobs:
           command: |
             DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
             printf "Deploying to test environment: https://beis-par-$DEPLOY_ENV.cloudapps.digital\n"
-            ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   archive_database:
     <<: *defaults
