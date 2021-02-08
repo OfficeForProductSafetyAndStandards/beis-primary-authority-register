@@ -1,0 +1,6 @@
+administer par subscribers:
+  title: 'Manage subscribers'
+  description: 'Allow users to manage subscribers.'
+par subscribe:
+  title: 'Subscribe to subscription list'
+  description: 'Allow users to subscribe to a subscription list.'

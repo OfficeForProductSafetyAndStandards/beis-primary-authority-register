@@ -1,0 +1,18 @@
+# The config for subscription list entities
+par_data.par_subscription_list.*:
+  type: config_entity
+  label: 'PAR subscription list config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: string
+      label: 'Description'
+    verification:
+      type: boolean
+      label: 'Verification required'
+      nullable: true
