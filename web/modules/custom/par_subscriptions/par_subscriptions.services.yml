@@ -1,0 +1,8 @@
+services:
+  par_subscriptions.route_subscriber:
+      class: Drupal\par_subscriptions\Routing\ParSubscriptionRoutes
+      arguments: ['@par_subscriptions.manager']
+  par_subscriptions.manager:
+    class: Drupal\par_subscriptions\ParSubscriptionManager
+    arguments: [ '@entity_type.manager', '@entity_type.bundle.info', '@email.validator', '@messenger' ]
+

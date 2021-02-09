@@ -1,0 +1,21 @@
+uuid: 5424fb46-bc69-4a6e-9040-15202aa28d2c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.subscription_verify_notification.field_message_subject
+    - message.template.subscription_verify_notification
+id: message.subscription_verify_notification.default
+targetEntityType: message
+bundle: subscription_verify_notification
+mode: default
+content:
+  field_message_subject:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden: {  }

@@ -1,5 +1,5 @@
 # The config for subscription list entities
-par_data.par_subscription_list.*:
+par_subscriptions.par_subscription_list.*:
   type: config_entity
   label: 'PAR subscription list config'
   mapping:

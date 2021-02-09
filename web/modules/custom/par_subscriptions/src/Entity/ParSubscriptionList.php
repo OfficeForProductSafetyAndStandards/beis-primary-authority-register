@@ -12,8 +12,8 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
  *   id = "par_subscription_list",
  *   label = @Translation("PAR Subscription List"),
  *   config_prefix = "par_subscription_list",
- *   bundle_of = "par_data_legal_entity",
- *   admin_permission = "administer par subscribers",
+ *   bundle_of = "par_subscription",
+ *   admin_permission = "administer all subscribers",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",

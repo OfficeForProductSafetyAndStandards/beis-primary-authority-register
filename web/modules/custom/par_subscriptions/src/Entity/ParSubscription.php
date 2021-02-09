@@ -6,6 +6,8 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_subscriptions\Event\SubscriptionEvent;
+use Drupal\par_subscriptions\Event\SubscriptionEvents;
 
 /**
  * Defines the Subscription entity.
@@ -32,7 +34,60 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   permission_granularity = "bundle",
  * )
  */
-class ParSubscription extends ContentEntityBase implements ContentEntityInterface {
+class ParSubscription extends ContentEntityBase implements ContentEntityInterface, ParSubscriptionInterface {
+
+  private function getEventDispatcher() {
+    return \Drupal::service('event_dispatcher');
+  }
+
+  public function getList() {
+    return $this->get('list')->getString();
+  }
+
+  public function getCode() {
+    return $this->get('code')->getString();
+  }
+
+  public function getEmail() {
+    return $this->get('email')->getString();
+  }
+
+  public function displayList() {
+    return $this->list->entity->label();
+  }
+
+  public function displayEmail() {
+    $email = $this->getEmail();
+    $replaceable = substr($email, 1, strpos($email, '@')-1);
+
+    // Return a partly obfuscated email address.
+    return str_replace($replaceable, 'xxxxxx', $email);
+  }
+
+  public function isVerified() {
+    return $this->get('verified')->get(0)->getValue()['value'] === 1;
+  }
+
+  public function subscribe() {
+    $this->save();
+
+    // Dispatch a subscribe event.
+    $event = new SubscriptionEvent($this);
+    $this->getEventDispatcher()->dispatch(SubscriptionEvents::subscribe($this->getEntityTypeId()), $event);
+  }
+
+  public function verify() {
+    $this->set('verified', 1);
+    $this->save();
+  }
+
+  public function unsubscribe() {
+    $this->delete();
+
+    // Dispatch a subscribe event.
+    $event = new SubscriptionEvent($this);
+    $this->getEventDispatcher()->dispatch(SubscriptionEvents::unsubscribe($this->getEntityTypeId()), $event);
+  }
 
   /**
    * Determines the schema for the base_table property defined above.
