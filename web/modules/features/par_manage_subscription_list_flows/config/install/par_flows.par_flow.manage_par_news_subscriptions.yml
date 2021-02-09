@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies: {  }
+id: manage_par_news_subscriptions
+label: 'Manage PAR News Subscriptions'
+default_title: null
+default_section_title: null
+description: 'The operations to manage subscription lists in bulk.'
+save_method: end
+states:
+  - par_data_partnership
+final_routes:
+  - view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page
+steps:
+  1:
+    route: par_manage_subscription_list_flows.par_news.manage
+    form_id: manage_subscriptions
+    redirect:
+      next: 2
+  2:
+    route: par_manage_subscription_list_flows.par_news.validate
+    form_id: validate_subscriptions
+    redirect:
+      next: 3
+  3:
+    route: par_manage_subscription_list_flows.par_news.validate
+    form_id: validate_subscriptions
