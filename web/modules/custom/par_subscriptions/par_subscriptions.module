@@ -23,3 +23,20 @@ function par_subscriptions_help($route_name, RouteMatchInterface $route_match) {
     default:
   }
 }
+
+/**
+ * Implements hook_cron().
+ */
+function par_subscriptions_cron() {
+  $subscription_manager = \Drupal::service('par_subscriptions.manager');
+
+  $request_time = \Drupal::time()->getRequestTime();
+  $last_run = \Drupal::state()->get('par_subscriptions.last_purge', 0);
+  $day = 60*60*24;
+
+  if ($request_time-$day > $last_run) {
+    $subscription_manager->purge();
+  }
+
+  \Drupal::state()->set('par_subscriptions.last_purge', $request_time);
+}

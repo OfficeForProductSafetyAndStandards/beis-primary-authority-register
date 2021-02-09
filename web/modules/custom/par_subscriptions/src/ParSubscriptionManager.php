@@ -22,6 +22,8 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
   const SUBSCRIPTION_STATUS_VERIFIED = 'verified';
   const UNIVERSAL_UNSUBSCRIBE_CODE = 'unsubscribed';
 
+  const VERIFICATION_EXPIRY = 604800;
+
   /**
    * The entity type manager.
    *
@@ -112,6 +114,22 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
   }
 
   /**
+   * Get all subscriptions belonging to a list.
+   */
+  public function getListSubscriptions($list) {
+    if ($this->isValidList($list)) {
+      $subscriptions = $this->entityTypeManager
+        ->getStorage(self::SUBSCRIPTION_ENTITY)
+        ->loadByProperties([
+          'list' => $list,
+          'verified' => 1,
+        ]);
+    }
+
+    return $subscriptions ?? [];
+  }
+
+  /**
    * Get a subscription by the subscription code.
    *
    * For security this should be the primary way of retrieving existing subscriptions.
@@ -151,6 +169,34 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
     }
 
     return NULL;
+  }
+
+  /**
+   * Purge old non-verified subscriptions from all lists.
+   */
+  public function purge() {
+    $query = $this->entityTypeManager
+      ->getStorage(self::SUBSCRIPTION_ENTITY)
+      ->getQuery()
+      ->accessCheck(FALSE);
+
+    // Only query for unverified subscriptions.
+    $group = $query->orConditionGroup()
+      ->condition('verified', 0, 'IS NULL')
+      ->condition('verified', 0, '=');
+    $query->condition($group);
+
+    // Only query for old subscriptions.
+    $request_time = \Drupal::time()->getRequestTime();
+    $expiry = $request_time-self::VERIFICATION_EXPIRY;
+    $query->condition('created', $expiry, '<');
+
+    $expired_subscriptions = $query->execute();
+    foreach ($expired_subscriptions as $id) {
+      $this->entityTypeManager
+        ->getStorage(self::SUBSCRIPTION_ENTITY)
+        ->delete($id);
+    }
   }
 
   /**
