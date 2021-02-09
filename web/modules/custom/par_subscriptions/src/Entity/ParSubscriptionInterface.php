@@ -8,6 +8,20 @@ namespace Drupal\par_subscriptions\Entity;
 interface ParSubscriptionInterface {
 
   /**
+   * Get the list.
+   *
+   * @return string
+   */
+  public function getListId();
+
+  /**
+   * Get the human readable list name.
+   *
+   * @return string
+   */
+  public function getListName();
+
+  /**
    * Get the subscription code.
    *
    * @return string
@@ -27,13 +41,6 @@ interface ParSubscriptionInterface {
    * @return string
    */
   public function displayEmail();
-
-  /**
-   * Get the list.
-   *
-   * @return string
-   */
-  public function getList();
 
   /**
    * Is the subscription verified.

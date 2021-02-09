@@ -10,14 +10,14 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * @package Drupal\par_subscriptions\Event
  */
-class SubscriptionEvent extends Event {
+class SubscriptionEvent extends Event implements SubscriptionEventInterface {
 
   /**
    * The list name.
    *
    * @var string
    */
-  protected $list;
+  protected $listName;
 
   /**
    * Email.
@@ -37,7 +37,7 @@ class SubscriptionEvent extends Event {
    * @param \Drupal\par_subscriptions\Entity\ParSubscriptionInterface $subscription
    */
   public function __construct(ParSubscriptionInterface $subscription) {
-    $this->list = $subscription->displayList();
+    $this->listName = $subscription->getListName();
     $this->email = $subscription->getEmail();
     $this->subscription = $subscription;
   }
@@ -53,7 +53,7 @@ class SubscriptionEvent extends Event {
    * @return string
    */
   public function getListName(){
-    return $this->list;
+    return $this->listName;
   }
 
   /**

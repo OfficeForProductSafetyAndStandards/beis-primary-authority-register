@@ -64,7 +64,7 @@ class ParSubscriptionRoutes implements ContainerInjectionInterface {
         "/subscription-list/$list_slug/subscribe/{subscription_status}",
         [
           '_form' => 'Drupal\par_subscriptions\Form\ParSubscribeForm',
-          '_title' => "Subscribe",
+          '_title_callback' => 'Drupal\par_subscriptions\Form\ParSubscribeForm::titleCallback',
           'list' => $list,
           'subscription_status' => NULL,
         ],
@@ -79,7 +79,7 @@ class ParSubscriptionRoutes implements ContainerInjectionInterface {
         "/subscription-list/$list_slug/verify/{subscription_code}",
         [
           '_form' => 'Drupal\par_subscriptions\Form\ParVerifyForm',
-          '_title' => "Subscribe",
+          '_title_callback' => 'Drupal\par_subscriptions\Form\ParVerifyForm::titleCallback',
           'list' => $list,
         ],
         [
@@ -93,7 +93,7 @@ class ParSubscriptionRoutes implements ContainerInjectionInterface {
         "/subscription-list/$list_slug/unsubscribe/{subscription_code}",
         [
           '_form' => 'Drupal\par_subscriptions\Form\ParUnsubscribeForm',
-          '_title' => "Unsubscribe",
+          '_title_callback' => 'Drupal\par_subscriptions\Form\ParUnsubscribeForm::titleCallback',
           'list' => $list,
           'subscription_code' => NULL,
         ],

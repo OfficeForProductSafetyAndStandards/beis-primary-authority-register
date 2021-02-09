@@ -5,6 +5,7 @@ namespace Drupal\par_subscriptions\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\Email;
+use Drupal\Core\Url;
 use Drupal\par_subscriptions\ParSubscriptionManager;
 use Drupal\par_subscriptions\ParSubscriptionManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -44,6 +45,12 @@ class ParUnsubscribeForm extends FormBase  {
     return 'subscription_list_unsubscribe';
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function titleCallback($list = NULL) {
+    return "Unsubscribe from {$this->getSubscriptionManager()->getListName($list)}";
+  }
 
   /**
    * Verify a subscription to a list.
@@ -57,15 +64,20 @@ class ParUnsubscribeForm extends FormBase  {
       $subscription->unsubscribe();
     }
 
-    if ($subscription_code) {
-      // If there's a subscription code, tell the user that the subscription
-      // will have been removed if it existed, but do not allow enumeration of
-      // existing subscriptions.
+    if ($subscription || $subscription_code === ParSubscriptionManager::UNIVERSAL_UNSUBSCRIBE_CODE) {
       $form['help'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#value' => $this->t('You have been unsubscribed from this mailing list.'),
         '#attributes' => ['class' => 'subscription-help'],
+      ];
+
+      $link_name = $this->currentUser()->isAuthenticated() ? 'Go back to dashboard' : 'Go to the home page';
+      $route = $this->currentUser()->isAuthenticated() ? 'par_dashboards.dashboard' : '<front>';
+      $form['back'] = [
+        '#title' => $this->t($link_name),
+        '#type' => 'link',
+        '#url' => Url::fromRoute($route),
       ];
     }
     else {

@@ -40,8 +40,12 @@ class ParSubscription extends ContentEntityBase implements ContentEntityInterfac
     return \Drupal::service('event_dispatcher');
   }
 
-  public function getList() {
+  public function getListId() {
     return $this->get('list')->getString();
+  }
+
+  public function getListName() {
+    return $this->list->entity->label();
   }
 
   public function getCode() {
@@ -50,10 +54,6 @@ class ParSubscription extends ContentEntityBase implements ContentEntityInterfac
 
   public function getEmail() {
     return $this->get('email')->getString();
-  }
-
-  public function displayList() {
-    return $this->list->entity->label();
   }
 
   public function displayEmail() {
@@ -72,8 +72,9 @@ class ParSubscription extends ContentEntityBase implements ContentEntityInterfac
     $this->save();
 
     // Dispatch a subscribe event.
+    $name = SubscriptionEvents::subscribe($this->getListId());
     $event = new SubscriptionEvent($this);
-    $this->getEventDispatcher()->dispatch(SubscriptionEvents::subscribe($this->getEntityTypeId()), $event);
+    $this->getEventDispatcher()->dispatch($name, $event);
   }
 
   public function verify() {
@@ -85,8 +86,9 @@ class ParSubscription extends ContentEntityBase implements ContentEntityInterfac
     $this->delete();
 
     // Dispatch a subscribe event.
+    $name = SubscriptionEvents::unsubscribe($this->getListId());
     $event = new SubscriptionEvent($this);
-    $this->getEventDispatcher()->dispatch(SubscriptionEvents::unsubscribe($this->getEntityTypeId()), $event);
+    $this->getEventDispatcher()->dispatch($name, $event);
   }
 
   /**

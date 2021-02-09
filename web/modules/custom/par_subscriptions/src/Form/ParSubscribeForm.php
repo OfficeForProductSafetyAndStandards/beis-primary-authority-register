@@ -4,6 +4,7 @@ namespace Drupal\par_subscriptions\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\par_subscriptions\ParSubscriptionManager;
 use Drupal\par_subscriptions\ParSubscriptionManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -43,6 +44,12 @@ class ParSubscribeForm extends FormBase  {
     return 'subscription_list_subscribe';
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function titleCallback($list = NULL) {
+    return "Subscribe to {$this->getSubscriptionManager()->getListName($list)}";
+  }
 
   /**
    * Subscribe to a list.
@@ -57,6 +64,14 @@ class ParSubscribeForm extends FormBase  {
         '#tag' => 'p',
         '#value' => $this->t('A verification link has been sent to your email address, you must complete this verification to activate your subscription.'),
         '#attributes' => ['class' => 'subscription-help'],
+      ];
+
+      $link_name = $this->currentUser()->isAuthenticated() ? 'Go back to dashboard' : 'Go to the home page';
+      $route = $this->currentUser()->isAuthenticated() ? 'par_dashboards.dashboard' : '<front>';
+      $form['back'] = [
+        '#title' => $this->t($link_name),
+        '#type' => 'link',
+        '#url' => Url::fromRoute($route),
       ];
     }
     else {
@@ -111,7 +126,7 @@ class ParSubscribeForm extends FormBase  {
       $subscription = $this->getSubscriptionManager()->createSubscription($list, $email);
 
       if ($subscription) {
-        // Silently subscribe.
+        // Silently subscribe to prevent enumeration attacks.
         $subscription->subscribe();
       }
 

@@ -16,7 +16,8 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
 
   use StringTranslationTrait;
 
-  const SUBSCRIPTION_ENTITY_TYPE = 'par_subscription';
+  const SUBSCRIPTION_ENTITY = 'par_subscription';
+  const SUBSCRIPTION_TYPE_ENTITY = 'par_subscription_list';
   const SUBSCRIPTION_STATUS_SUBSCRIBED = 'subscribed';
   const SUBSCRIPTION_STATUS_VERIFIED = 'verified';
   const UNIVERSAL_UNSUBSCRIBE_CODE = 'unsubscribed';
@@ -72,9 +73,19 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
    * {@inheritDoc}
    */
   public function getLists() {
-    $bundle_info = $this->entityTypeBundleInfo->getBundleInfo(self::SUBSCRIPTION_ENTITY_TYPE);
+    $bundle_info = $this->entityTypeBundleInfo->getBundleInfo(self::SUBSCRIPTION_ENTITY);
 
     return $bundle_info ? array_keys($bundle_info) : [];
+  }
+
+  public function getListName($list) {
+    if ($this->isValidList($list)) {
+      $list_type = $subscriptions = $this->entityTypeManager
+        ->getStorage(self::SUBSCRIPTION_TYPE_ENTITY)
+        ->load($list);
+
+      return $list_type ? $list_type->label() : '';
+    }
   }
 
   public function createSubscription($list, $email) {
@@ -91,7 +102,7 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
       ];
 
       $subscription = $this->entityTypeManager
-        ->getStorage(self::SUBSCRIPTION_ENTITY_TYPE)
+        ->getStorage(self::SUBSCRIPTION_ENTITY)
         ->create($values);
 
       return $subscription;
@@ -111,7 +122,7 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
   public function getSubscription($code) {
     if ($this->isValidCode($code)) {
       $subscriptions = $this->entityTypeManager
-        ->getStorage(self::SUBSCRIPTION_ENTITY_TYPE)
+        ->getStorage(self::SUBSCRIPTION_ENTITY)
         ->loadByProperties([
           'code' => $code
         ]);
@@ -131,7 +142,7 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
   public function getSubscriptionByEmail($email) {
     if ($this->isValidEmail($email)) {
       $subscriptions = $this->entityTypeManager
-        ->getStorage(self::SUBSCRIPTION_ENTITY_TYPE)
+        ->getStorage(self::SUBSCRIPTION_ENTITY)
         ->loadByProperties([
           'email' => $email
         ]);

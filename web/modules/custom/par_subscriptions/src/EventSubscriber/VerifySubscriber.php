@@ -6,6 +6,7 @@ use Drupal\Core\Url;
 use Drupal\message\Entity\Message;
 use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParNotificationSubscriberBase;
+use Drupal\par_subscriptions\Event\SubscriptionEventInterface;
 use Drupal\par_subscriptions\Event\SubscriptionEvents;
 use Drupal\par_subscriptions\ParSubscriptionManager;
 
@@ -35,7 +36,7 @@ class VerifySubscriber extends ParNotificationSubscriberBase {
   /**
    * @param \Drupal\par_subscriptions\Event\SubscriptionEventInterface $event
    */
-  public function onEvent(SubscriptionEvents $event) {
+  public function onEvent(SubscriptionEventInterface $event) {
     // Do not send a verification message if this subscription is already verified.
     if ($event->getSubscription()->isVerified()) {
       return;
@@ -51,7 +52,8 @@ class VerifySubscriber extends ParNotificationSubscriberBase {
 
     // Generate the verification link.
     $parameters = ['subscription_code' => $event->getSubscription()->getCode()];
-    $verification_link = Url::fromRoute("par_subscriptions.{$event->getSubscription()->getList()}.verify", $parameters);
+    $options = ['absolute' => true];
+    $verification_link = Url::fromRoute("par_subscriptions.{$event->getSubscription()->getListId()}.verify", $parameters, $options);
 
     // Add some custom arguments to this message.
     $message->setArguments([
