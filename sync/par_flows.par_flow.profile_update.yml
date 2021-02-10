@@ -43,7 +43,7 @@ steps:
     route: par_profile_update_flows.subscription_preferences
     form_id: par_subscription_preferences
     components:
-      subscription_preferences: {}
+      subscription_preferences: {  }
     form_data:
       select_person: par_choose_person
       contact_details: par_profile_update
@@ -52,7 +52,7 @@ steps:
     route: par_profile_update_flows.notification_preferences
     form_id: par_notification_preferences
     components:
-      notification_preferences: {}
+      notification_preferences: {  }
     form_data:
       select_person: par_choose_person
       contact_details: par_profile_update
