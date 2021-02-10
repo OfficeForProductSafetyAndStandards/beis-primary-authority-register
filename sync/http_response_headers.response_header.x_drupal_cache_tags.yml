@@ -1,0 +1,10 @@
+uuid: ef013e30-f477-441f-9386-c5416bc204ef
+langcode: en
+status: true
+dependencies: {  }
+id: x_drupal_cache_tags
+label: 'X Drupal Cache Tags'
+description: 'Overrides the core drupal cache tags'
+group: ''
+name: X-Drupal-Cache-Tags
+value: ''

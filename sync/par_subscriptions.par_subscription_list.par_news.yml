@@ -1,0 +1,10 @@
+uuid: e095ad4e-f1ec-49ff-a14d-1f006c20c5a6
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: E5tFuXQ2qAJP-6GMZB3dCZxVNPLM9mF6Mudk4xls5_U
+id: par_news
+label: 'PAR News'
+description: 'A subscription list for receiving PAR News'
+verification: true

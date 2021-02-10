@@ -1,0 +1,11 @@
+uuid: f5632307-1f43-4801-ac4f-346102e43fab
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.par_deviation_request_comments
+id: comment.par_deviation_request_comments
+target_entity_type_id: comment
+target_bundle: par_deviation_request_comments
+default_langcode: site_default
+language_alterable: false

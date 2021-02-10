@@ -1,0 +1,17 @@
+uuid: f23269ea-c23a-44e7-9685-547d1bca34f0
+langcode: en
+status: false
+dependencies:
+  module:
+    - par_actions
+title: 'Default cron handler'
+id: par_actions_cron
+weight: 0
+module: par_actions
+callback: par_actions_cron
+scheduler:
+  id: simple
+launcher:
+  id: serial
+logger:
+  id: database

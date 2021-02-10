@@ -1,0 +1,17 @@
+uuid: 7d9cf714-b820-4779-b9d0-ab9846935a4f
+langcode: en
+status: true
+dependencies: {  }
+template: reviewed_enforcement
+label: 'Reviewed enforcement notification'
+description: 'This notification is sent to the enforcing authority when an enforcement notice has been approved or blocked.'
+text:
+  -
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>The enforcement notification against @enforced_organisation has been reviewed.</p>\r\n\r\n<p><span>Please see the link below to view the full details of this review.</span></p>\r\n\r\n<p>^ View enforcement notice: [message:primary-action]</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
+    format: basic_html
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }

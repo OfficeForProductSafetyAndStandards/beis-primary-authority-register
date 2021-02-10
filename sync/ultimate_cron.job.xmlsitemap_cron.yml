@@ -1,0 +1,30 @@
+uuid: 7dd1cad1-3fdf-436c-9aa7-b2cf4e261dd7
+langcode: en
+status: true
+dependencies:
+  module:
+    - xmlsitemap
+title: 'Default cron handler'
+id: xmlsitemap_cron
+weight: 0
+module: xmlsitemap
+callback: xmlsitemap_cron
+scheduler:
+  id: crontab
+  configuration:
+    rules:
+      - '0 0 * * 0'
+    catch_up: 0
+launcher:
+  id: serial
+  configuration:
+    timeouts:
+      lock_timeout: 3600
+    launcher:
+      thread: 0
+logger:
+  id: database
+  configuration:
+    method: '3'
+    expire: 1209600
+    retain: 1000

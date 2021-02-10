@@ -1,0 +1,17 @@
+uuid: 87082506-9a17-4a46-bec8-ca3725dcb711
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_subscriptions
+title: 'Default cron handler'
+id: par_subscriptions_cron
+weight: 0
+module: par_subscriptions
+callback: par_subscriptions_cron
+scheduler:
+  id: simple
+launcher:
+  id: serial
+logger:
+  id: database

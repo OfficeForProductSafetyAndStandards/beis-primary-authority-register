@@ -1,0 +1,15 @@
+uuid: b5ea0882-8bc7-4446-bbdb-180f859a61f4
+name: 'Primary Authority Register'
+mail: pa@bis.gsi.gov.uk
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /about
+admin_compact_mode: false
+weight_select_max: 100
+langcode: en
+default_langcode: en
+_core:
+  default_config_hash: AyT9s8OUcclfALRE_imByOMgtZ19eOlqdF6zI3p7yqo
+mail_notification: pa@bis.gsi.gov.uk

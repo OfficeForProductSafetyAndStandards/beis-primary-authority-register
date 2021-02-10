@@ -1,0 +1,30 @@
+uuid: 2307a9c4-37fa-46ba-9adc-b2c37b480a23
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_partnership.field_regulatory_function
+    - par_data.par_data_partnership_type.partnership
+    - par_data.par_data_regulatory_function_t.regulatory_function
+_core:
+  default_config_hash: V2OjhUGy455Mwr3_7838lIdiDCOVKYNVhaBtJOR9UrE
+id: par_data_partnership.partnership.field_regulatory_function
+field_name: field_regulatory_function
+entity_type: par_data_partnership
+bundle: partnership
+label: 'Regulatory Function'
+description: 'The regulatory functions for this partnership.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_regulatory_function'
+  handler_settings:
+    target_bundles:
+      regulatory_function: regulatory_function
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

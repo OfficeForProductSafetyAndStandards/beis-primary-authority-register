@@ -1,0 +1,14 @@
+uuid: 106729c0-442a-49fc-8d03-2005450108ca
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.par_helpdesk
+  module:
+    - user
+id: user_remove_role_action.par_helpdesk
+label: 'Remove the PAR Helpdesk role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: par_helpdesk

@@ -1,0 +1,20 @@
+uuid: ab60e74b-8ff4-4081-bf62-af5ac6fb8a94
+langcode: en
+status: true
+dependencies:
+  module:
+    - file
+    - par_data
+id: file.field_authority
+field_name: field_authority
+entity_type: file
+type: entity_reference
+settings:
+  target_type: par_data_authority
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

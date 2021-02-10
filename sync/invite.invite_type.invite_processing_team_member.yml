@@ -1,0 +1,8 @@
+uuid: 5b50553b-37c6-4dfa-8c4b-ce072360fc9e
+langcode: en
+status: null
+dependencies: {  }
+id: invite_processing_team_member
+label: 'Invite Processing Team Member'
+description: 'Allows users to invite a member of the processing team to create an account.'
+data: 'a:4:{s:11:"use_default";i:1;s:16:"subject_editable";i:0;s:10:"html_email";i:0;s:11:"target_role";s:12:"par_helpdesk";}'

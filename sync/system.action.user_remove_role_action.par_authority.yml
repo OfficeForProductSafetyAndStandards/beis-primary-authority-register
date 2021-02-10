@@ -1,0 +1,14 @@
+uuid: 31b8849b-adc5-48e2-ad41-c46eb6cdbe27
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.par_authority
+  module:
+    - user
+id: user_remove_role_action.par_authority
+label: 'Remove the PAR Authority role from the selected users'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: par_authority

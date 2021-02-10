@@ -1,0 +1,45 @@
+uuid: 98737d26-3083-4f6b-a6f1-63a5473d71a3
+langcode: en
+status: true
+dependencies:
+  module:
+    - editor
+_core:
+  default_config_hash: P8ddpAIKtawJDi5SzOwCzVnnNYqONewSTJ6Xn0dW_aQ
+name: 'PAR HTML'
+format: basic_html
+weight: 0
+filters:
+  filter_html:
+    id: filter_html
+    provider: filter
+    status: true
+    weight: -10
+    settings:
+      allowed_html: '<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <li> <dl> <dt> <dd> <h5 id> <h6 id> <br> <span> <ul type class="list list-bullet"> <ol start type class="list list-number"> <div class="info-notice help-notice contact"> <p class="lede font-xsmall"> <h2 id class="heading-large"> <h3 id class="heading-medium"> <h4 id class="heading-small"> <h1 class="heading-xlarge">'
+      filter_html_help: false
+      filter_html_nofollow: false
+  filter_align:
+    id: filter_align
+    provider: filter
+    status: true
+    weight: 7
+    settings: {  }
+  filter_caption:
+    id: filter_caption
+    provider: filter
+    status: true
+    weight: 8
+    settings: {  }
+  filter_html_image_secure:
+    id: filter_html_image_secure
+    provider: filter
+    status: true
+    weight: 9
+    settings: {  }
+  editor_file_reference:
+    id: editor_file_reference
+    provider: editor
+    status: true
+    weight: 11
+    settings: {  }

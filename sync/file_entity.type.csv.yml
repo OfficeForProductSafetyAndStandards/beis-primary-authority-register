@@ -1,0 +1,9 @@
+uuid: 1d9e65e8-ec79-4c6c-96aa-eaf3ef4b22a5
+langcode: en
+status: true
+dependencies: {  }
+id: csv
+label: CSV
+description: 'An uploadable data format.'
+mimetypes:
+  - text/csv

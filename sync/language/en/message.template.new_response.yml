@@ -1,0 +1,4 @@
+text:
+  -
+    value: "<p>This is a legacy notification, please ignore.</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+    format: basic_html
