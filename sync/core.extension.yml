@@ -95,6 +95,7 @@ module:
   par_invite_user_flows: 0
   par_log: 0
   par_login: 0
+  par_manage_subscription_list_flows: 0
   par_member_add_flows: 0
   par_member_cease_flows: 0
   par_member_unlock_flows: 0
@@ -120,6 +121,7 @@ module:
   par_reporting: 0
   par_roles: 0
   par_search_partnership_flows: 0
+  par_subscriptions: 0
   par_user_block_flows: 0
   par_validation: 0
   password_policy: 0

@@ -1,0 +1,8 @@
+name: 'PAR Manage Subscription List Flows'
+type: module
+description: 'Creates the flows required to manage subscription lists in bulk.'
+core: 8.x
+package: PAR
+dependencies:
+  - par_data
+  - par_flows

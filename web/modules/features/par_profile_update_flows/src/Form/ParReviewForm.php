@@ -17,7 +17,9 @@ use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_profile_update_flows\ParFlowAccessTrait;
+use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 
 /**
  * The form for the partnership details.
@@ -30,6 +32,13 @@ class ParReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   protected $pageTitle = 'Profile review';
+
+  /**
+   * Get the subscription manager.
+   */
+  private function getSubscriptionManager() {
+    return \Drupal::service('par_subscriptions.manager');
+  }
 
   /**
    * {@inheritdoc}
@@ -237,6 +246,28 @@ class ParReviewForm extends ParBaseForm {
     $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
     $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
     $cid_invitation = $this->getFlowNegotiator()->getFormKey('par_invite');
+    $subscriptions_cid = $this->getFlowNegotiator()->getFormKey('subscription_preferences');
+    $notifications_cid = $this->getFlowNegotiator()->getFormKey('notification_preferences');
+
+    // Subscribe and unsubscribe the user from the relevant subscription lists.
+    $lists = $this->getSubscriptionManager()->getLists();
+    $subscriptions = array_filter($this->getFlowDataHandler()->getTempDataValue('subscriptions', $subscriptions_cid));
+    foreach ($lists as $list) {
+      // Create a new subscription.
+      if (isset($subscriptions[$list])) {
+        $subscription = $this->getSubscriptionManager()->createSubscription($list, $account->getEmail());
+        if ($subscription instanceof ParSubscriptionInterface) {
+          $subscription->subscribe();
+        }
+      }
+      // Unsubscribe a user from the list.
+      else {
+        $subscription = $this->getSubscriptionManager()->getSubscriptionByEmail($list, $account->getEmail());
+        if ($subscription instanceof ParSubscriptionInterface) {
+          $subscription->unsubscribe();
+        }
+      }
+    }
 
     $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
     switch ($role) {

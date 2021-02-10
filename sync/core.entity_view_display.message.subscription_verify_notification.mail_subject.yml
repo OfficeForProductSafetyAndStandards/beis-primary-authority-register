@@ -1,0 +1,24 @@
+uuid: 9351bbbf-2b24-4bd8-90a4-928c81fb3858
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - field.field.message.subscription_verify_notification.field_message_subject
+    - message.template.subscription_verify_notification
+id: message.subscription_verify_notification.mail_subject
+targetEntityType: message
+bundle: subscription_verify_notification
+mode: mail_subject
+content:
+  field_message_subject:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  partial_0: true
+  partial_1: true

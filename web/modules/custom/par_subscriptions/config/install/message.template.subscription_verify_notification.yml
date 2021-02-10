@@ -1,0 +1,17 @@
+uuid: 16e36843-9cac-4ff3-b11f-9dee0c2adf49
+langcode: en
+status: true
+dependencies: {  }
+template: subscription_verify_notification
+label: 'Subscription Verify Notification'
+description: 'Sent to any user after they subscribe to a mailing list so that they can verify their email address.'
+text:
+  -
+    value: "<p>Dear subscriber,<br />\r\n<br />\r\nYou have&nbsp;subscribed to the subscription list&nbsp;@list.<br />\r\n<br />\r\nTo activate your subscription please verify your email address.<br />\r\n<br />\r\n^ Verify your email address: @verification_link<br />\r\n<br />\r\nIf you did not subscribe to this list you don't need to do anything.<br />\r\n<br />\r\nRegards, Primary Authority Register team</p>\r\n"
+    format: basic_html
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }
