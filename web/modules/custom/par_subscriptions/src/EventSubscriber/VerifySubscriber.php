@@ -9,6 +9,7 @@ use Drupal\par_notification\ParNotificationSubscriberBase;
 use Drupal\par_subscriptions\Event\SubscriptionEventInterface;
 use Drupal\par_subscriptions\Event\SubscriptionEvents;
 use Drupal\par_subscriptions\ParSubscriptionManager;
+use Drupal\user\Entity\User;
 
 class VerifySubscriber extends ParNotificationSubscriberBase {
 
@@ -37,6 +38,15 @@ class VerifySubscriber extends ParNotificationSubscriberBase {
    * @param \Drupal\par_subscriptions\Event\SubscriptionEventInterface $event
    */
   public function onEvent(SubscriptionEventInterface $event) {
+    // Automatically verify signed in users.
+    if ($this->getCurrentUser()->isAuthenticated()) {
+      $account = User::load($this->getCurrentUser()->id());
+      if ($account->getEmail() === $event->getEmail()) {
+        // Silently verify any user subscribing themselves.
+        $event->getSubscription()->verify();
+      }
+    }
+
     // Do not send a verification message if this subscription is already verified.
     if ($event->getSubscription()->isVerified()) {
       return;
