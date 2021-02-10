@@ -1,5 +1,5 @@
 permission_callbacks:
-  - 'Drupal\par_submissions\Permissions\ParSubscriptionPermissions::permissions'
+  - 'Drupal\par_subscriptions\Permissions\ParSubscriptionPermissions::permissions'
 
 administer all subscribers:
   title: 'Manage all subscription settings'

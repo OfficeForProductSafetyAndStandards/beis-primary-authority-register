@@ -1,6 +1,0 @@
-uuid: e7ef94f9-65f9-472f-b8d8-4d963575b6eb
-langcode: en
-status: true
-dependencies: {  }
-id: invite_senior_administration_officer
-sending_methods: invite_by_email||0

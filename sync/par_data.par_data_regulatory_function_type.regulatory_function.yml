@@ -1,7 +1,0 @@
-primary-authority-partnershipsstatus: true
-dependencies: {  }
-id: regulatory_function
-label: 'Regulatory Function'
-description: 'PAR3 will cover 7 high-level Regulatory Functions: Environmental Health, Trading Standards, Fire Safety, Licensing, Petrol Storage Certification, Explosives Licensing, Health and Safety (Scotland)'
-help: ''
-configuration: null

@@ -1,8 +1,0 @@
-uuid: fa693493-f610-4661-99c4-a5ea258d35e5
-langcode: en
-status: null
-dependencies: {  }
-id: invite_link
-label: 'Invite Link'
-description: 'Generate an invitation link for any user.'
-data: 'a:4:{s:11:"use_default";i:1;s:16:"subject_editable";i:0;s:10:"html_email";i:0;s:11:"target_role";s:1:"0";}'

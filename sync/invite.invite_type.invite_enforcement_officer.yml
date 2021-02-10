@@ -1,8 +1,0 @@
-uuid: 37f8a7dc-57c5-49ef-8bb4-79af643f442a
-langcode: en
-status: null
-dependencies: {  }
-id: invite_enforcement_officer
-label: 'Invite Enforcement Officer'
-description: 'Invite a primary authority enforcement officer to the system.'
-data: 'a:4:{s:11:"use_default";i:1;s:16:"subject_editable";i:0;s:10:"html_email";i:0;s:11:"target_role";s:15:"par_enforcement";}'

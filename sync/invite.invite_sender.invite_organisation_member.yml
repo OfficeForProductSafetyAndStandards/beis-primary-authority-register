@@ -1,6 +1,0 @@
-uuid: 664ec4a1-1944-4818-8d0f-5a0b5ac554ce
-langcode: en
-status: true
-dependencies: {  }
-id: invite_organisation_member
-sending_methods: invite_by_email||0

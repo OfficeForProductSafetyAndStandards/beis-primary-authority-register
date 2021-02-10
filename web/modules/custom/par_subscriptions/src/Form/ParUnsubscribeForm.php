@@ -2,6 +2,7 @@
 
 namespace Drupal\par_subscriptions\Form;
 
+use Drupal\Core\Flood\FloodInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\Email;
@@ -16,17 +17,33 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ParUnsubscribeForm extends FormBase  {
 
   /**
-   * Constructs a subscription controller for rendering requests.
+   * The flood service.
+   *
+   * @var \Drupal\Core\Flood\FloodInterface
    */
-  public function __construct(ParSubscriptionManagerInterface $par_subscriptions_manager) {
+  protected $flood;
+
+  /**
+   * Constructs a subscription controller for rendering requests.
+   *
+   * @param \Drupal\par_subscriptions\Entity\ParSubscription
+   *   The subscription manager.
+   * @param \Drupal\Core\Flood\FloodInterface $flood
+   *   The flood service.
+   */
+  public function __construct(ParSubscriptionManagerInterface $par_subscriptions_manager, FloodInterface $flood) {
     $this->subscriptionManager = $par_subscriptions_manager;
+    $this->flood = $flood;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('par_subscriptions.manager'));
+    return new static(
+      $container->get('par_subscriptions.manager'),
+      $container->get('flood')
+    );
   }
 
   /**
@@ -108,6 +125,17 @@ class ParUnsubscribeForm extends FormBase  {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
+    // Add flood protection for unauthenticated users.
+    $fid = implode(':', [$this->getRequest()->getClientIP(), $this->currentUser()->id()]);
+    if ($this->currentUser()->isAnonymous() &&
+      !$this->flood->isAllowed("par_subscriptions.{$this->getFormId()}", 10, 3600, $fid)) {
+      $form_state->setErrorByName('text', $this->t(
+        'Too many form submissions from your location.
+        This IP address is temporarily blocked. Try again later.'
+      ));
+      return;
+    }
+
     $email = $form_state->getValue('email');
     $email_validator = \Drupal::service('email.validator');
 
@@ -120,6 +148,10 @@ class ParUnsubscribeForm extends FormBase  {
    * {@inheritDoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    // Register flood protection.
+    $fid = implode(':', [$this->getRequest()->getClientIP(), $this->currentUser()->id()]);
+    $this->flood->register("par_subscriptions.{$this->getFormId()}", 3600, $fid);
+
     $action = $form_state->getTriggeringElement()['#name'];
 
     if ($action === 'unsubscribe') {

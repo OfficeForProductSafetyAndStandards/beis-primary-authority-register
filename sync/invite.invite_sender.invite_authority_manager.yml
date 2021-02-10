@@ -1,6 +1,0 @@
-uuid: 4560df0e-2dab-4bc4-9e81-76ac1cac4e1b
-langcode: en
-status: true
-dependencies: {  }
-id: invite_authority_manager
-sending_methods: invite_by_email||0
