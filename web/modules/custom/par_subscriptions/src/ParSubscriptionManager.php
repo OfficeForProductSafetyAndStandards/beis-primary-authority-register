@@ -130,6 +130,20 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
   }
 
   /**
+   * Get all subscriptions belonging to a list.
+   */
+  public function getListEmails($list) {
+    $subscriptions = $this->getListSubscriptions($list);
+
+    $emails = [];
+    foreach($subscriptions as $i => $subscription) {
+      $emails[$i] = $subscription->getEmail();
+    }
+
+    return $emails;
+  }
+
+  /**
    * Get a subscription by the subscription code.
    *
    * For security this should be the primary way of retrieving existing subscriptions.

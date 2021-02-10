@@ -22,16 +22,48 @@ class ParSubscriptionReviewForm extends ParBaseForm {
     return 'Help Desk | Review changes';
   }
 
+  public function getSubscriptionManager() {
+    return \Drupal::service('par_subscriptions.manager');
+  }
+
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
-    $form['partnership_info'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Delete the partnership'),
-      '#attributes' => ['class' => 'form-group'],
-    ];
+    // Determine which subscriptions need to be subscribed or unsubscribed.
+    $cid = $this->getFlowNegotiator()->getFormKey('manage_subscriptions');
+    $subscribe = $this->getFlowDataHandler()->getTempDataValue('subscribe', $cid);
+    $unsubscribe = $this->getFlowDataHandler()->getTempDataValue('unsubscribe', $cid);
+
+    if (!empty($subscribe)) {
+      $subscribe_list = implode(', ', $subscribe);
+      $form['subscribe'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('Subscriptions to be added (@count)', ['@count' => count($subscribe)]),
+        '#attributes' => ['class' => 'form-group'],
+        'new' => [
+          '#type' => 'markup',
+          '#markup' => "$subscribe_list",
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
+        ]
+      ];
+    }
+    if (!empty($unsubscribe)) {
+      $unsubscribe_list = implode(', ', $unsubscribe);
+      $form['unsubscribe'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('Subscriptions to be removed (@count)', ['@count' => count($unsubscribe)]),
+        '#attributes' => ['class' => 'form-group'],
+        'new' => [
+          '#type' => 'markup',
+          '#markup' => "$unsubscribe_list",
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
+        ]
+      ];
+    }
 
     return parent::buildForm($form, $form_state);
   }
@@ -49,8 +81,23 @@ class ParSubscriptionReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // The method used to update the subscription list: insert, remove or replace.
-    $method = $this->getFlowDataHandler()->getTempDataValue('method');
+    // Determine which subscriptions need to be subscribed or unsubscribed.
+    $cid = $this->getFlowNegotiator()->getFormKey('manage_subscriptions');
+    $subscribe = $this->getFlowDataHandler()->getTempDataValue('subscribe', $cid);
+    $unsubscribe = $this->getFlowDataHandler()->getTempDataValue('unsubscribe', $cid);
+
+    $list = $this->getFlowDataHandler()->getTempDataValue('list', $cid);
+
+    foreach ($subscribe as $email) {
+      $subscription = $this->getSubscriptionManager()->createSubscription($list, $email);
+      $subscription->verify();
+    }
+    foreach ($unsubscribe as $email) {
+      $subscription = $this->getSubscriptionManager()->getSubscriptionByEmail($email);
+      $subscription->unsubscribe();
+    }
+
+    $this->getFlowDataHandler()->deleteStore();
   }
 
 }
