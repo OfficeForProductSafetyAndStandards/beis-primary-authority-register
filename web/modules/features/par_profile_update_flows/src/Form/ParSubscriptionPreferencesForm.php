@@ -17,7 +17,7 @@ class ParSubscriptionPreferencesForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = 'Update notification preferences';
+  protected $pageTitle = 'Update subscriptions';
 
   /**
    * {@inheritdoc}

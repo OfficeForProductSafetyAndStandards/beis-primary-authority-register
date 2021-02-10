@@ -130,7 +130,7 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
   }
 
   /**
-   * Get all subscriptions belonging to a list.
+   * Get all emails belonging to a list.
    */
   public function getListEmails($list) {
     $subscriptions = $this->getListSubscriptions($list);

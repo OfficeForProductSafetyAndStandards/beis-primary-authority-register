@@ -27,14 +27,16 @@ class ParSubscriptionPreferencesForm extends ParFormPluginBase {
     $lists = $this->getSubscriptionManager()->getLists();
     $account = $this->getFlowDataHandler()->getParameter('user');
 
+    $subscription_lists = [];
     $subscription_preferences = [];
     foreach ($lists as $list) {
+      $subscription_lists[$list] = $this->getSubscriptionManager()->getListName($list);
       if ($account && $subscription = $this->getSubscriptionManager()->getSubscriptionByEmail($list, $account->getEmail())) {
         $subscription_preferences[$list] = $subscription->getCode();
       }
     }
 
-    $this->getFlowDataHandler()->setFormPermValue('subscription_lists', $lists);
+    $this->getFlowDataHandler()->setFormPermValue('subscription_lists', $subscription_lists);
     $this->getFlowDataHandler()->setFormPermValue('subscription_preferences', $subscription_preferences);
 
     parent::loadData();
@@ -51,17 +53,13 @@ class ParSubscriptionPreferencesForm extends ParFormPluginBase {
       return new RedirectResponse($url->toString());
     }
 
-    $form['help'] = [
-      '#markup' => '<p>You can choose to subscribe to our Mailing lists below</p>',
-    ];
-
     $subscription_preferences = $this->getFlowDataHandler()->getFormPermValue('subscription_preferences');
     $form['subscriptions'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Subscribe to the mailing list'),
-      '#description' => '<p>\.</p>',
+      '#description' => '<p>All out news letters are sent round no more than once a month, you can unsubscribe at any time.</p>',
       '#options' => $subscription_lists,
-      '#default_value' => $this->getDefaultValuesByKey('subscriptions', $cardinality, $subscription_preferences),
+      '#default_value' => $this->getDefaultValuesByKey('subscriptions', $cardinality, array_keys($subscription_preferences)),
       '#return_value' => 'on',
     ];
 
