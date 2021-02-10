@@ -1,0 +1,41 @@
+<?php
+/**
+ * @file
+ * Installation hooks for par_subscriptions module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function par_subscriptions_install() {
+
+}
+
+/**
+ * Add users to each list.
+ */
+function par_subscriptions_update_8001() {
+  // Start by subscribing every user to the par_news list.
+  $query = \Drupal::entityTypeManager()
+    ->getStorage('user')
+    ->getQuery()
+    ->accessCheck(FALSE);
+
+  $result = $query->execute();
+
+  $subscription_manager = \Drupal::service('par_subscriptions.manager');
+  $lists = $subscription_manager->getLists();
+  foreach ($result as $id) {
+    $user = \Drupal\user\Entity\User::load($id);
+
+    foreach ($lists as $list) {
+      $subscription = $user->id() > 1 ?
+        $subscription_manager->createSubscription($list, $user->getEmail()) :
+        NULL;
+      // Silently subscribe & verify the user.
+      if ($subscription instanceof \Drupal\par_subscriptions\Entity\ParSubscriptionInterface) {
+        $subscription->verify();
+      }
+    }
+  }
+}
