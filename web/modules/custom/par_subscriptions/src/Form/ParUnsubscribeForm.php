@@ -74,7 +74,7 @@ class ParUnsubscribeForm extends FormBase  {
    *
    * {@inheritDoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $subscription_code = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $list = NULL, $subscription_code = NULL) {
     $subscription = $this->getSubscriptionManager()->getSubscription($subscription_code);
     if ($subscription) {
       // Silently unsubscribe.
@@ -102,6 +102,10 @@ class ParUnsubscribeForm extends FormBase  {
       $form['email'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Enter your email'),
+      ];
+      $form['list'] = [
+        '#type' => 'hidden',
+        '#title' => $list,
       ];
 
       $form['actions']['unsubscribe'] = [

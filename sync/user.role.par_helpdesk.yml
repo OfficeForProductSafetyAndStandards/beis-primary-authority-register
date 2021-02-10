@@ -186,6 +186,7 @@ permissions:
   - 'view enforcement notice'
   - 'view general enquiry'
   - 'view inspection feedback'
+  - 'view list par_news'
   - 'view own private files'
   - 'view par profile'
   - 'view private files'

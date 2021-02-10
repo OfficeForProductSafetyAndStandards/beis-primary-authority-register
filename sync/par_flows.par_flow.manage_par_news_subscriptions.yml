@@ -12,7 +12,7 @@ description: 'The operations to manage subscription lists in bulk.'
 save_method: end
 states: null
 final_routes:
-  - view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page
+  - view.subscriptions.subscription_list
 steps:
   1:
     route: par_manage_subscription_list_flows.par_news.manage

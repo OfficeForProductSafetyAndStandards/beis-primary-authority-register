@@ -23,6 +23,9 @@ use Drupal\par_subscriptions\Event\SubscriptionEvents;
  *   fieldable = FALSE,
  *   bundle_label = @Translation("PAR Subscription List"),
  *   base_table = "par_subscription",
+ *   handlers = {
+ *     "views_data" = "Drupal\par_subscriptions\Views\ParSubscriptionsViewsData",
+ *   },
  *   admin_permission = "administer par subscribers",
  *   entity_keys = {
  *     "id" = "id",

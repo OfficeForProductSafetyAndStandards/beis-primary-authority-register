@@ -59,6 +59,14 @@ class ParSubscriptionPermissions implements ContainerInjectionInterface {
         ]
       ];
 
+      // View a list.
+      $permissions += [
+        "view list $list" => [
+          'title' => $this->t('View subscribers to %list', array('%list' => $list)),
+          'description' => $this->t('Allow users to see who is subscribed to %list.', array('%list' => $list)),
+        ]
+      ];
+
       // Administer a list.
       $permissions += [
         "administer list $list" => [

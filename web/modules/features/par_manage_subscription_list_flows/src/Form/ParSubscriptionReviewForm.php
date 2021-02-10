@@ -65,6 +65,10 @@ class ParSubscriptionReviewForm extends ParBaseForm {
       ];
     }
 
+    // Change primary action.
+    $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Update list');
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -93,7 +97,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
       $subscription->verify();
     }
     foreach ($unsubscribe as $email) {
-      $subscription = $this->getSubscriptionManager()->getSubscriptionByEmail($email);
+      $subscription = $this->getSubscriptionManager()->getSubscriptionByEmail($list, $email);
       $subscription->unsubscribe();
     }
 

@@ -93,7 +93,7 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
   public function createSubscription($list, $email) {
     if ($this->isValidList($list) && $this->isValidEmail($email)) {
       // Check that this email address isn't already on this list.
-      if ($subscription = $this->getSubscriptionByEmail($email)) {
+      if ($subscription = $this->getSubscriptionByEmail($list, $email)) {
         return $subscription;
       }
 
@@ -171,11 +171,12 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
    * @return \Drupal\par_subscriptions\Entity\ParSubscription|NULL
    *   A subscription entity if found.
    */
-  public function getSubscriptionByEmail($email) {
-    if ($this->isValidEmail($email)) {
+  public function getSubscriptionByEmail($list, $email) {
+    if ($this->isValidList($list) && $this->isValidEmail($email)) {
       $subscriptions = $this->entityTypeManager
         ->getStorage(self::SUBSCRIPTION_ENTITY)
         ->loadByProperties([
+          'list' => $list,
           'email' => $email
         ]);
 

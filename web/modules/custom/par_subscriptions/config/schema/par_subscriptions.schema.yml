@@ -16,3 +16,11 @@ par_subscriptions.par_subscription_list.*:
       type: boolean
       label: 'Verification required'
       nullable: true
+
+field.formatter.settings.par_email_obfuscation_formatter:
+  type: mapping
+  label: 'PAR email obfuscation formatter'
+  mapping:
+    display_original_value:
+      type: boolean
+      label: 'Display the original value if email can not be obfuscated.'
