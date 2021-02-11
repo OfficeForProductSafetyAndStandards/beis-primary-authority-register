@@ -31,7 +31,6 @@ class ParSubscriptionReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-
     // Determine which subscriptions need to be subscribed or unsubscribed.
     $cid = $this->getFlowNegotiator()->getFormKey('manage_subscriptions');
     $subscribe = $this->getFlowDataHandler()->getTempDataValue('subscribe', $cid);
