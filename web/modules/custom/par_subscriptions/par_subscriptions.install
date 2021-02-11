@@ -8,13 +8,6 @@
  * Implements hook_install().
  */
 function par_subscriptions_install() {
-
-}
-
-/**
- * Add users to each list.
- */
-function par_subscriptions_update_8001() {
   // Start by subscribing every user to the par_news list.
   $query = \Drupal::entityTypeManager()
     ->getStorage('user')
