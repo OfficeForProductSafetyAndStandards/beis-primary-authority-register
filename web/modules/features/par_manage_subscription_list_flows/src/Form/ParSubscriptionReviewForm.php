@@ -4,6 +4,7 @@ namespace Drupal\par_manage_subscription_list_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 
 /**
  * Review changes to a subscription list.
@@ -94,11 +95,15 @@ class ParSubscriptionReviewForm extends ParBaseForm {
 
     foreach ($subscribe as $email) {
       $subscription = $this->getSubscriptionManager()->createSubscription($list, $email);
-      $subscription->verify();
+      if ($subscription instanceof ParSubscriptionInterface) {
+        $subscription->verify();
+      }
     }
     foreach ($unsubscribe as $email) {
       $subscription = $this->getSubscriptionManager()->getSubscriptionByEmail($list, $email);
-      $subscription->unsubscribe();
+      if ($subscription instanceof ParSubscriptionInterface) {
+        $subscription->unsubscribe();
+      }
     }
 
     $this->getFlowDataHandler()->deleteStore();

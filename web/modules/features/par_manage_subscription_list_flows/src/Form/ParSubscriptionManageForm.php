@@ -104,6 +104,10 @@ class ParSubscriptionManageForm extends ParBaseForm {
     if (count($rows) > 0) {
       $form_state->setValue('subscribers', $rows);
     }
+    else {
+      $message = "No valid email addresses have been submitted.";
+      $form_state->setErrorByName($this->getElementName('emails'), $this->wrapErrorMessage($message, $id));
+    }
   }
 
   /**
