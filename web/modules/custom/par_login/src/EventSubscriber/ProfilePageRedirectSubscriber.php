@@ -66,7 +66,7 @@ class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
     // to view their profile pages.
     if ($this->account->isAuthenticated() && $profile_page &&
       !$this->account->hasPermission('administer users') &&
-      ltrim($request->getPathInfo(), '/') === ltrim($profile_page->getInternalPath(), '/')) {
+      trim($request->getPathInfo(), '/') === trim($profile_page->getInternalPath(), '/')) {
 
       // Log the denied request as well as the referer for information.
       $referer = $request->headers->get('referer');

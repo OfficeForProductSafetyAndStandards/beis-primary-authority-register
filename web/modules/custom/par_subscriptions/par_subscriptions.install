@@ -17,7 +17,7 @@ function par_subscriptions_install() {
   $result = $query->execute();
 
   $subscription_manager = \Drupal::service('par_subscriptions.manager');
-  $lists = $subscription_manager->getLists();
+  $lists = ['par_news'] + $subscription_manager->getLists();
   foreach ($result as $id) {
     $user = \Drupal\user\Entity\User::load($id);
 
