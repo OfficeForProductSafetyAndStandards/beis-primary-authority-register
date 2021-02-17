@@ -77,18 +77,21 @@ class ParSubscriptionManageForm extends ParBaseForm {
     // Define array variable.
     $rows = [];
 
-    // Process uploaded csv file.
+    // Process email addresses.
     if ($raw = $this->getFlowDataHandler()->getTempDataValue('emails')) {
       $emails = explode(PHP_EOL, $raw);
       $chars = " ,.\n\r\t\v\0";
 
       // Validate each row.
-      foreach ($emails as $i => $email) {
-        $clean = trim($email, $chars);
-        if ($this->getEmailValidator()->isValid($clean)) {
-          $rows[$i] = $clean;
+      foreach ($emails as $i => &$email) {
+        $email = trim($email, $chars);
+        if ($this->getEmailValidator()->isValid($email)) {
+          $rows[$i] = $email;
         }
       }
+
+      // Remove any empty rows.
+      $emails = array_filter($emails);
 
       // Calculate errors by comparing validated rows.
       $errors = array_diff_key($emails, $rows);
@@ -101,9 +104,47 @@ class ParSubscriptionManageForm extends ParBaseForm {
       }
     }
 
-    if (count($rows) > 0) {
-      $form_state->setValue('subscribers', $rows);
+    if (count($rows) <= 0) {
+      $id = $this->getElementId(['emails'], $form);
+      $message = "No valid email addresses have been submitted.";
+      $form_state->setErrorByName($this->getElementName('emails'), $this->wrapErrorMessage($message, $id));
     }
+
+    // Determine which subscribers are new and which are existing.
+    $list = $this->getFlowDataHandler()->getTempDataValue('list');
+    $method = $this->getFlowDataHandler()->getTempDataValue('method');
+
+    $current = $this->getSubscriptionManager()->getListEmails($list);
+    $new = $rows;
+
+    switch ($method) {
+      case self::METHOD_INSERT:
+        $subscribe = array_diff($new, $current);
+        $error_message = "There are no new subscribers to add.";
+
+        break;
+
+      case self::METHOD_REMOVE:
+        $unsubscribe = array_intersect($new, $current);
+        $error_message = "There are no existing subscribers matching these addresses.";
+
+        break;
+
+      case self::METHOD_REPLACE:
+        $unsubscribe = array_diff($current, $new);
+        $subscribe = array_diff($new, $current);
+        $error_message = "There are no changes to be made.";
+
+    }
+
+    // If there are no changes to make show an error.
+    if (empty($subscribe) && empty($unsubscribe) && $error_message) {
+      $id = $this->getElementId(['emails'], $form);
+      $form_state->setErrorByName($this->getElementName('emails'), $this->wrapErrorMessage($error_message, $id));
+    }
+
+    $form_state->setValue('subscribe', $subscribe ?? []);
+    $form_state->setValue('unsubscribe', $unsubscribe ?? []);
   }
 
   /**
@@ -111,32 +152,6 @@ class ParSubscriptionManageForm extends ParBaseForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-
-    $list = $this->getFlowDataHandler()->getTempDataValue('list');
-    $method = $this->getFlowDataHandler()->getTempDataValue('method');
-
-    $current = $this->getSubscriptionManager()->getListEmails($list);
-    $new = $this->getFlowDataHandler()->getTempDataValue('subscribers');
-
-    switch ($method) {
-      case self::METHOD_INSERT:
-        $subscribe = array_diff($new, $current);
-
-        break;
-
-      case self::METHOD_REMOVE:
-        $unsubscribe = array_intersect($new, $current);
-
-        break;
-
-      case self::METHOD_REPLACE:
-        $unsubscribe = array_diff($current, $new);
-        $subscribe = array_diff($new, $current);
-
-    }
-
-    $this->getFlowDataHandler()->setTempDataValue('subscribe', $subscribe ?? []);
-    $this->getFlowDataHandler()->setTempDataValue('unsubscribe', $unsubscribe ?? []);
   }
 
 }

@@ -6,6 +6,7 @@ use Drupal\Core\Flood\FloodInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 use Drupal\par_subscriptions\ParSubscriptionManager;
 use Drupal\par_subscriptions\ParSubscriptionManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -160,7 +161,7 @@ class ParSubscribeForm extends FormBase {
       $subscription = $this->getSubscriptionManager()
         ->createSubscription($list, $email);
 
-      if ($subscription) {
+      if ($subscription instanceof ParSubscriptionInterface) {
         // Silently subscribe to prevent enumeration attacks.
         $subscription->subscribe();
       }
