@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\Email;
 use Drupal\Core\Url;
+use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 use Drupal\par_subscriptions\ParSubscriptionManager;
 use Drupal\par_subscriptions\ParSubscriptionManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -76,7 +77,7 @@ class ParUnsubscribeForm extends FormBase  {
    */
   public function buildForm(array $form, FormStateInterface $form_state, $list = NULL, $subscription_code = NULL) {
     $subscription = $this->getSubscriptionManager()->getSubscription($subscription_code);
-    if ($subscription) {
+    if ($subscription instanceof ParSubscriptionInterface) {
       // Silently unsubscribe.
       $subscription->unsubscribe();
     }
@@ -162,7 +163,7 @@ class ParUnsubscribeForm extends FormBase  {
       $email = $form_state->getValue('email');
       $subscription = $this->getSubscriptionManager()->getSubscriptionByEmail($email);
 
-      if ($subscription) {
+      if ($subscription instanceof ParSubscriptionInterface) {
         // Silently unsubscribe.
         $subscription->unsubscribe();
       }
