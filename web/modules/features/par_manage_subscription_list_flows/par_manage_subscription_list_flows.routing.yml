@@ -1,0 +1,2 @@
+route_callbacks:
+  - 'par_manage_subscription_list_flows.route_subscriber:routes'

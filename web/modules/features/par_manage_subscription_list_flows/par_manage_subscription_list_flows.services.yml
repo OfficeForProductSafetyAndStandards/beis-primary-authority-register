@@ -1,0 +1,4 @@
+services:
+  par_manage_subscription_list_flows.route_subscriber:
+      class: Drupal\par_manage_subscription_list_flows\Routing\ParSubscriptionManagementRoutes
+      arguments: ['@par_subscriptions.manager']
