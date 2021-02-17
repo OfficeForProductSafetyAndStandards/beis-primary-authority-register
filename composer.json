@@ -164,7 +164,8 @@
                 "Mail body formatting": "./patches/mail_body-govuk_notify.patch"
             },
             "drupal/govuk_theme": {
-                "Allow alternate menus": "https://www.drupal.org/files/issues/2021-02-03/allow-alternate-main-menu_3196241_3.patch"
+                "Allow alternate menus": "https://www.drupal.org/files/issues/2021-02-03/allow-alternate-main-menu_3196241_3.patch",
+                "Allow compatibility mode": "https://www.drupal.org/files/issues/2021-02-17/allow_compatibility_mode-3196545-3.patch"
             },
             "drupal/health_check": {
                 "Health Check doesn't check Drupal application": "https://www.drupal.org/files/issues/health_check_doesn_t-2892294-2.patch"
