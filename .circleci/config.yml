@@ -140,6 +140,8 @@ jobs:
           command: |
             echo "$(pwd)"
             composer install -v
+            npm run install-govuk-theme
+            npm run install-par-theme
             npm install
             npm run gulp
             cd ./tests && rm -rf node_modules && npm install

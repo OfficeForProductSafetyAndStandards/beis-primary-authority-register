@@ -21,6 +21,8 @@
     "ideal-postcodes-autocomplete": "^0.2.1"
   },
   "scripts": {
-    "gulp": "gulp"
+    "gulp": "gulp",
+    "install-govuk-theme": "cd web/themes/contrib/govuk_theme && npm install",
+    "install-par-theme": "cd web/themes/custom/govuk_par && npm install"
   }
 }
