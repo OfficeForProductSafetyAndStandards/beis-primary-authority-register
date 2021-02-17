@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8d5a6c4af23a3980cc2682045e55bd66",
+    "content-hash": "9b22e07776c9f52a92bcac88bcd497ee",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -4373,7 +4373,8 @@
                 },
                 "patches_applied": {
                     "Allow alternate menus": "https://www.drupal.org/files/issues/2021-02-03/allow-alternate-main-menu_3196241_3.patch",
-                    "Allow compatibility mode": "https://www.drupal.org/files/issues/2021-02-17/allow_compatibility_mode-3196545-3.patch"
+                    "Allow compatibility mode": "https://www.drupal.org/files/issues/2021-02-17/allow_compatibility_mode-3196545-4.patch",
+                    "Support legacy colours": "https://www.drupal.org/files/issues/2021-02-17/legacy_colour_support-3198988-2.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
