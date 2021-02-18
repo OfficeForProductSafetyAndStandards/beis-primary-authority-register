@@ -25,16 +25,53 @@ function par_subscriptions_help($route_name, RouteMatchInterface $route_match) {
 }
 
 /**
+ * Implements hook_modules_installed().
+ *
+ * Adds all users to the list by default after the module has been installed.
+ */
+function par_subscriptions_modules_installed($modules) {
+  if (!in_array('par_subscriptions', $modules)) {
+    return;
+  }
+
+  // Start by subscribing every user to the par_news list.
+  $query = \Drupal::entityTypeManager()
+    ->getStorage('user')
+    ->getQuery()
+    ->accessCheck(FALSE);
+
+  $result = $query->execute();
+
+  $subscription_manager = \Drupal::service('par_subscriptions.manager');
+  $lists = ['par_news'] + $subscription_manager->getLists();
+  foreach ($result as $id) {
+    $user = \Drupal\user\Entity\User::load($id);
+
+    foreach ($lists as $list) {
+      $subscription = $user->id() > 1 ?
+        $subscription_manager->createSubscription($list, $user->getEmail()) :
+        NULL;
+      // Silently subscribe & verify the user.
+      if ($subscription instanceof \Drupal\par_subscriptions\Entity\ParSubscriptionInterface) {
+        $subscription->verify();
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_cron().
+ * 
+ * Purge any old unverified subscriptions after 7 days.
  */
 function par_subscriptions_cron() {
   $subscription_manager = \Drupal::service('par_subscriptions.manager');
 
   $request_time = \Drupal::time()->getRequestTime();
   $last_run = \Drupal::state()->get('par_subscriptions.last_purge', 0);
-  $day = 60*60*24;
+  $days = 60*60*24*7;
 
-  if ($request_time-$day > $last_run) {
+  if ($request_time-$days > $last_run) {
     $subscription_manager->purge();
   }
 
