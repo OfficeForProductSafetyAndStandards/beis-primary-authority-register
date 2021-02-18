@@ -26,15 +26,17 @@ function par_subscriptions_help($route_name, RouteMatchInterface $route_match) {
 
 /**
  * Implements hook_cron().
+ *
+ * Purge any old unverified subscriptions after 7 days.
  */
 function par_subscriptions_cron() {
   $subscription_manager = \Drupal::service('par_subscriptions.manager');
 
   $request_time = \Drupal::time()->getRequestTime();
   $last_run = \Drupal::state()->get('par_subscriptions.last_purge', 0);
-  $day = 60*60*24;
+  $days = 60*60*24*7;
 
-  if ($request_time-$day > $last_run) {
+  if ($request_time-$days > $last_run) {
     $subscription_manager->purge();
   }
 
