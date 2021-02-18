@@ -5,8 +5,13 @@ services:
   par_subscriptions.manager:
     class: Drupal\par_subscriptions\ParSubscriptionManager
     arguments: [ '@entity_type.manager', '@entity_type.bundle.info', '@email.validator', '@messenger' ]
+  par_subscriptions.populate_list_subscriber:
+    class: Drupal\par_subscriptions\EventSubscriber\PopulateListSubscriber
+    tags:
+      - { name: event_subscriber }
+    arguments: [ '@config.manager', '@config.storage', '@entity_type.manager' ]
   par_subscriptions.verify_subscriber:
-    class: '\Drupal\par_subscriptions\EventSubscriber\VerifySubscriber'
+    class: Drupal\par_subscriptions\EventSubscriber\VerifySubscriber
     tags:
       - { name: 'event_subscriber' }
 

@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\par_subscriptions\Entity\ParSubscriptionList;
 
 /**
  * Manages all subscriptions
@@ -75,9 +76,8 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
    * {@inheritDoc}
    */
   public function getLists() {
-    $bundle_info = $this->entityTypeBundleInfo->getBundleInfo(self::SUBSCRIPTION_ENTITY);
-
-    return $bundle_info ? array_keys($bundle_info) : [];
+    $list_entities = ParSubscriptionList::loadMultiple();
+    return array_keys($list_entities);
   }
 
   public function getListName($list) {
