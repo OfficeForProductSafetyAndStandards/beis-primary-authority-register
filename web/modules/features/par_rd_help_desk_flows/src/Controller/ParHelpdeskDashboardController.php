@@ -191,11 +191,13 @@ class ParHelpdeskDashboardController extends ControllerBase {
     ];
 
     $manage_subscriptions = $this->getLinkByRoute('view.subscriptions.subscription_list');
-    $manage_subscriptions_link = $manage_subscriptions->setText('Manage subscriptions')->toString();
-    $build['people']['subscriptions'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>{$manage_subscriptions_link}</p>",
-    ];
+    if ($manage_subscriptions) {
+      $manage_subscriptions_link = $manage_subscriptions->setText('Manage subscriptions')->toString();
+      $build['people']['subscriptions'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$manage_subscriptions_link}</p>",
+      ];
+    }
 
     // Manage enforcements.
     $build['enforcements'] = [
