@@ -183,6 +183,9 @@
             },
             "drupal/vbo_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2018-07-26/allow_configurable_scheme-2988257-5.patch"
+            },
+            "drupal/views_data_export": {
+                "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-03-01/allow-configurable-filesystems_3200974-6.patch"
             }
         }
     },
