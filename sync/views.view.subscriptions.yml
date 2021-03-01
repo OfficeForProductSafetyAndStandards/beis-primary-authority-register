@@ -755,7 +755,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: Email
+          label: 'email address'
           exclude: false
           alter:
             alter_text: false
@@ -820,7 +820,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: Code
+          label: code
           exclude: false
           alter:
             alter_text: false
@@ -878,6 +878,7 @@ display:
           entity_type: par_subscription
           entity_field: code
           plugin_id: field
+      export_filesystem: s3private
     cache_metadata:
       max-age: -1
       contexts:
