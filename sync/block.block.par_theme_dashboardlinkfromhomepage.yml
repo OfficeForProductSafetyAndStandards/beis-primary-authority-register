@@ -1,0 +1,39 @@
+uuid: 3749f1a1-1bc0-459a-b28f-499c716d718b
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:bc6cfde1-fef1-410a-aa20-f845d4769f58'
+  module:
+    - block_content
+    - system
+    - user
+  theme:
+    - par_theme
+id: par_theme_dashboardlinkfromhomepage
+theme: par_theme
+region: content
+weight: -1
+provider: null
+plugin: 'block_content:bc6cfde1-fef1-410a-aa20-f845d4769f58'
+settings:
+  id: 'block_content:bc6cfde1-fef1-410a-aa20-f845d4769f58'
+  label: 'Dashboard Link From Home Page'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: /about
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      authenticated: authenticated
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

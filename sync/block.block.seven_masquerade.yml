@@ -1,0 +1,34 @@
+uuid: 4a05ca09-ac5a-421f-be09-71356c30374e
+langcode: en
+status: true
+dependencies:
+  module:
+    - masquerade
+    - system
+    - user
+  theme:
+    - seven
+id: seven_masquerade
+theme: seven
+region: content
+weight: -3
+provider: null
+plugin: masquerade
+settings:
+  id: masquerade
+  label: Masquerade
+  provider: masquerade
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: /admin/people
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      administrator: administrator
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

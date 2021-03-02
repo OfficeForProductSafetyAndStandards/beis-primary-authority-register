@@ -42,6 +42,12 @@ $settings['skip_permissions_hardening'] = TRUE;
 
 $config['config_split.config_split.dev_config']['status'] = TRUE;
 $config['config_split.config_split.test_config']['status'] = TRUE;
+$config['config_split.config_split.theme_v2_config']['status'] = FALSE;
+// Allow theme v2 to be enabled through environment variables.
+$theme_version = getenv('THEME_VERSION');
+if (isset($theme_version) && $theme_version === 'v2') {
+  $config['config_split.config_split.theme_v2_config']['status'] = TRUE;
+}
 
 if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
   $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.yml';

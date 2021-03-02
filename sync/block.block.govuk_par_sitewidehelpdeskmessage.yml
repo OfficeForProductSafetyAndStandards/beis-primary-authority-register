@@ -1,0 +1,25 @@
+uuid: d9596734-89c7-4b85-8933-6f415b893671
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:c0a315eb-948b-4e33-b83c-72f65108dd5f'
+  module:
+    - block_content
+  theme:
+    - govuk_par
+id: govuk_par_sitewidehelpdeskmessage
+theme: govuk_par
+region: content
+weight: -7
+provider: null
+plugin: 'block_content:c0a315eb-948b-4e33-b83c-72f65108dd5f'
+settings:
+  id: 'block_content:c0a315eb-948b-4e33-b83c-72f65108dd5f'
+  label: 'Sitewide Helpdesk Message'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

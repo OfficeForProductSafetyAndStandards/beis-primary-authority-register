@@ -1026,6 +1026,11 @@ $config['system.logging']['error_level'] = ERROR_REPORTING_HIDE;
 // Ensure all environments use production config unless overwritten.
 $config['config_split.config_split.dev_config']['status'] = FALSE;
 $config['config_split.config_split.test_config']['status'] = FALSE;
+$config['config_split.config_split.theme_v2_config']['status'] = FALSE;
+
+// Ensure dev config is not exported.
+// See https://www.drupal.org/node/3079028
+$settings['config_exclude_modules'] = ['devel', 'maillog', 'watchdog', 'webprofiler'];
 
 /**
  * Environment settings override.

@@ -1,0 +1,22 @@
+uuid: b528b3cd-4b90-45bb-b71c-cc85485834d8
+langcode: en
+status: true
+dependencies:
+  module:
+    - help
+  theme:
+    - govuk_par
+_core:
+  default_config_hash: 8I8iACSa0sKO3k3jlvUG1ge52rfcKX7USJAQYnzuBgg
+id: govuk_par_help
+theme: govuk_par
+region: content
+weight: -4
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Help
+  provider: help
+  label_display: '0'
+visibility: {  }

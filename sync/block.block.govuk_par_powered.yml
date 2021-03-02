@@ -1,0 +1,22 @@
+uuid: 36fb4554-4207-4de0-a8c7-daab5f0cd4cf
+langcode: en
+status: false
+dependencies:
+  module:
+    - system
+  theme:
+    - govuk_par
+_core:
+  default_config_hash: jQQUUWN2Uxr5qZtc9zcJKBCxpKY8orN1u2HPqYYRQDI
+id: govuk_par_powered
+theme: govuk_par
+region: header
+weight: -8
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

@@ -29,7 +29,7 @@
         "drupal/chosen": "~2.7.0",
         "drupal/clamav": "~1.1.0",
         "drupal/config_readonly": "~1.0.0",
-        "drupal/config_split": "~1.4.0",
+        "drupal/config_split": "~1.7.0",
         "drupal/config_update": "~1.6.0",
         "drupal/core": "~8.9.0",
         "drupal/csv_serialization": "~1.4.0",
@@ -41,6 +41,7 @@
         "drupal/flysystem_s3": "1.0.0-beta1",
         "drupal/google_analytics": "~2.4.0",
         "drupal/govuk_notify": "~1.2.0",
+        "drupal/govuk_theme": "~1.8.0",
         "drupal/health_check": "1.0.0",
         "drupal/http_response_headers": "2.x-dev#de12feba1ca817352cafae68e4731344a56341c5",
         "drupal/inline_entity_form": "~1.0.0",
@@ -161,6 +162,11 @@
             },
             "drupal/govuk_notify": {
                 "Mail body formatting": "./patches/mail_body-govuk_notify.patch"
+            },
+            "drupal/govuk_theme": {
+                "Allow alternate menus": "https://www.drupal.org/files/issues/2021-02-03/allow-alternate-main-menu_3196241_3.patch",
+                "Allow compatibility mode": "https://www.drupal.org/files/issues/2021-02-17/allow_compatibility_mode-3196545-4.patch",
+                "Support legacy colours": "https://www.drupal.org/files/issues/2021-02-17/legacy_colour_support-3198988-2.patch"
             },
             "drupal/health_check": {
                 "Health Check doesn't check Drupal application": "https://www.drupal.org/files/issues/health_check_doesn_t-2892294-2.patch"

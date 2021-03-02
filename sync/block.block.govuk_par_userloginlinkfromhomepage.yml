@@ -1,0 +1,39 @@
+uuid: 9577a6b1-24a4-424a-a656-1621a3b3f76e
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:b5bd652e-c3ba-421e-894f-3b302c11f19e'
+  module:
+    - block_content
+    - system
+    - user
+  theme:
+    - govuk_par
+id: govuk_par_userloginlinkfromhomepage
+theme: govuk_par
+region: content
+weight: 0
+provider: null
+plugin: 'block_content:b5bd652e-c3ba-421e-894f-3b302c11f19e'
+settings:
+  id: 'block_content:b5bd652e-c3ba-421e-894f-3b302c11f19e'
+  label: 'User Login Link From Home Page'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: /about
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      anonymous: anonymous
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

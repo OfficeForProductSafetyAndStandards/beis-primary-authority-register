@@ -1,0 +1,30 @@
+par-core:
+  version: 1.0
+  js:
+    js/par.js: {}
+  css:
+    theme:
+      css/par.css: {}
+  dependencies:
+    - govuk_par/par-vendor
+
+par-vendor:
+  version: 1.0
+  js:
+    javascript/vendor/console.log-wrapper/consolelog.min.js: {}
+    javascript/vendor/console.log-wrapper/consolelog.detailprint.min.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal.ajax
+    - core/drupal
+    - core/drupalSettings
+    - core/jquery.once
+    - core/jquery.ui
+    - core/jquery.ui.tabs
+
+tota11y:
+  remote: https://khan.github.io/tota11y
+  version: VERSION
+  license: MIT
+  js:
+    https://cdn.rawgit.com/Khan/tota11y/master/build/tota11y.min.js: { type: external, minified: true }
