@@ -22,65 +22,41 @@
 #}
 {%
   set classes = [
-    'js-form-item',
-    'form-item',
-    'js-form-wrapper',
-    'form-wrapper',
-  ]
+  'js-form-item',
+  'form-item',
+  'js-form-wrapper',
+  'form-wrapper',
+  'govuk-fieldset',
+]
 %}
-
-{%
-  set wrapper_classes = [
-    'form-group-wrapper',
-    errors ? 'form-group-error'
-  ]
-%}
-
-{%
-  set legend_header_classes = [
-    'heading-medium',
-    'fieldset-legend',
-    required ? 'js-form-required',
-    required ? 'form-required',
-  ]
-%}
-
-{% if child_count <= 2 %}
-  {% set classes = classes|merge(['inline']) %}
-{% endif %}
-
-{% if errors %}
-<div class="form-group-error">
-{% else %}
-<div>
-{% endif %}
-
-  <fieldset{{ attributes.addClass(classes).removeClass('form-group-error') }}>
-
-    {% if legend.title or description.content %}
-    <legend{{ legend.attributes }}>
-      {% if legend.title %}<h3{{ legend_span.attributes.addClass(legend_header_classes) }}>{{ legend.title }}</h3>{% endif %}
-      {% if description.content %}
-        <span{{ description.attributes.addClass('form-hint') }}>{{ description.content }}</span>
-      {% endif %}
+<div class="govuk-form-group{% if errors %} govuk-form-group--error{% endif %}">
+  <fieldset{{ attributes.addClass(classes) }}>
+    {%
+      set legend_span_classes = [
+      'fieldset-legend',
+      required ? 'js-form-required',
+      required ? 'form-required',
+      'govuk-fieldset__heading',
+    ]
+    %}
+    {#  Always wrap fieldset legends in a SPAN for CSS positioning. #}
+    <legend{{ legend.attributes.addClass('govuk-fieldset__legend', 'govuk-fieldset__legend--m') }}>
+      <span{{ legend_span.attributes.addClass(legend_span_classes).removeClass('visually-hidden') }}>{{ legend.title }}</span>
     </legend>
+    {% if description.content %}
+      <div{{ description.attributes.addClass('govuk-hint') }}>{{ description.content }}</div>
     {% endif %}
-
     {% if errors %}
-      <span class="error-message">
-        {{ errors | striptags('<p>') }}
-      </span>
+      <span class="govuk-error-message">
+          {{ errors }}
+        </span>
     {% endif %}
-
     {% if prefix %}
-      <span class="field-prefix">{{ prefix }}</span>
+      <span class="field-prefix govuk-hint">{{ prefix }}</span>
     {% endif %}
-
     {{ children }}
-
     {% if suffix %}
       <span class="field-suffix">{{ suffix }}</span>
     {% endif %}
   </fieldset>
-
 </div>
