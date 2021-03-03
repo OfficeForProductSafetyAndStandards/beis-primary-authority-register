@@ -1066,59 +1066,59 @@ function par_data_update_8046() {
 /**
  * PAR-1694 remove all superfluous address records.
  */
-function par_data_update_8047(&$sandbox) {
-  /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
-  $par_data_manager = \Drupal::service('par_data.manager');
-  $batch_size = 1000;
-
-  // Initialize some variables during the first pass through.
-  if (!isset($sandbox['total'])) {
-    /** @var \Drupal\par_data\Entity\ParDataEntityInterface[] $authorities */
-    /** @var \Drupal\par_data\Entity\ParDataEntityInterface[] $organisations */
-    $authorities = $par_data_manager->getEntitiesByType('par_data_authority');
-    $organisations = $par_data_manager->getEntitiesByType('par_data_organisation');
-
-    $primary_addresses = [];
-    foreach($authorities as $id => $entity) {
-      if ($entity->hasField('field_premises') && !$entity->get('field_premises')->isEmpty()) {
-        $primary_addresses[] = $entity->get('field_premises')->first()->target_id;
-      }
-    }
-    foreach($organisations as $id => $entity) {
-      if ($entity->hasField('field_premises') && !$entity->get('field_premises')->isEmpty()) {
-        $primary_addresses[] = $entity->get('field_premises')->first()->target_id;
-      }
-    }
-
-    // Build the address query.
-    $total_query = $par_data_manager->getEntityQuery('par_data_premises');
-    $total_query->condition('id', $primary_addresses, 'NOT IN');
-    $total_results = array_unique($total_query->execute());
-
-    // Set default values.
-    $sandbox['secondary_addresses'] = array_chunk($total_results, $batch_size, true);
-    $sandbox['total'] = count($total_results);
-    $sandbox['current'] = 0;
-  }
-
-  // Delete the secondary addresses in chunks.
-  // This helps the update runner know that we're still alive and processing.
-  $chunk = $sandbox['secondary_addresses'][$sandbox['current']];
-  foreach ($chunk as $result) {
-    if ($entity = ParDataPremises::load($result)) {
-      $entity->annihilate();
-    }
-  }
-  $sandbox['current']++;
-
-  $results_removed = ($batch_size * $sandbox['current']);
-  $message = "$results_removed secondary addresses removed, batch {$sandbox['current']} complete.";
-
-  if ($sandbox['total'] == 0) {
-    $sandbox['#finished'] = 1;
-  } else {
-    $sandbox['#finished'] = ($results_removed / $sandbox['total']);
-  }
-
-  return t($message);
-}
+//function par_data_update_8047(&$sandbox) {
+//  /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
+//  $par_data_manager = \Drupal::service('par_data.manager');
+//  $batch_size = 1000;
+//
+//  // Initialize some variables during the first pass through.
+//  if (!isset($sandbox['total'])) {
+//    /** @var \Drupal\par_data\Entity\ParDataEntityInterface[] $authorities */
+//    /** @var \Drupal\par_data\Entity\ParDataEntityInterface[] $organisations */
+//    $authorities = $par_data_manager->getEntitiesByType('par_data_authority');
+//    $organisations = $par_data_manager->getEntitiesByType('par_data_organisation');
+//
+//    $primary_addresses = [];
+//    foreach($authorities as $id => $entity) {
+//      if ($entity->hasField('field_premises') && !$entity->get('field_premises')->isEmpty()) {
+//        $primary_addresses[] = $entity->get('field_premises')->first()->target_id;
+//      }
+//    }
+//    foreach($organisations as $id => $entity) {
+//      if ($entity->hasField('field_premises') && !$entity->get('field_premises')->isEmpty()) {
+//        $primary_addresses[] = $entity->get('field_premises')->first()->target_id;
+//      }
+//    }
+//
+//    // Build the address query.
+//    $total_query = $par_data_manager->getEntityQuery('par_data_premises');
+//    $total_query->condition('id', $primary_addresses, 'NOT IN');
+//    $total_results = array_unique($total_query->execute());
+//
+//    // Set default values.
+//    $sandbox['secondary_addresses'] = array_chunk($total_results, $batch_size, true);
+//    $sandbox['total'] = count($total_results);
+//    $sandbox['current'] = 0;
+//  }
+//
+//  // Delete the secondary addresses in chunks.
+//  // This helps the update runner know that we're still alive and processing.
+//  $chunk = $sandbox['secondary_addresses'][$sandbox['current']];
+//  foreach ($chunk as $result) {
+//    if ($entity = ParDataPremises::load($result)) {
+//      $entity->annihilate();
+//    }
+//  }
+//  $sandbox['current']++;
+//
+//  $results_removed = ($batch_size * $sandbox['current']);
+//  $message = "$results_removed secondary addresses removed, batch {$sandbox['current']} complete.";
+//
+//  if ($sandbox['total'] == 0) {
+//    $sandbox['#finished'] = 1;
+//  } else {
+//    $sandbox['#finished'] = ($results_removed / $sandbox['total']);
+//  }
+//
+//  return t($message);
+//}
