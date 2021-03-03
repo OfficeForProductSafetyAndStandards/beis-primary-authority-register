@@ -59,6 +59,7 @@ class ParSubscriptionPreferencesForm extends ParFormPluginBase {
       '#title' => $this->t('Subscribe to the mailing list'),
       '#description' => '<p>All out news letters are sent round no more than once a month, you can unsubscribe at any time.</p>',
       '#options' => $subscription_lists,
+      '#attributes' => ['class' => ['form-group']],
       '#default_value' => $this->getDefaultValuesByKey('subscriptions', $cardinality, array_keys($subscription_preferences)),
       '#return_value' => 'on',
     ];
