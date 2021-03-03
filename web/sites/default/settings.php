@@ -742,9 +742,6 @@ if (!empty($app_env)) {
   if (file_exists("{$app_root}/{$site_path}/services.local.{$app_env}.php")) {
     include "{$app_root}/{$site_path}/services.local.{$app_env}.php";
   }
-  else {
-    include "{$app_root}/{$site_path}/services.local.non-production.php";
-  }
 }
 
 /**
