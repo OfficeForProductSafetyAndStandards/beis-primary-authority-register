@@ -60,6 +60,7 @@ class ParContactPreferencesForm extends ParFormPluginBase {
       '#type' => 'checkboxes',
       '#title' => $this->t('Select the preferred methods of contact (optional)'),
       '#options' => $contact_options,
+      '#attributes' => ['class' => ['form-group']],
       '#default_value' => $this->getDefaultValuesByKey('preferred_contact', $cardinality, []),
       '#return_value' => 'on',
     ];
