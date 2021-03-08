@@ -37,7 +37,7 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v9-repo-{{ .Branch }}-{{ .Revision }}
+        - v10-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
@@ -135,7 +135,7 @@ jobs:
           name: "Unpacking database"
           command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - save_cache:
-          key: v9-repo-{{ .Branch }}-{{ .Revision }}
+          key: v10-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
