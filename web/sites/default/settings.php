@@ -736,15 +736,6 @@ $settings['file_private_path'] = realpath($app_root. '/../private');
 $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
 
 /**
- * Enable local development services.
- */
-if (!empty($app_env)) {
-  if (file_exists("{$app_root}/{$site_path}/services.local.{$app_env}.php")) {
-    include "{$app_root}/{$site_path}/services.local.{$app_env}.php";
-  }
-}
-
-/**
  * Override the default service container class.
  *
  * This is useful for example to trace the service container for performance
@@ -805,6 +796,15 @@ $settings['trusted_host_patterns'] = [
   '^beis-par-' . $app_env . '\.cloudapps\.digital',
   $app_env . '-cdn.par-beta.net',
 ];
+
+/**
+ * Enable local development services.
+ */
+if (!empty($app_env)) {
+  if (file_exists("{$app_root}/{$site_path}/services.local.{$app_env}.yml")) {
+    $settings['container_yamls'][] = "{$app_root}/{$site_path}/services.local.{$app_env}.yml";
+  }
+}
 
 /**
  * The default list of directories that will be ignored by Drupal's file API.

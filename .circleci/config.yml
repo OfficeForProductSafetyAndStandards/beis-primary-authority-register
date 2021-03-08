@@ -26,6 +26,14 @@ references:
 
     working_directory: /var/www/html
 
+  clean_working_directory: &clean_working_directory
+    run:
+      name: "Clean the default directory"
+      command: |
+        cd /
+        rm -fr /var/www/html/
+        mkdir -p /var/www/html/
+
   restore_code: &restore_code
     restore_cache:
       keys:
@@ -90,6 +98,7 @@ jobs:
   checkout_code:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *restore_code
       - checkout:
           post:
@@ -133,6 +142,7 @@ jobs:
   compile_code:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *restore_code
       - *restore_dependencies
       - run:
@@ -176,6 +186,7 @@ jobs:
         default: v1
         type: string
     steps:
+      - *clean_working_directory
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
@@ -232,6 +243,7 @@ jobs:
         default: v1
         type: string
     steps:
+      - *clean_working_directory
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
@@ -280,6 +292,7 @@ jobs:
   deploy_stage:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
@@ -307,6 +320,7 @@ jobs:
   deploy_prod:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
@@ -333,6 +347,7 @@ jobs:
   deploy_test:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
@@ -364,6 +379,7 @@ jobs:
   sanitise_database:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
