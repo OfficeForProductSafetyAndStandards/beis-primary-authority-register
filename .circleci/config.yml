@@ -155,9 +155,9 @@ jobs:
             - ./web/modules/contrib
             - ./web/profiles/contrib
             - ./web/themes/contrib
+            - ./web/themes/custom
             - ./drush/contrib
             - ./node_modules
-            - ./web/themes/custom
       - run:
           name: "Create workspace"
           command: |
