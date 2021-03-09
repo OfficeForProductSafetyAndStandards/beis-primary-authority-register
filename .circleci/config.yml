@@ -460,35 +460,35 @@ jobs:
 
 workflows:
   version: 2.1
-  theme_v2_test:
-    jobs:
-      - checkout_code:
-          filters:
-            tags:
-              only: /.*/
-            branches:
-              ignore:
-                - master
-      - compile_code:
-          requires:
-            - checkout_code
-          filters:
-            tags:
-              only: /.*/
-            branches:
-              ignore:
-                - master
-      - test_full:
-          name: test_theme
-          theme_version: v2
-          requires:
-            - compile_code
-          filters:
-            tags:
-              only: /.*/
-            branches:
-              ignore:
-                - master
+#  theme_v2_test:
+#    jobs:
+#      - checkout_code:
+#          filters:
+#            tags:
+#              only: /.*/
+#            branches:
+#              ignore:
+#                - master
+#      - compile_code:
+#          requires:
+#            - checkout_code
+#          filters:
+#            tags:
+#              only: /.*/
+#            branches:
+#              ignore:
+#                - master
+#      - test_full:
+#          name: test_theme
+#          theme_version: v2
+#          requires:
+#            - compile_code
+#          filters:
+#            tags:
+#              only: /.*/
+#            branches:
+#              ignore:
+#                - master
 
   build_test_deploy:
     jobs:
