@@ -365,6 +365,11 @@ jobs:
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
           arguments: '--region eu-west-1'
       - run:
+          name: "Check stylesheet"
+          command: |
+            ls -lah /tmp/workspace/web/themes/contrib/govuk_theme/css/styles.css
+            ls -lah /var/www/html/web/themes/contrib/govuk_theme/css/styles.css
+      - run:
           name: "Deploy to test environment"
           command: |
             DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
