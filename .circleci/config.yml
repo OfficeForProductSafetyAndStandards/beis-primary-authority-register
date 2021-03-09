@@ -360,15 +360,19 @@ jobs:
       - *configure_webroot
       - *import_database
       - *build_assets
+      - run:
+          name: "Examine asset bundle."
+          command: |
+            ls -lah /tmp/workspace
+      - run:
+          name: "Check stylesheet"
+          command: |
+            ls -lah /tmp/workspace/web/themes/contrib/govuk_theme/css/style.css
+            ls -lah /var/www/html/web/themes/contrib/govuk_theme/css/style.css
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
           arguments: '--region eu-west-1'
-      - run:
-          name: "Check stylesheet"
-          command: |
-            ls -lah /tmp/workspace/web/themes/contrib/govuk_theme/css/styles.css
-            ls -lah /var/www/html/web/themes/contrib/govuk_theme/css/styles.css
       - run:
           name: "Deploy to test environment"
           command: |
