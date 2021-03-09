@@ -151,6 +151,7 @@ jobs:
             echo "$(pwd)"
             composer install -v
             npm run install-govuk-theme
+            ls -lah web/modules/themes/contrib/govuk_theme/css/styles.css
             npm run install-par-theme
             npm install
             npm run gulp
