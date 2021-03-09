@@ -19,9 +19,15 @@ manifest.yml
 /devops/vault/
 /clamav/
 /tests/
-/vendor/
 
 # Ignore package files
+composer.json
+composer.lock
+package.json
+package-lock.json
+## Temporary fix: @SEE PAR-1705
+
+# Ignore config files
 phpunit.xml
 
 # Ignore local only files
