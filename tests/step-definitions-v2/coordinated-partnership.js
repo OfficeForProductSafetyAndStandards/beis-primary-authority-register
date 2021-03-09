@@ -18,15 +18,15 @@ When('I complete valid coordinated partnership application details', function ()
   .click('#edit-application-type-coordinated')
   .click('#edit-next')
   .click('#edit-next')
-  .waitForElementVisible('.error-summary', 1000)
-  .assert.containsText('.error-summary', 'Please confirm that all conditions for a new partnership have been met')
+  .waitForElementVisible('.govuk-error-summary', 1000)
+  .assert.containsText('.govuk-error-summary', 'Please confirm that all conditions for a new partnership have been met')
   .click('#edit-edit-confirm')
   .click('#edit-next')
   .assert.containsText('h1.heading-xlarge','Information about the new partnership')
   .setValue('#edit-about-partnership', 'About the partnership detail')
   .click('#edit-next')
 });
-  
+
 Given('I complete valid organisation details for coordinated partnership {string}', function (partnershipname) {
   return client
   .setValue('#edit-organisation-name',partnershipname)
@@ -74,7 +74,7 @@ When('I complete review and submit valid coordinated partnership application', f
     .assert.containsText('h1.heading-xlarge','Check partnership information')
     .click('#edit-partnership-info-agreed-authority')
     .click('#edit-save')
-}); 
+});
 
 When('I complete the business contact details', function () {
   return client
@@ -97,7 +97,7 @@ When('I complete the business contact details', function () {
   .click('#edit-preferred-contact-communication-mobile')
   .setValue( '#edit-notes','Some additional notes')
   .click('#edit-next')
-}); 
+});
 
 When('the coordinated partnership creation email template is correct', function () {
  return shared
@@ -125,7 +125,7 @@ When('I complete the organisation registered address for coordinated partnership
   .clearValue('#edit-town-city')
   .clearValue('#edit-county')
   .click('#edit-next')
-  .waitForElementVisible('.error-summary', 2000)
+  .waitForElementVisible('.govuk-error-summary', 2000)
   .assert.containsText('h1.heading-xlarge','Confirm the primary address details')
   .setValue('#edit-postcode','SE16 4NX')
   .setValue('#edit-address-line1','1 High St')

@@ -26,7 +26,7 @@ When('I select coordinated partnership', function () {
  	return client
  	 	 .click('#edit-confirm')
  	 	 .click('#edit-next')
- 	 	 .isVisible('.error-summary', results => {
+ 	 	 .isVisible('.govuk-error-summary', results => {
       	 if (results.value) {
       	 	return client
       	 .click('#edit-confirm')

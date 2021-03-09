@@ -20,13 +20,13 @@ When('I complete valid direct partnership application details', function () {
   .click('#edit-application-type-direct')
   .click('#edit-next')
   .click('#edit-next')
-  .waitForElementVisible('.error-summary', 1000)
-  .assert.containsText('.error-summary', 'Please confirm that all conditions for a new partnership have been met')
+  .waitForElementVisible('.govuk-error-summary', 1000)
+  .assert.containsText('.govuk-error-summary', 'Please confirm that all conditions for a new partnership have been met')
   .click('#edit-edit-confirm')
   .click('#edit-next')
   .click('#edit-next')
-  .waitForElementVisible('.error-summary', 1000)
-  .assert.containsText('.error-summary', 'Please confirm whether the organisation has been notified that any existing local authorities will continue to regulate it')
+  .waitForElementVisible('.govuk-error-summary', 1000)
+  .assert.containsText('.govuk-error-summary', 'Please confirm whether the organisation has been notified that any existing local authorities will continue to regulate it')
   .click('#edit-business-notified-2')
   .click('#edit-next')
   .assert.containsText('#par-partnership-about','Use this section to give a brief overview of the partnership')
@@ -83,7 +83,7 @@ When('I complete review and submit valid direct partnership application', functi
     .assert.containsText('h1.heading-xlarge','Check partnership information')
     .click('#edit-partnership-info-agreed-authority')
     .click('#edit-save')
-}); 
+});
 
 // Starting point: After review and submission complete
 When('the direct partnership creation email template is correct', function () {
@@ -97,4 +97,4 @@ When('the direct partnership creation email template is correct', function () {
   .assert.containsText('#block-par-theme-content', title + ' ' + firstname + ' ' + lastname + ' will receive an email with a link to register/login to the PAR website')
   .clickLinkByPureText('Done')
   .assert.containsText('h1.heading-xlarge','Primary Authority Register')
-}); 
+});

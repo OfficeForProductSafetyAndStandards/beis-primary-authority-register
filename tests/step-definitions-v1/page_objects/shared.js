@@ -204,12 +204,12 @@ module.exports = {
         },
         createNewPartnership: function () {
             return this
-                .assert.containsText('.error-summary', 'Please confirm that all conditions for a new partnership have been met')
+                .assert.containsText('.govuk-error-summary', 'Please confirm that all conditions for a new partnership have been met')
                 .click('#edit-edit-confirm')
                 .click('#edit-next')
                 .click('#edit-next')
-                .waitForElementVisible('.error-summary', 1000)
-                .assert.containsText('.error-summary', 'Please confirm whether the organisation has been notified that any existing local authorities will continue to regulate it')
+                .waitForElementVisible('.govuk-error-summary', 1000)
+                .assert.containsText('.govuk-error-summary', 'Please confirm whether the organisation has been notified that any existing local authorities will continue to regulate it')
                 .click('#edit-business-notified-2')
                 .click('#edit-next')
                 .assert.containsText('#par-partnership-about', 'Use this section to give a brief overview of the partnership')

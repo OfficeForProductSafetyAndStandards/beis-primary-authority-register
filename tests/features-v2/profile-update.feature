@@ -10,7 +10,7 @@ Feature: New Direct Partnership For PA To Approve
         When I click on the button "#edit-next"
 
         # Confirm form can't be submitted without agreeing to terms.
-        When the element ".error-summary" does exist
+        When the element ".govuk-error-summary" does exist
         And I click on the checkbox "#edit-data-policy"
         When I click on the button "#edit-next"
 
@@ -64,7 +64,7 @@ Feature: New Direct Partnership For PA To Approve
 
         Then the element "h1.heading-xlarge" contains the text "Update contact details"
         And I click on the button "#edit-next"
-        When the element ".error-summary" does exist
+        When the element ".govuk-error-summary" does exist
         Then I add "Joe" to the inputfield "#edit-first-name"
         Then I add "Smith" to the inputfield "#edit-last-name"
         And I add "01870119991" to the inputfield "#edit-work-phone"

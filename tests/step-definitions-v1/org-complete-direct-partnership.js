@@ -60,7 +60,7 @@ When('I complete the organisation registered address for direct partnership', fu
   .clearValue('#edit-town-city')
   .clearValue('#edit-county')
   .click('#edit-next')
-  .waitForElementVisible('.error-summary', 2000)
+  .waitForElementVisible('.govuk-error-summary', 2000)
   .assert.containsText('h1.heading-xlarge','Confirm the primary address details')
   .setValue('#edit-postcode','SE16 4NX')
   .setValue('#edit-address-line1','1 High St')
@@ -164,7 +164,7 @@ When('I change the completed about the organisation', function () {
 When('I submit final confirmation of completion by organisation {string}', function (partnershipname) {
   return shared
    .click('#edit-save')
-   .waitForElementVisible('.error-summary', 2000)
+   .waitForElementVisible('.govuk-error-summary', 2000)
    .click('#edit-terms-organisation-agreed')
    .click('#edit-save')
    .assert.containsText('h1.heading-xlarge','Thank you for completing the application')

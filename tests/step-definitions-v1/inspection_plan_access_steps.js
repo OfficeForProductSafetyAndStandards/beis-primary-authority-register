@@ -89,8 +89,8 @@ When('I remove the inspection plan {string} with the reason {string}', function 
         .clickLinkByPureText('Remove inspection plan')
         .assert.containsText('h1.heading-xlarge', 'Are you sure you want to remove this inspection plan?')
         .click('#edit-next')
-        .waitForElementVisible('.error-summary', 1000)
-        .assert.containsText('.error-summary', 'Please enter the reason you are removing this inspection plan.')
+        .waitForElementVisible('.govuk-error-summary', 1000)
+        .assert.containsText('.govuk-error-summary', 'Please enter the reason you are removing this inspection plan.')
         .setValue('#edit-remove-reason', reason)
         .click('#edit-next')
 });

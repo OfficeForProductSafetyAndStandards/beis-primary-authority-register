@@ -11,7 +11,7 @@ When('I update the registered address for organisation', function () {
   .clearValue('#edit-address-line1')
   .clearValue('#edit-postcode')
   .click('#edit-save')
-  .waitForElementVisible('.error-summary', 1000)
+  .waitForElementVisible('.govuk-error-summary', 1000)
   .setValue('#edit-postcode','SE16 4NX')
   .setValue('#edit-address-line1','1 Change St')
   .setValue('#edit-address-line2','New Change')

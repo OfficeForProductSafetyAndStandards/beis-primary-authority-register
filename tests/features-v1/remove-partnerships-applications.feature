@@ -18,7 +18,7 @@ Feature: Remove partnership appliations
 
         And the element "h1.heading-xlarge" contains the text "Delete a partnership"
         When I click on the button "#edit-next"
-        Then the element ".error-summary" contains the text "Please supply the reason for cancelling this partnership."
+        Then the element ".govuk-error-summary" contains the text "Please supply the reason for cancelling this partnership."
         When I enter the deletion reason "Testing the deletion of a partnership application."
         And I click on the button "#edit-next"
 
