@@ -150,16 +150,21 @@ jobs:
           command: |
             echo "$(pwd)"
             composer install -v
+            rm -f web/themes/contrib/govuk_theme/css/styles.css
             npm run install-govuk-theme
-            ls -lah web/modules/themes/contrib/govuk_theme/css/styles.css
             npm run install-par-theme
             npm install
             npm run gulp
+      - run:
+          name: "Installing tests"
+          command: |
+            echo "$(pwd)"
             cd ./tests && rm -rf node_modules && npm install
       - *restore_scaffold
       - save_cache:
           key: v10-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
           paths:
+            - ./node_modules
             - ./vendor
             - ./web/core
             - ./web/libraries
@@ -168,7 +173,6 @@ jobs:
             - ./web/themes/contrib
             - ./web/themes/custom
             - ./drush/contrib
-            - ./node_modules
       - run:
           name: "Create workspace"
           command: |
