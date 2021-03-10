@@ -75,6 +75,14 @@ The build relies on a seed database which is a sanitised version of the producti
 cf ssh beis-par-production -c "python app/devops/tools/postgres_dump.py"
 ```
 
+#### Access tests run on CI
+Run circle ci in ssh mode, and get the port and IP address from the 'Enable SSH' tab.
+```
+ssh -p 64546 35.174.174.208 -L 3000:localhost:80
+```
+
+This will allow the web server running in ci to be accessible on `http://par.localhost:3000`
+
 #### Sanitize the production database
 Go to the S3 artifacts bucket and download a copy of the drush-dump-production-unsanitized.sql file that was just created (and uploaded).
 
