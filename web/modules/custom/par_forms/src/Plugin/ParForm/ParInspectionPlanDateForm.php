@@ -66,23 +66,24 @@ class ParInspectionPlanDateForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
 
     // Inspection plan begin date.
-    if ($this->getFlowDataHandler()->getFormPermValue("start_date_required")) {
+    if ($start_date = $this->getFlowDataHandler()->getFormPermValue("start_date_required")) {
       $form['start'] = [
         '#type' => 'gds_date',
         '#title' => $this->t('Enter the date the inspection plan is valid from'),
         '#description' => $this->t('For example: 01/01/2019'),
-        '#default_value' => $this->getDefaultValuesByKey('start', $cardinality, $this->getFormDefaultByKey('start')),
+        '#default_value' => $this->getDefaultValuesByKey('start', $cardinality, $start_date),
       ];
     }
 
     // Inspection plan begin date.
-    if ($this->getFlowDataHandler()->getFormPermValue("end_date_required")) {
+    if ($end_date = $this->getFlowDataHandler()->getFormPermValue("end_date_required")) {
       $form['expire'] = [
         '#type' => 'gds_date',
-        '#title' => $this->t('Enter the date the inspection plan expires'),
+        '#title' => $this->t('Enter the date the inspection plan expire'),
         '#description' => $this->t('For example: 01/01/2021'),
-        '#default_value' => $this->getDefaultValuesByKey('expire', $cardinality, $this->getFormDefaultByKey('expire')),
+        '#default_value' => $this->getDefaultValuesByKey('expire', $cardinality, $end_date),
       ];
+
     }
 
     return $form;
