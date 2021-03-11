@@ -69,6 +69,7 @@ Then('I enter new summary for an inspection plan', function () {
 
 Then('I see the inspection plan has updated successfully', function () {
     return shared
+        .assert.containsText('h1.heading-xlarge', 'Inspection Plans')
         .clickLinkByPureText('Auto-test-NewInspectionPlan-retest')
         .assert.containsText('h1.heading-xlarge', 'Auto-test-NewInspectionPlan-retest')
         .assert.containsText('#content', 'Auto-inspection-plan-Summary-retest')
