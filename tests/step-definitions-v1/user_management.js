@@ -48,12 +48,12 @@ Then('I should not see {string}', function (string) {
 
          });
   When('I click save', function () {
-          return client
+          return shared
            .click('#edit-save')
 
          });
   When('I click continue', function () {
-          return client
+          return shared
            .click('#edit-next')
 
          });
