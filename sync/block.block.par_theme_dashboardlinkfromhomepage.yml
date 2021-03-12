@@ -13,7 +13,7 @@ dependencies:
 id: par_theme_dashboardlinkfromhomepage
 theme: par_theme
 region: content
-weight: -1
+weight: -3
 provider: null
 plugin: 'block_content:bc6cfde1-fef1-410a-aa20-f845d4769f58'
 settings:

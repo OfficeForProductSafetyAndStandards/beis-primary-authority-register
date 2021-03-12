@@ -12,8 +12,8 @@ _core:
   default_config_hash: DweBpscQZdG0-fHkSpUzdYucrNH45G_KF7Z82V-oyQM
 id: par_theme_account_menu
 theme: par_theme
-region: header
-weight: -6
+region: navigation
+weight: -7
 provider: null
 plugin: 'system_menu_block:account'
 settings:

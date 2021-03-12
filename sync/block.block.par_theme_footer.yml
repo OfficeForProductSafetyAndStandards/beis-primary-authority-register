@@ -1,6 +1,6 @@
 uuid: a2b00b8f-2cc5-4046-8fb4-8985c0284ad0
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - system.menu.footer
@@ -12,7 +12,7 @@ _core:
   default_config_hash: kkISXE1LT2FJEoYnqCrCpeFB-2pmGmMxMklVk7rQcfg
 id: par_theme_footer
 theme: par_theme
-region: footer_inner
+region: header
 weight: -3
 provider: null
 plugin: 'system_menu_block:footer'
