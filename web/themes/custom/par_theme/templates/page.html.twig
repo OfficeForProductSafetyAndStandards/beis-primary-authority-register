@@ -51,7 +51,7 @@
 {% endif %}
 <div id="skiplink-container">
   <div>
-    <a href="#main-content" class="skiplink govuk-skip-link" title="Skip to main content">Skip to main content</a>
+    <a href="#content" class="skiplink govuk-skip-link" title="Skip to main content">Skip to main content</a>
   </div>
 </div>
 <header class="govuk-header" role="banner" data-module="govuk-header">
@@ -93,7 +93,7 @@
       page.content.govuk_local_tasks|render|striptags|trim is not empty ? 'has-local-tasks'
     ]
   %}
-  <main {{ attributes.addClass(main_classes) }} id="main-content" role="main">
+  <main {{ attributes.addClass(main_classes) }} id="content" role="main">
     <div class="govuk-grid-row">
       {% if page.sidebar_first %}
         <div class="govuk-grid-column-two-thirds">
