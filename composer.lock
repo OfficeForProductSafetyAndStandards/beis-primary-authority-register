@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "879ec242cc6c844b43eb2aac62cfb7ed",
+    "content-hash": "d749718b22f6882a496b58d4303ef6ba",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -4202,48 +4202,50 @@
         },
         {
             "name": "drupal/google_analytics",
-            "version": "2.4.0",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/google_analytics.git",
-                "reference": "8.x-2.4"
+                "reference": "8.x-3.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/google_analytics-8.x-2.4.zip",
-                "reference": "8.x-2.4",
-                "shasum": "f2e78ec140024ddcd19e027704ba73c33731f656"
+                "url": "https://ftp.drupal.org/files/projects/google_analytics-8.x-3.1.zip",
+                "reference": "8.x-3.1",
+                "shasum": "171dcac5a67cde66201754baaa52711f45e47a3b"
             },
             "require": {
-                "drupal/core": "~8.5"
+                "drupal/core": "^8.8.6|^9.0"
             },
             "require-dev": {
-                "drupal/php": "*",
-                "drupal/token": "*"
+                "drupal/token": "^1.7"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.4",
-                    "datestamp": "1548968580",
+                    "version": "8.x-3.1",
+                    "datestamp": "1591298584",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "branch-alias": {
+                    "dev-8.x-2.x": "2.x-dev"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
-                    "name": "hass",
-                    "homepage": "https://www.drupal.org/u/hass"
+                    "name": "See contributors",
+                    "homepage": "https://www.drupal.org/node/49388/committers"
                 },
                 {
-                    "name": "See other contributors",
-                    "homepage": "https://www.drupal.org/node/49388/committers"
+                    "name": "budda",
+                    "homepage": "https://www.drupal.org/user/13164"
                 },
                 {
                     "name": "ixismark",

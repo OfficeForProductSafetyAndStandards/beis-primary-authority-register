@@ -3,11 +3,11 @@ domain_mode: 0
 cross_domains: ''
 visibility:
   request_path_mode: 0
-  request_path_pages: "/admin/*\r\n/dv/rd-helpdesk/*"
+  request_path_pages: '/admin/*'
   user_role_mode: 1
   user_role_roles:
-    administrator: administrator
     par_helpdesk: par_helpdesk
+    administrator: administrator
   user_account_mode: 0
 track:
   outbound: true
@@ -36,3 +36,4 @@ cache: false
 debug: false
 _core:
   default_config_hash: 5YkLBJiAXgH9BDLkDIb1ozqfCXWwvZggf4XfcXgfjzc
+premium: false
