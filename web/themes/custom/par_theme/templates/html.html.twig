@@ -27,7 +27,7 @@
 #}
 <!DOCTYPE html>
 <!--[if lt IE 9]><html class="lte-ie8" lang="en"><![endif]-->
-<!--[if gt IE 8]><!--><html lang="en" {{ html_attributes }}><!--<![endif]-->
+<!--[if gt IE 8]><!--><html lang="en" {{ html_attributes.addClass('govuk-template') }}><!--<![endif]-->
   <head>
     <head-placeholder token="{{ placeholder_token }}">
     <meta charset="utf-8" />
@@ -46,10 +46,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta property="og:image" content="/themes/custom/par_theme/assets/images/opengraph-image.png">
   </head>
-<body {{ attributes }}>
+<body {{ attributes.addClass('govuk-template__body') }}>
+    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
     {{ page_top }}
     {{ page }}
     {{ page_bottom }}
     <js-bottom-placeholder token="{{ placeholder_token }}">
 </body>
+<script>window.GOVUKFrontend.initAll()</script>
 </html>

@@ -10,7 +10,7 @@ favicon:
 search_box: 0
 govuk_cookie: 1
 govuk_breadcrumb: 1
-govuk_phase_banner: ''
+govuk_phase_banner: beta
 phase_banner_message:
-  value: ''
+  value: "<p><span>This is a new service – your <a href=\"https://www.surveymonkey.co.uk/r/primaryauthorityregister\">feedback</a> will help us to improve it.</span></p>\r\n"
   format: basic_html

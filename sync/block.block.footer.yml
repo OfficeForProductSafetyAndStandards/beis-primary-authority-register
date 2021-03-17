@@ -1,4 +1,4 @@
-uuid: a2b00b8f-2cc5-4046-8fb4-8985c0284ad0
+uuid: 6d5a66ab-5f26-4d47-bdcc-d27bec85656f
 langcode: en
 status: true
 dependencies:
@@ -8,17 +8,15 @@ dependencies:
     - system
   theme:
     - par_theme
-_core:
-  default_config_hash: kkISXE1LT2FJEoYnqCrCpeFB-2pmGmMxMklVk7rQcfg
-id: par_theme_footer
+id: footer
 theme: par_theme
-region: footer_inner
-weight: -3
+region: footer
+weight: 0
 provider: null
 plugin: 'system_menu_block:footer'
 settings:
   id: 'system_menu_block:footer'
-  label: 'Footer menu'
+  label: Footer
   provider: system
   label_display: '0'
   level: 1
