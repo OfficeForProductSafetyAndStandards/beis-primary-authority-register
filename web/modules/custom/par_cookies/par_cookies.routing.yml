@@ -1,2 +1,0 @@
-route_callbacks:
-  - 'par_subscriptions.route_subscriber:routes'

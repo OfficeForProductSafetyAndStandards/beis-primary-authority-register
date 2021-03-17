@@ -5,10 +5,19 @@ namespace Drupal\par_cookies\Form;
 use Drupal\Core\Flood\FloodInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Path\PathValidator;
+use Drupal\Core\Routing\LocalRedirectResponse;
 use Drupal\Core\Url;
+use Drupal\par_flows\ParFlowException;
+use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\SetCookie;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Drupal\Component\Serialization\Json;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
  * A form controller for the cookie page.
@@ -17,7 +26,7 @@ class CookieConsentForm extends FormBase {
 
   const ALLOW_VALUE = 'allow';
   const BLOCK_VALUE = 'block';
-  const COOKIE_NAME = 'cookie_policy';
+  const COOKIE_NAME = '_cookie_policy';
 
   /**
    * Cookie types.
@@ -32,13 +41,24 @@ class CookieConsentForm extends FormBase {
   protected $flood;
 
   /**
+   * The path validator service.
+   *
+   * @var \Drupal\Core\Path\PathValidator
+   */
+  protected $pathValidator;
+
+  /**
    * Constructs a cookie page controller.
    *
    * @param \Drupal\Core\Flood\FloodInterface $flood
    *   The flood service.
+   *
+   * @param \Drupal\Core\Path\PathValidator $path_validator
+   *   The path validator service.
    */
-  public function __construct(FloodInterface $flood) {
+  public function __construct(FloodInterface $flood, PathValidator $path_validator) {
     $this->flood = $flood;
+    $this->pathValidator = $path_validator;
   }
 
   /**
@@ -46,7 +66,8 @@ class CookieConsentForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('flood')
+      $container->get('flood'),
+      $container->get('path.validator')
     );
   }
 
@@ -64,8 +85,12 @@ class CookieConsentForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state, $list = NULL, $subscription_status = NULL) {
     $service = \Drupal::config('system.site')->get('name');
-    $cookie = \Drupal::request()->cookies->get(self::COOKIE_NAME);
-    var_dump($cookie);
+
+
+    $cookie = $this->getRequest()->cookies->get(self::COOKIE_NAME);
+    $cookies = $this->getRequest()->cookies->get(self::COOKIE_NAME);
+    var_dump($cookies);
+    $referer = $this->getRequest()->headers->get('referer');
 
     foreach ($this->types as $type) {
       $options = [
@@ -76,10 +101,21 @@ class CookieConsentForm extends FormBase {
         '#type' => 'radios',
         '#title' => "Do you want to accept $type cookies?",
         '#options' => $options,
-        '#default_value' => current($options),
+        '#default_value' => self::ALLOW_VALUE,
       ];
     }
 
+    $form['actions']['save'] = [
+      '#type' => 'submit',
+      '#name' => 'save',
+      '#submit' => ['::submitForm'],
+      '#value' => $this->t('Save cookie settings'),
+      '#attributes' => [
+        'class' => ['cta-submit', 'govuk-button'],
+        'data-prevent-double-click' => 'true',
+        'data-module' => 'govuk-button',
+      ],
+    ];
 
     return $form;
   }
@@ -117,14 +153,20 @@ class CookieConsentForm extends FormBase {
       }
     }
 
+    $response = $form_state->getResponse() ??
+      new RedirectResponse($this->getRequest()->getUri());
     // Set the new cookie policy.
-    $name = 'cookie_policy';
-    $value = Json::encode($cookie_policy);
-    $expiry = 60*60*24*365;
-    $cookie = new Cookie($name, $value, $expiry);
+    $response->headers->setCookie(new Cookie(
+      self::COOKIE_NAME,
+      Json::encode($cookie_policy),
+      \Drupal::time()->getRequestTime() + 31536000,
+      '/',
+      ".{$this->getRequest()->getHost()}",
+      false,
+      false,
+      true,
+    ));
 
-    $response = $form_state->getResponse();
-    $response->headers->setCookie($cookie);
-    return $response;
+    $form_state->setResponse($response);
   }
 }
