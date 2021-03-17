@@ -2,5 +2,6 @@
       "PHP_VERSION": "{PHP_74_LATEST}",
       "PHP_MODULES": ["cli"],
       "WEBDIR": "web",
+      "COMPOSER_INSTALL_OPTIONS": ["--no-interaction", "--no-dev", "--dry-run"],
       "COMPOSER_VENDOR_DIR": "vendor"
 }

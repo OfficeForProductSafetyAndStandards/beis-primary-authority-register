@@ -10,8 +10,8 @@ _core:
   default_config_hash: 8I8iACSa0sKO3k3jlvUG1ge52rfcKX7USJAQYnzuBgg
 id: par_theme_help
 theme: par_theme
-region: content
-weight: -4
+region: help
+weight: -7
 provider: null
 plugin: help_block
 settings:

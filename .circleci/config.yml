@@ -26,15 +26,23 @@ references:
 
     working_directory: /var/www/html
 
+  clean_working_directory: &clean_working_directory
+    run:
+      name: "Clean the default directory"
+      command: |
+        cd /
+        rm -fr /var/www/html/
+        mkdir -p /var/www/html/
+
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v9-repo-{{ .Branch }}-{{ .Revision }}
+        - v10-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+        - v10-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -90,6 +98,7 @@ jobs:
   checkout_code:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *restore_code
       - checkout:
           post:
@@ -126,13 +135,14 @@ jobs:
           name: "Unpacking database"
           command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - save_cache:
-          key: v9-repo-{{ .Branch }}-{{ .Revision }}
+          key: v10-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
   compile_code:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *restore_code
       - *restore_dependencies
       - run:
@@ -140,24 +150,29 @@ jobs:
           command: |
             echo "$(pwd)"
             composer install -v
+            rm -f web/themes/contrib/govuk_theme/css/styles.css
             npm run install-govuk-theme
             npm run install-par-theme
             npm install
             npm run gulp
+      - run:
+          name: "Installing tests"
+          command: |
+            echo "$(pwd)"
             cd ./tests && rm -rf node_modules && npm install
       - *restore_scaffold
       - save_cache:
-          key: v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+          key: v10-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
           paths:
+            - ./node_modules
             - ./vendor
             - ./web/core
             - ./web/libraries
             - ./web/modules/contrib
             - ./web/profiles/contrib
             - ./web/themes/contrib
-            - ./drush/contrib
-            - ./node_modules
             - ./web/themes/custom
+            - ./drush/contrib
       - run:
           name: "Create workspace"
           command: |
@@ -176,6 +191,7 @@ jobs:
         default: v1
         type: string
     steps:
+      - *clean_working_directory
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
@@ -232,6 +248,7 @@ jobs:
         default: v1
         type: string
     steps:
+      - *clean_working_directory
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
@@ -280,6 +297,7 @@ jobs:
   deploy_stage:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
@@ -307,6 +325,7 @@ jobs:
   deploy_prod:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
@@ -333,6 +352,7 @@ jobs:
   deploy_test:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
@@ -340,6 +360,10 @@ jobs:
       - *configure_webroot
       - *import_database
       - *build_assets
+      - run:
+          name: "Examine asset bundle."
+          command: |
+            ls -lah /tmp/workspace
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
@@ -364,6 +388,7 @@ jobs:
   sanitise_database:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
@@ -443,35 +468,35 @@ jobs:
 
 workflows:
   version: 2.1
-  theme_v2_test:
-    jobs:
-      - checkout_code:
-          filters:
-            tags:
-              only: /.*/
-            branches:
-              ignore:
-                - master
-      - compile_code:
-          requires:
-            - checkout_code
-          filters:
-            tags:
-              only: /.*/
-            branches:
-              ignore:
-                - master
-      - test_full:
-          name: test_theme
-          theme_version: v2
-          requires:
-            - compile_code
-          filters:
-            tags:
-              only: /.*/
-            branches:
-              ignore:
-                - master
+#  theme_v2_test:
+#    jobs:
+#      - checkout_code:
+#          filters:
+#            tags:
+#              only: /.*/
+#            branches:
+#              ignore:
+#                - master
+#      - compile_code:
+#          requires:
+#            - checkout_code
+#          filters:
+#            tags:
+#              only: /.*/
+#            branches:
+#              ignore:
+#                - master
+#      - test_full:
+#          name: test_theme
+#          theme_version: v2
+#          requires:
+#            - compile_code
+#          filters:
+#            tags:
+#              only: /.*/
+#            branches:
+#              ignore:
+#                - master
 
   build_test_deploy:
     jobs:
