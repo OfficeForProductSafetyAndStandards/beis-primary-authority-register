@@ -160,8 +160,9 @@ class ParUnsubscribeForm extends FormBase  {
     $action = $form_state->getTriggeringElement()['#name'];
 
     if ($action === 'unsubscribe') {
+      $list = $form_state->getValue('list');
       $email = $form_state->getValue('email');
-      $subscription = $this->getSubscriptionManager()->getSubscriptionByEmail($email);
+      $subscription = $this->getSubscriptionManager()->getSubscriptionByEmail($list, $email);
 
       if ($subscription instanceof ParSubscriptionInterface) {
         // Silently unsubscribe.
