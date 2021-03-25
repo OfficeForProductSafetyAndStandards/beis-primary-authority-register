@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_cookies\Plugin\Block;
+namespace Drupal\govuk_cookies\Plugin\Block;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
@@ -8,7 +8,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\par_cookies\Form\CookieConsentForm;
+use Drupal\govuk_cookies\Form\CookieConsentForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -28,13 +28,6 @@ class CookieConsentBlock extends BlockBase implements ContainerFactoryPluginInte
    * @var \Drupal\Core\Form\FormBuilderInterface
    */
   protected $formBuilder;
-
-  /**
-   * The masquerade service.
-   *
-   * @var \Drupal\masquerade\Masquerade
-   */
-  protected $masquerade;
 
   /**
    * Constructs a new MasqueradeBlock object.

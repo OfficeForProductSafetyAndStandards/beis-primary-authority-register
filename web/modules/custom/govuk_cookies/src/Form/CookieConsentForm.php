@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_cookies\Form;
+namespace Drupal\govuk_cookies\Form;
 
 use Drupal\Core\Flood\FloodInterface;
 use Drupal\Core\Form\FormBase;
@@ -84,13 +84,11 @@ class CookieConsentForm extends FormBase {
    * {@inheritDoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $list = NULL, $subscription_status = NULL) {
-    $service = \Drupal::config('system.site')->get('name');
-
-
-    $cookie = $this->getRequest()->cookies->get(self::COOKIE_NAME);
-    $cookies = $this->getRequest()->cookies->get(self::COOKIE_NAME);
-    var_dump($cookies);
-    $referer = $this->getRequest()->headers->get('referer');
+    $cookie_policy = $this->types;
+    if ($this->getRequest()->cookies->has(self::COOKIE_NAME)) {
+      $cookie = $this->getRequest()->cookies->get(self::COOKIE_NAME);
+      $cookie_policy = Json::decode($cookie);
+    }
 
     foreach ($this->types as $type) {
       $options = [
@@ -101,7 +99,9 @@ class CookieConsentForm extends FormBase {
         '#type' => 'radios',
         '#title' => "Do you want to accept $type cookies?",
         '#options' => $options,
-        '#default_value' => self::ALLOW_VALUE,
+        '#default_value' => array_search($type, $cookie_policy) !== false ?
+          self::ALLOW_VALUE :
+          self::BLOCK_VALUE,
       ];
     }
 
@@ -129,7 +129,7 @@ class CookieConsentForm extends FormBase {
     // Add flood protection for unauthenticated users.
     $fid = implode(':', [$this->getRequest()->getClientIP(), $this->currentUser()->id()]);
     if ($this->currentUser()->isAnonymous() &&
-      !$this->flood->isAllowed("par_cookies.{$this->getFormId()}", 10, 3600, $fid)) {
+      !$this->flood->isAllowed("govuk_cookies.{$this->getFormId()}", 10, 3600, $fid)) {
       $form_state->setErrorByName('text', $this->t(
         'Too many form submissions from your location.
         This IP address is temporarily blocked. Please try again later.'
@@ -144,7 +144,7 @@ class CookieConsentForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Register flood protection.
     $fid = implode(':', [$this->getRequest()->getClientIP(), $this->currentUser()->id()]);
-    $this->flood->register("par_cookies.{$this->getFormId()}", 3600, $fid);
+    $this->flood->register("govuk_cookies.{$this->getFormId()}", 3600, $fid);
 
     $cookie_policy = [];
     foreach ($this->types as $type) {

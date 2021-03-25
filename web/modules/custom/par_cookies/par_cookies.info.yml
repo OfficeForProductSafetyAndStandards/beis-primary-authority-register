@@ -1,5 +1,0 @@
-name: PAR Cookies
-type: module
-description: Provides consent forms for cookie pages.
-core: 8.x
-package: PAR

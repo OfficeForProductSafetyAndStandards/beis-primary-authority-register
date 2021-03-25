@@ -1,0 +1,5 @@
+name: GOVUK Cookies
+type: module
+description: Provides a cookie banner and consent forms for cookie pages.
+core: 8.x
+package: PAR

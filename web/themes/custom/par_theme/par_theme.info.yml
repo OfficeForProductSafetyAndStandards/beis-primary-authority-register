@@ -8,8 +8,9 @@ base theme: govuk
 libraries:
   - par_theme/par-kour
 regions:
+  cookies: Cookies
   header: Header
-  navigation: 'Navigation'
+  navigation: Navigation
   pre_content: 'Pre-content'
   breadcrumb: Breadcrumb
   highlighted: Highlighted
