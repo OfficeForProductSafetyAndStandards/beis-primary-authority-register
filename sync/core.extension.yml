@@ -38,6 +38,7 @@ module:
   flysystem: 0
   flysystem_s3: 0
   google_analytics: 0
+  govuk_cookies: 0
   govuk_notify: 0
   hal: 0
   health_check: 0
