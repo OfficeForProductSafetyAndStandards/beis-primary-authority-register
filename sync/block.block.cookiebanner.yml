@@ -17,10 +17,9 @@ settings:
   id: cookie_banner
   label: 'Cookie Banner'
   provider: govuk_cookies
-  my_block_settings: null
 visibility:
   govuk_cookie:
     id: govuk_cookie
-    enable: 0
-    negate: false
+    enable: 1
+    negate: true
     context_mapping: {  }
