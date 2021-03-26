@@ -1,8 +1,0 @@
-# Create a default cookie page.
-govuk_cookies.cookies:
-  path: '/cookies'
-  defaults:
-    _controller: '\Drupal\govuk_cookies\Controller\CookiePageController::content'
-    _title: 'Cookies'
-  requirements:
-    _access: 'TRUE'
