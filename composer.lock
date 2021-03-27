@@ -4278,7 +4278,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/govuk_cookies.git",
-                "reference": "1aae86ea811dcf23d9bd202a4102f4f148ddd330"
+                "reference": "d88c45147c2771d325566372469feee570d91a15"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -4290,7 +4290,7 @@
                 },
                 "drupal": {
                     "version": "1.0.x-dev",
-                    "datestamp": "1616667980",
+                    "datestamp": "1616853355",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -4312,7 +4312,7 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/govuk_cookies"
             },
-            "time": "2021-03-27T13:55:21+00:00"
+            "time": "2021-03-27T15:26:21+00:00"
         },
         {
             "name": "drupal/govuk_notify",
