@@ -4278,7 +4278,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/govuk_cookies.git",
-                "reference": "66985a2cf46f2f798ff3ddbaccf8ab0ed289e32e"
+                "reference": "1aae86ea811dcf23d9bd202a4102f4f148ddd330"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -4312,7 +4312,7 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/govuk_cookies"
             },
-            "time": "2021-03-25T09:39:45+00:00"
+            "time": "2021-03-27T13:55:21+00:00"
         },
         {
             "name": "drupal/govuk_notify",

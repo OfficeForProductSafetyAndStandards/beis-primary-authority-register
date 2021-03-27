@@ -19,13 +19,8 @@ settings:
   provider: govuk_cookies
   label_display: visible
 visibility:
-  govuk_cookie:
-    id: govuk_cookie
-    enable: 0
-    negate: false
-    context_mapping: {  }
   request_path:
     id: request_path
-    pages: /cookie
+    pages: /cookies
     negate: false
     context_mapping: {  }
