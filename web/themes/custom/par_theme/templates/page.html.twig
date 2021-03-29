@@ -28,6 +28,7 @@
  *   comment/reply/12345).
  *
  * Regions:
+ * - page.cookies: Items for the header region.
  * - page.header: Items for the header region.
  * - page.primary_menu: Items for the primary menu region.
  * - page.secondary_menu: Items for the secondary menu region.
@@ -45,15 +46,20 @@
  * @ingroup themeable
  */
 #}
-<!-- page template -->
+{% if page.cookies %}
+    {{ page.cookies }}
+{% endif %}
+
 {% if govuk_cookie %}
   {{ govuk_cookie }}
 {% endif %}
+
 <div id="skiplink-container">
   <div>
     <a href="#content" class="skiplink govuk-skip-link" title="Skip to main content">Skip to main content</a>
   </div>
 </div>
+
 <header class="govuk-header" id="global-header" role="banner" data-module="govuk-header">
   <div class="govuk-header__container govuk-width-container">
     {{ govuk_header }}
