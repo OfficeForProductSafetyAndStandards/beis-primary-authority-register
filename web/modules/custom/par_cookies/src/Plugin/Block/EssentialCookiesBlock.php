@@ -74,7 +74,7 @@ class EssentialCookiesBlock extends BlockBase implements ContainerFactoryPluginI
     ];
     $build['cookies']['#rows'][] = [
       'data' => [
-        'name' => 'PARSESSID',
+        'name' => 'SESSOxxxxx',
         'purpose' => 'Used to keep you signed in',
         'expires' => '20 days',
       ],
