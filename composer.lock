@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "166f9105407ad6819bc0784428dddb0a",
+    "content-hash": "73c681cd5ce9ebba4ad2b07fb484ee28",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -4390,6 +4390,9 @@
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
                     }
+                },
+                "patches_applied": {
+                    "Remove style sheet": "https://www.drupal.org/files/issues/2021-03-29/3202722-5-remove_generated_css.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4409,7 +4412,8 @@
             "homepage": "https://www.drupal.org/project/govuk_theme",
             "support": {
                 "source": "https://git.drupalcode.org/project/govuk_theme"
-            }
+            },
+            "time": "2021-03-29T16:36:12+00:00"
         },
         {
             "name": "drupal/health_check",
