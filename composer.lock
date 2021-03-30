@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "73c681cd5ce9ebba4ad2b07fb484ee28",
+    "content-hash": "2fab5a43c15934bd2fc3dc8b345bf3c3",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -4392,7 +4392,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Remove style sheet": "https://www.drupal.org/files/issues/2021-03-29/3202722-5-remove_generated_css.patch"
+                    "Remove style sheet": "https://www.drupal.org/files/issues/2021-03-29/3202722-5-remove_generated_css.patch",
+                    "Correct version dependencies": "./patches/yargs-version.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",

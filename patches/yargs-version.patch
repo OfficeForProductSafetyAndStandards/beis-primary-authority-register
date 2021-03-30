@@ -1,0 +1,13 @@
+diff --git a/package.json b/package.json
+index 6382825..407b5ed 100755
+--- a/package.json
++++ b/package.json
+@@ -18,7 +18,7 @@
+     "gulp-sass": "^4.0.1",
+     "gulp-sass-variables": "^1.2.0",
+     "gulp-sourcemaps": "^2.6.4",
+-    "yargs": ">=15.0.0"
++    "yargs": "15.4.1"
+   },
+   "scripts": {
+     "gulp": "gulp"

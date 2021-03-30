@@ -165,7 +165,8 @@
                 "Mail body formatting": "./patches/mail_body-govuk_notify.patch"
             },
             "drupal/govuk_theme": {
-                "Remove style sheet": "https://www.drupal.org/files/issues/2021-03-29/3202722-5-remove_generated_css.patch"
+                "Remove style sheet": "https://www.drupal.org/files/issues/2021-03-29/3202722-5-remove_generated_css.patch",
+                "Correct version dependencies": "./patches/yargs-version.patch"
             },
             "drupal/health_check": {
                 "Health Check doesn't check Drupal application": "https://www.drupal.org/files/issues/health_check_doesn_t-2892294-2.patch"
