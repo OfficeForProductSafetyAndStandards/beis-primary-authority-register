@@ -306,12 +306,8 @@ fieldset, legend {
     }
   }
 
-  #footer {
-    .footer-meta {
-      .copyright a {
-        background-image: url("../assets/images/PAR/PAR-logo.png");
-        background-size: 100px 100px;
-      }
-    }
+  .govuk-footer__copyright-logo {
+    background-image: url("../assets/images/PAR/PAR-logo.png");
+    background-size: 100px 100px;
   }
 }

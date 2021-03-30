@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5a73e92b79837b2e9a9eddbe6e4e8afa",
+    "content-hash": "2fab5a43c15934bd2fc3dc8b345bf3c3",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -4369,35 +4369,31 @@
         },
         {
             "name": "drupal/govuk_theme",
-            "version": "1.8.0",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/govuk_theme.git",
-                "reference": "8.x-1.8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/govuk_theme-8.x-1.8.zip",
-                "reference": "8.x-1.8",
-                "shasum": "e8f1df688815c2eb7f25b702790be840c3efb5a1"
+                "reference": "19a845ef8145029e8cdae8082dce5cbd8951707e"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
             },
             "type": "drupal-theme",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
-                    "version": "8.x-1.8",
-                    "datestamp": "1611270626",
+                    "version": "8.x-1.8+3-dev",
+                    "datestamp": "1617035839",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 },
                 "patches_applied": {
-                    "Allow alternate menus": "https://www.drupal.org/files/issues/2021-02-03/allow-alternate-main-menu_3196241_3.patch",
-                    "Allow compatibility mode": "https://www.drupal.org/files/issues/2021-02-17/allow_compatibility_mode-3196545-4.patch",
-                    "Support legacy colours": "https://www.drupal.org/files/issues/2021-02-17/legacy_colour_support-3198988-2.patch"
+                    "Remove style sheet": "https://www.drupal.org/files/issues/2021-03-29/3202722-5-remove_generated_css.patch",
+                    "Correct version dependencies": "./patches/yargs-version.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4406,6 +4402,10 @@
             ],
             "authors": [
                 {
+                    "name": "kalpaitch",
+                    "homepage": "https://www.drupal.org/user/2547946"
+                },
+                {
                     "name": "webfaqtory",
                     "homepage": "https://www.drupal.org/user/241985"
                 }
@@ -4413,7 +4413,8 @@
             "homepage": "https://www.drupal.org/project/govuk_theme",
             "support": {
                 "source": "https://git.drupalcode.org/project/govuk_theme"
-            }
+            },
+            "time": "2021-03-30T09:01:55+00:00"
         },
         {
             "name": "drupal/health_check",
@@ -12842,16 +12843,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v5.2.4",
+            "version": "v5.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "c7d1f35a31ef153a302e3f80336170e1280b983d"
+                "reference": "3c3075467da15bc2edf38d2ac20d34719e794bd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/c7d1f35a31ef153a302e3f80336170e1280b983d",
-                "reference": "c7d1f35a31ef153a302e3f80336170e1280b983d",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/3c3075467da15bc2edf38d2ac20d34719e794bd8",
+                "reference": "3c3075467da15bc2edf38d2ac20d34719e794bd8",
                 "shasum": ""
             },
             "require": {
@@ -12907,7 +12908,7 @@
             ],
             "description": "Provides powerful methods to fetch HTTP resources synchronously or asynchronously",
             "homepage": "https://symfony.com",
-            "time": "2021-03-01T00:40:14+00:00"
+            "time": "2021-03-28T09:42:18+00:00"
         },
         {
             "name": "symfony/http-client-contracts",
@@ -14297,16 +14298,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v4.4.20",
+            "version": "v4.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "a1eab2f69906dc83c5ddba4632180260d0ab4f7f"
+                "reference": "0da0e174f728996f5d5072d6a9f0a42259dbc806"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/a1eab2f69906dc83c5ddba4632180260d0ab4f7f",
-                "reference": "a1eab2f69906dc83c5ddba4632180260d0ab4f7f",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/0da0e174f728996f5d5072d6a9f0a42259dbc806",
+                "reference": "0da0e174f728996f5d5072d6a9f0a42259dbc806",
                 "shasum": ""
             },
             "require": {
@@ -14365,7 +14366,7 @@
                 "debug",
                 "dump"
             ],
-            "time": "2021-01-27T09:09:26+00:00"
+            "time": "2021-03-27T19:49:03+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -16768,6 +16769,7 @@
         "deblan/csv-validator": 20,
         "drupal/audit_log": 15,
         "drupal/govuk_cookies": 20,
+        "drupal/govuk_theme": 20,
         "drupal/http_response_headers": 20,
         "drupal/invite": 20,
         "drupal/login_destination": 20,
