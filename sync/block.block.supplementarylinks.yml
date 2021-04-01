@@ -1,0 +1,31 @@
+uuid: 3e56e474-afc8-4258-9fb7-b3c54ddf0bb3
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.supplementary-links
+  module:
+    - govuk_cookies
+    - system
+  theme:
+    - par_theme
+id: supplementarylinks
+theme: par_theme
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'system_menu_block:supplementary-links'
+settings:
+  id: 'system_menu_block:supplementary-links'
+  label: Resources
+  provider: system
+  label_display: visible
+  level: 1
+  depth: 1
+  expand_all_items: false
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }
