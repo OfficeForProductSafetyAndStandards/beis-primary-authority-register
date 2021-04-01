@@ -1,0 +1,8 @@
+uuid: b29d7cd9-5cc3-4038-ab17-c445f37aa473
+langcode: en
+status: true
+dependencies: {  }
+id: supplementary-links
+label: 'Supplementary links'
+description: 'A list of supplementary links to support user actions.'
+locked: false
