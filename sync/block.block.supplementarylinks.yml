@@ -24,11 +24,6 @@ settings:
   depth: 1
   expand_all_items: false
 visibility:
-  govuk_cookie:
-    id: govuk_cookie
-    enable: 0
-    negate: false
-    context_mapping: {  }
   request_path:
     id: request_path
     pages: '<front>'
