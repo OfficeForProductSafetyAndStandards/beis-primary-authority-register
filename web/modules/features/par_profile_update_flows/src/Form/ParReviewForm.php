@@ -217,8 +217,8 @@ class ParReviewForm extends ParBaseForm {
     // Get the authorities and organisations that will be associated with the person.
     $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
     $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
-    $par_data_authorities = $par_data_person->updateAuthorityMemberships($authority_ids);
-    $par_data_organisations = $par_data_person->updateOrganisationMemberships($organisation_ids);
+    $par_data_authorities = $par_data_person ? $par_data_person->updateAuthorityMemberships($authority_ids) : NULL;
+    $par_data_organisations = $par_data_person ? $par_data_person->updateOrganisationMemberships($organisation_ids) : NULL;
 
     return [
       'par_data_person' => $par_data_person,
