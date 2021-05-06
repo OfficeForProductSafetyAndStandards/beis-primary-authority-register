@@ -70,6 +70,7 @@ class ParSelectMemberForm extends ParFormPluginBase {
       '#title' => t('Choose the member to enforce'),
       '#options' => $chunks[$current_pager->getCurrentPage()],
       '#default_value' => $this->getDefaultValuesByKey('par_data_organisation_id', $cardinality, []),
+      '#attributes' => ['class' => ['form-group']],
     ];
 
     $form['pager'] = [

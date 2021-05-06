@@ -219,9 +219,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       }
     }
 
-    // The components have weights around the 100 mark,
-    // so the actions must always come last.
-    $form['actions']['#weight'] = 999;
+    // Enable the default actions wrapper.
+    $form['actions']['#type'] = 'actions';
 
     // The 'done' is a primary and final action, meaning no other actions should be performed.
     // The 'upload', 'save' and 'next are all primary actions with varying subtleties.
