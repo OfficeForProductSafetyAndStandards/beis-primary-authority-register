@@ -154,9 +154,6 @@
                 "PostgreSQL: deal with case insensitivity": "https://www.drupal.org/files/issues/2020-10-05/postgres-case-insensitivity_2464481-71.patch",
                 "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2021-01-19/case_sensitive_email-2490294-37.patch"
             },
-            "drupal/file_entity": {
-                "Provides support for s3 response objects": "./patches/file_entity_s3_file_support.patch"
-            },
             "drupal/flysystem": {
                 "Add Drush commands for sending and receiving files": "https://www.drupal.org/files/issues/2021-01-14/3192777-2-Added_drush_commands.patch",
                 "CSS and JS served through the flysystem.serve route can't be downloaded in maintenance mode": "https://www.drupal.org/files/issues/2019-06-13/serve_maintenance_page_assets-3061561-3.patch"
