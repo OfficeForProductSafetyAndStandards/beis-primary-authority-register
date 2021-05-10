@@ -5,6 +5,10 @@
     "repositories": [
         {
             "type": "vcs",
+            "url": "https://github.com/UKGovernmentBEIS/drupal-audit-log"
+        },
+        {
+            "type": "vcs",
             "url": "https://github.com/UKGovernmentBEIS/drupal-trance"
         },
         {
@@ -21,6 +25,7 @@
         "cweagans/composer-patches": "^1.7",
         "deblan/csv-validator": "^3.0",
         "drupal/address": "~1.9.0",
+        "drupal/audit_log": "8.x-2.x-dev",
         "drupal/autologout": "~1.3.0",
         "drupal/better_exposed_filters": "~5.0.0",
         "drupal/big_pipe_sessionless": "~2.0.0",
@@ -171,6 +176,9 @@
             },
             "drupal/redis": {
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch"
+            },
+            "drupal/vbo_export": {
+                "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-05-10/allow_configurable_scheme-2988257-14.patch"
             },
             "drupal/views_data_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-03-01/allow-configurable-filesystems_3200974-6.patch"
