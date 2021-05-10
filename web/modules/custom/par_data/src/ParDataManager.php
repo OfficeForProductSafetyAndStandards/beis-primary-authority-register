@@ -4,7 +4,6 @@ namespace Drupal\par_data;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
@@ -35,13 +34,6 @@ class ParDataManager implements ParDataManagerInterface {
 
   const PAR_AUTHORITY_ROLE_PA = 'primary_authority';
   const PAR_AUTHORITY_ROLE_EA = 'enforcing_authority';
-
-  /**
-   * The entity manager.
-   *
-   * @var \Drupal\Core\Entity\EntityManagerInterface
-   */
-  protected $entityManager;
 
   /**
    * The entity type manager.
@@ -100,8 +92,6 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Constructs a ParDataPermissions instance.
    *
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *   The entity manager.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_manager
@@ -115,8 +105,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @param \Drupal\Core\Session\AccountProxyInterface $current_user
    *   The current user
    */
-  public function __construct(EntityManagerInterface $entity_manager, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, MessengerInterface $messenger, RendererInterface $renderer, $current_user) {
-    $this->entityManager = $entity_manager;
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, MessengerInterface $messenger, RendererInterface $renderer, $current_user) {
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
@@ -177,7 +166,7 @@ class ParDataManager implements ParDataManagerInterface {
     // We're obviously assuming that all par entities begin with this prefix.
     $par_entity_prefix = 'par_data_';
     $par_entity_types = [];
-    $entity_type_definitions = $this->entityManager->getDefinitions();
+    $entity_type_definitions = $this->entityTypeManager->getDefinitions();
     foreach ($entity_type_definitions as $definition) {
       if ($definition instanceof ContentEntityType
         && substr($definition->getBundleEntityType(), 0, strlen($par_entity_prefix)) === $par_entity_prefix
@@ -200,7 +189,7 @@ class ParDataManager implements ParDataManagerInterface {
    * {@inheritdoc}
    */
   public function getEntityBundleDefinition(EntityTypeInterface $definition) {
-    return $definition->getBundleEntityType() ? $this->entityManager->getDefinition($definition->getBundleEntityType()) : NULL;
+    return $definition->getBundleEntityType() ? $this->entityTypeManager->getDefinition($definition->getBundleEntityType()) : NULL;
   }
 
   /**
@@ -217,7 +206,7 @@ class ParDataManager implements ParDataManagerInterface {
    * {@inheritdoc}
    */
   public function getEntityTypeStorage($definition) {
-    return $this->entityManager->getStorage($definition) ?: NULL;
+    return $this->entityTypeManager->getStorage($definition) ?: NULL;
   }
 
   /**
@@ -714,7 +703,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   An array of entities found with this value.
    */
   public function getEntitiesByType($type, array $ids = NULL) {
-    $entities = $this->entityManager
+    $entities = $this->entityTypeManager
       ->getStorage($type)
       ->loadMultiple($ids);
 
@@ -778,7 +767,7 @@ class ParDataManager implements ParDataManagerInterface {
     }
 
     $results = $query->execute();
-    $entities = $this->entityManager->getStorage($type)->loadMultiple(array_unique($results));
+    $entities = $this->entityTypeManager->getStorage($type)->loadMultiple(array_unique($results));
 
     // In some cases we need to return deleted entities mainly for updating legacy data across the system.
     if ($remove_deleted_entities) {

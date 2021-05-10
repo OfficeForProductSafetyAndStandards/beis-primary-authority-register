@@ -8,11 +8,12 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
+use Drupal\Core\TempStore\PrivateTempStore;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\Entity\ParFlowInterface;
 use Drupal\par_forms\ParFormPluginInterface;
 use Drupal\user\Entity\User;
-use Drupal\user\PrivateTempStoreFactory;
 
 class ParFlowDataHandler implements ParFlowDataHandlerInterface {
 
@@ -55,7 +56,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    *
    * Each key (form) will last 1 week since it was last updated.
    *
-   * @var \Drupal\user\PrivateTempStore
+   * @var \Drupal\Core\TempStore\PrivateTempStore
    */
   protected $store;
 
@@ -86,7 +87,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * Constructs a ParFlowDataHandler instance.
    *
-   * @param \Drupal\user\PrivateTempStoreFactory $temp_store_factory
+   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
    *   The private temporary store.
    * @param \Drupal\par_flows\ParFlowNegotiatorInterface $entity_type_manager
    *   The entity type manager.
