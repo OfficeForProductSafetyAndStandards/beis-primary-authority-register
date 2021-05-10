@@ -20,11 +20,8 @@ RUN sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debcon
     && apt-key adv --no-tty --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886 \
     && sh -c 'echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list' \
     && apt-key adv --no-tty --fetch-keys https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key \
-    && sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list' \
-    && apt-key adv --no-tty --fetch-keys https://www.postgresql.org/media/keys/ACCC4CF8.asc \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -f install -y \
-        postgresql:client-10 \
         software-properties-common \
         libnss3 \
         libgconf-2-4 \
@@ -32,6 +29,14 @@ RUN sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debcon
         unzip \
         python-pip \
         cf-cli
+
+# Install Postgres (client)
+RUN RELEASE=$(lsb_release -cs) \
+    && echo "deb http://apt.postgresql.org/pub/repos/apt/ ${RELEASE}"-pgdg main | sudo tee  /etc/apt/sources.list.d/pgdg.list \
+    && apt-key adv --no-tty --fetch-keys https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get -f install -y \
+        postgresql-client-11
 
 # Install Vault
 ## Using vault installation from https://www.vaultproject.io/docs/install/index.html
@@ -85,7 +90,7 @@ COPY ./par.localhost.conf /etc/apache2/sites-available/par.localhost.conf
 ## Using composer installation from https://getcomposer.org/download/
 RUN cd /tmp \
     && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php -r "if (hash_file('sha384', 'composer-setup.php') === '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
+    && php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024fc62c56153228907f1545c228516cbf63f885e036d37e9a59d27d63f46af1d4d07ee0f76181c7d3') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
     && php composer-setup.php \
     && php -r "unlink('composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer
