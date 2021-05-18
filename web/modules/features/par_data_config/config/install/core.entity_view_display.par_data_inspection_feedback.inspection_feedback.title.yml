@@ -3,14 +3,13 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_inspection_feedback.title
-    - field.field.par_data_inspection_feedback.inspection_feedback.field_document
     - field.field.par_data_inspection_feedback.inspection_feedback.field_enforcing_authority
     - field.field.par_data_inspection_feedback.inspection_feedback.field_inspection_plan
     - field.field.par_data_inspection_feedback.inspection_feedback.field_partnership
     - field.field.par_data_inspection_feedback.inspection_feedback.field_person
     - par_data.par_data_inspection_feedback_type.inspection_feedback
   module:
-    - file_entity
+    - file
     - text
 id: par_data_inspection_feedback.inspection_feedback.title
 targetEntityType: par_data_inspection_feedback
@@ -18,23 +17,13 @@ bundle: inspection_feedback
 mode: title
 content:
   document:
-    label: hidden
-    weight: 1
-    region: content
+    weight: 3
+    label: above
     settings:
-      access_message: 'You don''t have access to download this file.'
-      text: 'Download [file:name]'
+      use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_download_link
-  field_document:
-    type: entity_reference_entity_view
-    weight: 2
+    type: file_default
     region: content
-    label: hidden
-    settings:
-      link: true
-      view_mode: default
-    third_party_settings: {  }
   notes:
     type: text_trimmed
     weight: 0

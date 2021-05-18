@@ -1,23 +1,23 @@
 name: 'PAR Data Config'
 description: 'The configuration required to correctly setup the PAR Data entities.'
 type: module
-core: 8.x
 dependencies:
-  - address
-  - better_exposed_filters
-  - comment
-  - csv_serialization
-  - datetime
-  - datetime_range
-  - field
-  - file
-  - file_entity
-  - message
-  - pagerer
-  - par_data
-  - par_data_config
-  - rest
-  - serialization
-  - text
-  - user
+  - 'address:address'
+  - 'better_exposed_filters:better_exposed_filters'
+  - 'csv_serialization:csv_serialization'
+  - 'drupal:comment'
+  - 'drupal:datetime'
+  - 'drupal:datetime_range'
+  - 'drupal:field'
+  - 'drupal:file'
+  - 'drupal:rest'
+  - 'drupal:serialization'
+  - 'drupal:text'
+  - 'drupal:user'
+  - 'drupal:views'
+  - 'message:message'
+  - 'pagerer:pagerer'
+  - 'par_data:par_data'
+  - 'par_data_config:par_data_config'
 package: PAR
+core_version_requirement: '^8.9 || ^9'

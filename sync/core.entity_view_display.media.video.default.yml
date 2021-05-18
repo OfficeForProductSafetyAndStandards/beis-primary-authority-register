@@ -6,7 +6,7 @@ dependencies:
     - field.field.media.video.field_media_video_file
     - media.type.video
   module:
-    - file_entity
+    - file
 _core:
   default_config_hash: dQR0mYK5NNg27OigHrxZrHSsnwewnNZcPJKjKIO0cpA
 id: media.video.default
@@ -15,18 +15,12 @@ bundle: video
 mode: default
 content:
   field_media_video_file:
-    type: file_video
-    weight: 0
-    label: visually_hidden
+    weight: 1
+    label: above
     settings:
-      muted: false
-      width: 640
-      height: 480
-      controls: true
-      autoplay: false
-      loop: false
-      multiple_file_display_type: tags
+      use_description_as_link_text: true
     third_party_settings: {  }
+    type: file_default
     region: content
 hidden:
   created: true
