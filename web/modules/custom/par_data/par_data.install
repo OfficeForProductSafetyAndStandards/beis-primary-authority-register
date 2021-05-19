@@ -1122,3 +1122,15 @@ function par_data_update_8047(&$sandbox) {
 //
 //  return t($message);
 }
+
+/**
+ * PAR-1710 remove file_entity in preparation for Drupal 9.
+ *
+ * If we don't remove the bundle property file_entity won't be able to uninstall
+ */
+function par_data_update_8048() {
+  $file_entities = \Drupal\file_entity\Entity\FileEntity::loadMultiple();
+  foreach ($file_entities as $file_entity) {
+    $file_entity->set('type', '')->save();
+  }
+}
