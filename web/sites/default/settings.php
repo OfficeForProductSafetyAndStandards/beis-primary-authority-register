@@ -854,14 +854,15 @@ if ($env_services = getenv("VCAP_SERVICES")) {
 // Set the PaaS database connection credentials.
 if (isset($db_credentials)) {
   $databases['default']['default'] = [
+    'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
+    'driver' => 'pgsql',
     'database' => $db_credentials->name,
     'username' => $db_credentials->username,
     'password' => $db_credentials->password,
     'prefix' => '',
     'host' => $db_credentials->host,
     'port' => $db_credentials->port,
-    'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
-    'driver' => 'pgsql',
+    'collation' => 'utf8mb4_general_ci',
   ];
 }
 
