@@ -5,7 +5,7 @@ orbs:
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v3.1.0
+      - image: beispar/web:v3.3.0
         name: web
         environment:
           APP_ENV: ci
@@ -381,9 +381,16 @@ jobs:
       - run:
           name: "Backup production database"
           command: |
-            cf login -a api.cloud.service.gov.uk -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
-            cf target -o office-for-product-safety-and-standards -s primary-authority-register-production
-            cf run-task beis-par-production "./scripts/db-backup.sh production -p" --name DB_ARCHIVE -k 4G -m 4G
+            ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
+      - aws-s3/copy:
+          from: "/tmp/backups/"
+          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
+          arguments: |
+            --region eu-west-1 \
+            --cache-control "max-age=0" \
+            --recursive \
+            --exclude="*" \
+            --include "db-dump-*.tar.gz"
 
   sanitise_database:
     <<: *defaults
