@@ -5,7 +5,7 @@ orbs:
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v3.3.0
+      - image: beispar/web:v3.4.0
         name: web
         environment:
           APP_ENV: ci
@@ -477,36 +477,6 @@ jobs:
 
 workflows:
   version: 2.1
-#  theme_v2_test:
-#    jobs:
-#      - checkout_code:
-#          filters:
-#            tags:
-#              only: /.*/
-#            branches:
-#              ignore:
-#                - master
-#      - compile_code:
-#          requires:
-#            - checkout_code
-#          filters:
-#            tags:
-#              only: /.*/
-#            branches:
-#              ignore:
-#                - master
-#      - test_full:
-#          name: test_theme
-#          theme_version: v2
-#          requires:
-#            - compile_code
-#          filters:
-#            tags:
-#              only: /.*/
-#            branches:
-#              ignore:
-#                - master
-
   build_test_deploy:
     jobs:
       - checkout_code:
@@ -614,13 +584,17 @@ workflows:
   db_archive:
     triggers:
       - schedule:
-          cron: "0 0 * * 1,2,3,4,5"
+#          cron: "0 0 * * 1,2,3,4,5"
+          cron: "0,10,20,30,40,50 * * * *"
           filters:
             branches:
               only:
                 - master
     jobs:
-      - archive_database
+      - checkout_code
+      - archive_database:
+          requires:
+            - checkout_code
 
   db_sanitise:
     triggers:
