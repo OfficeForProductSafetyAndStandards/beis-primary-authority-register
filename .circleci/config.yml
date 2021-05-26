@@ -378,6 +378,8 @@ jobs:
   archive_database:
     <<: *defaults
     steps:
+      - *clean_working_directory
+      - *restore_code
       - run:
           name: "Backup production database"
           command: |
