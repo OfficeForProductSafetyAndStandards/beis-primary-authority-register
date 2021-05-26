@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@1.0.0
+  browser-tools: circleci/browser-tools@1.1.3
 
 references:
   defaults: &defaults
@@ -11,7 +12,7 @@ references:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: postgres:9.6.3
+      - image: postgres:11.12
         environment:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
@@ -598,8 +599,8 @@ workflows:
   db_sanitise:
     triggers:
       - schedule:
-#          cron: "0 0 * * 1,2,3,4,5"
-          cron: "0,10,20,30,40,50 * * * *"
+          cron: "0 0 * * 1,2,3,4,5"
+#          cron: "0,10,20,30,40,50 * * * *"
           filters:
             branches:
               only:
