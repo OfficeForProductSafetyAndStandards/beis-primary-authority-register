@@ -1,17 +1,18 @@
 version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@1.0.0
+  browser-tools: circleci/browser-tools@1.1.3
 
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v3.1.0
+      - image: beispar/web:v3.4.0
         name: web
         environment:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: postgres:9.6.3
+      - image: postgres:11.12
         environment:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
@@ -378,12 +379,21 @@ jobs:
   archive_database:
     <<: *defaults
     steps:
+      - *clean_working_directory
+      - *restore_code
       - run:
           name: "Backup production database"
           command: |
-            cf login -a api.cloud.service.gov.uk -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
-            cf target -o office-for-product-safety-and-standards -s primary-authority-register-production
-            cf run-task beis-par-production "./scripts/db-backup.sh production -p" --name DB_ARCHIVE -k 4G -m 4G
+            ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
+      - aws-s3/copy:
+          from: "/tmp/backups/"
+          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
+          arguments: |
+            --region eu-west-1 \
+            --cache-control "max-age=0" \
+            --recursive \
+            --exclude="*" \
+            --include "db-dump-*.tar.gz"
 
   sanitise_database:
     <<: *defaults
@@ -468,36 +478,6 @@ jobs:
 
 workflows:
   version: 2.1
-#  theme_v2_test:
-#    jobs:
-#      - checkout_code:
-#          filters:
-#            tags:
-#              only: /.*/
-#            branches:
-#              ignore:
-#                - master
-#      - compile_code:
-#          requires:
-#            - checkout_code
-#          filters:
-#            tags:
-#              only: /.*/
-#            branches:
-#              ignore:
-#                - master
-#      - test_full:
-#          name: test_theme
-#          theme_version: v2
-#          requires:
-#            - compile_code
-#          filters:
-#            tags:
-#              only: /.*/
-#            branches:
-#              ignore:
-#                - master
-
   build_test_deploy:
     jobs:
       - checkout_code:
@@ -611,12 +591,15 @@ workflows:
               only:
                 - master
     jobs:
-      - archive_database
+      - checkout_code
+      - archive_database:
+          requires:
+            - checkout_code
 
   db_sanitise:
     triggers:
       - schedule:
-          cron: "0 0 * * *"
+          cron: "0 0 * * 1,2,3,4,5"
           filters:
             branches:
               only:
