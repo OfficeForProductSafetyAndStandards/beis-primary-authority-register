@@ -599,8 +599,8 @@ workflows:
   db_sanitise:
     triggers:
       - schedule:
-          cron: "0 0 * * 1,2,3,4,5"
-#          cron: "0,10,20,30,40,50 * * * *"
+#          cron: "0 0 * * 1,2,3,4,5"
+          cron: "0,10,20,30,40,50 * * * *"
           filters:
             branches:
               only:
