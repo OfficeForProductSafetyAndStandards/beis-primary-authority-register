@@ -1129,7 +1129,7 @@ function par_data_update_8047(&$sandbox) {
  * Removing the file entity bundle transforms these back into ordinary managed files.
  */
 function par_data_update_8048(&$sandbox) {
-  $batch_size = 1000;
+  $batch_size = 200;
 
   // Initialize some variables during the first pass through.
   if (!isset($sandbox['total'])) {
