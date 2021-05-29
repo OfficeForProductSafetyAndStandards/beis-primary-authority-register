@@ -114,12 +114,6 @@ RUN cd /tmp \
     && node --version \
     && npm --version
 
-# Install Selenium
-ENV SELENIUM_VER=3.141.59
-RUN curl -sSL -o selenium-server-standalone-${SELENIUM_VER}.jar "https://selenium-release.storage.googleapis.com/${SELENIUM_VER%.*}/selenium-server-standalone-${SELENIUM_VER}.jar" \
-    && sudo cp selenium-server-standalone-${SELENIUM_VER}.jar /usr/local/bin/selenium.jar \
-    && rm selenium-server-standalone-${SELENIUM_VER}.jar
-
 # Install java 11
 ## Using java installation from CircleCi docker images circleci/php:7.3.1-apache-buster-node-browsers
 RUN sudo apt-get update \
