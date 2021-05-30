@@ -114,13 +114,11 @@ RUN cd /tmp \
     && node --version \
     && npm --version
 
-# Install java 11
+# Install java 8
 ## Using java installation from CircleCi docker images circleci/php:7.3.1-apache-buster-node-browsers
-RUN sudo apt-get update \
-    && if ! command -v java > /dev/null; then \
-        echo "Java not found in parent image, installing..." \
-        && sudo apt-get install -y --no-install-recommends --no-upgrade openjdk-11-jre; \
-    fi
+RUN apt-add-repository 'deb http://security.debian.org/debian-security stretch/updates main' \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends --no-upgrade openjdk-8-jre openjdk-8-jre-headless openjdk-8-jdk openjdk-8-jdk-headless
 
 #=====================================
 # Browser testing for GDS requirements
