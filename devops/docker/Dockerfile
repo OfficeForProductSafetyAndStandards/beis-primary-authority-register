@@ -114,19 +114,11 @@ RUN cd /tmp \
     && node --version \
     && npm --version
 
-# Install Selenium
-ENV SELENIUM_VER=3.141.59
-RUN curl -sSL -o selenium-server-standalone-${SELENIUM_VER}.jar "https://selenium-release.storage.googleapis.com/${SELENIUM_VER%.*}/selenium-server-standalone-${SELENIUM_VER}.jar" \
-    && sudo cp selenium-server-standalone-${SELENIUM_VER}.jar /usr/local/bin/selenium.jar \
-    && rm selenium-server-standalone-${SELENIUM_VER}.jar
-
-# Install java 11
+# Install java 8
 ## Using java installation from CircleCi docker images circleci/php:7.3.1-apache-buster-node-browsers
-RUN sudo apt-get update \
-    && if ! command -v java > /dev/null; then \
-        echo "Java not found in parent image, installing..." \
-        && sudo apt-get install -y --no-install-recommends --no-upgrade openjdk-11-jre; \
-    fi
+RUN apt-add-repository 'deb http://security.debian.org/debian-security stretch/updates main' \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends --no-upgrade openjdk-8-jre openjdk-8-jre-headless openjdk-8-jdk openjdk-8-jdk-headless
 
 #=====================================
 # Browser testing for GDS requirements
