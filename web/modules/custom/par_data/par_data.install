@@ -1128,35 +1128,46 @@ function par_data_update_8047(&$sandbox) {
  *
  * Removing the file entity bundle transforms these back into ordinary managed files.
  */
-function par_data_update_8048(&$sandbox) {
-  $batch_size = 200;
+//function par_data_update_8048(&$sandbox) {
+//  $batch_size = 200;
+//
+//  // Initialize some variables during the first pass through.
+//  if (!isset($sandbox['total'])) {
+//    $file_entities = \Drupal\file_entity\Entity\FileEntity::loadMultiple();
+//
+//    // Set default values.
+//    $sandbox['file_chunks'] = array_chunk($file_entities, $batch_size, true);
+//    $sandbox['total'] = count($file_entities);
+//    $sandbox['current'] = 0;
+//  }
+//
+//  // Remove the file entity bundle.
+//  // This helps the update runner know that we're still alive and processing.
+//  $chunk = $sandbox['file_chunks'][$sandbox['current']];
+//  foreach ($chunk as $file_entity) {
+//    $file_entity->set('type', '')->save();
+//  }
+//  $sandbox['current']++;
+//
+//  $results = ($batch_size * $sandbox['current']);
+//  $message = "$results file entities removed, batch {$sandbox['current']} complete.";
+//
+//  if ($sandbox['total'] == 0) {
+//    $sandbox['#finished'] = 1;
+//  } else {
+//    $sandbox['#finished'] = ($results / $sandbox['total']);
+//  }
+//
+//  return t($message);
+//}
+function par_data_update_8048() {
+  $connection = \Drupal::database();
+  $query = $connection->update('file_managed')
+    ->fields([
+      'type' => '',
+    ])
+    ->isNotNull('type');
+  $count = $query->execute();
 
-  // Initialize some variables during the first pass through.
-  if (!isset($sandbox['total'])) {
-    $file_entities = \Drupal\file_entity\Entity\FileEntity::loadMultiple();
-
-    // Set default values.
-    $sandbox['file_chunks'] = array_chunk($file_entities, $batch_size, true);
-    $sandbox['total'] = count($file_entities);
-    $sandbox['current'] = 0;
-  }
-
-  // Remove the file entity bundle.
-  // This helps the update runner know that we're still alive and processing.
-  $chunk = $sandbox['file_chunks'][$sandbox['current']];
-  foreach ($chunk as $file_entity) {
-    $file_entity->set('type', '')->save();
-  }
-  $sandbox['current']++;
-
-  $results = ($batch_size * $sandbox['current']);
-  $message = "$results file entities removed, batch {$sandbox['current']} complete.";
-
-  if ($sandbox['total'] == 0) {
-    $sandbox['#finished'] = 1;
-  } else {
-    $sandbox['#finished'] = ($results / $sandbox['total']);
-  }
-
-  return t($message);
+  return t("$count file entities removed.");
 }
