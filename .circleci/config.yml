@@ -17,6 +17,7 @@ references:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
           POSTGRES_DB: par
+    resource_class: large
 
     environment:
       TEST_REPORTS: ~/par/tests/reports

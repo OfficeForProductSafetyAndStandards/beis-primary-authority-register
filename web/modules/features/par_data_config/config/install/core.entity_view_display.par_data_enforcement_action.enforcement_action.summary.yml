@@ -5,11 +5,10 @@ dependencies:
     - core.entity_view_mode.par_data_enforcement_action.summary
     - field.field.par_data_enforcement_action.enforcement_action.field_action_referral
     - field.field.par_data_enforcement_action.enforcement_action.field_blocked_advice
-    - field.field.par_data_enforcement_action.enforcement_action.field_document
     - field.field.par_data_enforcement_action.enforcement_action.field_regulatory_function
     - par_data.par_data_enforcement_action_type.enforcement_action
   module:
-    - file_entity
+    - file
     - par_data
     - text
 id: par_data_enforcement_action.enforcement_action.summary
@@ -25,23 +24,13 @@ content:
     settings: {  }
     third_party_settings: {  }
   document:
-    label: hidden
-    weight: 4
-    region: content
+    weight: 6
+    label: above
     settings:
-      access_message: 'You don''t have access to download this file.'
-      text: 'Download [file:name]'
+      use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_download_link
-  field_document:
-    type: entity_reference_entity_view
-    weight: 5
+    type: file_default
     region: content
-    label: hidden
-    settings:
-      link: true
-      view_mode: default
-    third_party_settings: {  }
   field_regulatory_function:
     type: entity_reference_entity_view
     weight: 2

@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterInterface;
+use Drupal\file\Plugin\Field\FieldType\FileFieldItemList;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 
 trait ParDisplayTrait {
@@ -316,7 +317,10 @@ trait ParDisplayTrait {
         }
 
         // Reference fields need to be rendered slightly differently.
-        if ($field instanceof EntityReferenceFieldItemListInterface) {
+        // @TODO File entity removal temporary fix. This entire trait is superseded by components.
+        // @deprecated
+        if ($field instanceof EntityReferenceFieldItemListInterface
+            && !$field instanceof FileFieldItemList) {
           $rows = $this->renderReferenceField($section, $field, $view_mode, $operations, $single_item);
         }
         else {

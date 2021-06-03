@@ -5,7 +5,6 @@ dependencies:
   config:
     - comment.type.par_inspection_feedback_comments
     - field.field.comment.par_inspection_feedback_comments.comment_body
-    - field.field.comment.par_inspection_feedback_comments.field_document
     - field.field.comment.par_inspection_feedback_comments.field_supporting_document
   module:
     - file
@@ -25,16 +24,6 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    region: content
-  field_document:
-    weight: 13
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
     region: content
   field_supporting_document:
     weight: 12
