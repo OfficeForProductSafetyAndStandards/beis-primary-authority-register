@@ -75,7 +75,7 @@ class ParEnforcementActionForm extends ParFormPluginBase {
       '#title' => $this->t('Add an attachment'),
       '#upload_location' => 's3private://documents/enforcement_action/',
       '#multiple' => TRUE,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("files"),
+      '#default_value' => $this->getDefaultValuesByKey("files", $cardinality),
       '#upload_validators' => [
         'file_validate_extensions' => [
           0 => $file_extensions
