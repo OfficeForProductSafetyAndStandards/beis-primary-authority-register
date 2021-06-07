@@ -46,7 +46,7 @@ class ParMessageForm extends ParFormPluginBase {
       '#description' => t('Use Ctrl or cmd to select multiple files'),
       '#upload_location' => 's3private://documents/messages/',
       '#multiple' => TRUE,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("files"),
+      '#default_value' => $this->getDefaultValuesByKey("files", $cardinality),
       '#upload_validators' => [
         'file_validate_extensions' => [
           0 => 'jpg jpeg gif png tif pdf txt rdf doc docx odt xls xlsx csv ods ppt pptx odp pot potx pps'
