@@ -742,17 +742,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     $directory = 's3private://member-csv/';
     $name = str_replace(' ', '_', "Member list for " . lcfirst($par_data_partnership->label()));
-    $file = file_save_data($data, $directory . $name . '.' . self::FILE_EXTENSION, FileSystemInterface::EXISTS_REPLACE);
-
-    // Set the reference fields, useful for keeping track of
-    // which authorities and organisations the csv belongs to.
-    if ($file) {
-      $file->set('field_authority', $par_data_partnership->getAuthority(TRUE));
-      $file->set('field_organisation', $par_data_partnership->getOrganisation(TRUE));
-      $file->save();
-    }
-
-    return $file;
+    return file_save_data($data, $directory . $name . '.' . self::FILE_EXTENSION, FileSystemInterface::EXISTS_REPLACE);
   }
 
   /**
