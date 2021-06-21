@@ -2,4 +2,5 @@ name: PAR Cache
 type: module
 description: Provides a more persistent cache for key PAR caches.
 core: 8.x
+core_version_requirement: ^8 || ^9
 package: PAR Cache

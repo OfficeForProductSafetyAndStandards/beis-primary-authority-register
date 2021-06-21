@@ -2,6 +2,7 @@ name: PAR Flows
 type: module
 description: Defines the base level flow opperations for the site, and includes the base for forms and controllers to use this.
 core: 8.x
+core_version_requirement: ^8 || ^9
 package: PAR
 dependencies:
   - par_data

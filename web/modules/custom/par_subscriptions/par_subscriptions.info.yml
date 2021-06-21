@@ -2,4 +2,5 @@ name: PAR Subscriptions
 type: module
 description: Allows subscription to par newsletters.
 core: 8.x
+core_version_requirement: ^8 || ^9
 package: PAR

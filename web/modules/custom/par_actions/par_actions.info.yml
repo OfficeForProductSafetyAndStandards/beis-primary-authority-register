@@ -2,6 +2,7 @@ name: PAR Actions
 type: module
 description: Provides specific system actions, single and bulk, that can be performed within a flow or triggered by some other event.
 core: 8.x
+core_version_requirement: ^8 || ^9
 package: PAR
 dependencies:
   - views

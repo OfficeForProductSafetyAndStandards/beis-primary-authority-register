@@ -2,6 +2,7 @@ name: PAR Roles
 type: module
 description: Defines roles for PAR Users and funnels users down the right journey's depending on their roles.
 core: 8.x
+core_version_requirement: ^8 || ^9
 package: PAR
 dependencies:
   - par_data

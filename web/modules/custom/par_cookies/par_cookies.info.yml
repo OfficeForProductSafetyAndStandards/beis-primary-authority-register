@@ -2,4 +2,5 @@ name: PAR Cookies
 type: module
 description: Provides a couple of additional blocks to display the cookies used by PAR.
 core: 8.x
+core_version_requirement: ^8 || ^9
 package: PAR

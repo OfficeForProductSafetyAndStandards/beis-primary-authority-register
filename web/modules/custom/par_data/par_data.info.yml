@@ -2,6 +2,7 @@ name: PAR Data Model
 type: module
 description: The data model for PAR.
 core: 8.x
+core_version_requirement: ^8 || ^9
 package: PAR Data Model
 dependencies:
   - trance

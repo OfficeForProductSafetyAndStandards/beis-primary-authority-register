@@ -103,7 +103,7 @@ ENV COMPOSER_VERSION 2.0.13
 RUN cd /tmp \
     && sudo php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --version=$COMPOSER_VERSION --install-dir=/usr/local/bin --filename=composer \
-    && php -r "unlink('composer-setup.php');" \
+ParDataStorage    && php -r "unlink('composer-setup.php');" \
     && composer --version
 
 # Install node
