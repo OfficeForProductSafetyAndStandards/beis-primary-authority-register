@@ -162,7 +162,7 @@
                 "CSS and JS served through the flysystem.serve route can't be downloaded in maintenance mode": "https://www.drupal.org/files/issues/2019-06-13/serve_maintenance_page_assets-3061561-3.patch"
             },
             "drupal/flysystem_s3": {
-                "Allow downloading of private files from remote S3 wrappers": "./patches/private_s3_file_download.patch"
+                "uriScheme method deprecated": "https://www.drupal.org/files/issues/2020-12-07/replace-urischeme-method-3159928-4.patch"
             },
             "drupal/govuk_theme": {
                 "Remove style sheet": "https://www.drupal.org/files/issues/2021-03-29/3202722-5-remove_generated_css.patch",
