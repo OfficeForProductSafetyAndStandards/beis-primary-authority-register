@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_advice.full
-    - field.field.par_data_advice.advice.field_document
     - field.field.par_data_advice.advice.field_regulatory_function
     - par_data.par_data_advice_type.advice
   module:
@@ -58,15 +57,6 @@ content:
     label: hidden
     settings:
       use_description_as_link_text: true
-    third_party_settings: {  }
-  field_document:
-    type: entity_reference_entity_view
-    weight: 2
-    region: content
-    label: hidden
-    settings:
-      link: true
-      view_mode: default
     third_party_settings: {  }
   issue_date:
     label: hidden

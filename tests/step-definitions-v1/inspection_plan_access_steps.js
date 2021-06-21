@@ -41,7 +41,7 @@ Then('I enter summary of inspection plan', function () {
 Then('I see inspection plan uploaded successfully', function () {
     return shared
         .clickLinkByPureText('Auto-test-NewInspectionPlan')
-        .assert.containsText('.filename', 'test')
+        .assert.containsText('.file', 'test')
 });
 
 When('I edit the inspection plan {string}', function (title) {

@@ -119,7 +119,7 @@ Then('I select regulatory function', function () {
 Then('I see that the advice {string} uploaded successfully', function (advice) {
   return !shared
       .clickLinkByPureText(advice)
-      .assert.containsText('.filename', 'test')
+      .assert.containsText('.file', 'test')
 });
 
 

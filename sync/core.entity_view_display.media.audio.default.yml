@@ -6,7 +6,7 @@ dependencies:
     - field.field.media.audio.field_media_audio_file
     - media.type.audio
   module:
-    - file_entity
+    - file
 _core:
   default_config_hash: SWf3MLdbEKvlx4Vs6iPwDHu5pr1aKT0SJmgp8no73-k
 id: media.audio.default
@@ -15,15 +15,12 @@ bundle: audio
 mode: default
 content:
   field_media_audio_file:
-    type: file_audio
-    weight: 0
-    label: visually_hidden
+    weight: 1
+    label: above
     settings:
-      controls: true
-      autoplay: false
-      loop: false
-      multiple_file_display_type: tags
+      use_description_as_link_text: true
     third_party_settings: {  }
+    type: file_default
     region: content
 hidden:
   created: true

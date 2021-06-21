@@ -24,7 +24,6 @@ class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController 
    * {@inheritdoc}
    */
   public function titleCallback() {
-
     $par_data_partnership_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
     if ($par_data_partnership_inspection_plan) {
       $this->pageTitle = $par_data_partnership_inspection_plan->getTitle();
@@ -36,7 +35,6 @@ class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController 
    * {@inheritdoc}
    */
   public function build($build = [], ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
-
     if ($par_data_inspection_plan->isRevoked()) {
       $build['inspection_plan_details'] = [
         '#type' => 'container',
@@ -57,6 +55,9 @@ class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController 
     $build['valid_date'] = $this->renderSection('The date range this inspection plan is valid for', $par_data_inspection_plan, ['valid_date' => 'full']);
 
     $build['inspection_plan_link'] = $this->renderSection('Inspection plan documents', $par_data_inspection_plan, ['document' => 'title']);
+
+    // Make sure to add the inspection plan cacheability data to this form.
+    $this->addCacheableDependency($par_data_inspection_plan);
 
     return parent::build($build);
   }
