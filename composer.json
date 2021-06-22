@@ -34,7 +34,7 @@
         "drupal/config_readonly": "~1.0.0",
         "drupal/config_split": "~1.7.0",
         "drupal/config_update": "~1.7.0",
-        "drupal/core": "~9.1.0",
+        "drupal/core": "~9.2.0",
         "drupal/core-composer-scaffold": "^9.1",
         "drupal/core-recommended": "^9.1",
         "drupal/csv_serialization": "~2.0.0",
@@ -175,7 +175,8 @@
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch"
             },
             "drupal/vbo_export": {
-                "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-05-10/allow_configurable_scheme-2988257-14.patch"
+                "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-05-10/allow_configurable_scheme-2988257-14.patch",
+                "deprecated function theme_vbo_export_content_xlsx()": "https://www.drupal.org/files/issues/2020-12-20/vbo_export-deprecated-theme-functions-3175522-9.patch"
             },
             "drupal/views_data_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-03-01/allow-configurable-filesystems_3200974-6.patch"

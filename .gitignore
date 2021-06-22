@@ -91,6 +91,7 @@ auth.json
 /.htaccess
 /INSTALL.txt
 /README.txt
+/README.md
 /autoload.php
 /example.gitignore
 /index.php
