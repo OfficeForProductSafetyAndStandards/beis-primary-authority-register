@@ -4,6 +4,7 @@ namespace Drupal\par_reporting\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Url;
@@ -16,7 +17,7 @@ class ParReportingController extends ControllerBase {
   /**
    * The entity manager.
    *
-   * @var \Drupal\Core\Entity\EntityManagerInterface
+   * @var \Drupal\par_data\ParDataManagerInterface
    */
   protected $parDataManager;
 
