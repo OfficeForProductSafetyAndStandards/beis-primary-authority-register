@@ -7,6 +7,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
+use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPersonInterface;
@@ -23,7 +24,26 @@ use Drupal\par_forms\ParFormPluginBase;
  *   title = @Translation("Contact detail display with locations.")
  * )
  */
-class ParContactLocationsDetailed extends ParFormPluginBase {
+class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCallbackInterface {
+
+  /**
+   * Lists the trusted callbacks provided by this implementing class.
+   *
+   * Trusted callbacks are public methods on the implementing class and can be
+   * invoked via
+   * \Drupal\Core\Security\DoTrustedCallbackTrait::doTrustedCallback().
+   *
+   * @return string[]
+   *   List of method names implemented by the class that can be used as trusted
+   *   callbacks.
+   *
+   * @see \Drupal\Core\Security\DoTrustedCallbackTrait::doTrustedCallback()
+   */
+  public static function trustedCallbacks() {
+    return [
+      'getContactLocations',
+    ];
+  }
 
   /**
    * @return DateFormatterInterface
