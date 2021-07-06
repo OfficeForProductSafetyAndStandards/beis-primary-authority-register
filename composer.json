@@ -37,7 +37,7 @@
         "drupal/core": "~9.2.0",
         "drupal/core-composer-scaffold": "^9.1",
         "drupal/core-recommended": "^9.1",
-        "drupal/csv_serialization": "~2.0.0",
+        "drupal/csv_serialization": "~1.5.0",
         "drupal/default_content": "~2.0.0",
         "drupal/email_registration": "~1.1.0",
         "drupal/features": "~3.12.0",
