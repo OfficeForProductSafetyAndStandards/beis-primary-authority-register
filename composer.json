@@ -61,7 +61,7 @@
         "drupal/message_notify": "~1.2.0",
         "drupal/migrate_file_to_media": "^2.0",
         "drupal/no_autocomplete": "~1.6.0",
-        "drupal/pagerer": "~2.0.0",
+        "drupal/pagerer": "~2.1.0",
         "drupal/password_policy": "~3.0.0",
         "drupal/password_strength": "~2.0.0",
         "drupal/queue_ui": "~2.2.0",
@@ -168,9 +168,6 @@
             "drupal/govuk_theme": {
                 "Remove style sheet": "https://www.drupal.org/files/issues/2021-03-29/3202722-5-remove_generated_css.patch",
                 "Correct version dependencies": "./patches/yargs-version.patch"
-            },
-            "drupal/password_policy": {
-                "Remove setting of field_last_password_reset on install": "https://www.drupal.org/files/issues/2020-03-23/Do_not_set_user_fields_on_install-2983448-17.patch"
             },
             "drupal/redis": {
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch"
