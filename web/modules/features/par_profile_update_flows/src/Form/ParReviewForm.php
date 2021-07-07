@@ -269,6 +269,13 @@ class ParReviewForm extends ParBaseForm {
       }
     }
 
+    // Set the user's notification preferences.
+    $notification_preferences = array_filter($this->getFlowDataHandler()->getTempDataValue('notification_preferences', $notifications_cid));
+
+    if ($par_data_person && $notification_preferences) {
+      $par_data_person->set('field_notification_preferences', array_values($notification_preferences));
+    }
+
     $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
     switch ($role) {
       case 'par_enforcement':
