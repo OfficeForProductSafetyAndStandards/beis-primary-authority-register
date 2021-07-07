@@ -6,7 +6,6 @@ dependencies:
     - better_exposed_filters
     - pagerer
     - par_data
-    - role_delegation
     - user
 _core:
   default_config_hash: wTJRNzsLVTenCALONNlVfgm_pBOlqucSPuVFLOD56ck
