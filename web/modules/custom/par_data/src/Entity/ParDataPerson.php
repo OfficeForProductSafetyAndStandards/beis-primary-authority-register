@@ -549,21 +549,18 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   }
 
   /**
-   * Get the notification preferences.
+   * Get the notification preferences as a string/id.
    *
-   * @param string $notification_type
-   *   The \Drupal\message\Entity\MessageTemplate::id() that indicates the notification type.
-   *
-   * @return bool
+   * @return string[]
    *   Whether or not the person has choosen to receive additional notifications.
    */
   public function getNotificationPreferences() {
     if (!$this->get('field_notification_preferences')->isEmpty()) {
-      $notification_messages = $this->get('field_notification_preferences')->referencedEntities();
+      $notification_preference_templates = $this->get('field_notification_preferences')->referencedEntities();
 
       $notification_preferences = array_map(
         function ($m) { return $m->id(); },
-        $notification_messages
+        $notification_preference_templates
       );
 
       return $notification_preferences;
@@ -586,7 +583,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
 
     if ($notification_preferences) {
       $notification_preferences = array_filter($notification_preferences, function ($preference) use ($notification_type) {
-        return ($notification_type === $preference->getTemplate());
+        return ($notification_type === $preference);
       });
     }
     else {
