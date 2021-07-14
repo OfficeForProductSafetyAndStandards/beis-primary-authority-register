@@ -151,10 +151,10 @@
                 "Add support for ClamAV via a REST daemon": "./patches/clamav_add_rest_client.patch"
             },
             "drupal/core": {
-                "Ensure the table alias is no longer than 60 characters long": "https://www.drupal.org/files/issues/drupal-571548-107-d8_0.patch",
+                "Ensure the table alias is no longer than 60 characters long": "https://www.drupal.org/files/issues/2021-03-17/571548-155.patch",
                 "Form API #ajax not working on link element": "https://www.drupal.org/files/issues/2021-04-28/core-allow-form-ajax-for-links-2915954-21.patch",
-                "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2019-05-23/2551893-entity-hooks-71.patch",
-                "Non-exposed and exposed sorts cause issues with the default sort order": "https://www.drupal.org/files/issues/2020-03-19/exposed_and_non_exposed_sort_issues-3120847-2.patch",
+                "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2020-07-19/2551893-85.patch",
+                "Non-exposed and exposed default sort order": "https://www.drupal.org/files/issues/2021-05-20/3120847-23.patch",
                 "PostgreSQL: deal with case insensitivity": "https://www.drupal.org/files/issues/2020-10-05/postgres-case-insensitivity_2464481-71.patch",
                 "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2021-01-19/case_sensitive_email-2490294-37.patch"
             },
