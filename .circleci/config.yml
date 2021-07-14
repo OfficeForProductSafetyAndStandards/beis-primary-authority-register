@@ -226,7 +226,7 @@ jobs:
       - run:
           name: "Run unit tests"
           command: |
-            ./vendor/bin/paratest --processes=16
+            ./vendor/bin/paratest --processes=16 --no-coverage
       - run:
           name: "Run feature tests"
           command: |
@@ -280,7 +280,7 @@ jobs:
       - run:
           name: "Run unit tests"
           command: |
-            ./vendor/bin/paratest --processes=16
+            ./vendor/bin/paratest --processes=16 --no-coverage
       - run:
           name: "Run feature tests"
           command: |
