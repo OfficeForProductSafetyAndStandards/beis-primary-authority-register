@@ -70,7 +70,8 @@ class EntityParEnforcementNoticeTest extends ParDataTestBase {
    * Test to create and save an authority entity.
    */
   public function testEntityCreate() {
+    /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = ParDataEnforcementNotice::create($this->getEnforcementNoticeValues());
-    $this->assertTrue($entity->save(), 'Par Enforcement Notice entity saved correctly.');
+    $this->assertTrue($entity->save() === SAVED_NEW, 'Par Enforcement Notice entity saved correctly.');
   }
 }

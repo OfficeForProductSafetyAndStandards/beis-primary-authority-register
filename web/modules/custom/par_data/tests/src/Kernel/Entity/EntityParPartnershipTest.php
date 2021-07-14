@@ -70,6 +70,6 @@ class EntityParPartnershipTest extends ParDataTestBase {
    */
   public function testEntityCreate() {
     $entity = ParDataPartnership::create($this->getCoordinatedPartnershipValues());
-    $this->assertTrue($entity->save(), 'PAR Partnership entity saved correctly.');
+    $this->assertTrue($entity->save() === SAVED_NEW, 'PAR Partnership entity saved correctly.');
   }
 }

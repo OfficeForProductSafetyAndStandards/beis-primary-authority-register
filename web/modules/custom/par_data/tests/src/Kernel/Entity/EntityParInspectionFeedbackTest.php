@@ -56,6 +56,6 @@ class EntityParInspectionFeedbackTest extends ParDataTestBase {
    */
   public function testEntityCreate() {
     $entity = ParDataInspectionFeedback::create($this->getInspectionFeedbackValues());
-    $this->assertTrue($entity->save(), 'Par Inspection Feedback entity saved correctly.');
+    $this->assertTrue($entity->save() === SAVED_NEW, 'Par Inspection Feedback entity saved correctly.');
   }
 }
