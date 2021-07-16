@@ -35,11 +35,11 @@ Feature: New Direct Partnership For PA To Approve
         And I click on the button "#edit-next"
 
         Then the element "h1.heading-xlarge" contains the text "Update notification preferences"
-        When I click on the checkbox "#edit-preferred-contact-new-deviation-response"
-        When I click on the checkbox "#edit-preferred-contact-new-enquiry-response"
-        When I click on the checkbox "#edit-preferred-contact-new-inspection-feedback-response"
-        When I click on the checkbox "#edit-preferred-contact-reviewed-deviation-request"
-        When I click on the checkbox "#edit-preferred-contact-reviewed-enforcement"
+        When I click on the checkbox "#edit-notification-preferences-new-deviation-response"
+        When I click on the checkbox "#edit-notification-preferences-new-enquiry-response"
+        When I click on the checkbox "#edit-notification-preferences-new-inspection-feedback-response"
+        When I click on the checkbox "#edit-notification-preferences-reviewed-deviation-request"
+        When I click on the checkbox "#edit-notification-preferences-reviewed-enforcement"
         And I click on the button "#edit-next"
 
         Then the element "h1.heading-xlarge" contains the text "Profile review"
@@ -83,9 +83,9 @@ Feature: New Direct Partnership For PA To Approve
         And I click on the button "#edit-next"
 
         Then the element "h1.heading-xlarge" contains the text "Update notification preferences"
-        When I click on the checkbox "#edit-preferred-contact-new-deviation-response"
-        When I click on the checkbox "#edit-preferred-contact-new-enquiry-response"
-        When I click on the checkbox "#edit-preferred-contact-reviewed-enforcement"
+        When I click on the checkbox "#edit-notification-preferences-new-deviation-response"
+        When I click on the checkbox "#edit-notification-preferences-new-enquiry-response"
+        When I click on the checkbox "#edit-notification-preferences-reviewed-enforcement"
         And I click on the button "#edit-next"
 
         Then the element "h1.heading-xlarge" contains the text "Profile review"
