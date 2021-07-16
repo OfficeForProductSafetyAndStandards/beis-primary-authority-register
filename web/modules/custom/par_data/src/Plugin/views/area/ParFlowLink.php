@@ -118,6 +118,19 @@ class ParFlowLink extends AreaPluginBase {
     }
     $options = ['attributes' => $attributes];
 
+    // @TODO There is an issue here when rendering the flow link in an
+    // admin view which doesn't have any route parameters.
+    //
+    // Error: Call to a member function isCoordinated() on null in Drupal\par_member_add_flows\Form\ParOrganisationNameForm->accessCallback()
+    // (line 37 of /var/www/par/web/modules/features/par_member_add_flows/src/ParFlowAccessTrait.php)
+    //
+    // Because this is an admin view and doesn't need to render the issue isn't too critical,
+    // but we do need to consider how we get parameters into this par flow link,
+    // we can't use views tokens because there might be no results in the view.
+    //
+    // Perhaps rather than passing all current route parameters to the Url::fromRoute
+    // we could configure which parameters should be passed.
+
     // Get the route name from the path match.
     $route_matches = $this->getRouteProvier()->getRoutesByPattern($path);
     if ($route_matches->count() > 0) {
