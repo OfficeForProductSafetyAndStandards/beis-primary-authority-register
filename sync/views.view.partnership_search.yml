@@ -31,7 +31,7 @@ display:
         options:
           perm: 'search partnerships'
       cache:
-        type: tag
+        type: none
         options: {  }
       query:
         type: views_query
