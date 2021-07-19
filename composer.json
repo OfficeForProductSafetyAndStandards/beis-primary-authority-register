@@ -85,7 +85,7 @@
         "drupal/xmlsitemap": "~1.0.0",
         "drush/config-extra": "~1.0.0",
         "drush/drush": "^10.3",
-        "league/flysystem": "1.0.69",
+        "league/flysystem": "1.1.4",
         "league/flysystem-aws-s3-v3": "1.0.25",
         "predis/predis": "1.1.1",
         "rapidwebltd/php-uk-bank-holidays": "~5.0.0",
