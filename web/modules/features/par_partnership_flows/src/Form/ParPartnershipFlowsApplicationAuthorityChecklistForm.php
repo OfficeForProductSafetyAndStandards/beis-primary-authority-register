@@ -48,7 +48,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
     $applicationType = $this->getFlowDataHandler()->getDefaultValues('application_type', '', $cid);
 
     // Get Primary Authority Terms and Conditions URL.
-    $terms_page = \Drupal::service('path.alias_manager')
+    $terms_page = \Drupal::service('path_alias.manager')
       ->getAliasByPath('/node/49');
 
     if ($applicationType == 'direct') {

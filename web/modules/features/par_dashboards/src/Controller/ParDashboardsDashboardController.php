@@ -56,9 +56,9 @@ class ParDashboardsDashboardController extends ControllerBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    $entity_manager = $container->get('entity.manager');
+    $entity_type_manager = $container->get('entity_type.manager');
     return new static(
-      $entity_manager->getStorage('par_flow'),
+      $entity_type_manager->getStorage('par_flow'),
       $container->get('par_data.manager'),
       $container->get('current_user'),
       $container->get('page_cache_kill_switch')
@@ -82,7 +82,7 @@ class ParDashboardsDashboardController extends ControllerBase {
    *
    * @return AccessResult
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
+  public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
     // Disallow anyone with the permission to view the helpdesk dashboard.
     if ($account->hasPermission('access helpdesk')) {
       // Set an error if this action has already been reviewed.

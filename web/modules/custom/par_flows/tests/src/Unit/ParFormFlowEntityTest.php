@@ -18,7 +18,7 @@ use Drupal\par_flows\Entity\ParFlow;
  *
  * @group par_flows
  */
-class ParFlowEntityTest extends UnitTestCase {
+class ParFormFlowEntityTest extends UnitTestCase {
 
   /**
    * The test flow class to run the tests on.

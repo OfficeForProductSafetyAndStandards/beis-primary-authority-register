@@ -4,7 +4,10 @@ namespace Drupal\par_data;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Cache\MemoryCache\MemoryCacheInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
@@ -23,8 +26,17 @@ class ParDataStorage extends TranceStorage {
 
   protected $parDataManager;
 
-  public function __construct(\Drupal\Core\Entity\EntityTypeInterface $entity_type, \Drupal\Core\Database\Connection $database, EntityFieldManagerInterface $entity_field_manager, \Drupal\Core\Cache\CacheBackendInterface $cache, \Drupal\Core\Language\LanguageManagerInterface $language_manager) {
-    parent::__construct($entity_type, $database, $entity_field_manager, $cache, $language_manager);
+  public function __construct(\Drupal\Core\Entity\EntityTypeInterface $entity_type, \Drupal\Core\Database\Connection $database, EntityFieldManagerInterface $entity_field_manager, \Drupal\Core\Cache\CacheBackendInterface $cache, \Drupal\Core\Language\LanguageManagerInterface $language_manager, MemoryCacheInterface $memory_cache, EntityTypeBundleInfoInterface $entity_type_bundle_info, EntityTypeManagerInterface $entity_type_manager) {
+    parent::__construct(
+      $entity_type,
+      $database,
+      $entity_field_manager,
+      $cache,
+      $language_manager,
+      $memory_cache,
+      $entity_type_bundle_info,
+      $entity_type_manager
+    );
 
     $this->parDataManager = \Drupal::service('par_data.manager');
   }

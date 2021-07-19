@@ -32,6 +32,7 @@ class ParNotificationPreferencesForm extends ParFormPluginBase {
     // Get all message types.
     $message_templates = \Drupal::service('entity_type.manager')->getStorage('message_template')->loadMultiple();
     $account = $this->getFlowDataHandler()->getParameter('user');
+    $person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
     $notification_options = [];
     foreach ($message_templates as $message_template) {
@@ -42,6 +43,10 @@ class ParNotificationPreferencesForm extends ParFormPluginBase {
     }
 
     $this->getFlowDataHandler()->setFormPermValue('notification_option', $notification_options);
+
+    if ($person && $notification_preferences = $person->getNotificationPreferences()) {
+      $this->getFlowDataHandler()->setFormPermValue('notification_preferences', $notification_preferences);
+    }
 
     parent::loadData();
   }
@@ -60,7 +65,7 @@ class ParNotificationPreferencesForm extends ParFormPluginBase {
       '#markup' => '<p>As a primary contact you will always receive transactional notifications that are relevant to your partnerships, authorities or organisations.</p><p class="form-group">However, you can also choose to receive these notifications as a secondary contact for the partnership or as a member of the authority or organisation it relates to.</p>',
     ];
 
-    $form['preferred_contact'] = [
+    $form['notification_preferences'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Choose which additional notifications to receive'),
       '#description' => '<p>Primary contacts will always be sent these notifications.</p>',

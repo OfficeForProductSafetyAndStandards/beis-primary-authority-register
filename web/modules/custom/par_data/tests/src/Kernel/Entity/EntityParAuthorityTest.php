@@ -75,6 +75,6 @@ class EntityParAuthorityTest extends ParDataTestBase {
    */
   public function testEntityCreate() {
     $entity = ParDataAuthority::create($this->getAuthorityValues());
-    $this->assertTrue($entity->save(), 'PAR Authority entity saved correctly.');
+    $this->assertTrue($entity->save() === SAVED_NEW, 'PAR Authority entity saved correctly.');
   }
 }

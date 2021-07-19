@@ -82,6 +82,6 @@ class EntityParOrganisationTest extends ParDataTestBase {
    */
   public function testEntityCreate() {
     $entity = ParDataOrganisation::create($this->getOrganisationValues());
-    $this->assertTrue($entity->save(), 'PAR Organisation entity saved correctly.');
+    $this->assertTrue($entity->save() === SAVED_NEW, 'PAR Organisation entity saved correctly.');
   }
 }

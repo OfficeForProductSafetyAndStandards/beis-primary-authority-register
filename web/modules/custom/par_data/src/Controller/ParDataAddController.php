@@ -4,7 +4,7 @@ namespace Drupal\par_data\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
@@ -44,14 +44,14 @@ class ParDataAddController extends ControllerBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    /** @var EntityManagerInterface $entity_manager */
-    $entity_manager = $container->get('entity.manager');
+    /** @var EntityTypeManagerInterface $entity_type_manager */
+    $entity_type_manager = $container->get('entity_type.manager');
 
     $entity_type = \Drupal::routeMatch()->getParameter('par_data_entity');
-    $entity_definition = $entity_type ? $entity_manager->getDefinition($entity_type) : NULL;
+    $entity_definition = $entity_type ? $entity_type_manager->getDefinition($entity_type) : NULL;
 
-    $entity_storage = $entity_definition ? $entity_manager->getStorage($entity_definition->id()) : NULL;
-    $entity_type_storage = $entity_definition ? $entity_manager->getStorage($entity_definition->getBundleEntityType()) : NULL;
+    $entity_storage = $entity_definition ? $entity_type_manager->getStorage($entity_definition->id()) : NULL;
+    $entity_type_storage = $entity_definition ? $entity_type_manager->getStorage($entity_definition->getBundleEntityType()) : NULL;
 
     return new static(
       $entity_storage,

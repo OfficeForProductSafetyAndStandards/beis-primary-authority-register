@@ -54,7 +54,6 @@ class ParNotificationTestBase extends ParDataTestBase
     'media_library',
     'views',
     'media_test_views',
-    'file_entity',
   ];
 
   /**

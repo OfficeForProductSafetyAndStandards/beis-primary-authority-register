@@ -8,6 +8,7 @@ use Drupal\Core\Site\Settings;
 use Drupal\Core\Utility\Error;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -64,9 +65,9 @@ class ErrorPageSubscriber implements EventSubscriberInterface {
   /**
    * Handles the exception and displays a friendly error page.
    *
-   * @param GetResponseForExceptionEvent $event
+   * @param ExceptionEvent $event
    */
-  public function onException(GetResponseForExceptionEvent $event) {
+  public function onException(ExceptionEvent $event) {
     $exception = $event->getException();
     $error = Error::decodeException($exception);
 
@@ -77,7 +78,7 @@ class ErrorPageSubscriber implements EventSubscriberInterface {
     // Always log verbose errors for our private record.
     $message = new FormattableMarkup(
       '%par_code [%type]: @message in %function (line %line of %file).',
-      ['par_code' => $custom_code] + $error
+      ['%par_code' => $custom_code] + $error
     );
     $log->error($message);
 

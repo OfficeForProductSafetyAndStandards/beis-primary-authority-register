@@ -56,6 +56,6 @@ class EntityParGeneralEnquiryTest extends ParDataTestBase {
    */
   public function testEntityCreate() {
     $entity = ParDataGeneralEnquiry::create($this->getGeneralEnquiryValues());
-    $this->assertTrue($entity->save(), 'Par General Enquiry entity saved correctly.');
+    $this->assertTrue($entity->save() === SAVED_NEW, 'Par General Enquiry entity saved correctly.');
   }
 }

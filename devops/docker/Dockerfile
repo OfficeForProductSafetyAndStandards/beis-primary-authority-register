@@ -94,6 +94,11 @@ RUN buildDeps=" \
     && rm -r /var/lib/apt/lists/* \
     && a2enmod rewrite
 
+# Configure PCov for PHPUnit code coverage reports.
+RUN cd /tmp \
+    && sudo -E pecl install pcov \
+    && sudo -E docker-php-ext-enable pcov
+
 # Configure Apache virtual host
 COPY ./par.localhost.conf /etc/apache2/sites-available/par.localhost.conf
 
@@ -103,7 +108,7 @@ ENV COMPOSER_VERSION 2.0.13
 RUN cd /tmp \
     && sudo php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --version=$COMPOSER_VERSION --install-dir=/usr/local/bin --filename=composer \
-    && php -r "unlink('composer-setup.php');" \
+ParDataStorage    && php -r "unlink('composer-setup.php');" \
     && composer --version
 
 # Install node

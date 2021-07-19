@@ -57,6 +57,6 @@ class EntityParDeviationRequestTest extends ParDataTestBase {
    */
   public function testEntityCreate() {
     $entity = ParDataDeviationRequest::create($this->getDeviationRequestValues());
-    $this->assertTrue($entity->save(), 'Par Deviation Request entity saved correctly.');
+    $this->assertTrue($entity->save() === SAVED_NEW, 'Par Deviation Request entity saved correctly.');
   }
 }

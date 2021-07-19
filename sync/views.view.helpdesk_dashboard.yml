@@ -2392,12 +2392,94 @@ display:
           clear_on_exposed: false
           action_title: Action
           selected_actions:
-            comment_delete_action: 0
-            par_bulk_invite: 0
-            vbo_export_generate_xlsx_action: 0
-            vbo_export_generate_csv_action: vbo_export_generate_csv_action
-            views_bulk_operations_delete_entity: 0
-            'entity:save_action:par_data_partnership': 0
+            1:
+              action_id: vbo_export_generate_csv_action
+              preconfiguration:
+                add_confirmation: 0
+                file_scheme: s3private
+                strip_tags: 1
+                field_override: 1
+                field_config:
+                  id_1:
+                    active: '1'
+                    label: 'Partnershp ID'
+                  id:
+                    active: '1'
+                    label: 'Authority ID'
+                  created:
+                    active: '1'
+                    label: 'Partnership Created'
+                  authority_name:
+                    active: '1'
+                    label: 'Authority Name'
+                  organisation_name:
+                    active: '1'
+                    label: 'Organisation Name'
+                  trading_name_value:
+                    active: '1'
+                    label: 'Trading Name'
+                  field_legal_entity:
+                    active: '1'
+                    label: 'Legal Entity'
+                  field_legal_entity_1:
+                    active: '1'
+                    label: 'Number of Legal Entities'
+                  partnership_type:
+                    active: '1'
+                    label: 'Partnership Type'
+                  field_coordinated_business:
+                    active: '1'
+                    label: Members
+                  size:
+                    active: '1'
+                    label: 'Business Size'
+                  par_status:
+                    active: '1'
+                    label: 'Partnership Status'
+                  par_status_time:
+                    active: '1'
+                    label: 'Partnership Last Updated'
+                  field_regulatory_function:
+                    active: '1'
+                    label: 'Regulatory Functions'
+                  field_authority_person:
+                    active: '1'
+                    label: 'Authority Contacts'
+                  partnership_info_agreed_authority:
+                    active: '1'
+                    label: 'Authority Approved'
+                  terms_authority_agreed:
+                    active: '1'
+                    label: 'Authority Terms Agreed'
+                  partnership_info_agreed_business:
+                    active: '1'
+                    label: 'Business Approved'
+                  terms_organisation_agreed:
+                    active: '1'
+                    label: 'Business Terms Agreed'
+                  approved_date:
+                    active: '1'
+                    label: 'Approved On'
+                  revocation_date:
+                    active: '1'
+                    label: 'Revoked On'
+                  id_2:
+                    active: '1'
+                    label: 'Number of Enforcement Notices'
+                  field_inspection_plan:
+                    active: '1'
+                    label: 'Number of Inspection Plans'
+                  field_advice:
+                    active: '1'
+                    label: 'Number of Advice Documents'
+                  nation:
+                    active: '1'
+                    label: 'Organisation''s Nation'
+                  employees_band:
+                    label: ''
+                    active: 0
+                separator: ','
+          force_selection_info: false
           preconfiguration:
             vbo_export_generate_csv_action:
               label_override: 'CSV Download'

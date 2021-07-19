@@ -4,6 +4,7 @@ version: v0.1.1
 package: Custom
 description: A Drupal 8 theme based on the GDS GOV.UK Frontend Toolkit.
 core: 8.x
+core_version_requirement: ^8 || ^9
 base theme: govuk
 libraries:
   - par_theme/par-kour

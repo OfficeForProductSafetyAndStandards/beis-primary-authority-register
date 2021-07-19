@@ -75,6 +75,6 @@ class EntityParPersonTest extends ParDataTestBase {
    */
   public function testEntityCreate() {
     $entity = ParDataPerson::create($this->getPersonValues());
-    $this->assertTrue($entity->save(), 'PAR Person entity saved correctly.');
+    $this->assertTrue($entity->save() === SAVED_NEW, 'PAR Person entity saved correctly.');
   }
 }
