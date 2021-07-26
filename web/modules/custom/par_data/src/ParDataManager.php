@@ -762,6 +762,10 @@ class ParDataManager implements ParDataManagerInterface {
       }
     }
 
+    if ($sort) {
+      $query->sort($sort, $direction);
+    }
+
     if ($limit) {
       $query->range(0, $limit);
     }
@@ -904,7 +908,7 @@ class ParDataManager implements ParDataManagerInterface {
       ],
     ];
 
-    $entities = $this->getEntitiesByQuery('par_data_person', $conditions, NULL, NULL, 'ASC', 'OR');
+    $entities = $this->getEntitiesByQuery('par_data_person', $conditions, NULL, 'id', 'ASC', 'OR');
 
     // There is a need to check that any par_data_person entities returned
     // do not link to any other active users. This can't be done directly with
