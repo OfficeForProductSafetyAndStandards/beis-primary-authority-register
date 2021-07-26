@@ -191,7 +191,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
     ];
 
     $par_data_partnerships = $this->getParDataManager()
-      ->getEntitiesByQuery('par_data_partnership', $conditions, 10);
+      ->getEntitiesByQuery('par_data_partnership', $conditions, 10, 'id');
 
     // Ignore all inactive partnerships.
     $par_data_partnerships = array_filter($par_data_partnerships, function ($partnership) {
