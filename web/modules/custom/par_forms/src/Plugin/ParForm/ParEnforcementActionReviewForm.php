@@ -99,32 +99,30 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
 //      $form_state->setErrorByName($legal_entity, $this->t('<a href="#edit-legal_entities_select">You must choose a legal entity.</a>'));
 //    }
 
-    $status_key = $this->getElementKey(['action', 'primary_authority_status']);
+    $status_key = $this->getElementKey('primary_authority_status', $cardinality);
     $status = $this->getFlowDataHandler()->getTempDataValue($status_key);
 
     // Set an error if an action is not reviewed.
     $allowed_statuses = [ParDataEnforcementAction::APPROVED, ParDataEnforcementAction::BLOCKED, ParDataEnforcementAction::REFERRED];
-    $definition = DataDefinition::create('string')
-      ->addConstraint('AllowedValues', ['choices' => $allowed_statuses]);
-    $typed_data = \Drupal::typedDataManager()->create($definition, $status);
-    $violations['primary_authority_status'] = $typed_data->validate();
-
-    $blocked_reason_key = $this->getElementKey(['action', 'primary_authority_notes']);
-    $blocked_reason = $this->getFlowDataHandler()->getTempDataValue($blocked_reason_key);
-    $definition = DataDefinition::create('string')
-      ->addConstraint('NotNull');
-    $typed_data = \Drupal::typedDataManager()->create($definition, $blocked_reason);
-    if ($status == ParDataEnforcementAction::BLOCKED && empty($blocked_reason)) {
-      $violations['primary_authority_notes'] = $typed_data->validate();
+    if ($status && !in_array($status, $allowed_statuses)) {
+      $message = $this->wrapErrorMessage('Please choose how you would like to respond to this notice.', $this->getElementId($status_key, $form));
+      $form_state->setErrorByName($this->getElementName($status_key), $message);
     }
 
-    $referred_reason_key = $this->getElementKey(['action', 'referral_notes']);
+    $blocked_reason_key = $this->getElementKey('primary_authority_notes', $cardinality);
+    $blocked_reason = $this->getFlowDataHandler()->getTempDataValue($blocked_reason_key);
+    if ($status == ParDataEnforcementAction::BLOCKED && empty($blocked_reason)) {
+
+      $message = $this->wrapErrorMessage('You must explain your reason for blocking this notice.', $this->getElementId($blocked_reason_key, $form));
+      $form_state->setErrorByName($this->getElementName($blocked_reason_key), $message);
+    }
+
+    $referred_reason_key = $this->getElementKey('referral_notes', $cardinality);
     $referred_reason = $this->getFlowDataHandler()->getTempDataValue($referred_reason_key);
-    $definition = DataDefinition::create('string')
-      ->addConstraint('NotNull');
-    $typed_data = \Drupal::typedDataManager()->create($definition, $referred_reason);
     if ($status == ParDataEnforcementAction::REFERRED && empty($referred_reason)) {
-      $violations['referral_notes'] = $typed_data->validate();
+
+      $message = $this->wrapErrorMessage('You must explain why you are referring this notice.', $this->getElementId($referred_reason_key, $form));
+      $form_state->setErrorByName($this->getElementName($referred_reason_key), $message);
     }
 
     // Set an error if this action has already been reviewed.
