@@ -39,7 +39,7 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
         ],
       ];
 
-      $organisations = $this->getParDataManager()->getEntitiesByQuery('par_data_organisation', $conditions, 10);
+      $organisations = $this->getParDataManager()->getEntitiesByQuery('par_data_organisation', $conditions, 10, 'id');
 
       if (count($organisations) <= 0) {
         $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', 'new');
