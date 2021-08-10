@@ -366,7 +366,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -386,7 +386,7 @@ display:
           relationship: field_organisation
           group_type: group
           admin_label: 'Organisation Name'
-          label: Business
+          label: Partnership
           exclude: false
           alter:
             alter_text: true
@@ -431,7 +431,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1197,7 +1197,22 @@ display:
           entity_type: par_data_partnership
           entity_field: revoked
           plugin_id: boolean
-      sorts: {  }
+      sorts:
+        created:
+          id: created
+          table: par_partnerships_field_data
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          granularity: day
+          entity_type: par_data_partnership
+          entity_field: created
+          plugin_id: date
       title: 'Primary Authority Register | Search for a partnership'
       header: {  }
       footer: {  }

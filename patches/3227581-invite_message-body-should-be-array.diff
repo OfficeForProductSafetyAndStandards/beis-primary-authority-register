@@ -1,0 +1,13 @@
+diff --git a/modules/invite_by_email/src/Plugin/Invite/InviteByEmail.php b/modules/invite_by_email/src/Plugin/Invite/InviteByEmail.php
+index d9f7781a9f548c58df93f75ed391f56d17e99a13..e22ba0e0c0cc401c9ea314b3bd11526b75b5a537 100644
+--- a/modules/invite_by_email/src/Plugin/Invite/InviteByEmail.php
++++ b/modules/invite_by_email/src/Plugin/Invite/InviteByEmail.php
+@@ -87,7 +87,7 @@ class InviteByEmail extends PluginBase implements InvitePluginInterface, Contain
+       '#theme' => 'invite_by_email',
+       '#body' => $token->replace($invite->get('field_invite_email_body')->value, ['invite' => $invite], [], $bubbleable_metadata),
+     ];
+-    $message['body'] = \Drupal::service('renderer')
++    $message['body'][] = \Drupal::service('renderer')
+       ->render($body)
+       ->__toString();
+     // Send.
