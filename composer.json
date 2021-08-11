@@ -165,12 +165,12 @@
             "drupal/flysystem_s3": {
                 "uriScheme method deprecated": "https://www.drupal.org/files/issues/2020-12-07/replace-urischeme-method-3159928-4.patch"
             },
+            "drupal/govuk_notify": {
+                "Message body formatting array to string": "https://www.drupal.org/files/issues/2021-08-11/3227617-2-govuk-notify-message-body-formatting.diff"
+            },
             "drupal/govuk_theme": {
                 "Remove style sheet": "https://www.drupal.org/files/issues/2021-03-29/3202722-5-remove_generated_css.patch",
                 "Correct version dependencies": "./patches/yargs-version.patch"
-            },
-            "drupal/invite": {
-                "$message['body'] should be an array": "./patches/3227581-invite_message-body-should-be-array.diff"
             },
             "drupal/redis": {
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch"
