@@ -1,0 +1,29 @@
+uuid: 5c529121-9aa3-47b3-aef4-0c873f7c3a27
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_enforcement_notice
+    - message.template.approved_enforcement
+    - par_data.par_data_enforcement_notice_type.enforcement_notice
+id: message.approved_enforcement.field_enforcement_notice
+field_name: field_enforcement_notice
+entity_type: message
+bundle: approved_enforcement
+label: 'Enforcement Notice'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_data_enforcement_notice'
+  handler_settings:
+    target_bundles:
+      enforcement_notice: enforcement_notice
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
