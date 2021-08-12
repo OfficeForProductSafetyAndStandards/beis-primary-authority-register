@@ -181,6 +181,12 @@ class ParNotificationTestBase extends ParDataTestBase
       ->getMock();
     $container->set('par_notification.reviewed_enforcement_subscriber', $this->enforcement_reviewed_subscriber);
 
+    $this->enforcement_approved_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\ApprovedEnforcementSubscriber')
+      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->disableOriginalConstructor()
+      ->getMock();
+    $container->set('par_notification.approved_enforcement_subscriber', $this->enforcement_approved_subscriber);
+
     \Drupal::setContainer($container);
   }
 
