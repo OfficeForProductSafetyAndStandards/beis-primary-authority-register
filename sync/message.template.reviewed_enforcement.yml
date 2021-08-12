@@ -1,7 +1,9 @@
 uuid: 7d9cf714-b820-4779-b9d0-ab9846935a4f
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.basic_html
 template: reviewed_enforcement
 label: 'Reviewed enforcement notification'
 description: 'This notification is sent to the enforcing authority when an enforcement notice has been approved or blocked.'

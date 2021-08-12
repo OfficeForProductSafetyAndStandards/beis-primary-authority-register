@@ -1,0 +1,32 @@
+uuid: aed4e82a-5550-4000-9958-e3d9f32d1125
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.approved_enforcement.field_enforcement_notice
+    - field.field.message.approved_enforcement.field_message_subject
+    - message.template.approved_enforcement
+id: message.approved_enforcement.default
+targetEntityType: message
+bundle: approved_enforcement
+mode: default
+content:
+  field_enforcement_notice:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_message_subject:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden: {  }
