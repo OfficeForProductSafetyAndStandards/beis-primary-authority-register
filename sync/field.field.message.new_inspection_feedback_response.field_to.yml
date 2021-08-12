@@ -1,0 +1,19 @@
+uuid: 1d4e6894-b717-44ec-b693-f9d52f1e0558
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_to
+    - message.template.new_inspection_feedback_response
+id: message.new_inspection_feedback_response.field_to
+field_name: field_to
+entity_type: message
+bundle: new_inspection_feedback_response
+label: To
+description: 'The email address of the message recipient.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

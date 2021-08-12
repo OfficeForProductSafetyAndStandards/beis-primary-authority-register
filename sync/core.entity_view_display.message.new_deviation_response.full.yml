@@ -7,6 +7,7 @@ dependencies:
     - field.field.message.new_deviation_response.field_comment
     - field.field.message.new_deviation_response.field_deviation_request
     - field.field.message.new_deviation_response.field_message_subject
+    - field.field.message.new_deviation_response.field_to
     - message.template.new_deviation_response
 id: message.new_deviation_response.full
 targetEntityType: message
@@ -38,3 +39,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_message_subject: true
+  field_to: true

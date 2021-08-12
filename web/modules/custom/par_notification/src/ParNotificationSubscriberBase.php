@@ -155,6 +155,13 @@ abstract class ParNotificationSubscriberBase implements EventSubscriberInterface
         'mail' => $email,
       ];
 
+      // The message needs to record who it is sent to in cases where it
+      // is not sent to a user with an account.
+      // PAR-1734: Invitations can be generated from this information.
+      if ($message->hasField('field_to')) {
+        $message->set('field_to', $email);
+      }
+
       $this->getNotifier()->send($message, $options, static::DELIVERY_METHOD);
     }
     else {

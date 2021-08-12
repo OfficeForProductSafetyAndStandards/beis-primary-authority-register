@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.message.partnership_approved_notificatio.field_message_subject
     - field.field.message.partnership_approved_notificatio.field_partnership
+    - field.field.message.partnership_approved_notificatio.field_to
     - message.template.partnership_approved_notificatio
 id: message.partnership_approved_notificatio.default
 targetEntityType: message
@@ -26,3 +27,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_message_subject: true
+  field_to: true

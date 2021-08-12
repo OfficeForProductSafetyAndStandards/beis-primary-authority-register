@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.message.inspection_plan_expiry_warning.field_inspection_plan
     - field.field.message.inspection_plan_expiry_warning.field_message_subject
+    - field.field.message.inspection_plan_expiry_warning.field_to
     - message.template.inspection_plan_expiry_warning
 id: message.inspection_plan_expiry_warning.default
 targetEntityType: message
@@ -28,5 +29,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_to:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
     region: content
 hidden: {  }

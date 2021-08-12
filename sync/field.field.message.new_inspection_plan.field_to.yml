@@ -1,0 +1,19 @@
+uuid: cbf62a99-e0dc-4dc9-8977-e28a1dd40363
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_to
+    - message.template.new_inspection_plan
+id: message.new_inspection_plan.field_to
+field_name: field_to
+entity_type: message
+bundle: new_inspection_plan
+label: To
+description: 'The email address of the message recipient.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

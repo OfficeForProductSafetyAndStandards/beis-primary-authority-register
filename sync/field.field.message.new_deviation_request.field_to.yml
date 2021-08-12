@@ -1,0 +1,19 @@
+uuid: 05900c34-b967-4179-868d-4ed081377f13
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_to
+    - message.template.new_deviation_request
+id: message.new_deviation_request.field_to
+field_name: field_to
+entity_type: message
+bundle: new_deviation_request
+label: To
+description: 'The email address of the message recipient.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

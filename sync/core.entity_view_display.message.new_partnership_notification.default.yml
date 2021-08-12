@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.message.new_partnership_notification.field_message_subject
     - field.field.message.new_partnership_notification.field_partnership
+    - field.field.message.new_partnership_notification.field_to
     - message.template.new_partnership_notification
 id: message.new_partnership_notification.default
 targetEntityType: message
@@ -27,3 +28,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_message_subject: true
+  field_to: true

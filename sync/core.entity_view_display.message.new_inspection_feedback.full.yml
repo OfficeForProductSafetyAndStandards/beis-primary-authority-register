@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.message.full
     - field.field.message.new_inspection_feedback.field_inspection_feedback
     - field.field.message.new_inspection_feedback.field_message_subject
+    - field.field.message.new_inspection_feedback.field_to
     - message.template.new_inspection_feedback
 id: message.new_inspection_feedback.full
 targetEntityType: message
@@ -28,3 +29,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_message_subject: true
+  field_to: true

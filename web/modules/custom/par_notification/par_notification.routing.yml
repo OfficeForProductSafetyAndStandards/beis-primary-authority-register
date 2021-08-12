@@ -12,6 +12,20 @@ par_notification.link_manager:
       message:
         type: entity:message
 
+par_notification.link_access_denied:
+  path: '/notifications/{message}/access-denied'
+  defaults:
+    _controller: '\Drupal\par_notification\Controller\ParAccessDeniedController::build'
+    _title: 'You are not signed in'
+  requirements:
+    _access: 'TRUE'
+    message: \d+
+  options:
+    no_cache: 'TRUE'
+    parameters:
+      message:
+        type: entity:message
+
 par_notification.link_not_found:
   path: '/notifications/{message}/link-not-found'
   defaults:

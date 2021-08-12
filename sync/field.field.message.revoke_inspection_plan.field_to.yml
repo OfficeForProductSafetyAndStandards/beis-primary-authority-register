@@ -1,0 +1,19 @@
+uuid: ad40f37c-620c-4691-bf7d-5d2993e936d7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_to
+    - message.template.revoke_inspection_plan
+id: message.revoke_inspection_plan.field_to
+field_name: field_to
+entity_type: message
+bundle: revoke_inspection_plan
+label: To
+description: 'The email address of the message recipient.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

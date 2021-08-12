@@ -6,6 +6,7 @@ dependencies:
     - field.field.message.new_enquiry_response.field_comment
     - field.field.message.new_enquiry_response.field_general_enquiry
     - field.field.message.new_enquiry_response.field_message_subject
+    - field.field.message.new_enquiry_response.field_to
     - message.template.new_enquiry_response
 id: message.new_enquiry_response.default
 targetEntityType: message
@@ -39,5 +40,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_to:
+    weight: 3
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
     region: content
 hidden: {  }
