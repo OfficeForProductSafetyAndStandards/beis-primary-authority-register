@@ -85,6 +85,7 @@ permissions:
   - 'update partnership organisation details'
   - 'upload coordinated member'
   - 'use text format basic_html'
+  - 'view enforcement notice'
   - 'view own private files'
   - 'view par profile'
   - 'view private files'

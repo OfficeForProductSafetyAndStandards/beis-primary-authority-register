@@ -9,12 +9,16 @@ use Drupal\Core\Link;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\State\StateInterface;
+use Drupal\Core\Url;
 use Drupal\message\Entity\Message;
+use Drupal\par_notification\Form\ParInvitationForm;
 use Drupal\par_notification\ParLinkManager;
 use Drupal\user\Form\UserLoginForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use function PHPUnit\Framework\isEmpty;
 
 /**
  * Controller for handling link redirection requests when the user is not signed in.
@@ -43,15 +47,58 @@ class ParAccessDeniedController extends ControllerBase {
   public function build(Request $request) {
     $build = [];
 
-    $build['login'] = $this->getFormBuilder()->getForm(UserLoginForm::class);
+    $message = \Drupal::routeMatch()->getParameter('message');
 
-    $dashboard_link = Link::createFromRoute('Request an invitation', 'par_dashboards.dashboard');
-    $build['invitation'] = [
-      '#type' => 'markup',
-      '#markup' => t('@link', [
-        '@link' => $dashboard_link->toString(),
-      ]),
+    // Redirect back to the message link if a user account is detected.
+    // This could happen if the user account is authenticated in a separate tab.
+    $account = $this->currentUser();
+    if ($account->isAuthenticated()) {
+      $message_link = Url::fromRoute('par_notification.link_manager', ['message' => $message->id()]);
+      return new RedirectResponse($message_link->toString());
+    }
+
+    // Determine whether to allow invitations.
+    $allow_invitations = ($message->hasField('field_to')
+      && !$message->get('field_to')->isEmpty()
+      && !user_load_by_mail($message->get('field_to')->getString()));
+
+    // Column size is determined by whether invitations should be shown.
+    $column_size = $allow_invitations ? 'column-one-half' : 'column-full';
+
+    $build['account'] = [
+      '#type'   => 'container',
+      '#attributes' => ['class' => ['grid-row']],
     ];
+
+    // Show sign in form.
+    $build['account']['signin'] = [
+      '#type'   => 'container',
+      '#weight' => 1,
+      '#attributes' => ['class' => [$column_size]]
+    ];
+    $build['account']['signin']['title'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#attributes' => ['class' => ['heading-medium']],
+      '#value' => $this->t('Please sign in'),
+    ];
+    $build['account']['signin']['form'] = $this->getFormBuilder()->getForm(UserLoginForm::class);
+
+    // Show invitation form.
+    if ($allow_invitations) {
+      $build['account']['invitation'] = [
+        '#type'   => 'container',
+        '#weight' => 2,
+        '#attributes' => ['class' => [$column_size]]
+      ];
+      $build['account']['invitation']['title'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => $this->t('Or request an invitation'),
+      ];
+      $build['account']['invitation']['form'] = $this->getFormBuilder()->getForm(ParInvitationForm::class);
+    }
 
     return $build;
   }
