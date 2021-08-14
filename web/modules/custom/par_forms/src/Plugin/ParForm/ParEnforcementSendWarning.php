@@ -56,15 +56,14 @@ class ParEnforcementSendWarning extends ParFormPluginBase {
       $schedule_url = Url::fromUri('http://www.legislation.gov.uk/ukpga/2008/13/schedule/4A', ['attributes' => ['target' => '_blank']]);
       $schedule_link = Link::fromTextAndUrl('Schedule 4A of The Regulatory Enforcement Sanctions Act 2008', $schedule_url);
 
-      $form['send_warning'] = [
+      $form['warning'] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['form-group', 'notice']],
+        '#attributes' => ['class' => ['form-group']],
         'warning' => [
           '#type' => 'html_tag',
-          '#tag' => 'strong',
-          '#value' => $this->t("Please note that this enforcement notice has been approved. If you intend to proceed with your proposed action you must now notify the business. This notification should be made directly to the business via e-mail. If you require contact details of the business, please obtain these from the Primary Authority. For further information please refer to @link.", ['@link' => $schedule_link->toString()]),
-          '#attributes' => ['class' => 'bold-small'],
-          '#prefix' => '<i class="icon icon-important"><span class="visually-hidden">Warning</span></i>'
+          '#tag' => 'p',
+          '#value' => $this->t("This enforcement notice has now been reviewed by the Primary Authority."),
+          '#attributes' => ['class' => ['govuk-!-font-weight-bold']],
         ],
       ];
     }
