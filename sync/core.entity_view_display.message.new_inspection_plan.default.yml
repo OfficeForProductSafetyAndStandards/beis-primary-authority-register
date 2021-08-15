@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.message.new_inspection_plan.field_inspection_plan
     - field.field.message.new_inspection_plan.field_message_subject
+    - field.field.message.new_inspection_plan.field_to
     - message.template.new_inspection_plan
 id: message.new_inspection_plan.default
 targetEntityType: message
@@ -27,3 +28,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_message_subject: true
+  field_to: true

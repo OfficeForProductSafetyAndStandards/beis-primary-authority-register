@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.message.full
     - field.field.message.partnership_confirmed_notificati.field_message_subject
     - field.field.message.partnership_confirmed_notificati.field_partnership
+    - field.field.message.partnership_confirmed_notificati.field_to
     - message.template.partnership_confirmed_notificati
 id: message.partnership_confirmed_notificati.full
 targetEntityType: message
@@ -27,3 +28,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_message_subject: true
+  field_to: true

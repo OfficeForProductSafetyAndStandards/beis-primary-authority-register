@@ -6,6 +6,7 @@ dependencies:
     - field.field.message.new_inspection_feedback_response.field_comment
     - field.field.message.new_inspection_feedback_response.field_inspection_feedback
     - field.field.message.new_inspection_feedback_response.field_message_subject
+    - field.field.message.new_inspection_feedback_response.field_to
     - message.template.new_inspection_feedback_response
 id: message.new_inspection_feedback_response.default
 targetEntityType: message
@@ -37,3 +38,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_message_subject: true
+  field_to: true

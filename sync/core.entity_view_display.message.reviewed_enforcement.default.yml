@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.message.reviewed_enforcement.field_enforcement_notice
     - field.field.message.reviewed_enforcement.field_message_subject
+    - field.field.message.reviewed_enforcement.field_to
     - message.template.reviewed_enforcement
 id: message.reviewed_enforcement.default
 targetEntityType: message
@@ -32,4 +33,5 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_to: true

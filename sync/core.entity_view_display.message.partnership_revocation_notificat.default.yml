@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.message.partnership_revocation_notificat.field_message_subject
     - field.field.message.partnership_revocation_notificat.field_partnership
+    - field.field.message.partnership_revocation_notificat.field_to
     - message.template.partnership_revocation_notificat
 id: message.partnership_revocation_notificat.default
 targetEntityType: message
@@ -26,3 +27,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_partnership: true
+  field_to: true

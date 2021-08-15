@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.message.reviewed_deviation_request.field_deviation_request
     - field.field.message.reviewed_deviation_request.field_message_subject
+    - field.field.message.reviewed_deviation_request.field_to
     - message.template.reviewed_deviation_request
 id: message.reviewed_deviation_request.default
 targetEntityType: message
@@ -28,5 +29,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_to:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
     region: content
 hidden: {  }

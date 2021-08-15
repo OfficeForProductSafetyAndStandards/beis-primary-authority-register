@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.message.approved_enforcement.field_enforcement_notice
     - field.field.message.approved_enforcement.field_message_subject
+    - field.field.message.approved_enforcement.field_to
     - message.template.approved_enforcement
 id: message.approved_enforcement.default
 targetEntityType: message
@@ -28,5 +29,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_to:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
     region: content
 hidden: {  }

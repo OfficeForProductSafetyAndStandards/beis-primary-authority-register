@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.message.full
     - field.field.message.subscription_verify_notification.field_message_subject
+    - field.field.message.subscription_verify_notification.field_to
     - message.template.subscription_verify_notification
 id: message.subscription_verify_notification.full
 targetEntityType: message
@@ -18,3 +19,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_message_subject: true
+  field_to: true

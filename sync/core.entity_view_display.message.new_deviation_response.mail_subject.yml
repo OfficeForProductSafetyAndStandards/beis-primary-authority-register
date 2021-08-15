@@ -5,7 +5,9 @@ dependencies:
   config:
     - core.entity_view_mode.message.mail_subject
     - field.field.message.new_deviation_response.field_comment
+    - field.field.message.new_deviation_response.field_deviation_request
     - field.field.message.new_deviation_response.field_message_subject
+    - field.field.message.new_deviation_response.field_to
     - message.template.new_deviation_response
 id: message.new_deviation_response.mail_subject
 targetEntityType: message
@@ -22,5 +24,7 @@ content:
     third_party_settings: {  }
 hidden:
   field_comment: true
+  field_deviation_request: true
+  field_to: true
   partial_0: true
   partial_1: true

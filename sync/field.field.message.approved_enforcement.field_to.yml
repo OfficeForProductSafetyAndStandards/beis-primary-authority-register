@@ -1,0 +1,19 @@
+uuid: f7ffbfde-c2a2-483f-a411-b4ea7f6be4d2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_to
+    - message.template.approved_enforcement
+id: message.approved_enforcement.field_to
+field_name: field_to
+entity_type: message
+bundle: approved_enforcement
+label: To
+description: 'The email address of the message recipient.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

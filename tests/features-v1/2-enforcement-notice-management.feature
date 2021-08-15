@@ -35,10 +35,10 @@ Feature: Enforcement notice review
         Given I am logged in as "par_authority@example.com"
         When I search for an enforcement notice "Enforcement notice 3" against "Charlie's"
         Then the element "h1.heading-xlarge" contains the text "View notification of enforcement action received from"
-        And the element ".component-enforcement-send-warning" does not contain the text "Please note that this enforcement notice has been approved."
+        And the element ".component-enforcement-send-warning" does not contain the text "This enforcement notice has now been reviewed by the Primary Authority."
         When I search for an enforcement notice "Enforcement notice 4" against "Charlie's"
         Then the element "h1.heading-xlarge" contains the text "View notification of enforcement action received from"
-        And the element ".component-enforcement-send-warning" contains the text "Please note that this enforcement notice has been approved."
+        And the element ".component-enforcement-send-warning" contains the text "This enforcement notice has now been reviewed by the Primary Authority."
 
     @v1-ci
     Scenario: Check un-reviewed enforcement notices

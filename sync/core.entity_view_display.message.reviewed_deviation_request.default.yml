@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.message.reviewed_deviation_request.field_deviation_request
     - field.field.message.reviewed_deviation_request.field_message_subject
+    - field.field.message.reviewed_deviation_request.field_to
     - message.template.reviewed_deviation_request
 id: message.reviewed_deviation_request.default
 targetEntityType: message
@@ -26,3 +27,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_message_subject: true
+  field_to: true

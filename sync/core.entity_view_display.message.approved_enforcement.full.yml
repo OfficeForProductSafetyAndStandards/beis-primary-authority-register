@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.message.full
     - field.field.message.approved_enforcement.field_enforcement_notice
     - field.field.message.approved_enforcement.field_message_subject
+    - field.field.message.approved_enforcement.field_to
     - message.template.approved_enforcement
 id: message.approved_enforcement.full
 targetEntityType: message
@@ -33,4 +34,5 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_to: true

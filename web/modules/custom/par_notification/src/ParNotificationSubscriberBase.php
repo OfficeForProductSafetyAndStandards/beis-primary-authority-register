@@ -11,6 +11,7 @@ use Drupal\message\Entity\Message;
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -149,6 +150,13 @@ abstract class ParNotificationSubscriberBase implements EventSubscriberInterface
    * Send the message.
    */
   public function sendMessage(MessageInterface $message, $email) {
+    // The message needs to record who it is sent to in cases where it
+    // is not sent to a user with an account.
+    // PAR-1734: Invitations can be generated from this information.
+    if ($message->hasField('field_to')) {
+      $message->set('field_to', $email);
+    }
+
     if ($message->save()) {
       // Choose who to send the notification to.
       $options = [

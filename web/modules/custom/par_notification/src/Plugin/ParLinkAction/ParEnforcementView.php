@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *   status = TRUE,
  *   weight = 2,
  *   notification = {
+ *     "approved_enforcement",
  *     "new_enforcement_notification",
  *     "reviewed_enforcement",
  *   }

@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.message.subscription_verify_notification.field_message_subject
+    - field.field.message.subscription_verify_notification.field_to
     - message.template.subscription_verify_notification
 id: message.subscription_verify_notification.default
 targetEntityType: message
@@ -17,5 +18,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_to:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
     region: content
 hidden: {  }

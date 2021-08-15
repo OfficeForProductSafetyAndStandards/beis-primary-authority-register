@@ -6,6 +6,7 @@ dependencies:
     - field.field.message.new_enquiry_response.field_comment
     - field.field.message.new_enquiry_response.field_general_enquiry
     - field.field.message.new_enquiry_response.field_message_subject
+    - field.field.message.new_enquiry_response.field_to
     - message.template.new_enquiry_response
 id: message.new_enquiry_response.default
 targetEntityType: message
@@ -35,3 +36,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_message_subject: true
+  field_to: true

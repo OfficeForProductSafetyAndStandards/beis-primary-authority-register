@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.message.new_response.field_comment
     - field.field.message.new_response.field_message_subject
+    - field.field.message.new_response.field_to
     - message.template.new_response
 id: message.new_response.default
 targetEntityType: message
@@ -27,3 +28,4 @@ content:
     third_party_settings: {  }
 hidden:
   field_message_subject: true
+  field_to: true

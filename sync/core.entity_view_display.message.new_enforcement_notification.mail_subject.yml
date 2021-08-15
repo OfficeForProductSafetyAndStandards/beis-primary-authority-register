@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.message.mail_subject
     - field.field.message.new_enforcement_notification.field_enforcement_notice
     - field.field.message.new_enforcement_notification.field_message_subject
+    - field.field.message.new_enforcement_notification.field_to
     - message.template.new_enforcement_notification
 id: message.new_enforcement_notification.mail_subject
 targetEntityType: message
@@ -22,4 +23,5 @@ content:
     third_party_settings: {  }
 hidden:
   field_enforcement_notice: true
+  field_to: true
   partial_0: true
