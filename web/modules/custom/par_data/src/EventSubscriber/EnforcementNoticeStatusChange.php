@@ -8,6 +8,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\message\Entity\Message;
 use Drupal\message\MessageInterface;
+use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
@@ -58,18 +59,15 @@ class EnforcementNoticeStatusChange implements EventSubscriberInterface {
     /** @var ParDataEntityInterface $par_data_enforcement_action */
     $par_data_enforcement_action = $event->getEntity();
 
-    if ($par_data_enforcement_notice = $par_data_enforcement_action->getEnforcementNotice(TRUE)) {
-      foreach ($par_data_enforcement_notice->getEnforcementActions() as $action) {
-        // Ignore the current action which has not been fully saved yet.
-        if ($action->id() === $par_data_enforcement_action->id()) {
-          continue;
-        }
+    // Get all the sibling actions associated with the parent enforcement notice.
+    $par_data_enforcement_notice = $par_data_enforcement_action->getEnforcementNotice(TRUE);
+    $primary_action = $par_data_enforcement_notice ?
+      $par_data_enforcement_notice->getEnforcementActions(True) :
+      $par_data_enforcement_action;
 
-        // If any other actions are still awaiting review this event should not fire.
-        if ($action->isAwaitingApproval()) {
-          return;
-        }
-      }
+    // Only trigger an enforcement notice status change on the first updated item.
+    if ($par_data_enforcement_action->id() !== $primary_action->id()) {
+      return;
     }
 
     // Dispatch the status update event for enforcement notices.

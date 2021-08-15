@@ -451,12 +451,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
-
-      // Dispatch a par event.
-      // @TODO We can't dispatch this event until the entity is saved, we may end up with repeat calls.
-      $event = new ParDataEvent($this);
-      $dispatcher = \Drupal::service('event_dispatcher');
-      $dispatcher->dispatch(ParDataEvent::statusChange($this->getEntityTypeId(), $value), $event);
     }
   }
 
