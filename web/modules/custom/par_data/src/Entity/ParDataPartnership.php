@@ -648,12 +648,13 @@ class ParDataPartnership extends ParDataEntity {
       ])
       ->setDefaultValue('')
       ->setDisplayOptions('form', [
-        'type' => 'integer',
+        'type' => 'number',
         'weight' => 8,
       ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
+        'type' => 'number_integer',
         'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
