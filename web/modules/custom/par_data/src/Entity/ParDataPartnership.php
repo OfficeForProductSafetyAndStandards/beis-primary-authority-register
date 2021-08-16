@@ -270,6 +270,12 @@ class ParDataPartnership extends ParDataEntity {
     return 0;
   }
 
+  /**
+   * Get the membership list display type.
+   *
+   * @return string
+   *  The user configured method of displaying the member list.
+   */
   public function getMemberDisplay() {
     if (!$this->get('member_display')->isEmpty()) {
       return $this->get('member_display')->getString();
@@ -286,8 +292,13 @@ class ParDataPartnership extends ParDataEntity {
       return 'internal';
     }
 
-    // Available on request is the typical default.
-    return 'request';
+    // If the member number field has been filled.
+    if (!$this->get('member_number')->isEmpty()) {
+      return 'request';
+    }
+
+    // Internal lists are the preferred default if no action has been taken.
+    return 'internal';
   }
 
   /**
