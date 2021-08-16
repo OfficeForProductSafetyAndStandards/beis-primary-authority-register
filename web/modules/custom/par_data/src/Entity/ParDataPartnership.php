@@ -5,6 +5,7 @@ namespace Drupal\par_data\Entity;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\link\LinkItemInterface;
 use Drupal\user\UserInterface;
 
 /**
@@ -78,6 +79,13 @@ class ParDataPartnership extends ParDataEntity {
 
   const ADVICE_REVOKE_REASON = 'Partnership entity revoked';
   const INSPECTION_PLAN_REVOKE_REASON = 'Partnership entity revoked';
+
+  /**
+   * The available member display options.
+   */
+  const MEMBER_DISPLAY_INTERNAL = 'internal';
+  const MEMBER_DISPLAY_EXTERNAL = 'external';
+  const MEMBER_DISPLAY_REQUEST = 'request';
 
   /**
    * Get the time service.
@@ -255,12 +263,12 @@ class ParDataPartnership extends ParDataEntity {
   public function numberOfMembers() {
     // PAR-1741: Use the display method to determine how to get the number of members.
     switch ($this->getMemberDisplay()) {
-      case 'internal':
+      case self::MEMBER_DISPLAY_INTERNAL:
         return $this->countMembers();
 
         break;
-      case 'external':
-      case 'request':
+      case self::MEMBER_DISPLAY_EXTERNAL:
+      case self::MEMBER_DISPLAY_REQUEST:
         return !$this->get('member_number')->isEmpty() ?
           (int) $this->get('member_number')->getString() : 0;
 
@@ -271,6 +279,18 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * Get the membership link.
+   *
+   * @return \Drupal\Core\Url
+   *  The URL for the external member link.
+   */
+  public function getMemberLink() {
+    return !$this->get('member_link')->isEmpty()
+        ? $this->get('member_link')->first()->getUrl()
+        : NULL;
+  }
+
+  /**
    * Get the membership list display type.
    *
    * @return string
@@ -278,7 +298,14 @@ class ParDataPartnership extends ParDataEntity {
    */
   public function getMemberDisplay() {
     if (!$this->get('member_display')->isEmpty()) {
-      return $this->get('member_display')->getString();
+      $display = $this->get('member_display')->getString();
+      // The display value must be one of self::MEMBER_DISPLAY_INTERNAL,
+      // self::MEMBER_DISPLAY_EXTERNAL or self::MEMBER_DISPLAY_REQUEST
+      // as defined in the entity type config.
+      $allowed_displays = $this->getTypeEntity()->getAllowedValues('member_display');
+      if (isset($allowed_displays[$display])) {
+        return $display;
+      }
     }
 
     // The default value is determined by whether any coordinated members have
@@ -286,19 +313,28 @@ class ParDataPartnership extends ParDataEntity {
     return $this->getDefaultMemberDisplay();
   }
 
+  /**
+   * @return string
+   *  The default
+   */
   public function getDefaultMemberDisplay() {
     // If there are any uploaded members default to an internal list.
     if ($this->countMembers(0, true) > 0) {
-      return 'internal';
+      return self::MEMBER_DISPLAY_INTERNAL;
+    }
+
+    // If the member number field has been filled.
+    if (!$this->get('member_link')->isEmpty()) {
+      return self::MEMBER_DISPLAY_EXTERNAL;
     }
 
     // If the member number field has been filled.
     if (!$this->get('member_number')->isEmpty()) {
-      return 'request';
+      return self::MEMBER_DISPLAY_REQUEST;
     }
 
     // Internal lists are the preferred default if no action has been taken.
-    return 'internal';
+    return self::MEMBER_DISPLAY_INTERNAL;
   }
 
   /**
@@ -651,7 +687,6 @@ class ParDataPartnership extends ParDataEntity {
     $fields['member_number'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('Number of members'))
       ->setDescription(t('The number of coordinated members in this partnership.'))
-      ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 6,
@@ -666,6 +701,28 @@ class ParDataPartnership extends ParDataEntity {
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'type' => 'number_integer',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Number of Members.
+    $fields['member_link'] = BaseFieldDefinition::create('link')
+      ->setLabel(t('Member list link'))
+      ->setDescription(t('The link to the publicly available external member list.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'link_type' => LinkItemInterface::LINK_EXTERNAL,
+        'title' => DRUPAL_DISABLED,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'link_default',
+        'weight' => 8,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'link',
         'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);

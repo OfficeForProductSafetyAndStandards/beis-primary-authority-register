@@ -8,6 +8,7 @@ use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
@@ -26,8 +27,8 @@ class ParPartnershipMembers extends ParFormPluginBase {
   /**
    * Available display formats.
    */
-  const MEMBER_FORMAT_INLINE = 'member_list';
-  const MEMBER_FORMAT_VIEW = 'member_link_view';
+  const MEMBER_FORMAT_INLINE = 'member_list'; # for internal displays
+  const MEMBER_FORMAT_VIEW = 'member_link_view'; # for internal displays
   const MEMBER_DISPLAY_INTERNAL = 'internal';
   const MEMBER_DISPLAY_EXTERNAL = 'external';
   const MEMBER_DISPLAY_REQUEST = 'request';
@@ -40,7 +41,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
 
     if ($par_data_partnership instanceof ParDataEntityInterface && $par_data_partnership->isCoordinated()) {
       // If there is a members list uploaded already.
-      if ($par_data_partnership->getMemberDisplay() === self::MEMBER_DISPLAY_INTERNAL) {
+      if ($par_data_partnership->getMemberDisplay() === ParDataPartnership::MEMBER_DISPLAY_INTERNAL) {
         // Display only active members.
         $this->getFlowDataHandler()->setFormPermValue("members", $par_data_partnership->getCoordinatedMember(FALSE, TRUE));
 
@@ -54,6 +55,12 @@ class ParPartnershipMembers extends ParFormPluginBase {
         $this->getFlowDataHandler()->setFormPermValue("member_format", $par_data_partnership->getMemberDisplay());
       }
 
+      if ($par_data_partnership->getMemberDisplay() === ParDataPartnership::MEMBER_DISPLAY_EXTERNAL) {
+        $member_link = $par_data_partnership->getMemberLink();
+        $this->getFlowDataHandler()->setFormPermValue("member_list_link", $member_link);
+      }
+
+      // Show the number of members for all display formats.
       $this->getFlowDataHandler()->setFormPermValue("number_of_members", $par_data_partnership->numberOfMembers());
     }
 
@@ -187,12 +194,32 @@ class ParPartnershipMembers extends ParFormPluginBase {
       }
     }
     // Show the member list inline.
-    elseif ($this->getFlowDataHandler()->getFormPermValue("member_format") === self::MEMBER_DISPLAY_REQUEST) {
+    elseif ($this->getFlowDataHandler()->getFormPermValue("member_format") === ParDataPartnership::MEMBER_DISPLAY_EXTERNAL) {
       $form['members']['list'] = [
         '#type' => 'container',
         '#title' => t('Members'),
         '#attributes' => ['class' => 'form-group'],
+        'info' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => "The co-ordinator has hosted the list of members on their own portal. If you have any difficulties viewing this list please contact the coordinator.",
+          '#attributes' => ['class' => ['member-list', 'member-list-link']],
+        ],
         'link' => [
+          '#type' => 'link',
+          '#title' => $this->t('show external members list'),
+          '#url' => $this->getFlowDataHandler()->getFormPermValue("member_list_link"),
+          '#attributes' => ['class' => ['member-list', 'member-list-link']],
+        ],
+      ];
+    }
+    // Show the member list inline.
+    elseif ($this->getFlowDataHandler()->getFormPermValue("member_format") === ParDataPartnership::MEMBER_DISPLAY_REQUEST) {
+      $form['members']['list'] = [
+        '#type' => 'container',
+        '#title' => t('Members'),
+        '#attributes' => ['class' => 'form-group'],
+        'request' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => "Please request a list of members from the coordinator.",

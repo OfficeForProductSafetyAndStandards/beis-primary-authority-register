@@ -140,6 +140,7 @@ hidden:
   field_organisation_person: true
   field_regulatory_function: true
   member_display: true
+  member_link: true
   member_number: true
   name: true
   organisation_change_comment: true

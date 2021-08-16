@@ -71,6 +71,7 @@ hidden:
   field_regulatory_function: true
   inspection_plan: true
   member_display: true
+  member_link: true
   member_number: true
   name: true
   organisation_change_comment: true

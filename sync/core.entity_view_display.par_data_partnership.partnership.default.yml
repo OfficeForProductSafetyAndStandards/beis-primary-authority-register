@@ -15,6 +15,7 @@ dependencies:
     - par_data.par_data_partnership_type.partnership
   module:
     - datetime
+    - link
     - par_data
     - text
 _core:
@@ -100,7 +101,7 @@ content:
     type: entity_reference_label
     region: content
   field_coordinated_business:
-    weight: 14
+    weight: 15
     label: hidden
     settings:
       link: true
@@ -147,6 +148,18 @@ content:
       display_original_value: false
     third_party_settings: {  }
     type: par_list_formatter
+  member_link:
+    label: hidden
+    type: link
+    weight: 14
+    region: content
+    settings:
+      trim_length: null
+      url_only: true
+      rel: nofollow
+      url_plain: false
+      target: '0'
+    third_party_settings: {  }
   member_number:
     label: hidden
     weight: 13
