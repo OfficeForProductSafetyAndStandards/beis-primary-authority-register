@@ -4,6 +4,7 @@ namespace Drupal\Tests\par_data\Kernel;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\Entity\File;
+use Drupal\core\Url;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataAdviceType;

@@ -17,7 +17,7 @@ use Drupal\par_data_test_entity\Plugin\TestSchedulerManager;
  */
 class ParSchedulerTestBase extends EntityKernelTestBase {
 
-  static $modules = ['user', 'language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'par_data_test_entity', 'par_actions', 'datetime'];
+  static $modules = ['user', 'language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'par_data_test_entity', 'par_actions', 'datetime', 'link'];
 
   /**
    * @var AccountInterface
