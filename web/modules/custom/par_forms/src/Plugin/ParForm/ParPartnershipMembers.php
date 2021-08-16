@@ -29,9 +29,6 @@ class ParPartnershipMembers extends ParFormPluginBase {
    */
   const MEMBER_FORMAT_INLINE = 'member_list'; # for internal displays
   const MEMBER_FORMAT_VIEW = 'member_link_view'; # for internal displays
-  const MEMBER_DISPLAY_INTERNAL = 'internal';
-  const MEMBER_DISPLAY_EXTERNAL = 'external';
-  const MEMBER_DISPLAY_REQUEST = 'request';
 
   /**
    * {@inheritdoc}
