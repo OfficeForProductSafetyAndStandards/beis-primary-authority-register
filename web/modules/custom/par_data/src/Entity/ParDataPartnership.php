@@ -592,6 +592,51 @@ class ParDataPartnership extends ParDataEntity {
       ->setDisplayConfigurable('view', TRUE);
 
     // Partnership Status.
+    $fields['member_display'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Member list display'))
+      ->setDescription(t('The list display type, one of: internal, external, request.'))
+      ->addConstraint('par_required')
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 8,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Number of Members.
+    $fields['member_number'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('Number of members'))
+      ->setDescription(t('The number of coordinated members in this partnership.'))
+      ->addConstraint('par_required')
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 6,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'integer',
+        'weight' => 8,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+
+    // Partnership Status.
     $fields['cost_recovery'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Cost Recovery'))
       ->setDescription(t('How is the cost recovered by for this partnership.'))
