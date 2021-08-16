@@ -823,7 +823,7 @@ class ParDataTestBase extends EntityKernelTestBase {
         'approved_date' => '2017-06-01',
         'member_display' => 'internal',
         'member_number' => rand(0,9999),
-        'member_link' => Url::fromUri('http://example.com'),
+        'member_link' => 'http://example.com',
         'reject_comment' => $this->randomString(1000),
         'revocation_source' => 'RD Executive',
         'revocation_date' => '2017-07-01',
