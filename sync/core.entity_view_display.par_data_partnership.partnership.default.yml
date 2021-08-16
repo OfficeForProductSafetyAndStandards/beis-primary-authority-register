@@ -15,6 +15,7 @@ dependencies:
     - par_data.par_data_partnership_type.partnership
   module:
     - datetime
+    - par_data
     - text
 _core:
   default_config_hash: DwJUK0uaOTVAP3yNOF8mhki4UoPmQs2LX7_OTWNKu4k
@@ -99,7 +100,7 @@ content:
     type: entity_reference_label
     region: content
   field_coordinated_business:
-    weight: 12
+    weight: 14
     label: hidden
     settings:
       link: true
@@ -138,6 +139,23 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  member_display:
+    label: hidden
+    weight: 12
+    region: content
+    settings:
+      display_original_value: false
+    third_party_settings: {  }
+    type: par_list_formatter
+  member_number:
+    label: hidden
+    weight: 13
+    region: content
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
   organisation:
     type: entity_reference_entity_view
     weight: 4

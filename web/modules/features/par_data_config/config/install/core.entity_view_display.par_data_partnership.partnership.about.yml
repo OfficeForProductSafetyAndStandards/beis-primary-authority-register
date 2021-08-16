@@ -102,6 +102,8 @@ hidden:
   field_organisation_person: true
   field_regulatory_function: true
   inspection_plan: true
+  member_display: true
+  member_number: true
   name: true
   organisation_change_comment: true
   partnership_info_agreed_authority: true
