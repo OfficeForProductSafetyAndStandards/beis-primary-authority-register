@@ -1139,3 +1139,91 @@ function par_data_update_8048() {
 
   return t("$count file entities removed.");
 }
+
+/**
+ * PAR-1737: Base field updates for new member fields on coordinated partnerships.
+ */
+function par_data_update_9002() {
+  $entity_definition_manager = \Drupal::service('entity.definition_update_manager');
+
+  // New fields definitions to be added to the partnership entity.
+  // @see https://www.drupal.org/node/3034742
+  $storage_definitions = [];
+
+  // Partnership Status.
+  $storage_definitions['member_display'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Member list display'))
+    ->setDescription(t('The list display type, one of: internal, external, request.'))
+    ->addConstraint('par_required')
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'max_length' => 255,
+      'text_processing' => 0,
+    ])
+    ->setDefaultValue('')
+    ->setDisplayOptions('form', [
+      'type' => 'string_textfield',
+      'weight' => 8,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  // Number of Members.
+  $storage_definitions['member_number'] = BaseFieldDefinition::create('integer')
+    ->setLabel(t('Number of members'))
+    ->setDescription(t('The number of coordinated members in this partnership.'))
+    ->addConstraint('par_required')
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'max_length' => 6,
+      'text_processing' => 0,
+    ])
+    ->setDefaultValue('')
+    ->setDisplayOptions('form', [
+      'type' => 'integer',
+      'weight' => 8,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  foreach ($storage_definitions as $field => $definition) {
+    $entity_definition_manager->installFieldStorageDefinition($field, 'par_data_partnership', 'par_data_partnership', $definition);
+  }
+}
+
+/**
+ * PAR-1737 update new member display fields.
+ *
+ * Migrate the number of members from the organisation to the partnership.
+ * Attempt to set the correct display type for coordinated partnerships.
+ */
+function par_data_update_9003() {
+  /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  $qry = $par_data_manager->getEntityQuery('par_data_partnership');
+  $qry->condition('partnership_type', 'coordinated');
+  $results = $qry->execute();
+
+  foreach ($results as $result) {
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $partnership */
+    $partnership = \Drupal::entityTypeManager()->getStorage('par_data_partnership')->load($result);
+
+    // Get the number of members on the organisation.
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation $organisation */
+    $organisation = $partnership ? $partnership->getOrganisation(true) : NULL;
+    $number_members = $organisation ? $organisation->getMembershipSize() : NULL;
+    if ($number_members) {
+      $partnership->set('member_number', $number_members);
+      $partnership->save();
+    }
+  }
+}

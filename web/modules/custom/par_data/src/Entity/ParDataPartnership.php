@@ -226,7 +226,7 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
-   * Get the number of coordinated members listed for this partnership.
+   * Get the number of coordinated members added to this partnership's member list.
    *
    * @param int $i
    *   The index to start counting from, can be used to add up all members.
@@ -246,22 +246,48 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
-   * Get the number of members not listed on this partnership.
+   * Get the number of members associated with this partnership.
    *
-   * Note this is different to self::countMembers(), this method retrieves the number
-   * of members that a coordinator says they have as opposed to the number of members
-   * that they've actually listed on the partnership.
-   *
-   * In some cases these may be different, or they may not have or wish to share
-   * the details of the members up front.
+   * Note this method reports the number of members a coordinator says they have
+   * as opposed to self::countMembers() which retrieves the number of coordinated
+   * members attached to the partnerhip's member list (only used for 'internal' lists).
    */
   public function numberOfMembers() {
-    // @TODO This data is currently stored on the coordinated organisation.
-    // This is wrong and we need to change this.
-    $par_data_organisation = $this->getOrganisation(TRUE);
+    // PAR-1741: Use the display method to determine how to get the number of members.
+    switch ($this->getMemberDisplay()) {
+      case 'internal':
+        return $this->countMembers();
 
-    if ($par_data_organisation) {
-      return $par_data_organisation->getMembershipSize();
+        break;
+      case 'external':
+      case 'request':
+        return !$this->get('member_number')->isEmpty() ?
+          (int) $this->get('member_number')->getString() : 0;
+
+        break;
+    }
+
+    return 0;
+  }
+
+  public function getMemberDisplay() {
+    if (!$this->get('member_display')->isEmpty()) {
+      return $this->get('member_display')->getString();
+    }
+
+    // The default value is determined by whether any coordinated members have
+    // ever been uploaded or else whether the member_number field is empty.
+    return $this->getDefaultMemberDisplay();
+  }
+
+  public function getDefaultMemberDisplay() {
+    if ($this->countMembers(true)) {
+      return 'internal';
+    }
+
+    // Available on request is the typical default.
+    if ($this->get('member_number')->isEmpty()) {
+      return 'request';
     }
 
     return NULL;
