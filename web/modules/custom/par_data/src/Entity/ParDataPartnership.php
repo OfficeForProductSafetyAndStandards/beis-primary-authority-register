@@ -281,16 +281,13 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   public function getDefaultMemberDisplay() {
-    if ($this->countMembers(true)) {
+    // If there are any uploaded members default to an internal list.
+    if ($this->countMembers(0, true) > 0) {
       return 'internal';
     }
 
     // Available on request is the typical default.
-    if ($this->get('member_number')->isEmpty()) {
-      return 'request';
-    }
-
-    return NULL;
+    return 'request';
   }
 
   /**

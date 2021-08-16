@@ -28,7 +28,9 @@ class ParPartnershipMembers extends ParFormPluginBase {
    */
   const MEMBER_FORMAT_INLINE = 'member_list';
   const MEMBER_FORMAT_VIEW = 'member_link_view';
-  const MEMBER_FORMAT_REQUEST = 'member_link_request';
+  const MEMBER_DISPLAY_INTERNAL = 'internal';
+  const MEMBER_DISPLAY_EXTERNAL = 'external';
+  const MEMBER_DISPLAY_REQUEST = 'request';
 
   /**
    * {@inheritdoc}
@@ -38,25 +40,22 @@ class ParPartnershipMembers extends ParFormPluginBase {
 
     if ($par_data_partnership instanceof ParDataEntityInterface && $par_data_partnership->isCoordinated()) {
       // If there is a members list uploaded already.
-      $membershipCount = $par_data_partnership->countMembers();
-      if ($membershipCount > 0) {
+      if ($par_data_partnership->getMemberDisplay() === self::MEMBER_DISPLAY_INTERNAL) {
         // Display only active members.
         $this->getFlowDataHandler()->setFormPermValue("members", $par_data_partnership->getCoordinatedMember(FALSE, TRUE));
-        $this->getFlowDataHandler()->setFormPermValue("number_of_members", $membershipCount);
 
-        // Set display configuration options.
+        // Set display configuration options for internal lists.
         $available_formats = [self::MEMBER_FORMAT_INLINE, self::MEMBER_FORMAT_VIEW];
         $format = isset($this->getConfiguration()['format']) && array_search($this->getConfiguration()['format'], $available_formats) !== FALSE
           ? $this->getConfiguration()['format'] : self::MEMBER_FORMAT_INLINE;
+        $this->getFlowDataHandler()->setFormPermValue("member_format", $format);
       }
-      elseif ($numberOfMembers = $par_data_partnership->numberOfMembers()) {
-        $this->getFlowDataHandler()->setFormPermValue("number_of_members", $numberOfMembers);
+      else {
+        $this->getFlowDataHandler()->setFormPermValue("member_format", $par_data_partnership->getMemberDisplay());
       }
-    }
 
-    // If there are no members the format must be to request the member list
-    // from the coordinator.
-    $this->getFlowDataHandler()->setFormPermValue("member_format", $format ?? self::MEMBER_FORMAT_REQUEST);
+      $this->getFlowDataHandler()->setFormPermValue("number_of_members", $par_data_partnership->numberOfMembers());
+    }
 
     parent::loadData();
   }
@@ -151,25 +150,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
           ],
         ];
       }
-    }
-    // Show the member list inline.
-    elseif ($this->getFlowDataHandler()->getFormPermValue("member_format") === self::MEMBER_FORMAT_REQUEST) {
-      $form['members']['list'] = [
-        '#type' => 'container',
-        '#title' => t('Members'),
-        '#attributes' => ['class' => 'form-group'],
-        'link' => [
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => "Please request a list of members from the coordinator, they will be able to provide a list on request.",
-          '#attributes' => ['class' => ['member-list', 'member-list-link']],
-        ],
-      ];
-    }
 
-    // Operation links should not be added for the link format, where the update
-    // links will be available on the referenced page.
-    if ($this->getFlowDataHandler()->getFormPermValue("member_format") !== self::MEMBER_FORMAT_VIEW) {
       // Add link to add a new member.
       try {
         $member_add_flow = ParFlow::load('member_add');
@@ -204,6 +185,20 @@ class ParPartnershipMembers extends ParFormPluginBase {
           '#attributes' => ['class' => ['upload-member']],
         ];
       }
+    }
+    // Show the member list inline.
+    elseif ($this->getFlowDataHandler()->getFormPermValue("member_format") === self::MEMBER_DISPLAY_REQUEST) {
+      $form['members']['list'] = [
+        '#type' => 'container',
+        '#title' => t('Members'),
+        '#attributes' => ['class' => 'form-group'],
+        'link' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => "Please request a list of members from the coordinator.",
+          '#attributes' => ['class' => ['member-list', 'member-list-link']],
+        ],
+      ];
     }
 
     return $form;
