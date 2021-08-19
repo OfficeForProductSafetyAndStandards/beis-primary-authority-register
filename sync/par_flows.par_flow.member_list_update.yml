@@ -1,6 +1,9 @@
+uuid: d99eaa4e-bace-489a-9c53-b3cca5d19632
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: KwMQwuTaoNzz9mz0yE4Pc27wzYld0TMHssWybuR9wDo
 id: member_list_update
 label: 'Member List Update Flow'
 default_title: null
@@ -16,7 +19,7 @@ steps:
     route: par_member_list_update_flows.update_list_type
     form_id: par_update_list_type
     components:
-      member_list_type: {}
+      member_list_type: {  }
     redirect:
       internal: 4
       external: 2
@@ -25,12 +28,12 @@ steps:
     route: par_member_list_update_flows.update_member_link
     form_id: par_update_member_link
     components:
-      member_link: {}
+      member_link: {  }
   3:
     route: par_member_list_update_flows.update_member_number
     form_id: par_update_member_number
     components:
-      member_number: {}
+      member_number: {  }
   4:
     route: par_member_list_update_flows.confirm_list_details
     form_id: par_confirm_member_list

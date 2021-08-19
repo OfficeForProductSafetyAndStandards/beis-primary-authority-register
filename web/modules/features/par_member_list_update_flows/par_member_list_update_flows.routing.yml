@@ -1,22 +1,8 @@
-par_member_list_update_flows.confirm_member_number:
+par_member_list_update_flows.confirm_list_details:
   path: '/partnership/{par_data_partnership}/member-list/confirm'
   defaults:
-    _form: '\Drupal\par_member_list_update_flows\Form\XXX'
-    _title_callback: '\Drupal\par_member_list_update_flows\Form\ParMemberDeXXXtailsForm::titleCallback'
-  requirements:
-    _permission: 'update member list'
-    _par_member_list_update_access_check: 'TRUE'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-
-par_member_list_update_flows.confirm_list_type:
-  path: '/partnership/{par_data_partnership}/member-list/confirm/list-type'
-  defaults:
-    _form: '\Drupal\par_member_list_update_flows\Form\YYY'
-    _title_callback: '\Drupal\par_member_list_update_flows\Form\YYY::titleCallback'
+    _form: '\Drupal\par_member_list_update_flows\Form\ParConfirmListDetailsForm'
+    _title_callback: '\Drupal\par_member_list_update_flows\Form\ParConfirmListDetailsForm::titleCallback'
   requirements:
     _permission: 'update member list'
     _par_member_list_update_access_check: 'TRUE'
@@ -29,8 +15,8 @@ par_member_list_update_flows.confirm_list_type:
 par_member_list_update_flows.update_list_type:
   path: '/partnership/{par_data_partnership}/member-list/update/list-type'
   defaults:
-    _form: '\Drupal\par_member_list_update_flows\Form\AAA'
-    _title_callback: '\Drupal\par_member_list_update_flows\Form\AAA::titleCallback'
+    _form: '\Drupal\par_member_list_update_flows\Form\ParUpdateListTypeForm'
+    _title_callback: '\Drupal\par_member_list_update_flows\Form\ParUpdateListTypeForm::titleCallback'
   requirements:
     _permission: 'update member list'
     _par_member_list_update_access_check: 'TRUE'
@@ -43,8 +29,8 @@ par_member_list_update_flows.update_list_type:
 par_member_list_update_flows.update_member_link:
   path: '/partnership/{par_data_partnership}/member-list/update/member-link'
   defaults:
-    _form: '\Drupal\par_member_list_update_flows\Form\BBB'
-    _title_callback: '\Drupal\par_member_list_update_flows\Form\BBB::titleCallback'
+    _form: '\Drupal\par_member_list_update_flows\Form\ParUpdateLinkForm'
+    _title_callback: '\Drupal\par_member_list_update_flows\Form\ParUpdateLinkForm::titleCallback'
   requirements:
     _permission: 'update member list'
     _par_member_list_update_access_check: 'TRUE'
@@ -57,22 +43,8 @@ par_member_list_update_flows.update_member_link:
 par_member_list_update_flows.update_member_number:
   path: '/partnership/{par_data_partnership}/member-list/update/member-count'
   defaults:
-    _form: '\Drupal\par_member_list_update_flows\Form\CCC'
-    _title_callback: '\Drupal\par_member_list_update_flows\Form\CCC::titleCallback'
-  requirements:
-    _permission: 'update member list'
-    _par_member_list_update_access_check: 'TRUE'
-    par_data_partnership: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-
-par_member_list_update_flows.member_list_review:
-  path: '/partnership/{par_data_partnership}/member-list/review'
-  defaults:
-    _form: '\Drupal\par_member_list_update_flows\Form\DDD'
-    _title_callback: '\Drupal\par_member_list_update_flows\Form\DDD::titleCallback'
+    _form: '\Drupal\par_member_list_update_flows\Form\ParUpdateMemberNumberForm'
+    _title_callback: '\Drupal\par_member_list_update_flows\Form\ParUpdateMemberNumberForm::titleCallback'
   requirements:
     _permission: 'update member list'
     _par_member_list_update_access_check: 'TRUE'

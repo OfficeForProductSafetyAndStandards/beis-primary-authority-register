@@ -104,6 +104,7 @@ module:
   par_manage_subscription_list_flows: 0
   par_member_add_flows: 0
   par_member_cease_flows: 0
+  par_member_list_update_flows: 0
   par_member_unlock_flows: 0
   par_member_update_flows: 0
   par_member_upload_flows: 0

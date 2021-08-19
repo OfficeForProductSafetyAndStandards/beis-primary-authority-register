@@ -5,6 +5,7 @@ namespace Drupal\par_data\Entity;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\link\LinkItemInterface;
 use Drupal\user\UserInterface;
 
@@ -259,6 +260,9 @@ class ParDataPartnership extends ParDataEntity {
    * Note this method reports the number of members a coordinator says they have
    * as opposed to self::countMembers() which retrieves the number of coordinated
    * members attached to the partnerhip's member list (only used for 'internal' lists).
+   *
+   * @return int
+   *  The number of active members.
    */
   public function numberOfMembers() {
     // PAR-1741: Use the display method to determine how to get the number of members.
@@ -285,9 +289,11 @@ class ParDataPartnership extends ParDataEntity {
    *  The URL for the external member link.
    */
   public function getMemberLink() {
-    return !$this->get('member_link')->isEmpty()
+    $url = !$this->get('member_link')->isEmpty()
         ? $this->get('member_link')->first()->getUrl()
         : NULL;
+
+    return $url instanceof Url ? $url : NULL;
   }
 
   /**

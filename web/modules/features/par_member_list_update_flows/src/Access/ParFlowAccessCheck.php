@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_member_list_update_flows;
+namespace Drupal\par_member_list_update_flows\Access;
 
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Access\AccessResult;
@@ -65,7 +65,7 @@ class ParFlowAccessCheck implements AccessInterface {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataCoordinatedBusiness $par_data_coordinated_business = NULL) {
+  public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
     try {
       // Get a new flow negotiator that points to the route being checked for access.
       $access_route_negotiator = $this->flowNegotiator->cloneFlowNegotiator($route_match);

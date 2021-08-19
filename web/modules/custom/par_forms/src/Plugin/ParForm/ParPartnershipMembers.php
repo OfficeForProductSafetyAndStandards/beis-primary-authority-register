@@ -46,11 +46,10 @@ class ParPartnershipMembers extends ParFormPluginBase {
         $available_formats = [self::MEMBER_FORMAT_INLINE, self::MEMBER_FORMAT_VIEW];
         $format = isset($this->getConfiguration()['format']) && array_search($this->getConfiguration()['format'], $available_formats) !== FALSE
           ? $this->getConfiguration()['format'] : self::MEMBER_FORMAT_INLINE;
-        $this->getFlowDataHandler()->setFormPermValue("member_format", $format);
+        $this->getFlowDataHandler()->setFormPermValue("member_display_format", $format);
       }
-      else {
-        $this->getFlowDataHandler()->setFormPermValue("member_format", $par_data_partnership->getMemberDisplay());
-      }
+
+      $this->getFlowDataHandler()->setFormPermValue("member_list_type", $par_data_partnership->getMemberDisplay());
 
       if ($par_data_partnership->getMemberDisplay() === ParDataPartnership::MEMBER_DISPLAY_EXTERNAL) {
         $member_link = $par_data_partnership->getMemberLink();
@@ -92,7 +91,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
     $members = $this->getDefaultValuesByKey('members', $cardinality, NULL);
 
     // Show the link to view the full membership list.
-    if ($this->getFlowDataHandler()->getFormPermValue("member_format") === self::MEMBER_FORMAT_VIEW) {
+    if ($this->getFlowDataHandler()->getFormPermValue("member_display_format") === self::MEMBER_FORMAT_VIEW) {
       try {
         $member_link = $this->getLinkByRoute('view.members_list.member_list_coordinator', [], [], TRUE);
       } catch (ParFlowException $e) {
@@ -108,7 +107,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
       }
     }
     // Show the member list inline.
-    elseif ($this->getFlowDataHandler()->getFormPermValue("member_format") === self::MEMBER_FORMAT_INLINE) {
+    elseif ($this->getFlowDataHandler()->getFormPermValue("member_display_format") === self::MEMBER_FORMAT_INLINE) {
       // Initialize pager and get current page.
       $number_per_page = 5;
       $pager = $this->getUniquePager()->getPager('partnership_manage_coordinated_members');
@@ -191,7 +190,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
       }
     }
     // Show the member list inline.
-    elseif ($this->getFlowDataHandler()->getFormPermValue("member_format") === ParDataPartnership::MEMBER_DISPLAY_EXTERNAL) {
+    elseif ($this->getFlowDataHandler()->getFormPermValue("member_display") === ParDataPartnership::MEMBER_DISPLAY_EXTERNAL) {
       $form['members']['list'] = [
         '#type' => 'container',
         '#title' => t('Members'),
@@ -211,7 +210,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
       ];
     }
     // Show the member list inline.
-    elseif ($this->getFlowDataHandler()->getFormPermValue("member_format") === ParDataPartnership::MEMBER_DISPLAY_REQUEST) {
+    elseif ($this->getFlowDataHandler()->getFormPermValue("member_list_type") === ParDataPartnership::MEMBER_DISPLAY_REQUEST) {
       $form['members']['list'] = [
         '#type' => 'container',
         '#title' => t('Members'),
@@ -222,6 +221,28 @@ class ParPartnershipMembers extends ParFormPluginBase {
           '#value' => "Please request a list of members from the coordinator.",
           '#attributes' => ['class' => ['member-list', 'member-list-link']],
         ],
+      ];
+    }
+
+    // Display the membership list details update link.
+    try {
+      // For internal lists the details are updated separately.
+      $link_title = $this->getFlowDataHandler()->getFormPermValue("member_list_type") === ParDataPartnership::MEMBER_DISPLAY_INTERNAL ?
+        'change the list type' :
+        'update the list details';
+
+      $list_update_flow = ParFlow::load('member_list_update');
+      $list_update_link = $list_update_flow ?
+        $list_update_flow->getStartLink(1, $link_title) : NULL;
+    } catch (ParFlowException $e) {
+
+    }
+    if (isset($list_update_link) && $list_update_link instanceof Link) {
+      $form['members']['update'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $list_update_link ? $list_update_link->toString() : '',
+        '#attributes' => ['class' => ['update-list']],
       ];
     }
 

@@ -1,7 +1,6 @@
 services:
   par_member_list_update_flows.access_checker:
-    class: '\Drupal\par_notification\Access\ParFlowAccessCheck'
-    arguments: ['@par_data.manager', 'par_flows.negotiator', 'par_flows.data_handler']
+    class: '\Drupal\par_member_list_update_flows\Access\ParFlowAccessCheck'
+    arguments: ['@par_data.manager', '@par_flows.negotiator', '@par_flows.data_handler']
     tags:
       - { name: access_check, applies_to: _par_member_list_update_access_check }
-
