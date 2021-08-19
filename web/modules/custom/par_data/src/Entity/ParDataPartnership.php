@@ -89,6 +89,11 @@ class ParDataPartnership extends ParDataEntity {
   const MEMBER_DISPLAY_REQUEST = 'request';
 
   /**
+   * The revision prefix for identifying when the organisation last updated the list.
+   */
+  const REVISION_PREFIX = 'PAR_MEMBER_LIST_UPDATE';
+
+  /**
    * Get the time service.
    */
   public function getTime() {
@@ -280,6 +285,40 @@ class ParDataPartnership extends ParDataEntity {
     }
 
     return 0;
+  }
+
+  /**
+   * Get the time the membership list was last updated.
+   *
+   * @return bool
+   *  Whether the member list needs updating.
+   *  TRUE if it hasn't been updated recently
+   *  FALSE if it has been updated recently
+   */
+  public function memberListNeedsUpdating($since = '-3 months') {
+    // Make sure not to request this more than once for a given entity.
+    $function_id = __FUNCTION__ . ':' . $this->uuid();
+    $status_revision = &drupal_static($function_id);
+    if (!empty($status_revision)) {
+      return $status_revision;
+    }
+
+    $partnership_storage = $this->entityTypeManager()->getStorage($this->getEntityTypeId());
+
+    // Query any member list update revisions since the last cutoff time.
+    $timestamp = strtotime($since);
+    $revision_query = $partnership_storage->getQuery()->allRevisions()
+      ->condition('id', $this->id())
+      ->condition($this->getEntityType()->getRevisionMetadataKey('revision_log_message'), self::REVISION_PREFIX, 'STARTS_WITH')
+      ->condition($this->getEntityType()->getRevisionMetadataKey('revision_created'), $timestamp, '>=')
+      ->sort($this->getEntityType()->getRevisionMetadataKey('revision_created'), 'DESC');
+
+    $count = $revision_query->count()->execute();
+    if ($count > 0) {
+      return FALSE;
+    }
+
+    return TRUE;
   }
 
   /**

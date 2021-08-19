@@ -8,6 +8,7 @@ use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
+use Drupal\par_log\EventSubscriber\ParData;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -75,22 +76,21 @@ class ParConfirmListDetailsForm extends ParBaseForm {
       '#tag' => 'p',
       '#value' => $this->formatPlural(
         $member_number,
-        'There is %count active member in the member list.',
-        'There are %count active members in the member list.',
-        ['%count' => $member_number]
+        'There is @count active member in the member list.',
+        'There are @count active members in the member list.',
+        ['@count' => $member_number]
       ),
       '#attributes' => ['class' => 'member-count'],
     ];
     if ($member_display === ParDataPartnership::MEMBER_DISPLAY_INTERNAL) {
-      $form['number']['#value'] = $this->t("You will be able to update the members in this list after confirming these details");
-      $form['number']['#weight'] = 10;
+      $form['number']['#value'] .= $this->t(" You will be able to update them after confirming these details");
     }
 
     // Confirm the list type.
     $form['list'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => $this->t('The list will display as an %type.', ['%type' => $display_label]),
+      '#value' => $this->t('The list will display as an @type.', ['@type' => $display_label]),
       '#attributes' => ['class' => 'member-display'],
     ];
 
@@ -202,7 +202,7 @@ class ParConfirmListDetailsForm extends ParBaseForm {
 
       // Save a new partnership revision.
       $revision_message = "The membership list has been confirmed.";
-      $par_data_partnership->setNewRevision(TRUE, implode(':', [self::REVISION_PREFIX, $revision_message]));
+      $par_data_partnership->setNewRevision(TRUE, implode(':', [ParDataPartnership::REVISION_PREFIX, $revision_message]));
       if ($par_data_partnership->save()) {
         $this->getFlowDataHandler()->deleteStore();
       }
