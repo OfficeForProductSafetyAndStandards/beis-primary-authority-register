@@ -1,0 +1,30 @@
+uuid: 437c48a7-24b9-4284-adf7-5dd64d5d9ca7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.member_list_stale_warning.field_message_subject
+    - field.field.message.member_list_stale_warning.field_partnership
+    - field.field.message.member_list_stale_warning.field_to
+    - message.template.member_list_stale_warning
+id: message.member_list_stale_warning.default
+targetEntityType: message
+bundle: member_list_stale_warning
+mode: default
+content:
+  field_partnership:
+    weight: 1
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_message_subject: true
+  field_to: true

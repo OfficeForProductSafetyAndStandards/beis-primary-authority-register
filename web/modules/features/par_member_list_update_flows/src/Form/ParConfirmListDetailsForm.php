@@ -202,7 +202,7 @@ class ParConfirmListDetailsForm extends ParBaseForm {
 
       // Save a new partnership revision.
       $revision_message = "The membership list has been confirmed.";
-      $par_data_partnership->setNewRevision(TRUE, implode(':', [ParDataPartnership::REVISION_PREFIX, $revision_message]));
+      $par_data_partnership->setNewRevision(TRUE, implode(':', [ParDataPartnership::MEMBER_LIST_REVISION_PREFIX, $revision_message]));
       if ($par_data_partnership->save()) {
         $this->getFlowDataHandler()->deleteStore();
       }

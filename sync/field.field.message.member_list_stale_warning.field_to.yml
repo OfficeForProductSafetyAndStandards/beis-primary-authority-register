@@ -1,0 +1,19 @@
+uuid: 929ab4f3-c0e5-4c7b-978f-fed796463949
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_to
+    - message.template.member_list_stale_warning
+id: message.member_list_stale_warning.field_to
+field_name: field_to
+entity_type: message
+bundle: member_list_stale_warning
+label: To
+description: 'The email address of the message recipient.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

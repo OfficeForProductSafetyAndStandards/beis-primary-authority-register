@@ -137,6 +137,7 @@ class ParScheduleManager extends DefaultPluginManager {
    *   The timestamp when this plugin was last run.
    */
   public function getSchedulerLastRun($plugin) {
+    return 0;
     return \Drupal::state()->get("par_actions.{$plugin->getPluginId()}.last_schedule", 0);
   }
 

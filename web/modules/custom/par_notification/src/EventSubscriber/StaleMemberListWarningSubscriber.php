@@ -12,14 +12,14 @@ use Drupal\par_data\ParDataRelationship;
 use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParNotificationSubscriberBase;
 
-class InspectionPlanExpiryWarningSubscriber extends ParNotificationSubscriberBase {
+class StaleMemberListWarningSubscriber extends ParNotificationSubscriberBase {
 
   /**
    * The message template ID created for this notification.
    *
-   * @see /admin/structure/message/manage/inspection_plan_expiry_warning
+   * @see /admin/structure/message/manage/member_list_stale_warning
    */
-  const MESSAGE_ID = 'inspection_plan_expiry_warning';
+  const MESSAGE_ID = 'member_list_stale_warning';
 
   /**
    * The events to react to.
@@ -29,7 +29,7 @@ class InspectionPlanExpiryWarningSubscriber extends ParNotificationSubscriberBas
   static function getSubscribedEvents() {
     // Revocation event should fire after most default events to make sure
     // revocation has not been cancelled.
-    $events[ParDataEvent::customAction('par_data_inspection_plan', 'expiry_notification')][] = ['onEvent', -100];
+    $events[ParDataEvent::customAction('par_data_partnership', 'stale_list_notification')][] = ['onEvent', -100];
 
     return $events;
   }
@@ -42,34 +42,11 @@ class InspectionPlanExpiryWarningSubscriber extends ParNotificationSubscriberBas
    * @return ParDataPerson[]
    */
   public function getRecipients(ParDataEventInterface $event) {
-    $contacts = [];
+    /** @var ParDataEntityInterface $entity */
+    $entity = $event->getEntity();
 
-    /** @var ParDataEntityInterface $par_data_inspection_plan */
-    $par_data_inspection_plan = $event->getEntity();
-    /** @var ParDataRelationship[] $partnership_relationships */
-    $partnership_relationships = $par_data_inspection_plan->getRelationships('par_data_partnership');
-
-    foreach ($partnership_relationships as $relationship) {
-      $par_data_partnership = $relationship->getEntity();
-
-      // Always notify the primary authority contacts.
-      if ($primary_authority_contacts = $par_data_partnership->getAuthorityPeople()) {
-        foreach ($primary_authority_contacts as $contact) {
-          if (!isset($contacts[$contact->id()])) {
-            $contacts[$contact->id()] = $contact;
-          }
-        }
-      }
-
-      // Notify secondary contacts at the authority if there are any.
-      if ($authority = $par_data_partnership->getAuthority(TRUE)) {
-        foreach ($authority->getPerson() as $contact) {
-          if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
-            $contacts[$contact->id()] = $contact;
-          }
-        }
-      }
-    }
+    // Notify secondary contacts if they've opted-in.
+    $contacts = $entity->getOrganisationPeople();
 
     return $contacts;
   }
@@ -78,11 +55,8 @@ class InspectionPlanExpiryWarningSubscriber extends ParNotificationSubscriberBas
    * @param ParDataEventInterface $event
    */
   public function onEvent(ParDataEventInterface $event) {
-    /** @var ParDataEntityInterface par_data_inspection_plan */
-    $par_data_inspection_plan = $event->getEntity();
-    /** @var ParDataRelationship[] $partnership_relationships */
-    $partnership_relationships = $par_data_inspection_plan->getRelationships('par_data_partnership');
-    $par_data_partnership = !empty($partnership_relationships) ? current($partnership_relationships)->getEntity() : NULL;
+    /** @var ParDataEntityInterface par_data_partnership */
+    $par_data_partnership = $event->getEntity();
 
     $contacts = $this->getRecipients($event);
     foreach ($contacts as $contact) {
@@ -101,14 +75,13 @@ class InspectionPlanExpiryWarningSubscriber extends ParNotificationSubscriberBas
         }
 
         // Add contextual information to this message.
-        if ($message->hasField('field_inspection_plan')) {
-          $message->set('field_inspection_plan', $par_data_inspection_plan);
+        if ($message->hasField('field_partnership')) {
+          $message->set('field_partnership', $par_data_partnership);
         }
 
         // Add some custom arguments to this message.
         $message->setArguments([
           '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
-          '@inspection_plan_title' =>  $par_data_inspection_plan ? strtolower($par_data_inspection_plan->getTitle()) : 'inspection plan',
           '@first_name' => $contact->getFirstName(),
         ]);
 

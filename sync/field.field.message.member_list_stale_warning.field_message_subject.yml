@@ -1,0 +1,21 @@
+uuid: 55f0b2b3-66df-41c8-b87a-271a78e5e369
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_message_subject
+    - message.template.member_list_stale_warning
+id: message.member_list_stale_warning.field_message_subject
+field_name: field_message_subject
+entity_type: message
+bundle: member_list_stale_warning
+label: 'Message Subject'
+description: ''
+required: true
+translatable: true
+default_value:
+  -
+    value: 'Primary Authority: Member list needs updating'
+default_value_callback: ''
+settings: {  }
+field_type: string
