@@ -174,5 +174,5 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-next"
 
         # CHECK
-        When I click the link text "Member Upload Test Business"
+        Then the element "h1.heading-xlarge" contains the text "Member Upload Test Business"
         And the element ".number-of-members" contains the text "There are 1583 active members covered by this partnership"
