@@ -19,8 +19,8 @@ class ParConfirmListDetailsForm extends ParBaseForm {
   /**
    * The confirmation values.
    */
-  const CONFIRM = 'no';
-  const UPDATE = 'yes';
+  const CONFIRM = 'yes';
+  const UPDATE = 'no';
 
   /**
    * The revision prefix for identifying when the organisation last updated the list.
@@ -97,7 +97,6 @@ class ParConfirmListDetailsForm extends ParBaseForm {
     // External lists should confirm the link if one has been set.
     if ($member_display === ParDataPartnership::MEMBER_DISPLAY_EXTERNAL
       && $member_link = $this->getFlowDataHandler()->getDefaultValues('member_link', NULL)) {
-      var_dump($member_link->toString());
       $form['link'] = [
         '#type' => 'container',
         '#attributes' => ['class' => ['member-link', 'form-group']],

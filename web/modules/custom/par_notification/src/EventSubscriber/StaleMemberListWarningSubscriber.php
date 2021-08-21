@@ -27,8 +27,7 @@ class StaleMemberListWarningSubscriber extends ParNotificationSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    // Revocation event should fire after most default events to make sure
-    // revocation has not been cancelled.
+    // Get the custom event, dispatched when a member list needs updating.
     $events[ParDataEvent::customAction('par_data_partnership', 'stale_list_notification')][] = ['onEvent', -100];
 
     return $events;

@@ -303,6 +303,11 @@ class ParDataPartnership extends ParDataEntity {
       return $status_revision;
     }
 
+    // Only for coordinated partnerships.
+    if (!$this->isCoordinated()) {
+      return FALSE;
+    }
+
     $partnership_storage = $this->entityTypeManager()->getStorage($this->getEntityTypeId());
 
     // Query any member list update revisions since the last cutoff time.

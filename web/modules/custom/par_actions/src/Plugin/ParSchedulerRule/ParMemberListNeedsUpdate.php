@@ -12,7 +12,7 @@ use Drupal\par_data\Entity\ParDataPartnership;
  *   id = "member_list_needs_update",
  *   title = @Translation("Prompt to update the member list."),
  *   entity = "par_data_partnership",
- *   time = "+3 months",
+ *   time = "-3 months",
  *   queue = FALSE,
  *   status = TRUE,
  *   action = "par_send_member_list_notice"
@@ -23,6 +23,9 @@ class ParMemberListNeedsUpdate extends ParSchedulerRuleBase {
   public function query() {
     $entity_type_definition = \Drupal::entityTypeManager()->getDefinition($this->getEntity());
     $query = parent::query();
+
+    // Only for coordinated partnerships.
+    $query->condition('partnership_type', 'coordinated');
 
     // This condition relies on a time comparison with a timestamp field.
     $timestamp = strtotime($this->getTime());
@@ -40,5 +43,20 @@ class ParMemberListNeedsUpdate extends ParSchedulerRuleBase {
     );
 
     return $query;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getItems() {
+    $storage = $this->getParDataManager()->getEntityTypeStorage($this->getEntity());
+    $coordinated_partnerships = $this->getParDataManager()->getEntitiesByProperty(
+      'par_data_partnership', 'partnership_type', 'coordinated', FALSE);
+
+    // This is a reverse query, the entities returned do NOT need updating.
+    $results = $this->query()->execute();
+    $up_to_date = $results ? $storage->loadMultiple($results) : [];
+
+    return array_diff_key($coordinated_partnerships, $up_to_date);
   }
 }
