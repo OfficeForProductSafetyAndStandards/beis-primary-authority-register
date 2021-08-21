@@ -171,7 +171,7 @@ Feature: Coordinator User - Upload Members
         Then the element ".member-count" contains the text "There are 1583 active members in the member list."
         Then the element ".member-display" contains the text "The list will display as an external list available by link."
         When I click on the radio "#edit-confirm-yes"
-        And I click on the button "#edit-next"
+        And I click on the button "#edit-save"
 
         # CHECK
         Then the element "h1.heading-xlarge" contains the text "Member Upload Test Business"
