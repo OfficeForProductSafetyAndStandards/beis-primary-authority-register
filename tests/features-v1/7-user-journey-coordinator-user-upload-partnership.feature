@@ -13,7 +13,7 @@ Feature: Coordinator User - Upload Members
         When I click the link text "show members list"
         Then the element "h1.heading-xlarge" contains the text "Members list"
         When I click the link text "Upload a Member List (CSV)"
-        Then the element "h1.heading-xlarge" contains the text "Upload a Member List (CSV)"
+        Then the element "h1.heading-xlarge" contains the text "Upload a list of members"
 
         # SUPPORT LINKS
         And the element "#edit-info--description em a" contains the text "Member Guidance Page"
