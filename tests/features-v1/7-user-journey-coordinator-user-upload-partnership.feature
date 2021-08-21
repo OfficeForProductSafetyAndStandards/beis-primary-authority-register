@@ -10,7 +10,7 @@ Feature: Coordinator User - Upload Members
         Then the element "h1.heading-xlarge" contains the text "Organisation For Coordinated Partnership"
 
         # UPLOAD MEMBERS
-        When I click the link text "show member list"
+        When I click the link text "show members list"
         Then the element "h1.heading-xlarge" contains the text "Members list"
         When I click the link text "upload a member list (csv)"
         Then the element "h1.heading-xlarge" contains the text "Upload a Member List (CSV)"
