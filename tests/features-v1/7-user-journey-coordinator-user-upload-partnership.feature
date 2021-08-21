@@ -12,7 +12,7 @@ Feature: Coordinator User - Upload Members
         # UPLOAD MEMBERS
         When I click the link text "show members list"
         Then the element "h1.heading-xlarge" contains the text "Members list"
-        When I click the link text "upload a member list (csv)"
+        When I click the link text "Upload a Member List (CSV)"
         Then the element "h1.heading-xlarge" contains the text "Upload a Member List (CSV)"
 
         # SUPPORT LINKS
@@ -158,6 +158,7 @@ Feature: Coordinator User - Upload Members
         # LIST DETAILS
         Then the element "h1.heading-xlarge" contains the text "Where is the list?"
         When I add "example.com" to the inputfield "#edit-member-link"
+        And I click on the button "#edit-next"
         Then the element ".error-summary" contains the text "Please enter a fully qualified URL for the member list."
         When I add "http://example.com" to the inputfield "#edit-member-link"
         And I click on the button "#edit-next"
