@@ -54,8 +54,12 @@ class ApprovedEnforcementSubscriber extends ParNotificationSubscriberBase {
     /** @var ParDataEntityInterface $par_data_enforcement_notice */
     $par_data_enforcement_notice = $event->getEntity();
 
-    // Only act on approved enforcement notices.
-    if ($par_data_enforcement_notice->isApproved()) {
+    // Get the partnership for this notice.
+    $partnership = $par_data_enforcement_notice->getPartnership();
+
+    // Only act on approved enforcement notices for direct partnerships
+    if ($par_data_enforcement_notice->isApproved()
+      && $partnership && $partnership->isDirect()) {
       // Get the contacts for this notification and build the message.
       $contacts = $this->getRecipients($event);
 
