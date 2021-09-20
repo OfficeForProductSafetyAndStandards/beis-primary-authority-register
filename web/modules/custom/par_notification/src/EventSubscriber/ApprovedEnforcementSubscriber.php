@@ -41,7 +41,7 @@ class ApprovedEnforcementSubscriber extends ParNotificationSubscriberBase {
     /** @var ParDataEntityInterface $entity */
     $entity = $event->getEntity();
 
-    // Notify secondary contacts if they've opted-in.
+    // Get the contact information for the primary business.
     $contacts = $entity->getOrganisationContacts();
 
     return $contacts;
