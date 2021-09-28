@@ -41,7 +41,7 @@ class ApprovedEnforcementSubscriber extends ParNotificationSubscriberBase {
     /** @var ParDataEntityInterface $entity */
     $entity = $event->getEntity();
 
-    // Notify secondary contacts if they've opted-in.
+    // Get the contact information for the primary business.
     $contacts = $entity->getOrganisationContacts();
 
     return $contacts;
@@ -54,14 +54,15 @@ class ApprovedEnforcementSubscriber extends ParNotificationSubscriberBase {
     /** @var ParDataEntityInterface $par_data_enforcement_notice */
     $par_data_enforcement_notice = $event->getEntity();
 
-    foreach ($par_data_enforcement_notice->getEnforcementActions() as $delta => $par_data_enforcement_action) {
-      // Only act on approved enforcements.
-      if (!$par_data_enforcement_action->isApproved()) {
-        continue;
-      }
+    // Get the partnership for this notice.
+    $partnership = $par_data_enforcement_notice->getPartnership();
 
+    // Only act on approved enforcement notices for direct partnerships
+    if ($par_data_enforcement_notice->isApproved()
+      && $partnership && $partnership->isDirect()) {
       // Get the contacts for this notification and build the message.
       $contacts = $this->getRecipients($event);
+
       foreach ($contacts as $contact) {
         if (!isset($this->recipients[$contact->getEmail()])) {
           // Record the recipient so that we don't send them the message twice.
@@ -96,9 +97,6 @@ class ApprovedEnforcementSubscriber extends ParNotificationSubscriberBase {
           $this->sendMessage($message, $contact->getEmail());
         }
       }
-
-      // Only send the message once per enforcement notice.
-      break;
 
     }
   }
