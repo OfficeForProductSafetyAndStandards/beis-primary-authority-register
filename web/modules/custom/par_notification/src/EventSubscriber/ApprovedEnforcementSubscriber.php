@@ -4,6 +4,7 @@ namespace Drupal\par_notification\EventSubscriber;
 
 use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
@@ -55,11 +56,11 @@ class ApprovedEnforcementSubscriber extends ParNotificationSubscriberBase {
     $par_data_enforcement_notice = $event->getEntity();
 
     // Get the partnership for this notice.
-    $partnership = $par_data_enforcement_notice->getPartnership();
+    $partnership = $par_data_enforcement_notice->getPartnership(TRUE);
 
     // Only act on approved enforcement notices for direct partnerships
     if ($par_data_enforcement_notice->isApproved()
-      && $partnership && $partnership->isDirect()) {
+      && $partnership && $partnership instanceof ParDataPartnership && $partnership->isDirect()) {
       // Get the contacts for this notification and build the message.
       $contacts = $this->getRecipients($event);
 
