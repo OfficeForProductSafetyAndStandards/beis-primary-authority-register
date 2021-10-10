@@ -37,11 +37,25 @@ class ParEnforcementSendWarning extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
+    $this->getFlowDataHandler()
+      ->setFormPermValue("enforcement_label", $par_data_enforcement_notice->label());
 
-    // Only allow this message for approved or partly approved enforcements.
+    // A message to display for all approved and partly approved enforcement notices.
     if ($par_data_enforcement_notice->isApproved()) {
       $this->getFlowDataHandler()
         ->setFormPermValue("enforcement_approved", TRUE);
+    }
+    // A message to display for all blocked and partly blocked enforcement notices.
+    if ($par_data_enforcement_notice->isApproved()) {
+      $this->getFlowDataHandler()
+        ->setFormPermValue("enforcement_blocked", TRUE);
+    }
+
+    // PAR-1735: Enforcement notices against direct partnerships are automatically
+    // sent to the business, all other enforcement notices must be sent by the EO.
+    if ($par_data_enforcement_notice && $par_data_partnership = $par_data_enforcement_notice->getPartnership(TRUE)) {
+      $sent = ($par_data_partnership && $par_data_partnership->isDirect());
+      $this->getFlowDataHandler()->setFormPermValue('enforcement_sent', $sent);
     }
 
     parent::loadData($cardinality);
@@ -56,13 +70,41 @@ class ParEnforcementSendWarning extends ParFormPluginBase {
       $schedule_url = Url::fromUri('http://www.legislation.gov.uk/ukpga/2008/13/schedule/4A', ['attributes' => ['target' => '_blank']]);
       $schedule_link = Link::fromTextAndUrl('Schedule 4A of The Regulatory Enforcement Sanctions Act 2008', $schedule_url);
 
-      $form['warning'] = [
+      $message = $this->getFlowDataHandler()->getFormPermValue('enforcement_sent')
+        ? "Please note that this enforcement notice has been approved.
+          The business has been notified of this through the register."
+        : "Please note that this enforcement notice has been approved.
+          If you intend to proceed with your proposed action you must now notify the business.
+          This notification should be made directly to the business via e-mail.
+          If you require contact details of the business, please obtain these from the Primary Authority.
+          For further information please refer to @link.";
+
+      $form['approved_message'] = [
         '#type' => 'container',
         '#attributes' => ['class' => ['form-group']],
         'warning' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $this->t("This enforcement notice has now been reviewed by the Primary Authority."),
+          '#value' => $this->t($message, ['@link' => $schedule_link->toString()]),
+          '#attributes' => ['class' => ['govuk-!-font-weight-bold']],
+        ],
+      ];
+    }
+
+    // Show determination message.
+    if ($this->getFlowDataHandler()->getFormPermValue('enforcement_blocked')
+      || $this->getFlowDataHandler()->getFormPermValue('enforcement_approved')) {
+      $label = $this->getFlowDataHandler()->getFormPermValue('enforcement_label');
+      $email_link = Link::fromTextAndUrl("pa@beis.gov.uk", Url::fromUri("mailto:pa@beis.gov.uk?subject=Determination:%20$label"));
+
+      $form['determination_message'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['form-group']],
+        'warning' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => "Please contact the Primary Authority if you have any questions around this decision,
+            or contact Office for Product Safety Standards at {$email_link->toString()} to ask for a determination if you have any disagreements with it.",
           '#attributes' => ['class' => ['govuk-!-font-weight-bold']],
         ],
       ];
