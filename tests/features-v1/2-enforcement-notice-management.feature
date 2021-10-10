@@ -36,9 +36,11 @@ Feature: Enforcement notice review
         When I search for an enforcement notice "Enforcement notice 3" against "Charlie's"
         Then the element "h1.heading-xlarge" contains the text "View notification of enforcement action received from"
         And the element ".component-enforcement-send-warning" does not contain the text "Please note that this enforcement notice has been approved. The business has been notified of this through the register."
+        And the element ".component-enforcement-send-warning" contains the text "Please contact the Primary Authority if you have any questions around this decision"
         When I search for an enforcement notice "Enforcement notice 4" against "Charlie's"
         Then the element "h1.heading-xlarge" contains the text "View notification of enforcement action received from"
         And the element ".component-enforcement-send-warning" contains the text "Please note that this enforcement notice has been approved. The business has been notified of this through the register."
+        And the element ".component-enforcement-send-warning" contains the text "Please contact the Primary Authority if you have any questions around this decision"
 
     @v1-ci
     Scenario: Check un-reviewed enforcement notices
