@@ -78,17 +78,27 @@ class ParMemberListType extends ParFormPluginBase {
   public function getOptionLabel(&$item, $key) {
     switch ($key) {
       case ParDataPartnership::MEMBER_DISPLAY_INTERNAL:
-        $description = "Upload the list securely to the Primary Authority Register. <br><br>This list will remain private within the Register and will make it easier for Local Authorities to search the partnership without submitting requests for information to the coordinator.";
+        $description = "Upload the list securely to the Primary Authority Register.
+            <br><br>This list will remain private within the Register and will make
+            it easier for Local Authorities to search the partnership without submitting
+            requests for information to the co-ordinator.";
 
         break;
 
       case ParDataPartnership::MEMBER_DISPLAY_EXTERNAL:
-        $description = "This list must be publicly available to enable Local Authorities to access the member list without submitting requests for information to the coordinator.";
+        $description = "This list must be publicly available to enable Local Authorities
+          to access the member list without submitting requests for information to
+          the co-ordinator.";
 
         break;
 
       case ParDataPartnership::MEMBER_DISPLAY_REQUEST:
-        $description = "The coordinator must agree to provide all the information about the member list to Local Authorities in a timely manner when requested.";
+        $description = "Where the co-ordinator receives a request for a copy of its
+          Primary Authority Membership List from its primary authority, an enforcing
+          authority, a supporting regulator, or from the Secretary of State, the co-ordinator
+          must make the copy available as soon as reasonably practicable and, in any
+          event, not later than the third working day after the date of receiving
+          the request at no charge.";
 
         break;
 

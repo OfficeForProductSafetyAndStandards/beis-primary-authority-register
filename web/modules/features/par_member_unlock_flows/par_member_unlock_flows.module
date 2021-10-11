@@ -15,7 +15,7 @@ function par_member_unlock_flows_help($route_name, RouteMatchInterface $route_ma
     case 'help.page.par_member_unlock_flows':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('Allows coordinators to cease the membership of any member on their partnerships.') . '</p>';
+      $output .= '<p>' . t('Allows co-ordinators to cease the membership of any member on their partnerships.') . '</p>';
       return $output;
 
     default:

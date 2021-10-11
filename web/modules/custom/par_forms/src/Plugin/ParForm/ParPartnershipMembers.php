@@ -7,6 +7,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Entity\ParFlow;
@@ -190,21 +191,21 @@ class ParPartnershipMembers extends ParFormPluginBase {
       }
     }
     // Show the member list inline.
-    elseif ($this->getFlowDataHandler()->getFormPermValue("member_display") === ParDataPartnership::MEMBER_DISPLAY_EXTERNAL) {
+    elseif ($this->getFlowDataHandler()->getFormPermValue("member_list_type") === ParDataPartnership::MEMBER_DISPLAY_EXTERNAL) {
       $form['members']['list'] = [
         '#type' => 'container',
         '#title' => t('Members'),
         '#attributes' => ['class' => 'form-group'],
-        'info' => [
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => "The co-ordinator has hosted the list of members on their own portal. If you have any difficulties viewing this list please contact the coordinator.",
-          '#attributes' => ['class' => ['member-list', 'member-list-link']],
-        ],
         'link' => [
           '#type' => 'link',
           '#title' => $this->t('show external members list'),
           '#url' => $this->getFlowDataHandler()->getFormPermValue("member_list_link"),
+          '#attributes' => ['class' => ['member-list', 'member-list-link']],
+        ],
+        'info' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => "The co-ordinator has hosted the list of members on their own portal. If you have any difficulties viewing this list please contact the co-ordinator.",
           '#attributes' => ['class' => ['member-list', 'member-list-link']],
         ],
       ];
@@ -218,7 +219,10 @@ class ParPartnershipMembers extends ParFormPluginBase {
         'request' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => "Please request a list of members from the coordinator.",
+          '#value' => "Please request a copy of the Primary Authority Membership List
+            from the co-ordinator.<br><br> The co-ordinator must make the copy available
+            as soon as reasonably practicable and, in any event, not later than the
+            third working day after the date of receiving the request at no charge.",
           '#attributes' => ['class' => ['member-list', 'member-list-link']],
         ],
       ];

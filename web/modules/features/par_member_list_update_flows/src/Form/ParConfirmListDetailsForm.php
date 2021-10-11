@@ -72,26 +72,49 @@ class ParConfirmListDetailsForm extends ParBaseForm {
 
     // Confirm the number of members.
     $form['number'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'p',
-      '#value' => $this->formatPlural(
-        $member_number,
-        'There is @count active member in the member list.',
-        'There are @count active members in the member list.',
-        ['@count' => $member_number]
-      ),
-      '#attributes' => ['class' => 'member-count'],
+      '#type' => 'container',
+      '#attributes' => ['class' => ['member-count', 'form-group']],
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#value' => $this->t('Number of members'),
+        '#attributes' => ['class' => ['heading-medium']],
+      ],
+      'value' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->formatPlural(
+          $member_number,
+          'There is <strong>@count</strong> active member in the member list.',
+          'There are <strong>@count</strong> active members in the member list.',
+          ['@count' => $member_number]
+        ),
+      ]
     ];
-    if ($member_display === ParDataPartnership::MEMBER_DISPLAY_INTERNAL) {
-      $form['number']['#value'] .= $this->t(" You will be able to update them after confirming these details");
+
+    switch ($member_display) {
+      case ParDataPartnership::MEMBER_DISPLAY_INTERNAL:
+        $message = $this->t("You will be able to update the member list, and change the number of members, after confirming you want this to be hosted internally within the Primary Authority Register.");
+        break;
+
+      case ParDataPartnership::MEMBER_DISPLAY_EXTERNAL:
+        $message = $this->t('The list will display as an @type.', ['@type' => $display_label]);
+        break;
+
+      case ParDataPartnership::MEMBER_DISPLAY_REQUEST:
+        $message = $this->t('The list will display as an @type.<br><br>
+            The co-ordinator must make the copy available
+            as soon as reasonably practicable and, in any event, not later than the
+            third working day after the date of receiving the request at no charge.',
+          ['@type' => $display_label]);
+        break;
+
     }
 
-    // Confirm the list type.
-    $form['list'] = [
+    $form['number']['warning'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => $this->t('The list will display as an @type.', ['@type' => $display_label]),
-      '#attributes' => ['class' => 'member-display'],
+      '#value' => $message,
     ];
 
     // External lists should confirm the link if one has been set.
@@ -100,17 +123,23 @@ class ParConfirmListDetailsForm extends ParBaseForm {
       $form['link'] = [
         '#type' => 'container',
         '#attributes' => ['class' => ['member-link', 'form-group']],
-      ];
-      $form['link']['info'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $this->t('This member list is publicly accessible on the following link:'),
-      ];
-      $form['link']['external'] = [
-        '#type' => 'link',
-        '#title' => $member_link->toString(),
-        '#url' => $member_link,
-        '#attributes' => ['class' => 'external-link'],
+        'title' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h3',
+          '#value' => $this->t('Member link'),
+          '#attributes' => ['class' => ['heading-medium']],
+        ],
+        'value' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->t('This member list is publicly accessible on the following link:'),
+        ],
+        'link' => [
+          '#type' => 'link',
+          '#title' => $member_link->toString(),
+          '#url' => $member_link,
+          '#attributes' => ['class' => 'external-link'],
+        ]
       ];
     }
 

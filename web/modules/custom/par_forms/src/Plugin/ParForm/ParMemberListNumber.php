@@ -33,7 +33,7 @@ class ParMemberListNumber extends ParFormPluginBase {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     if ($par_data_partnership instanceof ParDataEntityInterface && $par_data_partnership->isCoordinated()) {
-      $this->setDefaultValuesByKey('member_number', $cardinality, $par_data_partnership->numberOfMembers());
+      $this->setDefaultValuesByKey('number_members', $cardinality, $par_data_partnership->numberOfMembers());
     }
 
     parent::loadData();

@@ -222,7 +222,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
       // All items in section needs to be ticked before they can proceed.
       $form_items = [
         'coordinator_local_authority_suitable' => 'the organisation is eligible',
-        'suitable_nomination' => 'the coordinator is suitable for nomination',
+        'suitable_nomination' => 'the co-ordinator is suitable for nomination',
         'written_summary_agreed' => 'a written summary has been agreed',
         'terms_local_authority_agreed' => 'the local authority agrees to Primary Authority Terms and Conditions',
       ];
