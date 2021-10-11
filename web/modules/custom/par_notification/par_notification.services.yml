@@ -75,4 +75,8 @@ services:
     class: '\Drupal\par_notification\EventSubscriber\InspectionPlanRevokedSubscriber'
     tags:
       - { name: 'event_subscriber' }
+  par_notification.stale_member_list_warning_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\StaleMemberListWarningSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
 

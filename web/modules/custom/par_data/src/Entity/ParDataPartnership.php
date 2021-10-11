@@ -5,6 +5,7 @@ namespace Drupal\par_data\Entity;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\link\LinkItemInterface;
 use Drupal\user\UserInterface;
 
@@ -86,6 +87,11 @@ class ParDataPartnership extends ParDataEntity {
   const MEMBER_DISPLAY_INTERNAL = 'internal';
   const MEMBER_DISPLAY_EXTERNAL = 'external';
   const MEMBER_DISPLAY_REQUEST = 'request';
+
+  /**
+   * The revision prefix for identifying when the organisation last updated the list.
+   */
+  const MEMBER_LIST_REVISION_PREFIX = 'PAR_MEMBER_LIST_UPDATE';
 
   /**
    * Get the time service.
@@ -259,6 +265,9 @@ class ParDataPartnership extends ParDataEntity {
    * Note this method reports the number of members a coordinator says they have
    * as opposed to self::countMembers() which retrieves the number of coordinated
    * members attached to the partnerhip's member list (only used for 'internal' lists).
+   *
+   * @return int
+   *  The number of active members.
    */
   public function numberOfMembers() {
     // PAR-1741: Use the display method to determine how to get the number of members.
@@ -279,15 +288,56 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * Get the time the membership list was last updated.
+   *
+   * @return bool
+   *  Whether the member list needs updating.
+   *  TRUE if it hasn't been updated recently
+   *  FALSE if it has been updated recently
+   */
+  public function memberListNeedsUpdating($since = '-3 months') {
+    // Make sure not to request this more than once for a given entity.
+    $function_id = __FUNCTION__ . ':' . $this->uuid();
+    $status_revision = &drupal_static($function_id);
+    if (!empty($status_revision)) {
+      return $status_revision;
+    }
+
+    // Only for coordinated partnerships.
+    if (!$this->isCoordinated()) {
+      return FALSE;
+    }
+
+    $partnership_storage = $this->entityTypeManager()->getStorage($this->getEntityTypeId());
+
+    // Query any member list update revisions since the last cutoff time.
+    $timestamp = strtotime($since);
+    $revision_query = $partnership_storage->getQuery()->allRevisions()
+      ->condition('id', $this->id())
+      ->condition($this->getEntityType()->getRevisionMetadataKey('revision_log_message'), self::MEMBER_LIST_REVISION_PREFIX, 'STARTS_WITH')
+      ->condition($this->getEntityType()->getRevisionMetadataKey('revision_created'), $timestamp, '>=')
+      ->sort($this->getEntityType()->getRevisionMetadataKey('revision_created'), 'DESC');
+
+    $count = $revision_query->count()->execute();
+    if ($count > 0) {
+      return FALSE;
+    }
+
+    return TRUE;
+  }
+
+  /**
    * Get the membership link.
    *
    * @return \Drupal\Core\Url
    *  The URL for the external member link.
    */
   public function getMemberLink() {
-    return !$this->get('member_link')->isEmpty()
+    $url = !$this->get('member_link')->isEmpty()
         ? $this->get('member_link')->first()->getUrl()
         : NULL;
+
+    return $url instanceof Url ? $url : NULL;
   }
 
   /**

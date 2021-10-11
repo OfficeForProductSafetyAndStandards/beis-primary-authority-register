@@ -1,0 +1,4 @@
+text:
+  -
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>We can see that the member details on your @partnership_label hasn't been updated for a while.</p>\r\n\r\n<p>It is a statutory requirement to keep your member list updated on the Register, please confirm that your member list is up-to-date.</p>\r\n\r\n<p>^ Confirm the member list now: [message:primary-action]</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
+    format: basic_html

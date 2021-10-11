@@ -29,7 +29,7 @@ class InspectionPlanExpiryWarningSubscriber extends ParNotificationSubscriberBas
   static function getSubscribedEvents() {
     // Revocation event should fire after most default events to make sure
     // revocation has not been cancelled.
-    $events[ParDataEvent::statusChange('par_data_inspection_plan', 'revoked')][] = ['onEvent', -100];
+    $events[ParDataEvent::customAction('par_data_inspection_plan', 'expiry_notification')][] = ['onEvent', -100];
 
     return $events;
   }

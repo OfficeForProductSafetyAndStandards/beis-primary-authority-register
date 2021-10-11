@@ -10,18 +10,22 @@ use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Event\ParDataEvent;
 
 /**
- * Send a notice that an entity is due to expire.
+ * Send a notice to update a member list.
  *
  * @Action(
- *   id = "par_send_expiry_notice",
- *   label = @Translation("Send an expiry notice."),
+ *   id = "par_send_member_list_notice",
+ *   label = @Translation("Update the member list"),
  *   type = "system"
  * )
  */
-class ParSendExpiryNotice extends ActionBase {
+class ParSendMemberListNotice extends ActionBase {
 
   public function getCurrentUser() {
     return \Drupal::currentUser();
+  }
+
+  public function getAccountSwitcher() {
+    return \Drupal::service('account_switcher');
   }
 
   /**
@@ -32,10 +36,10 @@ class ParSendExpiryNotice extends ActionBase {
       // Dispatch a PAR custom event.
       $event = new ParDataEvent($entity);
       $dispatcher = \Drupal::service('event_dispatcher');
-      // @TODO PAR-This event should only fire ONCE
+      // @TODO This event should only fire ONCE
       // There needs to be a way to record it has
       // been sent so that it isn't processed again.
-//      $dispatcher->dispatch(ParDataEvent::customAction($entity->getEntityTypeId(), 'expiry_notification'), $event);
+//      $dispatcher->dispatch(ParDataEvent::customAction($entity->getEntityTypeId(), 'stale_list_notification'), $event);
     }
   }
 

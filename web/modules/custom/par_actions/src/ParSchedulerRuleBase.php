@@ -52,7 +52,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    * {@inheritdoc}
    */
   public function getProperty() {
-    return $this->pluginDefinition['property'];
+    return $this->pluginDefinition['property'] ?? NULL;
   }
 
   /**
@@ -172,7 +172,11 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
     $operator = '<=';
 
     $query = \Drupal::entityQuery($this->getEntity());
-    $query->condition($this->getProperty(), $scheduled_time->format('Y-m-d'), $operator);
+
+    // Only run the default query if specified.
+    if ($this->getProperty()) {
+      $query->condition($this->getProperty(), $scheduled_time->format('Y-m-d'), $operator);
+    }
 
     return $query;
   }
