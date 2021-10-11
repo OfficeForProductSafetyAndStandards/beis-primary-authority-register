@@ -46,7 +46,7 @@ class ParEnforcementSendWarning extends ParFormPluginBase {
         ->setFormPermValue("enforcement_approved", TRUE);
     }
     // A message to display for all blocked and partly blocked enforcement notices.
-    if ($par_data_enforcement_notice->isApproved()) {
+    if ($par_data_enforcement_notice->isBlocked()) {
       $this->getFlowDataHandler()
         ->setFormPermValue("enforcement_blocked", TRUE);
     }
