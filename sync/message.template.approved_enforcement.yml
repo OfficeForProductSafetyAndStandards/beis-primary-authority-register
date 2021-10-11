@@ -9,7 +9,7 @@ label: 'Approved enforcement notification'
 description: 'This notification is sent to the organisation when an enforcement notice has been approved.'
 text:
   -
-    value: "<p>Dear @first_name,</p>\r\n\r\n<p>An enforcement notification against your organisation @enforced_organisation has been received.</p>\r\n\r\n<p>Please see the link below to view the full details of this enforcement notice.</p>\r\n\r\n<p>^ View enforcement notice: [message:primary-action]</p>\r\n\r\n<p>If you wish to query this action or would like more information about it you can contact the OSU at pa@beis.gov.uk.</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
+    value: "<p>Dear @first_name,</p>\r\n\r\n<p>An enforcement notification against your organisation @enforced_organisation has been received.</p>\r\n\r\n<p>Please see the link below to view the full details of this enforcement notice.</p>\r\n\r\n<p>^ View enforcement notice: [message:primary-action]</p>\r\n\r\n<p>Please contact the Primary Authority to query this decision, or contact Office for Product Safety Standards at pa@beis.gov.uk to ask for a determination in relation to any disagreements surrounding this enforcement.</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html
 settings:
   'token options':

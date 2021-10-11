@@ -128,16 +128,26 @@ class ParDataStorage extends TranceStorage {
       \Drupal::cache('par_data')->delete($hash_key);
     }
 
-    $original = $entity->original;
-    if ($entity->getRawStatus() && !$entity->isNew() && isset($original) && $entity->getRawStatus() !== $original->getRawStatus()) {
-      // Dispatch the an event for every par entity that has a status update.
+    // Identify whether to dispatch a status update.
+    $dispatch_status_update = (
+      $entity->getRawStatus() &&
+      !$entity->isNew() &&
+      isset($entity->original) &&
+      $entity->getRawStatus() !== $entity->original->getRawStatus()
+    );
+
+    $saved = parent::save($entity);
+
+    // Dispatch must happen after the entity is saved.
+    if ($dispatch_status_update) {
+      // Dispatch an event for every par entity that has a status update.
       $event = new ParDataEvent($entity);
       $event_to_dispatch = ParDataEvent::statusChange($entity->getEntityTypeId(), $entity->getRawStatus());
       $dispatcher = \Drupal::service('event_dispatcher');
       $dispatcher->dispatch($event_to_dispatch, $event);
     }
 
-    return parent::save($entity);
+    return $saved;
   }
 
   /**
