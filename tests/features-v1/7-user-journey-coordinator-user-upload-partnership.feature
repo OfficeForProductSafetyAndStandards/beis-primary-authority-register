@@ -169,7 +169,7 @@ Feature: Coordinator User - Upload Members
         # REVIEW
         Then the element "h1.heading-xlarge" contains the text "Is the list up-to-date?"
         Then the element ".member-count" contains the text "There are 1583 active members in the member list."
-        Then the element ".member-link" contains the text "This member list is publicly accessible on the following link."
+        Then the element ".member-link" contains the text "This member list is publicly accessible on the following link:"
         When I click on the radio "#edit-confirm-yes"
         And I click on the button "#edit-save"
 
