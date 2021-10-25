@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,7 +28,8 @@ class ParSelectMemberForm extends ParFormPluginBase {
       if ($par_data_partnership->isDirect()) {
         $organisations = $par_data_partnership->getOrganisation();
       }
-      elseif ($par_data_partnership->isCoordinated()) {
+      elseif ($par_data_partnership->isCoordinated()
+        && $par_data_partnership->getMemberDisplay() === ParDataPartnership::MEMBER_DISPLAY_INTERNAL) {
         foreach ($par_data_partnership->getCoordinatedMember(FALSE, TRUE) as $coordinated_member) {
           $coordinated_organisations = $coordinated_member->getOrganisation();
           $organisations = $this->getParDataManager()->getEntitiesAsOptions($coordinated_organisations, $organisations);
