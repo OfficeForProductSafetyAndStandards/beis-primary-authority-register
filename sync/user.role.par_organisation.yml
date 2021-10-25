@@ -81,6 +81,7 @@ permissions:
   - 'receive revoke_inspection_plan notification'
   - 'remove partnership organisation contact'
   - 'update coordinated member'
+  - 'update member list'
   - 'update partnership organisation contact'
   - 'update partnership organisation details'
   - 'upload coordinated member'

@@ -4,6 +4,7 @@ namespace Drupal\Tests\par_data\Kernel;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\Entity\File;
+use Drupal\Core\Url;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataAdviceType;
@@ -52,6 +53,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     'system',
     'field',
     'text',
+    'link',
     'filter',
     'entity_test',
     'language',
@@ -819,7 +821,9 @@ class ParDataTestBase extends EntityKernelTestBase {
         'partnership_status' => 'Current',
         'about_partnership' => $this->randomString(1000),
         'approved_date' => '2017-06-01',
-        'cost_recovery' => 'Cost recovery from partnership',
+        'member_display' => 'internal',
+        'member_number' => rand(0,9999),
+        'member_link' => 'http://example.com',
         'reject_comment' => $this->randomString(1000),
         'revocation_source' => 'RD Executive',
         'revocation_date' => '2017-07-01',

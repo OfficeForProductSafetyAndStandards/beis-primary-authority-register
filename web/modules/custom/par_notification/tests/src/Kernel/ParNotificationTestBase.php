@@ -33,6 +33,7 @@ class ParNotificationTestBase extends ParDataTestBase
     'system',
     'field',
     'text',
+    'link',
     'filter',
     'entity_test',
     'language',

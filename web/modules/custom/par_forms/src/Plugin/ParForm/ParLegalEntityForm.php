@@ -78,7 +78,7 @@ class ParLegalEntityForm extends ParFormPluginBase {
           '#type' => 'markup',
           '#markup' => '<div class="form-group notice">
               <i class="icon icon-important"><span class="visually-hidden">Warning</span></i>
-              <strong class="bold-small">Please enter the legal entities for the members covered by this partnership not the coordinator.</strong>
+              <strong class="bold-small">Please enter the legal entities for the members covered by this partnership not the co-ordinator.</strong>
             </div>',
         ];
       }

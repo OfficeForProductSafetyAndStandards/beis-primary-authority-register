@@ -20,7 +20,7 @@ class EntityParPartnershipTest extends ParDataTestBase {
   public function testEntityValidate() {
     $entity = ParDataPartnership::create($this->getCoordinatedPartnershipValues());
     $violations = $entity->validate();
-    $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default PAR Partnership entity.');
+    $this->assertEquals(0, count($violations->getFieldNames()), 'No violations when validating a default PAR Partnership entity.');
   }
 
   /**
@@ -46,7 +46,7 @@ class EntityParPartnershipTest extends ParDataTestBase {
 
     $entity = ParDataPartnership::create($values + $this->getCoordinatedPartnershipValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(count($values), count($violations->getFieldNames()), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
   }
 
   /**
@@ -62,7 +62,7 @@ class EntityParPartnershipTest extends ParDataTestBase {
 
     $entity = ParDataPartnership::create($values + $this->getCoordinatedPartnershipValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values cannot be longer than their allowed lengths for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(count($values), count($violations->getFieldNames()), t('Field values cannot be longer than their allowed lengths for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
   }
 
   /**

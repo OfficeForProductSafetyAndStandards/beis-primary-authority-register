@@ -268,7 +268,7 @@ class EntityMergeTest extends ParDataTestBase {
     // Assert that each of the authorities has the correct number of records.
     for ($i=1; $i<=3; $i++) {
       $original_count = $this->authorities[$i]->get('field_person')->count();
-      $this->assertEqual($original_count, 2, t('Authority @i has 2 contact records.', ['@i' => $i]));
+      $this->assertEquals(2, $original_count, t('Authority @i has 2 contact records.', ['@i' => $i]));
 
       // Also assert that both contact records are legitimate entity references,
       // it's possible that a reference to a deleted record might remain.
@@ -281,7 +281,7 @@ class EntityMergeTest extends ParDataTestBase {
       $count = ($i <= 6) ? 1 : 2;
       // Assert that each of the authorities has the correct number of records.
       $original_count = $this->partnerships[$i]->get('field_authority_person')->count();
-      $this->assertEqual($original_count, $count, t('Partnership @i has @count contact records.', ['@i' => $i, '@count' => $count]));
+      $this->assertEquals($count, $original_count, t('Partnership @i has @count contact records.', ['@i' => $i, '@count' => $count]));
 
       // Also assert that both contact records are legitimate entity references,
       // it's possible that a reference to a deleted record might remain.
@@ -322,7 +322,7 @@ class EntityMergeTest extends ParDataTestBase {
     // Assert that each of the authorities has the correct number of records.
     for ($i=1; $i<=3; $i++) {
       $original_count = $this->authorities[$i]->get('field_person')->count();
-      $this->assertEqual($original_count, 1, t('Authority @i has 1 contact record.', ['@i' => $i]));
+      $this->assertEquals(1, $original_count, t('Authority @i has 1 contact record.', ['@i' => $i]));
 
       // Also assert that both contact records are legitimate entity references,
       // it's possible that a reference to a deleted record might remain.
@@ -334,7 +334,7 @@ class EntityMergeTest extends ParDataTestBase {
     for ($i=1; $i<=9; $i++) {
       // Assert that each of the authorities has the correct number of records.
       $original_count = $this->partnerships[$i]->get('field_authority_person')->count();
-      $this->assertEqual($original_count, 1, t('Partnership @i has 1 contact record.', ['@i' => $i]));
+      $this->assertEquals(1, $original_count, t('Partnership @i has 1 contact record.', ['@i' => $i]));
 
       // Also assert that both contact records are legitimate entity references,
       // it's possible that a reference to a deleted record might remain.

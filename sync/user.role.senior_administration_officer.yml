@@ -165,6 +165,7 @@ permissions:
   - 'unblock user'
   - 'unlock membership list'
   - 'update coordinated member'
+  - 'update member list'
   - 'update partnership authority contact'
   - 'update partnership authority details'
   - 'update partnership helpdesk details'

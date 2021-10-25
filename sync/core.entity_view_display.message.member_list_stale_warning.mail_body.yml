@@ -1,0 +1,27 @@
+uuid: 982d03e6-0567-496a-a363-374647c61d45
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_body
+    - field.field.message.member_list_stale_warning.field_message_subject
+    - field.field.message.member_list_stale_warning.field_partnership
+    - field.field.message.member_list_stale_warning.field_to
+    - message.template.member_list_stale_warning
+id: message.member_list_stale_warning.mail_body
+targetEntityType: message
+bundle: member_list_stale_warning
+mode: mail_body
+content:
+  partial_0:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  partial_1:
+    weight: 0
+    region: content
+hidden:
+  field_message_subject: true
+  field_partnership: true
+  field_to: true

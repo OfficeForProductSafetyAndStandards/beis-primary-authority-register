@@ -66,7 +66,7 @@ limited company or partnership, as well as other types of organisations such as 
         '#type' => 'markup',
         '#markup' => '<div class="form-group notice">
               <i class="icon icon-important"><span class="visually-hidden">Warning</span></i>
-              <strong class="bold-small">Please select the legal entities for the coordinator not the members covered by this partnership.</strong>
+              <strong class="bold-small">Please select the legal entities for the co-ordinator not the members covered by this partnership.</strong>
             </div>',
       ];
     }
