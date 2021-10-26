@@ -45,7 +45,7 @@ class ParDataStatusAuthor extends FieldPluginBase {
       $author = $entity->getStatusAuthor($entity->getRawStatus());
       $label = $author ? $author->label() : '';
 
-      if ($contacts = $this->getParDataManager()->getUserPeople($author)) {
+      if ($author && $contacts = $this->getParDataManager()->getUserPeople($author)) {
         $contact = current($contacts);
         $label = $contact->label();
       }
