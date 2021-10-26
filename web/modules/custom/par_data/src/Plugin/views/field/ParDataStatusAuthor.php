@@ -51,7 +51,7 @@ class ParDataStatusAuthor extends FieldPluginBase {
       }
 
       // If the uid is that of the admin user this has been automatically approved.
-      if ($author->id() <= 1) {
+      if ($author && $author->id() <= 1) {
         $label = '(automatically approved)';
       }
 
