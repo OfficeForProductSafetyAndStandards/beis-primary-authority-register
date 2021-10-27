@@ -318,10 +318,10 @@ display:
             1:
               action_id: vbo_export_generate_csv_action
               preconfiguration:
-                add_confirmation: 0
+                add_confirmation: false
                 file_scheme: s3private
-                strip_tags: 1
-                field_override: 1
+                strip_tags: true
+                field_override: true
                 field_config:
                   id:
                     active: '1'
