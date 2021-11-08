@@ -67,9 +67,9 @@ class ParMemberListNumber extends ParFormPluginBase {
     $number_member_key = $this->getElementKey('number_members');
 
     $number = $form_state->getValue($number_member_key);
-    if ((int) $number < 1 || (int) $number > 10000) {
+    if ((int) $number < 1 || (int) $number > 100000) {
       $id_key = $this->getElementKey('number_members', $cardinality, TRUE);
-      $message = $this->wrapErrorMessage('The number of members needs to be between 1 and 10,000.', $this->getElementId($id_key, $form));
+      $message = $this->wrapErrorMessage('The number of members needs to be between 1 and 100,000.', $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($number_member_key), $message);
     }
 
