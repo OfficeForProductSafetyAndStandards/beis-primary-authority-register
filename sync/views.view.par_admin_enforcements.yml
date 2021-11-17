@@ -1,4 +1,4 @@
-uuid: 759be8f0-abe0-421e-a3ba-b2877e28ebe8
+uuid: 90f49cef-f95c-4c6c-a6ee-fe4a5670112f
 langcode: en
 status: true
 dependencies:
@@ -8,12 +8,15 @@ dependencies:
     - field.storage.par_data_partnership.field_organisation
     - par_data.par_data_enforcement_notice_type.enforcement_notice
   module:
+    - better_exposed_filters
     - datetime
     - pagerer
     - par_data
-    - par_roles
-id: par_user_enforcements
-label: 'Par User Enforcements'
+    - text
+    - user
+    - views_bulk_operations
+id: par_admin_enforcements
+label: 'Par Admin Enforcements'
 module: views
 description: ''
 tag: ''
@@ -27,16 +30,16 @@ display:
     position: 0
     display_options:
       access:
-        type: views_access_multiple_permissions
+        type: perm
         options:
-          mult_perm:
-            'approve enforcement notice': 'approve enforcement notice'
-            'send enforcement notice': 'send enforcement notice'
-            'view enforcement notice': 'view enforcement notice'
-          mult_perm_all: 0
+          perm: 'access helpdesk'
       cache:
-        type: none
-        options: {  }
+        type: time
+        options:
+          results_lifespan: 3600
+          results_lifespan_custom: 0
+          output_lifespan: 0
+          output_lifespan_custom: 0
       query:
         type: views_query
         options:
@@ -47,7 +50,7 @@ display:
           query_tags: {  }
           contextual_filters_or: 1
       exposed_form:
-        type: basic
+        type: bef
         options:
           submit_button: Apply
           reset_button: false
@@ -56,6 +59,35 @@ display:
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
+          text_input_required: 'Select any filter and click on Apply to see results'
+          text_input_required_format: basic_html
+          bef:
+            general:
+              autosubmit: false
+              autosubmit_exclude_textfield: false
+              autosubmit_textfield_delay: 500
+              autosubmit_hide: false
+              input_required: false
+              allow_secondary: false
+              secondary_label: 'Advanced options'
+              secondary_open: false
+            sort:
+              plugin_id: default
+              advanced:
+                combine: true
+                combine_rewrite: "Date Asc|Oldest first\r\nDate Desc|Newest first"
+                reset: false
+                reset_label: ''
+                collapsible: false
+                collapsible_label: 'Sort options'
+                is_secondary: false
+            filter:
+              combine:
+                plugin_id: default
+                advanced:
+                  placeholder_text: ''
+                  collapsible: false
+                  is_secondary: false
       pager:
         type: pagerer
         options:
@@ -228,6 +260,186 @@ display:
           entity_type: par_data_enforcement_notice
           entity_field: id
           plugin_id: field
+        id_1:
+          id: id_1
+          table: par_enforcement_actions_field_data
+          field: id
+          relationship: field_enforcement_action
+          group_type: group
+          admin_label: ''
+          label: 'Action ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: par_data_enforcement_action
+          entity_field: id
+          plugin_id: field
+        views_bulk_operations_bulk_form:
+          id: views_bulk_operations_bulk_form
+          table: views
+          field: views_bulk_operations_bulk_form
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          batch: true
+          batch_size: 100
+          form_step: true
+          buttons: true
+          clear_on_exposed: false
+          action_title: Action
+          selected_actions:
+            1:
+              action_id: vbo_export_generate_csv_action
+              preconfiguration:
+                add_confirmation: false
+                file_scheme: s3private
+                strip_tags: true
+                field_override: true
+                field_config:
+                  id:
+                    active: '1'
+                    label: 'Enforcement ID'
+                  notice_date:
+                    active: '1'
+                    label: 'Notice Date'
+                  title:
+                    active: '1'
+                    label: Title
+                  par_flow_link_1:
+                    label: ''
+                    active: 0
+                  par_flow_link:
+                    label: ''
+                    active: 0
+                  field_enforcing_authority:
+                    active: '1'
+                    label: 'Enforcing Authority Name'
+                  field_primary_authority:
+                    active: '1'
+                    label: 'Primary Authority Name'
+                  notice_type:
+                    label: ''
+                    active: 0
+                  par_status_author:
+                    label: ''
+                    active: 0
+                  par_status_time_1:
+                    label: ''
+                    active: 0
+                  par_status:
+                    active: '1'
+                    label: Status
+                  field_organisation:
+                    active: '1'
+                    label: 'Organisation Name'
+                  authority_name:
+                    label: ''
+                    active: 0
+                  authority_name_1:
+                    label: ''
+                    active: 0
+                  organisation_name:
+                    label: ''
+                    active: 0
+                  summary__value:
+                    label: ''
+                    active: 0
+                separator: ','
+          force_selection_info: false
+          plugin_id: views_bulk_operations_bulk_form
         notice_date:
           id: notice_date
           table: par_enforcement_notices_field_data
@@ -281,7 +493,7 @@ display:
           settings:
             timezone_override: ''
             format_type: gds_date_format
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -346,7 +558,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -408,6 +620,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           title: '{{ title }}'
+          assistive_text: {  }
           link: '/enforcement-notice/{{ id }}/send'
           hidden: 0
           entity_type: par_data_enforcement_notice
@@ -517,7 +730,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -580,7 +793,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -591,6 +804,171 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        notice_type:
+          id: notice_type
+          table: par_enforcement_notices_field_data
+          field: notice_type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Notice Type'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: par_data_enforcement_notice
+          entity_field: notice_type
+          plugin_id: field
+        par_status_author:
+          id: par_status_author
+          table: par_enforcement_actions_field_data
+          field: par_status_author
+          relationship: field_enforcement_action
+          group_type: group
+          admin_label: ''
+          label: 'PAR Status Author'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          entity_type: par_data_enforcement_action
+          plugin_id: par_data_status_author
+        par_status_time_1:
+          id: par_status_time_1
+          table: par_enforcement_actions_field_data
+          field: par_status_time
+          relationship: field_enforcement_action
+          group_type: group
+          admin_label: ''
+          label: 'PAR Status Time'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          entity_type: par_data_enforcement_action
+          plugin_id: par_data_status_time
         par_status:
           id: par_status
           table: par_enforcement_actions_field_data
@@ -601,8 +979,8 @@ display:
           label: Status
           exclude: false
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: '{{ par_status }} by {{ par_status_author }} on {{ par_status_time_1 }}'
             make_link: false
             path: ''
             absolute: false
@@ -693,7 +1071,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -756,7 +1134,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -821,7 +1199,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -886,7 +1264,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -898,6 +1276,70 @@ display:
           field_api_classes: false
           entity_type: par_data_organisation
           entity_field: organisation_name
+          plugin_id: field
+        summary__value:
+          id: summary__value
+          table: par_enforcement_notices_field_data
+          field: summary__value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Summary
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: text_default
+          settings: {  }
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: par_data_enforcement_notice
+          entity_field: summary
           plugin_id: field
       filters:
         type:
@@ -1112,19 +1554,6 @@ display:
           plugin_id: date
       title: Enforcements
       header:
-        par_flow_link:
-          id: par_flow_link
-          table: views
-          field: par_flow_link
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          title: 'report download (csv)'
-          assistive_text: ''
-          link: /enforcement-notices/csv
-          class: ''
-          plugin_id: par_flow_link
         area_text_custom:
           id: area_text_custom
           table: views
@@ -1291,7 +1720,7 @@ display:
           not: false
           plugin_id: numeric
       display_extenders: {  }
-      group_by: false
+      group_by: true
       css_class: par-user-enforcement-list
     cache_metadata:
       max-age: 0
@@ -1308,20 +1737,30 @@ display:
         - 'config:field.storage.par_data_enforcement_notice.field_enforcing_authority'
         - 'config:field.storage.par_data_enforcement_notice.field_primary_authority'
         - 'config:field.storage.par_data_partnership.field_organisation'
-  enforcement_notices_page:
+  enforcement_notices_csv:
     display_plugin: page
-    id: enforcement_notices_page
-    display_title: Page
+    id: enforcement_notices_csv
+    display_title: 'CSV Export'
     position: 1
     display_options:
       display_extenders: {  }
-      path: enforcement-notices
+      path: enforcement-notices/csv
       defaults:
         fields: true
         arguments: false
       arguments: {  }
+      display_description: ''
+      menu:
+        type: tab
+        title: 'CSV Report Download'
+        description: ''
+        expanded: false
+        parent: 'menu_link_content:8b076218-3b80-4fd2-a177-085974bf7daa'
+        weight: 0
+        context: '0'
+        menu_name: account
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'

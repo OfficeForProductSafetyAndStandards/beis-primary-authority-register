@@ -45,13 +45,13 @@ class ParDataStatusAuthor extends FieldPluginBase {
       $author = $entity->getStatusAuthor($entity->getRawStatus());
       $label = $author ? $author->label() : '';
 
-      if ($contacts = $this->getParDataManager()->getUserPeople($author)) {
+      if ($author && $contacts = $this->getParDataManager()->getUserPeople($author)) {
         $contact = current($contacts);
         $label = $contact->label();
       }
 
       // If the uid is that of the admin user this has been automatically approved.
-      if ($author->id() <= 1) {
+      if ($author && $author->id() <= 1) {
         $label = '(automatically approved)';
       }
 

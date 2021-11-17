@@ -77,8 +77,8 @@
         "drupal/twig_tweak": "~3.1.0",
         "drupal/ultimate_cron": "~2.0.0",
         "drupal/upgrade_status": "~3.5.0",
-        "drupal/vbo_export": "~3.2.0",
-        "drupal/views_bulk_operations": "~3.13.0",
+        "drupal/vbo_export": "~3.3.0",
+        "drupal/views_bulk_operations": "~4.0.0",
         "drupal/views_contextual_filters_or": "~1.2.0",
         "drupal/views_data_export": "~1.0.0",
         "drupal/views_field_view": "~1.0.0",
@@ -179,8 +179,7 @@
                 "Temporary patch to enable module uninstall": "./patches/tmp-patch-fix-for-d9-upgrade.patch"
             },
             "drupal/vbo_export": {
-                "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-05-10/allow_configurable_scheme-2988257-14.patch",
-                "deprecated function theme_vbo_export_content_xlsx()": "https://www.drupal.org/files/issues/2020-12-20/vbo_export-deprecated-theme-functions-3175522-9.patch"
+                "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-05-10/allow_configurable_scheme-2988257-14.patch"
             },
             "drupal/views_data_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-03-01/allow-configurable-filesystems_3200974-6.patch"
