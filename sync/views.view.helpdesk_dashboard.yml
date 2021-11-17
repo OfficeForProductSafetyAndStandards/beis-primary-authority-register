@@ -2386,7 +2386,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           batch: true
-          batch_size: 100
+          batch_size: 50
           form_step: true
           buttons: true
           clear_on_exposed: false
@@ -2395,10 +2395,10 @@ display:
             1:
               action_id: vbo_export_generate_csv_action
               preconfiguration:
-                add_confirmation: 0
+                add_confirmation: false
                 file_scheme: s3private
-                strip_tags: 1
-                field_override: 1
+                strip_tags: true
+                field_override: true
                 field_config:
                   id_1:
                     active: '1'

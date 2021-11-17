@@ -260,6 +260,72 @@ display:
           entity_type: par_data_enforcement_notice
           entity_field: id
           plugin_id: field
+        id_1:
+          id: id_1
+          table: par_enforcement_actions_field_data
+          field: id
+          relationship: field_enforcement_action
+          group_type: group
+          admin_label: ''
+          label: 'Action ID'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: par_data_enforcement_action
+          entity_field: id
+          plugin_id: field
         views_bulk_operations_bulk_form:
           id: views_bulk_operations_bulk_form
           table: views
@@ -344,6 +410,15 @@ display:
                   field_primary_authority:
                     active: '1'
                     label: 'Primary Authority Name'
+                  notice_type:
+                    label: ''
+                    active: 0
+                  par_status_author:
+                    label: ''
+                    active: 0
+                  par_status_time_1:
+                    label: ''
+                    active: 0
                   par_status:
                     active: '1'
                     label: Status
@@ -357,6 +432,9 @@ display:
                     label: ''
                     active: 0
                   organisation_name:
+                    label: ''
+                    active: 0
+                  summary__value:
                     label: ''
                     active: 0
                 separator: ','
@@ -415,7 +493,7 @@ display:
           settings:
             timezone_override: ''
             format_type: gds_date_format
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -480,7 +558,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -542,6 +620,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           title: '{{ title }}'
+          assistive_text: {  }
           link: '/enforcement-notice/{{ id }}/send'
           hidden: 0
           entity_type: par_data_enforcement_notice
@@ -651,7 +730,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -714,7 +793,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -777,7 +856,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -992,7 +1071,7 @@ display:
           type: entity_reference_label
           settings:
             link: false
-          group_column: target_id
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1055,7 +1134,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1120,7 +1199,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1185,7 +1264,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1249,7 +1328,7 @@ display:
           click_sort_column: value
           type: text_default
           settings: {  }
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1641,7 +1720,7 @@ display:
           not: false
           plugin_id: numeric
       display_extenders: {  }
-      group_by: false
+      group_by: true
       css_class: par-user-enforcement-list
     cache_metadata:
       max-age: 0
