@@ -375,7 +375,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           batch: true
-          batch_size: 100
+          batch_size: 50
           form_step: true
           buttons: true
           clear_on_exposed: false
@@ -392,6 +392,9 @@ display:
                   id:
                     active: '1'
                     label: 'Enforcement ID'
+                  id_1:
+                    label: ''
+                    active: 0
                   notice_date:
                     active: '1'
                     label: 'Notice Date'
