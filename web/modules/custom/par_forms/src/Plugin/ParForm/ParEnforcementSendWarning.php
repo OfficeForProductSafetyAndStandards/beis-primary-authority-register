@@ -100,11 +100,16 @@ class ParEnforcementSendWarning extends ParFormPluginBase {
       $form['determination_message'] = [
         '#type' => 'container',
         '#attributes' => ['class' => ['form-group']],
-        'warning' => [
+        'warning-primary' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => "Please contact the Primary Authority if you have any questions around this decision,
-            or contact Office for Product Safety Standards at {$email_link->toString()} to ask for a determination if you have any disagreements with it.",
+          '#value' => "Please contact the Primary Authority if you have any questions around this decision.",
+          '#attributes' => ['class' => ['govuk-!-font-weight-bold']],
+        ],
+        'warning-opss' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => "If you would like to apply to the Secretary of State for consent to refer the matter for determination please contact Office for Product Safety & Standards at {$email_link->toString()}.",
           '#attributes' => ['class' => ['govuk-!-font-weight-bold']],
         ],
       ];
