@@ -47,7 +47,10 @@ class ParDataRemoveField implements EventSubscriberInterface {
         $diff = array_diff_key($old, $current);
         if (!empty($diff)) {
           foreach ($diff as $e) {
-            $removed[] = (string) $e;
+            // PAR Data entities can be converted to string format.
+            $removed[] = $e instanceof ParDataEntityInterface ?
+              (string) $e :
+              $e->label();
 
             // Get the last revision message as the reason.
             if ($entity->getEntityType()->isRevisionable()) {
