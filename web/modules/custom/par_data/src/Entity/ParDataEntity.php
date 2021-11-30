@@ -47,6 +47,17 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   const DEFAULT_RELATIONSHIP = 'default';
 
   /**
+   * Render the string version of this entity.
+   */
+  public function __toString(){
+    return $this->t("@type: @label (@id)", [
+      '@type' => mb_strtoupper($this->getTypeEntity()->label()),
+      '@label' => $this->label(),
+      '@id' => $this->id(),
+    ])->render();
+  }
+
+  /**
    * Returns the logger channel specific to errors logged by PAR Forms.
    *
    * @return string
@@ -123,7 +134,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   protected function getLabelValue($value) {
-    list($field_name, $property_name) = explode(':', $value . ':');
+    [$field_name, $property_name] = explode(':', $value . ':');
 
     if ($this->hasField($field_name)) {
       if ($this->get($field_name)->isEmpty()) {
@@ -281,6 +292,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       return $this->destroy();
     }
 
+    // Set the reason so that loggers can make use of it.
+    $this->get(ParDataEntity::DELETE_REASON_FIELD)->setValue([
+      'value' => $reason,
+      'format' => 'plain_text',
+    ]);
+
     return FALSE;
   }
 
@@ -384,6 +401,15 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     }
 
     return TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasStatus(): bool {
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+
+    return (bool) $field_name;
   }
 
   /**
@@ -570,8 +596,24 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $referencedEntities = $this->get($field_name)->referencedEntities();
 
     $ids = [];
-    foreach ($referencedEntities as $id => $entity) {
+    foreach ($referencedEntities as $delta => $entity) {
       $ids[] = $entity->id();
+    }
+
+    return $ids;
+  }
+
+  /**
+   * Get the reference field entities keyed by Id.
+   *
+   * @return array
+   */
+  public function retrieveEntitiesKeyedById($field_name) {
+    $referencedEntities = $this->get($field_name)->referencedEntities();
+
+    $ids = [];
+    foreach ($referencedEntities as $delta => $entity) {
+      $ids[$entity->id()] = $entity;
     }
 
     return $ids;

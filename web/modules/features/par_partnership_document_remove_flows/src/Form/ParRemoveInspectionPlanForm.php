@@ -129,11 +129,11 @@ class ParRemoveInspectionPlanForm extends ParBaseForm {
     try {
       if (isset($delta)) {
         $par_data_partnership->get('field_inspection_plan')->removeItem($delta);
+
+        // Set the reason as the revision message.
+        // Which allows it to be recorded by the logger.
         $remove_reason = $this->getFlowDataHandler()->getDefaultValues('remove_reason', '');
-        $revision_message = $this->t(
-          "The inspection plan @inspection_plan was removed from the partnership. The reason given was:" . PHP_EOL . "@reason",
-          ['@inspection_plan' => $par_data_inspection_plan->getTitle(), '@reason' => $remove_reason]);
-        $par_data_partnership->setNewRevision(TRUE, $revision_message);
+        $par_data_partnership->setNewRevision(TRUE, $remove_reason);
       }
       else {
         throw new \InvalidArgumentException('No field delta has been provided.');
