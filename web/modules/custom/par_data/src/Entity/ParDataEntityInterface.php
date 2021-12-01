@@ -19,6 +19,14 @@ interface ParDataEntityInterface extends TranceInterface {
   public function getViewBuilder();
 
   /**
+   * Determine if this entity supports PAR statuses.
+   *
+   * @return boolean
+   *   Whether the entity has a status field.
+   */
+  public function hasStatus(): bool;
+
+  /**
    * Return the stored value of the status field.
    *
    * @return NULL|mixed
