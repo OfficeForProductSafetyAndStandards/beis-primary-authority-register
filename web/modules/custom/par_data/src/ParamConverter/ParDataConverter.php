@@ -39,6 +39,11 @@ class ParDataConverter implements ParamConverterInterface {
   protected $settings;
 
   /**
+   * A unique stub ID for forcing a stub to be loaded.
+   */
+  const STUB_ID = 000;
+
+  /**
    * Constructs a new EntityConverter.
    *
    * @param \Drupal\Core\ParamConverter\EntityConverter $parent
@@ -76,7 +81,7 @@ class ParDataConverter implements ParamConverterInterface {
       if ($this->parDataManager->getEntityTypeStorage($entity_type_id)->load($value)) {
         $entity = $this->parent->convert($value, $definition, $name, $defaults);
       }
-      elseif ($entity_type_id) {
+      elseif ($entity_type_id && $value == self::STUB_ID) {
         $entities = $this->parDataManager->getEntityTypeStorage($entity_type_id)->loadMultiple();
         $entity = !empty($entities) ? current($entities) : NULL;
       }
