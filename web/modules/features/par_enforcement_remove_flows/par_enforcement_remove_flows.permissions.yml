@@ -1,0 +1,4 @@
+remove enforcement notice:
+  title: 'Remove enforcement notice'
+  description: 'Allow a user to remove an enforcement notice.'
+  restrict access: TRUE

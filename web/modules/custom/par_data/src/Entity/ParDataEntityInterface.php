@@ -99,22 +99,37 @@ interface ParDataEntityInterface extends TranceInterface {
   public function isDeletable();
 
   /**
+   * Check whether any other entity has a dependency on this entity, if there
+   * are this will impact the actions that can be performed against this entity.
+   * Protected relationships should be preserved.
+   *
+   * @return bool
+   *   TRUE if entity can be deleted.
+   */
+  public function hasDependencies();
+
+  /**
    * Delete if this entity is deletable and is not new.
    *
    * @param string $reason
    *   The reason for deleting this entity.
+   * @param bool $deletable
+   *   Allows deletion of entities to bypass the default
+   *   self::isDeletable() check on entities.
    *
    * @return bool
    *   TRUE if the entity can be deleted
    *   FALSE if the entity cannot be deleted, or it has already been removed.
    */
-  public function delete($reason = '');
+  public function delete($reason = '', $deletable = FALSE);
 
   /**
-   * Destroy and entity, and completely remove from the system without checking
-   * whether the entity can be deleted. Use with caution.
+   * Delete the entity without checking whether it is a deletable entity type.
+   *
+   * If it has dependent relationships it may still not be possible to remove
+   * it, these dependent relationships will have to be deleted first.
    */
-  public function annihilate();
+  public function destroy();
 
   /**
    * Revoke if this entity is revokable and is not new.

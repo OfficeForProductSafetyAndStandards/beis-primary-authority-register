@@ -35,6 +35,7 @@ class ParEnforcementSendController extends ParBaseController {
 
   public function loadData() {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
+    var_dump($par_data_enforcement_notice->id());
 
     if ($par_data_enforcement_notice && $par_data_enforcement_actions = $par_data_enforcement_notice->getEnforcementActions()) {
       $this->getFlowDataHandler()->setParameter('par_data_enforcement_actions', $par_data_enforcement_actions);

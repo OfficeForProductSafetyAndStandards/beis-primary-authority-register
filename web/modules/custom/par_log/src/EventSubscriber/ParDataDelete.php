@@ -33,7 +33,7 @@ class ParDataDelete implements EventSubscriberInterface {
     $entity = $event->getEntity();
 
     $reason = !$entity->{ParDataEntity::DELETE_REASON_FIELD}->isEmpty() ?
-      (string) $entity->{ParDataEntity::DELETE_REASON_FIELD}->getString() :
+      (string) $entity->getPlain(ParDataEntity::DELETE_REASON_FIELD) :
       '';
     $label = (string) $entity;
 

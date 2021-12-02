@@ -87,6 +87,7 @@ module:
   par_deviation_review_flows: 0
   par_deviation_view_flows: 0
   par_enforcement_raise_flows: 0
+  par_enforcement_remove_flows: 0
   par_enforcement_review_flows: 0
   par_enforcement_send_flows: 0
   par_enquiry_send_flows: 0

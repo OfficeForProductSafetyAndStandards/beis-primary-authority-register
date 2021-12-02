@@ -375,8 +375,9 @@ function par_data_update_8023() {
   $par_data_manager = \Drupal::service('par_data.manager');
 
   $people = $par_data_manager->getEntitiesByProperty('par_data_person', 'type', 'business');
+  $reason = 'Entity removed as part of hook cleanup par_data_update_8023';
   foreach ($people as $person) {
-    $person->destroy();
+    $person->destroy($reason);
   }
 }
 
@@ -515,6 +516,7 @@ function par_data_update_8030() {
     ],
   ];
   $par_data_enforcement_notices = $par_data_manager->getEntitiesByQuery('par_data_enforcement_notice', $conditions);
+  $reason = 'Entity removed as part of hook cleanup par_data_update_8030';
 
   foreach ($par_data_enforcement_notices as $par_data_enforcement_notice) {
     if ($par_data_enforcement_notice->getEnforcementActions()) {
