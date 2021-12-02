@@ -93,6 +93,10 @@ display:
             field_primary_authority: field_primary_authority
             par_status: par_status
             field_organisation: field_organisation
+            authority_name: authority_name
+            authority_name_1: authority_name_1
+            organisation_name: organisation_name
+            par_flow_link_2: par_flow_link_2
           info:
             id:
               sortable: false
@@ -142,7 +146,7 @@ display:
               align: ''
               separator: ''
               empty_column: false
-              responsive: ''
+              responsive: priority-medium
             par_status:
               sortable: false
               default_sort_order: asc
@@ -157,6 +161,34 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
+            authority_name:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            authority_name_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: priority-medium
+            organisation_name:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_flow_link_2:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: true
+              responsive: priority-medium
           default: '-1'
           empty_table: false
       row:
@@ -899,6 +931,60 @@ display:
           entity_type: par_data_organisation
           entity_field: organisation_name
           plugin_id: field
+        par_flow_link_2:
+          id: par_flow_link_2
+          table: par_enforcement_notices_field_data
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Remove Enforcement'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          title: 'remove enforcement'
+          assistive_text: 'remove the enforcement against {{ field_organisation }}: {{ title }}'
+          link: '/enforcement-notice/{{ id }}/remove'
+          hidden: 1
+          entity_type: par_data_enforcement_notice
+          plugin_id: par_flow_link
       filters:
         type:
           id: type
