@@ -72,7 +72,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    * {@inheritdoc}
    */
   public function getFrequency() {
-    $frequency = $this->pluginDefinition['frequency'];
+    $frequency = $this->pluginDefinition['frequency'] ?? NULL;
 
     // Only a limited subset of the relative time formats are allowed for simplicity.
     return preg_match("^[0-9]*[\s]+(day|week|month|year)[s]*$", $frequency) === 1 ?
@@ -231,7 +231,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
       $entities = $this->getItems();
       foreach ($entities as $entity) {
         // PAR-1746: Notifications should only be sent once.
-        $key = "scheduled-action:{$action->getPluginId()}:{$this->$entity()}";
+        $key = "scheduled-action:{$action->getPluginId()}:{$entity->id()}";
         if (!$this->getCacheBin()->get($key)) {
           // Execute the plugin.
           $action->execute($entity);
