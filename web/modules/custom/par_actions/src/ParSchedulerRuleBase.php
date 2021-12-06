@@ -3,11 +3,13 @@
 namespace Drupal\par_actions;
 
 use Drupal\Component\Plugin\PluginBase;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Queue\QueueInterface;
 use Drupal\par_actions\Plugin\Factory\BusinessDaysCalculator;
 use Drupal\par_data\ParDataManagerInterface;
+use False\True;
 use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
 
 /**
@@ -68,6 +70,18 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getFrequency() {
+    $frequency = $this->pluginDefinition['frequency'];
+
+    // Only a limited subset of the relative time formats are allowed for simplicity.
+    return preg_match("^[0-9]*[\s]+(day|week|month|year)[s]*$", $frequency) === 1 ?
+      "+" . $this->pluginDefinition['frequency'] :
+      "+1 week";
+  }
+
+  /**
    * Whether only working days should be counted.
    *
    * {@inheritdoc}
@@ -108,6 +122,16 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    */
   public function getActionManager() {
     return \Drupal::service('plugin.manager.action');
+  }
+
+  /**
+   * Get the action manager service.
+   *
+   * @return \Drupal\Core\Cache\CacheBackendInterface
+   *  A cache bin instance.
+   */
+  public function getCacheBin() {
+    return \Drupal::cache('par_actions');
   }
 
   /**
@@ -178,6 +202,9 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
       $query->condition($this->getProperty(), $scheduled_time->format('Y-m-d'), $operator);
     }
 
+    // Keep a record of the values we searched for.
+
+
     return $query;
   }
 
@@ -204,7 +231,17 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
       $action = $this->getActionPlugin($this->getAction());
       $entities = $this->getItems();
       foreach ($entities as $entity) {
-        $action->execute($entity);
+        // PAR-1746: Notifications should only be sent once.
+        $key = "scheduled-action:{$action->getPluginId()}:{$this->$entity()}";
+        if (!$this->getCacheBin()->get($key)) {
+          // Execute the plugin.
+          $action->execute($entity);
+
+          // Keep a record that we executed this action on this entity.
+          $expiry = $this->getCurrentTime();
+          $expiry->modify($this->getFrequency());
+          $this->getCacheBin()->set($key, $entity, $expiry->getTimestamp());
+        }
       }
     }
   }

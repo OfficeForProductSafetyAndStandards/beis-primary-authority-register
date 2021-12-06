@@ -87,6 +87,25 @@ class ParSchedulerRule extends Plugin {
   public $time;
 
   /**
+   * The frequency with which this rule can run each action.
+   *
+   * These time properties should be recorded in relative time formats,
+   * limited to days, weeks, months and years, and are assumed that
+   * these are always in the future:
+   * https://www.php.net/manual/en/datetime.formats.relative.php
+   *
+   * e.g. "1 day", "2 weeks", "3 months", "1 year"
+   *
+   * For example if a rule is allowed to run with a frequency of "1 month"
+   * then each action will only per run once per entity every month.
+   *
+   * The default is "1 week".
+   *
+   * @var string
+   */
+  public $frequency;
+
+  /**
    * Whether to resolve this action by sticking it in a queue
    * instead of trying to resolve immediately.
    *

@@ -36,10 +36,8 @@ class ParSendMemberListNotice extends ActionBase {
       // Dispatch a PAR custom event.
       $event = new ParDataEvent($entity);
       $dispatcher = \Drupal::service('event_dispatcher');
-      // @TODO This event should only fire ONCE
-      // There needs to be a way to record it has
-      // been sent so that it isn't processed again.
-//      $dispatcher->dispatch(ParDataEvent::customAction($entity->getEntityTypeId(), 'stale_list_notification'), $event);
+
+      $dispatcher->dispatch(ParDataEvent::customAction($entity->getEntityTypeId(), 'stale_list_notification'), $event);
     }
   }
 

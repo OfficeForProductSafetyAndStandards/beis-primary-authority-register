@@ -12,7 +12,8 @@ use Drupal\par_data\Entity\ParDataPartnership;
  *   id = "member_list_needs_update",
  *   title = @Translation("Prompt to update the member list."),
  *   entity = "par_data_partnership",
- *   time = "-3 months",
+ *   time = "+3 months",
+ *   frequency = "2 months",
  *   queue = FALSE,
  *   status = TRUE,
  *   action = "par_send_member_list_notice"
