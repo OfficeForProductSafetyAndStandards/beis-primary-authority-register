@@ -282,28 +282,6 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
-  public function getParStatus() {
-    if ($this->isDeleted()) {
-      return 'Deleted';
-    }
-    if ($this->isRevoked()) {
-      return 'Revoked';
-    }
-    if ($this->isArchived()) {
-      return 'Archived';
-    }
-    if (!$this->isTransitioned()) {
-      return 'Not transitioned from PAR2';
-    }
-
-    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-    $raw_status = $this->getRawStatus();
-    return $field_name && $raw_status ? $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status) : '';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getStatusTime($status) {
     // Loop through all actions to determine status.
     foreach ($this->getEnforcementActions() as $action) {

@@ -7,6 +7,7 @@ use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParControllerTrait;
@@ -107,11 +108,20 @@ class ParHelpdeskDashboardController extends ControllerBase {
       ];
     }
 
-    $manage_partnerships = $this->getLinkByRoute('view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page');
-    $manage_link = $manage_partnerships->setText('Manage partnerships')->toString();
-    $build['partnerships']['manage'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>{$manage_link}</p>",
+    $log = $this->getLinkByRoute('view.par_log.log_page');
+    $log_link = $log->setText('View log of notable actions')->toString();
+    $build['log'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => ['grid-row', 'form-group']],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+    $build['log']['view'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#attributes' => ['class' => 'column-full'],
+      '#value' => $log_link,
+
     ];
 
     // Manage partnerships.

@@ -79,10 +79,19 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Simple getter to inject the date formatter service.
    *
-   * @return DateFormatterInterface
+   * @return \Drupal\Core\Datetime\DateFormatterInterface
    */
   public function getDateFormatter() {
     return \Drupal::service('date.formatter');
+  }
+
+  /**
+   * Simple getter to inject the messenger service.
+   *
+   * @return \Drupal\Core\Messenger\MessengerInterface
+   */
+  public function getMessenger() {
+    return \Drupal::service('messenger');
   }
 
   /**
@@ -173,7 +182,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * @return bool
    */
   public function isLiving() {
-    return !$this->isDeleted() && $this->isTransitioned() && $this->getBoolean('status');
+    return $this->isTransitioned() && $this->getBoolean('status');
   }
 
   /**
@@ -182,10 +191,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * @return bool
    */
   public function isDeleted() {
-    if ($this->getTypeEntity()->isDeletable() && $this->getBoolean(self::DELETE_FIELD)) {
-      return TRUE;
-    }
-
+    // @DEPRECATED This function will be removed in a future release.
     return FALSE;
   }
 
@@ -225,80 +231,90 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Invalidate entities so that they are not transitioned to PAR3.
-   */
-  public function invalidate() {
-    // Only three entities can be transitioned.
-    if (!in_array($this->getEntityTypeId(), ['par_data_partnership', 'par_data_advice', 'par_data_inspection_plan'])) {
-      return FALSE;
-    }
-    if (!$this->isNew() && $this->isTransitioned()) {
-      // Set the status to unpublished to make filtering from display easier.
-      $this->delete();
-
-      $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-
-      if (isset($field_name) && $this->hasField($field_name) && !$this->get($field_name)->isEmpty() && $this->get($field_name)->getString() === 'n/a') {
-        return $this->set($field_name, 'n/a')->save();
-      }
-      elseif ($this->hasField('obsolete')) {
-        return $this->set('obsolete', FALSE)->save();
-      }
-    }
-    return FALSE;
-  }
-
-  /**
-   * Destroy and entity, and completely remove.
-   */
-  public function destroy() {
-    if ($this->isDeletable()) {
-      parent::delete();
-
-      return TRUE;
-    }
-
-    return FALSE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function annihilate() {
-    return $this->entityTypeManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function isDeletable() {
     // Only some PAR entities can be deleted.
-    if (!$this->getTypeEntity()->isDeletable()) {
-      return FALSE;
-    }
-
-    // If there are any relationships whereby another entity requires this one
-    // then this entity should not be deleted.
-    $relationships = $this->getRequiredRelationships(TRUE);
-    return $relationships ? FALSE : TRUE;
+    return (bool) $this->getTypeEntity()->isDeletable();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function delete($reason = '') {
-    if (!$this->isDeleted()) {
-      // PAR-1507: We are moving away from soft-delete options.
-      return $this->destroy();
+  public function hasDependencies() {
+    // Identify if there are any other entities which depend
+    // on this one, which may impact whether this can be deleted.
+    return (bool) $this->getRequiredRelationships(TRUE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function delete($reason = '', $deletable = FALSE) {
+    // Do not allow removal if the entity is not a deletable entity type
+    if (!$this->isDeletable() && !$deletable) {
+      return FALSE;
     }
 
-    // Set the reason so that loggers can make use of it.
+    // Do not allow removal if it has other entities which depend on it.
+    if ($this->hasDependencies()) {
+      // Alert the user why this entity could not be deleted.
+      $dependencies = [];
+      $required_relationships = $this->getRequiredRelationships();
+      foreach ($required_relationships as $dependency) {
+        // Get a string version of this dependent entity.
+        $dependencies[] = $dependency->getEntity() instanceof ParDataEntityInterface ?
+          (string) $dependency->getEntity() :
+          $dependency->getEntity()->label();
+
+        // Do not show more than 3 dependencies.
+        if (count($dependencies) >= 3) {
+          $dependencies[] = $this->t("... there are %count more...", [
+            '%count' => count($required_relationships) - 3
+          ]);
+        }
+      }
+      // Set a message to indicate that deletion failed.
+      $message = $this->t("Deletion of %entity failed because there are some entities which depend on it:".PHP_EOL."@dependencies", [
+        '%entity' => $this->label(),
+        '@dependencies' => implode(PHP_EOL, $dependencies)
+      ]);
+      $this->getMessenger()->addWarning($message);
+
+      return FALSE;
+    }
+
+    // PAR-1744: Set the reason so that loggers can make use of it.
     $this->get(ParDataEntity::DELETE_REASON_FIELD)->setValue([
       'value' => $reason,
       'format' => 'plain_text',
     ]);
 
-    return FALSE;
+    parent::delete();
+    return TRUE;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function destroy($reason = '') {
+    return $this->delete($reason, TRUE);
+  }
+
+  /**
+   * Destroy and entity, and completely remove from the system without checking
+   * whether the entity can be deleted. Use with caution.
+   *
+   * NOTE: Not to be exposed to end users.
+   */
+  public function annihilate() {
+    // Set the reason so that loggers can make use of it.
+    $this->get(ParDataEntity::DELETE_REASON_FIELD)->setValue([
+      'value' => "This entity was permanently removed (annihilated) by administrators.",
+      'format' => 'plain_text',
+    ]);
+
+    return parent::delete();
   }
 
   /**
@@ -396,7 +412,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function isActive() {
-    if ($this->isDeleted() || $this->isRevoked() || $this->isArchived() || !$this->isTransitioned()) {
+    if ($this->isRevoked() || $this->isArchived() || !$this->isTransitioned()) {
       return FALSE;
     }
 
@@ -416,9 +432,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function getRawStatus() {
-    if ($this->isDeleted()) {
-      return 'deleted';
-    }
     if ($this->isRevoked()) {
       return 'revoked';
     }
@@ -442,9 +455,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function getParStatus() {
-    if ($this->isDeleted()) {
-      return 'Deleted';
-    }
     if ($this->isRevoked()) {
       return 'Revoked';
     }

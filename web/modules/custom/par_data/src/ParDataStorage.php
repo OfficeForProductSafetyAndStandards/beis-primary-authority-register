@@ -42,13 +42,6 @@ class ParDataStorage extends TranceStorage {
   }
 
   /**
-   * Hard delete all PAR Data Entities.
-   */
-  public function destroy(array $entities) {
-    parent::delete($entities);
-  }
-
-  /**
    * Soft delete all PAR Data entities.
    *
    * {@inheritdoc}
