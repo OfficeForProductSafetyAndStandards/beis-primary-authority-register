@@ -3,6 +3,7 @@
 This modules creates some persistent cache bins that won't be cleared when flushing drupal caches. This enables deployments to be scheduled without clearing user data defined caches.
 
 ## Cache bins
+* **par_actions** - for storing execution times of scheduler action executions so that they're not run repeatedly.
 * **par_data** - for storing relationships between par_data entities, such that relationship trees can be easily referenced.
 * **par_flows** - for storing multistep form caches and user temporary form data between sessions.
 
