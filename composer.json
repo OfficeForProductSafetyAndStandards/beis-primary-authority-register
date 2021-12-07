@@ -21,7 +21,7 @@
         }
     ],
     "require": {
-        "php": "^8.1.0",
+        "php": "^8.0.0",
         "aws/aws-sdk-php":  "3.144.1",
         "bjeavons/zxcvbn-php": "~1.2.0",
         "commerceguys/intl": "^1.0",
