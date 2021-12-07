@@ -20,12 +20,12 @@ bundle: organisation
 mode: about
 content:
   comments:
+    type: text_default
     label: hidden
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 0
+    region: content
 hidden:
   archive_reason: true
   coordinator_number: true

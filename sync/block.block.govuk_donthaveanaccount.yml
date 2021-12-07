@@ -18,14 +18,14 @@ plugin: 'block_content:63f4e86b-35dd-460c-a40a-21d578c4e592'
 settings:
   id: 'block_content:63f4e86b-35dd-460c-a40a-21d578c4e592'
   label: 'Don''t have an account?'
-  provider: block_content
   label_display: '0'
+  provider: block_content
   status: true
   info: ''
   view_mode: full
 visibility:
   request_path:
     id: request_path
-    pages: "<front>\r\n/user/login"
     negate: false
     context_mapping: {  }
+    pages: "<front>\r\n/user/login"

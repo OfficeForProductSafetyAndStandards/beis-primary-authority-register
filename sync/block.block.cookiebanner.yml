@@ -13,9 +13,9 @@ weight: 0
 provider: null
 plugin: cookie_banner
 settings:
-  label_display: '0'
   id: cookie_banner
   label: 'Cookie Banner'
+  label_display: '0'
   provider: govuk_cookies
   my_block_settings: null
 visibility:

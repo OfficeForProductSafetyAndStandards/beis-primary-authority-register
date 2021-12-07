@@ -15,33 +15,33 @@ bundle: person
 mode: summary
 content:
   email_pseudo_field:
+    settings: {  }
+    third_party_settings: {  }
     weight: 3
     region: content
+  full_name_pseudo_field:
     settings: {  }
     third_party_settings: {  }
-  full_name_pseudo_field:
     weight: 0
     region: content
+  mobile_phone_pseudo_field:
     settings: {  }
     third_party_settings: {  }
-  mobile_phone_pseudo_field:
     weight: 2
     region: content
-    settings: {  }
-    third_party_settings: {  }
   person_name:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  work_phone_pseudo_field:
-    weight: 1
+    weight: 0
     region: content
+  work_phone_pseudo_field:
     settings: {  }
     third_party_settings: {  }
+    weight: 1
+    region: content
 hidden:
   archive_reason: true
   communication_email: true

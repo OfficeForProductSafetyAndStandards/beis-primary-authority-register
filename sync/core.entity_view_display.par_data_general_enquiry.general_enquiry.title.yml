@@ -20,21 +20,21 @@ bundle: general_enquiry
 mode: title
 content:
   document:
-    weight: 3
+    type: file_default
     label: above
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
+    weight: 3
     region: content
   notes:
     type: text_trimmed
-    weight: 0
-    region: content
     label: hidden
     settings:
       trim_length: 300
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   archive_reason: true
   deleted_reason: true

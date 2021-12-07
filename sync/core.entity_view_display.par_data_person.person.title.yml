@@ -15,10 +15,10 @@ bundle: person
 mode: title
 content:
   full_name_pseudo_field:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   archive_reason: true
   communication_email: true

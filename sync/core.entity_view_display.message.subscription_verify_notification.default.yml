@@ -12,16 +12,16 @@ bundle: subscription_verify_notification
 mode: default
 content:
   field_to:
-    weight: 1
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 1
     region: content
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_message_subject: true

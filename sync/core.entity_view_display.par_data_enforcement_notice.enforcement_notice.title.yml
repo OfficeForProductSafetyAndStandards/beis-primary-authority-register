@@ -23,37 +23,37 @@ bundle: enforcement_notice
 mode: title
 content:
   enforcement_action:
+    type: entity_reference_label
     label: hidden
-    region: content
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
-  legal_entity_name:
-    label: hidden
-    weight: 1
     region: content
+  legal_entity_name:
+    type: string
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 1
+    region: content
   notice_date:
     type: datetime_default
-    weight: 2
-    region: content
     label: hidden
     settings:
       timezone_override: ''
       format_type: gds_date_format
     third_party_settings: {  }
+    weight: 2
+    region: content
   notice_type:
     type: par_list_formatter
-    weight: 0
-    region: content
     label: hidden
     settings:
       display_original_value: false
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   archive_reason: true
   deleted_reason: true

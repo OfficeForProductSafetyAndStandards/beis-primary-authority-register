@@ -14,19 +14,19 @@ bundle: new_partnership_notification
 mode: full
 content:
   field_partnership:
-    weight: 1
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 1
     region: content
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_message_subject: true
   field_to: true

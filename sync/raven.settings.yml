@@ -1,6 +1,8 @@
+_core:
+  default_config_hash: EJsMMn516WDvtSeOL9Dx7ulP0PnE5dNVCv6AcXolnKg
 client_key: SENTRY_DSN
-fatal_error_handler: true
-fatal_error_handler_memory: 2560
+environment: ''
+release: ''
 log_levels:
   1: 1
   2: 2
@@ -13,14 +15,12 @@ log_levels:
 stack: true
 timeout: !!float 2
 trace: false
+fatal_error_handler: true
+fatal_error_handler_memory: 2560
 javascript_error_handler: true
-public_dsn: SENTRY_DSN_PUBLIC
-_core:
-  default_config_hash: EJsMMn516WDvtSeOL9Dx7ulP0PnE5dNVCv6AcXolnKg
 drush_error_handler: false
-send_user_data: false
-send_request_body: false
-rate_limit: null
+public_dsn: SENTRY_DSN_PUBLIC
 ignored_channels: {  }
-environment: ''
-release: ''
+send_user_data: false
+rate_limit: null
+send_request_body: false

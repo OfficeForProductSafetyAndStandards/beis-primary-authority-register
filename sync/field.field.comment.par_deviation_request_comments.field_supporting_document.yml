@@ -18,10 +18,10 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
+  handler: 'default:file'
+  handler_settings: {  }
   file_directory: documents/deviation_request
   file_extensions: 'jpg jpeg gif png tif pdf txt rdf doc docx odt xls xlsx csv ods ppt pptx odp pot potx pps'
   max_filesize: '20 MB'
   description_field: false
-  handler: 'default:file'
-  handler_settings: {  }
 field_type: file

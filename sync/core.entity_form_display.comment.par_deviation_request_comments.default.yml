@@ -20,18 +20,18 @@ content:
   comment_body:
     type: text_textarea
     weight: 11
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    region: content
   field_supporting_document:
+    type: file_generic
     weight: 12
+    region: content
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
-    type: file_generic
-    region: content
   langcode:
     type: language_select
     weight: 2

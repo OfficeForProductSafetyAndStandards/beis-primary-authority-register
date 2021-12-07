@@ -1,3 +1,5 @@
+_core:
+  default_config_hash: CIMBsgQI4M_WsBh0nn1FLrjeO5m-wBCfAITt31sNSvU
 langcode: en
 default_config:
   display: pages
@@ -11,47 +13,45 @@ default_config:
     pages:
       prefix_label: 'Page <b>@number</b> of @total'
       first: «
-      previous: ‹
-      next: ›
-      last: »
-      pageset_empty: 'No pages to display.'
       first_title: 'Go to first page'
-      previous_title: 'Go to previous page'
-      next_title: 'Go to next page'
-      last_title: 'Go to last page'
       first_reader: 'First page'
+      previous: ‹
+      previous_title: 'Go to previous page'
       previous_reader: 'Previous page'
+      next: ›
+      next_title: 'Go to next page'
       next_reader: 'Next page'
+      last: »
+      last_title: 'Go to last page'
       last_reader: 'Last page'
+      pageset_empty: 'No pages to display.'
     items:
       prefix_label: 'Item <b>@item</b> of @total_items'
       first: «
-      previous: ‹
-      next: ›
-      last: »
-      pageset_empty: 'No items to display.'
       first_title: 'Go to first item'
-      previous_title: 'Go to previous items'
-      next_title: 'Go to next items'
-      last_title: 'Go to last item'
       first_reader: 'First item'
+      previous: ‹
+      previous_title: 'Go to previous items'
       previous_reader: 'Previous items'
+      next: ›
+      next_title: 'Go to next items'
       next_reader: 'Next items'
+      last: »
+      last_title: 'Go to last item'
       last_reader: 'Last item'
+      pageset_empty: 'No items to display.'
     item_ranges:
       prefix_label: 'Items <b>@item_low-@item_high</b> of @total_items'
       first: «
-      previous: ‹
-      next: ›
-      last: »
-      pageset_empty: 'No items to display.'
       first_title: 'Go to first items'
-      previous_title: 'Go to previous items'
-      next_title: 'Go to next items'
-      last_title: 'Go to last items'
       first_reader: 'First items'
+      previous: ‹
+      previous_title: 'Go to previous items'
       previous_reader: 'Previous items'
+      next: ›
+      next_title: 'Go to next items'
       next_reader: 'Next items'
+      last: »
+      last_title: 'Go to last items'
       last_reader: 'Last items'
-_core:
-  default_config_hash: CIMBsgQI4M_WsBh0nn1FLrjeO5m-wBCfAITt31sNSvU
+      pageset_empty: 'No items to display.'

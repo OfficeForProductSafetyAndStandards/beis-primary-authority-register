@@ -5,6 +5,7 @@ dependencies: {  }
 id: theme_v2_config
 label: 'Theme v2 Config'
 description: 'Enables and configures the upgraded govuk par theme.'
+weight: 0
 folder: ../sync-theme-v2
 module: {  }
 theme: {  }
@@ -13,4 +14,3 @@ graylist:
   - system.theme
 graylist_dependents: true
 graylist_skip_equal: true
-weight: 0
