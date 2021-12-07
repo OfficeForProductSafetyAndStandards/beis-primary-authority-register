@@ -4,7 +4,7 @@ applications:
       - route: primary-authority.beis.gov.uk
     buildpack: php_buildpack
     memory: 2G
-    disk_quota: 4096M
+    disk_quota: 10G
     timeout: 120
     services:
       - par-pg-production

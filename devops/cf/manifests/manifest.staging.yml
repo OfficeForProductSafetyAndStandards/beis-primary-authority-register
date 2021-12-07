@@ -4,5 +4,5 @@ applications:
       - route: beis-par-staging.cloudapps.digital
     buildpack: php_buildpack
     memory: 2G
-    disk_quota: 4096M
+    disk_quota: 10G
     timeout: 120
