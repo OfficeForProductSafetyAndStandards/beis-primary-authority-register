@@ -6,6 +6,8 @@ id: dev_config
 label: 'Dev Config'
 description: ''
 weight: 0
+stackable: false
+storage: null
 folder: ../sync-dev
 module:
   config_inspector: 0
@@ -14,8 +16,5 @@ module:
   par_data_test: 0
   webprofiler: 0
 theme: {  }
-blacklist:
-  - par_data.settings
-graylist: {  }
-graylist_dependents: true
-graylist_skip_equal: true
+complete_list: {  }
+partial_list: {  }

@@ -14,7 +14,6 @@ module:
   color: 0
   comment: 0
   config: 0
-  config_filter: 0
   config_readonly: 0
   config_split: 0
   config_translation: 0
