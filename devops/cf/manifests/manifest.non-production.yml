@@ -4,5 +4,5 @@ applications:
       - route: ((app)).cloudapps.digital
     buildpack: php_buildpack
     memory: 2G
-    disk_quota: 2048M
+    disk_quota: 5G
     timeout: 120
