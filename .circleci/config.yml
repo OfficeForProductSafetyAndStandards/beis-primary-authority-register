@@ -6,7 +6,7 @@ orbs:
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v3.4.1
+      - image: beispar/web:v4.0.0
         name: web
         environment:
           APP_ENV: ci
