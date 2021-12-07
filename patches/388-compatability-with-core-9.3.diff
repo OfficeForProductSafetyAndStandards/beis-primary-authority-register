@@ -1,0 +1,18 @@
+diff --git a/webprofiler/src/Entity/Decorators/Config/ConfigEntityStorageDecorator.php b/webprofiler/src/Entity/Decorators/Config/ConfigEntityStorageDecorator.php
+index d842b82..db63502 100644
+--- a/webprofiler/src/Entity/Decorators/Config/ConfigEntityStorageDecorator.php
++++ b/webprofiler/src/Entity/Decorators/Config/ConfigEntityStorageDecorator.php
+@@ -136,6 +136,13 @@ class ConfigEntityStorageDecorator extends EntityDecorator implements ConfigEnti
+     return $this->getOriginalObject()->getEntityType();
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function getEntityClass(?string $bundle = NULL): string {
++    return $this->getOriginalObject()->getEntityClass();
++  }
++
+   /**
+    * {@inheritdoc}
+    */
