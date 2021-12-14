@@ -437,7 +437,8 @@ if [[ $ENV = "production" ]] || [[ $ENV = "staging" ]]; then
     REDIS_PLAN='medium-ha-5.x'
 else
     ## The free plan can be used for any non-critical environments
-    PG_PLAN='tiny-unencrypted-11'
+#    PG_PLAN='tiny-unencrypted-11' @TODO DB is currently too large for this plan.
+    PG_PLAN='small-11'
     REDIS_PLAN='tiny-5.x'
 fi
 
