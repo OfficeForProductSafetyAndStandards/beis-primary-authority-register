@@ -2,7 +2,7 @@ applications:
   - name: beis-par-production
     routes:
       - route: primary-authority.beis.gov.uk
-    buildpack:
+    buildpacks:
       - https://github.com/cloudfoundry/php-buildpack.git#v4.4.52
     memory: 2G
     disk_quota: 10G
