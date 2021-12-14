@@ -5,5 +5,5 @@ applications:
     buildpacks:
       - https://github.com/cloudfoundry/php-buildpack.git#v4.4.52
     memory: 2G
-    disk_quota: 10G
+    disk_quota: 5G
     timeout: 120
