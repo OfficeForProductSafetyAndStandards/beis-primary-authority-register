@@ -2,7 +2,7 @@ applications:
   - name: ((app))
     routes:
       - route: ((app)).cloudapps.digital
-    buildpack:
+    buildpacks:
       - https://github.com/cloudfoundry/php-buildpack.git#v4.4.52
     memory: 2G
     disk_quota: 5G
