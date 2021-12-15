@@ -40,16 +40,4 @@ class ParNotificationFollowup extends ParFormPluginBase {
 
     return $form;
   }
-
-  /**
-   * Validate checkbox.
-   */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
-    if (!$form_state->getValue('notifications')) {
-      $id = $this->getElementId('notifications', $form);
-      $form_state->setErrorByName($this->getElementName(['notifications']), $this->wrapErrorMessage('Please confirm that you will follow up on this with the affected parties.', $id));
-    }
-
-    parent::validate($form, $form_state, $cardinality, $action);
-  }
 }
