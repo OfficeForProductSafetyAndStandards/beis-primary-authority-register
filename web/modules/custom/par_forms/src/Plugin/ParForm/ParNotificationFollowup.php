@@ -32,11 +32,10 @@ class ParNotificationFollowup extends ParFormPluginBase {
    */
   public function getElements($form = [], $cardinality = 1) {
     $form['notifications'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('No notifications will be sent'),
-      '#description' => $this->t('Please confirm that you will follow up this matter with the affected parties.'),
-      '#return_value' => self::FOLLOWUP_CONFIRM,
+      '#type' => 'html_tag',
+      '#tag' => 'p',
       '#attributes' => ['class' => ['form-group']],
+      '#value' => $this->t('No notifications will be sent, please follow up this matter with the affected parties.'),
     ];
 
     return $form;

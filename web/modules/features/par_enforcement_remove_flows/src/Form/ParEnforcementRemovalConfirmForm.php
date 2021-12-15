@@ -64,6 +64,9 @@ class ParEnforcementRemovalConfirmForm extends ParBaseForm {
       ]
     ];
 
+    // Change the main button title to 'remove'.
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Remove');
+
     return parent::buildForm($form, $form_state);
   }
 
