@@ -154,6 +154,7 @@ permissions:
   - 'receive partnership_revocation_notificat notification'
   - 'receive reviewed_deviation_request notification'
   - 'receive reviewed_enforcement notification'
+  - 'remove enforcement notice'
   - 'remove partnership advice'
   - 'remove partnership authority contact'
   - 'remove partnership inspection plan'
