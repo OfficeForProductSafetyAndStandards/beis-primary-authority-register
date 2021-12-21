@@ -208,6 +208,13 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
       ->condition('revoked', NULL, 'IS NULL');
     $query->condition($revoked);
 
+    // Do not include archived entities.
+    $archived = $query
+      ->orConditionGroup()
+      ->condition('archived', 0)
+      ->condition('archived', NULL, 'IS NULL');
+    $query->condition($archived);
+
     return $query;
   }
 
