@@ -8,6 +8,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Queue\QueueInterface;
 use Drupal\par_actions\Plugin\Factory\BusinessDaysCalculator;
+use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\ParDataManagerInterface;
 use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
 
@@ -204,15 +205,15 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
     // Do not include revoked entities.
     $revoked = $query
       ->orConditionGroup()
-      ->condition('revoked', 0)
-      ->condition('revoked', NULL, 'IS NULL');
+      ->condition(ParDataEntity::REVOKE_FIELD, 0)
+      ->condition(ParDataEntity::REVOKE_FIELD, NULL, 'IS NULL');
     $query->condition($revoked);
 
     // Do not include archived entities.
     $archived = $query
       ->orConditionGroup()
-      ->condition('archived', 0)
-      ->condition('archived', NULL, 'IS NULL');
+      ->condition(ParDataEntity::ARCHIVE_FIELD, 0)
+      ->condition(ParDataEntity::ARCHIVE_FIELD, NULL, 'IS NULL');
     $query->condition($archived);
 
     return $query;
