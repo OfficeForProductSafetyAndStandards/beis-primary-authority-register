@@ -201,8 +201,12 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
       $query->condition($this->getProperty(), $scheduled_time->format('Y-m-d'), $operator);
     }
 
-    // Keep a record of the values we searched for.
-
+    // Do not include revoked entities.
+    $revoked = $query
+      ->orConditionGroup()
+      ->condition('revoked', 0)
+      ->condition('revoked', NULL, 'IS NULL');
+    $query->condition($revoked);
 
     return $query;
   }

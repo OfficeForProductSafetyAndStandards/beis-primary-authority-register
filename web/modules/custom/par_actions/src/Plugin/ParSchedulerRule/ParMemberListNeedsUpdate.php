@@ -31,13 +31,6 @@ class ParMemberListNeedsUpdate extends ParSchedulerRuleBase {
     // Only active partnerships.
     $query->condition('partnership_status', 'confirmed_rd');
 
-    // Do not include revoked partnerships.
-    $revoked = $query
-      ->orConditionGroup()
-      ->condition('revoked', 0)
-      ->condition('revoked', NULL, 'IS NULL');
-    $query->condition($revoked);
-
     // This condition relies on a time comparison with a timestamp field.
     $timestamp = strtotime($this->getTime());
     $query->condition(
