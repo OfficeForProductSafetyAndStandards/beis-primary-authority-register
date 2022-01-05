@@ -34,13 +34,18 @@ As part of the site setup run composer install from the project root folder.  En
 
 #### Database
 
-In order to run the site you will need to import a copy of the latest par database, download this and place in the `backups` directory of the par project (create the folder if it doesn't' exist).
+In order to run the site you will need to import a copy of the latest par database:
+```
+aws s3 cp s3://beis-par-artifacts/backups/db-dump-production-unsanitised-latest.tar.gz ./backups/
+```
+Download this and place in the `backups` directory of the par project (create the folder if it doesn't' exist).
 
 Import the database using drush (note the database should be truncated before re-importing)
 ```bash
+cd /var/www/par/backups
+tar -zxvf ../backups/db-dump-production-sanitised-latest.tar.gz db-dump-production-sanitised.sql
 cd /var/www/par/web
-tar -zxvf ../backups/drush-dump-production-sanitized-latest.sql.tar.gz ../backups/drush-dump-production-sanitized-latest.sql
-../vendor/bin/drush sql:cli < ../backups/drush-dump-production-sanitized-latest.sql
+../vendor/bin/drush sql:cli < ../backups/db-dump-production-sanitised.sql
 ```
 
 ## Deployment
