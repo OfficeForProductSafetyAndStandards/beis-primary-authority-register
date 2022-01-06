@@ -76,9 +76,10 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
     $frequency = $this->pluginDefinition['frequency'] ?? NULL;
 
     // Only a limited subset of the relative time formats are allowed for simplicity.
-    return preg_match("^[0-9]*[\s]+(day|week|month|year)[s]*$", $frequency) === 1 ?
+    // e.g. 3 weeks, 2 months, 1 year
+    return preg_match("/^[0-9]*[\s]+(day|week|month|year)[s]*$/", $frequency) === 1 ?
       "+" . $this->pluginDefinition['frequency'] :
-      "+1 week";
+      "+1 month";
   }
 
   /**
