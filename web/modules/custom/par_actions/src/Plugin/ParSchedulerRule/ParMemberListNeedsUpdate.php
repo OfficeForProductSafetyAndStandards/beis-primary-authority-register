@@ -28,6 +28,9 @@ class ParMemberListNeedsUpdate extends ParSchedulerRuleBase {
     // Only for coordinated partnerships.
     $query->condition('partnership_type', 'coordinated');
 
+    // Only active partnerships.
+    $query->condition('partnership_status', 'confirmed_rd');
+
     // This condition relies on a time comparison with a timestamp field.
     $timestamp = strtotime($this->getTime());
     $query->condition(
