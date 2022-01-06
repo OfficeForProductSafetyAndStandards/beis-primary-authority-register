@@ -23,7 +23,7 @@
     "require": {
         "php": "^8.0.0",
         "aws/aws-sdk-php":  "3.144.1",
-        "bjeavons/zxcvbn-php": "~1.2.0",
+        "bjeavons/zxcvbn-php": "~1.3.0",
         "commerceguys/intl": "^1.0",
         "composer/installers": "^1.9",
         "cweagans/composer-patches": "^1.7",
@@ -68,7 +68,6 @@
         "drupal/no_autocomplete": "~1.6.0",
         "drupal/pagerer": "~2.1.0",
         "drupal/password_policy": "~3.0.0",
-        "drupal/password_strength": "dev-8.x-2.x",
         "drupal/queue_ui": "~2.2.0",
         "drupal/range": "~1.3.0",
         "drupal/raven": "~3.2.0",
@@ -124,7 +123,14 @@
     "prefer-stable": true,
     "config": {
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "cweagans/composer-patches": true,
+            "composer/installers": true,
+            "drupal/core-composer-scaffold": true,
+            "zaporylie/composer-drupal-optimizations": true,
+            "drupal/console-extend-plugin": true
+        }
     },
     "extra": {
         "installer-paths": {
@@ -162,9 +168,6 @@
                 "Non-exposed and exposed default sort order": "https://www.drupal.org/files/issues/2021-05-20/3120847-23.patch",
                 "PostgreSQL: deal with case insensitivity": "https://www.drupal.org/files/issues/2020-10-05/postgres-case-insensitivity_2464481-71.patch",
                 "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2021-01-19/case_sensitive_email-2490294-37.patch"
-            },
-            "drupal/devel": {
-                "#388: Compatibility with core 9.3": "./patches/388-compatability-with-core-9.3.diff"
             },
             "drupal/flysystem": {
                 "Add Drush commands for sending and receiving files": "https://www.drupal.org/files/issues/2021-01-14/3192777-2-Added_drush_commands.patch",
