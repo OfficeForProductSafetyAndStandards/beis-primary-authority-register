@@ -1,9 +1,8 @@
+_core:
+  default_config_hash: w1Hg1sJmlqc38y_J-HQH8kLDLRH3wuEhx-Fkwz7m-SI
 purge_on_cache_clear: true
 storage: profiler.database_storage
 exclude: "/contextual/*\r\n/toolbar/*\r\n/edit/*\r\n*.js\r\n*.css"
-ide_link: 'txmt://open?url=file://@file&line=@line'
-ide_link_remote: ''
-ide_link_local: ''
 active_toolbar_items:
   assets: assets
   blocks: blocks
@@ -26,7 +25,8 @@ active_toolbar_items:
   services: '0'
   state: '0'
   theme: '0'
+ide_link: 'txmt://open?url=file://@file&line=@line'
+ide_link_remote: ''
+ide_link_local: ''
 query_sort: source
 query_highlight: 5
-_core:
-  default_config_hash: w1Hg1sJmlqc38y_J-HQH8kLDLRH3wuEhx-Fkwz7m-SI
