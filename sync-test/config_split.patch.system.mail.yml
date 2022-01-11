@@ -1,6 +1,0 @@
-adding:
-  interface:
-    default: maillog
-removing:
-  interface:
-    default: govuk_notify_mail
