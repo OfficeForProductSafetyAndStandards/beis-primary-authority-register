@@ -11,10 +11,12 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\file\FileInterface;
+use Drupal\file\FileRepositoryInterface;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataCoordinatedBusinessType;
 use Drupal\par_data\Entity\ParDataLegalEntity;
@@ -73,6 +75,13 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    */
   const DATE_FORMAT = 'd/m/Y';
   const DATETIME_FORMAT = 'Y-m-d';
+
+  /**
+   * The directory to write csv files to.
+   *
+   * @var string
+   */
+  protected $directory = 's3private://member-csv/';
 
   /**
    * The symfony serializer.
@@ -153,10 +162,27 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $this->parDataManager = $par_data_manager;
     $this->negotiator = $negotiator;
     $this->flowDataHandler = $data_handler;
+
+    // Prepare the member-csv directory for reads and writes.
+    $this->getFileSystem()->prepareDirectory($this->directory);
   }
 
   protected function getDateFormatter() {
     return \Drupal::service('date.formatter');
+  }
+
+  /**
+   * @return FileRepositoryInterface
+   */
+  protected function getFileRepository(): FileRepositoryInterface {
+    return \Drupal::service('file.repository');
+  }
+
+  /**
+   * @return FileSystemInterface
+   */
+  protected function getFileSystem(): FileSystemInterface {
+    return \Drupal::service('file_system');
   }
 
   /**
@@ -730,19 +756,28 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * Save data to a CSV file.
    *
-   * @param array $rows
-   *   An array to add processed rows to.
    * @param $par_data_partnership
    *   The partnership to generate the name for.
+   * @param array $rows
+   *   An array to add processed rows to.
    *
-   * @return bool
+   * @return bool|FileInterface
+   *   Return the file if successfully saved, otherwise return false.
    */
-  public function saveFile(array $rows = [], $par_data_partnership) {
+  public function saveFile(ParDataPartnership $par_data_partnership, array $rows = []): bool|FileInterface {
     $data = $this->getSerializer()->encode($rows, 'csv');
 
-    $directory = 's3private://member-csv/';
     $name = str_replace(' ', '_', "Member list for " . lcfirst($par_data_partnership->label()));
-    return file_save_data($data, $directory . $name . '.' . self::FILE_EXTENSION, FileSystemInterface::EXISTS_REPLACE);
+    $file_repository = $this->getFileRepository();
+
+    try {
+      $file = $file_repository->writeData($data, $this->directory . $name . '.' . self::FILE_EXTENSION, FileSystemInterface::EXISTS_REPLACE);
+    }
+    catch (FileException | InvalidStreamWrapperException | EntityStorageException $e) {
+      return false;
+    }
+
+    return $file;
   }
 
   /**
@@ -860,10 +895,10 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // Generate and save member list.
     $data = $this->generate($existing_members);
-    $file = $this->saveFile($data, $par_data_partnership);
+    $file = $this->saveFile($par_data_partnership, $data);
 
     // Redirect to saved file.
-    if ($file) {
+    if ($file instanceof FileInterface) {
       return $file;
     }
   }

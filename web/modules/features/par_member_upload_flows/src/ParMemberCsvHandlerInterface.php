@@ -28,14 +28,15 @@ interface ParMemberCsvHandlerInterface {
   /**
    * Save data to a CSV file.
    *
-   * @param array $rows
-   *   An array to add processed rows to.
    * @param ParDataPartnership $par_data_partnership
    *   The partnership to generate a name for.
+   * @param array $rows
+   *   An array to add processed rows to.
    *
-   * @return bool
+   * @return bool|FileInterface
+   *   Return the file if successfully saved, otherwise return false.
    */
-  public function saveFile(array $rows, $par_data_partnership);
+  public function saveFile(ParDataPartnership $par_data_partnership, array $rows): bool|FileInterface;
 
   /**
    * Get the column headings for this CSV file.
