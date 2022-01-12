@@ -722,7 +722,8 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     try {
       $csv = file_get_contents($file->getFileUri());
-      $data = $this->sanitize($this->getSerializer()->decode($csv, 'csv'));
+      $decode = $this->getSerializer()->decode($csv, 'csv');
+      $data = $this->sanitize($decode);
 
       // We have a limit of that we can process to, this limit
       // is tested with and anything over cannot be supported.
@@ -831,11 +832,10 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    */
   public function validate(array $rows) {
     $errors = [];
-
     foreach ($rows as $index => $row) {
       // Check that all headings are supported.
       $diff_keys = array_diff_key($row, $this->getColumns());
-      if (!empty($diff_Keys)) {
+      if (!empty($diff_keys)) {
         $errors[] = new ParCsvViolation($index+2, NULL, 'The column headings are incorrect or missing.');
       }
 
