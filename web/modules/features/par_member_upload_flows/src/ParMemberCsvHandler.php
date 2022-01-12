@@ -325,20 +325,20 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       'organisation_name' => [
         new Length(['max' => 500]),
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('organisation_name')}' is not set.",
         ]),
       ],
       'email' => [
         new Length(['max' => 500]),
         new Email(),
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('email')}' is not set.",
         ]),
       ],
       'membership_start' => [
         new DateTime(['format' => self::DATE_FORMAT]),
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('membership_start')}' is not set.",
         ]),
         new PastDate(['value' => 'tomorrow']),
       ],
@@ -351,16 +351,18 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       ],
       'legal_entity_name_first' => [
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('legal_entity_name_first')}' is not set.",
         ]),
       ],
       'address_line_1' => [
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('address_line_1')}' is not set.",
         ]),
       ],
       'nation' => [
-        new NotBlank(),
+        new NotBlank([
+          'message' => "The value for the column '{$this->getMapping('nation')}' is not set.",
+        ]),
         new Choice([
           'choices' => array_map('strtolower', $country_options),
           'message' => 'The value you entered is not a valid selection, please see the Member Guidance Page for a full list of available country codes.',
@@ -374,7 +376,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       ],
       'legal_entity_type_first' => [
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('legal_entity_type_first')}' is not set.",
         ]),
         new Choice([
           'choices' => array_map('strtolower', $legal_entity_options),
@@ -722,8 +724,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     try {
       $csv = file_get_contents($file->getFileUri());
-      $decode = $this->getSerializer()->decode($csv, 'csv');
-      $data = $this->sanitize($decode);
+      $data = $this->getSerializer()->decode($csv, 'csv');
 
       // We have a limit of that we can process to, this limit
       // is tested with and anything over cannot be supported.
@@ -832,15 +833,28 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    */
   public function validate(array $rows) {
     $errors = [];
-    foreach ($rows as $index => $row) {
-      // Check that all headings are supported.
-      $diff_keys = array_diff_key($row, $this->getColumns());
-      if (!empty($diff_keys)) {
-        $errors[] = new ParCsvViolation($index+2, NULL, 'The column headings are incorrect or missing.');
-      }
+
+    // Use the first row to check that all headings in the csv are supported.
+    $unknown_keys = array_diff(array_keys($rows[0]), $this->getColumns());
+    $unknown_keys_string = implode(', ', $unknown_keys);
+    if (!empty($unknown_keys)) {
+      $errors['headers_unknown'] = new ParCsvViolation(1, NULL, "Some unidentified columns were found in the csv, these columns will not be imported: $unknown_keys_string");
+    }
+
+    // Use the first row to check that all headers are present.
+    $missing_keys = array_diff($this->getColumns(), array_keys($rows[0]));
+    $missing_keys_string = implode(', ', $missing_keys);
+    if (!empty($missing_keys)) {
+      $errors['headers_missing'] = new ParCsvViolation(1, NULL, "There are some columns missing from your csv, see the Member Guidance Page for all headings: $missing_keys_string");
+    }
+
+    // Rows must be sanitised before validating.
+    foreach ($this->sanitize($rows) as $index => $row) {
+      // Get the validation constraints.
+      $constraints = $this->getConstraints($row);
 
       $validator = Validation::createValidator();
-      foreach ($this->getConstraints($row) as $key => $constraints) {
+      foreach ($constraints as $key => $constraints) {
         $column = $this->getMapping($key);
 
         // Ensure case insensitive validation.
@@ -913,6 +927,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    */
   public function process($data, ParDataPartnership $par_data_partnership) {
     $new_members = [];
+
+    // Santise data at the latest possible point to improve validation.
+    $data = $this->sanitize($data);
 
     foreach ($data as $index => $row) {
       $member = $this->normalize($row);
