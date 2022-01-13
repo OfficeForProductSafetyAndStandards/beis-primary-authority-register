@@ -9,20 +9,26 @@
  - -printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" to use it (note there
  should be no spaces between the hyphens).
 -->
-<phpunit bootstrap="web/core/tests/bootstrap.php" colors="true"
+<phpunit bootstrap="web/core/tests/bootstrap.php"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutChangesToGlobalState="true"
          checkForUnintentionallyCoveredCode="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
          forceCoversAnnotation="true"
          stopOnError="true"
          stopOnFailure="true"
          stopOnIncomplete="true"
          stopOnSkipped="true"
-         stopOnRisky="true">
+         stopOnRisky="true"
+         strict="false"
+         verbose="true">
     <php>
         <!-- Set error reporting to E_ALL. -->
-        <ini name="error_reporting" value="E_ALL"/>
+        <ini name="error_reporting" value="22527"/>
         <ini name="display_errors" value="On" />
         <ini name="display_startup_errors" value="On" />
         <!-- Do not limit the amount of memory tests take to run. -->
