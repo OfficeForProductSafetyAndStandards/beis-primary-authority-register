@@ -65,6 +65,7 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
 
       // Split the items up into chunks:
       $chunks = array_chunk($authorities, $number_of_items, TRUE);
+      $chunk = $chunks[$current_pager->getCurrentPage()] ?? [];
 
       $multiple = $this->getFlowDataHandler()->getDefaultValues('allow_multiple', FALSE);
       $default_value = $this->getDefaultValuesByKey("par_data_authority_id", $cardinality, NULL);
