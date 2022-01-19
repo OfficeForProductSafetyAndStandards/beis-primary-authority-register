@@ -224,9 +224,9 @@ jobs:
             npm install
             npm run selenium-install
       - run:
-          name: "Run unit tests"
+          name: "Run unit tesunit tests"
           command: |
-            ./vendor/bin/paratest --processes=16 --no-coverage
+            ./vendor/bin/phpunit --no-coverage
       - run:
           name: "Run feature tests"
           command: |

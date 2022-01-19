@@ -101,7 +101,7 @@ class AccessParPartnershipsTest extends ParDataTestBase {
         }
         $this->organisations[$i] = ParDataOrganisation::create($organisation_values + $this->getOrganisationValues());
         $this->organisations[$i]->save();
-        $partnership_values = [
+        $partnership_values += [
           'field_organisation' => [$this->organisations[$i]->id()],
           'field_organisation_person' => [$this->people[$i]->id()],
         ];
@@ -109,6 +109,7 @@ class AccessParPartnershipsTest extends ParDataTestBase {
 
       $this->partnerships[$i] = ParDataPartnership::create($partnership_values + $this->getDirectPartnershipValues());
       $this->partnerships[$i]->save();
+
     }
 
     $partnership_memberships = $this->parDataManager->hasMembershipsByType($this->membershipUser, 'par_data_partnership');

@@ -13,7 +13,6 @@
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutChangesToGlobalState="true"
-         checkForUnintentionallyCoveredCode="false"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
@@ -24,7 +23,6 @@
          stopOnIncomplete="true"
          stopOnSkipped="true"
          stopOnRisky="true"
-         strict="false"
          verbose="true">
     <php>
         <!-- Set error reporting to E_ALL. -->
