@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\par_data\Kernel\Entity;
+namespace Drupal\Tests\par_data\Kernel\Access;
 
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAuthority;
