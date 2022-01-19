@@ -22,7 +22,6 @@
          stopOnFailure="true"
          stopOnIncomplete="true"
          stopOnSkipped="true"
-         stopOnRisky="true"
          verbose="true">
     <php>
         <!-- Set error reporting to E_ALL. -->
