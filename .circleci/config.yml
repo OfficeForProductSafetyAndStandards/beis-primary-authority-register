@@ -226,7 +226,7 @@ jobs:
       - run:
           name: "Run unit tesunit tests"
           command: |
-            ./vendor/bin/phpunit --no-coverage
+            ./vendor/bin/phpunit --testdox --no-coverage
       - run:
           name: "Run feature tests"
           command: |
