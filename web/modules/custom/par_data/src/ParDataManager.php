@@ -5,6 +5,7 @@ namespace Drupal\par_data;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\ContentEntityType;
@@ -23,6 +24,7 @@ use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\Entity\ParDataTypeInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
@@ -163,7 +165,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
   * @inheritdoc}
   */
-  public function getParEntityTypes() {
+  public function getParEntityTypes(): array {
     // We're obviously assuming that all par entities begin with this prefix.
     $par_entity_prefix = 'par_data_';
     $par_entity_types = [];
@@ -183,7 +185,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getParEntityType(string $type) {
+  public function getParEntityType(string $type): ?EntityTypeInterface {
     $types = $this->getParEntityTypes();
     return $types[$type] ?? NULL;
   }
@@ -191,14 +193,14 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEntityBundleDefinition(EntityTypeInterface $definition) {
+  public function getEntityBundleDefinition(EntityTypeInterface $definition): ?EntityTypeInterface {
     return $definition->getBundleEntityType() ? $this->entityTypeManager->getDefinition($definition->getBundleEntityType()) : NULL;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getParBundleEntity(string $type, $bundle = NULL) {
+  public function getParBundleEntity(string $type, $bundle = NULL): ParDataTypeInterface {
     $entity_type = $this->getParEntityType($type);
     $definition = $entity_type ? $this->getEntityBundleDefinition($entity_type) : NULL;
     $bundles = $definition ? $this->getEntityTypeStorage($definition->id())->loadMultiple() : [];
@@ -208,7 +210,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEntityTypeStorage($definition) {
+  public function getEntityTypeStorage($definition): ?EntityStorageInterface {
     return $this->entityTypeManager->getStorage($definition) ?: NULL;
   }
 
@@ -748,7 +750,7 @@ class ParDataManager implements ParDataManagerInterface {
    * ];
    * @endcode
    */
-  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC', $conjunction = 'AND', $remove_deleted_entities = TRUE) {
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC', $conjunction = 'AND', $remove_deleted_entities = TRUE): array {
     $entities = [];
 
     $query = $this->getEntityQuery($type, $conjunction);
