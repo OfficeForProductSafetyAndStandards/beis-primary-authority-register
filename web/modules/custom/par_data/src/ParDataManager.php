@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Messenger\Messenger;
 use Drupal\Core\Messenger\MessengerInterface;
@@ -168,8 +169,10 @@ class ParDataManager implements ParDataManagerInterface {
     $par_entity_types = [];
     $entity_type_definitions = $this->entityTypeManager->getDefinitions();
     foreach ($entity_type_definitions as $definition) {
+      $bundle = $definition->getBundleEntityType();
       if ($definition instanceof ContentEntityType
-        && substr($definition->getBundleEntityType(), 0, strlen($par_entity_prefix)) === $par_entity_prefix
+        && isset($bundle)
+        && str_starts_with($bundle, $par_entity_prefix)
       ) {
         $par_entity_types[$definition->id()] = $definition;
       }
@@ -182,7 +185,7 @@ class ParDataManager implements ParDataManagerInterface {
    */
   public function getParEntityType(string $type) {
     $types = $this->getParEntityTypes();
-    return isset($types[$type]) ? $types[$type] : NULL;
+    return $types[$type] ?? NULL;
   }
 
   /**
@@ -219,14 +222,14 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getFieldDefinition(string $entity_type, $bundle = NULL, string $field) {
+  public function getFieldDefinition(string $entity_type, string $field, $bundle = NULL): ?FieldDefinitionInterface {
     if (!$bundle) {
       $bundle_definition = $this->getParBundleEntity($entity_type, $bundle);
-      $bundle = $bundle_definition ? $bundle_definition->id() : NULL;
+      $bundle = $bundle_definition?->id();
     }
 
     $entity_fields = $this->entityFieldManager->getFieldDefinitions($entity_type, $bundle);
-    return isset($entity_fields[$field]) ? $entity_fields[$field] : NULL;
+    return $entity_fields[$field] ?? NULL;
   }
 
   /**
@@ -244,7 +247,7 @@ class ParDataManager implements ParDataManagerInterface {
    * Get the default for a field.
    */
   public function getFieldDefaults($entity_type, $bundle, $field) {
-    $field_definition = $this->getFieldDefinition($entity_type, $bundle, $field);
+    $field_definition = $this->getFieldDefinition($entity_type, $field, $bundle);
     return $field_definition ? $field_definition->getDefaultValueLiteral() : [];
   }
 
@@ -463,7 +466,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @param bool $direct
    *   Whether to check only direct relationships.
    *
-   * @return EntityInterface
+   * @return EntityInterface[]
    *   Returns the entities for the given type.
    */
   public function hasInProgressMembershipsByType(UserInterface $account, $type, $direct = FALSE) {
@@ -488,7 +491,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @param bool $direct
    *   Whether to check only direct relationships.
    *
-   * @return EntityInterface
+   * @return EntityInterface[]
    *   Returns the entities for the given type.
    */
   public function hasNotCommentedOnMembershipsByType(UserInterface $account, $type, $direct = FALSE) {
@@ -603,7 +606,7 @@ class ParDataManager implements ParDataManagerInterface {
 
     foreach ($roles as $role) {
       foreach ($authority_roles as $authority) {
-        if (!isset($authority[$role]) || empty($authority[$role])) {
+        if (empty($authority[$role])) {
           return FALSE;
         }
       }
@@ -640,7 +643,7 @@ class ParDataManager implements ParDataManagerInterface {
 
     foreach ($roles as $role) {
       foreach ($organisation_roles as $organisation) {
-        if (!isset($organisation[$role]) || empty($organisation[$role])) {
+        if (empty($organisation[$role])) {
           return FALSE;
         }
       }
