@@ -3,7 +3,7 @@ Feature: Apply for a new partnership
     Background:
         Given I am logged in as "par_authority@example.com"
 
-    @v1-ci @direct
+    @ci @direct
     Scenario: Apply for a direct partnership with a new business
         When I apply for a direct partnership
         And I enter information about the partnership
@@ -13,7 +13,7 @@ Feature: Apply for a new partnership
         And I invite the business contact
         And I review the partnership application between "Lower East Side Borough Council" and "Business-for-partnership-application"
 
-    @v1-ci @direct
+    @ci @direct
     Scenario: Apply for a direct partnership with an existing business
         When I apply for a direct partnership
         And I enter information about the partnership
@@ -21,7 +21,7 @@ Feature: Apply for a new partnership
         And I choose an existing business
         And I review the partnership application between "Lower East Side Borough Council" and "Sesame Street Farming"
 
-    @v1-ci @coordinated
+    @ci @coordinated
     Scenario: Apply for a new coordinated Partnership
         When I apply for a coordinated partnership
         And I enter information about the partnership

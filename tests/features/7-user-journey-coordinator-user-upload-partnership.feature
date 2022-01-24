@@ -1,6 +1,6 @@
 Feature: Coordinator User - Upload Members
 
-    @v1-ci @PAR790 @coordinatedpartnership
+    @ci @PAR790 @coordinatedpartnership
     Scenario: Coordinator User - Upload Members
 
         # PARTNERSHIPS DASHBOARD
@@ -118,7 +118,7 @@ Feature: Coordinator User - Upload Members
         And the element ".table-scroll-wrapper a*=Coordinated Member 4" does not exist
         And the element "Cease membership" does not exist
 
-    @coordinatedpartnership @v1-ci
+    @coordinatedpartnership @ci
     Scenario: Test search criteria
         # CHECK SEARCH PICKS UP ON TRADERS AND MEMBERS
         Given I am logged in as "par_authority@example.com"
@@ -130,7 +130,7 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-submit-partnership-search"
         Then the element ".table-scroll-wrapper" contains the text "Organisation For Coordinated Partnership"
 
-    @coordinatedpartnership @v1-ci
+    @coordinatedpartnership @ci
     Scenario: Test member upload numbers
         Given I am logged in as "par_coordinator@example.com"
         And I click the link with text "See your partnerships"
@@ -142,7 +142,7 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-submit-members-list"
         And the element ".pagerer-container" contains the text "Showing 1-10 of 13 results"
 
-    @coordinatedpartnership @v1-ci
+    @coordinatedpartnership @ci
     Scenario: Test external member list
         Given I am logged in as "par_coordinator@example.com"
         And I click the link with text "See your partnerships"

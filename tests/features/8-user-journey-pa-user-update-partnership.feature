@@ -1,6 +1,6 @@
 Feature: PA User - Update a partnership
 
-    @v1-ci @directpartnership
+    @ci @directpartnership
     Scenario: PA User - Update a partnership
 
         #LOGIN
