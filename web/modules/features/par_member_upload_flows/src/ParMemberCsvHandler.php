@@ -720,7 +720,8 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   public function loadFile(FileInterface $file, array &$rows = []) {
     // Need to set auto_detect_line_endings to deal with Mac line endings.
     // @see http://php.net/manual/en/function.fgetcsv.php
-    ini_set('auto_detect_line_endings', TRUE);
+    // @TODO PHP 8.1 Deprecated this setting.
+    // ini_set('auto_detect_line_endings', TRUE);
 
     try {
       $csv = file_get_contents($file->getFileUri());
