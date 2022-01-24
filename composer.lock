@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2bfdc1ff52832e7001ad5a96fb28141e",
+    "content-hash": "7e23b6ca7a0b6474892f0be660cb2c90",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -171,16 +171,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.209.10",
+            "version": "3.209.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "45082e9fac26bdbc5db504639373374084f616d3"
+                "reference": "9f9591bff3dc0b2bc5400eb81e2e22228f2e4c95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/45082e9fac26bdbc5db504639373374084f616d3",
-                "reference": "45082e9fac26bdbc5db504639373374084f616d3",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9f9591bff3dc0b2bc5400eb81e2e22228f2e4c95",
+                "reference": "9f9591bff3dc0b2bc5400eb81e2e22228f2e4c95",
                 "shasum": ""
             },
             "require": {
@@ -256,9 +256,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.209.10"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.209.11"
             },
-            "time": "2022-01-21T19:18:51+00:00"
+            "time": "2022-01-24T19:15:49+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -5571,17 +5571,17 @@
         },
         {
             "name": "drupal/raven",
-            "version": "3.2.9",
+            "version": "3.2.10",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/raven.git",
-                "reference": "3.2.9"
+                "reference": "3.2.10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/raven-3.2.9.zip",
-                "reference": "3.2.9",
-                "shasum": "660dfb60f20c3765d7d9032f945f7ec146eebcfc"
+                "url": "https://ftp.drupal.org/files/projects/raven-3.2.10.zip",
+                "reference": "3.2.10",
+                "shasum": "3046967e02668de191f2cad8317ce3c2ac3974df"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -5595,8 +5595,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "3.2.9",
-                    "datestamp": "1637015893",
+                    "version": "3.2.10",
+                    "datestamp": "1643047907",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
