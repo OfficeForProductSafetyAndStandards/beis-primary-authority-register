@@ -3,20 +3,20 @@ const chromedriver = require('chromedriver')
 
 require('nightwatch-cucumber')({
     cucumberArgs: [
-            '--require', 'step-definitions-v1',
+            '--require', 'step-definitions',
             '--require', 'support',
             '-- --tag', 'ci',
             '--format', 'node_modules/cucumber-pretty',
             '--format', 'json:reports/cucumber.json',
-            'features-v1'
+            'features'
         ]
 })
 
 module.exports = {
     output_folder: 'reports',
-    custom_assertions_path: 'step-definitions-v1/assertions',
-    page_objects_path: 'step-definitions-v1/page_objects',
-    globals_path : 'step-definitions-v1/globals/globalModules.js',
+    custom_assertions_path: 'step-definitions/assertions',
+    page_objects_path: 'step-definitions/page_objects',
+    globals_path : 'step-definitions/globals/globalModules.js',
     live_output: false,
     disable_colors: false,
     selenium: {
