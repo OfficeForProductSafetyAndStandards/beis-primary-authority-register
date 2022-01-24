@@ -974,7 +974,8 @@ class ParDataManager implements ParDataManagerInterface {
   public function processCsvFile(FileInterface $file, $rows = [], $skip = TRUE) {
     // Need to set auto_detect_line_endings to deal with Mac line endings.
     // @see http://php.net/manual/en/function.fgetcsv.php
-    ini_set('auto_detect_line_endings', TRUE);
+    // @TODO PHP 8.1 Deprecated this setting.
+    // ini_set('auto_detect_line_endings', TRUE);
 
     if (($handle = fopen($file->getFileUri(), "r")) !== FALSE) {
       while (($data = fgetcsv($handle)) !== FALSE) {
