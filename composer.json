@@ -180,6 +180,9 @@
             "drupal/flysystem_s3": {
                 "uriScheme method deprecated": "https://www.drupal.org/files/issues/2020-12-07/replace-urischeme-method-3159928-4.patch"
             },
+            "drupal/google_analytics": {
+                "Deprecated warning": "https://git.drupalcode.org/issue/google_analytics-3258588/-/merge_requests/1.diff"
+            },
             "drupal/govuk_notify": {
                 "Message body formatting array to string": "https://www.drupal.org/files/issues/2021-08-11/3227617-2-govuk-notify-message-body-formatting.diff"
             },
