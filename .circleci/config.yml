@@ -63,15 +63,6 @@ references:
         echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
         cat /etc/hosts
 
-  configure_theme: &configure_theme
-    run:
-      name: "Configure the appropriate theme."
-      command: |
-        echo "THEME_VERSION=<<parameters.theme_version>>" >> .env
-        echo "Enabled theme: $THEME_VERSION"
-      environment:
-        THEME_VERSION: <<parameters.theme_version>>
-
   import_database: &import_database
     run:
       name: "Import & set up the database"
@@ -194,7 +185,6 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *configure_theme
       - *import_database
       - run:
           name: "Run cron"
@@ -246,7 +236,6 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *configure_theme
       - *import_database
       - run:
           name: "Run cron"
