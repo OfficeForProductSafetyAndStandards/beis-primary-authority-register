@@ -28,9 +28,9 @@ Feature: Coordinator User - Upload Members
         And the element "#edit-error-list thead" contains the text "Column"
         And the element "#edit-error-list thead" contains the text "Error"
 
-        And the element "#edit-error-list .error-line-3.error-column-organisation-name" contains the text "The value could not be found."
-        And the element "#edit-error-list .error-line-3.error-column-membership-start-date" contains the text "The value could not be found."
-        And the element "#edit-error-list .error-line-3.error-column-address-line-1" contains the text "The value could not be found."
+        And the element "#edit-error-list .error-line-3.error-column-organisation-name" contains the text "The value for the column 'organisation name' is not set."
+        And the element "#edit-error-list .error-line-3.error-column-membership-start-date" contains the text "The value for the column 'membership start date' is not set."
+        And the element "#edit-error-list .error-line-3.error-column-address-line-1" contains the text "The value for the column 'address line 1' is not set."
         And the element "#edit-error-list .error-line-3.error-column-nation" contains the text "The value you entered is not a valid selection, please see the Member Guidance Page for a full list of available country codes."
         And the element "#edit-error-list .error-line-3.error-column-legal-entity-type-first" contains the text "The value you entered is not a valid selection, please see the Member Guidance Page for a full list of legal entity types."
         And the element "#edit-error-list .error-line-4.error-column-membership-start-date" contains the text "The date should be in the past."

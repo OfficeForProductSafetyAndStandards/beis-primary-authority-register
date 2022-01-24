@@ -117,6 +117,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       'organisation_name' => 'Organisation name',
       'address_line_1' => 'Address Line 1',
       'address_line_2' => 'Address Line 2',
+      'address_line_3' => 'Address Line 3',
       'town' => 'Town',
       'county' => 'County',
       'postcode' => 'Postcode',
@@ -830,23 +831,40 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
+   * Case insensitive compare.
+   */
+  protected function caseInsensitiveCompare($value, $comparison) {
+    return !empty($value) && (strtolower($value) === strtolower($comparison));
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function validate(array $rows) {
     $errors = [];
 
     // Use the first row to check that all headings in the csv are supported.
-    $unknown_keys = array_diff(array_keys($rows[0]), $this->getColumns());
+    $unknown_keys = array_udiff(array_keys($rows[0]), $this->getColumns(), 'strcasecmp');
     $unknown_keys_string = implode(', ', $unknown_keys);
     if (!empty($unknown_keys)) {
-      $errors['headers_unknown'] = new ParCsvViolation(1, NULL, "Some unidentified columns were found in the csv, these columns will not be imported: $unknown_keys_string");
+      $errors['headers_unknown'] = new ParCsvViolation(
+        1,
+        NULL,
+        "Some unidentified columns were found in the csv, these columns will not be imported: $unknown_keys_string",
+        FALSE,
+      );
     }
 
     // Use the first row to check that all headers are present.
-    $missing_keys = array_diff($this->getColumns(), array_keys($rows[0]));
+    $missing_keys = array_udiff($this->getColumns(), array_keys($rows[0]), 'strcasecmp');
     $missing_keys_string = implode(', ', $missing_keys);
     if (!empty($missing_keys)) {
-      $errors['headers_missing'] = new ParCsvViolation(1, NULL, "There are some columns missing from your csv, see the Member Guidance Page for all headings: $missing_keys_string");
+      $errors['headers_missing'] = new ParCsvViolation(
+        1,
+        NULL,
+        "There are some columns missing from your csv, see the Member Guidance Page for all headings: $missing_keys_string",
+        FALSE,
+      );
     }
 
     // Rows must be sanitised before validating.
@@ -876,6 +894,19 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     }
 
     return !empty($errors) ? $errors : NULL;
+  }
+
+  /**
+   * Filter the errors returning only the fatal errors that should stop the upload.
+   *
+   * @param array $errors
+   *
+   * @return array
+   */
+  public function filterFatalErrors(array $errors): array {
+    return array_filter($errors, function ($error) {
+      return ($error instanceof ParCsvViolation && $error->isFatal());
+    });
   }
 
   public function backup(ParDataPartnership $par_data_partnership) {
