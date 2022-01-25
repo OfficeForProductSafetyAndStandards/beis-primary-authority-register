@@ -32,6 +32,13 @@ class ParPartnershipMembers extends ParFormPluginBase {
   const MEMBER_FORMAT_VIEW = 'member_link_view'; # for internal displays
 
   /**
+   * Get the date formatter.
+   */
+  public function getDateFormatter() {
+    return \Drupal::service('date.formatter');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
@@ -57,6 +64,13 @@ class ParPartnershipMembers extends ParFormPluginBase {
         $this->getFlowDataHandler()->setFormPermValue("member_list_link", $member_link);
       }
 
+      // Show the last updated date.
+      if ($this->getFlowDataHandler()->getCurrentUser()->hasPermission('access helpdesk')) {
+        $last_updated = $par_data_partnership->membersLastUpdated();
+        $formatted_date = $last_updated ? $this->getDateFormatter()->format($last_updated, 'gds_date_format') : NULL;
+        $this->getFlowDataHandler()->setFormPermValue("members_last_updated", $formatted_date);
+      }
+
       // Show the number of members for all display formats.
       $this->getFlowDataHandler()->setFormPermValue("number_of_members", $par_data_partnership->numberOfMembers());
     }
@@ -79,6 +93,17 @@ class ParPartnershipMembers extends ParFormPluginBase {
       '#title' => t('Number of members'),
       '#attributes' => ['class' => 'form-group'],
     ];
+
+    // Show the date the member list was last updated.
+    if ($this->getFlowDataHandler()->getCurrentUser()->hasPermission('access helpdesk')) {
+      $form['members']['last_updated'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t("The member list was last updated: <strong>@date</strong>.", ['@date' => $this->getDefaultValuesByKey('members_last_updated', $cardinality, 'a long time ago')]),
+        '#attributes' => ['class' => ['form-group', 'number-of-members']],
+        '#weight' => -6,
+      ];
+    }
 
     // Show the members count.
     $form['members']['count'] = [

@@ -116,17 +116,6 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       ],
     ];
 
-    // PAR Partnership Flow Link.
-    // @deprecated
-    $data[$this->entityType->getDataTable()]['par_partnership_flow_link'] = [
-      'title' => t('PAR Partnership Flow Link'),
-      'field' => [
-        'title' => t('PAR Partnership Flow Link'),
-        'help' => t('Provides a link to the relevant partnership journey determined by the partnership status.'),
-        'id' => 'par_partnership_flow_link',
-      ],
-    ];
-
     // Custom filter for Par Membership checks.
     $data[$this->entityType->getDataTable()]['id_filter'] = [
       'title' => t('Membership Filter'),
@@ -157,6 +146,28 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
         'id' => 'par_flow_link',
       ],
     ];
+
+    // @see PAR-1750 Enable the membership last updated date.
+    if ($this->entityType->id() === 'par_data_partnership') {
+      $data[$this->entityType->getDataTable()]['par_data_member_number']  = [
+        'title' => t('PAR Membership Number'),
+        'field' => [
+          'title' => t('PAR Membership Number'),
+          'help' => t('Provides a field for the number of members.'),
+          'id' => 'par_data_member_number',
+        ],
+      ];
+
+      $data[$this->entityType->getDataTable()]['par_data_members_last_updated']  = [
+        'title' => t('PAR Membership Last Updated'),
+        'field' => [
+          'title' => t('PAR Membership Last Updated'),
+          'help' => t('Provides a field to display when the membership list was last updated.'),
+          'id' => 'par_data_members_last_updated',
+        ],
+      ];
+
+    }
 
     return $data;
   }
