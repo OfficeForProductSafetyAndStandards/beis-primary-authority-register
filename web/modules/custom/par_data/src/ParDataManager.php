@@ -5,10 +5,12 @@ namespace Drupal\par_data;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Messenger\Messenger;
 use Drupal\Core\Messenger\MessengerInterface;
@@ -22,6 +24,7 @@ use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\Entity\ParDataTypeInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
@@ -162,14 +165,16 @@ class ParDataManager implements ParDataManagerInterface {
   /**
   * @inheritdoc}
   */
-  public function getParEntityTypes() {
+  public function getParEntityTypes(): array {
     // We're obviously assuming that all par entities begin with this prefix.
     $par_entity_prefix = 'par_data_';
     $par_entity_types = [];
     $entity_type_definitions = $this->entityTypeManager->getDefinitions();
     foreach ($entity_type_definitions as $definition) {
+      $bundle = $definition->getBundleEntityType();
       if ($definition instanceof ContentEntityType
-        && substr($definition->getBundleEntityType(), 0, strlen($par_entity_prefix)) === $par_entity_prefix
+        && isset($bundle)
+        && str_starts_with($bundle, $par_entity_prefix)
       ) {
         $par_entity_types[$definition->id()] = $definition;
       }
@@ -180,22 +185,22 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getParEntityType(string $type) {
+  public function getParEntityType(string $type): ?EntityTypeInterface {
     $types = $this->getParEntityTypes();
-    return isset($types[$type]) ? $types[$type] : NULL;
+    return $types[$type] ?? NULL;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getEntityBundleDefinition(EntityTypeInterface $definition) {
+  public function getEntityBundleDefinition(EntityTypeInterface $definition): ?EntityTypeInterface {
     return $definition->getBundleEntityType() ? $this->entityTypeManager->getDefinition($definition->getBundleEntityType()) : NULL;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getParBundleEntity(string $type, $bundle = NULL) {
+  public function getParBundleEntity(string $type, $bundle = NULL): ParDataTypeInterface {
     $entity_type = $this->getParEntityType($type);
     $definition = $entity_type ? $this->getEntityBundleDefinition($entity_type) : NULL;
     $bundles = $definition ? $this->getEntityTypeStorage($definition->id())->loadMultiple() : [];
@@ -205,7 +210,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEntityTypeStorage($definition) {
+  public function getEntityTypeStorage($definition): ?EntityStorageInterface {
     return $this->entityTypeManager->getStorage($definition) ?: NULL;
   }
 
@@ -219,14 +224,14 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getFieldDefinition(string $entity_type, $bundle = NULL, string $field) {
+  public function getFieldDefinition(string $entity_type, string $field, $bundle = NULL): ?FieldDefinitionInterface {
     if (!$bundle) {
       $bundle_definition = $this->getParBundleEntity($entity_type, $bundle);
-      $bundle = $bundle_definition ? $bundle_definition->id() : NULL;
+      $bundle = $bundle_definition?->id();
     }
 
     $entity_fields = $this->entityFieldManager->getFieldDefinitions($entity_type, $bundle);
-    return isset($entity_fields[$field]) ? $entity_fields[$field] : NULL;
+    return $entity_fields[$field] ?? NULL;
   }
 
   /**
@@ -244,7 +249,7 @@ class ParDataManager implements ParDataManagerInterface {
    * Get the default for a field.
    */
   public function getFieldDefaults($entity_type, $bundle, $field) {
-    $field_definition = $this->getFieldDefinition($entity_type, $bundle, $field);
+    $field_definition = $this->getFieldDefinition($entity_type, $field, $bundle);
     return $field_definition ? $field_definition->getDefaultValueLiteral() : [];
   }
 
@@ -463,7 +468,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @param bool $direct
    *   Whether to check only direct relationships.
    *
-   * @return EntityInterface
+   * @return EntityInterface[]
    *   Returns the entities for the given type.
    */
   public function hasInProgressMembershipsByType(UserInterface $account, $type, $direct = FALSE) {
@@ -488,7 +493,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @param bool $direct
    *   Whether to check only direct relationships.
    *
-   * @return EntityInterface
+   * @return EntityInterface[]
    *   Returns the entities for the given type.
    */
   public function hasNotCommentedOnMembershipsByType(UserInterface $account, $type, $direct = FALSE) {
@@ -603,7 +608,7 @@ class ParDataManager implements ParDataManagerInterface {
 
     foreach ($roles as $role) {
       foreach ($authority_roles as $authority) {
-        if (!isset($authority[$role]) || empty($authority[$role])) {
+        if (empty($authority[$role])) {
           return FALSE;
         }
       }
@@ -640,7 +645,7 @@ class ParDataManager implements ParDataManagerInterface {
 
     foreach ($roles as $role) {
       foreach ($organisation_roles as $organisation) {
-        if (!isset($organisation[$role]) || empty($organisation[$role])) {
+        if (empty($organisation[$role])) {
           return FALSE;
         }
       }
@@ -745,7 +750,7 @@ class ParDataManager implements ParDataManagerInterface {
    * ];
    * @endcode
    */
-  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC', $conjunction = 'AND', $remove_deleted_entities = TRUE) {
+  public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC', $conjunction = 'AND', $remove_deleted_entities = TRUE): array {
     $entities = [];
 
     $query = $this->getEntityQuery($type, $conjunction);
@@ -969,7 +974,8 @@ class ParDataManager implements ParDataManagerInterface {
   public function processCsvFile(FileInterface $file, $rows = [], $skip = TRUE) {
     // Need to set auto_detect_line_endings to deal with Mac line endings.
     // @see http://php.net/manual/en/function.fgetcsv.php
-    ini_set('auto_detect_line_endings', TRUE);
+    // @TODO PHP 8.1 Deprecated this setting.
+    // ini_set('auto_detect_line_endings', TRUE);
 
     if (($handle = fopen($file->getFileUri(), "r")) !== FALSE) {
       while (($data = fgetcsv($handle)) !== FALSE) {

@@ -1,4 +1,7 @@
+_core:
+  default_config_hash: 5YkLBJiAXgH9BDLkDIb1ozqfCXWwvZggf4XfcXgfjzc
 account: UA-105785675-1
+premium: false
 domain_mode: 0
 cross_domains: ''
 visibility:
@@ -34,6 +37,3 @@ codesnippet:
 translation_set: false
 cache: false
 debug: false
-_core:
-  default_config_hash: 5YkLBJiAXgH9BDLkDIb1ozqfCXWwvZggf4XfcXgfjzc
-premium: false

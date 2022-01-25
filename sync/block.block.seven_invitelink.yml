@@ -17,19 +17,19 @@ plugin: 'invite_link_block:invite_link'
 settings:
   id: 'invite_link_block:invite_link'
   label: 'Invite Link'
-  provider: invite_link
   label_display: visible
+  provider: invite_link
 visibility:
   request_path:
     id: request_path
-    pages: /admin/people
     negate: false
     context_mapping: {  }
+    pages: /admin/people
   user_role:
     id: user_role
-    roles:
-      administrator: administrator
-      par_helpdesk: par_helpdesk
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator
+      par_helpdesk: par_helpdesk

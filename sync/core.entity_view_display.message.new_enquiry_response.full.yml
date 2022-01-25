@@ -15,28 +15,28 @@ bundle: new_enquiry_response
 mode: full
 content:
   field_comment:
-    weight: 1
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: full
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 1
     region: content
   field_general_enquiry:
-    weight: 2
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 2
     region: content
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_message_subject: true
   field_to: true

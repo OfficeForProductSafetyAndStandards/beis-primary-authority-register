@@ -128,12 +128,20 @@ class ParMemberCsvValidationForm extends ParBaseForm {
       }
     }
 
-    $form = parent::buildForm($form, $form_state);
-
-    if ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
-      $form['actions']['done']['#value'] = 'Re-upload';
+    // If there are warnings and no errors give a choice to continue or cancel.
+    $fatal_errors = isset($errors) ? $this->getCsvHandler()->filterFatalErrors($errors) : NULL;
+    if (!empty($errors) && empty($fatal_errors)) {
+      $this->getFlowNegotiator()->getFlow()->enableAction('next');
+      $this->getFlowNegotiator()->getFlow()->disableAction('done');
+      $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Continue with upload');
     }
-    return $form;
+    // Otherwise, require the csv to be re-uploaded.
+    else if ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
+      $form['actions']['done']['#value'] = 'Re-upload';
+      $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Re-upload');
+    }
+
+    return parent::buildForm($form, $form_state);
   }
 
   /**

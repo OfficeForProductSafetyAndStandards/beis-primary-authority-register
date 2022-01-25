@@ -1,6 +1,6 @@
 Feature: Coordinator User - Upload Members
 
-    @v1-ci @PAR790 @coordinatedpartnership
+    @ci @PAR790 @coordinatedpartnership
     Scenario: Coordinator User - Upload Members
 
         # PARTNERSHIPS DASHBOARD
@@ -28,9 +28,9 @@ Feature: Coordinator User - Upload Members
         And the element "#edit-error-list thead" contains the text "Column"
         And the element "#edit-error-list thead" contains the text "Error"
 
-        And the element "#edit-error-list .error-line-3.error-column-organisation-name" contains the text "The value could not be found."
-        And the element "#edit-error-list .error-line-3.error-column-membership-start-date" contains the text "The value could not be found."
-        And the element "#edit-error-list .error-line-3.error-column-address-line-1" contains the text "The value could not be found."
+        And the element "#edit-error-list .error-line-3.error-column-organisation-name" contains the text "The value for the column 'organisation name' is not set."
+        And the element "#edit-error-list .error-line-3.error-column-membership-start-date" contains the text "The value for the column 'membership start date' is not set."
+        And the element "#edit-error-list .error-line-3.error-column-address-line-1" contains the text "The value for the column 'address line 1' is not set."
         And the element "#edit-error-list .error-line-3.error-column-nation" contains the text "The value you entered is not a valid selection, please see the Member Guidance Page for a full list of available country codes."
         And the element "#edit-error-list .error-line-3.error-column-legal-entity-type-first" contains the text "The value you entered is not a valid selection, please see the Member Guidance Page for a full list of legal entity types."
         And the element "#edit-error-list .error-line-4.error-column-membership-start-date" contains the text "The date should be in the past."
@@ -118,7 +118,7 @@ Feature: Coordinator User - Upload Members
         And the element ".table-scroll-wrapper a*=Coordinated Member 4" does not exist
         And the element "Cease membership" does not exist
 
-    @coordinatedpartnership @v1-ci
+    @coordinatedpartnership @ci
     Scenario: Test search criteria
         # CHECK SEARCH PICKS UP ON TRADERS AND MEMBERS
         Given I am logged in as "par_authority@example.com"
@@ -130,7 +130,7 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-submit-partnership-search"
         Then the element ".table-scroll-wrapper" contains the text "Organisation For Coordinated Partnership"
 
-    @coordinatedpartnership @v1-ci
+    @coordinatedpartnership @ci
     Scenario: Test member upload numbers
         Given I am logged in as "par_coordinator@example.com"
         And I click the link with text "See your partnerships"
@@ -142,7 +142,7 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-submit-members-list"
         And the element ".pagerer-container" contains the text "Showing 1-10 of 13 results"
 
-    @coordinatedpartnership @v1-ci
+    @coordinatedpartnership @ci
     Scenario: Test external member list
         Given I am logged in as "par_coordinator@example.com"
         And I click the link with text "See your partnerships"

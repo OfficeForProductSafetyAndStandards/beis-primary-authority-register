@@ -16,11 +16,11 @@ plugin: cookie_policy
 settings:
   id: cookie_policy
   label: 'Cookie Consent'
-  provider: govuk_cookies
   label_display: ''
+  provider: govuk_cookies
 visibility:
   request_path:
     id: request_path
-    pages: /cookies
     negate: false
     context_mapping: {  }
+    pages: /cookies

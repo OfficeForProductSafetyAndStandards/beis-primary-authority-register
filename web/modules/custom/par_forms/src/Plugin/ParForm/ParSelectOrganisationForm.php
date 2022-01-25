@@ -65,6 +65,7 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
 
       // Split the items up into chunks:
       $chunks = array_chunk($organisations, $number_of_items, TRUE);
+      $chunk = $chunks[$current_pager->getCurrentPage()] ?? [];
 
       $multiple = $this->getFlowDataHandler()->getDefaultValues('allow_multiple', FALSE);
       $default_value = $this->getDefaultValuesByKey("par_data_organisation_id", $cardinality, NULL);

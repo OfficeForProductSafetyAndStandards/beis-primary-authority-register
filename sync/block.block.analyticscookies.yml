@@ -17,8 +17,8 @@ plugin: analytics_cookies
 settings:
   id: analytics_cookies
   label: 'Analytics Cookies'
-  provider: par_cookies
   label_display: visible
+  provider: par_cookies
 visibility:
   govuk_cookie:
     id: govuk_cookie
@@ -27,6 +27,6 @@ visibility:
     context_mapping: {  }
   request_path:
     id: request_path
-    pages: /cookies
     negate: false
     context_mapping: {  }
+    pages: /cookies

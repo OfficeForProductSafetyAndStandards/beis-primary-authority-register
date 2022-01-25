@@ -58,29 +58,67 @@ class ParReportingController extends ControllerBase {
     $build = [];
 
     // Statistics related to partnerships.
+    $build['partnership_applications'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Partnership Applications',
+      '#attributes' => ['class' => ['grid-row', 'form-group']],
+    ];
+    $build['partnership_applications']['active'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_active_partnerships']],
+      '#create_placeholder' => TRUE,
+    ];
+    $build['partnership_applications']['pending'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_pending_partnerships']],
+      '#create_placeholder' => TRUE,
+    ];
+    $build['partnership_applications']['revoked'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_revoked_partnerships']],
+      '#create_placeholder' => TRUE,
+    ];
+    $build['partnership_applications']['direct'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_active_direct_partnerships']],
+      '#create_placeholder' => TRUE,
+    ];
+    $build['partnership_applications']['coordinated'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_active_coordinated_partnerships']],
+      '#create_placeholder' => TRUE,
+    ];
+
+    // Statistics related to partnerships.
     $build['partnerships'] = [
       '#type' => 'fieldset',
       '#title' => 'Partnerships',
       '#attributes' => ['class' => ['grid-row', 'form-group']],
     ];
-    $build['partnerships']['active'] = [
-      '#lazy_builder' => ['par_reporting.manager:render', ['total_active_partnerships']],
-      '#create_placeholder' => TRUE,
-    ];
-    $build['partnerships']['pending'] = [
-      '#lazy_builder' => ['par_reporting.manager:render', ['total_pending_partnerships']],
-      '#create_placeholder' => TRUE,
-    ];
-    $build['partnerships']['revoked'] = [
-      '#lazy_builder' => ['par_reporting.manager:render', ['total_revoked_partnerships']],
+    $build['partnerships']['total'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_businesses']],
       '#create_placeholder' => TRUE,
     ];
     $build['partnerships']['direct'] = [
-      '#lazy_builder' => ['par_reporting.manager:render', ['total_active_direct_partnerships']],
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_direct_businesses']],
       '#create_placeholder' => TRUE,
     ];
     $build['partnerships']['coordinated'] = [
-      '#lazy_builder' => ['par_reporting.manager:render', ['total_active_coordinated_partnerships']],
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_coordinated_members']],
+      '#create_placeholder' => TRUE,
+    ];
+
+    // Statistics related to organisations and legal entities.
+    $build['businesses_in_partnership'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Organisations in a partnership',
+      '#attributes' => ['class' => ['grid-row', 'form-group']],
+    ];
+    $build['businesses_in_partnership']['total'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_unique_businesses']],
+      '#create_placeholder' => TRUE,
+    ];
+    $build['businesses_in_partnership']['direct'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_unique_direct_businesses']],
+      '#create_placeholder' => TRUE,
+    ];
+    $build['businesses_in_partnership']['coordinated'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_unique_coordinated_members']],
       '#create_placeholder' => TRUE,
     ];
 
@@ -96,25 +134,6 @@ class ParReportingController extends ControllerBase {
     ];
     $build['documents']['advice'] = [
       '#lazy_builder' => ['par_reporting.manager:render', ['active_advice']],
-      '#create_placeholder' => TRUE,
-    ];
-
-    // Statistics related to organisations and legal entities.
-    $build['covered_organisations'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Organisations',
-      '#attributes' => ['class' => ['grid-row', 'form-group']],
-    ];
-    $build['covered_organisations']['total'] = [
-      '#lazy_builder' => ['par_reporting.manager:render', ['total_businesses']],
-      '#create_placeholder' => TRUE,
-    ];
-    $build['covered_organisations']['direct'] = [
-      '#lazy_builder' => ['par_reporting.manager:render', ['total_direct_businesses']],
-      '#create_placeholder' => TRUE,
-    ];
-    $build['covered_organisations']['coordinated'] = [
-      '#lazy_builder' => ['par_reporting.manager:render', ['total_coordinated_members']],
       '#create_placeholder' => TRUE,
     ];
 

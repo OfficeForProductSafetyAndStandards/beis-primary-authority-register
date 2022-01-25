@@ -1,3 +1,5 @@
+_core:
+  default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc
 module:
   address: 0
   audit_log: 0
@@ -136,7 +138,6 @@ module:
   password_policy_character_types: 0
   password_policy_characters: 0
   password_policy_length: 0
-  password_strength: 0
   path: 0
   path_alias: 0
   queue_ui: 0
@@ -174,5 +175,3 @@ theme:
   govuk: 0
   govuk_par: 0
 profile: standard
-_core:
-  default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc

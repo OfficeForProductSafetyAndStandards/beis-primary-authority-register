@@ -6,7 +6,7 @@ orbs:
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v3.4.1
+      - image: beispar/web:v4.0.0
         name: web
         environment:
           APP_ENV: ci
@@ -62,15 +62,6 @@ references:
         service apache2 restart
         echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
         cat /etc/hosts
-
-  configure_theme: &configure_theme
-    run:
-      name: "Configure the appropriate theme."
-      command: |
-        echo "THEME_VERSION=<<parameters.theme_version>>" >> .env
-        echo "Enabled theme: $THEME_VERSION"
-      environment:
-        THEME_VERSION: <<parameters.theme_version>>
 
   import_database: &import_database
     run:
@@ -188,17 +179,12 @@ jobs:
   test_smoke:
     <<: *defaults
     parameters:
-      theme_version:
-        description: "The theme version to test."
-        default: v1
-        type: string
     steps:
       - *clean_working_directory
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *configure_theme
       - *import_database
       - run:
           name: "Run cron"
@@ -224,15 +210,15 @@ jobs:
             npm install
             npm run selenium-install
       - run:
-          name: "Run unit tests"
+          name: "Run unit tesunit tests"
           command: |
-            ./vendor/bin/paratest --processes=16 --no-coverage
+            ./vendor/bin/phpunit --testdox --no-coverage
       - run:
           name: "Run feature tests"
           command: |
             cd tests
-            echo "Running tests against theme: <<parameters.theme_version>>"
-            npm run ci-<<parameters.theme_version>> -- --tag <<parameters.theme_version>>-ci
+            echo "Running smoke tests against default theme"
+            npm run ci -- --tag ci
             npm run generate-report
       # Save artifacts
       - store_artifacts:
@@ -244,18 +230,12 @@ jobs:
 
   test_full:
     <<: *defaults
-    parameters:
-      theme_version:
-        description: "The theme version to test."
-        default: v1
-        type: string
     steps:
       - *clean_working_directory
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *configure_theme
       - *import_database
       - run:
           name: "Run cron"
@@ -285,8 +265,8 @@ jobs:
           name: "Run feature tests"
           command: |
             cd tests
-            echo "Running tests against theme: <<parameters.theme_version>>"
-            npm run ci-<<parameters.theme_version>> -- --tag <<parameters.theme_version>>-ci
+            echo "Running full tests against default theme"
+            npm run ci -- --tag ci
             npm run generate-report
       # Save artifacts
       - store_artifacts:

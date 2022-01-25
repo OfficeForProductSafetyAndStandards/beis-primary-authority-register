@@ -17,54 +17,55 @@ bundle: invite
 mode: default
 content:
   field_invite_email_address:
-    weight: 0
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 0
     region: content
   field_invite_email_body:
-    weight: 2
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 2
     region: content
   field_invite_email_subject:
-    weight: 1
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 1
     region: content
   invitee:
-    label: hidden
     type: author
-    weight: 0
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   reg_code:
-    label: above
     type: string
-    weight: -4
-    region: content
+    label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: -4
+    region: content
   type:
-    label: above
     type: string
-    weight: -4
-    region: content
+    label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  user_id:
-    label: hidden
-    type: author
-    weight: 0
+    weight: -4
     region: content
+  user_id:
+    type: author
+    label: hidden
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+    weight: 0
+    region: content
+hidden:
+  field_invite_par_person: true

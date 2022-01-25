@@ -2,3 +2,7 @@ services:
   par_member_upload_flows.csv_handler:
     class: Drupal\par_member_upload_flows\ParMemberCsvHandler
     arguments: ['@serializer', '@par_data.manager', '@par_flows.negotiator', '@par_flows.data_handler']
+  par_member_upload_flows_serializer.encoder.csv:
+    class: Symfony\Component\Serializer\Encoder\CsvEncoder
+    tags:
+      - { name: encoder, priority: 21, format: 'csv' }

@@ -14,10 +14,10 @@ bundle: new_enforcement_notification
 mode: mail_body
 content:
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_enforcement_notice: true
   field_message_subject: true

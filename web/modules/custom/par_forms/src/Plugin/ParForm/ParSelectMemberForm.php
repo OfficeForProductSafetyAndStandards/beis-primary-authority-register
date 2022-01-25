@@ -66,11 +66,12 @@ class ParSelectMemberForm extends ParFormPluginBase {
 
     // Split the items up into chunks:
     $chunks = array_chunk($partnership_organisations, $number_of_items, TRUE);
+    $chunk = $chunks[$current_pager->getCurrentPage()] ?? [];
 
     $form['par_data_organisation_id'] = [
       '#type' => 'radios',
       '#title' => t('Choose the member to enforce'),
-      '#options' => $chunks[$current_pager->getCurrentPage()],
+      '#options' => $chunk,
       '#default_value' => $this->getDefaultValuesByKey('par_data_organisation_id', $cardinality, []),
       '#attributes' => ['class' => ['form-group']],
     ];

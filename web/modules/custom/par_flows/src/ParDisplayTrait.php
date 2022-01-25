@@ -380,7 +380,7 @@ trait ParDisplayTrait {
 
       // Split the items up into chunks:
       $chunks = array_chunk($rows, $this->numberPerPage);
-
+      $chunk = $chunks[$current_pager->getCurrentPage()] ?? [];
 
       $element = [
         'items' => [
@@ -401,7 +401,7 @@ trait ParDisplayTrait {
       ];
 
       // Add the items for our current page to the fieldset.
-      foreach ($chunks[$current_pager->getCurrentPage()] as $delta => $item) {
+      foreach ($chunk as $delta => $item) {
         $element[$delta] = $item;
       }
     }

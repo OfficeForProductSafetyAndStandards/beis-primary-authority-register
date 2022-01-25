@@ -135,7 +135,8 @@ class ParPartnershipMembers extends ParFormPluginBase {
 
       // Split the members up into chunks:
       $chunks = array_chunk($members, $number_per_page);
-      foreach ($chunks[$current_pager->getCurrentPage()] as $delta => $entity) {
+      $chunk = $chunks[$current_pager->getCurrentPage()] ?? [];
+      foreach ($chunk as $delta => $entity) {
         if (!$entity instanceof ParDataEntityInterface) {
           continue;
         }

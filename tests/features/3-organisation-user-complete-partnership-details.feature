@@ -1,6 +1,6 @@
 Feature: Business User - Complete organisation details
 
-    @v1-ci @directpartnership
+    @ci @directpartnership
     Scenario: Business User - Complete organisation details
 
         # LOGIN
@@ -48,7 +48,7 @@ Feature: Business User - Complete organisation details
         And I submit final confirmation of completion by organisation "Organisation For Direct Partnership"
 
 
-    @v1-ci @directpartnership
+    @ci @directpartnership
     Scenario: Business User - Cannot modify legal entities
         Given I am logged in as "par_business@example.com"
         And I go to partnership detail page for my partnership "Partnership nominated by Secretary of State" with status "confirmed_rd"
@@ -59,7 +59,7 @@ Feature: Business User - Complete organisation details
         And the element "#edit-legal-entities" does not contain the text "add another legal entity"
 
 
-    @v1-ci @directpartnership
+    @ci @directpartnership
     Scenario: Helpdesk User - Cannot modify legal entities on active partnerships
         Given I am logged in as "par_helpdesk@example.com"
         And I go to manage the partnership "Partnership nominated by Secretary of State" with status "confirmed_rd"

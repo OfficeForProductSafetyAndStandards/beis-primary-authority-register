@@ -22,10 +22,11 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
-      if ($inspection_plans = $par_data_partnership->getInspectionPlan()) {
-        $options = $this->getParDataManager()->getEntitiesAsOptions((array) $inspection_plans);
-        $this->getFlowDataHandler()->setFormPermValue('inspection_plan_options', $options);
-      }
+      $inspection_plans = $par_data_partnership->getInspectionPlan();
+      $options = $inspection_plans ?
+        $this->getParDataManager()->getEntitiesAsOptions((array) $inspection_plans) :
+        [];
+      $this->getFlowDataHandler()->setFormPermValue('inspection_plan_options', $options);
     }
 
     parent::loadData();
@@ -37,7 +38,7 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     $inspection_plans = $this->getFlowDataHandler()->getFormPermValue('inspection_plan_options');
 
-    if (count($inspection_plans) <= 0) {
+    if (!$inspection_plans or count($inspection_plans) <= 0) {
       $form['no_inspection_plans'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('There are no inspection plans'),
@@ -75,10 +76,15 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
    */
   public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $inspection_plan_key = $this->getElementKey('inspection_plan_id');
-    $inspection_plan_values = array_filter($form_state->getValue($inspection_plan_key));
+    $inspection_plan_values = array_filter($form_state->getValue($inspection_plan_key) ?? []);
     if (!$inspection_plan_values) {
+      $inspection_plans = $this->getFlowDataHandler()->getFormPermValue('inspection_plan_options');
+      $message = (!$inspection_plans or count($inspection_plans) <= 0) ?
+        "You can not complete this journey because this partnership doesn't have any inspection plans." :
+        "You must select at least one inspection plan.";
+
       $id_key = $this->getElementKey('inspection_plan_id', $cardinality, TRUE);
-      $message = $this->wrapErrorMessage('You must select at least one inspection plan.', $this->getElementId($id_key, $form));
+      $message = $this->wrapErrorMessage($message, $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($inspection_plan_key), $message);
     }
 

@@ -1,6 +1,6 @@
 # beispar/web:v3.0.0
 
-FROM php:7.4.19-apache-buster
+FROM php:8.1.0-apache-buster
 
 WORKDIR /var/www/html
 

@@ -17,12 +17,12 @@ mode: title
 content:
   title:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   action_referral: true
   archive_reason: true
