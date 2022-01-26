@@ -2,11 +2,13 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\link\LinkItemInterface;
+use Drupal\par_data\ParDataException;
 use Drupal\user\UserInterface;
 
 /**
@@ -290,6 +292,54 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get the time the membership list was last updated.
    *
+   * @return int|null The timestamp for the last updated time.
+   */
+  public function membersLastUpdated(): ?int {
+    // PAR-1750: Use the display method to determine how to determine the last updated date.
+    switch ($this->getMemberDisplay()) {
+      case self::MEMBER_DISPLAY_INTERNAL:
+        $coordinated_businesses = $this->retrieveEntityIds('field_coordinated_business');
+
+        if ($coordinated_businesses) {
+          $member_storage = $this->entityTypeManager()->getStorage('par_data_coordinated_business');
+          $member_query = $member_storage->getQuery()
+            ->condition('id', $coordinated_businesses, 'IN')
+            ->sort('changed', 'DESC')
+            ->range(0, 1);
+
+          $results = $member_query->execute();
+          foreach ($results as $revision_key => $entity_id) {
+            $entity = $member_storage->load($entity_id);
+            return $entity ?->get('changed')->getString();
+          }
+        }
+
+        break;
+      case self::MEMBER_DISPLAY_EXTERNAL:
+      case self::MEMBER_DISPLAY_REQUEST:
+        $partnership_storage = $this->entityTypeManager()->getStorage($this->getEntityTypeId());
+
+        $revision_query = $partnership_storage->getQuery()->allRevisions()
+          ->condition('id', $this->id())
+          ->condition($this->getEntityType()->getRevisionMetadataKey('revision_log_message'), self::MEMBER_LIST_REVISION_PREFIX, 'STARTS_WITH')
+          ->sort($this->getEntityType()->getRevisionMetadataKey('revision_created'), 'DESC')
+          ->range(0, 1);
+
+        $results = $revision_query->execute();
+        foreach ($results as $revision_key => $entity_id) {
+          $revision = $partnership_storage->loadRevision($revision_key);
+          return $revision ?->get($this->getEntityType()->getRevisionMetadataKey('revision_created'))->getString();
+        }
+
+        break;
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Get the time the membership list was last updated.
+   *
    * @return bool
    *  Whether the member list needs updating.
    *  TRUE if it hasn't been updated recently
@@ -308,22 +358,21 @@ class ParDataPartnership extends ParDataEntity {
       return FALSE;
     }
 
-    $partnership_storage = $this->entityTypeManager()->getStorage($this->getEntityTypeId());
-
-    // Query any member list update revisions since the last cutoff time.
-    $timestamp = strtotime($since);
-    $revision_query = $partnership_storage->getQuery()->allRevisions()
-      ->condition('id', $this->id())
-      ->condition($this->getEntityType()->getRevisionMetadataKey('revision_log_message'), self::MEMBER_LIST_REVISION_PREFIX, 'STARTS_WITH')
-      ->condition($this->getEntityType()->getRevisionMetadataKey('revision_created'), $timestamp, '>=')
-      ->sort($this->getEntityType()->getRevisionMetadataKey('revision_created'), 'DESC');
-
-    $count = $revision_query->count()->execute();
-    if ($count > 0) {
-      return FALSE;
+    // If there is no last updated timestamp return needs updating.
+    $last_updated = $this->membersLastUpdated();
+    if (!$last_updated) {
+      return TRUE;
     }
 
-    return TRUE;
+    // Get comparable timestamp.
+    try {
+      $since_datetime = new DrupalDateTime($since);
+    } catch (Exception $e) {
+      throw new ParDataException('Date format incorrect when comparing membership last updated date.');
+    }
+
+    // Compare timestamps.
+    return $last_updated <= $since_datetime->getTimestamp();
   }
 
   /**

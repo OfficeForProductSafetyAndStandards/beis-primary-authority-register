@@ -607,7 +607,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     $ids = [];
     foreach ($referencedEntities as $delta => $entity) {
-      $ids[] = $entity->id();
+      $ids[] = (int) $entity->id();
     }
 
     return $ids;

@@ -9,6 +9,7 @@ namespace Drupal\par_data\Plugin\views\field;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
 
@@ -17,9 +18,9 @@ use Drupal\views\ResultRow;
  *
  * @ingroup views_field_handlers
  *
- * @ViewsField("par_data_members")
+ * @ViewsField("par_data_member_number")
  */
-class ParDataStatus extends FieldPluginBase {
+class ParDataMemberNumber extends FieldPluginBase {
 
   /**
    * @{inheritdoc}
@@ -34,10 +35,8 @@ class ParDataStatus extends FieldPluginBase {
   public function render(ResultRow $values) {
     $entity = $this->getEntity($values);
 
-    if ($entity instanceof ParDataEntityInterface) {
-      $status = $entity->getParStatus();
-
-      return $status ? t($status) : '';
-    }
+    return $entity instanceof ParDataPartnership && $entity->isCoordinated() ?
+      $entity->numberOfMembers() :
+      0;
   }
 }
