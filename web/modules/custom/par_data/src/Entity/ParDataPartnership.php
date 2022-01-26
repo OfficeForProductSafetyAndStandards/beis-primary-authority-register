@@ -6,7 +6,6 @@ use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\TypedData\Type\DateTimeInterface;
 use Drupal\Core\Url;
 use Drupal\link\LinkItemInterface;
 use Drupal\par_data\ParDataException;
@@ -301,16 +300,18 @@ class ParDataPartnership extends ParDataEntity {
       case self::MEMBER_DISPLAY_INTERNAL:
         $coordinated_businesses = $this->retrieveEntityIds('field_coordinated_business');
 
-        $member_storage = $this->entityTypeManager()->getStorage('par_data_coordinated_business');
-        $member_query = $member_storage->getQuery()
-          ->condition('id', $coordinated_businesses, 'IN')
-          ->sort('changed', 'DESC')
-          ->range(0, 1);
+        if ($coordinated_businesses) {
+          $member_storage = $this->entityTypeManager()->getStorage('par_data_coordinated_business');
+          $member_query = $member_storage->getQuery()
+            ->condition('id', $coordinated_businesses, 'IN')
+            ->sort('changed', 'DESC')
+            ->range(0, 1);
 
-        $results = $member_query->execute();
-        foreach ($results as $revision_key => $entity_id) {
-          $entity = $member_storage->load($entity_id);
-          return $entity ?->get('changed')->getString();
+          $results = $member_query->execute();
+          foreach ($results as $revision_key => $entity_id) {
+            $entity = $member_storage->load($entity_id);
+            return $entity ?->get('changed')->getString();
+          }
         }
 
         break;
@@ -344,7 +345,7 @@ class ParDataPartnership extends ParDataEntity {
    *  TRUE if it hasn't been updated recently
    *  FALSE if it has been updated recently
    */
-  public function memberListNeedsUpdating($since = '-3 months'): bool {
+  public function memberListNeedsUpdating($since = '-3 months') {
     // Make sure not to request this more than once for a given entity.
     $function_id = __FUNCTION__ . ':' . $this->uuid();
     $status_revision = &drupal_static($function_id);
@@ -359,19 +360,19 @@ class ParDataPartnership extends ParDataEntity {
 
     // If there is no last updated timestamp return needs updating.
     $last_updated = $this->membersLastUpdated();
-    if (!$last_updated) {
-      return TRUE;
-    }
+//    if (!$last_updated) {
+//      return TRUE;
+//    }
 
     // Get comparable timestamp.
-    try {
-      $since_datetime = new DrupalDateTime($since);
-    } catch (Exception $e) {
-      throw new ParDataException('Date format incorrect when comparing membership last updated date.');
-    }
+//    try {
+//      $since_datetime = new DrupalDateTime($since);
+//    } catch (Exception $e) {
+//      throw new ParDataException('Date format incorrect when comparing membership last updated date.');
+//    }
 
     // Compare timestamps.
-    return $last_updated <= $since_datetime->getTimestamp();
+//    return $last_updated <= $since_datetime->getTimestamp();
   }
 
   /**
