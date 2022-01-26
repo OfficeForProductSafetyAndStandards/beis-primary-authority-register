@@ -360,19 +360,19 @@ class ParDataPartnership extends ParDataEntity {
 
     // If there is no last updated timestamp return needs updating.
     $last_updated = $this->membersLastUpdated();
-//    if (!$last_updated) {
-//      return TRUE;
-//    }
+    if (!$last_updated) {
+      return TRUE;
+    }
 
     // Get comparable timestamp.
-//    try {
-//      $since_datetime = new DrupalDateTime($since);
-//    } catch (Exception $e) {
-//      throw new ParDataException('Date format incorrect when comparing membership last updated date.');
-//    }
+    try {
+      $since_datetime = new DrupalDateTime($since);
+    } catch (Exception $e) {
+      throw new ParDataException('Date format incorrect when comparing membership last updated date.');
+    }
 
     // Compare timestamps.
-//    return $last_updated <= $since_datetime->getTimestamp();
+    return $last_updated <= $since_datetime->getTimestamp();
   }
 
   /**
