@@ -50,7 +50,7 @@ class ParDataRemoveField implements EventSubscriberInterface {
             // PAR Data entities can be converted to string format.
             $removed[] = $e instanceof ParDataEntityInterface ?
               (string) $e :
-              $e->label();
+              "{$e->label()} ({$field_name})";
 
             // Get the last revision message as the reason.
             if ($entity->getEntityType()->isRevisionable()) {
