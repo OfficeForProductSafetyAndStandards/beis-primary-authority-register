@@ -227,7 +227,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
     $results = $this->query()->execute();
     $storage = $this->getParDataManager()->getEntityTypeStorage($this->getEntity());
 
-    return $results ? $storage->loadMultiple($results) : [];
+    return !empty($results) ? $storage->loadMultiple($results) : [];
   }
 
   /**
