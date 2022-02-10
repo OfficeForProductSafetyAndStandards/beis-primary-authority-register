@@ -1179,7 +1179,7 @@ display:
         options:
           perm: 'search partnerships'
       cache:
-        type: none
+        type: tag
         options: {  }
       empty:
         area_text_custom:
