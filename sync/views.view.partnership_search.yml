@@ -1,6 +1,6 @@
 uuid: fc0c1dfa-7048-4ab1-8c15-b41ba81459f2
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - field.storage.par_data_partnership.field_authority_person

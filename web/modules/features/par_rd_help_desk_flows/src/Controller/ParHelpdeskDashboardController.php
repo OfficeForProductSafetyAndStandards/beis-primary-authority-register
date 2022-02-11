@@ -12,6 +12,7 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParDisplayTrait;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_rd_help_desk_flows\ParFlowAccessTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -149,13 +150,21 @@ class ParHelpdeskDashboardController extends ControllerBase {
     ];
 
     // Partnerships search link.
-    $search_partnerships = $this->getLinkByRoute('view.partnership_search.enforcment_flow_search_partnerships');
-    $search_link = $search_partnerships->setText('Search for a partnership')->toString();
-    $build['partnerships']['link'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>{$search_link}</p>",
-      '#pre' => "<p>Search for active partnerships to check advice and raise notice of enforcement action.</p>",
-    ];
+    try {
+      $search_partnerships = $this->getLinkByRoute('view.partnership_search.enforcment_flow_search_partnerships');
+      $search_link = $search_partnerships->setText('Search for a partnership')->toString();
+    }
+    catch (ParFlowException $e) {
+
+    }
+
+    if (isset($search_link)) {
+      $build['partnerships']['link'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$search_link}</p>",
+        '#pre' => "<p>Search for active partnerships to check advice and raise notice of enforcement action.</p>",
+      ];
+    }
 
 
     // Manage authorities and organisations.
