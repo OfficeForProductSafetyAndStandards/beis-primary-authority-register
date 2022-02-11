@@ -488,7 +488,7 @@ workflows:
       - hold_stage:
           type: approval
           requires:
-            - test_full
+            - compile_code
           filters:
             tags:
               only: /^v.*/
