@@ -22,6 +22,7 @@ use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\ParDataManager;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
@@ -194,17 +195,24 @@ class ParDashboardComponents implements TrustedCallbackInterface {
       '#collapsed' => FALSE,
     ];
 
-    $search_partnerships = $this->getLinkByRoute('view.partnership_search.enforcment_flow_search_partnerships');
-    $search_link = $search_partnerships->setText('Search for a partnership')->toString();
+    try {
+      $search_partnerships = $this->getLinkByRoute('view.partnership_search.enforcment_flow_search_partnerships');
+      $search_link = $search_partnerships->setText('Search for a partnership')->toString();
+    }
+    catch (ParFlowException $e) {
+
+    }
 
     $build['partnerships_find']['text'] = [
       '#type' => 'markup',
       '#markup' => "<p>Search for active partnerships to check advice and raise notice of enforcement action.</p>",
     ];
-    $build['partnerships_find']['link'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>{$search_link}</p>",
-    ];
+    if (isset($search_link)) {
+      $build['partnerships_find']['link'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$search_link}</p>",
+      ];
+    }
 
     return $build;
   }
