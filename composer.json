@@ -130,7 +130,8 @@
             "composer/installers": true,
             "drupal/core-composer-scaffold": true,
             "zaporylie/composer-drupal-optimizations": true,
-            "drupal/console-extend-plugin": true
+            "drupal/console-extend-plugin": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
     "extra": {
@@ -168,7 +169,8 @@
                 "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2020-07-19/2551893-85.patch",
                 "Non-exposed and exposed default sort order": "https://www.drupal.org/files/issues/2021-05-20/3120847-23.patch",
                 "PostgreSQL: deal with case insensitivity": "https://www.drupal.org/files/issues/2020-10-05/postgres-case-insensitivity_2464481-71.patch",
-                "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2021-01-19/case_sensitive_email-2490294-37.patch"
+                "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2021-01-19/case_sensitive_email-2490294-37.patch",
+                "PostgreSQL: DatabaseExceptionWrapper throwable": "https://www.drupal.org/files/issues/2021-12-21/postgresql-database-exception-wrapper-issues-3255437-2.patch"
             },
             "drupal/csv_serialization": {
                 "Deprecate auto_detect_line_endings": "https://www.drupal.org/files/issues/2022-01-24/3260224-deprecate_auto_detect_line_endings.diff"
@@ -176,9 +178,6 @@
             "drupal/flysystem": {
                 "Add Drush commands for sending and receiving files": "https://www.drupal.org/files/issues/2021-01-14/3192777-2-Added_drush_commands.patch",
                 "CSS and JS served through the flysystem.serve route can't be downloaded in maintenance mode": "https://www.drupal.org/files/issues/2019-06-13/serve_maintenance_page_assets-3061561-3.patch"
-            },
-            "drupal/flysystem_s3": {
-                "uriScheme method deprecated": "https://www.drupal.org/files/issues/2020-12-07/replace-urischeme-method-3159928-4.patch"
             },
             "drupal/google_analytics": {
                 "Deprecated warning": "https://git.drupalcode.org/issue/google_analytics-3258588/-/merge_requests/1.diff"
