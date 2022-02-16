@@ -43,7 +43,7 @@ RUN RELEASE=$(lsb_release -cs) \
     && apt-key adv --no-tty --fetch-keys https://www.postgresql.org/media/keys/ACCC4CF8.asc \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -f install -y \
-        postgresql-client-11
+        postgresql-client-13
 
 # Install Vault
 ## Using vault installation from https://www.vaultproject.io/docs/install/index.html
