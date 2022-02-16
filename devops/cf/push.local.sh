@@ -431,26 +431,22 @@ fi
 ####################################################################################
 printf "Checking and enabling backing services...\n"
 
-## Some extensions are required for postgres to work.
-PG_EXTENSIONS=('pg_trgm', 'postgis')
-
 ## Ensure the right service plan is selected
 if [[ $ENV = "production" ]] || [[ $ENV = "staging" ]]; then
-    PG_PLAN='medium-ha-11'
-    PG_EXTENSIONS=['pg_trgm']
-    REDIS_PLAN='medium-ha-5.x'
+    PG_PLAN='medium-ha-13'
+    REDIS_PLAN='medium-ha-6.x'
 else
     ## The free plan can be used for any non-critical environments
 #    PG_PLAN='tiny-unencrypted-11' @TODO DB is currently too large for this plan.
-    PG_PLAN='small-11'
-    REDIS_PLAN='tiny-5.x'
+    PG_PLAN='small-13'
+    REDIS_PLAN='tiny-6.x'
 fi
 
 if [[ $ENV != "production" ]]; then
     ## Check for the postgres database service
     if ! cf service $PG_BACKING_SERVICE 2>&1; then
         printf "Creating postgres service, instance of $PG_PLAN...\n"
-        cf create-service postgres $PG_PLAN $PG_BACKING_SERVICE -c '{"enable_extensions": ["pg_trgm","postgis"]}'
+        cf create-service postgres $PG_PLAN $PG_BACKING_SERVICE -c '{"enable_extensions": ["citext","uuid-ossp","pg_trgm","pg_stat_statements"]}'
 
         echo "################################################################################################"
         echo >&2 "The new postgres service is being created, this can take up to 10 minutes"
