@@ -272,6 +272,13 @@ class ParDataPartnership extends ParDataEntity {
    *  The number of active members.
    */
   public function numberOfMembers() {
+    // Make sure not to request this more than once for a given entity.
+    $function_id = __FUNCTION__ . ':' . $this->uuid();
+    $members = &drupal_static($function_id);
+    if (isset($members)) {
+      return $members;
+    }
+
     // PAR-1741: Use the display method to determine how to get the number of members.
     switch ($this->getMemberDisplay()) {
       case self::MEMBER_DISPLAY_INTERNAL:
@@ -295,6 +302,13 @@ class ParDataPartnership extends ParDataEntity {
    * @return int|null The timestamp for the last updated time.
    */
   public function membersLastUpdated(): ?int {
+    // Make sure not to request this more than once for a given entity.
+    $function_id = __FUNCTION__ . ':' . $this->uuid();
+    $timestamp = &drupal_static($function_id);
+    if (isset($timestamp)) {
+      return $timestamp;
+    }
+
     // PAR-1750: Use the display method to determine how to determine the last updated date.
     switch ($this->getMemberDisplay()) {
       case self::MEMBER_DISPLAY_INTERNAL:
@@ -346,13 +360,6 @@ class ParDataPartnership extends ParDataEntity {
    *  FALSE if it has been updated recently
    */
   public function memberListNeedsUpdating($since = '-3 months') {
-    // Make sure not to request this more than once for a given entity.
-    $function_id = __FUNCTION__ . ':' . $this->uuid();
-    $status_revision = &drupal_static($function_id);
-    if (!empty($status_revision)) {
-      return $status_revision;
-    }
-
     // Only for coordinated partnerships.
     if (!$this->isCoordinated()) {
       return FALSE;
