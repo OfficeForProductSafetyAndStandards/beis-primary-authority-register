@@ -15,7 +15,7 @@ use Drupal\par_data\Entity\ParDataPartnership;
  *   time = "+3 months",
  *   frequency = "2 months",
  *   queue = FALSE,
- *   status = TRUE,
+ *   status = FALSE,
  *   action = "par_send_member_list_notice"
  * )
  */
@@ -45,6 +45,8 @@ class ParMemberListNeedsUpdate extends ParSchedulerRuleBase {
       ParDataPartnership::MEMBER_LIST_REVISION_PREFIX,
       'STARTS_WITH'
     );
+
+    $query->addTag('debug');
 
     return $query;
   }
