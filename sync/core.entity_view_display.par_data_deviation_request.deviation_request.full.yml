@@ -11,7 +11,7 @@ dependencies:
     - par_data.par_data_deviation_request_type.deviation_request
   module:
     - datetime
-    - file_entity
+    - file
     - par_data
     - text
 _core:
@@ -22,45 +22,44 @@ bundle: deviation_request
 mode: full
 content:
   document:
-    label: hidden
-    weight: 1
-    region: content
+    type: file_default
+    label: above
     settings:
-      access_message: 'You don''t have access to download this file.'
-      text: 'Download [file:name]'
+      use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_download_link
+    weight: 6
+    region: content
   notes:
-    label: hidden
     type: text_default
-    weight: 2
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
-  primary_authority_notes:
-    label: hidden
-    type: text_default
-    weight: 4
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  primary_authority_status:
-    label: hidden
     weight: 3
     region: content
+  primary_authority_notes:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  primary_authority_status:
+    type: par_list_formatter
+    label: hidden
     settings:
       display_original_value: false
     third_party_settings: {  }
-    type: par_list_formatter
-  request_date:
-    label: hidden
-    weight: 0
+    weight: 4
     region: content
+  request_date:
+    type: datetime_default
+    label: hidden
     settings:
       timezone_override: ''
       format_type: gds_date_format
     third_party_settings: {  }
-    type: datetime_default
+    weight: 0
+    region: content
 hidden:
   archive_reason: true
   deleted_reason: true

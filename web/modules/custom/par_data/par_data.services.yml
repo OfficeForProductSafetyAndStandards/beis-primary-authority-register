@@ -4,19 +4,28 @@ services:
     public: false
     decorates: paramconverter.entity
     decoration_priority: 3
-    arguments: ['@par_data.entity_converter.inner', '@entity.manager', '@par_data.manager', '@config.factory']
+    arguments: ['@par_data.entity_converter.inner', '@entity_type.manager', '@par_data.manager', '@config.factory']
   par_data.manager:
     class: Drupal\par_data\ParDataManager
-    arguments: ['@entity.manager', '@entity_type.manager', '@entity_field.manager', '@entity_type.bundle.info', '@messenger', '@renderer', '@current_user']
+    arguments: ['@entity_type.manager', '@entity_field.manager', '@entity_type.bundle.info', '@messenger', '@renderer', '@current_user']
   par_data.route_subscriber:
       class: Drupal\par_data\Routing\ParDataRoutes
       arguments: ['@par_data.manager']
+  # Subscribers.
+  par_data.enforcement_status_subscriber:
+    class: '\Drupal\par_data\EventSubscriber\EnforcementNoticeStatusChange'
+    tags:
+      - { name: 'event_subscriber' }
+  # Cache context for member relationships.
   cache_context.user.par_memberships:
     class: Drupal\par_data\Cache\UserParMembershipsCacheContext
     arguments: ['@current_user']
     tags:
       - { name: cache.context}
-  par_data.enforcement_status_subscriber:
-    class: '\Drupal\par_data\EventSubscriber\EnforcementNoticeStatusChange'
+  # Cache bin for par_data relationships.
+  cache.par_data:
+    class: Drupal\Core\Cache\CacheBackendInterface
     tags:
-      - { name: 'event_subscriber' }
+      - { name: cache.bin, lifecycle: persistent }
+    factory: cache_factory:get
+    arguments: [ par_data ]

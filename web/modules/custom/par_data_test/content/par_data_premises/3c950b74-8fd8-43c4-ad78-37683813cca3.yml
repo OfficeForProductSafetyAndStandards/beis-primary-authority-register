@@ -1,0 +1,49 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_premises
+  uuid: 3c950b74-8fd8-43c4-ad78-37683813cca3
+  bundle: premises
+  default_langcode: en
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282ce7687
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  address:
+    -
+      langcode: ''
+      country_code: GB
+      administrative_area: US-NY
+      locality: 'New York State'
+      dependent_locality: ''
+      postal_code: 'BS21 7TT'
+      sorting_code: ''
+      address_line1: '6 sesame St'
+      address_line2: Cardiff
+      organization: ''
+      given_name: ''
+      additional_name: ''
+      family_name: ''

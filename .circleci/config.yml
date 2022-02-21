@@ -1,20 +1,23 @@
 version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@1.0.0
+  browser-tools: circleci/browser-tools@1.1.3
 
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v3.1.0
+      - image: beispar/web:v4.1.0
         name: web
         environment:
           APP_ENV: ci
+          SENTRY_ENVIRONMENT: ci
 
-      - image: postgres:9.6.3
+      - image: postgres:11.12
         environment:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
           POSTGRES_DB: par
+    resource_class: large
 
     environment:
       TEST_REPORTS: ~/par/tests/reports
@@ -25,31 +28,57 @@ references:
 
     working_directory: /var/www/html
 
+  clean_working_directory: &clean_working_directory
+    run:
+      name: "Clean the default directory"
+      command: |
+        cd /
+        rm -fr /var/www/html/
+        mkdir -p /var/www/html/
+
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v9-repo-{{ .Branch }}-{{ .Revision }}
+        - v10-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+        - v10-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+
   restore_scaffold: &restore_scaffold
     run:
       name: "Install drupal scaffold files"
       command: |
-        composer drupal-scaffold
+        composer drupal:scaffold
 
   configure_webroot: &configure_webroot
     run:
       name: "Configure web root"
       command: |
-        sudo chown -R -L www-data:www-data /var/www/html/web
+        sudo chown -RhL www-data:www-data /var/www/html/web
         ls -lah /var/www/html/web
         a2ensite par.localhost
         service apache2 restart
         echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
         cat /etc/hosts
+
+  import_database: &import_database
+    run:
+      name: "Import & set up the database"
+      command: |
+        cd web
+        ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
+        ../drupal-update.sh
+
+  build_assets: &build_assets
+    run:
+      name: "Make asset bundle"
+      command: |
+        cd /tmp/workspace
+        echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
+        echo "SENTRY_RELEASE=$CIRCLE_TAG" >> .env
+        tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
 
   workspace_root: &workspace_root
     /tmp/workspace
@@ -62,6 +91,7 @@ jobs:
   checkout_code:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *restore_code
       - checkout:
           post:
@@ -77,6 +107,7 @@ jobs:
             echo "S3_BUCKET_PUBLIC=$S3_BUCKET_PUBLIC" >> .env
             echo "PAR_HASH_SALT=$PAR_HASH_SALT" >> .env
             echo "APP_ENV=$APP_ENV" >> .env
+            echo "SENTRY_ENVIRONMENT=$APP_ENV" >> .env
             echo "SENTRY_DSN=$SENTRY_DSN" >> .env
             echo "SENTRY_DSN_PUBLIC=$SENTRY_DSN_PUBLIC" >> .env
             echo "PAR_GOVUK_NOTIFY_KEY=$PAR_GOVUK_NOTIFY_KEY" >> .env
@@ -97,36 +128,44 @@ jobs:
           name: "Unpacking database"
           command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - save_cache:
-          key: v9-repo-{{ .Branch }}-{{ .Revision }}
+          key: v10-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
   compile_code:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *restore_code
       - *restore_dependencies
-      - *restore_scaffold
       - run:
           name: "Installing app"
           command: |
             echo "$(pwd)"
             composer install -v
+            rm -f web/themes/contrib/govuk_theme/css/styles.css
+            npm run install-govuk-theme
+            npm run install-par-theme
             npm install
             npm run gulp
+      - run:
+          name: "Installing tests"
+          command: |
+            echo "$(pwd)"
             cd ./tests && rm -rf node_modules && npm install
+      - *restore_scaffold
       - save_cache:
-          key: v1-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+          key: v10-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
           paths:
+            - ./node_modules
             - ./vendor
             - ./web/core
             - ./web/libraries
             - ./web/modules/contrib
             - ./web/profiles/contrib
             - ./web/themes/contrib
-            - ./drush/contrib
-            - ./node_modules
             - ./web/themes/custom
+            - ./drush/contrib
       - run:
           name: "Create workspace"
           command: |
@@ -139,23 +178,14 @@ jobs:
 
   test_smoke:
     <<: *defaults
+    parameters:
     steps:
+      - *clean_working_directory
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - run:
-          name: "Importing database"
-          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}.sql
-      - run:
-          name: "Setup application"
-          command: sh drupal-update.sh
-      - run:
-          name: "Re-install temporary data @temp"
-          command: |
-            cd web
-            ../vendor/bin/drush pm-uninstall par_data_test -y
-            ../vendor/bin/drush en par_data_test -y
+      - *import_database
       - run:
           name: "Run cron"
           command: |
@@ -167,7 +197,7 @@ jobs:
           name: "Application checklist"
           command: |
             cd web
-            ../vendor/bin/drush cex -n
+            ../vendor/bin/drush --no config:import
             ../vendor/bin/drush core-requirements --severity=2
             ../vendor/bin/drush ev "print_r(\Drupal::service('flysystem_factory')->ensure());"
             curl -sD - -o /dev/null http://par.localhost
@@ -180,13 +210,14 @@ jobs:
             npm install
             npm run selenium-install
       - run:
-          name: "Run unit tests"
+          name: "Run unit tesunit tests"
           command: |
-            ./vendor/bin/paratest --processes=16
+            ./vendor/bin/phpunit --testdox --no-coverage
       - run:
           name: "Run feature tests"
           command: |
             cd tests
+            echo "Running smoke tests against default theme"
             npm run ci -- --tag ci
             npm run generate-report
       # Save artifacts
@@ -200,22 +231,12 @@ jobs:
   test_full:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - run:
-          name: "Importing database"
-          command: cd web && ../vendor/bin/drush sql-cli @dev < ../backups/${SANITISED_DATABASE}.sql
-      - run:
-          name: "Setup application"
-          command: sh drupal-update.sh
-      - run:
-          name: "Re-install temporary data @temp"
-          command: |
-            cd web
-            ../vendor/bin/drush pm-uninstall par_data_test -y
-            ../vendor/bin/drush en par_data_test -y
+      - *import_database
       - run:
           name: "Run cron"
           command: |
@@ -225,7 +246,7 @@ jobs:
           name: "Application checklist"
           command: |
             cd web
-            ../vendor/bin/drush cex -n
+            ../vendor/bin/drush --no config:import
             ../vendor/bin/drush core-requirements --severity=2
             curl -sD - -o /dev/null http://par.localhost
       - run:
@@ -239,11 +260,12 @@ jobs:
       - run:
           name: "Run unit tests"
           command: |
-            ./vendor/bin/paratest --processes=16
+            ./vendor/bin/paratest --processes=16 --no-coverage
       - run:
           name: "Run feature tests"
           command: |
             cd tests
+            echo "Running full tests against default theme"
             npm run ci -- --tag ci
             npm run generate-report
       # Save artifacts
@@ -256,23 +278,19 @@ jobs:
 
   deploy_stage:
     <<: *defaults
-
     steps:
+      - *clean_working_directory
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
+      - *configure_webroot
+      - *import_database
+      - *build_assets
       - run:
-          name: "Make asset bundle"
+          name: "Examine asset bundle."
           command: |
-            cd /tmp/workspace
-            rm -f .env
-            rm -fr .git
-            rm -fr tests
-            rm -fr clamav
-            rm -fr backups
-            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
-            tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
+            ls -lah /tmp/workspace
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
@@ -284,50 +302,50 @@ jobs:
           command: |
             DEPLOY_ENV="staging"
             printf "$DEPLOY_ENV\n"
-            if ! test $(git rev-parse master) = $(git rev-parse $CIRCLE_TAG^{commit}); then
-              echo "Tags can only be deployed from the master branch"
-              exit 1
-            else
-              ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
-            fi
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_prod:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
+      - *configure_webroot
+      - *import_database
+      - run:
+          name: "Remove additional sensitive assets"
+          command: |
+            cd /tmp/workspace
+            rm -fr backups
+      - *build_assets
+      - run:
+          name: "Examine asset bundle"
+          command: |
+            ls -lah /tmp/workspace
       - run:
           name: "Deploy to production environment"
           command: |
             DEPLOY_ENV="production"
             printf "$DEPLOY_ENV\n"
-            if ! test $(git rev-parse master) = $(git rev-parse $CIRCLE_TAG^{commit}); then
-              echo "Tags can only be deployed from the master branch"
-              exit 1
-            else
-              ./devops/cf/push.local.sh -u $GOVUK_CF_USER -p $GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
-            fi
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $GOVUK_CF_USER -p $GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
 
   deploy_test:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
+      - *configure_webroot
+      - *import_database
+      - *build_assets
       - run:
-          name: "Make asset bundle"
+          name: "Examine asset bundle."
           command: |
-            cd /tmp/workspace
-            rm -f .env
-            rm -fr .git
-            rm -fr tests
-            rm -fr clamav
-            rm -fr backups
-            echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
-            tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
+            ls -lah /tmp/workspace
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
@@ -337,21 +355,31 @@ jobs:
           command: |
             DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
             printf "Deploying to test environment: https://beis-par-$DEPLOY_ENV.cloudapps.digital\n"
-            ./devops/cf/push.local.sh -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   archive_database:
     <<: *defaults
     steps:
+      - *clean_working_directory
+      - *restore_code
       - run:
           name: "Backup production database"
           command: |
-            cf login -a api.cloud.service.gov.uk -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
-            cf target -o office-for-product-safety-and-standards -s primary-authority-register-production
-            cf run-task beis-par-production "./scripts/db-backup.sh production -p" --name DB_ARCHIVE -k4G
+            ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
+      - aws-s3/copy:
+          from: "/tmp/backups/"
+          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
+          arguments: |
+            --region eu-west-1 \
+            --cache-control "max-age=0" \
+            --recursive \
+            --exclude="*" \
+            --include "db-dump-*.tar.gz"
 
   sanitise_database:
     <<: *defaults
     steps:
+      - *clean_working_directory
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
@@ -370,19 +398,12 @@ jobs:
           command: cd backups && ls -lah ${UNSANITISED_DATABASE}.sql
       - run:
           name: "Importing database"
-          command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${UNSANITISED_DATABASE}.sql | ../vendor/bin/drush sql-cli @dev
+          command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${UNSANITISED_DATABASE}.sql | ../vendor/bin/drush @par.dev sql:cli
           environment:
             APP_ENV: ci-sanitise
       - run:
           name: "Setup application"
-          command: sh drupal-update.sh
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
-          name: "Un-install temporary data @temp"
-          command: |
-            cd web
-            ../vendor/bin/drush pm-uninstall par_data_test -y
+          command: ./drupal-update.sh
           environment:
             APP_ENV: ci-sanitise
       - run:
@@ -396,21 +417,37 @@ jobs:
           name: "Application checklist"
           command: |
             cd web
-            ../vendor/bin/drush cex -n
+            ../vendor/bin/drush --no config:import
             ../vendor/bin/drush core-requirements --severity=2
             curl -sD - -o /dev/null http://par.localhost
+          environment:
+            APP_ENV: ci-sanitise
+      - run:
+          name: "Un-install temporary data @temp"
+          command: |
+            cd web
+            ../vendor/bin/drush pm-uninstall par_data_test -y
+          environment:
+            APP_ENV: ci-sanitise
+      - run:
+          name: "Un-install dev only modules"
+          command: |
+            cd web
+            ../vendor/bin/drush pm-uninstall webprofiler -y
+            ../vendor/bin/drush pm-uninstall maillog -y
+            ../vendor/bin/drush pm-uninstall dblog -y
           environment:
             APP_ENV: ci-sanitise
       - run:
           name: "Sanitise database"
           command: |
             cd web
-            ../vendor/bin/drush sql-sanitize @par.paas -y
+            ../vendor/bin/drush @par.paas sql:sanitize -y
           environment:
             APP_ENV: ci-sanitise
       - run:
           name: "Backup database"
-          command: ./scripts/db-backup.sh production -p -s -d "../backups" -a '@par.dev'
+          command: ./scripts/db-backup.sh production -s -d "../backups" -a '@par.dev'
           environment:
             APP_ENV: ci-sanitise
       - aws-s3/copy:
@@ -451,7 +488,7 @@ workflows:
       - hold_stage:
           type: approval
           requires:
-            - test_full
+            - compile_code
           filters:
             tags:
               only: /^v.*/
@@ -535,12 +572,15 @@ workflows:
               only:
                 - master
     jobs:
-      - archive_database
+      - checkout_code
+      - archive_database:
+          requires:
+            - checkout_code
 
   db_sanitise:
     triggers:
       - schedule:
-          cron: "0 0 * * *"
+          cron: "0 0 * * 1,2,3,4,5"
           filters:
             branches:
               only:

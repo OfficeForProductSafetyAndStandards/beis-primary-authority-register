@@ -55,6 +55,15 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticBaseIn
   }
 
   /**
+   * Simple getter to inject the PAR Reporting Manager service.
+   *
+   * @return ParDataManagerInterface
+   */
+  public function getReportingManager() {
+    return \Drupal::service('par_reporting.manager');
+  }
+
+  /**
    * Simple getter to inject the PAR Data Manager service.
    *
    * @return ParDataManagerInterface
@@ -73,6 +82,17 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticBaseIn
   }
 
   /**
+   * Important the value of a different statistic.
+   *
+   * {@inheritDoc}
+   */
+  public function importStat(string $stat): int {
+    $plugin = $this->getReportingManager()->import($stat);
+
+    return $plugin ?? 0;
+  }
+
+  /**
    * Get the statistic
    *
    * {@inheritDoc}
@@ -88,7 +108,7 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticBaseIn
     return [
       '#theme' => 'gds_data',
       '#attributes' => ['class' => 'column-one-third'],
-      '#value' => $this->getStat(),
+      '#value' => number_format($this->getStat(), 0, '', ','),
       '#label' => $this->getTitle(),
       '#description' => $this->getDescription(),
     ];

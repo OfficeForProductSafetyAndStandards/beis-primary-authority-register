@@ -39,7 +39,7 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
         ],
       ];
 
-      $organisations = $this->getParDataManager()->getEntitiesByQuery('par_data_organisation', $conditions, 10);
+      $organisations = $this->getParDataManager()->getEntitiesByQuery('par_data_organisation', $conditions, 10, 'id');
 
       if (count($organisations) <= 0) {
         $this->getFlowDataHandler()->setTempDataValue('par_data_organisation_id', 'new');
@@ -73,6 +73,7 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
         '#title' => t('Choose an existing organisation or create a new organisation'),
         '#options' => $radio_options + ['new' => "no, the organisation is not currently in a partnership with any other primary authority"],
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', 'new'),
+        '#attributes' => ['class' => ['form-group']],
       ];
     }
     else {

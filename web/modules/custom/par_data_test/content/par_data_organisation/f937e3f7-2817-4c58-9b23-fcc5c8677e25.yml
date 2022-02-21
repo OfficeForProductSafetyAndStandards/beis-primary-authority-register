@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: f937e3f7-2817-4c58-9b23-fcc5c8677e25
+  bundle: organisation
+  default_langcode: en
+  depends:
+    46e65664-bf34-4713-ab14-740cbe581538: user
+    208a7228-1c20-41b7-9a43-29881d8439fd: par_data_legal_entity
+    e7098157-2b3e-461f-bfdf-fa5b47765c96: par_data_person
+    c959757d-bdca-46b7-8317-b12abaffe44c: par_data_premises
+default:
+  user_id:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311475
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3d9049772
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'The Kings Head'
+  field_legal_entity:
+    -
+      entity: 208a7228-1c20-41b7-9a43-29881d8439fd
+  field_person:
+    -
+      entity: e7098157-2b3e-461f-bfdf-fa5b47765c96
+  field_premises:
+    -
+      entity: c959757d-bdca-46b7-8317-b12abaffe44c

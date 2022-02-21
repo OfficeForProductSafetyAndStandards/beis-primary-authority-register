@@ -56,9 +56,9 @@ class ParRdDeletedDataListController extends ControllerBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    $entity_manager = $container->get('entity.manager');
+    $entity_type_manager = $container->get('entity_type.manager');
     return new static(
-      $entity_manager->getStorage('par_flow'),
+      $entity_type_manager->getStorage('par_flow'),
       $container->get('par_data.manager'),
       $container->get('current_user'),
       $container->get('page_cache_kill_switch')

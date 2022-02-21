@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: 232f091e-081f-4334-954f-427e7ef647bc
+  bundle: organisation
+  default_langcode: en
+  depends:
+    46e65664-bf34-4713-ab14-740cbe581538: user
+    486ddc4c-652f-4b3e-8680-9af271014857: par_data_legal_entity
+    11caf99d-fe18-4e12-81fc-4ff0757ecbcd: par_data_person
+    6d150d39-7d90-4da7-8673-f9bab618ce7a: par_data_premises
+default:
+  user_id:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311475
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3da2c5879
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: Newsagent
+  field_legal_entity:
+    -
+      entity: 486ddc4c-652f-4b3e-8680-9af271014857
+  field_person:
+    -
+      entity: 11caf99d-fe18-4e12-81fc-4ff0757ecbcd
+  field_premises:
+    -
+      entity: 6d150d39-7d90-4da7-8673-f9bab618ce7a

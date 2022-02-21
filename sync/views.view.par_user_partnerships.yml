@@ -19,155 +19,12 @@ base_table: par_partnerships_field_data
 base_field: id
 display:
   default:
-    display_plugin: default
     id: default
-    css_class: dv_journey_1_step_1
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: views_access_multiple_permissions
-        options:
-          mult_perm:
-            'access par dashboard': 'access par dashboard'
-            'access user partnerships': 'access user partnerships'
-          mult_perm_all: 1
-      cache:
-        type: none
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: bef
-        options:
-          submit_button: Search
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-          input_required: false
-          text_input_required: 'Select any filter and click on Apply to see results'
-          bef:
-            general:
-              allow_secondary: false
-              secondary_label: 'Advanced options'
-              autosubmit: false
-              autosubmit_hide: false
-            combine:
-              bef_format: default
-              more_options:
-                is_secondary: false
-                placeholder_text: ''
-            partnership_status_1:
-              bef_format: default
-              more_options:
-                is_secondary: false
-                rewrite:
-                  filter_rewrite_values: ''
-            partnership_status:
-              bef_format: default
-              more_options:
-                is_secondary: false
-                rewrite:
-                  filter_rewrite_values: ''
-          text_input_required_format: basic_html
-      pager:
-        type: pagerer
-        options:
-          preset: gds_list_pagination
-          items_per_page: 10
-          offset: 0
-          id: '0'
-          total_pages: ''
-          expose:
-            items_per_page: 0
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: 0
-            items_per_page_options_all_label: '- All -'
-            offset: 0
-            offset_label: Offset
-      style:
-        type: table
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          override: true
-          sticky: false
-          caption: Partnerships
-          summary: ''
-          description: ''
-          columns:
-            id: id
-            authority_name: authority_name
-            organisation_name: organisation_name
-            par_flow_link: par_flow_link
-            par_flow_link_1: par_flow_link_1
-            par_flow_link_2: par_flow_link_2
-            partnership_status: partnership_status
-          info:
-            id:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            authority_name:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            organisation_name:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            par_flow_link:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            par_flow_link_1:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            par_flow_link_2:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            partnership_status:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          default: '-1'
-          empty_table: false
-      row:
-        type: fields
+      title: 'Primary Authority Register | Your partnerships'
       fields:
         id:
           id: id
@@ -176,6 +33,9 @@ display:
           relationship: none
           group_type: group
           admin_label: 'PAR Partnership ID'
+          entity_type: par_data_partnership
+          entity_field: id
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -232,9 +92,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_partnership
-          entity_field: id
-          plugin_id: field
         about_partnership__value:
           id: about_partnership__value
           table: par_partnerships_field_data
@@ -242,6 +99,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: about_partnership
+          plugin_id: field
           label: 'About the Partnership'
           exclude: true
           alter:
@@ -296,9 +156,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_partnership
-          entity_field: about_partnership
-          plugin_id: field
         par_label:
           id: par_label
           table: par_partnerships_field_data
@@ -306,6 +163,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          plugin_id: par_data_label
           label: ''
           exclude: true
           alter:
@@ -347,8 +206,6 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          entity_type: par_data_partnership
-          plugin_id: par_data_label
         authority_name:
           id: authority_name
           table: par_authorities_field_data
@@ -356,6 +213,9 @@ display:
           relationship: field_authority
           group_type: group
           admin_label: ''
+          entity_type: par_data_authority
+          entity_field: authority_name
+          plugin_id: field
           label: 'Authority Name'
           exclude: true
           alter:
@@ -411,9 +271,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_authority
-          entity_field: authority_name
-          plugin_id: field
         organisation_name:
           id: organisation_name
           table: par_organisations_field_data
@@ -421,6 +278,9 @@ display:
           relationship: field_organisation
           group_type: group
           admin_label: ''
+          entity_type: par_data_organisation
+          entity_field: organisation_name
+          plugin_id: field
           label: 'Organisation Name'
           exclude: true
           alter:
@@ -476,9 +336,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_organisation
-          entity_field: organisation_name
-          plugin_id: field
         par_flow_link:
           id: par_flow_link
           table: par_authorities_field_data
@@ -486,6 +343,8 @@ display:
           relationship: field_authority
           group_type: group
           admin_label: ''
+          entity_type: par_data_authority
+          plugin_id: par_flow_link
           label: 'Authority Details Link'
           exclude: false
           alter:
@@ -531,8 +390,6 @@ display:
           assistive_text: 'Edit the authority''s details for the {{ par_label }}'
           link: '/partnership/{{id}}/authority-details'
           hidden: 0
-          entity_type: par_data_authority
-          plugin_id: par_flow_link
         par_flow_link_1:
           id: par_flow_link_1
           table: par_authorities_field_data
@@ -540,6 +397,8 @@ display:
           relationship: field_authority
           group_type: group
           admin_label: ''
+          entity_type: par_data_authority
+          plugin_id: par_flow_link
           label: 'PAR Flow Link (Organisation details link)'
           exclude: true
           alter:
@@ -585,8 +444,6 @@ display:
           assistive_text: 'Edit the organisation''s details for the {{ par_label }}'
           link: '/partnership/{{id}}/organisation-details'
           hidden: 0
-          entity_type: par_data_authority
-          plugin_id: par_flow_link
         par_flow_link_2:
           id: par_flow_link_2
           table: par_authorities_field_data
@@ -594,6 +451,8 @@ display:
           relationship: field_authority
           group_type: group
           admin_label: ''
+          entity_type: par_data_authority
+          plugin_id: par_flow_link
           label: 'Organisation Details Link'
           exclude: false
           alter:
@@ -639,8 +498,6 @@ display:
           assistive_text: ''
           link: '/partnership/confirm/{{id}}/checklist'
           hidden: 1
-          entity_type: par_data_authority
-          plugin_id: par_flow_link
         par_status:
           id: par_status
           table: par_partnerships_field_data
@@ -648,6 +505,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          plugin_id: par_data_status
           label: Status
           exclude: false
           alter:
@@ -689,18 +548,123 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+      pager:
+        type: pagerer
+        options:
+          offset: 0
+          items_per_page: 10
+          preset: gds_list_pagination
+          id: '0'
+          total_pages: ''
+          expose:
+            items_per_page: 0
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: 0
+            items_per_page_options_all_label: '- All -'
+            offset: 0
+            offset_label: Offset
+      exposed_form:
+        type: bef
+        options:
+          submit_button: Search
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+          input_required: false
+          text_input_required: 'Select any filter and click on Apply to see results'
+          text_input_required_format: basic_html
+          bef:
+            general:
+              autosubmit: false
+              autosubmit_hide: false
+              allow_secondary: false
+              secondary_label: 'Advanced options'
+            combine:
+              bef_format: default
+              more_options:
+                is_secondary: false
+                placeholder_text: ''
+            partnership_status_1:
+              bef_format: default
+              more_options:
+                is_secondary: false
+                rewrite:
+                  filter_rewrite_values: ''
+            partnership_status:
+              bef_format: default
+              more_options:
+                is_secondary: false
+                rewrite:
+                  filter_rewrite_values: ''
+      access:
+        type: views_access_multiple_permissions
+        options:
+          mult_perm:
+            'access par dashboard': 'access par dashboard'
+            'access user partnerships': 'access user partnerships'
+          mult_perm_all: 1
+      cache:
+        type: none
+        options: {  }
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text_custom
+          empty: true
+          content: '<p>Sorry, there are no results for your search.</p>'
+          tokenize: false
+      sorts:
+        partnership_status:
+          id: partnership_status
+          table: par_partnerships_field_data
+          field: partnership_status
+          relationship: none
+          group_type: group
+          admin_label: ''
           entity_type: par_data_partnership
-          plugin_id: par_data_status
+          plugin_id: par_sort_allowed_statuses
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: partnership_status
+          exposed: false
+          allowed_values: '1'
+          null_heavy: '0'
+        organisation_name:
+          id: organisation_name
+          table: par_organisations_field_data
+          field: organisation_name
+          relationship: field_organisation
+          group_type: group
+          admin_label: ''
+          entity_type: par_data_organisation
+          entity_field: organisation_name
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: organisation_name
+          exposed: false
+      arguments: {  }
       filters:
         type:
           id: type
           table: par_partnerships_field_data
           field: type
-          value:
-            partnership: partnership
           entity_type: par_data_partnership
           entity_field: type
           plugin_id: bundle
+          value:
+            partnership: partnership
           group: 1
           expose:
             operator_limit_selection: false
@@ -712,6 +676,7 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Primary Authority / Business Name Search'
+          plugin_id: combine
           operator: contains
           value: ''
           group: 1
@@ -722,6 +687,8 @@ display:
             description: 'Enter keyword(s)'
             use_operator: false
             operator: combine_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: keywords
             required: false
             remember: false
@@ -735,8 +702,6 @@ display:
               par_organisation: '0'
               par_helpdesk: '0'
             placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -753,7 +718,6 @@ display:
             about_partnership__value: about_partnership__value
             authority_name: authority_name
             organisation_name: organisation_name
-          plugin_id: combine
         field_organisation_target_id:
           id: field_organisation_target_id
           table: par_data_partnership__field_organisation
@@ -761,6 +725,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: numeric
           operator: 'not empty'
           value:
             min: ''
@@ -774,14 +739,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -794,7 +759,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: numeric
         field_authority_target_id:
           id: field_authority_target_id
           table: par_data_partnership__field_authority
@@ -802,6 +766,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: numeric
           operator: 'not empty'
           value:
             min: ''
@@ -815,14 +780,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -835,7 +800,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: numeric
         id_filter:
           id: id_filter
           table: par_partnerships_field_data
@@ -843,6 +807,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          plugin_id: par_member
           operator: '='
           value: ''
           group: 1
@@ -853,14 +819,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -873,8 +839,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_partnership
-          plugin_id: par_member
         status:
           id: status
           table: par_partnerships_field_data
@@ -882,6 +846,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: status
+          plugin_id: boolean
           operator: '='
           value: '1'
           group: 1
@@ -892,14 +859,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -912,9 +879,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_partnership
-          entity_field: status
-          plugin_id: boolean
         revoked:
           id: revoked
           table: par_partnerships_field_data
@@ -922,6 +886,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: revoked
+          plugin_id: boolean
           operator: '!='
           value: '1'
           group: 1
@@ -932,14 +899,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -952,9 +919,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_partnership
-          entity_field: revoked
-          plugin_id: boolean
         deleted:
           id: deleted
           table: par_partnerships_field_data
@@ -962,6 +926,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: deleted
+          plugin_id: boolean
           operator: '!='
           value: '1'
           group: 1
@@ -972,14 +939,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -992,40 +959,111 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_partnership
-          entity_field: deleted
-          plugin_id: boolean
-      sorts:
-        partnership_status:
-          id: partnership_status
-          table: par_partnerships_field_data
-          field: partnership_status
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          columns:
+            id: id
+            authority_name: authority_name
+            organisation_name: organisation_name
+            par_flow_link: par_flow_link
+            par_flow_link_1: par_flow_link_1
+            par_flow_link_2: par_flow_link_2
+            partnership_status: partnership_status
+          default: '-1'
+          info:
+            id:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            authority_name:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            organisation_name:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_flow_link:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_flow_link_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_flow_link_2:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            partnership_status:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: false
+          summary: ''
+          empty_table: false
+          caption: Partnerships
+          description: ''
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+      relationships:
+        field_organisation:
+          id: field_organisation
+          table: par_data_partnership__field_organisation
+          field: field_organisation
           relationship: none
           group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          allowed_values: '1'
-          null_heavy: '0'
-          entity_type: par_data_partnership
-          plugin_id: par_sort_allowed_statuses
-        organisation_name:
-          id: organisation_name
-          table: par_organisations_field_data
-          field: organisation_name
-          relationship: field_organisation
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          entity_type: par_data_organisation
-          entity_field: organisation_name
+          admin_label: 'PAR Organisation'
           plugin_id: standard
-      title: 'Primary Authority Register | Your partnerships'
+          required: false
+        field_authority:
+          id: field_authority
+          table: par_data_partnership__field_authority
+          field: field_authority
+          relationship: none
+          group_type: group
+          admin_label: 'PAR Authority'
+          plugin_id: standard
+          required: false
+      css_class: par-user-partnership-list
       header: {  }
       footer:
         par_flow_link:
@@ -1035,50 +1073,13 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: par_flow_link
           empty: true
           title: 'back to dashboard'
           assistive_text: ''
           link: /dashboard
           class: link-back
-          plugin_id: par_flow_link
-      empty:
-        area_text_custom:
-          id: area_text_custom
-          table: views
-          field: area_text_custom
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content: '<p>Sorry, there are no results for your search.</p>'
-          plugin_id: text_custom
-      relationships:
-        field_organisation:
-          id: field_organisation
-          table: par_data_partnership__field_organisation
-          field: field_organisation
-          relationship: none
-          group_type: group
-          admin_label: 'PAR Organisation'
-          required: false
-          plugin_id: standard
-        field_authority:
-          id: field_authority
-          table: par_data_partnership__field_authority
-          field: field_authority
-          relationship: none
-          group_type: group
-          admin_label: 'PAR Authority'
-          required: false
-          plugin_id: standard
-      arguments: {  }
       display_extenders: {  }
-      css_class: par-user-partnership-list
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
     cache_metadata:
       max-age: -1
       contexts:
@@ -1088,31 +1089,57 @@ display:
         - url.query_args
         - user.permissions
       tags: {  }
+    css_class: dv_journey_1_step_1
   par_user_partnership_applications:
-    display_plugin: page
     id: par_user_partnership_applications
     display_title: 'Pending applications'
+    display_plugin: page
     position: 1
     display_options:
-      display_extenders: {  }
-      path: partnerships/pending
-      display_description: ''
       title: 'Primary Authority Register | Pending applications'
-      defaults:
-        title: false
-        filters: false
-        filter_groups: false
-        sorts: false
+      sorts:
+        partnership_status:
+          id: partnership_status
+          table: par_partnerships_field_data
+          field: partnership_status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: par_data_partnership
+          plugin_id: par_sort_allowed_statuses
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: partnership_status
+          exposed: false
+          allowed_values: '1'
+          null_heavy: '0'
+        created:
+          id: created
+          table: par_partnerships_field_data
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: created
+          plugin_id: date
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: created
+          exposed: false
+          granularity: second
       filters:
         type:
           id: type
           table: par_partnerships_field_data
           field: type
-          value:
-            partnership: partnership
           entity_type: par_data_partnership
           entity_field: type
           plugin_id: bundle
+          value:
+            partnership: partnership
           group: 1
           expose:
             operator_limit_selection: false
@@ -1124,6 +1151,7 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Primary Authority / Business Name Search'
+          plugin_id: combine
           operator: contains
           value: ''
           group: 1
@@ -1134,6 +1162,8 @@ display:
             description: 'Enter keyword(s)'
             use_operator: false
             operator: combine_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: keywords
             required: false
             remember: false
@@ -1147,8 +1177,6 @@ display:
               par_organisation: '0'
               par_helpdesk: '0'
             placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1165,7 +1193,6 @@ display:
             about_partnership__value: about_partnership__value
             authority_name: authority_name
             organisation_name: organisation_name
-          plugin_id: combine
         field_organisation_target_id:
           id: field_organisation_target_id
           table: par_data_partnership__field_organisation
@@ -1173,6 +1200,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: numeric
           operator: 'not empty'
           value:
             min: ''
@@ -1186,14 +1214,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1206,7 +1234,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: numeric
         field_authority_target_id:
           id: field_authority_target_id
           table: par_data_partnership__field_authority
@@ -1214,6 +1241,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: numeric
           operator: 'not empty'
           value:
             min: ''
@@ -1227,14 +1255,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1247,7 +1275,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: numeric
         id_filter:
           id: id_filter
           table: par_partnerships_field_data
@@ -1255,6 +1282,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          plugin_id: par_member
           operator: '='
           value: ''
           group: 1
@@ -1265,14 +1294,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1285,8 +1314,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_partnership
-          plugin_id: par_member
         status:
           id: status
           table: par_partnerships_field_data
@@ -1294,6 +1321,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: status
+          plugin_id: boolean
           operator: '='
           value: '1'
           group: 1
@@ -1304,14 +1334,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1324,9 +1354,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_partnership
-          entity_field: status
-          plugin_id: boolean
         revoked:
           id: revoked
           table: par_partnerships_field_data
@@ -1334,6 +1361,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: revoked
+          plugin_id: boolean
           operator: '!='
           value: '1'
           group: 1
@@ -1344,14 +1374,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1364,9 +1394,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_partnership
-          entity_field: revoked
-          plugin_id: boolean
         partnership_status:
           id: partnership_status
           table: par_partnerships_field_revision
@@ -1374,6 +1401,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: partnership_status
+          plugin_id: string
           operator: '!='
           value: confirmed_rd
           group: 1
@@ -1384,14 +1414,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1404,9 +1434,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_partnership
-          entity_field: partnership_status
-          plugin_id: string
         deleted:
           id: deleted
           table: par_partnerships_field_data
@@ -1414,6 +1441,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: deleted
+          plugin_id: boolean
           operator: '!='
           value: '1'
           group: 1
@@ -1424,14 +1454,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1444,44 +1474,18 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_partnership
-          entity_field: deleted
-          plugin_id: boolean
       filter_groups:
         operator: AND
         groups:
           1: AND
-      sorts:
-        partnership_status:
-          id: partnership_status
-          table: par_partnerships_field_data
-          field: partnership_status
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          allowed_values: '1'
-          null_heavy: '0'
-          entity_type: par_data_partnership
-          plugin_id: par_sort_allowed_statuses
-        created:
-          id: created
-          table: par_partnerships_field_data
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: DESC
-          exposed: false
-          expose:
-            label: ''
-          granularity: second
-          entity_type: par_data_partnership
-          entity_field: created
-          plugin_id: date
+      defaults:
+        title: false
+        sorts: false
+        filters: false
+        filter_groups: false
+      display_description: ''
+      display_extenders: {  }
+      path: partnerships/pending
     cache_metadata:
       max-age: -1
       contexts:
@@ -1492,24 +1496,21 @@ display:
         - user.permissions
       tags: {  }
   partnerships_page:
-    display_plugin: page
     id: partnerships_page
     display_title: 'Your Partnerships'
+    display_plugin: page
     position: 1
     display_options:
-      display_extenders: {  }
-      path: partnerships
-      display_description: ''
       filters:
         type:
           id: type
           table: par_partnerships_field_data
           field: type
-          value:
-            partnership: partnership
           entity_type: par_data_partnership
           entity_field: type
           plugin_id: bundle
+          value:
+            partnership: partnership
           group: 1
           expose:
             operator_limit_selection: false
@@ -1521,6 +1522,7 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Primary Authority / Business Name Search'
+          plugin_id: combine
           operator: contains
           value: ''
           group: 1
@@ -1531,6 +1533,8 @@ display:
             description: 'Enter keyword(s)'
             use_operator: false
             operator: combine_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: keywords
             required: false
             remember: false
@@ -1544,8 +1548,6 @@ display:
               par_organisation: '0'
               par_helpdesk: '0'
             placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1562,7 +1564,6 @@ display:
             about_partnership__value: about_partnership__value
             authority_name: authority_name
             organisation_name: organisation_name
-          plugin_id: combine
         partnership_status_1:
           id: partnership_status_1
           table: par_partnerships_field_data
@@ -1570,6 +1571,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: partnership_status
+          plugin_id: par_data_status_filter
           operator: '='
           value: awaiting_review
           group: 1
@@ -1580,6 +1584,8 @@ display:
             description: 'Filter by partnership status '
             use_operator: false
             operator: partnership_status_1_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: partnership_status_1
             required: false
             remember: false
@@ -1592,8 +1598,6 @@ display:
               par_enforcement: '0'
               par_organisation: '0'
               par_helpdesk: '0'
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1606,9 +1610,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_partnership
-          entity_field: partnership_status
-          plugin_id: par_data_status_filter
         field_organisation_target_id:
           id: field_organisation_target_id
           table: par_data_partnership__field_organisation
@@ -1616,6 +1617,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: numeric
           operator: 'not empty'
           value:
             min: ''
@@ -1629,14 +1631,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1649,7 +1651,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: numeric
         field_authority_target_id:
           id: field_authority_target_id
           table: par_data_partnership__field_authority
@@ -1657,6 +1658,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: numeric
           operator: 'not empty'
           value:
             min: ''
@@ -1670,14 +1672,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1690,7 +1692,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: numeric
         id_filter:
           id: id_filter
           table: par_partnerships_field_data
@@ -1698,6 +1699,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          plugin_id: par_member
           operator: '='
           value: ''
           group: 1
@@ -1708,14 +1711,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1728,8 +1731,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_partnership
-          plugin_id: par_member
         status:
           id: status
           table: par_partnerships_field_data
@@ -1737,6 +1738,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: status
+          plugin_id: boolean
           operator: '='
           value: '1'
           group: 1
@@ -1747,14 +1751,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1767,9 +1771,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_partnership
-          entity_field: status
-          plugin_id: boolean
         revoked:
           id: revoked
           table: par_partnerships_field_data
@@ -1777,6 +1778,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: revoked
+          plugin_id: boolean
           operator: '!='
           value: '1'
           group: 1
@@ -1787,14 +1791,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1807,9 +1811,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_partnership
-          entity_field: revoked
-          plugin_id: boolean
         deleted:
           id: deleted
           table: par_partnerships_field_data
@@ -1817,6 +1818,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: deleted
+          plugin_id: boolean
           operator: '!='
           value: '1'
           group: 1
@@ -1827,14 +1831,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1847,16 +1851,16 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_partnership
-          entity_field: deleted
-          plugin_id: boolean
-      defaults:
-        filters: false
-        filter_groups: false
       filter_groups:
         operator: AND
         groups:
           1: AND
+      defaults:
+        filters: false
+        filter_groups: false
+      display_description: ''
+      display_extenders: {  }
+      path: partnerships
     cache_metadata:
       max-age: -1
       contexts:

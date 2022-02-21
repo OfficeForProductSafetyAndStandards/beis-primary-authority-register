@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_premises
+  uuid: 7b24f86d-784d-444a-be17-90ee3331ab66
+  bundle: premises
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1527001844
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5b0432f54fea1
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  address:
+    -
+      langcode: ''
+      country_code: GB
+      administrative_area: London
+      locality: London
+      dependent_locality: ''
+      postal_code: 'SE16 4NX'
+      sorting_code: ''
+      address_line1: '1 Change St'
+      address_line2: 'New Change'
+      organization: ''
+      given_name: ''
+      additional_name: ''
+      family_name: ''

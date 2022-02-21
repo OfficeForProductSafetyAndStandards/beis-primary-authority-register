@@ -1,6 +1,6 @@
 # beispar/web:v3.0.0
 
-FROM php:7.3-apache
+FROM php:8.1.0-apache-buster
 
 WORKDIR /var/www/html
 
@@ -20,18 +20,30 @@ RUN sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debcon
     && apt-key adv --no-tty --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886 \
     && sh -c 'echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list' \
     && apt-key adv --no-tty --fetch-keys https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key \
-    && sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list' \
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get -f install -y \
+        build-essential \
+        bzip2 \
+        libnss3 \
+        libfontconfig \
+        libgconf-2-4 \
+        libgl1-mesa-glx \
+        libgtk-3-dev \
+        unzip \
+        python-pip \
+        software-properties-common \
+        cf-cli
+
+# Install the Cloudfoundry Conduit tool for connecting to remote PaaS instances
+RUN cf install-plugin conduit -f
+
+# Install Postgres (client)
+RUN RELEASE=$(lsb_release -cs) \
+    && echo "deb http://apt.postgresql.org/pub/repos/apt/ ${RELEASE}"-pgdg main | sudo tee  /etc/apt/sources.list.d/pgdg.list \
     && apt-key adv --no-tty --fetch-keys https://www.postgresql.org/media/keys/ACCC4CF8.asc \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -f install -y \
-        postgresql-client-10 \
-        software-properties-common \
-        libnss3 \
-        libgconf-2-4 \
-        libfontconfig \
-        unzip \
-        python-pip \
-        cf-cli
+        postgresql-client-13
 
 # Install Vault
 ## Using vault installation from https://www.vaultproject.io/docs/install/index.html
@@ -59,36 +71,45 @@ RUN buildDeps=" \
         libfreetype6-dev \
         libicu-dev \
         libjpeg-dev \
-        libmcrypt-dev \
         libjpeg62-turbo-dev \
+        libmcrypt-dev \
+        libonig-dev \
         libpng-dev \
         libpq-dev \
         libxml2-dev \
         libzip-dev \
     " \
     && sudo -E apt-get update && sudo -E DEBIAN_FRONTEND=noninteractive apt-get install -y $buildDeps $runtimeDeps \
-    && sudo -E docker-php-ext-install -j$(nproc) intl mbstring opcache pdo_pgsql pgsql \
-    && sudo -E docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && sudo -E docker-php-ext-install -j$(nproc) \
+      intl \
+      mbstring \
+      opcache \
+      pdo_pgsql \
+      pgsql \
+    && sudo -E docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/ \
     && sudo -E docker-php-ext-install gd \
-    && sudo -E docker-php-ext-install exif \
-    && sudo -E docker-php-ext-install zip \
-    && pecl install mcrypt-1.0.2 \
-    && sudo -E docker-php-ext-enable mcrypt \
+      exif \
+      zip \
     && apt-get purge -y --auto-remove $buildDeps \
     && rm -r /var/lib/apt/lists/* \
     && a2enmod rewrite
+
+# Configure PCov for PHPUnit code coverage reports.
+RUN cd /tmp \
+    && sudo -E pecl install pcov \
+    && sudo -E docker-php-ext-enable pcov
 
 # Configure Apache virtual host
 COPY ./par.localhost.conf /etc/apache2/sites-available/par.localhost.conf
 
 # Install composer
 ## Using composer installation from https://getcomposer.org/download/
+ENV COMPOSER_VERSION 2.0.13
 RUN cd /tmp \
-    && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php -r "if (hash_file('sha384', 'composer-setup.php') === '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
-    && php composer-setup.php \
-    && php -r "unlink('composer-setup.php');" \
-    && mv composer.phar /usr/local/bin/composer
+    && sudo php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php --version=$COMPOSER_VERSION --install-dir=/usr/local/bin --filename=composer \
+ParDataStorage    && php -r "unlink('composer-setup.php');" \
+    && composer --version
 
 # Install node
 ## Using the nvm installation from https://github.com/mklement0/n-install
@@ -99,34 +120,38 @@ RUN cd /tmp \
     && npm --version
 
 # Install java 8
-## Using java installation from CircleCi docker images circleci/php:7.3.1-apache-stretch-node-browsers
-RUN if grep -q Debian /etc/os-release && grep -q jessie /etc/os-release; then \
-    echo "deb http://http.us.debian.org/debian/ jessie-backports main" | sudo tee -a /etc/apt/sources.list \
-    && echo "deb-src http://http.us.debian.org/debian/ jessie-backports main" | sudo tee -a /etc/apt/sources.list \
-    && sudo apt-get update; sudo apt-get install -y -t jessie-backports openjdk-8-jre openjdk-8-jre-headless openjdk-8-jdk openjdk-8-jdk-headless \
-  ; elif grep -q Ubuntu /etc/os-release && grep -q Trusty /etc/os-release; then \
-    echo "deb http://ppa.launchpad.net/openjdk-r/ppa/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list \
-    && echo "deb-src http://ppa.launchpad.net/openjdk-r/ppa/ubuntu trusty main" | sudo tee -a /etc/apt/sources.list \
-    && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key DA1A4A13543B466853BAF164EB9B1D8886F44E2A \
-    && sudo apt-get update; sudo apt-get install -y openjdk-8-jre openjdk-8-jre-headless openjdk-8-jdk openjdk-8-jdk-headless \
-  ; else \
-    sudo apt-get update; sudo apt-get install -y openjdk-8-jre openjdk-8-jre-headless openjdk-8-jdk openjdk-8-jdk-headless \
-  ; fi \
-  && sudo apt-get install -y bzip2 libgconf-2-4 # for extracting firefox and running chrome, respectively
+## Using java installation from CircleCi docker images circleci/php:7.3.1-apache-buster-node-browsers
+RUN apt-add-repository 'deb http://security.debian.org/debian-security stretch/updates main' \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends --no-upgrade openjdk-8-jre openjdk-8-jre-headless openjdk-8-jdk openjdk-8-jdk-headless
+
+#=====================================
+# Browser testing for GDS requirements
+# https://www.gov.uk/service-manual/technology/designing-for-different-browsers-and-devices
+#=====================================
+# Install geckodriver
+ARG GECKODRIVER_VERSION=0.29.1
+RUN echo "Using GeckoDriver version: "$GECKODRIVER_VERSION \
+  && wget --no-verbose -O /tmp/geckodriver.tar.gz https://github.com/mozilla/geckodriver/releases/download/v$GECKODRIVER_VERSION/geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz \
+  && rm -rf /opt/geckodriver \
+  && tar -C /opt -zxf /tmp/geckodriver.tar.gz \
+  && rm /tmp/geckodriver.tar.gz \
+  && mv /opt/geckodriver /opt/geckodriver-$GECKODRIVER_VERSION \
+  && chmod 755 /opt/geckodriver-$GECKODRIVER_VERSION \
+  && ln -fs /opt/geckodriver-$GECKODRIVER_VERSION /usr/local/bin/geckodriver
 
 # Install firefox
-## Using firefox installation from CircleCi docker images circleci/php:7.3.1-apache-stretch-node-browsers
-RUN FIREFOX_URL="https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-US" \
-  && ACTUAL_URL=$(curl -Ls -o /dev/null -w %{url_effective} $FIREFOX_URL) \
-  && curl --silent --show-error --location --fail --retry 3 --output /tmp/firefox.tar.bz2 $ACTUAL_URL \
-  && sudo tar -xvjf /tmp/firefox.tar.bz2 -C /opt \
-  && sudo ln -s /opt/firefox/firefox /usr/local/bin/firefox \
-  && sudo apt-get install -y libgtk3.0-cil-dev libasound2 libasound2 libdbus-glib-1-2 libdbus-1-3 \
-  && rm -rf /tmp/firefox.* \
-  && firefox --version
+## @TODO install actual working version of ff and other supported browsers
+ARG FIREFOX_VERSION=88.0.1
+RUN wget --no-verbose -O /tmp/firefox.tar.bz2 https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2 \
+    && rm -rf /opt/firefox \
+    && tar -C /opt -xjf /tmp/firefox.tar.bz2 \
+    && rm /tmp/firefox.tar.bz2 \
+    && mv /opt/firefox /opt/firefox-$FIREFOX_VERSION \
+    && ln -fs /opt/firefox-$FIREFOX_VERSION/firefox /usr/local/bin/firefox
 
 # Install chrome
-## Using chromedriver isntallation from CircleCi docker images circleci/php:7.3.1-apache-stretch-node-browsers
+## Using chromedriver installation from CircleCi docker images circleci/php:7.3.1-apache-stretch-node-browsers
 RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
       && (sudo dpkg -i /tmp/google-chrome-stable_current_amd64.deb || sudo apt-get -fy install)  \
       && rm -rf /tmp/google-chrome-stable_current_amd64.deb \

@@ -114,7 +114,7 @@ class ParPartnershipAddMemberQueue extends QueueWorkerBase {
 
       $entity_values = [];
       foreach ($fields as $field => $properties) {
-        $field_definition = $this->getParDataManager()->getFieldDefinition($entity_type->id(), $entity_bundle->id(), $field);
+        $field_definition = $this->getParDataManager()->getFieldDefinition($entity_type->id(), $field, $entity_bundle->id());
 
         if (is_array($properties)) {
           $entity_values[$field] = [];

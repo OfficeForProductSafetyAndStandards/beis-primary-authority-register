@@ -1,0 +1,78 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: 12392d50-57dc-48c8-9480-85f44c9b2903
+  bundle: organisation
+  default_langcode: en
+  depends:
+    66a1618f-e4e5-4232-979a-0f8832dd51b0: par_data_legal_entity
+    26db3fbe-d4a6-4a6a-ad69-108b54e1e4c5: par_data_person
+    3f21083a-98c9-440e-92b0-12947f799e0a: par_data_person
+    7f3b87cd-4406-4f07-a562-ee6876774b16: par_data_premises
+    86bcff9c-882e-46d1-b768-68eb5b311f2c: par_data_sic_code
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282d33f5e
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'ABCD Mart'
+  size:
+    -
+      value: Enormous
+  employees_band:
+    -
+      value: 10-50
+  nation:
+    -
+      value: USA
+  comments:
+    -
+      value: 'ABCD Mart is a department store featured in the Sesame Street direct-to-video special Big Bird Gets Lost.'
+      format: plain_text
+  premises_mapped:
+    -
+      value: true
+  trading_name:
+    -
+      value: ABCD
+    -
+      value: 'ABCD Mart'
+  field_legal_entity:
+    -
+      entity: 66a1618f-e4e5-4232-979a-0f8832dd51b0
+  field_person:
+    -
+      entity: 26db3fbe-d4a6-4a6a-ad69-108b54e1e4c5
+    -
+      entity: 3f21083a-98c9-440e-92b0-12947f799e0a
+  field_premises:
+    -
+      entity: 7f3b87cd-4406-4f07-a562-ee6876774b16
+  field_sic_code:
+    -
+      entity: 86bcff9c-882e-46d1-b768-68eb5b311f2c

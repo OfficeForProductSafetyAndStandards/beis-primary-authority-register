@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.message.reviewed_enforcement.field_enforcement_notice
     - field.field.message.reviewed_enforcement.field_message_subject
+    - field.field.message.reviewed_enforcement.field_to
     - message.template.reviewed_enforcement
 id: message.reviewed_enforcement.default
 targetEntityType: message
@@ -12,24 +13,25 @@ bundle: reviewed_enforcement
 mode: default
 content:
   field_enforcement_notice:
-    weight: 1
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 1
     region: content
   field_message_subject:
-    weight: 2
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 2
     region: content
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+    weight: 0
+    region: content
+hidden:
+  field_to: true

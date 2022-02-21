@@ -2,5 +2,6 @@ name: par_message_config
 description: 'The configuration required to setup all messages templates necessary for the PAR notification system.'
 type: module
 core: 8.x
+core_version_requirement: ^8 || ^9
 dependencies:
   - message

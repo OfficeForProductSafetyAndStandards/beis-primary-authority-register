@@ -1,6 +1,14 @@
 services:
-  par_log.event_subscriber.par_data:
-    class: Drupal\par_log\EventSubscriber\ParData
+  par_log.event_subscriber.par_data_delete:
+    class: Drupal\par_log\EventSubscriber\ParDataDelete
     tags:
       - { name: audit_log_event_subscriber }
       - { name: par_log_event_subscriber }
+  par_log.event_subscriber.par_data_remove_field:
+    class: Drupal\par_log\EventSubscriber\ParDataRemoveField
+    tags:
+      - { name: audit_log_event_subscriber }
+      - { name: par_log_event_subscriber }
+  logger.channel.par:
+    parent: logger.channel_base
+    arguments: ['par']

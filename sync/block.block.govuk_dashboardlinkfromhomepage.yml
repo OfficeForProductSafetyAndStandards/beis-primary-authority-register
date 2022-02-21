@@ -1,0 +1,39 @@
+uuid: 8e04b99b-7224-474e-9fd1-b6baefe73b49
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:bc6cfde1-fef1-410a-aa20-f845d4769f58'
+  module:
+    - block_content
+    - system
+    - user
+  theme:
+    - govuk
+id: govuk_dashboardlinkfromhomepage
+theme: govuk
+region: content
+weight: -1
+provider: null
+plugin: 'block_content:bc6cfde1-fef1-410a-aa20-f845d4769f58'
+settings:
+  id: 'block_content:bc6cfde1-fef1-410a-aa20-f845d4769f58'
+  label: 'Dashboard Link From Home Page'
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: /about
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      authenticated: authenticated

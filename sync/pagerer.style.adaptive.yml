@@ -1,18 +1,20 @@
+_core:
+  default_config_hash: tAMh3Y-xcyrD7xvBOSc7x5xyatMgzp7PvkT2LWYHvAc
 langcode: en
 default_config:
-  quantity: 5
-  display_mode: normal
   display: pages
   display_restriction: 2
   prefix_display: false
   suffix_display: false
-  separator_display: false
-  breaker_display: true
   first_link: never
   previous_link: never
   next_link: never
   last_link: never
+  quantity: 5
   fl_breakers: true
+  display_mode: normal
+  separator_display: false
+  breaker_display: true
   progr_links: relative
   tags:
     page_breaker: …
@@ -21,76 +23,74 @@ default_config:
       prefix_label: Page
       suffix_label: 'of @total'
       page_current: '@number'
-      page_previous: '@number'
-      page_previous_relative: '-@offset'
-      page_next: '@number'
-      page_next_relative: +@offset
-      first: «
-      previous: ‹
-      next: ›
-      last: »
-      pageset_empty: 'No pages to display.'
       page_current_title: 'Current page'
-      page_title: 'Go to page @number'
-      first_title: 'Go to first page'
-      previous_title: 'Go to previous page'
-      next_title: 'Go to next page'
-      last_title: 'Go to last page'
       page_current_reader: 'Current page'
-      page_reader: Page
+      first: «
+      first_title: 'Go to first page'
       first_reader: 'First page'
+      previous: ‹
+      previous_title: 'Go to previous page'
       previous_reader: 'Previous page'
+      next: ›
+      next_title: 'Go to next page'
       next_reader: 'Next page'
+      last: »
+      last_title: 'Go to last page'
       last_reader: 'Last page'
+      pageset_empty: 'No pages to display.'
+      page_previous: '@number'
+      page_next: '@number'
+      page_title: 'Go to page @number'
+      page_reader: Page
+      page_previous_relative: '-@offset'
+      page_next_relative: +@offset
     items:
       prefix_label: Item
       suffix_label: 'of @total_items'
       page_current: '@item'
-      page_previous: '@item'
-      page_previous_relative: '-@item_offset'
-      page_next: '@item'
-      page_next_relative: +@item_offset
-      first: «
-      previous: ‹
-      next: ›
-      last: »
-      pageset_empty: 'No items to display.'
       page_current_title: 'Current items'
-      page_title: 'Go to item @item'
-      first_title: 'Go to first item'
-      previous_title: 'Go to previous items'
-      next_title: 'Go to next items'
-      last_title: 'Go to last item'
       page_current_reader: 'Current items'
-      page_reader: Item
+      first: «
+      first_title: 'Go to first item'
       first_reader: 'First item'
+      previous: ‹
+      previous_title: 'Go to previous items'
       previous_reader: 'Previous items'
+      next: ›
+      next_title: 'Go to next items'
       next_reader: 'Next items'
+      last: »
+      last_title: 'Go to last item'
       last_reader: 'Last item'
+      pageset_empty: 'No items to display.'
+      page_previous: '@item'
+      page_next: '@item'
+      page_title: 'Go to item @item'
+      page_reader: Item
+      page_previous_relative: '-@item_offset'
+      page_next_relative: +@item_offset
     item_ranges:
       prefix_label: Items
       suffix_label: 'of @total_items'
       page_current: '@item_low-@item_high'
-      page_previous: '@item_low-@item_high'
-      page_previous_relative: '-@item_offset'
-      page_next: '@item_low-@item_high'
-      page_next_relative: +@item_offset
-      first: «
-      previous: ‹
-      next: ›
-      last: »
-      pageset_empty: 'No items to display.'
       page_current_title: 'Current items'
-      page_title: 'Go to items @item_low-@item_high'
-      first_title: 'Go to first items'
-      previous_title: 'Go to previous items'
-      next_title: 'Go to next items'
-      last_title: 'Go to last items'
       page_current_reader: 'Current items'
-      page_reader: Items
+      first: «
+      first_title: 'Go to first items'
       first_reader: 'First items'
+      previous: ‹
+      previous_title: 'Go to previous items'
       previous_reader: 'Previous items'
+      next: ›
+      next_title: 'Go to next items'
       next_reader: 'Next items'
+      last: »
+      last_title: 'Go to last items'
       last_reader: 'Last items'
-_core:
-  default_config_hash: tAMh3Y-xcyrD7xvBOSc7x5xyatMgzp7PvkT2LWYHvAc
+      pageset_empty: 'No items to display.'
+      page_previous: '@item_low-@item_high'
+      page_next: '@item_low-@item_high'
+      page_title: 'Go to items @item_low-@item_high'
+      page_reader: Items
+      page_previous_relative: '-@item_offset'
+      page_next_relative: +@item_offset

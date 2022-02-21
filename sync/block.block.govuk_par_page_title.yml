@@ -1,0 +1,20 @@
+uuid: b0f34a18-f475-47ee-98bc-0d85a7ddde40
+langcode: en
+status: true
+dependencies:
+  theme:
+    - govuk_par
+_core:
+  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
+id: govuk_par_page_title
+theme: govuk_par
+region: content
+weight: -6
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  label_display: '0'
+  provider: core
+visibility: {  }

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,7 +28,8 @@ class ParSelectMemberForm extends ParFormPluginBase {
       if ($par_data_partnership->isDirect()) {
         $organisations = $par_data_partnership->getOrganisation();
       }
-      elseif ($par_data_partnership->isCoordinated()) {
+      elseif ($par_data_partnership->isCoordinated()
+        && $par_data_partnership->getMemberDisplay() === ParDataPartnership::MEMBER_DISPLAY_INTERNAL) {
         foreach ($par_data_partnership->getCoordinatedMember(FALSE, TRUE) as $coordinated_member) {
           $coordinated_organisations = $coordinated_member->getOrganisation();
           $organisations = $this->getParDataManager()->getEntitiesAsOptions($coordinated_organisations, $organisations);
@@ -64,12 +66,14 @@ class ParSelectMemberForm extends ParFormPluginBase {
 
     // Split the items up into chunks:
     $chunks = array_chunk($partnership_organisations, $number_of_items, TRUE);
+    $chunk = $chunks[$current_pager->getCurrentPage()] ?? [];
 
     $form['par_data_organisation_id'] = [
       '#type' => 'radios',
       '#title' => t('Choose the member to enforce'),
-      '#options' => $chunks[$current_pager->getCurrentPage()],
+      '#options' => $chunk,
       '#default_value' => $this->getDefaultValuesByKey('par_data_organisation_id', $cardinality, []),
+      '#attributes' => ['class' => ['form-group']],
     ];
 
     $form['pager'] = [

@@ -4,7 +4,7 @@ Feature: Business User - Complete organisation details
     Scenario: Business User - Complete organisation details
 
         # LOGIN
-        
+
         Given I am logged in as "par_business@example.com"
 
         # COMPLETE PARTNERSHIP ORGANISATION DETAIL
@@ -18,7 +18,7 @@ Feature: Business User - Complete organisation details
         # COMPLETE REGISTERED ADDRESS
 
         And I complete the organisation registered address for direct partnership
-        
+
         # COMPLETE SIC CODES
 
         And I complete the SIC codes
@@ -26,7 +26,7 @@ Feature: Business User - Complete organisation details
         # COMPLETE EMPLOYEES
 
         And I complete the employees
-        
+
         # COMPLETE TRADING NAME
 
         And I complete the trading names

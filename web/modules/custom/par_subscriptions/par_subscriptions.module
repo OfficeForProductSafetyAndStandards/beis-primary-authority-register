@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Contains par_subscriptions.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Access\AccessResult;
+
+/**
+ * Implements hook_help().
+ */
+function par_subscriptions_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the par_subscriptions module.
+    case 'help.page.par_subscriptions':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Allows anyone, registered or not, to subscribe with their email address to a subscription list for PAR content.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * Purge any old unverified subscriptions after 7 days.
+ */
+function par_subscriptions_cron() {
+  $subscription_manager = \Drupal::service('par_subscriptions.manager');
+
+  $request_time = \Drupal::time()->getRequestTime();
+  $last_run = \Drupal::state()->get('par_subscriptions.last_purge', 0);
+  $days = 60*60*24*7;
+
+  if ($request_time-$days > $last_run) {
+    $subscription_manager->purge();
+  }
+
+  \Drupal::state()->set('par_subscriptions.last_purge', $request_time);
+}

@@ -1,0 +1,27 @@
+uuid: 859e71db-1ea9-4a3c-8a73-e4aed251825d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.subscription_verify_notification.field_message_subject
+    - field.field.message.subscription_verify_notification.field_to
+    - message.template.subscription_verify_notification
+id: message.subscription_verify_notification.default
+targetEntityType: message
+bundle: subscription_verify_notification
+mode: default
+content:
+  field_to:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_message_subject: true

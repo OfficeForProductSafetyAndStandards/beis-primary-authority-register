@@ -1,0 +1,22 @@
+uuid: e7e6d617-b801-47cd-917a-7a3293110fc1
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - govuk_par
+_core:
+  default_config_hash: KHQIJ7Vfl25lTjzIc7qIvnuistt-Mw2O0kG4jCofmkI
+id: govuk_par_messages
+theme: govuk_par
+region: content
+weight: -8
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  label_display: '0'
+  provider: system
+visibility: {  }

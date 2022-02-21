@@ -75,7 +75,7 @@ interface ParFormPluginInterface extends PluginInspectionInterface, Configurable
    * @param mixed $action
    *   An identifier relating to the action to be performed.
    */
-  public function validate($form, &$form_state, $cardinality = 0, $action);
+  public function validate($form, &$form_state, $cardinality = 0, $action = ParFormBuilder::PAR_ERROR_DISPLAY);
 
   /**
    * Saves the form elements.

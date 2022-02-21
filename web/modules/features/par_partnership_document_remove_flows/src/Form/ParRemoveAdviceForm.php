@@ -130,12 +130,11 @@ class ParRemoveAdviceForm extends ParBaseForm {
     try {
       if (isset($delta)) {
         $par_data_partnership->get('field_advice')->removeItem($delta);
+
+        // Set the reason as the revision message.
+        // Which allows it to be recorded by the logger.
         $remove_reason = $this->getFlowDataHandler()->getDefaultValues('remove_reason', '');
-        $revision_message = $this->t(
-          "The advice '@advice' was removed from the partnership. The reason given was:" . PHP_EOL . "@reason",
-          ['@advice' => $par_data_advice->getAdviceTitle(), '@reason' => $remove_reason]
-        );
-        $par_data_partnership->setNewRevision(TRUE, $revision_message);
+        $par_data_partnership->setNewRevision(TRUE, $remove_reason);
       }
       else {
         throw new \InvalidArgumentException('No field delta has been provided.');

@@ -1,0 +1,21 @@
+features:
+  node_user_picture: 1
+  comment_user_picture: 1
+  comment_user_verification: 1
+  favicon: 1
+logo:
+  use_default: 1
+favicon:
+  use_default: 1
+search_box: 0
+govuk_cookie: 0
+govuk_breadcrumb: 1
+govuk_phase_banner: beta
+phase_banner_message:
+  value: "<p><span>This is a new service – your <a href=\"https://www.surveymonkey.co.uk/r/primaryauthorityregister\">feedback</a> will help us to improve it.</span></p>\r\n"
+  format: basic_html
+govuk_cookie_name: _cookie_policy
+govuk_cookie_policy:
+  analytics: analytics
+  functional: functional
+  other: other

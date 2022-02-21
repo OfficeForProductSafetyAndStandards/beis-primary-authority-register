@@ -15,6 +15,14 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
 interface ParStatisticBaseInterface extends PluginInspectionInterface {
 
   /**
+   * Important the value of a different statistic.
+   *
+   * @param string $stat
+   *   The statistic plugin id for the stat to import.
+   */
+  public function importStat(string $stat): int;
+
+  /**
    * Get the statistic.
    */
   public function getStat();

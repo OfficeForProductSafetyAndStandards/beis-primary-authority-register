@@ -1,0 +1,40 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_sic_code
+  uuid: 0f59d76d-3062-4c5e-8b26-b0a798a7104c
+  bundle: sic_code
+  default_langcode: en
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282d3025e
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  sic_code:
+    -
+      value: '111111'
+  description:
+    -
+      value: 'This SIC Code should be used if you allow people to eat cookies on your premises.'

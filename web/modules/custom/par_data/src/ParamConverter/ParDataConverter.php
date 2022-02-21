@@ -2,7 +2,7 @@
 
 namespace Drupal\par_data\ParamConverter;
 
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\ParamConverter\ParamConverterInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Symfony\Component\Routing\Route;
@@ -13,21 +13,21 @@ class ParDataConverter implements ParamConverterInterface {
   /**
    * Entity manager which performs the upcasting in the end.
    *
-   * @var \Drupal\Core\Entity\EntityManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityManager;
+  protected $entityTypeManager;
 
   /**
    * The entity manager.
    *
-   * @var \Drupal\Core\Entity\EntityManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $parDataManager;
 
   /**
    * The inner parent service being decorated.
    *
-   * @param EntityConverter
+   * @param \Drupal\Core\ParamConverter\EntityConverter
    */
   protected $parent;
 
@@ -39,19 +39,24 @@ class ParDataConverter implements ParamConverterInterface {
   protected $settings;
 
   /**
+   * A unique stub ID for forcing a stub to be loaded.
+   */
+  const STUB_ID = 000;
+
+  /**
    * Constructs a new EntityConverter.
    *
    * @param \Drupal\Core\ParamConverter\EntityConverter $parent
    *   The param converter that is being decorated.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity manager.
    * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
    *   The par data manager.
    * @param \Drupal\Core\Config\ConfigFactory $config_factory
    *   The conig factory.
    */
-  public function __construct($parent, EntityManagerInterface $entity_manager, ParDataManagerInterface $par_data_manager, $config_factory) {
-    $this->entityManager = $entity_manager;
+  public function __construct($parent, EntityTypeManagerInterface $entity_type_manager, ParDataManagerInterface $par_data_manager, $config_factory) {
+    $this->entityTypeManager = $entity_type_manager;
     $this->parDataManager = $par_data_manager;
     $this->parent = $parent;
     $this->settings = $config_factory->get('par_data.settings');
@@ -76,7 +81,7 @@ class ParDataConverter implements ParamConverterInterface {
       if ($this->parDataManager->getEntityTypeStorage($entity_type_id)->load($value)) {
         $entity = $this->parent->convert($value, $definition, $name, $defaults);
       }
-      elseif ($entity_type_id) {
+      elseif ($entity_type_id && $value == self::STUB_ID) {
         $entities = $this->parDataManager->getEntityTypeStorage($entity_type_id)->loadMultiple();
         $entity = !empty($entities) ? current($entities) : NULL;
       }

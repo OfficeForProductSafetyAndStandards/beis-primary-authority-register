@@ -3,10 +3,10 @@
 namespace Drupal\par_data\Form;
 
 use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 
 /**
@@ -15,68 +15,6 @@ use Drupal\Core\Language\LanguageManagerInterface;
  * @ingroup par_data
  */
 class ParDataForm extends ContentEntityForm {
-
-  /**
-   * The entity storage.
-   *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
-   */
-  protected $entityStorage;
-
-  /**
-   * The entity type storage.
-   *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
-   */
-  protected $entityTypeStorage;
-
-  /**
-   * The language manager.
-   *
-   * @var \Drupal\Core\Language\LanguageManagerInterface
-   */
-  protected $languageManager;
-
-  /**
-   * The time service.
-   *
-   * @var \Drupal\Component\Datetime\TimeInterface
-   */
-  protected $time;
-
-  /**
-   * The content entity.
-   *
-   * @var \Drupal\par_data\Entity\ParDataEntityInterface
-   */
-  protected $entity;
-
-  /**
-   * Constructs a ParDataForm object.
-   *
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *   The entity manager.
-   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
-   *   The language manager.
-   * @param \Drupal\Component\Datetime\TimeInterface $time
-   *   The time service.
-   */
-  public function __construct(EntityManagerInterface $entity_manager, LanguageManagerInterface $language_manager, TimeInterface $time) {
-    parent::__construct($entity_manager);
-    $this->languageManager = $language_manager;
-    $this->time = $time;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, $entity_type = '', $entity_bundle_type = '') {
-    return new static(
-      $container->get('entity.manager'),
-      $container->get('language_manager'),
-      $container->get('datetime.time')
-    );
-  }
 
   /**
    * Get time service.

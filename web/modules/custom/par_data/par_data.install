@@ -5,12 +5,14 @@
  */
 
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\link\LinkItemInterface;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\Entity\ParDataPersonInterface;
+use Drupal\par_data\Entity\ParDataPremises;
 
 /**
  * Implements hook_install().
@@ -373,8 +375,9 @@ function par_data_update_8023() {
   $par_data_manager = \Drupal::service('par_data.manager');
 
   $people = $par_data_manager->getEntitiesByProperty('par_data_person', 'type', 'business');
+  $reason = 'Entity removed as part of hook cleanup par_data_update_8023';
   foreach ($people as $person) {
-    $person->destroy();
+    $person->destroy($reason);
   }
 }
 
@@ -513,6 +516,7 @@ function par_data_update_8030() {
     ],
   ];
   $par_data_enforcement_notices = $par_data_manager->getEntitiesByQuery('par_data_enforcement_notice', $conditions);
+  $reason = 'Entity removed as part of hook cleanup par_data_update_8030';
 
   foreach ($par_data_enforcement_notices as $par_data_enforcement_notice) {
     if ($par_data_enforcement_notice->getEnforcementActions()) {
@@ -1059,5 +1063,192 @@ function par_data_update_8046() {
     $field_advice_reason = $entity_definition_update_manager->getFieldStorageDefinition(ParDataEntity::ARCHIVE_REASON_FIELD, $entity_type->id());
     $field_advice_reason->addConstraint('par_required');
     $entity_definition_update_manager->updateFieldStorageDefinition($field_advice_reason);
+  }
+}
+
+/**
+ * PAR-1694 remove all superfluous address records.
+ */
+function par_data_update_8047(&$sandbox) {
+  /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
+  $par_data_manager = \Drupal::service('par_data.manager');
+  $batch_size = 1000;
+
+  // Initialize some variables during the first pass through.
+  if (!isset($sandbox['total'])) {
+    /** @var \Drupal\par_data\Entity\ParDataEntityInterface[] $authorities */
+    /** @var \Drupal\par_data\Entity\ParDataEntityInterface[] $organisations */
+    $authorities = $par_data_manager->getEntitiesByType('par_data_authority');
+    $organisations = $par_data_manager->getEntitiesByType('par_data_organisation');
+
+    $primary_addresses = [];
+    foreach($authorities as $id => $entity) {
+      if ($entity->hasField('field_premises') && !$entity->get('field_premises')->isEmpty()) {
+        $primary_addresses[] = $entity->get('field_premises')->first()->target_id;
+      }
+    }
+    foreach($organisations as $id => $entity) {
+      if ($entity->hasField('field_premises') && !$entity->get('field_premises')->isEmpty()) {
+        $primary_addresses[] = $entity->get('field_premises')->first()->target_id;
+      }
+    }
+
+    // Build the address query.
+    $total_query = $par_data_manager->getEntityQuery('par_data_premises');
+    $total_query->condition('id', $primary_addresses, 'NOT IN');
+    $total_results = array_unique($total_query->execute());
+
+    // Set default values.
+    $sandbox['secondary_addresses'] = array_chunk($total_results, $batch_size, true);
+    $sandbox['total'] = count($total_results);
+    $sandbox['current'] = 0;
+  }
+
+  // Delete the secondary addresses in chunks.
+  // This helps the update runner know that we're still alive and processing.
+  $chunk = $sandbox['secondary_addresses'][$sandbox['current']];
+  foreach ($chunk as $result) {
+    if ($entity = ParDataPremises::load($result)) {
+      $entity->annihilate();
+    }
+  }
+  $sandbox['current']++;
+
+  $results_removed = ($batch_size * $sandbox['current']);
+  $message = "$results_removed secondary addresses removed, batch {$sandbox['current']} complete.";
+
+  if ($sandbox['total'] == 0) {
+    $sandbox['#finished'] = 1;
+  } else {
+    $sandbox['#finished'] = ($results_removed / $sandbox['total']);
+  }
+
+  return t($message);
+}
+
+/**
+ * PAR-1710 remove file_entity in preparation for Drupal 9.
+ *
+ * Removing the file entity bundle transforms these back into ordinary managed files.
+ */
+function par_data_update_8048() {
+  $connection = \Drupal::database();
+  $query = $connection->update('file_managed')
+    ->fields([
+      'type' => '',
+    ])
+    ->isNotNull('type');
+  $count = $query->execute();
+
+  return t("$count file entities removed.");
+}
+
+/**
+ * PAR-1737: Base field updates for new member fields on coordinated partnerships.
+ */
+function par_data_update_9001() {
+  $entity_definition_manager = \Drupal::service('entity.definition_update_manager');
+
+  // New fields definitions to be added to the partnership entity.
+  // @see https://www.drupal.org/node/3034742
+  $storage_definitions = [];
+
+  // Partnership Status.
+  $storage_definitions['member_display'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Member list display'))
+    ->setDescription(t('The list display type, one of: internal, external, request.'))
+    ->addConstraint('par_required')
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'max_length' => 255,
+      'text_processing' => 0,
+    ])
+    ->setDefaultValue('')
+    ->setDisplayOptions('form', [
+      'type' => 'string_textfield',
+      'weight' => 8,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  // Number of Members.
+  $storage_definitions['member_number'] = BaseFieldDefinition::create('integer')
+    ->setLabel(t('Number of members'))
+    ->setDescription(t('The number of coordinated members in this partnership.'))
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'max_length' => 6,
+      'text_processing' => 0,
+    ])
+    ->setDefaultValue('')
+    ->setDisplayOptions('form', [
+      'type' => 'number',
+      'weight' => 8,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'type' => 'number_integer',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  // Number of Members.
+  $storage_definitions['member_link'] = BaseFieldDefinition::create('link')
+    ->setLabel(t('Member list link'))
+    ->setDescription(t('The link to the publicly available external member list.'))
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'link_type' => LinkItemInterface::LINK_EXTERNAL,
+      'title' => DRUPAL_DISABLED,
+    ])
+    ->setDefaultValue('')
+    ->setDisplayOptions('form', [
+      'type' => 'link_default',
+      'weight' => 8,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'type' => 'link',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  foreach ($storage_definitions as $field => $definition) {
+    $entity_definition_manager->installFieldStorageDefinition($field, 'par_data_partnership', 'par_data_partnership', $definition);
+  }
+}
+
+/**
+ * PAR-1737 update new member display fields.
+ *
+ * Migrate the number of members from the organisation to the partnership.
+ * Attempt to set the correct display type for coordinated partnerships.
+ */
+function par_data_update_9002() {
+  /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  $qry = $par_data_manager->getEntityQuery('par_data_partnership');
+  $qry->condition('partnership_type', 'coordinated');
+  $results = $qry->execute();
+
+  foreach ($results as $result) {
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $partnership */
+    $partnership = \Drupal::entityTypeManager()->getStorage('par_data_partnership')->load($result);
+
+    // Get the number of members on the organisation.
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation $organisation */
+    $organisation = $partnership ? $partnership->getOrganisation(true) : NULL;
+    $number_members = $organisation ? $organisation->getMembershipSize() : NULL;
+    if ($number_members) {
+      $partnership->set('member_number', $number_members);
+      $partnership->save();
+    }
   }
 }

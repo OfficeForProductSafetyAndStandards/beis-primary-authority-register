@@ -1,0 +1,62 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_advice
+  uuid: f39a3e89-0cfa-4040-b35e-7ad170beada4
+  bundle: advice
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    6be26569-93f7-4693-933c-6e448dd3c477: file
+    15660610-03e4-47f4-b26e-159d0cd4d86a: par_data_regulatory_function
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1562774817
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d260d2332cf6
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  advice_title:
+    -
+      value: 'Educational training'
+  advice_type:
+    -
+      value: business_advice
+  notes:
+    -
+      value: 'We must make sure that all young cookie monsters are aware that they can only have one cookie a day and that they must adhere to these strict standards for the rest of their monster lives.'
+      format: plain_text
+  issue_date:
+    -
+      value: '2019-07-10'
+  document:
+    -
+      entity: 6be26569-93f7-4693-933c-6e448dd3c477
+      display: false
+      description: ''
+  advice_status:
+    -
+      value: active
+  field_regulatory_function:
+    -
+      entity: 15660610-03e4-47f4-b26e-159d0cd4d86a

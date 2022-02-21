@@ -22,7 +22,7 @@ class EntityParAuthorityTest extends ParDataTestBase {
   public function testEntityValidate() {
     $entity = ParDataAuthority::create($this->getAuthorityValues());
     $violations = $entity->validate();
-    $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default PAR Authority entity.');
+    $this->assertEquals(0, count($violations->getFieldNames()), 'No violations when validating a default PAR Authority entity.');
   }
 
   /**
@@ -51,7 +51,7 @@ class EntityParAuthorityTest extends ParDataTestBase {
 
     $entity = ParDataAuthority::create($values + $this->getAuthorityValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(count($values), count($violations->getFieldNames()), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
   }
 
   /**
@@ -67,7 +67,7 @@ class EntityParAuthorityTest extends ParDataTestBase {
 
     $entity = ParDataAuthority::create($values + $this->getAuthorityValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values cannot be longer than their allowed lengths for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(count($values), count($violations->getFieldNames()), t('Field values cannot be longer than their allowed lengths for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
   }
 
   /**
@@ -75,6 +75,6 @@ class EntityParAuthorityTest extends ParDataTestBase {
    */
   public function testEntityCreate() {
     $entity = ParDataAuthority::create($this->getAuthorityValues());
-    $this->assertTrue($entity->save(), 'PAR Authority entity saved correctly.');
+    $this->assertTrue($entity->save() === SAVED_NEW, 'PAR Authority entity saved correctly.');
   }
 }

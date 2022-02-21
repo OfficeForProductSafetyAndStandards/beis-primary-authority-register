@@ -1,0 +1,54 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: bd870f70-b306-4894-93cb-99a50d5a00e2
+  bundle: organisation
+  default_langcode: en
+  depends:
+    46e65664-bf34-4713-ab14-740cbe581538: user
+    f7ba58f5-ab8c-45b2-9b42-1f464cc15484: par_data_legal_entity
+    678508ff-763f-4c81-a33b-0b182f57ab0e: par_data_legal_entity
+    f3dfc4dc-1841-4444-96e5-ed1c7f9b4b8f: par_data_person
+    ff77c19b-7480-4b3c-8487-822c8308ba6e: par_data_premises
+default:
+  user_id:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311475
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3d7400ea4
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'General Store'
+  field_legal_entity:
+    -
+      entity: f7ba58f5-ab8c-45b2-9b42-1f464cc15484
+    -
+      entity: 678508ff-763f-4c81-a33b-0b182f57ab0e
+  field_person:
+    -
+      entity: f3dfc4dc-1841-4444-96e5-ed1c7f9b4b8f
+  field_premises:
+    -
+      entity: ff77c19b-7480-4b3c-8487-822c8308ba6e

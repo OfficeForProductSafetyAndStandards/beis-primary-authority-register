@@ -11,7 +11,7 @@ dependencies:
   module:
     - comment
     - datetime
-    - file_entity
+    - file
     - par_data
     - text
 id: par_data_inspection_feedback.inspection_feedback.default
@@ -20,24 +20,14 @@ bundle: inspection_feedback
 mode: default
 content:
   document:
-    label: hidden
-    weight: 2
-    region: content
+    weight: 11
+    label: above
     settings:
-      access_message: 'You don''t have access to download this file.'
-      text: 'Download [file:name]'
+      use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_download_link
+    type: file_default
+    region: content
   field_enforcing_authority:
-    weight: 5
-    label: hidden
-    settings:
-      view_mode: title
-      link: false
-    third_party_settings: {  }
-    type: entity_reference_entity_view
-    region: content
-  field_inspection_plan:
     weight: 6
     label: hidden
     settings:
@@ -46,7 +36,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_entity_view
     region: content
-  field_partnership:
+  field_inspection_plan:
     weight: 7
     label: hidden
     settings:
@@ -55,8 +45,17 @@ content:
     third_party_settings: {  }
     type: entity_reference_entity_view
     region: content
-  field_person:
+  field_partnership:
     weight: 8
+    label: hidden
+    settings:
+      view_mode: title
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  field_person:
+    weight: 9
     label: hidden
     settings:
       view_mode: title
@@ -66,7 +65,7 @@ content:
     region: content
   messages:
     type: comment_default
-    weight: 9
+    weight: 10
     region: content
     label: hidden
     settings:
@@ -83,13 +82,13 @@ content:
   primary_authority_notes:
     label: hidden
     type: text_default
-    weight: 4
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_status:
     label: hidden
-    weight: 3
+    weight: 4
     region: content
     settings:
       display_original_value: false

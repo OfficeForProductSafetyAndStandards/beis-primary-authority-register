@@ -54,7 +54,7 @@ When('I successfully refer enforcement notice {string} to {string}', function (e
     .setValue('#edit-par-component-enforcement-action-review-0-referral-notes', 'Some notes about why the enforcement action has been referred')
     .click('#edit-next')
     .assert.containsText('h1.heading-xlarge', 'Refer Enforcement Notice')
-    .click('#edit-par-component-enforcement-action-refer-0 .multiple-choice .form-radio:nth-child(1)')
+    .click('#edit-par-component-enforcement-action-refer-0 .govuk-radios__item .form-radio:nth-child(1)')
     .click('#edit-save')
     .assert.containsText('h1.heading-xlarge', 'Respond to notice of enforcement action')
     .assert.containsText('h1.heading-xlarge', 'Review')

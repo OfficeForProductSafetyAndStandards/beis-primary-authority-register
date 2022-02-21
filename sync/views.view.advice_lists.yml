@@ -21,163 +21,12 @@ base_table: par_partnerships_field_data
 base_field: id
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: none
-        options: {  }
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: bef
-        options:
-          submit_button: Search
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-          input_required: false
-          text_input_required: 'Select any filter and click on Apply to see results'
-          bef:
-            general:
-              allow_secondary: false
-              secondary_label: 'Advanced options'
-              autosubmit: true
-              autosubmit_exclude_textfield: true
-              autosubmit_hide: false
-            sort:
-              bef_format: default
-              advanced:
-                collapsible: false
-                collapsible_label: 'Sort options'
-                combine: true
-                combine_rewrite: "Issue date Desc|Most recent first\r\nIssue date Asc|Oldest first\r\nAdvice title Asc|Alphabetical A -> Z\r\nAdvice title Desc|Alphabetical Z -> A"
-                reset: true
-                reset_label: 'Restore default order'
-                is_secondary: false
-            advice_status:
-              bef_format: default
-              more_options:
-                is_secondary: false
-                rewrite:
-                  filter_rewrite_values: ''
-            combine:
-              bef_format: default
-              more_options:
-                is_secondary: false
-                placeholder_text: ''
-          text_input_required_format: basic_html
-      pager:
-        type: pagerer
-        options:
-          preset: gds_list_pagination
-          items_per_page: 10
-          offset: 0
-          id: '0'
-          total_pages: ''
-          expose:
-            items_per_page: 0
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: 0
-            items_per_page_options_all_label: '- All -'
-            offset: 0
-            offset_label: Offset
-      style:
-        type: table
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: false
-          override: true
-          sticky: false
-          caption: ''
-          summary: ''
-          description: ''
-          columns:
-            id_1: id_1
-            id: id
-            function_name: function_name
-            par_status_time: par_status_time
-            advice_title: advice_title
-            advice_type: advice_type
-            advice_title_1: advice_title_1
-            par_status: par_status
-          info:
-            id_1:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            id:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            function_name:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            par_status_time:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            advice_title:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            advice_type:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            advice_title_1:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            par_status:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          default: '-1'
-          empty_table: false
-      row:
-        type: fields
+      title: 'Primary Authority Register | Search for a partnership'
       fields:
         id_1:
           id: id_1
@@ -186,6 +35,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: id
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -249,9 +101,6 @@ display:
           format_plural_string: !!binary MQNAY291bnQ=
           prefix: ''
           suffix: ''
-          entity_type: par_data_partnership
-          entity_field: id
-          plugin_id: field
         par_flow_link:
           id: par_flow_link
           table: par_partnerships_field_data
@@ -259,6 +108,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          plugin_id: par_flow_link
           label: Partnership
           exclude: false
           alter:
@@ -303,8 +154,6 @@ display:
           title: 'Partnership between {{ authority_name }} and {{ organisation_name }}'
           link: '/partnership/{{ id_1 }}'
           hidden: 0
-          entity_type: par_data_partnership
-          plugin_id: par_flow_link
         partnership_type:
           id: partnership_type
           table: par_partnerships_field_data
@@ -312,6 +161,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: partnership_type
+          plugin_id: field
           label: 'Partnership Type'
           exclude: false
           alter:
@@ -367,9 +219,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_partnership
-          entity_field: partnership_type
-          plugin_id: field
         field_authority_person:
           id: field_authority_person
           table: par_data_partnership__field_authority_person
@@ -377,6 +226,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: 'Invite Authority Contacts'
           exclude: true
           alter:
@@ -432,7 +282,6 @@ display:
           multi_type: ul
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_regulatory_function:
           id: field_regulatory_function
           table: par_data_partnership__field_regulatory_function
@@ -440,6 +289,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: 'Regulatory Functions'
           exclude: false
           alter:
@@ -495,7 +345,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         approved_date:
           id: approved_date
           table: par_partnerships_field_data
@@ -503,6 +352,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: approved_date
+          plugin_id: field
           label: 'Approved on'
           exclude: false
           alter:
@@ -559,9 +411,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_partnership
-          entity_field: approved_date
-          plugin_id: field
         function_name:
           id: function_name
           table: par_regulatory_functions_field_data
@@ -569,6 +418,9 @@ display:
           relationship: field_regulatory_function
           group_type: group
           admin_label: ''
+          entity_type: par_data_regulatory_function
+          entity_field: function_name
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -624,9 +476,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_regulatory_function
-          entity_field: function_name
-          plugin_id: field
         advice_title:
           id: advice_title
           table: par_advice_field_data
@@ -634,6 +483,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          entity_field: advice_title
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -689,9 +541,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_advice
-          entity_field: advice_title
-          plugin_id: field
         advice_type:
           id: advice_type
           table: par_advice_field_data
@@ -699,6 +548,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          entity_field: advice_type
+          plugin_id: field
           label: 'Advice Type'
           exclude: false
           alter:
@@ -754,9 +606,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_advice
-          entity_field: advice_type
-          plugin_id: field
         notes__value:
           id: notes__value
           table: par_advice_field_data
@@ -764,6 +613,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          entity_field: notes
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -818,9 +670,144 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+      pager:
+        type: pagerer
+        options:
+          offset: 0
+          items_per_page: 10
+          preset: gds_list_pagination
+          id: '0'
+          total_pages: ''
+          expose:
+            items_per_page: 0
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: 0
+            items_per_page_options_all_label: '- All -'
+            offset: 0
+            offset_label: Offset
+      exposed_form:
+        type: bef
+        options:
+          submit_button: Search
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+          input_required: false
+          text_input_required: 'Select any filter and click on Apply to see results'
+          text_input_required_format: basic_html
+          bef:
+            general:
+              autosubmit: true
+              autosubmit_exclude_textfield: true
+              autosubmit_hide: false
+              allow_secondary: false
+              secondary_label: 'Advanced options'
+            sort:
+              advanced:
+                combine: true
+                combine_rewrite: "Issue date Desc|Most recent first\r\nIssue date Asc|Oldest first\r\nAdvice title Asc|Alphabetical A -> Z\r\nAdvice title Desc|Alphabetical Z -> A"
+                reset: true
+                reset_label: 'Restore default order'
+                collapsible: false
+                collapsible_label: 'Sort options'
+                is_secondary: false
+              bef_format: default
+            advice_status:
+              bef_format: default
+              more_options:
+                is_secondary: false
+                rewrite:
+                  filter_rewrite_values: ''
+            combine:
+              bef_format: default
+              more_options:
+                is_secondary: false
+                placeholder_text: ''
+      access:
+        type: none
+        options: {  }
+      cache:
+        type: none
+        options: {  }
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text_custom
+          empty: true
+          content: '<p>Sorry, there are no results for your search.</p>'
+          tokenize: false
+      sorts:
+        archived:
+          id: archived
+          table: par_advice_field_data
+          field: archived
+          relationship: field_advice
+          group_type: group
+          admin_label: ''
           entity_type: par_data_advice
-          entity_field: notes
-          plugin_id: field
+          entity_field: archived
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: archived
+          exposed: false
+        advice_status:
+          id: advice_status
+          table: par_advice_field_data
+          field: advice_status
+          relationship: field_advice
+          group_type: group
+          admin_label: ''
+          entity_type: par_data_advice
+          plugin_id: par_sort_allowed_statuses
+          order: ASC
+          expose:
+            label: 'PAR Status'
+            field_identifier: advice_status
+          exposed: false
+          allowed_values: '1'
+          null_heavy: '0'
+        issue_date:
+          id: issue_date
+          table: par_advice_field_data
+          field: issue_date
+          relationship: field_advice
+          group_type: group
+          admin_label: 'Issue date'
+          entity_type: par_data_advice
+          entity_field: issue_date
+          plugin_id: standard
+          order: DESC
+          expose:
+            label: 'Issue date'
+            field_identifier: issue_date
+          exposed: true
+        advice_title:
+          id: advice_title
+          table: par_advice_field_data
+          field: advice_title
+          relationship: field_advice
+          group_type: group
+          admin_label: 'Advice title'
+          entity_type: par_data_advice
+          entity_field: advice_title
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: 'Advice title'
+            field_identifier: advice_title
+          exposed: true
+      arguments: {  }
       filters:
         combine:
           id: combine
@@ -829,6 +816,7 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Partnership advice search'
+          plugin_id: combine
           operator: contains
           value: ''
           group: 1
@@ -839,6 +827,8 @@ display:
             description: 'Enter keyword(s)'
             use_operator: false
             operator: combine_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: keywords
             required: false
             remember: false
@@ -852,8 +842,6 @@ display:
               par_organisation: '0'
               par_helpdesk: '0'
             placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -871,7 +859,6 @@ display:
             advice_title: advice_title
             advice_type: advice_type
             notes__value: notes__value
-          plugin_id: combine
         advice_status:
           id: advice_status
           table: par_advice_field_data
@@ -879,6 +866,8 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          plugin_id: par_data_status_filter
           operator: '='
           value: active
           group: 1
@@ -889,6 +878,8 @@ display:
             description: ''
             use_operator: false
             operator: advice_status_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: advice_status
             required: false
             remember: false
@@ -901,8 +892,6 @@ display:
               par_enforcement: '0'
               par_organisation: '0'
               par_helpdesk: '0'
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -915,8 +904,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_advice
-          plugin_id: par_data_status_filter
         deleted:
           id: deleted
           table: par_advice_field_data
@@ -924,6 +911,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          entity_field: deleted
+          plugin_id: boolean
           operator: '!='
           value: '1'
           group: 1
@@ -934,14 +924,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -954,82 +944,99 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_advice
-          entity_field: deleted
-          plugin_id: boolean
-      sorts:
-        archived:
-          id: archived
-          table: par_advice_field_data
-          field: archived
-          relationship: field_advice
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          entity_type: par_data_advice
-          entity_field: archived
-          plugin_id: standard
-        advice_status:
-          id: advice_status
-          table: par_advice_field_data
-          field: advice_status
-          relationship: field_advice
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: 'PAR Status'
-          allowed_values: '1'
-          null_heavy: '0'
-          entity_type: par_data_advice
-          plugin_id: par_sort_allowed_statuses
-        issue_date:
-          id: issue_date
-          table: par_advice_field_data
-          field: issue_date
-          relationship: field_advice
-          group_type: group
-          admin_label: 'Issue date'
-          order: DESC
-          exposed: true
-          expose:
-            label: 'Issue date'
-          entity_type: par_data_advice
-          entity_field: issue_date
-          plugin_id: standard
-        advice_title:
-          id: advice_title
-          table: par_advice_field_data
-          field: advice_title
-          relationship: field_advice
-          group_type: group
-          admin_label: 'Advice title'
-          order: ASC
-          exposed: true
-          expose:
-            label: 'Advice title'
-          entity_type: par_data_advice
-          entity_field: advice_title
-          plugin_id: standard
-      title: 'Primary Authority Register | Search for a partnership'
-      header: {  }
-      footer: {  }
-      empty:
-        area_text_custom:
-          id: area_text_custom
-          table: views
-          field: area_text_custom
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content: '<p>Sorry, there are no results for your search.</p>'
-          plugin_id: text_custom
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: false
+          columns:
+            id_1: id_1
+            id: id
+            function_name: function_name
+            par_status_time: par_status_time
+            advice_title: advice_title
+            advice_type: advice_type
+            advice_title_1: advice_title_1
+            par_status: par_status
+          default: '-1'
+          info:
+            id_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            id:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            function_name:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_status_time:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            advice_title:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            advice_type:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            advice_title_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_status:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: false
+          summary: ''
+          empty_table: false
+          caption: ''
+          description: ''
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
       relationships:
         field_advice:
           id: field_advice
@@ -1038,8 +1045,8 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Partnership''s Advice'
-          required: true
           plugin_id: standard
+          required: true
         field_regulatory_function:
           id: field_regulatory_function
           table: par_data_advice__field_regulatory_function
@@ -1047,17 +1054,14 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: 'field_regulatory_function: PAR Regulatory Function'
-          required: false
           plugin_id: standard
-      arguments: {  }
-      display_extenders: {  }
+          required: false
       css_class: par_advice_listing
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
-      group_by: true
       use_ajax: false
+      group_by: true
+      header: {  }
+      footer: {  }
+      display_extenders: {  }
     cache_metadata:
       max-age: -1
       contexts:
@@ -1071,23 +1075,13 @@ display:
         - 'config:field.storage.par_data_partnership.field_authority_person'
         - 'config:field.storage.par_data_partnership.field_regulatory_function'
   advice_list_authority_block:
-    display_plugin: block
     id: advice_list_authority_block
     display_title: advice_list_authority_block
+    display_plugin: block
     position: 3
     display_options:
-      display_extenders: {  }
-      display_description: ''
-      defaults:
-        fields: false
-        filters: true
-        filter_groups: true
-        relationships: true
-        arguments: false
-        use_ajax: false
-        title: false
-        query: false
       enabled: true
+      title: ''
       fields:
         id_1:
           id: id_1
@@ -1096,6 +1090,9 @@ display:
           relationship: none
           group_type: group
           admin_label: partnership_id
+          entity_type: par_data_partnership
+          entity_field: id
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -1152,9 +1149,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_partnership
-          entity_field: id
-          plugin_id: field
         id:
           id: id
           table: par_advice_field_data
@@ -1162,6 +1156,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: advice_id
+          entity_type: par_data_advice
+          entity_field: id
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -1208,7 +1205,7 @@ display:
           settings:
             thousand_separator: ''
             prefix_suffix: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1218,9 +1215,71 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        advice_title:
+          id: advice_title
+          table: par_advice_field_data
+          field: advice_title
+          relationship: field_advice
+          group_type: group
+          admin_label: ''
           entity_type: par_data_advice
-          entity_field: id
+          entity_field: advice_title
           plugin_id: field
+          label: Title
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: true
+            path: '/partnership/{{ id_1 }}/advice-details/{{ id }}'
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         function_name:
           id: function_name
           table: par_regulatory_functions_field_data
@@ -1228,6 +1287,9 @@ display:
           relationship: field_regulatory_function
           group_type: group
           admin_label: ''
+          entity_type: par_data_regulatory_function
+          entity_field: function_name
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -1283,9 +1345,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_regulatory_function
-          entity_field: function_name
-          plugin_id: field
         field_regulatory_function:
           id: field_regulatory_function
           table: par_data_advice__field_regulatory_function
@@ -1293,6 +1352,7 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -1348,7 +1408,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         issue_date:
           id: issue_date
           table: par_advice_field_data
@@ -1356,6 +1415,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          entity_field: issue_date
+          plugin_id: field
           label: 'Issue Date'
           exclude: false
           alter:
@@ -1402,73 +1464,7 @@ display:
           settings:
             timezone_override: ''
             format_type: gds_date_format
-          group_column: value
-          group_columns:
-            value: value
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_advice
-          entity_field: issue_date
-          plugin_id: field
-        advice_title:
-          id: advice_title
-          table: par_advice_field_data
-          field: advice_title
-          relationship: field_advice
-          group_type: group
-          admin_label: ''
-          label: Title
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: true
-            path: '/partnership/{{ id_1 }}/advice-details/{{ id }}'
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1478,9 +1474,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_advice
-          entity_field: advice_title
-          plugin_id: field
         par_flow_link_2:
           id: par_flow_link_2
           table: par_advice_field_data
@@ -1488,6 +1481,8 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          plugin_id: par_flow_link
           label: Title
           exclude: false
           alter:
@@ -1533,8 +1528,6 @@ display:
           assistive_text: 'View {{ advice_title }}'
           link: '/partnership/{{ id_1 }}/advice/authority-list/{{ id }}'
           hidden: 0
-          entity_type: par_data_advice
-          plugin_id: par_flow_link
         advice_type:
           id: advice_type
           table: par_advice_field_data
@@ -1542,6 +1535,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          entity_field: advice_type
+          plugin_id: field
           label: 'Type of document and regulatory functions'
           exclude: false
           alter:
@@ -1604,9 +1600,6 @@ display:
           format_plural_string: !!binary MQNAY291bnQ=
           prefix: ''
           suffix: ''
-          entity_type: par_data_advice
-          entity_field: advice_type
-          plugin_id: field
         par_status:
           id: par_status
           table: par_advice_field_data
@@ -1614,6 +1607,8 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          plugin_id: par_data_status
           label: Status
           exclude: false
           alter:
@@ -1655,8 +1650,6 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          entity_type: par_data_advice
-          plugin_id: par_data_status
         notes__value:
           id: notes__value
           table: par_advice_field_data
@@ -1664,6 +1657,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          entity_field: notes
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -1708,7 +1704,7 @@ display:
           click_sort_column: value
           type: text_default
           settings: {  }
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -1718,9 +1714,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_advice
-          entity_field: notes
-          plugin_id: field
         par_flow_link:
           id: par_flow_link
           table: par_advice_field_data
@@ -1728,6 +1721,8 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          plugin_id: par_flow_link
           label: Update
           exclude: true
           alter:
@@ -1773,8 +1768,6 @@ display:
           assistive_text: 'Update {{ advice_title }}'
           link: '/partnership/{{ id_1 }}/advice/{{ id }}/edit'
           hidden: 1
-          entity_type: par_data_advice
-          plugin_id: par_flow_link
         par_flow_link_1:
           id: par_flow_link_1
           table: par_advice_field_data
@@ -1782,6 +1775,8 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          plugin_id: par_flow_link
           label: Archive
           exclude: true
           alter:
@@ -1827,8 +1822,6 @@ display:
           assistive_text: 'Archive {{ advice_title }}'
           link: '/partnership/{{ id_1 }}/advice/{{ id }}/archive'
           hidden: 1
-          entity_type: par_data_advice
-          plugin_id: par_flow_link
         par_flow_link_3:
           id: par_flow_link_3
           table: par_advice_field_data
@@ -1836,6 +1829,8 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          plugin_id: par_flow_link
           label: Actions
           exclude: false
           alter:
@@ -1881,8 +1876,6 @@ display:
           assistive_text: 'Remove the advice {{ advice_title }}'
           link: '/partnership/{{ id_1 }}/advice/{{ id }}/remove'
           hidden: 1
-          entity_type: par_data_advice
-          plugin_id: par_flow_link
       arguments:
         id:
           id: id
@@ -1891,6 +1884,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: id
+          plugin_id: numeric
           default_action: ignore
           exception:
             value: all
@@ -1904,8 +1900,8 @@ display:
           summary_options:
             base_path: ''
             count: true
-            items_per_page: 25
             override: false
+            items_per_page: 25
           summary:
             sort_order: asc
             number_of_records: 0
@@ -1917,21 +1913,28 @@ display:
           validate_options: {  }
           break_phrase: false
           not: false
-          entity_type: par_data_partnership
-          entity_field: id
-          plugin_id: numeric
-      use_ajax: true
-      title: ''
-      block_description: advice_list_authority_block
       query:
         type: views_query
         options:
+          query_comment: ''
           disable_sql_rewrite: false
           distinct: true
           replica: false
-          query_comment: ''
           query_tags: null
           contextual_filters_or: 0
+      defaults:
+        query: false
+        title: false
+        use_ajax: false
+        relationships: true
+        fields: false
+        arguments: false
+        filters: true
+        filter_groups: true
+      use_ajax: true
+      display_description: ''
+      display_extenders: {  }
+      block_description: advice_list_authority_block
     cache_metadata:
       max-age: -1
       contexts:
@@ -1945,23 +1948,13 @@ display:
         - 'config:field.storage.par_data_advice.field_regulatory_function'
     deleted: false
   advice_list_organisation_block:
-    display_plugin: block
     id: advice_list_organisation_block
     display_title: advice_list_organisation_block
+    display_plugin: block
     position: 3
     display_options:
-      display_extenders: {  }
-      display_description: ''
-      defaults:
-        fields: false
-        filters: true
-        filter_groups: true
-        relationships: true
-        arguments: false
-        use_ajax: false
-        title: false
-        query: false
       enabled: true
+      title: ''
       fields:
         id_1:
           id: id_1
@@ -1970,6 +1963,9 @@ display:
           relationship: none
           group_type: group
           admin_label: partnership_id
+          entity_type: par_data_partnership
+          entity_field: id
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -2026,9 +2022,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_partnership
-          entity_field: id
-          plugin_id: field
         id:
           id: id
           table: par_advice_field_data
@@ -2036,6 +2029,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: advice_id
+          entity_type: par_data_advice
+          entity_field: id
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -2082,7 +2078,7 @@ display:
           settings:
             thousand_separator: ''
             prefix_suffix: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -2092,9 +2088,71 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        advice_title:
+          id: advice_title
+          table: par_advice_field_data
+          field: advice_title
+          relationship: field_advice
+          group_type: group
+          admin_label: ''
           entity_type: par_data_advice
-          entity_field: id
+          entity_field: advice_title
           plugin_id: field
+          label: Title
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: true
+            path: '/partnership/{{ id_1 }}/advice-details/{{ id }}'
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         function_name:
           id: function_name
           table: par_regulatory_functions_field_data
@@ -2102,6 +2160,9 @@ display:
           relationship: field_regulatory_function
           group_type: group
           admin_label: ''
+          entity_type: par_data_regulatory_function
+          entity_field: function_name
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -2157,9 +2218,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_regulatory_function
-          entity_field: function_name
-          plugin_id: field
         field_regulatory_function:
           id: field_regulatory_function
           table: par_data_advice__field_regulatory_function
@@ -2167,6 +2225,7 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -2222,7 +2281,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         issue_date:
           id: issue_date
           table: par_advice_field_data
@@ -2230,6 +2288,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          entity_field: issue_date
+          plugin_id: field
           label: 'Issue Date'
           exclude: false
           alter:
@@ -2276,73 +2337,7 @@ display:
           settings:
             timezone_override: ''
             format_type: gds_date_format
-          group_column: value
-          group_columns:
-            value: value
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_advice
-          entity_field: issue_date
-          plugin_id: field
-        advice_title:
-          id: advice_title
-          table: par_advice_field_data
-          field: advice_title
-          relationship: field_advice
-          group_type: group
-          admin_label: ''
-          label: Title
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: true
-            path: '/partnership/{{ id_1 }}/advice-details/{{ id }}'
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -2352,9 +2347,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_advice
-          entity_field: advice_title
-          plugin_id: field
         par_flow_link_2:
           id: par_flow_link_2
           table: par_advice_field_data
@@ -2362,6 +2354,8 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          plugin_id: par_flow_link
           label: Title
           exclude: false
           alter:
@@ -2407,8 +2401,6 @@ display:
           assistive_text: 'View {{ advice_title }}'
           link: '/partnership/{{ id_1 }}/advice/organisation-list/{{ id }}'
           hidden: 0
-          entity_type: par_data_advice
-          plugin_id: par_flow_link
         advice_type:
           id: advice_type
           table: par_advice_field_data
@@ -2416,6 +2408,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          entity_field: advice_type
+          plugin_id: field
           label: 'Type of document and regulatory functions'
           exclude: false
           alter:
@@ -2478,9 +2473,6 @@ display:
           format_plural_string: !!binary MQNAY291bnQ=
           prefix: ''
           suffix: ''
-          entity_type: par_data_advice
-          entity_field: advice_type
-          plugin_id: field
         par_status:
           id: par_status
           table: par_advice_field_data
@@ -2488,6 +2480,8 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          plugin_id: par_data_status
           label: Status
           exclude: false
           alter:
@@ -2529,8 +2523,6 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          entity_type: par_data_advice
-          plugin_id: par_data_status
         notes__value:
           id: notes__value
           table: par_advice_field_data
@@ -2538,6 +2530,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          entity_field: notes
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -2582,7 +2577,7 @@ display:
           click_sort_column: value
           type: text_default
           settings: {  }
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -2592,9 +2587,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_advice
-          entity_field: notes
-          plugin_id: field
       arguments:
         id:
           id: id
@@ -2603,6 +2595,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: id
+          plugin_id: numeric
           default_action: ignore
           exception:
             value: all
@@ -2616,8 +2611,8 @@ display:
           summary_options:
             base_path: ''
             count: true
-            items_per_page: 25
             override: false
+            items_per_page: 25
           summary:
             sort_order: asc
             number_of_records: 0
@@ -2629,21 +2624,28 @@ display:
           validate_options: {  }
           break_phrase: false
           not: false
-          entity_type: par_data_partnership
-          entity_field: id
-          plugin_id: numeric
-      use_ajax: true
-      title: ''
-      block_description: advice_list_organisation_block
       query:
         type: views_query
         options:
+          query_comment: ''
           disable_sql_rewrite: false
           distinct: true
           replica: false
-          query_comment: ''
           query_tags: null
           contextual_filters_or: 0
+      defaults:
+        query: false
+        title: false
+        use_ajax: false
+        relationships: true
+        fields: false
+        arguments: false
+        filters: true
+        filter_groups: true
+      use_ajax: true
+      display_description: ''
+      display_extenders: {  }
+      block_description: advice_list_organisation_block
     cache_metadata:
       max-age: -1
       contexts:
@@ -2657,22 +2659,13 @@ display:
         - 'config:field.storage.par_data_advice.field_regulatory_function'
     deleted: false
   advice_search_block_exposed:
-    display_plugin: block
     id: advice_search_block_exposed
     display_title: advice_search_block
+    display_plugin: block
     position: 3
     display_options:
-      display_extenders: {  }
-      display_description: ''
-      defaults:
-        fields: false
-        filters: true
-        filter_groups: true
-        relationships: true
-        arguments: false
-        use_ajax: false
-        title: false
       enabled: true
+      title: ''
       fields:
         id_1:
           id: id_1
@@ -2681,6 +2674,9 @@ display:
           relationship: none
           group_type: group
           admin_label: partnership_id
+          entity_type: par_data_partnership
+          entity_field: id
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -2737,9 +2733,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_partnership
-          entity_field: id
-          plugin_id: field
         id:
           id: id
           table: par_advice_field_data
@@ -2747,6 +2740,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: advice_id
+          entity_type: par_data_advice
+          entity_field: id
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -2793,7 +2789,7 @@ display:
           settings:
             thousand_separator: ''
             prefix_suffix: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -2803,9 +2799,71 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        advice_title:
+          id: advice_title
+          table: par_advice_field_data
+          field: advice_title
+          relationship: field_advice
+          group_type: group
+          admin_label: ''
           entity_type: par_data_advice
-          entity_field: id
+          entity_field: advice_title
           plugin_id: field
+          label: Title
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: true
+            path: '/partnership/{{ id_1 }}/advice-details/{{ id }}'
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         function_name:
           id: function_name
           table: par_regulatory_functions_field_data
@@ -2813,6 +2871,9 @@ display:
           relationship: field_regulatory_function
           group_type: group
           admin_label: ''
+          entity_type: par_data_regulatory_function
+          entity_field: function_name
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -2868,9 +2929,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_regulatory_function
-          entity_field: function_name
-          plugin_id: field
         field_regulatory_function:
           id: field_regulatory_function
           table: par_data_advice__field_regulatory_function
@@ -2878,6 +2936,7 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -2933,7 +2992,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         issue_date:
           id: issue_date
           table: par_advice_field_data
@@ -2941,6 +2999,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          entity_field: issue_date
+          plugin_id: field
           label: 'Issue Date'
           exclude: false
           alter:
@@ -2987,73 +3048,7 @@ display:
           settings:
             timezone_override: ''
             format_type: gds_date_format
-          group_column: value
-          group_columns:
-            value: value
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          entity_type: par_data_advice
-          entity_field: issue_date
-          plugin_id: field
-        advice_title:
-          id: advice_title
-          table: par_advice_field_data
-          field: advice_title
-          relationship: field_advice
-          group_type: group
-          admin_label: ''
-          label: Title
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: true
-            path: '/partnership/{{ id_1 }}/advice-details/{{ id }}'
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -3063,9 +3058,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_advice
-          entity_field: advice_title
-          plugin_id: field
         par_flow_link:
           id: par_flow_link
           table: par_advice_field_data
@@ -3073,6 +3065,8 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          plugin_id: par_flow_link
           label: Title
           exclude: false
           alter:
@@ -3118,8 +3112,6 @@ display:
           assistive_text: 'View {{ advice_title }}'
           link: '/partnership/{{ id_1 }}/advice/search/{{ id }}'
           hidden: 0
-          entity_type: par_data_advice
-          plugin_id: par_flow_link
         advice_type:
           id: advice_type
           table: par_advice_field_data
@@ -3127,6 +3119,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          entity_field: advice_type
+          plugin_id: field
           label: 'Type of document and regulatory functions'
           exclude: false
           alter:
@@ -3182,9 +3177,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_advice
-          entity_field: advice_type
-          plugin_id: field
         par_status:
           id: par_status
           table: par_advice_field_data
@@ -3192,6 +3184,8 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          plugin_id: par_data_status
           label: Status
           exclude: false
           alter:
@@ -3233,8 +3227,6 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          entity_type: par_data_advice
-          plugin_id: par_data_status
         notes__value:
           id: notes__value
           table: par_advice_field_data
@@ -3242,6 +3234,9 @@ display:
           relationship: field_advice
           group_type: group
           admin_label: ''
+          entity_type: par_data_advice
+          entity_field: notes
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -3286,7 +3281,7 @@ display:
           click_sort_column: value
           type: text_default
           settings: {  }
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -3296,9 +3291,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_advice
-          entity_field: notes
-          plugin_id: field
       arguments:
         id:
           id: id
@@ -3307,6 +3299,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: id
+          plugin_id: numeric
           default_action: ignore
           exception:
             value: all
@@ -3320,8 +3315,8 @@ display:
           summary_options:
             base_path: ''
             count: true
-            items_per_page: 25
             override: false
+            items_per_page: 25
           summary:
             sort_order: asc
             number_of_records: 0
@@ -3333,11 +3328,17 @@ display:
           validate_options: {  }
           break_phrase: false
           not: false
-          entity_type: par_data_partnership
-          entity_field: id
-          plugin_id: numeric
+      defaults:
+        title: false
+        use_ajax: false
+        relationships: true
+        fields: false
+        arguments: false
+        filters: true
+        filter_groups: true
       use_ajax: true
-      title: ''
+      display_description: ''
+      display_extenders: {  }
       block_description: advice_search_block
     cache_metadata:
       max-age: -1

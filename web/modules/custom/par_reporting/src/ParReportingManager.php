@@ -11,6 +11,7 @@ use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Messenger\Messenger;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
+use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\user\Entity\User;
@@ -19,7 +20,7 @@ use Drupal\user\UserInterface;
 /**
 * Manages all functionality universal to Par Data.
 */
-class ParReportingManager extends DefaultPluginManager implements ParReportingManagerInterface {
+class ParReportingManager extends DefaultPluginManager implements ParReportingManagerInterface, TrustedCallbackInterface {
 
   use LoggerChannelTrait;
 
@@ -27,6 +28,28 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
    * The logger channel to use.
    */
   const PAR_LOGGER_CHANNEL = 'par';
+
+  /**
+   * Loaded plugin Cache.
+   */
+  protected $stats = [];
+
+  /**
+   * Lists the trusted callbacks provided by this implementing class.
+   *
+   * Trusted callbacks are public methods on the implementing class and can be
+   * invoked via
+   * \Drupal\Core\Security\DoTrustedCallbackTrait::doTrustedCallback().
+   *
+   * @return string[]
+   *   List of method names implemented by the class that can be used as trusted
+   *   callbacks.
+   *
+   * @see \Drupal\Core\Security\DoTrustedCallbackTrait::doTrustedCallback()
+   */
+  public static function trustedCallbacks() {
+    return ['render'];
+  }
 
   /**
    * Constructs a ParScheduleManager object.
@@ -71,7 +94,11 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
    * @return \Drupal\par_reporting\ParStatisticBaseInterface
    */
   public function createInstance($plugin_id, array $configuration = []) {
-    return parent::createInstance($plugin_id, $configuration);
+    if (!isset($this->stats[$plugin_id])) {
+      $this->stats[$plugin_id] = parent::createInstance($plugin_id, $configuration);
+    }
+
+    return $this->stats[$plugin_id];
   }
 
   /**
@@ -94,7 +121,7 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
    * @param string $id
    *   The ParStatistic plugin ID.
    *
-   * @return array
+   * @return array|void
    *   A rendered Statistic plugin.
    */
   public function render($id) {
@@ -107,6 +134,29 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
     catch (PluginException $e) {
       $this->getLogger(self::PAR_LOGGER_CHANNEL)->error($e);
     }
+  }
+
+  /**
+   * A helper method to import the value of any given stat.
+   *
+   * @param string $id
+   *   The ParStatistic plugin ID.
+   *
+   * @return int
+   *   The value for a Statistic plugin.
+   */
+  public function import($id) {
+//    try {
+      $definition = $this->getDefinition($id);
+      $plugin = $definition ? $this->createInstance($definition['id'], $definition) : NULL;
+
+
+//    }
+//    catch (PluginException $e) {
+//      $this->getLogger(self::PAR_LOGGER_CHANNEL)->error($e);
+//    }
+
+    return $plugin ? $plugin->getStat() : 0;
   }
 
   /**

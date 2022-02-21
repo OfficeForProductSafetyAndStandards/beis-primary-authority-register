@@ -36,8 +36,8 @@ trait ParFlowAccessTrait {
     }
 
     // Check the user has permission to manage the current organisation.
-    if (!$account->hasPermission('bypass par_data membership')
-      && !$this->getParDataManager()->isMember($par_data_partnership->getOrganisation(TRUE), $user)) {
+    if (!$user || (!$account->hasPermission('bypass par_data membership')
+      && !$this->getParDataManager()->isMember($par_data_partnership->getOrganisation(TRUE), $user))) {
       $this->accessResult = AccessResult::forbidden('User does not have permissions to remove authority contacts from this partnership.');
     }
 

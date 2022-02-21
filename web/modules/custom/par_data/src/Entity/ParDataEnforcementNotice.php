@@ -191,7 +191,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
     ];
 
     $par_data_partnerships = $this->getParDataManager()
-      ->getEntitiesByQuery('par_data_partnership', $conditions, 10);
+      ->getEntitiesByQuery('par_data_partnership', $conditions, 10, 'id');
 
     // Ignore all inactive partnerships.
     $par_data_partnerships = array_filter($par_data_partnerships, function ($partnership) {
@@ -277,28 +277,6 @@ class ParDataEnforcementNotice extends ParDataEntity {
     }
 
     return isset($status) ? $status : NULL;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getParStatus() {
-    if ($this->isDeleted()) {
-      return 'Deleted';
-    }
-    if ($this->isRevoked()) {
-      return 'Revoked';
-    }
-    if ($this->isArchived()) {
-      return 'Archived';
-    }
-    if (!$this->isTransitioned()) {
-      return 'Not transitioned from PAR2';
-    }
-
-    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-    $raw_status = $this->getRawStatus();
-    return $field_name && $raw_status ? $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status) : '';
   }
 
   /**

@@ -6,6 +6,7 @@ dependencies:
     - field.field.message.new_enquiry_response.field_comment
     - field.field.message.new_enquiry_response.field_general_enquiry
     - field.field.message.new_enquiry_response.field_message_subject
+    - field.field.message.new_enquiry_response.field_to
     - message.template.new_enquiry_response
 id: message.new_enquiry_response.default
 targetEntityType: message
@@ -13,25 +14,26 @@ bundle: new_enquiry_response
 mode: default
 content:
   field_comment:
-    weight: 1
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 1
     region: content
   field_general_enquiry:
-    weight: 2
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 2
     region: content
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_message_subject: true
+  field_to: true

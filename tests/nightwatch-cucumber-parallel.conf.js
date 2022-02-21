@@ -3,10 +3,10 @@ const chromedriver = require('chromedriver')
 
 require('nightwatch-cucumber')({
     cucumberArgs: [
-        '--require', 'step-definitions', 
-        '--require', 'support', 
-        '--format', 'node_modules/cucumber-pretty', 
-        '--format', 'json:reports/cucumber.json', 
+        '--require', 'step-definitions',
+        '--require', 'support',
+        '--format', 'node_modules/cucumber-pretty',
+        '--format', 'json:reports/cucumber.json',
         'features'
     ]
 })

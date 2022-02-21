@@ -8,7 +8,7 @@ dependencies:
     - par_data.par_data_inspection_plan_type.inspection_plan
   module:
     - datetime_range
-    - file_entity
+    - file
     - text
 _core:
   default_config_hash: 0ol4PuJoUH6sndODYdBm6ZNox5ZcEV52oPNCSrJzvWA
@@ -18,40 +18,39 @@ bundle: inspection_plan
 mode: summary
 content:
   document:
-    type: file_download_link
-    weight: 2
-    region: content
-    label: hidden
+    type: file_default
+    label: above
     settings:
-      access_message: 'You don''t have access to download this file.'
-      text: 'Download [file:name]'
+      use_description_as_link_text: true
     third_party_settings: {  }
-  summary:
-    label: hidden
-    type: text_trimmed
-    weight: 1
+    weight: 5
     region: content
+  summary:
+    type: text_trimmed
+    label: hidden
     settings:
       trim_length: 600
     third_party_settings: {  }
-  title:
-    label: hidden
-    weight: 0
+    weight: 1
     region: content
+  title:
+    type: string
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 0
+    region: content
   valid_date:
     type: daterange_default
-    weight: 3
-    region: content
     label: hidden
     settings:
       timezone_override: ''
       format_type: gds_date_format
       separator: ' to '
     third_party_settings: {  }
+    weight: 4
+    region: content
 hidden:
   approved_rd_executive: true
   archive_reason: true

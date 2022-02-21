@@ -10,7 +10,7 @@ dependencies:
     - field.field.par_data_general_enquiry.general_enquiry.field_primary_authority
     - par_data.par_data_general_enquiry_type.general_enquiry
   module:
-    - file_entity
+    - file
     - text
 _core:
   default_config_hash: _EV7YQWGucSV0egwQ3q9GjJ23QvA0F89eaH2QQ-L5MI
@@ -20,22 +20,21 @@ bundle: general_enquiry
 mode: title
 content:
   document:
-    label: hidden
-    weight: 1
-    region: content
+    type: file_default
+    label: above
     settings:
-      access_message: 'You don''t have access to download this file.'
-      text: 'Download [file:name]'
+      use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_download_link
+    weight: 3
+    region: content
   notes:
     type: text_trimmed
-    weight: 0
-    region: content
     label: hidden
     settings:
       trim_length: 300
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   archive_reason: true
   deleted_reason: true

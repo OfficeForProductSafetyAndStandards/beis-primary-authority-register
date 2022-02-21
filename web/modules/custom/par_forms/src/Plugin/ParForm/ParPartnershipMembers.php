@@ -7,7 +7,9 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
@@ -26,9 +28,15 @@ class ParPartnershipMembers extends ParFormPluginBase {
   /**
    * Available display formats.
    */
-  const MEMBER_FORMAT_INLINE = 'member_list';
-  const MEMBER_FORMAT_VIEW = 'member_link_view';
-  const MEMBER_FORMAT_REQUEST = 'member_link_request';
+  const MEMBER_FORMAT_INLINE = 'member_list'; # for internal displays
+  const MEMBER_FORMAT_VIEW = 'member_link_view'; # for internal displays
+
+  /**
+   * Get the date formatter.
+   */
+  public function getDateFormatter() {
+    return \Drupal::service('date.formatter');
+  }
 
   /**
    * {@inheritdoc}
@@ -38,25 +46,34 @@ class ParPartnershipMembers extends ParFormPluginBase {
 
     if ($par_data_partnership instanceof ParDataEntityInterface && $par_data_partnership->isCoordinated()) {
       // If there is a members list uploaded already.
-      $membershipCount = $par_data_partnership->countMembers();
-      if ($membershipCount > 0) {
+      if ($par_data_partnership->getMemberDisplay() === ParDataPartnership::MEMBER_DISPLAY_INTERNAL) {
         // Display only active members.
         $this->getFlowDataHandler()->setFormPermValue("members", $par_data_partnership->getCoordinatedMember(FALSE, TRUE));
-        $this->getFlowDataHandler()->setFormPermValue("number_of_members", $membershipCount);
 
-        // Set display configuration options.
+        // Set display configuration options for internal lists.
         $available_formats = [self::MEMBER_FORMAT_INLINE, self::MEMBER_FORMAT_VIEW];
         $format = isset($this->getConfiguration()['format']) && array_search($this->getConfiguration()['format'], $available_formats) !== FALSE
           ? $this->getConfiguration()['format'] : self::MEMBER_FORMAT_INLINE;
+        $this->getFlowDataHandler()->setFormPermValue("member_display_format", $format);
       }
-      elseif ($numberOfMembers = $par_data_partnership->numberOfMembers()) {
-        $this->getFlowDataHandler()->setFormPermValue("number_of_members", $numberOfMembers);
-      }
-    }
 
-    // If there are no members the format must be to request the member list
-    // from the coordinator.
-    $this->getFlowDataHandler()->setFormPermValue("member_format", $format ?? self::MEMBER_FORMAT_REQUEST);
+      $this->getFlowDataHandler()->setFormPermValue("member_list_type", $par_data_partnership->getMemberDisplay());
+
+      if ($par_data_partnership->getMemberDisplay() === ParDataPartnership::MEMBER_DISPLAY_EXTERNAL) {
+        $member_link = $par_data_partnership->getMemberLink();
+        $this->getFlowDataHandler()->setFormPermValue("member_list_link", $member_link);
+      }
+
+      // Show the last updated date.
+      if ($this->getFlowDataHandler()->getCurrentUser()->hasPermission('access helpdesk')) {
+        $last_updated = $par_data_partnership->membersLastUpdated();
+        $formatted_date = $last_updated ? $this->getDateFormatter()->format($last_updated, 'gds_date_format') : NULL;
+        $this->getFlowDataHandler()->setFormPermValue("members_last_updated", $formatted_date);
+      }
+
+      // Show the number of members for all display formats.
+      $this->getFlowDataHandler()->setFormPermValue("number_of_members", $par_data_partnership->numberOfMembers());
+    }
 
     parent::loadData();
   }
@@ -77,6 +94,17 @@ class ParPartnershipMembers extends ParFormPluginBase {
       '#attributes' => ['class' => 'form-group'],
     ];
 
+    // Show the date the member list was last updated.
+    if ($this->getFlowDataHandler()->getCurrentUser()->hasPermission('access helpdesk')) {
+      $form['members']['last_updated'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t("The member list was last updated: <strong>@date</strong>.", ['@date' => $this->getDefaultValuesByKey('members_last_updated', $cardinality, 'a long time ago')]),
+        '#attributes' => ['class' => ['form-group', 'number-of-members']],
+        '#weight' => -6,
+      ];
+    }
+
     // Show the members count.
     $form['members']['count'] = [
       '#type' => 'html_tag',
@@ -89,7 +117,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
     $members = $this->getDefaultValuesByKey('members', $cardinality, NULL);
 
     // Show the link to view the full membership list.
-    if ($this->getFlowDataHandler()->getFormPermValue("member_format") === self::MEMBER_FORMAT_VIEW) {
+    if ($this->getFlowDataHandler()->getFormPermValue("member_display_format") === self::MEMBER_FORMAT_VIEW) {
       try {
         $member_link = $this->getLinkByRoute('view.members_list.member_list_coordinator', [], [], TRUE);
       } catch (ParFlowException $e) {
@@ -105,7 +133,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
       }
     }
     // Show the member list inline.
-    elseif ($this->getFlowDataHandler()->getFormPermValue("member_format") === self::MEMBER_FORMAT_INLINE) {
+    elseif ($this->getFlowDataHandler()->getFormPermValue("member_display_format") === self::MEMBER_FORMAT_INLINE) {
       // Initialize pager and get current page.
       $number_per_page = 5;
       $pager = $this->getUniquePager()->getPager('partnership_manage_coordinated_members');
@@ -132,7 +160,8 @@ class ParPartnershipMembers extends ParFormPluginBase {
 
       // Split the members up into chunks:
       $chunks = array_chunk($members, $number_per_page);
-      foreach ($chunks[$current_pager->getCurrentPage()] as $delta => $entity) {
+      $chunk = $chunks[$current_pager->getCurrentPage()] ?? [];
+      foreach ($chunk as $delta => $entity) {
         if (!$entity instanceof ParDataEntityInterface) {
           continue;
         }
@@ -151,25 +180,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
           ],
         ];
       }
-    }
-    // Show the member list inline.
-    elseif ($this->getFlowDataHandler()->getFormPermValue("member_format") === self::MEMBER_FORMAT_REQUEST) {
-      $form['members']['list'] = [
-        '#type' => 'container',
-        '#title' => t('Members'),
-        '#attributes' => ['class' => 'form-group'],
-        'link' => [
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => "Please request a list of members from the coordinator, they will be able to provide a list on request.",
-          '#attributes' => ['class' => ['member-list', 'member-list-link']],
-        ],
-      ];
-    }
 
-    // Operation links should not be added for the link format, where the update
-    // links will be available on the referenced page.
-    if ($this->getFlowDataHandler()->getFormPermValue("member_format") !== self::MEMBER_FORMAT_VIEW) {
       // Add link to add a new member.
       try {
         $member_add_flow = ParFlow::load('member_add');
@@ -204,6 +215,65 @@ class ParPartnershipMembers extends ParFormPluginBase {
           '#attributes' => ['class' => ['upload-member']],
         ];
       }
+    }
+    // Show the member list inline.
+    elseif ($this->getFlowDataHandler()->getFormPermValue("member_list_type") === ParDataPartnership::MEMBER_DISPLAY_EXTERNAL) {
+      $form['members']['list'] = [
+        '#type' => 'container',
+        '#title' => t('Members'),
+        '#attributes' => ['class' => 'form-group'],
+        'link' => [
+          '#type' => 'link',
+          '#title' => $this->t('show external members list'),
+          '#url' => $this->getFlowDataHandler()->getFormPermValue("member_list_link"),
+          '#attributes' => ['class' => ['member-list', 'member-list-link']],
+        ],
+        'info' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => "The co-ordinator has hosted the list of members on their own portal. If you have any difficulties viewing this list please contact the co-ordinator.",
+          '#attributes' => ['class' => ['member-list', 'member-list-link']],
+        ],
+      ];
+    }
+    // Show the member list inline.
+    elseif ($this->getFlowDataHandler()->getFormPermValue("member_list_type") === ParDataPartnership::MEMBER_DISPLAY_REQUEST) {
+      $form['members']['list'] = [
+        '#type' => 'container',
+        '#title' => t('Members'),
+        '#attributes' => ['class' => 'form-group'],
+        'request' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => "Please request a copy of the Primary Authority Membership List
+            from the co-ordinator.<br><br> The co-ordinator must make the copy available
+            as soon as reasonably practicable and, in any event, not later than the
+            third working day after the date of receiving the request at no charge.",
+          '#attributes' => ['class' => ['member-list', 'member-list-link']],
+        ],
+      ];
+    }
+
+    // Display the membership list details update link.
+    try {
+      // For internal lists the details are updated separately.
+      $link_title = $this->getFlowDataHandler()->getFormPermValue("member_list_type") === ParDataPartnership::MEMBER_DISPLAY_INTERNAL ?
+        'change the list type' :
+        'update the list details';
+
+      $list_update_flow = ParFlow::load('member_list_update');
+      $list_update_link = $list_update_flow ?
+        $list_update_flow->getStartLink(1, $link_title) : NULL;
+    } catch (ParFlowException $e) {
+
+    }
+    if (isset($list_update_link) && $list_update_link instanceof Link) {
+      $form['members']['update'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $list_update_link ? $list_update_link->toString() : '',
+        '#attributes' => ['class' => ['update-list']],
+      ];
     }
 
     return $form;

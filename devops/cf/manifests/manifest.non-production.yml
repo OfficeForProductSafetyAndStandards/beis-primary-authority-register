@@ -1,3 +1,9 @@
-memory: 2G
-disk_quota: 2048M
-buildpack: php_buildpack
+applications:
+  - name: ((app))
+    routes:
+      - route: ((app)).cloudapps.digital
+    buildpacks:
+      - https://github.com/cloudfoundry/php-buildpack.git#v4.4.52
+    memory: 2G
+    disk_quota: 5G
+    timeout: 120

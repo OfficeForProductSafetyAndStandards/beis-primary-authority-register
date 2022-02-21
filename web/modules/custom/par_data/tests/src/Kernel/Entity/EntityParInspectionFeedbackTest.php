@@ -22,7 +22,7 @@ class EntityParInspectionFeedbackTest extends ParDataTestBase {
   public function testEntityValidate() {
     $entity = ParDataInspectionFeedback::create($this->getInspectionFeedbackValues());
     $violations = $entity->validate();
-    $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default Par Inspection Feedback entity.');
+    $this->assertEquals(0, count($violations->getFieldNames()), 'No violations when validating a default Par Inspection Feedback entity.');
   }
 
   /**
@@ -48,7 +48,7 @@ class EntityParInspectionFeedbackTest extends ParDataTestBase {
 
     $entity = ParDataInspectionFeedback::create($values + $this->getInspectionFeedbackValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(count($values), count($violations->getFieldNames()), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
   }
 
   /**
@@ -56,6 +56,6 @@ class EntityParInspectionFeedbackTest extends ParDataTestBase {
    */
   public function testEntityCreate() {
     $entity = ParDataInspectionFeedback::create($this->getInspectionFeedbackValues());
-    $this->assertTrue($entity->save(), 'Par Inspection Feedback entity saved correctly.');
+    $this->assertTrue($entity->save() === SAVED_NEW, 'Par Inspection Feedback entity saved correctly.');
   }
 }

@@ -6,6 +6,7 @@ dependencies:
     - field.field.message.new_deviation_response.field_comment
     - field.field.message.new_deviation_response.field_deviation_request
     - field.field.message.new_deviation_response.field_message_subject
+    - field.field.message.new_deviation_response.field_to
     - message.template.new_deviation_response
 id: message.new_deviation_response.default
 targetEntityType: message
@@ -13,27 +14,28 @@ bundle: new_deviation_response
 mode: default
 content:
   field_comment:
-    weight: 1
+    type: entity_reference_entity_view
     label: above
     settings:
       view_mode: full
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 1
     region: content
   field_deviation_request:
     type: entity_reference_entity_view
-    weight: 2
-    region: content
     label: above
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
-  partial_0:
-    weight: 0
+    weight: 2
     region: content
+  partial_0:
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_message_subject: true
+  field_to: true

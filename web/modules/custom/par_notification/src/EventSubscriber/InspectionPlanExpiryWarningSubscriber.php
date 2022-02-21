@@ -29,7 +29,7 @@ class InspectionPlanExpiryWarningSubscriber extends ParNotificationSubscriberBas
   static function getSubscribedEvents() {
     // Revocation event should fire after most default events to make sure
     // revocation has not been cancelled.
-    $events[ParDataEvent::statusChange('par_data_inspection_plan', 'revoked')][] = ['onEvent', -100];
+    $events[ParDataEvent::customAction('par_data_inspection_plan', 'expiry_notification')][] = ['onEvent', -100];
 
     return $events;
   }
@@ -88,7 +88,7 @@ class InspectionPlanExpiryWarningSubscriber extends ParNotificationSubscriberBas
     foreach ($contacts as $contact) {
       if (!isset($this->recipients[$contact->getEmail()])) {
         // Record the recipient so that we don't send them the message twice.
-        $this->recipients[$contact->getEmail] = $contact;
+        $this->recipients[$contact->getEmail()] = $contact;
         // Try and get the user account associated with this contact.
         $account = $contact->getUserAccount();
 

@@ -20,7 +20,7 @@ class EntityParOrganisationTest extends ParDataTestBase {
   public function testEntityValidate() {
     $entity = ParDataOrganisation::create($this->getOrganisationValues());
     $violations = $entity->validate();
-    $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default PAR Organisation entity of type Business.');
+    $this->assertEquals(0, count($violations->getFieldNames()), 'No violations when validating a default PAR Organisation entity of type Business.');
   }
 
   /**
@@ -52,7 +52,7 @@ class EntityParOrganisationTest extends ParDataTestBase {
 
     $entity = ParDataOrganisation::create($values + $this->getOrganisationValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(count($values), count($violations->getFieldNames()), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
   }
 
   /**
@@ -74,7 +74,7 @@ class EntityParOrganisationTest extends ParDataTestBase {
 
     $entity = ParDataOrganisation::create($values + $this->getOrganisationValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values cannot be longer than their allowed lengths for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(count($values), count($violations->getFieldNames()), t('Field values cannot be longer than their allowed lengths for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
   }
 
   /**
@@ -82,6 +82,6 @@ class EntityParOrganisationTest extends ParDataTestBase {
    */
   public function testEntityCreate() {
     $entity = ParDataOrganisation::create($this->getOrganisationValues());
-    $this->assertTrue($entity->save(), 'PAR Organisation entity saved correctly.');
+    $this->assertTrue($entity->save() === SAVED_NEW, 'PAR Organisation entity saved correctly.');
   }
 }

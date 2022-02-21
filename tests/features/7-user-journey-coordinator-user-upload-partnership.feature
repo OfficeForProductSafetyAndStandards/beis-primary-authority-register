@@ -7,20 +7,19 @@ Feature: Coordinator User - Upload Members
         Given I am logged in as "par_coordinator@example.com"
         And I click the link with text "See your partnerships"
         When I click the link text "Organisation For Coordinated Partnership"
-        Then the element "h1" is not empty
+        Then the element "h1.heading-xlarge" contains the text "Organisation For Coordinated Partnership"
 
         # UPLOAD MEMBERS
-
-        When I click the link text "upload a member list (csv)"
+        When I click the link text "show members list"
+        Then the element "h1.heading-xlarge" contains the text "Members list"
+        When I click the link text "Upload a Member List (CSV)"
         Then the element "h1.heading-xlarge" contains the text "Upload a list of members"
 
         # SUPPORT LINKS
-
         And the element "#edit-info--description em a" contains the text "Member Guidance Page"
         And the element "#download-members-link" does exist
 
         # VALIDATION
-
         When I upload the file "files/csv_test_errors.csv" to field "#edit-csv-upload"
         And I click on the button "#edit-upload"
         Then the element "h1.heading-xlarge" contains the text "CSV validation errors"
@@ -29,9 +28,9 @@ Feature: Coordinator User - Upload Members
         And the element "#edit-error-list thead" contains the text "Column"
         And the element "#edit-error-list thead" contains the text "Error"
 
-        And the element "#edit-error-list .error-line-3.error-column-organisation-name" contains the text "The value could not be found."
-        And the element "#edit-error-list .error-line-3.error-column-membership-start-date" contains the text "The value could not be found."
-        And the element "#edit-error-list .error-line-3.error-column-address-line-1" contains the text "The value could not be found."
+        And the element "#edit-error-list .error-line-3.error-column-organisation-name" contains the text "The value for the column 'organisation name' is not set."
+        And the element "#edit-error-list .error-line-3.error-column-membership-start-date" contains the text "The value for the column 'membership start date' is not set."
+        And the element "#edit-error-list .error-line-3.error-column-address-line-1" contains the text "The value for the column 'address line 1' is not set."
         And the element "#edit-error-list .error-line-3.error-column-nation" contains the text "The value you entered is not a valid selection, please see the Member Guidance Page for a full list of available country codes."
         And the element "#edit-error-list .error-line-3.error-column-legal-entity-type-first" contains the text "The value you entered is not a valid selection, please see the Member Guidance Page for a full list of legal entity types."
         And the element "#edit-error-list .error-line-4.error-column-membership-start-date" contains the text "The date should be in the past."
@@ -39,7 +38,6 @@ Feature: Coordinator User - Upload Members
         When I click on the button "#edit-done"
 
         # CSV PROCESSING
-
         Then the element "h1.heading-xlarge" contains the text "Upload a list of members"
         When I upload the file "files/csv_test_valid.csv" to field "#edit-csv-upload"
         And I click on the button "#edit-upload"
@@ -50,7 +48,6 @@ Feature: Coordinator User - Upload Members
         And I open the path "/user/logout"
 
         # APPROVE COORDINATED PARTNERSHIP (HELPDESK)
-
         Given I open the path "/user/login"
         And I add "par_helpdesk@example.com" to the inputfield "#edit-name"
         And I add "TestPassword" to the inputfield "#edit-pass"
@@ -72,7 +69,6 @@ Feature: Coordinator User - Upload Members
         And I open the path "/user/logout"
 
         # CHECK MEMBERS (COORDINATOR)
-
         Given I am logged in as "par_coordinator@example.com"
 
         And I click the link with text "See your partnerships"
@@ -87,7 +83,6 @@ Feature: Coordinator User - Upload Members
         And the element ".table-scroll-wrapper" contains the text "Coordinated Member 4"
 
         # REUPLOAD MEMBERS
-
         When I click the link text "Upload a Member List (CSV)"
         Then the element "h1.heading-xlarge" contains the text "Upload a list of members"
         When I upload the file "files/csv_test_second.csv" to field "#edit-csv-upload"
@@ -98,7 +93,6 @@ Feature: Coordinator User - Upload Members
         When I click on the button "#edit-done"
 
         # RE-CHECK MEMBERS (COORDINATOR)
-
         When I click the link text "Dashboard"
         And I click the link with text "See your partnerships"
         And I click the link text "Organisation For Coordinated Partnership"
@@ -124,7 +118,7 @@ Feature: Coordinator User - Upload Members
         And the element ".table-scroll-wrapper a*=Coordinated Member 4" does not exist
         And the element "Cease membership" does not exist
 
-        @coordinatedpartnership @ci
+    @coordinatedpartnership @ci
     Scenario: Test search criteria
         # CHECK SEARCH PICKS UP ON TRADERS AND MEMBERS
         Given I am logged in as "par_authority@example.com"
@@ -136,7 +130,7 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-submit-partnership-search"
         Then the element ".table-scroll-wrapper" contains the text "Organisation For Coordinated Partnership"
 
-        @coordinatedpartnership @ci
+    @coordinatedpartnership @ci
     Scenario: Test member upload numbers
         Given I am logged in as "par_coordinator@example.com"
         And I click the link with text "See your partnerships"
@@ -148,3 +142,37 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-submit-members-list"
         And the element ".pagerer-container" contains the text "Showing 1-10 of 13 results"
 
+    @coordinatedpartnership @ci
+    Scenario: Test external member list
+        Given I am logged in as "par_coordinator@example.com"
+        And I click the link with text "See your partnerships"
+        When I click the link text "Member Upload Test Business"
+        Then the element "h1.heading-xlarge" contains the text "Member Upload Test Business"
+        When I click the link text "change the list type"
+
+        # LIST TYPE
+        Then the element "h1.heading-xlarge" contains the text "How would you like to display the member list?"
+        When I click on the radio "#edit-type-external"
+        And I click on the button "#edit-next"
+
+        # LIST DETAILS
+        Then the element "h1.heading-xlarge" contains the text "Where is the list?"
+        When I add "example.com" to the inputfield "#edit-member-link"
+        And I click on the button "#edit-next"
+        Then the element ".error-summary" contains the text "Please enter a fully qualified URL for the member list."
+        When I add "http://example.com" to the inputfield "#edit-member-link"
+        And I click on the button "#edit-next"
+        Then the element "h1.heading-xlarge" contains the text "How many members are in this list?"
+        When I add "1583" to the inputfield "#edit-number-members"
+        And I click on the button "#edit-next"
+
+        # REVIEW
+        Then the element "h1.heading-xlarge" contains the text "Is the list up-to-date?"
+        Then the element ".member-count" contains the text "There are 1583 active members in the member list."
+        Then the element ".member-link" contains the text "This member list is publicly accessible on the following link:"
+        When I click on the radio "#edit-confirm-yes"
+        And I click on the button "#edit-save"
+
+        # CHECK
+        Then the element "h1.heading-xlarge" contains the text "Member Upload Test Business"
+        And the element ".number-of-members" contains the text "There are 1583 active members covered by this partnership"

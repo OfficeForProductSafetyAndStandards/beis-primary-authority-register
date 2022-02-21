@@ -1,0 +1,65 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: 02d8b3ae-4529-45db-97b6-4475e4e51d92
+  bundle: organisation
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    7e78d205-5451-4819-9518-a5f48d090553: par_data_legal_entity
+    fe62e084-4806-4f82-9452-a2f981e0d73d: par_data_person
+    33ac68c2-df99-49dd-b2c0-6d536b83741a: par_data_premises
+    0f59d76d-3062-4c5e-8b26-b0a798a7104c: par_data_sic_code
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1536788947
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5b9989d3e0a5f
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: Enquirer
+  employees_band:
+    -
+      value: '50'
+  comments:
+    -
+      value: 'Test organisation for testing enquiry functionality.'
+      format: plain_text
+  trading_name:
+    -
+      value: 'The Enquirer'
+  field_legal_entity:
+    -
+      entity: 7e78d205-5451-4819-9518-a5f48d090553
+  field_person:
+    -
+      entity: fe62e084-4806-4f82-9452-a2f981e0d73d
+  field_premises:
+    -
+      entity: 33ac68c2-df99-49dd-b2c0-6d536b83741a
+  field_sic_code:
+    -
+      entity: 0f59d76d-3062-4c5e-8b26-b0a798a7104c

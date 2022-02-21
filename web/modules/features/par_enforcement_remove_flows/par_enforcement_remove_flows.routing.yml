@@ -1,0 +1,24 @@
+par_enforcement_remove_flows.remove_enforcement:
+  path: '/enforcement-notice/{par_data_enforcement_notice}/remove'
+  defaults:
+    _form: '\Drupal\par_enforcement_remove_flows\Form\ParEnforcementRemovalForm'
+    _title_callback: '\Drupal\par_enforcement_remove_flows\Form\ParEnforcementRemovalForm::titleCallback'
+  requirements:
+    _permission: 'remove enforcement notice'
+    par_data_enforcement_notice: \d+
+  options:
+    parameters:
+      par_data_enforcement_notice:
+        type: entity:par_data_enforcement_notice
+par_enforcement_remove_flows.confirm_removal:
+  path: '/enforcement-notice/{par_data_enforcement_notice}/remove/confirm'
+  defaults:
+    _form: '\Drupal\par_enforcement_remove_flows\Form\ParEnforcementRemovalConfirmForm'
+    _title_callback: '\Drupal\par_enforcement_remove_flows\Form\ParEnforcementRemovalConfirmForm::titleCallback'
+  requirements:
+    _permission: 'remove enforcement notice'
+    par_data_enforcement_notice: \d+
+  options:
+    parameters:
+      par_data_enforcement_notice:
+        type: entity:par_data_enforcement_notice

@@ -1,0 +1,49 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_premises
+  uuid: 7c3f359d-1ef9-43a3-be5e-883f3beb30cf
+  bundle: premises
+  default_langcode: en
+default:
+  user_id:
+    -
+      target_id: 1
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  revision_uid:
+    -
+      target_id: 1
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5ab1282ce42d3
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  address:
+    -
+      langcode: ''
+      country_code: GB
+      administrative_area: US-NY
+      locality: 'New York State'
+      dependent_locality: ''
+      postal_code: 'PH36 4LE'
+      sorting_code: ''
+      address_line1: '5 sesame St'
+      address_line2: Guildford
+      organization: ''
+      given_name: ''
+      additional_name: ''
+      family_name: ''

@@ -1,0 +1,45 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_legal_entity
+  uuid: 7e78d205-5451-4819-9518-a5f48d090553
+  bundle: legal_entity
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1536789058
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5b998a42ed23e
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  registered_name:
+    -
+      value: 'Enquirer Ltd'
+  registered_number:
+    -
+      value: '9191919191'
+  legal_entity_type:
+    -
+      value: partnership

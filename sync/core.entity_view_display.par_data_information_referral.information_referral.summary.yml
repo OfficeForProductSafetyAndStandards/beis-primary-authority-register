@@ -21,46 +21,46 @@ bundle: information_referral
 mode: summary
 content:
   document:
+    type: file_default
     label: hidden
-    weight: 1
-    region: content
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
+    weight: 1
+    region: content
   field_person:
-    weight: 4
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 5
     region: content
   notes:
-    label: hidden
     type: text_default
-    weight: 2
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
-  primary_authority_status:
-    label: hidden
     weight: 3
     region: content
+  primary_authority_status:
+    type: par_list_formatter
+    label: hidden
     settings:
       display_original_value: false
     third_party_settings: {  }
-    type: par_list_formatter
+    weight: 4
+    region: content
   request_date:
+    type: datetime_default
     label: hidden
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
     weight: 0
     region: content
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
 hidden:
   archive_reason: true
   deleted_reason: true

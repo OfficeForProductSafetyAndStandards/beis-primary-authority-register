@@ -9,7 +9,7 @@ dependencies:
     - field.field.par_data_enforcement_action.enforcement_action.field_regulatory_function
     - par_data.par_data_enforcement_action_type.enforcement_action
   module:
-    - file_entity
+    - file
     - text
 _core:
   default_config_hash: h5nQnaJmtZ34xcHOmfv7dvaZURir5oR_ZvMZg3ZLI7k
@@ -20,58 +20,57 @@ mode: full
 content:
   details:
     type: text_default
-    weight: 5
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 5
+    region: content
   document:
-    label: hidden
-    weight: 6
-    region: content
+    type: file_default
+    label: above
     settings:
-      access_message: 'You don''t have access to download this file.'
-      text: 'Download [file:name]'
+      use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_download_link
-  enforcement_action_notes:
-    label: hidden
-    type: text_default
+    weight: 8
     region: content
+  enforcement_action_notes:
+    type: text_default
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 2
-  enforcement_action_status:
-    label: hidden
     region: content
+  enforcement_action_status:
+    type: string
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
     weight: 1
-  primary_authority_notes:
-    label: hidden
-    type: text_default
     region: content
+  primary_authority_notes:
+    type: text_default
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 4
-  primary_authority_status:
-    label: hidden
-    type: string
     region: content
+  primary_authority_status:
+    type: string
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     weight: 3
+    region: content
   title:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   action_referral: true
   archive_reason: true

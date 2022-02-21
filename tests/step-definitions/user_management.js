@@ -50,11 +50,13 @@ Then('I should not see {string}', function (string) {
   When('I click save', function () {
           return client
            .click('#edit-save')
+            .waitForElementPresent('h1.heading-xlarge',3000)
 
          });
   When('I click continue', function () {
           return client
-           .click('#edit-next')
+            .click('#edit-next')
+            .waitForElementPresent('h1.heading-xlarge',3000)
 
          });
 

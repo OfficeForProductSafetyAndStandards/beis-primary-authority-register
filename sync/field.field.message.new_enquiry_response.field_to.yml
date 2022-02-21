@@ -1,0 +1,19 @@
+uuid: d657b4bc-214d-4855-b052-e772f22a9895
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_to
+    - message.template.new_enquiry_response
+id: message.new_enquiry_response.field_to
+field_name: field_to
+entity_type: message
+bundle: new_enquiry_response
+label: To
+description: 'The email address of the message recipient.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

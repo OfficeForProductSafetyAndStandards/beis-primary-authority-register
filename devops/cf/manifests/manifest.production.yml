@@ -1,10 +1,13 @@
 applications:
-- name: beis-par-production
-memory: 2G
-disk_quota: 2048M
-host: beis-par-production
-buildpack: php_buildpack
-services:
-- par-pg-production
-- par-redis-production
-- opss-log-drain
+  - name: beis-par-production
+    routes:
+      - route: primary-authority.beis.gov.uk
+    buildpacks:
+      - https://github.com/cloudfoundry/php-buildpack.git#v4.4.52
+    memory: 2G
+    disk_quota: 5G
+    timeout: 120
+    services:
+      - par-pg-production
+      - par-redis-production
+      - opss-log-drain

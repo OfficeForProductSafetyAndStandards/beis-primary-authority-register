@@ -4,7 +4,6 @@ namespace Drupal\par_dashboards;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
@@ -13,6 +12,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -22,6 +22,7 @@ use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\ParDataManager;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
@@ -29,7 +30,7 @@ use Drupal\user\UserInterface;
 /**
 * Manages all functionality universal to Par Data.
 */
-class ParDashboardComponents {
+class ParDashboardComponents implements TrustedCallbackInterface {
 
   use StringTranslationTrait;
   use ParRedirectTrait;
@@ -77,17 +78,43 @@ class ParDashboardComponents {
   protected $messenger;
 
   /**
+   * Lists the trusted callbacks provided by this implementing class.
+   *
+   * Trusted callbacks are public methods on the implementing class and can be
+   * invoked via
+   * \Drupal\Core\Security\DoTrustedCallbackTrait::doTrustedCallback().
+   *
+   * @return string[]
+   *   List of method names implemented by the class that can be used as trusted
+   *   callbacks.
+   *
+   * @see \Drupal\Core\Security\DoTrustedCallbackTrait::doTrustedCallback()
+   */
+  public static function trustedCallbacks() {
+    return [
+      'managePartnershipComponent',
+      'searchPartnershipComponent',
+      'messagesComponent',
+      'manageInstitutionsComponent',
+      'manageUsersComponent',
+      'manageProfileComponent',
+    ];
+  }
+
+  /**
    * Constructs a ParDataPermissions instance.
    *
    * @param \Drupal\Core\Session\AccountProxy $current_user
    *   The current user.
    * @param \Drupal\par_data\ParDataManager $par_data_manager
    *   The par data manager.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *   The entity manager.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Drupal\Core\Messenger\MessengerInterface
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
+   *   The entity field manager.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger.
    */
   public function __construct(AccountProxy $current_user, ParDataManagerInterface $par_data_manager, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, RendererInterface $renderer, MessengerInterface $messenger) {
@@ -168,17 +195,24 @@ class ParDashboardComponents {
       '#collapsed' => FALSE,
     ];
 
-    $search_partnerships = $this->getLinkByRoute('view.partnership_search.enforcment_flow_search_partnerships');
-    $search_link = $search_partnerships->setText('Search for a partnership')->toString();
+    try {
+      $search_partnerships = $this->getLinkByRoute('view.partnership_search.enforcment_flow_search_partnerships');
+      $search_link = $search_partnerships->setText('Search for a partnership')->toString();
+    }
+    catch (ParFlowException $e) {
+
+    }
 
     $build['partnerships_find']['text'] = [
       '#type' => 'markup',
       '#markup' => "<p>Search for active partnerships to check advice and raise notice of enforcement action.</p>",
     ];
-    $build['partnerships_find']['link'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>{$search_link}</p>",
-    ];
+    if (isset($search_link)) {
+      $build['partnerships_find']['link'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$search_link}</p>",
+      ];
+    }
 
     return $build;
   }

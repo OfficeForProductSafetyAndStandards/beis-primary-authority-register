@@ -2,3 +2,10 @@ services:
   plugin.manager.par_scheduler:
     class: Drupal\par_actions\ParScheduleManager
     parent: default_plugin_manager
+  # Cache bin for par_actions scheduler runs.
+  cache.par_actions:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin, lifecycle: persistent }
+    factory: cache_factory:get
+    arguments: [ par_actions ]

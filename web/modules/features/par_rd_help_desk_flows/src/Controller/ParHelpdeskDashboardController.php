@@ -7,10 +7,12 @@ use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParDisplayTrait;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_rd_help_desk_flows\ParFlowAccessTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -53,9 +55,9 @@ class ParHelpdeskDashboardController extends ControllerBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    $entity_manager = $container->get('entity.manager');
+    $entity_type_manager = $container->get('entity_type.manager');
     return new static(
-      $entity_manager->getStorage('par_flow'),
+      $entity_type_manager->getStorage('par_flow'),
       $container->get('par_data.manager'),
       $container->get('current_user'),
       $container->get('page_cache_kill_switch')
@@ -107,11 +109,20 @@ class ParHelpdeskDashboardController extends ControllerBase {
       ];
     }
 
-    $manage_partnerships = $this->getLinkByRoute('view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page');
-    $manage_link = $manage_partnerships->setText('Manage partnerships')->toString();
-    $build['partnerships']['manage'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>{$manage_link}</p>",
+    $log = $this->getLinkByRoute('view.par_log.log_page');
+    $log_link = $log->setText('View log of notable actions')->toString();
+    $build['log'] = [
+      '#type' => 'fieldset',
+      '#attributes' => ['class' => ['grid-row', 'form-group']],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+    $build['log']['view'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#attributes' => ['class' => 'column-full'],
+      '#value' => $log_link,
+
     ];
 
     // Manage partnerships.
@@ -139,13 +150,21 @@ class ParHelpdeskDashboardController extends ControllerBase {
     ];
 
     // Partnerships search link.
-    $search_partnerships = $this->getLinkByRoute('view.partnership_search.enforcment_flow_search_partnerships');
-    $search_link = $search_partnerships->setText('Search for a partnership')->toString();
-    $build['partnerships']['link'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>{$search_link}</p>",
-      '#pre' => "<p>Search for active partnerships to check advice and raise notice of enforcement action.</p>",
-    ];
+    try {
+      $search_partnerships = $this->getLinkByRoute('view.partnership_search.enforcment_flow_search_partnerships');
+      $search_link = $search_partnerships->setText('Search for a partnership')->toString();
+    }
+    catch (ParFlowException $e) {
+
+    }
+
+    if (isset($search_link)) {
+      $build['partnerships']['link'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$search_link}</p>",
+        '#pre' => "<p>Search for active partnerships to check advice and raise notice of enforcement action.</p>",
+      ];
+    }
 
 
     // Manage authorities and organisations.
@@ -183,19 +202,21 @@ class ParHelpdeskDashboardController extends ControllerBase {
       '#cache' => ['contexts' => ['user.par_memberships:authority']]
     ];
 
-//    $manage_users = $this->getLinkByRoute('view.user_admin_people.helpdesk_users');
-//    $manage_users_link = $manage_users->setText('Manage user accounts')->toString();
-//    $build['people']['users'] = [
-//      '#type' => 'markup',
-//      '#markup' => "<p>{$manage_users_link}</p>",
-//    ];
-
     $manage_users = $this->getLinkByRoute('view.par_people.people');
     $manage_users_link = $manage_users->setText('Manage people')->toString();
     $build['people']['people'] = [
       '#type' => 'markup',
       '#markup' => "<p>{$manage_users_link}</p>",
     ];
+
+    $manage_subscriptions = $this->getLinkByRoute('view.subscriptions.subscription_list');
+    if ($manage_subscriptions) {
+      $manage_subscriptions_link = $manage_subscriptions->setText('Manage subscriptions')->toString();
+      $build['people']['subscriptions'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>{$manage_subscriptions_link}</p>",
+      ];
+    }
 
     // Manage enforcements.
     $build['enforcements'] = [

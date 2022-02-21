@@ -2,19 +2,14 @@
 
 namespace Drupal\par_data\Plugin\DevelGenerate;
 
-use Drupal\comment\CommentManagerInterface;
 use Drupal\Component\Datetime\TimeInterface;
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\devel_generate\DevelGenerateBase;
-use Drupal\field\Entity\FieldConfig;
 use Drupal\par_data\ParDataManagerInterface;
 use Drush\Utils\StringUtils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -122,11 +117,11 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    $entity_manager = $container->get('entity.manager');
+    $entity_type_manager = $container->get('entity_type.manager');
     return new static(
       $configuration, $plugin_id, $plugin_definition,
-      $entity_manager->getStorage('node'),
-      $entity_manager->getStorage('node_type'),
+      $entity_type_manager->getStorage('node'),
+      $entity_type_manager->getStorage('node_type'),
       $container->get('module_handler'),
       $container->get('date.formatter'),
       $container->get('par_data.manager'),

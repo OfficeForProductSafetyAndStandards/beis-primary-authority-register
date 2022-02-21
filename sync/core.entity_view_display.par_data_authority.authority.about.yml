@@ -20,38 +20,38 @@ mode: about
 content:
   comments:
     type: text_default
-    weight: 0
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   person:
     type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
     weight: 3
     region: content
-    label: hidden
-    settings:
-      view_mode: summary
-      link: false
-    third_party_settings: {  }
   premises:
     type: entity_reference_entity_view
-    weight: 4
-    region: content
     label: hidden
     settings:
       view_mode: summary
       link: false
     third_party_settings: {  }
+    weight: 4
+    region: content
   regulatory_function:
     type: entity_reference_entity_view
-    weight: 2
-    region: content
     label: hidden
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
+    weight: 2
+    region: content
 hidden:
   allowed_regulatory_function: true
   archive_reason: true

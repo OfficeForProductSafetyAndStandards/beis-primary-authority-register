@@ -4,7 +4,10 @@ namespace Drupal\par_data;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Cache\MemoryCache\MemoryCacheInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
@@ -23,46 +26,20 @@ class ParDataStorage extends TranceStorage {
 
   protected $parDataManager;
 
-  public function __construct(\Drupal\Core\Entity\EntityTypeInterface $entity_type, \Drupal\Core\Database\Connection $database, EntityFieldManagerInterface $entity_field_manager, \Drupal\Core\Cache\CacheBackendInterface $cache, \Drupal\Core\Language\LanguageManagerInterface $language_manager) {
-    parent::__construct($entity_type, $database, $entity_field_manager, $cache, $language_manager);
+  public function __construct(\Drupal\Core\Entity\EntityTypeInterface $entity_type, \Drupal\Core\Database\Connection $database, EntityFieldManagerInterface $entity_field_manager, \Drupal\Core\Cache\CacheBackendInterface $cache, \Drupal\Core\Language\LanguageManagerInterface $language_manager, MemoryCacheInterface $memory_cache, EntityTypeBundleInfoInterface $entity_type_bundle_info, EntityTypeManagerInterface $entity_type_manager) {
+    parent::__construct(
+      $entity_type,
+      $database,
+      $entity_field_manager,
+      $cache,
+      $language_manager,
+      $memory_cache,
+      $entity_type_bundle_info,
+      $entity_type_manager
+    );
 
     $this->parDataManager = \Drupal::service('par_data.manager');
   }
-
-  /**
-   * Hard delete all PAR Data Entities.
-   */
-  public function destroy(array $entities) {
-    parent::delete($entities);
-  }
-
-  /**
-   * Modification of entity query allows deleted entities to be excluded.
-   *
-   * {@inheritDoc}
-   */
-//  public function getQuery($conjunction = 'AND') {
-//    $query = parent::getQuery($conjunction);
-//
-//    // Do not return deleted entities.
-//    $query->condition(ParDataEntity::DELETE_FIELD, 1, '<>');
-//
-//    return $query;
-//  }
-
-  /**
-   * Modification of entity query allows deleted entities to be excluded.
-   *
-   * {@inheritDoc}
-   */
-//  public function getAggregateQuery($conjunction = 'AND') {
-//    $query = parent::getAggregateQuery($conjunction);
-//
-//    // Do not return deleted entities.
-//    $query->condition(ParDataEntity::DELETE_FIELD, 1, '<>');
-//
-//    return $query;
-//  }
 
   /**
    * Soft delete all PAR Data entities.
@@ -140,20 +117,30 @@ class ParDataStorage extends TranceStorage {
     // Loop through relationships and delete appropriate relationship cache records.
     foreach ($relationships as $uuid => $relationship) {
       // Delete cache record for new/updated references.
-      $hash_key = "par_data_relationships:{$relationship->getEntity()->uuid()}";
-      \Drupal::cache('data')->delete($hash_key);
+      $hash_key = "relationships:{$relationship->getEntity()->uuid()}";
+      \Drupal::cache('par_data')->delete($hash_key);
     }
 
-    $original = $entity->original;
-    if ($entity->getRawStatus() && !$entity->isNew() && isset($original) && $entity->getRawStatus() !== $original->getRawStatus()) {
-      // Dispatch the an event for every par entity that has a status update.
+    // Identify whether to dispatch a status update.
+    $dispatch_status_update = (
+      $entity->getRawStatus() &&
+      !$entity->isNew() &&
+      isset($entity->original) &&
+      $entity->getRawStatus() !== $entity->original->getRawStatus()
+    );
+
+    $saved = parent::save($entity);
+
+    // Dispatch must happen after the entity is saved.
+    if ($dispatch_status_update) {
+      // Dispatch an event for every par entity that has a status update.
       $event = new ParDataEvent($entity);
       $event_to_dispatch = ParDataEvent::statusChange($entity->getEntityTypeId(), $entity->getRawStatus());
       $dispatcher = \Drupal::service('event_dispatcher');
       $dispatcher->dispatch($event_to_dispatch, $event);
     }
 
-    return parent::save($entity);
+    return $saved;
   }
 
   /**
@@ -171,12 +158,6 @@ class ParDataStorage extends TranceStorage {
    */
   public function loadMultiple(array $ids = NULL) {
     $entities = parent::loadMultiple($ids);
-
-    // Do not return any deleted entities.
-    // @see PAR-1462 - Removing all deleted entities from loading.
-//    $entities = array_filter($entities, function ($entity) {
-//      return (!$entity->isDeleted());
-//    });
 
     return $entities;
   }

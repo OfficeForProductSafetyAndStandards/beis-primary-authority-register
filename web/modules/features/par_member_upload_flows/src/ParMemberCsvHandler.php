@@ -11,10 +11,12 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\file\FileInterface;
+use Drupal\file\FileRepositoryInterface;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataCoordinatedBusinessType;
 use Drupal\par_data\Entity\ParDataLegalEntity;
@@ -75,6 +77,13 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   const DATETIME_FORMAT = 'Y-m-d';
 
   /**
+   * The directory to write csv files to.
+   *
+   * @var string
+   */
+  protected $directory = 's3private://member-csv/';
+
+  /**
    * The symfony serializer.
    *
    * @var \Symfony\Component\Serializer\Serializer
@@ -108,6 +117,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       'organisation_name' => 'Organisation name',
       'address_line_1' => 'Address Line 1',
       'address_line_2' => 'Address Line 2',
+      'address_line_3' => 'Address Line 3',
       'town' => 'Town',
       'county' => 'County',
       'postcode' => 'Postcode',
@@ -153,10 +163,27 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $this->parDataManager = $par_data_manager;
     $this->negotiator = $negotiator;
     $this->flowDataHandler = $data_handler;
+
+    // Prepare the member-csv directory for reads and writes.
+    $this->getFileSystem()->prepareDirectory($this->directory);
   }
 
   protected function getDateFormatter() {
     return \Drupal::service('date.formatter');
+  }
+
+  /**
+   * @return FileRepositoryInterface
+   */
+  protected function getFileRepository(): FileRepositoryInterface {
+    return \Drupal::service('file.repository');
+  }
+
+  /**
+   * @return FileSystemInterface
+   */
+  protected function getFileSystem(): FileSystemInterface {
+    return \Drupal::service('file_system');
   }
 
   /**
@@ -299,20 +326,20 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       'organisation_name' => [
         new Length(['max' => 500]),
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('organisation_name')}' is not set.",
         ]),
       ],
       'email' => [
         new Length(['max' => 500]),
         new Email(),
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('email')}' is not set.",
         ]),
       ],
       'membership_start' => [
         new DateTime(['format' => self::DATE_FORMAT]),
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('membership_start')}' is not set.",
         ]),
         new PastDate(['value' => 'tomorrow']),
       ],
@@ -325,16 +352,18 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       ],
       'legal_entity_name_first' => [
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('legal_entity_name_first')}' is not set.",
         ]),
       ],
       'address_line_1' => [
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('address_line_1')}' is not set.",
         ]),
       ],
       'nation' => [
-        new NotBlank(),
+        new NotBlank([
+          'message' => "The value for the column '{$this->getMapping('nation')}' is not set.",
+        ]),
         new Choice([
           'choices' => array_map('strtolower', $country_options),
           'message' => 'The value you entered is not a valid selection, please see the Member Guidance Page for a full list of available country codes.',
@@ -348,7 +377,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       ],
       'legal_entity_type_first' => [
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('legal_entity_type_first')}' is not set.",
         ]),
         new Choice([
           'choices' => array_map('strtolower', $legal_entity_options),
@@ -692,11 +721,12 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   public function loadFile(FileInterface $file, array &$rows = []) {
     // Need to set auto_detect_line_endings to deal with Mac line endings.
     // @see http://php.net/manual/en/function.fgetcsv.php
-    ini_set('auto_detect_line_endings', TRUE);
+    // @TODO PHP 8.1 Deprecated this setting.
+    // ini_set('auto_detect_line_endings', TRUE);
 
     try {
       $csv = file_get_contents($file->getFileUri());
-      $data = $this->sanitize($this->getSerializer()->decode($csv, 'csv'));
+      $data = $this->getSerializer()->decode($csv, 'csv');
 
       // We have a limit of that we can process to, this limit
       // is tested with and anything over cannot be supported.
@@ -730,26 +760,25 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * Save data to a CSV file.
    *
-   * @param array $rows
-   *   An array to add processed rows to.
    * @param $par_data_partnership
    *   The partnership to generate the name for.
+   * @param array $rows
+   *   An array to add processed rows to.
    *
-   * @return bool
+   * @return bool|FileInterface
+   *   Return the file if successfully saved, otherwise return false.
    */
-  public function saveFile(array $rows = [], $par_data_partnership) {
+  public function saveFile(ParDataPartnership $par_data_partnership, array $rows = []): bool|FileInterface {
     $data = $this->getSerializer()->encode($rows, 'csv');
 
-    $directory = 's3private://member-csv/';
     $name = str_replace(' ', '_', "Member list for " . lcfirst($par_data_partnership->label()));
-    $file = file_save_data($data, $directory . $name . '.' . self::FILE_EXTENSION, FileSystemInterface::EXISTS_REPLACE);
+    $file_repository = $this->getFileRepository();
 
-    // Set the reference fields, useful for keeping track of
-    // which authorities and organisations the csv belongs to.
-    if ($file) {
-      $file->set('field_authority', $par_data_partnership->getAuthority(TRUE));
-      $file->set('field_organisation', $par_data_partnership->getOrganisation(TRUE));
-      $file->save();
+    try {
+      $file = $file_repository->writeData($data, $this->directory . $name . '.' . self::FILE_EXTENSION, FileSystemInterface::EXISTS_REPLACE);
+    }
+    catch (FileException | InvalidStreamWrapperException | EntityStorageException $e) {
+      return false;
     }
 
     return $file;
@@ -802,20 +831,49 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
+   * Case insensitive compare.
+   */
+  protected function caseInsensitiveCompare($value, $comparison) {
+    return !empty($value) && (strtolower($value) === strtolower($comparison));
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function validate(array $rows) {
     $errors = [];
 
-    foreach ($rows as $index => $row) {
-      // Check that all headings are supported.
-      $diff_keys = array_diff_key($row, $this->getColumns());
-      if (!empty($diff_Keys)) {
-        $errors[] = new ParCsvViolation($index+2, NULL, 'The column headings are incorrect or missing.');
-      }
+    // Use the first row to check that all headings in the csv are supported.
+    $unknown_keys = array_udiff(array_keys($rows[0]), $this->getColumns(), 'strcasecmp');
+    $unknown_keys_string = implode(', ', $unknown_keys);
+    if (!empty($unknown_keys)) {
+      $errors['headers_unknown'] = new ParCsvViolation(
+        1,
+        NULL,
+        "Some unidentified columns were found in the csv, these columns will not be imported: $unknown_keys_string",
+        FALSE,
+      );
+    }
+
+    // Use the first row to check that all headers are present.
+    $missing_keys = array_udiff($this->getColumns(), array_keys($rows[0]), 'strcasecmp');
+    $missing_keys_string = implode(', ', $missing_keys);
+    if (!empty($missing_keys)) {
+      $errors['headers_missing'] = new ParCsvViolation(
+        1,
+        NULL,
+        "There are some columns missing from your csv, see the Member Guidance Page for all headings: $missing_keys_string",
+        FALSE,
+      );
+    }
+
+    // Rows must be sanitised before validating.
+    foreach ($this->sanitize($rows) as $index => $row) {
+      // Get the validation constraints.
+      $constraints = $this->getConstraints($row);
 
       $validator = Validation::createValidator();
-      foreach ($this->getConstraints($row) as $key => $constraints) {
+      foreach ($constraints as $key => $constraints) {
         $column = $this->getMapping($key);
 
         // Ensure case insensitive validation.
@@ -836,6 +894,19 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     }
 
     return !empty($errors) ? $errors : NULL;
+  }
+
+  /**
+   * Filter the errors returning only the fatal errors that should stop the upload.
+   *
+   * @param array $errors
+   *
+   * @return array
+   */
+  public function filterFatalErrors(array $errors): array {
+    return array_filter($errors, function ($error) {
+      return ($error instanceof ParCsvViolation && $error->isFatal());
+    });
   }
 
   public function backup(ParDataPartnership $par_data_partnership) {
@@ -870,10 +941,10 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // Generate and save member list.
     $data = $this->generate($existing_members);
-    $file = $this->saveFile($data, $par_data_partnership);
+    $file = $this->saveFile($par_data_partnership, $data);
 
     // Redirect to saved file.
-    if ($file) {
+    if ($file instanceof FileInterface) {
       return $file;
     }
   }
@@ -888,6 +959,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    */
   public function process($data, ParDataPartnership $par_data_partnership) {
     $new_members = [];
+
+    // Santise data at the latest possible point to improve validation.
+    $data = $this->sanitize($data);
 
     foreach ($data as $index => $row) {
       $member = $this->normalize($row);
@@ -1032,7 +1106,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // Redirect to saved file.
     if ($file) {
-      $url = $file->downloadUrl()->toString();
+      $url = $file->createFileUrl();
       $response->addCommand(new RedirectCommand($url));
     }
     else {

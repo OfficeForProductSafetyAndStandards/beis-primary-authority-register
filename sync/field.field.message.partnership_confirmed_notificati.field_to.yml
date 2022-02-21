@@ -1,0 +1,19 @@
+uuid: 9f70ef9a-c1f4-4d39-a73b-689e460e8f36
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_to
+    - message.template.partnership_confirmed_notificati
+id: message.partnership_confirmed_notificati.field_to
+field_name: field_to
+entity_type: message
+bundle: partnership_confirmed_notificati
+label: To
+description: 'The email address of the message recipient.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

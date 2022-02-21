@@ -1,0 +1,25 @@
+uuid: 0bb84ba8-c148-4237-8e60-8550d1840951
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:c0a315eb-948b-4e33-b83c-72f65108dd5f'
+  module:
+    - block_content
+  theme:
+    - par_theme
+id: par_theme_sitewidehelpdeskmessage
+theme: par_theme
+region: pre_content
+weight: -6
+provider: null
+plugin: 'block_content:c0a315eb-948b-4e33-b83c-72f65108dd5f'
+settings:
+  id: 'block_content:c0a315eb-948b-4e33-b83c-72f65108dd5f'
+  label: 'Sitewide Helpdesk Message'
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

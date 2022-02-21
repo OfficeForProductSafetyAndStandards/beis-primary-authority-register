@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.message.new_inspection_feedback.field_inspection_feedback
     - field.field.message.new_inspection_feedback.field_message_subject
+    - field.field.message.new_inspection_feedback.field_to
     - message.template.new_inspection_feedback
 id: message.new_inspection_feedback.default
 targetEntityType: message
@@ -12,18 +13,19 @@ bundle: new_inspection_feedback
 mode: default
 content:
   field_inspection_feedback:
-    weight: 1
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 1
     region: content
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_message_subject: true
+  field_to: true

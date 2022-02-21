@@ -1,0 +1,26 @@
+uuid: 0d419315-bfbf-43c7-ae31-d294d41b281b
+langcode: en
+status: true
+dependencies:
+  module:
+    - govuk_cookies
+  theme:
+    - par_theme
+id: cookiebanner
+theme: par_theme
+region: cookies
+weight: 0
+provider: null
+plugin: cookie_banner
+settings:
+  id: cookie_banner
+  label: 'Cookie Banner'
+  label_display: '0'
+  provider: govuk_cookies
+  my_block_settings: null
+visibility:
+  govuk_cookie:
+    id: govuk_cookie
+    enable: 1
+    negate: true
+    context_mapping: {  }

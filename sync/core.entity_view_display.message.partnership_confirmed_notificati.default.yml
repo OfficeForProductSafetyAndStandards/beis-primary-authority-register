@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.message.partnership_confirmed_notificati.field_message_subject
     - field.field.message.partnership_confirmed_notificati.field_partnership
+    - field.field.message.partnership_confirmed_notificati.field_to
     - message.template.partnership_confirmed_notificati
 id: message.partnership_confirmed_notificati.default
 targetEntityType: message
@@ -12,17 +13,18 @@ bundle: partnership_confirmed_notificati
 mode: default
 content:
   field_partnership:
-    weight: 1
+    type: entity_reference_label
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 1
     region: content
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_message_subject: true
+  field_to: true

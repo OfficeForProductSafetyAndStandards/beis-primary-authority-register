@@ -1,0 +1,47 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: 26fd0777-64d3-49a1-b8b6-a2125bb76172
+  bundle: organisation
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    804be6cc-9a93-49de-9175-803105e45a4c: par_data_person
+    167fa03d-87f9-43c9-b76c-1ab302035759: par_data_premises
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1578121175
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5e1037d7e1a68
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: 'Demolition Experts'
+  field_person:
+    -
+      entity: 804be6cc-9a93-49de-9175-803105e45a4c
+  field_premises:
+    -
+      entity: 167fa03d-87f9-43c9-b76c-1ab302035759

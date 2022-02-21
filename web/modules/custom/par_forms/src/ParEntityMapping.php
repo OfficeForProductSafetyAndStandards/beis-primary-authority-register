@@ -38,7 +38,7 @@ class ParEntityMapping {
    *   entity violation message and the value is the replacement.
    */
   public function __construct($elementKey, string $entityType, string $field, string $property = NULL, string $bundle = NULL, int $delta = NULL, array $messageOverrides = []) {
-    if ($fieldDefinition = $this->getParDataManager()->getFieldDefinition($entityType, $bundle, $field)) {
+    if ($fieldDefinition = $this->getParDataManager()->getFieldDefinition($entityType, $field, $bundle)) {
       $this->fieldDefinition = $fieldDefinition;
     }
     else {

@@ -1,0 +1,32 @@
+uuid: 97fe8413-ded3-4eaf-9b83-884b4a0f1610
+langcode: en
+status: true
+dependencies:
+  module:
+    - govuk_cookies
+    - par_cookies
+    - system
+  theme:
+    - par_theme
+id: essentialcookies
+theme: par_theme
+region: content
+weight: -1
+provider: null
+plugin: essential_cookies
+settings:
+  id: essential_cookies
+  label: 'Essential Cookies'
+  label_display: visible
+  provider: par_cookies
+visibility:
+  govuk_cookie:
+    id: govuk_cookie
+    enable: 0
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: /cookies

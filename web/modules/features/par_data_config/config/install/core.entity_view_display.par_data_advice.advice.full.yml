@@ -7,7 +7,7 @@ dependencies:
     - par_data.par_data_advice_type.advice
   module:
     - datetime
-    - file_entity
+    - file
     - par_data
     - text
 id: par_data_advice.advice.full
@@ -17,7 +17,7 @@ mode: full
 content:
   advice_status:
     label: hidden
-    weight: 2
+    weight: 4
     region: content
     settings:
       link_to_entity: false
@@ -33,24 +33,31 @@ content:
     type: string
   advice_type:
     type: par_list_formatter
-    weight: 1
+    weight: 3
     region: content
     label: hidden
     settings:
       display_original_value: false
     third_party_settings: {  }
+  attachment:
+    label: hidden
+    weight: 1
+    region: content
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
   document:
-    type: file_download_link
-    weight: 4
+    type: file_default
+    weight: 1
     region: content
     label: hidden
     settings:
-      access_message: 'You don''t have access to download this file.'
-      text: 'Download [file:name]'
+      use_description_as_link_text: true
     third_party_settings: {  }
   issue_date:
     label: hidden
-    weight: 3
+    weight: 5
     region: content
     settings:
       timezone_override: ''
@@ -59,7 +66,7 @@ content:
     type: datetime_default
   notes:
     type: text_default
-    weight: 5
+    weight: 6
     region: content
     label: hidden
     settings: {  }

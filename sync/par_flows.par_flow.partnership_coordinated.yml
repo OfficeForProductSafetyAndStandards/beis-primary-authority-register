@@ -20,6 +20,8 @@ steps:
     route: par_partnership_flows.organisation_details
     form_id: par_partnership_details
     components:
+      confirm_partnership_members:
+        weight: -11
       partnership_information_display:
         weight: -10
       organisation_information_display:

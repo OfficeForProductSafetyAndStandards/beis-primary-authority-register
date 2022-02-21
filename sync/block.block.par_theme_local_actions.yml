@@ -9,12 +9,12 @@ _core:
 id: par_theme_local_actions
 theme: par_theme
 region: content
-weight: -3
+weight: -6
 provider: null
 plugin: local_actions_block
 settings:
   id: local_actions_block
   label: 'Primary admin actions'
-  provider: core
   label_display: '0'
+  provider: core
 visibility: {  }

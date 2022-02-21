@@ -1,0 +1,67 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_person
+  uuid: 7fe49d5e-75fa-4aa2-94f6-ef9e3999aeed
+  bundle: person
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    1639f81a-a0fb-4d51-bd8b-324728b24711: user
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1596907434
+  revision_uid:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5f2edfaaa620b
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  salutation:
+    -
+      value: Dr
+  first_name:
+    -
+      value: Elmo
+  last_name:
+    -
+      value: Jones
+  work_phone:
+    -
+      value: '020 7946 0087'
+  mobile_phone:
+    -
+      value: '07700 900877'
+  email:
+    -
+      value: business.partnership-apply@example.com
+  communication_email:
+    -
+      value: true
+  communication_phone:
+    -
+      value: false
+  communication_mobile:
+    -
+      value: false
+  field_user_account:
+    -
+      entity: 1639f81a-a0fb-4d51-bd8b-324728b24711

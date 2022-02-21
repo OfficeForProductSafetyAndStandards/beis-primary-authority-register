@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.message.mail_subject
     - field.field.message.new_inspection_plan.field_inspection_plan
     - field.field.message.new_inspection_plan.field_message_subject
+    - field.field.message.new_inspection_plan.field_to
     - message.template.new_inspection_plan
 id: message.new_inspection_plan.mail_subject
 targetEntityType: message
@@ -14,13 +15,14 @@ mode: mail_subject
 content:
   field_message_subject:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_inspection_plan: true
+  field_to: true
   partial_0: true
   partial_1: true

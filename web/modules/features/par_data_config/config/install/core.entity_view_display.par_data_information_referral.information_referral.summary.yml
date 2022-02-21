@@ -26,7 +26,7 @@ content:
     third_party_settings: {  }
     type: file_default
   field_person:
-    weight: 4
+    weight: 5
     label: hidden
     settings:
       view_mode: title
@@ -37,13 +37,13 @@ content:
   notes:
     label: hidden
     type: text_default
-    weight: 2
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   primary_authority_status:
     label: hidden
-    weight: 3
+    weight: 4
     region: content
     settings:
       display_original_value: false

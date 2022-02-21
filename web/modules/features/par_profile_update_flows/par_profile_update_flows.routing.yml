@@ -74,6 +74,20 @@ par_profile_update_flows.contact_preferences:
       user:
         type: entity:user
 
+par_profile_update_flows.subscription_preferences:
+  path: '/profile/{user}/update/subscriptions'
+  defaults:
+    _form: '\Drupal\par_profile_update_flows\Form\ParSubscriptionPreferencesForm'
+    _title_callback: '\Drupal\par_profile_update_flows\Form\ParSubscriptionPreferencesForm::titleCallback'
+  requirements:
+    _permission: 'manage own par profile'
+    _custom_access: '\Drupal\par_profile_update_flows\Form\ParSubscriptionPreferencesForm::accessCallback'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+
 par_profile_update_flows.notification_preferences:
   path: '/profile/{user}/update/notifications'
   defaults:

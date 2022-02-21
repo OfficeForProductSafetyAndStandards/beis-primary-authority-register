@@ -1,0 +1,5 @@
+name: PAR Subscriptions
+type: module
+description: Allows subscription to par newsletters.
+core_version_requirement: ^8 || ^9
+package: PAR

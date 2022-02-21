@@ -219,9 +219,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       }
     }
 
-    // The components have weights around the 100 mark,
-    // so the actions must always come last.
-    $form['actions']['#weight'] = 999;
+    // Enable the default actions wrapper.
+    $form['actions']['#type'] = 'actions';
 
     // The 'done' is a primary and final action, meaning no other actions should be performed.
     // The 'upload', 'save' and 'next are all primary actions with varying subtleties.
@@ -405,22 +404,21 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       // Get the redirect route to the next form based on the flow configuration
       // 'operation' parameter that matches the submit button's name.
       $submit_action = $form_state->getTriggeringElement()['#name'];
+
       // Get the next route from the flow.
       $url = $this->getFlowNegotiator()->getFlow()->progress($submit_action);
     }
-    catch (ParFlowException $e) {
+    catch (ParFlowException | RouteNotFoundException $e) {
 
     }
-    catch (RouteNotFoundException $e) {
 
+    // Delete form storage if complete.
+    if (isset($submit_action) && $submit_action == 'done') {
+      $this->getFlowDataHandler()->deleteStore();
     }
 
     // Set the redirection.
-    if ($url && $url instanceof Url) {
-      if ($submit_action && $submit_action == ParFlowEvents::FLOW_DONE) {
-        // Delete form storage.
-        $this->getFlowDataHandler()->deleteStore();
-      }
+    if (isset($url) && $url instanceof Url) {
       $form_state->setRedirectUrl($url);
     }
   }

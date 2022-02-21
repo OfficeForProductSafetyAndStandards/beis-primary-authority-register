@@ -11,5 +11,13 @@
  */
 #}
 
-<span class="form-hint">{{ attributes.placeholder }}</span>
-<input{{ attributes.addClass('form-control').removeAttribute('placeholder') }} />{{ children }}
+{%
+  set classes = [
+  'form-control',
+  'govuk-input',
+  errors ? 'form-group-error'
+]
+%}
+
+<span class="form-hint govuk-hint">{{ attributes.placeholder }}</span>
+<input{{ attributes.addClass(classes).setAttribute('autocomplete', 'tel').removeAttribute('placeholder') }} />{{ children }}

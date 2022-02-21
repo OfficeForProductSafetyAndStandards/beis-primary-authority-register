@@ -7,6 +7,7 @@ dependencies:
     - field.field.message.new_inspection_feedback_response.field_comment
     - field.field.message.new_inspection_feedback_response.field_inspection_feedback
     - field.field.message.new_inspection_feedback_response.field_message_subject
+    - field.field.message.new_inspection_feedback_response.field_to
     - message.template.new_inspection_feedback_response
 id: message.new_inspection_feedback_response.mail_subject
 targetEntityType: message
@@ -15,14 +16,15 @@ mode: mail_subject
 content:
   field_message_subject:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_comment: true
   field_inspection_feedback: true
+  field_to: true
   partial_0: true
   partial_1: true

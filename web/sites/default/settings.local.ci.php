@@ -42,6 +42,12 @@ $settings['skip_permissions_hardening'] = TRUE;
 
 $config['config_split.config_split.dev_config']['status'] = TRUE;
 $config['config_split.config_split.test_config']['status'] = TRUE;
+$config['config_split.config_split.theme_v2_config']['status'] = FALSE;
+// Allow theme v2 to be enabled through environment variables.
+$theme_version = getenv('THEME_VERSION');
+if (isset($theme_version) && $theme_version === 'v2') {
+  $config['config_split.config_split.theme_v2_config']['status'] = TRUE;
+}
 
 if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
   $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.yml';
@@ -55,9 +61,9 @@ if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
  */
 $config['system.logging']['error_level'] = 'verbose';
 
-// Ensure travis always runs with the same memory that other environments do.
-ini_set('memory_limit', '2048M');
-ini_set('max_execution_time', 300);
+// Ensure ci always runs with the same memory that other environments do.
+ini_set('memory_limit', '512M');
+ini_set('max_execution_time', 60);
 
 // Enable tota11y library.
 $settings['enable_tota11y'] = TRUE;

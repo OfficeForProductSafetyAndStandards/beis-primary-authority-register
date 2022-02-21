@@ -82,3 +82,19 @@ package.box
 .env.*
 
 auth.json
+/.csslintrc
+/.editorconfig
+/.eslintignore
+/.eslintrc.json
+/.gitattributes
+/.ht.router.php
+/.htaccess
+/INSTALL.txt
+/README.txt
+/README.md
+/autoload.php
+/example.gitignore
+/index.php
+/robots.txt
+/update.php
+/web.config

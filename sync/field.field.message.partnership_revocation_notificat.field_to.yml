@@ -1,0 +1,19 @@
+uuid: 70538bff-1842-4a4d-9ed1-325ea9ccdb61
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_to
+    - message.template.partnership_revocation_notificat
+id: message.partnership_revocation_notificat.field_to
+field_name: field_to
+entity_type: message
+bundle: partnership_revocation_notificat
+label: To
+description: 'The email address of the message recipient.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

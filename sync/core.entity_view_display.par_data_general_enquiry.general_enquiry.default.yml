@@ -9,7 +9,7 @@ dependencies:
     - field.field.par_data_general_enquiry.general_enquiry.field_primary_authority
     - par_data.par_data_general_enquiry_type.general_enquiry
   module:
-    - file_entity
+    - file
     - par_data
     - text
 _core:
@@ -20,71 +20,70 @@ bundle: general_enquiry
 mode: default
 content:
   document:
-    label: hidden
-    weight: 1
-    region: content
+    type: file_default
+    label: above
     settings:
-      access_message: 'You don''t have access to download this file.'
-      text: 'Download [file:name]'
+      use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_download_link
+    weight: 9
+    region: content
   field_enforcing_authority:
-    weight: 4
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 5
     region: content
   field_partnership:
-    weight: 7
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 8
     region: content
   field_person:
-    weight: 5
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 6
     region: content
   field_primary_authority:
-    weight: 6
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 7
     region: content
   notes:
-    label: hidden
     type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
     weight: 0
     region: content
-    settings: {  }
-    third_party_settings: {  }
   primary_authority_notes:
-    label: hidden
     type: text_default
-    weight: 3
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
-  primary_authority_status:
-    label: hidden
-    weight: 2
+    weight: 4
     region: content
+  primary_authority_status:
+    type: par_list_formatter
+    label: hidden
     settings:
       display_original_value: false
     third_party_settings: {  }
-    type: par_list_formatter
+    weight: 3
+    region: content
 hidden:
   archive_reason: true
   deleted_reason: true

@@ -17,7 +17,9 @@ use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_profile_update_flows\ParFlowAccessTrait;
+use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 
 /**
  * The form for the partnership details.
@@ -30,6 +32,13 @@ class ParReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   protected $pageTitle = 'Profile review';
+
+  /**
+   * Get the subscription manager.
+   */
+  private function getSubscriptionManager() {
+    return \Drupal::service('par_subscriptions.manager');
+  }
 
   /**
    * {@inheritdoc}
@@ -199,17 +208,17 @@ class ParReviewForm extends ParBaseForm {
         $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
       }
 
+      // Get the authorities and organisations that will be associated with the person.
+      $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
+      $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
+      $par_data_authorities = $par_data_person->updateAuthorityMemberships($authority_ids);
+      $par_data_organisations = $par_data_person->updateOrganisationMemberships($organisation_ids);
+
       // Make sure to save the related user account.
       if ($account) {
         $par_data_person->setUserAccount($account);
       }
     }
-
-    // Get the authorities and organisations that will be associated with the person.
-    $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
-    $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
-    $par_data_authorities = $par_data_person->updateAuthorityMemberships($authority_ids);
-    $par_data_organisations = $par_data_person->updateOrganisationMemberships($organisation_ids);
 
     return [
       'par_data_person' => $par_data_person,
@@ -237,6 +246,35 @@ class ParReviewForm extends ParBaseForm {
     $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
     $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
     $cid_invitation = $this->getFlowNegotiator()->getFormKey('par_invite');
+    $subscriptions_cid = $this->getFlowNegotiator()->getFormKey('subscription_preferences');
+    $notifications_cid = $this->getFlowNegotiator()->getFormKey('notification_preferences');
+
+    // Subscribe and unsubscribe the user from the relevant subscription lists.
+    $lists = $this->getSubscriptionManager()->getLists();
+    $subscriptions = array_filter($this->getFlowDataHandler()->getTempDataValue('subscriptions', $subscriptions_cid));
+    foreach ($lists as $list) {
+      // Create a new subscription.
+      if (isset($subscriptions[$list])) {
+        $subscription = $this->getSubscriptionManager()->createSubscription($list, $account->getEmail());
+        if ($subscription instanceof ParSubscriptionInterface) {
+          $subscription->subscribe();
+        }
+      }
+      // Unsubscribe a user from the list.
+      else {
+        $subscription = $this->getSubscriptionManager()->getSubscriptionByEmail($list, $account->getEmail());
+        if ($subscription instanceof ParSubscriptionInterface) {
+          $subscription->unsubscribe();
+        }
+      }
+    }
+
+    // Set the user's notification preferences.
+    $notification_preferences = array_filter($this->getFlowDataHandler()->getTempDataValue('notification_preferences', $notifications_cid));
+
+    if ($par_data_person && $notification_preferences) {
+      $par_data_person->set('field_notification_preferences', array_values($notification_preferences));
+    }
 
     $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
     switch ($role) {

@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.message.full
     - field.field.message.new_response.field_comment
     - field.field.message.new_response.field_message_subject
+    - field.field.message.new_response.field_to
     - message.template.new_response
 id: message.new_response.full
 targetEntityType: message
@@ -13,18 +14,19 @@ bundle: new_response
 mode: full
 content:
   field_comment:
-    weight: 1
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: full
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 1
     region: content
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_message_subject: true
+  field_to: true

@@ -1,0 +1,21 @@
+services:
+  par_subscriptions.route_subscriber:
+      class: Drupal\par_subscriptions\Routing\ParSubscriptionRoutes
+      arguments: ['@par_subscriptions.manager']
+  par_subscriptions.manager:
+    class: Drupal\par_subscriptions\ParSubscriptionManager
+    arguments: [ '@entity_type.manager', '@entity_type.bundle.info', '@email.validator', '@messenger' ]
+  par_subscriptions.populate_list_subscriber:
+    class: Drupal\par_subscriptions\EventSubscriber\PopulateListSubscriber
+    tags:
+      - { name: event_subscriber }
+    arguments: [ '@config.manager', '@config.storage', '@entity_type.manager' ]
+  par_subscriptions.user_default_subscriber:
+    class: Drupal\par_subscriptions\EventSubscriber\UserDefaultSubscriber
+    tags:
+      - { name: 'event_subscriber' }
+  par_subscriptions.verify_subscriber:
+    class: Drupal\par_subscriptions\EventSubscriber\VerifySubscriber
+    tags:
+      - { name: 'event_subscriber' }
+

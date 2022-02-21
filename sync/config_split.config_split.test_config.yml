@@ -4,6 +4,8 @@ status: true
 dependencies: {  }
 id: test_config
 label: 'Test Config'
+description: ''
+weight: 5
 folder: ../sync-test
 module:
   maillog: 0
@@ -14,4 +16,3 @@ graylist:
   - system.mail
 graylist_dependents: true
 graylist_skip_equal: true
-weight: 5

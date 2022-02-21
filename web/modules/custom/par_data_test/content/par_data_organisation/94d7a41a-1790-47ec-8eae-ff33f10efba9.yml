@@ -1,0 +1,51 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_organisation
+  uuid: 94d7a41a-1790-47ec-8eae-ff33f10efba9
+  bundle: organisation
+  default_langcode: en
+  depends:
+    46e65664-bf34-4713-ab14-740cbe581538: user
+    085976e5-7dda-4792-b62b-fbf84c6ec2ce: par_data_legal_entity
+    f7d896a2-24c7-4c4a-bf16-351ae17bc6af: par_data_person
+    8e09c5d7-e629-4c5d-a937-42bd521d0516: par_data_premises
+default:
+  user_id:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311475
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3d8470754
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  organisation_name:
+    -
+      value: Supermarket
+  field_legal_entity:
+    -
+      entity: 085976e5-7dda-4792-b62b-fbf84c6ec2ce
+  field_person:
+    -
+      entity: f7d896a2-24c7-4c4a-bf16-351ae17bc6af
+  field_premises:
+    -
+      entity: 8e09c5d7-e629-4c5d-a937-42bd521d0516

@@ -1,0 +1,132 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_partnership
+  uuid: 0529e1fe-0346-4fe9-9b02-53cf399b79a3
+  bundle: partnership
+  default_langcode: en
+  depends:
+    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    46e65664-bf34-4713-ab14-740cbe581538: user
+    5385e5cf-1b98-43ae-9a3e-e369091a61ef: par_data_authority
+    c78b0352-15c8-42b5-b22d-082b72c51af4: par_data_person
+    22fd1a6f-2913-44d6-8dbc-f048005ff5b9: par_data_coordinated_business
+    82851532-6914-40df-a437-8c45b6f4e776: par_data_coordinated_business
+    646c0670-2b95-4b66-80f8-ebda074ec2f4: par_data_coordinated_business
+    26bc81d6-c59d-4ac5-bb40-bc374ffd0532: par_data_coordinated_business
+    8e479bd8-e0f4-4507-ba41-ab0434e33932: par_data_coordinated_business
+    cdd7d793-32e8-44d1-9604-61b90d21d17b: par_data_coordinated_business
+    9eac0a7c-c3d3-4efc-8585-d4ce66580a9d: par_data_coordinated_business
+    8beab6c6-7378-4a63-a0a2-1f1ecf25d1de: par_data_coordinated_business
+    344dba63-556a-4908-8ec8-d2ed60ea3482: par_data_coordinated_business
+    8bc96258-c46e-4a19-b5a0-94a2259a3c67: par_data_coordinated_business
+    69e22ece-9d9e-4503-b4f7-0ce9b1058aec: par_data_coordinated_business
+    e2870b89-a597-4ab8-8043-e2e83e7f036a: par_data_coordinated_business
+    cf823285-a709-40fb-9b5a-053c0068dc8d: par_data_coordinated_business
+    d92d6b38-6b5d-4e56-9267-a16b71ff498d: par_data_coordinated_business
+    dfd52bb4-3d99-4209-8605-94961bea7a75: par_data_coordinated_business
+    4a46ac19-ecb4-4e1b-ae20-07180dba261e: par_data_legal_entity
+    bc33b45a-147d-4db3-934b-e8eaef6cf5ea: par_data_organisation
+    f7ba6111-932a-494b-a614-680525ac6aca: par_data_person
+    15660610-03e4-47f4-b26e-159d0cd4d86a: par_data_regulatory_function
+    3a4c6455-7263-4f0b-966a-24b8dd518f49: par_data_regulatory_function
+default:
+  user_id:
+    -
+      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1563311050
+  revision_uid:
+    -
+      entity: 46e65664-bf34-4713-ab14-740cbe581538
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 5d2e3bcb00783
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  partnership_type:
+    -
+      value: coordinated
+  partnership_status:
+    -
+      value: confirmed_rd
+  about_partnership:
+    -
+      value: 'Test partnership for unchangeable data.'
+      format: plain_text
+  approved_date:
+    -
+      value: '2019-07-16'
+  terms_authority_agreed:
+    -
+      value: false
+  partnership_info_agreed_authority:
+    -
+      value: true
+  partnership_info_agreed_business:
+    -
+      value: false
+  field_authority:
+    -
+      entity: 5385e5cf-1b98-43ae-9a3e-e369091a61ef
+  field_authority_person:
+    -
+      entity: c78b0352-15c8-42b5-b22d-082b72c51af4
+  field_coordinated_business:
+    -
+      entity: 22fd1a6f-2913-44d6-8dbc-f048005ff5b9
+    -
+      entity: 82851532-6914-40df-a437-8c45b6f4e776
+    -
+      entity: 646c0670-2b95-4b66-80f8-ebda074ec2f4
+    -
+      entity: 26bc81d6-c59d-4ac5-bb40-bc374ffd0532
+    -
+      entity: 8e479bd8-e0f4-4507-ba41-ab0434e33932
+    -
+      entity: cdd7d793-32e8-44d1-9604-61b90d21d17b
+    -
+      entity: 9eac0a7c-c3d3-4efc-8585-d4ce66580a9d
+    -
+      entity: 8beab6c6-7378-4a63-a0a2-1f1ecf25d1de
+    -
+      entity: 344dba63-556a-4908-8ec8-d2ed60ea3482
+    -
+      entity: 8bc96258-c46e-4a19-b5a0-94a2259a3c67
+    -
+      entity: 69e22ece-9d9e-4503-b4f7-0ce9b1058aec
+    -
+      entity: e2870b89-a597-4ab8-8043-e2e83e7f036a
+    -
+      entity: cf823285-a709-40fb-9b5a-053c0068dc8d
+    -
+      entity: d92d6b38-6b5d-4e56-9267-a16b71ff498d
+    -
+      entity: dfd52bb4-3d99-4209-8605-94961bea7a75
+  field_legal_entity:
+    -
+      entity: 4a46ac19-ecb4-4e1b-ae20-07180dba261e
+  field_organisation:
+    -
+      entity: bc33b45a-147d-4db3-934b-e8eaef6cf5ea
+  field_organisation_person:
+    -
+      entity: f7ba6111-932a-494b-a614-680525ac6aca
+  field_regulatory_function:
+    -
+      entity: 15660610-03e4-47f4-b26e-159d0cd4d86a
+    -
+      entity: 3a4c6455-7263-4f0b-966a-24b8dd518f49

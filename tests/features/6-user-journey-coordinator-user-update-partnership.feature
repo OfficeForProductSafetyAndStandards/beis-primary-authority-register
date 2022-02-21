@@ -13,8 +13,9 @@ Feature: Coordinator User - Update Partnership
         Then the element "h1" is not empty
 
         # ADD MEMBERS
-
-        When I click the link text "add a member"
+        When I click the link text "show members list"
+        Then the element "h1.heading-xlarge" contains the text "Members list"
+        When I click the link text "Add a member"
         And I add "New Member One" to the inputfield "#edit-name"
         And I click on the button "#edit-next"
         And I add "MK43 7AS" to the inputfield "#edit-postcode"

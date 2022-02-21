@@ -1,0 +1,7 @@
+services:
+  par_data.commands:
+    class: \Drupal\par_data\Commands\ParDataCommands
+    arguments:
+      - '@par_data.manager'
+    tags:
+      - { name: drush.command }

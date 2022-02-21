@@ -41,13 +41,14 @@ class ParTradingForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
+    $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
 
     $trading_name = $this->getFlowDataHandler()->getTempDataValue('trading_name');
-    $trading_name_delta = (int) $this->getRouteParam('trading_name_delta');
+
     // If a delta is specified we should update this delta only.
     if (isset($trading_name_delta)) {
       try {
-        $par_data_organisation->get('trading_name')->set($trading_name_delta, $trading_name);
+        $par_data_organisation->get('trading_name')->set((int) $trading_name_delta, $trading_name);
       } catch (MissingDataException $e) {
         $message = $this->t('Trading name could not be saved for %form_id due to missing data: %error');
         $replacements = [

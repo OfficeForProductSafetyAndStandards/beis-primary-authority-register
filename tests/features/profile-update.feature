@@ -30,12 +30,16 @@ Feature: New Direct Partnership For PA To Approve
         And I add "Please only contact me during office hours." to the inputfield "#edit-notes"
         And I click on the button "#edit-next"
 
+        Then the element "h1.heading-xlarge" contains the text "Update subscriptions"
+        When I click on the checkbox "#edit-subscriptions-par-news"
+        And I click on the button "#edit-next"
+
         Then the element "h1.heading-xlarge" contains the text "Update notification preferences"
-        When I click on the checkbox "#edit-preferred-contact-new-deviation-response"
-        When I click on the checkbox "#edit-preferred-contact-new-enquiry-response"
-        When I click on the checkbox "#edit-preferred-contact-new-inspection-feedback-response"
-        When I click on the checkbox "#edit-preferred-contact-reviewed-deviation-request"
-        When I click on the checkbox "#edit-preferred-contact-reviewed-enforcement"
+        When I click on the checkbox "#edit-notification-preferences-new-deviation-response"
+        When I click on the checkbox "#edit-notification-preferences-new-enquiry-response"
+        When I click on the checkbox "#edit-notification-preferences-new-inspection-feedback-response"
+        When I click on the checkbox "#edit-notification-preferences-reviewed-deviation-request"
+        When I click on the checkbox "#edit-notification-preferences-reviewed-enforcement"
         And I click on the button "#edit-next"
 
         Then the element "h1.heading-xlarge" contains the text "Profile review"
@@ -59,7 +63,7 @@ Feature: New Direct Partnership For PA To Approve
         When I click on the button "#edit-next"
 
         Then the element "h1.heading-xlarge" contains the text "Choose which contact to update"
-        Then I click on the radio ".form-item-user-person .form-radio"
+        Then I click on the radio "#edit-user-person .form-radio"
         When I click on the button "#edit-next"
 
         Then the element "h1.heading-xlarge" contains the text "Update contact details"
@@ -74,10 +78,14 @@ Feature: New Direct Partnership For PA To Approve
         When I click on the checkbox "#edit-preferred-contact-communication-phone"
         And I click on the button "#edit-next"
 
+        Then the element "h1.heading-xlarge" contains the text "Update subscriptions"
+        When I click on the checkbox "#edit-subscriptions-par-news"
+        And I click on the button "#edit-next"
+
         Then the element "h1.heading-xlarge" contains the text "Update notification preferences"
-        When I click on the checkbox "#edit-preferred-contact-new-deviation-response"
-        When I click on the checkbox "#edit-preferred-contact-new-enquiry-response"
-        When I click on the checkbox "#edit-preferred-contact-reviewed-enforcement"
+        When I click on the checkbox "#edit-notification-preferences-new-deviation-response"
+        When I click on the checkbox "#edit-notification-preferences-new-enquiry-response"
+        When I click on the checkbox "#edit-notification-preferences-reviewed-enforcement"
         And I click on the button "#edit-next"
 
         Then the element "h1.heading-xlarge" contains the text "Profile review"

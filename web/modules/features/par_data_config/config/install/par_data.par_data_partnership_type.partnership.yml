@@ -39,6 +39,11 @@ configuration:
     allowed_values:
       direct: Direct
       coordinated: Co-ordinated
+  member_display:
+    allowed_values:
+      internal: 'Internal list on the register'
+      external: 'External list available by link'
+      request: 'External list available on request'
   terms_organisation_agreed:
     boolean_values:
       'on': 'Terms agreed by the organisation'

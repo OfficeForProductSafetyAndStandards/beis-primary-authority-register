@@ -37,14 +37,15 @@ class ParTradingNameForm extends ParFormPluginBase {
    */
   public function loadData($cardinality = 1) {
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
-    $trading_name_delta = (int) $this->getFlowDataHandler()->getParameter('trading_name_delta');
-    if ($par_data_organisation) {
+    $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
+
+    if ($par_data_organisation && isset($trading_name_delta)) {
       // Store the current value of the trading name if it's being edited.
       $index = $trading_name_delta ?: $cardinality-1;
       try {
         $trading_name = $par_data_organisation ? $par_data_organisation->get('trading_name')->get($index) : NULL;
         if ($trading_name) {
-          $this->getFlowDataHandler()->setFormPermValue("trading_name", $trading_name->getString());
+          $this->setDefaultValuesByKey('trading_name', $cardinality, $trading_name->getString());
         }
       }
       catch (MissingDataException $e) {

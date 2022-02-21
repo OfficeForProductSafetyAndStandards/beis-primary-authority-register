@@ -23,30 +23,30 @@ mode: summary
 content:
   field_authority:
     type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
     weight: 1
     region: content
-    label: hidden
-    settings:
-      view_mode: summary
-      link: false
-    third_party_settings: {  }
   field_organisation:
     type: entity_reference_entity_view
-    weight: 0
-    region: content
     label: hidden
     settings:
       view_mode: summary
       link: false
     third_party_settings: {  }
-  organisation:
-    type: entity_reference_label
     weight: 0
     region: content
+  organisation:
+    type: entity_reference_label
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   about_partnership: true
   advice: true
@@ -70,6 +70,9 @@ hidden:
   field_organisation_person: true
   field_regulatory_function: true
   inspection_plan: true
+  member_display: true
+  member_link: true
+  member_number: true
   name: true
   organisation_change_comment: true
   organisation_person: true

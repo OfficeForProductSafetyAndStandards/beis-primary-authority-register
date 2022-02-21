@@ -64,6 +64,21 @@ function par_theme_preprocess_fieldset(array &$variables) {
 }
 
 /**
+ * Implements hook_element_info_alter().
+ *
+ * @see Drupal\Core\Render\Element\Actions
+ *
+ * @param array $info
+ */
+function par_theme_element_info_alter(array &$info) {
+  // Decrease the default weight of the actions form wrapper.
+  if (isset($info['actions'])) {
+    $info['actions']['#attributes']['class'][] = 'govuk-button-group';
+    $info['actions']['#weight'] = 999;
+  }
+}
+
+/**
  * Implements hook_preprocess_form_element().
  *
  * @param array $variables

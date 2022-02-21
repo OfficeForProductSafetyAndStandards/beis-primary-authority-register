@@ -1,5 +1,7 @@
 {
-      "PHP_VERSION": "{PHP_DEFAULT}",
+      "PHP_VERSION": "{PHP_80_LATEST}",
       "PHP_MODULES": ["cli"],
-      "WEBDIR": "web"
+      "WEBDIR": "web",
+      "COMPOSER_INSTALL_OPTIONS": ["--no-interaction", "--no-dev", "--dry-run"],
+      "COMPOSER_VENDOR_DIR": "vendor"
 }

@@ -7,7 +7,7 @@ dependencies:
     - field.field.par_data_advice.advice.field_regulatory_function
     - par_data.par_data_advice_type.advice
   module:
-    - file_entity
+    - file
 _core:
   default_config_hash: AL51cLsfUHh1UchHW4tWajqmoaTRmOnezqr55_rIsek
 id: par_data_advice.advice.title
@@ -16,30 +16,37 @@ bundle: advice
 mode: title
 content:
   advice_status:
+    type: string
     label: hidden
-    weight: 2
-    region: content
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 3
+    region: content
   advice_title:
+    type: string
     label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
     weight: 0
     region: content
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-  document:
-    type: file_download_link
-    weight: 1
-    region: content
+  attachment:
+    type: file_default
     label: hidden
     settings:
-      access_message: 'You don''t have access to download this file.'
-      text: 'Download [file:name]'
+      use_description_as_link_text: true
     third_party_settings: {  }
+    weight: 0
+    region: content
+  document:
+    type: file_default
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
 hidden:
   advice_type: true
   archive_reason: true

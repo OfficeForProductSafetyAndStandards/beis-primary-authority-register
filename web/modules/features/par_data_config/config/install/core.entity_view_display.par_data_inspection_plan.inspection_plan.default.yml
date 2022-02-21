@@ -6,7 +6,7 @@ dependencies:
     - par_data.par_data_inspection_plan_type.inspection_plan
   module:
     - datetime_range
-    - file_entity
+    - file
     - text
 id: par_data_inspection_plan.inspection_plan.default
 targetEntityType: par_data_inspection_plan
@@ -14,16 +14,15 @@ bundle: inspection_plan
 mode: default
 content:
   document:
-    type: file_download_link
-    weight: 2
-    region: content
-    label: hidden
+    weight: 7
+    label: above
     settings:
-      access_message: 'You don''t have access to download this file.'
-      text: 'Download [file:name]'
+      use_description_as_link_text: true
     third_party_settings: {  }
+    type: file_default
+    region: content
   field_regulatory_function:
-    weight: 5
+    weight: 6
     label: hidden
     settings:
       link: true
@@ -32,7 +31,7 @@ content:
     region: content
   inspection_status:
     type: string
-    weight: 4
+    weight: 5
     region: content
     label: hidden
     settings:
@@ -55,7 +54,7 @@ content:
     type: string
   valid_date:
     type: daterange_default
-    weight: 3
+    weight: 4
     region: content
     label: hidden
     settings:

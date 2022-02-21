@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains par_cookies.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function par_cookies_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the par_cookies module.
+    case 'help.page.par_cookies':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Provides additional blocks to display the cookies used by this site.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

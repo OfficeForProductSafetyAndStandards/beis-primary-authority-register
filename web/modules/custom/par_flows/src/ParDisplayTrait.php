@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterInterface;
+use Drupal\file\Plugin\Field\FieldType\FileFieldItemList;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 
 trait ParDisplayTrait {
@@ -316,7 +317,10 @@ trait ParDisplayTrait {
         }
 
         // Reference fields need to be rendered slightly differently.
-        if ($field instanceof EntityReferenceFieldItemListInterface) {
+        // @TODO File entity removal temporary fix. This entire trait is superseded by components.
+        // @deprecated
+        if ($field instanceof EntityReferenceFieldItemListInterface
+            && !$field instanceof FileFieldItemList) {
           $rows = $this->renderReferenceField($section, $field, $view_mode, $operations, $single_item);
         }
         else {
@@ -376,7 +380,7 @@ trait ParDisplayTrait {
 
       // Split the items up into chunks:
       $chunks = array_chunk($rows, $this->numberPerPage);
-
+      $chunk = $chunks[$current_pager->getCurrentPage()] ?? [];
 
       $element = [
         'items' => [
@@ -397,7 +401,7 @@ trait ParDisplayTrait {
       ];
 
       // Add the items for our current page to the fieldset.
-      foreach ($chunks[$current_pager->getCurrentPage()] as $delta => $item) {
+      foreach ($chunk as $delta => $item) {
         $element[$delta] = $item;
       }
     }

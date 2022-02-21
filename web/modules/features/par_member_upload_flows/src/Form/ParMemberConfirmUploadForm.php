@@ -79,10 +79,10 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // Process the data in one go if less than half the maximum batch size.
-    if (count($csv_data) <= (ParMemberCsvHandler::BATCH_LIMIT/2)) {
+    if (!empty($csv_data) && count($csv_data) <= (ParMemberCsvHandler::BATCH_LIMIT/2)) {
       $uploaded = $this->getCsvHandler()->upload($csv_data, $par_data_partnership);
     }
-    else {
+    else if (!empty($csv_data)) {
       $uploaded = $this->getCsvHandler()->batchUpload($csv_data, $par_data_partnership);
     }
 

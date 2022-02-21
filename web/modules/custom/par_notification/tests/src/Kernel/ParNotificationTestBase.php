@@ -28,7 +28,34 @@ use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 class ParNotificationTestBase extends ParDataTestBase
 {
 
-  static $modules = ['language', 'content_translation', 'comment', 'trance', 'par_data', 'par_data_config', 'message', 'par_message_config', 'par_notification', 'address', 'datetime', 'datetime_range', 'file_test', 'file', 'file_entity'];
+  static $modules = [
+    'user',
+    'system',
+    'field',
+    'text',
+    'link',
+    'filter',
+    'entity_test',
+    'language',
+    'content_translation',
+    'comment',
+    'trance',
+    'par_data',
+    'par_data_config',
+    'message',
+    'par_message_config',
+    'par_notification',
+    'address',
+    'datetime',
+    'datetime_range',
+    'file_test',
+    'file',
+    'image',
+    'media',
+    'media_library',
+    'views',
+    'media_test_views',
+  ];
 
   /**
    * Notification types
@@ -154,6 +181,12 @@ class ParNotificationTestBase extends ParDataTestBase
       ->disableOriginalConstructor()
       ->getMock();
     $container->set('par_notification.reviewed_enforcement_subscriber', $this->enforcement_reviewed_subscriber);
+
+    $this->enforcement_approved_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\ApprovedEnforcementSubscriber')
+      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->disableOriginalConstructor()
+      ->getMock();
+    $container->set('par_notification.approved_enforcement_subscriber', $this->enforcement_approved_subscriber);
 
     \Drupal::setContainer($container);
   }

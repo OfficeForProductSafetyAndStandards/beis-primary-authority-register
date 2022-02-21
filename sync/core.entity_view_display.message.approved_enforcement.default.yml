@@ -1,0 +1,37 @@
+uuid: c6b735c8-7c82-4aa5-8871-0a2b7303bfa3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.approved_enforcement.field_enforcement_notice
+    - field.field.message.approved_enforcement.field_message_subject
+    - field.field.message.approved_enforcement.field_to
+    - message.template.approved_enforcement
+id: message.approved_enforcement.default
+targetEntityType: message
+bundle: approved_enforcement
+mode: default
+content:
+  field_enforcement_notice:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_message_subject:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_to: true
