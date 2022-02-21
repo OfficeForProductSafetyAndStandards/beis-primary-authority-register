@@ -1,0 +1,8 @@
+How to run jmeter test through command line
+
+1. cd to jmeter bin folder (after you download Jmeter tool)
+2. run the command ./jmeter -n -t <jmeter file path>
+
+To generate the html report after the test run, pls add run test script with additional parameters as below
+
+./jmeter -n -t <jmeter test script path> -l <jmeterlog.jtl> -e -o <output hmlt fie path>
