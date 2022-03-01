@@ -12,11 +12,15 @@ references:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: postgres:11.12
+      - image: postgres:13.6
+        name: db
         environment:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
           POSTGRES_DB: par
+
+      - image: opensearchproject/opensearch:1.2.4
+        name: search
     resource_class: large
 
     environment:

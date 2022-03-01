@@ -10,15 +10,21 @@ services:
         - "8111:80"
       volumes:
         - ../../:/var/www/html
-
     db:
-      container_name: par_beta_db
+      container_name: beis_par_db
       restart: always
-      image: postgres:9.6.3
+      image: postgres:13.6
       ports:
         - "5411:5432"
       environment:
         POSTGRES_USER: par
         POSTGRES_PASSWORD: 123456
         POSTGRES_DB: par
+    search:
+      container_name: beis_par_search
+      restart: always
+      image: opensearchproject/opensearch:1.2.4
+      ports:
+        - 9200:9200
+        - 9600:9600 # required for Performance Analyzer
 
