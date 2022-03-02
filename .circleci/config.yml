@@ -13,7 +13,6 @@ references:
           SENTRY_ENVIRONMENT: ci
 
       - image: postgres:13.6
-        name: db
         environment:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
