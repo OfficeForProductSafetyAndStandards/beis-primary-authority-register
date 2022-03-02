@@ -419,7 +419,7 @@ jobs:
           name: "Application checklist"
           command: |
             cd web
-            ../vendor/bin/drush --no config:import
+            ../vendor/bin/drush --no --diff config:import
             ../vendor/bin/drush core-requirements --severity=2
             curl -sD - -o /dev/null http://par.localhost
           environment:
