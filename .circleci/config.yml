@@ -199,7 +199,7 @@ jobs:
           name: "Application checklist"
           command: |
             cd web
-            ../vendor/bin/drush --no config:import
+            ../vendor/bin/drush --no --diff config:import
             ../vendor/bin/drush core-requirements --severity=2
             ../vendor/bin/drush ev "print_r(\Drupal::service('flysystem_factory')->ensure());"
             curl -sD - -o /dev/null http://par.localhost
@@ -248,7 +248,7 @@ jobs:
           name: "Application checklist"
           command: |
             cd web
-            ../vendor/bin/drush --no config:import
+            ../vendor/bin/drush --no --diff config:import
             ../vendor/bin/drush core-requirements --severity=2
             curl -sD - -o /dev/null http://par.localhost
       - run:
