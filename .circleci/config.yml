@@ -12,11 +12,12 @@ references:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: postgres:11.12
+      - image: postgres:13.6
         environment:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
           POSTGRES_DB: par
+
     resource_class: large
 
     environment:
@@ -197,7 +198,7 @@ jobs:
           name: "Application checklist"
           command: |
             cd web
-            ../vendor/bin/drush --no config:import
+            ../vendor/bin/drush --no --diff config:import
             ../vendor/bin/drush core-requirements --severity=2
             ../vendor/bin/drush ev "print_r(\Drupal::service('flysystem_factory')->ensure());"
             curl -sD - -o /dev/null http://par.localhost
@@ -246,7 +247,7 @@ jobs:
           name: "Application checklist"
           command: |
             cd web
-            ../vendor/bin/drush --no config:import
+            ../vendor/bin/drush --no --diff config:import
             ../vendor/bin/drush core-requirements --severity=2
             curl -sD - -o /dev/null http://par.localhost
       - run:
@@ -417,7 +418,7 @@ jobs:
           name: "Application checklist"
           command: |
             cd web
-            ../vendor/bin/drush --no config:import
+            ../vendor/bin/drush --no --diff config:import
             ../vendor/bin/drush core-requirements --severity=2
             curl -sD - -o /dev/null http://par.localhost
           environment:
