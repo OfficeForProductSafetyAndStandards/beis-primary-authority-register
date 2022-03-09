@@ -952,10 +952,10 @@ if (isset($redis_credentials)) {
 
 // Set the PaaS opensearch conneciton credentials.
 if (isset($os_credentials)) {
-  $settings['search_api.server.opensearch']['backend_config']['connector'] = 'basicauth';
-  $settings['search_api.server.opensearch']['backend_config']['connector_config']['url'] = $os_credentials->uri;
-  $settings['search_api.server.opensearch']['backend_config']['connector_config']['username'] = $os_credentials->username;
-  $settings['search_api.server.opensearch']['backend_config']['connector_config']['password'] = $os_credentials->password;
+  $config['search_api.server.opensearch']['backend_config']['connector'] = 'basicauth';
+  $config['search_api.server.opensearch']['backend_config']['connector_config']['url'] = $os_credentials->uri;
+  $config['search_api.server.opensearch']['backend_config']['connector_config']['username'] = $os_credentials->username;
+  $config['search_api.server.opensearch']['backend_config']['connector_config']['password'] = $os_credentials->password;
 }
 
 // Set flysystem configuration to use local files for all environments,
