@@ -66,10 +66,14 @@ services:
         - "5601:5601"
       expose:
         - "5601"
+      links:
+        - db:db.localhost
+        - os:os.localhost
       networks:
         - par-net
       environment:
-        OPENSEARCH_HOSTS: '["https://search:9200"]'
+        - OPENSEARCH_HOSTS=["http://os.localhost:9200"]
+        - DISABLE_SECURITY_DASHBOARDS_PLUGIN=true # disables security dashboards plugin in OpenSearch Dashboards
 
 networks:
   par-net:
