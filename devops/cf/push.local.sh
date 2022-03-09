@@ -274,6 +274,7 @@ fi
 PG_BACKING_SERVICE="par-pg-$ENV"
 CDN_BACKING_SERVICE="par-cdn-$ENV"
 REDIS_BACKING_SERVICE="par-redis-$ENV"
+OS_BACKING_SERVICE="par-os-$ENV"
 LOGGING_BACKING_SERVICE="opss-log-drain"
 
 MANIFEST="${BASH_SOURCE%/*}/manifests/manifest.$ENV.yml"
@@ -387,6 +388,8 @@ done
 cf_poll $PG_BACKING_SERVICE
 ## Checking the redis backing services
 cf_poll $REDIS_BACKING_SERVICE
+## Checking the opensearch backing services
+cf_poll $OS_BACKING_SERVICE
 
 
 ####################################################################################
@@ -460,7 +463,7 @@ if [[ $ENV != "production" ]]; then
 
     ## Check for the redis database service
     if ! cf service $REDIS_BACKING_SERVICE 2>&1; then
-        printf "Creating redis service, instance of $PG_PLAN...\n"
+        printf "Creating redis service, instance of $REDIS_PLAN...\n"
         cf create-service redis $REDIS_PLAN $REDIS_BACKING_SERVICE
 
         echo "################################################################################################"
@@ -468,16 +471,30 @@ if [[ $ENV != "production" ]]; then
         echo "################################################################################################"
     fi
 
+    ## Check for the opensearch service
+    if ! cf service $OS_BACKING_SERVICE 2>&1; then
+        printf "Creating opensearch service, instance of $OS_PLAN...\n"
+        cf create-service opensearch $OS_PLAN $OS_BACKING_SERVICE
+
+        echo "################################################################################################"
+        echo >&2 "The new opensearch service is being created, this can take up to 10 minutes"
+        echo "################################################################################################"
+    fi
+
     ## Checking the postgres backing services
     cf_poll $PG_BACKING_SERVICE
     ## Checking the redis backing services
     cf_poll $REDIS_BACKING_SERVICE
+    ## Checking the redis backing services
+    cf_poll $OS_BACKING_SERVICE
 fi
 
 # Binding the postgres backing service
 cf bind-service $TARGET_ENV $PG_BACKING_SERVICE
 # Binding the redis backing service
 cf bind-service $TARGET_ENV $REDIS_BACKING_SERVICE
+# Binding the opensearch backing service
+cf bind-service $TARGET_ENV $OS_BACKING_SERVICE
 if [[ $ENV == "production" ]] && cf service $LOGGING_BACKING_SERVICE 2>&1; then
     # Binding the opss logging service
     cf bind-service $TARGET_ENV $LOGGING_BACKING_SERVICE
@@ -570,7 +587,10 @@ echo "##########################################################################
 
 printf "Running the post deployment scripts...\n"
 
+## Run cron to perform necessary startup tasks
 cf ssh $TARGET_ENV -c "cd app/devops/tools && python cron_runner.py"
 
 ## Run the cache warmer asynchronously with lots of memory
 cf run-task $TARGET_ENV "./scripts/cache-warmer.sh" -m 4G -k 4G --name CACHE_WARMER
+
+## Index the search engine

@@ -875,7 +875,10 @@ if ($env_services = getenv("VCAP_SERVICES")) {
   $services = json_decode($env_services);
   $db_credentials = isset($services->postgres) ? $services->postgres[0]->credentials : NULL;
   $redis_credentials = isset($services->redis) ? $services->redis[0]->credentials : NULL;
+  $os_credentials = isset($services->opensearch) ? $services->opensearch[0]->credentials : NULL;
 }
+
+
 
 // Set the PaaS database connection credentials.
 if (isset($db_credentials)) {
@@ -892,7 +895,7 @@ if (isset($db_credentials)) {
   ];
 }
 
-// Set the Paas redis conneciton credentials.
+// Set the PaaS redis conneciton credentials.
 if (isset($redis_credentials)) {
   // Enable Redis services.
   $settings['redis.connection']['interface'] = 'Predis';
@@ -945,6 +948,14 @@ if (isset($redis_credentials)) {
       ],
     ],
   ];
+}
+
+// Set the PaaS opensearch conneciton credentials.
+if (isset($os_credentials)) {
+  $settings['search_api.server.opensearch_server']['backend_config']['connector'] = 'basicauth';
+  $settings['search_api.server.opensearch_server']['backend_config']['connector_config']['url'] = $os_credentials->uri;
+  $settings['search_api.server.opensearch_server']['backend_config']['connector_config']['username'] = $os_credentials->username;
+  $settings['search_api.server.opensearch_server']['backend_config']['connector_config']['password'] = $os_credentials->password;
 }
 
 // Set flysystem configuration to use local files for all environments,
