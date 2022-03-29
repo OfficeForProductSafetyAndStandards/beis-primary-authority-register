@@ -312,7 +312,7 @@ class ParDataTestBase extends EntityKernelTestBase {
 
   public function getBaseValues() {
     return [
-      'uid' => $this->account,
+      'uid' => $this->account->id(),
       'type' => 'UNKNOWN',
       'archive_reason' => "Automated test archive reason",
     ];
@@ -630,7 +630,7 @@ class ParDataTestBase extends EntityKernelTestBase {
         'type' => 'legal_entity',
         'registered_name' => 'Jo\' Coffee Ltd',
         'registered_number' => '0123456789',
-        'legal_entity_type' => 'Limited Company',
+        'legal_entity_type' => 'limited_company',
       ] + $this->getBaseValues();
 
     return $values;
@@ -659,7 +659,7 @@ class ParDataTestBase extends EntityKernelTestBase {
         'size' => 'Enormous',
         'employees_band' => '10-50',
         'nation' => 'Wales',
-        'comments' => $long_string = $this->randomString(1000),
+        'comments' => $this->randomString(1000),
         'premises_mapped' => TRUE,
         'trading_name' => [
           $this->randomString(255),
