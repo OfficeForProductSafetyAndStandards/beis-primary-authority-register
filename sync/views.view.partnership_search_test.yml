@@ -26,6 +26,89 @@ display:
     display_options:
       title: 'Partnership Search Test'
       fields:
+        id:
+          id: id
+          table: search_api_datasource_partnership_index_entity_par_data_partnership
+          field: id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: par_data_partnership
+          plugin_id: search_api_field
+          label: 'Partnership Id'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api_numeric
+          fallback_options:
+            set_precision: false
+            precision: 0
+            decimal: .
+            separator: ''
+            format_plural: false
+            format_plural_string: !!binary MQNAY291bnQ=
+            prefix: ''
+            suffix: ''
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+            format_plural_values:
+              - '1'
+              - '@count'
         authority_name:
           id: authority_name
           table: search_api_index_partnership_index
@@ -89,7 +172,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
@@ -105,7 +188,7 @@ display:
           admin_label: ''
           plugin_id: search_api_field
           label: Partnership
-          exclude: false
+          exclude: true
           alter:
             alter_text: true
             text: 'Partnership between {{ authority_name }} and {{ organisation_name }}'
@@ -159,13 +242,66 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
+        par_flow_link:
+          id: par_flow_link
+          table: search_api_index_partnership_index
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: par_flow_link
+          label: Partnership
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          title: 'Partnership between {{ authority_name }} and {{ organisation_name }}'
+          assistive_text: ''
+          link: '/partnership/{{ id }}'
+          hidden: 0
         partnership_type:
           id: partnership_type
           table: search_api_index_partnership_index
