@@ -11,29 +11,6 @@ $databases['default']['default'] = array (
   'driver' => 'pgsql',
 );
 
-// Files need to be stored locally.
-//$settings['flysystem']['s3public'] = [
-//  'name' => 'S3 Public',
-//  'description' => 'The S3 store for public files.',
-//  'driver' => 'local',
-//  'config' => [
-//    'root' => 'sites/default/files/flysystem',
-//    'public' => TRUE,
-//  ],
-//  'serve_js' => TRUE,
-//  'serve_css' => TRUE,
-//];
-//$settings['flysystem']['s3private'] = [
-//  'name' => 'S3 Private',
-//  'description' => 'The S3 store for private files.',
-//  'driver' => 'local',
-//  'config' => [
-//    'root' => '/var/www/html/private',
-//  ],
-//  'serve_js' => FALSE,
-//  'serve_css' => FALSE,
-//];
-
 $settings['trusted_host_patterns'] = [''];
 
 $settings['config_readonly'] = FALSE;
@@ -42,12 +19,9 @@ $settings['skip_permissions_hardening'] = TRUE;
 
 $config['config_split.config_split.dev_config']['status'] = TRUE;
 $config['config_split.config_split.test_config']['status'] = TRUE;
-$config['config_split.config_split.theme_v2_config']['status'] = FALSE;
-// Allow theme v2 to be enabled through environment variables.
-$theme_version = getenv('THEME_VERSION');
-if (isset($theme_version) && $theme_version === 'v2') {
-  $config['config_split.config_split.theme_v2_config']['status'] = TRUE;
-}
+
+// Force the index to be created on the database server for CI.
+$config['search_api.index.partnership_index']['server'] = 'database_server';
 
 if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
   $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.yml';
