@@ -53,6 +53,9 @@ web/themes/custom/par_theme/assets/vendor/
 # Ignore backups directory used to store a local back of the database.
 /backups/
 
+# Ignore data directory used to store local opensearch data.
+/data/
+
 # Exclude configuration for developer only modules.
 /sync/devel.*
 /sync/simpletest.*

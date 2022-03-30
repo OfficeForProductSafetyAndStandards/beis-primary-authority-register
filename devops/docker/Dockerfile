@@ -91,16 +91,27 @@ RUN buildDeps=" \
       exif \
       zip \
     && apt-get purge -y --auto-remove $buildDeps \
-    && rm -r /var/lib/apt/lists/* \
-    && a2enmod rewrite
+    && rm -r /var/lib/apt/lists/*
 
 # Configure PCov for PHPUnit code coverage reports.
 RUN cd /tmp \
     && sudo -E pecl install pcov \
     && sudo -E docker-php-ext-enable pcov
 
+# Enable the requisite Apache modules.
+RUN a2enmod rewrite \
+    && a2enmod proxy \
+    && a2enmod proxy_http \
+    && a2enmod proxy_ajp \
+    && a2enmod proxy_balancer \
+    && a2enmod proxy_connect \
+    && a2enmod proxy_html
+
 # Configure Apache virtual host
 COPY ./par.localhost.conf /etc/apache2/sites-available/par.localhost.conf
+RUN mkdir -p /var/www/html/web \
+    && chown -RhL www-data:www-data /var/www/html/web \
+    && a2ensite par.localhost
 
 # Install composer
 ## Using composer installation from https://getcomposer.org/download/

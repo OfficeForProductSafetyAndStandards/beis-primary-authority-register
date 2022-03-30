@@ -2,23 +2,75 @@ version: "3"
 
 services:
     web:
-      image: beispar/web:v3.0.0
-      container_name: par_beta_web
-      links:
-        - db
+      image: beispar/web:v4.1.1
+      container_name: beis-par-web
       ports:
-        - "8111:80"
+        - "8080:80"
+        - "4433:443"
+      links:
+        - db:db.localhost
+        - os:os.localhost
+      networks:
+        - par-net
       volumes:
         - ../../:/var/www/html
 
     db:
-      container_name: par_beta_db
+      image: postgres:13.6
+      container_name: beis-par-db
       restart: always
-      image: postgres:9.6.3
       ports:
-        - "5411:5432"
+        - "5433:5432"
+      networks:
+        - par-net
+      volumes:
+        - ../../data/postgres:/var/lib/postgresql/data
       environment:
         POSTGRES_USER: par
         POSTGRES_PASSWORD: 123456
         POSTGRES_DB: par
+        PGDATA: /var/lib/postgresql/data
 
+    os:
+      image: opensearchproject/opensearch:1.2.4
+      container_name: beis-par-search
+      restart: always
+      ports:
+        - "9200:9200"
+        - "9600:9600" # required for Performance Analyzer
+      networks:
+        - par-net
+      volumes:
+        - ../../data/opensearch:/usr/share/opensearch/data
+      environment:
+        - cluster.name=opensearch-cluster
+        - node.name=beis-par-search
+        - discovery.seed_hosts=beis-par-search
+        - cluster.initial_master_nodes=beis-par-search
+        - bootstrap.memory_lock=true # along with the memlock settings below, disables swapping
+        - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # minimum and maximum Java heap size, recommend setting both to 50% of system RAM
+        - DISABLE_INSTALL_DEMO_CONFIG=true # disables execution of install_demo_configuration.sh bundled with security plugin, which installs demo certificates and security configurations to OpenSearch
+        - DISABLE_SECURITY_PLUGIN=true # disables security plugin entirely in OpenSearch by setting plugins.security.disabled: true in opensearch.yml
+      ulimits:
+        memlock:
+          soft: -1
+          hard: -1
+        nofile:
+          soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
+          hard: 65536
+
+    search-dashboard:
+      image: opensearchproject/opensearch-dashboards:1.2.0
+      container_name: opensearch-dashboards
+      ports:
+        - "5601:5601"
+      expose:
+        - "5601"
+      networks:
+        - par-net
+      environment:
+        OPENSEARCH_HOSTS: '["https://search:9200"]'
+
+networks:
+  par-net:
+    driver: bridge

@@ -435,11 +435,13 @@ printf "Checking and enabling backing services...\n"
 if [[ $ENV = "production" ]] || [[ $ENV = "staging" ]]; then
     PG_PLAN='medium-ha-13'
     REDIS_PLAN='medium-ha-6.x'
+    OS_PLAN='small-ha-1'
 else
     ## The free plan can be used for any non-critical environments
 #    PG_PLAN='tiny-unencrypted-11' @TODO DB is currently too large for this plan.
     PG_PLAN='small-13'
     REDIS_PLAN='tiny-6.x'
+    OS_PLAN='tiny-1'
 fi
 
 if [[ $ENV != "production" ]]; then
