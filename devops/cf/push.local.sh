@@ -594,3 +594,4 @@ cf ssh $TARGET_ENV -c "cd app/devops/tools && python cron_runner.py"
 cf run-task $TARGET_ENV "./scripts/cache-warmer.sh" -m 4G -k 4G --name CACHE_WARMER
 
 ## Index the search engine
+cf run-task $TARGET_ENV "./scripts/re-index.sh partnership_index --rebuild" -m 4G -k 4G --name SEARCH_REINDEX
