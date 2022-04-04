@@ -13,6 +13,7 @@ RUN apt-get update \
         gnupg2 \
         wget \
         curl \
+        jq \
         certbot
 
 RUN sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections" \

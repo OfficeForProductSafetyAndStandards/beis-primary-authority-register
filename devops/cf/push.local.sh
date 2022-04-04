@@ -8,20 +8,6 @@ set -o errexit -euo pipefail -o noclobber -o nounset
 
 
 ####################################################################################
-# Create polling function
-# Used to check for the status of a PaaS service.
-####################################################################################
-function cf_poll {
-    I=1
-    printf "Waiting for $1 backing service...\n"
-    while [[ $(cf service $1 | awk -F '  +' '/status:/ {print $2}' | grep 'in progress') ]]
-    do
-      printf "%0.s-" $(seq 1 $I)
-      sleep 2
-    done
-}
-
-####################################################################################
 # Prerequisites - You'll need the following installed
 #    Cloud Foundry CLI - https://docs.cloudfoundry.org/cf-cli/install-go-cli.html
 #    Vault CLI - https://www.vaultproject.io/docs/install/index.html
@@ -355,9 +341,19 @@ trap cf_teardown ERR
 
 ####################################################################################
 # Create polling function
-# Used to check for the status of a PaaS service.
+# Used to check for the status of a PaaS service or a PaaS task.
 ####################################################################################
-function cf_poll {
+function cf_poll_app {
+    I=1
+    printf "Waiting for the app $1...\n"
+    while [[ $(cf app $1 | awk -F '  +' '/status:/ {print $2}' | grep 'in progress') ]]
+    do
+      printf "%0.s-" $(seq 1 $I)
+      sleep 2
+    done
+    printf "App $1 is running...\n"
+}
+function cf_poll_service {
     I=1
     printf "Waiting for $1 backing service...\n"
     while [[ $(cf service $1 | awk -F '  +' '/status:/ {print $2}' | grep 'in progress') ]]
@@ -367,6 +363,21 @@ function cf_poll {
     done
     printf "Backing service $1 is running...\n"
 }
+function cf_poll_task {
+    I=1
+    printf "Waiting for $2 task...\n"
+    while [[ $(cf tasks $1 | awk '//{print $2, $3}' | grep "$2 RUNNING") ]]
+    do
+      printf "%0.s-" $(seq 1 $I)
+      sleep 2
+    done
+    task_status=$(cf tasks $1 | awk '//{print $1, $2, $3}' | grep -m 1 "$2" | awk '//{print $3}')
+    if [[ $task_status == "FAILED" ]]; then
+      exit 99
+    fi
+    printf "Task $2 has completed ($task_status)...\n"
+}
+
 
 ####################################################################################
 # Waiting for cloud foundry to be ready
@@ -376,20 +387,14 @@ function cf_poll {
 printf "Waiting for cloud foundry (readiness)...\n"
 
 ## Checking the app
-printf "Waiting for the app...\n"
-I=1
-while [[ $(cf app $TARGET_ENV | awk -F '  +' '/status:/ {print $2}' | grep 'in progress') ]]
-do
-  printf "%0.s-" $(seq 1 $I)
-  sleep 2
-done
+cf_poll_app $TARGET_ENV
 
 ## Checking the postgres backing services
-cf_poll $PG_BACKING_SERVICE
+cf_poll_service $PG_BACKING_SERVICE
 ## Checking the redis backing services
-cf_poll $REDIS_BACKING_SERVICE
+cf_poll_service $REDIS_BACKING_SERVICE
 ## Checking the opensearch backing services
-cf_poll $OS_BACKING_SERVICE
+cf_poll_service $OS_BACKING_SERVICE
 
 
 ####################################################################################
@@ -482,11 +487,11 @@ if [[ $ENV != "production" ]]; then
     fi
 
     ## Checking the postgres backing services
-    cf_poll $PG_BACKING_SERVICE
+    cf_poll_service $PG_BACKING_SERVICE
     ## Checking the redis backing services
-    cf_poll $REDIS_BACKING_SERVICE
+    cf_poll_service $REDIS_BACKING_SERVICE
     ## Checking the redis backing services
-    cf_poll $OS_BACKING_SERVICE
+    cf_poll_service $OS_BACKING_SERVICE
 fi
 
 # Binding the postgres backing service
@@ -595,3 +600,7 @@ cf run-task $TARGET_ENV "./scripts/cache-warmer.sh" -m 4G -k 4G --name CACHE_WAR
 
 ## Index the search engine
 cf run-task $TARGET_ENV "./scripts/re-index.sh partnership_index --rebuild" -m 4G -k 4G --name SEARCH_REINDEX
+
+# Poll running tasks so that the job reports the completion status of each task
+cf_poll_task $TARGET_ENV CACHE_WARMER
+cf_poll_task $TARGET_ENV SEARCH_REINDEX
