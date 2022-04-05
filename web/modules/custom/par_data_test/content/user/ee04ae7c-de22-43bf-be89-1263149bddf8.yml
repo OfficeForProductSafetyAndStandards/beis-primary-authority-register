@@ -1,0 +1,50 @@
+_meta:
+  version: '1.0'
+  entity_type: user
+  uuid: ee04ae7c-de22-43bf-be89-1263149bddf8
+  default_langcode: en
+default:
+  preferred_langcode:
+    -
+      value: en
+  name:
+    -
+      value: load_test_4@example.com
+  pass:
+    -
+      value: TestPassword
+      existing: ''
+      pre_hashed: false
+  mail:
+    -
+      value: load_test_4@example.com
+  timezone:
+    -
+      value: UTC
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1521559594
+  access:
+    -
+      value: 0
+  login:
+    -
+      value: 0
+  roles:
+    -
+      target_id: par_enforcement
+  role_change:
+    -
+      target_id: __role_delegation_empty_field_value__
+  field_gdpr:
+    -
+      value: true
+  field_last_password_reset:
+    -
+      value: '2020-12-10T13:33:38'
+  field_password_expiration:
+    -
+      value: false

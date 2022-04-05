@@ -1,0 +1,21 @@
+username,password,searchTerm
+load_test_1@example.com,TestPassword,Tesco
+load_test_2@example.com,TestPassword,asda
+load_test_3@example.com,TestPassword,aldi
+load_test_4@example.com,TestPassword,sainsburys
+load_test_5@example.com,TestPassword,lidl
+load_test_6@example.com,TestPassword,Sainsbury
+load_test_7@example.com,TestPassword,amazon
+load_test_8@example.com,TestPassword,costa
+load_test_9@example.com,TestPassword,costa
+load_test_10@example.com,TestPassword,greggs
+load_test_11@example.com,TestPassword,greene king
+load_test_12@example.com,TestPassword,iceland
+load_test_13@example.com,TestPassword,waitrose
+load_test_14@example.com,TestPassword,Morrisons
+load_test_15@example.com,TestPassword,Lidl
+load_test_16@example.com,TestPassword,KFC
+load_test_17@example.com,TestPassword,Greggs
+load_test_18@example.com,TestPassword,kfc
+load_test_19@example.com,TestPassword,mcdonalds
+load_test_20@example.com,TestPassword,co-operative

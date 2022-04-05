@@ -123,6 +123,7 @@ cf target -o "office-for-product-safety-and-standards" -s "primary-authority-reg
 printf "Acquiring the backing services to be removed...\n"
 
 APP="beis-par-$ENV"
+CDN_BACKING_SERVICE="par-cdn-$ENV"
 PG_BACKING_SERVICE="par-pg-$ENV"
 REDIS_BACKING_SERVICE="par-redis-$ENV"
 
@@ -130,14 +131,32 @@ REDIS_BACKING_SERVICE="par-redis-$ENV"
 ####################################################################################
 # Unbinding all the backing services.
 ####################################################################################
+printf "Removing cdn backing services...\n"
+if cf service $CDN_BACKING_SERVICE >/dev/null 2>&1; then
+    if cf app $APP >/dev/null 2>&1; then
+        printf "Unbinding cdn backing services...\n"
+        cf unbind-service $APP $CDN_BACKING_SERVICE
+    fi
+
+    ## In some instances service keys may also have to be deleted
+    if ! cf service-keys $CDN_BACKING_SERVICE | grep -v 'No service key for service instance'; then
+          printf "Service keys will need to be deleted manually, see 'cf service-keys $CDN_BACKING_SERVICE'\n"
+    fi
+
+    cf delete-service -f $CDN_BACKING_SERVICE
+fi
+
 printf "Removing postgres backing services...\n"
 if cf service $PG_BACKING_SERVICE >/dev/null 2>&1; then
     if cf app $APP >/dev/null 2>&1; then
+        printf "Unbinding postgres backing services...\n"
         cf unbind-service $APP $PG_BACKING_SERVICE
     fi
 
     ## In some instances service keys may also have to be deleted
-    printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $PG_BACKING_SERVICE'\n"
+    if ! cf service-keys $PG_BACKING_SERVICE | grep -v 'No service key for service instance'; then
+          printf "Service keys will need to be deleted manually, see 'cf service-keys $PG_BACKING_SERVICE'\n"
+    fi
 
     cf delete-service -f $PG_BACKING_SERVICE
 fi
@@ -145,11 +164,14 @@ fi
 printf "Removing redis backing services...\n"
 if cf service $REDIS_BACKING_SERVICE >/dev/null 2>&1; then
     if cf app $APP >/dev/null 2>&1; then
+        printf "Unbinding redis backing services...\n"
         cf unbind-service $APP $REDIS_BACKING_SERVICE
     fi
 
     ## In some instances service keys may also have to be deleted
-    printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $REDIS_BACKING_SERVICE'\n"
+    if ! cf service-keys $REDIS_BACKING_SERVICE | grep -v 'No service key for service instance'; then
+          printf "Service keys will need to be deleted manually, see 'cf service-keys $REDIS_BACKING_SERVICE'\n"
+    fi
 
     cf delete-service -f $REDIS_BACKING_SERVICE
 fi

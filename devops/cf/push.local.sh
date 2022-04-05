@@ -244,10 +244,10 @@ vault operator seal -tls-skip-verify
 ####################################################################################
 printf "Authenticating with GovUK PaaS...\n"
 
-if [[ $ENV == 'production' ]] || [[ $ENV == production-* ]]; then
+if [[ $ENV == 'production' ]] || [[ $ENV =~ ^production-.* ]]; then
     cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD \
       -o "office-for-product-safety-and-standards" -s "primary-authority-register-production"
-elif [[ $ENV == 'staging' ]] || [[ $ENV == staging-* ]]; then
+elif [[ $ENV == 'staging' ]] || [[ $ENV =~ ^staging-.* ]] || [[ $ENV =~ ^test-.* ]]; then
     cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD \
       -o "office-for-product-safety-and-standards" -s "primary-authority-register-staging"
 else
@@ -436,6 +436,10 @@ if [[ $ENV = "production" ]] || [[ $ENV = "staging" ]]; then
     PG_PLAN='medium-ha-13'
     REDIS_PLAN='medium-ha-6.x'
     OS_PLAN='small-ha-1'
+elseif [[ $ENV =~ ^test-.* ]]; then
+    PG_PLAN='medium-13'
+    REDIS_PLAN='medium-6.x'
+    OS_PLAN='small-1'
 else
     ## The free plan can be used for any non-critical environments
 #    PG_PLAN='tiny-unencrypted-11' @TODO DB is currently too large for this plan.
