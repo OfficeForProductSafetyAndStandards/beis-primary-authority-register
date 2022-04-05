@@ -6,7 +6,7 @@ orbs:
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v4.1.0
+      - image: beispar/web:v4.2.0
         name: web
         environment:
           APP_ENV: ci
@@ -286,7 +286,6 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *import_database
       - *build_assets
       - run:
           name: "Examine asset bundle."
@@ -297,7 +296,7 @@ jobs:
           command: |
             DEPLOY_ENV="test"
             UNIQUE_NAME=$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
-            printf "$DEPLOY_ENV-$UNIQUE_NAME\n"
+            printf "Deploying to test environment beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
             ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV-$UNIQUE_NAME
       - run:
           name: "Run load test."
@@ -311,7 +310,6 @@ jobs:
           command: |
             DEPLOY_ENV="test"
             UNIQUE_NAME=$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
-            printf "$DEPLOY_ENV-$UNIQUE_NAME\n"
             printf "Removing test environment beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
             ./devops/cf/destroy.app.sh $DEPLOY_ENV-$UNIQUE_NAME
 

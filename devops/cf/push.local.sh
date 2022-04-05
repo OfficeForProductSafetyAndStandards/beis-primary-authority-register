@@ -436,7 +436,7 @@ if [[ $ENV = "production" ]] || [[ $ENV = "staging" ]]; then
     PG_PLAN='medium-ha-13'
     REDIS_PLAN='medium-ha-6.x'
     OS_PLAN='small-ha-1'
-elseif [[ $ENV =~ ^test-.* ]]; then
+elif [[ $ENV =~ ^test-.* ]]; then
     PG_PLAN='medium-13'
     REDIS_PLAN='medium-6.x'
     OS_PLAN='small-1'
