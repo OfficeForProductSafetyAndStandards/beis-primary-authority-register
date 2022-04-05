@@ -465,7 +465,7 @@ if [[ $ENV != "production" ]]; then
 
     ## Check for the redis database service
     if ! cf service $REDIS_BACKING_SERVICE 2>&1; then
-        printf "Creating redis service, instance of $PG_PLAN...\n"
+        printf "Creating redis service, instance of $REDIS_PLAN...\n"
         cf create-service redis $REDIS_PLAN $REDIS_BACKING_SERVICE
 
         echo "################################################################################################"
