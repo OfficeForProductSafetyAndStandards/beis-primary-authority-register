@@ -111,10 +111,14 @@ fi
 ####################################################################################
 printf "Authenticating with GovUK PaaS...\n"
 
-cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD
-
-# Only allow apps in the development space to be removed.
-cf target -o "office-for-product-safety-and-standards" -s "primary-authority-register-development"
+# Only allow apps in the development or staging space to be removed.
+if [[ $ENV == 'staging' ]] || [[ $ENV =~ ^staging-.* ]] || [[ $ENV =~ ^test-.* ]]; then
+    cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD \
+      -o "office-for-product-safety-and-standards" -s "primary-authority-register-staging"
+else
+    cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD \
+      -o "office-for-product-safety-and-standards" -s "primary-authority-register-development"
+fi
 
 
 ####################################################################################
@@ -131,7 +135,7 @@ REDIS_BACKING_SERVICE="par-redis-$ENV"
 ####################################################################################
 # Unbinding all the backing services.
 ####################################################################################
-printf "Removing cdn backing services...\n"
+printf "Removing cdn backing service $CDN_BACKING_SERVICE...\n"
 if cf service $CDN_BACKING_SERVICE >/dev/null 2>&1; then
     if cf app $APP >/dev/null 2>&1; then
         printf "Unbinding cdn backing services...\n"
@@ -146,7 +150,7 @@ if cf service $CDN_BACKING_SERVICE >/dev/null 2>&1; then
     cf delete-service -f $CDN_BACKING_SERVICE
 fi
 
-printf "Removing postgres backing services...\n"
+printf "Removing postgres backing service $PG_BACKING_SERVICE...\n"
 if cf service $PG_BACKING_SERVICE >/dev/null 2>&1; then
     if cf app $APP >/dev/null 2>&1; then
         printf "Unbinding postgres backing services...\n"
@@ -161,7 +165,7 @@ if cf service $PG_BACKING_SERVICE >/dev/null 2>&1; then
     cf delete-service -f $PG_BACKING_SERVICE
 fi
 
-printf "Removing redis backing services...\n"
+printf "Removing redis backing service $REDIS_BACKING_SERVICE...\n"
 if cf service $REDIS_BACKING_SERVICE >/dev/null 2>&1; then
     if cf app $APP >/dev/null 2>&1; then
         printf "Unbinding redis backing services...\n"
@@ -181,8 +185,8 @@ if cf app $APP >/dev/null 2>&1; then
     cf unmap-route $APP cloudapps.digital -n $APP
     cf unmap-route $APP cloudapps.digital -n $APP-green
 fi
-cf delete-route cloudapps.digital -n $APP -y
-cf delete-route cloudapps.digital -n $APP-green -y
+cf delete-route -f cloudapps.digital -n $APP
+cf delete-route -f cloudapps.digital -n $APP-green
 
 ## Remove the main app if it exists
 printf "Removing the app...\n"
