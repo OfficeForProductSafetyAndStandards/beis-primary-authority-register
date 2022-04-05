@@ -13,6 +13,7 @@ RUN apt-get update \
         gnupg2 \
         wget \
         curl \
+        jq \
         certbot
 
 RUN sh -c "echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections" \
@@ -135,6 +136,20 @@ RUN cd /tmp \
 RUN apt-add-repository 'deb http://security.debian.org/debian-security stretch/updates main' \
     && apt-get update \
     && apt-get install -y --no-install-recommends --no-upgrade openjdk-8-jre openjdk-8-jre-headless openjdk-8-jdk openjdk-8-jdk-headless
+
+# Install jMeter
+## Using instalation from https://github.com/justb4/docker-jmeter/blob/master/Dockerfile
+ARG JMETER_VERSION="5.4.3"
+ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
+ENV	JMETER_BIN	${JMETER_HOME}/bin
+ENV	JMETER_DOWNLOAD_URL  https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
+RUN mkdir -p /tmp/dependencies \
+  && curl -L --silent ${JMETER_DOWNLOAD_URL} >  /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz \
+  && mkdir -p /opt \
+  && tar -xzf /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz -C /opt \
+  && rm -rf /tmp/dependencies
+# Set global PATH such that "jmeter" command is found
+ENV PATH $PATH:$JMETER_BIN
 
 #=====================================
 # Browser testing for GDS requirements

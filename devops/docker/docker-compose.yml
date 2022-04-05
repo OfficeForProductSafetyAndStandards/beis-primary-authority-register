@@ -2,7 +2,7 @@ version: "3"
 
 services:
     web:
-      image: beispar/web:v4.1.1
+      image: beispar/web:v4.2.0
       container_name: beis-par-web
       ports:
         - "8080:80"

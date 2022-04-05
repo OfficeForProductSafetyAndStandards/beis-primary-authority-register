@@ -277,6 +277,44 @@ jobs:
       - store_test_results:
           path: /var/www/html/tests/reports
 
+  test_load:
+    <<: *defaults
+    steps:
+      - *clean_working_directory
+      - *attach_workspace
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
+      - *configure_webroot
+      - *import_database
+      - *build_assets
+      - run:
+          name: "Examine asset bundle."
+          command: |
+            ls -lah /tmp/workspace
+      - run:
+          name: "Deploy to fresh load testing environment"
+          command: |
+            DEPLOY_ENV="test"
+            UNIQUE_NAME=$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
+            printf "$DEPLOY_ENV-$UNIQUE_NAME\n"
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV-$UNIQUE_NAME
+      - run:
+          name: "Run load test."
+          command: |
+            DEPLOY_ENV="test"
+            UNIQUE_NAME=$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
+            printf "Running load test against beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
+            jmeter -n -t ./tests/nfr/jmeter/search_partnerships.jmx -Jurl=beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital -l ./tests/reports/jmeter/jmeterlog.jtl
+      - run:
+          name: "Destroy the load testing environment."
+          command: |
+            DEPLOY_ENV="test"
+            UNIQUE_NAME=$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
+            printf "$DEPLOY_ENV-$UNIQUE_NAME\n"
+            printf "Removing test environment beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
+            ./devops/cf/destroy.app.sh $DEPLOY_ENV-$UNIQUE_NAME
+
   deploy_stage:
     <<: *defaults
     steps:
@@ -498,6 +536,23 @@ workflows:
       - deploy_stage:
           requires:
             - hold_stage
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - hold_load_test:
+          type: approval
+          requires:
+            - compile_code
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - test_load:
+          requires:
+            - hold_load_test
           filters:
             tags:
               only: /^v.*/
