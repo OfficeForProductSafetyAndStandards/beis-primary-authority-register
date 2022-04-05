@@ -225,9 +225,6 @@ jobs:
       - store_artifacts:
           path: /var/www/html/tests/reports
           destination: build
-      # Upload test results
-      - store_test_results:
-          path: /var/www/html/tests/reports
 
   test_full:
     <<: *defaults
@@ -273,9 +270,6 @@ jobs:
       - store_artifacts:
           path: /var/www/html/tests/reports
           destination: build
-      # Upload test results
-      - store_test_results:
-          path: /var/www/html/tests/reports
 
   test_load:
     <<: *defaults
@@ -312,6 +306,10 @@ jobs:
             UNIQUE_NAME=$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
             printf "Removing test environment beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
             ./devops/cf/destroy.app.sh $DEPLOY_ENV-$UNIQUE_NAME
+      # Save artifacts
+      - store_artifacts:
+          path: /var/www/html/tests/reports
+          destination: build
 
   deploy_stage:
     <<: *defaults

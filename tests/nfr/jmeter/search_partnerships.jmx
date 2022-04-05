@@ -250,7 +250,7 @@
             <hashTree/>
           </hashTree>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="View Partnership Search Page" enabled="false">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="View Partnership Search Page" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
           <boolProp name="TransactionController.parent">false</boolProp>
         </TransactionController>
