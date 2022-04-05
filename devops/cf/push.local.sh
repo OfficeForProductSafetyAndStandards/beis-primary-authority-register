@@ -437,12 +437,13 @@ if [[ $ENV = "production" ]] || [[ $ENV = "staging" ]]; then
     REDIS_PLAN='medium-ha-6.x'
     OS_PLAN='small-ha-1'
 elif [[ $ENV =~ ^test-.* ]]; then
+    # Bottleneck for tests is the database, all other services
+    # can use the smallest effective instance sizes.
     PG_PLAN='medium-13'
-    REDIS_PLAN='medium-6.x'
-    OS_PLAN='small-1'
+    REDIS_PLAN='tiny-6.x'
+    OS_PLAN='tiny-1'
 else
     ## The free plan can be used for any non-critical environments
-#    PG_PLAN='tiny-unencrypted-11' @TODO DB is currently too large for this plan.
     PG_PLAN='small-13'
     REDIS_PLAN='tiny-6.x'
     OS_PLAN='tiny-1'
@@ -487,7 +488,7 @@ if [[ $ENV == "production" ]] && cf service $LOGGING_BACKING_SERVICE 2>&1; then
     cf bind-service $TARGET_ENV $LOGGING_BACKING_SERVICE
 fi
 
-## Deployment to no production environments need a database
+## Deployment to non production environments need a database
 if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]] && [[ ! -f $DB_IMPORT ]]; then
     printf "Non-production environments need a copy of the database to seed from at '$DB_IMPORT'.\n"
     exit 5
