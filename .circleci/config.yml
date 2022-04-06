@@ -177,6 +177,26 @@ jobs:
           paths:
             - .
 
+  release_notes:
+    <<: *defaults
+    parameters:
+    steps:
+      - *clean_working_directory
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
+      - *configure_webroot
+      - run:
+          name: "Add workflow url to build summary"
+          command: |
+            cd /tmp/workspace
+            printf "https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID\n" >> build_summary.txt
+      - run:
+          name: "Write artifacts to github release"
+          command: |
+            cd /tmp/workspace
+            # This is a work in progress, see https://circleci.com/developer/orbs/orb/circleci/github-cli && https://github.com/cli/cli/issues/1997
+
   test_smoke:
     <<: *defaults
     parameters:
@@ -211,7 +231,7 @@ jobs:
             npm install
             npm run selenium-install
       - run:
-          name: "Run unit tesunit tests"
+          name: "Run unit tests"
           command: |
             ./vendor/bin/phpunit --testdox --no-coverage
       - run:
@@ -225,9 +245,6 @@ jobs:
       - store_artifacts:
           path: /var/www/html/tests/reports
           destination: build
-      # Upload test results
-      - store_test_results:
-          path: /var/www/html/tests/reports
 
   test_full:
     <<: *defaults
@@ -273,9 +290,6 @@ jobs:
       - store_artifacts:
           path: /var/www/html/tests/reports
           destination: build
-      # Upload test results
-      - store_test_results:
-          path: /var/www/html/tests/reports
 
   test_load:
     <<: *defaults
@@ -312,6 +326,10 @@ jobs:
             UNIQUE_NAME=$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
             printf "Removing test environment beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
             ./devops/cf/destroy.app.sh $DEPLOY_ENV-$UNIQUE_NAME
+      # Save artifacts
+      - store_artifacts:
+          path: /var/www/html/tests/reports
+          destination: build
 
   deploy_stage:
     <<: *defaults
