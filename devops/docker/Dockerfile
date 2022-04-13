@@ -141,8 +141,9 @@ RUN apt-add-repository 'deb http://security.debian.org/debian-security stretch/u
 ## Using instalation from https://github.com/justb4/docker-jmeter/blob/master/Dockerfile
 ARG JMETER_VERSION="5.4.3"
 ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
-ENV	JMETER_BIN	${JMETER_HOME}/bin
-ENV	JMETER_DOWNLOAD_URL  https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
+ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
+ENV	JMETER_BIN ${JMETER_HOME}/bin
+ENV	JMETER_DOWNLOAD_URL https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
 RUN mkdir -p /tmp/dependencies \
   && curl -L --silent ${JMETER_DOWNLOAD_URL} >  /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz \
   && mkdir -p /opt \
@@ -150,6 +151,26 @@ RUN mkdir -p /tmp/dependencies \
   && rm -rf /tmp/dependencies
 # Set global PATH such that "jmeter" command is found
 ENV PATH $PATH:$JMETER_BIN
+
+# Install jMeter Plugins
+ARG FILTER_RESULTS_PLUGIN_VERSION="2.2"
+ENV	FILTER_RESULTS_PLUGIN_URL https://jmeter-plugins.org/files/packages/jpgc-filterresults-${FILTER_RESULTS_PLUGIN_VERSION}.zip
+RUN mkdir -p /tmp/dependencies \
+  && curl -L --silent ${FILTER_RESULTS_PLUGIN_URL} >  \
+    /tmp/dependencies/jmeter-cmd-plugin-${FILTER_RESULTS_PLUGIN_VERSION}.zip \
+  && unzip -o /tmp/dependencies/jmeter-cmd-plugin-${FILTER_RESULTS_PLUGIN_VERSION}.zip -d ${JMETER_HOME}
+ARG SYNTHESIS_PLUGIN_VERSION="2.2"
+ENV	SYNTHESIS_PLUGIN_URL https://jmeter-plugins.org/files/packages/jpgc-synthesis-${SYNTHESIS_PLUGIN_VERSION}.zip
+RUN mkdir -p /tmp/dependencies \
+  && curl -L --silent ${SYNTHESIS_PLUGIN_URL} >  \
+    /tmp/dependencies/jmeter-cmd-plugin-${SYNTHESIS_PLUGIN_VERSION}.zip \
+  && unzip -o /tmp/dependencies/jmeter-cmd-plugin-${SYNTHESIS_PLUGIN_VERSION}.zip -d ${JMETER_HOME}
+ARG CMD_PLUGIN_VERSION="2.2"
+ENV	CMD_PLUGIN_URL https://jmeter-plugins.org/files/packages/jpgc-cmd-${CMD_PLUGIN_VERSION}.zip
+RUN mkdir -p /tmp/dependencies \
+  && curl -L --silent ${CMD_PLUGIN_URL} >  \
+    /tmp/dependencies/jmeter-cmd-plugin-${CMD_PLUGIN_VERSION}.zip \
+  && unzip -o /tmp/dependencies/jmeter-cmd-plugin-${CMD_PLUGIN_VERSION}.zip -d ${JMETER_HOME}
 
 #=====================================
 # Browser testing for GDS requirements
