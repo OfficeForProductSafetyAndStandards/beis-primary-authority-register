@@ -318,8 +318,12 @@ jobs:
             DEPLOY_ENV="test"
             UNIQUE_NAME=$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
             printf "Running load test against beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
-            jmeter -n -t ./tests/nfr/jmeter/search_partnerships.jmx -Jurl=beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital -l ./tests/reports/jmeter/jmeterlog.jtl
-            /opt/apache-jmeter-5.4.3/bin/JMeterPluginsCMD.sh --generate-csv ./tests/reports/jmeter/aggregate-report.csv --input-jtl ./tests/reports/jmeter/jmeter-log.jtl --plugin-type AggregateReport
+            jmeter -n -t ./tests/nfr/jmeter/search_partnerships.jmx \
+                -Jurl=beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital \
+                -l ./tests/reports/jmeter/jmeter-log.jtl
+            /opt/apache-jmeter-5.4.3/bin/JMeterPluginsCMD.sh --generate-csv ./tests/reports/jmeter/aggregate-report.csv \
+                --input-jtl ./tests/reports/jmeter/jmeter-log.jtl  \
+                --plugin-type AggregateReport
       - run:
           name: "Destroy the load testing environment."
           command: |
