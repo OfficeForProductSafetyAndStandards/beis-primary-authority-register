@@ -544,7 +544,7 @@ workflows:
       - hold_stage:
           type: approval
           requires:
-            - compile_code
+            - test_full
           filters:
             tags:
               only: /^v.*/
@@ -580,6 +580,7 @@ workflows:
           context: production
           requires:
             - deploy_stage
+            - test_load
           filters:
             tags:
               only: /^v.*/
