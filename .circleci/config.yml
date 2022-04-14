@@ -313,11 +313,12 @@ jobs:
             printf "Deploying to test environment beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
             ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV-$UNIQUE_NAME
       - run:
-          name: "Run load test."
+          name: "Run load test"
           command: |
             DEPLOY_ENV="test"
             UNIQUE_NAME=$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
             printf "Running load test against beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
+            set +e
             jmeter -n -t ./tests/nfr/jmeter/search_partnerships.jmx \
                 -Jurl=beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital \
                 -l ./tests/reports/jmeter/jmeter-log.jtl
