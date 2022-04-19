@@ -313,6 +313,15 @@ jobs:
             printf "Deploying to test environment beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
             ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV-$UNIQUE_NAME
       - run:
+          name: "Wait for site to be ready for testing"
+          command: |
+            DEPLOY_ENV="test"
+            UNIQUE_NAME=$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
+            SITE_URL="https://beis-par-${DEPLOY_ENV}-${UNIQUE_NAME}.cloudapps.digital"
+            printf "Checking that $SITE_URL is ready to perform a load test\n"
+            curl -s -o /dev/null -w "Response status: %{http_code}\n" $SITE_URL
+            sleep 30;
+      - run:
           name: "Run load test"
           command: |
             DEPLOY_ENV="test"
