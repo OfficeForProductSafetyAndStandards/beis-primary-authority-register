@@ -8,20 +8,6 @@ set -o errexit -euo pipefail -o noclobber -o nounset
 
 
 ####################################################################################
-# Create polling function
-# Used to check for the status of a PaaS service.
-####################################################################################
-function cf_poll {
-    I=1
-    printf "Waiting for $1 backing service...\n"
-    while [[ $(cf service $1 | awk -F '  +' '/status:/ {print $2}' | grep 'in progress') ]]
-    do
-      printf "%0.s-" $(seq 1 $I)
-      sleep 2
-    done
-}
-
-####################################################################################
 # Prerequisites - You'll need the following installed
 #    Cloud Foundry CLI - https://docs.cloudfoundry.org/cf-cli/install-go-cli.html
 #    Vault CLI - https://www.vaultproject.io/docs/install/index.html
@@ -244,10 +230,10 @@ vault operator seal -tls-skip-verify
 ####################################################################################
 printf "Authenticating with GovUK PaaS...\n"
 
-if [[ $ENV == 'production' ]] || [[ $ENV =~ ^production-.* ]]; then
+if [[ $ENV == 'production' ]] || [[ $ENV == production-* ]]; then
     cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD \
       -o "office-for-product-safety-and-standards" -s "primary-authority-register-production"
-elif [[ $ENV == 'staging' ]] || [[ $ENV =~ ^staging-.* ]] || [[ $ENV =~ ^test-.* ]]; then
+elif [[ $ENV == 'staging' ]] || [[ $ENV == staging-* ]]; then
     cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD \
       -o "office-for-product-safety-and-standards" -s "primary-authority-register-staging"
 else
@@ -274,6 +260,7 @@ fi
 PG_BACKING_SERVICE="par-pg-$ENV"
 CDN_BACKING_SERVICE="par-cdn-$ENV"
 REDIS_BACKING_SERVICE="par-redis-$ENV"
+OS_BACKING_SERVICE="par-os-$ENV"
 LOGGING_BACKING_SERVICE="opss-log-drain"
 
 MANIFEST="${BASH_SOURCE%/*}/manifests/manifest.$ENV.yml"
@@ -354,9 +341,19 @@ trap cf_teardown ERR
 
 ####################################################################################
 # Create polling function
-# Used to check for the status of a PaaS service.
+# Used to check for the status of a PaaS service or a PaaS task.
 ####################################################################################
-function cf_poll {
+function cf_poll_app {
+    I=1
+    printf "Waiting for the app $1...\n"
+    while [[ $(cf app $1 | awk -F '  +' '/status:/ {print $2}' | grep 'in progress') ]]
+    do
+      printf "%0.s-" $(seq 1 $I)
+      sleep 2
+    done
+    printf "App $1 is running...\n"
+}
+function cf_poll_service {
     I=1
     printf "Waiting for $1 backing service...\n"
     while [[ $(cf service $1 | awk -F '  +' '/status:/ {print $2}' | grep 'in progress') ]]
@@ -366,6 +363,21 @@ function cf_poll {
     done
     printf "Backing service $1 is running...\n"
 }
+function cf_poll_task {
+    I=1
+    printf "Waiting for $2 task...\n"
+    while [[ $(cf tasks $1 | awk '//{print $2, $3}' | grep "$2 RUNNING") ]]
+    do
+      printf "%0.s-" $(seq 1 $I)
+      sleep 2
+    done
+    task_status=$(cf tasks $1 | awk '//{print $1, $2, $3}' | grep -m 1 "$2" | awk '//{print $3}')
+    if [[ $task_status == "FAILED" ]]; then
+      exit 99
+    fi
+    printf "Task $2 has completed ($task_status)...\n"
+}
+
 
 ####################################################################################
 # Waiting for cloud foundry to be ready
@@ -375,18 +387,14 @@ function cf_poll {
 printf "Waiting for cloud foundry (readiness)...\n"
 
 ## Checking the app
-printf "Waiting for the app...\n"
-I=1
-while [[ $(cf app $TARGET_ENV | awk -F '  +' '/status:/ {print $2}' | grep 'in progress') ]]
-do
-  printf "%0.s-" $(seq 1 $I)
-  sleep 2
-done
+cf_poll_app $TARGET_ENV
 
 ## Checking the postgres backing services
-cf_poll $PG_BACKING_SERVICE
+cf_poll_service $PG_BACKING_SERVICE
 ## Checking the redis backing services
-cf_poll $REDIS_BACKING_SERVICE
+cf_poll_service $REDIS_BACKING_SERVICE
+## Checking the opensearch backing services
+cf_poll_service $OS_BACKING_SERVICE
 
 
 ####################################################################################
@@ -436,14 +444,9 @@ if [[ $ENV = "production" ]] || [[ $ENV = "staging" ]]; then
     PG_PLAN='medium-ha-13'
     REDIS_PLAN='medium-ha-6.x'
     OS_PLAN='small-ha-1'
-elif [[ $ENV =~ ^test-.* ]]; then
-    # Bottleneck for tests is the database, all other services
-    # can use the smallest effective instance sizes.
-    PG_PLAN='medium-13'
-    REDIS_PLAN='tiny-6.x'
-    OS_PLAN='tiny-1'
 else
     ## The free plan can be used for any non-critical environments
+#    PG_PLAN='tiny-unencrypted-11' @TODO DB is currently too large for this plan.
     PG_PLAN='small-13'
     REDIS_PLAN='tiny-6.x'
     OS_PLAN='tiny-1'
@@ -473,22 +476,36 @@ if [[ $ENV != "production" ]]; then
         echo "################################################################################################"
     fi
 
+    ## Check for the opensearch service
+    if ! cf service $OS_BACKING_SERVICE 2>&1; then
+        printf "Creating opensearch service, instance of $OS_PLAN...\n"
+        cf create-service opensearch $OS_PLAN $OS_BACKING_SERVICE
+
+        echo "################################################################################################"
+        echo >&2 "The new opensearch service is being created, this can take up to 10 minutes"
+        echo "################################################################################################"
+    fi
+
     ## Checking the postgres backing services
-    cf_poll $PG_BACKING_SERVICE
+    cf_poll_service $PG_BACKING_SERVICE
     ## Checking the redis backing services
-    cf_poll $REDIS_BACKING_SERVICE
+    cf_poll_service $REDIS_BACKING_SERVICE
+    ## Checking the redis backing services
+    cf_poll_service $OS_BACKING_SERVICE
 fi
 
 # Binding the postgres backing service
 cf bind-service $TARGET_ENV $PG_BACKING_SERVICE
 # Binding the redis backing service
 cf bind-service $TARGET_ENV $REDIS_BACKING_SERVICE
+# Binding the opensearch backing service
+cf bind-service $TARGET_ENV $OS_BACKING_SERVICE
 if [[ $ENV == "production" ]] && cf service $LOGGING_BACKING_SERVICE 2>&1; then
     # Binding the opss logging service
     cf bind-service $TARGET_ENV $LOGGING_BACKING_SERVICE
 fi
 
-## Deployment to non production environments need a database
+## Deployment to no production environments need a database
 if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]] && [[ ! -f $DB_IMPORT ]]; then
     printf "Non-production environments need a copy of the database to seed from at '$DB_IMPORT'.\n"
     exit 5
@@ -575,7 +592,15 @@ echo "##########################################################################
 
 printf "Running the post deployment scripts...\n"
 
+## Run cron to perform necessary startup tasks
 cf ssh $TARGET_ENV -c "cd app/devops/tools && python cron_runner.py"
 
 ## Run the cache warmer asynchronously with lots of memory
 cf run-task $TARGET_ENV "./scripts/cache-warmer.sh" -m 4G -k 4G --name CACHE_WARMER
+
+## Index the search engine
+cf run-task $TARGET_ENV "./scripts/re-index.sh partnership_index --rebuild" -m 4G -k 4G --name SEARCH_REINDEX
+
+# Poll running tasks so that the job reports the completion status of each task
+cf_poll_task $TARGET_ENV CACHE_WARMER
+cf_poll_task $TARGET_ENV SEARCH_REINDEX
