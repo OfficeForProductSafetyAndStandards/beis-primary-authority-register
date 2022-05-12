@@ -4,8 +4,9 @@ namespace Drupal\par_data\Commands;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\search_api\ConsoleException;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -21,14 +22,22 @@ class ParDataCommands extends DrushCommands {
   protected $parDataManager;
 
   /**
+   * The entity_type.manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * ParDataCommands constructor.
    *
    * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
    *   The par_data.manager service.
    */
-  public function __construct(ParDataManagerInterface $par_data_manager) {
+  public function __construct(ParDataManagerInterface $par_data_manager, EntityTypeManagerInterface $entityTypeManager) {
     parent::__construct();
     $this->parDataManager = $par_data_manager;
+    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -36,6 +45,7 @@ class ParDataCommands extends DrushCommands {
    *
    * @param string $type
    *   The type of data to be warmed.
+   *
    * @validate-module-enabled par_data
    *
    * @command par-data:cache-warm
@@ -69,5 +79,67 @@ class ParDataCommands extends DrushCommands {
     }
 
     return "No caches warmed.";
+  }
+
+  /**
+   * Check the health of search_api indexes.
+   *
+   * @param string|null $index
+   *   The index id.
+   * @param array $options
+   *   (optional) An array of options.
+   *
+   * @throws \Drupal\search_api\ConsoleException
+   *   If a batch process could not be created.
+   *
+   * @validate-module-enabled par_data
+   * @validate-module-enabled search_api
+   *
+   * @command par-data:index-health
+   * @option index-health
+   *   Whether to check the index health.
+   * @aliases pih
+
+   */
+  public function index_health($index = NULL, array $options = ['index-health' => NULL]) {
+    $include_index_health = $options['index-health'];
+
+    $index_storage = $this->entityTypeManager->getStorage('search_api_index');
+
+    $indexes = $index_storage->loadMultiple([$index]);
+    if (!$indexes) {
+      return [];
+    }
+
+    foreach ($indexes as $index) {
+      // Check the health of the server.
+      $server_health = $index->isServerEnabled() ? $index->getServerInstance()->hasValidBackend() : FALSE;
+
+      $indexed = $index->getTrackerInstance()->getIndexedItemsCount();
+      $total = $index->getTrackerInstance()->getTotalItemsCount();
+
+      $entity_types = $index->getEntityTypes();
+      $count = 0;
+      foreach ($entity_types as $key => $type) {
+        $entity_storage = $this->entityTypeManager->getStorage($type);
+        $count += $entity_storage->getQuery()->count()->execute();
+      }
+
+      $index_health = (($total == $indexed) && ($indexed == $count));
+
+      if (!$server_health) {
+        throw new ConsoleException(dt('Server for index %index is not valid.', ['%index' => $index->id()]));
+      }
+      if ($include_index_health and !$index_health) {
+        throw new ConsoleException(dt('Index %index has only indexed %indexed out of %total items (%count entities).', [
+          '%index' => $index->id(),
+          '%indexed' => $indexed,
+          '%total' => $total,
+          '%count' => $count,
+        ]));
+      }
+    }
+
+    return "Index health good.";
   }
 }
