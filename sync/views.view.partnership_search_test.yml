@@ -9,6 +9,7 @@ dependencies:
     - pagerer
     - par_data
     - search_api
+    - user
 id: partnership_search_test
 label: 'Partnership Search Test'
 module: views
@@ -33,7 +34,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: ''
+          label: Authority
           exclude: true
           alter:
             alter_text: false
@@ -667,8 +668,9 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'access par_data_partnership entities'
       cache:
         type: tag
         options: {  }
@@ -863,7 +865,7 @@ display:
               align: ''
               separator: ''
               empty_column: false
-              responsive: ''
+              responsive: priority-medium
             approved_date:
               align: ''
               separator: ''
@@ -875,19 +877,19 @@ display:
               align: ''
               separator: ''
               empty_column: false
-              responsive: ''
+              responsive: priority-medium
             registered_name:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
-              responsive: ''
+              responsive: priority-medium
             search_api_excerpt:
               align: ''
               separator: ''
               empty_column: false
-              responsive: ''
+              responsive: priority-low
           override: true
           sticky: false
           summary: ''
@@ -914,10 +916,11 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.permissions
       tags:
         - 'config:search_api.index.partnership_index'
-  page_1:
-    id: page_1
+  partnership_search_page:
+    id: partnership_search_page
     display_title: Page
     display_plugin: page
     position: 1
@@ -931,5 +934,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.permissions
       tags:
         - 'config:search_api.index.partnership_index'

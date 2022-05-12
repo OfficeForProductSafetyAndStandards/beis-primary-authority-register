@@ -2747,6 +2747,7 @@
         },
         {
             "name": "drupal/core",
+<<<<<<< HEAD
             "version": "9.3.13",
             "source": {
                 "type": "git",
@@ -2757,6 +2758,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/drupal/core/zipball/02ba7a3a42612a04124ac5131df0726e1e5097c6",
                 "reference": "02ba7a3a42612a04124ac5131df0726e1e5097c6",
+=======
+            "version": "9.3.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupal/core.git",
+                "reference": "a768174b00fa088027d460a80a13550e624b9bf8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drupal/core/zipball/a768174b00fa088027d460a80a13550e624b9bf8",
+                "reference": "a768174b00fa088027d460a80a13550e624b9bf8",
+>>>>>>> b9bfdf9f7 (PAR-1760: Added views patch.)
                 "shasum": ""
             },
             "require": {
@@ -2998,6 +3011,7 @@
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/drupal/core/tree/9.3.13"
             },
             "time": "2022-05-11T09:20:58+00:00"
@@ -3005,6 +3019,15 @@
         {
             "name": "drupal/core-composer-scaffold",
             "version": "9.3.13",
+=======
+                "source": "https://github.com/drupal/core/tree/9.3.7"
+            },
+            "time": "2022-03-03T09:23:53+00:00"
+        },
+        {
+            "name": "drupal/core-composer-scaffold",
+            "version": "9.3.7",
+>>>>>>> b9bfdf9f7 (PAR-1760: Added views patch.)
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
@@ -3048,12 +3071,17 @@
                 "drupal"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/drupal/core-composer-scaffold/tree/9.3.13"
+=======
+                "source": "https://github.com/drupal/core-composer-scaffold/tree/9.3.7"
+>>>>>>> b9bfdf9f7 (PAR-1760: Added views patch.)
             },
             "time": "2022-02-24T17:40:56+00:00"
         },
         {
             "name": "drupal/core-recommended",
+<<<<<<< HEAD
             "version": "9.3.13",
             "source": {
                 "type": "git",
@@ -3064,6 +3092,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/drupal/core-recommended/zipball/0fe76c7af47fafcff37d8cb6053014e52e0f4a69",
                 "reference": "0fe76c7af47fafcff37d8cb6053014e52e0f4a69",
+=======
+            "version": "9.3.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drupal/core-recommended.git",
+                "reference": "29f6f29672861a5719701a59aae26aafbb4c9495"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drupal/core-recommended/zipball/29f6f29672861a5719701a59aae26aafbb4c9495",
+                "reference": "29f6f29672861a5719701a59aae26aafbb4c9495",
+>>>>>>> b9bfdf9f7 (PAR-1760: Added views patch.)
                 "shasum": ""
             },
             "require": {
@@ -3072,7 +3112,11 @@
                 "doctrine/annotations": "1.13.2",
                 "doctrine/lexer": "1.2.1",
                 "doctrine/reflection": "1.2.2",
+<<<<<<< HEAD
                 "drupal/core": "9.3.13",
+=======
+                "drupal/core": "9.3.7",
+>>>>>>> b9bfdf9f7 (PAR-1760: Added views patch.)
                 "egulias/email-validator": "3.1.2",
                 "guzzlehttp/guzzle": "6.5.5",
                 "guzzlehttp/promises": "1.5.1",
@@ -3134,9 +3178,15 @@
             ],
             "description": "Locked core dependencies; require this project INSTEAD OF drupal/core.",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/drupal/core-recommended/tree/9.3.13"
             },
             "time": "2022-05-11T09:20:58+00:00"
+=======
+                "source": "https://github.com/drupal/core-recommended/tree/9.3.7"
+            },
+            "time": "2022-03-03T09:23:53+00:00"
+>>>>>>> b9bfdf9f7 (PAR-1760: Added views patch.)
         },
         {
             "name": "drupal/csv_serialization",
@@ -3967,6 +4017,7 @@
         },
         {
             "name": "drupal/inline_entity_form",
+<<<<<<< HEAD
             "version": "1.0.0-rc11",
             "source": {
                 "type": "git",
@@ -3978,6 +4029,19 @@
                 "url": "https://ftp.drupal.org/files/projects/inline_entity_form-8.x-1.0-rc11.zip",
                 "reference": "8.x-1.0-rc11",
                 "shasum": "67a92ec1482be19b2f2091ca9498f585e34072b9"
+=======
+            "version": "1.0.0-rc10",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/inline_entity_form.git",
+                "reference": "8.x-1.0-rc10"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/inline_entity_form-8.x-1.0-rc10.zip",
+                "reference": "8.x-1.0-rc10",
+                "shasum": "e10a90cee004e13b4c59991a312f805834a35750"
+>>>>>>> b9bfdf9f7 (PAR-1760: Added views patch.)
             },
             "require": {
                 "drupal/core": "^8.8 || ^9",
@@ -3989,8 +4053,13 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
+<<<<<<< HEAD
                     "version": "8.x-1.0-rc11",
                     "datestamp": "1648748863",
+=======
+                    "version": "8.x-1.0-rc10",
+                    "datestamp": "1646314907",
+>>>>>>> b9bfdf9f7 (PAR-1760: Added views patch.)
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "RC releases are not covered by Drupal security advisories."
@@ -5847,6 +5916,7 @@
         },
         {
             "name": "drupal/search_api_opensearch",
+<<<<<<< HEAD
             "version": "1.0.0-alpha9",
             "source": {
                 "type": "git",
@@ -5858,6 +5928,19 @@
                 "url": "https://ftp.drupal.org/files/projects/search_api_opensearch-1.0.0-alpha9.zip",
                 "reference": "1.0.0-alpha9",
                 "shasum": "7108c79eaf6de3b0d6d46845aa98ff227c46e86f"
+=======
+            "version": "1.0.0-alpha6",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/search_api_opensearch.git",
+                "reference": "1.0.0-alpha6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api_opensearch-1.0.0-alpha6.zip",
+                "reference": "1.0.0-alpha6",
+                "shasum": "c8b90ffbcacb6e523721c9524e5b7b1646b73503"
+>>>>>>> b9bfdf9f7 (PAR-1760: Added views patch.)
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -5873,8 +5956,13 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
+<<<<<<< HEAD
                     "version": "1.0.0-alpha9",
                     "datestamp": "1650492167",
+=======
+                    "version": "1.0.0-alpha6",
+                    "datestamp": "1646864136",
+>>>>>>> b9bfdf9f7 (PAR-1760: Added views patch.)
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -16693,7 +16781,11 @@
         },
         {
             "name": "drupal/core-dev",
+<<<<<<< HEAD
             "version": "9.3.13",
+=======
+            "version": "9.3.7",
+>>>>>>> b9bfdf9f7 (PAR-1760: Added views patch.)
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-dev.git",
@@ -16737,7 +16829,11 @@
             ],
             "description": "require-dev dependencies from drupal/drupal; use in addition to drupal/core-recommended to run tests from drupal/core.",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/drupal/core-dev/tree/9.3.13"
+=======
+                "source": "https://github.com/drupal/core-dev/tree/9.3.7"
+>>>>>>> b9bfdf9f7 (PAR-1760: Added views patch.)
             },
             "time": "2021-11-30T05:41:29+00:00"
         },
@@ -18266,6 +18362,7 @@
         },
         {
             "name": "phpunit/phpunit",
+<<<<<<< HEAD
             "version": "9.5.20",
             "source": {
                 "type": "git",
@@ -18276,6 +18373,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/12bc8879fb65aef2138b26fc633cb1e3620cffba",
                 "reference": "12bc8879fb65aef2138b26fc633cb1e3620cffba",
+=======
+            "version": "9.5.18",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/phpunit.git",
+                "reference": "1b5856028273bfd855e60a887278857d872ec67a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1b5856028273bfd855e60a887278857d872ec67a",
+                "reference": "1b5856028273bfd855e60a887278857d872ec67a",
+>>>>>>> b9bfdf9f7 (PAR-1760: Added views patch.)
                 "shasum": ""
             },
             "require": {
@@ -18353,7 +18462,11 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.20"
+=======
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.18"
+>>>>>>> b9bfdf9f7 (PAR-1760: Added views patch.)
             },
             "funding": [
                 {
@@ -18365,7 +18478,11 @@
                     "type": "github"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-04-01T12:37:26+00:00"
+=======
+            "time": "2022-03-08T06:52:28+00:00"
+>>>>>>> b9bfdf9f7 (PAR-1760: Added views patch.)
         },
         {
             "name": "sebastian/cli-parser",

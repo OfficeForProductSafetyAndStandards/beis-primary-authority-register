@@ -11,7 +11,7 @@ backend: opensearch
 backend_config:
   connector: standard
   connector_config:
-    url: 'http://os.localhost'
+    url: 'http://os.localhost:9200'
   advanced:
-    fuzziness: '2'
+    fuzziness: auto
     prefix: ''
