@@ -218,7 +218,7 @@ class ParRdDeletedDataListController extends ControllerBase {
 //    ];
 //
 //    // Partnerships search link.
-//    $search_partnerships = $this->getLinkByRoute('view.partnership_search.enforcment_flow_search_partnerships');
+//    $search_partnerships = $this->getLinkByRoute('view.partnership_search.search_partnerships');
 //    $search_link = $search_partnerships->setText('Search for a partnership')->toString();
 //    $build['partnerships']['link'] = [
 //      '#type' => 'markup',

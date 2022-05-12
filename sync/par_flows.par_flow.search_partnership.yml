@@ -13,7 +13,7 @@ save_method: end
 states:
   - par_data_partnership
 final_routes:
-  - view.partnership_search.enforcment_flow_search_partnerships
+  - view.partnership_search.search_partnerships
 steps:
   1:
     route: par_search_partnership_flows.partnership_page
