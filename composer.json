@@ -170,7 +170,6 @@
                 "Form API #ajax not working on link element": "https://www.drupal.org/files/issues/2021-04-28/core-allow-form-ajax-for-links-2915954-21.patch",
                 "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2020-07-19/2551893-85.patch",
                 "Non-exposed and exposed default sort order": "https://www.drupal.org/files/issues/2021-05-20/3120847-23.patch",
-                "PostgreSQL: deal with case insensitivity": "https://www.drupal.org/files/issues/2020-10-05/postgres-case-insensitivity_2464481-71.patch",
                 "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2021-01-19/case_sensitive_email-2490294-37.patch",
                 "PostgreSQL: DatabaseExceptionWrapper throwable": "https://www.drupal.org/files/issues/2021-12-21/postgresql-database-exception-wrapper-issues-3255437-2.patch"
             },
@@ -197,6 +196,9 @@
             },
             "drupal/role_delegation": {
                 "Temporary patch to enable module uninstall": "./patches/tmp-patch-fix-for-d9-upgrade.patch"
+            },
+            "drupal/search_api": {
+                "Unable to render EntityFields in views with search_api_opensearch": "https://www.drupal.org/files/issues/2022-03-17/3262507-10-unable_to_render_entity_fields.patch"
             },
             "drupal/vbo_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-11-23/allow_configurable_scheme-2988257-18.patch"
