@@ -230,10 +230,10 @@ vault operator seal -tls-skip-verify
 ####################################################################################
 printf "Authenticating with GovUK PaaS...\n"
 
-if [[ $ENV == 'production' ]] || [[ $ENV == production-* ]]; then
+if [[ $ENV == 'production' ]] || [[ $ENV =~ ^production-.* ]]; then
     cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD \
       -o "office-for-product-safety-and-standards" -s "primary-authority-register-production"
-elif [[ $ENV == 'staging' ]] || [[ $ENV == staging-* ]]; then
+elif [[ $ENV == 'staging' ]] || [[ $ENV =~ ^staging-.* ]]; then
     cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD \
       -o "office-for-product-safety-and-standards" -s "primary-authority-register-staging"
 else
@@ -452,15 +452,18 @@ else
     OS_PLAN='tiny-1'
 fi
 
+# TODO Error happens here if there's an error during the creation of services.
+# some services may not be in the correct state to tear down and so may not be removed.
+# Catch any service errors and don't tear down until all services are ready.
 if [[ $ENV != "production" ]]; then
     ## Check for the postgres database service
     if ! cf service $PG_BACKING_SERVICE 2>&1; then
-        printf "Creating postgres service, instance of $PG_PLAN...\n"
-        cf create-service postgres $PG_PLAN $PG_BACKING_SERVICE -c '{"enable_extensions": ["citext","uuid-ossp","pg_trgm","pg_stat_statements"]}'
-
         echo "################################################################################################"
         echo >&2 "The new postgres service is being created, this can take up to 10 minutes"
         echo "################################################################################################"
+
+        printf "Creating postgres service, instance of $PG_PLAN...\n"
+        cf create-service postgres $PG_PLAN $PG_BACKING_SERVICE -c '{"enable_extensions": ["citext","uuid-ossp","pg_trgm","pg_stat_statements"]}'
 
         ## If a new db is created it needs an import
         DB_RESET=y
@@ -468,22 +471,22 @@ if [[ $ENV != "production" ]]; then
 
     ## Check for the redis database service
     if ! cf service $REDIS_BACKING_SERVICE 2>&1; then
-        printf "Creating redis service, instance of $REDIS_PLAN...\n"
-        cf create-service redis $REDIS_PLAN $REDIS_BACKING_SERVICE
-
         echo "################################################################################################"
         echo >&2 "The new redis service is being created, this can take up to 10 minutes"
         echo "################################################################################################"
+
+        printf "Creating redis service, instance of $REDIS_PLAN...\n"
+        cf create-service redis $REDIS_PLAN $REDIS_BACKING_SERVICE
     fi
 
     ## Check for the opensearch service
     if ! cf service $OS_BACKING_SERVICE 2>&1; then
-        printf "Creating opensearch service, instance of $OS_PLAN...\n"
-        cf create-service opensearch $OS_PLAN $OS_BACKING_SERVICE
-
         echo "################################################################################################"
         echo >&2 "The new opensearch service is being created, this can take up to 10 minutes"
         echo "################################################################################################"
+
+        printf "Creating opensearch service, instance of $OS_PLAN...\n"
+        cf create-service opensearch $OS_PLAN $OS_BACKING_SERVICE
     fi
 
     ## Checking the postgres backing services

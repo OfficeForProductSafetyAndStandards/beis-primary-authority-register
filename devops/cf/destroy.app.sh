@@ -112,7 +112,7 @@ fi
 printf "Authenticating with GovUK PaaS...\n"
 
 # Only allow apps in the development or staging space to be removed.
-if [[ $ENV == 'staging' ]] || [[ $ENV =~ ^staging-.* ]] || [[ $ENV =~ ^test-.* ]]; then
+if [[ $ENV == 'staging' ]] || [[ $ENV =~ ^staging-.* ]]; then
     cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD \
       -o "office-for-product-safety-and-standards" -s "primary-authority-register-staging"
 else
@@ -130,6 +130,7 @@ APP="beis-par-$ENV"
 CDN_BACKING_SERVICE="par-cdn-$ENV"
 PG_BACKING_SERVICE="par-pg-$ENV"
 REDIS_BACKING_SERVICE="par-redis-$ENV"
+OS_BACKING_SERVICE="par-os-$ENV"
 
 
 ####################################################################################
@@ -180,6 +181,27 @@ if cf service $REDIS_BACKING_SERVICE >/dev/null 2>&1; then
     cf delete-service -f $REDIS_BACKING_SERVICE
 fi
 
+printf "Removing opensearch backing service $OS_BACKING_SERVICE...\n"
+if cf service $OS_BACKING_SERVICE >/dev/null 2>&1; then
+    if cf app $APP >/dev/null 2>&1; then
+        printf "Unbinding opensearch backing services...\n"
+        cf unbind-service $APP $OS_BACKING_SERVICE
+    fi
+
+    ## In some instances service keys may also have to be deleted
+    if ! cf service-keys $OS_BACKING_SERVICE | grep -v 'No service key for service instance'; then
+          printf "Service keys will need to be deleted manually, see 'cf service-keys $OS_BACKING_SERVICE'\n"
+    fi
+
+    cf delete-service -f $OS_BACKING_SERVICE
+fi
+
+## Remove the main app if it exists
+printf "Removing the app '$APP'...\n"
+if cf app $APP >/dev/null 2>&1; then
+    cf delete -f $APP
+fi
+
 printf "Removing the routes...\n"
 if cf app $APP >/dev/null 2>&1; then
     cf unmap-route $APP cloudapps.digital -n $APP
@@ -187,9 +209,3 @@ if cf app $APP >/dev/null 2>&1; then
 fi
 cf delete-route -f cloudapps.digital -n $APP
 cf delete-route -f cloudapps.digital -n $APP-green
-
-## Remove the main app if it exists
-printf "Removing the app...\n"
-if cf app $APP >/dev/null 2>&1; then
-    cf delete -f $APP
-fi
