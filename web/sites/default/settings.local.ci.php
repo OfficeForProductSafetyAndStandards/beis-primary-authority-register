@@ -5,7 +5,7 @@ $databases['default']['default'] = array (
   'username' => 'par',
   'password' => '123456',
   'prefix' => '',
-  'host' => 'localhost',
+  'host' => 'db.localhost',
   'port' => '5432',
   'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
   'driver' => 'pgsql',
@@ -19,9 +19,6 @@ $settings['skip_permissions_hardening'] = TRUE;
 
 $config['config_split.config_split.dev_config']['status'] = TRUE;
 $config['config_split.config_split.test_config']['status'] = TRUE;
-
-// Force the index to be created on the database server for CI.
-$config['search_api.index.partnership_index']['server'] = 'database_server';
 
 if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
   $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.yml';
