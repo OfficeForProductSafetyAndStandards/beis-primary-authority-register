@@ -13,14 +13,14 @@ references:
           SENTRY_ENVIRONMENT: ci
 
       - image: postgres:13.6
-        name: db
+        name: db.localhost
         environment:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
           POSTGRES_DB: par
 
       - image: opensearchproject/opensearch:1.2.4
-        name: os
+        name: os.localhost
         environment:
           - cluster.name=opensearch-cluster
           - node.name=beis-par-search
