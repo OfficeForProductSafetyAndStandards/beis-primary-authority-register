@@ -34,8 +34,10 @@ class TotalBusinessesInDirectPartnerships extends ParStatisticBase {
     $query->condition($revoked);
     $query->condition($deleted);
 
-    $entities = $query->execute();
-    $partnerships = $this->getEntityTypeManager()->getStorage('par_data_partnership')->loadMultiple(array_unique($entities));
+    $entities = array_unique($query->execute());
+    $partnerships = !empty($entities) ?
+      $this->getEntityTypeManager()->getStorage('par_data_partnership')->loadMultiple($entities) :
+      [];
 
     $total = 0;
     foreach ($partnerships as $partnership) {
