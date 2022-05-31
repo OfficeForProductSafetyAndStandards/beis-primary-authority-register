@@ -58,7 +58,7 @@ class SchedulerRuleExpiryTest extends ParSchedulerTestBase {
       }
     }
 
-    $this->assertEqual(count($entities), count($assertions), t('Retrieved %assertions expired entities.', ['%assertions' => (string) count($assertions)]));
+    $this->assertEquals(count($assertions), count($entities), t('Retrieved %assertions expired entities.', ['%assertions' => (string) count($assertions)]));
   }
 
   /**
@@ -106,7 +106,7 @@ class SchedulerRuleExpiryTest extends ParSchedulerTestBase {
       }
     }
 
-    $this->assertEqual(count($entities), count($assertions), t('Retrieved %assertions expired entities.', ['%assertions' => (string) count($assertions)]));
+    $this->assertEquals(count($assertions), count($entities), t('Retrieved %assertions expired entities.', ['%assertions' => (string) count($assertions)]));
   }
 
   /**
@@ -154,7 +154,7 @@ class SchedulerRuleExpiryTest extends ParSchedulerTestBase {
       }
     }
 
-    $this->assertEqual(count($entities), count($assertions), t('Retrieved %assertions expired entities.', ['%assertions' => (string) count($assertions)]));
+    $this->assertEquals(count($assertions), count($entities), t('Retrieved %assertions expired entities.', ['%assertions' => (string) count($assertions)]));
   }
 
   /**
@@ -202,7 +202,7 @@ class SchedulerRuleExpiryTest extends ParSchedulerTestBase {
       }
     }
 
-    $this->assertEqual(count($entities), count($assertions), t('Retrieved %assertions expired entities.', ['%assertions' => (string) count($assertions)]));
+    $this->assertEquals(count($assertions), count($entities), t('Retrieved %assertions expired entities.', ['%assertions' => (string) count($assertions)]));
   }
 
   /**
@@ -250,6 +250,6 @@ class SchedulerRuleExpiryTest extends ParSchedulerTestBase {
       }
     }
 
-    $this->assertEqual(count($entities), count($assertions), t('Retrieved %assertions expired entities.', ['%assertions' => (string) count($assertions)]));
+    $this->assertEquals(count($assertions), count($entities), t('Retrieved %assertions expired entities.', ['%assertions' => (string) count($assertions)]));
   }
 }

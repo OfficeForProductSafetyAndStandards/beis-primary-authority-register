@@ -32,9 +32,10 @@ class TotalPrimaryAuthorities extends ParStatisticBase {
     $query->condition($revoked);
     $query->condition($deleted);
 
-    $entities = $query->execute();
-
-    $partnerships = $this->getEntityTypeManager()->getStorage('par_data_partnership')->loadMultiple(array_unique($entities));
+    $entities = array_unique($query->execute());
+    $partnerships = !empty($entities) ?
+      $this->getEntityTypeManager()->getStorage('par_data_partnership')->loadMultiple($entities) :
+      [];
 
     $authorities = [];
     foreach ($partnerships as $partnership) {
