@@ -19,6 +19,7 @@ references:
           POSTGRES_DB: par
 
       - image: opensearchproject/opensearch:1.2.4
+        name: os.localhost
         environment:
           - cluster.name=opensearch-cluster
           - node.name=beis-par-search

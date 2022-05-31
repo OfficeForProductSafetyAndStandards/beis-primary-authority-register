@@ -1,5 +1,6 @@
 <?php
 
+// Configure the database.
 $databases['default']['default'] = array (
   'database' => 'par',
   'username' => 'par',
