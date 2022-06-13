@@ -140,6 +140,7 @@ module:
   password_policy_length: 0
   path: 0
   path_alias: 0
+  pgsql: 0
   queue_ui: 0
   raven: 0
   rdf: 0
