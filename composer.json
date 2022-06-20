@@ -39,10 +39,10 @@
         "drupal/config_readonly": "~1.0.0",
         "drupal/config_split": "~1.7.0",
         "drupal/config_update": "~1.7.0",
-        "drupal/core": "~9.3.0",
+        "drupal/core": "~9.4.0",
         "drupal/core-composer-scaffold": "~9.3",
         "drupal/core-recommended": "~9.3",
-        "drupal/csv_serialization": "~2.0",
+        "drupal/csv_serialization": "~2.1",
         "drupal/default_content": "~2.0.0",
         "drupal/email_registration": "~1.1.0",
         "drupal/features": "~3.12.0",
@@ -83,7 +83,7 @@
         "drupal/twig_field_value": "~2.0.0",
         "drupal/twig_tweak": "~3.1.0",
         "drupal/ultimate_cron": "~2.0.0",
-        "drupal/upgrade_status": "~3.5.0",
+        "drupal/upgrade_status": "^3.14.0",
         "drupal/vbo_export": "~3.4.0",
         "drupal/views_bulk_operations": "~4.0.0",
         "drupal/views_contextual_filters_or": "~1.2.0",
@@ -170,11 +170,7 @@
                 "Form API #ajax not working on link element": "https://www.drupal.org/files/issues/2021-04-28/core-allow-form-ajax-for-links-2915954-21.patch",
                 "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2020-07-19/2551893-85.patch",
                 "Non-exposed and exposed default sort order": "https://www.drupal.org/files/issues/2021-05-20/3120847-23.patch",
-                "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2021-01-19/case_sensitive_email-2490294-37.patch",
-                "PostgreSQL: DatabaseExceptionWrapper throwable": "https://www.drupal.org/files/issues/2021-12-21/postgresql-database-exception-wrapper-issues-3255437-2.patch"
-            },
-            "drupal/csv_serialization": {
-                "Deprecate auto_detect_line_endings": "https://www.drupal.org/files/issues/2022-01-24/3260224-deprecate_auto_detect_line_endings.diff"
+                "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2021-01-19/case_sensitive_email-2490294-37.patch"
             },
             "drupal/flysystem": {
                 "Add Drush commands for sending and receiving files": "https://www.drupal.org/files/issues/2021-01-14/3192777-2-Added_drush_commands.patch",
