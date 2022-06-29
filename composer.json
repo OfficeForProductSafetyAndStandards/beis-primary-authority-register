@@ -16,6 +16,10 @@
             "url": "https://github.com/UKGovernmentBEIS/password-strength"
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/UKGovernmentBEIS/companieshouse-api-php-client"
+        },
+        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
@@ -96,6 +100,7 @@
         "league/flysystem-aws-s3-v3": "1.0.25",
         "predis/predis": "~1.1.1",
         "rapidwebltd/php-uk-bank-holidays": "~5.0.0",
+        "uk-government-beis/companieshouse-php-client" : "dev-master",
         "vlucas/phpdotenv": "~2.4.0"
     },
     "require-dev": {
