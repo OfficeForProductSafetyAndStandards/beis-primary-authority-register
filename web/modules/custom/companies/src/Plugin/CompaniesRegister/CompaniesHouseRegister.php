@@ -1,9 +1,12 @@
 <?php
 
-namespace Drupal\par_actions\Plugin\ParSchedulerRule;
+namespace Drupal\companies\Plugin\CompaniesRegister;
 
 use Drupal\companies\Plugin\CompaniesRegister\CompaniesRegisterInterface;
 use Drupal\companies\Plugin\CompaniesRegister\CompaniesRegisterApi;
+use Drupal\Core\Cache\Cache;
+use Http\Adapter\Guzzle6\Client;
+use UKGovernmentBEIS\CompaniesHouse\Client as CompaniesClient;
 
 /**
  * Cease a member.
@@ -24,7 +27,7 @@ class CompaniesHouseRegister extends CompaniesRegisterApi {
     }
 
     try {
-      $this->client = new CompaniesHouseClient($api_key);
+      $this->client = new CompaniesClient($api_key);
     }
     catch (\Alphagov\Notifications\Exception\ApiException $e) {
       \Drupal::logger('govuk_notify')->warning("Failed to create Gov Notify Client using API: @message",

@@ -19,7 +19,7 @@
     "license": "GPL-2.0+",
     "minimum-stability": "dev",
     "require": {
-        "netsensia/companieshouse-api-php-client" : "~0.1.0",
+        "uk-government-beis/companieshouse-php-client" : "~2.0.0",
         "php-http/guzzle6-adapter": "*"
     }
 }
