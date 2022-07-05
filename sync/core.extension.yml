@@ -145,6 +145,7 @@ module:
   raven: 0
   rdf: 0
   redis: 0
+  registered_organisations: 0
   rest: 0
   robotstxt: 0
   search_api: 0
