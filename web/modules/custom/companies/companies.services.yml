@@ -1,4 +1,0 @@
-services:
-  companies.companies_manager:
-    class: Drupal\companies\CompaniesManager
-    arguments: ['@current_user']
