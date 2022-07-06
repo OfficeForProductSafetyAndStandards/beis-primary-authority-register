@@ -101,7 +101,6 @@
         "league/flysystem-aws-s3-v3": "1.0.25",
         "predis/predis": "~1.1.1",
         "rapidwebltd/php-uk-bank-holidays": "~5.0.0",
-        "uk-government-beis/companieshouse-php-client" : "dev-master",
         "vlucas/phpdotenv": "~2.4.0"
     },
     "require-dev": {

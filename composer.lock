@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2a7408b2ebfac951b533c628849c0f5e",
+    "content-hash": "f1ac4579437bd4c7751a437533d5d99e",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -5670,10 +5670,13 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/registered_organisations.git",
-                "reference": "f0bd49e9738209d14ae414d1cf92840d392c837d"
+                "reference": "8eeb381bc3d61b40189b452d2c6ec438471a0de2"
             },
             "require": {
-                "drupal/core": "^8 || ^9 || ^10"
+                "drupal/core": "^8 || ^9 || ^10",
+                "php": "^8.0",
+                "php-http/guzzle6-adapter": "*",
+                "uk-government-beis/companieshouse-php-client": "~1.0.0"
             },
             "type": "drupal-module",
             "extra": {
@@ -5682,7 +5685,7 @@
                 },
                 "drupal": {
                     "version": "1.0.x-dev",
-                    "datestamp": "1657039462",
+                    "datestamp": "1657104197",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5691,18 +5694,22 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
+                "GPL-2.0+"
             ],
             "authors": [
                 {
-                    "name": "kalpaitch",
-                    "homepage": "https://www.drupal.org/user/2547946"
+                    "name": "Andrew Hughes-Onslow (kalpaitch)",
+                    "homepage": "https://www.drupal.org/u/kalpaitch",
+                    "role": "Maintainer",
+                    "email": "andrew@kalpaitch.com"
                 }
             ],
-            "description": "Provides a uniqfied interface to lookup information on registered organisations from their official sources.",
-            "homepage": "https://www.drupal.org/project/registered_organisations",
+            "description": "Registered Organisations",
+            "homepage": "https://drupal.org/project/registered_organisations",
             "support": {
-                "source": "https://git.drupalcode.org/project/registered_organisations"
+                "source": "https://cgit.drupalcode.org/registered_organisations",
+                "issues": "https://drupal.org/project/issues/registered_organisations",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
             }
         },
         {
@@ -7901,16 +7908,16 @@
         },
         {
             "name": "laminas/laminas-diactoros",
-            "version": "2.11.2",
+            "version": "2.11.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-diactoros.git",
-                "reference": "78846cbce0550ec174508a646f46fd6dee76099b"
+                "reference": "1f97b0c52eafd108e09c76d6b29d83ef4a855f76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-diactoros/zipball/78846cbce0550ec174508a646f46fd6dee76099b",
-                "reference": "78846cbce0550ec174508a646f46fd6dee76099b",
+                "url": "https://api.github.com/repos/laminas/laminas-diactoros/zipball/1f97b0c52eafd108e09c76d6b29d83ef4a855f76",
+                "reference": "1f97b0c52eafd108e09c76d6b29d83ef4a855f76",
                 "shasum": ""
             },
             "require": {
@@ -7996,7 +8003,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2022-06-29T14:15:02+00:00"
+            "time": "2022-07-06T09:24:53+00:00"
         },
         {
             "name": "laminas/laminas-escaper",
@@ -14504,7 +14511,7 @@
         },
         {
             "name": "uk-government-beis/companieshouse-php-client",
-            "version": "dev-master",
+            "version": "v1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/UKGovernmentBEIS/companieshouse-api-php-client.git",
@@ -14527,7 +14534,6 @@
             "suggest": {
                 "ext-curl": "To send requests using cURL"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -14539,7 +14545,7 @@
             ],
             "description": "API Wrapper for the Companies House API",
             "support": {
-                "source": "https://github.com/UKGovernmentBEIS/companieshouse-api-php-client/tree/master"
+                "source": "https://github.com/UKGovernmentBEIS/companieshouse-api-php-client/tree/v1.0.0-alpha1"
             },
             "time": "2022-07-05T12:05:53+00:00"
         },
@@ -20259,8 +20265,7 @@
         "drupal/govuk_cookies": 20,
         "drupal/password_strength": 20,
         "drupal/registered_organisations": 20,
-        "drupal/trance": 20,
-        "uk-government-beis/companieshouse-php-client": 20
+        "drupal/trance": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
