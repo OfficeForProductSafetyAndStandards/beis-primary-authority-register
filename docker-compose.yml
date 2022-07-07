@@ -13,7 +13,7 @@ services:
       networks:
         - par-net
       volumes:
-        - ../../:/var/www/html
+        - .:/var/www/html
 
     db:
       image: postgres:13.6
@@ -24,7 +24,7 @@ services:
       networks:
         - par-net
       volumes:
-        - ../../data/postgres:/var/lib/postgresql/data
+        - ./data/postgres:/var/lib/postgresql/data
       environment:
         POSTGRES_USER: par
         POSTGRES_PASSWORD: 123456
@@ -41,7 +41,7 @@ services:
       networks:
         - par-net
       volumes:
-        - ../../data/opensearch:/usr/share/opensearch/data
+        - ./data/opensearch:/usr/share/opensearch/data
       environment:
         - cluster.name=opensearch-cluster
         - node.name=beis-par-search
