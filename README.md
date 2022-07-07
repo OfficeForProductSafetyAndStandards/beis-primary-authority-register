@@ -23,9 +23,8 @@ docker exec -it beis-par-web /bin/bash
 
 #### Prerequisites
 
-* [VirtualBox](https://www.virtualbox.org/wiki/Downloads) - tested with version 5.2.22
-* [Vagrant](https://www.vagrantup.com/downloads.html) - tested with version 2.2.0
-* [Drupal-VM](https://github.com/kalpaitch/drupal-vm)
+* [Docker]
+* [Docker Compose]
 * A copy of the [Drupal-VM config.yml file](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/dev/config.yml) in the BEIS S3 artifacts bucket.
 * A copy of the [latest sanitised PAR database](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/backups/drush-dump-production-sanitized-latest.sql.tar.gz) from the BEIS S3 artifacts bucket.
 
