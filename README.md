@@ -12,11 +12,14 @@ Please see the [web application readme file](https://github.com/UKGovernmentBEIS
 
 Please see the [dashboard readme file](https://github.com/UKGovernmentBEIS/beis-primary-authority-register/blob/master/dashboard/README.md) in the dashboard directory for more information.
 
-## Vagrant development environment
+## Development environment
 
-The Vagrant development environment tries to maximise all the work done for Drupal-VM as much as possible. Please follow the Drupal-VM readme below and install Drupal-VM in a convenient location.
+Docker can be used as the local development environment. There is a docker-compose file in the project root which contains all the images needed to run PAR.
 
-*NOTE:* The old Vagrant development environment wraps docker in a VM, these files vagrant files are still in the repository but please do not use them.
+```
+docker-compose up
+docker exec -it beis-par-web /bin/bash
+```
 
 #### Prerequisites
 
