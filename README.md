@@ -14,27 +14,30 @@ Please see the [dashboard readme file](https://github.com/UKGovernmentBEIS/beis-
 
 ## Development environment
 
-Docker can be used as the local development environment. There is a docker-compose file in the project root which contains all the images needed to run PAR.
+Docker can be used as the local development environment.
 
+There is a docker-compose file in the project root which contains all the images needed to run PAR, these are the same containers that are run in CI:
+* Web (primary container)
+* Postgres
+* Opensearch
+
+Just run `docker-compose up` from the project root.
+
+To run commands within the primary container:
 ```
-docker-compose up
 docker exec -it beis-par-web /bin/bash
+$ cd /var/www/html/web
+$ ../vendor/bin/drush cr
 ```
 
-#### Prerequisites
+### Prerequisites
 
-* [Docker]
-* [Docker Compose]
-* A copy of the [Drupal-VM config.yml file](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/dev/config.yml) in the BEIS S3 artifacts bucket.
+* [Composer] - version 2.3.5 or higher
+* [Docker] - version 20.0 or higher
+* [Docker Compose] - version 2.2.2 or higher
 * A copy of the [latest sanitised PAR database](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/backups/drush-dump-production-sanitized-latest.sql.tar.gz) from the BEIS S3 artifacts bucket.
 
-#### Configuration
-
-Before starting the Drupal-VM make sure that you have cloned a copy of the website and run all the necessary setup on this. You will need to configure Drupal-VM so that the `vagrant_synced_folders` for this project points to the correct `local_path` of your application.
-
-As part of the site setup run composer install from the project root folder.  Ensure the vendor directory is created with all the required application components before moving on to the database section.
-
-#### Database
+### Database
 
 In order to run the site you will need to import a copy of the latest par database:
 ```
@@ -50,28 +53,54 @@ cd /var/www/par/web
 ../vendor/bin/drush sql:cli < ../backups/db-dump-production-sanitised.sql
 ```
 
+### Set up
+
+There are a few main tasks that need to be performed after pulling new code or downloading a new database.
+
+#### Composer install
+After pulling any changes to the `composer.json` file, run:
+
+```
+composer install
+```
+
+This is best run from outside the primary docker container (very slow within the container), on your local machine.
+
+#### NPM install
+The theme and the tests dependencies are both managed with NPM, any changes to `package.json` or `tests/package.json`, run:
+
+```
+npm install
+npm run install-govuk-theme
+npm run install-par-theme
+npm run gulp
+```
+
+#### Drupal install
+After a fresh database import, or when switching branches always re-install drupal, run:
+
+```
+./drupal-update.sh
+```
+
 ## Deployment
 
-Tagging the master branch will cause the build to be packaged and stored in S3
+Tagging the master branch will start a deployment build.
 
-    git tag v0.0.31
-    git push --tags
+```
+git tag v0.0.31
+git push --tags
+```
 
-Once a build has been packaged, it can be deployed to another environment as follows:
+Visit [CircleCI](https://app.circleci.com/pipelines/github/UKGovernmentBEIS/beis-primary-authority-register) to complete the deployment pipeline, deployments should always be made through CI.
 
-    cd cf
-    ./push.sh ENV_NAME VERSION
+## Backup database
 
-e.g.
+The build relies on a seed database which is a sanitised version of the production database. At regular periods this seed database needs to be updated.
 
-    ./push.sh staging v0.0.31
+Typically this process will be handled by a daily CI job, with database backups being stored to the S3 bucket `beis-par-artifacts` with the prefix `backups/`.
 
-Full instructions on setting AWS keys and environment variables for the target environment can be found in the push.sh script itself.
-
-#### Prerequisites
-
-* [Vault](https://www.vaultproject.io/)
-* [AWS CLI](https://aws.amazon.com/cli/)
+But should this process need to be run manually...
 
 ## Backup database
 
