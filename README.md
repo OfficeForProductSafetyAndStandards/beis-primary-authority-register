@@ -30,6 +30,8 @@ $ cd /var/www/html/web
 $ ../vendor/bin/drush cr
 ```
 
+Once you have a working development environment PAR should be available at [https://par.localhost:8080](https://par.localhost:8080)
+
 ### Prerequisites
 
 * [Composer] - version 2.3.5 or higher
@@ -37,7 +39,20 @@ $ ../vendor/bin/drush cr
 * [Docker Compose] - version 2.2.2 or higher
 * A copy of the [latest sanitised PAR database](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/backups/drush-dump-production-sanitized-latest.sql.tar.gz) from the BEIS S3 artifacts bucket.
 
-### Database
+### Set up
+
+There are a few main tasks that need to be performed after pulling new code or downloading a new database.
+
+#### Composer install
+After pulling any changes to the `composer.json` file, run:
+
+```
+composer install
+```
+
+This is best run from outside the primary docker container (very slow within the container), on your local machine.
+
+#### Database
 
 In order to run the site you will need to import a copy of the latest par database:
 ```
@@ -52,19 +67,6 @@ tar -zxvf ../backups/db-dump-production-sanitised-latest.tar.gz db-dump-producti
 cd /var/www/par/web
 ../vendor/bin/drush sql:cli < ../backups/db-dump-production-sanitised.sql
 ```
-
-### Set up
-
-There are a few main tasks that need to be performed after pulling new code or downloading a new database.
-
-#### Composer install
-After pulling any changes to the `composer.json` file, run:
-
-```
-composer install
-```
-
-This is best run from outside the primary docker container (very slow within the container), on your local machine.
 
 #### NPM install
 The theme and the tests dependencies are both managed with NPM, any changes to `package.json` or `tests/package.json`, run:
