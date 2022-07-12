@@ -21,7 +21,7 @@ There is a docker-compose file in the project root which contains all the images
 * Postgres
 * Opensearch
 
-Just run `docker-compose up` from the project root.
+Just run `docker-compose up -d` from the project root.
 
 To run commands within the primary container:
 ```
