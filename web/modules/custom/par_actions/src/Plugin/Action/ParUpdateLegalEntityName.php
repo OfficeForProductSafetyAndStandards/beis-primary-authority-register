@@ -33,7 +33,7 @@ class ParUpdateLegalEntityName extends ActionBase {
         in_array($entity->get('legal_entity_type')->getString(), $companies_house_types)) {
         $company_profile = $organisation_register_manager->lookupOrganisation($entity->getRegisteredNumber(), $companies_house_register);
 
-        $companies_house_name = $company_profile ? $company_profile['company_name'] : false;
+        $companies_house_name = $company_profile?->getName();
         if ($companies_house_name && $companies_house_name !== $entity->getName()) {
           // Update the name.
           $entity->get('registered_name')->setValue($companies_house_name);

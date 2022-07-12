@@ -199,6 +199,9 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
     $query = \Drupal::entityQuery($this->getEntity());
 
     // Only run the default query if specified.
+    // The default query condition compares a relative time format to
+    // a specified date field on the entity.
+    // It does not handle timestamp fields.
     if ($this->getProperty()) {
       $query->condition($this->getProperty(), $scheduled_time->format('Y-m-d'), $operator);
     }

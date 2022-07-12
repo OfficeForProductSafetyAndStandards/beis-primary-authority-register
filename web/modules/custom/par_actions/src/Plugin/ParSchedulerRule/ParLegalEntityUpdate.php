@@ -13,7 +13,7 @@ use Drupal\par_actions\ParSchedulerRuleBase;
  *   entity = "par_data_legal_entity",
  *   frequency = "1 week",
  *   queue = TRUE,
- *   status = TRUE,
+ *   status = FALSE,
  *   action = "par_update_legal_entity_name"
  * )
  */
