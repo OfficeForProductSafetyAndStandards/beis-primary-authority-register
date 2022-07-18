@@ -79,15 +79,6 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
       $legal_entity_summary = $legal_entity_view_builder->view($legal_entity, 'summary');
       $classes = ['legal-entity'];
 
-      // Check the legal entity name is up-to-date.
-      $organisation_register_manager = \Drupal::service('registered_organisations.organisation_manager');
-      $companies_house_register = $organisation_register_manager->getDefinition('companies_house');
-      $company_profile = $organisation_register_manager->lookupOrganisation($legal_entity->getRegisteredNumber(), $companies_house_register);
-      $company_name = $company_profile?->getName();
-      if (strcasecmp($company_name, $legal_entity->getName()) != 0 &&
-        $this->getFlowNegotiator()->getCurrentUser()->hasPermission('administer par_data_legal_entity entities')) {
-        $classes[] = 'needs-updating';
-      }
       $form['legal_entities']['legal_entity'][$delta] = [
         '#type' => 'container',
         '#attributes' => ['class' => 'column-full'],
