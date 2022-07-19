@@ -24,11 +24,9 @@ PRs should be tested against the Definition of Done.
 
 * Code meets the A/C agreed on the task.
 * TTD requirements met. New tests written for all A/C (at a minimum).
-* Coding standards met:
+* Coding standards met. `drupal-check -d` is essential, `phpcs` is optional:
 ```
 ./vendor/bin/drupal-check -d --memory-limit=256M web/modules/custom/ web/modules/features/ web/themes/custom/
-```
-```
 ./vendor/bin/phpcs web/modules/custom/ web/modules/features/ web/themes/custom/
 ```
 * Can be deployed to an existing environment without manual intervention.
