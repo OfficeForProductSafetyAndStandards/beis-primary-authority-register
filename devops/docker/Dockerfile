@@ -99,6 +99,10 @@ RUN cd /tmp \
     && sudo -E pecl install pcov \
     && sudo -E docker-php-ext-enable pcov
 
+# Configure Xdebug for remote debugging.
+RUN cd /tmp \
+    && sudo -E pecl install xdebug
+
 # Enable the requisite Apache modules.
 RUN a2enmod rewrite \
     && a2enmod proxy \
@@ -216,6 +220,6 @@ RUN export CHROMEDRIVER_RELEASE=$(curl --location --fail --retry 3 http://chrome
       && chromedriver --version
 
 # Start apache
-CMD apachectl -D FOREGROUND
+ENTRYPOINT ./entrypoint.sh
 
 EXPOSE 80

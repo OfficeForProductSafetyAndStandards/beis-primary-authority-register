@@ -83,6 +83,30 @@ After a fresh database import, or when switching branches always re-install drup
 ./drupal-update.sh
 ```
 
+#### Debugging
+
+The Xdebug PHP extension is included in the web container image. It is disabled by default.
+
+To activate the debugger set the XDEBUG environment variable to 'debug' before starting the services.
+
+```
+export XDEBUG=debug
+docker-composer up -d web
+```
+
+To deactivate Xdebug remove the XDEBUG environment variable, or set to 'off', and restart.
+
+```
+export XDEBUG=off
+docker-composer up -d web
+```
+
+To avoid slowing execution when debugging is not required Xdebug is configured for debugging
+to start only when triggered, it will not initiate a connection to the IDE unless a trigger is
+present. Which trigger to use depends on whether you're debugging a PHP application through
+a browser, or on the command line. See [Xdebug activating step debugging](https://xdebug.org/docs/step_debug#activate_debugger)
+for more information about triggering debugging.
+
 ## Deployment
 
 Tagging the master branch will start a deployment build.
