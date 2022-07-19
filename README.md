@@ -91,14 +91,14 @@ To activate the debugger set the XDEBUG environment variable to 'debug' before s
 
 ```
 export XDEBUG=debug
-docker-composer up -d web
+docker-compose up -d web
 ```
 
 To deactivate Xdebug remove the XDEBUG environment variable, or set to 'off', and restart.
 
 ```
 export XDEBUG=off
-docker-composer up -d web
+docker-compose up -d web
 ```
 
 To avoid slowing execution when debugging is not required Xdebug is configured for debugging
