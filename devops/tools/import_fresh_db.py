@@ -7,7 +7,7 @@ import sys
 import argparse
 
 parser = argparse.ArgumentParser(description='Import new database')
-parser.add_argument("-f", dest="sqlfile", help="The full path to the SQL file to import", default="/home/vcap/app/web/docker/fresh_drupal_postgres.sql")
+parser.add_argument("-f", dest="sqlfile", help="The full path to the SQL file to import", default="/home/vcap/app/web/docker/db/fresh_drupal_postgres.sql")
 results = parser.parse_args()
 
 from subprocess import call
