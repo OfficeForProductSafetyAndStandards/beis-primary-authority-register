@@ -12,7 +12,7 @@ references:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: beispar/db:latest
+      - image: beispar/db:v1.0.0
         environment:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
@@ -33,6 +33,7 @@ references:
     environment:
       TEST_REPORTS: ~/par/tests/reports
       S3_ARTIFACTS_BUCKET: beis-par-artifacts
+      SEED_DATABASE: db-dump-production-seed
       SANITISED_DATABASE: db-dump-production-sanitised
       UNSANITISED_DATABASE: db-dump-production-unsanitised
       SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
@@ -519,6 +520,11 @@ jobs:
           environment:
             APP_ENV: ci-sanitise
       - run:
+          name: "Backup seed database"
+          command: ./scripts/db-backup.sh production -z -d "../backups" -a '@par.dev'
+          environment:
+            APP_ENV: ci-sanitise
+      - run:
           name: "Sanitise database"
           command: |
             cd web
@@ -526,35 +532,22 @@ jobs:
           environment:
             APP_ENV: ci-sanitise
       - run:
-          name: "Backup database"
+          name: "Backup sanitised database"
           command: ./scripts/db-backup.sh production -s -d "../backups" -a '@par.dev'
           environment:
             APP_ENV: ci-sanitise
+      - aws-s3/copy:
+          from: "backups/${SEED_DATABASE}-latest.tar.gz"
+          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
+          arguments: |
+            --region eu-west-1 \
+            --cache-control "max-age=0"
       - aws-s3/copy:
           from: "backups/${SANITISED_DATABASE}-latest.tar.gz"
           to: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
           arguments: |
             --region eu-west-1 \
             --cache-control "max-age=0"
-
-  reseed_database:
-    <<: *defaults
-    steps:
-      - *clean_working_directory
-      - *restore_code
-      - run:
-          name: "Backup production database"
-          command: |
-            ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
-      - aws-s3/copy:
-          from: "/tmp/backups/"
-          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
-          arguments: |
-            --region eu-west-1 \
-            --cache-control "max-age=0" \
-            --recursive \
-            --exclude="*" \
-            --include "db-dump-*.tar.gz"
 
 workflows:
   version: 2.1
@@ -633,15 +626,6 @@ workflows:
           context: production
           requires:
             - hold_prod
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-      - reseed_database:
-          context: production
-          requires:
-            - deploy_prod
           filters:
             tags:
               only: /^v.*/

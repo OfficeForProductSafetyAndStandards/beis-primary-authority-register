@@ -20,7 +20,7 @@ services:
         - .:/var/www/html
 
     db:
-      image: postgres:13.6
+      image: beispar/db:latest
       container_name: beis-par-db
       restart: always
       ports:

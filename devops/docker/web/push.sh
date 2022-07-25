@@ -8,12 +8,7 @@ set -o errexit -euo pipefail -o noclobber -o nounset
 
 ####################################################################################
 # Set required parameters
-#    ENV (required) - the password for the user account
-#    GOVUK_CF_USER (required) - the user deploying the script
-#    GOVUK_CF_PWD (required) - the password for the user account
-#    BUILD_DIR - the directory containing the build assets
-#    VAULT_ADDR - the vault service endpoint
-#    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
+#    TAG (required) - the semver tag to deploy
 ####################################################################################
 OPTIONS=t:
 LONGOPTS=tag:
@@ -34,7 +29,7 @@ eval set -- "$PARSED"
 # Defaults
 DOCKER_USER=${DOCKER_USER:=beispar}
 IMAGE=${IMAGE:=web}
-TAG=${TAG:=latest}
+TAG=${TAG:-}
 
 while true; do
     case "$1" in
@@ -53,7 +48,26 @@ while true; do
     esac
 done
 
-# Operate in the docker directory
-echo ${BASH_SOURCE%/*}
+# Operate in the docker directory.
+WORKING_DIR=${BASH_SOURCE%/*}
+printf "Working directory: $WORKING_DIR\n"
 
-docker build --no-cache -t $DOCKER_USER/$IMAGE:$TAG .
+# Require a tag.
+re='^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)';
+if [[ -z "${TAG}" ]] || [[ ! $TAG =~ $re ]]; then
+    printf "Error: please specify a valid semver tag (starting with a v) using the '-t' flag...\n"
+    exit 2
+fi
+
+# Build the image and tag the image with the 'latest' tag.
+printf "Building the image...\n"
+docker build --no-cache -t $DOCKER_USER/$IMAGE:latest $WORKING_DIR
+
+# Also tag the image with the appropriate semver tag.
+printf "Tagging the image...\n"
+docker tag $DOCKER_USER/$IMAGE:latest $DOCKER_USER/$IMAGE:$TAG
+
+# Push the image.
+printf "Pushing the image...\n"
+docker push $DOCKER_USER/$IMAGE:latest
+docker push $DOCKER_USER/$IMAGE:$TAG

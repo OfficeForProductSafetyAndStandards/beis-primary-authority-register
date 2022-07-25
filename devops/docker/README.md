@@ -2,33 +2,28 @@
 
 Docker is used by CircleCI and all testing environments as well as being available to run locally for developers.
 
-## Building docker image
+## Building the docker image
 
-To build changes to the Docker image run the build script.
+Before pushing the docker image check that it builds locally:
 ```
-sh ./build.sh
-```
-
-Check that the new image tag has been created and check connect to the image to check that everything is good with it.
-```
-docker image ls
-docker exec -it beispar/web:latest /bin/bash
+docker build --no-cache -t beispar/web:test ./web
+docker build --no-cache -t beispar/db:test ./db
 ```
 
-When you're ready to tag you can either run the build script again with a version constraint:
+Run `docker image ls` to check that the image was correctly built.
+
+Once the image builds you can execute commands inside the container to confirm all the components run as epected.
 ```
-sh ./build.sh -t [VERSION]
-```
-or tag the image you created previously:
-```
-docker tag beispar/web:latest beispar/web:[VERSION]
+docker exec -it beispar/web:test /bin/bash
+docker exec -it beispar/db:test /bin/bash
 ```
 
-## Push changes to Docker hub
+## Pushing a new docker image
 
-To push changes to the central dockerhub repository
+To publish a new version of the Docker image run the push.sh script in the appropriate docker folder:
 ```
-docker push beispar/web:[VERSION]
+./web/build.sh -t v1.0.0
+./db/build.sh -t v1.0.0
 ```
 
 You must have access to the central docker hub to push images to `beis-par` and login first with `docker login`.

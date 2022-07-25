@@ -2,4 +2,6 @@
 
 FROM postgres:13.6
 
-COPY seed_db.sql /docker-entrypoint-initdb.d/
+ARG DATABASE_FILE='../../../backups/db-dump-production-seed.sql'
+
+COPY $DATABASE_FILE /docker-entrypoint-initdb.d/db-dump-production-seed.sql

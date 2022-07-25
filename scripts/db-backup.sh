@@ -29,8 +29,8 @@ fi
 #    VAULT_ADDR - the vault service endpoint
 #    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
 ####################################################################################
-OPTIONS=psd:a:
-LONGOPTS=push,sanitised,directory:,alias:
+OPTIONS=pszd:a:
+LONGOPTS=push,sanitised,seed,directory:,alias:
 
 # -use ! and PIPESTATUS to get exit code with errexit set
 # -temporarily store output to be able to check for errors
@@ -51,7 +51,7 @@ DIRECTORY=${DIRECTORY:="/tmp"}
 DRUPAL_ALIAS=${DRUPAL_ALIAS:="@par.paas"}
 
 # Set the defaults.
-SANITISED=unsanitised
+CLEANSED=unsanitised
 
 while true; do
     case "$1" in
@@ -60,7 +60,11 @@ while true; do
             shift
             ;;
         -s|--sanitised)
-            SANITISED=sanitised
+            CLEANSED=sanitised
+            shift
+            ;;
+        -z|--seed)
+            CLEANSED=seed
             shift
             ;;
         -d|--directory)
@@ -96,7 +100,7 @@ WEBROOT="${BASH_SOURCE%/*}/../web"
 cd $WEBROOT
 printf "Current working directory: $PWD\n"
 
-FILE_NAME="db-dump-$NAME-$SANITISED"
+FILE_NAME="db-dump-$NAME-$CLEANSED"
 DATE=$(date +%Y-%m-%d)
 
 mkdir -p $DIRECTORY
