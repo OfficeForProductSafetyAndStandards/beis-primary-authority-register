@@ -2,7 +2,7 @@ version: "3.1"
 
 services:
     web:
-      build: ./devops/docker
+      image: beispar/web:v4.2.5
       container_name: beis-par-web
       environment:
         - XDEBUG=${XDEBUG:-off}
