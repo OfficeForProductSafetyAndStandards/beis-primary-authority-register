@@ -41,7 +41,7 @@ eval set -- "$PARSED"
 
 # Defaults
 DOCKER_USER=${DOCKER_USER:=beispar}
-IMAGE=${IMAGE:=web}
+IMAGE=${IMAGE:=db}
 TAG=${TAG:-}
 AWS_KEY=${AWS_KEY:-}
 DATABASE_FILE=${DATABASE_FILE:="db-dump-production-seed.sql"}
