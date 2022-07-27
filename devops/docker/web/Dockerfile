@@ -219,7 +219,12 @@ RUN export CHROMEDRIVER_RELEASE=$(curl --location --fail --retry 3 http://chrome
       && sudo chmod +x /usr/local/bin/chromedriver \
       && chromedriver --version
 
-# Start apache
-ENTRYPOINT ./entrypoint.sh
+# Copy any .ini files.
+COPY ./php/* /home/php/conf.d/
+
+# Configure the container with a custom entrypoint script.
+COPY ./par-entrypoint.sh /usr/local/bin/par-entrypoint
+RUN chmod +x /usr/local/bin/par-entrypoint
+ENTRYPOINT ["par-entrypoint"]
 
 EXPOSE 80

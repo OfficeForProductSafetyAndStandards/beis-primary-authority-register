@@ -23,8 +23,8 @@ command -v aws >/dev/null 2>&1 || {
 #    TAG (required) - the semver tag to deploy
 #    AWS_KEY (required) - the user deploying the script
 ####################################################################################
-OPTIONS=t:u:
-LONGOPTS=tag:,key:
+OPTIONS=t:u:s
+LONGOPTS=tag:,key:,skip-download
 
 # -use ! and PIPESTATUS to get exit code with errexit set
 # -temporarily store output to be able to check for errors
@@ -45,6 +45,7 @@ IMAGE=${IMAGE:=db}
 TAG=${TAG:-}
 AWS_KEY=${AWS_KEY:-}
 DATABASE_FILE=${DATABASE_FILE:="db-dump-production-seed.sql"}
+DOWNLOAD_DATABASE=${DOWNLOAD_DATABASE:=true}
 
 while true; do
     case "$1" in
@@ -55,6 +56,10 @@ while true; do
         -u|--key)
             KEY="$2"
             shift 2
+            ;;
+        -s|--skip-download)
+            DOWNLOAD_DATABASE=false
+            shift 1
             ;;
         --)
             shift
@@ -72,10 +77,12 @@ WORKING_DIR=${BASH_SOURCE%/*}
 printf "Working directory: $WORKING_DIR\n"
 
 # Download the latest database file.
-SEED_DATABASE='db-dump-production-seed'
-printf "Downloading the latest seed database s3://beis-par-artifacts/builds/$SEED_DATABASE-latest.tar.gz...\n"
-aws s3 cp s3://beis-par-artifacts/backups/$SEED_DATABASE-latest.tar.gz /tmp/
-tar -zxvf /tmp/$SEED_DATABASE-latest.tar.gz -C $WORKING_DIR
+if [[ "$DOWNLOAD_DATABASE" = true ]]; then
+  SEED_DATABASE='db-dump-production-seed'
+  printf "Downloading the latest seed database s3://beis-par-artifacts/builds/$SEED_DATABASE-latest.tar.gz...\n"
+  aws s3 cp s3://beis-par-artifacts/backups/$SEED_DATABASE-latest.tar.gz /tmp/
+  tar -zxvf /tmp/$SEED_DATABASE-latest.tar.gz -C $WORKING_DIR
+fi
 
 # Check the database seed file exists.
 if [[ ! -f "$WORKING_DIR/$DATABASE_FILE" ]]; then
