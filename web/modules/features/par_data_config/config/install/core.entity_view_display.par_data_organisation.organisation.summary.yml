@@ -15,22 +15,22 @@ bundle: organisation
 mode: summary
 content:
   field_premises:
-    weight: 1
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: summary
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 1
     region: content
   organisation_name:
+    type: string
     label: hidden
-    region: content
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
     weight: 0
+    region: content
 hidden:
   archive_reason: true
   comments: true
