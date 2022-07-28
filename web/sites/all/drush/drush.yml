@@ -58,9 +58,6 @@ sql:
       - invite
       - 'invite_*'
       - 'messages_*'
-      - users
-      - 'user_*'
-      - 'users_*'
   skip-tables:
     common:
       - 'migration_*'
