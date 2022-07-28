@@ -1,0 +1,21 @@
+uuid: 05f5989e-a6ac-4d30-ad80-053b5093ade8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_partnership_le.field_legal_entity
+    - par_data.par_data_partnership_legal_entity_type.partnership_legal_entity
+id: par_data_partnership_le.partnership_legal_entity.field_legal_entity
+field_name: field_legal_entity
+entity_type: par_data_partnership_le
+bundle: partnership_legal_entity
+label: 'Legal Entity'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings: {  }
+field_type: entity_reference

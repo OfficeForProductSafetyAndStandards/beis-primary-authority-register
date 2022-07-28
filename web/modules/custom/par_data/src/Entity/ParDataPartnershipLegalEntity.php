@@ -62,9 +62,9 @@ use Drupal\par_data\ParDataException;
  *   },
  *   links = {
  *     "collection" = "/admin/content/par_data/par_data_partnership_legal_entity",
- *     "canonical" = "/admin/content/par_data/par_data_partnership_legal_entity/{par_data_partnership_legal_entity}",
- *     "edit-form" = "/admin/content/par_data/par_data_partnership_legal_entity/{par_data_partnership_legal_entity}/edit",
- *     "delete-form" = "/admin/content/par_data/par_data_partnership_legal_entity/{par_data_partnership_legal_entity}/delete"
+ *     "canonical" = "/admin/content/par_data/par_data_partnership_legal_entity/{par_data_partnership_le}",
+ *     "edit-form" = "/admin/content/par_data/par_data_partnership_legal_entity/{par_data_partnership_le}/edit",
+ *     "delete-form" = "/admin/content/par_data/par_data_partnership_legal_entity/{par_data_partnership_le}/delete"
  *   },
  *   bundle_entity_type = "par_data_partnership_le_type",
  *   permission_granularity = "bundle",

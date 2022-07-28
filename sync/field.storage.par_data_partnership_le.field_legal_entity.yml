@@ -1,0 +1,20 @@
+uuid: f186ce99-7b62-4d5f-8cf2-0fd74356dec4
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - par_data
+id: par_data_partnership_le.field_legal_entity
+field_name: field_legal_entity
+entity_type: par_data_partnership_le
+type: entity_reference
+settings:
+  target_type: node
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
