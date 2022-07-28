@@ -1,16 +1,17 @@
-uuid: 59c2a373-0923-46dd-8c5d-d67cf4269c29
+uuid: 211d5a72-6360-4412-97fd-4613c08a68b6
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.par_data_partnership_le.summary
     - field.field.par_data_partnership_le.partnership_legal_entity.field_legal_entity
     - par_data.par_data_partnership_legal_entity_type.partnership_legal_entity
   module:
     - datetime
-id: par_data_partnership_le.partnership_legal_entity.default
+id: par_data_partnership_le.partnership_legal_entity.summary
 targetEntityType: par_data_partnership_le
 bundle: partnership_legal_entity
-mode: default
+mode: summary
 content:
   date_legal_entity_approved:
     type: datetime_default
@@ -34,7 +35,7 @@ content:
     type: entity_reference_entity_view
     label: hidden
     settings:
-      view_mode: full
+      view_mode: title
       link: false
     third_party_settings: {  }
     weight: 0
