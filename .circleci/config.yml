@@ -12,7 +12,7 @@ references:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: beispar/db:v1.0.2
+      - image: beispar/db:v1.0.3
         environment:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
@@ -82,6 +82,17 @@ references:
         cd web
         ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
         ../drupal-update.sh
+
+  check_application: &check_application
+    run:
+      name: "Application checklist"
+      command: |
+        cd web
+        ../vendor/bin/drush --yes config-split:export dev_config
+        ../vendor/bin/drush --yes config-split:export test_config
+        ../vendor/bin/drush --no --diff config:import
+        ../vendor/bin/drush core-requirements --severity=2
+        curl -sD - -o /dev/null http://par.localhost
 
   build_assets: &build_assets
     run:
@@ -225,14 +236,7 @@ jobs:
             ../vendor/bin/drush cron
             ../vendor/bin/drush cron
             ../vendor/bin/drush cron
-      - run:
-          name: "Application checklist"
-          command: |
-            cd web
-            ../vendor/bin/drush --no --diff config:import
-            ../vendor/bin/drush core-requirements --severity=2
-            ../vendor/bin/drush ev "print_r(\Drupal::service('flysystem_factory')->ensure());"
-            curl -sD - -o /dev/null http://par.localhost
+      - *check_application
       - run:
           name: "Install test dependencies"
           command: |
@@ -271,13 +275,7 @@ jobs:
           command: |
             cd web
             ../vendor/bin/drush cron
-      - run:
-          name: "Application checklist"
-          command: |
-            cd web
-            ../vendor/bin/drush --no --diff config:import
-            ../vendor/bin/drush core-requirements --severity=2
-            curl -sD - -o /dev/null http://par.localhost
+      - *check_application
       - run:
           name: "Install test dependencies"
           command: |
@@ -494,15 +492,7 @@ jobs:
             ../vendor/bin/drush cron
           environment:
             APP_ENV: ci-sanitise
-      - run:
-          name: "Application checklist"
-          command: |
-            cd web
-            ../vendor/bin/drush --no --diff config:import
-            ../vendor/bin/drush core-requirements --severity=2
-            curl -sD - -o /dev/null http://par.localhost
-          environment:
-            APP_ENV: ci-sanitise
+      - *check_application
       - run:
           name: "Un-install temporary data @temp"
           command: |
