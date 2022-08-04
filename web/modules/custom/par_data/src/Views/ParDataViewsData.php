@@ -46,7 +46,7 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
     // This will always get the allowed statuses from the first bundle.
     // @TODO Get the list of bundles which the view supports and use these.
     $par_entity = $this->getParDataManager()->getParEntityType($this->entityType->id());
-    $entity_bundle = $par_entity ?: $this->getParDataManager()->getParBundleEntity($this->entityType->id());
+    $entity_bundle = $par_entity ? $this->getParDataManager()->getParBundleEntity($this->entityType->id()) : NULL;
     if (isset($par_entity) && isset($entity_bundle) && $entity_bundle instanceof ParDataTypeInterface) {
       $status_field = $entity_bundle->getConfigurationElementByType('entity', 'status_field');
     }
