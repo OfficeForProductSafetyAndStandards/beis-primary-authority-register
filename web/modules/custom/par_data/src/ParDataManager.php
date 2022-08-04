@@ -200,7 +200,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getParBundleEntity(string $type, $bundle = NULL): ParDataTypeInterface {
+  public function getParBundleEntity(string $type, $bundle = NULL): ?ParDataTypeInterface {
     $entity_type = $this->getParEntityType($type);
     $definition = $this->entityTypeManager->hasDefinition($type) ? $this->getEntityBundleDefinition($entity_type) : NULL;
     $bundles = $definition ? $this->getEntityTypeStorage($definition->id())->loadMultiple() : [];
