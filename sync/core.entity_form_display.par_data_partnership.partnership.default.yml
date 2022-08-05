@@ -11,10 +11,12 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_legal_entity
     - field.field.par_data_partnership.partnership.field_organisation
     - field.field.par_data_partnership.partnership.field_organisation_person
+    - field.field.par_data_partnership.partnership.field_partnership_legal_entity
     - field.field.par_data_partnership.partnership.field_regulatory_function
     - par_data.par_data_partnership_type.partnership
   module:
     - datetime
+    - link
     - text
 _core:
   default_config_hash: hsEFYV4xjPVPeVpfcAM3LMAsx1qnjffieHMjehRj1Bc
@@ -96,6 +98,16 @@ content:
   field_organisation_person:
     type: entity_reference_autocomplete
     weight: 4
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_partnership_legal_entity:
+    type: entity_reference_autocomplete
+    weight: 28
     region: content
     settings:
       match_operator: CONTAINS

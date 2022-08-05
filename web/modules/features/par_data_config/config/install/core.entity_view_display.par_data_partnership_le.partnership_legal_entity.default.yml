@@ -1,0 +1,47 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.par_data_partnership_le.partnership_legal_entity.field_legal_entity
+    - par_data.par_data_partnership_legal_entity_type.partnership_legal_entity
+  module:
+    - datetime
+id: par_data_partnership_le.partnership_legal_entity.default
+targetEntityType: par_data_partnership_le
+bundle: partnership_legal_entity
+mode: default
+content:
+  date_legal_entity_approved:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  date_legal_entity_revoked:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_legal_entity:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: full
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  archive_reason: true
+  deleted_reason: true
+  name: true
+  revocation_reason: true
+  search_api_excerpt: true
+  user_id: true

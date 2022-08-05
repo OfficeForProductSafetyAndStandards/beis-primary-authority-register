@@ -1252,3 +1252,16 @@ function par_data_update_9002() {
     }
   }
 }
+
+/**
+ * PAR-1780 Install the new Partnership Legal Entity entity.
+ */
+function par_data_update_9003() {
+  // Create the new entity if it isn't already installed.
+  $db = \Drupal::database();
+  if (!$db->schema()->tableExists('par_data_partnership_legal_entities')) {
+    \Drupal::entityTypeManager()->clearCachedDefinitions();
+    \Drupal::entityDefinitionUpdateManager()
+      ->installEntityType(\Drupal::entityTypeManager()->getDefinition('par_data_partnership_le'));
+  }
+}

@@ -15,47 +15,47 @@ mode: detailed
 content:
   communication_notes:
     type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
     weight: 4
     region: content
-    label: hidden
+  email_pseudo_field:
     settings: {  }
     third_party_settings: {  }
-  email_pseudo_field:
     weight: 3
     region: content
-    settings: {  }
-    third_party_settings: {  }
   full_name_pseudo_field:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
-  full_name_str:
-    label: hidden
     weight: 0
     region: content
+  full_name_str:
+    type: string
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
-  mobile_phone_pseudo_field:
-    weight: 2
+    weight: 0
     region: content
+  mobile_phone_pseudo_field:
     settings: {  }
     third_party_settings: {  }
+    weight: 2
+    region: content
   person_name:
     type: string
-    weight: 1
-    region: content
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  work_phone_pseudo_field:
     weight: 1
     region: content
+  work_phone_pseudo_field:
     settings: {  }
     third_party_settings: {  }
+    weight: 1
+    region: content
 hidden:
   archive_reason: true
   communication_email: true

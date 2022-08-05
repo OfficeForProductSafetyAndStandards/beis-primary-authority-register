@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.par_data_partnership_le.title
+    - field.field.par_data_partnership_le.partnership_legal_entity.field_legal_entity
+    - par_data.par_data_partnership_legal_entity_type.partnership_legal_entity
+id: par_data_partnership_le.partnership_legal_entity.title
+targetEntityType: par_data_partnership_le
+bundle: partnership_legal_entity
+mode: title
+content:
+  field_legal_entity:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  archive_reason: true
+  date_legal_entity_approved: true
+  date_legal_entity_revoked: true
+  deleted_reason: true
+  name: true
+  revocation_reason: true
+  search_api_excerpt: true
+  user_id: true
