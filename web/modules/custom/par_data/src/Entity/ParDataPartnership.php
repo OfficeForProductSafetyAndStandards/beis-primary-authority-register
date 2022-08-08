@@ -660,19 +660,37 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * Get partnership legal entities for this partnership.
+   */
+  public function getPartnershipLegalEntity($single = FALSE) {
+    $legal_entities = $this->get('field_partnership_legal_entity')->referencedEntities();
+    $legal_entity = !empty($legal_entities) ? current($legal_entities) : NULL;
+
+    return $single ? $legal_entity : $legal_entities;
+  }
+
+  /**
    * Add a legal entity to partnership.
    *
    * @param ParDataLegalEntity $legal_entity
    *   A PAR Legal Entity to add.
    */
   public function addLegalEntity(ParDataLegalEntity $legal_entity) {
-    // Retrieve existing legal entities.
-    $legal_entities = $this->getLegalEntity();
 
-    // Append new legal entity to existing entities.
-    $legal_entities[] = $legal_entity;
+    // Create new partnership legal entity referencing the legal entity.
+    $partnership_legal_entity = ParDataPartnershipLegalEntity::create([]);
+    $partnership_legal_entity->addLegalEntity($legal_entity);
 
-    $this->set('field_legal_entity', $legal_entities);
+    // Start date only needed if partnership is already approved.
+    // If start date not set then it is assumed that the legal entity's
+    // participation starts when the partnership starts.
+    if ($this->isActive()) {
+      $partnership_legal_entity->setStartDate(new DrupalDateTime());
+    }
+    $partnership_legal_entity->save();
+
+    // Append new partnership legal entity to existing list of legal entities covered by this partnership.
+    $this->get('field_partnership_legal_entity')->appendItem($partnership_legal_entity);
   }
 
   /**
