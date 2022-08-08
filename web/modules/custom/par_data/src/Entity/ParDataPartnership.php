@@ -683,13 +683,8 @@ class ParDataPartnership extends ParDataEntity {
     $partnership_legal_entity->setStartDate(new DrupalDateTime());
     $partnership_legal_entity->save();
 
-    // Retrieve existing partnership legal entities.
-    $partnership_legal_entities = $this->getPartnershipLegalEntity();
-
-    // Append new partnership legal entity to existing entities.
-    $partnership_legal_entities[] = $partnership_legal_entity;
-
-    $this->set('field_partnership_legal_entity', $partnership_legal_entities);
+    // Append new partnership legal entity to existing list of legal entities covered by this partnership.
+    $this->get('field_partnership_legal_entity')->appendItem($partnership_legal_entity);
   }
 
   /**
