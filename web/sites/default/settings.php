@@ -1137,3 +1137,15 @@ if (PHP_SAPI === 'cli') {
   ini_set('memory_limit', '4G');
   ini_set('max_execution_time', '3600');
 }
+$databases['default']['default'] = array (
+  'database' => 'par',
+  'username' => 'par',
+  'password' => '123456',
+  'prefix' => '',
+  'host' => 'db.localhost',
+  'port' => '5432',
+  'namespace' => 'Drupal\\pgsql\\Driver\\Database\\pgsql',
+  'driver' => 'pgsql',
+  'autoload' => 'core/modules/pgsql/src/Driver/Database/pgsql/',
+);
+$settings['hash_salt'] = 'qALpGEVy94sN2F1j8C-SvoqpSBUV60yHCihfcmlM18zA3WImQrs-mreKMxoF72ndTUD6IwO0RQ';
