@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="par_coding_standards">
+  <description>PHP Coding standards for developers.</description>
+
+  <arg name="extensions" value="css,inc,install,module,php,profile,test,theme"/>
+
+  <config name="drupal_core_version" value="9"/>
+
+  <file>web/modules/custom</file>
+  <file>web/modules/features</file>
+  <file>web/themes/custom</file>
+
+  <rule ref="Drupal"/>
+</ruleset>
