@@ -162,7 +162,7 @@ skip_tables=(
   webprofiler
 )
 # Select the tables to only dump the schema for, ignoring all content.
-temp_tables=(
+structure_tables=(
   cache
   cache_*
   history
@@ -182,7 +182,7 @@ dump_args=(
 for t in ${skip_tables[@]}; do
   dump_args+=(--exclude-table 'public.'$t)
 done
-for t in ${temp_tables[@]}; do
+for t in ${structure_tables[@]}; do
   dump_args+=(--exclude-table-data 'public.'$t)
 done
 

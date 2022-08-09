@@ -6,13 +6,13 @@ orbs:
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v4.2.4
+      - image: beispar/web:v4.2.7
         name: web
         environment:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: postgres:13.6
+      - image: beispar/db:v1.0.3
         environment:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
@@ -33,6 +33,7 @@ references:
     environment:
       TEST_REPORTS: ~/par/tests/reports
       S3_ARTIFACTS_BUCKET: beis-par-artifacts
+      SEED_DATABASE: db-dump-production-seed
       SANITISED_DATABASE: db-dump-production-sanitised
       UNSANITISED_DATABASE: db-dump-production-unsanitised
       SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
@@ -526,10 +527,28 @@ jobs:
           environment:
             APP_ENV: ci-sanitise
       - run:
-          name: "Backup database"
+          name: "Backup sanitised database"
           command: ./scripts/db-backup.sh production -s -d "../backups" -a '@par.dev'
           environment:
             APP_ENV: ci-sanitise
+      - run:
+          name: "Remove all user data"
+          command: |
+            cd web
+            ../vendor/bin/drush @par.dev devel-generate:users --kill 0
+          environment:
+            APP_ENV: ci-sanitise
+      - run:
+          name: "Backup seed database"
+          command: ./scripts/db-backup.sh production -z -d "../backups" -a '@par.seed'
+          environment:
+            APP_ENV: ci-sanitise
+      - aws-s3/copy:
+          from: "backups/${SEED_DATABASE}-latest.tar.gz"
+          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
+          arguments: |
+            --region eu-west-1 \
+            --cache-control "max-age=0"
       - aws-s3/copy:
           from: "backups/${SANITISED_DATABASE}-latest.tar.gz"
           to: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"

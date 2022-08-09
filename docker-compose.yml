@@ -1,9 +1,13 @@
-version: "3"
+version: "3.1"
 
 services:
     web:
-      image: beispar/web:v4.2.4
+      image: beispar/web:latest
       container_name: beis-par-web
+      environment:
+        - XDEBUG=${XDEBUG:-off}
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
       ports:
         - "8080:80"
         - "4433:443"
@@ -16,7 +20,7 @@ services:
         - .:/var/www/html
 
     db:
-      image: postgres:13.6
+      image: beispar/db:latest
       container_name: beis-par-db
       restart: always
       ports:

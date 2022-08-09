@@ -21,7 +21,7 @@ There is a docker-compose file in the project root which contains all the images
 * Postgres
 * Opensearch
 
-Just run `docker-compose up` from the project root.
+Just run `docker-compose up -d` from the project root.
 
 To run commands within the primary container:
 ```
@@ -34,10 +34,11 @@ Once you have a working development environment PAR should be available at [http
 
 ### Prerequisites
 
-* [Composer] - version 2.3.5 or higher
-* [Docker] - version 20.0 or higher
-* [Docker Compose] - version 2.2.2 or higher
-* A copy of the [latest sanitised PAR database](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/backups/drush-dump-production-sanitized-latest.sql.tar.gz) from the BEIS S3 artifacts bucket.
+* [Composer](https://getcomposer.org/download) - version 2.3.5 or higher
+* [Docker](https://docs.docker.com/engine/install) - version 20.0 or higher
+* [Docker Compose](https://docs.docker.com/compose/install) - version 2.2.2 or higher
+* (Optional) A copy of the [latest sanitised PAR database](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/backups/drush-dump-production-sanitized-latest.sql.tar.gz) from the BEIS S3 artifacts bucket.
+* A copy of the [settings.local.php](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/backups/drush-dump-production-sanitized-latest.sql.tar.gz) configuration file required to setup the application locally.
 
 ### Set up
 
@@ -52,22 +53,6 @@ composer install
 
 This is best run from outside the primary docker container (very slow within the container), on your local machine.
 
-#### Database
-
-In order to run the site you will need to import a copy of the latest par database:
-```
-aws s3 cp s3://beis-par-artifacts/backups/db-dump-production-unsanitised-latest.tar.gz ./backups/
-```
-Download this and place in the `backups` directory of the par project (create the folder if it doesn't' exist).
-
-Import the database using drush (note the database should be truncated before re-importing)
-```bash
-cd /var/www/par/backups
-tar -zxvf ../backups/db-dump-production-sanitised-latest.tar.gz db-dump-production-sanitised.sql
-cd /var/www/par/web
-../vendor/bin/drush sql:cli < ../backups/db-dump-production-sanitised.sql
-```
-
 #### NPM install
 The theme and the tests dependencies are both managed with NPM, any changes to `package.json` or `tests/package.json`, run:
 
@@ -78,12 +63,59 @@ npm run install-par-theme
 npm run gulp
 ```
 
+#### Database (optional)
+
+The docker container includes a seed database that can be used to get started.
+
+In order to get the latest and most up-to-date database including some of the par data you will need to import a copy of the latest par database:
+```
+aws s3 cp s3://beis-par-artifacts/backups/db-dump-production-unsanitised-latest.tar.gz ./backups/
+```
+Download this and place in the `backups` directory of the par project (create the folder if it doesn't' exist).
+
+Import the database using drush (note the database should be truncated before re-importing)
+```bash
+cd /var/www/html/backups
+tar -zxvf ../backups/db-dump-production-sanitised-latest.tar.gz db-dump-production-sanitised.sql
+cd /var/www/html/web
+../vendor/bin/drush sql:cli < ../backups/db-dump-production-sanitised.sql
+```
+
 #### Drupal install
-After a fresh database import, or when switching branches always re-install drupal, run:
+Get a copy of the settings.local.php file that will configure Drupal within your local environment and place this in `web/sites/default`:
+```
+aws s3 cp s3://beis-par-artifacts/dev/settings.local.php ./web/sites/default/settings.local.php
+```
+
+To set-up drupal, on whenever switching branches or importing a fresh database, run:
 
 ```
 ./drupal-update.sh
 ```
+
+#### Debugging
+
+The Xdebug PHP extension is included in the web container image. It is disabled by default.
+
+To activate the debugger set the XDEBUG environment variable to 'debug' before starting the services.
+
+```
+export XDEBUG=debug
+docker-compose up -d web
+```
+
+To deactivate Xdebug remove the XDEBUG environment variable, or set to 'off', and restart.
+
+```
+export XDEBUG=off
+docker-compose up -d web
+```
+
+To avoid slowing execution when debugging is not required Xdebug is configured for debugging
+to start only when triggered, it will not initiate a connection to the IDE unless a trigger is
+present. Which trigger to use depends on whether you're debugging a PHP application through
+a browser, or on the command line. See [Xdebug activating step debugging](https://xdebug.org/docs/step_debug#activate_debugger)
+for more information about triggering debugging.
 
 ## Deployment
 
