@@ -11,6 +11,7 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\Entity\ParDataPremises;
 
@@ -1265,3 +1266,46 @@ function par_data_update_9003() {
       ->installEntityType(\Drupal::entityTypeManager()->getDefinition('par_data_partnership_le'));
   }
 }
+
+/**
+ * PAR-1781 Migrate legal entity relationship data from partnership to new partnership_legal_entity data entity.
+ */
+function par_data_update_9004() {
+
+  /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  // Get all direct partnerships.
+  $query = $par_data_manager->getEntityQuery('par_data_partnership');
+  $results = $query->execute();
+
+  // Process each partnership.
+  foreach ($results as $result) {
+
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $partnership */
+    $partnership = \Drupal::entityTypeManager()->getStorage('par_data_partnership')->load($result);
+
+    // Get the legal entities linked to the partnership.
+    $legal_entities = $partnership->getLegalEntity();
+    if (empty($legal_entities)) {
+      continue;
+    }
+
+    // Process each legal entity.
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntity $legal_entity */
+    foreach ($legal_entities as $legal_entity) {
+
+      // Create new partnership legal entity instance referencing the legal entity.
+      $partnership_legal_entity = ParDataPartnershipLegalEntity::create([]);
+      $partnership_legal_entity->addLegalEntity($legal_entity);
+      $partnership_legal_entity->save();
+
+      // Append new partnership legal entity to list of legal entities covered by this partnership.
+      $partnership->get('field_partnership_legal_entity')->appendItem($partnership_legal_entity);
+    }
+
+    // Save the partnership with its new partnership_legal_entity references.
+    $partnership->save();
+  }
+}
+
