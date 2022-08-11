@@ -39,10 +39,10 @@ use Drupal\par_data\ParDataException;
  *     },
  *     "access" = "Drupal\par_data\Access\ParDataAccessControlHandler",
  *   },
- *   base_table = "par_partnership_legal_entities",
- *   data_table = "par_partnership_legal_entities_field_data",
- *   revision_table = "par_partnership_legal_entities_revision",
- *   revision_data_table = "par_partnership_legal_entities_field_revision",
+ *   base_table = "par_data_partnership_legal_entities",
+ *   data_table = "par_data_partnership_legal_entities_field_data",
+ *   revision_table = "par_data_partnership_legal_entities_revision",
+ *   revision_data_table = "par_data_partnership_legal_entities_field_revision",
  *   admin_permission = "administer par_data_partnership_legal_entities entities",
  *   translatable = TRUE,
  *   entity_keys = {
@@ -127,21 +127,19 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
 
   /**
    * Get the legal entity for this partnership legal entity.
-   *
-   * @return ParDataLegalEntity
    */
   public function getLegalEntity() {
-    return $this->get('field_legal_entity')->referencedEntities()[0];
+    return $this->get('field_legal_entity')->referencedEntities();
   }
 
   /**
-   * Add a legal entity for this partnership legal entity.
+   * Set the legal entity for this partnership legal entity.
    *
    * @param ParDataLegalEntity $legal_entity
-   *   A PAR Legal Entity to add.
+   *   A PAR Legal Entity to set.
 
    */
-  public function addLegalEntity(ParDataLegalEntity $legal_entity) {
+  public function setLegalEntity(ParDataLegalEntity $legal_entity) {
     // This field should only allow single values.
     $this->set('field_legal_entity', $legal_entity);
   }
@@ -150,7 +148,8 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * Get the legal entity approval date.
    */
   public function getStartDate() {
-    return !$this->get('date_legal_entity_approved')->isEmpty() ? $this->date_legal_entity_approved->date : NULL;
+    $date = !$this->get('date_legal_entity_approved')->isEmpty() ? $this->date_legal_entity_approved->date : NULL;
+    return $date?->format(self::DATE_DISPLAY_FORMAT);
   }
 
   /**
@@ -167,7 +166,8 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * Get the legal entity revocation date.
    */
   public function getEndDate() {
-    return !$this->get('date_legal_entity_revoked')->isEmpty() ? $this->date_legal_entity_revoked->date : NULL;
+    $date = !$this->get('date_legal_entity_revoked')->isEmpty() ? $this->date_legal_entity_revoked->date : NULL;
+    return $date?->format(self::DATE_DISPLAY_FORMAT);
   }
 
   /**

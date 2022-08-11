@@ -1275,15 +1275,19 @@ function par_data_update_9004() {
   /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
   $par_data_manager = \Drupal::service('par_data.manager');
 
-  // Get all direct partnerships.
-  $query = $par_data_manager->getEntityQuery('par_data_partnership');
-  $results = $query->execute();
+  // Get all partnerships that have legal entities attached.
+  $conditions = [
+    [
+      'AND' => [
+        ['field_legal_entity', '', 'IS NOT NULL'],
+      ]
+    ],
+  ];
+  $partnerships = $par_data_manager->getEntitiesByQuery('par_data_partnership', $conditions);
 
   // Process each partnership.
-  foreach ($results as $result) {
-
-    /** @var \Drupal\par_data\Entity\ParDataPartnership $partnership */
-    $partnership = \Drupal::entityTypeManager()->getStorage('par_data_partnership')->load($result);
+  /** @var \Drupal\par_data\Entity\ParDataPartnership $partnership */
+  foreach ($partnerships as $partnership) {
 
     // Get the legal entities linked to the partnership.
     $legal_entities = $partnership->getLegalEntity();
@@ -1296,8 +1300,9 @@ function par_data_update_9004() {
     foreach ($legal_entities as $legal_entity) {
 
       // Create new partnership legal entity instance referencing the legal entity.
+      /** @var \Drupal\par_data\Entity\ParDataPartnershipLegalEntity $partnership_legal_entity */
       $partnership_legal_entity = ParDataPartnershipLegalEntity::create([]);
-      $partnership_legal_entity->addLegalEntity($legal_entity);
+      $partnership_legal_entity->setLegalEntity($legal_entity);
       $partnership_legal_entity->save();
 
       // Append new partnership legal entity to list of legal entities covered by this partnership.
