@@ -11,6 +11,7 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_legal_entity
     - field.field.par_data_partnership.partnership.field_organisation
     - field.field.par_data_partnership.partnership.field_organisation_person
+    - field.field.par_data_partnership.partnership.field_partnership_legal_entity
     - field.field.par_data_partnership.partnership.field_regulatory_function
     - par_data.par_data_partnership_type.partnership
   module:
@@ -23,100 +24,100 @@ mode: full
 content:
   about_partnership:
     type: text_default
-    weight: 1
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 1
+    region: content
   advice:
     type: entity_reference_entity_view
-    weight: 8
-    region: content
     label: hidden
     settings:
       view_mode: summary
       link: false
     third_party_settings: {  }
+    weight: 8
+    region: content
   approved_date:
     type: datetime_default
-    weight: 2
-    region: content
     label: hidden
     settings:
       timezone_override: ''
       format_type: gds_date_format
     third_party_settings: {  }
-  authority:
-    type: entity_reference_entity_view
     weight: 2
     region: content
+  authority:
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: summary
       link: false
     third_party_settings: {  }
+    weight: 2
+    region: content
   authority_person:
     type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
     weight: 3
     region: content
-    label: hidden
-    settings:
-      view_mode: summary
-      link: false
-    third_party_settings: {  }
   inspection_plan:
     type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
     weight: 7
     region: content
-    label: hidden
-    settings:
-      view_mode: summary
-      link: false
-    third_party_settings: {  }
   organisation:
     type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
     weight: 4
     region: content
-    label: hidden
-    settings:
-      view_mode: summary
-      link: false
-    third_party_settings: {  }
   organisation_person:
     type: entity_reference_entity_view
-    weight: 5
-    region: content
     label: hidden
     settings:
       view_mode: summary
       link: false
     third_party_settings: {  }
+    weight: 5
+    region: content
   partnership_type:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
   regulatory_function:
     type: entity_reference_entity_view
-    weight: 1
-    region: content
     label: hidden
     settings:
       view_mode: summary
       link: false
     third_party_settings: {  }
+    weight: 1
+    region: content
   revocation_date:
     type: datetime_default
-    weight: 3
-    region: content
     label: hidden
     settings:
       timezone_override: ''
       format_type: gds_date_format
     third_party_settings: {  }
+    weight: 3
+    region: content
 hidden:
   archive_reason: true
   authority_change_comment: true
@@ -135,6 +136,7 @@ hidden:
   field_legal_entity: true
   field_organisation: true
   field_organisation_person: true
+  field_partnership_legal_entity: true
   field_regulatory_function: true
   member_display: true
   member_link: true
@@ -148,6 +150,7 @@ hidden:
   reject_comment: true
   revocation_reason: true
   revocation_source: true
+  search_api_excerpt: true
   tc_authority_agreed: true
   tc_organisation_agreed: true
   terms_authority_agreed: true

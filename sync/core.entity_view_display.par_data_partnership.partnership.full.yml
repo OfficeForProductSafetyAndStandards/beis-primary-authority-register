@@ -12,6 +12,7 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_legal_entity
     - field.field.par_data_partnership.partnership.field_organisation
     - field.field.par_data_partnership.partnership.field_organisation_person
+    - field.field.par_data_partnership.partnership.field_partnership_legal_entity
     - field.field.par_data_partnership.partnership.field_regulatory_function
     - par_data.par_data_partnership_type.partnership
   module:
@@ -138,6 +139,7 @@ hidden:
   field_legal_entity: true
   field_organisation: true
   field_organisation_person: true
+  field_partnership_legal_entity: true
   field_regulatory_function: true
   member_display: true
   member_link: true
@@ -151,6 +153,7 @@ hidden:
   reject_comment: true
   revocation_reason: true
   revocation_source: true
+  search_api_excerpt: true
   tc_authority_agreed: true
   tc_organisation_agreed: true
   terms_authority_agreed: true

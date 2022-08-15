@@ -17,57 +17,57 @@ mode: full
 content:
   details:
     type: text_default
-    weight: 5
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 5
+    region: content
   document:
-    weight: 8
+    type: file_default
     label: above
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
+    weight: 8
     region: content
   enforcement_action_notes:
-    label: hidden
     type: text_default
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 2
-  enforcement_action_status:
-    label: hidden
     region: content
+  enforcement_action_status:
+    type: string
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
     weight: 1
-  primary_authority_notes:
-    label: hidden
-    type: text_default
     region: content
+  primary_authority_notes:
+    type: text_default
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 4
-  primary_authority_status:
-    label: hidden
-    type: string
     region: content
+  primary_authority_status:
+    type: string
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     weight: 3
+    region: content
   title:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   action_referral: true
   archive_reason: true

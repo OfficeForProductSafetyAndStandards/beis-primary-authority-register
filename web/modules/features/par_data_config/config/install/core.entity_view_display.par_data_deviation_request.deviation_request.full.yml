@@ -19,44 +19,44 @@ bundle: deviation_request
 mode: full
 content:
   document:
-    weight: 6
+    type: file_default
     label: above
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
+    weight: 6
     region: content
   notes:
-    label: hidden
     type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
     weight: 3
     region: content
+  primary_authority_notes:
+    type: text_default
+    label: hidden
     settings: {  }
     third_party_settings: {  }
-  primary_authority_notes:
-    label: hidden
-    type: text_default
     weight: 5
     region: content
-    settings: {  }
-    third_party_settings: {  }
   primary_authority_status:
+    type: par_list_formatter
     label: hidden
-    weight: 4
-    region: content
     settings:
       display_original_value: false
     third_party_settings: {  }
-    type: par_list_formatter
-  request_date:
-    label: hidden
-    weight: 0
+    weight: 4
     region: content
+  request_date:
+    type: datetime_default
+    label: hidden
     settings:
       timezone_override: ''
       format_type: gds_date_format
     third_party_settings: {  }
-    type: datetime_default
+    weight: 0
+    region: content
 hidden:
   archive_reason: true
   deleted_reason: true

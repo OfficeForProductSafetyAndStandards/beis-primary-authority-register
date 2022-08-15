@@ -27,6 +27,8 @@ use Drupal\par_data\Entity\ParDataInspectionPlan;
 use Drupal\par_data\Entity\ParDataInspectionPlanType;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataLegalEntityType;
+use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
+use Drupal\par_data\Entity\ParDataPartnershipLegalEntityType;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataOrganisationType;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -89,6 +91,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     'access par_data_information_referral entities',
     'access par_data_inspection_plan entities',
     'access par_data_legal_entity entities',
+    'access par_data_partnership_le entities',
     'access par_data_organisation entities',
     'access par_data_coordinated_business entities',
     'access par_data_partnership entities',
@@ -105,6 +108,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     'edit par_data_information_referral entities',
     'edit par_data_inspection_plan entities',
     'edit par_data_legal_entity entities',
+    'edit par_data_partnership_le entities',
     'edit par_data_organisation entities',
     'edit par_data_coordinated_business entities',
     'edit par_data_partnership entities',
@@ -144,6 +148,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'par_data_information_referral',
       'par_data_inspection_plan',
       'par_data_legal_entity',
+      'par_data_partnership_le',
       'par_data_organisation',
       'par_data_coordinated_business',
       'par_data_partnership',
@@ -228,6 +233,13 @@ class ParDataTestBase extends EntityKernelTestBase {
     $type = ParDataLegalEntityType::create([
       'id' => 'legal_entity',
       'label' => 'Legal Entity',
+    ]);
+    $type->save();
+
+    // Create the entity bundles required for testing.
+    $type = ParDataPartnershipLegalEntityType::create([
+      'id' => 'partnership_legal_entity',
+      'label' => 'Partnership Legal Entity',
     ]);
     $type->save();
 
@@ -631,6 +643,16 @@ class ParDataTestBase extends EntityKernelTestBase {
         'registered_name' => 'Jo\' Coffee Ltd',
         'registered_number' => '0123456789',
         'legal_entity_type' => 'limited_company',
+      ] + $this->getBaseValues();
+
+    return $values;
+  }
+
+  public function getPartnershipLegalEntityValues($values = []) {
+    $values += [
+        'type' => 'partnership_legal_entity',
+        'date_legal_entity_approved' => '2020-01-01',
+        'date_legal_entity_revoked' => '2022-12-25',
       ] + $this->getBaseValues();
 
     return $values;

@@ -19,54 +19,54 @@ mode: full
 content:
   comments:
     type: text_default
-    weight: 2
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 2
+    region: content
   employees_band:
     type: par_list_formatter
-    weight: 1
-    region: content
     label: hidden
     settings:
       display_original_value: false
     third_party_settings: {  }
+    weight: 1
+    region: content
   field_legal_entity:
     type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: title
+      link: false
+    third_party_settings: {  }
     weight: 3
     region: content
-    label: hidden
-    settings:
-      view_mode: title
-      link: false
-    third_party_settings: {  }
   field_person:
     type: entity_reference_entity_view
-    weight: 4
-    region: content
     label: hidden
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
+    weight: 4
+    region: content
   field_premises:
-    weight: 5
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: summary
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 5
     region: content
   organisation_name:
+    type: string
     label: hidden
-    region: content
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
     weight: 0
+    region: content
 hidden:
   archive_reason: true
   coordinator_number: true
