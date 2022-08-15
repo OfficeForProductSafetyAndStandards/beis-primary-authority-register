@@ -18,70 +18,70 @@ mode: full
 content:
   authority_name:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
   authority_type:
     type: par_list_formatter
-    weight: 1
-    region: content
     label: hidden
     settings:
       display_original_value: false
     third_party_settings: {  }
+    weight: 1
+    region: content
   comments:
     type: text_default
-    weight: 2
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
-  nation:
-    type: string
-    weight: 3
-    region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  ons_code:
-    type: string
-    weight: 4
-    region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  person:
-    type: entity_reference_entity_view
-    weight: 3
-    region: content
-    label: hidden
-    settings:
-      view_mode: summary
-      link: false
-    third_party_settings: {  }
-  premises:
-    type: entity_reference_entity_view
-    weight: 4
-    region: content
-    label: hidden
-    settings:
-      view_mode: summary
-      link: false
-    third_party_settings: {  }
-  regulatory_function:
-    type: entity_reference_entity_view
     weight: 2
     region: content
+  nation:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  ons_code:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  person:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  premises:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  regulatory_function:
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
+    weight: 2
+    region: content
 hidden:
   allowed_regulatory_function: true
   archive_reason: true

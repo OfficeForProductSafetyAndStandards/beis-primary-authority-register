@@ -17,29 +17,29 @@ mode: summary
 content:
   authority_name:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
   authority_type:
     type: par_list_formatter
-    weight: 1
-    region: content
     label: hidden
     settings:
       display_original_value: false
     third_party_settings: {  }
+    weight: 1
+    region: content
   regulatory_function:
     type: entity_reference_entity_view
-    weight: 2
-    region: content
     label: hidden
     settings:
       view_mode: summary
       link: false
     third_party_settings: {  }
+    weight: 2
+    region: content
 hidden:
   allowed_regulatory_function: true
   archive_reason: true

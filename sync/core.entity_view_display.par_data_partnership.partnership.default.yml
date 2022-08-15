@@ -11,6 +11,7 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_legal_entity
     - field.field.par_data_partnership.partnership.field_organisation
     - field.field.par_data_partnership.partnership.field_organisation_person
+    - field.field.par_data_partnership.partnership.field_partnership_legal_entity
     - field.field.par_data_partnership.partnership.field_regulatory_function
     - par_data.par_data_partnership_type.partnership
   module:
@@ -106,7 +107,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 15
+    weight: 16
     region: content
   field_inspection_plan:
     type: entity_reference_label
@@ -132,6 +133,14 @@ content:
     third_party_settings: {  }
     weight: 5
     region: content
+  field_partnership_legal_entity:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 12
+    region: content
   field_regulatory_function:
     type: entity_reference_label
     label: hidden
@@ -146,7 +155,7 @@ content:
     settings:
       display_original_value: false
     third_party_settings: {  }
-    weight: 12
+    weight: 13
     region: content
   member_link:
     type: link
@@ -158,7 +167,7 @@ content:
       rel: nofollow
       target: '0'
     third_party_settings: {  }
-    weight: 14
+    weight: 15
     region: content
   member_number:
     type: number_integer
@@ -167,7 +176,7 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 13
+    weight: 14
     region: content
   organisation:
     type: entity_reference_entity_view
@@ -240,6 +249,7 @@ hidden:
   reject_comment: true
   revocation_reason: true
   revocation_source: true
+  search_api_excerpt: true
   tc_authority_agreed: true
   tc_organisation_agreed: true
   terms_authority_agreed: true

@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+id: partnership_legal_entity
+label: 'Partnership Legal Entity'
+description: 'A partnership legal entity meta data entity.'
+help: ''
+isDeletable: false
+isRevokable: true
+isArchivable: false
+configuration:
+  entity:
+    label_fields:
+      - field_legal_entity

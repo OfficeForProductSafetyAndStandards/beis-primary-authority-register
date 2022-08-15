@@ -14,27 +14,27 @@ mode: full
 content:
   address:
     type: address_default
-    weight: 0
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   nation:
     type: par_list_formatter
-    weight: 1
-    region: content
     label: hidden
     settings:
       display_original_value: false
     third_party_settings: {  }
+    weight: 1
+    region: content
   uprn:
     type: string
-    weight: 2
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 2
+    region: content
 hidden:
   archive_reason: true
   deleted_reason: true

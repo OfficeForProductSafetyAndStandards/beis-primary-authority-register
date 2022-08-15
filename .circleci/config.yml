@@ -88,8 +88,8 @@ references:
       name: "Application checklist"
       command: |
         cd web
-        ../vendor/bin/drush --yes config-split:export dev_config
-        ../vendor/bin/drush --yes config-split:export test_config
+        ../vendor/bin/drush --yes --quiet config-split:export dev_config
+        ../vendor/bin/drush --yes --quiet config-split:export test_config
         ../vendor/bin/drush --no --diff config:import
         ../vendor/bin/drush core-requirements --severity=2
         curl -sD - -o /dev/null http://par.localhost
