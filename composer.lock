@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "568aead5536192f5df070e9f61db3ea7",
+    "content-hash": "ac98318509f6a423d01d3219d5d1c0c6",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -1945,21 +1945,22 @@
         },
         {
             "name": "drupal/address",
-            "version": "1.9.0",
+            "version": "1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/address.git",
-                "reference": "8.x-1.9"
+                "reference": "8.x-1.11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/address-8.x-1.9.zip",
-                "reference": "8.x-1.9",
-                "shasum": "c7e6406d88c6d6be9e8fe0091040d67012bdbf05"
+                "url": "https://ftp.drupal.org/files/projects/address-8.x-1.11.zip",
+                "reference": "8.x-1.11",
+                "shasum": "1cb40fb1a43e88041b888ac8fb6aa77a45ac85fb"
             },
             "require": {
-                "commerceguys/addressing": "^1.0.7",
-                "drupal/core": "^8.8 || ^9"
+                "commerceguys/addressing": "^1.4.0",
+                "drupal/core": "^9.2 || ^10",
+                "php": "^7.3 || ^8.0"
             },
             "require-dev": {
                 "drupal/token": "^1.0"
@@ -1967,8 +1968,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.9",
-                    "datestamp": "1604422821",
+                    "version": "8.x-1.11",
+                    "datestamp": "1659989858",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5579,6 +5580,54 @@
             "homepage": "https://www.drupal.org/project/redis",
             "support": {
                 "source": "https://git.drupalcode.org/project/redis"
+            }
+        },
+        {
+            "name": "drupal/registered_organisations",
+            "version": "dev-1.0.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/registered_organisations.git",
+                "reference": "97c373dd53677b0dd221fa20970cb9a01de9e22c"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9 || ^10",
+                "php": "^8.0",
+                "php-http/guzzle6-adapter": "*",
+                "uk-government-beis/companieshouse-php-client": "~1.0.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.0.x": "1.0.x-dev"
+                },
+                "drupal": {
+                    "version": "1.0.x-dev",
+                    "datestamp": "1658173304",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Hughes-Onslow (kalpaitch)",
+                    "homepage": "https://www.drupal.org/u/kalpaitch",
+                    "role": "Maintainer",
+                    "email": "andrew@kalpaitch.com"
+                }
+            ],
+            "description": "Registered Organisations",
+            "homepage": "https://drupal.org/project/registered_organisations",
+            "support": {
+                "source": "https://cgit.drupalcode.org/registered_organisations",
+                "issues": "https://drupal.org/project/issues/registered_organisations",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
             }
         },
         {
@@ -14381,6 +14430,46 @@
             "time": "2021-09-20T19:19:13+00:00"
         },
         {
+            "name": "uk-government-beis/companieshouse-php-client",
+            "version": "v1.0.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/UKGovernmentBEIS/companieshouse-api-php-client.git",
+                "reference": "9c729789d9fd398cc4a67f0e95b74244ad9eb718"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/UKGovernmentBEIS/companieshouse-api-php-client/zipball/9c729789d9fd398cc4a67f0e95b74244ad9eb718",
+                "reference": "9c729789d9fd398cc4a67f0e95b74244ad9eb718",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "guzzlehttp/guzzle": "^6.2.1|^7.0",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "~3.0"
+            },
+            "suggest": {
+                "ext-curl": "To send requests using cURL"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "UKGovernmentBEIS\\CompaniesHouse\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "API Wrapper for the Companies House API",
+            "support": {
+                "source": "https://github.com/UKGovernmentBEIS/companieshouse-api-php-client/tree/v1.0.0-alpha1"
+            },
+            "time": "2022-07-05T12:05:53+00:00"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v2.4.0",
             "source": {
@@ -20093,6 +20182,7 @@
         "deblan/csv-validator": 20,
         "drupal/govuk_cookies": 20,
         "drupal/password_strength": 20,
+        "drupal/registered_organisations": 20,
         "drupal/trance": 20
     },
     "prefer-stable": true,

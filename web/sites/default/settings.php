@@ -1049,6 +1049,15 @@ $config['govuk_notify.settings']['api_key'] = getenv('PAR_GOVUK_NOTIFY_KEY');
 $config['govuk_notify.settings']['default_template_id'] = getenv('PAR_GOVUK_NOTIFY_TEMPLATE');
 
 /**
+ * Set the Companies House connection settings.
+ *
+ * These are confidential and should be set with ENV variables.
+ *
+ * @see https://developer-specs.company-information.service.gov.uk/guides/authorisation
+ */
+$config['registered_organisations.settings']['companies_house_api_key'] = getenv('COMPANIES_HOUSE_API_KEY');
+
+/**
  * Set Ideal Postcodes settings.
  *
  * These are confidential and should be set with ENV variables.
