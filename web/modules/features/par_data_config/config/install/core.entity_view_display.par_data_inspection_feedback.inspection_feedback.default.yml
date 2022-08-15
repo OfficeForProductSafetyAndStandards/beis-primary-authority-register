@@ -20,89 +20,89 @@ bundle: inspection_feedback
 mode: default
 content:
   document:
-    weight: 11
+    type: file_default
     label: above
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
+    weight: 11
     region: content
   field_enforcing_authority:
-    weight: 6
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 6
     region: content
   field_inspection_plan:
-    weight: 7
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 7
     region: content
   field_partnership:
-    weight: 8
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 8
     region: content
   field_person:
-    weight: 9
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 9
     region: content
   messages:
     type: comment_default
-    weight: 10
-    region: content
     label: hidden
     settings:
       view_mode: default
       pager_id: 0
     third_party_settings: {  }
+    weight: 10
+    region: content
   notes:
-    label: hidden
     type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
     weight: 1
     region: content
+  primary_authority_notes:
+    type: text_default
+    label: hidden
     settings: {  }
     third_party_settings: {  }
-  primary_authority_notes:
-    label: hidden
-    type: text_default
     weight: 5
     region: content
-    settings: {  }
-    third_party_settings: {  }
   primary_authority_status:
+    type: par_list_formatter
     label: hidden
-    weight: 4
-    region: content
     settings:
       display_original_value: false
     third_party_settings: {  }
-    type: par_list_formatter
-  request_date:
-    label: hidden
-    weight: 0
+    weight: 4
     region: content
+  request_date:
+    type: datetime_default
+    label: hidden
     settings:
       timezone_override: ''
       format_type: gds_date_format
     third_party_settings: {  }
-    type: datetime_default
+    weight: 0
+    region: content
 hidden:
   archive_reason: true
   deleted_reason: true

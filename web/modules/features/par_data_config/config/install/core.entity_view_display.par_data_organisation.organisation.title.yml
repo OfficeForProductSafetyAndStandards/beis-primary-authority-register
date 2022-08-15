@@ -15,13 +15,13 @@ bundle: organisation
 mode: title
 content:
   organisation_name:
+    type: string
     label: hidden
-    region: content
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
     weight: 0
+    region: content
 hidden:
   archive_reason: true
   comments: true

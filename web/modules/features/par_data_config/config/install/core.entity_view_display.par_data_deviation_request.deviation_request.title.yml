@@ -17,20 +17,20 @@ bundle: deviation_request
 mode: title
 content:
   document:
-    weight: 3
+    type: file_default
     label: above
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
+    weight: 3
     region: content
   notes:
-    label: hidden
     type: text_default
-    weight: 2
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 2
+    region: content
 hidden:
   archive_reason: true
   deleted_reason: true

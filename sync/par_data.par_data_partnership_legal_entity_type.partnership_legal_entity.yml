@@ -1,0 +1,15 @@
+uuid: 8c28ac8e-06f9-4833-8f1e-e0938f761e3d
+langcode: en
+status: true
+dependencies: {  }
+id: partnership_legal_entity
+label: 'Partnership Legal Entity'
+description: 'A partnership legal entity meta data entity.'
+help: ''
+isDeletable: false
+isRevokable: true
+isArchivable: false
+configuration:
+  entity:
+    label_fields:
+      - field_legal_entity

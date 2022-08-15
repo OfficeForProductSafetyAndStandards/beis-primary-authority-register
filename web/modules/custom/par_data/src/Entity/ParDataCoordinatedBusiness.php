@@ -24,7 +24,7 @@ use Drupal\par_data\ParDataException;
  *     singular = "@count coordinated business",
  *     plural = "@count coordinated businesses"
  *   ),
- *   bundle_label = @Translation("PAR Coordinated Business type"),
+ *   bundle_label = @Translation("PAR Coordinated Business Type"),
  *   handlers = {
  *     "storage" = "Drupal\par_data\ParDataStorage",
  *     "storage_schema" = "Drupal\trance\TranceStorageSchema",

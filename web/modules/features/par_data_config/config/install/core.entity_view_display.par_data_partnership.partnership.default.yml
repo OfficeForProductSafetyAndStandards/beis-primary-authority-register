@@ -10,6 +10,7 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_legal_entity
     - field.field.par_data_partnership.partnership.field_organisation
     - field.field.par_data_partnership.partnership.field_organisation_person
+    - field.field.par_data_partnership.partnership.field_partnership_legal_entity
     - field.field.par_data_partnership.partnership.field_regulatory_function
     - par_data.par_data_partnership_type.partnership
   module:
@@ -24,200 +25,208 @@ mode: default
 content:
   about_partnership:
     type: text_default
-    weight: 1
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
-  advice:
-    type: entity_reference_entity_view
     weight: 1
     region: content
+  advice:
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: summary
       link: false
     third_party_settings: {  }
+    weight: 1
+    region: content
   approved_date:
     type: datetime_default
-    weight: 2
-    region: content
     label: hidden
     settings:
       timezone_override: ''
       format_type: gds_date_format
     third_party_settings: {  }
-  authority:
-    type: entity_reference_entity_view
     weight: 2
     region: content
+  authority:
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: summary
       link: false
     third_party_settings: {  }
+    weight: 2
+    region: content
   authority_person:
     type: entity_reference_entity_view
-    weight: 3
-    region: content
     label: hidden
     settings:
       view_mode: summary
       link: false
     third_party_settings: {  }
+    weight: 3
+    region: content
   expertise_details:
     type: text_trimmed
-    weight: 9
-    region: content
     label: hidden
     settings:
       trim_length: 600
     third_party_settings: {  }
-  field_advice:
     weight: 9
+    region: content
+  field_advice:
+    type: entity_reference_label
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 9
     region: content
   field_authority:
-    weight: 10
+    type: entity_reference_label
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 10
     region: content
   field_authority_person:
-    weight: 6
+    type: entity_reference_label
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 6
     region: content
   field_coordinated_business:
-    weight: 15
+    type: entity_reference_label
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 16
     region: content
   field_inspection_plan:
-    weight: 8
+    type: entity_reference_label
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 8
     region: content
   field_organisation:
-    weight: 11
+    type: entity_reference_label
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 11
     region: content
   field_organisation_person:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
     weight: 5
+    region: content
+  field_partnership_legal_entity:
+    type: entity_reference_label
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_regulatory_function:
-    weight: 7
-    label: hidden
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  member_display:
-    label: hidden
     weight: 12
     region: content
+  field_regulatory_function:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  member_display:
+    type: par_list_formatter
+    label: hidden
     settings:
       display_original_value: false
     third_party_settings: {  }
-    type: par_list_formatter
-  member_link:
-    label: hidden
-    type: link
-    weight: 14
+    weight: 13
     region: content
+  member_link:
+    type: link
+    label: hidden
     settings:
       trim_length: null
       url_only: true
-      rel: nofollow
       url_plain: false
+      rel: nofollow
       target: '0'
     third_party_settings: {  }
-  member_number:
-    label: hidden
-    weight: 13
+    weight: 15
     region: content
+  member_number:
+    type: number_integer
+    label: hidden
     settings:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_integer
+    weight: 14
+    region: content
   organisation:
     type: entity_reference_entity_view
-    weight: 4
-    region: content
     label: hidden
     settings:
       view_mode: summary
       link: false
     third_party_settings: {  }
+    weight: 4
+    region: content
   organisation_person:
     type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: summary
+      link: false
+    third_party_settings: {  }
     weight: 5
     region: content
-    label: hidden
-    settings:
-      view_mode: summary
-      link: false
-    third_party_settings: {  }
   partnership_status:
     type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
     weight: 4
     region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   partnership_type:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
   regulatory_function:
     type: entity_reference_entity_view
-    weight: 6
-    region: content
     label: hidden
     settings:
       view_mode: summary
       link: false
     third_party_settings: {  }
+    weight: 6
+    region: content
   revocation_date:
     type: datetime_default
-    weight: 3
-    region: content
     label: hidden
     settings:
       timezone_override: ''
       format_type: gds_date_format
     third_party_settings: {  }
+    weight: 3
+    region: content
 hidden:
   archive_reason: true
   authority_change_comment: true
@@ -237,6 +246,7 @@ hidden:
   reject_comment: true
   revocation_reason: true
   revocation_source: true
+  search_api_excerpt: true
   tc_authority_agreed: true
   tc_organisation_agreed: true
   terms_authority_agreed: true

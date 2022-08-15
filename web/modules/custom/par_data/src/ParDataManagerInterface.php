@@ -71,7 +71,7 @@ interface ParDataManagerInterface {
    * @return ParDataTypeInterface
    *   A PAR Data Bundle Entity
    */
-  public function getParBundleEntity(string $type, $bundle = NULL): ParDataTypeInterface;
+  public function getParBundleEntity(string $type, $bundle = NULL): ?ParDataTypeInterface;
 
   /**
    * @param string $definition
