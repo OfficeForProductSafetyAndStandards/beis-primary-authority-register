@@ -126,10 +126,12 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
-   * Get the legal entities for this partnership legal entity.
+   * Get the legal entity for this partnership legal entity.
+   *
+   * @return ParDataLegalEntity
    */
   public function getLegalEntity() {
-    return $this->get('field_legal_entity')->referencedEntities();
+    return $this->get('field_legal_entity')->referencedEntities()[0];
   }
 
   /**
@@ -148,8 +150,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * Get the legal entity approval date.
    */
   public function getStartDate() {
-    $date = !$this->get('date_legal_entity_approved')->isEmpty() ? $this->date_legal_entity_approved->date : NULL;
-    return $date?->format(self::DATE_DISPLAY_FORMAT);
+    return !$this->get('date_legal_entity_approved')->isEmpty() ? $this->date_legal_entity_approved->date : NULL;
   }
 
   /**
@@ -166,8 +167,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * Get the legal entity revocation date.
    */
   public function getEndDate() {
-    $date = !$this->get('date_legal_entity_revoked')->isEmpty() ? $this->date_legal_entity_revoked->date : NULL;
-    return $date?->format(self::DATE_DISPLAY_FORMAT);
+    return !$this->get('date_legal_entity_revoked')->isEmpty() ? $this->date_legal_entity_revoked->date : NULL;
   }
 
   /**
