@@ -286,7 +286,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get the defaults by a replacement form data key.
+   * Set the defaults by a replacement form data key.
    *
    * @param $key
    *   The form data key.
@@ -303,7 +303,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get's the element key prefix for multiple cardinality forms.
+   * Gets the element key prefix for multiple cardinality forms.
    */
   public function getPrefix($cardinality = 1, $force = FALSE) {
     if ($this->getCardinality() !== 1 || $cardinality !== 1 || $force) {
@@ -314,7 +314,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get's the element key depending on the cardinality of this plugin.
+   * Gets the element key depending on the cardinality of this plugin.
    *
    * @param $element
    *   The element key.
