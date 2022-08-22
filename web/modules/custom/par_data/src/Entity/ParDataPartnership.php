@@ -679,7 +679,7 @@ class ParDataPartnership extends ParDataEntity {
 
     // Create new partnership legal entity referencing the legal entity.
     $partnership_legal_entity = ParDataPartnershipLegalEntity::create([]);
-    $partnership_legal_entity->addLegalEntity($legal_entity);
+    $partnership_legal_entity->setLegalEntity($legal_entity);
 
     // Start date only needed if partnership is already approved.
     // If start date not set then it is assumed that the legal entity's

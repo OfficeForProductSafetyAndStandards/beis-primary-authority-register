@@ -16,19 +16,23 @@
             "url": "https://github.com/UKGovernmentBEIS/password-strength"
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/UKGovernmentBEIS/companieshouse-api-php-client"
+        },
+        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
     ],
     "require": {
-        "php": "^8.0.0",
+        "php": "~8.1.0",
         "aws/aws-sdk-php":  "~3.209.0",
         "bjeavons/zxcvbn-php": "~1.3.0",
         "commerceguys/intl": "^1.0",
         "composer/installers": "^1.9",
         "cweagans/composer-patches": "^1.7",
         "deblan/csv-validator": "dev-master",
-        "drupal/address": "~1.9.0",
+        "drupal/address": "~1.11.0",
         "drupal/audit_log": "~3.0.0",
         "drupal/autologout": "~1.3.0",
         "drupal/better_exposed_filters": "~5.0.0",
@@ -73,6 +77,7 @@
         "drupal/range": "~1.3.0",
         "drupal/raven": "~3.2.0",
         "drupal/redis": "~1.5.0",
+        "drupal/registered_organisations": "dev-1.0.x",
         "drupal/robotstxt": "~1.4.0",
         "drupal/role_delegation": "~1.1.0",
         "drupal/search_api": "~1.23.0",
@@ -171,6 +176,9 @@
                 "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2020-07-19/2551893-85.patch",
                 "Non-exposed and exposed default sort order": "https://www.drupal.org/files/issues/2021-05-20/3120847-23.patch",
                 "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2021-01-19/case_sensitive_email-2490294-37.patch"
+            },
+            "drupal/devel": {
+                "Webprofiler related crash: requested a non-existent service": "https://gitlab.com/drupalspoons/devel/uploads/8c8ddd9716570d17fa46b9182d22aa7f/419-Webprofiler-related-crash-in-core-9.4.2.patch"
             },
             "drupal/flysystem": {
                 "Add Drush commands for sending and receiving files": "https://www.drupal.org/files/issues/2021-01-14/3192777-2-Added_drush_commands.patch",

@@ -77,6 +77,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
     foreach ($legal_entities as $delta => $legal_entity) {
       $legal_entity_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
       $legal_entity_summary = $legal_entity_view_builder->view($legal_entity, 'summary');
+      $classes = ['legal-entity'];
 
       $form['legal_entities']['legal_entity'][$delta] = [
         '#type' => 'container',
@@ -85,7 +86,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
           '#type' => 'html_tag',
           '#tag' => 'div',
           '#value' => $this->getRenderer()->render($legal_entity_summary),
-          '#attributes' => ['class' => 'legal-entity'],
+          '#attributes' => ['class' => $classes],
         ],
       ];
 
