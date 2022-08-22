@@ -8,9 +8,42 @@
 
 Please see the [web application readme file](https://github.com/UKGovernmentBEIS/beis-primary-authority-register/blob/master/web/README.md) in the web directory for more information about Drupal and how to configure the web application.
 
-## Dashboard
+## Ways of Working
 
-Please see the [dashboard readme file](https://github.com/UKGovernmentBEIS/beis-primary-authority-register/blob/master/dashboard/README.md) in the dashboard directory for more information.
+There are some basic ways of working with the PAR project to ensure consistency and code quality across the team.
+
+* We use feature branching and merge all code back into the master branch via PRs.
+Feature branches should preferably be named after the task number.
+
+* We request peer reviews from other developers against all completed tasks.
+PRs should be tested against the Definition of Done.
+
+* We deploy through a release strategy by tagging the master branch.
+
+### Definition of Done
+
+* Code meets the A/C agreed on the task.
+* TTD requirements met. New tests written for all A/C (at a minimum).
+* Coding standards met. `drupal-check -d` is essential, `phpcs` is optional:
+```
+./vendor/bin/drupal-check -d --memory-limit=256M web/modules/custom/ web/modules/features/ web/themes/custom/
+./vendor/bin/phpcs web/modules/custom/ web/modules/features/ web/themes/custom/
+```
+* Can be deployed to an existing environment without manual intervention.
+* No regressions found from local testing.
+
+### Deployment
+
+Tagging the master branch with a semver tag starting with a lowercase `v` will start a deployment build.
+
+```
+git tag v0.0.31
+git push --tags
+```
+
+Tagging any branch with any other tag will start a test deployment and allow the feature to be deployed to a test environment.
+
+All started jobs can be found on [CircleCI](https://app.circleci.com/pipelines/github/UKGovernmentBEIS/beis-primary-authority-register). And all tagged deployments will have to be manually released through CI.
 
 ## Development environment
 
@@ -117,17 +150,6 @@ present. Which trigger to use depends on whether you're debugging a PHP applicat
 a browser, or on the command line. See [Xdebug activating step debugging](https://xdebug.org/docs/step_debug#activate_debugger)
 for more information about triggering debugging.
 
-## Deployment
-
-Tagging the master branch will start a deployment build.
-
-```
-git tag v0.0.31
-git push --tags
-```
-
-Visit [CircleCI](https://app.circleci.com/pipelines/github/UKGovernmentBEIS/beis-primary-authority-register) to complete the deployment pipeline, deployments should always be made through CI.
-
 ## Backup database
 
 The build relies on a seed database which is a sanitised version of the production database. At regular periods this seed database needs to be updated.
@@ -135,10 +157,6 @@ The build relies on a seed database which is a sanitised version of the producti
 Typically this process will be handled by a daily CI job, with database backups being stored to the S3 bucket `beis-par-artifacts` with the prefix `backups/`.
 
 But should this process need to be run manually...
-
-## Backup database
-
-The build relies on a seed database which is a sanitised version of the production database. At regular periods this seed database needs to be updated:
 
 #### Backup the production database
 ```
