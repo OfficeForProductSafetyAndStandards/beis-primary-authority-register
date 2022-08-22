@@ -67,39 +67,74 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       return $form;
     }
 
-    // Display the partnership legal entities.
+    // Fieldset encompassing the partnership legal entities plugin display.
     $form['partnership_legal_entities'] = [
       '#type' => 'fieldset',
       '#title' => 'Legal entities',
       '#attributes' => ['class' => ['form-group']],
     ];
 
+    // Display a link to add a legal entity. Weighted to sink to bottom.
+    if (isset($partnership_legal_entity_add_link) && $partnership_legal_entity_add_link instanceof Link) {
+      $link_label = !empty($partnership_legal_entities) && count($partnership_legal_entities) >= 1
+        ? "add another legal entity" : "add a legal entity";
+      $form['partnership_legal_entities_x']['add'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $partnership_legal_entity_add_link->setText($link_label)->toString(),
+        '#attributes' => ['class' => ['add-partnership-legal-entity']],
+        '#weight' => 99,
+      ];
+    }
+
+    // If there are currently no partnership legal entities to show we can stop here, no need to show an empty table.
+    if (empty($partnership_legal_entities)) {
+      return $form;
+    }
+
+    // Table in which to show partnership legal entities.
+    // We only show start/end date columns for active partnerships.
+    // @note We should hide the operations column if user has no access to any operations.
+    if ($partnership->isActive()) {
+      $form['partnership_legal_entities']['table'] = [
+        '#type' => 'table',
+        '#header' => [
+          'Name',
+          'Start date',
+          'End date',
+          'Operations',
+        ],
+      ];
+    }
+    else {
+      $form['partnership_legal_entities']['table'] = [
+        '#type' => 'table',
+        '#header' => [
+          'Name',
+          'Operations',
+        ],
+      ];
+    }
+
+    // Add a row for each partnership legal entity.
     /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
     foreach ($partnership_legal_entities as $delta => $partnership_legal_entity) {
 
+      // Get the actual legal entity instance.
       $legal_entity = $partnership_legal_entity->getLegalEntity();
 
-      $form['partnership_legal_entities'][$delta] = [
-        '#type' => 'container',
-        '#attributes' => ['class' => ['grid-row']],
-      ];
-
-      $form['partnership_legal_entities'][$delta]['partnership-legal-entity'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#attributes' => ['class' => 'column-full partnership-legal-entity'],
-      ];
-
-      $form['partnership_legal_entities'][$delta]['partnership-legal-entity']['name'] = [
+      // The LE name goes in the first 'identity' column.
+      $form['partnership_legal_entities']['table'][$delta]['identity']['name'] = [
         '#type' => 'html_tag',
         '#tag' => 'span',
         '#attributes' => ['class' => 'name'],
         '#value' => $legal_entity->getName(),
       ];
 
+      // If we have one the LE registered number also goes in the 'identity' column.
       $registered_number = $legal_entity->getRegisteredNumber();
       if (!empty($registered_number)) {
-        $form['partnership_legal_entities'][$delta]['partnership-legal-entity']['registered_number'] = [
+        $form['partnership_legal_entities']['table'][$delta]['identity']['registered_number'] = [
           '#type' => 'html_tag',
           '#tag' => 'span',
           '#attributes' => ['class' => 'registered-number'],
@@ -109,35 +144,10 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         ];
       }
 
-      // Dates only shown once partnership becomes active.
-      if ($partnership->isActive()) {
-
-        // If a partnership legal entity has no start date then it is effective from the start of the partnership.
-        $start_date = $partnership_legal_entity->getStartDate();
-        $start_date = $start_date ?: $partnership->getApprovedDate();
-        $form['partnership_legal_entities'][$delta]['partnership-legal-entity']['start_date'] = [
-          '#type' => 'html_tag',
-          '#tag' => 'span',
-          '#attributes' => ['class' => 'start-date'],
-          '#prefix' => ' - ',
-          '#value' => $start_date->format('d M Y'),
-        ];
-
-        // If a partnership legal entity has no end date that indicates it is effective up to the present day.
-        $end_date = $partnership_legal_entity->getEndDate();
-        $end_date = (empty($end_date)) ? 'present' : $end_date->format('d M Y');
-        $form['partnership_legal_entities'][$delta]['partnership-legal-entity']['end_date'] = [
-          '#type' => 'html_tag',
-          '#tag' => 'span',
-          '#attributes' => ['class' => 'end-date'],
-          '#prefix' => ' - ',
-          '#value' => $end_date,
-        ];
-      }
-
+      // If we have one the LE type goes in the 'identity' column but below the name.
       $type = $legal_entity->getType();
       if (!empty($type)) {
-        $form['partnership_legal_entities'][$delta]['partnership-legal-entity']['type'] = [
+        $form['partnership_legal_entities']['table'][$delta]['identity']['type'] = [
           '#type' => 'html_tag',
           '#tag' => 'span',
           '#attributes' => ['class' => 'type'],
@@ -146,17 +156,40 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         ];
       }
 
-    }
+      // Date columns only present once partnership becomes active.
+      if ($partnership->isActive()) {
 
-    // Display a link to add a legal entity.
-    if (isset($partnership_legal_entity_add_link) && $partnership_legal_entity_add_link instanceof Link) {
-      $link_label = !empty($partnership_legal_entities) && count($partnership_legal_entities) >= 1
-        ? "add another legal entity" : "add a legal entity";
-      $form['partnership_legal_entities']['add'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $partnership_legal_entity_add_link->setText($link_label)->toString(),
-        '#attributes' => ['class' => ['add-partnership-legal-entity']],
+        // Start date cell is empty if the is no start date. LE is effective from the start of the partnership.
+        $start_date = $partnership_legal_entity->getStartDate();
+        if ($start_date) {
+          $form['partnership_legal_entities']['table'][$delta]['start_date'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#attributes' => ['class' => 'start-date'],
+            '#value' => $start_date->format('d M Y'),
+          ];
+        }
+        else {
+          $form['partnership_legal_entities']['table'][$delta]['start_date'] = [];
+        }
+
+        // End date cell is empty if the is no end date. LE is effective to present day.
+        $end_date = $partnership_legal_entity->getEndDate();
+        if ($end_date) {
+          $form['partnership_legal_entities']['table'][$delta]['end_date'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#attributes' => ['class' => 'end-date'],
+            '#value' => $end_date->format('d M Y'),
+          ];
+        }
+        else {
+          $form['partnership_legal_entities']['table'][$delta]['end_date'] = [];
+        }
+      }
+
+      // Operation links will go in the last column.
+      $form['partnership_legal_entities']['table'][$delta]['operations'] = [
       ];
     }
 
