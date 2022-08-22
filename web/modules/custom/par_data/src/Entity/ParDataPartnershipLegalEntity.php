@@ -126,20 +126,20 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
-   * Get the legal entities for this partnership legal entity.
+   * Get the legal entity for this partnership legal entity.
    */
   public function getLegalEntity() {
     return $this->get('field_legal_entity')->referencedEntities();
   }
 
   /**
-   * Add a legal entity for this partnership legal entity.
+   * Set the legal entity for this partnership legal entity.
    *
    * @param ParDataLegalEntity $legal_entity
-   *   A PAR Legal Entity to add.
+   *   A PAR Legal Entity to set.
 
    */
-  public function addLegalEntity(ParDataLegalEntity $legal_entity) {
+  public function setLegalEntity(ParDataLegalEntity $legal_entity) {
     // This field should only allow single values.
     $this->set('field_legal_entity', $legal_entity);
   }
