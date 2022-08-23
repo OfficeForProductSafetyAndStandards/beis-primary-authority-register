@@ -26,6 +26,15 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
 
   /**
+   * Return the date formatter service.
+   *
+   * @return DateFormatterInterface
+   */
+  protected function getDateFormatter() {
+    return \Drupal::service('date.formatter');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function loadData($cardinality = 1) {
@@ -35,8 +44,6 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     if ($par_data_partnership instanceof ParDataEntityInterface) {
       $this->setDefaultValuesByKey("partnership", $cardinality, $par_data_partnership);
       $partnership_legal_entities = $par_data_partnership->getPartnershipLegalEntity();
-    }
-    if (isset($partnership_legal_entities) && !empty ($partnership_legal_entities)) {
       $this->setDefaultValuesByKey("partnership_legal_entities", $cardinality, $partnership_legal_entities);
     }
 
@@ -166,7 +173,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
             '#type' => 'html_tag',
             '#tag' => 'span',
             '#attributes' => ['class' => 'start-date'],
-            '#value' => $start_date->format('d M Y'),
+            '#value' => $this->getDateFormatter()->format($start_date->getTimestamp(), 'gds_date_format'),
           ];
         }
         else {
@@ -180,7 +187,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
             '#type' => 'html_tag',
             '#tag' => 'span',
             '#attributes' => ['class' => 'end-date'],
-            '#value' => $end_date->format('d M Y'),
+            '#value' => $this->getDateFormatter()->format($end_date->getTimestamp(), 'gds_date_format'),
           ];
         }
         else {

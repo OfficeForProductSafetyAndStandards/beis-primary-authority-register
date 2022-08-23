@@ -4,6 +4,7 @@ namespace Drupal\par_forms;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
@@ -175,6 +176,15 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    */
   public function getPathValidator() {
     return \Drupal::service('path.validator');
+  }
+
+  /**
+   * Return the date formatter service.
+   *
+   * @return DateFormatterInterface
+   */
+  protected function getDateFormatter() {
+    return \Drupal::service('date.formatter');
   }
 
   /**
