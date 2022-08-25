@@ -27,6 +27,56 @@ display:
     display_options:
       title: 'Primary Authority Register | Advanced partnership search'
       fields:
+        counter:
+          id: counter
+          table: views
+          field: counter
+          relationship: none
+          group_type: group
+          admin_label: row_number
+          plugin_id: counter
+          label: 'Row number'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          counter_start: 1
         id:
           id: id
           table: search_api_datasource_partnership_index_entity_par_data_partnership
@@ -362,7 +412,7 @@ display:
           field: nothing
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: partnership_name
           plugin_id: custom
           label: 'Partnership between'
           exclude: false
@@ -1599,23 +1649,37 @@ display:
         type: table
         options:
           grouping: {  }
-          row_class: ''
+          row_class: 'row-{{ counter }}'
           default_row_class: true
           columns:
+            counter: counter
             id: id
             authority_name: authority_name
             organisation_name: organisation_name
             par_flow_link: par_flow_link
+            par_flow_link_5: par_flow_link_5
+            nothing_1: nothing_1
             partnership_type: partnership_type
-            function_name: function_name
             partnership_status: partnership_status
             approved_date: approved_date
+            function_name: function_name
             trading_name: trading_name
-            registered_name: registered_name
             search_api_excerpt: search_api_excerpt
-            search_api_relevance: search_api_relevance
+            revoked: revoked
+            par_flow_link_1: par_flow_link_1
+            par_flow_link_2: par_flow_link_2
+            par_flow_link_3: par_flow_link_3
+            par_flow_link_4: par_flow_link_4
+            nothing: nothing
           default: '-1'
           info:
+            counter:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             id:
               align: ''
               separator: ''
@@ -1642,14 +1706,19 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            partnership_type:
+            par_flow_link_5:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            function_name:
+            nothing_1:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            partnership_type:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -1668,14 +1737,14 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            trading_name:
+            function_name:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
-              responsive: priority-medium
-            registered_name:
+              responsive: ''
+            trading_name:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -1687,13 +1756,44 @@ display:
               separator: ''
               empty_column: false
               responsive: priority-low
-            search_api_relevance:
+            revoked:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_flow_link_1:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
-              responsive: priority-low
+              responsive: ''
+            par_flow_link_2:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_flow_link_3:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_flow_link_4:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            nothing:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
           override: true
           sticky: false
           summary: ''
