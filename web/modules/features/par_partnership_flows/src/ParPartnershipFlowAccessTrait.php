@@ -80,7 +80,7 @@ trait ParPartnershipFlowAccessTrait {
 
       case 'par_partnership_flows.legal_entity_add':
       case 'par_partnership_flows.legal_entity_edit':
-        // Also restrict business users who have already confirmed their business details.
+        // Restrict business users who have already confirmed their business details.
         if ($par_data_partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
           $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
         }
