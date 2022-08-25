@@ -196,7 +196,7 @@ module.exports = {
             return this
                 .clickLinkByPureText('Helpdesk')
                 .clickLinkByPartialText('Search partnerships')
-                .assert.containsText('h1.heading-xlarge', 'Dashboard')
+                .assert.containsText('h1.heading-xlarge', 'Advanced partnership search')
                 .setValue('#edit-keywords', search)
                 .click('#edit-partnership-status option[value="' + status + '"]')
                 .click('#edit-submit-advanced-partnership-search')
