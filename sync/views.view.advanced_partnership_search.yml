@@ -1291,11 +1291,14 @@ display:
             - comments
             - function_name
             - inspection_plan_summary
+            - inspection_plan_title
             - member_legal_entity_name
             - member_organisation_about
             - member_organisation_name
             - member_trading_name
             - organisation_name
+            - organisation_registered_name
+            - registered_name
             - trading_name
         partnership_type:
           id: partnership_type
@@ -1513,6 +1516,54 @@ display:
             operator_limit_selection: false
             operator_list: {  }
             identifier: inspection_plan_status
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              par_enforcement: '0'
+              par_authority: '0'
+              par_authority_manager: '0'
+              par_organisation: '0'
+              par_helpdesk: '0'
+              senior_administration_officer: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+        member_display:
+          id: member_display
+          table: search_api_index_partnership_index
+          field: member_display
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api_options
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: member_display_op
+            label: 'Member display'
+            description: ''
+            use_operator: false
+            operator: member_display_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: member_display
             required: false
             remember: false
             multiple: false

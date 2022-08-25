@@ -10,9 +10,10 @@ dependencies:
     - field.storage.par_data_partnership.field_coordinated_business
     - field.storage.par_data_coordinated_business.field_organisation
     - field.storage.par_data_partnership.field_inspection_plan
-    - field.storage.par_data_partnership.field_legal_entity
     - field.storage.par_data_partnership.field_organisation
     - field.storage.par_data_organisation.field_legal_entity
+    - field.storage.par_data_partnership.field_partnership_legal_entity
+    - field.storage.par_data_partnership_le.field_legal_entity
     - field.storage.par_data_partnership.field_regulatory_function
     - search_api.server.opensearch
   module:
@@ -28,6 +29,7 @@ field_settings:
     datasource_id: 'entity:par_data_partnership'
     property_path: about_partnership
     type: text
+    boost: !!float 2
     dependencies:
       module:
         - par_data
@@ -119,14 +121,6 @@ field_settings:
     dependencies:
       module:
         - par_data
-  field_legal_entity:
-    label: 'Legal Entity'
-    datasource_id: 'entity:par_data_partnership'
-    property_path: field_legal_entity
-    type: integer
-    dependencies:
-      config:
-        - field.storage.par_data_partnership.field_legal_entity
   function_name:
     label: 'Regulatory Function » Regulatory Function Name'
     datasource_id: 'entity:par_data_partnership'
@@ -171,10 +165,21 @@ field_settings:
     label: 'Inspection Plan » PAR Inspection Plan » Inspection plan title'
     datasource_id: 'entity:par_data_partnership'
     property_path: 'field_inspection_plan:entity:title'
-    type: string
+    type: text
     dependencies:
       config:
         - field.storage.par_data_partnership.field_inspection_plan
+      module:
+        - par_data
+  legal_entity_type:
+    label: 'Partnership Legal Entity » PAR Partnership Legal Entity » Legal Entity » PAR Legal Entity » Legal Entity Type'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_partnership_legal_entity:entity:field_legal_entity:entity:legal_entity_type'
+    type: string
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_partnership_legal_entity
+        - field.storage.par_data_partnership_le.field_legal_entity
       module:
         - par_data
   member_ceased:
@@ -185,6 +190,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.par_data_partnership.field_coordinated_business
+      module:
+        - par_data
+  member_display:
+    label: 'Member list display'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: member_display
+    type: string
+    dependencies:
       module:
         - par_data
   member_legal_entity_name:
@@ -258,7 +271,6 @@ field_settings:
     datasource_id: 'entity:par_data_partnership'
     property_path: 'field_organisation:entity:field_legal_entity:entity:registered_name'
     type: text
-    boost: !!float 2
     dependencies:
       config:
         - field.storage.par_data_organisation.field_legal_entity
@@ -277,26 +289,6 @@ field_settings:
         - field.storage.par_data_partnership.field_organisation
       module:
         - par_data
-  partnership_registered_name:
-    label: 'Legal Entity » PAR Legal Entity » Registered Name'
-    datasource_id: 'entity:par_data_partnership'
-    property_path: 'field_legal_entity:entity:registered_name'
-    type: string
-    dependencies:
-      config:
-        - field.storage.par_data_partnership.field_legal_entity
-      module:
-        - par_data
-  partnership_registered_number:
-    label: 'Legal Entity » PAR Legal Entity » Registered Number'
-    datasource_id: 'entity:par_data_partnership'
-    property_path: 'field_legal_entity:entity:registered_number'
-    type: string
-    dependencies:
-      config:
-        - field.storage.par_data_partnership.field_legal_entity
-      module:
-        - par_data
   partnership_status:
     label: 'Partnership Status'
     datasource_id: 'entity:par_data_partnership'
@@ -311,6 +303,29 @@ field_settings:
     property_path: partnership_type
     type: string
     dependencies:
+      module:
+        - par_data
+  registered_name:
+    label: 'Partnership Legal Entity » PAR Partnership Legal Entity » Legal Entity » PAR Legal Entity » Registered Name'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_partnership_legal_entity:entity:field_legal_entity:entity:registered_name'
+    type: text
+    boost: !!float 3
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_partnership_legal_entity
+        - field.storage.par_data_partnership_le.field_legal_entity
+      module:
+        - par_data
+  registered_number:
+    label: 'Partnership Legal Entity » PAR Partnership Legal Entity » Legal Entity » PAR Legal Entity » Registered Number'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_partnership_legal_entity:entity:field_legal_entity:entity:registered_number'
+    type: string
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_partnership_legal_entity
+        - field.storage.par_data_partnership_le.field_legal_entity
       module:
         - par_data
   regulatory_function:
@@ -334,7 +349,7 @@ field_settings:
     datasource_id: 'entity:par_data_partnership'
     property_path: 'field_organisation:entity:trading_name'
     type: text
-    boost: !!float 2
+    boost: !!float 3
     dependencies:
       config:
         - field.storage.par_data_partnership.field_organisation
