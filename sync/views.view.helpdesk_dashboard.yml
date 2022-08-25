@@ -7,6 +7,7 @@ dependencies:
     - field.storage.par_data_partnership.field_authority_person
     - field.storage.par_data_partnership.field_legal_entity
     - field.storage.par_data_partnership.field_regulatory_function
+    - field.storage.par_data_partnership_le.field_legal_entity
   module:
     - better_exposed_filters
     - datetime
@@ -2140,15 +2141,6 @@ display:
           admin_label: 'Partnership''s Organisation'
           plugin_id: standard
           required: false
-        field_legal_entity:
-          id: field_legal_entity
-          table: par_data_partnership__field_legal_entity
-          field: field_legal_entity
-          relationship: none
-          group_type: group
-          admin_label: 'Partnership''s Legal Entities'
-          plugin_id: standard
-          required: false
         reverse__par_data_enforcement_notice__field_partnership:
           id: reverse__par_data_enforcement_notice__field_partnership
           table: par_partnerships_field_data
@@ -2193,6 +2185,24 @@ display:
           relationship: field_organisation_1
           group_type: group
           admin_label: 'Coordinated Member''s Legal Entity'
+          plugin_id: standard
+          required: false
+        field_partnership_legal_entity:
+          id: field_partnership_legal_entity
+          table: par_data_partnership__field_partnership_legal_entity
+          field: field_partnership_legal_entity
+          relationship: none
+          group_type: group
+          admin_label: 'Partnership Legal Entity'
+          plugin_id: standard
+          required: false
+        field_legal_entity_2:
+          id: field_legal_entity_2
+          table: par_data_partnership_le__field_legal_entity
+          field: field_legal_entity
+          relationship: field_partnership_legal_entity
+          group_type: group
+          admin_label: 'Partnership''s Legal Entity'
           plugin_id: standard
           required: false
       css_class: par_helpdesk_partnership_list
@@ -2790,11 +2800,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_legal_entity:
-          id: field_legal_entity
-          table: par_data_partnership__field_legal_entity
+        field_legal_entity_1:
+          id: field_legal_entity_1
+          table: par_data_partnership_le__field_legal_entity
           field: field_legal_entity
-          relationship: none
+          relationship: field_partnership_legal_entity
           group_type: group
           admin_label: ''
           plugin_id: field
@@ -2842,7 +2852,7 @@ display:
           click_sort_column: target_id
           type: entity_reference_label
           settings:
-            link: false
+            link: true
           group_column: entity_id
           group_columns: {  }
           group_rows: true
@@ -2977,6 +2987,176 @@ display:
           entity_type: par_data_partnership
           plugin_id: par_data_member_number
           label: 'Number of Members'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+        field_coordinated_business:
+          id: field_coordinated_business
+          table: par_data_partnership__field_coordinated_business
+          field: field_coordinated_business
+          relationship: none
+          group_type: count
+          admin_label: ''
+          plugin_id: field
+          label: 'Coordinated Members'
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: true
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          set_precision: false
+          precision: 0
+          decimal: .
+          format_plural: 0
+          format_plural_string: !!binary MQNAY291bnQ=
+          prefix: ''
+          suffix: ''
+        nothing:
+          id: nothing
+          table: views
+          field: nothing
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: custom
+          label: 'Combined members'
+          exclude: false
+          alter:
+            alter_text: true
+            text: "{{ field_coordinated_business }} marked externally\r\n{{ par_data_member_number }} in the internal list"
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: true
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: false
+        member_display:
+          id: member_display
+          table: par_partnerships_field_data
+          field: member_display
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: member_display
+          plugin_id: field
+          label: 'Member list'
           exclude: false
           alter:
             alter_text: false
@@ -3017,6 +3197,20 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
+          click_sort_column: value
+          type: par_list_formatter
+          settings:
+            display_original_value: false
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         par_status:
           id: par_status
           table: par_partnerships_field_data
@@ -4013,8 +4207,8 @@ display:
       tags:
         - 'config:field.storage.par_data_partnership.field_advice'
         - 'config:field.storage.par_data_partnership.field_authority_person'
-        - 'config:field.storage.par_data_partnership.field_legal_entity'
         - 'config:field.storage.par_data_partnership.field_regulatory_function'
+        - 'config:field.storage.par_data_partnership_le.field_legal_entity'
   par_rd_helpdesk_dashboard_page:
     id: par_rd_helpdesk_dashboard_page
     display_title: Page
@@ -4884,7 +5078,7 @@ display:
           id: registered_name_1
           table: par_legal_entities_field_data
           field: registered_name
-          relationship: field_legal_entity
+          relationship: field_legal_entity_1
           group_type: group
           admin_label: ''
           entity_type: par_data_legal_entity
@@ -4949,7 +5143,7 @@ display:
           id: registered_number_1
           table: par_legal_entities_field_data
           field: registered_number
-          relationship: field_legal_entity
+          relationship: field_legal_entity_2
           group_type: group
           admin_label: ''
           entity_type: par_data_legal_entity
