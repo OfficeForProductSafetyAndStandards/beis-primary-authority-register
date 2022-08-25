@@ -1710,6 +1710,7 @@ display:
           preserve_facet_query_args: false
           contextual_filters_or: false
       relationships: {  }
+      css_class: par-advanced-partnership-search-list
       header: {  }
       footer: {  }
       display_extenders: {  }

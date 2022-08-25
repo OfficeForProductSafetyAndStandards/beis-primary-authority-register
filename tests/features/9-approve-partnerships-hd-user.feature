@@ -16,7 +16,7 @@ Feature: Helpdesk approve partnership
         And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_business" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-advanced-partnership-search"
-        And there is "1" occurences of element ".par-helpdesk-partnership-list tbody tr"
+        And there is "1" occurences of element ".par-advanced-partnership-search-list tbody tr"
         Then I click the link text "Approve partnership"
 
         # APPROVAL REVIEW SCREEN
@@ -50,7 +50,7 @@ Feature: Helpdesk approve partnership
         And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_rd" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-advanced-partnership-search"
-        And there is "1" occurences of element ".par-helpdesk-partnership-list tbody tr"
+        And there is "1" occurences of element ".par-advanced-partnership-search-list tbody tr"
         Then I click the link text "Revoke partnership"
 
         Then the element "h1.heading-xlarge" contains the text "Revoke a partnership"
