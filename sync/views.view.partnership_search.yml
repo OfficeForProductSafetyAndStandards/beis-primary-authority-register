@@ -997,11 +997,14 @@ display:
             - authority_name
             - comments
             - function_name
+            - inspection_plan_summary
+            - inspection_plan_title
             - member_legal_entity_name
             - member_organisation_about
             - member_organisation_name
             - member_trading_name
             - organisation_name
+            - organisation_registered_name
             - registered_name
             - trading_name
         partnership_status:
@@ -1012,11 +1015,9 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_string
-          operator: '='
+          operator: or
           value:
-            min: ''
-            max: ''
-            value: confirmed_rd
+            confirmed_rd: confirmed_rd
           group: 1
           exposed: false
           expose:
@@ -1036,6 +1037,7 @@ display:
             min_placeholder: null
             max_placeholder: null
             placeholder: null
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -1048,6 +1050,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          reduce_duplicates: false
         revoked:
           id: revoked
           table: search_api_index_partnership_index
