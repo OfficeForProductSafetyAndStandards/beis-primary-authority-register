@@ -29,7 +29,7 @@ steps:
       partnership_members:
         format: member_link_view
         weight: -8
-      legal_entity_display:
+      partnership_legal_entity_display:
         weight: -7
       trading_name_display:
         weight: -6
