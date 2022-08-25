@@ -2,7 +2,7 @@ Feature: Remove partnership appliations
 
     Background:
         Given I am logged in as "par_helpdesk@example.com"
-        Given I click the link text "Manage partnerships"
+        Given I click the link text "Search partnerships"
 
 
     @ci @nonsmoke
@@ -10,7 +10,7 @@ Feature: Remove partnership appliations
         When I add "Demolition Experts" to the inputfield "#edit-keywords"
         When I add "Demolition Experts" to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_authority" for element "#edit-partnership-status"
-        And I click on the button "#edit-submit-helpdesk-dashboard"
+        And I click on the button "#edit-submit-advanced-partnership-search"
         And there is "1" occurences of element ".par-helpdesk-partnership-list tbody tr"
         Then I click the link text "Delete partnership"
 

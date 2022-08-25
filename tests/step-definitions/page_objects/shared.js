@@ -195,11 +195,11 @@ module.exports = {
         goToManagePartnershipPage: function (search, name, status) {
             return this
                 .clickLinkByPureText('Helpdesk')
-                .clickLinkByPartialText('Manage partnerships')
+                .clickLinkByPartialText('Search partnerships')
                 .assert.containsText('h1.heading-xlarge', 'Dashboard')
                 .setValue('#edit-keywords', search)
                 .click('#edit-partnership-status option[value="' + status + '"]')
-                .click('#edit-submit-helpdesk-dashboard')
+                .click('#edit-submit-advanced-partnership-search')
                 .clickLinkByPureText(name)
         },
         createNewPartnership: function () {

@@ -12,10 +12,10 @@ Feature: Helpdesk approve partnership
     @ci @directpartnership @iostest
     Scenario: Helpdesk approve direct partnership
 
-        Given I click the link text "Manage partnerships"
+        Given I click the link text "Search partnerships"
         And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_business" for element "#edit-partnership-status"
-        And I click on the button "#edit-submit-helpdesk-dashboard"
+        And I click on the button "#edit-submit-advanced-partnership-search"
         And there is "1" occurences of element ".par-helpdesk-partnership-list tbody tr"
         Then I click the link text "Approve partnership"
 
@@ -46,10 +46,10 @@ Feature: Helpdesk approve partnership
 
         # REVOKE DIRECT PARTNERSHIP
 
-        Given I click the link text "Manage partnerships"
+        Given I click the link text "Search partnerships"
         And I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_rd" for element "#edit-partnership-status"
-        And I click on the button "#edit-submit-helpdesk-dashboard"
+        And I click on the button "#edit-submit-advanced-partnership-search"
         And there is "1" occurences of element ".par-helpdesk-partnership-list tbody tr"
         Then I click the link text "Revoke partnership"
 
@@ -66,6 +66,6 @@ Feature: Helpdesk approve partnership
         And the element "#edit-keywords" is visible
         When I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
         And I select the option with the value "revoked" for element "#edit-partnership-status"
-        And I click on the button "#edit-submit-helpdesk-dashboard"
+        And I click on the button "#edit-submit-advanced-partnership-search"
         And the element ".table-scroll-wrapper" is visible
         And the element ".table-scroll-wrapper" contains the text "Organisation For Direct Partnership"

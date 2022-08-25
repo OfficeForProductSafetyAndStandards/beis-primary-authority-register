@@ -49,10 +49,10 @@ Feature: Upload advice
   @upload-advice @ci
   Scenario: Helpdesk user able to upload advice for an active partnership
     Given I am logged in as "par_helpdesk@example.com"
-    When I click the link text "Manage partnerships"
+    When I click the link text "Search partnerships"
     And I add "Lower East Side Borough Council" to the inputfield "#edit-keywords"
     And I select the option with the value "confirmed_rd" for element "#edit-partnership-status"
-    And I click on the button "#edit-submit-helpdesk-dashboard"
+    And I click on the button "#edit-submit-advanced-partnership-search"
     Then I click the link text "Lower East Side Borough Council"
     And I open advice add page
     And I upload the file "files/test.png" to field "#edit-files-upload"
@@ -89,10 +89,10 @@ Feature: Upload advice
   @upload-advice @ci
   Scenario: Remove advice
     Given I am logged in as "par_helpdesk@example.com"
-    When I click the link text "Manage partnerships"
+    When I click the link text "Search partnerships"
     And I add "Lower East Side Borough Council" to the inputfield "#edit-keywords"
     And I select the option with the value "confirmed_rd" for element "#edit-partnership-status"
-    And I click on the button "#edit-submit-helpdesk-dashboard"
+    And I click on the button "#edit-submit-advanced-partnership-search"
     Then I click the link text "Lower East Side Borough Council"
     And I click "See all Advice"
     When I remove the advice "Environmental Health advice" with the reason "Removing test advice."
