@@ -23,12 +23,6 @@ trait ParPartnershipFlowAccessTrait {
    *   The account being checked.
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
-    try {
-      // Get a new flow negotiator that points the the route being checked for access.
-      $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
-
-    }
 
     // Limit access to partnership pages.
     $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
@@ -80,6 +74,10 @@ trait ParPartnershipFlowAccessTrait {
 
       case 'par_partnership_flows.legal_entity_add':
       case 'par_partnership_flows.legal_entity_edit':
+        // Restrict access when partnership is active to users with administrator role.
+        if ($par_data_partnership->isActive() && !$user->hasRole('senior_administration_officer')) {
+          $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
+        }
         // Restrict business users who have already confirmed their business details.
         if ($par_data_partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
           $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
