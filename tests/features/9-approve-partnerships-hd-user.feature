@@ -13,7 +13,7 @@ Feature: Helpdesk approve partnership
     Scenario: Helpdesk approve direct partnership
 
         Given I click the link text "Search partnerships"
-        And I add "'Organisation For Direct Partnership'" to the inputfield "#edit-keywords"
+        And I add '"Organisation For Direct Partnership"' to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_business" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-advanced-partnership-search"
         Then the element ".par-advanced-partnership-search-list .views-row-1 .partnership-name" contains the text "Organisation For Direct Partnership"
@@ -47,7 +47,7 @@ Feature: Helpdesk approve partnership
         # REVOKE DIRECT PARTNERSHIP
 
         Given I click the link text "Search partnerships"
-        And I add "'Organisation For Direct Partnership'" to the inputfield "#edit-keywords"
+        And I add '"Organisation For Direct Partnership"' to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_rd" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-advanced-partnership-search"
         Then the element ".par-advanced-partnership-search-list .views-row-1 .partnership-name" contains the text "Organisation For Direct Partnership"
