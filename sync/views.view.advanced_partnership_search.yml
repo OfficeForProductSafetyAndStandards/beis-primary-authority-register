@@ -444,7 +444,7 @@ display:
             preserve_tags: ''
             html: false
           element_type: ''
-          element_class: ''
+          element_class: partnership-name
           element_label_type: ''
           element_label_class: ''
           element_label_colon: true
@@ -1649,7 +1649,7 @@ display:
         type: table
         options:
           grouping: {  }
-          row_class: 'row-{{ counter }}'
+          row_class: 'views-row-{{counter}}'
           default_row_class: true
           columns:
             counter: counter
