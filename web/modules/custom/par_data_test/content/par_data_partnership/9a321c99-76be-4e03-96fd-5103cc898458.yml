@@ -11,6 +11,7 @@ _meta:
     ff938a0f-0bb9-4ef9-a5c6-c1d7721d2401: par_data_legal_entity
     b3f26aa8-a857-4829-8306-6c88e1fb03f7: par_data_organisation
     b36d8ee5-b8ff-4dd7-9851-303c66a3497a: par_data_person
+    754aafb5-b995-4c78-9fd9-ee27132bbd8d: par_data_partnership_le
     3a4c6455-7263-4f0b-966a-24b8dd518f49: par_data_regulatory_function
 default:
   user_id:
@@ -86,6 +87,9 @@ default:
   field_organisation_person:
     -
       entity: b36d8ee5-b8ff-4dd7-9851-303c66a3497a
+  field_partnership_legal_entity:
+    -
+      entity: 754aafb5-b995-4c78-9fd9-ee27132bbd8d
   field_regulatory_function:
     -
       entity: 3a4c6455-7263-4f0b-966a-24b8dd518f49
