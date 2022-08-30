@@ -41,7 +41,7 @@ Then('I click the link with text {string}', function (string) {
 });
 
 Then('I click the link {string} in row {string}', function (link, row) {
-    let xpath="//div[@class='table-scroll-wrapper']//table[1]//tr["+row+"]//a[text()='"+link+"']"
+    let xpath="//div[@class='table-scroll-wrapper']//table[1]//tr["+row+"]//a[text()='"+link+"']";
     return shared
         .clickLinkByXpath(xpath).then(function () {
             return client
