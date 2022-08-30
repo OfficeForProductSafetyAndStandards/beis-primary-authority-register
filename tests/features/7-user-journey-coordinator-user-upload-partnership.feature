@@ -56,7 +56,7 @@ Feature: Coordinator User - Upload Members
         And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_business" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-advanced-partnership-search"
-        Then I click the link text "Approve partnership"
+        Then I click the link "Approve partnership" in row "1"
         And the element "#par-rd-help-desk-confirm" contains the text "Organisation For Coordinated Partnership"
         When I click on the radio "#edit-confirm-authorisation-select"
         And I click on the button "#edit-next"

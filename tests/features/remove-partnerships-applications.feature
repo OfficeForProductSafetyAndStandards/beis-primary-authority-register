@@ -11,7 +11,7 @@ Feature: Remove partnership appliations
         And I select the option with the value "confirmed_authority" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-advanced-partnership-search"
         Then the element ".par-advanced-partnership-search-list .views-row-1 .partnership-name" contains the text "Demolition Experts"
-        And I click the link text "Delete partnership"
+        And I click the link "Delete partnership" in row "1"
 
         # DELETION REASON SCREEN
 

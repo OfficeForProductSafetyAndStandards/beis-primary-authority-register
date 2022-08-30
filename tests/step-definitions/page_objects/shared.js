@@ -25,7 +25,6 @@ module.exports = {
                 .useXpath()
                 .click(xpathValue)
                 .useCss()
-                .click('#edit-next')
         },
         clickUploadAdvice: function () {
             return client
