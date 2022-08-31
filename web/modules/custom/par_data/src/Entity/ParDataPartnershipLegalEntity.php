@@ -182,6 +182,22 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
+   * Returns TRUE if this partnership_legal_entity is active on a given date.
+   *
+   * @param DrupalDateTime $date
+   *   The date to compare.
+   *
+   * @return bool
+   */
+  public function isActiveDuringPeriod(DrupalDateTime $from, DrupalDateTime $to) {
+
+    $start = $this->getStartDate();
+    $end = $this->getEndDate();
+
+    return ((empty($start) || $start <= $date) && (empty($end) || $end >= $date));
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {

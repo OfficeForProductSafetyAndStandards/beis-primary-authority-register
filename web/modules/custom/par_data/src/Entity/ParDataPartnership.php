@@ -677,6 +677,33 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * Get partnership legal entities attached to this partnership that are active on a particular date.
+   *
+   * @param DrupalDateTime $date
+   *   The date to be used to filter the partnership legal entities.
+   *   If null current date is used.
+   *
+   * @return array
+   *   Array of ParDataPartnershipLegalEntities
+   */
+  public function getPartnershipLegalEntitiesActiveForDate(DrupalDateTime $date = NULL) {
+
+    if (empty($date)) {
+      $date = new DrupalDateTime();
+    }
+
+    $return = [];
+    /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
+    foreach ($this->getPartnershipLegalEntity() as $partnership_legal_entity) {
+      if ($partnership_legal_entity->isActiveForDate($date)) {
+        $return[] = $partnership_legal_entity;
+      }
+    }
+
+    return $return;
+  }
+
+  /**
    * Add a legal entity to partnership.
    *
    * @param ParDataLegalEntity $legal_entity

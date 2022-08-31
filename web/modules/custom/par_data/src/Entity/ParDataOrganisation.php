@@ -117,15 +117,27 @@ class ParDataOrganisation extends ParDataEntity {
   }
 
   /**
-   * Add a legal entity for this Organisation.
+   * Add a legal entity to this Organisation.
    *
    * @param ParDataLegalEntity $legal_entity
    *   A PAR Legal Entity to add.
 
    */
-  public function addLegalEntity(ParDataLegalEntity $legal_entity) {
+  public function addLegalEntity(ParDataLegalEntity $new_legal_entity) {
+
+    // Get the legal entities already attached to the organisation.
     $legal_entities = $this->getLegalEntity();
-    $legal_entities[] = $legal_entity;
+
+    // If this legal entity is already attached then don't attach it again.
+    /* @var ParDataLegalEntity $legal_entity */
+    foreach ($legal_entities as $legal_entity) {
+      if ($legal_entity->id() == $new_legal_entity->id()) {
+        return;
+      }
+    }
+
+    // Attach the new legal entity.
+    $legal_entities[] = $new_legal_entity;
     $this->set('field_legal_entity', $legal_entities);
   }
 

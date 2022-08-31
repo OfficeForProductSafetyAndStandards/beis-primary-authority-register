@@ -5,6 +5,7 @@ namespace Drupal\par_partnership_flows\Form;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataLegalEntity;
+use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_flows\Form\ParBaseForm;
@@ -138,12 +139,64 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
   }
 
   /**
+   * Validate the form to make sure the correct values have been entered.
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+
+    parent::validateForm($form, $form_state);
+
+    $registered_name = $form_state->getValue('registered_name');
+    $registered_number = $form_state->getValue('registered_number');
+
+    // Get the legal entity.
+    /* @var ParDataLegalEntity $legal_entity */
+    $legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
+
+    // If we are adding then see if this LE is already attached to the organisation.
+    if (!$legal_entity) {
+
+      // We are going to try to match on the entered name and number.
+      $registered_name = $form_state->getValue('registered_name');
+      $registered_number = $form_state->getValue('registered_number');
+
+      /* @var ParDataPartnership $partnership */
+      $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+      /* @var ParDataOrganisation $organisation */
+      $organisation = $partnership->getOrganisation(TRUE);
+
+      $legal_entities = $organisation->getLegalEntity();
+      foreach ($legal_entities as $legal_entity) {
+        if ($legal_entity->getRegisteredNumber() == $registered_number) {
+          break;
+        }
+        if ($legal_entity->getName() == $registered_name) {
+          break;
+        }
+      }
+
+      // We have found an existing LE attached to the organisation.
+      if ($legal_entity) {
+
+        // If this LE is already active on the partnership for the current date then it can not be added again.
+        $partnership_legal_entities = $partnership->getPartnershipLegalEntitiesActiveForDate();
+        /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
+        foreach ($partnership_legal_entities as $partnership_legal_entity) {
+          if ($partnership_legal_entity->getLegalEntity() === $legal_entity) {
+            $id = $this->getElementId(['registered_name'], $form);
+            $form_state->setErrorByName($this->getElementName('registered_name'), $this->wrapErrorMessage('This legal entity is already an active participant in the partnership.', $id));
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the value for the about_partnership field.
     $legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
 
     // Legal entities that accept registered numbers.
@@ -196,6 +249,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       $par_data_partnership->addLegalEntity($legal_entity);
 
       // Add the new legal entity to the organisation.
+      /* @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
       $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
       $par_data_organisation->addLegalEntity($legal_entity);
 
