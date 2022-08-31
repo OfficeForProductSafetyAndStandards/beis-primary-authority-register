@@ -53,11 +53,11 @@ Feature: Coordinator User - Upload Members
         And I add "TestPassword" to the inputfield "#edit-pass"
         When I click on the button "#edit-submit"
         And I click the link text "Search partnerships"
-        And I add "Organisation For Coordinated Partnership" to the inputfield "#edit-keywords"
+        And I add '"Organisation For Coordinated Partnership"' to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_business" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-advanced-partnership-search"
         Then I click the link "Approve partnership" in row "1"
-        And the element "#par-rd-help-desk-confirm" contains the text "Organisation For Coordinated Partnership"
+        And the element "#par-rd-help-desk-confirm" contains the text '"Organisation For Coordinated Partnership"'
         When I click on the radio "#edit-confirm-authorisation-select"
         And I click on the button "#edit-next"
         And I click on the radio "#edit-partnership-cover-default"
@@ -123,9 +123,9 @@ Feature: Coordinator User - Upload Members
         # CHECK SEARCH PICKS UP ON TRADERS AND MEMBERS
         Given I am logged in as "par_authority@example.com"
         And I click the link text "Search for a partnership"
-        When I add "New LLP Company" to the inputfield "#edit-keywords"
+        When I add '"New LLP Company"' to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
-        Then the element ".table-scroll-wrapper" contains the text "Organisation For Coordinated Partnership"
+        Then the element ".table-scroll-wrapper" contains the text '"Organisation For Coordinated Partnership"'
         When I add "Coordinated Member 1" to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
         Then the element ".table-scroll-wrapper" contains the text "Organisation For Coordinated Partnership"

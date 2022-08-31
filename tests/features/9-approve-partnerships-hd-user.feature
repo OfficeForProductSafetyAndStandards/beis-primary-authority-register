@@ -64,7 +64,7 @@ Feature: Helpdesk approve partnership
         And I click on the button "#edit-done"
 
         And the element "#edit-keywords" is visible
-        When I add "Organisation For Direct Partnership" to the inputfield "#edit-keywords"
+        When I add '"Organisation For Direct Partnership"' to the inputfield "#edit-keywords"
         And I select the option with the value "revoked" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-advanced-partnership-search"
         And the element ".table-scroll-wrapper" is visible

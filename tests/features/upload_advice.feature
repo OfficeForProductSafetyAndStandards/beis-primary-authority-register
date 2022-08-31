@@ -50,7 +50,7 @@ Feature: Upload advice
   Scenario: Helpdesk user able to upload advice for an active partnership
     Given I am logged in as "par_helpdesk@example.com"
     When I click the link text "Search partnerships"
-    And I add "Lower East Side Borough Council" to the inputfield "#edit-keywords"
+    And I add '"Lower East Side Borough Council"' to the inputfield "#edit-keywords"
     And I select the option with the value "confirmed_rd" for element "#edit-partnership-status"
     And I click on the button "#edit-submit-advanced-partnership-search"
     Then I click the link text "Lower East Side Borough Council"
@@ -90,7 +90,7 @@ Feature: Upload advice
   Scenario: Remove advice
     Given I am logged in as "par_helpdesk@example.com"
     When I click the link text "Search partnerships"
-    And I add "Lower East Side Borough Council" to the inputfield "#edit-keywords"
+    And I add '"Lower East Side Borough Council"' to the inputfield "#edit-keywords"
     And I select the option with the value "confirmed_rd" for element "#edit-partnership-status"
     And I click on the button "#edit-submit-advanced-partnership-search"
     Then I click the link text "Lower East Side Borough Council"

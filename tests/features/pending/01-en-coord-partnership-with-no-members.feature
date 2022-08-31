@@ -1,13 +1,13 @@
 Feature: Enforcement Officer - Issue enforcement notice
-    
+
     @pending
     Scenario Outline: Enforcement Officer - Issue enforcement notice on coordinated partnership with no members
 
         #LOGIN
-        
+
         Given I am logged in as "par_enforcement_officer@example.com"
         And I click on the link text "Search for a partnership"
-        When I add "Univilla Limited" to the inputfield "#edit-keywords"
+        When I add '"Univilla Limited"' to the inputfield "#edit-keywords"
         And I click on the button "#edit-submit-partnership-search"
         And I click on the link text "Univilla Limited"
 

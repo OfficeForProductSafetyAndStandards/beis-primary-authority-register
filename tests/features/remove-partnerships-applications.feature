@@ -7,7 +7,7 @@ Feature: Remove partnership appliations
 
     @ci @nonsmoke
     Scenario: Search and remove an incomplete partnership
-        When I add "Demolition Experts" to the inputfield "#edit-keywords"
+        When I add '"Demolition Experts"' to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_authority" for element "#edit-partnership-status"
         And I click on the button "#edit-submit-advanced-partnership-search"
         Then the element ".par-advanced-partnership-search-list .views-row-1 .partnership-name" contains the text "Demolition Experts"
