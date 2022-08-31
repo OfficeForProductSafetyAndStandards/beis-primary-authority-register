@@ -488,6 +488,13 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * Get the approved date for this partnership.
+   */
+  public function getApprovedDate() {
+    return !$this->get('approved_date')->isEmpty() ? $this->approved_date->date : NULL;
+  }
+
+  /**
    * Get the authority for this Partnership.
    */
   public function getAuthority($single = FALSE) {

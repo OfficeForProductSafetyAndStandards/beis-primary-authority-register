@@ -73,8 +73,6 @@ use Drupal\par_data\ParDataException;
  */
 class ParDataPartnershipLegalEntity extends ParDataEntity {
 
-  const DATE_DISPLAY_FORMAT = 'd/m/Y';
-
   /**
    * {@inheritdoc}
    */
@@ -93,9 +91,6 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
 
   /**
    * {@inheritdoc}
-   *
-   * @param string $date
-   *   The date this member was ceased.
    */
   public function revoke($save = TRUE, $reason = '') {
     $current_date = new DrupalDateTime();
@@ -116,6 +111,8 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
 
   /**
    * Get the partnerships for this partnership legal entity.
+   *
+   * @return array
    */
   public function getPartnership() {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
@@ -127,9 +124,11 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
 
   /**
    * Get the legal entity for this partnership legal entity.
+   *
+   * @return ParDataLegalEntity
    */
   public function getLegalEntity() {
-    return $this->get('field_legal_entity')->referencedEntities();
+    return current($this->get('field_legal_entity')->referencedEntities());
   }
 
   /**
@@ -145,17 +144,18 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
-   * Get the legal entity approval date.
+   * Gets the legal entity approval date.
+   *
+   * @return null|DrupalDateTime
    */
   public function getStartDate() {
-    $date = !$this->get('date_legal_entity_approved')->isEmpty() ? $this->date_legal_entity_approved->date : NULL;
-    return $date?->format(self::DATE_DISPLAY_FORMAT);
+    return $this->get('date_legal_entity_approved')->isEmpty() ? NULL : $this->date_legal_entity_approved->date;
   }
 
   /**
-   * Set the legal entity approval date.
+   * Sets the legal entity approval date.
    *
-   * @param string $date
+   * @param DrupalDateTime $date
    *   The date this legal entity was approved.
    */
   public function setStartDate(DrupalDateTime $date = NULL) {
@@ -163,17 +163,18 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
-   * Get the legal entity revocation date.
+   * Gets the legal entity revocation date.
+   *
+   * @return null|DrupalDateTime
    */
   public function getEndDate() {
-    $date = !$this->get('date_legal_entity_revoked')->isEmpty() ? $this->date_legal_entity_revoked->date : NULL;
-    return $date?->format(self::DATE_DISPLAY_FORMAT);
+    return $this->get('date_legal_entity_revoked')->isEmpty() ? NULL : $this->date_legal_entity_revoked->date;
   }
 
   /**
-   * Set the legal entity revocation date.
+   * Sets the legal entity revocation date.
    *
-   * @param string $date
+   * @param DrupalDateTime $date
    *   The date this legal entity was revoked.
    */
   public function setEndDate(DrupalDateTime $date = NULL) {

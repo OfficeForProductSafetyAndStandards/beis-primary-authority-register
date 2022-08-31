@@ -25,7 +25,7 @@ steps:
         weight: -8
       sic_code_display:
         weight: -7
-      legal_entity_display:
+      partnership_legal_entity_display:
         weight: -6
       trading_name_display:
         weight: -5
