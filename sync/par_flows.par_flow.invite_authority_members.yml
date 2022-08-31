@@ -27,4 +27,4 @@ steps:
     redirect:
       done: 3
   3:
-    route: view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page
+    route: view.advanced_partnership_search.advanced_search

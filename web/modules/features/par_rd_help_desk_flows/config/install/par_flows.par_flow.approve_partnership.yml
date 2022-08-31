@@ -10,7 +10,7 @@ save_method: end
 states:
   - par_data_partnership
 final_routes:
-  - view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page
+  - view.advanced_partnership_search.advanced_search
 steps:
   1:
     route: par_help_desks_flows.confirm_partnership
