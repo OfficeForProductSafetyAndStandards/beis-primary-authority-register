@@ -677,54 +677,33 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
-   * Get partnership legal entities attached to this partnership that are active on a particular date.
-   *
-   * @param DrupalDateTime $date
-   *   The date to be used to filter the partnership legal entities.
-   *   If null current date is used.
-   *
-   * @return array
-   *   Array of ParDataPartnershipLegalEntities
-   */
-  public function getPartnershipLegalEntitiesActiveForDate(DrupalDateTime $date = NULL) {
-
-    if (empty($date)) {
-      $date = new DrupalDateTime();
-    }
-
-    $return = [];
-    /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
-    foreach ($this->getPartnershipLegalEntity() as $partnership_legal_entity) {
-      if ($partnership_legal_entity->isActiveForDate($date)) {
-        $return[] = $partnership_legal_entity;
-      }
-    }
-
-    return $return;
-  }
-
-  /**
    * Add a legal entity to partnership.
+   *
+   * Method creates a partnership_legal_entity object that links the given legal_entity to the partnership.
    *
    * @param ParDataLegalEntity $legal_entity
    *   A PAR Legal Entity to add.
+   * @param DrupalDateTime | NULL $period_from
+   *   Start date of period during which the LE is active.
+   * @param DrupalDateTime | NULL $period_to
+   *   End date of period during which the LE is active.
+   *
+   * @return ParDataPartnershipLegalEntity
+   *   The newly created partnership_legal_entity.
    */
-  public function addLegalEntity(ParDataLegalEntity $legal_entity) {
+  public function addLegalEntity(ParDataLegalEntity $legal_entity, DrupalDateTime $period_from = NULL, DrupalDateTime $period_to = NULL) {
 
     // Create new partnership legal entity referencing the legal entity.
     $partnership_legal_entity = ParDataPartnershipLegalEntity::create([]);
     $partnership_legal_entity->setLegalEntity($legal_entity);
-
-    // Start date only needed if partnership is already approved.
-    // If start date not set then it is assumed that the legal entity's
-    // participation starts when the partnership starts.
-    if ($this->isActive()) {
-      $partnership_legal_entity->setStartDate(new DrupalDateTime());
-    }
+    $partnership_legal_entity->setStartDate($period_from);
+    $partnership_legal_entity->setEndDate($period_to);
     $partnership_legal_entity->save();
 
     // Append new partnership legal entity to existing list of legal entities covered by this partnership.
     $this->get('field_partnership_legal_entity')->appendItem($partnership_legal_entity);
+
+    return $partnership_legal_entity;
   }
 
   /**
