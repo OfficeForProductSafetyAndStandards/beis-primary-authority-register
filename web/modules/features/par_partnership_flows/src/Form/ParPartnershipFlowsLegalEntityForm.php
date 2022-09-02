@@ -140,48 +140,61 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
   /**
    * Validate the form to make sure the correct values have been entered.
+   *
+   * @note Currently we are only adding new LE/PLE to the partnership.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
     parent::validateForm($form, $form_state);
 
-    $registered_name = $form_state->getValue('registered_name');
-    $registered_number = $form_state->getValue('registered_number');
+    // Get the partnership.
+    /* @var ParDataPartnership $partnership */
+    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // Get the legal entity.
     /* @var ParDataLegalEntity $legal_entity */
     $legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
 
-    // If we are adding then see if this LE is already attached to the organisation.
+    // Get form values.
+    $registered_name = $form_state->getValue('registered_name');
+    $registered_number = $form_state->getValue('registered_number');
+
+    // Set start and end dates for the PLE period. Currently, we are just adding new PLEs. If the partnership is
+    // not yet active the from_date is NULL, once it is active the from_date is today's date. Once PLE editing is
+    // implemented these will be form values so the user can set the actual period.
+    $period_from = NULL;
+    if ($partnership->isActive()) {
+      $period_from = new DrupalDateTime('now');
+      $period_from->setTime(12, 0);
+    }
+    $period_to = NULL;
+
+    // If we are adding then see if this LE is already exists on the organisation.
     if (!$legal_entity) {
 
-      // We are going to try to match on the entered name and number.
-      $registered_name = $form_state->getValue('registered_name');
-      $registered_number = $form_state->getValue('registered_number');
-
-      /* @var ParDataPartnership $partnership */
-      $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
       /* @var ParDataOrganisation $organisation */
       $organisation = $partnership->getOrganisation(TRUE);
 
-      $legal_entities = $organisation->getLegalEntity();
-      foreach ($legal_entities as $legal_entity) {
-        if ($legal_entity->getRegisteredNumber() == $registered_number) {
-          break;
-        }
-        if ($legal_entity->getName() == $registered_name) {
+      // We look for an existing LE on the organisation with the entered name or registration number.
+      $organisation_legal_entities = $organisation->getLegalEntity();
+      foreach ($organisation_legal_entities as $organisation_legal_entity) {
+        if ($organisation_legal_entity->getRegisteredNumber() == $registered_number ||
+          $organisation_legal_entity->getName() == $registered_name) {
+          $legal_entity = $organisation_legal_entity;
           break;
         }
       }
+    }
 
-      // We have found an existing LE attached to the organisation.
-      if ($legal_entity) {
+    // We have an existing LE attached to the organisation.
+    if ($legal_entity) {
 
-        // If this LE is already active on the partnership for the current date then it can not be added again.
-        $partnership_legal_entities = $partnership->getPartnershipLegalEntitiesActiveForDate();
-        /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
-        foreach ($partnership_legal_entities as $partnership_legal_entity) {
-          if ($partnership_legal_entity->getLegalEntity() === $legal_entity) {
+      // If this LE is already active on the partnership for the current date then it can not be added again.
+      $partnership_legal_entities = $partnership->getPartnershipLegalEntity();
+      /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
+      foreach ($partnership_legal_entities as $partnership_legal_entity) {
+        if ($partnership_legal_entity->getLegalEntity() === $legal_entity) {
+          if ($partnership_legal_entity->isActiveDuringPeriod($period_from, $period_to)) {
             $id = $this->getElementId(['registered_name'], $form);
             $form_state->setErrorByName($this->getElementName('registered_name'), $this->wrapErrorMessage('This legal entity is already an active participant in the partnership.', $id));
             break;
@@ -245,8 +258,15 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       $legal_entity->save();
 
       // Now add the legal entity to the partnership.
+      /* @var ParDataPartnership $par_data_partnership */
       $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-      $par_data_partnership->addLegalEntity($legal_entity);
+      $period_from = NULL;
+      if ($par_data_partnership->isActive()) {
+        $period_from = new DrupalDateTime('now');
+        $period_from->setTime(12, 0);
+      }
+      $period_to = NULL;
+      $par_data_partnership->addLegalEntity($legal_entity, $period_from, $period_to);
 
       // Add the new legal entity to the organisation.
       /* @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
