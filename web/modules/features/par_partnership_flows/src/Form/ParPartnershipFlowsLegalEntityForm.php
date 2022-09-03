@@ -2,15 +2,19 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
-use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
+use Drupal\user\Entity\User;
+use Symfony\Component\Routing\Route;
 
 /**
  * The primary contact form for the partnership details steps of the
@@ -19,7 +23,6 @@ use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
-  use ParPartnershipFlowAccessTrait;
 
   /**
    * {@inheritdoc}
@@ -48,6 +51,69 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
     return parent::titleCallback();
   }
+  /**
+   * @param \Symfony\Component\Routing\Route $route
+   *   The route.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The route match object to be checked.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account being checked.
+   */
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_legal_entity = NULL) {
+
+    // Limit access to partnership pages.
+    $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
+    if (!$account->hasPermission('bypass par_data membership') && $user && !$this->getParDataManager()->isMember($par_data_partnership, $user)) {
+      $this->accessResult = AccessResult::forbidden('The user is not allowed to access this page.');
+    }
+
+    switch ($route_match->getRouteName()) {
+
+      case 'par_partnership_flows.legal_entity_add':
+      case 'par_partnership_flows.legal_entity_edit':
+      case 'par_partnership_flows.legal_entity_revoke':
+      case 'par_partnership_flows.legal_entity_reinstate':
+
+        // Restrict access when partnership is active to users with administrator role.
+        if ($par_data_partnership->isActive() && !$user->hasRole('senior_administration_officer')) {
+          $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
+        }
+
+        // Restrict business users who have already confirmed their business details.
+        if ($par_data_partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
+          $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
+        }
+
+      // Partnership legal entities that are already revoked cannot be revoked again.
+      if ($par_data_partnership_legal_entity->getEndDate()) {
+        $this->accessResult = AccessResult::forbidden('This legal entity has already been revoked.');
+      }
+
+      // Partnership legal entities that are active cannot be reinstated.
+      if (!$par_data_partnership_legal_entity->getEndDate()) {
+        $this->accessResult = AccessResult::forbidden('This legal entity is already active.');
+      }
+
+        break;
+
+      case 'par_partnership_flows.legal_entity_remove':
+
+        // Prohibit deletion if partnership is active.
+        if ($par_data_partnership->isActive()) {
+          $this->accessResult = AccessResult::forbidden('Legal entities can not be removed from active partnerships.');
+        }
+
+        // Prohibit removing of the last legal entity.
+        if (count($par_data_partnership->getPartnershipLegalEntity()) < 2) {
+          $this->accessResult = AccessResult::forbidden('The last legal entity can\'t be removed.');
+        }
+
+        break;
+
+    }
+
+    return parent::accessCallback($route, $route_match, $account);
+  }
 
   /**
    * Helper to get all the editable values when editing or
@@ -58,12 +124,16 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataLegalEntity $par_data_legal_entity
    *   The Authority being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataLegalEntity $par_data_legal_entity = NULL) {
-    if ($par_data_legal_entity) {
-      $this->getFlowDataHandler()->setFormPermValue("legal_entity_registered_name", $par_data_legal_entity->get('registered_name')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("legal_entity_registered_number", $par_data_legal_entity->get('registered_number')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("legal_entity_legal_entity_type", $par_data_legal_entity->get('legal_entity_type')->getString());
-      $this->getFlowDataHandler()->setFormPermValue('legal_entity_id', $par_data_legal_entity->id());
+  public function retrieveEditableValues(ParDataPartnership $partnership = NULL, ParDataPartnershipLegalEntity $partnership_legal_entity = NULL) {
+
+    if ($partnership_legal_entity) {
+      $legal_entity = $partnership_legal_entity->getLegalEntity();
+      $this->getFlowDataHandler()->setFormPermValue("legal_entity_registered_name", $legal_entity->get('registered_name')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("legal_entity_registered_number", $legal_entity->get('registered_number')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("legal_entity_legal_entity_type", $legal_entity->get('legal_entity_type')->getString());
+      $this->getFlowDataHandler()->setFormPermValue('legal_entity_id', $legal_entity->id());
+      $this->getFlowDataHandler()->setFormPermValue('partnership_legal_entity_start_date', $partnership_legal_entity->getStartDate());
+      $this->getFlowDataHandler()->setFormPermValue('partnership_legal_entity_end_date', $partnership_legal_entity->getEndDate());
     }
   }
 
@@ -132,7 +202,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       ],
     ];
 
-    // Make sure to add the person cacheability data to this form.
+    // Make sure to add the cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
 
     return parent::buildForm($form, $form_state);

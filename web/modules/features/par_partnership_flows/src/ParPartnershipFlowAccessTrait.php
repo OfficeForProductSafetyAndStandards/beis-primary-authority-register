@@ -65,26 +65,6 @@ trait ParPartnershipFlowAccessTrait {
 
         break;
 
-
-      case 'par_partnership_flows.legal_entity_remove':
-        // Prohibit removing of the last item.
-        if ($par_data_partnership->get('field_legal_entity')->count() <= 1) {
-          $this->accessResult = AccessResult::forbidden('The last legal entity can\'t be removed.');
-        }
-
-      case 'par_partnership_flows.legal_entity_add':
-      case 'par_partnership_flows.legal_entity_edit':
-        // Restrict access when partnership is active to users with administrator role.
-        if ($par_data_partnership->isActive() && !$user->hasRole('senior_administration_officer')) {
-          $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
-        }
-        // Restrict business users who have already confirmed their business details.
-        if ($par_data_partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
-          $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
-        }
-
-        break;
-
       case 'par_partnership_flows.advice_edit':
       case 'par_partnership_flows.advice_edit_documents':
         // Restrict editorial access to archived and deleted advice entities.
