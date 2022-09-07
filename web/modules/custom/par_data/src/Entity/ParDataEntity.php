@@ -24,6 +24,8 @@ use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
 use Drupal\trance\Trance;
 use Drupal\Component\Datetime\TimeInterface;
+use Drupal\par_data\Plugin\Field\FieldType\ParLabelField;
+use Drupal\par_data\Plugin\Field\FieldType\ParStatusField;
 
 /**
  * Defines the PAR entities.
@@ -37,6 +39,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   use RevisionLogEntityTrait;
 
   const PAR_LOGGER_CHANNEL = 'par';
+  const STATUS_FIELD = 'par_status';
   const DELETE_FIELD = 'deleted';
   const REVOKE_FIELD = 'revoked';
   const ARCHIVE_FIELD = 'archived';
@@ -121,7 +124,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function label() {
-
     //PAR-988 prevent the page crashing when NULL is returned by getTypeEntity() on the current entity.
     if (is_object($this->getTypeEntity())) {
       $label_fields = $this->getTypeEntity()->getConfigurationElementByType('entity', 'label_fields');
@@ -1112,6 +1114,29 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         'text_processing' => 0,
       ]);
 
+    // Compute the label as a field value.
+    $fields['par_label'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Label'))
+      ->setDescription(t('The label of the PAR entity.'))
+      ->setComputed(TRUE)
+      ->setClass(ParLabelField::class)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     // We will apply action state fields to all par entities for consistency
     // but will only use certain actions on certain entities.
     $fields['deleted'] = BaseFieldDefinition::create('boolean')
@@ -1225,6 +1250,29 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
+
+    $fields['par_status'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Status'))
+      ->setDescription(t('The status of the PAR entity.'))
+      ->setComputed(TRUE)
+      ->setClass(ParStatusField::class)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     return $fields;
   }
 }

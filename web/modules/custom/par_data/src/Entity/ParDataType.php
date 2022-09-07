@@ -98,6 +98,14 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    * {@inheritdoc}
    */
   public function getConfigurationElementByType($element, $type) {
+    // @see PAR-1805: The true status field assumes the configuration from the status field.
+    if ($element !== 'element' && $type !== 'status_field') {
+      $status_field = $this->getConfigurationElementByType('entity', 'status_field');
+      if ($status_field && $element === ParDataEntity::STATUS_FIELD) {
+        $element = $status_field;
+      }
+    }
+
     $element_configuration = $this->getConfigurationElement($element);
     return isset($element_configuration[$type]) ? $element_configuration[$type] : NULL;
   }
@@ -182,6 +190,20 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    */
   public function getAllowedValues($field_name) {
     $allowed_values = $this->getConfigurationElementByType($field_name, 'allowed_values');
+
+    // @see PAR-1805: The computed true status values include the default statuses.
+    if ($field_name === ParDataEntity::STATUS_FIELD) {
+      // If this entity is revokable.
+      if ($this->isRevokable()) {
+        $allowed_values['revoked'] = 'Revoked';
+      }
+
+      // If this entity is archivable.
+      if ($this->isArchivable()) {
+        $allowed_values['archived'] = 'Archived';
+      }
+    }
+
     return $allowed_values ?? [];
   }
 

@@ -7,6 +7,7 @@
 
 use \Drupal\search_api\Entity\Index;
 use \Drupal\Core\Field\TypedData\FieldItemDataDefinition;
+use Drupal\search_api\Utility\Utility;
 
 /**
  * Implements hook_views_data_alter().
@@ -51,7 +52,7 @@ function par_data_views_data_alter(array &$data) {
         $entity_type = $par_data_manager->getParBundleEntity($entity_type_id, $bundle);
 
         // Check whether this field has allowed values.
-        $allowed_values = $entity_type->getConfigurationElementByType($field_name, 'allowed_values');
+        $allowed_values = $entity_type->getAllowedValues($field_name);
 
         // Modify the default views handler for par allowed_value filters.
         if (!empty($allowed_values)) {

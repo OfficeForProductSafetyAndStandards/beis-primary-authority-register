@@ -140,7 +140,7 @@ function _par_data_search_api_views_get_allowed_values($entity_type_id, $bundle,
   $entity_type = $par_data_manager->getParBundleEntity($entity_type_id, $bundle);
 
   // Check whether this field has allowed values.
-  $allowed_values = $entity_type->getConfigurationElementByType($field_name, 'allowed_values');
+  $allowed_values = $entity_type->getAllowedValues($field_name);
 
   // If this is the status field then it should also have the default statuses.
   $status_field = $entity_type->getConfigurationElementByType('entity', 'status_field');
