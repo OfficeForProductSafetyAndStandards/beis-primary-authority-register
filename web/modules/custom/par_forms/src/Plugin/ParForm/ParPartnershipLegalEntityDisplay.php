@@ -60,9 +60,11 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     $partnership_legal_entities = $this->getDefaultValuesByKey('partnership_legal_entities', $cardinality, []);
 
     // Generate the link to add a new partnership legal entity.
+    $link_label = !empty($partnership_legal_entities) && count($partnership_legal_entities) >= 1
+      ? "add another legal entity" : "add a legal entity";
     try {
-      $partnership_legal_entity_add_link = $this->getFlowNegotiator()->getFlow()
-        ->getOperationLink('add_field_legal_entity');
+      $add_link = $this->getFlowNegotiator()->getFlow()
+        ->getOperationLink('add_field_legal_entity', $link_label, ['par_data_partnership' => $partnership]);
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -70,7 +72,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
 
     // Do not render this plugin if there is nothing to display, for example if
     // there are no partnership legal entities and the user isn't able to add a new partnership legal entity.
-    if (empty($partnership_legal_entities) && (!isset($partnership_legal_entity_add_link) || !$partnership_legal_entity_add_link instanceof Link)) {
+    if (empty($partnership_legal_entities) && !$add_link instanceof Link) {
       return $form;
     }
 
@@ -82,13 +84,11 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     ];
 
     // Display a link to add a legal entity. Weighted to sink to bottom.
-    if (isset($partnership_legal_entity_add_link) && $partnership_legal_entity_add_link instanceof Link) {
-      $link_label = !empty($partnership_legal_entities) && count($partnership_legal_entities) >= 1
-        ? "add another legal entity" : "add a legal entity";
+    if ($add_link instanceof Link) {
       $form['partnership_legal_entities_x']['add'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $partnership_legal_entity_add_link->setText($link_label)->toString(),
+        '#value' => $add_link->toString(),
         '#attributes' => ['class' => ['add-partnership-legal-entity']],
         '#weight' => 99,
       ];
@@ -196,8 +196,38 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       }
 
       // Operation links will go in the last column.
-      $form['partnership_legal_entities']['table'][$delta]['operations'] = [
+      $operations = [
+        'edit_field_legal_entity' => 'Edit',
+        'revoke_field_legal_entity' => 'Revoke',
+        'reinstate_field_legal_entity' => 'Reinstate',
+        'remove_field_legal_entity' => 'Remove',
       ];
+      $link_params = [
+        'par_data_partnership' => $partnership,
+        'par_data_partnership_le' => $partnership_legal_entity,
+      ];
+      foreach ($operations as $link_name => $link_label) {
+
+        // Attempt to generate the link.
+        try {
+          $link = $this->getFlowNegotiator()->getFlow()->getOperationLink($link_name, $link_label, $link_params);
+        }
+        catch (ParFlowException $e) {
+          $this->getLogger($this->getLoggerChannel())->notice($e);
+          continue;
+        }
+
+        // Display the link.
+        if ($link instanceof Link) {
+          $form['partnership_legal_entities']['table'][$delta]['operations'][$link_name] = [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $link->toString(),
+            '#attributes' => ['class' => [$link_name]],
+          ];
+        }
+
+      }
     }
 
     return $form;

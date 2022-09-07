@@ -2,14 +2,19 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Route;
 
 /**
  * The partnership form for removing the legal entity.
@@ -20,6 +25,49 @@ class ParPartnershipFlowsRemoveLegalEntityForm extends ParBaseForm {
   use ParPartnershipFlowAccessTrait;
 
   protected $pageTitle = 'Are you sure you want to remove this legal entity?';
+
+  /**
+   * @param \Symfony\Component\Routing\Route $route
+   *   The route.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The route match object to be checked.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account being checked.
+   */
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
+
+    // Get the route parameters.
+    $partnership = $route_match->getParameter('par_data_partnership');
+    $partnership_legal_entity = $route_match->getParameter('par_data_partnership_le');
+
+    // Limit access to partnership pages.
+    $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
+    if (!$account->hasPermission('bypass par_data membership') && $user && !$this->getParDataManager()->isMember($partnership, $user)) {
+      $this->accessResult = AccessResult::forbidden('The user is not allowed to access this page.');
+    }
+
+    // Restrict access when partnership is active to users with administrator role.
+    if ($partnership->isActive() && !$user->hasRole('senior_administration_officer')) {
+      $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
+    }
+
+    // Restrict business users who have already confirmed their business details.
+    if ($partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
+      $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
+    }
+
+    // Prohibit deletion if partnership is active.
+    if ($partnership->isActive()) {
+      $this->accessResult = AccessResult::forbidden('Legal entities can not be removed from active partnerships.');
+    }
+
+    // Prohibit removing of the last legal entity.
+    if (count($partnership->getPartnershipLegalEntity()) < 2) {
+      $this->accessResult = AccessResult::forbidden('The last legal entity can\'t be removed.');
+    }
+
+    return parent::accessCallback($route, $route_match, $account);
+  }
 
   /**
    * Load the data for this form.

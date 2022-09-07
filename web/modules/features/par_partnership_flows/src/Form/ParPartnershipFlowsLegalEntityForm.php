@@ -51,6 +51,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
     return parent::titleCallback();
   }
+
   /**
    * @param \Symfony\Component\Routing\Route $route
    *   The route.
@@ -59,52 +60,62 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_legal_entity = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
+
+    // Get the route parameters.
+    $partnership = $route_match->getParameter('par_data_partnership');
+    $partnership_legal_entity = $route_match->getParameter('par_data_partnership_le');
 
     // Limit access to partnership pages.
     $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
-    if (!$account->hasPermission('bypass par_data membership') && $user && !$this->getParDataManager()->isMember($par_data_partnership, $user)) {
+    if (!$account->hasPermission('bypass par_data membership') && $user && !$this->getParDataManager()->isMember($partnership, $user)) {
       $this->accessResult = AccessResult::forbidden('The user is not allowed to access this page.');
+    }
+
+    // Restrict access when partnership is active to users with administrator role.
+    if ($partnership->isActive() && !$user->hasRole('senior_administration_officer')) {
+      $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
+    }
+
+    // Restrict business users who have already confirmed their business details.
+    if ($partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
+      $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
     }
 
     switch ($route_match->getRouteName()) {
 
       case 'par_partnership_flows.legal_entity_add':
+        break;
+
       case 'par_partnership_flows.legal_entity_edit':
+        break;
+
       case 'par_partnership_flows.legal_entity_revoke':
+
+        // Partnership legal entities that are already revoked cannot be revoked again.
+        if ($partnership_legal_entity->getEndDate()) {
+          $this->accessResult = AccessResult::forbidden('This legal entity has already been revoked.');
+        }
+        break;
+
       case 'par_partnership_flows.legal_entity_reinstate':
 
-        // Restrict access when partnership is active to users with administrator role.
-        if ($par_data_partnership->isActive() && !$user->hasRole('senior_administration_officer')) {
-          $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
+        // Partnership legal entities that are active cannot be reinstated.
+        if (!$partnership_legal_entity->getEndDate()) {
+          $this->accessResult = AccessResult::forbidden('This legal entity is already active.');
         }
-
-        // Restrict business users who have already confirmed their business details.
-        if ($par_data_partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
-          $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
-        }
-
-      // Partnership legal entities that are already revoked cannot be revoked again.
-      if ($par_data_partnership_legal_entity->getEndDate()) {
-        $this->accessResult = AccessResult::forbidden('This legal entity has already been revoked.');
-      }
-
-      // Partnership legal entities that are active cannot be reinstated.
-      if (!$par_data_partnership_legal_entity->getEndDate()) {
-        $this->accessResult = AccessResult::forbidden('This legal entity is already active.');
-      }
 
         break;
 
       case 'par_partnership_flows.legal_entity_remove':
 
         // Prohibit deletion if partnership is active.
-        if ($par_data_partnership->isActive()) {
+        if ($partnership->isActive()) {
           $this->accessResult = AccessResult::forbidden('Legal entities can not be removed from active partnerships.');
         }
 
         // Prohibit removing of the last legal entity.
-        if (count($par_data_partnership->getPartnershipLegalEntity()) < 2) {
+        if (count($partnership->getPartnershipLegalEntity()) < 2) {
           $this->accessResult = AccessResult::forbidden('The last legal entity can\'t be removed.');
         }
 
@@ -140,15 +151,18 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataLegalEntity $par_data_legal_entity = NULL) {
-    $this->retrieveEditableValues($par_data_partnership, $par_data_legal_entity);
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_legal_entity = NULL) {
+    $this->retrieveEditableValues($par_data_partnership, $par_data_partnership_legal_entity);
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
-    if ($par_data_legal_entity) {
-      $referenced_legal_entity = $par_data_legal_entity->hasExistingPartnershipReferences();
+    $form_id = $form_state->getBuildInfo()['form_id'];
+
+    if ($par_data_partnership_legal_entity) {
+      $referenced_legal_entity = $par_data_partnership_legal_entity->getLegalEntity();
     } else {
       $referenced_legal_entity = FALSE;
     }
+
     $form['legal_entity_intro_fieldset'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('What is a legal entity?'),
