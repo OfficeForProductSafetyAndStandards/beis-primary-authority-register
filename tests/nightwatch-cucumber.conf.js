@@ -1,6 +1,5 @@
 const seleniumServer = require('selenium-server')
 const chromedriver = require('chromedriver')
-const electron = require('electron-prebuilt');
 
 require('nightwatch-cucumber')({
     cucumberArgs: [
@@ -39,7 +38,6 @@ module.exports = {
                 browserName: 'chrome',
                 resolution: '1280x3000',
                 chromeOptions : {
-                //  binary: electron,
                     args: ['--headless', '--window-size=1280,3000'],
                   },
                 javascriptEnabled: true,
