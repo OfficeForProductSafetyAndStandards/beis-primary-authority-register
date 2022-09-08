@@ -74,19 +74,19 @@ steps:
       cancel: 1
   5:
     route: par_partnership_flows.legal_entity_add
-    form_id: par_partnership_legal_add
+    form_id: par_partnership_legal_entity_add
     redirect:
       save: 1
       cancel: 1
   6:
     route: par_partnership_flows.legal_entity_edit
-    form_id: par_partnership_legal_edit
+    form_id: par_partnership_legal_entity_edit
     redirect:
       save: 1
       cancel: 1
   7:
     route: par_partnership_flows.legal_entity_remove
-    form_id: par_partnership_legal_remove
+    form_id: par_partnership_legal_entity_remove
     redirect:
       save: 1
       cancel: 1
@@ -140,13 +140,13 @@ steps:
       done: 15
   17:
     route: par_partnership_flows.legal_entity_revoke
-    form_id: par_partnership_legal_revoke
+    form_id: par_partnership_legal_entity_revoke
     redirect:
       save: 1
       cancel: 1
   18:
     route: par_partnership_flows.legal_entity_reinstate
-    form_id: par_partnership_legal_reinstate
+    form_id: par_partnership_legal_entity_reinstate
     redirect:
       save: 1
       cancel: 1

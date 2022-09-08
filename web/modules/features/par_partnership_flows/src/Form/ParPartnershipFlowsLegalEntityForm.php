@@ -43,11 +43,19 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
 
-    $form_context = $legal_entity ? 'Change the legal entity for your organisation' : 'Add a legal entity for your organisation';
+    $formIdTitleMap = [
+      'par_partnership_legal_entity_add' => 'Add a legal entity for your organisation',
+      'par_partnership_legal_entity_edit' => 'Edit a legal entity for your organisation',
+      'par_partnership_legal_entity_revoke' => 'Revoke a legal entity for your organisation',
+      'par_partnership_legal_entity_reinstate' => 'Reinstate a legal entity for your organisation',
+      'par_partnership_legal_entity_remove' => 'Remove a legal entity from your organisation',
+    ];
 
-    $this->pageTitle = "Update Partnership Information | {$form_context}";
+    $fi = $this->getFormId();
+    if ($title = $formIdTitleMap[$this->getFormId()]) {
+      $this->pageTitle = "Update Partnership Information | {$title}";
+    }
 
     return parent::titleCallback();
   }
@@ -135,7 +143,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataLegalEntity $par_data_legal_entity
    *   The Authority being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $partnership = NULL, ParDataPartnershipLegalEntity $partnership_legal_entity = NULL) {
+  public function retrieveEditableValues(ParDataPartnershipLegalEntity $partnership_legal_entity = NULL) {
 
     if ($partnership_legal_entity) {
       $legal_entity = $partnership_legal_entity->getLegalEntity();
@@ -151,70 +159,124 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_legal_entity = NULL) {
-    $this->retrieveEditableValues($par_data_partnership, $par_data_partnership_legal_entity);
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_le = NULL) {
+
+    $this->retrieveEditableValues($par_data_partnership_le);
+
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
+    // What operation are we performing?
     $form_id = $form_state->getBuildInfo()['form_id'];
+    $last_word_start = strrpos($form_id, '_') + 1;
+    $operation = substr($form_id, $last_word_start);
 
-    if ($par_data_partnership_legal_entity) {
-      $referenced_legal_entity = $par_data_partnership_legal_entity->getLegalEntity();
-    } else {
-      $referenced_legal_entity = FALSE;
+    // Get the legal_entity referenced by the partnership_legal_entity.
+    $legal_entity = $par_data_partnership_le->getLegalEntity();
+    $le_used_by_multiple_partnerships = $legal_entity?->hasMultiplePartnershipReferences();
+
+    // Only show intro for add operations.
+    if ($operation == 'add') {
+      $form['legal_entity_intro_fieldset'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('What is a legal entity?'),
+      ];
+
+      $form['legal_entity_intro_fieldset']['intro'] = [
+        '#type' => 'markup',
+        '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
+      ];
     }
 
-    $form['legal_entity_intro_fieldset'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('What is a legal entity?'),
-    ];
-
-    $form['legal_entity_intro_fieldset']['intro'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
-    ];
-
-    if ($par_data_legal_entity){
+    // Only show multiple partnerships message for add and edit operations.
+    if ($le_used_by_multiple_partnerships && in_array($operation, ['add', 'edit'])) {
       $form['legal_entity_disabled']['intro'] = [
         '#type' => 'markup',
         '#markup' => "<p><b>" . $this->t("This legal entity cannot be updated as it is being used in another partnership.") . "</b></p>",
       ];
-
     }
 
-    $form['registered_name'] = [
-      '#disabled' => $referenced_legal_entity,
-      '#type' => 'textfield',
-      '#title' => $this->t('Enter name of the legal entity'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_name"),
-    ];
+    // Legal entity details only editable by add and edit operations.
+    if (in_array($operation, ['add', 'edit'])) {
 
-    $form['legal_entity_type'] = [
-      '#disabled' => $referenced_legal_entity,
-      '#type' => 'select',
-      '#title' => $this->t('Select type of Legal Entity'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_legal_entity_type"),
-      '#options' => $legal_entity_bundle->getAllowedValues('legal_entity_type'),
-    ];
+      $form['registered_name'] = [
+        '#disabled' => $le_used_by_multiple_partnerships,
+        '#type' => 'textfield',
+        '#title' => ($operation == 'add') ? $this->t('Enter the name of the legal entity') : $this->t('Name of the legal entity'),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_name"),
+      ];
 
-    $form['registered_number'] = [
-      '#disabled' => $referenced_legal_entity,
-      '#type' => 'textfield',
-      '#title' => $this->t('Provide the registration number'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_number"),
-      '#states' => [
-        'visible' => [
-          'select[name="legal_entity_type"]' => [
-            ['value' => 'limited_company'],
-            ['value' => 'public_limited_company'],
-            ['value' => 'limited_liability_partnership'],
-            ['value' => 'registered_charity'],
-            ['value' => 'partnership'],
-            ['value' => 'limited_partnership'],
-            ['value' => 'other'],
+      $form['legal_entity_type'] = [
+        '#disabled' => $le_used_by_multiple_partnerships,
+        '#type' => 'select',
+        '#title' => ($operation == 'add') ? $this->t('Select the type of legal entity') : $this->t('Type of the legal entity'),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_legal_entity_type"),
+        '#options' => $legal_entity_bundle->getAllowedValues('legal_entity_type'),
+      ];
+
+      $form['registered_number'] = [
+        '#disabled' => $le_used_by_multiple_partnerships,
+        '#type' => 'textfield',
+        '#title' => ($operation == 'add') ? $this->t('Provide the registration number') : $this->t('Registration number of the legal entity'),
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_number"),
+        '#states' => [
+          'visible' => [
+            'select[name="legal_entity_type"]' => [
+              ['value' => 'limited_company'],
+              ['value' => 'public_limited_company'],
+              ['value' => 'limited_liability_partnership'],
+              ['value' => 'registered_charity'],
+              ['value' => 'partnership'],
+              ['value' => 'limited_partnership'],
+              ['value' => 'other'],
+            ],
           ],
         ],
-      ],
-    ];
+      ];
+    }
+
+    // Legal entity details displayed for reference on other operations.
+    else {
+      $form['registered_name'] = [
+        '#type' => 'item',
+        '#title' => $this->t('Name of the legal entity'),
+        '#markup' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_name"),
+      ];
+
+      $values = $legal_entity_bundle->getAllowedValues('legal_entity_type')
+      $form['legal_entity_type'] = [
+        '#type' => 'item',
+        '#title' => $this->t('Type of the legal entity'),
+        '#markup' => $values[$this->getFlowDataHandler()->getDefaultValues("legal_entity_legal_entity_type")],
+      ];
+
+      $form['registered_number'] = [
+        '#type' => 'item',
+        '#title' => $this->t('Registration number of the legal entity'),
+        '#markup' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_number"),
+      ];
+    }
+
+    // Start date shown only for active partnerships for add and edit operations.
+    if ($par_data_partnership->isActive() && in_array($operation, ['add', 'edit'])) {
+      $form['start_date'] = [
+        '#disabled' => FALSE,
+        '#type' => 'gds_date',
+        '#title' => $this->t('Start date'),
+        '#default_value' => ['year' => 2020, 'month' => 2, 'day' => 15,],
+        '#description' => 'The date at which the participation of this legal entity in the partnership begins. Leave blank if association begins at start of the partnership.',
+      ];
+    }
+
+    // End date shown only for active partnerships for edit, revoke and reinstate operations.
+    if ($par_data_partnership->isActive() && in_array($operation, ['edit', 'revoke', 'reinstate'])) {
+      $form['end_date'] = [
+        '#disabled' => FALSE,
+        '#type' => 'gds_date',
+        '#title' => $this->t('End date'),
+        '#default_value' => ['year' => 2020, 'month' => 2, 'day' => 15,],
+        '#description' => 'The date at which the participation of this legal entity in the partnership ends. Leave blank if association continues indefinitely.',
+      ];
+    }
 
     // Make sure to add the cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
