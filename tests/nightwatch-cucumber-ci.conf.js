@@ -1,6 +1,5 @@
 const seleniumServer = require('selenium-server')
 const chromedriver = require('chromedriver')
-const electron = require('electron-prebuilt');
 
 require('nightwatch-cucumber')({
     cucumberArgs: [
