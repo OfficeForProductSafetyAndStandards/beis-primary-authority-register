@@ -525,14 +525,14 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-        partnership_status:
-          id: partnership_status
+        partnership_status_1:
+          id: partnership_status_1
           table: search_api_index_partnership_index
           field: partnership_status
           relationship: none
           group_type: group
-          admin_label: ''
-          plugin_id: search_api_field
+          admin_label: partnership_status
+          plugin_id: search_api
           label: Status
           exclude: false
           alter:
@@ -574,27 +574,10 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: value
-          type: par_list_formatter
-          settings:
-            display_original_value: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
+          link_to_item: false
+          use_highlighting: false
           multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
+          multi_separator: ', '
         approved_date:
           id: approved_date
           table: search_api_datasource_partnership_index_entity_par_data_partnership
@@ -1457,24 +1440,24 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-        partnership_status:
-          id: partnership_status
+        partnership_status_1:
+          id: partnership_status_1
           table: search_api_index_partnership_index
           field: partnership_status
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: search_api_string
+          plugin_id: search_api_options
           operator: or
           value: {  }
           group: 1
           exposed: true
           expose:
-            operator_id: partnership_status_op
+            operator_id: partnership_status_1_op
             label: 'Partnership Status'
             description: ''
             use_operator: false
-            operator: partnership_status_op
+            operator: partnership_status_1_op
             operator_limit_selection: false
             operator_list: {  }
             identifier: partnership_status
@@ -1491,10 +1474,7 @@ display:
               par_helpdesk: '0'
               senior_administration_officer: '0'
               administrator: '0'
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
-            reduce: 0
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -1556,8 +1536,8 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-        advice_status:
-          id: advice_status
+        advice_status_1:
+          id: advice_status_1
           table: search_api_index_partnership_index
           field: advice_status
           relationship: none
@@ -1569,11 +1549,11 @@ display:
           group: 1
           exposed: true
           expose:
-            operator_id: advice_status_op
+            operator_id: advice_status_1_op
             label: 'Advice Status'
             description: ''
             use_operator: false
-            operator: advice_status_op
+            operator: advice_status_1_op
             operator_limit_selection: false
             operator_list: {  }
             identifier: advice_status
@@ -1604,8 +1584,8 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-        inspection_plan_status:
-          id: inspection_plan_status
+        inspection_plan_status_1:
+          id: inspection_plan_status_1
           table: search_api_index_partnership_index
           field: inspection_plan_status
           relationship: none
@@ -1617,11 +1597,11 @@ display:
           group: 1
           exposed: true
           expose:
-            operator_id: inspection_plan_status_op
+            operator_id: inspection_plan_status_1_op
             label: 'Inspection Plan Status'
             description: ''
             use_operator: false
-            operator: inspection_plan_status_op
+            operator: inspection_plan_status_1_op
             operator_limit_selection: false
             operator_list: {  }
             identifier: inspection_plan_status

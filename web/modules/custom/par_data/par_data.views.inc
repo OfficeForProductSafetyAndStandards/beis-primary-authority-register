@@ -7,7 +7,8 @@
 
 use \Drupal\search_api\Entity\Index;
 use \Drupal\Core\Field\TypedData\FieldItemDataDefinition;
-use Drupal\search_api\Utility\Utility;
+use \Drupal\search_api\Utility\Utility;
+use \Drupal\par_data\Entity\ParDataEntity;
 
 /**
  * Implements hook_views_data_alter().
@@ -37,7 +38,7 @@ function par_data_views_data_alter(array &$data) {
     ];
 
     // Add suitable handlers for all indexed fields.
-    foreach ($index->getFields(TRUE) as $field_id => $field) {
+    foreach ($index->getFields(TRUE) as $index_field_id => $field) {
       // Lookup the field definitions.
       $data_definition = $field->getDataDefinition();
 
@@ -45,24 +46,28 @@ function par_data_views_data_alter(array &$data) {
         // Get the entity and field ids.
         $field_definition = $data_definition->getFieldDefinition();
         $bundle = $field_definition->getTargetBundle();
-        $field_name = $field_definition->getName();
+        $entity_field_name = $field_definition->getName();
         $entity_type_id = $field_definition->getTargetEntityTypeId();
 
         // Lookup the par data config for the field.
         $entity_type = $par_data_manager->getParBundleEntity($entity_type_id, $bundle);
-
         // Check whether this field has allowed values.
-        $allowed_values = $entity_type->getAllowedValues($field_name);
+        $allowed_values = $entity_type->getAllowedValues($entity_field_name);
+
+        // Modify the status field to set the custom Status field.
+        if ($entity_field_name === ParDataEntity::STATUS_FIELD) {
+          $table[$index_field_id]['field']['id'] = 'par_index_status';
+        }
 
         // Modify the default views handler for par allowed_value filters.
         if (!empty($allowed_values)) {
           $mapping = _search_api_views_handler_mapping();
-          $table[$field_id]['filter']['id'] = $mapping['options']['filter']['id'];
-          $table[$field_id]['filter']['options callback'] = '_par_data_search_api_views_get_allowed_values';
-          $table[$field_id]['filter']['options arguments'] = [$entity_type_id, $bundle, $field_name];
+          $table[$index_field_id]['filter']['id'] = $mapping['options']['filter']['id'];
+          $table[$index_field_id]['filter']['options callback'] = '_par_data_search_api_views_get_allowed_values';
+          $table[$index_field_id]['filter']['options arguments'] = [$entity_type_id, $bundle, $entity_field_name];
         }
 
-        // Modify the default views handler for entity reference lists.
+        // Modify the default views handler for entity reference filters.
         if ($field_definition->getType() === 'entity_reference'
             && $par_data_manager->getParEntityType($field_definition->getsetting('target_type'))) {
           $target_type = $field_definition->getsetting('target_type');
@@ -72,9 +77,9 @@ function par_data_views_data_alter(array &$data) {
           // A list can be displayed if less than 20.
           if ($count <= 20) {
             $mapping = _search_api_views_handler_mapping();
-            $table[$field_id]['filter']['id'] = $mapping['options']['filter']['id'];
-            $table[$field_id]['filter']['options callback'] = '_par_data_search_api_views_get_entity_values';
-            $table[$field_id]['filter']['options arguments'] = [$target_type];
+            $table[$index_field_id]['filter']['id'] = $mapping['options']['filter']['id'];
+            $table[$index_field_id]['filter']['options callback'] = '_par_data_search_api_views_get_entity_values';
+            $table[$index_field_id]['filter']['options arguments'] = [$target_type];
           }
           // Otherwise an autocomplete can be added.
           else {

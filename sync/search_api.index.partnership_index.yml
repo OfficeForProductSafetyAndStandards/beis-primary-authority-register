@@ -55,9 +55,9 @@ field_settings:
       module:
         - par_data
   advice_status:
-    label: 'Advice » PAR Advice » Advice Status'
+    label: 'Advice » PAR Advice » Status'
     datasource_id: 'entity:par_data_partnership'
-    property_path: 'field_advice:entity:advice_status'
+    property_path: 'field_advice:entity:par_status'
     type: string
     dependencies:
       config:
@@ -142,9 +142,9 @@ field_settings:
       module:
         - par_data
   inspection_plan_status:
-    label: 'Inspection Plan » PAR Inspection Plan » Inspection Status'
+    label: 'Inspection Plan » PAR Inspection Plan » Status'
     datasource_id: 'entity:par_data_partnership'
-    property_path: 'field_inspection_plan:entity:inspection_status'
+    property_path: 'field_inspection_plan:entity:par_status'
     type: string
     dependencies:
       config:
@@ -290,9 +290,9 @@ field_settings:
       module:
         - par_data
   partnership_status:
-    label: 'Partnership Status'
+    label: Status
     datasource_id: 'entity:par_data_partnership'
-    property_path: partnership_status
+    property_path: par_status
     type: string
     dependencies:
       module:
