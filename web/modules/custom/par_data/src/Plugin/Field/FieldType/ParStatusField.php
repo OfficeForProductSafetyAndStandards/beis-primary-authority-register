@@ -31,7 +31,7 @@ class ParStatusField extends FieldItemList {
       // Get the status field.
       $status_field = $entity->getTypeEntity()?->getConfigurationElementByType('entity', 'status_field');
 
-      if ($status_field) {
+      if ($status_field && $entity->hasField($status_field)) {
         // Set the default status.
         $status = $entity->get($status_field)->getString();
 

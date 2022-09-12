@@ -427,7 +427,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function hasStatus(): bool {
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
-    return (bool) $field_name;
+    return ($field_name && $this->hasField($field_name));
   }
 
   /**
@@ -446,11 +446,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
-    if (isset($field_name) && $this->hasField($field_name)) {
+    if ($this->hasStatus()) {
       $status = $this->get($field_name)->getString();
     }
 
-    return isset($status) ? $status : NULL;
+    return $status ?? NULL;
   }
 
   /**
@@ -469,7 +469,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
     $raw_status = $this->getRawStatus();
-    return $field_name && $raw_status ? $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status) : '';
+    return $raw_status ? $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status) : '';
   }
 
   /**
@@ -484,7 +484,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
     $allowed_values = $this->getTypeEntity()->getAllowedValues($field_name);
-    if (isset($allowed_values[$value]) && $this->get($field_name)->getString() !== $value) {
+    if ($this->hasStatus() && isset($allowed_values[$value])
+      && $this->get($field_name)->getString() !== $value) {
       $this->set($field_name, $value);
 
       // Always revision status changes.
@@ -501,6 +502,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $status_revision = &drupal_static($function_id);
     if (!empty($status_revision)) {
       return $status_revision;
+    }
+
+    if (!$this->hasStatus()) {
+      return NULL;
     }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
@@ -539,7 +544,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function getStatusTime($status) {
     $revision = $this->getStatusChanged($status);
 
-    return $revision ? $revision->get('revision_timestamp')->value : NULL;
+    return $revision?->get('revision_timestamp')->value;
   }
 
   /**
@@ -548,7 +553,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function getStatusAuthor($status) {
     $revision = $this->getStatusChanged($status);
 
-    return $revision ? $revision->get('revision_uid')->entity : NULL;
+    return $revision?->get('revision_uid')->entity;
   }
 
   /**
@@ -575,7 +580,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $label = isset($label) ? $label . $time_string : $time_string;
     }
 
-    return isset($label) ? ucfirst($label): NULL;
+    return isset($label) ? ucfirst($label) : NULL;
   }
 
   /**
