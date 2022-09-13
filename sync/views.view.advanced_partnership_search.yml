@@ -1536,6 +1536,54 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
+        advice_type:
+          id: advice_type
+          table: search_api_index_partnership_index
+          field: advice_type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api_options
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: advice_type_op
+            label: 'Advice Type'
+            description: ''
+            use_operator: false
+            operator: advice_type_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: advice_type
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              par_enforcement: '0'
+              par_authority: '0'
+              par_authority_manager: '0'
+              par_organisation: '0'
+              par_helpdesk: '0'
+              senior_administration_officer: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
         advice_status_1:
           id: advice_status_1
           table: search_api_index_partnership_index

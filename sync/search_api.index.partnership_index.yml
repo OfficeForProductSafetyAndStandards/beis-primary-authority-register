@@ -18,6 +18,7 @@ dependencies:
     - search_api.server.opensearch
   module:
     - par_data
+    - file
     - search_api
 id: partnership_index
 name: 'Partnership Index'
@@ -33,15 +34,16 @@ field_settings:
     dependencies:
       module:
         - par_data
-  advice_archived:
-    label: 'Advice » Archived'
+  advice_document_uri:
+    label: 'Advice » PAR Advice » Document » File » URI'
     datasource_id: 'entity:par_data_partnership'
-    property_path: 'field_advice:entity:archived'
-    type: boolean
+    property_path: 'field_advice:entity:document:entity:uri'
+    type: string
     dependencies:
       config:
         - field.storage.par_data_partnership.field_advice
       module:
+        - file
         - par_data
   advice_regulatory_function:
     label: 'Advice » PAR Advice » Regulatory Function'
@@ -79,6 +81,16 @@ field_settings:
     datasource_id: 'entity:par_data_partnership'
     property_path: 'field_advice:entity:advice_title'
     type: text
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_advice
+      module:
+        - par_data
+  advice_type:
+    label: 'Advice » PAR Advice » Advice Type'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_advice:entity:advice_type'
+    type: string
     dependencies:
       config:
         - field.storage.par_data_partnership.field_advice
@@ -353,16 +365,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.par_data_partnership.field_organisation
-      module:
-        - par_data
-  type:
-    label: 'Advice » PAR Advice » Type'
-    datasource_id: 'entity:par_data_partnership'
-    property_path: 'field_advice:entity:type'
-    type: string
-    dependencies:
-      config:
-        - field.storage.par_data_partnership.field_advice
       module:
         - par_data
 datasource_settings:

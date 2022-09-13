@@ -49,6 +49,11 @@ function par_data_views_data_alter(array &$data) {
         $entity_field_name = $field_definition->getName();
         $entity_type_id = $field_definition->getTargetEntityTypeId();
 
+        // All our modifications only apply to PAR Data entities.
+        if (!$par_data_manager->getParEntityType($entity_type_id)) {
+          continue;
+        }
+
         // Lookup the par data config for the field.
         $entity_type = $par_data_manager->getParBundleEntity($entity_type_id, $bundle);
         // Check whether this field has allowed values.
