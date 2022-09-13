@@ -110,16 +110,17 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
-   * Get the partnerships for this partnership legal entity.
+   * Get the partnership for this partnership legal entity.
    *
-   * @return array
+   * @return ParDataPartnership|NULL
    */
   public function getPartnership() {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
       ->condition('field_partnership_legal_entity', $this->id())
       ->execute();
 
-    return $this->getParDataManager()->getEntitiesByType('par_data_partnership', $query);
+    $partnerships = $this->getParDataManager()->getEntitiesByType('par_data_partnership', $query);
+    return (!empty($partnerships)) ? $partnerships[0] : NULL;
   }
 
   /**

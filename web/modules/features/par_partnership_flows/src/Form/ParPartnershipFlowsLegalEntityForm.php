@@ -52,7 +52,6 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       'par_partnership_legal_entity_remove' => 'Remove a legal entity from your organisation',
     ];
 
-    $fi = $this->getFormId();
     if ($title = $formIdTitleMap[$this->getFormId()]) {
       $this->pageTitle = "Update Partnership Information | {$title}";
     }
@@ -151,8 +150,8 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       $this->getFlowDataHandler()->setFormPermValue("legal_entity_registered_number", $legal_entity->get('registered_number')->getString());
       $this->getFlowDataHandler()->setFormPermValue("legal_entity_legal_entity_type", $legal_entity->get('legal_entity_type')->getString());
       $this->getFlowDataHandler()->setFormPermValue('legal_entity_id', $legal_entity->id());
-      $this->getFlowDataHandler()->setFormPermValue('partnership_legal_entity_start_date', $partnership_legal_entity->getStartDate());
-      $this->getFlowDataHandler()->setFormPermValue('partnership_legal_entity_end_date', $partnership_legal_entity->getEndDate());
+      $this->getFlowDataHandler()->setFormPermValue('partnership_legal_entity_start_date', $this->dateToArray($partnership_legal_entity->getStartDate()));
+      $this->getFlowDataHandler()->setFormPermValue('partnership_legal_entity_end_date', $this->dateToArray($partnership_legal_entity->getEndDate()));
     }
   }
 
@@ -166,12 +165,10 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
     // What operation are we performing?
-    $form_id = $form_state->getBuildInfo()['form_id'];
-    $last_word_start = strrpos($form_id, '_') + 1;
-    $operation = substr($form_id, $last_word_start);
+    $operation = $this->getOperation();
 
     // Get the legal_entity referenced by the partnership_legal_entity.
-    $legal_entity = $par_data_partnership_le->getLegalEntity();
+    $legal_entity = $par_data_partnership_le?->getLegalEntity();
     $le_used_by_multiple_partnerships = $legal_entity?->hasMultiplePartnershipReferences();
 
     // Only show intro for add operations.
@@ -188,7 +185,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     }
 
     // Only show multiple partnerships message for add and edit operations.
-    if ($le_used_by_multiple_partnerships && in_array($operation, ['add', 'edit'])) {
+    if ($operation == 'edit' && $le_used_by_multiple_partnerships) {
       $form['legal_entity_disabled']['intro'] = [
         '#type' => 'markup',
         '#markup' => "<p><b>" . $this->t("This legal entity cannot be updated as it is being used in another partnership.") . "</b></p>",
@@ -198,15 +195,17 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     // Legal entity details only editable by add and edit operations.
     if (in_array($operation, ['add', 'edit'])) {
 
+      $disabled = !($operation == 'add' || !$le_used_by_multiple_partnerships);
+
       $form['registered_name'] = [
-        '#disabled' => $le_used_by_multiple_partnerships,
+        '#disabled' => $disabled,
         '#type' => 'textfield',
         '#title' => ($operation == 'add') ? $this->t('Enter the name of the legal entity') : $this->t('Name of the legal entity'),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_name"),
       ];
 
       $form['legal_entity_type'] = [
-        '#disabled' => $le_used_by_multiple_partnerships,
+        '#disabled' => $disabled,
         '#type' => 'select',
         '#title' => ($operation == 'add') ? $this->t('Select the type of legal entity') : $this->t('Type of the legal entity'),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_legal_entity_type"),
@@ -214,7 +213,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       ];
 
       $form['registered_number'] = [
-        '#disabled' => $le_used_by_multiple_partnerships,
+        '#disabled' => $disabled,
         '#type' => 'textfield',
         '#title' => ($operation == 'add') ? $this->t('Provide the registration number') : $this->t('Registration number of the legal entity'),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_number"),
@@ -234,26 +233,31 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       ];
     }
 
-    // Legal entity details displayed for reference on other operations.
+    // Legal entity details just displayed for reference on other operations.
     else {
+
       $form['registered_name'] = [
         '#type' => 'item',
         '#title' => $this->t('Name of the legal entity'),
         '#markup' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_name"),
       ];
 
-      $values = $legal_entity_bundle->getAllowedValues('legal_entity_type')
+      $values = $legal_entity_bundle->getAllowedValues('legal_entity_type');
       $form['legal_entity_type'] = [
         '#type' => 'item',
         '#title' => $this->t('Type of the legal entity'),
         '#markup' => $values[$this->getFlowDataHandler()->getDefaultValues("legal_entity_legal_entity_type")],
       ];
 
-      $form['registered_number'] = [
-        '#type' => 'item',
-        '#title' => $this->t('Registration number of the legal entity'),
-        '#markup' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_number"),
-      ];
+      if (in_array($this->getFlowDataHandler()->getDefaultValues("legal_entity_legal_entity_type"),
+                   ['limited_company', 'public_limited_company', 'limited_liability_partnership',
+                    'registered_charity', 'partnership', 'limited_partnership', 'other'])) {
+        $form['registered_number'] = [
+          '#type' => 'item',
+          '#title' => $this->t('Registration number of the legal entity'),
+          '#markup' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_number"),
+        ];
+      }
     }
 
     // Start date shown only for active partnerships for add and edit operations.
@@ -262,20 +266,37 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
         '#disabled' => FALSE,
         '#type' => 'gds_date',
         '#title' => $this->t('Start date'),
-        '#default_value' => ['year' => 2020, 'month' => 2, 'day' => 15,],
-        '#description' => 'The date at which the participation of this legal entity in the partnership begins. Leave blank if association begins at start of the partnership.',
+        '#default_value' => $this->getFlowDataHandler()->getDefaultValues('partnership_legal_entity_start_date'),
+        '#description' => 'The date at which the participation of this legal entity in the partnership begins. ' .
+                          'Leave blank if the association begins at start of the partnership.',
       ];
     }
 
-    // End date shown only for active partnerships for edit, revoke and reinstate operations.
-    if ($par_data_partnership->isActive() && in_array($operation, ['edit', 'revoke', 'reinstate'])) {
+    // End date shown only for active partnerships for edit and revoke operations.
+    if ($par_data_partnership->isActive() && in_array($operation, ['edit', 'revoke'])) {
+      $default_value = NULL;
+      $description = 'The date at which the participation of this legal entity in the partnership ends.';
+      switch ($operation) {
+        case 'edit':
+          $default_value = $this->getFlowDataHandler()->getDefaultValues('partnership_legal_entity_end_date');
+          $description .= ' Leave blank if the association is to continue indefinitely.';
+          break;
+        case 'revoke': // Default to today.
+          $default_value = $this->dateToArray(new DrupalDateTime());
+          break;
+      }
       $form['end_date'] = [
         '#disabled' => FALSE,
         '#type' => 'gds_date',
         '#title' => $this->t('End date'),
-        '#default_value' => ['year' => 2020, 'month' => 2, 'day' => 15,],
-        '#description' => 'The date at which the participation of this legal entity in the partnership ends. Leave blank if association continues indefinitely.',
+        '#default_value' => $default_value,
+        '#description' => $description,
       ];
+    }
+
+    // For certain operations change the label of the primary action button.
+    if (in_array($operation, ['revoke', 'reinstate', 'delete'])) {
+      $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle(ucfirst($operation));
     }
 
     // Make sure to add the cacheability data to this form.
@@ -286,12 +307,12 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
   /**
    * Validate the form to make sure the correct values have been entered.
-   *
-   * @note Currently we are only adding new LE/PLE to the partnership.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
     parent::validateForm($form, $form_state);
+
+    $operation = $this->getOperation();
 
     // Get the partnership.
     /* @var ParDataPartnership $partnership */
@@ -299,24 +320,29 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
     // Get the legal entity.
     /* @var ParDataLegalEntity $legal_entity */
-    $legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
+    $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
 
     // Get form values.
     $registered_name = $form_state->getValue('registered_name');
+    $legal_entity_type = $form_state->getValue('legal_entity_type');
     $registered_number = $form_state->getValue('registered_number');
-
-    // Set start and end dates for the PLE period. Currently, we are just adding new PLEs. If the partnership is
-    // not yet active the from_date is NULL, once it is active the from_date is today's date. Once PLE editing is
-    // implemented these will be form values so the user can set the actual period.
-    $period_from = NULL;
-    if ($partnership->isActive()) {
-      $period_from = new DrupalDateTime('now');
-      $period_from->setTime(12, 0);
-    }
-    $period_to = NULL;
+    $start_date = $form_state->getValue('start_date');
+    $end_date = $form_state->getValue('end_date');
 
     // If we are adding then see if this LE is already exists on the organisation.
-    if (!$legal_entity) {
+    if ($operation == 'add') {
+
+      // Set start and end dates for the period of the new PLE. If the partnership is
+      // not yet active the from_date is NULL, once it is active the from_date is today's date. Once PLE editing is
+      // implemented these will be form values so the user can set the actual period.
+      if (!$partnership->isActive()) {
+        $start_date = NULL;
+      }
+      elseif (!empty($start_date)) {
+        $start_date = new DrupalDateTime('now');
+        $start_date->setTime(12, 0);
+      }
+      $end_date = NULL;
 
       /* @var ParDataOrganisation $organisation */
       $organisation = $partnership->getOrganisation(TRUE);
@@ -332,15 +358,14 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       }
     }
 
-    // We have an existing LE attached to the organisation.
-    if ($legal_entity) {
-
-      // If this LE is already active on the partnership for the current date then it can not be added again.
+    // When we have an existing LE (always except when adding a completely new LE) we check that the period of this PLE
+    // instance will not overlap with any other PLE for the same partnership/LE combination.
+    if ($legal_entity && $operation != 'remove') {
       $partnership_legal_entities = $partnership->getPartnershipLegalEntity();
       /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
       foreach ($partnership_legal_entities as $partnership_legal_entity) {
         if ($partnership_legal_entity->getLegalEntity() === $legal_entity) {
-          if ($partnership_legal_entity->isActiveDuringPeriod($period_from, $period_to)) {
+          if ($partnership_legal_entity->isActiveDuringPeriod($start_date, $end_date)) {
             $id = $this->getElementId(['registered_name'], $form);
             $form_state->setErrorByName($this->getElementName('registered_name'), $this->wrapErrorMessage('This legal entity is already an active participant in the partnership.', $id));
             break;
@@ -435,4 +460,22 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
   }
 
+  protected function dateToArray(DrupalDateTime $date = NULL) {
+    if (!$date) {
+      return NULL;
+    }
+
+    $formatted_date = $date->format('Ymd');
+    return [
+      'year' => (integer)substr($formatted_date, 0, 4),
+      'month' => (integer)substr($formatted_date, 4, 2),
+      'day' => (integer)substr($formatted_date, 6, 2),
+    ];
+  }
+
+  protected function getOperation() {
+    $form_id = $this->getFormId();
+    $last_word_start = strrpos($form_id, '_') + 1;
+    return substr($form_id, $last_word_start);
+  }
 }
