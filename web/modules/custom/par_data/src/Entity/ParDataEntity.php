@@ -40,7 +40,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
   const PAR_LOGGER_CHANNEL = 'par';
   const STATUS_FIELD = 'par_status';
-  const DELETE_FIELD = 'deleted';
+  const STATUS_DEFAULT = 'active';
   const REVOKE_FIELD = 'revoked';
   const ARCHIVE_FIELD = 'archived';
   const DELETE_REASON_FIELD = 'deleted_reason';

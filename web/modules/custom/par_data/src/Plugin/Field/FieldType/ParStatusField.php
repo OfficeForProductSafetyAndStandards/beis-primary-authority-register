@@ -31,19 +31,22 @@ class ParStatusField extends FieldItemList {
       // Get the status field.
       $status_field = $entity->getTypeEntity()?->getConfigurationElementByType('entity', 'status_field');
 
+      // The default status for all entities is 'active'.
+      $status = ParDataEntity::STATUS_DEFAULT;
+
+      // Check to see if the entity has a status field.
       if ($status_field && $entity->hasField($status_field)) {
-        // Set the default status.
         $status = $entity->get($status_field)->getString();
+      }
 
-        // Check if the entity is revoked.
-        if ($entity->getTypeEntity()->isRevokable() && $entity->isRevoked()) {
-          $status = ParDataEntity::REVOKE_FIELD;
-        }
+      // Check if the entity is revoked.
+      if ($entity->getTypeEntity()->isRevokable() && $entity->isRevoked()) {
+        $status = ParDataEntity::REVOKE_FIELD;
+      }
 
-        // Check if the entity is revoked.
-        if ($entity->getTypeEntity()->isArchivable() && $entity->isArchived()) {
-          $status = ParDataEntity::ARCHIVE_FIELD;
-        }
+      // Check if the entity is archived.
+      if ($entity->getTypeEntity()->isArchivable() && $entity->isArchived()) {
+        $status = ParDataEntity::ARCHIVE_FIELD;
       }
     }
 

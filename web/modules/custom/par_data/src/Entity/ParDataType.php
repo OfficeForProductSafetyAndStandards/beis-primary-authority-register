@@ -193,14 +193,19 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
 
     // @see PAR-1805: The computed true status values include the default statuses.
     if ($field_name === ParDataEntity::STATUS_FIELD) {
+      // If there are no allowed values set then the default status value is 'active'.
+      if (empty($allowed_values)) {
+        $allowed_values[ParDataEntity::STATUS_FIELD] = 'Active';
+      }
+
       // If this entity is revokable.
       if ($this->isRevokable()) {
-        $allowed_values['revoked'] = 'Revoked';
+        $allowed_values[ParDataEntity::REVOKE_FIELD] = 'Revoked';
       }
 
       // If this entity is archivable.
       if ($this->isArchivable()) {
-        $allowed_values['archived'] = 'Archived';
+        $allowed_values[ParDataEntity::ARCHIVE_FIELD] = 'Archived';
       }
     }
 
