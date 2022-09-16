@@ -5,6 +5,7 @@ namespace Drupal\par_data\Entity;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\link\LinkItemInterface;
@@ -703,6 +704,21 @@ class ParDataPartnership extends ParDataEntity {
     $this->get('field_partnership_legal_entity')->appendItem($partnership_legal_entity);
 
     return $partnership_legal_entity;
+  }
+
+  public function removeLegalEntity(ParDataPartnershipLegalEntity $partnership_legal_entity) {
+
+    $index = NULL;
+    foreach ($this->get('field_partnership_legal_entity') as $delta => $item) {
+      if ($partnership_legal_entity->id() == $item->getValue()['target_id']) {
+        $index = $delta;
+        break;
+      }
+    };
+    $this->get('field_partnership_legal_entity')->removeItem($index);
+    $this->save();
+
+    $partnership_legal_entity->delete();
   }
 
   /**

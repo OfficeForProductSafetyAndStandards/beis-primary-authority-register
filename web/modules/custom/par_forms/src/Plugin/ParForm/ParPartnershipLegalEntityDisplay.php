@@ -43,7 +43,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
 
     if ($par_data_partnership instanceof ParDataEntityInterface) {
       $this->setDefaultValuesByKey("partnership", $cardinality, $par_data_partnership);
-      $partnership_legal_entities = $par_data_partnership->getPartnershipLegalEntity();
+      $partnership_legal_entities = $par_data_partnership->getPartnershipLegalEntities();
       $this->setDefaultValuesByKey("partnership_legal_entities", $cardinality, $partnership_legal_entities);
     }
 
@@ -57,6 +57,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
 
     /* @var ParDataPartnership $partnership */
     $partnership = $this->getDefaultValuesByKey('partnership', $cardinality, []);
+    /* @var ParDataPartnershipLegalEntity[] $partnership_legal_entities */
     $partnership_legal_entities = $this->getDefaultValuesByKey('partnership_legal_entities', $cardinality, []);
 
     // Generate the link to add a new partnership legal entity.
@@ -64,7 +65,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       ? "add another legal entity" : "add a legal entity";
     try {
       $add_link = $this->getFlowNegotiator()->getFlow()
-        ->getOperationLink('add_field_legal_entity', $link_label, ['par_data_partnership' => $partnership]);
+        ->getOperationLink('add_legal_entity', $link_label, ['par_data_partnership' => $partnership]);
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -109,7 +110,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
           'Name',
           'Start date',
           'End date',
-          'Operations',
+          'Actions',
         ],
       ];
     }
@@ -118,13 +119,12 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         '#type' => 'table',
         '#header' => [
           'Name',
-          'Operations',
+          'Actions',
         ],
       ];
     }
 
     // Add a row for each partnership legal entity.
-    /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
     foreach ($partnership_legal_entities as $delta => $partnership_legal_entity) {
 
       // Get the actual legal entity instance.
@@ -180,14 +180,13 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
           $form['partnership_legal_entities']['table'][$delta]['start_date'] = [];
         }
 
-        // End date cell is empty if the is no end date. LE is effective to present day.
-        $end_date = $partnership_legal_entity->getEndDate();
-        if ($end_date) {
+        // Only show end date if the PLE has been revoked.
+        if ($partnership_legal_entity->isRevoked()) {
           $form['partnership_legal_entities']['table'][$delta]['end_date'] = [
             '#type' => 'html_tag',
             '#tag' => 'span',
             '#attributes' => ['class' => 'end-date'],
-            '#value' => $this->getDateFormatter()->format($end_date->getTimestamp(), 'gds_date_format'),
+            '#value' => $this->getDateFormatter()->format($partnership_legal_entity->getEndDate()->getTimestamp(), 'gds_date_format'),
           ];
         }
         else {
@@ -196,11 +195,11 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       }
 
       // Operation links will go in the last column.
+      $form['partnership_legal_entities']['table'][$delta]['operations'] = [];
       $operations = [
-        'edit_field_legal_entity' => 'Edit',
-        'revoke_field_legal_entity' => 'Revoke',
-        'reinstate_field_legal_entity' => 'Reinstate',
-        'remove_field_legal_entity' => 'Remove',
+        'revoke_legal_entity' => 'Revoke',
+        'reinstate_legal_entity' => 'Reinstate',
+        'remove_legal_entity' => 'Remove',
       ];
       $link_params = [
         'par_data_partnership' => $partnership,

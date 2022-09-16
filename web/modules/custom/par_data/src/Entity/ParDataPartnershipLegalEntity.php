@@ -90,6 +90,15 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
+   * Override parent implementation to let delete go ahead.
+   *
+   * @return false
+   */
+  public function hasDependencies() {
+    return false;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function revoke($save = TRUE, $reason = '') {
@@ -112,7 +121,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * Get the partnership for this partnership legal entity.
    *
-   * @return ParDataPartnership|NULL
+   * @return ParDataPartnership
    */
   public function getPartnership() {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
@@ -120,7 +129,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
       ->execute();
 
     $partnerships = $this->getParDataManager()->getEntitiesByType('par_data_partnership', $query);
-    return (!empty($partnerships)) ? $partnerships[0] : NULL;
+    return reset($partnerships);
   }
 
   /**

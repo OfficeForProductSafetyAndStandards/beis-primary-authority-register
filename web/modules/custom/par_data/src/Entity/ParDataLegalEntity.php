@@ -102,8 +102,12 @@ class ParDataLegalEntity extends ParDataEntity {
     return $number;
   }
 
+  public function getTypeRaw() {
+    return $this->get('legal_entity_type')->getString();
+  }
+
   public function getType() {
-    $value = $this->get('legal_entity_type')->getString();
+    $value = $this->getTypeRaw();
     $type = !empty($value) ? $this->getTypeEntity()->getAllowedFieldlabel('legal_entity_type', $value) : NULL;
     return $type;
   }

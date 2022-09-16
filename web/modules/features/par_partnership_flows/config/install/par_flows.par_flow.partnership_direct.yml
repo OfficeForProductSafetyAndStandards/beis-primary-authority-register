@@ -42,11 +42,11 @@ steps:
       edit_comments: 2
       add_field_premises: 3
       edit_field_premises: 4
-      add_field_legal_entity: 5
-      edit_field_legal_entity: 6
-      revoke_field_legal_entity: 17
-      reinstate_field_legal_entity: 18
-      remove_field_legal_entity: 7
+      add_legal_entity: 5
+      edit_legal_entity: 6
+      revoke_legal_entity: 17
+      reinstate_legal_entity: 18
+      remove_legal_entity: 7
       add_trading_name: 8
       edit_trading_name: 9
       add_field_sic_code: 10

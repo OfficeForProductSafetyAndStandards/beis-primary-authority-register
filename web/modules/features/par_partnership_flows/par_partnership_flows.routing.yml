@@ -379,11 +379,11 @@ par_partnership_flows.legal_entity_reinstate:
 par_partnership_flows.legal_entity_remove:
   path: '/partnership/{par_data_partnership}/legal-entity/{par_data_partnership_le}/remove'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRemoveLegalEntityRemoveForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRemoveLegalEntityRemoveForm::titleCallback'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityRemoveForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityRemoveForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRemoveLegalEntityRemoveForm::accessCallback'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityRemoveForm::accessCallback'
     par_data_partnership: \d+
     par_data_partnership_le: \d+
   options:

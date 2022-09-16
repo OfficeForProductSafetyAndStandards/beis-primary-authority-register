@@ -57,25 +57,21 @@ class ParPartnershipFlowsLegalEntityAddForm extends ParBaseForm {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
-
-    // Get the route parameters.
-    $partnership = $route_match->getParameter('par_data_partnership');
-    $partnership_legal_entity = $route_match->getParameter('par_data_partnership_le');
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
 
     // Limit access to partnership pages.
     $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
-    if (!$account->hasPermission('bypass par_data membership') && $user && !$this->getParDataManager()->isMember($partnership, $user)) {
+    if (!$account->hasPermission('bypass par_data membership') && $user && !$this->getParDataManager()->isMember($par_data_partnership, $user)) {
       $this->accessResult = AccessResult::forbidden('The user is not allowed to access this page.');
     }
 
     // Restrict access when partnership is active to users with administrator role.
-    if ($partnership->isActive() && !$user->hasRole('senior_administration_officer')) {
+    if ($par_data_partnership->isActive() && !$user->hasRole('senior_administration_officer')) {
       $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
     }
 
     // Restrict business users who have already confirmed their business details.
-    if ($partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
+    if ($par_data_partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
       $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
     }
 
@@ -91,14 +87,14 @@ class ParPartnershipFlowsLegalEntityAddForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataLegalEntity $par_data_legal_entity
    *   The Authority being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnershipLegalEntity $partnership_legal_entity = NULL) {
+  public function retrieveEditableValues(ParDataPartnershipLegalEntity $par_data_partnership_le = NULL) {
 
-    if ($partnership_legal_entity) {
-      $legal_entity = $partnership_legal_entity->getLegalEntity();
-      $this->getFlowDataHandler()->setFormPermValue("legal_entity_registered_name", $legal_entity->get('registered_name')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("legal_entity_registered_number", $legal_entity->get('registered_number')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("legal_entity_legal_entity_type", $legal_entity->get('legal_entity_type')->getString());
-      $this->getFlowDataHandler()->setFormPermValue('legal_entity_id', $legal_entity->id());
+    if ($par_data_partnership_le) {
+      $par_data_legal_entity = $par_data_partnership_le->getLegalEntity();
+      $this->getFlowDataHandler()->setFormPermValue("legal_entity_registered_name", $par_data_legal_entity->get('registered_name')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("legal_entity_registered_number", $par_data_legal_entity->get('registered_number')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("legal_entity_legal_entity_type", $par_data_legal_entity->get('legal_entity_type')->getString());
+      $this->getFlowDataHandler()->setFormPermValue('legal_entity_id', $par_data_legal_entity->id());
     }
   }
 
@@ -167,8 +163,6 @@ class ParPartnershipFlowsLegalEntityAddForm extends ParBaseForm {
 
     parent::validateForm($form, $form_state);
 
-    $operation = $this->getOperation();
-
     // Get the partnership.
     /* @var ParDataPartnership $partnership */
     $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
@@ -209,7 +203,7 @@ class ParPartnershipFlowsLegalEntityAddForm extends ParBaseForm {
     // If we have an existing LE we check that the period of this PLE instance will not overlap with any other PLE
     // for the same partnership/LE combination.
     if ($legal_entity) {
-      $partnership_legal_entities = $partnership->getPartnershipLegalEntity();
+      $partnership_legal_entities = $partnership->getPartnershipLegalEntities();
       /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
       foreach ($partnership_legal_entities as $partnership_legal_entity) {
         if ($partnership_legal_entity->getLegalEntity() === $legal_entity) {

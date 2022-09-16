@@ -42,30 +42,26 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
-
-    // Get the route parameters.
-    $partnership = $route_match->getParameter('par_data_partnership');
-    $partnership_legal_entity = $route_match->getParameter('par_data_partnership_le');
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_le = NULL) {
 
     // Limit access to partnership pages.
     $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
-    if (!$account->hasPermission('bypass par_data membership') && $user && !$this->getParDataManager()->isMember($partnership, $user)) {
+    if (!$account->hasPermission('bypass par_data membership') && $user && !$this->getParDataManager()->isMember($par_data_partnership, $user)) {
       $this->accessResult = AccessResult::forbidden('The user is not allowed to access this page.');
     }
 
-    // Restrict access when partnership is active to users with administrator role.
-    if ($partnership->isActive() && !$user->hasRole('senior_administration_officer')) {
-      $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
+    // Partnership must be active.
+    if (!$par_data_partnership->isActive()) {
+      $this->accessResult = AccessResult::forbidden('This partnership is not active so legal entities cannot be revoked.');
     }
 
-    // Restrict business users who have already confirmed their business details.
-    if ($partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
-      $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
+    // Restrict access when partnership is active to users with administrator role.
+    if ($par_data_partnership->isActive() && !$user->hasRole('senior_administration_officer')) {
+      $this->accessResult = AccessResult::forbidden('This partnership is active and user\'s role does not allow changes to be made.');
     }
 
     // Partnership legal entities that are already revoked cannot be revoked again.
-    if ($partnership_legal_entity->getEndDate()) {
+    if ($par_data_partnership_le->isRevoked()) {
       $this->accessResult = AccessResult::forbidden('This legal entity has already been revoked.');
     }
 
@@ -77,123 +73,72 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_le = NULL) {
 
-    $legal_entity = $par_data_partnership_le->getLegalEntity();
-    $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
+    $par_data_legal_entity = $par_data_partnership_le->getLegalEntity();
 
     // Legal entity details just displayed for reference.
     $form['registered_name'] = [
       '#type' => 'item',
       '#title' => $this->t('Name of the legal entity'),
-      '#markup' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_name"),
+      '#markup' => $par_data_legal_entity->getName(),
     ];
 
-    $values = $legal_entity_bundle->getAllowedValues('legal_entity_type');
     $form['legal_entity_type'] = [
       '#type' => 'item',
       '#title' => $this->t('Type of the legal entity'),
-      '#markup' => $values[$legal_entity->getType()],
+      '#markup' => $par_data_legal_entity->getType(),
     ];
 
     // Only show registered number for types that allow it.
-    if (in_array($legal_entity->getType(),
+    if (in_array($par_data_legal_entity->getTypeRaw(),
                  ['limited_company', 'public_limited_company', 'limited_liability_partnership',
                   'registered_charity', 'partnership', 'limited_partnership', 'other'])) {
       $form['registered_number'] = [
         '#type' => 'item',
         '#title' => $this->t('Registration number of the legal entity'),
-        '#markup' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_number"),
+        '#markup' => $par_data_legal_entity->getRegisteredNumber(),
       ];
     }
 
-    $form['start_date'] = [
-      '#type' => 'item',
-      '#title' => $this->t('Start date'),
-      '#markup' => $par_data_partnership_le->getStartDate(),
-    ];
+    // Only show start date if there is one.
+    if ($start_date = $par_data_partnership_le->getStartDate()) {
+      $form['start_date'] = [
+        '#type' => 'item',
+        '#title' => $this->t('Start date'),
+        '#markup' => $this->getDateFormatter()->format($start_date->getTimestamp(), 'gds_date_format'),
+      ];
+    }
 
-    // End date.
-    $form['end_date'] = [
-      '#type' => 'item',
-      '#title' => $this->t('Start date'),
-      '#markup' => $par_data_partnership_le->getEndDate(),
+    // Optional revocation reason.
+    $form['revocation_reason'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Revocation reason'),
+      '#rows' => 4,
+      '#cols' => 40,
+      '#description' => $this->t('Enter reason for revocation (optional).'),
     ];
 
     // Change label of the primary action button.
-    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Reinstate');
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Revoke');
 
     // Make sure to add the cacheability data to this form.
     $this->addCacheableDependency($par_data_partnership);
+    $this->addCacheableDependency($par_data_partnership_le);
 
     return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * Validate the form to make sure the correct values have been entered.
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-
-    parent::validateForm($form, $form_state);
-
-    // Get the partnership legal entity.
-    /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
-    $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
-
-    // Get form values.
-    $end_date = $form_state->getValue('end_date');
-
-    // End date can not be set to date before start date of the PLE if it has one.
-    if ($start_date = $partnership_legal_entity->getStartDate()) {
-      if ($end_date < $start_date) {
-        $id = $this->getElementId(['start_date'], $form);
-        $form_state->setErrorByName($this->getElementName('start_date'), $this->wrapErrorMessage('End date can not precede start date.', $id));
-      }
-    }
-
-    // End date can not be set to date before start of partnership.
-    else {
-      $partnership = $partnership_legal_entity->getPartnership();
-      $partnership_approved_date = $partnership->getApprovedDate();
-      if ($end_date < $partnership_approved_date) {
-        $id = $this->getElementId(['start_date'], $form);
-        $form_state->setErrorByName($this->getElementName('start_date'), $this->wrapErrorMessage('End date can not precede the partnership approval date.', $id));
-      }
-    }
   }
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+
     parent::submitForm($form, $form_state);
 
+    /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
     $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
 
-    $partnership_legal_entity->set('end_date', $this->getFlowDataHandler()->getTempDataValue('end_date'));
+    $revocation_reason = trim($form_state->getValue('revocation_reason'));
 
-    if ($partnership_legal_entity->save()) {
-      $this->getFlowDataHandler()->deleteStore();
-    }
-    else {
-      $message = $this->t('When submitting form %form_id the partnership legal entity %id could not be saved with end date %ed.');
-      $replacements = [
-        '%form_id' => $this->getFormId(),
-        '%id' => $partnership_legal_entity->id(),
-        '%ed' => $this->getFlowDataHandler()->getTempDataValue('end_date'),
-      ];
-      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-    }
-  }
-
-  protected function dateToArray(DrupalDateTime $date = NULL) {
-    if (!$date) {
-      return NULL;
-    }
-
-    $formatted_date = $date->format('Ymd');
-    return [
-      'year' => (integer)substr($formatted_date, 0, 4),
-      'month' => (integer)substr($formatted_date, 4, 2),
-      'day' => (integer)substr($formatted_date, 6, 2),
-    ];
+    $partnership_legal_entity->revoke(TRUE, $revocation_reason);
   }
 }
