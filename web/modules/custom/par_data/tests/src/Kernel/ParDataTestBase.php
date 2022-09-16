@@ -649,10 +649,14 @@ class ParDataTestBase extends EntityKernelTestBase {
   }
 
   public function getPartnershipLegalEntityValues($values = []) {
+    $legal_entity = ParDataLegalEntity::create($this->getLegalEntityValues());
+    $legal_entity->save();
+
     $values += [
         'type' => 'partnership_legal_entity',
         'date_legal_entity_approved' => '2020-01-01',
         'date_legal_entity_revoked' => '2022-12-25',
+        'field_legal_entity' => [$legal_entity->id()],
       ] + $this->getBaseValues();
 
     return $values;
@@ -816,6 +820,13 @@ class ParDataTestBase extends EntityKernelTestBase {
     $coordinated_business_2->save();
     $coordinated_business_3->save();
 
+    // We need to create a Legal Entity first.
+    $legal_entity = ParDataLegalEntity::create($this->getLegalEntityValues());
+    $legal_entity->save();
+    $partnership_legal_entity = ParDataPartnershipLegalEntity::create(
+      $this->getPartnershipLegalEntityValues(['field_legal_entity' => $legal_entity->id()])
+    );
+
     // We need to create a Authority first.
     $authority = ParDataAuthority::create($this->getAuthorityValues());
     $authority->save();
@@ -868,6 +879,9 @@ class ParDataTestBase extends EntityKernelTestBase {
           $coordinated_business_1->id(),
           $coordinated_business_2->id(),
           $coordinated_business_3->id(),
+        ],
+        'field_partnership_legal_entity' => [
+          $partnership_legal_entity->id(),
         ],
         'field_authority' => [
           $authority->id(),
