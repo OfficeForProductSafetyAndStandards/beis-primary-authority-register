@@ -48,9 +48,11 @@ steps:
       edit_comments: 2
       add_field_premises: 3
       edit_field_premises: 4
-      add_field_legal_entity: 5
-      edit_field_legal_entity: 6
-      remove_field_legal_entity: 7
+      add_legal_entity: 5
+      edit_legal_entity: 6
+      revoke_legal_entity: 15
+      reinstate_legal_entity: 16
+      remove_legal_entity: 7
       add_trading_name: 8
       edit_trading_name: 9
       edit_size: 10
@@ -128,3 +130,15 @@ steps:
     route: par_partnership_flows.organisation_advice_details
     redirect:
       done: 13
+  15:
+    route: par_partnership_flows.legal_entity_revoke
+    form_id: par_partnership_legal_entity_revoke
+    redirect:
+      save: 1
+      cancel: 1
+  16:
+    route: par_partnership_flows.legal_entity_reinstate
+    form_id: par_partnership_legal_entity_reinstate
+    redirect:
+      save: 1
+      cancel: 1
