@@ -14,6 +14,8 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\Entity\ParDataPremises;
+use Drupal\par_data\Plugin\Field\FieldType\ParLabelField;
+use Drupal\par_data\Plugin\Field\FieldType\ParStatusField;
 
 /**
  * Implements hook_install().
@@ -1314,3 +1316,69 @@ function par_data_update_9004() {
   }
 }
 
+/**
+ * PAR-1737: Base field updates for new member fields on coordinated partnerships.
+ */
+function par_data_update_9005() {
+  /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
+  $par_data_manager = \Drupal::service('par_data.manager');
+  $entity_definition_manager = \Drupal::service('entity.definition_update_manager');
+  $entity_types = \Drupal::service('par_data.manager')->getParEntityTypes();
+
+  // New fields definitions to be added to all par entities.
+  // @see https://www.drupal.org/node/3034742
+  $storage_definitions = [];
+
+  // Add the PAR Label computed field.
+  $storage_definitions['par_label'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Label'))
+    ->setDescription(t('The label of the PAR entity.'))
+    ->setComputed(TRUE)
+    ->setClass(\Drupal\par_data\Plugin\Field\FieldType\ParLabelField::class)
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'max_length' => 255,
+      'text_processing' => 0,
+    ])
+    ->setDefaultValue('')
+    ->setDisplayOptions('form', [
+      'type' => 'string_textfield',
+      'weight' => 2,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  // Add the PAR Status computed field.
+  $storage_definitions['par_status'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Status'))
+    ->setDescription(t('The status of the PAR entity.'))
+    ->setComputed(TRUE)
+    ->setClass(\Drupal\par_data\Plugin\Field\FieldType\ParStatusField::class)
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'max_length' => 255,
+      'text_processing' => 0,
+    ])
+    ->setDefaultValue('')
+    ->setDisplayOptions('form', [
+      'type' => 'string_textfield',
+      'weight' => 2,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  foreach($entity_types as $entity_type_id => $entity_type) {
+    // Install each field.
+    foreach ($storage_definitions as $field => $definition) {
+      $entity_definition_manager->installFieldStorageDefinition($field, $entity_type_id, $entity_type_id, $definition);
+    }
+  }
+}

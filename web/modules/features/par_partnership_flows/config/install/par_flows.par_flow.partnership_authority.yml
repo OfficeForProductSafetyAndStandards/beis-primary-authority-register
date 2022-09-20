@@ -11,7 +11,7 @@ states:
   - par_data_partnership
 final_routes:
   - view.par_user_partnerships.partnerships_page
-  - view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page
+  - view.advanced_partnership_search.advanced_search
 steps:
   1:
     route: par_partnership_flows.authority_details

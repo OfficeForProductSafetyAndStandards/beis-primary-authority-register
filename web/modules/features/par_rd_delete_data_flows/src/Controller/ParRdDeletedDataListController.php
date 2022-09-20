@@ -203,7 +203,7 @@ class ParRdDeletedDataListController extends ControllerBase {
 //      '#cache' => ['contexts' => ['user.par_memberships:authority']]
 //    ];
 //
-//    $manage_partnerships = $this->getLinkByRoute('view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page');
+//    $manage_partnerships = $this->getLinkByRoute('view.advanced_partnership_search.advanced_search');
 //    $manage_link = $manage_partnerships->setText('Manage partnerships')->toString();
 //    $build['partnerships']['manage'] = [
 //      '#type' => 'markup',

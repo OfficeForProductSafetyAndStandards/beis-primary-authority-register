@@ -89,7 +89,7 @@ Feature: Coordinator User - Update Partnership
 
         # CEASE MEMBER
 
-        When I click the link text "Cease membership"
+        When I click the link "Cease membership" in row "1"
         # And I run tota11y against the current page
         And I add "2" to the inputfield "#edit-day"
         And I add "2" to the inputfield "#edit-month"

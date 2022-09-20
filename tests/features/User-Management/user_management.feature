@@ -78,7 +78,7 @@ Feature: User Management
     Scenario: Verify update user role for existing user
 
     Scenario : verify update authorities for existing user
-    
+
 
 
 

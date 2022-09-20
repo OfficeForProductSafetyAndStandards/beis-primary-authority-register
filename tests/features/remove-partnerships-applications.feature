@@ -2,17 +2,16 @@ Feature: Remove partnership appliations
 
     Background:
         Given I am logged in as "par_helpdesk@example.com"
-        Given I click the link text "Manage partnerships"
+        Given I click the link text "Search partnerships"
 
 
     @ci @nonsmoke
     Scenario: Search and remove an incomplete partnership
-        When I add "Demolition Experts" to the inputfield "#edit-keywords"
-        When I add "Demolition Experts" to the inputfield "#edit-keywords"
+        When I add '"Demolition Experts"' to the inputfield "#edit-keywords"
         And I select the option with the value "confirmed_authority" for element "#edit-partnership-status"
-        And I click on the button "#edit-submit-helpdesk-dashboard"
-        And there is "1" occurences of element ".par-helpdesk-partnership-list tbody tr"
-        Then I click the link text "Delete partnership"
+        And I click on the button "#edit-submit-advanced-partnership-search"
+        Then the element ".par-advanced-partnership-search-list .views-row-1 .partnership-name" contains the text "Demolition Experts"
+        And I click the link "Delete partnership" in row "1"
 
         # DELETION REASON SCREEN
 

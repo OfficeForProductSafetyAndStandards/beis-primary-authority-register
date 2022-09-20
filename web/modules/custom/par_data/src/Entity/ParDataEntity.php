@@ -24,6 +24,8 @@ use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
 use Drupal\trance\Trance;
 use Drupal\Component\Datetime\TimeInterface;
+use Drupal\par_data\Plugin\Field\FieldType\ParLabelField;
+use Drupal\par_data\Plugin\Field\FieldType\ParStatusField;
 
 /**
  * Defines the PAR entities.
@@ -37,7 +39,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   use RevisionLogEntityTrait;
 
   const PAR_LOGGER_CHANNEL = 'par';
-  const DELETE_FIELD = 'deleted';
+  const STATUS_FIELD = 'par_status';
+  const STATUS_DEFAULT = 'active';
   const REVOKE_FIELD = 'revoked';
   const ARCHIVE_FIELD = 'archived';
   const DELETE_REASON_FIELD = 'deleted_reason';
@@ -121,7 +124,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function label() {
-
     //PAR-988 prevent the page crashing when NULL is returned by getTypeEntity() on the current entity.
     if (is_object($this->getTypeEntity())) {
       $label_fields = $this->getTypeEntity()->getConfigurationElementByType('entity', 'label_fields');
@@ -425,7 +427,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function hasStatus(): bool {
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
-    return (bool) $field_name;
+    return ($field_name && $this->hasField($field_name));
   }
 
   /**
@@ -444,11 +446,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
-    if (isset($field_name) && $this->hasField($field_name)) {
+    if ($this->hasStatus()) {
       $status = $this->get($field_name)->getString();
     }
 
-    return isset($status) ? $status : NULL;
+    return $status ?? NULL;
   }
 
   /**
@@ -467,7 +469,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
     $raw_status = $this->getRawStatus();
-    return $field_name && $raw_status ? $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status) : '';
+    return $raw_status ? $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status) : '';
   }
 
   /**
@@ -482,7 +484,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
     $allowed_values = $this->getTypeEntity()->getAllowedValues($field_name);
-    if (isset($allowed_values[$value]) && $this->get($field_name)->getString() !== $value) {
+    if ($this->hasStatus() && isset($allowed_values[$value])
+      && $this->get($field_name)->getString() !== $value) {
       $this->set($field_name, $value);
 
       // Always revision status changes.
@@ -499,6 +502,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $status_revision = &drupal_static($function_id);
     if (!empty($status_revision)) {
       return $status_revision;
+    }
+
+    if (!$this->hasStatus()) {
+      return NULL;
     }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
@@ -537,7 +544,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function getStatusTime($status) {
     $revision = $this->getStatusChanged($status);
 
-    return $revision ? $revision->get('revision_timestamp')->value : NULL;
+    return $revision?->get('revision_timestamp')->value;
   }
 
   /**
@@ -546,7 +553,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function getStatusAuthor($status) {
     $revision = $this->getStatusChanged($status);
 
-    return $revision ? $revision->get('revision_uid')->entity : NULL;
+    return $revision?->get('revision_uid')->entity;
   }
 
   /**
@@ -573,7 +580,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $label = isset($label) ? $label . $time_string : $time_string;
     }
 
-    return isset($label) ? ucfirst($label): NULL;
+    return isset($label) ? ucfirst($label) : NULL;
   }
 
   /**
@@ -1112,6 +1119,29 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         'text_processing' => 0,
       ]);
 
+    // Compute the label as a field value.
+    $fields['par_label'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Label'))
+      ->setDescription(t('The label of the PAR entity.'))
+      ->setComputed(TRUE)
+      ->setClass(ParLabelField::class)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     // We will apply action state fields to all par entities for consistency
     // but will only use certain actions on certain entities.
     $fields['deleted'] = BaseFieldDefinition::create('boolean')
@@ -1225,6 +1255,29 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
+
+    $fields['par_status'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Status'))
+      ->setDescription(t('The status of the PAR entity.'))
+      ->setComputed(TRUE)
+      ->setClass(ParStatusField::class)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     return $fields;
   }
 }

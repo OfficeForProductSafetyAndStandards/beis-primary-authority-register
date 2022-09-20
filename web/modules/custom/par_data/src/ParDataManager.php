@@ -903,13 +903,11 @@ class ParDataManager implements ParDataManagerInterface {
       [
         'AND' => [
           ['field_user_account', $account->id(), 'IN'],
-          [ParDataEntity::DELETE_FIELD, 1, '<>'],
          ],
       ],
       [
         'AND' => [
           ['email', $account->get('mail')->getString()],
-          [ParDataEntity::DELETE_FIELD, 1, '<>'],
         ],
       ],
     ];

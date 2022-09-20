@@ -96,7 +96,7 @@
         "drupal/views_field_view": "~1.0.0",
         "drupal/xmlsitemap": "~1.0.0",
         "drush/config-extra": "~1.0.0",
-        "drush/drush": "^10.3",
+        "drush/drush": "~10.4",
         "league/flysystem": "1.0.69",
         "league/flysystem-aws-s3-v3": "1.0.25",
         "predis/predis": "~1.1.1",
@@ -183,9 +183,6 @@
             "drupal/flysystem": {
                 "Add Drush commands for sending and receiving files": "https://www.drupal.org/files/issues/2021-01-14/3192777-2-Added_drush_commands.patch",
                 "CSS and JS served through the flysystem.serve route can't be downloaded in maintenance mode": "https://www.drupal.org/files/issues/2019-06-13/serve_maintenance_page_assets-3061561-3.patch"
-            },
-            "drupal/google_analytics": {
-                "Deprecated warning": "https://git.drupalcode.org/issue/google_analytics-3258588/-/merge_requests/1.diff"
             },
             "drupal/govuk_notify": {
                 "Message body formatting array to string": "https://www.drupal.org/files/issues/2021-08-11/3227617-2-govuk-notify-message-body-formatting.diff"
