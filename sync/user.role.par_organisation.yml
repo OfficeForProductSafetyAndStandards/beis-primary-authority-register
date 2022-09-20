@@ -1,7 +1,32 @@
 uuid: b6588f03-8317-4473-b1ca-f668571052d9
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.basic_html
+  module:
+    - filter
+    - invite
+    - par_dashboards
+    - par_data
+    - par_enforcement_send_flows
+    - par_invite_user_flows
+    - par_member_add_flows
+    - par_member_cease_flows
+    - par_member_list_update_flows
+    - par_member_update_flows
+    - par_member_upload_flows
+    - par_notification
+    - par_organisation_update_flows
+    - par_partnership_confirmation_flows
+    - par_partnership_contact_add_flows
+    - par_partnership_contact_remove_flows
+    - par_partnership_contact_update_flows
+    - par_partnership_flows
+    - par_person_create_flows
+    - par_person_update_flows
+    - par_profile_view_flows
+    - par_roles
 id: par_organisation
 label: 'Organisation Member'
 weight: -5

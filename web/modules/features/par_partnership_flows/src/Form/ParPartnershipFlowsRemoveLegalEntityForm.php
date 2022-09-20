@@ -47,7 +47,7 @@ class ParPartnershipFlowsRemoveLegalEntityForm extends ParBaseForm {
     }
 
     // Restrict access when partnership is active to users with administrator role.
-    if ($partnership->isActive() && !$user->hasRole('senior_administration_officer')) {
+    if ($partnership->isActive() && !$user->hasPermission('amend active partnerships')) {
       $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
     }
 
