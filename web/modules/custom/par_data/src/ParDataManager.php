@@ -899,7 +899,20 @@ class ParDataManager implements ParDataManagerInterface {
       return $entities;
     }
 
-    $entities = $this->getEntitiesByQuery('par_data_person', [], NULL, 'id', 'ASC', 'OR');
+    $conditions = [
+      [
+        'AND' => [
+          ['field_user_account', $account->id(), 'IN'],
+         ],
+      ],
+      [
+        'AND' => [
+          ['email', $account->get('mail')->getString()],
+        ],
+      ],
+    ];
+
+    $entities = $this->getEntitiesByQuery('par_data_person', $conditions, NULL, 'id', 'ASC', 'OR');
 
     // There is a need to check that any par_data_person entities returned
     // do not link to any other active users. This can't be done directly with
