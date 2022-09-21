@@ -662,10 +662,6 @@ class ParDataPartnership extends ParDataEntity {
    */
   public function getLegalEntity($single = FALSE) {
     $partnership_legal_entities = $this->getPartnershipLegalEntities();
-    // Retain only the active partnership legal entities.
-    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) {
-      return $partnership_legal_entity->isActive();
-    });
 
     $legal_entities = [];
     foreach ($partnership_legal_entities as $partnership_legal_entity) {
@@ -682,7 +678,16 @@ class ParDataPartnership extends ParDataEntity {
    * @return ParDataPartnershipLegalEntity[]
    */
   public function getPartnershipLegalEntities($active = TRUE) {
-    return $this->get('field_partnership_legal_entity')->referencedEntities();
+    $partnership_legal_entities = $this->get('field_partnership_legal_entity')->referencedEntities();
+
+    // Retain only the active partnership legal entities.
+    if ($active) {
+      $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) {
+        return $partnership_legal_entity->isActive();
+      });
+    }
+
+    return $partnership_legal_entities;
   }
 
   /**
