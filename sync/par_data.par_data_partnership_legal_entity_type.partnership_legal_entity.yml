@@ -6,7 +6,7 @@ id: partnership_legal_entity
 label: 'Partnership Legal Entity'
 description: 'A partnership legal entity meta data entity.'
 help: ''
-isDeletable: false
+isDeletable: true
 isRevokable: true
 isArchivable: false
 configuration:

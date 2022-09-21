@@ -315,51 +315,83 @@ par_partnership_flows.address_add:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
-par_partnership_flows.legal_entity_edit:
-  path: '/partnership/{par_data_partnership}/legal-entity/{par_data_legal_entity}/edit'
-  defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm::titleCallback'
-  requirements:
-    _permission: 'update partnership organisation details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm::accessCallback'
-    par_data_partnership: \d+
-    par_data_legal_entity: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-      par_data_legal_entity:
-        type: entity:par_data_legal_entity
-par_partnership_flows.legal_entity_remove:
-  path: '/partnership/{par_data_partnership}/legal-entity/{par_data_legal_entity}/remove'
-  defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRemoveLegalEntityForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRemoveLegalEntityForm::titleCallback'
-  requirements:
-    _permission: 'update partnership organisation details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsRemoveLegalEntityForm::accessCallback'
-    par_data_partnership: \d+
-    par_data_legal_entity: \d+
-  options:
-    parameters:
-      par_data_partnership:
-        type: entity:par_data_partnership
-      par_data_legal_entity:
-        type: entity:par_data_legal_entity
 par_partnership_flows.legal_entity_add:
   path: '/partnership/{par_data_partnership}/legal-entity/add'
   defaults:
-    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm'
-    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm::titleCallback'
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityAddForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityAddForm::titleCallback'
   requirements:
     _permission: 'update partnership organisation details'
-    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityForm::accessCallback'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityAddForm::accessCallback'
     par_data_partnership: \d+
   options:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+par_partnership_flows.legal_entity_edit:
+  path: '/partnership/{par_data_partnership}/legal-entity/{par_data_partnership_le}/edit'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityEditForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityEditForm::titleCallback'
+  requirements:
+    _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityEditForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_partnership_le: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_partnership_le:
+        type: entity:par_data_partnership_le
+par_partnership_flows.legal_entity_revoke:
+  path: '/partnership/{par_data_partnership}/legal-entity/{par_data_partnership_le}/revoke'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityRevokeForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityRevokeForm::titleCallback'
+  requirements:
+    _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityRevokeForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_partnership_le: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_partnership_le:
+        type: entity:par_data_partnership_le
+par_partnership_flows.legal_entity_reinstate:
+  path: '/partnership/{par_data_partnership}/legal-entity/{par_data_partnership_le}/reinstate'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityReinstateForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityReinstateForm::titleCallback'
+  requirements:
+    _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityReinstateForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_partnership_le: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_partnership_le:
+        type: entity:par_data_partnership_le
+par_partnership_flows.legal_entity_remove:
+  path: '/partnership/{par_data_partnership}/legal-entity/{par_data_partnership_le}/remove'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityRemoveForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityRemoveForm::titleCallback'
+  requirements:
+    _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsLegalEntityRemoveForm::accessCallback'
+    par_data_partnership: \d+
+    par_data_partnership_le: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+      par_data_partnership_le:
+        type: entity:par_data_partnership_le
 par_partnership_flows.trading_name_edit:
   path: '/partnership/{par_data_partnership}/trading-name/{trading_name_delta}'
   defaults:

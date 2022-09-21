@@ -90,6 +90,15 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
+   * Override parent implementation to let delete go ahead.
+   *
+   * @return false
+   */
+  public function hasDependencies() {
+    return false;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function revoke($save = TRUE, $reason = '') {
@@ -110,16 +119,17 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
-   * Get the partnerships for this partnership legal entity.
+   * Get the partnership for this partnership legal entity.
    *
-   * @return array
+   * @return ParDataPartnership
    */
   public function getPartnership() {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
       ->condition('field_partnership_legal_entity', $this->id())
       ->execute();
 
-    return $this->getParDataManager()->getEntitiesByType('par_data_partnership', $query);
+    $partnerships = $this->getParDataManager()->getEntitiesByType('par_data_partnership', $query);
+    return reset($partnerships);
   }
 
   /**
@@ -179,6 +189,46 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    */
   public function setEndDate(DrupalDateTime $date = NULL) {
     $this->set('date_legal_entity_revoked', $date?->format('Y-m-d'));
+  }
+
+  /**
+   * Test whether the partnership_legal_entity is active during a given period.
+   *
+   * @param DrupalDateTime | NULL $period_from
+   *   The start date of the period to be compared.
+   * @param DrupalDateTime | NULL $period_to
+   *   The end date of the period to be compared.
+   *
+   * @return bool
+   *   TRUE if the given period overlaps with the active period of the PLE.
+   */
+  public function isActiveDuringPeriod(DrupalDateTime $period_from = NULL, DrupalDateTime $period_to = NULL) {
+
+    /**
+     * Annoyingly DrupalDateTime objects have no comparison method, so we use DateTime objects representing the periods
+     * because these are easy to compare.
+     * If the 'from' date of a period is NULL this means the period starts at the date the partnership became active. We
+     * could look this up, but that would be costly, and setting the date to a day in the far past has the same effect.
+     * If the 'to' date is NULL then the period extends indefinitely into the future. We use a day in the far future
+     * in this case.
+     */
+
+    // Create DateTime objects defining the period we are comparing to this PLE object's active period.
+    $compare_from = (!$period_from) ? new \DateTime('0000-01-01 12:00:00') : $period_from->getPhpDateTime();
+    $compare_to = (!$period_to) ? new \DateTime('9999-12-31 12:00:00') : $period_from->getPhpDateTime();
+
+    // Create DateTime objects defining this PLE object's active period.
+    $ple_from = (!$this->getStartDate()) ? new \DateTime('0001-01-01 12:00:00') : $this->getStartDate()->getPhpDateTime();
+    $ple_to = (!$this->getEndDate()) ? new \DateTime('9999-12-31 12:00:00') : $this->getEndDate()->getPhpDateTime();
+
+    // If the start of either period is inside the other period then the periods overlap.
+    if ($ple_from <= $compare_from && $compare_from <= $ple_to) {
+      return TRUE;
+    }
+    if ($compare_from <= $ple_from && $ple_from <= $compare_to) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
   /**

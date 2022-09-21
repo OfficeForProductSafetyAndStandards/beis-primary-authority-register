@@ -5,6 +5,7 @@ namespace Drupal\par_data\Entity;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\link\LinkItemInterface;
@@ -660,7 +661,12 @@ class ParDataPartnership extends ParDataEntity {
    * Get legal entities for this partnership.
    */
   public function getLegalEntity($single = FALSE) {
-    $legal_entities = $this->get('field_legal_entity')->referencedEntities();
+    $partnership_legal_entities = $this->getPartnershipLegalEntities(TRUE);
+
+    $legal_entities = [];
+    foreach ($partnership_legal_entities as $partnership_legal_entity) {
+      $legal_entities[] = $partnership_legal_entity->getLegalEntity();
+    }
     $legal_entity = !empty($legal_entities) ? current($legal_entities) : NULL;
 
     return $single ? $legal_entity : $legal_entities;
@@ -668,36 +674,65 @@ class ParDataPartnership extends ParDataEntity {
 
   /**
    * Get partnership legal entities for this partnership.
+   *
+   * @return ParDataPartnershipLegalEntity[]
    */
-  public function getPartnershipLegalEntity($single = FALSE) {
-    $legal_entities = $this->get('field_partnership_legal_entity')->referencedEntities();
-    $legal_entity = !empty($legal_entities) ? current($legal_entities) : NULL;
+  public function getPartnershipLegalEntities($active = FALSE) {
+    $partnership_legal_entities = $this->get('field_partnership_legal_entity')->referencedEntities();
 
-    return $single ? $legal_entity : $legal_entities;
+    // Retain only the active partnership legal entities.
+    if ($active) {
+      $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) {
+        return $partnership_legal_entity->isActive();
+      });
+    }
+
+    return $partnership_legal_entities;
   }
 
   /**
    * Add a legal entity to partnership.
    *
+   * Method creates a partnership_legal_entity object that links the given legal_entity to the partnership.
+   *
    * @param ParDataLegalEntity $legal_entity
    *   A PAR Legal Entity to add.
+   * @param DrupalDateTime | NULL $period_from
+   *   Start date of period during which the LE is active.
+   * @param DrupalDateTime | NULL $period_to
+   *   End date of period during which the LE is active.
+   *
+   * @return ParDataPartnershipLegalEntity
+   *   The newly created partnership_legal_entity.
    */
-  public function addLegalEntity(ParDataLegalEntity $legal_entity) {
+  public function addLegalEntity(ParDataLegalEntity $legal_entity, DrupalDateTime $period_from = NULL, DrupalDateTime $period_to = NULL) {
 
     // Create new partnership legal entity referencing the legal entity.
     $partnership_legal_entity = ParDataPartnershipLegalEntity::create([]);
     $partnership_legal_entity->setLegalEntity($legal_entity);
-
-    // Start date only needed if partnership is already approved.
-    // If start date not set then it is assumed that the legal entity's
-    // participation starts when the partnership starts.
-    if ($this->isActive()) {
-      $partnership_legal_entity->setStartDate(new DrupalDateTime());
-    }
+    $partnership_legal_entity->setStartDate($period_from);
+    $partnership_legal_entity->setEndDate($period_to);
     $partnership_legal_entity->save();
 
     // Append new partnership legal entity to existing list of legal entities covered by this partnership.
     $this->get('field_partnership_legal_entity')->appendItem($partnership_legal_entity);
+
+    return $partnership_legal_entity;
+  }
+
+  public function removeLegalEntity(ParDataPartnershipLegalEntity $partnership_legal_entity) {
+
+    $index = NULL;
+    foreach ($this->get('field_partnership_legal_entity') as $delta => $item) {
+      if ($partnership_legal_entity->id() == $item->getValue()['target_id']) {
+        $index = $delta;
+        break;
+      }
+    };
+    $this->get('field_partnership_legal_entity')->removeItem($index);
+    $this->save();
+
+    $partnership_legal_entity->delete();
   }
 
   /**

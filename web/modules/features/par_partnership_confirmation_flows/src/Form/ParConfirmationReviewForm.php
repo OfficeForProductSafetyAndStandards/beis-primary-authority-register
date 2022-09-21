@@ -351,7 +351,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
         $legal_entity->save();
         $par_data_organisation->get('field_legal_entity')->appendItem($legal_entity);
       }
-      $par_data_partnership->get('field_legal_entity')->appendItem($legal_entity);
+      $par_data_partnership->addLegalEntity($legal_entity);
     }
     if ($par_data_premises->save() && !$par_data_organisation->getPremises(TRUE)) {
       $par_data_organisation->get('field_premises')->set(0, $par_data_premises);
