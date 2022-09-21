@@ -191,7 +191,6 @@ class ParPartnershipFlowsLegalEntityEditForm extends ParBaseForm {
    * Validate the form to make sure the correct values have been entered.
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-
     parent::validateForm($form, $form_state);
 
     // Get the partnership.

@@ -661,7 +661,7 @@ class ParDataPartnership extends ParDataEntity {
    * Get legal entities for this partnership.
    */
   public function getLegalEntity($single = FALSE) {
-    $partnership_legal_entities = $this->getPartnershipLegalEntities();
+    $partnership_legal_entities = $this->getPartnershipLegalEntities(TRUE);
 
     $legal_entities = [];
     foreach ($partnership_legal_entities as $partnership_legal_entity) {
@@ -677,7 +677,7 @@ class ParDataPartnership extends ParDataEntity {
    *
    * @return ParDataPartnershipLegalEntity[]
    */
-  public function getPartnershipLegalEntities($active = TRUE) {
+  public function getPartnershipLegalEntities($active = FALSE) {
     $partnership_legal_entities = $this->get('field_partnership_legal_entity')->referencedEntities();
 
     // Retain only the active partnership legal entities.

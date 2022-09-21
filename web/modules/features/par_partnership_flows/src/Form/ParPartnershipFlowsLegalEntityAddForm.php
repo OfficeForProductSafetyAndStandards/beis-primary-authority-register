@@ -203,7 +203,7 @@ class ParPartnershipFlowsLegalEntityAddForm extends ParBaseForm {
     // If we have an existing LE we check that the period of this PLE instance will not overlap with any other PLE
     // for the same partnership/LE combination.
     if ($legal_entity) {
-      $partnership_legal_entities = $partnership->getPartnershipLegalEntities();
+      $partnership_legal_entities = $partnership->getPartnershipLegalEntities(TRUE);
       /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
       foreach ($partnership_legal_entities as $partnership_legal_entity) {
         if ($partnership_legal_entity->getLegalEntity() === $legal_entity) {
