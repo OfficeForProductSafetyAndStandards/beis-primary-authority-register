@@ -75,12 +75,20 @@ steps:
   5:
     route: par_partnership_flows.legal_entity_add
     form_id: par_partnership_legal_entity_add
+    components:
+      legal_entity:
+        weight: -10
+        cardinality: 1
     redirect:
       save: 1
       cancel: 1
   6:
     route: par_partnership_flows.legal_entity_edit
     form_id: par_partnership_legal_entity_edit
+    components:
+      legal_entity:
+        weight: -10
+        cardinality: 1
     redirect:
       save: 1
       cancel: 1

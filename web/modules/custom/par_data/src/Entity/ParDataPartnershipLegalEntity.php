@@ -194,7 +194,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * Check whether the legal entity can be removed.
    *
-   * Legal entities can be removed from the partnership if:
+   * Partnership Legal Entities can be removed if:
    *  - they are not attached to a partnership
    *  - the partnership they are attached to is not active
    *  - they were added within the last 24 hours

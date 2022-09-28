@@ -61,9 +61,9 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     $partnership_legal_entities = $this->getDefaultValuesByKey('partnership_legal_entities', $cardinality, []);
 
     // Generate the link to add a new partnership legal entity.
-    $link_label = !empty($partnership_legal_entities) && count($partnership_legal_entities) >= 1
-      ? "add another legal entity" : "add a legal entity";
     try {
+      $link_label = !empty($partnership_legal_entities) && count($partnership_legal_entities) >= 1
+        ? "add another legal entity" : "add a legal entity";
       $add_link = $this->getFlowNegotiator()->getFlow()
         ->getOperationLink('add_legal_entity', $link_label, ['par_data_partnership' => $partnership]);
     }
@@ -101,34 +101,50 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     }
 
     // Table in which to show partnership legal entities.
+    $form['partnership_legal_entities']['table'] = [
+      '#type' => 'table',
+      '#header' => [
+        'Name',
+      ],
+    ];
+    $headers = &$form['partnership_legal_entities']['table']['#header'];
     // We only show start/end date columns for active partnerships.
-    // @note We should hide the operations column if user has no access to any operations.
     if ($partnership->isActive()) {
-      $form['partnership_legal_entities']['table'] = [
-        '#type' => 'table',
-        '#header' => [
-          'Name',
-          'Start date',
-          'End date',
-          'Actions',
-        ],
-      ];
-    }
-    else {
-      $form['partnership_legal_entities']['table'] = [
-        '#type' => 'table',
-        '#header' => [
-          'Name',
-          'Actions',
-        ],
-      ];
+      array_push($headers, 'Start date', 'End date');
     }
 
     // Add a row for each partnership legal entity.
     foreach ($partnership_legal_entities as $delta => $partnership_legal_entity) {
-
       // Get the actual legal entity instance.
       $legal_entity = $partnership_legal_entity->getLegalEntity();
+
+      // Get all the operations available for this legal entity.
+      $operations = [
+        'revoke_legal_entity' => 'Revoke',
+        'reinstate_legal_entity' => 'Reinstate',
+        'remove_legal_entity' => 'Remove',
+      ];
+      $link_params = [
+        'par_data_partnership' => $partnership,
+        'par_data_partnership_le' => $partnership_legal_entity,
+      ];
+      $legal_entity_actions = [];
+      foreach ($operations as $link_name => $link_label) {
+        // Attempt to generate the link.
+        try {
+          $link = $this->getFlowNegotiator()->getFlow()->getOperationLink($link_name, $link_label, $link_params);
+          $legal_entity_actions[$link_name] = $link;
+        }
+        catch (ParFlowException $e) {
+          $this->getLogger($this->getLoggerChannel())->notice($e);
+          continue;
+        }
+      }
+
+      // Only show the operations column if user has access to modify the legal entities.
+      if (!empty($legal_entity_actions) && array_search('Actions', $headers) === false) {
+        $headers[] = 'Actions';
+      }
 
       // The LE name goes in the first 'identity' column.
       $form['partnership_legal_entities']['table'][$delta]['identity']['name'] = [
@@ -165,7 +181,6 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
 
       // Date columns only present once partnership becomes active.
       if ($partnership->isActive()) {
-
         // Start date cell is empty if the is no start date. LE is effective from the start of the partnership.
         $start_date = $partnership_legal_entity->getStartDate();
         if ($start_date) {
@@ -194,38 +209,21 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         }
       }
 
-      // Operation links will go in the last column.
-      $form['partnership_legal_entities']['table'][$delta]['operations'] = [];
-      $operations = [
-        'revoke_legal_entity' => 'Revoke',
-        'reinstate_legal_entity' => 'Reinstate',
-        'remove_legal_entity' => 'Remove',
-      ];
-      $link_params = [
-        'par_data_partnership' => $partnership,
-        'par_data_partnership_le' => $partnership_legal_entity,
-      ];
-      foreach ($operations as $link_name => $link_label) {
-
-        // Attempt to generate the link.
-        try {
-          $link = $this->getFlowNegotiator()->getFlow()->getOperationLink($link_name, $link_label, $link_params);
-        }
-        catch (ParFlowException $e) {
-          $this->getLogger($this->getLoggerChannel())->notice($e);
-          continue;
-        }
+      if (!empty($legal_entity_actions)) {
+        // Operation links will go in the last column.
+        $form['partnership_legal_entities']['table'][$delta]['operations'] = [];
 
         // Display the link.
-        if ($link instanceof Link) {
-          $form['partnership_legal_entities']['table'][$delta]['operations'][$link_name] = [
-            '#type' => 'html_tag',
-            '#tag' => 'p',
-            '#value' => $link->toString(),
-            '#attributes' => ['class' => [$link_name]],
-          ];
+        foreach ($legal_entity_actions as $link_name => $link) {
+          if ($link instanceof Link) {
+            $form['partnership_legal_entities']['table'][$delta]['operations'][$link_name] = [
+              '#type' => 'html_tag',
+              '#tag' => 'p',
+              '#value' => $link->toString(),
+              '#attributes' => ['class' => [$link_name]],
+            ];
+          }
         }
-
       }
     }
 
