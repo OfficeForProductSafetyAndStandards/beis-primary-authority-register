@@ -32,21 +32,18 @@ default:
   archived:
     -
       value: false
+  par_status:
+    -
+      value: active
   address:
     -
       langcode: ''
       country_code: GB
       administrative_area: US-NY
       locality: 'New York State'
-      dependent_locality: ''
       postal_code: 'SG19 3HZ'
-      sorting_code: ''
       address_line1: '4 sesame St'
       address_line2: Newcastle
-      organization: ''
-      given_name: ''
-      additional_name: ''
-      family_name: ''
   nation:
     -
       value: GB-ENG

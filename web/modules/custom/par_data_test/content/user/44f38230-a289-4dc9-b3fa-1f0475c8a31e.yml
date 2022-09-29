@@ -12,7 +12,7 @@ default:
       value: par_helpdesk@example.com
   pass:
     -
-      value: TestPassword
+      value: $S$E5WpylfDIga0DTTH7hVuKo1Tuc04vVan5C1k9ZIT3bBsevI2tf/q
       existing: ''
       pre_hashed: false
   mail:
@@ -29,7 +29,7 @@ default:
       value: 1521468935
   access:
     -
-      value: 0
+      value: 1664292695
   login:
     -
       value: 0
@@ -38,15 +38,12 @@ default:
       target_id: par_helpdesk
     -
       target_id: senior_administration_officer
-  role_change:
-    -
-      target_id: __role_delegation_empty_field_value__
   field_gdpr:
     -
       value: true
   field_last_password_reset:
     -
-      value: '2020-12-10T13:32:49'
+      value: '2022-09-26T14:08:21'
   field_password_expiration:
     -
       value: false

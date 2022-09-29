@@ -34,6 +34,9 @@ default:
   archived:
     -
       value: false
+  par_status:
+    -
+      value: active
   salutation:
     -
       value: Mr
