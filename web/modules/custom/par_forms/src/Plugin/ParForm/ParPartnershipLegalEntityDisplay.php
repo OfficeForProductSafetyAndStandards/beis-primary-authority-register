@@ -85,7 +85,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     ];
 
     // Display a link to add a legal entity. Weighted to sink to bottom.
-    if ($add_link instanceof Link) {
+    if (isset($add_link) && $add_link instanceof Link) {
       $form['partnership_legal_entities_x']['add'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
