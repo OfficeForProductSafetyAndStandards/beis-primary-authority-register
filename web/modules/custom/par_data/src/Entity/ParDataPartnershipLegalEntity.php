@@ -192,6 +192,25 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
+   * Check whether the legal entity can be removed.
+   *
+   * Partnership Legal Entities can be removed if:
+   *  - they are not attached to a partnership
+   *  - the partnership they are attached to is not active
+   *  - they were added within the last 24 hours
+   *
+   * @return bool
+   *   TRUE if the legal entity can be removed.
+   */
+  public function isRemovable() {
+    $now = new DrupalDateTime();
+    $partnership = $this->getPartnership();
+    return (!$partnership
+        || !$partnership->isActive()
+        || $this->getStartDate()?->modify('+1 day') > $now);
+  }
+
+  /**
    * Test whether the partnership_legal_entity is active during a given period.
    *
    * @param DrupalDateTime | NULL $period_from

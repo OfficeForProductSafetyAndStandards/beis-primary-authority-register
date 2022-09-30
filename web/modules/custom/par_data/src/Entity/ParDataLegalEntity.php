@@ -80,7 +80,9 @@ class ParDataLegalEntity extends ParDataEntity {
     $par_data_manger = \Drupal::service('par_data.manager');
 
     // Check to see if a legal entity already exists with this number.
-    $legal_entities = !empty($values['registered_number']) ? $par_data_manger->getEntitiesByProperty('par_data_legal_entity', 'registered_number', $values['registered_number']) : NULL;
+    $legal_entities = !empty($values['registered_number']) ?
+      $par_data_manger->getEntitiesByProperty('par_data_legal_entity', 'registered_number', $values['registered_number']) :
+      NULL;
 
     // Use the first available legal entity if one is found, otherwise
     // create a new record.
