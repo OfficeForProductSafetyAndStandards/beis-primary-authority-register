@@ -12,7 +12,7 @@ default:
       value: par_authority@example.com
   pass:
     -
-      value: $S$EF0ow0XBn7utE6EepIGbWWyGMq8sJ8JeiVMWPmXZQroqVZ4g6t55
+      value: TestPassword
       existing: ''
       pre_hashed: false
   mail:
@@ -36,12 +36,15 @@ default:
   roles:
     -
       target_id: par_authority
+  role_change:
+    -
+      target_id: __role_delegation_empty_field_value__
   field_gdpr:
     -
       value: true
   field_last_password_reset:
     -
-      value: '2022-09-26T14:08:21'
+      value: '2020-12-10T13:32:49'
   field_password_expiration:
     -
       value: false
