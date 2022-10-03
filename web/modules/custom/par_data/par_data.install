@@ -1298,7 +1298,7 @@ function par_data_update_9004(&$sandbox) {
 
     if ($partnership instanceof ParDataEntityInterface) {
       // Get the legal entities linked to the partnership.
-      $legal_entities = $partnership->getLegalEntity();
+      $legal_entities = $partnership->get('field_legal_entity')->referencedEntities();
       if (empty($legal_entities)) {
         continue;
       }

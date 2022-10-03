@@ -71,12 +71,6 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       $this->getLogger($this->getLoggerChannel())->notice($e);
     }
 
-    // Do not render this plugin if there is nothing to display, for example if
-    // there are no partnership legal entities and the user isn't able to add a new partnership legal entity.
-    if (empty($partnership_legal_entities) && !$add_link instanceof Link) {
-      return $form;
-    }
-
     // Fieldset encompassing the partnership legal entities plugin display.
     $form['partnership_legal_entities'] = [
       '#type' => 'fieldset',
@@ -86,7 +80,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
 
     // Display a link to add a legal entity. Weighted to sink to bottom.
     if (isset($add_link) && $add_link instanceof Link) {
-      $form['partnership_legal_entities_x']['add'] = [
+      $form['partnership_legal_entities']['add'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#value' => $add_link->toString(),
@@ -95,8 +89,13 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       ];
     }
 
-    // If there are currently no partnership legal entities to show we can stop here, no need to show an empty table.
+    // Do not render table if no legal entities to display.
     if (empty($partnership_legal_entities)) {
+      $form['partnership_legal_entities']['no_results'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t("There are no legal entities covered by this partnership."),
+      ];
       return $form;
     }
 
