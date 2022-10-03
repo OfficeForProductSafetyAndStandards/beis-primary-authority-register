@@ -907,7 +907,7 @@ display:
         options:
           perm: 'search partnerships'
       cache:
-        type: tag
+        type: search_api_tag
         options: {  }
       empty: {  }
       sorts:

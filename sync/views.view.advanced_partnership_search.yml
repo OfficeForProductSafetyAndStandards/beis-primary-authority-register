@@ -1281,7 +1281,7 @@ display:
         options:
           perm: 'access helpdesk'
       cache:
-        type: tag
+        type: search_api_tag
         options: {  }
       empty:
         area_text_custom:
