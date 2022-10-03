@@ -1386,7 +1386,7 @@ function par_data_update_9005() {
     ->setDisplayConfigurable('form', FALSE)
     ->setDisplayOptions('view', [
       'label' => 'hidden',
-      'weight' => 0,
+      'region' => 'hidden',
     ])
     ->setDisplayConfigurable('view', TRUE);
 

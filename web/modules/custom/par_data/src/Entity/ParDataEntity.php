@@ -1274,7 +1274,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
-        'weight' => 0,
+        'region' => 'hidden',
       ])
       ->setDisplayConfigurable('view', TRUE);
 

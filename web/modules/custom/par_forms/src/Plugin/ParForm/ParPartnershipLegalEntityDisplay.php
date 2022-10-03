@@ -144,39 +144,20 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       if (!empty($legal_entity_actions) && array_search('Actions', $headers) === false) {
         $headers[] = 'Actions';
       }
+      $legal_entity_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
+      $legal_entity_summary = $legal_entity_view_builder->view($legal_entity, 'summary');
+      $classes = ['legal-entity'];
 
-      // The LE name goes in the first 'identity' column.
-      $form['partnership_legal_entities']['table'][$delta]['identity']['name'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'span',
-        '#attributes' => ['class' => 'name'],
-        '#value' => $legal_entity->getName(),
+      $form['partnership_legal_entities']['table'][$delta]['legal_entity'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => 'column-full'],
+        'name' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#value' => $this->getRenderer()->render($legal_entity_summary),
+          '#attributes' => ['class' => $classes],
+        ],
       ];
-
-      // If we have one the LE registered number also goes in the 'identity' column.
-      $registered_number = $legal_entity->getRegisteredNumber();
-      if (!empty($registered_number)) {
-        $form['partnership_legal_entities']['table'][$delta]['identity']['registered_number'] = [
-          '#type' => 'html_tag',
-          '#tag' => 'span',
-          '#attributes' => ['class' => 'registered-number'],
-          '#prefix' => '(',
-          '#value' => $registered_number,
-          '#suffix' => ')',
-        ];
-      }
-
-      // If we have one the LE type goes in the 'identity' column but below the name.
-      $type = $legal_entity->getType();
-      if (!empty($type)) {
-        $form['partnership_legal_entities']['table'][$delta]['identity']['type'] = [
-          '#type' => 'html_tag',
-          '#tag' => 'span',
-          '#attributes' => ['class' => 'type'],
-          '#prefix' => '<br/>',
-          '#value' => $type,
-        ];
-      }
 
       // Date columns only present once partnership becomes active.
       if ($partnership->isActive()) {
