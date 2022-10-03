@@ -37,6 +37,9 @@ default:
   archived:
     -
       value: false
+  par_status:
+    -
+      value: active
   authority_name:
     -
       value: 'Upper West Side Borough Council'

@@ -111,6 +111,7 @@ Import the database using drush (note the database should be truncated before re
 cd /var/www/html/backups
 tar -zxvf ../backups/db-dump-production-sanitised-latest.tar.gz db-dump-production-sanitised.sql
 cd /var/www/html/web
+../vendor/bin/drush sql:drop
 ../vendor/bin/drush sql:cli < ../backups/db-dump-production-sanitised.sql
 ```
 
@@ -149,6 +150,17 @@ to start only when triggered, it will not initiate a connection to the IDE unles
 present. Which trigger to use depends on whether you're debugging a PHP application through
 a browser, or on the command line. See [Xdebug activating step debugging](https://xdebug.org/docs/step_debug#activate_debugger)
 for more information about triggering debugging.
+
+To debug Drush commands you will need to set two environment variables in the running web container.
+```
+export XDEBUG_CONFIG=idekey=PHPSTORM
+export PHP_IDE_CONFIG=servername=par.localhost
+```
+To stop Drush debugging unset the variables.
+```
+unset XDEBUG_CONFIG
+unset PHP_IDE_CONFIG
+```
 
 ## Backup database
 

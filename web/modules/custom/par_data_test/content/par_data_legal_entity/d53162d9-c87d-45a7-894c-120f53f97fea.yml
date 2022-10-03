@@ -1,30 +1,30 @@
 _meta:
   version: '1.0'
   entity_type: par_data_legal_entity
-  uuid: f7fe21f8-6059-49ae-861c-2cbef8f51377
+  uuid: d53162d9-c87d-45a7-894c-120f53f97fea
   bundle: legal_entity
   default_langcode: en
   depends:
-    1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
+    44f38230-a289-4dc9-b3fa-1f0475c8a31e: user
 default:
   user_id:
     -
-      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+      entity: 44f38230-a289-4dc9-b3fa-1f0475c8a31e
   status:
     -
       value: true
   created:
     -
-      value: 1563456667
+      value: 1664205285
   revision_uid:
     -
-      entity: 1a6dc8cd-fea2-486b-bd0e-12572c6a26ab
+      entity: 44f38230-a289-4dc9-b3fa-1f0475c8a31e
   revision_translation_affected:
     -
       value: true
   name:
     -
-      value: 5d30749ba7372
+      value: 'Active Organisation 2 Ltd'
   deleted:
     -
       value: false
@@ -39,10 +39,10 @@ default:
       value: active
   registered_name:
     -
-      value: 'Active Organisation 1 Ltd'
+      value: 'Active Organisation 2 Ltd'
   registered_number:
     -
-      value: '209823156'
+      value: '1525354555'
   legal_entity_type:
     -
-      value: public_limited_company
+      value: limited_company

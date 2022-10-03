@@ -13,6 +13,8 @@ _meta:
     792c1443-f05a-4cf7-b634-a846b29e16b3: par_data_organisation
     faf103d7-c0ce-406e-a8f3-4aeea73aaedd: par_data_person
     a17d7fa3-cfda-46a7-b89d-1e42d2db7294: par_data_partnership_le
+    20bf74d8-9f5c-4e59-99c1-c728dcd3c581: par_data_partnership_le
+    5f992bf3-984e-41ea-813f-9f423f322343: par_data_partnership_le
     15660610-03e4-47f4-b26e-159d0cd4d86a: par_data_regulatory_function
     3a4c6455-7263-4f0b-966a-24b8dd518f49: par_data_regulatory_function
 default:
@@ -43,6 +45,9 @@ default:
   archived:
     -
       value: false
+  par_status:
+    -
+      value: confirmed_rd
   partnership_type:
     -
       value: direct
@@ -86,6 +91,10 @@ default:
   field_partnership_legal_entity:
     -
       entity: a17d7fa3-cfda-46a7-b89d-1e42d2db7294
+    -
+      entity: 20bf74d8-9f5c-4e59-99c1-c728dcd3c581
+    -
+      entity: 5f992bf3-984e-41ea-813f-9f423f322343
   field_regulatory_function:
     -
       entity: 15660610-03e4-47f4-b26e-159d0cd4d86a
