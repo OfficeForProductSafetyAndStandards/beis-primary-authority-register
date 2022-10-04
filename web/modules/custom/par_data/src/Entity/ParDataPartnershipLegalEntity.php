@@ -161,11 +161,23 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    *
    * @return null|DrupalDateTime
    */
-  public function getStartDate() {
-    $partnership_start_date = $this->getPartnership()?->getApprovedDate();
+  public function getStartDate($full = FALSE) {
     return !$this->get('date_legal_entity_approved')->isEmpty() ?
       $this->date_legal_entity_approved->date :
-      $partnership_start_date;
+      null;
+  }
+
+  /**
+   * Gets the legal entity approval date.
+   *
+   * Defaults to the partnership's approval date if
+   * not explicitly set.
+   *
+   * @return null|DrupalDateTime
+   */
+  public function getFullStartDate() {
+    $partnership_start_date = $this->getPartnership()?->getApprovedDate();
+    return $this->getStartDate() ?? $partnership_start_date;
   }
 
   /**

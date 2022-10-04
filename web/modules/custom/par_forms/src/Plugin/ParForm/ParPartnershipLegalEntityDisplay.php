@@ -107,7 +107,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       ],
     ];
     $headers = &$form['partnership_legal_entities']['table']['#header'];
-    // We only show start/end date columns for active partnerships.
+    // Only show start/end date columns for active partnerships.
     if ($partnership->isActive()) {
       array_push($headers, 'Active from', 'Active until');
     }
@@ -142,7 +142,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
 
       // Only show the operations column if user has access to modify the legal entities.
       if (!empty($legal_entity_actions) && array_search('Actions', $headers) === false) {
-        $headers[] = 'Actions';
+        $headers[3] = 'Actions';
       }
       $legal_entity_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
       $legal_entity_summary = $legal_entity_view_builder->view($legal_entity, 'summary');
@@ -162,7 +162,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       // Date columns only present once partnership becomes active.
       if ($partnership->isActive()) {
         // Start date cell is empty if the is no start date. LE is effective from the start of the partnership.
-        $start_date = $partnership_legal_entity->getStartDate();
+        $start_date = $partnership_legal_entity->getFullStartDate();
         if ($start_date) {
           $form['partnership_legal_entities']['table'][$delta]['start_date'] = [
             '#type' => 'html_tag',
