@@ -122,13 +122,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     if (!$legal_entity->isNew() && !empty($partnership_legal_entities)) {
       // Set start and end dates for the period of the new PLE. If the partnership is
       // not yet active the from_date is NULL, once it is active the from_date is today's date.
-      if (!$partnership->isActive()) {
-        $start_date = NULL;
-      }
-      else {
-        $start_date = new DrupalDateTime('now');
-        $start_date->setTime(12, 0);
-      }
+      $start_date = $partnership->isActive() ? new DrupalDateTime('now') : NULL;
       $end_date = NULL;
 
       foreach ($partnership_legal_entities as $partnership_legal_entity) {
@@ -198,13 +192,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       // Now add the legal entity to the partnership.
       /* @var ParDataPartnership $par_data_partnership */
       $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-      $period_from = NULL;
-      if ($par_data_partnership->isActive()) {
-        $period_from = new DrupalDateTime('now');
-        $period_from->setTime(12, 0);
-      }
-      $period_to = NULL;
-      $par_data_partnership->addLegalEntity($legal_entity, $period_from, $period_to);
+      $par_data_partnership->addLegalEntity($legal_entity);
 
       // Add the new legal entity to the organisation.
       /* @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */

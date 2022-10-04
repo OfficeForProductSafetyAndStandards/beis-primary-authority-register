@@ -706,12 +706,16 @@ class ParDataPartnership extends ParDataEntity {
    *   The newly created partnership_legal_entity.
    */
   public function addLegalEntity(ParDataLegalEntity $legal_entity, DrupalDateTime $period_from = NULL, DrupalDateTime $period_to = NULL) {
-
     // Create new partnership legal entity referencing the legal entity.
     $partnership_legal_entity = ParDataPartnershipLegalEntity::create([]);
     $partnership_legal_entity->setLegalEntity($legal_entity);
+
+    if ($this->isActive() && !$period_from) {
+      $period_from = new DrupalDateTime('now');
+    }
     $partnership_legal_entity->setStartDate($period_from);
     $partnership_legal_entity->setEndDate($period_to);
+
     $partnership_legal_entity->save();
 
     // Append new partnership legal entity to existing list of legal entities covered by this partnership.

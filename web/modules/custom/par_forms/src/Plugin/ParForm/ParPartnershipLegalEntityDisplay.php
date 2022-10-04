@@ -109,7 +109,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     $headers = &$form['partnership_legal_entities']['table']['#header'];
     // We only show start/end date columns for active partnerships.
     if ($partnership->isActive()) {
-      array_push($headers, 'Start date', 'End date');
+      array_push($headers, 'Active from', 'Active until');
     }
 
     // Add a row for each partnership legal entity.

@@ -121,7 +121,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * Get the partnership for this partnership legal entity.
    *
-   * @return ParDataPartnership
+   * @return ParDataPartnership|null
    */
   public function getPartnership() {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
@@ -129,7 +129,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
       ->execute();
 
     $partnerships = $this->getParDataManager()->getEntitiesByType('par_data_partnership', $query);
-    return reset($partnerships);
+    return !empty($partnerships) ? reset($partnerships) : NULL;
   }
 
   /**
@@ -156,10 +156,16 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * Gets the legal entity approval date.
    *
+   * Defaults to the partnership's approval date if
+   * not explicitly set.
+   *
    * @return null|DrupalDateTime
    */
   public function getStartDate() {
-    return $this->get('date_legal_entity_approved')->isEmpty() ? NULL : $this->date_legal_entity_approved->date;
+    $partnership_start_date = $this->getPartnership()?->getApprovedDate();
+    return !$this->get('date_legal_entity_approved')->isEmpty() ?
+      $this->date_legal_entity_approved->date :
+      $partnership_start_date;
   }
 
   /**
@@ -207,7 +213,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
     $partnership = $this->getPartnership();
     return (!$partnership
         || !$partnership->isActive()
-        || $this->getStartDate()?->modify('+1 day') > $now);
+        || $this->getStartDate() > $now->modify('-1 day'));
   }
 
   /**
