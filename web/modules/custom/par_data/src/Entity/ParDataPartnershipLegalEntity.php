@@ -124,6 +124,12 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * @return ParDataPartnership|null
    */
   public function getPartnership() {
+    // Make sure not to request this more than once for a given entity.
+    $partnership = &drupal_static(__FUNCTION__ . ':' . $this->uuid());
+    if (isset($partnership)) {
+      return $partnership;
+    }
+
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
       ->condition('field_partnership_legal_entity', $this->id())
       ->execute();
