@@ -28,8 +28,13 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
     $radio_options = $this->getParDataManager()->getEntitiesAsOptions($organisation_legal_entities, [], 'summary');
     $this->getFlowDataHandler()->setFormPermValue('legal_entity_options', $radio_options);
 
+    $partnership_legal_entities = $par_data_partnership->getLegalEntity();
+    $partnership_ids = [];
+    foreach ($partnership_legal_entities as $partnership_legal_entity) {
+      $partnership_ids[] = $partnership_legal_entity->id();
+    }
     $this->getFlowDataHandler()
-      ->setTempDataValue('partnership_legal_entities', $par_data_partnership->retrieveEntityIds('field_legal_entity'));
+      ->setTempDataValue('partnership_legal_entities', $partnership_ids);
 
     if ($par_data_partnership) {
       $this->getFlowDataHandler()->setFormPermValue('coordinated_partnership', $par_data_partnership->isCoordinated());
