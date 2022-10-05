@@ -14,7 +14,6 @@ _meta:
     1c39c373-4a9d-43e6-ba31-f9abb0e99038: par_data_coordinated_business
     c71959cf-00f4-4a6b-8064-15cc2f8e46f1: par_data_coordinated_business
     63f0deec-353d-4cfb-a727-c372d1b730a6: par_data_inspection_plan
-    ff938a0f-0bb9-4ef9-a5c6-c1d7721d2401: par_data_legal_entity
     b3f26aa8-a857-4829-8306-6c88e1fb03f7: par_data_organisation
     b36d8ee5-b8ff-4dd7-9851-303c66a3497a: par_data_person
     8cbcde93-3a33-45ff-9503-02ce78d9a46f: par_data_person
@@ -88,9 +87,6 @@ default:
   field_inspection_plan:
     -
       entity: 63f0deec-353d-4cfb-a727-c372d1b730a6
-  field_legal_entity:
-    -
-      entity: ff938a0f-0bb9-4ef9-a5c6-c1d7721d2401
   field_organisation:
     -
       entity: b3f26aa8-a857-4829-8306-6c88e1fb03f7

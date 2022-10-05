@@ -9,7 +9,6 @@ _meta:
     46e65664-bf34-4713-ab14-740cbe581538: user
     84e03a59-b111-4e14-994c-67c7e08a3cfe: par_data_authority
     5e0977f0-29de-4904-9a86-c697252e8bc5: par_data_person
-    547056e8-1773-4019-9fd8-32354897eff7: par_data_legal_entity
     e38b9709-76ba-4fac-8ebc-e6b239acadd6: par_data_organisation
     ce56ad28-b986-4860-8bd7-aad0d33778bb: par_data_person
     c1a82f9a-ab27-45db-81ba-427478c90d69: par_data_partnership_le
@@ -73,9 +72,6 @@ default:
   field_authority_person:
     -
       entity: 5e0977f0-29de-4904-9a86-c697252e8bc5
-  field_legal_entity:
-    -
-      entity: 547056e8-1773-4019-9fd8-32354897eff7
   field_organisation:
     -
       entity: e38b9709-76ba-4fac-8ebc-e6b239acadd6

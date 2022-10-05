@@ -95,6 +95,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * @return false
    */
   public function hasDependencies() {
+    parent::hasDependencies();
     return false;
   }
 
