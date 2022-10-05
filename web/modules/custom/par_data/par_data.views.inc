@@ -59,11 +59,6 @@ function par_data_views_data_alter(array &$data) {
         // Check whether this field has allowed values.
         $allowed_values = $entity_type->getAllowedValues($entity_field_name);
 
-        // Modify the status field to set the custom Status field.
-        if ($entity_field_name === ParDataEntity::STATUS_FIELD) {
-          $table[$index_field_id]['field']['id'] = 'par_index_status';
-        }
-
         // Modify the default views handler for par allowed_value filters.
         if (!empty($allowed_values)) {
           $mapping = _search_api_views_handler_mapping();
