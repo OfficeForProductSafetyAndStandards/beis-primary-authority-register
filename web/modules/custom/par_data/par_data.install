@@ -1318,7 +1318,7 @@ function par_data_update_9004(&$sandbox) {
       }
 
       // Remove the values from the old field to prevent circular references.
-      $this->set('field_legal_entity', null)
+      $partnership->set('field_legal_entity', null);
 
       // Save the partnership with its new partnership_legal_entity references.
       $partnership->save();
