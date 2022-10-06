@@ -1401,3 +1401,21 @@ function par_data_update_9005() {
     }
   }
 }
+
+/**
+ * PAR-1800: Updating invalid partnership data for the options property on the member_link field.
+ */
+function par_data_update_9006() {
+  /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
+  $par_data_manager = \Drupal::service('par_data.manager');
+  $query = $par_data_manager->getEntityQuery('par_data_partnership')
+        ->condition('member_link.options', NULL, 'IS NULL');
+  $partnerships = $query->execute();
+
+  foreach ($partnerships as $id) {
+    $partnership = \Drupal::service('entity_type.manager')
+    ->getStorage('par_data_partnership')->load($id);
+    $partnership->set('member_link', NULL);
+    $partnership->save();
+  }
+}
