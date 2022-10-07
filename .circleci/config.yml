@@ -80,7 +80,7 @@ references:
       name: "Import & set up the database"
       command: |
         cd web
-        ../vendor/bin/drush @par.dev sql:cli < ../backups/${SEED_DATABASE}.sql
+        ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
         ../drupal-update.sh
 
   prepare_application: &prepare_application
