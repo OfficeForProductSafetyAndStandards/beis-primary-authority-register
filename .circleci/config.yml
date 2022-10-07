@@ -80,7 +80,7 @@ references:
       name: "Import & set up the database"
       command: |
         cd web
-        ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
+        ../vendor/bin/drush @par.dev sql:cli < ../backups/${SEED_DATABASE}.sql
         ../drupal-update.sh
 
   check_application: &check_application
@@ -142,13 +142,22 @@ jobs:
           command: |
             mkdir -p backups
       - aws-s3/copy:
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
+          to: backups/${SEED_DATABASE}-latest.tar.gz
+          arguments: |
+            --region eu-west-1 \
+            --cache-control "max-age=0"
+      - run:
+          name: "Unpacking seed database"
+          command: cd backups && tar --no-same-owner -zxvf ${SEED_DATABASE}-latest.tar.gz
+      - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
           to: backups/${SANITISED_DATABASE}-latest.tar.gz
           arguments: |
             --region eu-west-1 \
             --cache-control "max-age=0"
       - run:
-          name: "Unpacking database"
+          name: "Unpacking sanitised database"
           command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - save_cache:
           key: v10-repo-{{ .Branch }}-{{ .Revision }}
