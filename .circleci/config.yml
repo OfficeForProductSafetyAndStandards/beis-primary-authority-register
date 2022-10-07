@@ -83,6 +83,15 @@ references:
         ../vendor/bin/drush @par.dev sql:cli < ../backups/${SEED_DATABASE}.sql
         ../drupal-update.sh
 
+  prepare_application: &prepare_application
+    run:
+      name: "Prepare the application"
+      command: |
+        cd web
+        ../vendor/bin/drush cron
+        ../scripts/cache-warmer.sh
+        ../scripts/re-index.sh partnership_index --rebuild
+
   check_application: &check_application
     run:
       name: "Application checklist"
@@ -238,13 +247,7 @@ jobs:
       - *restore_scaffold
       - *configure_webroot
       - *import_database
-      - run:
-          name: "Run cron"
-          command: |
-            cd web
-            ../vendor/bin/drush cron
-            ../vendor/bin/drush cron
-            ../vendor/bin/drush cron
+      - *prepare_application
       - *check_application
       - run:
           name: "Install test dependencies"
@@ -279,11 +282,7 @@ jobs:
       - *restore_scaffold
       - *configure_webroot
       - *import_database
-      - run:
-          name: "Run cron"
-          command: |
-            cd web
-            ../vendor/bin/drush cron
+      - *prepare_application
       - *check_application
       - run:
           name: "Install test dependencies"
