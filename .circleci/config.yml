@@ -538,7 +538,7 @@ jobs:
             APP_ENV: ci-sanitise
       - run:
           name: "Backup seed database"
-          command: ./scripts/db-backup.sh production -s -d "/tmp/backups" -a '@par.seed'
+          command: ./scripts/db-backup.sh production -Z -d "/tmp/backups" -a '@par.seed'
           environment:
             APP_ENV: ci-sanitise
       - aws-s3/copy:
