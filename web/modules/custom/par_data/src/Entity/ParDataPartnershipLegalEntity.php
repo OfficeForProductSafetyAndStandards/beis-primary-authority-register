@@ -239,13 +239,18 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * Check whether this partnership legal entity can be reinstated.
    *
-   * A partnership legal entity can not be reinstated if there already exists another active partnership legal entity
-   * for the same legal entity.
+   * A partnership legal entity can be reinstated if:
+   *  - It has been revoked
+   *  - There is not already existent another active partnership legal entity for the same legal entity.
    *
    * @return bool
    *   TRUE if the legal entity can be reinstated.
    */
   public function isReinstatable() {
+
+    if (!$this->isRevoked()) {
+      return FALSE;
+    }
 
     foreach ($this->getPartnership()->getPartnershipLegalEntities(TRUE) as $active_partnership_le) {
       if ($this->getLegalEntity()->id() == $active_partnership_le->getLegalEntity()->id()) {
