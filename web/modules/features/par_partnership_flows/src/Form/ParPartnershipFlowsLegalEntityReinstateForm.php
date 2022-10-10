@@ -64,6 +64,11 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
       $this->accessResult = AccessResult::forbidden('This legal entity is already active.');
     }
 
+    // We can't reinstate a PLE if there is already an active PLE for the same LE.
+    if (!$par_data_partnership_le->isReinstatable()) {
+      $this->accessResult = AccessResult::forbidden('Another instance of this legal entity is already active.');
+    }
+
     return parent::accessCallback($route, $route_match, $account);
   }
 
@@ -121,6 +126,22 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
     $this->addCacheableDependency($par_data_partnership_le);
 
     return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * Validate the form to make sure the correct values have been entered.
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+
+    /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
+    $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
+
+    // We can't reinstate a PLE if there is already an active PLE for the same LE.
+    if (!$partnership_legal_entity->isReinstatable()) {
+      $id = $this->getElementId(['registered_number'], $form);
+      $form_state->setErrorByName($this->getElementName('registered_number'), $this->wrapErrorMessage('This legal entity is already an active participant in the partnership.', $id));
+    }
   }
 
   /**

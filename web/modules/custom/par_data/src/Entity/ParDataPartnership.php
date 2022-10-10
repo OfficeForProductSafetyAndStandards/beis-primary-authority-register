@@ -675,6 +675,9 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get partnership legal entities for this partnership.
    *
+   * @param boolean $active
+   *  If TRUE then only active PLEs are returned. Default FALSE.
+   *
    * @return ParDataPartnershipLegalEntity[]
    */
   public function getPartnershipLegalEntities($active = FALSE) {
