@@ -3,6 +3,7 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\Component\Datetime\DateTimePlus;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -233,6 +234,26 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
     return (!$partnership
         || !$partnership->isActive()
         || $this->getStartDate() > $now->modify('-1 day'));
+  }
+
+  /**
+   * Check whether this partnership legal entity can be reinstated.
+   *
+   * A partnership legal entity can not be reinstated if there already exists another active partnership legal entity
+   * for the same legal entity.
+   *
+   * @return bool
+   *   TRUE if the legal entity can be reinstated.
+   */
+  public function isReinstatable() {
+
+    foreach ($this->getPartnership()->getPartnershipLegalEntities(TRUE) as $active_partnership_le) {
+      if ($this->getLegalEntity()->id() == $active_partnership_le->getLegalEntity()->id()) {
+        return FALSE;
+      }
+    }
+
+    return TRUE;
   }
 
   /**
