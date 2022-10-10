@@ -77,7 +77,7 @@ When('I complete the organisation registered address for direct partnership', fu
 // Starting point: at beginning of this application step
 When('I complete the SIC codes', function () {
   return shared
-  .click('#edit-sic-code option:nth-child(2)')
+  .click('#edit-sic-code option[value="1"]')
    .click('#edit-next')
 });
 

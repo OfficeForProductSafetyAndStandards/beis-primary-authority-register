@@ -51,7 +51,7 @@ When('I edit about the partnership', function () {
 When('I update the SIC code', function () {
   return shared
       .clickLinkByPureText('add another sic code')
-      .click('#edit-sic-code option:nth-child(3)')
+      .click('#edit-sic-code option[value="2"]')
       .click('#edit-save')
     });
 
