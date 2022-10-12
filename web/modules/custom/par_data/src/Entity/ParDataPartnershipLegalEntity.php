@@ -3,6 +3,7 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\Component\Datetime\DateTimePlus;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -73,8 +74,6 @@ use Drupal\par_data\ParDataException;
  */
 class ParDataPartnershipLegalEntity extends ParDataEntity {
 
-  const DATE_DISPLAY_FORMAT = 'd/m/Y';
-
   /**
    * {@inheritdoc}
    */
@@ -92,10 +91,17 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
-   * {@inheritdoc}
+   * Override parent implementation to let delete go ahead.
    *
-   * @param string $date
-   *   The date this member was ceased.
+   * @return false
+   */
+  public function hasDependencies() {
+    parent::hasDependencies();
+    return false;
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function revoke($save = TRUE, $reason = '') {
     $current_date = new DrupalDateTime();
@@ -115,47 +121,77 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
-   * Get the partnerships for this partnership legal entity.
+   * Get the partnership for this partnership legal entity.
+   *
+   * @return ParDataPartnership|null
    */
   public function getPartnership() {
+    // Make sure not to request this more than once for a given entity.
+    $partnership = &drupal_static(__FUNCTION__ . ':' . $this->uuid());
+    if (isset($partnership)) {
+      return $partnership;
+    }
+
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
       ->condition('field_partnership_legal_entity', $this->id())
       ->execute();
 
-    return $this->getParDataManager()->getEntitiesByType('par_data_partnership', $query);
+    $partnerships = $this->getParDataManager()->getEntitiesByType('par_data_partnership', $query);
+    return !empty($partnerships) ? reset($partnerships) : NULL;
   }
 
   /**
-   * Get the legal entites for this partnership legal entity.
+   * Get the legal entity for this partnership legal entity.
+   *
+   * @return ParDataLegalEntity
    */
   public function getLegalEntity() {
-    return $this->get('field_legal_entity')->referencedEntities();
+    return current($this->get('field_legal_entity')->referencedEntities());
   }
 
   /**
-   * Add a legal entity for this partnership legal entity.
+   * Set the legal entity for this partnership legal entity.
    *
    * @param ParDataLegalEntity $legal_entity
-   *   A PAR Legal Entity to add.
+   *   A PAR Legal Entity to set.
 
    */
-  public function addLegalEntity(ParDataLegalEntity $legal_entity) {
+  public function setLegalEntity(ParDataLegalEntity $legal_entity) {
     // This field should only allow single values.
     $this->set('field_legal_entity', $legal_entity);
   }
 
   /**
-   * Get the legal entity approval date.
+   * Gets the legal entity approval date.
+   *
+   * Defaults to the partnership's approval date if
+   * not explicitly set.
+   *
+   * @return null|DrupalDateTime
    */
-  public function getStartDate() {
-    $date = !$this->get('date_legal_entity_approved')->isEmpty() ? $this->date_legal_entity_approved->date : NULL;
-    return $date?->format(self::DATE_DISPLAY_FORMAT);
+  public function getStartDate($full = FALSE) {
+    return !$this->get('date_legal_entity_approved')->isEmpty() ?
+      $this->date_legal_entity_approved->date :
+      null;
   }
 
   /**
-   * Set the legal entity approval date.
+   * Gets the legal entity approval date.
    *
-   * @param string $date
+   * Defaults to the partnership's approval date if
+   * not explicitly set.
+   *
+   * @return null|DrupalDateTime
+   */
+  public function getFullStartDate() {
+    $partnership_start_date = $this->getPartnership()?->getApprovedDate();
+    return $this->getStartDate() ?? $partnership_start_date;
+  }
+
+  /**
+   * Sets the legal entity approval date.
+   *
+   * @param DrupalDateTime $date
    *   The date this legal entity was approved.
    */
   public function setStartDate(DrupalDateTime $date = NULL) {
@@ -163,21 +199,106 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
-   * Get the legal entity revocation date.
+   * Gets the legal entity revocation date.
+   *
+   * @return null|DrupalDateTime
    */
   public function getEndDate() {
-    $date = !$this->get('date_legal_entity_revoked')->isEmpty() ? $this->date_legal_entity_revoked->date : NULL;
-    return $date?->format(self::DATE_DISPLAY_FORMAT);
+    return $this->get('date_legal_entity_revoked')->isEmpty() ? NULL : $this->date_legal_entity_revoked->date;
   }
 
   /**
-   * Set the legal entity revocation date.
+   * Sets the legal entity revocation date.
    *
-   * @param string $date
+   * @param DrupalDateTime $date
    *   The date this legal entity was revoked.
    */
   public function setEndDate(DrupalDateTime $date = NULL) {
     $this->set('date_legal_entity_revoked', $date?->format('Y-m-d'));
+  }
+
+  /**
+   * Check whether the legal entity can be removed.
+   *
+   * Partnership Legal Entities can be removed if:
+   *  - they are not attached to a partnership
+   *  - the partnership they are attached to is not active
+   *  - they were added within the last 24 hours
+   *
+   * @return bool
+   *   TRUE if the legal entity can be removed.
+   */
+  public function isRemovable() {
+    $now = new DrupalDateTime();
+    $partnership = $this->getPartnership();
+    return (!$partnership
+        || !$partnership->isActive()
+        || $this->getStartDate() > $now->modify('-1 day'));
+  }
+
+  /**
+   * Check whether this partnership legal entity can be reinstated.
+   *
+   * A partnership legal entity can be reinstated if:
+   *  - It has been revoked
+   *  - There is not already existent another active partnership legal entity for the same legal entity.
+   *
+   * @return bool
+   *   TRUE if the legal entity can be reinstated.
+   */
+  public function isReinstatable() {
+
+    if (!$this->isRevoked()) {
+      return FALSE;
+    }
+
+    foreach ($this->getPartnership()->getPartnershipLegalEntities(TRUE) as $active_partnership_le) {
+      if ($this->getLegalEntity()->id() == $active_partnership_le->getLegalEntity()->id()) {
+        return FALSE;
+      }
+    }
+
+    return TRUE;
+  }
+
+  /**
+   * Test whether the partnership_legal_entity is active during a given period.
+   *
+   * @param DrupalDateTime | NULL $period_from
+   *   The start date of the period to be compared.
+   * @param DrupalDateTime | NULL $period_to
+   *   The end date of the period to be compared.
+   *
+   * @return bool
+   *   TRUE if the given period overlaps with the active period of the PLE.
+   */
+  public function isActiveDuringPeriod(DrupalDateTime $period_from = NULL, DrupalDateTime $period_to = NULL) {
+
+    /**
+     * Annoyingly DrupalDateTime objects have no comparison method, so we use DateTime objects representing the periods
+     * because these are easy to compare.
+     * If the 'from' date of a period is NULL this means the period starts at the date the partnership became active. We
+     * could look this up, but that would be costly, and setting the date to a day in the far past has the same effect.
+     * If the 'to' date is NULL then the period extends indefinitely into the future. We use a day in the far future
+     * in this case.
+     */
+
+    // Create DateTime objects defining the period we are comparing to this PLE object's active period.
+    $compare_from = (!$period_from) ? new \DateTime('0000-01-01 12:00:00') : $period_from->getPhpDateTime();
+    $compare_to = (!$period_to) ? new \DateTime('9999-12-31 12:00:00') : $period_from->getPhpDateTime();
+
+    // Create DateTime objects defining this PLE object's active period.
+    $ple_from = (!$this->getStartDate()) ? new \DateTime('0001-01-01 12:00:00') : $this->getStartDate()->getPhpDateTime();
+    $ple_to = (!$this->getEndDate()) ? new \DateTime('9999-12-31 12:00:00') : $this->getEndDate()->getPhpDateTime();
+
+    // If the start of either period is inside the other period then the periods overlap.
+    if ($ple_from <= $compare_from && $compare_from <= $ple_to) {
+      return TRUE;
+    }
+    if ($compare_from <= $ple_from && $ple_from <= $compare_to) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
   /**

@@ -1,7 +1,25 @@
 uuid: 046b3c32-40ce-49ae-9e94-efe483de4411
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.basic_html
+  module:
+    - filter
+    - invite
+    - par_dashboards
+    - par_data
+    - par_deviation_request_flows
+    - par_deviation_view_flows
+    - par_enforcement_raise_flows
+    - par_enforcement_send_flows
+    - par_enquiry_send_flows
+    - par_enquiry_view_flows
+    - par_inspection_feedback_flows
+    - par_inspection_feedback_view_flows
+    - par_notification
+    - par_profile_view_flows
+    - par_search_partnership_flows
 id: par_enforcement
 label: 'Enforcement Officer'
 weight: -8

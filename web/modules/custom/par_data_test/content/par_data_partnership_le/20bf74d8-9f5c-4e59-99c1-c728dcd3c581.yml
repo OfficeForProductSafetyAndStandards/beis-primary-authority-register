@@ -1,0 +1,50 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_partnership_le
+  uuid: 20bf74d8-9f5c-4e59-99c1-c728dcd3c581
+  bundle: partnership_legal_entity
+  default_langcode: en
+  depends:
+    44f38230-a289-4dc9-b3fa-1f0475c8a31e: user
+    d53162d9-c87d-45a7-894c-120f53f97fea: par_data_legal_entity
+default:
+  user_id:
+    -
+      entity: 44f38230-a289-4dc9-b3fa-1f0475c8a31e
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1664205285
+  revision_uid:
+    -
+      entity: 44f38230-a289-4dc9-b3fa-1f0475c8a31e
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 6331c1e617e3d
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: true
+  revocation_reason:
+    -
+      value: 'Revoked for testing.'
+      format: plain_text
+  archived:
+    -
+      value: false
+  par_status:
+    -
+      value: revoked
+  date_legal_entity_revoked:
+    -
+      value: '2022-08-01'
+  field_legal_entity:
+    -
+      entity: d53162d9-c87d-45a7-894c-120f53f97fea

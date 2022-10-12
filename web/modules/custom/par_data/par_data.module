@@ -118,6 +118,86 @@ function par_data_views_query_alter(ViewExecutable $view, QueryPluginBase $query
 }
 
 /**
+ * Retrieves the allowed values for a par list field instance.
+ *
+ * @param string $entity_type_id
+ *   The entity type id to which the field is attached.
+ * @param string $bundle
+ *   The bundle to which the field is attached.
+ * @param string $field_name
+ *   The field's field name.
+ *
+ * @return array|null
+ *   An array of allowed values in the form key => label, or NULL.
+ *
+ * @see _search_api_views_handler_adjustments()
+ */
+function _par_data_search_api_views_get_allowed_values($entity_type_id, $bundle, $field_name) {
+  // Make sure not to request this more than once for a given entity type.
+  $function_id = __FUNCTION__ . ':' . $entity_type_id . ':' . $bundle . ':' . $field_name;
+  $allowed_values = &drupal_static($function_id);
+  if (!empty($allowed_values)) {
+    return $allowed_values;
+  }
+
+  // Get the par data manager.
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  // Lookup the par data config for the field.
+  $entity_type = $par_data_manager->getParBundleEntity($entity_type_id, $bundle);
+
+  // Check whether this field has allowed values.
+  $allowed_values = $entity_type->getAllowedValues($field_name);
+
+  // If this is the status field then it should also have the default statuses.
+  $status_field = $entity_type->getConfigurationElementByType('entity', 'status_field');
+  if ($field_name === $status_field) {
+    if ($entity_type->isRevokable()) {
+      $allowed_values['revoked'] = 'Revoked';
+    }
+    if ($entity_type->isArchivable()) {
+      $allowed_values['archived'] = 'Archived';
+    }
+  }
+
+  return !empty($allowed_values) ? $allowed_values : NULL;
+}
+
+/**
+ * Retrieves the entity values in a list.
+ *
+ * @param string $entity_type_id
+ *   The entity type id to which the field is attached.
+ *
+ * @return array|null
+ *   An array of entity values in the form id => label, or NULL.
+ *
+ * @see _search_api_views_handler_adjustments()
+ */
+function _par_data_search_api_views_get_entity_values($entity_type_id) {
+  // Make sure not to request this more than once for a given entity type.
+  $function_id = __FUNCTION__ . ':' . $entity_type_id;
+  $allowed_values = &drupal_static($function_id);
+  if (!empty($allowed_values)) {
+    return $allowed_values;
+  }
+
+  // Get the par data manager.
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  // Get all the entities.
+  $count = $par_data_manager->getEntityQuery($entity_type_id)->count()->execute();
+  if ($count <= 20) {
+    $entities = \Drupal::entityTypeManager()->getStorage($entity_type_id)->loadMultiple();
+  }
+
+  // Check whether this field has allowed values.
+  $allowed_values = $par_data_manager->getEntitiesAsOptions($entities);
+
+  return !empty($allowed_values) ? $allowed_values : NULL;
+}
+
+/**
  * Implements hook_entity_extra_field_info().
  */
 function par_data_entity_extra_field_info() {

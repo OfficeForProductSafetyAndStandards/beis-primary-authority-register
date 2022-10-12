@@ -80,7 +80,9 @@ class ParDataLegalEntity extends ParDataEntity {
     $par_data_manger = \Drupal::service('par_data.manager');
 
     // Check to see if a legal entity already exists with this number.
-    $legal_entities = !empty($values['registered_number']) ? $par_data_manger->getEntitiesByProperty('par_data_legal_entity', 'registered_number', $values['registered_number']) : NULL;
+    $legal_entities = !empty($values['registered_number']) ?
+      $par_data_manger->getEntitiesByProperty('par_data_legal_entity', 'registered_number', $values['registered_number']) :
+      NULL;
 
     // Use the first available legal entity if one is found, otherwise
     // create a new record.
@@ -102,8 +104,12 @@ class ParDataLegalEntity extends ParDataEntity {
     return $number;
   }
 
+  public function getTypeRaw() {
+    return $this->get('legal_entity_type')->getString();
+  }
+
   public function getType() {
-    $value = $this->get('legal_entity_type')->getString();
+    $value = $this->getTypeRaw();
     $type = !empty($value) ? $this->getTypeEntity()->getAllowedFieldlabel('legal_entity_type', $value) : NULL;
     return $type;
   }
@@ -174,23 +180,6 @@ class ParDataLegalEntity extends ParDataEntity {
 
     // This method will always save the entity.
     $this->save();
-  }
-
-  /**
-   *  Helper function to determine if a legal entity is referenced by more then one partnership entity.
-   *
-   * @return Boolean
-   *   TRUE if the legal entity is being referenced in another partnership.
-   *   FALSE if the legal entity has no references.
-   */
-  public function hasExistingPartnershipReferences() {
-    $relationships = $this->getRelationships('par_data_partnership', NULL, TRUE);
-    // Standard (new) legal entities should only have one partnership being referenced.
-    // If multiple partnerships are being referenced by the same legal entity updates are not permitted.
-    if (count($relationships) > 1) {
-      return TRUE;
-    }
-    return FALSE;
   }
 
   /**

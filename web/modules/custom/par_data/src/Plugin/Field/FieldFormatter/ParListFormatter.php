@@ -18,6 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   field_types = {
  *     "string",
  *     "text",
+ *     "par_status_field",
  *   }
  * )
  */

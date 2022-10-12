@@ -51,12 +51,12 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v10-repo-{{ .Branch }}-{{ .Revision }}
+        - v11-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v10-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+        - v11-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -80,8 +80,17 @@ references:
       name: "Import & set up the database"
       command: |
         cd web
-        ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
+        ../vendor/bin/drush @par.dev sql:cli < ../backups/${SEED_DATABASE}.sql
         ../drupal-update.sh
+
+  prepare_application: &prepare_application
+    run:
+      name: "Prepare the application"
+      command: |
+        cd web
+        ../vendor/bin/drush cron
+        ../scripts/cache-warmer.sh
+        ../scripts/re-index.sh partnership_index --rebuild
 
   check_application: &check_application
     run:
@@ -142,16 +151,25 @@ jobs:
           command: |
             mkdir -p backups
       - aws-s3/copy:
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
+          to: backups/${SEED_DATABASE}-latest.tar.gz
+          arguments: |
+            --region eu-west-1 \
+            --cache-control "max-age=0"
+      - run:
+          name: "Unpacking seed database"
+          command: cd backups && tar --no-same-owner -zxvf ${SEED_DATABASE}-latest.tar.gz
+      - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
           to: backups/${SANITISED_DATABASE}-latest.tar.gz
           arguments: |
             --region eu-west-1 \
             --cache-control "max-age=0"
       - run:
-          name: "Unpacking database"
+          name: "Unpacking sanitised database"
           command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - save_cache:
-          key: v10-repo-{{ .Branch }}-{{ .Revision }}
+          key: v11-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
@@ -178,7 +196,7 @@ jobs:
             cd ./tests && rm -rf node_modules && npm install
       - *restore_scaffold
       - save_cache:
-          key: v10-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+          key: v11-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
           paths:
             - ./node_modules
             - ./vendor
@@ -229,13 +247,7 @@ jobs:
       - *restore_scaffold
       - *configure_webroot
       - *import_database
-      - run:
-          name: "Run cron"
-          command: |
-            cd web
-            ../vendor/bin/drush cron
-            ../vendor/bin/drush cron
-            ../vendor/bin/drush cron
+      - *prepare_application
       - *check_application
       - run:
           name: "Install test dependencies"
@@ -270,11 +282,7 @@ jobs:
       - *restore_scaffold
       - *configure_webroot
       - *import_database
-      - run:
-          name: "Run cron"
-          command: |
-            cd web
-            ../vendor/bin/drush cron
+      - *prepare_application
       - *check_application
       - run:
           name: "Install test dependencies"
@@ -518,7 +526,7 @@ jobs:
             APP_ENV: ci-sanitise
       - run:
           name: "Backup sanitised database"
-          command: ./scripts/db-backup.sh production -s -d "../backups" -a '@par.dev'
+          command: ./scripts/db-backup.sh production -s -d "/tmp/backups" -a '@par.dev'
           environment:
             APP_ENV: ci-sanitise
       - run:
@@ -530,21 +538,18 @@ jobs:
             APP_ENV: ci-sanitise
       - run:
           name: "Backup seed database"
-          command: ./scripts/db-backup.sh production -z -d "../backups" -a '@par.seed'
+          command: ./scripts/db-backup.sh production -Z -d "/tmp/backups" -a '@par.seed'
           environment:
             APP_ENV: ci-sanitise
       - aws-s3/copy:
-          from: "backups/${SEED_DATABASE}-latest.tar.gz"
-          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
+          from: "/tmp/backups/"
+          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
           arguments: |
             --region eu-west-1 \
-            --cache-control "max-age=0"
-      - aws-s3/copy:
-          from: "backups/${SANITISED_DATABASE}-latest.tar.gz"
-          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
-          arguments: |
-            --region eu-west-1 \
-            --cache-control "max-age=0"
+            --cache-control "max-age=0" \
+            --recursive \
+            --exclude="*" \
+            --include "db-dump-*.tar.gz"
 
 workflows:
   version: 2.1

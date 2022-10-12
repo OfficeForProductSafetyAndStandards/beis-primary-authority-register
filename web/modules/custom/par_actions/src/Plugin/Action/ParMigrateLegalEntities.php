@@ -6,9 +6,12 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataPartnership;
 
 /**
- * Approves a par entity.
+ * Migrates legal entities.
+ *
+ * @Deprecated This plugin is no longer used.
  *
  * @Action(
  *   id = "par_migrate_legal_entities",
@@ -22,7 +25,7 @@ class ParMigrateLegalEntities extends ActionBase {
    * {@inheritdoc}
    */
   public function execute($entity = NULL) {
-    if ($entity instanceof ParDataEntityInterface) {
+    if ($entity instanceof ParDataPartnership) {
       // Get partnership organisation entity.
       $par_data_organisation = $entity->getOrganisation(TRUE);
 
@@ -30,9 +33,10 @@ class ParMigrateLegalEntities extends ActionBase {
       $legal_entities = $par_data_organisation ? $par_data_organisation->get('field_legal_entity')->getValue() : NULL;
 
       // Get all legal entity IDs.
-      if ($entity->get('field_legal_entity')->isEmpty() && !empty($legal_entities)) {
-        $entity->get('field_legal_entity')->setValue($legal_entities);
-
+      if ($entity->get('field_partnership_legal_entity')->isEmpty() && !empty($legal_entities)) {
+        foreach ($legal_entities as $legal_entity) {
+          $entity->addLegalEntity($legal_entity);
+        }
         $entity->save();
       }
     }

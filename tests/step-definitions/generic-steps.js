@@ -40,6 +40,15 @@ Then('I click the link with text {string}', function (string) {
         })
 });
 
+Then('I click the link {string} in row {string}', function (link, row) {
+    let xpath="//div[@class='table-scroll-wrapper']//table[1]//tr["+row+"]//a[text()='"+link+"']";
+    return shared
+        .clickLinkByXpath(xpath).then(function () {
+            return client
+                .waitForElementVisible('h1', 3000)
+        })
+});
+
 Then('I click on the button {string}', function (string) {
     return client
         .click(string).then(function () {

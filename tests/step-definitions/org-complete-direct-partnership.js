@@ -24,16 +24,16 @@ var county = faker.fake("{{address.county}}")
   return shared
     .clickLinkByPureText('Helpdesk')
     .setValue('#edit-keywords','Specialist Cheesemakers Association')
-    .click('#edit-partnership-status-1 option[value="confirmed_rd"]')
-    .click('#edit-submit-helpdesk-dashboard')
+    .click('#edit-partnership-status option[value="confirmed_rd"]')
+    .click('#edit-submit-advanced-partnership-search')
     .clickLinkByPureText('Revoke partnership')
     .setValue('#edit-revocation-reason','A reason for revoking')
     .click('#edit-next')
     .assert.containsText('#edit-partnership-info','The following partnership has been revoked')
     .click('#edit-done')
     .setValue('#edit-keywords','Specialist Cheesemakers Association')
-    .click('#edit-partnership-status-1 option[value="revoked"]')
-    .click('#edit-submit-helpdesk-dashboard')
+    .click('#edit-partnership-status option[value="revoked"]')
+    .click('#edit-submit-advanced-partnership-search')
     .assert.containsText('.table-scroll-wrapper','Specialist Cheesemakers Association')
     .expect.element('#block-par-theme-content > div > div > div > table > tbody > tr:nth-child(2)').to.not.be.present;
 });
@@ -77,7 +77,7 @@ When('I complete the organisation registered address for direct partnership', fu
 // Starting point: at beginning of this application step
 When('I complete the SIC codes', function () {
   return shared
-  .click('#edit-sic-code option[value="38"]')
+  .click('#edit-sic-code option[value="1"]')
    .click('#edit-next')
 });
 

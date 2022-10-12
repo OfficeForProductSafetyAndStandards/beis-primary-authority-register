@@ -135,9 +135,9 @@ class ParHelpdeskDashboardController extends ControllerBase {
       '#cache' => ['contexts' => ['user.par_memberships:authority']]
     ];
 
-    $manage_partnerships = $this->getLinkByRoute('view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page');
-    $manage_link = $manage_partnerships->setText('Manage partnerships')->toString();
-    $build['partnerships']['manage'] = [
+    $manage_partnerships = $this->getLinkByRoute('view.advanced_partnership_search.advanced_search');
+    $manage_link = $manage_partnerships->setText('Search partnerships')->toString();
+    $build['partnerships']['search'] = [
       '#type' => 'markup',
       '#markup' => "<p>{$manage_link}</p>",
     ];
@@ -148,23 +148,6 @@ class ParHelpdeskDashboardController extends ControllerBase {
       '#type' => 'markup',
       '#markup' => "<p>{$partnership_report_link}</p>",
     ];
-
-    // Partnerships search link.
-    try {
-      $search_partnerships = $this->getLinkByRoute('view.partnership_search.search_partnerships');
-      $search_link = $search_partnerships->setText('Search for a partnership')->toString();
-    }
-    catch (ParFlowException $e) {
-
-    }
-
-    if (isset($search_link)) {
-      $build['partnerships']['link'] = [
-        '#type' => 'markup',
-        '#markup' => "<p>{$search_link}</p>",
-        '#pre' => "<p>Search for active partnerships to check advice and raise notice of enforcement action.</p>",
-      ];
-    }
 
 
     // Manage authorities and organisations.

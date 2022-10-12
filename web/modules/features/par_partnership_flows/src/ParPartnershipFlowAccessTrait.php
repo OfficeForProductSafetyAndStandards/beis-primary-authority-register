@@ -21,18 +21,8 @@ trait ParPartnershipFlowAccessTrait {
    *   The route match object to be checked.
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
-   *
-   * @TODO Please be aware that this access callback is currently specific to
-   * the ParPartnershipFlowsLegalEntityForm class and would need to be updated
-   * for use with other forms in par_partnership_flows flows.
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
-    try {
-      // Get a new flow negotiator that points the the route being checked for access.
-      $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
-
-    }
 
     // Limit access to partnership pages.
     $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
@@ -71,26 +61,6 @@ trait ParPartnershipFlowAccessTrait {
         // Restrict advice upload to active partnerships only.
         if (!$par_data_partnership->isActive()) {
           $this->accessResult = AccessResult::forbidden('Advice can only be added to active partnerships.');
-        }
-
-        break;
-
-
-      case 'par_partnership_flows.legal_entity_remove':
-        // Prohibit removing of the last item.
-        if ($par_data_partnership->get('field_legal_entity')->count() <= 1) {
-          $this->accessResult = AccessResult::forbidden('The last legal entity can\'t be removed.');
-        }
-
-      case 'par_partnership_flows.legal_entity_add':
-      case 'par_partnership_flows.legal_entity_edit':
-        // Restrict access to partnerships that haven't yet been nominated.
-        if ($par_data_partnership->isActive()) {
-          $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
-        }
-        // Also restrict business users who have already confirmed their business details.
-        if ($par_data_partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
-          $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
         }
 
         break;

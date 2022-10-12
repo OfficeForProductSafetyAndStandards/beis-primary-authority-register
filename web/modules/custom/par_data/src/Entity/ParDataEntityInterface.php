@@ -12,6 +12,13 @@ use Drupal\trance\TranceInterface;
 interface ParDataEntityInterface extends TranceInterface {
 
   /**
+   * Get the par data type entity.
+   *
+   * @return \Drupal\par_data\Entity\ParDataTypeInterface
+   */
+  public function getTypeEntity();
+
+  /**
    * Get the view builder for the entity.
    *
    * @return \Drupal\Core\Entity\EntityViewBuilderInterface

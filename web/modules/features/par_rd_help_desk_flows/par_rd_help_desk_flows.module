@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @file
+ */
+
+use \Drupal\Core\Form\FormStateInterface;
+use \Drupal\Core\Render\Element;
+
+function par_rd_help_desk_flows_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+
+  if (($view->id() == 'advanced_partnership_search') && ($view->current_display == 'advanced_search')) {
+    // Turn the exposed form into a grid layout.
+    $form['#attributes']['class'][] = 'govuk-grid-row';
+
+    // All children must have full width within the grid.
+    foreach (Element::children($form) as $children) {
+      isset($form[$children]['#attributes']['class']) || $form[$children]['#attributes']['class'] = [];
+      $form[$children]['#attributes']['class'][] = 'govuk-!-width-full';
+    }
+
+    // Keywords is a full column width.
+    isset($form['keywords']['#wrapper_attributes']['class']) || $form['keywords']['#wrapper_attributes']['class'] = [];
+    $form['keywords']['#wrapper_attributes']['class'][] = 'govuk-grid-column-full';
+
+    // All list filters are one thirds witdh.
+    $list_filters = ['partnership_type', 'partnership_status', 'regulatory_function', 'advice_type', 'advice_status', 'inspection_plan_status', 'member_display'];
+    foreach ($list_filters as $filter) {
+      isset($form[$filter]['#wrapper_attributes']['class']) || $form[$filter]['#wrapper_attributes']['class'] = [];
+      $form[$filter]['#wrapper_attributes']['class'][] = 'govuk-grid-column-one-third';
+    }
+
+    // All buttons must also be applied a grid class.
+    isset($form['actions']['#attributes']['class']) || $form['actions']['#attributes']['class'] = [];
+    $form['actions']['#attributes']['class'][] = 'govuk-grid-column-full';
+  }
+}

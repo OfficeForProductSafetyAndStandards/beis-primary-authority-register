@@ -4,6 +4,7 @@ namespace Drupal\par_flows\Form;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
+use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
@@ -695,6 +696,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function decideBooleanValue($input, $on = 'on', $off = 'off') {
     return ($on === $input || $input === TRUE) ? TRUE : FALSE;
+  }
+
+  /**
+   * Return the date formatter service.
+   *
+   * @return DateFormatterInterface
+   */
+  protected function getDateFormatter() {
+    return \Drupal::service('date.formatter');
   }
 
 }

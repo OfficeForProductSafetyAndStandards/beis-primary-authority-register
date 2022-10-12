@@ -8,9 +8,9 @@ _meta:
     1a6dc8cd-fea2-486b-bd0e-12572c6a26ab: user
     5385e5cf-1b98-43ae-9a3e-e369091a61ef: par_data_authority
     c78b0352-15c8-42b5-b22d-082b72c51af4: par_data_person
-    a1daacbc-48f4-4c8b-8f8c-b8c41c81de9a: par_data_legal_entity
     ab764754-577f-4c8b-9032-8d694875bbfe: par_data_organisation
     2a41ea56-3fd9-4b66-b345-90f636d591f6: par_data_person
+    7c2338fd-6b74-4992-bc6f-fa3ed8821365: par_data_partnership_le
 default:
   user_id:
     -
@@ -67,12 +67,12 @@ default:
   field_authority_person:
     -
       entity: c78b0352-15c8-42b5-b22d-082b72c51af4
-  field_legal_entity:
-    -
-      entity: a1daacbc-48f4-4c8b-8f8c-b8c41c81de9a
   field_organisation:
     -
       entity: ab764754-577f-4c8b-9032-8d694875bbfe
   field_organisation_person:
     -
       entity: 2a41ea56-3fd9-4b66-b345-90f636d591f6
+  field_partnership_legal_entity:
+    -
+      entity: 7c2338fd-6b74-4992-bc6f-fa3ed8821365

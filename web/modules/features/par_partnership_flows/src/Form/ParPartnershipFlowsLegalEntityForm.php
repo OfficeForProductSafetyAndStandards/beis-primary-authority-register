@@ -2,12 +2,20 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataLegalEntity;
+use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
-use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
+use Drupal\user\Entity\User;
+use Symfony\Component\Routing\Route;
 
 /**
  * The primary contact form for the partnership details steps of the
@@ -16,7 +24,6 @@ use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
-  use ParPartnershipFlowAccessTrait;
 
   /**
    * {@inheritdoc}
@@ -37,13 +44,39 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function titleCallback() {
-    $legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
 
-    $form_context = $legal_entity ? 'Change the legal entity for your organisation' : 'Add a legal entity for your organisation';
-
-    $this->pageTitle = "Update Partnership Information | {$form_context}";
+    $this->pageTitle = 'Update Partnership Information | Add a legal entity for your organisation';
 
     return parent::titleCallback();
+  }
+
+  /**
+   * @param \Symfony\Component\Routing\Route $route
+   *   The route.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The route match object to be checked.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The account being checked.
+   */
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
+
+    // Limit access to partnership pages.
+    $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
+    if (!$account->hasPermission('bypass par_data membership') && $user && !$this->getParDataManager()->isMember($par_data_partnership, $user)) {
+      $this->accessResult = AccessResult::forbidden('The user is not allowed to access this page.');
+    }
+
+    // Restrict access when partnership is active to users with administrator role.
+    if ($par_data_partnership->isActive() && !$user->hasPermission('amend active partnerships')) {
+      $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
+    }
+
+    // Restrict business users who have already confirmed their business details.
+    if ($par_data_partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
+      $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
+    }
+
+    return parent::accessCallback($route, $route_match, $account);
   }
 
   /**
@@ -55,84 +88,52 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataLegalEntity $par_data_legal_entity
    *   The Authority being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataLegalEntity $par_data_legal_entity = NULL) {
-    if ($par_data_legal_entity) {
-      $this->getFlowDataHandler()->setFormPermValue("legal_entity_registered_name", $par_data_legal_entity->get('registered_name')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("legal_entity_registered_number", $par_data_legal_entity->get('registered_number')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("legal_entity_legal_entity_type", $par_data_legal_entity->get('legal_entity_type')->getString());
-      $this->getFlowDataHandler()->setFormPermValue('legal_entity_id', $par_data_legal_entity->id());
+  public function retrieveEditableValues(ParDataPartnershipLegalEntity $par_data_partnership_le = NULL) {
+    if ($par_data_legal_entity = $par_data_partnership_le->getLegalEntity()) {
+      $this->getFlowDataHandler()->setParameter('par_data_legal_entity', $par_data_legal_entity);
     }
   }
 
   /**
-   * {@inheritdoc}
+   * Validate the form to make sure the correct values have been entered.
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataLegalEntity $par_data_legal_entity = NULL) {
-    $this->retrieveEditableValues($par_data_partnership, $par_data_legal_entity);
-    $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
 
-    if ($par_data_legal_entity) {
-      $referenced_legal_entity = $par_data_legal_entity->hasExistingPartnershipReferences();
-    } else {
-      $referenced_legal_entity = FALSE;
+    // Get the partnership.
+    /* @var ParDataPartnership $partnership */
+    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+
+    // Set the data for the legal entities.
+    $legal_entity_name = $this->getFlowDataHandler()->getTempDataValue('registered_name');
+    $legal_entity_number = $this->getFlowDataHandler()->getTempDataValue('registered_number');
+    $legal_entity_type = $this->getFlowDataHandler()->getTempDataValue('legal_entity_type');
+
+    // If a legal entity exists with the same registered_number
+    // the existing entity will be returned.
+    $legal_entity = ParDataLegalEntity::create([
+      'registered_name' => $legal_entity_name,
+      'registered_number' => $legal_entity_number,
+      'legal_entity_type' => $legal_entity_type,
+    ]);
+
+    // If this is an existing legal entity check that it is not already active on the partnership.
+    $partnership_legal_entities = $partnership->getPartnershipLegalEntities(TRUE);
+    if (!$legal_entity->isNew() && !empty($partnership_legal_entities)) {
+      // Set start and end dates for the period of the new PLE. If the partnership is
+      // not yet active the from_date is NULL, once it is active the from_date is today's date.
+      $start_date = $partnership->isActive() ? new DrupalDateTime('now') : NULL;
+      $end_date = NULL;
+
+      foreach ($partnership_legal_entities as $partnership_legal_entity) {
+        if ($partnership_legal_entity->getLegalEntity()->id() === $legal_entity->id()
+            && $partnership_legal_entity->isActiveDuringPeriod($start_date, $end_date)) {
+          $id = $this->getElementId(['registered_number'], $form);
+          $form_state->setErrorByName($this->getElementName('registered_number'), $this->wrapErrorMessage('This legal entity is already an active participant in the partnership.', $id));
+          break;
+        }
+      }
     }
-    $form['legal_entity_intro_fieldset'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('What is a legal entity?'),
-    ];
-
-    $form['legal_entity_intro_fieldset']['intro'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
-    ];
-
-    if ($par_data_legal_entity){
-      $form['legal_entity_disabled']['intro'] = [
-        '#type' => 'markup',
-        '#markup' => "<p><b>" . $this->t("This legal entity cannot be updated as it is being used in another partnership.") . "</b></p>",
-      ];
-
-    }
-
-    $form['registered_name'] = [
-      '#disabled' => $referenced_legal_entity,
-      '#type' => 'textfield',
-      '#title' => $this->t('Enter name of the legal entity'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_name"),
-    ];
-
-    $form['legal_entity_type'] = [
-      '#disabled' => $referenced_legal_entity,
-      '#type' => 'select',
-      '#title' => $this->t('Select type of Legal Entity'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_legal_entity_type"),
-      '#options' => $legal_entity_bundle->getAllowedValues('legal_entity_type'),
-    ];
-
-    $form['registered_number'] = [
-      '#disabled' => $referenced_legal_entity,
-      '#type' => 'textfield',
-      '#title' => $this->t('Provide the registration number'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("legal_entity_registered_number"),
-      '#states' => [
-        'visible' => [
-          'select[name="legal_entity_type"]' => [
-            ['value' => 'limited_company'],
-            ['value' => 'public_limited_company'],
-            ['value' => 'limited_liability_partnership'],
-            ['value' => 'registered_charity'],
-            ['value' => 'partnership'],
-            ['value' => 'limited_partnership'],
-            ['value' => 'other'],
-          ],
-        ],
-      ],
-    ];
-
-    // Make sure to add the person cacheability data to this form.
-    $this->addCacheableDependency($par_data_partnership);
-
-    return parent::buildForm($form, $form_state);
   }
 
   /**
@@ -141,7 +142,6 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Save the value for the about_partnership field.
     $legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
 
     // Legal entities that accept registered numbers.
@@ -190,10 +190,12 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       $legal_entity->save();
 
       // Now add the legal entity to the partnership.
+      /* @var ParDataPartnership $par_data_partnership */
       $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
       $par_data_partnership->addLegalEntity($legal_entity);
 
       // Add the new legal entity to the organisation.
+      /* @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
       $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
       $par_data_organisation->addLegalEntity($legal_entity);
 
@@ -212,5 +214,4 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     }
 
   }
-
 }

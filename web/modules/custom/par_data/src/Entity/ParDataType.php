@@ -98,6 +98,14 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    * {@inheritdoc}
    */
   public function getConfigurationElementByType($element, $type) {
+    // @see PAR-1805: The true status field assumes the configuration from the status field.
+    if ($element !== 'entity' && $type !== 'status_field') {
+      $status_field = $this->getConfigurationElementByType('entity', 'status_field');
+      if ($status_field && $element === ParDataEntity::STATUS_FIELD) {
+        $element = $status_field;
+      }
+    }
+
     $element_configuration = $this->getConfigurationElement($element);
     return isset($element_configuration[$type]) ? $element_configuration[$type] : NULL;
   }
@@ -182,6 +190,25 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    */
   public function getAllowedValues($field_name) {
     $allowed_values = $this->getConfigurationElementByType($field_name, 'allowed_values');
+
+    // @see PAR-1805: The computed true status values include the default statuses.
+    if ($field_name === ParDataEntity::STATUS_FIELD) {
+      // If there are no allowed values set then the default status value is 'active'.
+      if (empty($allowed_values)) {
+        $allowed_values[ParDataEntity::STATUS_FIELD] = 'Active';
+      }
+
+      // If this entity is revokable.
+      if ($this->isRevokable()) {
+        $allowed_values[ParDataEntity::REVOKE_FIELD] = 'Revoked';
+      }
+
+      // If this entity is archivable.
+      if ($this->isArchivable()) {
+        $allowed_values[ParDataEntity::ARCHIVE_FIELD] = 'Archived';
+      }
+    }
+
     return $allowed_values ?? [];
   }
 
@@ -189,7 +216,7 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    * {@inheritdoc}
    */
   public function getAllowedFieldlabel($field_name, $value = FALSE) {
-    $allowed_values = $this->getConfigurationElementByType($field_name, 'allowed_values');
+    $allowed_values = $this->getAllowedValues($field_name);
     return isset($allowed_values[$value]) ? $allowed_values[$value] : FALSE;
   }
 
@@ -197,7 +224,7 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    * {@inheritdoc}
    */
   public function getAllowedValueBylabel($field_name, $label, $fuzzy = FALSE) {
-    $allowed_values = $this->getConfigurationElementByType($field_name, 'allowed_values');
+    $allowed_values = $this->getAllowedValues($field_name);
 
     $key = $fuzzy ?
       array_search(strtolower($label), array_map('strtolower', $allowed_values)) :

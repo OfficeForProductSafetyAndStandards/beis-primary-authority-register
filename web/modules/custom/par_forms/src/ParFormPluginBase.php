@@ -4,6 +4,7 @@ namespace Drupal\par_forms;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
@@ -178,6 +179,15 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
+   * Return the date formatter service.
+   *
+   * @return DateFormatterInterface
+   */
+  protected function getDateFormatter() {
+    return \Drupal::service('date.formatter');
+  }
+
+  /**
    * Returns the logger channel specific to errors logged by PAR Forms.
    *
    * @return string
@@ -286,7 +296,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get the defaults by a replacement form data key.
+   * Set the defaults by a replacement form data key.
    *
    * @param $key
    *   The form data key.
@@ -303,7 +313,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get's the element key prefix for multiple cardinality forms.
+   * Gets the element key prefix for multiple cardinality forms.
    */
   public function getPrefix($cardinality = 1, $force = FALSE) {
     if ($this->getCardinality() !== 1 || $cardinality !== 1 || $force) {
@@ -314,7 +324,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get's the element key depending on the cardinality of this plugin.
+   * Gets the element key depending on the cardinality of this plugin.
    *
    * @param $element
    *   The element key.

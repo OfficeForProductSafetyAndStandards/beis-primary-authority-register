@@ -107,7 +107,7 @@ Then('I select type of advice', function () {
 
 Then('I filter by partnership status {string}', function (status) {
   return client
-      .click('#edit-partnership-status-1 option[value="'+status+'"]')
+      .click('#edit-partnership-status option[value="'+status+'"]')
 });
 
 Then('I select regulatory function', function () {
