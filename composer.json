@@ -191,9 +191,6 @@
                 "Remove style sheet": "https://www.drupal.org/files/issues/2021-03-29/3202722-5-remove_generated_css.patch",
                 "Correct version dependencies": "./patches/yargs-version.patch"
             },
-            "drupal/login_destination": {
-                "Can't pass NULL to UrlHelper isExternal": "https://www.drupal.org/files/issues/2022-09-23/3292255-4.patch"
-            },
             "drupal/redis": {
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch",
                 "Take into account CONFIG command may not work": "https://www.drupal.org/files/issues/2021-02-16/redis-allow_disabled_config-3173988-4.patch"
