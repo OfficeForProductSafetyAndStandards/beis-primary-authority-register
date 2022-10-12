@@ -191,6 +191,9 @@
                 "Remove style sheet": "https://www.drupal.org/files/issues/2021-03-29/3202722-5-remove_generated_css.patch",
                 "Correct version dependencies": "./patches/yargs-version.patch"
             },
+            "drupal/login_destination": {
+                "Always redirects to current page on login": "https://www.drupal.org/files/issues/2022-10-12/3314925-7-revert_query_parameter.diff"
+            },
             "drupal/redis": {
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch",
                 "Take into account CONFIG command may not work": "https://www.drupal.org/files/issues/2021-02-16/redis-allow_disabled_config-3173988-4.patch"
