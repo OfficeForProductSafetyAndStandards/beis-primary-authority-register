@@ -1,6 +1,14 @@
+par_flows.par_index:
+  title: 'PAR Journeys'
+  route_name: par_flows.par_index
+  parent: system.admin_config
+  description: 'Configure PAR user journeys.'
+  position: left
+  weight: -50
+
 # PAR Form Flow menu items definition
 entity.par_entity_type.collection:
   title: 'PAR Flows'
   route_name: entity.par_flow.collection
   description: 'Manage PAR flows'
-  parent: system.admin_config
+  parent: par_flows.par_index
