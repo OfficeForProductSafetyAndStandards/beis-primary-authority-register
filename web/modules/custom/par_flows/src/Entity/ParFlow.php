@@ -25,7 +25,7 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
  *   config_prefix = "par_flow",
  *   handlers = {
  *     "storage" = "Drupal\par_flows\ParFlowStorage",
- *     "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
+ *     "list_builder" = "Drupal\par_flows\FlowListBuilder",
  *     "form" = {
  *       "add" = "Drupal\Core\Entity\EntityForm",
  *       "edit" = "Drupal\Core\Entity\EntityForm",
@@ -39,10 +39,10 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "canonical" = "/admin/config/par/flows/{par_entity_type}",
- *     "edit-form" = "/admin/config/par/flows/{par_entity_type}/edit",
- *     "delete-form" = "/admin/config/par/flows/{par_entity_type}/delete",
- *     "collection" = "/admin/config/par/flows"
+ *     "canonical" = "/admin/config/flows/{par_entity_type}",
+ *     "edit-form" = "/admin/config/flows/{par_entity_type}/edit",
+ *     "delete-form" = "/admin/config/flows/{par_entity_type}/delete",
+ *     "collection" = "/admin/config/flows"
  *   },
  *   config_export = {
  *     "id",
