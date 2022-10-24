@@ -117,6 +117,7 @@
         "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
         "mglaman/drupal-check": "^1.0",
         "mikey179/vfsstream": "^1.2",
+        "palantirnet/drupal-rector": "^0.13.1",
         "phpspec/prophecy": "^1.8",
         "phpspec/prophecy-phpunit": "^2",
         "phpunit/phpunit": "^9.0",

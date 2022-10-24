@@ -64,7 +64,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
           'organisation_name' => 'summary',
           'field_premises' => 'summary',
         ], ['edit-entity'], FALSE, TRUE);
-        $radio_options[$organisation->id()] = render($label);
+        $radio_options[$organisation->id()] = \Drupal::service('renderer')->render($label);
       }
     }
 
