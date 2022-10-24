@@ -106,9 +106,11 @@ class ParRdDeletedDataListController extends ControllerBase {
           // Split the items up into chunks:
           $chunks = array_chunk($deleted_data, $this->numberPerPage);
 
+          // TODO: Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
+          // Please confirm that `$entity_type` is an instance of `\Drupal\Core\Entity\EntityType`. Only the method name and not the class name was checked for this replacement, so this may be a false positive.
           $build['entity_types'][$entity_type->id()] = [
             '#type' => 'fieldset',
-            '#title' => t($entity_type->getLowercaseLabel()),
+            '#title' => t($entity_type->getSingularLabel()),
             '#attributes' => ['class' => ['form-group']],
             'items' => [
               '#type' => 'container',
@@ -153,9 +155,11 @@ class ParRdDeletedDataListController extends ControllerBase {
           }
         }
         else {
+          // TODO: Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
+          // Please confirm that `$entity_type` is an instance of `\Drupal\Core\Entity\EntityType`. Only the method name and not the class name was checked for this replacement, so this may be a false positive.
           $build['entity_types'][$entity_type->id()] = [
             '#type' => 'fieldset',
-            '#title' => t($entity_type->getLowercaseLabel()),
+            '#title' => t($entity_type->getSingularLabel()),
             '#attributes' => ['class' => ['form-group']],
             'items' => [
               '#type' => 'container',
