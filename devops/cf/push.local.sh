@@ -278,8 +278,6 @@ if [[ -f $DB_IMPORT ]]; then
     tar -zcvf "$DB_DIR/$DB_NAME.tar.gz" -C $DB_DIR "$DB_NAME.sql"
 fi
 
-exit 88
-
 ####################################################################################
 # Cleanup any instances that have been created
 #
