@@ -70,7 +70,7 @@ BUILD_VER=${BUILD_VER:-}
 BUILD_DIR=${BUILD_DIR:=$PWD}
 REMOTE_BUILD_DIR=${REMOTE_BUILD_DIR:="/home/vcap/app"}
 DB_NAME="db-seed"
-DB_DIR="$PWD/backups"
+DB_DIR="$BUILD_DIR/backups"
 DB_IMPORT=${DB_IMPORT:="$DB_DIR/$DB_NAME.sql"}
 DB_RESET=${DB_RESET:=n}
 DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
@@ -271,14 +271,14 @@ if [[ ! -f $MANIFEST ]]; then
 fi
 
 ## Copy the seed database to the build directory and archive it for import.
-mkdir -p "$BUILD_DIR/backups"
+mkdir -p "$DB_DIR"
 if [[ -f $DB_IMPORT ]]; then
-    mkdir -p "$DB_DIR"
     rm -fr "${DB_DIR:?}/*"
     cp "$DB_IMPORT" "$DB_DIR/$DB_NAME.sql"
-    tar -zcvf "$DB_DIR/$DB_NAME.tar.gz" -C "$DB_DIR" "$DB_NAME.sql"
+    tar -zcvf "$DB_DIR/$DB_NAME.tar.gz" -C $DB_DIR "$DB_NAME.sql"
 fi
 
+exit 88
 
 ####################################################################################
 # Cleanup any instances that have been created
@@ -536,6 +536,7 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
 
     # Running a python script instead of bash because python has immediate
     # access to all of the environment variables and configuration.
+    printf "Importing the database...\n"
     cf ssh $TARGET_ENV -c "cd app && \
         tar --no-same-owner -zxvf $DB_DIR/$DB_NAME.tar.gz && \
         python ./devops/tools/import_db.py -f $REMOTE_BUILD_DIR/backups/sanitised-db.sql && \
