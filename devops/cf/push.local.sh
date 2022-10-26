@@ -69,7 +69,9 @@ CF_INSTANCES=${CF_INSTANCES:=1}
 BUILD_VER=${BUILD_VER:-}
 BUILD_DIR=${BUILD_DIR:=$PWD}
 REMOTE_BUILD_DIR=${REMOTE_BUILD_DIR:="/home/vcap/app"}
-DB_IMPORT=${DB_IMPORT:="$PWD/backups/sanitised-db.sql"}
+DB_NAME="db-seed"
+DB_DIR="$PWD/backups"
+DB_IMPORT=${DB_IMPORT:="$DB_DIR/$DB_NAME.sql"}
 DB_RESET=${DB_RESET:=n}
 DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
 VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.services:8200"}
@@ -268,10 +270,13 @@ if [[ ! -f $MANIFEST ]]; then
     MANIFEST="${BASH_SOURCE%/*}/manifests/manifest.non-production.yml"
 fi
 
-## Copy the seed database to the build directory to use for import
+## Copy the seed database to the build directory and archive it for import.
 mkdir -p "$BUILD_DIR/backups"
 if [[ -f $DB_IMPORT ]]; then
-    cp $DB_IMPORT "$BUILD_DIR/backups/sanitised-db.sql"
+    mkdir -p "$DB_DIR"
+    rm -fr "${DB_DIR:?}/*"
+    cp "$DB_IMPORT" "$DB_DIR/$DB_NAME.sql"
+    tar -zcvf "$DB_DIR/$DB_NAME.tar.gz" -C "$DB_DIR" "$DB_NAME.sql"
 fi
 
 
@@ -524,14 +529,17 @@ cf start $TARGET_ENV
 
 ## Import the seed database and then delete it.
 if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
-    if [[ ! -f "$BUILD_DIR/backups/sanitised-db.sql" ]]; then
+    if [[ ! -f "$DB_DIR/$DB_NAME.tar.gz" ]]; then
         printf "Seed database required, but could not find one at '$BUILD_DIR/backups/sanitised-db.sql'.\n"
         exit 6
     fi
 
     # Running a python script instead of bash because python has immediate
     # access to all of the environment variables and configuration.
-    cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/import_fresh_db.py -f $REMOTE_BUILD_DIR/backups/sanitised-db.sql && rm -f $REMOTE_BUILD_DIR/backups/sanitised-db.sql"
+    cf ssh $TARGET_ENV -c "cd app && \
+        tar --no-same-owner -zxvf $DB_DIR/$DB_NAME.tar.gz && \
+        python ./devops/tools/import_db.py -f $REMOTE_BUILD_DIR/backups/sanitised-db.sql && \
+        rm -f $REMOTE_BUILD_DIR/backups/sanitised-db.sql"
 fi
 
 cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/post_deploy.py"

@@ -112,6 +112,14 @@ references:
         echo "SENTRY_RELEASE=$CIRCLE_TAG" >> .env
         tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
 
+  remove_assets: &remove_assets
+    run:
+      name: "Remove unwanted files from the asset bundle"
+      command: |
+        cd /tmp/workspace
+        rm -fr /backups/*.sql
+        rm -fr /tests
+
   workspace_root: &workspace_root
     /tmp/workspace
 
@@ -318,6 +326,7 @@ jobs:
       - *restore_scaffold
       - *configure_webroot
       - *build_assets
+      - *remove_assets
       - run:
           name: "Examine asset bundle."
           command: |
@@ -374,6 +383,7 @@ jobs:
       - *configure_webroot
       - *import_database
       - *build_assets
+      - *remove_assets
       - run:
           name: "Examine asset bundle."
           command: |
@@ -401,6 +411,7 @@ jobs:
       - *restore_scaffold
       - *configure_webroot
       - *import_database
+      - *remove_assets
       - run:
           name: "Remove additional sensitive assets"
           command: |
@@ -429,6 +440,7 @@ jobs:
       - *configure_webroot
       - *import_database
       - *build_assets
+      - *remove_assets
       - run:
           name: "Examine asset bundle."
           command: |
