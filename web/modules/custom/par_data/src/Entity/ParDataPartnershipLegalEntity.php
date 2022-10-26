@@ -229,11 +229,12 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    *   TRUE if the legal entity can be removed.
    */
   public function isRemovable() {
-    $now = new DrupalDateTime();
+    $request_time = \Drupal::time()->getRequestTime();
+    $now = DrupalDateTime::createFromTimestamp($request_time);
     $partnership = $this->getPartnership();
     return (!$partnership
         || !$partnership->isActive()
-        || $this->getStartDate() > $now->modify('-1 day'));
+        || $this->getFullStartDate() > $now->modify('-1 day'));
   }
 
   /**
