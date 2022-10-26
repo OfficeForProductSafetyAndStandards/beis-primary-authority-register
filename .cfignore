@@ -11,14 +11,14 @@ manifest.yml
 *.env
 
 # Ignore temporary assets
-*.tar.gz
+/backups/*.sql
 
 # Ignore non-app files
-/devops/dashboard/
-/devops/docker/
-/devops/vault/
-/clamav/
-/tests/
+/devops/dashboard
+/devops/docker
+/devops/vault
+/clamav
+/tests
 
 # Ignore package files
 ## Temporary fix: @SEE PAR-1705

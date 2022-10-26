@@ -35,19 +35,19 @@ Copy an existing manifest and modify to taste. Use the app slug in the manifest 
 #### Choose a service plan
 
     cf marketplace -s postgres
-    
+
 #### Create the service
 
     cf create-service postgres M-HA-dedicated-9.5 par-pg-assessment
-    
+
 #### Create the vault entries
 
-    The script cf/update-vault.sh shows how to read and set values in the vault. 
-    
+    The script cf/update-vault.sh shows how to read and set values in the vault.
+
     The script simply sets the same values as it reads, but variations on the script can be used to either copy variables from another environment or create new ones.
-    
-    Remember that any keys not specified in the update command will be deleted, so all key/value pairs must be provided with each call. 
-    
+
+    Remember that any keys not specified in the update command will be deleted, so all key/value pairs must be provided with each call.
+
 #### Push the app
 
 Use the push script to deploy the application to PaaS.
@@ -55,35 +55,35 @@ Use the push script to deploy the application to PaaS.
 We skip the post deploy scripts, as we need to seed the database before those scripts can run.
 
 From the root of the beis-primary-authority-register repository:
-   
+
     cf push -f cf/manifests/manifest.ENV_SLUG.yml
-    
+
 This will create the app with the code as it stands on your local machine. This is just a placeholder until we perform a correct deployment which will specify a version
 of the packaged code to push.
-    
+
 #### Setup the CDN and CNAME record
 
 Run the cf/route.sh script
 
     cd cf
     ./route.sh
-    
+
 The script will prompt for the environment slug.
 
 Once complete, type
 
     cf service par-cdn-ENV_SLUG
-    
+
 This will give you the information you need to set up the CNAME for the par-beta.net domain
 
 #### Set the environment variables
 
     cd cf
     ./push.sh environment-only
-    
+
 #### Import the seed data
 
     cf ssh beis-par-ENV_SLUG
     cd app/devops/tools
-    python import_fresh_db.py -f /path/to/sql/file.sql
-    
+    python import_db.py -f /path/to/sql/file.sql
+
