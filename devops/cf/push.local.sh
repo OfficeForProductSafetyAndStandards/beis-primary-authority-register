@@ -538,7 +538,7 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     # access to all of the environment variables and configuration.
     printf "Importing the database...\n"
     cf ssh $TARGET_ENV -c "cd app && \
-        tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz && \
+        tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
         python ./devops/tools/import_db.py -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
         rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
 fi
