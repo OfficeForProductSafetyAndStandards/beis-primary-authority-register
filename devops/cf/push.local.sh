@@ -45,7 +45,7 @@ command -v cf >/dev/null 2>&1 || {
 #    VAULT_ADDR - the vault service endpoint
 #    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
 ####################################################################################
-OPTIONS=sT:u:p:i:b:rd:v:u:t:x
+OPTIONS=sT:u:p:i:b:rd:v:n:t:x
 LONGOPTS=single,build-tag:,user:,password:,instances:,database:,refresh-database,directory:,vault:,unseal:,token:,deploy-production
 
 # -use ! and PIPESTATUS to get exit code with errexit set
@@ -70,8 +70,6 @@ BUILD_VER=${BUILD_VER:-}
 BUILD_DIR=${BUILD_DIR:=$PWD}
 REMOTE_BUILD_DIR=${REMOTE_BUILD_DIR:="/home/vcap/app"}
 DB_NAME="db-seed"
-DB_DIR="$BUILD_DIR/backups"
-DB_IMPORT=${DB_IMPORT:="$DB_DIR/$DB_NAME.sql"}
 DB_RESET=${DB_RESET:=n}
 DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
 VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.services:8200"}
@@ -120,7 +118,7 @@ while true; do
             VAULT_ADDR="$2"
             shift 2
             ;;
-        -u|--unseal)
+        -n|--unseal)
             VAULT_UNSEAL="$2"
             shift 2
             ;;
@@ -138,6 +136,10 @@ while true; do
             ;;
     esac
 done
+
+# Defaults that incorporate user defined values
+DB_DIR="$BUILD_DIR/backups"
+DB_IMPORT=${DB_IMPORT:="$DB_DIR/$DB_NAME.sql"}
 
 ## Ensure an environment has been passed
 if [[ $# -ne 1 ]]; then
@@ -271,9 +273,10 @@ if [[ ! -f $MANIFEST ]]; then
 fi
 
 ## Copy the seed database to the build directory and archive it for import.
+printf "Archiving the seed database in $DB_DIR...\n"
+printf "BUILD DIR is $BUILD_DIR...\n"
 mkdir -p "$DB_DIR"
 if [[ -f $DB_IMPORT ]]; then
-    rm -fr "${DB_DIR:?}/*"
     cp "$DB_IMPORT" "$DB_DIR/$DB_NAME.sql"
     tar -zcvf "$DB_DIR/$DB_NAME.tar.gz" -C $DB_DIR "$DB_NAME.sql"
 fi
