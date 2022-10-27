@@ -70,6 +70,7 @@ BUILD_VER=${BUILD_VER:-}
 BUILD_DIR=${BUILD_DIR:=$PWD}
 REMOTE_BUILD_DIR=${REMOTE_BUILD_DIR:="/home/vcap/app"}
 DB_NAME="db-seed"
+DB_DIR="backups"
 DB_RESET=${DB_RESET:=n}
 DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
 VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.services:8200"}
@@ -138,8 +139,7 @@ while true; do
 done
 
 # Defaults that incorporate user defined values
-DB_DIR="$BUILD_DIR/backups"
-DB_IMPORT=${DB_IMPORT:="$DB_DIR/$DB_NAME.sql"}
+DB_IMPORT=${DB_IMPORT:="$BUILD_DIR/$DB_DIR/$DB_NAME.sql"}
 
 ## Ensure an environment has been passed
 if [[ $# -ne 1 ]]; then
@@ -273,12 +273,11 @@ if [[ ! -f $MANIFEST ]]; then
 fi
 
 ## Copy the seed database to the build directory and archive it for import.
-printf "Archiving the seed database in $DB_DIR...\n"
-printf "BUILD DIR is $BUILD_DIR...\n"
-mkdir -p "$DB_DIR"
+printf "Archiving the seed database in $BUILD_DIR/$DB_DIR...\n"
+mkdir -p "$BUILD_DIR/$DB_DIR"
 if [[ -f $DB_IMPORT ]]; then
-    cp "$DB_IMPORT" "$DB_DIR/$DB_NAME.sql"
-    tar -zcvf "$DB_DIR/$DB_NAME.tar.gz" -C $DB_DIR "$DB_NAME.sql"
+    cp "$DB_IMPORT" "$BUILD_DIR/$DB_DIR/$DB_NAME.sql"
+    tar -zcvf "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" -C $BUILD_DIR/$DB_DIR "$DB_NAME.sql"
 fi
 
 ####################################################################################
@@ -530,8 +529,8 @@ cf start $TARGET_ENV
 
 ## Import the seed database and then delete it.
 if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
-    if [[ ! -f "$DB_DIR/$DB_NAME.tar.gz" ]]; then
-        printf "Seed database required, but could not find one at '$BUILD_DIR/backups/sanitised-db.sql'.\n"
+    if [[ ! -f "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" ]]; then
+        printf "Seed database required, but could not find one at '$BUILD_DIR/$DB_DIR/sanitised-db.sql'.\n"
         exit 6
     fi
 
@@ -539,9 +538,9 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     # access to all of the environment variables and configuration.
     printf "Importing the database...\n"
     cf ssh $TARGET_ENV -c "cd app && \
-        tar --no-same-owner -zxvf $DB_DIR/$DB_NAME.tar.gz && \
-        python ./devops/tools/import_db.py -f $REMOTE_BUILD_DIR/backups/sanitised-db.sql && \
-        rm -f $REMOTE_BUILD_DIR/backups/sanitised-db.sql"
+        tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz && \
+        python ./devops/tools/import_db.py -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
+        rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
 fi
 
 cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/post_deploy.py"
