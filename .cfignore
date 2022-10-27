@@ -11,7 +11,10 @@ manifest.yml
 *.env
 
 # Ignore temporary assets
-/backups/*.sql
+## Exclude all temporary files except the seed database @SEE PAR-1938
+!backups/
+backups/*
+!/backups/db-seed.tar.gz
 
 # Ignore non-app files
 /devops/dashboard
