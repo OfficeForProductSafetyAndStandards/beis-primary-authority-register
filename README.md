@@ -20,6 +20,15 @@ PRs should be tested against the Definition of Done.
 
 * We deploy through a release strategy by tagging the master branch.
 
+### Definition of ready
+
+Work to be started only when:
+
+* Story A/Cs have been discussed with QA, and PO where applicable
+* Story has been refined, and sized
+* There is enough information on the ticket to complete it
+* Any UI changes have been prototyped and agreed by stakeholders
+
 ### Definition of Done
 
 * Code meets the A/C agreed on the task.
