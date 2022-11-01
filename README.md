@@ -85,7 +85,13 @@ Once you have a working development environment PAR should be available at [http
 #### Additional Windows prerequisites
 
 * [WSL2](https://learn.microsoft.com/en-gb/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package)
-* patch, need to be added to the system path
+  * Configure [.wslconfig]() and set maximum memory and processor limits for VM.
+    ```
+    [wsl2]
+    memory=4GB
+    processor=1
+    ```
+* php, composer & patch (available through `Git/usr/bin`) need to be added to the system path
 
 ### Set up
 
