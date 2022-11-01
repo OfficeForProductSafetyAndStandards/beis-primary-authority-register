@@ -22,8 +22,6 @@ PRs should be tested against the Definition of Done.
 
 ### Definition of ready
 
-Work to be started only when:
-
 * Story A/Cs have been discussed with QA, and PO where applicable
 * Story has been refined, and sized
 * There is enough information on the ticket to complete it
@@ -76,11 +74,18 @@ Once you have a working development environment PAR should be available at [http
 
 ### Prerequisites
 
+* [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) - version 2.0 or higher
+* [php](https://www.php.net/) - version 8.1 or higher
 * [Composer](https://getcomposer.org/download) - version 2.3.5 or higher
 * [Docker](https://docs.docker.com/engine/install) - version 20.0 or higher
 * [Docker Compose](https://docs.docker.com/compose/install) - version 2.2.2 or higher
 * (Optional) A copy of the [latest sanitised PAR database](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/backups/drush-dump-production-sanitized-latest.sql.tar.gz) from the BEIS S3 artifacts bucket.
 * A copy of the [settings.local.php](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/backups/drush-dump-production-sanitized-latest.sql.tar.gz) configuration file required to setup the application locally.
+
+#### Additional Windows prerequisites
+
+* [WSL2](https://learn.microsoft.com/en-gb/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package)
+* patch, need to be added to the system path
 
 ### Set up
 
