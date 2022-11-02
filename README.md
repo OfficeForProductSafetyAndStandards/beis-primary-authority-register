@@ -85,7 +85,7 @@ Once you have a working development environment PAR should be available at [http
 #### Additional Windows prerequisites
 If on windows follow the instructions below, essentially docker performance on windows is poor and needs to run from the WSL distro (use the latest Ubuntu LTS).
 
-* [Install WSL2](https://learn.microsoft.com/en-us/windows/wsl/install](https://learn.microsoft.com/en-gb/windows/wsl/install)
+* [Install WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
   * [Configure .wslconfig](https://learn.microsoft.com/en-us/windows/wsl/wsl-config#configuration-setting-for-wslconfig), and set maximum memory and processor limits
 * [Install Docker Desktop & enable WSL 2 support](https://docs.docker.com/desktop/windows/wsl/#install)
 * [Clone the repository into the WSL 2 distro's filesystem](https://docs.docker.com/desktop/windows/wsl/#best-practices), for better performance
