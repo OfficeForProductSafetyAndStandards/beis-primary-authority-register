@@ -83,10 +83,13 @@ Once you have a working development environment PAR should be available at [http
 * A copy of the [settings.local.php](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/backups/drush-dump-production-sanitized-latest.sql.tar.gz) configuration file required to setup the application locally.
 
 #### Additional Windows prerequisites
+If on windows follow the instructions below, essentially docker performance on windows is poor and needs to run from the WSL distro (use the latest Ubuntu LTS).
 
-* [WSL2](https://learn.microsoft.com/en-gb/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package)
-  * [Configure .wslconfig](https://learn.microsoft.com/en-us/windows/wsl/wsl-config#configuration-setting-for-wslconfig) and set maximum memory and processor limits for VM.
-  * [Mount Volumes from WSL](https://nickjanetakis.com/blog/setting-up-docker-for-windows-and-wsl-to-work-flawlessly#ensure-volume-mounts-work)
+* [WSL2]([https://learn.microsoft.com/en-us/windows/wsl/install](https://learn.microsoft.com/en-gb/windows/wsl/install))
+  * [Configure .wslconfig](https://learn.microsoft.com/en-us/windows/wsl/wsl-config#configuration-setting-for-wslconfig), and set maximum memory and processor limits
+* [Install Docker Desktop & enable WSL 2 support](https://docs.docker.com/desktop/windows/wsl/#install)
+* [Clone the repository into the WSL 2 distro's filesystem](https://docs.docker.com/desktop/windows/wsl/#best-practices), for better performance
+  * This can be found by navigating to `\\wsl$\{DISTRO}\home` in the file explorer, where `{DISTRO}` can be found by running `wsl -l`, e.g. `Ubuntu-22.04`
 * php, composer & patch (available through `C:/Program Files/Git/usr/bin`) need to be added to the system path
 
 ### Set up
