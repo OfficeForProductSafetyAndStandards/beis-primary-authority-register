@@ -119,19 +119,32 @@ npm run gulp
 
 The docker container includes a seed database that can be used to get started.
 
-In order to get the latest and most up-to-date database including some of the par data you will need to import a copy of the latest par database:
+In order to get the latest and most up-to-date database including some of the par data you will need access to AWS:
 ```
-aws s3 cp s3://beis-par-artifacts/backups/db-dump-production-unsanitised-latest.tar.gz ./backups/
+aws s3 cp s3://beis-par-artifacts/backups/db-dump-production-{DB_TYPE}-latest.tar.gz ./backups/
 ```
+Where `{DB_TYPE}` is one of:
+
+* seed
+* sanitised
+
 Download this and place in the `backups` directory of the par project (create the folder if it doesn't' exist).
 
-Import the database using drush (note the database should be truncated before re-importing)
-```bash
-cd /var/www/html/backups
-tar -zxvf ../backups/db-dump-production-sanitised-latest.tar.gz db-dump-production-sanitised.sql
-cd /var/www/html/web
+##### Extract the database
+```
+cd ./backups
+tar -zxvf ../backups/db-dump-production-{DB_TYPE}-latest.tar.gz db-dump-production-{DB_TYPE}.sql
+```
+**Note:** On some systems, such as windows, and for some files the downloaded archives are not compressed and may end in `.tar` instead of `.tar.gz`
+
+##### Import the database using drush
+
+You will need the `settings.local.php` before you run this, see the Drupal install section below.
+
+```
+cd ./web
 ../vendor/bin/drush sql:drop
-../vendor/bin/drush sql:cli < ../backups/db-dump-production-sanitised.sql
+../vendor/bin/drush sql:cli < ../backups/db-dump-production-{DB_TYPE}.sql
 ```
 
 #### Drupal install
