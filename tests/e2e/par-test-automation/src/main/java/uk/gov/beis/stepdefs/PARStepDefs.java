@@ -1,47 +1,84 @@
 package uk.gov.beis.stepdefs;
 
 import java.io.IOException;
+import java.util.Map;
 
+import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import cucumber.api.DataTable;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
+import uk.gov.beis.pageobjects.PARAuthorityPage;
+import uk.gov.beis.pageobjects.PARBusinessAddressDetailsPage;
+import uk.gov.beis.pageobjects.PARBusinessContactDetailsPage;
+import uk.gov.beis.pageobjects.PARBusinessInvitePage;
+import uk.gov.beis.pageobjects.PARBusinessPage;
 import uk.gov.beis.pageobjects.PARDashboardPage;
 import uk.gov.beis.pageobjects.PARHomePage;
 import uk.gov.beis.pageobjects.PARLoginPage;
+import uk.gov.beis.pageobjects.PARPartnershipCompletionPage;
+import uk.gov.beis.pageobjects.PARPartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PARPartnershipDescriptionPage;
+import uk.gov.beis.pageobjects.PARPartnershipTermsPage;
+import uk.gov.beis.pageobjects.PARPartnershipTypePage;
+import uk.gov.beis.utility.DataStore;
+import uk.gov.beis.utility.RandomStringGenerator;
 
 public class PARStepDefs {
-	
+
 	public static WebDriver driver;
 	private PARHomePage parHomePage;
 	private PARLoginPage parLoginPage;
 	private PARDashboardPage parDashboardPage;
-
+	private PARAuthorityPage parAuthorityPage;
+	private PARPartnershipTypePage parPartnershipTypePage;
+	private PARPartnershipTermsPage parPartnershipTermsPage;
+	private PARPartnershipDescriptionPage parPartnershipDescriptionPage;
+	private PARBusinessPage parBusinessPage;
+	private PARBusinessContactDetailsPage parBusinessContactDetailsPage;
+	private PARPartnershipConfirmationPage parPartnershipConfirmationPage;
+	private PARBusinessInvitePage parBusinessInvitePage;
+	private PARPartnershipCompletionPage parPartnershipCompletionPage;
+	private PARBusinessAddressDetailsPage parBusinessAddressDetailsPage;
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
 		parHomePage = PageFactory.initElements(driver, PARHomePage.class);
 		parLoginPage = PageFactory.initElements(driver, PARLoginPage.class);
 		parDashboardPage = PageFactory.initElements(driver, PARDashboardPage.class);
+		parAuthorityPage = PageFactory.initElements(driver, PARAuthorityPage.class);
+		parPartnershipTypePage = PageFactory.initElements(driver, PARPartnershipTypePage.class);
+		parPartnershipDescriptionPage = PageFactory.initElements(driver, PARPartnershipDescriptionPage.class);
+		parBusinessPage = PageFactory.initElements(driver, PARBusinessPage.class);
+		parBusinessContactDetailsPage = PageFactory.initElements(driver, PARBusinessContactDetailsPage.class);
+		parPartnershipConfirmationPage = PageFactory.initElements(driver, PARPartnershipConfirmationPage.class);
+		parBusinessInvitePage = PageFactory.initElements(driver, PARBusinessInvitePage.class);
+		parPartnershipCompletionPage = PageFactory.initElements(driver, PARPartnershipCompletionPage.class);
+		parBusinessAddressDetailsPage = PageFactory.initElements(driver, PARBusinessAddressDetailsPage.class);
+		parPartnershipTermsPage = PageFactory.initElements(driver, PARPartnershipTermsPage.class);
 
 	}
-	
+
 	@Given("^the user is on the PAR home page$")
 	public void the_user_is_on_the_PAR_home_page() throws Throwable {
-		LOG.info("Navigating to PAR Home page");
+		LOG.info("Navigating to PAR Home page but first accepting cookies if present");
 		parHomePage.navigateToUrl();
+		parHomePage.checkAndAcceptCookies();
 	}
 
-	@Given("^the user wants to login$")
+	@Given("^the user visits the login page$")
 	public void the_user_wants_to_login() throws Throwable {
 		parHomePage.selectLogin();
 	}
-	
+
 	@Given("^the user logs in with the \"([^\"]*)\" user credentials$")
 	public void the_user_logs_in_with_the_user_credentials(String user) throws Throwable {
 		String pass = PropertiesUtil.getConfigPropertyValue(user);
@@ -51,7 +88,45 @@ public class PARStepDefs {
 
 	@Then("^the user is on the dashboard page$")
 	public void the_user_is_on_the_dashboard_page() throws Throwable {
-	    
+		Assert.assertTrue("Text not found", parDashboardPage.checkPage().contains("Dashboard"));
+	}
+
+	@When("^the user creates a new \"([^\"]*)\" partnership application with the following details:$")
+	public void the_user_creates_a_new_partnership_application_with_the_following_details(String type,
+			DataTable details) throws Throwable {
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			parDashboardPage.selectApplyForNewPartnership();
+			parAuthorityPage.selectAuthority();
+			parPartnershipTypePage.selectPartnershipType(type);
+			parPartnershipTermsPage.acceptTerms();
+			DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, data.get("Partnership Info"));
+			parPartnershipDescriptionPage.enterPartnershipDescription(data.get("Partnership Info"));
+			DataStore.saveValue(UsableValues.BUSINESS_NAME, RandomStringGenerator.getBusinessName(3));
+			parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+			parBusinessAddressDetailsPage.enterAddressDetails(data.get("addressline1"), data.get("town"),
+					data.get("postcode"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("addressline1"));
+			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("town"));
+			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("postcode"));
+
+			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, RandomStringGenerator.getEmail(3));
+			parBusinessContactDetailsPage.enterContactDetails(data.get("firstname"), data.get("lastname"),
+					data.get("phone"), DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
+			DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, data.get("firstname"));
+			DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, data.get("lastname"));
+			DataStore.saveValue(UsableValues.BUSINESS_PHONE, data.get("phone"));
+
+			parBusinessInvitePage.sendInvite();
+			parPartnershipConfirmationPage.confirmDetails();
+			Assert.assertTrue("Appliction not complete", parPartnershipConfirmationPage.checkPartnershipApplication());
+			parPartnershipConfirmationPage.saveChanges();
+			parPartnershipCompletionPage.completeApplication();
+		}
+	}
+
+	@Then("^the partnership application is successfully created$")
+	public void the_partnership_application_is_successfully_created() throws Throwable {
+//		Assert.assertTrue("Not created successfully",parPartnershipConfirmationPage.checkPartnershipApplication());
 	}
 
 }
