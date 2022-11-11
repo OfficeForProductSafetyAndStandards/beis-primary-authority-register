@@ -23,6 +23,11 @@ use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
 abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRuleInterface {
 
   /**
+   * The default frequency for sending repeat notifications.
+   */
+  const DEFAULT_FREQUENCY = "+1 month";
+
+  /**
    * {@inheritdoc}
    */
   public function getTitle() {
@@ -79,7 +84,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
     // e.g. 3 weeks, 2 months, 1 year
     return preg_match("/^[0-9]*[\s]+(day|week|month|year)[s]*$/", $frequency) === 1 ?
       "+" . $this->pluginDefinition['frequency'] :
-      "+1 month";
+      self::DEFAULT_FREQUENCY;
   }
 
   /**

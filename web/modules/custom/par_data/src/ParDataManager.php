@@ -268,7 +268,7 @@ class ParDataManager implements ParDataManagerInterface {
   public function getReferences($type, $bundle) {
     $reference_fields = [];
 
-    // First get all the entities referenced by this entity type.
+    // First get all the PAR Data entities referenced by this entity type.
     foreach ($this->entityFieldManager->getFieldDefinitions($type, $bundle) as $field_name => $definition) {
       if ($definition->getType() === 'entity_reference' && $this->getParEntityType($definition->getsetting('target_type'))) {
         $reference_fields[$type][$field_name] = $definition;

@@ -14,6 +14,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
+use Drupal\message\MessageTemplateInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -104,7 +105,8 @@ class ParLinkManager extends DefaultPluginManager {
    *
    * @return \Drupal\par_notification\ParLinkActionInterface
    */
-  public function createInstance($plugin_id, array $configuration = []) {
+  public function createInstance($plugin_id, array $configuration = []): ?ParLinkActionInterface {
+    /** @var ParLinkActionInterface $instance */
     $instance = parent::createInstance($plugin_id, $configuration);
     $instance->setUser($this->user);
     return $instance;
@@ -112,8 +114,14 @@ class ParLinkManager extends DefaultPluginManager {
 
   /**
    * Get only the enabled rules.
+   *
+   * @param bool $only_active
+   *   Whether to return only active definitions.
+   *
+   * @return array
+   *   An array of plugin definitions.
    */
-  public function getDefinitions($only_active = FALSE) {
+  public function getDefinitions(bool $only_active = FALSE): array {
     $definitions = [];
     foreach (parent::getDefinitions() as $id => $definition) {
       if (!$only_active || !empty($definition['status'])) {
@@ -130,8 +138,14 @@ class ParLinkManager extends DefaultPluginManager {
 
   /**
    * Get only the enabled rules that applies to this notification.
+   *
+   * @param string $notification_type
+   *   The message template id (the message bundle).
+   *
+   * @return array
+   *   An array of plugin definitions.
    */
-  public function getDefinitionsByNotification($notification_type) {
+  public function getDefinitionsByNotification(string $notification_type): array {
     $definitions = [];
     if ($notification_type) {
       foreach ($this->getDefinitions(TRUE) as $id => $definition) {
@@ -153,7 +167,7 @@ class ParLinkManager extends DefaultPluginManager {
    * @return \Drupal\Core\Url
    *   The generated URL
    */
-  public function generateLink($message_id) {
+  public function generateLink(int|string $message_id): Url {
     $link_options = ['absolute' => TRUE];
     return Url::fromRoute('par_notification.link_manager', ['message' => $message_id], $link_options);
   }
@@ -166,9 +180,9 @@ class ParLinkManager extends DefaultPluginManager {
    * @throws ParNotificationException
    *   When the link cannot be accessed after all the checks have been made.
    *
-   * @return RedirectResponse
+   * @return RedirectResponse|void
    */
-  public function receive(RouteMatchInterface $route, MessageInterface $message) {
+  public function receive(RouteMatchInterface $route, MessageInterface $message): ?RedirectResponse {
     // The current link manager link, used for sequential redirection.
     // This will be used until all prerequisite actions are completed.
     $link_manager_destination = Url::fromRouteMatch($route);
@@ -189,6 +203,39 @@ class ParLinkManager extends DefaultPluginManager {
         return $response;
       }
     }
+  }
+
+  /**
+   * Return all link actions with tasks.
+   *
+   * Tasks are actions that require active input and need to be completed.
+   * @see PAR-1948 - https://regulatorydelivery.atlassian.net/browse/PAR-1948
+   *
+   * @param MessageTemplateInterface $message_template
+   *   The message template (aka the message bundle entity).
+   *
+   * @return ParTaskInterface[]
+   */
+  public function retrieveTasks(MessageTemplateInterface $message_template): array {
+    // Retrieve tasks once per notification type.
+    $function_id = __FUNCTION__ . ':' . $message_template->id();
+    $tasks = &drupal_static($function_id);
+    if (isset($tasks)) {
+      return $tasks;
+    }
+
+    $tasks = [];
+    $plugin_definitions = $this->getDefinitionsByNotification($message_template->id());
+
+    // Return only the link actions with tasks.
+    foreach ($plugin_definitions as $definition) {
+      $plugin = $this->createInstance($definition['id'], []);
+      if ($plugin instanceof ParTaskInterface) {
+        $tasks[$definition['id']] = $plugin;
+      }
+    }
+
+    return $tasks;
   }
 
 }

@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\message\MessageInterface;
 
 /**
  * Implements hook_help().
@@ -20,5 +21,23 @@ function par_notification_help($route_name, RouteMatchInterface $route_match) {
       return $output;
 
     default:
+  }
+  return;
+}
+
+function _par_notification_message_callback(MessageInterface $message) {
+  return 'asdf';
+}
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function par_notification_entity_type_build(array &$entity_types) {
+  /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
+
+  // Add an access control handler for message entities.
+  if (isset($entity_types['message'])) {
+    $entity_types['message']
+      ->setHandlerClass('access', 'Drupal\par_notification\Access\ParMessageAccessControlHandler');
   }
 }

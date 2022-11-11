@@ -4,7 +4,7 @@ namespace Drupal\par_data\Event;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * The par data event.
@@ -35,16 +35,16 @@ class ParDataEvent extends Event implements ParDataEventInterface {
    *
    * @var ParDataEntityInterface
    */
-  protected $entity;
+  protected ParDataEntityInterface $entity;
 
-  public function __construct(EntityInterface $entity) {
+  public function __construct(ParDataEntityInterface $entity) {
     $this->entity = $entity;
   }
 
   /**
    * @return ParDataEntityInterface
    */
-  public function getEntity() {
+  public function getEntity(): ParDataEntityInterface {
     return $this->entity;
   }
 
@@ -58,7 +58,7 @@ class ParDataEvent extends Event implements ParDataEventInterface {
    *
    * @return string
    */
-  public static function statusChange($entity_type_id, $status) {
+  public static function statusChange(string $entity_type_id, string $status): string {
     return implode('.', [self::STATUS_CHANGE, $entity_type_id, $status]);
   }
 
@@ -72,7 +72,7 @@ class ParDataEvent extends Event implements ParDataEventInterface {
    *
    * @return string
    */
-  public static function customAction($entity_type, $action) {
+  public static function customAction(string $entity_type, string $action): string {
     return implode('.', [self::ENTITY_CUSTOM_ACTION, $entity_type, $action]);
   }
 

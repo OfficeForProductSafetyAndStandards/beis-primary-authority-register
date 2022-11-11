@@ -2,18 +2,16 @@
 
 namespace Drupal\par_notification;
 
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
 use Drupal\Core\Link;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Url;
-use Drupal\message\Entity\Message;
 use Drupal\message\MessageInterface;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPersonInterface;
-use Drupal\par_data\Event\ParDataEvent;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\message\MessageTemplateInterface;
 use Drupal\par_data\Event\ParDataEventInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\message_notify\Plugin\Notifier\MessageNotifierInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 abstract class ParNotificationSubscriberBase implements EventSubscriberInterface {
@@ -31,14 +29,14 @@ abstract class ParNotificationSubscriberBase implements EventSubscriberInterface
   const MESSAGE_ID = '';
 
   /**
-   * @var $event
+   * @var ParDataEventInterface $event
    */
-  protected $event;
+  protected ParDataEventInterface $event;
 
   /**
    * @var array $recipients
    */
-  protected $recipients = [];
+  protected array $recipients = [];
 
   /**
    * Returns the logger channel specific to errors logged by PAR Forms.
@@ -46,41 +44,53 @@ abstract class ParNotificationSubscriberBase implements EventSubscriberInterface
    * @return string
    *   Get the logger channel to use.
    */
-  public function getLoggerChannel() {
+  public function getLoggerChannel(): string {
     return 'par';
+  }
+
+  /**
+   * Get the par link manager.
+   *
+   * @return ParLinkManager
+   */
+  public function getLinkManager(): ParLinkManager {
+    return \Drupal::service('plugin.manager.par_link_manager');
   }
 
   /**
    * Get the entity type manager.
    *
-   * @return \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @return EntityTypeManagerInterface
    */
-  public function getEntityTypeManager() {
+  public function getEntityTypeManager(): EntityTypeManagerInterface {
     return \Drupal::entityTypeManager();
   }
 
   /**
    * Get the notification service.
    *
-   * @return mixed
+   * @return MessageNotifierInterface
    */
-  public function getNotifier() {
+  public function getNotifier(): MessageNotifierInterface {
     return \Drupal::service('message_notify.sender');
   }
 
   /**
    * Get the current user sending the message.
    *
-   * @return \Drupal\Core\Session\AccountProxyInterface
+   * @return AccountProxyInterface
    */
-  public function getCurrentUser() {
+  public function getCurrentUser(): AccountProxyInterface {
     return \Drupal::currentUser();
   }
 
   /**
    * Get message template storage.
+   *
+   * @return EntityStorageInterface
+   *   The entity storage for message template (bundle) entities.
    */
-  public function getMessageTemplateStorage() {
+  public function getMessageTemplateStorage(): EntityStorageInterface {
     return $this->getEntityTypeManager()->getStorage('message_template');
   }
 
@@ -110,19 +120,22 @@ abstract class ParNotificationSubscriberBase implements EventSubscriberInterface
    *
    * Checks whether the template is valid.
    *
-   * @param string $message_id
+   * @param string $message_template_id
    *   The message template id.
    *
-   * @return string|NULL
+   * @return MessageTemplateInterface|void
    */
-  public function getMessageTemplateId($message_id = NULL) {
-    if (!$message_id) {
-      $message_id = static::MESSAGE_ID;
+  public function getMessageTemplate($message_template_id = NULL): ?MessageTemplateInterface {
+    if (!$message_template_id) {
+      $message_template_id = static::MESSAGE_ID;
     }
 
-    // Load the message template.
-    if ($message_template = $this->getMessageTemplateStorage()->load($message_id)) {
-      return $message_id;
+    // Check that a template could be found.
+    /** @var MessageTemplateInterface $message_template */
+    $message_template = $this->getMessageTemplateStorage()->load($message_template_id);
+
+    if ($message_template instanceof MessageTemplateInterface) {
+      return $message_template;
     }
     else {
       $this->getLogger($this->getLoggerChannel())->warning('Could not find the message template for %message.', ['%message' => $message_id]);
@@ -136,13 +149,13 @@ abstract class ParNotificationSubscriberBase implements EventSubscriberInterface
    */
   public function createMessage() {
     // Create one message per user.
-    $template_id = $this->getMessageTemplateId();
+    $template_id = $this->getMessageTemplate()?->id();
     if (!$template_id) {
       throw new ParNotificationException('No template could be found.');
     }
 
     return $this->getMessageStorage()->create([
-      'template' => $this->getMessageTemplateId(),
+      'template' => $template_id,
     ]);
   }
 
@@ -155,6 +168,17 @@ abstract class ParNotificationSubscriberBase implements EventSubscriberInterface
     // PAR-1734: Invitations can be generated from this information.
     if ($message->hasField('field_to')) {
       $message->set('field_to', $email);
+    }
+
+    // Get all the primary tasks for this notification.
+    $tasks = $this->getLinkManager()->retrieveTasks($message->getTemplate());
+    // If any of the tasks have been completed then throw a message error.
+    foreach ($tasks as $id => $task) {
+      if ($task->isComplete($message)) {
+        // throw new ParNotificationException('The message does not need to be sent because the primary action has already been completed.');
+        $this->getLogger($this->getLoggerChannel())->warning('The message \'%message_template\' does not need to be sent because the primary action has already been completed .', ['%message_template' => $message->getTemplate()->label()]);
+        return;
+      }
     }
 
     if ($message->save()) {
