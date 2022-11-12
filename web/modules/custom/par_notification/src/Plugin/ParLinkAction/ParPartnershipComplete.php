@@ -5,6 +5,9 @@ namespace Drupal\par_notification\Plugin\ParLinkAction;
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
 use Drupal\par_notification\ParLinkActionBase;
+use Drupal\par_notification\ParNotificationException;
+use Drupal\par_notification\ParTaskInterface;
+use Drupal\par_data\Entity\ParDataPartnership;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -20,11 +23,48 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *   }
  * )
  */
-class ParPartnershipComplete extends ParLinkActionBase {
+class ParPartnershipComplete extends ParLinkActionBase implements ParTaskInterface {
 
+  /**
+   * The field that holds the primary par_data entity that this message refers to.
+   *
+   * This changes depending on the message type / bundle.
+   */
+  const PRIMARY_FIELD = 'field_partnership';
+
+  /**
+   * {@inheritDoc}
+   */
+  public function isComplete(MessageInterface $message): bool {
+    // Check if this is a valid task.
+    if (!$message->hasField(self::PRIMARY_FIELD)
+      || $message->get(self::PRIMARY_FIELD)->isEmpty()) {
+      throw new ParNotificationException('This message is invalid.');
+    }
+
+    /** @var ParDataPartnership[] $partnerships */
+    $partnerships = $message->get(self::PRIMARY_FIELD)->referencedEntities();
+    // If any of the partnerships are awaiting business confirmation this is not complete.
+    foreach ($partnerships as $partnership) {
+      $incomplete_statuses = [
+        $partnership->getTypeEntity()->getDefaultStatus(),
+        'confirmed_authority'
+      ];
+
+      if (in_array($partnership->getRawStatus(), $incomplete_statuses)) {
+        return FALSE;
+      }
+    }
+
+    return TRUE;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public function receive(MessageInterface $message) {
-    if ($message->hasField('field_partnership') && !$message->get('field_partnership')->isEmpty()) {
-      $par_data_partnership = current($message->get('field_partnership')->referencedEntities());
+    if ($message->hasField(self::PRIMARY_FIELD) && !$message->get(self::PRIMARY_FIELD)->isEmpty()) {
+      $par_data_partnership = current($message->get(self::PRIMARY_FIELD)->referencedEntities());
 
       // The route for viewing enforcement notices.
       $destination = Url::fromRoute('par_partnership_confirmation_flows.partnership_confirmation_authority_checklist', ['par_data_partnership' => $par_data_partnership->id()]);

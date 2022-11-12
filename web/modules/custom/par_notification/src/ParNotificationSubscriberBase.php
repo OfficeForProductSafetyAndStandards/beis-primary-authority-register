@@ -11,7 +11,7 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\message\MessageTemplateInterface;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\message_notify\Plugin\Notifier\MessageNotifierInterface;
+use Drupal\message_notify\Plugin\Notifier\MessageNotifier;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 abstract class ParNotificationSubscriberBase implements EventSubscriberInterface {
@@ -69,9 +69,9 @@ abstract class ParNotificationSubscriberBase implements EventSubscriberInterface
   /**
    * Get the notification service.
    *
-   * @return MessageNotifierInterface
+   * @return MessageNotifier
    */
-  public function getNotifier(): MessageNotifierInterface {
+  public function getNotifier(): MessageNotifier {
     return \Drupal::service('message_notify.sender');
   }
 
