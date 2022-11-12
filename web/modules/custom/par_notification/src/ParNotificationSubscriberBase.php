@@ -11,7 +11,7 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\message\MessageTemplateInterface;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\message_notify\Plugin\Notifier\MessageNotifier;
+use Drupal\message_notify\MessageNotifier;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 abstract class ParNotificationSubscriberBase implements EventSubscriberInterface {
@@ -138,7 +138,7 @@ abstract class ParNotificationSubscriberBase implements EventSubscriberInterface
       return $message_template;
     }
     else {
-      $this->getLogger($this->getLoggerChannel())->warning('Could not find the message template for %message.', ['%message' => $message_id]);
+      $this->getLogger($this->getLoggerChannel())->warning('Could not find the message template for %message.', ['%message' => $message_template_id]);
     }
   }
 
@@ -175,7 +175,6 @@ abstract class ParNotificationSubscriberBase implements EventSubscriberInterface
     // If any of the tasks have been completed then throw a message error.
     foreach ($tasks as $id => $task) {
       if ($task->isComplete($message)) {
-        // throw new ParNotificationException('The message does not need to be sent because the primary action has already been completed.');
         $this->getLogger($this->getLoggerChannel())->warning('The message \'%message_template\' does not need to be sent because the primary action has already been completed .', ['%message_template' => $message->getTemplate()->label()]);
         return;
       }
