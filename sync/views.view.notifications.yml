@@ -3,14 +3,17 @@ langcode: en
 status: true
 dependencies:
   module:
+    - better_exposed_filters
     - message
+    - pagerer
+    - user
 id: notifications
 label: Notifications
 module: views
 description: ''
 tag: ''
 base_table: message_field_data
-base_field: nid
+base_field: mid
 display:
   default:
     id: default
@@ -85,25 +88,23 @@ display:
           separator: ', '
           field_api_classes: false
       pager:
-        type: mini
+        type: pagerer
         options:
           offset: 0
           items_per_page: 20
-          total_pages: null
-          id: 0
-          tags:
-            next: ››
-            previous: ‹‹
+          preset: gds_list_pagination
+          id: '0'
+          total_pages: ''
           expose:
-            items_per_page: false
+            items_per_page: 0
             items_per_page_label: 'Items per page'
             items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
+            items_per_page_options_all: 0
             items_per_page_options_all_label: '- All -'
-            offset: false
+            offset: 0
             offset_label: Offset
       exposed_form:
-        type: basic
+        type: bef
         options:
           submit_button: Apply
           reset_button: false
@@ -112,9 +113,22 @@ display:
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
+          text_input_required: 'Select any filter and click on Apply to see results'
+          text_input_required_format: basic_html
+          bef:
+            general:
+              autosubmit: false
+              autosubmit_exclude_textfield: false
+              autosubmit_textfield_delay: 500
+              autosubmit_hide: false
+              input_required: false
+              allow_secondary: false
+              secondary_label: 'Advanced options'
+              secondary_open: false
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'access content'
       cache:
         type: tag
         options: {  }
@@ -138,19 +152,22 @@ display:
       relationships: {  }
       header: {  }
       footer: {  }
+      display_extenders: {  }
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user.permissions
       tags: {  }
-  page_1:
-    id: page_1
-    display_title: Page
+  user_notifications:
+    id: user_notifications
+    display_title: Notifications
     display_plugin: page
     position: 1
     display_options:
+      display_description: ''
       display_extenders: {  }
       path: notifications
     cache_metadata:
@@ -159,4 +176,5 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user.permissions
       tags: {  }
