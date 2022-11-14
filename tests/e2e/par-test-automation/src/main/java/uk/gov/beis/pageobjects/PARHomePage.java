@@ -20,8 +20,19 @@ public class PARHomePage extends BasePageObject {
 	@FindBy(linkText = "Sign in")
 	private WebElement signinButton;
 	
+	@FindBy(xpath = "//button[contains(text(),'Accept')]")
+	private WebElement cookies;
+	
 	public PARHomePage navigateToUrl() {
 		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url"));
+		return PageFactory.initElements(driver, PARHomePage.class);
+	}
+	
+	public PARHomePage checkAndAcceptCookies() {
+		driver.manage().deleteAllCookies();
+		if (cookies.isDisplayed()) {
+			cookies.click();
+		}
 		return PageFactory.initElements(driver, PARHomePage.class);
 	}
 	
