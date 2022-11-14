@@ -23,15 +23,27 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class ParInspectionFeedbackView extends ParLinkActionBase {
 
-  public function receive(MessageInterface $message) {
-    if ($message->hasField('field_inspection_feedback') && !$message->get('field_inspection_feedback')->isEmpty()) {
-      $par_data_inspection_feedback = current($message->get('field_inspection_feedback')->referencedEntities());
+  /**
+   * The field that holds the primary par_data entity that this message refers to.
+   *
+   * This changes depending on the message type / bundle.
+   */
+  const PRIMARY_FIELD = 'field_inspection_feedback';
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getUrl(MessageInterface $message): ?Url {
+    if ($message->hasField(self::PRIMARY_FIELD) && !$message->get(self::PRIMARY_FIELD)->isEmpty()) {
+      $par_data_inspection_feedback = current($message->get(self::PRIMARY_FIELD)->referencedEntities());
 
       $destination = Url::fromRoute('par_inspection_feedback_view_flows.view_feedback', ['par_data_inspection_feedback' => $par_data_inspection_feedback->id()]);
 
-      if ($destination->access($this->user)) {
-        return new RedirectResponse($destination->toString());
-      }
+      return $destination instanceof Url ?
+        $destination :
+        NULL;
     }
+
+    return NULL;
   }
 }

@@ -7,6 +7,10 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\message\MessageInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_notification\Plugin\Field\FieldType\ParNotificationLinkField;
+use Drupal\par_notification\Plugin\Field\FieldType\ParNotificationActionField;
 
 /**
  * Implements hook_help().
@@ -25,19 +29,36 @@ function par_notification_help($route_name, RouteMatchInterface $route_match) {
   return;
 }
 
-function _par_notification_message_callback(MessageInterface $message) {
-  return 'asdf';
-}
-
 /**
  * Implements hook_entity_type_build().
  */
 function par_notification_entity_type_build(array &$entity_types) {
-  /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
+  /** @var $entity_types EntityTypeInterface[] */
 
   // Add an access control handler for message entities.
   if (isset($entity_types['message'])) {
     $entity_types['message']
       ->setHandlerClass('access', 'Drupal\par_notification\Access\ParMessageAccessControlHandler');
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function par_notification_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === "message") {
+    // A boolean field to determine whether action is required.
+    $fields['action'] = BaseFieldDefinition::create('boolean')
+      ->setName('notification_action_required')
+      ->setLabel(t('Action Required'))
+      ->setComputed(TRUE)
+      ->setClass(ParNotificationActionField::class);
+
+    // A link field to add the appropriate destination for the message.
+    $fields['link'] = BaseFieldDefinition::create('link')
+      ->setName('notification_link')
+      ->setLabel(t('Notification Url'))
+      ->setComputed(TRUE)
+      ->setClass(ParNotificationLinkField::class);
   }
 }

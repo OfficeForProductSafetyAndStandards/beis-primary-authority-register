@@ -4,9 +4,13 @@ namespace Drupal\par_notification;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
+use Drupal\message\MessageInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Provides a base implementation for a Par Link Action plugin.
@@ -23,13 +27,18 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
    *
    * @var \Drupal\Core\Session\AccountInterface
    */
-  protected $user;
+  protected AccountInterface $user;
+
+  /**
+   * The default action text for links.
+   */
+  protected string $actionText = 'View the notification';
 
   /**
    * The return query used if an action is sequential,
    * as in it is not the final action.
    */
-  protected $returnQuery;
+  protected array $returnQuery;
 
   /**
    * {@inheritdoc}
@@ -71,7 +80,7 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
    *
    * @return AccountInterface
    */
-  public function getUser() {
+  public function getUser(): AccountInterface {
     return $this->user;
   }
 
@@ -80,6 +89,31 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
    */
   public function setUser(AccountInterface $user) {
     $this->user = $user;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function receive(MessageInterface $message): ?RedirectResponse {
+    $destination = $this->getUrl($message);
+
+    return $destination instanceof Url
+      && $destination->access($this->user) ?
+        new RedirectResponse($destination->toString()) :
+        NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getLink(MessageInterface $message): ?Link {
+    $destination = $this->getUrl($message);
+
+    return $destination instanceof Url
+      && $destination->access($this->user)
+      && !empty($this->actionText) ?
+        Link::fromTextAndUrl($this->actionText, $destination) :
+        NULL;
   }
 
   /**

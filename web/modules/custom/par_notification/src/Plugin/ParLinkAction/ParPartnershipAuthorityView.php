@@ -24,16 +24,29 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class ParPartnershipAuthorityView extends ParLinkActionBase {
 
-  public function receive(MessageInterface $message) {
-    if ($message->hasField('field_partnership') && !$message->get('field_partnership')->isEmpty()) {
-      $par_data_partnership = current($message->get('field_partnership')->referencedEntities());
+  /**
+   * The field that holds the primary par_data entity that this message refers to.
+   *
+   * This changes depending on the message type / bundle.
+   */
+  const PRIMARY_FIELD = 'field_partnership';
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getUrl(MessageInterface $message): ?Url {
+    if ($message->hasField(self::PRIMARY_FIELD) && !$message->get(self::PRIMARY_FIELD)->isEmpty()) {
+      $par_data_partnership = current($message->get(self::PRIMARY_FIELD)->referencedEntities());
 
       // The route for viewing enforcement notices.
       $destination = Url::fromRoute('par_partnership_flows.authority_details', ['par_data_partnership' => $par_data_partnership->id()]);
 
-      if (!$par_data_partnership->inProgress() && $destination->access($this->user)) {
-        return new RedirectResponse($destination->toString());
-      }
+      return $destination instanceof Url &&
+        !$par_data_partnership->inProgress() ?
+          $destination :
+          NULL;
     }
+
+    return NULL;
   }
 }

@@ -7,6 +7,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -29,7 +30,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  * @see \Drupal\Core\Archiver\ArchiverInterface
  * @see plugin_api
  */
-class ParLinkManager extends DefaultPluginManager {
+class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInterface {
 
   use LoggerChannelTrait;
   use StringTranslationTrait;
@@ -139,19 +140,17 @@ class ParLinkManager extends DefaultPluginManager {
   /**
    * Get only the enabled rules that applies to this notification.
    *
-   * @param string $notification_type
+   * @param MessageTemplateInterface $notification_type
    *   The message template id (the message bundle).
    *
    * @return array
    *   An array of plugin definitions.
    */
-  public function getDefinitionsByNotification(string $notification_type): array {
+  public function getDefinitionsByNotification(MessageTemplateInterface $notification_type): array {
     $definitions = [];
-    if ($notification_type) {
-      foreach ($this->getDefinitions(TRUE) as $id => $definition) {
-        if (!$definition['notification'] || in_array($notification_type, $definition['notification'])) {
-          $definitions[] = $definition;
-        }
+    foreach ($this->getDefinitions(TRUE) as $id => $definition) {
+      if (!$definition['notification'] || in_array($notification_type->id(), $definition['notification'])) {
+        $definitions[] = $definition;
       }
     }
 
@@ -159,13 +158,32 @@ class ParLinkManager extends DefaultPluginManager {
   }
 
   /**
-   * Generate the link manager URL.
-   *
-   * @param integer|string $message_id
-   *   Can be a message id or a message replacement token.
-   *
-   * @return \Drupal\Core\Url
-   *   The generated URL
+   * {@inheritDoc}
+   */
+  public function retrieveTasks(MessageTemplateInterface $message_template): array {
+    // Retrieve tasks once per notification type.
+    $function_id = __FUNCTION__ . ':' . $message_template->id();
+    $tasks = &drupal_static($function_id);
+    if (isset($tasks)) {
+      return $tasks;
+    }
+
+    $tasks = [];
+    $plugin_definitions = $this->getDefinitionsByNotification($message_template);
+
+    // Return only the link actions with tasks.
+    foreach ($plugin_definitions as $definition) {
+      $plugin = $this->createInstance($definition['id'], []);
+      if ($plugin instanceof ParTaskInterface) {
+        $tasks[$definition['id']] = $plugin;
+      }
+    }
+
+    return $tasks;
+  }
+
+  /**
+   * {@inheritDoc}
    */
   public function generateLink(int|string $message_id): Url {
     $link_options = ['absolute' => TRUE];
@@ -173,14 +191,7 @@ class ParLinkManager extends DefaultPluginManager {
   }
 
   /**
-   * Redirect to the appropriate URL.
-   *
-   * Handles cases where the link is not accessible.
-   *
-   * @throws ParNotificationException
-   *   When the link cannot be accessed after all the checks have been made.
-   *
-   * @return RedirectResponse|void
+   * {@inheritDoc}
    */
   public function receive(RouteMatchInterface $route, MessageInterface $message): ?RedirectResponse {
     // The current link manager link, used for sequential redirection.
@@ -190,7 +201,7 @@ class ParLinkManager extends DefaultPluginManager {
     $link_manager_destination_query = ['query' => ['destination' => UrlHelper::encodePath($link_manager_destination_path)]];
 
     // Get all redirection plugins.
-    $plugin_definitions = $this->getDefinitionsByNotification($message->getTemplate()->id());
+    $plugin_definitions = $this->getDefinitionsByNotification($message->getTemplate());
     foreach ($plugin_definitions as $definition) {
       $plugin = $this->createInstance($definition['id'], []);
 
@@ -203,39 +214,27 @@ class ParLinkManager extends DefaultPluginManager {
         return $response;
       }
     }
+
+    return NULL;
   }
 
   /**
-   * Return all link actions with tasks.
-   *
-   * Tasks are actions that require active input and need to be completed.
-   * @see PAR-1948 - https://regulatorydelivery.atlassian.net/browse/PAR-1948
-   *
-   * @param MessageTemplateInterface $message_template
-   *   The message template (aka the message bundle entity).
-   *
-   * @return ParTaskInterface[]
+   * {@inheritDoc}
    */
-  public function retrieveTasks(MessageTemplateInterface $message_template): array {
-    // Retrieve tasks once per notification type.
-    $function_id = __FUNCTION__ . ':' . $message_template->id();
-    $tasks = &drupal_static($function_id);
-    if (isset($tasks)) {
-      return $tasks;
-    }
-
-    $tasks = [];
-    $plugin_definitions = $this->getDefinitionsByNotification($message_template->id());
-
-    // Return only the link actions with tasks.
+  public function link(MessageInterface $message): ?Link {
+    // Get all redirection plugins.
+    $plugin_definitions = $this->getDefinitionsByNotification($message->getTemplate());
     foreach ($plugin_definitions as $definition) {
       $plugin = $this->createInstance($definition['id'], []);
-      if ($plugin instanceof ParTaskInterface) {
-        $tasks[$definition['id']] = $plugin;
+
+      $action_link = $plugin->getLink($message);
+      // If the plugin returns a redirect response return this.
+      if ($action_link instanceof Link) {
+        return $action_link;
       }
     }
 
-    return $tasks;
+    return NULL;
   }
 
 }

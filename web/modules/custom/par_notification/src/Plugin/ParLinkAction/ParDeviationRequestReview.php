@@ -55,17 +55,23 @@ class ParDeviationRequestReview extends ParLinkActionBase implements ParTaskInte
     return TRUE;
   }
 
-  public function receive(MessageInterface $message) {
+  /**
+   * {@inheritDoc}
+   */
+  public function getUrl(MessageInterface $message): ?Url {
     if ($message->hasField(self::PRIMARY_FIELD)
       && !$message->get(self::PRIMARY_FIELD)->isEmpty()) {
-      $par_data_deviation_request = current($message->get(self::PRIMARY_FIELD)->referencedEntities());
+      $par_data_deviation_request = current($message->get(self::PRIMARY_FIELD)
+        ->referencedEntities());
 
       $destination = Url::fromRoute('par_deviation_review_flows.respond', ['par_data_deviation_request' => $par_data_deviation_request->id()]);
 
-      if ($par_data_deviation_request->isAwaitingApproval()
-        && $destination->access($this->user)) {
-        return new RedirectResponse($destination->toString());
-      }
+      return $destination instanceof Url &&
+        $par_data_deviation_request->isAwaitingApproval() ?
+          $destination :
+          NULL;
     }
+
+    return NULL;
   }
 }

@@ -62,16 +62,19 @@ class ParPartnershipComplete extends ParLinkActionBase implements ParTaskInterfa
   /**
    * {@inheritDoc}
    */
-  public function receive(MessageInterface $message) {
+  public function getUrl(MessageInterface $message): ?Url {
     if ($message->hasField(self::PRIMARY_FIELD) && !$message->get(self::PRIMARY_FIELD)->isEmpty()) {
       $par_data_partnership = current($message->get(self::PRIMARY_FIELD)->referencedEntities());
 
       // The route for viewing enforcement notices.
       $destination = Url::fromRoute('par_partnership_confirmation_flows.partnership_confirmation_authority_checklist', ['par_data_partnership' => $par_data_partnership->id()]);
 
-      if ($par_data_partnership->inProgress() && $destination->access($this->user)) {
-        return new RedirectResponse($destination->toString());
-      }
+      return $destination instanceof Url &&
+        $par_data_partnership->inProgress() ?
+          $destination :
+          NULL;
     }
+
+    return NULL;
   }
 }

@@ -24,25 +24,46 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class ParInspectionPlanView extends ParLinkActionBase {
 
-  public function receive(MessageInterface $message) {
-    if ($message->hasField('field_inspection_plan') && !$message->get('field_inspection_plan')->isEmpty()) {
-      $par_data_inspection_plan = current($message->get('field_inspection_plan')->referencedEntities());
+  /**
+   * The field that holds the primary par_data entity that this message refers to.
+   *
+   * This changes depending on the message type / bundle.
+   */
+  const PRIMARY_FIELD = 'field_inspection_plan';
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getUrl(MessageInterface $message): ?Url {
+    if ($message->hasField(self::PRIMARY_FIELD)
+      && !$message->get(self::PRIMARY_FIELD)->isEmpty()) {
+      $par_data_inspection_plan = current($message->get(self::PRIMARY_FIELD)
+        ->referencedEntities());
 
       /** @var ParDataRelationship[] $partnership_relationships */
-      $partnership_relationships = $par_data_inspection_plan->getRelationships('par_data_partnership');
-      $par_data_partnership = !empty($partnership_relationships) ? current($partnership_relationships)->getEntity() : NULL;
+      $partnership_relationships = $par_data_inspection_plan ?
+        $par_data_inspection_plan->getRelationships('par_data_partnership') :
+        [];
+      $par_data_partnership = !empty($partnership_relationships) ?
+        current($partnership_relationships)->getEntity() :
+        NULL;
 
-      if ($par_data_partnership && $par_data_inspection_plan) {
+      if ($par_data_partnership) {
         // The route for viewing enforcement notices.
-        $destination = Url::fromRoute('par_partnership_flows.authority_inspection_plan_details', [
-          'par_data_partnership' => $par_data_partnership->id(),
-          'par_data_inspection_plan' => $par_data_inspection_plan->id(),
-        ]);
-      }
+        $destination = Url::fromRoute(
+          'par_partnership_flows.authority_inspection_plan_details',
+          [
+            'par_data_partnership' => $par_data_partnership->id(),
+            'par_data_inspection_plan' => $par_data_inspection_plan->id(),
+          ]
+        );
 
-      if ($destination->access($this->user)) {
-        return new RedirectResponse($destination->toString());
+        return $destination instanceof Url ?
+          $destination :
+          NULL;
       }
     }
+
+    return NULL;
   }
 }

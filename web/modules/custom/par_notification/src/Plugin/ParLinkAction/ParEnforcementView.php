@@ -24,16 +24,29 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class ParEnforcementView extends ParLinkActionBase {
 
-  public function receive(MessageInterface $message) {
-    if ($message->hasField('field_enforcement_notice') && !$message->get('field_enforcement_notice')->isEmpty()) {
-      $par_data_enforcement_notice = current($message->get('field_enforcement_notice')->referencedEntities());
+  /**
+   * The field that holds the primary par_data entity that this message refers to.
+   *
+   * This changes depending on the message type / bundle.
+   */
+  const PRIMARY_FIELD = 'field_enforcement_notice';
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getUrl(MessageInterface $message): ?Url {
+    if ($message->hasField(self::PRIMARY_FIELD) && !$message->get(self::PRIMARY_FIELD)->isEmpty()) {
+      $par_data_enforcement_notice = current($message->get(self::PRIMARY_FIELD)->referencedEntities());
 
       // The route for viewing enforcement notices.
       $destination = Url::fromRoute('par_enforcement_send_flows.send_enforcement', ['par_data_enforcement_notice' => $par_data_enforcement_notice->id()]);
 
-      if (!$par_data_enforcement_notice->inProgress() && $destination->access($this->user)) {
-        return new RedirectResponse($destination->toString());
-      }
+      return $destination instanceof Url &&
+        !$par_data_enforcement_notice->inProgress() ?
+          $destination :
+          NULL;
     }
+
+    return NULL;
   }
 }
