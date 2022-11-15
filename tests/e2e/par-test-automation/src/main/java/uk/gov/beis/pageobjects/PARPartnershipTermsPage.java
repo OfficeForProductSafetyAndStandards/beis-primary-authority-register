@@ -13,10 +13,6 @@ public class PARPartnershipTermsPage extends BasePageObject {
 		super();
 	}
 
-//	@FindBy(xpath = "//input[@name='confirm']")
-	@FindBy(xpath = "//label[contains(text(),'I confirm these conditions have been met')]")
-	WebElement termsCheckbox;
-
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 

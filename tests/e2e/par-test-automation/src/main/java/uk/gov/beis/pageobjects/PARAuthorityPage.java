@@ -16,10 +16,10 @@ public class PARAuthorityPage extends BasePageObject {
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 
-	private String locator = "//label[contains(text(),'?')]";
+	private String authority = "//label[contains(text(),'?')]";
 
-	public PARPartnershipTypePage selectAuthority() {
-		WebElement link = driver.findElement(By.xpath(locator.replace("?", "Lower")));
+	public PARPartnershipTypePage selectAuthority(String auth) {
+		WebElement link = driver.findElement(By.xpath(authority.replace("?", auth)));
 		link.click();
 		if (continueBtn.isDisplayed())
 			continueBtn.click();

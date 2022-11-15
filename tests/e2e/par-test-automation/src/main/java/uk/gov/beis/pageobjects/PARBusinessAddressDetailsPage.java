@@ -38,4 +38,10 @@ public class PARBusinessAddressDetailsPage extends BasePageObject {
 
 		return PageFactory.initElements(driver, PARBusinessContactDetailsPage.class);
 	}
+
+	public PARBusinessContactDetailsPage proceed() {
+		if (continueBtn.isDisplayed())
+			continueBtn.click();
+		return PageFactory.initElements(driver, PARBusinessContactDetailsPage.class);
+	}
 }

@@ -19,11 +19,17 @@ public class PARDashboardPage extends BasePageObject {
 	@FindBy(linkText = "Apply for a new partnership")
 	WebElement applyPartnershipBtn;
 	
-    private String locator = "//label[contains(text(),'?')]";
+	@FindBy(linkText = "See your partnerships")
+	WebElement viewPartnershipBtn;
 	
 	public PARAuthorityPage selectApplyForNewPartnership() {
 		applyPartnershipBtn.click();
 		return PageFactory.initElements(driver, PARAuthorityPage.class);
+	}
+	
+	public PartnershipSearchPage selectSeePartnerships() {
+		viewPartnershipBtn.click();
+		return PageFactory.initElements(driver, PartnershipSearchPage.class);
 	}
 	
 	public String checkPage() {
