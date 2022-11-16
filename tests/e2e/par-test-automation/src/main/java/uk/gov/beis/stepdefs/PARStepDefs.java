@@ -16,12 +16,15 @@ import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
+import uk.gov.beis.pageobjects.EmployeesPage;
 import uk.gov.beis.pageobjects.PARAuthorityPage;
 import uk.gov.beis.pageobjects.PARBusinessAddressDetailsPage;
 import uk.gov.beis.pageobjects.PARBusinessContactDetailsPage;
+import uk.gov.beis.pageobjects.PARBusinessDetailsPage;
 import uk.gov.beis.pageobjects.PARBusinessInvitePage;
 import uk.gov.beis.pageobjects.PARBusinessPage;
 import uk.gov.beis.pageobjects.PARDashboardPage;
+import uk.gov.beis.pageobjects.PARDeclarationPage;
 import uk.gov.beis.pageobjects.PARHomePage;
 import uk.gov.beis.pageobjects.PARLoginPage;
 import uk.gov.beis.pageobjects.PARPartnershipCompletionPage;
@@ -30,6 +33,8 @@ import uk.gov.beis.pageobjects.PARPartnershipDescriptionPage;
 import uk.gov.beis.pageobjects.PARPartnershipTermsPage;
 import uk.gov.beis.pageobjects.PARPartnershipTypePage;
 import uk.gov.beis.pageobjects.PartnershipSearchPage;
+import uk.gov.beis.pageobjects.SICCodePage;
+import uk.gov.beis.pageobjects.TradingPage;
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
 
@@ -38,6 +43,7 @@ public class PARStepDefs {
 	public static WebDriver driver;
 	private PARHomePage parHomePage;
 	private PARLoginPage parLoginPage;
+	private SICCodePage sicCodePage;
 	private PARDashboardPage parDashboardPage;
 	private PARAuthorityPage parAuthorityPage;
 	private PartnershipSearchPage partnershipSearchPage;
@@ -45,15 +51,24 @@ public class PARStepDefs {
 	private PARPartnershipTermsPage parPartnershipTermsPage;
 	private PARPartnershipDescriptionPage parPartnershipDescriptionPage;
 	private PARBusinessPage parBusinessPage;
+	private EmployeesPage employeesPage;
+	private PARBusinessDetailsPage parBusinessDetailsPage;
+	private PARDeclarationPage parDeclarationPage;
 	private PARBusinessContactDetailsPage parBusinessContactDetailsPage;
 	private PARPartnershipConfirmationPage parPartnershipConfirmationPage;
 	private PARBusinessInvitePage parBusinessInvitePage;
 	private PARPartnershipCompletionPage parPartnershipCompletionPage;
 	private PARBusinessAddressDetailsPage parBusinessAddressDetailsPage;
+	private TradingPage tradingPage;
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		employeesPage = PageFactory.initElements(driver, EmployeesPage.class);
+		tradingPage = PageFactory.initElements(driver, TradingPage.class);
+		sicCodePage = PageFactory.initElements(driver, SICCodePage.class);
 		parHomePage = PageFactory.initElements(driver, PARHomePage.class);
+		parBusinessDetailsPage = PageFactory.initElements(driver, PARBusinessDetailsPage.class);
+		parDeclarationPage = PageFactory.initElements(driver, PARDeclarationPage.class);
 		parLoginPage = PageFactory.initElements(driver, PARLoginPage.class);
 		parDashboardPage = PageFactory.initElements(driver, PARDashboardPage.class);
 		parAuthorityPage = PageFactory.initElements(driver, PARAuthorityPage.class);
@@ -75,7 +90,7 @@ public class PARStepDefs {
 		parHomePage.navigateToUrl();
 		parHomePage.checkAndAcceptCookies();
 	}
-	
+
 	@Given("^the user is on the PAR login page$")
 	public void the_user_is_on_the_PAR_login_page() throws Throwable {
 		LOG.info("Navigating to PAR login page - logging out user first if already logged in");
@@ -149,18 +164,35 @@ public class PARStepDefs {
 	public void the_partnership_application_is_successfully_created() throws Throwable {
 //		Assert.assertTrue("Not created successfully",parPartnershipConfirmationPage.checkPartnershipApplication());
 	}
-	
+
 	@When("^the user searches for the last created partnership$")
 	public void the_user_searches_for_the_last_created_partnership() throws Throwable {
+		LOG.info("Selecting view partnerships");
 		parDashboardPage.selectSeePartnerships();
+		LOG.info("Search partnerships");
 		partnershipSearchPage.searchPartnerships();
+		LOG.info("Select organisation link details");
 		partnershipSearchPage.selectBusinessNameLink();
-		Thread.sleep(5000);
 	}
 
-	@When("^the user completes the direct partnership application$")
-	public void the_user_completes_the_direct_partnership_application() throws Throwable {
-	   
+	@When("^the user completes the direct partnership application with the following details:$")
+	public void the_user_completes_the_direct_partnership_application_with_the_following_details(DataTable details)
+			throws Throwable {
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			LOG.info("Accepting terms");
+			parDeclarationPage.acceptTerms();
+			LOG.info("Add business description");
+			parBusinessDetailsPage.enterBusinessDescription(data.get("Business Description"));
+			LOG.info("Confirming address details");
+			parBusinessAddressDetailsPage.proceed();
+			LOG.info("Confirming contact details");
+			parBusinessContactDetailsPage.proceed();
+			LOG.info("Selecting SIC Code");
+			sicCodePage.selectSICCode(data.get("SIC Code"));
+			LOG.info("Selecting No of Employees");
+			employeesPage.selectNoEmployees(data.get("No of Employees"));
+			LOG.info("Entering business trading name");
+			tradingPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME).replace("Business", "trading name"));
+		}
 	}
-
 }
