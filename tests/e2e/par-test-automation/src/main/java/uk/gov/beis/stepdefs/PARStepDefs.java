@@ -17,6 +17,7 @@ import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.EmployeesPage;
+import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.PARAuthorityPage;
 import uk.gov.beis.pageobjects.PARBusinessAddressDetailsPage;
 import uk.gov.beis.pageobjects.PARBusinessContactDetailsPage;
@@ -51,6 +52,7 @@ public class PARStepDefs {
 	private PARPartnershipTermsPage parPartnershipTermsPage;
 	private PARPartnershipDescriptionPage parPartnershipDescriptionPage;
 	private PARBusinessPage parBusinessPage;
+	private LegalEntityPage legalEntityPage;
 	private EmployeesPage employeesPage;
 	private PARBusinessDetailsPage parBusinessDetailsPage;
 	private PARDeclarationPage parDeclarationPage;
@@ -64,6 +66,7 @@ public class PARStepDefs {
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
 		employeesPage = PageFactory.initElements(driver, EmployeesPage.class);
+		legalEntityPage = PageFactory.initElements(driver, LegalEntityPage.class);
 		tradingPage = PageFactory.initElements(driver, TradingPage.class);
 		sicCodePage = PageFactory.initElements(driver, SICCodePage.class);
 		parHomePage = PageFactory.initElements(driver, PARHomePage.class);
@@ -136,6 +139,7 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.BUSINESS_NAME, RandomStringGenerator.getBusinessName(3));
 			parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 			LOG.info("Enter address details");
+			Thread.sleep(2000);
 			parBusinessAddressDetailsPage.enterAddressDetails(data.get("addressline1"), data.get("town"),
 					data.get("postcode"));
 			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("addressline1"));
@@ -188,11 +192,23 @@ public class PARStepDefs {
 			LOG.info("Confirming contact details");
 			parBusinessContactDetailsPage.proceed();
 			LOG.info("Selecting SIC Code");
+			DataStore.saveValue(UsableValues.SIC_CODE, data.get("SIC Code"));
 			sicCodePage.selectSICCode(data.get("SIC Code"));
 			LOG.info("Selecting No of Employees");
+			DataStore.saveValue(UsableValues.NO_EMPLOYEES, data.get("No of Employees"));
 			employeesPage.selectNoEmployees(data.get("No of Employees"));
 			LOG.info("Entering business trading name");
-			tradingPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME).replace("Business", "trading name"));
+			DataStore.saveValue(UsableValues.TRADING_NAME, DataStore.getSavedValue(UsableValues.BUSINESS_NAME).replace("Business", "trading name"));
+			tradingPage.enterBusinessName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal entity Type"));
+			legalEntityPage.createLegalEntity(data.get("Legal entity Type"));
+			LOG.info("set second journey part to true");
+			parPartnershipConfirmationPage.setJourneyPart(true);
+			LOG.info("Check and confirm changes");
+			parPartnershipConfirmationPage.confirmDetails();
+			Assert.assertTrue("Appliction not complete", parPartnershipConfirmationPage.checkPartnershipApplicationSecondPart());
+			parPartnershipConfirmationPage.saveChanges();
+			parPartnershipCompletionPage.completeApplication();
 		}
 	}
 }

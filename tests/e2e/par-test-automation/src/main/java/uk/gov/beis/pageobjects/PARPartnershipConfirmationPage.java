@@ -16,6 +16,8 @@ public class PARPartnershipConfirmationPage extends BasePageObject {
 		super();
 	}
 
+	private boolean twopartjourney = false;
+
 	@FindBy(xpath = "//input[contains(@value,'Save')]")
 	WebElement saveBtn;
 
@@ -28,11 +30,24 @@ public class PARPartnershipConfirmationPage extends BasePageObject {
 	String businessLName = "//div[contains(text(),'?')]";
 	String businessEmailid = "//a[contains(text(),'?')]";
 	String authorityName = "//div[contains(text(),'?')]";
+	String sic = "//div[contains(text(),'?')]";
+	String noEmplyees = "//div[contains(text(),'?')]";
+	String entName = "//div[contains(text(),'?')]";
+	String entType = "//div[contains(text(),'?')]";
+	String regNo = "//div[contains(text(),'?')]";
+
+	public void setJourneyPart(boolean value) {
+		this.twopartjourney = value;
+	}
+
+	public boolean getJourneyPart() {
+		return this.twopartjourney;
+	}
 
 	public PARPartnershipConfirmationPage confirmDetails() {
-		WebElement checkbox = driver.findElement(By.id("edit-terms-authority-agreed"));
-		// If the checkbox is unchecked then isSelected() will return false
-		// and NOT of false is true, hence we can click on checkbox
+		System.out.println("journey value = " + getJourneyPart());
+		WebElement checkbox = getJourneyPart() ? driver.findElement(By.id("edit-terms-organisation-agreed"))
+				: driver.findElement(By.id("edit-terms-authority-agreed"));
 		if (!checkbox.isSelected())
 			checkbox.click();
 		return PageFactory.initElements(driver, PARPartnershipConfirmationPage.class);
@@ -45,8 +60,8 @@ public class PARPartnershipConfirmationPage extends BasePageObject {
 	}
 
 	public boolean checkPartnershipApplication() {
-		WebElement partnershipDets = driver.findElement(
-				By.xpath(partnershipDetails.replace("?", DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO))));
+//		WebElement partnershipDets = driver.findElement(
+//				By.xpath(partnershipDetails.replace("?", DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO))));
 		WebElement businessNm = driver
 				.findElement(By.xpath(businessname.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME))));
 		WebElement addLine1 = driver.findElement(
@@ -61,8 +76,25 @@ public class PARPartnershipConfirmationPage extends BasePageObject {
 				By.xpath(businessLName.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME))));
 		WebElement businessEmail = driver.findElement(
 				By.xpath(businessEmailid.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL))));
-		return (partnershipDets.isDisplayed() && businessNm.isDisplayed() && addLine1.isDisplayed()
+
+		return (businessNm.isDisplayed() && addLine1.isDisplayed()
 				&& businessTown.isDisplayed() && businessPostcode.isDisplayed() && businessFirstName.isDisplayed()
 				&& businessLastName.isDisplayed() && businessEmail.isDisplayed());
+	}
+
+	public boolean checkPartnershipApplicationSecondPart() {
+		WebElement sicCd = driver
+				.findElement(By.xpath(sic.replace("?", DataStore.getSavedValue(UsableValues.SIC_CODE))));
+		WebElement nEmplyees = driver
+				.findElement(By.xpath(noEmplyees.replace("?", DataStore.getSavedValue(UsableValues.NO_EMPLOYEES))));
+		WebElement entityNm = driver
+				.findElement(By.xpath(entName.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
+		WebElement entityTyp = driver
+				.findElement(By.xpath(entType.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_TYPE))));
+		WebElement regNum = driver
+				.findElement(By.xpath(regNo.replace("?", DataStore.getSavedValue(UsableValues.REGISTRATION_NO))));
+
+		return (checkPartnershipApplication() && sicCd.isDisplayed() && nEmplyees.isDisplayed()
+				&& entityNm.isDisplayed() && entityTyp.isDisplayed() && regNum.isDisplayed() && regNum.isDisplayed());
 	}
 }
