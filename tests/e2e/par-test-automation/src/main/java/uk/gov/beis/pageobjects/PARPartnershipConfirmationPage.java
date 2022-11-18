@@ -35,6 +35,7 @@ public class PARPartnershipConfirmationPage extends BasePageObject {
 	String entName = "//div[contains(text(),'?')]";
 	String entType = "//div[contains(text(),'?')]";
 	String regNo = "//div[contains(text(),'?')]";
+	String tradename = "//div[contains(text(),'?')]";
 
 	public void setJourneyPart(boolean value) {
 		this.twopartjourney = value;
@@ -77,9 +78,9 @@ public class PARPartnershipConfirmationPage extends BasePageObject {
 		WebElement businessEmail = driver.findElement(
 				By.xpath(businessEmailid.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL))));
 
-		return (businessNm.isDisplayed() && addLine1.isDisplayed()
-				&& businessTown.isDisplayed() && businessPostcode.isDisplayed() && businessFirstName.isDisplayed()
-				&& businessLastName.isDisplayed() && businessEmail.isDisplayed());
+		return (businessNm.isDisplayed() && addLine1.isDisplayed() && businessTown.isDisplayed()
+				&& businessPostcode.isDisplayed() && businessFirstName.isDisplayed() && businessLastName.isDisplayed()
+				&& businessEmail.isDisplayed());
 	}
 
 	public boolean checkPartnershipApplicationSecondPart() {
@@ -93,8 +94,11 @@ public class PARPartnershipConfirmationPage extends BasePageObject {
 				.findElement(By.xpath(entType.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_TYPE))));
 		WebElement regNum = driver
 				.findElement(By.xpath(regNo.replace("?", DataStore.getSavedValue(UsableValues.REGISTRATION_NO))));
+		WebElement tradeNm = driver
+				.findElement(By.xpath(tradename.replace("?", DataStore.getSavedValue(UsableValues.TRADING_NAME))));
 
 		return (checkPartnershipApplication() && sicCd.isDisplayed() && nEmplyees.isDisplayed()
-				&& entityNm.isDisplayed() && entityTyp.isDisplayed() && regNum.isDisplayed() && regNum.isDisplayed());
+				&& entityNm.isDisplayed() && entityTyp.isDisplayed() && regNum.isDisplayed() && regNum.isDisplayed()
+				&& tradeNm.isDisplayed());
 	}
 }
