@@ -2,6 +2,8 @@
 
 namespace Drupal\par_notification\Plugin\ParLinkAction;
 
+use Drupal\Core\Entity\Query\ConditionInterface;
+use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
 use Drupal\par_notification\ParLinkActionBase;
@@ -20,31 +22,29 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *   weight = 1,
  *   notification = {
  *     "new_deviation_request",
- *     "new_deviation_response",
- *   }
+ *   },
+ *   field = "field_deviation_request",
  * )
  */
 class ParDeviationRequestReview extends ParLinkActionBase implements ParTaskInterface {
 
   /**
-   * The field that holds the primary par_data entity that this message refers to.
-   *
-   * This changes depending on the message type / bundle.
+   * {@inheritdoc}
    */
-  const PRIMARY_FIELD = 'field_deviation_request';
+  protected string $actionText = 'Approve the request to deviate from the inspection plan';
 
   /**
    * {@inheritDoc}
    */
   public function isComplete(MessageInterface $message): bool {
     // Check if this is a valid task.
-    if (!$message->hasField(self::PRIMARY_FIELD)
-      || $message->get(self::PRIMARY_FIELD)->isEmpty()) {
+    if (!$message->hasField($this->getPrimaryField())
+      || $message->get($this->getPrimaryField())->isEmpty()) {
       throw new ParNotificationException('This message is invalid.');
     }
 
     /** @var ParDataDeviationRequest[] $deviation_requests */
-    $deviation_requests = $message->get(self::PRIMARY_FIELD)->referencedEntities();
+    $deviation_requests = $message->get($this->getPrimaryField())->referencedEntities();
     // If any of the deviation requests are awaiting approval this is not complete.
     foreach ($deviation_requests as $deviation_request) {
       if ($deviation_request->isAwaitingApproval()) {
@@ -59,9 +59,9 @@ class ParDeviationRequestReview extends ParLinkActionBase implements ParTaskInte
    * {@inheritDoc}
    */
   public function getUrl(MessageInterface $message): ?Url {
-    if ($message->hasField(self::PRIMARY_FIELD)
-      && !$message->get(self::PRIMARY_FIELD)->isEmpty()) {
-      $par_data_deviation_request = current($message->get(self::PRIMARY_FIELD)
+    if ($message->hasField($this->getPrimaryField())
+      && !$message->get($this->getPrimaryField())->isEmpty()) {
+      $par_data_deviation_request = current($message->get($this->getPrimaryField())
         ->referencedEntities());
 
       $destination = Url::fromRoute('par_deviation_review_flows.respond', ['par_data_deviation_request' => $par_data_deviation_request->id()]);

@@ -113,6 +113,32 @@ class ParDashboardsDashboardController extends ControllerBase {
       ],
     ];
 
+    // Get the permissions that are allowed to view tasks.
+    $task_permissions = \Drupal::cache()->get('par_notification.task_permissions');
+    if (empty($task_permissions)) {
+      $par_link_manager = \Drupal::service('plugin.manager.par_link_manager');
+      $task_permissions = [];
+      foreach ($par_link_manager->getTaskTemplates() as $message_template) {
+        $task_permissions[] = $message_template->id();
+      }
+      \Drupal::cache()->set('par_notification.task_permissions', $task_permissions);
+    }
+    // If the user has permission to view task notications.
+    foreach ($task_permissions as $permission) {
+      if ($this->currentUser()->hasPermission($permission)) {
+        $build['tasks'] = [
+          '#lazy_builder' => [
+            'par_dashboards.components:viewOutstandingTasksComponent',
+            []
+          ],
+          '#create_placeholder' => TRUE
+        ];
+
+        break;
+      }
+    }
+
+    // Get the permissions for managing partnerships.
     $can_manage_partnerships = $this->getCurrentUser()->hasPermission('confirm partnership') ||
       $this->getCurrentUser()->hasPermission('update partnership authority details') ||
       $this->getCurrentUser()->hasPermission('update partnership organisation details');

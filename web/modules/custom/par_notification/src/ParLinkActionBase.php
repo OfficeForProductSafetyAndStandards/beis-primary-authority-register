@@ -30,7 +30,7 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
   protected AccountInterface $user;
 
   /**
-   * The default action text for links.
+   * The link text for link action plugin.
    */
   protected string $actionText = 'View the notification';
 
@@ -64,6 +64,13 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
   /**
    * {@inheritdoc}
    */
+  public function getNotifications() {
+    return $this->pluginDefinition['notification'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getDestination() {
     return $this->pluginDefinition['destination'];
   }
@@ -73,6 +80,13 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
    */
   public function getAction() {
     return $this->pluginDefinition['action'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPrimaryField(): string {
+    return $this->pluginDefinition['field'];
   }
 
   /**

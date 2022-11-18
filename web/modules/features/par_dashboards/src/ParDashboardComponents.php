@@ -7,8 +7,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
-use Drupal\Core\Entity\ContentEntityType;
-use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\Query\ConditionInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\RendererInterface;
@@ -16,16 +15,12 @@ use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\file\FileInterface;
-use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\ParDataManager;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\user\Entity\User;
-use Drupal\user\UserInterface;
+use Drupal\message\MessageInterface;
 
 /**
 * Manages all functionality universal to Par Data.
@@ -92,6 +87,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
    */
   public static function trustedCallbacks() {
     return [
+      'viewOutstandingTasksComponent',
       'managePartnershipComponent',
       'searchPartnershipComponent',
       'messagesComponent',
@@ -136,6 +132,94 @@ class ParDashboardComponents implements TrustedCallbackInterface {
 
   public function getParDataManager() {
     return $this->parDataManager;
+  }
+
+  public function viewOutstandingTasksComponent($count = 0) {
+    $par_link_manager = \Drupal::service('plugin.manager.par_link_manager');
+    $qry = \Drupal::entityQuery('message')->accessCheck(TRUE)
+      ->addTag('task_messages')
+      ->addTag('view_messages');
+    $results = $qry->execute();
+
+    /** @var MessageInterface[] $messages */
+    $messages = \Drupal::entityTypeManager()->getStorage('message')
+      ->loadMultiple($results);
+
+    // Only show the messages the user has permission to view.
+    $messages = array_filter($messages, function ($message) {
+      return $message->access('view');
+    });
+
+    // Count the number of messages with an active task that requires completion.
+    foreach ($messages as $message) {
+      $tasks = $par_link_manager->retrieveTasks($message->getTemplate());
+      foreach ($tasks as $task) {
+        if (!$task->isComplete($message)) {
+          $count++;
+        }
+      }
+    }
+
+    $build['tasks'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Tasks',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+      '#cache' => ['contexts' => ['user']],
+    ];
+
+    $build['tasks']['count'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => $this->formatPlural(
+        $count,
+        'There is <strong>@count</strong> task that requires your attention.',
+        'There are <strong>@count</strong> tasks that require your attention.',
+        ['@count' => $count]
+      ),
+      '#attributes' => ['class' => ['task-count', 'form-group']],
+    ];
+
+    if ($count >= 1) {
+      $build['tasks']['list'] = [
+        '#theme' => 'table',
+        '#attributes' => ['class' => ['form-group']],
+        '#title' => 'Tasks',
+        '#header' => [
+          'Action',
+          'Against',
+          'Status',
+        ],
+        '#empty' => $this->t("There are no tasks required."),
+      ];
+
+      foreach ($messages as $message) {
+        if ($par_link_manager->isComplete($message) === FALSE) {
+          $colour = $par_link_manager->isComplete($message) === FALSE ?
+            'govuk-tag--red' : 'govuk-tag--blue';
+          $status = [
+            '#type' => 'html_tag',
+            '#tag' => 'strong',
+            '#value' => $par_link_manager->isComplete($message) === FALSE ?
+              'Action required' : 'Complete',
+            '#attributes' => ['class' => ['govuk-tag', $colour]],
+          ];
+          foreach ($par_link_manager->retrieveTasks($message->getTemplate()) as $task) {
+            $label = current($message->get($task->getPrimaryField())->referencedEntities())->label();
+          }
+          $build['tasks']['list']['#rows'][] = [
+            'data' => [
+              'entity' => $par_link_manager->link($message),
+              'notification' => ucfirst($label),
+              'status' => \Drupal::service('renderer')->render($status),
+            ],
+          ];
+        }
+      }
+    }
+
+    return $build;
   }
 
   public function managePartnershipComponent($count = FALSE) {

@@ -19,25 +19,19 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *   notification = {
  *     "new_inspection_plan",
  *     "inspection_plan_expiry_warning",
- *   }
+ *   },
+ *   field = "field_inspection_plan",
  * )
  */
 class ParInspectionPlanView extends ParLinkActionBase {
 
   /**
-   * The field that holds the primary par_data entity that this message refers to.
-   *
-   * This changes depending on the message type / bundle.
-   */
-  const PRIMARY_FIELD = 'field_inspection_plan';
-
-  /**
    * {@inheritDoc}
    */
   public function getUrl(MessageInterface $message): ?Url {
-    if ($message->hasField(self::PRIMARY_FIELD)
-      && !$message->get(self::PRIMARY_FIELD)->isEmpty()) {
-      $par_data_inspection_plan = current($message->get(self::PRIMARY_FIELD)
+    if ($message->hasField($this->getPrimaryField())
+      && !$message->get($this->getPrimaryField())->isEmpty()) {
+      $par_data_inspection_plan = current($message->get($this->getPrimaryField())
         ->referencedEntities());
 
       /** @var ParDataRelationship[] $partnership_relationships */

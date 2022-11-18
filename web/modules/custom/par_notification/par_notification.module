@@ -8,7 +8,7 @@
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\message\MessageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\par_notification\Plugin\Field\FieldType\ParNotificationLinkField;
 use Drupal\par_notification\Plugin\Field\FieldType\ParNotificationActionField;
 
@@ -30,9 +30,9 @@ function par_notification_help($route_name, RouteMatchInterface $route_match) {
 }
 
 /**
- * Implements hook_entity_type_build().
+ * Implements hook_entity_type_alter().
  */
-function par_notification_entity_type_build(array &$entity_types) {
+function par_notification_entity_type_alter(array &$entity_types) {
   /** @var $entity_types EntityTypeInterface[] */
 
   // Add an access control handler for message entities.
@@ -43,22 +43,67 @@ function par_notification_entity_type_build(array &$entity_types) {
 }
 
 /**
+ * Implements hook_query_TAG_alter()
+ */
+function par_notification_query_task_messages_alter(AlterableInterface $query) {
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $par_link_manager = \Drupal::service('plugin.manager.par_link_manager');
+
+  // Get the bundle key.
+  $entity_type = $entity_type_manager->getDefinition('message');
+  $bundle_key = $entity_type->getKey('bundle');
+
+  // Get the template IDs for messages that have tasks.
+  $task_templates = [];
+  foreach ($par_link_manager->getTaskTemplates() as $template) {
+    $task_templates[] = $template->id();
+  }
+
+  $query->condition($bundle_key, $task_templates, 'IN');
+}
+
+/**
+ * Implements hook_query_TAG_alter()
+ */
+function par_notification_query_view_messages_alter(AlterableInterface $query) {
+  $current_user = \Drupal::currentUser();
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  // Get the bundle key.
+  $entity_type = $entity_type_manager->getDefinition('message');
+  $bundle_key = $entity_type->getKey('bundle');
+
+  // Get the template IDs for messages that have tasks.
+  $message_templates = \Drupal::service('entity_type.manager')
+    ->getStorage('message_template')->loadMultiple();
+  $permission_templates = [];
+  foreach ($message_templates as $template) {
+    if ($current_user->hasPermission("receive {$template->id()} notification")) {
+      $permission_templates[] = $template->id();
+    }
+  }
+
+  $query->condition($bundle_key, $permission_templates, 'IN');
+}
+
+
+/**
  * Implements hook_entity_base_field_info_alter().
  */
 function par_notification_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
   if ($entity_type->id() === "message") {
     // A boolean field to determine whether action is required.
-    $fields['action'] = BaseFieldDefinition::create('boolean')
-      ->setName('notification_action_required')
-      ->setLabel(t('Action Required'))
-      ->setComputed(TRUE)
-      ->setClass(ParNotificationActionField::class);
-
-    // A link field to add the appropriate destination for the message.
-    $fields['link'] = BaseFieldDefinition::create('link')
-      ->setName('notification_link')
-      ->setLabel(t('Notification Url'))
-      ->setComputed(TRUE)
-      ->setClass(ParNotificationLinkField::class);
+//    $fields['action'] = BaseFieldDefinition::create('boolean')
+//      ->setName('notification_action_required')
+//      ->setLabel(t('Action Required'))
+//      ->setComputed(TRUE)
+//      ->setClass(ParNotificationActionField::class);
+//
+//    // A link field to add the appropriate destination for the message.
+//    $fields['link'] = BaseFieldDefinition::create('link')
+//      ->setName('notification_link')
+//      ->setLabel(t('Notification Url'))
+//      ->setComputed(TRUE)
+//      ->setClass(ParNotificationLinkField::class);
   }
 }

@@ -130,9 +130,11 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
       }
     }
 
-    usort($definitions, function($a, $b) {
-      return $a['weight'] > $b['weight'];
-    });
+    if (!empty($definitions))
+      usort($definitions, function ($a, $b) {
+        return $a['weight'] <=> $b['weight'];
+      });{
+    }
 
     return $definitions;
   }
@@ -155,6 +157,20 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
     }
 
     return $definitions;
+  }
+
+  /**
+   * Get messages types that can contain tasks.
+   *
+   * @return MessageTemplateInterface[]
+   *   An array of message templates that contain tasks.
+   */
+  public function getTaskTemplates(): array {
+    $message_templates = \Drupal::service('entity_type.manager')->getStorage('message_template')->loadMultiple();
+
+    return array_filter($message_templates, function ($message_template) {
+      return !empty($this->retrieveTasks($message_template));
+    });
   }
 
   /**
@@ -235,6 +251,27 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
     }
 
     return NULL;
+  }
+
+  /**
+   * Get the task status.
+   *
+   * @return bool|null
+   *   Will return TRUE if ALL tasks are complete.
+   *   Will return FALSE if at least ONE task is not complete
+   *   Will return NULL if there are no tasks at all.
+   */
+  public function isComplete(MessageInterface $message): ?bool {
+    // Get all redirection plugins.
+    $tasks = $this->retrieveTasks($message->getTemplate());
+    foreach ($tasks as $task) {
+      if (!$task->isComplete($message)) {
+        return FALSE;
+      }
+    }
+
+    // If there are tasks, and they are all complete return TRUE.
+    return !empty($tasks) ? TRUE : NULL;
   }
 
 }

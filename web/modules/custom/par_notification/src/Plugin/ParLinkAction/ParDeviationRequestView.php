@@ -19,24 +19,18 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *     "new_deviation_request",
  *     "reviewed_deviation_request",
  *     "new_deviation_response",
- *   }
+ *   },
+ *   field = "field_deviation_request",
  * )
  */
 class ParDeviationRequestView extends ParLinkActionBase {
 
   /**
-   * The field that holds the primary par_data entity that this message refers to.
-   *
-   * This changes depending on the message type / bundle.
-   */
-  const PRIMARY_FIELD = 'field_deviation_request';
-
-  /**
    * {@inheritDoc}
    */
   public function getUrl(MessageInterface $message): ?Url {
-    if ($message->hasField(self::PRIMARY_FIELD) && !$message->get(self::PRIMARY_FIELD)->isEmpty()) {
-      $par_data_deviation_request = current($message->get(self::PRIMARY_FIELD)->referencedEntities());
+    if ($message->hasField($this->getPrimaryField()) && !$message->get($this->getPrimaryField())->isEmpty()) {
+      $par_data_deviation_request = current($message->get($this->getPrimaryField())->referencedEntities());
 
       $destination = Url::fromRoute('par_deviation_view_flows.view_deviation', ['par_data_deviation_request' => $par_data_deviation_request->id()]);
 

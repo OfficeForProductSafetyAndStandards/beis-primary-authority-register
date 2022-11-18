@@ -176,15 +176,21 @@ class ParMessageAccessControlHandler extends EntityAccessControlHandler implemen
   public function getUserNotificationRoles(AccountInterface $account, MessageInterface $message): array {
     $permission = "receive {$message->bundle()} notification";
 
+    // Compare all the available roles with the user's roles.
+    $all_roles = $this->getRoleStorage()->loadMultiple();
+    $user_roles = !empty($account->getRoles()) ?
+      $this->getRoleStorage()->loadMultiple($account->getRoles()) :
+      NULL;
+
     // Get all the roles that have permission to receive this notification type.
     /** @var RoleInterface[] $notification_roles */
-    $notification_roles = array_filter($this->getRoleStorage()->loadMultiple(), function ($role) use ($permission) {
+    $notification_roles = array_filter($all_roles, function ($role) use ($permission) {
       return ($role->hasPermission($permission));
     });
 
     // Get the intersection between the user's roles and the notifications roles.
-    return array_udiff($notification_roles, $account->getRoles(), function ($a, $b) {
-      return ($a->id() === $b->id());
+    return array_uintersect($notification_roles, $user_roles, function ($a, $b) {
+      return $a->id() <=> $b->id();
     });
   }
 

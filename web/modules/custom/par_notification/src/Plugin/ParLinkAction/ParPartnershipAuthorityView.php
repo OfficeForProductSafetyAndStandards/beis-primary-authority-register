@@ -19,7 +19,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *     "new_partnership_notification",
  *     "partnership_approved_notificatio",
  *     "partnership_confirmed_notificati",
- *   }
+ *   },
+ *   field = "field_partnership",
  * )
  */
 class ParPartnershipAuthorityView extends ParLinkActionBase {
@@ -35,8 +36,8 @@ class ParPartnershipAuthorityView extends ParLinkActionBase {
    * {@inheritDoc}
    */
   public function getUrl(MessageInterface $message): ?Url {
-    if ($message->hasField(self::PRIMARY_FIELD) && !$message->get(self::PRIMARY_FIELD)->isEmpty()) {
-      $par_data_partnership = current($message->get(self::PRIMARY_FIELD)->referencedEntities());
+    if ($message->hasField($this->getPrimaryField()) && !$message->get($this->getPrimaryField())->isEmpty()) {
+      $par_data_partnership = current($message->get($this->getPrimaryField())->referencedEntities());
 
       // The route for viewing enforcement notices.
       $destination = Url::fromRoute('par_partnership_flows.authority_details', ['par_data_partnership' => $par_data_partnership->id()]);
