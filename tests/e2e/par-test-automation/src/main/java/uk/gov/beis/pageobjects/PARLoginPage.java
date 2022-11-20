@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.jar.Attributes.Name;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -26,10 +27,10 @@ public class PARLoginPage extends BasePageObject {
 	@FindBy(name = "op")
 	private WebElement loginBtn;
 
-	public PARHomePage navigateToUrl() {
+	public PARLoginPage navigateToUrl() {
 		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url") + "/user/login%3Fcurrent");
 		checkLoginPage();
-		return PageFactory.initElements(driver, PARHomePage.class);
+		return PageFactory.initElements(driver, PARLoginPage.class);
 	}
 
 	public PARLoginPage enterLoginDetails(String user, String pass) {
@@ -46,8 +47,12 @@ public class PARLoginPage extends BasePageObject {
 	private String login = "//a[contains(text(),'?')]";
 
 	public PARLoginPage checkLoginPage() {
-		WebElement link = driver.findElement(By.xpath(login.replace("?", "Sign in")));
-		if (!link.isDisplayed()) {
+		try {
+		driver.findElement(By.xpath(login.replace("?", "Sign in")));
+//		if (!link.isDisplayed()) {
+			driver.findElement(By.linkText("Sign out")).click();
+			driver.findElement(By.linkText("Sign in")).click();
+		} catch (NoSuchElementException e) {
 			driver.findElement(By.linkText("Sign out")).click();
 			driver.findElement(By.linkText("Sign in")).click();
 		}
@@ -57,12 +62,18 @@ public class PARLoginPage extends BasePageObject {
 	@FindBy(xpath = "//button[contains(text(),'Accept')]")
 	private WebElement cookies;
 	
-	public PARHomePage checkAndAcceptCookies() {
+	public PARLoginPage checkAndAcceptCookies() {
 		driver.manage().deleteAllCookies();
-		if (cookies.isDisplayed()) {
-			cookies.click();
+		try {
+//		if (cookies.isDisplayed()) {
+//			System.exit(0);
+			driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
+//			cookies.click();
+		} catch (NoSuchElementException e) {
+			// do nothing
+			System.out.println("Doing nothing");
 		}
-		return PageFactory.initElements(driver, PARHomePage.class);
+		return PageFactory.initElements(driver, PARLoginPage.class);
 	}
 
 }

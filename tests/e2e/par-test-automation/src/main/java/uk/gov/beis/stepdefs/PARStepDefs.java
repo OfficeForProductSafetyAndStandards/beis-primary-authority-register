@@ -125,6 +125,7 @@ public class PARStepDefs {
 			DataTable details) throws Throwable {
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
 			LOG.info("Select apply new partnership");
+
 			parDashboardPage.selectApplyForNewPartnership();
 			LOG.info("Choose authority");
 			parAuthorityPage.selectAuthority(data.get("Authority"));
@@ -139,7 +140,6 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.BUSINESS_NAME, RandomStringGenerator.getBusinessName(3));
 			parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 			LOG.info("Enter address details");
-			Thread.sleep(2000);
 			parBusinessAddressDetailsPage.enterAddressDetails(data.get("addressline1"), data.get("town"),
 					data.get("postcode"));
 			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("addressline1"));
@@ -155,23 +155,26 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.BUSINESS_PHONE, data.get("phone"));
 			LOG.info("Send invitation to user");
 			parBusinessInvitePage.sendInvite();
-			LOG.info("Confirm partnership details");
-			parPartnershipConfirmationPage.confirmDetails();
-			Assert.assertTrue("Appliction not complete", parPartnershipConfirmationPage.checkPartnershipApplication());
-			LOG.info("Saving changes");
-			parPartnershipConfirmationPage.saveChanges();
-			parPartnershipCompletionPage.completeApplication();
 		}
 	}
 
-	@Then("^the partnership application is successfully created$")
-	public void the_partnership_application_is_successfully_created() throws Throwable {
-//		Assert.assertTrue("Not created successfully",parPartnershipConfirmationPage.checkPartnershipApplication());
+	@Then("^the first part of the partnership application is successfully completed$")
+	public void the_first_part_of_the_partnership_application_is_successfully_completed() throws Throwable {
+		LOG.info("Confirm/check partnership details");
+		parPartnershipConfirmationPage.confirmDetails();
+		Assert.assertTrue("Partnership info missing", parPartnershipConfirmationPage.checkPartnershipInfo());
+		Assert.assertTrue("Partnership appliction information not correct",
+				parPartnershipConfirmationPage.checkPartnershipApplication());
+		LOG.info("Saving changes");
+		parPartnershipConfirmationPage.saveChanges();
+		parPartnershipCompletionPage.completeApplication();
 	}
 
 	@When("^the user searches for the last created partnership$")
 	public void the_user_searches_for_the_last_created_partnership() throws Throwable {
 		LOG.info("Selecting view partnerships");
+		parDashboardPage.checkAndAcceptCookies();
+
 		parDashboardPage.selectSeePartnerships();
 		LOG.info("Search partnerships");
 		partnershipSearchPage.searchPartnerships();
@@ -198,17 +201,23 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.NO_EMPLOYEES, data.get("No of Employees"));
 			employeesPage.selectNoEmployees(data.get("No of Employees"));
 			LOG.info("Entering business trading name");
-			DataStore.saveValue(UsableValues.TRADING_NAME, DataStore.getSavedValue(UsableValues.BUSINESS_NAME).replace("Business", "trading name"));
+			DataStore.saveValue(UsableValues.TRADING_NAME,
+					DataStore.getSavedValue(UsableValues.BUSINESS_NAME).replace("Business", "trading name"));
 			tradingPage.enterBusinessName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
 			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal entity Type"));
 			legalEntityPage.createLegalEntity(data.get("Legal entity Type"));
 			LOG.info("set second journey part to true");
 			parPartnershipConfirmationPage.setJourneyPart(true);
-			LOG.info("Check and confirm changes");
-			parPartnershipConfirmationPage.confirmDetails();
-			Assert.assertTrue("Appliction not complete", parPartnershipConfirmationPage.checkPartnershipApplicationSecondPart());
-			parPartnershipConfirmationPage.saveChanges();
-			parPartnershipCompletionPage.completeApplication();
 		}
+	}
+
+	@Then("^the second part of the partnership application is successfully completed$")
+	public void the_second_part_of_the_partnership_application_is_successfully_completed() throws Throwable {
+		LOG.info("Check and confirm changes");
+		parPartnershipConfirmationPage.confirmDetails();
+		Assert.assertTrue("Appliction not complete",
+				parPartnershipConfirmationPage.checkPartnershipApplicationSecondPart());
+		parPartnershipConfirmationPage.saveChanges();
+		parPartnershipCompletionPage.completeApplication();
 	}
 }

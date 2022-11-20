@@ -46,7 +46,6 @@ public class PARPartnershipConfirmationPage extends BasePageObject {
 	}
 
 	public PARPartnershipConfirmationPage confirmDetails() {
-		System.out.println("journey value = " + getJourneyPart());
 		WebElement checkbox = getJourneyPart() ? driver.findElement(By.id("edit-terms-organisation-agreed"))
 				: driver.findElement(By.id("edit-terms-authority-agreed"));
 		if (!checkbox.isSelected())
@@ -59,10 +58,14 @@ public class PARPartnershipConfirmationPage extends BasePageObject {
 			saveBtn.click();
 		return PageFactory.initElements(driver, PARPartnershipCompletionPage.class);
 	}
+	
+	public boolean checkPartnershipInfo() {
+		WebElement partnershipDets = driver.findElement(
+		By.xpath(partnershipDetails.replace("?", DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO))));
+		return partnershipDets.isDisplayed();
+	}
 
 	public boolean checkPartnershipApplication() {
-//		WebElement partnershipDets = driver.findElement(
-//				By.xpath(partnershipDetails.replace("?", DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO))));
 		WebElement businessNm = driver
 				.findElement(By.xpath(businessname.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME))));
 		WebElement addLine1 = driver.findElement(

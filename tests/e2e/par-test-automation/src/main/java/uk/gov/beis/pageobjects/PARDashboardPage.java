@@ -3,6 +3,7 @@ package uk.gov.beis.pageobjects;
 import java.io.IOException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -11,6 +12,7 @@ public class PARDashboardPage extends BasePageObject {
 
 	public PARDashboardPage() throws ClassNotFoundException, IOException {
 		super();
+//		checkAndAcceptCookies();
 	}
 	
 	@FindBy(xpath = "//div[@id='block-par-theme-page-title']")
@@ -34,6 +36,20 @@ public class PARDashboardPage extends BasePageObject {
 	
 	public String checkPage() {
 		return dashBoard.getText();
+	}
+	
+	
+	public PARDashboardPage checkAndAcceptCookies() {
+		try {
+//		if (cookies.isDisplayed()) {
+//			System.exit(0);
+			driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
+//			cookies.click();
+		} catch (NoSuchElementException e) {
+			// do nothing
+			System.out.println("Doing nothing");
+		}
+		return PageFactory.initElements(driver, PARDashboardPage.class);
 	}
 	
 }
