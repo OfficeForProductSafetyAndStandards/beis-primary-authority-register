@@ -42,4 +42,10 @@ public class PARBusinessContactDetailsPage extends BasePageObject {
 
 		return PageFactory.initElements(driver, PARBusinessAddressDetailsPage.class);
 	}
+	
+	public SICCodePage proceed() {
+		if (continueBtn.isDisplayed())
+			continueBtn.click();
+		return PageFactory.initElements(driver, SICCodePage.class);
+	}
 }

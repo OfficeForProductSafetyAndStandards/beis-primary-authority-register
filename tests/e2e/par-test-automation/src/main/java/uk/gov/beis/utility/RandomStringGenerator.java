@@ -15,9 +15,15 @@ public class RandomStringGenerator {
 		String randomNumber = RandomStringUtils.random(length, "123456789");
 		return EMAILID+randomNumber+"@gmail.com";
 	}
+	
+	public static String getLegalEntityName(int length) {
+		String ent = "Test Legal Entity";
+		String randomNumber = RandomStringUtils.random(length, "123456789");
+		return ent+randomNumber;
+	}
 
-	public static String getRandomAlpahNumericString(int length) {
-		String randomString = RandomStringUtils.random(length, "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+	public static String getRandomNumericString(int length) {
+		String randomString = RandomStringUtils.random(length, "123456789");
 		return randomString;
 	}
 

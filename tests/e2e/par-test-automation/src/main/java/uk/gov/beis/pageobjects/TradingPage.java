@@ -6,26 +6,25 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class PARBusinessPage extends BasePageObject {
-
-	public PARBusinessPage() throws ClassNotFoundException, IOException {
+public class TradingPage extends BasePageObject{
+	public TradingPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
 	@FindBy(xpath = "//input[@type='text']")
-	WebElement businessName;
+	WebElement tradingName;
 
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 
-	public PARBusinessAddressDetailsPage enterBusinessName(String name) {
-		if (businessName.isDisplayed()) {
-			businessName.clear();
-			businessName.sendKeys(name);
+	public LegalEntityPage enterBusinessName(String name) {
+		if (tradingName.isDisplayed()) {
+			tradingName.clear();
+			tradingName.sendKeys(name);
 		}
 		if (continueBtn.isDisplayed())
 			continueBtn.click();
 
-		return PageFactory.initElements(driver, PARBusinessAddressDetailsPage.class);
+		return PageFactory.initElements(driver, LegalEntityPage.class);
 	}
 }

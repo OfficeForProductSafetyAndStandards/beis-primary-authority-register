@@ -2,6 +2,7 @@ package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -25,9 +26,8 @@ public class PARBusinessAddressDetailsPage extends BasePageObject {
 	WebElement continueBtn;
 
 	public PARBusinessContactDetailsPage enterAddressDetails(String address1, String town1, String postcode1) {
-		if (addressLine1.isDisplayed())
-			addressLine1.clear();
-		addressLine1.sendKeys(address1);
+		driver.findElement(By.xpath("//input[@name='address_line1']")).clear();
+		driver.findElement(By.xpath("//input[@name='address_line1']")).sendKeys(address1);
 		town.clear();
 		town.sendKeys(town1);
 		postcode.clear();
@@ -36,6 +36,12 @@ public class PARBusinessAddressDetailsPage extends BasePageObject {
 		if (continueBtn.isDisplayed())
 			continueBtn.click();
 
+		return PageFactory.initElements(driver, PARBusinessContactDetailsPage.class);
+	}
+
+	public PARBusinessContactDetailsPage proceed() {
+		if (continueBtn.isDisplayed())
+			continueBtn.click();
 		return PageFactory.initElements(driver, PARBusinessContactDetailsPage.class);
 	}
 }
