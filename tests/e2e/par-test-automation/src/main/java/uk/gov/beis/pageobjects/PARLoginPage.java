@@ -65,13 +65,9 @@ public class PARLoginPage extends BasePageObject {
 	public PARLoginPage checkAndAcceptCookies() {
 		driver.manage().deleteAllCookies();
 		try {
-//		if (cookies.isDisplayed()) {
-//			System.exit(0);
 			driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
-//			cookies.click();
 		} catch (NoSuchElementException e) {
 			// do nothing
-			System.out.println("Doing nothing");
 		}
 		return PageFactory.initElements(driver, PARLoginPage.class);
 	}

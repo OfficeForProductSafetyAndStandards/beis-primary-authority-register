@@ -41,13 +41,9 @@ public class PARDashboardPage extends BasePageObject {
 	
 	public PARDashboardPage checkAndAcceptCookies() {
 		try {
-//		if (cookies.isDisplayed()) {
-//			System.exit(0);
 			driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
-//			cookies.click();
 		} catch (NoSuchElementException e) {
 			// do nothing
-			System.out.println("Doing nothing");
 		}
 		return PageFactory.initElements(driver, PARDashboardPage.class);
 	}
