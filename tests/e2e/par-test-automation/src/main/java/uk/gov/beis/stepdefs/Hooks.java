@@ -44,7 +44,7 @@ public class Hooks {
 	@After
 	public void closeBrowser(Scenario scenario) throws Exception, Throwable {
 		if (scenario.isFailed()) {
-			LOG.info("... Doing After Method routine (clear session cookies user from DMS as result of/ failure)...");
+			LOG.info("Doing After Method routine");
 			driver.quit();
 		} else {
 			LOG.info("... Shutting down gracefully...");

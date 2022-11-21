@@ -48,8 +48,7 @@ public class PARLoginPage extends BasePageObject {
 
 	public PARLoginPage checkLoginPage() {
 		try {
-		driver.findElement(By.xpath(login.replace("?", "Sign in")));
-//		if (!link.isDisplayed()) {
+			driver.findElement(By.xpath(login.replace("?", "Sign in")));
 			driver.findElement(By.linkText("Sign out")).click();
 			driver.findElement(By.linkText("Sign in")).click();
 		} catch (NoSuchElementException e) {
@@ -58,10 +57,10 @@ public class PARLoginPage extends BasePageObject {
 		}
 		return PageFactory.initElements(driver, PARLoginPage.class);
 	}
-	
+
 	@FindBy(xpath = "//button[contains(text(),'Accept')]")
 	private WebElement cookies;
-	
+
 	public PARLoginPage checkAndAcceptCookies() {
 		driver.manage().deleteAllCookies();
 		try {
