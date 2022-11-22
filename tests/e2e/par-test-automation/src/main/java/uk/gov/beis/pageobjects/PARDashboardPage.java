@@ -12,7 +12,6 @@ public class PARDashboardPage extends BasePageObject {
 
 	public PARDashboardPage() throws ClassNotFoundException, IOException {
 		super();
-//		checkAndAcceptCookies();
 	}
 	
 	@FindBy(xpath = "//div[@id='block-par-theme-page-title']")
