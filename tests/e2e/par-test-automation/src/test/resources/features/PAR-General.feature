@@ -4,7 +4,7 @@ Feature:
   So I can comply with the BEIS standards for goods and services
   
  @regression @partnershipapplication @direct
- Scenario: Verify New Partnership application by authority and completion by new business (Happy Path - PAR-1826.PAR-1835, PAR-1836, PAR-1837)
+ Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826.PAR-1835, PAR-1836, PAR-1837)
   Given the user is on the PAR home page
   And the user visits the login page
   And the user logs in with the "par_authority@example.com" user credentials
@@ -22,7 +22,7 @@ Feature:
   Then the second part of the partnership application is successfully completed
   
  @regression @partnershipapplication @coordinated
- Scenario: Verify New Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
+ Scenario: Verify Coordinated Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
   Given the user is on the PAR home page
   And the user visits the login page
   And the user logs in with the "par_authority@example.com" user credentials
