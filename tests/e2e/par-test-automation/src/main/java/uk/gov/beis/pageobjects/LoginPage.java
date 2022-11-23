@@ -12,9 +12,9 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
 
-public class PARLoginPage extends BasePageObject {
+public class LoginPage extends BasePageObject {
 
-	public PARLoginPage() throws ClassNotFoundException, IOException {
+	public LoginPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
@@ -27,26 +27,26 @@ public class PARLoginPage extends BasePageObject {
 	@FindBy(name = "op")
 	private WebElement loginBtn;
 
-	public PARLoginPage navigateToUrl() {
+	public LoginPage navigateToUrl() {
 		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url") + "/user/login%3Fcurrent");
 		checkLoginPage();
-		return PageFactory.initElements(driver, PARLoginPage.class);
+		return PageFactory.initElements(driver, LoginPage.class);
 	}
 
-	public PARLoginPage enterLoginDetails(String user, String pass) {
+	public LoginPage enterLoginDetails(String user, String pass) {
 		username.sendKeys(user);
 		password.sendKeys(pass);
-		return PageFactory.initElements(driver, PARLoginPage.class);
+		return PageFactory.initElements(driver, LoginPage.class);
 	}
 
-	public PARDashboardPage selectLogin() {
+	public DashboardPage selectLogin() {
 		loginBtn.click();
-		return PageFactory.initElements(driver, PARDashboardPage.class);
+		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 
 	private String login = "//a[contains(text(),'?')]";
 
-	public PARLoginPage checkLoginPage() {
+	public LoginPage checkLoginPage() {
 		try {
 			driver.findElement(By.xpath(login.replace("?", "Sign in")));
 			driver.findElement(By.linkText("Sign out")).click();
@@ -55,20 +55,20 @@ public class PARLoginPage extends BasePageObject {
 			driver.findElement(By.linkText("Sign out")).click();
 			driver.findElement(By.linkText("Sign in")).click();
 		}
-		return PageFactory.initElements(driver, PARLoginPage.class);
+		return PageFactory.initElements(driver, LoginPage.class);
 	}
 
 	@FindBy(xpath = "//button[contains(text(),'Accept')]")
 	private WebElement cookies;
 
-	public PARLoginPage checkAndAcceptCookies() {
+	public LoginPage checkAndAcceptCookies() {
 		driver.manage().deleteAllCookies();
 		try {
 			driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
 		} catch (NoSuchElementException e) {
 			// do nothing
 		}
-		return PageFactory.initElements(driver, PARLoginPage.class);
+		return PageFactory.initElements(driver, LoginPage.class);
 	}
 
 }

@@ -8,9 +8,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class PARDashboardPage extends BasePageObject {
+public class DashboardPage extends BasePageObject {
 
-	public PARDashboardPage() throws ClassNotFoundException, IOException {
+	public DashboardPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
@@ -23,9 +23,9 @@ public class PARDashboardPage extends BasePageObject {
 	@FindBy(linkText = "See your partnerships")
 	WebElement viewPartnershipBtn;
 	
-	public PARAuthorityPage selectApplyForNewPartnership() {
+	public AuthorityPage selectApplyForNewPartnership() {
 		applyPartnershipBtn.click();
-		return PageFactory.initElements(driver, PARAuthorityPage.class);
+		return PageFactory.initElements(driver, AuthorityPage.class);
 	}
 	
 	public PartnershipSearchPage selectSeePartnerships() {
@@ -38,13 +38,13 @@ public class PARDashboardPage extends BasePageObject {
 	}
 	
 	
-	public PARDashboardPage checkAndAcceptCookies() {
+	public DashboardPage checkAndAcceptCookies() {
 		try {
 			driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
 		} catch (NoSuchElementException e) {
 			// do nothing
 		}
-		return PageFactory.initElements(driver, PARDashboardPage.class);
+		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 	
 }

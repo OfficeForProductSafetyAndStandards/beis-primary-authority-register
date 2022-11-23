@@ -21,15 +21,15 @@ public class PartnershipSearchPage extends BasePageObject{
 	@FindBy(xpath = "//input[contains(@value,'Search')]")
 	WebElement searchBtn;
 	
-	public PARAuthorityPage searchPartnerships() {
+	public AuthorityPage searchPartnerships() {
 		searchInput.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 		searchBtn.click();
-		return PageFactory.initElements(driver, PARAuthorityPage.class);
+		return PageFactory.initElements(driver, AuthorityPage.class);
 	}
 	
-	public PARDeclarationPage selectBusinessNameLink() {
+	public DeclarationPage selectBusinessNameLink() {
 		driver.findElement(By.linkText(DataStore.getSavedValue(UsableValues.BUSINESS_NAME))).click();
-		return PageFactory.initElements(driver, PARDeclarationPage.class);
+		return PageFactory.initElements(driver, DeclarationPage.class);
 	}
 	
 }

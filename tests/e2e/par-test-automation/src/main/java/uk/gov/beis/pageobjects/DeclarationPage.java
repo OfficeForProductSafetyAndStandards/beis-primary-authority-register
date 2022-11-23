@@ -7,16 +7,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class PARDeclarationPage extends BasePageObject {
+public class DeclarationPage extends BasePageObject {
 
-	public PARDeclarationPage() throws ClassNotFoundException, IOException {
+	public DeclarationPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 
-	public PARBusinessDetailsPage acceptTerms() {
+	public BusinessDetailsPage acceptTerms() {
 		WebElement checkbox = driver.findElement(By.id("edit-confirm"));
 		//If the checkbox is unchecked then isSelected() will return false 
 		//and NOT of false is true, hence we can click on checkbox
@@ -25,6 +25,6 @@ public class PARDeclarationPage extends BasePageObject {
 		if (continueBtn.isDisplayed())
 			continueBtn.click();
 		
-		return PageFactory.initElements(driver, PARBusinessDetailsPage.class);
+		return PageFactory.initElements(driver, BusinessDetailsPage.class);
 	}
 }
