@@ -11,8 +11,8 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.utility.DataStore;
 
-public class PARPartnershipConfirmationPage extends BasePageObject {
-	public PARPartnershipConfirmationPage() throws ClassNotFoundException, IOException {
+public class PartnershipConfirmationPage extends BasePageObject {
+	public PartnershipConfirmationPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
@@ -36,6 +36,8 @@ public class PARPartnershipConfirmationPage extends BasePageObject {
 	String entType = "//div[contains(text(),'?')]";
 	String regNo = "//div[contains(text(),'?')]";
 	String tradename = "//div[contains(text(),'?')]";
+	String membersize = "//div[contains(text(),'?')]";
+
 
 	public void setJourneyPart(boolean value) {
 		this.twopartjourney = value;
@@ -45,24 +47,36 @@ public class PARPartnershipConfirmationPage extends BasePageObject {
 		return this.twopartjourney;
 	}
 
-	public PARPartnershipConfirmationPage confirmDetails() {
+	public PartnershipConfirmationPage confirmDetails() {
 		WebElement checkbox = getJourneyPart() ? driver.findElement(By.id("edit-terms-organisation-agreed"))
 				: driver.findElement(By.id("edit-terms-authority-agreed"));
 		if (!checkbox.isSelected())
 			checkbox.click();
-		return PageFactory.initElements(driver, PARPartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 
-	public PARPartnershipCompletionPage saveChanges() {
+	public PartnershipCompletionPage saveChanges() {
 		if (saveBtn.isDisplayed())
 			saveBtn.click();
-		return PageFactory.initElements(driver, PARPartnershipCompletionPage.class);
+		return PageFactory.initElements(driver, PartnershipCompletionPage.class);
 	}
-	
+
 	public boolean checkPartnershipInfo() {
 		WebElement partnershipDets = driver.findElement(
-		By.xpath(partnershipDetails.replace("?", DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO))));
+				By.xpath(partnershipDetails.replace("?", DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO))));
 		return partnershipDets.isDisplayed();
+	}
+
+	public boolean checkNoEmployees() {
+		WebElement nEmplyees = driver
+				.findElement(By.xpath(noEmplyees.replace("?", DataStore.getSavedValue(UsableValues.NO_EMPLOYEES))));
+		return nEmplyees.isDisplayed();
+	}
+	
+	public boolean checkMemberSize() {
+		WebElement memsize = driver
+				.findElement(By.xpath(membersize.replace("?", DataStore.getSavedValue(UsableValues.MEMBERLIST_SIZE)).toLowerCase()));
+		return memsize.isDisplayed();
 	}
 
 	public boolean checkPartnershipApplication() {
@@ -89,8 +103,6 @@ public class PARPartnershipConfirmationPage extends BasePageObject {
 	public boolean checkPartnershipApplicationSecondPart() {
 		WebElement sicCd = driver
 				.findElement(By.xpath(sic.replace("?", DataStore.getSavedValue(UsableValues.SIC_CODE))));
-		WebElement nEmplyees = driver
-				.findElement(By.xpath(noEmplyees.replace("?", DataStore.getSavedValue(UsableValues.NO_EMPLOYEES))));
 		WebElement entityNm = driver
 				.findElement(By.xpath(entName.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
 		WebElement entityTyp = driver
@@ -100,8 +112,7 @@ public class PARPartnershipConfirmationPage extends BasePageObject {
 		WebElement tradeNm = driver
 				.findElement(By.xpath(tradename.replace("?", DataStore.getSavedValue(UsableValues.TRADING_NAME))));
 
-		return (checkPartnershipApplication() && sicCd.isDisplayed() && nEmplyees.isDisplayed()
-				&& entityNm.isDisplayed() && entityTyp.isDisplayed() && regNum.isDisplayed() && regNum.isDisplayed()
-				&& tradeNm.isDisplayed());
+		return (checkPartnershipApplication() && sicCd.isDisplayed() && entityNm.isDisplayed()
+				&& entityTyp.isDisplayed() && regNum.isDisplayed() && regNum.isDisplayed() && tradeNm.isDisplayed());
 	}
 }

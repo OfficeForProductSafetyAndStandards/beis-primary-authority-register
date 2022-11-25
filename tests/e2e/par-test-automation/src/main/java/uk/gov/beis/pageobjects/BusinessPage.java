@@ -6,9 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class PARBusinessPage extends BasePageObject {
+public class BusinessPage extends BasePageObject {
 
-	public PARBusinessPage() throws ClassNotFoundException, IOException {
+	public BusinessPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
@@ -18,7 +18,7 @@ public class PARBusinessPage extends BasePageObject {
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 
-	public PARBusinessAddressDetailsPage enterBusinessName(String name) {
+	public BusinessAddressDetailsPage enterBusinessName(String name) {
 		if (businessName.isDisplayed()) {
 			businessName.clear();
 			businessName.sendKeys(name);
@@ -26,6 +26,6 @@ public class PARBusinessPage extends BasePageObject {
 		if (continueBtn.isDisplayed())
 			continueBtn.click();
 
-		return PageFactory.initElements(driver, PARBusinessAddressDetailsPage.class);
+		return PageFactory.initElements(driver, BusinessAddressDetailsPage.class);
 	}
 }

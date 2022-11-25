@@ -7,9 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class PARBusinessAddressDetailsPage extends BasePageObject {
+public class BusinessAddressDetailsPage extends BasePageObject {
 
-	public PARBusinessAddressDetailsPage() throws ClassNotFoundException, IOException {
+	public BusinessAddressDetailsPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
@@ -25,7 +25,7 @@ public class PARBusinessAddressDetailsPage extends BasePageObject {
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 
-	public PARBusinessContactDetailsPage enterAddressDetails(String address1, String town1, String postcode1) {
+	public BusinessContactDetailsPage enterAddressDetails(String address1, String town1, String postcode1) {
 		driver.findElement(By.xpath("//input[@name='address_line1']")).clear();
 		driver.findElement(By.xpath("//input[@name='address_line1']")).sendKeys(address1);
 		town.clear();
@@ -36,12 +36,12 @@ public class PARBusinessAddressDetailsPage extends BasePageObject {
 		if (continueBtn.isDisplayed())
 			continueBtn.click();
 
-		return PageFactory.initElements(driver, PARBusinessContactDetailsPage.class);
+		return PageFactory.initElements(driver, BusinessContactDetailsPage.class);
 	}
 
-	public PARBusinessContactDetailsPage proceed() {
+	public BusinessContactDetailsPage proceed() {
 		if (continueBtn.isDisplayed())
 			continueBtn.click();
-		return PageFactory.initElements(driver, PARBusinessContactDetailsPage.class);
+		return PageFactory.initElements(driver, BusinessContactDetailsPage.class);
 	}
 }

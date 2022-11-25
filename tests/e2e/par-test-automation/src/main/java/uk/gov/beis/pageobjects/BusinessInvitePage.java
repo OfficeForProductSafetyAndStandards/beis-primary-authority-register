@@ -6,18 +6,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class PARBusinessInvitePage extends BasePageObject {
+public class BusinessInvitePage extends BasePageObject {
 
-	public PARBusinessInvitePage() throws ClassNotFoundException, IOException {
+	public BusinessInvitePage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 
-	public PARPartnershipConfirmationPage sendInvite() {
+	public PartnershipConfirmationPage sendInvite() {
 		if (continueBtn.isDisplayed())
 			continueBtn.click();
-		return PageFactory.initElements(driver, PARPartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 }

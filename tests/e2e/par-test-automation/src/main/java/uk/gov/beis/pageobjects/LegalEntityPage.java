@@ -25,7 +25,7 @@ public class LegalEntityPage extends BasePageObject {
 	String regNo = "//label[contains(text(),'Provide the registration number')]/following-sibling::input";
 
 
-	public PARPartnershipConfirmationPage createLegalEntity(String type) {
+	public PartnershipConfirmationPage createLegalEntity(String type) {
 		DataStore.saveValue(UsableValues.ENTITY_NAME, RandomStringGenerator.getLegalEntityName(3));
 		DataStore.saveValue(UsableValues.REGISTRATION_NO, RandomStringGenerator.getRandomNumericString(7));
 
@@ -35,6 +35,6 @@ public class LegalEntityPage extends BasePageObject {
 
 		if (continueBtn.isDisplayed())
 			continueBtn.click();
-		return PageFactory.initElements(driver, PARPartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 }

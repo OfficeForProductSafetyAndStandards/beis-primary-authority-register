@@ -11,9 +11,9 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
 
-public class PARHomePage extends BasePageObject {
+public class HomePage extends BasePageObject {
 
-	public PARHomePage() throws ClassNotFoundException, IOException {
+	public HomePage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
@@ -23,22 +23,22 @@ public class PARHomePage extends BasePageObject {
 	@FindBy(xpath = "//button[contains(text(),'Accept')]")
 	private WebElement cookies;
 	
-	public PARHomePage navigateToUrl() {
+	public HomePage navigateToUrl() {
 		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url"));
-		return PageFactory.initElements(driver, PARHomePage.class);
+		return PageFactory.initElements(driver, HomePage.class);
 	}
 	
-	public PARHomePage checkAndAcceptCookies() {
+	public HomePage checkAndAcceptCookies() {
 		driver.manage().deleteAllCookies();
 		if (cookies.isDisplayed()) {
 			cookies.click();
 		}
-		return PageFactory.initElements(driver, PARHomePage.class);
+		return PageFactory.initElements(driver, HomePage.class);
 	}
 	
-	public PARLoginPage selectLogin() {
+	public LoginPage selectLogin() {
 		signinButton.click();
-		return PageFactory.initElements(driver, PARLoginPage.class);
+		return PageFactory.initElements(driver, LoginPage.class);
 	}
 
 

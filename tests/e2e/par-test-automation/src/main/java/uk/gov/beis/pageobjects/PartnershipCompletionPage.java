@@ -6,19 +6,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class PARPartnershipCompletionPage extends BasePageObject {
+public class PartnershipCompletionPage extends BasePageObject {
 
-	public PARPartnershipCompletionPage() throws ClassNotFoundException, IOException {
+	public PartnershipCompletionPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
 	@FindBy(xpath = "//a[contains(@class,'button')]")
 	WebElement doneBtn;
 
-	public PARDashboardPage completeApplication() {
+	public DashboardPage completeApplication() {
 		if (doneBtn.isDisplayed()) {
 			doneBtn.click();
 		}
-		return PageFactory.initElements(driver, PARDashboardPage.class);
+		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 }
