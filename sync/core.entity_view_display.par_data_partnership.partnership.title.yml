@@ -9,7 +9,6 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_authority_person
     - field.field.par_data_partnership.partnership.field_coordinated_business
     - field.field.par_data_partnership.partnership.field_inspection_plan
-    - field.field.par_data_partnership.partnership.field_legal_entity
     - field.field.par_data_partnership.partnership.field_organisation
     - field.field.par_data_partnership.partnership.field_organisation_person
     - field.field.par_data_partnership.partnership.field_partnership_legal_entity
@@ -49,6 +48,14 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
+  par_label:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   about_partnership: true
   advice: true
@@ -68,7 +75,6 @@ hidden:
   field_authority_person: true
   field_coordinated_business: true
   field_inspection_plan: true
-  field_legal_entity: true
   field_organisation_person: true
   field_partnership_legal_entity: true
   field_regulatory_function: true
@@ -79,6 +85,7 @@ hidden:
   name: true
   organisation_change_comment: true
   organisation_person: true
+  par_status: true
   partnership_info_agreed_authority: true
   partnership_info_agreed_business: true
   partnership_status: true
