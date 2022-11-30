@@ -48,4 +48,10 @@ public class BusinessContactDetailsPage extends BasePageObject {
 			continueBtn.click();
 		return PageFactory.initElements(driver, SICCodePage.class);
 	}
+	
+	public SICCodePage proceedUserJourney() {
+		if (continueBtn.isDisplayed())
+			continueBtn.click();
+		return PageFactory.initElements(driver, SICCodePage.class);
+	}
 }
