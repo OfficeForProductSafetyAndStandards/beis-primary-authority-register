@@ -29,14 +29,22 @@ import uk.gov.beis.pageobjects.DashboardPage;
 import uk.gov.beis.pageobjects.DeclarationPage;
 import uk.gov.beis.pageobjects.HomePage;
 import uk.gov.beis.pageobjects.LoginPage;
+import uk.gov.beis.pageobjects.MailLogPage;
 import uk.gov.beis.pageobjects.PartnershipCompletionPage;
 import uk.gov.beis.pageobjects.PartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.PartnershipDescriptionPage;
 import uk.gov.beis.pageobjects.PartnershipTermsPage;
 import uk.gov.beis.pageobjects.PartnershipTypePage;
+import uk.gov.beis.pageobjects.PasswordPage;
 import uk.gov.beis.pageobjects.PartnershipSearchPage;
 import uk.gov.beis.pageobjects.SICCodePage;
 import uk.gov.beis.pageobjects.TradingPage;
+import uk.gov.beis.pageobjects.UserCommsPreferencesPage;
+import uk.gov.beis.pageobjects.UserNotificationPreferencesPage;
+import uk.gov.beis.pageobjects.UserProfileCompletionPage;
+import uk.gov.beis.pageobjects.UserProfileConfirmationPage;
+import uk.gov.beis.pageobjects.UserSubscriptionPage;
+import uk.gov.beis.pageobjects.UserTermsPage;
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
 
@@ -44,6 +52,13 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private UserProfileConfirmationPage userProfileConfirmationPage;
+	private UserNotificationPreferencesPage userNotificationPreferencesPage;
+	private MailLogPage mailLogPage;
+	private UserProfileCompletionPage userProfileCompletionPage;
+	private UserCommsPreferencesPage userCommsPreferencesPage;
+	private PasswordPage passwordPage;
+	private UserSubscriptionPage userSubscriptionPage;
 	private MemberListPage memberListPage;
 	private LoginPage parLoginPage;
 	private SICCodePage sicCodePage;
@@ -54,6 +69,7 @@ public class PARStepDefs {
 	private PartnershipTermsPage parPartnershipTermsPage;
 	private PartnershipDescriptionPage parPartnershipDescriptionPage;
 	private BusinessPage parBusinessPage;
+	private UserTermsPage userTermsPage;
 	private LegalEntityPage legalEntityPage;
 	private EmployeesPage employeesPage;
 	private BusinessDetailsPage parBusinessDetailsPage;
@@ -67,7 +83,15 @@ public class PARStepDefs {
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		userCommsPreferencesPage = PageFactory.initElements(driver, UserCommsPreferencesPage.class);
+		userProfileConfirmationPage = PageFactory.initElements(driver, UserProfileConfirmationPage.class);
+		userSubscriptionPage = PageFactory.initElements(driver, UserSubscriptionPage.class);
 		employeesPage = PageFactory.initElements(driver, EmployeesPage.class);
+		userNotificationPreferencesPage = PageFactory.initElements(driver, UserNotificationPreferencesPage.class);
+		userTermsPage = PageFactory.initElements(driver, UserTermsPage.class);
+		userProfileCompletionPage = PageFactory.initElements(driver, UserProfileCompletionPage.class);
+		passwordPage = PageFactory.initElements(driver, PasswordPage.class);
+		mailLogPage = PageFactory.initElements(driver, MailLogPage.class);
 		memberListPage = PageFactory.initElements(driver, MemberListPage.class);
 		legalEntityPage = PageFactory.initElements(driver, LegalEntityPage.class);
 		tradingPage = PageFactory.initElements(driver, TradingPage.class);
@@ -241,4 +265,34 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.saveChanges();
 		parPartnershipCompletionPage.completeApplication();
 	}
+	
+	@When("^the user visits the maillog page and extracts the invite link$")
+	public void the_user_visits_the_maillog_page_and_extracts_the_invite_link() throws Throwable {
+		mailLogPage.navigateToUrl();
+		mailLogPage.selectEamilAndGetINviteLink(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
+	}
+
+	@When("^the user follows the invitation link$")
+	public void the_user_follows_the_invitation_link() throws Throwable {
+		parLoginPage.navigateToInviteLink();
+	}
+	
+	@When("^the user completes the user creation journey$")
+	public void the_user_completes_the_user_creation_journey() throws Throwable {
+		passwordPage.enterPassword("TestPassword", "TestPassword");
+		passwordPage.selectRegister();
+		userTermsPage.acceptTerms();
+		parBusinessContactDetailsPage.proceed();
+		userCommsPreferencesPage.proceed();
+		userSubscriptionPage.selectContinue();
+		userNotificationPreferencesPage.selectContinue();
+	}
+
+	@Then("^the user journey creation is successful$")
+	public void the_user_journey_creation_is_successful() throws Throwable {
+		userProfileConfirmationPage.checkUserCreation();
+		userProfileConfirmationPage.saveChanges();
+		userProfileCompletionPage.completeApplication();
+	}
+
 }

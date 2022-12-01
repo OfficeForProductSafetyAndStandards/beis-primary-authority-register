@@ -3,8 +3,8 @@ Feature:
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
   
- @regression @partnershipapplication @direct
- Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826.PAR-1835, PAR-1836, PAR-1837)
+ @regression @partnershipapplication @direct @login
+ Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826. PAR-1835, PAR-1836, PAR-1837)
   Given the user is on the PAR home page
   And the user visits the login page
   And the user logs in with the "par_authority@example.com" user credentials
@@ -43,6 +43,16 @@ Feature:
   #And the user logs in with the "par_authority@example.com" user credentials
   #When the user searches for the last created partnership
   
+ @regression @usermanagement @login
+ Scenario: Verify Completion of User Creation journey (Happy Path - PAR-1904)
+  Given the user is on the PAR login page
+  And the user logs in with the "par_admin@example.com" user credentials
+  When the user visits the maillog page and extracts the invite link
+  And the user is on the PAR login page
+  And the user follows the invitation link
+  And the user completes the user creation journey
+  Then the user journey creation is successful
+ 
  @regression @partnershipapplication
  Scenario: Verify Completion of Partnership application with new business (Happy Path - PAR-1982)
   Given the user is on the PAR login page
