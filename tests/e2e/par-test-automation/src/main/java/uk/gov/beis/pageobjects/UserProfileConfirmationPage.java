@@ -21,7 +21,7 @@ public class UserProfileConfirmationPage extends BasePageObject {
 	
 	String businessFName = "//fieldset[contains(text(),'?')]";
 	String businessLName = "//fieldset[contains(text(),'?')]";
-	String businessEmailid = "/fieldseta[contains(text(),'?')]";
+	String businessEmailid = "//fieldset[contains(text(),'?')]";
 	
 	public boolean checkUserCreation() {
 		WebElement businessFirstName = driver.findElement(

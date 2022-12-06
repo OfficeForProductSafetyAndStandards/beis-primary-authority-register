@@ -23,6 +23,9 @@ public class DashboardPage extends BasePageObject {
 	@FindBy(linkText = "See your partnerships")
 	WebElement viewPartnershipBtn;
 	
+	@FindBy(linkText = "Search partnerships")
+	WebElement searchPartnershipBtn;
+	
 	public AuthorityPage selectApplyForNewPartnership() {
 		applyPartnershipBtn.click();
 		return PageFactory.initElements(driver, AuthorityPage.class);
@@ -33,10 +36,14 @@ public class DashboardPage extends BasePageObject {
 		return PageFactory.initElements(driver, PartnershipSearchPage.class);
 	}
 	
+	public PartnershipAdvancedSearchPage selectSearchPartnerships() {
+		searchPartnershipBtn.click();
+		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
+	}
+	
 	public String checkPage() {
 		return dashBoard.getText();
 	}
-	
 	
 	public DashboardPage checkAndAcceptCookies() {
 		try {
