@@ -19,5 +19,6 @@ public enum UsableValues {
 		BUSINESS_ADDRESSLINE1,
 		SIC_CODE,
 		NO_EMPLOYEES,
+		LOGIN_USER,
 		BUSINESS_TOWN;
 }

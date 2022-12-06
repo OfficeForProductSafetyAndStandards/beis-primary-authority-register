@@ -43,7 +43,7 @@ Feature:
   #And the user logs in with the "par_authority@example.com" user credentials
   #When the user searches for the last created partnership
   
- @regression @usermanagement @login
+ @regression @usermanagement
  Scenario: Verify Completion of User Creation journey (Happy Path - PAR-1904)
   Given the user is on the PAR login page
   And the user logs in with the "par_admin@example.com" user credentials
@@ -53,11 +53,22 @@ Feature:
   And the user completes the user creation journey
   Then the user journey creation is successful
  
- @regression @partnershipapplication
- Scenario: Verify Completion of Partnership application with new business (Happy Path - PAR-1982)
+ @regression @usermanagement @login
+ Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
   Given the user is on the PAR login page
-  And the user logs in with the "par_authority@example.com" user credentials
+  And the user logs in with the "par_helpdesk@example.com" user credentials
   When the user searches for the last created partnership
+  And checks the user can approve or delete the partnership
+  And the user approves the partnership 
+  And the user searches again for the last created partnership
+  Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
+  When the user revokes the partnership
+  And the user searches again for the last created partnership
+  Then the partnership is displayed with Status "Revoked" and Actions "Restore partnership"
+  When the user restores the partnership
+  And the user searches again for the last created partnership
+  Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
+  
   
 
   

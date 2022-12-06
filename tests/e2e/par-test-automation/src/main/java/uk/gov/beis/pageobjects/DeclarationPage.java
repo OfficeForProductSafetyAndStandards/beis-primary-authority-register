@@ -13,18 +13,25 @@ public class DeclarationPage extends BasePageObject {
 		super();
 	}
 
+	private boolean advancedsearch = false;
+
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 
+	public void setAdvancedSearch(boolean value) {
+		this.advancedsearch = value;
+	}
+
+	public boolean getAdvancedSearch() {
+		return this.advancedsearch;
+	}
+
 	public BusinessDetailsPage acceptTerms() {
-		WebElement checkbox = driver.findElement(By.id("edit-confirm"));
-		//If the checkbox is unchecked then isSelected() will return false 
-		//and NOT of false is true, hence we can click on checkbox
-		if(!checkbox.isSelected())
+		WebElement checkbox = getAdvancedSearch() ? driver.findElement(By.id("edit-confirm-authorisation-select"))
+				: driver.findElement(By.id("edit-confirm"));
+		if (!checkbox.isSelected())
 			checkbox.click();
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
-		
+		continueBtn.click();
 		return PageFactory.initElements(driver, BusinessDetailsPage.class);
 	}
 }

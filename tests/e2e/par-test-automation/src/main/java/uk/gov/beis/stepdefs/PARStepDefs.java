@@ -19,6 +19,8 @@ import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.EmployeesPage;
 import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.MemberListPage;
+import uk.gov.beis.pageobjects.PartnershipAdvancedSearchPage;
+import uk.gov.beis.pageobjects.PartnershipApprovalPage;
 import uk.gov.beis.pageobjects.AuthorityPage;
 import uk.gov.beis.pageobjects.BusinessAddressDetailsPage;
 import uk.gov.beis.pageobjects.BusinessContactDetailsPage;
@@ -33,9 +35,14 @@ import uk.gov.beis.pageobjects.MailLogPage;
 import uk.gov.beis.pageobjects.PartnershipCompletionPage;
 import uk.gov.beis.pageobjects.PartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.PartnershipDescriptionPage;
+import uk.gov.beis.pageobjects.PartnershipRestoredPage;
+import uk.gov.beis.pageobjects.PartnershipRevokedPage;
 import uk.gov.beis.pageobjects.PartnershipTermsPage;
 import uk.gov.beis.pageobjects.PartnershipTypePage;
 import uk.gov.beis.pageobjects.PasswordPage;
+import uk.gov.beis.pageobjects.RegulatoryFunctionPage;
+import uk.gov.beis.pageobjects.RestorePartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.PartnershipSearchPage;
 import uk.gov.beis.pageobjects.SICCodePage;
 import uk.gov.beis.pageobjects.TradingPage;
@@ -52,9 +59,11 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private PartnershipAdvancedSearchPage partnershipAdvancedSearchPage;
 	private UserProfileConfirmationPage userProfileConfirmationPage;
 	private UserNotificationPreferencesPage userNotificationPreferencesPage;
 	private MailLogPage mailLogPage;
+	private PartnershipApprovalPage partnershipApprovalPage;
 	private UserProfileCompletionPage userProfileCompletionPage;
 	private UserCommsPreferencesPage userCommsPreferencesPage;
 	private PasswordPage passwordPage;
@@ -69,8 +78,11 @@ public class PARStepDefs {
 	private PartnershipTermsPage parPartnershipTermsPage;
 	private PartnershipDescriptionPage parPartnershipDescriptionPage;
 	private BusinessPage parBusinessPage;
+	private RevokePartnershipConfirmationPage revokePartnershipConfirmationPage;
+	private PartnershipRevokedPage partnershipRevokedPage;
 	private UserTermsPage userTermsPage;
 	private LegalEntityPage legalEntityPage;
+	private RegulatoryFunctionPage regulatoryFunctionPage;
 	private EmployeesPage employeesPage;
 	private BusinessDetailsPage parBusinessDetailsPage;
 	private DeclarationPage parDeclarationPage;
@@ -80,9 +92,18 @@ public class PARStepDefs {
 	private PartnershipCompletionPage parPartnershipCompletionPage;
 	private BusinessAddressDetailsPage parBusinessAddressDetailsPage;
 	private TradingPage tradingPage;
+	private RestorePartnershipConfirmationPage restorePartnershipConfirmationPage;
+	private PartnershipRestoredPage partnershipRestoredPage;
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		partnershipRestoredPage = PageFactory.initElements(driver, PartnershipRestoredPage.class);
+		revokePartnershipConfirmationPage = PageFactory.initElements(driver, RevokePartnershipConfirmationPage.class);
+		partnershipRevokedPage = PageFactory.initElements(driver, PartnershipRevokedPage.class);
+		partnershipApprovalPage = PageFactory.initElements(driver, PartnershipApprovalPage.class);
+		regulatoryFunctionPage = PageFactory.initElements(driver, RegulatoryFunctionPage.class);
+		restorePartnershipConfirmationPage = PageFactory.initElements(driver, RestorePartnershipConfirmationPage.class);
+		partnershipAdvancedSearchPage = PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 		userCommsPreferencesPage = PageFactory.initElements(driver, UserCommsPreferencesPage.class);
 		userProfileConfirmationPage = PageFactory.initElements(driver, UserProfileConfirmationPage.class);
 		userSubscriptionPage = PageFactory.initElements(driver, UserSubscriptionPage.class);
@@ -135,6 +156,7 @@ public class PARStepDefs {
 
 	@Given("^the user logs in with the \"([^\"]*)\" user credentials$")
 	public void the_user_logs_in_with_the_user_credentials(String user) throws Throwable {
+		DataStore.saveValue(UsableValues.LOGIN_USER, user);
 		String pass = PropertiesUtil.getConfigPropertyValue(user);
 		LOG.info("Logging in user with credentials; username: " + user + " and password +" + pass);
 		parLoginPage.enterLoginDetails(user, pass);
@@ -200,14 +222,19 @@ public class PARStepDefs {
 
 	@When("^the user searches for the last created partnership$")
 	public void the_user_searches_for_the_last_created_partnership() throws Throwable {
-		LOG.info("Selecting view partnerships");
 		parDashboardPage.checkAndAcceptCookies();
 
-		parDashboardPage.selectSeePartnerships();
-		LOG.info("Search partnerships");
-		partnershipSearchPage.searchPartnerships();
-		LOG.info("Select organisation link details");
-		partnershipSearchPage.selectBusinessNameLink();
+		if (DataStore.getSavedValue(UsableValues.LOGIN_USER).equalsIgnoreCase("par_helpdesk@example.com")) {
+			LOG.info("Selecting view partnerships");
+			parDashboardPage.selectSearchPartnerships();
+			partnershipAdvancedSearchPage.searchPartnerships();
+		} else {
+			LOG.info("Search partnerships");
+			parDashboardPage.selectSeePartnerships();
+			LOG.info("Select organisation link details");
+			partnershipSearchPage.searchPartnerships();
+			partnershipSearchPage.selectBusinessNameLink();
+		}
 	}
 
 	@When("^the user completes the partnership application with the following details:$")
@@ -265,7 +292,7 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.saveChanges();
 		parPartnershipCompletionPage.completeApplication();
 	}
-	
+
 	@When("^the user visits the maillog page and extracts the invite link$")
 	public void the_user_visits_the_maillog_page_and_extracts_the_invite_link() throws Throwable {
 		mailLogPage.navigateToUrl();
@@ -276,9 +303,10 @@ public class PARStepDefs {
 	public void the_user_follows_the_invitation_link() throws Throwable {
 		parLoginPage.navigateToInviteLink();
 	}
-	
+
 	@When("^the user completes the user creation journey$")
 	public void the_user_completes_the_user_creation_journey() throws Throwable {
+		LOG.info("Completing user creation journey");
 		passwordPage.enterPassword("TestPassword", "TestPassword");
 		passwordPage.selectRegister();
 		userTermsPage.acceptTerms();
@@ -290,9 +318,52 @@ public class PARStepDefs {
 
 	@Then("^the user journey creation is successful$")
 	public void the_user_journey_creation_is_successful() throws Throwable {
-		userProfileConfirmationPage.checkUserCreation();
+		LOG.info("Checking user creation is sucessful");
+//		userProfileConfirmationPage.checkUserCreation();
 		userProfileConfirmationPage.saveChanges();
 		userProfileCompletionPage.completeApplication();
 	}
 
+	@When("^checks the user can approve or delete the partnership$")
+	public void checks_the_user_can_approve_or_delete_the_partnership() throws Throwable {
+
+	}
+
+	@When("^the user approves the partnership$")
+	public void the_user_approves_the_partnership() throws Throwable {
+		LOG.info("Approving last created partnership");
+		partnershipAdvancedSearchPage.selectApproveBusinessNameLink();
+		parDeclarationPage.setAdvancedSearch(true);
+		parDeclarationPage.acceptTerms();
+		regulatoryFunctionPage.proceed();
+		partnershipApprovalPage.completeApplication();
+	}
+
+	@When("^the user searches again for the last created partnership$")
+	public void the_user_searches_again_for_the_last_created_partnership() throws Throwable {
+		LOG.info("Searching for last created partnership");
+		partnershipAdvancedSearchPage.searchPartnerships();
+	}
+
+	@Then("^the partnership is displayed with Status \"([^\"]*)\" and Actions \"([^\"]*)\"$")
+	public void the_partnership_is_displayed_with_Status_and_Actions(String status, String action) throws Throwable {
+		LOG.info("Check status of partnership is: " + status + " and action is: " + action);
+		partnershipAdvancedSearchPage.checkPartnershipDetails(status, action);
+	}
+	
+	@When("^the user revokes the partnership$")
+	public void the_user_revokes_the_partnership() throws Throwable {
+		LOG.info("Revoking last created partnership");
+		partnershipAdvancedSearchPage.selectRevokeBusinessNameLink();
+		revokePartnershipConfirmationPage.enterRevokeReason("Revoking...");
+		partnershipRevokedPage.completeApplication();
+	}
+
+	@When("^the user restores the partnership$")
+	public void the_user_restores_the_partnership() throws Throwable {
+		LOG.info("Restoring last revoked partnership");
+		partnershipAdvancedSearchPage.selectRestoreBusinessNameLink();
+		restorePartnershipConfirmationPage.proceed();
+		partnershipRestoredPage.completeApplication();
+	}
 }
