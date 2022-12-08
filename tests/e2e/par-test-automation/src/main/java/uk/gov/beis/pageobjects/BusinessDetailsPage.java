@@ -20,19 +20,16 @@ public class BusinessDetailsPage extends BasePageObject {
 	WebElement continueBtn;
 
 	public BusinessAddressDetailsPage enterBusinessDescription(String desc) throws Throwable {
-		if (descriptionBox.isDisplayed()) {
-			descriptionBox.clear();
-			descriptionBox.sendKeys(desc);
-		}
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+		descriptionBox.clear();
+		descriptionBox.sendKeys(desc);
+		continueBtn.click();
 
 		return PageFactory.initElements(driver, BusinessAddressDetailsPage.class);
 	}
 
 	public BusinessDetailsPage proceed() {
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+//		if (continueBtn.isDisplayed())
+		continueBtn.click();
 		return PageFactory.initElements(driver, BusinessDetailsPage.class);
 	}
 }

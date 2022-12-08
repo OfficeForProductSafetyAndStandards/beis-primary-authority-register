@@ -23,8 +23,7 @@ public class SICCodePage extends BasePageObject {
 
 	public EmployeesPage selectSICCode(String code) {
 		driver.findElement(By.xpath(sic.replace("?", code))).click();
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+		continueBtn.click();
 		return PageFactory.initElements(driver, EmployeesPage.class);
 	}
 }

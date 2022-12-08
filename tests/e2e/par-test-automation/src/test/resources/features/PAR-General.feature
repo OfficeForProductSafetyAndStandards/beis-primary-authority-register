@@ -69,6 +69,10 @@ Feature:
   And the user searches again for the last created partnership
   Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
   
-  
+ @regression @usermanagement 
+ Scenario: Verify Update of Partnership journey (Happy Path - PAR-1845)
+  Given the user is on the PAR login page
+  And the user logs in with the "par_admin@example.com" user credentials
+  When the user searches for the last created partnership
 
   

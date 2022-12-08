@@ -17,9 +17,7 @@ public class PartnershipApprovalPage extends BasePageObject {
 	WebElement doneBtn;
 
 	public PartnershipAdvancedSearchPage completeApplication() {
-		if (doneBtn.isDisplayed()) {
-			doneBtn.click();
-		}
+		doneBtn.click();
 		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 	}
 }

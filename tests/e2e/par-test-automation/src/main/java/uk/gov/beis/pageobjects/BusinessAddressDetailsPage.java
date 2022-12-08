@@ -32,16 +32,13 @@ public class BusinessAddressDetailsPage extends BasePageObject {
 		town.sendKeys(town1);
 		postcode.clear();
 		postcode.sendKeys(postcode1);
-
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+		continueBtn.click();
 
 		return PageFactory.initElements(driver, BusinessContactDetailsPage.class);
 	}
 
 	public BusinessContactDetailsPage proceed() {
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+		continueBtn.click();
 		return PageFactory.initElements(driver, BusinessContactDetailsPage.class);
 	}
 }

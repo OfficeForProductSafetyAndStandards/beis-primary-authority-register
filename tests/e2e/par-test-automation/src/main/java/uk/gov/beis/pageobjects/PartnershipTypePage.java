@@ -21,8 +21,7 @@ public class PartnershipTypePage extends BasePageObject {
 	public PartnershipTermsPage selectPartnershipType(String type) {
 		WebElement link = driver.findElement(By.xpath(locator.replace("?", type)));
 		link.click();
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+		continueBtn.click();
 		return PageFactory.initElements(driver, PartnershipTermsPage.class);
 	}
 

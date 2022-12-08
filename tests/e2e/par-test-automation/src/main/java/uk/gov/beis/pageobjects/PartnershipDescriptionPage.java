@@ -19,12 +19,9 @@ public class PartnershipDescriptionPage extends BasePageObject {
 	WebElement continueBtn;
 
 	public BusinessPage enterPartnershipDescription(String description) throws Throwable {
-		if (descriptionBox.isDisplayed()) {
-			descriptionBox.clear();
-			descriptionBox.sendKeys(description);
-		}
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+		descriptionBox.clear();
+		descriptionBox.sendKeys(description);
+		continueBtn.click();
 
 		return PageFactory.initElements(driver, BusinessPage.class);
 	}

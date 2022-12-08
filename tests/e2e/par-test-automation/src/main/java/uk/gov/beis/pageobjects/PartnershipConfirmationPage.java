@@ -38,7 +38,6 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	String tradename = "//div[contains(text(),'?')]";
 	String membersize = "//div[contains(text(),'?')]";
 
-
 	public void setJourneyPart(boolean value) {
 		this.twopartjourney = value;
 	}
@@ -56,8 +55,7 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	}
 
 	public PartnershipCompletionPage saveChanges() {
-		if (saveBtn.isDisplayed())
-			saveBtn.click();
+		saveBtn.click();
 		return PageFactory.initElements(driver, PartnershipCompletionPage.class);
 	}
 
@@ -72,10 +70,10 @@ public class PartnershipConfirmationPage extends BasePageObject {
 				.findElement(By.xpath(noEmplyees.replace("?", DataStore.getSavedValue(UsableValues.NO_EMPLOYEES))));
 		return nEmplyees.isDisplayed();
 	}
-	
+
 	public boolean checkMemberSize() {
-		WebElement memsize = driver
-				.findElement(By.xpath(membersize.replace("?", DataStore.getSavedValue(UsableValues.MEMBERLIST_SIZE)).toLowerCase()));
+		WebElement memsize = driver.findElement(
+				By.xpath(membersize.replace("?", DataStore.getSavedValue(UsableValues.MEMBERLIST_SIZE)).toLowerCase()));
 		return memsize.isDisplayed();
 	}
 

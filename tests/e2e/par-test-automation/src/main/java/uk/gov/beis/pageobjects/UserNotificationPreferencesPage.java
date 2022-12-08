@@ -16,7 +16,6 @@ public class UserNotificationPreferencesPage extends BasePageObject{
 	WebElement continueBtn;
 
 	public UserProfileConfirmationPage selectContinue() {
-		if (continueBtn.isDisplayed())
 			continueBtn.click();
 		return PageFactory.initElements(driver, UserProfileConfirmationPage.class);
 	}

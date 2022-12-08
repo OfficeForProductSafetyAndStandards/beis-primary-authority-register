@@ -24,7 +24,6 @@ public class LegalEntityPage extends BasePageObject {
 	String legalEntType = "//select/option[contains(text(),'?')]";
 	String regNo = "//label[contains(text(),'Provide the registration number')]/following-sibling::input";
 
-
 	public PartnershipConfirmationPage createLegalEntity(String type) {
 		DataStore.saveValue(UsableValues.ENTITY_NAME, RandomStringGenerator.getLegalEntityName(3));
 		DataStore.saveValue(UsableValues.REGISTRATION_NO, RandomStringGenerator.getRandomNumericString(7));
@@ -33,8 +32,7 @@ public class LegalEntityPage extends BasePageObject {
 		driver.findElement(By.xpath(legalEntType.replace("?", type))).click();
 		driver.findElement(By.xpath(regNo)).sendKeys(DataStore.getSavedValue(UsableValues.REGISTRATION_NO));
 
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+		continueBtn.click();
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 }

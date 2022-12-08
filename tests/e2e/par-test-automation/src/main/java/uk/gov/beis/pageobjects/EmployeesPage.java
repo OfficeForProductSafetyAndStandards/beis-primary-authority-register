@@ -7,8 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class EmployeesPage extends BasePageObject{
-	
+public class EmployeesPage extends BasePageObject {
+
 	public EmployeesPage() throws ClassNotFoundException, IOException {
 		super();
 	}
@@ -20,8 +20,7 @@ public class EmployeesPage extends BasePageObject{
 
 	public TradingPage selectNoEmployees(String code) {
 		driver.findElement(By.xpath(noEmployees.replace("?", code))).click();
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+		continueBtn.click();
 		return PageFactory.initElements(driver, TradingPage.class);
 	}
 }

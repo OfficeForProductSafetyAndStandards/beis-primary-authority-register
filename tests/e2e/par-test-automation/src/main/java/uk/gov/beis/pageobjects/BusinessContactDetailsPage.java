@@ -26,9 +26,9 @@ public class BusinessContactDetailsPage extends BasePageObject {
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 
-	public BusinessAddressDetailsPage enterContactDetails(String firstname,String lastname, String phone1, String email1) {
-		if (firstName.isDisplayed())
-			firstName.clear();
+	public BusinessAddressDetailsPage enterContactDetails(String firstname, String lastname, String phone1,
+			String email1) {
+		firstName.clear();
 		firstName.sendKeys(firstname);
 		lastName.clear();
 		lastName.sendKeys(lastname);
@@ -36,16 +36,12 @@ public class BusinessContactDetailsPage extends BasePageObject {
 		phone.sendKeys(phone1);
 		email.clear();
 		email.sendKeys(email1);
-
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
-
+		continueBtn.click();
 		return PageFactory.initElements(driver, BusinessAddressDetailsPage.class);
 	}
-	
+
 	public SICCodePage proceed() {
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+		continueBtn.click();
 		return PageFactory.initElements(driver, SICCodePage.class);
 	}
 }
