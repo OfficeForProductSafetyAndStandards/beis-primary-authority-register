@@ -21,6 +21,9 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	@FindBy(xpath = "//input[contains(@value,'Save')]")
 	WebElement saveBtn;
 
+	@FindBy(linkText = "edit about the partnership")
+	WebElement editPartnershipLink;
+
 	String partnershipDetails = "//div/p[contains(text(),'?')]";
 	String businessname = "//div[contains(text(),'?')]";
 	String businessAddress1 = "//div/p[contains(text(),'?')]";
@@ -57,6 +60,11 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	public PartnershipCompletionPage saveChanges() {
 		saveBtn.click();
 		return PageFactory.initElements(driver, PartnershipCompletionPage.class);
+	}
+
+	public PartnershipDescriptionPage editAboutPartnership() {
+		editPartnershipLink.click();
+		return PageFactory.initElements(driver, PartnershipDescriptionPage.class);
 	}
 
 	public boolean checkPartnershipInfo() {

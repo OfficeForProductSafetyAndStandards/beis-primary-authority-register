@@ -177,6 +177,7 @@ public class PARStepDefs {
 
 			parDashboardPage.selectApplyForNewPartnership();
 			LOG.info("Choose authority");
+			DataStore.saveValue(UsableValues.AUTHORITY_NAME, data.get("Authority"));
 			parAuthorityPage.selectAuthority(data.get("Authority"));
 			LOG.info("Select partnership type");
 			DataStore.saveValue(UsableValues.PARTNERSHIP_TYPE, type);
@@ -185,7 +186,8 @@ public class PARStepDefs {
 			parPartnershipTermsPage.acceptTerms();
 			DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, data.get("Partnership Info"));
 			LOG.info("Entering partnership description");
-			parPartnershipDescriptionPage.enterPartnershipDescription(data.get("Partnership Info"));
+			parPartnershipDescriptionPage.enterPartnershipDescription(data.get("Partnership Info"),
+					parPartnershipConfirmationPage.getJourneyPart());
 			LOG.info("Entering business/organisation name");
 			DataStore.saveValue(UsableValues.BUSINESS_NAME, RandomStringGenerator.getBusinessName(4));
 			parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
@@ -233,7 +235,14 @@ public class PARStepDefs {
 			parDashboardPage.selectSeePartnerships();
 			LOG.info("Select organisation link details");
 			partnershipSearchPage.searchPartnerships();
-			partnershipSearchPage.selectBusinessNameLink();
+
+			// select business/organisation link if still first part of journey
+			if (!parPartnershipConfirmationPage.getJourneyPart())
+				partnershipSearchPage.selectBusinessNameLink();
+
+			// select authority link if in second part of journey
+			if (parPartnershipConfirmationPage.getJourneyPart())
+				partnershipSearchPage.selectAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
 		}
 	}
 
@@ -288,7 +297,6 @@ public class PARStepDefs {
 		Assert.assertTrue("Appliction not complete",
 				parPartnershipConfirmationPage.checkPartnershipApplicationSecondPart());
 		parPartnershipConfirmationPage.confirmDetails();
-
 		parPartnershipConfirmationPage.saveChanges();
 		parPartnershipCompletionPage.completeApplication();
 	}
@@ -350,7 +358,7 @@ public class PARStepDefs {
 		LOG.info("Check status of partnership is: " + status + " and action is: " + action);
 		partnershipAdvancedSearchPage.checkPartnershipDetails(status, action);
 	}
-	
+
 	@When("^the user revokes the partnership$")
 	public void the_user_revokes_the_partnership() throws Throwable {
 		LOG.info("Revoking last created partnership");
@@ -365,5 +373,18 @@ public class PARStepDefs {
 		partnershipAdvancedSearchPage.selectRestoreBusinessNameLink();
 		restorePartnershipConfirmationPage.proceed();
 		partnershipRestoredPage.completeApplication();
+	}
+
+	@When("^the user updates the partnership information with the following info: \"([^\"]*)\"$")
+	public void the_user_updates_the_partnership_information_with_the_following_info(String desc) throws Throwable {
+		parPartnershipConfirmationPage.editAboutPartnership();
+		DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, desc);
+		parPartnershipDescriptionPage.enterPartnershipDescription(desc,
+				parPartnershipConfirmationPage.getJourneyPart());
+	}
+
+	@Then("^the partnership is updated correctly$")
+	public void the_partnership_is_updated_correctly() throws Throwable {
+		Assert.assertTrue("Partnership info doesn't check out", parPartnershipConfirmationPage.checkPartnershipInfo());
 	}
 }

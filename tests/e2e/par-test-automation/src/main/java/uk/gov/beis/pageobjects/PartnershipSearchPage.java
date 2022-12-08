@@ -33,4 +33,11 @@ public class PartnershipSearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, DeclarationPage.class);
 	}
 
+	private String authority = "//td/a[contains(text(),'?')]";
+
+	public PartnershipConfirmationPage selectAuthority(String auth) {
+		WebElement link = driver.findElement(By.xpath(authority.replace("?", auth)));
+		link.click();
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
 }
