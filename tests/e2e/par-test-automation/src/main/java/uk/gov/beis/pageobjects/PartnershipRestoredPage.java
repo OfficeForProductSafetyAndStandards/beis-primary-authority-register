@@ -16,9 +16,7 @@ public class PartnershipRestoredPage extends BasePageObject {
 	WebElement doneBtn;
 
 	public PartnershipAdvancedSearchPage completeApplication() {
-		if (doneBtn.isDisplayed()) {
 			doneBtn.click();
-		}
 		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 	}
 }
