@@ -12,6 +12,7 @@ import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.utility.DataStore;
 
 public class PartnershipConfirmationPage extends BasePageObject {
+
 	public PartnershipConfirmationPage() throws ClassNotFoundException, IOException {
 		super();
 	}
