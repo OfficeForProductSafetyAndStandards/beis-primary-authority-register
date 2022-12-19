@@ -440,4 +440,21 @@ public class PARStepDefs {
 		authorityConfirmationPage.checkAuthorityDetails();
 		authorityConfirmationPage.saveChanges();
 	}
+	
+	@When("^the user searches for the last created authority$")
+	public void the_user_searches_for_the_last_created_authority() throws Throwable {
+		authoritiesDashboardPage.searchAuthority();
+		authoritiesDashboardPage.selectAuthority();
+	}
+	
+	@When("^the user updates all the fields for newly created authority$")
+	public void the_user_updates_all_the_fields_for_newly_created_authority() throws Throwable {
+		authorityConfirmationPage.editAuthorityName();
+		authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME)+ " Updated");
+	}
+
+	@Then("^the update for the authority is successful$")
+	public void the_update_for_the_authority_is_successful() throws Throwable {
+	    
+	}
 }

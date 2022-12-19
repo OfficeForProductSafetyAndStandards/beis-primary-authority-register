@@ -85,3 +85,11 @@ Feature:
    | Council Area    	| 43453465	 | Cookie control				| 32 Bramtom Rd	| Windsor	| SL4 5PN		|  
   Then the authority is created sucessfully
   
+  # Update All Fields for newly created Authority
+  When the user searches for the last created authority
+  And the user updates all the fields for newly created authority
+  Then the update for the authority is successful
+  
+  
+  
+  

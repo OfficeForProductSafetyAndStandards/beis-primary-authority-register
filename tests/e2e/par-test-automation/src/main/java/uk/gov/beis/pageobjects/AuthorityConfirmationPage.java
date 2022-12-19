@@ -50,4 +50,36 @@ public class AuthorityConfirmationPage extends BasePageObject {
 		saveBtn.click();
 		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
 	}
+	
+	@FindBy(linkText = "Change the authority name")
+	WebElement authorityNameLink;
+	
+	@FindBy(linkText = "Change the authority type")
+	WebElement authorityTypeLink;
+	
+	@FindBy(linkText = "Change the ONS code")
+	WebElement ONSCode;
+	
+	@FindBy(linkText = "Change the regulatory functions")
+	WebElement regFunctions;
+
+	public AuthorityNamePage editAuthorityName() {
+		authorityNameLink.click();
+		return PageFactory.initElements(driver, AuthorityNamePage.class);
+	}
+	
+	public AuthorityDashboardPage editAuthorityType() {
+		authorityTypeLink.click();
+		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
+	}
+	
+	public AuthorityDashboardPage editONSCode() {
+		ONSCode.click();
+		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
+	}
+	
+	public AuthorityDashboardPage editRegFunction() {
+		regFunctions.click();
+		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
+	}
 }
