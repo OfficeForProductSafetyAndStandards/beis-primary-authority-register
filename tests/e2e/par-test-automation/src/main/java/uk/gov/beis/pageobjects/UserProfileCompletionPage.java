@@ -16,9 +16,9 @@ public class UserProfileCompletionPage extends BasePageObject {
 	WebElement doneBtn;
 
 	public DashboardPage completeApplication() {
-		if (doneBtn.isDisplayed()) {
+//		if (doneBtn.isDisplayed()) {
 			doneBtn.click();
-		}
+//		}
 		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 }

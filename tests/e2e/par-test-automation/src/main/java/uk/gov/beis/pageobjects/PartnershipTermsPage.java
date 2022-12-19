@@ -18,13 +18,11 @@ public class PartnershipTermsPage extends BasePageObject {
 
 	public PartnershipDescriptionPage acceptTerms() {
 		WebElement checkbox = driver.findElement(By.id("edit-confirm"));
-		//If the checkbox is unchecked then isSelected() will return false 
-		//and NOT of false is true, hence we can click on checkbox
-		if(!checkbox.isSelected())
+		// If the checkbox is unchecked then isSelected() will return false
+		// and NOT of false is true, hence we can click on checkbox
+		if (!checkbox.isSelected())
 			checkbox.click();
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
-		
+		continueBtn.click();
 		return PageFactory.initElements(driver, PartnershipDescriptionPage.class);
 	}
 

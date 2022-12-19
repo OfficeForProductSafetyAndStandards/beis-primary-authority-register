@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class TradingPage extends BasePageObject{
+public class TradingPage extends BasePageObject {
 	public TradingPage() throws ClassNotFoundException, IOException {
 		super();
 	}
@@ -18,12 +18,9 @@ public class TradingPage extends BasePageObject{
 	WebElement continueBtn;
 
 	public LegalEntityPage enterBusinessName(String name) {
-		if (tradingName.isDisplayed()) {
-			tradingName.clear();
-			tradingName.sendKeys(name);
-		}
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+		tradingName.clear();
+		tradingName.sendKeys(name);
+		continueBtn.click();
 
 		return PageFactory.initElements(driver, LegalEntityPage.class);
 	}

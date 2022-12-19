@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class MemberListPage extends BasePageObject{
+public class MemberListPage extends BasePageObject {
 	public MemberListPage() throws ClassNotFoundException, IOException {
 		super();
 	}
@@ -19,8 +19,7 @@ public class MemberListPage extends BasePageObject{
 
 	public TradingPage selectMemberSize(String size) {
 		driver.findElement(By.xpath(memberSize.replace("?", size))).click();
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+		continueBtn.click();
 		return PageFactory.initElements(driver, TradingPage.class);
 	}
 }

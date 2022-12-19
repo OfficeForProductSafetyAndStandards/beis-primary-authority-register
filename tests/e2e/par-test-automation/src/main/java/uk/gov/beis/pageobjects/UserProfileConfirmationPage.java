@@ -36,7 +36,7 @@ public class UserProfileConfirmationPage extends BasePageObject {
 	}
 	
 	public UserProfileCompletionPage saveChanges() {
-		if (saveBtn.isDisplayed())
+//		if (saveBtn.isDisplayed())
 			saveBtn.click();
 		return PageFactory.initElements(driver, UserProfileCompletionPage.class);
 	}

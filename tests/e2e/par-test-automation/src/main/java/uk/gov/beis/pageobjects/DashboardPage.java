@@ -13,38 +13,38 @@ public class DashboardPage extends BasePageObject {
 	public DashboardPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-	
+
 	@FindBy(xpath = "//div[@id='block-par-theme-page-title']")
 	private WebElement dashBoard;
-	
+
 	@FindBy(linkText = "Apply for a new partnership")
 	WebElement applyPartnershipBtn;
-	
+
 	@FindBy(linkText = "See your partnerships")
 	WebElement viewPartnershipBtn;
-	
+
 	@FindBy(linkText = "Search partnerships")
 	WebElement searchPartnershipBtn;
-	
+
 	public AuthorityPage selectApplyForNewPartnership() {
 		applyPartnershipBtn.click();
 		return PageFactory.initElements(driver, AuthorityPage.class);
 	}
-	
+
 	public PartnershipSearchPage selectSeePartnerships() {
 		viewPartnershipBtn.click();
 		return PageFactory.initElements(driver, PartnershipSearchPage.class);
 	}
-	
+
 	public PartnershipAdvancedSearchPage selectSearchPartnerships() {
 		searchPartnershipBtn.click();
 		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 	}
-	
+
 	public String checkPage() {
 		return dashBoard.getText();
 	}
-	
+
 	public DashboardPage checkAndAcceptCookies() {
 		try {
 			driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
@@ -53,5 +53,5 @@ public class DashboardPage extends BasePageObject {
 		}
 		return PageFactory.initElements(driver, DashboardPage.class);
 	}
-	
+
 }

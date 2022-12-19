@@ -17,8 +17,7 @@ public class UserCommsPreferencesPage extends BasePageObject {
 	WebElement continueBtn;
 
 	public UserSubscriptionPage proceed() {
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+		continueBtn.click();
 		return PageFactory.initElements(driver, UserSubscriptionPage.class);
 	}
 

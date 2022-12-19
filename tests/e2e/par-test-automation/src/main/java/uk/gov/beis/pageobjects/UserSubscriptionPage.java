@@ -17,8 +17,7 @@ public class UserSubscriptionPage extends BasePageObject {
 	WebElement continueBtn;
 
 	public UserNotificationPreferencesPage selectContinue() {
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+		continueBtn.click();
 		return PageFactory.initElements(driver, UserNotificationPreferencesPage.class);
 	}
 

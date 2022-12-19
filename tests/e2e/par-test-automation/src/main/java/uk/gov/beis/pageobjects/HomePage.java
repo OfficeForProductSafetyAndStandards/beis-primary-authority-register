@@ -16,18 +16,18 @@ public class HomePage extends BasePageObject {
 	public HomePage() throws ClassNotFoundException, IOException {
 		super();
 	}
-	
+
 	@FindBy(linkText = "Sign in")
 	private WebElement signinButton;
-	
+
 	@FindBy(xpath = "//button[contains(text(),'Accept')]")
 	private WebElement cookies;
-	
+
 	public HomePage navigateToUrl() {
 		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url"));
 		return PageFactory.initElements(driver, HomePage.class);
 	}
-	
+
 	public HomePage checkAndAcceptCookies() {
 		driver.manage().deleteAllCookies();
 		if (cookies.isDisplayed()) {
@@ -35,11 +35,10 @@ public class HomePage extends BasePageObject {
 		}
 		return PageFactory.initElements(driver, HomePage.class);
 	}
-	
+
 	public LoginPage selectLogin() {
 		signinButton.click();
 		return PageFactory.initElements(driver, LoginPage.class);
 	}
-
 
 }

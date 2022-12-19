@@ -19,12 +19,9 @@ public class BusinessPage extends BasePageObject {
 	WebElement continueBtn;
 
 	public BusinessAddressDetailsPage enterBusinessName(String name) {
-		if (businessName.isDisplayed()) {
-			businessName.clear();
-			businessName.sendKeys(name);
-		}
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+		businessName.clear();
+		businessName.sendKeys(name);
+		continueBtn.click();
 
 		return PageFactory.initElements(driver, BusinessAddressDetailsPage.class);
 	}

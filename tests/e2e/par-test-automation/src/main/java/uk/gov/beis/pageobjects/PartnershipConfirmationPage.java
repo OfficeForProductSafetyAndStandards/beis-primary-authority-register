@@ -21,6 +21,9 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	@FindBy(xpath = "//input[contains(@value,'Save')]")
 	WebElement saveBtn;
 
+	@FindBy(linkText = "edit about the partnership")
+	WebElement editPartnershipLink;
+
 	String partnershipDetails = "//div/p[contains(text(),'?')]";
 	String businessname = "//div[contains(text(),'?')]";
 	String businessAddress1 = "//div/p[contains(text(),'?')]";
@@ -37,7 +40,6 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	String regNo = "//div[contains(text(),'?')]";
 	String tradename = "//div[contains(text(),'?')]";
 	String membersize = "//div[contains(text(),'?')]";
-
 
 	public void setJourneyPart(boolean value) {
 		this.twopartjourney = value;
@@ -56,9 +58,13 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	}
 
 	public PartnershipCompletionPage saveChanges() {
-		if (saveBtn.isDisplayed())
-			saveBtn.click();
+		saveBtn.click();
 		return PageFactory.initElements(driver, PartnershipCompletionPage.class);
+	}
+
+	public PartnershipDescriptionPage editAboutPartnership() {
+		editPartnershipLink.click();
+		return PageFactory.initElements(driver, PartnershipDescriptionPage.class);
 	}
 
 	public boolean checkPartnershipInfo() {
@@ -72,10 +78,10 @@ public class PartnershipConfirmationPage extends BasePageObject {
 				.findElement(By.xpath(noEmplyees.replace("?", DataStore.getSavedValue(UsableValues.NO_EMPLOYEES))));
 		return nEmplyees.isDisplayed();
 	}
-	
+
 	public boolean checkMemberSize() {
-		WebElement memsize = driver
-				.findElement(By.xpath(membersize.replace("?", DataStore.getSavedValue(UsableValues.MEMBERLIST_SIZE)).toLowerCase()));
+		WebElement memsize = driver.findElement(
+				By.xpath(membersize.replace("?", DataStore.getSavedValue(UsableValues.MEMBERLIST_SIZE)).toLowerCase()));
 		return memsize.isDisplayed();
 	}
 

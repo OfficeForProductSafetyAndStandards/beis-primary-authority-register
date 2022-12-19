@@ -16,9 +16,7 @@ public class PartnershipCompletionPage extends BasePageObject {
 	WebElement doneBtn;
 
 	public DashboardPage completeApplication() {
-		if (doneBtn.isDisplayed()) {
 			doneBtn.click();
-		}
 		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 }

@@ -16,8 +16,7 @@ public class BusinessInvitePage extends BasePageObject {
 	WebElement continueBtn;
 
 	public PartnershipConfirmationPage sendInvite() {
-		if (continueBtn.isDisplayed())
-			continueBtn.click();
+		continueBtn.click();
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 }
