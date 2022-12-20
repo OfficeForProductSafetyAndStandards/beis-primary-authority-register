@@ -418,7 +418,7 @@ public class PARStepDefs {
 			authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
 			LOG.info("Provide authority type");
 			DataStore.saveValue(UsableValues.AUTHORITY_TYPE, data.get("Authority Type"));
-			authorityTypePage.selectAuthorityType(data.get("Authority Type"));
+			authorityTypePage.selectAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
 			LOG.info("Enter authority contact details");
 			authorityAddressDetailsPage.enterAddressDetails(data.get("addressline1"), data.get("town"),
 					data.get("postcode"));
@@ -437,24 +437,39 @@ public class PARStepDefs {
 	@Then("^the authority is created sucessfully$")
 	public void the_authority_is_created_sucessfully() throws Throwable {
 		LOG.info("Confirm all details entered check out and save changes");
-		authorityConfirmationPage.checkAuthorityDetails();
+		Assert.assertTrue("Details don't check out", authorityConfirmationPage.checkAuthorityDetails());
 		authorityConfirmationPage.saveChanges();
 	}
 	
 	@When("^the user searches for the last created authority$")
 	public void the_user_searches_for_the_last_created_authority() throws Throwable {
+		LOG.info("Search for last created authority");
 		authoritiesDashboardPage.searchAuthority();
 		authoritiesDashboardPage.selectAuthority();
 	}
 	
 	@When("^the user updates all the fields for newly created authority$")
 	public void the_user_updates_all_the_fields_for_newly_created_authority() throws Throwable {
+		LOG.info("Updating all editble fields against selected authority");
 		authorityConfirmationPage.editAuthorityName();
-		authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME)+ " Updated");
+		DataStore.saveValue(UsableValues.AUTHORITY_NAME, DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + " Updated");
+		authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		authorityConfirmationPage.editAuthorityType();
+		DataStore.saveValue(UsableValues.AUTHORITY_TYPE, "District");
+		authorityTypePage.selectAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
+		authorityConfirmationPage.editONSCode();
+		DataStore.saveValue(UsableValues.ONS_CODE, DataStore.getSavedValue(UsableValues.ONS_CODE) + " Updated");
+		onsCodePage.enterONSCode(DataStore.getSavedValue(UsableValues.ONS_CODE));
+		authorityConfirmationPage.editRegFunction();
+		DataStore.saveValue(UsableValues.AUTHORITY_REGFUNCTION, "Alphabet learning");
+		regulatoryFunctionPage.selectRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
+		
 	}
 
 	@Then("^the update for the authority is successful$")
 	public void the_update_for_the_authority_is_successful() throws Throwable {
-	    
+		LOG.info("Check all updated changes check out");
+		Assert.assertTrue("Details don't check out", authorityConfirmationPage.checkAuthorityDetails());
+		authorityConfirmationPage.saveChanges();
 	}
 }

@@ -19,11 +19,15 @@ public class ONSCodePage extends BasePageObject {
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 
-	public RegulatoryFunctionPage enterONSCode(String name) {
+	public BasePageObject enterONSCode(String name) {
 		onsCode.clear();
 		onsCode.sendKeys(name);
-		continueBtn.click();
-
-		return PageFactory.initElements(driver, RegulatoryFunctionPage.class);
+		try {
+			driver.findElement(By.id("edit-next")).click();
+			return PageFactory.initElements(driver, RegulatoryFunctionPage.class);
+		} catch (Exception e) {
+			driver.findElement(By.id("edit-save")).click();
+			return PageFactory.initElements(driver, AuthorityConfirmationPage.class);
+		}
 	}
 }

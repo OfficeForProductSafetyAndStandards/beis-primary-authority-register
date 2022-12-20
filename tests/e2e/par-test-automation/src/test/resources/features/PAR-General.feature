@@ -77,7 +77,7 @@ Feature:
   Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
   
  @regression @authority
- Scenario: Verify Addition of Authority (Happy Path - PAR-1849)
+ Scenario: Verify Addition of Authority (Happy Path - PAR-1849, PAR-1850)
   Given the user is on the PAR login page
   And the user logs in with the "par_helpdesk@example.com" user credentials
   When the user creates a new authority with the following details:

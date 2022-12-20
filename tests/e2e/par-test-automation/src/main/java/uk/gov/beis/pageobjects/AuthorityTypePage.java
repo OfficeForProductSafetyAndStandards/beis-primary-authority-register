@@ -18,10 +18,15 @@ public class AuthorityTypePage extends BasePageObject {
 
 	private String locator = "//label[contains(text(),'?')]";
 
-	public AuthorityAddressDetailsPage selectAuthorityType(String type) {
+	public BasePageObject selectAuthorityType(String type) {
 		WebElement link = driver.findElement(By.xpath(locator.replace("?", type)));
 		link.click();
-		continueBtn.click();
-		return PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
+		try {
+			driver.findElement(By.id("edit-next")).click();
+			return PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
+		} catch (Exception e) {
+			driver.findElement(By.id("edit-save")).click();
+			return PageFactory.initElements(driver, AuthorityConfirmationPage.class);
+		}
 	}
 }

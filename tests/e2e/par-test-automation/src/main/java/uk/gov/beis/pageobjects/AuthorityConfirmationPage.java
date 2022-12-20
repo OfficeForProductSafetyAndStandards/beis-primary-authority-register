@@ -57,7 +57,7 @@ public class AuthorityConfirmationPage extends BasePageObject {
 	@FindBy(linkText = "Change the authority type")
 	WebElement authorityTypeLink;
 	
-	@FindBy(linkText = "Change the ONS code")
+	@FindBy(linkText = "Change the ons code")
 	WebElement ONSCode;
 	
 	@FindBy(linkText = "Change the regulatory functions")
