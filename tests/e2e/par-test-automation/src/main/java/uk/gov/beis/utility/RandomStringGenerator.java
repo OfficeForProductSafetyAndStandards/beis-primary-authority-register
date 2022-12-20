@@ -10,6 +10,12 @@ public class RandomStringGenerator {
 		return BUSINESSID+randomNumber;
 	}
 	
+	public static String getAuthorityName(int length) {
+		String AUTHID = "Test Authority ";
+		String randomNumber = RandomStringUtils.random(length, "123456789");
+		return AUTHID+randomNumber;
+	}
+	
 	public static String getEmail(int length) {
 		String EMAILID = "testemail";
 		String randomNumber = RandomStringUtils.random(length, "123456789");

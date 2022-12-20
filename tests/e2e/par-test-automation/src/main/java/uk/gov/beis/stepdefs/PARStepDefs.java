@@ -8,7 +8,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import cucumber.api.DataTable;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -19,9 +18,15 @@ import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.EmployeesPage;
 import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.MemberListPage;
+import uk.gov.beis.pageobjects.ONSCodePage;
 import uk.gov.beis.pageobjects.PartnershipAdvancedSearchPage;
 import uk.gov.beis.pageobjects.PartnershipApprovalPage;
+import uk.gov.beis.pageobjects.AuthorityDashboardPage;
+import uk.gov.beis.pageobjects.AuthorityAddressDetailsPage;
+import uk.gov.beis.pageobjects.AuthorityConfirmationPage;
+import uk.gov.beis.pageobjects.AuthorityNamePage;
 import uk.gov.beis.pageobjects.AuthorityPage;
+import uk.gov.beis.pageobjects.AuthorityTypePage;
 import uk.gov.beis.pageobjects.BusinessAddressDetailsPage;
 import uk.gov.beis.pageobjects.BusinessContactDetailsPage;
 import uk.gov.beis.pageobjects.BusinessDetailsPage;
@@ -59,10 +64,17 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private ONSCodePage onsCodePage;
+	private RegulatoryFunctionPage regulatoryFunctionPage;
+	private AuthorityConfirmationPage authorityConfirmationPage;
+	private AuthorityAddressDetailsPage authorityAddressDetailsPage;
+	private AuthorityTypePage authorityTypePage;
+	private AuthorityNamePage authorityNamePage;
 	private PartnershipAdvancedSearchPage partnershipAdvancedSearchPage;
 	private UserProfileConfirmationPage userProfileConfirmationPage;
 	private UserNotificationPreferencesPage userNotificationPreferencesPage;
 	private MailLogPage mailLogPage;
+	private AuthorityDashboardPage authoritiesDashboardPage;
 	private PartnershipApprovalPage partnershipApprovalPage;
 	private UserProfileCompletionPage userProfileCompletionPage;
 	private UserCommsPreferencesPage userCommsPreferencesPage;
@@ -82,7 +94,6 @@ public class PARStepDefs {
 	private PartnershipRevokedPage partnershipRevokedPage;
 	private UserTermsPage userTermsPage;
 	private LegalEntityPage legalEntityPage;
-	private RegulatoryFunctionPage regulatoryFunctionPage;
 	private EmployeesPage employeesPage;
 	private BusinessDetailsPage parBusinessDetailsPage;
 	private DeclarationPage parDeclarationPage;
@@ -97,6 +108,13 @@ public class PARStepDefs {
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		onsCodePage = PageFactory.initElements(driver, ONSCodePage.class);
+		authorityConfirmationPage = PageFactory.initElements(driver, AuthorityConfirmationPage.class);
+		authorityTypePage = PageFactory.initElements(driver, AuthorityTypePage.class);
+		regulatoryFunctionPage = PageFactory.initElements(driver, RegulatoryFunctionPage.class);
+		authorityAddressDetailsPage = PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
+		authorityNamePage = PageFactory.initElements(driver, AuthorityNamePage.class);
+		authoritiesDashboardPage = PageFactory.initElements(driver, AuthorityDashboardPage.class);
 		partnershipRestoredPage = PageFactory.initElements(driver, PartnershipRestoredPage.class);
 		revokePartnershipConfirmationPage = PageFactory.initElements(driver, RevokePartnershipConfirmationPage.class);
 		partnershipRevokedPage = PageFactory.initElements(driver, PartnershipRevokedPage.class);
@@ -386,5 +404,72 @@ public class PARStepDefs {
 	@Then("^the partnership is updated correctly$")
 	public void the_partnership_is_updated_correctly() throws Throwable {
 		Assert.assertTrue("Partnership info doesn't check out", parPartnershipConfirmationPage.checkPartnershipInfo());
+	}
+
+	@When("^the user creates a new authority with the following details:$")
+	public void the_user_creates_a_new_authority_with_the_following_details(DataTable dets) throws Throwable {
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			LOG.info("Select manage authorities");
+			parDashboardPage.selectManageAuthorities();
+			LOG.info("Select add authority");
+			authoritiesDashboardPage.selectAddAuthority();
+			DataStore.saveValue(UsableValues.AUTHORITY_NAME, RandomStringGenerator.getAuthorityName(3));
+			LOG.info("Provide authority name");
+			authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+			LOG.info("Provide authority type");
+			DataStore.saveValue(UsableValues.AUTHORITY_TYPE, data.get("Authority Type"));
+			authorityTypePage.selectAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
+			LOG.info("Enter authority contact details");
+			authorityAddressDetailsPage.enterAddressDetails(data.get("addressline1"), data.get("town"),
+					data.get("postcode"));
+			DataStore.saveValue(UsableValues.AUTHORITY_ADDRESSLINE1, data.get("addressline1"));
+			DataStore.saveValue(UsableValues.AUTHORITY_TOWN, data.get("town"));
+			DataStore.saveValue(UsableValues.AUTHORITY_POSTCODE, data.get("postcode"));
+			LOG.info("Provide ONS code");
+			DataStore.saveValue(UsableValues.ONS_CODE, data.get("ONS Code"));
+			onsCodePage.enterONSCode(DataStore.getSavedValue(UsableValues.ONS_CODE));
+			LOG.info("Select regulatory function");
+			DataStore.saveValue(UsableValues.AUTHORITY_REGFUNCTION, data.get("Regulatory Function"));
+			regulatoryFunctionPage.selectRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
+		}
+	}
+
+	@Then("^the authority is created sucessfully$")
+	public void the_authority_is_created_sucessfully() throws Throwable {
+		LOG.info("Confirm all details entered check out and save changes");
+		Assert.assertTrue("Details don't check out", authorityConfirmationPage.checkAuthorityDetails());
+		authorityConfirmationPage.saveChanges();
+	}
+	
+	@When("^the user searches for the last created authority$")
+	public void the_user_searches_for_the_last_created_authority() throws Throwable {
+		LOG.info("Search for last created authority");
+		authoritiesDashboardPage.searchAuthority();
+		authoritiesDashboardPage.selectAuthority();
+	}
+	
+	@When("^the user updates all the fields for newly created authority$")
+	public void the_user_updates_all_the_fields_for_newly_created_authority() throws Throwable {
+		LOG.info("Updating all editble fields against selected authority");
+		authorityConfirmationPage.editAuthorityName();
+		DataStore.saveValue(UsableValues.AUTHORITY_NAME, DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + " Updated");
+		authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		authorityConfirmationPage.editAuthorityType();
+		DataStore.saveValue(UsableValues.AUTHORITY_TYPE, "District");
+		authorityTypePage.selectAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
+		authorityConfirmationPage.editONSCode();
+		DataStore.saveValue(UsableValues.ONS_CODE, DataStore.getSavedValue(UsableValues.ONS_CODE) + " Updated");
+		onsCodePage.enterONSCode(DataStore.getSavedValue(UsableValues.ONS_CODE));
+		authorityConfirmationPage.editRegFunction();
+		DataStore.saveValue(UsableValues.AUTHORITY_REGFUNCTION, "Alphabet learning");
+		regulatoryFunctionPage.selectRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
+		
+	}
+
+	@Then("^the update for the authority is successful$")
+	public void the_update_for_the_authority_is_successful() throws Throwable {
+		LOG.info("Check all updated changes check out");
+		Assert.assertTrue("Details don't check out", authorityConfirmationPage.checkAuthorityDetails());
+		authorityConfirmationPage.saveChanges();
 	}
 }
