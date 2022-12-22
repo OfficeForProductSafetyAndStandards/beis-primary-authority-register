@@ -480,6 +480,8 @@ class ParDataPartnership extends ParDataEntity {
 
   /**
    * Get the organisation for this Partnership.
+   *
+   * @return ParDataOrganisation|ParDataOrganisation[]
    */
   public function getOrganisation($single = FALSE) {
     $organisations = $this->get('field_organisation')->referencedEntities();

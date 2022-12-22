@@ -106,7 +106,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $this->setCurrentUser();
 
     // @TODO Move this to middleware to stop it being loaded when this controller
-    // is contructed outside a request for a route this controller resolves.
+    // is constructed outside a request for a route this controller resolves.
     try {
       $this->getFlowNegotiator()->getFlow();
 
@@ -209,7 +209,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
-      // If there's is a cardinality parameter present display only this item.
+      // If there is a cardinality parameter present display only this item.
       $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
       $index = isset($cardinality) ? (int) $cardinality : NULL;
 

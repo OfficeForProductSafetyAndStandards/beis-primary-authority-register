@@ -61,14 +61,14 @@ trait ParDefaultActionsTrait {
   }
 
   /**
-   * Getter for retrieving the primary action title.
+   * Getter for retrieving the secondary action title.
    */
   public function getSecondaryActionTitle($fallback = '') {
     return !empty($this->secondaryActionTitle) ? $this->t($this->secondaryActionTitle) : $this->t($fallback);
   }
 
   /**
-   * Setter for the primary action title.
+   * Setter for the secondary action title.
    */
   public function setSecondaryActionTitle($title = '') {
     $this->secondaryActionTitle = $title;

@@ -69,7 +69,7 @@ interface ParFlowDataHandlerInterface {
   public function getFormTempData($cid = NULL);
 
   /**
-   * Retrieve the temporary data for a form.
+   * Set the temporary data for a form.
    *
    * @param array $data
    *   The array of data to be saved.
