@@ -19,6 +19,11 @@ configuration:
       registered_name: 'The %field is required.'
       legal_entity_type: 'The %field is required.'
       registered_number: 'The %field is required.'
+  registry:
+    allowed_values:
+      companies_house: 'Companies House'
+      charity_commission: 'Charity Commission'
+      internal: 'Internal'
   legal_entity_type:
     allowed_values:
       partnership: Partnership
