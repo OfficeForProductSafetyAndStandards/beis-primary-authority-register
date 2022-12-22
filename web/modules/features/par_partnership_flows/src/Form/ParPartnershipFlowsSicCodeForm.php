@@ -22,7 +22,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
    * Used for when editing or revisiting a previously edited page.
    *
    * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Authority being retrieved.
+   *   The Partnership being retrieved.
    * @param int $sic_code_delta
    *   The field delta to update.
    */
