@@ -19,6 +19,7 @@ import uk.gov.beis.pageobjects.EmployeesPage;
 import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.MemberListPage;
 import uk.gov.beis.pageobjects.ONSCodePage;
+import uk.gov.beis.pageobjects.OrganisationDashboardPage;
 import uk.gov.beis.pageobjects.PartnershipAdvancedSearchPage;
 import uk.gov.beis.pageobjects.PartnershipApprovalPage;
 import uk.gov.beis.pageobjects.AuthorityDashboardPage;
@@ -28,6 +29,7 @@ import uk.gov.beis.pageobjects.AuthorityNamePage;
 import uk.gov.beis.pageobjects.AuthorityPage;
 import uk.gov.beis.pageobjects.AuthorityTypePage;
 import uk.gov.beis.pageobjects.BusinessAddressDetailsPage;
+import uk.gov.beis.pageobjects.BusinessConfirmationPage;
 import uk.gov.beis.pageobjects.BusinessContactDetailsPage;
 import uk.gov.beis.pageobjects.BusinessDetailsPage;
 import uk.gov.beis.pageobjects.BusinessInvitePage;
@@ -64,6 +66,8 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private BusinessConfirmationPage businessConfirmationPage;
+	private OrganisationDashboardPage organisationDashboardPage;
 	private ONSCodePage onsCodePage;
 	private RegulatoryFunctionPage regulatoryFunctionPage;
 	private AuthorityConfirmationPage authorityConfirmationPage;
@@ -108,6 +112,8 @@ public class PARStepDefs {
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		businessConfirmationPage = PageFactory.initElements(driver, BusinessConfirmationPage.class);
+		organisationDashboardPage = PageFactory.initElements(driver, OrganisationDashboardPage.class);
 		onsCodePage = PageFactory.initElements(driver, ONSCodePage.class);
 		authorityConfirmationPage = PageFactory.initElements(driver, AuthorityConfirmationPage.class);
 		authorityTypePage = PageFactory.initElements(driver, AuthorityTypePage.class);
@@ -293,7 +299,7 @@ public class PARStepDefs {
 			LOG.info("Entering business trading name");
 			DataStore.saveValue(UsableValues.TRADING_NAME,
 					DataStore.getSavedValue(UsableValues.BUSINESS_NAME).replace("Business", "trading name"));
-			tradingPage.enterBusinessName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+			tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
 			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal entity Type"));
 			legalEntityPage.createLegalEntity(data.get("Legal entity Type"));
 			LOG.info("Set second part of journey part to true");
@@ -471,5 +477,28 @@ public class PARStepDefs {
 		LOG.info("Check all updated changes check out");
 		Assert.assertTrue("Details don't check out", authorityConfirmationPage.checkAuthorityDetails());
 		authorityConfirmationPage.saveChanges();
+	}
+	
+	@Given("^the user updates all the fields for last created organisation$")
+	public void the_user_updates_all_the_fields_for_last_created_organisation() throws Throwable {
+		LOG.info("Update all fields");
+		businessConfirmationPage.editOrganisationName();
+		DataStore.saveValue(UsableValues.BUSINESS_NAME, DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + " Updated");
+		parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		businessConfirmationPage.editOrganisationDesc();
+		parBusinessDetailsPage.enterBusinessDescription("Updated description");
+		businessConfirmationPage.editTradingName();
+		DataStore.saveValue(UsableValues.TRADING_NAME, DataStore.getSavedValue(UsableValues.TRADING_NAME) + " Updated");
+		tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+		businessConfirmationPage.editSICCode();
+		sicCodePage.selectSICCode("allow people to eat");
+	}
+	
+	@When("^the user searches for the last created organisation$")
+	public void the_user_searches_for_the_last_created_organisation() throws Throwable {
+		LOG.info("Search and select last created organisation");
+		parDashboardPage.selectManageOrganisations();
+		organisationDashboardPage.searchOrganisation();
+		organisationDashboardPage.selectOrganisation();
 	}
 }

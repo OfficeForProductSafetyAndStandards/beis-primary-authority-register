@@ -21,9 +21,14 @@ public class SICCodePage extends BasePageObject {
 
 	String sic = "//select/option[contains(text(),'?')]";
 
-	public EmployeesPage selectSICCode(String code) {
+	public BasePageObject selectSICCode(String code) {
 		driver.findElement(By.xpath(sic.replace("?", code))).click();
-		continueBtn.click();
-		return PageFactory.initElements(driver, EmployeesPage.class);
+		try {
+			driver.findElement(By.id("edit-next")).click();
+			return PageFactory.initElements(driver, EmployeesPage.class);
+		} catch (Exception e) {
+			driver.findElement(By.id("edit-save")).click();
+			return PageFactory.initElements(driver, BusinessConfirmationPage.class);
+		}
 	}
 }
