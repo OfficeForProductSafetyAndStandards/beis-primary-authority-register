@@ -277,7 +277,8 @@ public class PARStepDefs {
 			LOG.info("Accepting terms");
 			parDeclarationPage.acceptTerms();
 			LOG.info("Add business description");
-			parBusinessDetailsPage.enterBusinessDescription(data.get("Business Description"));
+			DataStore.saveValue(UsableValues.BUSINESS_DESC, data.get("Business Description"));
+			parBusinessDetailsPage.enterBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
 			LOG.info("Confirming address details");
 			parBusinessAddressDetailsPage.proceed();
 			LOG.info("Confirming contact details");
@@ -486,7 +487,8 @@ public class PARStepDefs {
 		DataStore.saveValue(UsableValues.BUSINESS_NAME, DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + " Updated");
 		parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 		businessConfirmationPage.editOrganisationDesc();
-		parBusinessDetailsPage.enterBusinessDescription("Updated description");
+		DataStore.saveValue(UsableValues.BUSINESS_DESC, DataStore.getSavedValue(UsableValues.BUSINESS_DESC) + " Updated");
+		parBusinessDetailsPage.enterBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
 		businessConfirmationPage.editTradingName();
 		DataStore.saveValue(UsableValues.TRADING_NAME, DataStore.getSavedValue(UsableValues.TRADING_NAME) + " Updated");
 		tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
@@ -500,5 +502,12 @@ public class PARStepDefs {
 		parDashboardPage.selectManageOrganisations();
 		organisationDashboardPage.searchOrganisation();
 		organisationDashboardPage.selectOrganisation();
+	}
+	
+	@Then("^all the fields are updated correctly$")
+	public void all_the_fields_are_updated_correctly() throws Throwable {
+		LOG.info("Check all updated changes check out");
+		Assert.assertTrue("Details don't check out", businessConfirmationPage.checkAuthorityDetails());
+		businessConfirmationPage.saveChanges();
 	}
 }
