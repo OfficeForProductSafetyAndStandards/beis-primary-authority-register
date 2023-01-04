@@ -16,19 +16,22 @@ public class BusinessDetailsPage extends BasePageObject {
 	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
 	WebElement descriptionBox;
 
+	public BasePageObject enterBusinessDescription(String desc) throws Throwable {
+		descriptionBox.clear();
+		descriptionBox.sendKeys(desc);
+		try {
+			driver.findElement(By.id("edit-next")).click();
+			return PageFactory.initElements(driver, BusinessAddressDetailsPage.class);
+		} catch (Exception e) {
+			driver.findElement(By.id("edit-save")).click();
+			return PageFactory.initElements(driver, BusinessConfirmationPage.class);
+		}
+	}
+
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 
-	public BusinessAddressDetailsPage enterBusinessDescription(String desc) throws Throwable {
-		descriptionBox.clear();
-		descriptionBox.sendKeys(desc);
-		continueBtn.click();
-
-		return PageFactory.initElements(driver, BusinessAddressDetailsPage.class);
-	}
-
 	public BusinessDetailsPage proceed() {
-//		if (continueBtn.isDisplayed())
 		continueBtn.click();
 		return PageFactory.initElements(driver, BusinessDetailsPage.class);
 	}

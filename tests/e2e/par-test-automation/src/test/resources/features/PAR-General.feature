@@ -3,7 +3,7 @@ Feature:
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
   
- @regression @partnershipapplication @direct @update @usermanagement
+ @regression @partnershipapplication @direct @update @usermanagement @organisation
  Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
   Given the user is on the PAR home page
   And the user visits the login page
@@ -77,7 +77,7 @@ Feature:
   Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
   
  @regression @authority
- Scenario: Verify Addition of Authority (Happy Path - PAR-1849, PAR-1850)
+ Scenario: Verify Addition/Update of Authority (Happy Path - PAR-1849, PAR-1850)
   Given the user is on the PAR login page
   And the user logs in with the "par_helpdesk@example.com" user credentials
   When the user creates a new authority with the following details:
@@ -90,6 +90,13 @@ Feature:
   And the user updates all the fields for newly created authority
   Then the update for the authority is successful
   
+  @regression @organisation
+  Scenario: Verify Update of Organisation (Happy Path - PAR-1851)
+  Given the user is on the PAR login page
+  And the user logs in with the "par_helpdesk@example.com" user credentials
+  When the user searches for the last created organisation
+  And the user updates all the fields for last created organisation
+  Then all the fields are updated correctly
   
   
   

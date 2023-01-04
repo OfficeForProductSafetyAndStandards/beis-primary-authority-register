@@ -29,6 +29,14 @@ public class DashboardPage extends BasePageObject {
 	@FindBy(linkText = "Manage authorities")
 	WebElement mangeAuthoritiesBtn;
 	
+	@FindBy(linkText = "Manage organisations")
+	WebElement mangeOrganisationsBtn;
+	
+	public OrganisationDashboardPage selectManageOrganisations() {
+		mangeOrganisationsBtn.click();
+		return PageFactory.initElements(driver, OrganisationDashboardPage.class);
+	}
+	
 	public AuthorityPage selectApplyForNewPartnership() {
 		applyPartnershipBtn.click();
 		return PageFactory.initElements(driver, AuthorityPage.class);
