@@ -26,6 +26,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ParEnforcementView extends ParLinkActionBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected string $actionText = 'View the notification of enforcement action';
+
+  /**
    * {@inheritDoc}
    */
   public function getUrl(MessageInterface $message): ?Url {

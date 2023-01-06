@@ -5,6 +5,7 @@ namespace Drupal\par_data\Entity;
 use Drupal\comment\Entity\Comment;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_data\ParDataException;
 
 /**
  * Defines the par_data_general_enquiry entity.
@@ -68,23 +69,45 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   field_ui_base_route = "entity.par_data_general_enquiry_t.edit_form"
  * )
  */
-class ParDataGeneralEnquiry extends ParDataEntity {
+class ParDataGeneralEnquiry extends ParDataEntity implements ParDataEnquiryInterface {
 
   use ParEnforcementEntityTrait;
 
   /**
-   * Get the message comments.
+   * {@inheritdoc}
    */
-  public function getReplies($single = FALSE) {
+  public function sender(): ParDataAuthority {
+    if (!$this->hasField('field_enforcing_authority')
+        || $this->get('field_enforcing_authority')->isEmpty()) {
+      throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
+    }
+
+    return current($this->get('field_enforcing_authority')->referencedEntities());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function receiver(): array {
+    if (!$this->hasField('field_primary_authority')
+      || $this->get('field_primary_authority')->isEmpty()) {
+      throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
+    }
+
+    return $this->get('field_primary_authority')->referencedEntities();
+  }
+
+  /**
+   * {@inheritDoc}>
+   */
+  public function getReplies(): array {
     $cids = \Drupal::entityQuery('comment')
       ->condition('entity_id', $this->id())
       ->condition('entity_type', $this->getEntityTypeId())
       ->sort('cid', 'DESC')
       ->execute();
-    $messages = !empty($cids) ? array_values(Comment::loadMultiple($cids)) : NULL;
-    $message = !empty($messages) ? current($messages): NULL;
 
-    return $single ? $message : $messages;
+    return !empty($cids) ? Comment::loadMultiple($cids) : [];
   }
 
   /**

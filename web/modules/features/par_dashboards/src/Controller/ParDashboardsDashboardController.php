@@ -9,6 +9,8 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\message\Entity\Message;
+use Drupal\message\MessageInterface;
 use Drupal\par_dashboards\ParFlowAccessTrait;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParControllerTrait;
@@ -112,31 +114,6 @@ class ParDashboardsDashboardController extends ControllerBase {
         '#markup' => "<p>Hello! Welcome to the Primary Authority Register.</p>",
       ],
     ];
-
-    // Get the permissions that are allowed to view tasks.
-    $task_permissions = \Drupal::cache()->get('par_notification.task_permissions');
-    if (empty($task_permissions)) {
-      $par_link_manager = \Drupal::service('plugin.manager.par_link_manager');
-      $task_permissions = [];
-      foreach ($par_link_manager->getTaskTemplates() as $message_template) {
-        $task_permissions[] = $message_template->id();
-      }
-      \Drupal::cache()->set('par_notification.task_permissions', $task_permissions);
-    }
-    // If the user has permission to view task notications.
-    foreach ($task_permissions as $permission) {
-      if ($this->currentUser()->hasPermission($permission)) {
-        $build['tasks'] = [
-          '#lazy_builder' => [
-            'par_dashboards.components:viewOutstandingTasksComponent',
-            []
-          ],
-          '#create_placeholder' => TRUE
-        ];
-
-        break;
-      }
-    }
 
     // Get the permissions for managing partnerships.
     $can_manage_partnerships = $this->getCurrentUser()->hasPermission('confirm partnership') ||

@@ -26,11 +26,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ParPartnershipAuthorityView extends ParLinkActionBase {
 
   /**
-   * The field that holds the primary par_data entity that this message refers to.
-   *
-   * This changes depending on the message type / bundle.
+   * {@inheritdoc}
    */
-  const PRIMARY_FIELD = 'field_partnership';
+  protected string $actionText = 'View the partnership';
 
   /**
    * {@inheritDoc}

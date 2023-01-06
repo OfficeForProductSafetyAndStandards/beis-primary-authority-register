@@ -26,6 +26,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ParPartnershipOrganisationView extends ParLinkActionBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected string $actionText = 'View the partnership';
+
+  /**
    * {@inheritDoc}
    */
   public function getUrl(MessageInterface $message): ?Url {

@@ -69,12 +69,71 @@ use Drupal\par_data\ParDataException;
  *   field_ui_base_route = "entity.par_data_deviation_request_t.edit_form"
  * )
  */
-class ParDataDeviationRequest extends ParDataEntity {
+class ParDataDeviationRequest extends ParDataEntity implements ParDataEnquiryInterface {
 
   use ParEnforcementEntityTrait;
 
   const APPROVED = 'approved';
   const BLOCKED = 'blocked';
+
+  /**
+   * {@inheritdoc}
+   */
+  public function sender(): ParDataAuthority {
+    if (!$this->hasField('field_enforcing_authority')
+      || $this->get('field_enforcing_authority')->isEmpty()) {
+      throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
+    }
+
+    return current($this->get('field_enforcing_authority')->referencedEntities());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function receiver(): array {
+    $partnerships = $this->getPartnerships();
+    foreach ($partnerships as $partnership) {
+      $authorities += $partnership->getAuthority() ?? [];
+    }
+
+    return $authorities;
+  }
+
+  /**
+   * {@inheritDoc}>
+   */
+  public function getReplies(): array {
+    $cids = \Drupal::entityQuery('comment')
+      ->condition('entity_id', $this->id())
+      ->condition('entity_type', $this->getEntityTypeId())
+      ->sort('cid', 'DESC')
+      ->execute();
+
+    return !empty($cids) ? Comment::loadMultiple($cids) : [];
+  }
+
+  /**
+   * Get the partnerships this deviation request is associated with.
+   */
+  public function getPartnerships(): array {
+    if (!$this->hasField('field_inspection_plan')
+      || $this->get('field_inspection_plan')->isEmpty()) {
+      throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
+    }
+
+    $inspection_plans = $this->get('field_inspection_plan')->referencedEntities();
+    $partnerships = [];
+
+    foreach ($inspection_plans as $inspection_plan) {
+      $partnerships = array_merge(
+        $partnerships,
+        $inspection_plan->getPartnerships(),
+      );
+    }
+
+    return $partnerships;
+  }
 
   /**
    * Check if this entity is approved.
@@ -195,21 +254,6 @@ class ParDataDeviationRequest extends ParDataEntity {
     }
 
     return parent::inProgress();
-  }
-
-  /**
-   * Get the message comments.
-   */
-  public function getReplies($single = FALSE) {
-    $cids = \Drupal::entityQuery('comment')
-      ->condition('entity_id', $this->id())
-      ->condition('entity_type', $this->getEntityTypeId())
-      ->sort('cid', 'DESC')
-      ->execute();
-    $messages = array_values(Comment::loadMultiple($cids));
-    $message = !empty($messages) ? current($messages): NULL;
-
-    return $single ? $message : $messages;
   }
 
   /**

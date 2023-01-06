@@ -6,11 +6,17 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\link\LinkItemInterface;
 use Drupal\message\MessageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Database\Query\SelectInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Database\Query\AlterableInterface;
-use Drupal\par_notification\Plugin\Field\FieldType\ParNotificationLinkField;
-use Drupal\par_notification\Plugin\Field\FieldType\ParNotificationActionField;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\user\Entity\User;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\par_notification\Plugin\Field\FieldType\NotificationLinkField;
+//use Drupal\par_notification\Plugin\Field\FieldType\ParNotificationStatus;
 
 /**
  * Implements hook_help().
@@ -27,6 +33,43 @@ function par_notification_help($route_name, RouteMatchInterface $route_match) {
     default:
   }
   return;
+}
+
+/**
+ * Implements hook_entity_presave().
+ *
+ * Adds the correct
+ */
+function par_notification_entity_presave(EntityInterface $message) {
+  // Only act on message entities.
+  if (!$message instanceof MessageInterface) {
+    return;
+  }
+
+  // Get the subscription manager.
+  $subscription_manager = \Drupal::service('plugin.manager.par_subscription_manager');
+
+  // Get the related entities.
+  $related_entities = $subscription_manager->getSubscribedEntities($message);
+  $authorities = array_filter($related_entities, function ($related_entity) {
+    return ('par_data_authority' === $related_entity->getEntityTypeId());
+  });
+  $organisations = array_filter($related_entities, function ($related_entity) {
+    return ('par_data_organisation' === $related_entity->getEntityTypeId());
+  });
+
+  // Add the subscribed entities.
+  if (!empty($authorities) && $message->hasField('field_target_authority')) {
+    $message->set('field_target_authority', $authorities);
+  }
+  if (!empty($organisations) && $message->hasField('field_target_organisation')) {
+    $message->set('field_target_organisation', $organisations);
+  }
+
+  // Add any recipients to the 'field_to'.
+  if ($recipients = $subscription_manager->getRecipients($message)) {
+    $message->set('field_to', $recipients);
+  }
 }
 
 /**
@@ -62,42 +105,174 @@ function par_notification_query_task_messages_alter(AlterableInterface $query) {
   $query->condition($bundle_key, $task_templates, 'IN');
 }
 
+///**
+// * Implements hook_views_query_alter()
+// */
+//function par_notification_views_query_alter($view, QueryPluginBase $query) {
+//  if ($view->id() == 'views_id') {
+//    $definition = [
+//      'table' => 'message_field_data',
+//      'field' => 'mid',
+//      'left_table' => 'message__field_target_authority',
+//      'left_field' => 'entity_id',
+//    ];
+//    $join = Drupal::service('plugin.manager.views.join')->createInstance('standard', $definition);
+//    $query->addRelationship('message_field_data', $join, 'person');
+//  }
+//}
+
 /**
  * Implements hook_query_TAG_alter()
  */
 function par_notification_query_view_messages_alter(AlterableInterface $query) {
-  $current_user = \Drupal::currentUser();
-  $entity_type_manager = \Drupal::entityTypeManager();
+  if (!$account = $query->getMetaData('account')) {
+    $account = \Drupal::currentUser();
+    $query->addMetaData('account', $account);
+  }
 
-  // Get the bundle key.
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $par_data_manager = \Drupal::service('par_data.manager');
+  $par_subscription_manager = \Drupal::service('plugin.manager.par_subscription_manager');
+
+  // Only alter message queries.
+  if (!$query instanceof SelectInterface) {
+      return;
+  }
+
+  $query_tables = $query->getTables();
+
+  // The tables belonging to media entity storage.
+  $table_mapping = \Drupal::entityTypeManager()->getStorage('message')->getTableMapping();
+  $message_tables = $table_mapping->getTableNames();
+
+  // For each table in the query, if it's a media entity storage table, add a
+  // condition to filter out records belonging to a media entity that we wish
+  // to hide.
+  foreach ($query_tables as $alias => $info) {
+    // Skip over subqueries.
+    if ($info['table'] instanceof SelectInterface) {
+      continue;
+    }
+    if (in_array($info['table'], $message_tables)) {
+      $base_table = $alias;
+    }
+  }
+  //  $base_table = $entity_type_manager->getDefinition('message')->getDataTable();
+  //  $data_table = $entity_type_manager->getDefinition('message')->getDataTable();
+  //  $aliases = array_intersect_key([$base_table,$data_table], $query->getTables());
+//  $ta_alias = $query->leftJoin('message__field_target_authority');
+//  var_dump($query->getTables());
+
+  // Get the message templates the user has permission to view.
+  $message_templates = $entity_type_manager
+    ->getStorage('message_template')
+    ->getQuery()->execute();
+  $message_templates = array_filter($message_templates, function($template) use ($account) {
+    return $account->hasPermission("receive {$template} notification");
+  });
+
+  // Filter out the message templates that don't require subscription.
+  $subscription_templates = array_filter($message_templates,
+    function($message_template) use ($account, $par_subscription_manager, $entity_type_manager) {
+      // Load the full template entity.
+      $template = $entity_type_manager
+        ->getStorage('message_template')
+        ->load($message_template);
+      // Get the roles which subscribe this user to the message.
+      $user_roles = $par_subscription_manager
+        ->getUserNotificationRoles($account, $template);
+      // Filter out all the roles which require a subscription.
+      $subscription_roles = $par_subscription_manager
+        ->filterSubscribedEntityRoles($user_roles);
+      // Include the template if there are any roles which don't require subscription.
+      return !empty($subscription_roles);
+  });
+
+  // Get the institutions the user is a member of.
+  if (!empty($subscription_templates)) {
+    $user = User::load($account->id());
+    $user_authorities = $par_data_manager
+      ->hasMembershipsByType($user, 'par_data_authority');
+    $user_organisations = $par_data_manager
+      ->hasMembershipsByType($user, 'par_data_organisation');
+  }
+
+  // Get the bundle key for the message query.
   $entity_type = $entity_type_manager->getDefinition('message');
   $bundle_key = $entity_type->getKey('bundle');
 
-  // Get the template IDs for messages that have tasks.
-  $message_templates = \Drupal::service('entity_type.manager')
-    ->getStorage('message_template')->loadMultiple();
-  $permission_templates = [];
-  foreach ($message_templates as $template) {
-    if ($current_user->hasPermission("receive {$template->id()} notification")) {
-      $permission_templates[] = $template->id();
-    }
+  // CONDITION 1: User can't see any messages if they have no permissions.
+  if (empty($message_templates)) {
+    $query->isNull("{$bundle_key}");
+    return;
   }
 
-  $query->condition($bundle_key, $permission_templates, 'IN');
+  // CONDITION 2: User has permission to view the message template.
+  $query->condition("{$bundle_key}", $message_templates, 'IN');
+
+  // CONDITION 3: User must be a member of the subscribed entities.
+  if (!empty($subscription_templates)) {
+    $membership_condition = $query->orConditionGroup();
+    if (!empty($user_authorities)) {
+      $user_authority_ids = array_values(array_map(function($authorities) {
+        return (int) $authorities->id();
+      }, $user_authorities));
+//      $field_target_authority = $query->addField('base_table', 'field_target_authority');
+//      $membership_condition->condition("field_target_authority", $user_authority_ids, 'IN');
+    }
+    if (!empty($user_organisations)) {
+      $user_organisation_ids = array_values(array_map(function($organisations) {
+        return (int) $organisations->id();
+      }, $user_organisations));
+      $membership_condition->condition("field_target_organisation", $user_organisation_ids, 'IN');
+    }
+    // Allow the membership condition to pass if the message doesn't require subscription.
+    $membership_condition->condition("{$bundle_key}", $subscription_templates, 'NOT IN');
+    $query->condition($membership_condition);
+  }
 }
 
-
 /**
- * Implements hook_entity_base_field_info_alter().
+ * Implements hook_entity_base_field_info().
  */
-function par_notification_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+function par_notification_entity_base_field_info(EntityTypeInterface $entity_type): array {
+  $fields = [];
   if ($entity_type->id() === "message") {
-    // A boolean field to determine whether action is required.
-//    $fields['action'] = BaseFieldDefinition::create('boolean')
-//      ->setName('notification_action_required')
-//      ->setLabel(t('Action Required'))
+    // We need to add a base field to store the authorities
+    // and organisations that the message is sent to.
+    $fields['field_target_authority'] = BaseFieldDefinition::create('entity_reference')
+      ->setName('field_target_authority')
+      ->setLabel(t('Receiving Authorities'))
+      ->setDescription(t('A reference field that stores the authorities that can view this message.'))
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+      ->setSetting('target_type', 'par_data_authority');
+    $fields['field_target_organisation'] = BaseFieldDefinition::create('entity_reference')
+      ->setName('field_target_organisation')
+      ->setLabel(t('Receiving Organisations'))
+      ->setDescription(t('A reference field that stores the organisations that can view this message.'))
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+      ->setSetting('target_type', 'par_data_organisation');
+
+//    // Calculates which field is the primary entity for this message.
+//    $fields['primary_data'] = BaseFieldDefinition::create('text')
+//      ->setName('primary_entity')
+//      ->setLabel(t('Primary entity'))
 //      ->setComputed(TRUE)
-//      ->setClass(ParNotificationActionField::class);
+//      ->setClass(bbb::class);
+
+    // A boolean field to determine whether action is required.
+    $fields['link'] = BaseFieldDefinition::create('link')
+      ->setName('link')
+      ->setLabel(t('Message Link'))
+      ->setComputed(TRUE)
+      ->setClass(NotificationLinkField::class)
+      ->setSettings([
+        'link_type' => LinkItemInterface::LINK_GENERIC,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'link_default',
+        'weight' => -2,
+      ]);
 //
 //    // A link field to add the appropriate destination for the message.
 //    $fields['link'] = BaseFieldDefinition::create('link')
@@ -106,4 +281,6 @@ function par_notification_entity_base_field_info_alter(&$fields, EntityTypeInter
 //      ->setComputed(TRUE)
 //      ->setClass(ParNotificationLinkField::class);
   }
+
+  return $fields;
 }

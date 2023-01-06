@@ -25,6 +25,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ParGeneralEnquiryView extends ParLinkActionBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected string $actionText = 'View the general enquiry';
+
+  /**
    * {@inheritDoc}
    */
   public function getUrl(MessageInterface $message): ?Url {

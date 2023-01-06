@@ -85,8 +85,8 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
   /**
    * {@inheritdoc}
    */
-  public function getPrimaryField(): string {
-    return $this->pluginDefinition['field'];
+  public function getPrimaryField(): ?string {
+    return $this->pluginDefinition['field'] ?? NULL;
   }
 
   /**
@@ -124,7 +124,6 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
     $destination = $this->getUrl($message);
 
     return $destination instanceof Url
-      && $destination->access($this->user)
       && !empty($this->actionText) ?
         Link::fromTextAndUrl($this->actionText, $destination) :
         NULL;

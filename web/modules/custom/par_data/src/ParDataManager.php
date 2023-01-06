@@ -935,7 +935,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @param ParDataEntityInterface $entity
    *   The authority or organisation entity to get the user for.
    *
-   * @return ParDataPerson
+   * @return ParDataPerson|null
    */
   public function getUserPerson($account, $entity) {
     $entity_people = $entity->hasField('field_person') ? $entity->retrieveEntityIds('field_person') : [];

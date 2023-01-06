@@ -22,10 +22,10 @@ use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\ParDataException;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
+use Drupal\par_data\Plugin\Field\FieldType\ParStatusField;
 use Drupal\trance\Trance;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\par_data\Plugin\Field\FieldType\ParLabelField;
-use Drupal\par_data\Plugin\Field\FieldType\ParStatusField;
 
 /**
  * Defines the PAR entities.

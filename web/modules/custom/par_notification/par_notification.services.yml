@@ -3,6 +3,15 @@ services:
     class: Drupal\par_notification\ParLinkManager
     parent: default_plugin_manager
     arguments: ['@entity_type.manager', '@current_user']
+
+  plugin.manager.par_subscription_manager:
+    class: Drupal\par_notification\ParSubscriptionManager
+    parent: default_plugin_manager
+
+  par_notification.message_handler:
+    class: Drupal\par_notification\ParMessageHandler
+    arguments: ['@entity_type.manager']
+
   par_notification.approved_enforcement_subscriber:
     class: '\Drupal\par_notification\EventSubscriber\ApprovedEnforcementSubscriber'
     tags:

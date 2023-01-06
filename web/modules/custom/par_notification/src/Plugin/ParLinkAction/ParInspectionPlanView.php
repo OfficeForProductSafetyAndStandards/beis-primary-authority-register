@@ -26,6 +26,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ParInspectionPlanView extends ParLinkActionBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected string $actionText = 'View the inspection plan';
+
+  /**
    * {@inheritDoc}
    */
   public function getUrl(MessageInterface $message): ?Url {

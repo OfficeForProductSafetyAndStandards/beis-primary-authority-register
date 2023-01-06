@@ -2,10 +2,33 @@ uuid: 8c30036f-ffd7-4da5-a67a-2f971ebbdfb1
 langcode: en
 status: true
 dependencies:
+  config:
+    - message.template.approved_enforcement
+    - message.template.inspection_plan_expiry_warning
+    - message.template.member_list_stale_warning
+    - message.template.new_deviation_request
+    - message.template.new_deviation_response
+    - message.template.new_enforcement_notification
+    - message.template.new_enquiry_response
+    - message.template.new_general_enquiry
+    - message.template.new_inspection_feedback
+    - message.template.new_inspection_feedback_response
+    - message.template.new_inspection_plan
+    - message.template.new_partnership_notification
+    - message.template.new_response
+    - message.template.partnership_approved_notificatio
+    - message.template.partnership_confirmed_notificati
+    - message.template.partnership_deleted_notification
+    - message.template.partnership_revocation_notificat
+    - message.template.reviewed_deviation_request
+    - message.template.reviewed_enforcement
+    - message.template.revoke_inspection_plan
+    - message.template.subscription_verify_notification
   module:
     - better_exposed_filters
     - message
     - pagerer
+    - par_notification
     - user
 id: notifications
 label: Notifications
@@ -21,7 +44,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: Notifications
+      title: Tasks
       fields:
         mid:
           id: mid
@@ -33,8 +56,8 @@ display:
           entity_type: null
           entity_field: mid
           plugin_id: field
-          label: 'Message ID'
-          exclude: false
+          label: Notification
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -76,8 +99,10 @@ display:
           hide_alter_empty: true
           click_sort_column: value
           type: number_integer
-          settings: {  }
-          group_column: value
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -87,6 +112,223 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        created:
+          id: created
+          table: message_field_data
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: message
+          entity_field: created
+          plugin_id: field
+          label: Date
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: timestamp
+          settings:
+            date_format: gds_date_format
+            custom_date_format: ''
+            timezone: ''
+          group_column: entity_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        notification_for:
+          id: notification_for
+          table: message
+          field: notification_for
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: message
+          plugin_id: par_notification_for
+          label: Message
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+        notification_link:
+          id: notification_link
+          table: message
+          field: notification_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: message
+          plugin_id: par_notification_link
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+        tasks:
+          id: tasks
+          table: message
+          field: tasks
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: message
+          plugin_id: par_notification_action
+          label: Status
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
       pager:
         type: pagerer
         options:
@@ -107,7 +349,7 @@ display:
         type: bef
         options:
           submit_button: Apply
-          reset_button: false
+          reset_button: true
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           expose_sort_order: true
@@ -125,6 +367,15 @@ display:
               allow_secondary: false
               secondary_label: 'Advanced options'
               secondary_open: false
+            filter:
+              template:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  rewrite:
+                    filter_rewrite_values: ''
+                  collapsible: false
+                  is_secondary: false
       access:
         type: perm
         options:
@@ -133,11 +384,229 @@ display:
         type: tag
         options: {  }
       empty: {  }
-      sorts: {  }
+      sorts:
+        created:
+          id: created
+          table: message_field_data
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: message
+          entity_field: created
+          plugin_id: date
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+          granularity: second
       arguments: {  }
-      filters: {  }
+      filters:
+        access:
+          id: access
+          table: message
+          field: access
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: message
+          plugin_id: view_messages
+          operator: '='
+          value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        template:
+          id: template
+          table: message_field_data
+          field: template
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: message
+          entity_field: template
+          plugin_id: bundle
+          operator: in
+          value:
+            all: all
+            approved_enforcement: approved_enforcement
+            inspection_plan_expiry_warning: inspection_plan_expiry_warning
+            new_enforcement_notification: new_enforcement_notification
+            new_deviation_request: new_deviation_request
+            new_deviation_response: new_deviation_response
+            new_enquiry_response: new_enquiry_response
+            new_general_enquiry: new_general_enquiry
+            new_inspection_feedback: new_inspection_feedback
+            new_inspection_feedback_response: new_inspection_feedback_response
+            new_inspection_plan: new_inspection_plan
+            new_partnership_notification: new_partnership_notification
+            new_response: new_response
+            partnership_approved_notificatio: partnership_approved_notificatio
+            partnership_confirmed_notificati: partnership_confirmed_notificati
+            partnership_deleted_notification: partnership_deleted_notification
+            partnership_revocation_notificat: partnership_revocation_notificat
+            reviewed_deviation_request: reviewed_deviation_request
+            reviewed_enforcement: reviewed_enforcement
+            revoke_inspection_plan: revoke_inspection_plan
+            member_list_stale_warning: member_list_stale_warning
+            subscription_verify_notification: subscription_verify_notification
+          group: 1
+          exposed: true
+          expose:
+            operator_id: template_op
+            label: 'Notification type'
+            description: ''
+            use_operator: false
+            operator: template_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: template
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              par_enforcement: '0'
+              par_authority: '0'
+              par_authority_manager: '0'
+              par_organisation: '0'
+              par_helpdesk: '0'
+              senior_administration_officer: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        tasks:
+          id: tasks
+          table: message
+          field: tasks
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: message
+          plugin_id: task_messages
+          operator: '='
+          value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       style:
         type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          columns:
+            mid: mid
+            created: created
+            notification_for: notification_for
+            notification_link: notification_link
+            tasks: tasks
+          default: '-1'
+          info:
+            mid:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            created:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            notification_for:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: '<br><br>'
+              empty_column: false
+              responsive: ''
+            notification_link:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            tasks:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: false
+          summary: ''
+          empty_table: false
+          caption: ''
+          description: ''
       row:
         type: fields
       query:
@@ -148,33 +617,158 @@ display:
           distinct: false
           replica: false
           query_tags: {  }
-          contextual_filters_or: false
+          contextual_filters_or: 0
       relationships: {  }
+      css_class: form-group
+      group_by: true
+      use_more: true
+      use_more_always: false
+      use_more_text: 'View all tasks'
+      link_display: user_notifications
+      link_url: ''
       header: {  }
       footer: {  }
       display_extenders: {  }
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - user.permissions
       tags: {  }
-  user_notifications:
-    id: user_notifications
-    display_title: Notifications
-    display_plugin: page
+  tasks_block:
+    id: tasks_block
+    display_title: 'Tasks Block'
+    display_plugin: block
     position: 1
     display_options:
+      pager:
+        type: some
+        options:
+          offset: 0
+          items_per_page: 5
+      filters:
+        access:
+          id: access
+          table: message
+          field: access
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: message
+          plugin_id: view_messages
+          operator: '='
+          value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        tasks:
+          id: tasks
+          table: message
+          field: tasks
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: message
+          plugin_id: task_messages
+          operator: '='
+          value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      defaults:
+        pager: false
+        filters: false
+        filter_groups: false
       display_description: ''
       display_extenders: {  }
-      path: notifications
+      block_description: Tasks
+      allow:
+        items_per_page: true
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - user.permissions
+      tags: {  }
+  tasks_page:
+    id: tasks_page
+    display_title: 'Tasks Page'
+    display_plugin: page
+    position: 1
+    display_options:
+      defaults:
+        pager: true
+        filters: true
+        filter_groups: true
+        footer: false
+      display_description: ''
+      footer: {  }
+      display_extenders: {  }
+      path: tasks
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
         - url.query_args
         - user.permissions
       tags: {  }

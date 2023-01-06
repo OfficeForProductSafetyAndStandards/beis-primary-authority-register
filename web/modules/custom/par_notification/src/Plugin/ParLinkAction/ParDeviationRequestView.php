@@ -26,6 +26,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ParDeviationRequestView extends ParLinkActionBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected string $actionText = 'View the deviation request';
+
+  /**
    * {@inheritDoc}
    */
   public function getUrl(MessageInterface $message): ?Url {
