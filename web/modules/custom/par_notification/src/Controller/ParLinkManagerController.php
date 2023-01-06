@@ -8,7 +8,6 @@ use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\message\Entity\Message;
 use Drupal\message\MessageInterface;
-use Drupal\message_expire\MessageExpiryManagerInterface;
 use Drupal\par_notification\ParLinkManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
