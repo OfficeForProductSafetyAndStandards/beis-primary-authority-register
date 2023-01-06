@@ -5010,7 +5010,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/message_expire.git",
-                "reference": "390c9360dbbaef77aa8f89242b9e6b395caae7fa"
+                "reference": "1fd574996a47a79f701482bf7a98a1f0c3330188"
             },
             "require": {
                 "drupal/core": "^8 || ^9 || ^10"
@@ -5022,7 +5022,7 @@
                 },
                 "drupal": {
                     "version": "1.0.x-dev",
-                    "datestamp": "1673003473",
+                    "datestamp": "1673005945",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
