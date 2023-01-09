@@ -196,6 +196,14 @@ content:
     third_party_settings: {  }
     weight: 5
     region: content
+  par_label:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
   partnership_status:
     type: string
     label: hidden
@@ -243,6 +251,7 @@ hidden:
   inspection_plan: true
   name: true
   organisation_change_comment: true
+  par_status: true
   partnership_info_agreed_authority: true
   partnership_info_agreed_business: true
   person: true
