@@ -10,7 +10,7 @@ use Drupal\Core\TypedData\ComputedItemListTrait;
  *
  * @FieldType(
  *   id = "par_label_field",
- *   label = @Translation("PAR Label (computed)"),
+ *   label = @Translation("PAR Label"),
  *   default_formatter = "string",
  *   default_widget = "string_textfield",
  * )
