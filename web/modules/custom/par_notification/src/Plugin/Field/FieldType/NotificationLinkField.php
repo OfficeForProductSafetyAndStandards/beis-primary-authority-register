@@ -40,13 +40,14 @@ class NotificationLinkField extends FieldItemList implements FieldItemListInterf
     $message = $this->getEntity();
 
     // Only process for message entities.
-    if (!$message instanceof MessageInterface) {
-      return NULL;
+    if ($message instanceof MessageInterface) {
+      $link = $this->getLinkManager()->link($message);
     }
 
-    $link = $this->getLinkManager()->link($message);
-
-    $this->list[] = $link instanceof Link ?? NULL;
+    // Add links to values array.
+    if ($link instanceof Link) {
+      $this->list[] = $link;
+    }
   }
 
 }
