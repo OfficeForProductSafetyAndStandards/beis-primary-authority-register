@@ -21,6 +21,9 @@ public class PartnershipConfirmationPage extends BasePageObject {
 
 	@FindBy(xpath = "//input[contains(@value,'Save')]")
 	WebElement saveBtn;
+	
+	@FindBy(linkText = "Send a notification of a proposed enforcement action")
+	WebElement craeteEnforcementBtn;
 
 	@FindBy(linkText = "edit about the partnership")
 	WebElement editPartnershipLink;
@@ -48,6 +51,11 @@ public class PartnershipConfirmationPage extends BasePageObject {
 
 	public boolean getJourneyPart() {
 		return this.twopartjourney;
+	}
+	
+	public EnforcementNotificationPage createEnforcement() {
+		craeteEnforcementBtn.click();
+		return PageFactory.initElements(driver, EnforcementNotificationPage.class);
 	}
 
 	public PartnershipConfirmationPage confirmDetails() {
