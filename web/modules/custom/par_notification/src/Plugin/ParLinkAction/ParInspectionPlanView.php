@@ -4,6 +4,7 @@ namespace Drupal\par_notification\Plugin\ParLinkAction;
 
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\ParDataRelationship;
 use Drupal\par_notification\ParLinkActionBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -47,7 +48,8 @@ class ParInspectionPlanView extends ParLinkActionBase {
         current($partnership_relationships)->getEntity() :
         NULL;
 
-      if ($par_data_partnership) {
+      if ($par_data_partnership instanceof ParDataEntityInterface &&
+          $par_data_inspection_plan instanceof ParDataEntityInterface) {
         // The route for viewing enforcement notices.
         $destination = Url::fromRoute(
           'par_partnership_flows.authority_inspection_plan_details',

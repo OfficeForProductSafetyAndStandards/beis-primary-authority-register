@@ -4,6 +4,7 @@ namespace Drupal\par_notification\Plugin\ParLinkAction;
 
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_notification\ParLinkActionBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -36,11 +37,13 @@ class ParInspectionFeedbackView extends ParLinkActionBase {
     if ($message->hasField($this->getPrimaryField()) && !$message->get($this->getPrimaryField())->isEmpty()) {
       $par_data_inspection_feedback = current($message->get($this->getPrimaryField())->referencedEntities());
 
-      $destination = Url::fromRoute('par_inspection_feedback_view_flows.view_feedback', ['par_data_inspection_feedback' => $par_data_inspection_feedback->id()]);
+      if ($par_data_inspection_feedback instanceof ParDataEntityInterface) {
+        $destination = Url::fromRoute('par_inspection_feedback_view_flows.view_feedback', ['par_data_inspection_feedback' => $par_data_inspection_feedback->id()]);
 
-      return $destination instanceof Url ?
-        $destination :
-        NULL;
+        return $destination instanceof Url ?
+          $destination :
+          NULL;
+      }
     }
 
     return NULL;

@@ -46,12 +46,7 @@ class NotificationLinkField extends FieldItemList implements FieldItemListInterf
 
     // Add links to values array.
     if ($link instanceof Link) {
-      $value = [
-        'uri' => $link->getUrl()->getUri(),
-        'title' => $link->getText(),
-        'options' => $link->getUrl()->getOptions(),
-      ];
-      $this->list[0] = $this->createItem(0, $value);
+      $this->list[0] = $this->createItem(0, $link);
     }
   }
 

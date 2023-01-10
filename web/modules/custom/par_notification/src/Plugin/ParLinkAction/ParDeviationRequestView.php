@@ -4,6 +4,7 @@ namespace Drupal\par_notification\Plugin\ParLinkAction;
 
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_notification\ParLinkActionBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -37,12 +38,14 @@ class ParDeviationRequestView extends ParLinkActionBase {
     if ($message->hasField($this->getPrimaryField()) && !$message->get($this->getPrimaryField())->isEmpty()) {
       $par_data_deviation_request = current($message->get($this->getPrimaryField())->referencedEntities());
 
-      $destination = Url::fromRoute('par_deviation_view_flows.view_deviation', ['par_data_deviation_request' => $par_data_deviation_request->id()]);
+      if ($par_data_deviation_request instanceof ParDataEntityInterface) {
+        $destination = Url::fromRoute('par_deviation_view_flows.view_deviation', ['par_data_deviation_request' => $par_data_deviation_request->id()]);
 
-      return $destination instanceof Url &&
-        !$par_data_deviation_request->isAwaitingApproval() ?
-          $destination :
-          NULL;
+        return $destination instanceof Url &&
+          !$par_data_deviation_request->isAwaitingApproval() ?
+            $destination :
+            NULL;
+      }
     }
 
     return NULL;

@@ -5,6 +5,7 @@ namespace Drupal\par_notification\Plugin\ParLinkAction;
 use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_notification\ParLinkActionBase;
 use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParTaskInterface;
@@ -62,12 +63,14 @@ class ParEnforcementReview extends ParLinkActionBase implements ParTaskInterface
       $par_data_enforcement_notice = current($message->get($this->getPrimaryField())->referencedEntities());
 
       // The route for approving enforcement notices.
-      $destination = Url::fromRoute('par_enforcement_review_flows.respond', ['par_data_enforcement_notice' => $par_data_enforcement_notice->id()]);
+      if ($par_data_enforcement_notice instanceof ParDataEntityInterface) {
+        $destination = Url::fromRoute('par_enforcement_review_flows.respond', ['par_data_enforcement_notice' => $par_data_enforcement_notice->id()]);
 
-      return $destination instanceof Url &&
-        $par_data_enforcement_notice->inProgress() ?
-          $destination :
-          NULL;
+        return $destination instanceof Url &&
+          $par_data_enforcement_notice->inProgress() ?
+            $destination :
+            NULL;
+      }
     }
 
     return NULL;

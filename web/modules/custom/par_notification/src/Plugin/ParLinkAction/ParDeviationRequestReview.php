@@ -6,6 +6,7 @@ use Drupal\Core\Entity\Query\ConditionInterface;
 use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_notification\ParLinkActionBase;
 use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParTaskInterface;
@@ -64,12 +65,14 @@ class ParDeviationRequestReview extends ParLinkActionBase implements ParTaskInte
       $par_data_deviation_request = current($message->get($this->getPrimaryField())
         ->referencedEntities());
 
-      $destination = Url::fromRoute('par_deviation_review_flows.respond', ['par_data_deviation_request' => $par_data_deviation_request->id()]);
+      if ($par_data_deviation_request instanceof ParDataEntityInterface) {
+        $destination = Url::fromRoute('par_deviation_review_flows.respond', ['par_data_deviation_request' => $par_data_deviation_request->id()]);
 
-      return $destination instanceof Url &&
-        $par_data_deviation_request->isAwaitingApproval() ?
-          $destination :
-          NULL;
+        return $destination instanceof Url &&
+          $par_data_deviation_request->isAwaitingApproval() ?
+            $destination :
+            NULL;
+      }
     }
 
     return NULL;
