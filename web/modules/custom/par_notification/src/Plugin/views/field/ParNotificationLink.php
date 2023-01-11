@@ -55,9 +55,13 @@ class ParNotificationLink extends FieldPluginBase {
     }
 
     $link = $this->getLinkManager()->link($message);
-    $render_array = $link->toRenderable();
+    if ($link instanceof Link &&
+        $link->getUrl()->access() &&
+        $link->getUrl()->isRouted()) {
+      $render_array = $link->toRenderable();
+    }
 
-    return $link instanceof Link && $link->getUrl()->access() && $link->getUrl()->isRouted() ?
-      $this->getRenderer()->render($render_array) : $link->getText();
+    return !empty($render_array) ?
+      $this->getRenderer()->render($render_array) : NULL;
   }
 }

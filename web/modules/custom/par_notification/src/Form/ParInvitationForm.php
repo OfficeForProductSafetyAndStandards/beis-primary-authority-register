@@ -181,7 +181,7 @@ class ParInvitationForm extends FormBase {
     if ($email && $primary_entity = $this->getPrimaryEntity($message)) {
       $related_entities = $this->getParDataManager()->getRelatedEntities($primary_entity);
 
-      $people`` = array_filter($related_entities, function ($entity) use ($email) {
+      $people = array_filter($related_entities, function ($entity) use ($email) {
         return ($entity instanceof ParDataPersonInterface
           && $entity->getEmail() === $email);
       });

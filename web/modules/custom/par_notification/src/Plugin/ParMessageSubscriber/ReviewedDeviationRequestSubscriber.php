@@ -76,9 +76,15 @@ class ReviewedDeviationRequestSubscriber extends ParMessageSubscriberBase {
     foreach ($deviation_requests as $deviation_request) {
       if ($deviation_request instanceof ParDataEnquiryInterface) {
         // This message should be viewed by the enforcing authority.
+        try {
+          $sender = [$deviation_request->sender()];
+        }
+        catch (ParDataException $e) {
+          $sender = [];
+        }
         $subscriptions = array_merge(
           $subscriptions,
-          $deviation_request->sender() ?? [],
+          $sender,
         );
       }
     }

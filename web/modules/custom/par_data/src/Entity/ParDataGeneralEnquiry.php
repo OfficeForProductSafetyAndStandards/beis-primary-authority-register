@@ -77,24 +77,32 @@ class ParDataGeneralEnquiry extends ParDataEntity implements ParDataEnquiryInter
    * {@inheritdoc}
    */
   public function sender(): ParDataAuthority {
-    if (!$this->hasField('field_enforcing_authority')
-        || $this->get('field_enforcing_authority')->isEmpty()) {
+    if ($this->hasField('field_enforcing_authority')) {
+      $enforcing_authorities = $this->get('field_enforcing_authority')->referencedEntities();
+    }
+
+    // Validate that there is an enforcing authority.
+    if (empty($enforcing_authorities)) {
       throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
     }
 
-    return current($this->get('field_enforcing_authority')->referencedEntities());
+    return current($enforcing_authorities);
   }
 
   /**
    * {@inheritdoc}
    */
   public function receiver(): array {
-    if (!$this->hasField('field_primary_authority')
-      || $this->get('field_primary_authority')->isEmpty()) {
+    if ($this->hasField('field_primary_authority')) {
+      $primary_authorities = $this->get('field_primary_authority')->referencedEntities();
+    }
+
+    // Validate that there is a primary authority.
+    if (empty($primary_authorities)) {
       throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
     }
 
-    return $this->get('field_primary_authority')->referencedEntities();
+    return $primary_authorities;
   }
 
   /**

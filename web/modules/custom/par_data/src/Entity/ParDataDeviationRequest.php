@@ -80,21 +80,33 @@ class ParDataDeviationRequest extends ParDataEntity implements ParDataEnquiryInt
    * {@inheritdoc}
    */
   public function sender(): ParDataAuthority {
-    if (!$this->hasField('field_enforcing_authority')
-      || $this->get('field_enforcing_authority')->isEmpty()) {
+    if ($this->hasField('field_enforcing_authority')) {
+      $enforcing_authorities = $this->get('field_enforcing_authority')->referencedEntities();
+    }
+
+    // Validate that there is an enforcing authority.
+    if (empty($enforcing_authorities)) {
       throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
     }
 
-    return current($this->get('field_enforcing_authority')->referencedEntities());
+    return current($enforcing_authorities);
   }
 
   /**
    * {@inheritdoc}
    */
   public function receiver(): array {
+    $authorities = [];
+
     $partnerships = $this->getPartnerships();
     foreach ($partnerships as $partnership) {
-      $authorities += $partnership->getAuthority() ?? [];
+      $authority = (array) $partnership->getAuthority();
+      $authorities = array_merge($authorities, $authority ?? []);
+    }
+
+    // Validate that there is a receiving authority.
+    if (empty($authorities)) {
+      throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
     }
 
     return $authorities;

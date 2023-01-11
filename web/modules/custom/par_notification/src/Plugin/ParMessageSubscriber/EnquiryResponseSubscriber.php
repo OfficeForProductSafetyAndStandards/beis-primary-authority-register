@@ -50,15 +50,22 @@ class EnquiryResponseSubscriber extends ParMessageSubscriberBase {
         // This message should be viewed by the enforcing authority
         // and by the enforced organisation.
         try {
-          $subscriptions = array_merge(
-            $subscriptions,
-            [$enquiry_entity->sender()],
-            $enquiry_entity->receiver(),
-          );
+          $sender = [$enquiry_entity->sender()];
         }
         catch (ParDataException $e) {
-          return [];
+          $sender = [];
         }
+        try {
+          $receiver = $enquiry_entity->receiver();
+        }
+        catch (ParDataException $e) {
+          $receiver = [];
+        }
+        $subscriptions = array_merge(
+          $subscriptions,
+          $sender,
+          $receiver,
+        );
       }
     }
 

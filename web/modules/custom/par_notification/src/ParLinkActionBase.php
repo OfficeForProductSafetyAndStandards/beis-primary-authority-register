@@ -38,7 +38,7 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
    * The return query used if an action is sequential,
    * as in it is not the final action.
    */
-  protected array $returnQuery;
+  protected array $returnQuery = [];
 
   /**
    * {@inheritdoc}
@@ -122,6 +122,15 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
    */
   public function getLink(MessageInterface $message): ?Link {
     $destination = $this->getUrl($message);
+
+    // Do not create links if the page couldn't be found,
+    // these pages are only for catching failed redirections.
+    $ignore_urls = ['par_notification.link_not_found'];
+    if ($destination instanceof Url &&
+        $destination->isRouted() &&
+        in_array($destination->getRouteName(), $ignore_urls)) {
+      return NULL;
+    }
 
     return $destination instanceof Url
       && !empty($this->actionText) ?
