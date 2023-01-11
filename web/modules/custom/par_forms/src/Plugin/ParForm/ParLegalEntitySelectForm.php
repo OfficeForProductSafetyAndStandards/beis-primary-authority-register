@@ -6,6 +6,7 @@ use Drupal\Core\Render\Markup;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
+use Drupal\registered_organisations\OrganisationProfile;
 
 /**
  * Legal entity select form plugin.
@@ -42,8 +43,7 @@ class ParLegalEntitySelectForm extends ParFormPluginBase {
     // Get the plugin state.
     $state = $this->getFlowDataHandler()->getMetaDataValue($this->getPluginId() . ':state');
 
-    // First time in.   that are not already part of the
-    // partnership.
+    // First time in.
     if (empty($state['step'])) {
 
       // Initialise state.
@@ -72,13 +72,12 @@ class ParLegalEntitySelectForm extends ParFormPluginBase {
 
       // Put remaining existing legal entities, those that may be added to the partnership, into the state array.
       foreach ($existing_legal_entities as $existing_legal_entity) {
-        $state['existing_legal_entities'][] = (object)[
-          'entity_id' => $existing_legal_entity->id(),
-          'registry' => $existing_legal_entity->getRegistry(),
+        $state['existing_legal_entities'][] = new OrganisationProfile([
+          'register' => $existing_legal_entity->getRegistry(),
+          'type' => $existing_legal_entity->getTypeRaw(),
+          'id' =>  $existing_legal_entity->getRegisteredNumber(),
           'name' => $existing_legal_entity->getName(),
-          'type' => $existing_legal_entity->getType(),
-          'number' => $existing_legal_entity->getRegisteredNumber(),
-        ];
+        ]);
       }
     }
 
@@ -89,29 +88,29 @@ class ParLegalEntitySelectForm extends ParFormPluginBase {
         // There are existing entities that can be selected.
         if (!empty($state['existing_legal_entities'])) {
 
-          // Construct the options list.
-          $options = [];
-          foreach ($state['existing_legal_entities'] as $key => $existing_legal_entity) {
-            $options[$key] =
-              $existing_legal_entity->name . ' ' .
-              $existing_legal_entity->type . ' ' .
-              $existing_legal_entity->number;
-          }
-
-          // Add the 'add other' option
-          $options['add_other'] = 'No, I want to add a different legal entity';
-
           // Add the checkboxes control.
           $form['existing_legal_entities'] = [
             '#type' => 'checkboxes',
             '#title' => 'Choose from the organisation\'s existing legal entities',
             '#description' => '<p>Select legal entities that are already attached to the organisation but are not part of the partnership.</p>',
-            '#options' => $options,
+            '#options' => [],
             '#attributes' => ['class' => ['form-group']],
-            'add_other' => [
-              '#prefix' => Markup::create('<div class="govuk-checkboxes__divider">or</div>'),
-            ],
           ];
+
+          // Add options and descriptions.
+          /* @var OrganisationProfile $existing_legal_entity */
+          foreach ($state['existing_legal_entities'] as $ind => $existing_legal_entity) {
+            $form['existing_legal_entities']['#options'][$ind] = $existing_legal_entity->getName();
+            $parts = [];
+            $parts[] = $existing_legal_entity->getType();
+            $parts[] = $existing_legal_entity->getId();
+            $parts = array_filter($parts);
+            $form['existing_legal_entities'][$ind]['#description'] = implode(' - ', $parts);
+          }
+
+          // Add the 'add other' option
+          $form['existing_legal_entities']['#options']['add_other'] = 'No, I want to add a different legal entity';
+          $form['existing_legal_entities']['add_other']['#prefix'] = Markup::create('<div class="govuk-checkboxes__divider">or</div>');
 
           $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Continue');
           break;
@@ -122,24 +121,28 @@ class ParLegalEntitySelectForm extends ParFormPluginBase {
 
       case self::STEP_CHOOSE_REGISTRY:
 
+        // Get array plugin definitions and move internal plugin to end of array.
+        /* @var \Drupal\registered_organisations\OrganisationManager $om */
+        $om = \Drupal::service('registered_organisations.organisation_manager');
+        $plugins = $om->getDefinitions();
+        if (isset($plugins['internal'])) {
+          $tmp = $plugins['internal'];
+          unset($plugins['internal']);
+          $plugins['internal'] = $tmp;
+        }
+
+        // Create the registry radio control.
         $form['registry'] = [
           '#type' => 'radios',
           '#title' => 'What type of legal entity do you want to add?',
-          '#options' => [
-            'companies_house' => 'A registered organisation',
-            'charity_commission' => 'A charity',
-            'internal' => 'An unregistered organisation',
-          ],
-          'companies_house' => [
-            '#description' => 'Please choose this option if the organisation or partnership is registered with Companies House.',
-          ],
-          'charity_commission' => [
-            '#description' => 'Please choose this option if the charity is registered with the Charity Commission.',
-          ],
-          'internal' => [
-            '#description' => 'Please choose this option for all other legal entity types.',
-          ],
+          '#options' => [],
         ];
+
+        // Add options and descriptions.
+        foreach ($plugins as $ind => $plugin) {
+          $form['registry']['#options'][$ind] = $plugin['label'];
+          $form['registry'][$ind]['#description'] = $plugin['description'];
+        }
 
         $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Continue');
 
@@ -156,23 +159,18 @@ class ParLegalEntitySelectForm extends ParFormPluginBase {
         $form['legal_entity_type'] = [
           '#type' => 'radios',
           '#title' => 'What type of organisation is this?',
-          '#options' => [
-            'partnership' => 'Partnership',
-            'sole_trader' => 'Sole trader',
-            'unincorporated_association' => 'Unincorporated association',
-            'other' => 'Other',
-          ],
+          '#options' => [],
           '#required' => TRUE,
-          'partnership' => [
-            '#description' => 'A partnership is a contractual arrangement between two or more people that is set up with a view to profit and to share the profits amongst the partners.',
-          ],
-          'sole_trader' => [
-            '#description' => 'A sole trader is an individual who is registered with HMRC for tax purposes.',
-          ],
-          'unincorporated_association' => [
-            '#description' => 'A simple way for a group of volunteers to run an organisation for a common purpose.',
-          ],
         ];
+
+        /* @var \Drupal\registered_organisations\OrganisationManager $om */
+        $om = \Drupal::service('registered_organisations.organisation_manager');
+        $class = $om->getDefinition('internal')['class'];
+
+        foreach (array_keys($class::ORGANISATION_TYPE) as $key) {
+          $form['legal_entity_type']['#options'][$key] = $class::ORGANISATION_TYPE[$key];
+          $form['legal_entity_type'][$key]['#description'] = $class::ORGANISATION_TYPE_DESC[$key];
+        }
 
         $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Continue');
 
@@ -183,35 +181,28 @@ class ParLegalEntitySelectForm extends ParFormPluginBase {
         // We have search results.
         if (!empty($state['search_results'])) {
 
+          // Get the plugin
           /* @var \Drupal\registered_organisations\OrganisationManager $om */
           $om = \Drupal::service('registered_organisations.organisation_manager');
-          $def = $om->getDefinition($state['registry']);
           $plugin = $om->createInstance($state['registry']);
-          $x = $plugin::COMPANY_TYPE;
 
-          $options = [];
-          $descriptions = [];
-          foreach ($state['search_results'] as $key => $value) {
-            $options[$key] = $value->name;
-            $parts = [];
-            if (isset($plugin::COMPANY_TYPE[$value->type])) {
-              $parts[] = $plugin::COMPANY_TYPE[$value->type];
-            }
-            if (!empty($value->number)) {
-              $parts[] = $value->number;
-            }
-            $descriptions[$key] = implode(' - ', $parts);
-          }
+          // Add checkboxes control to display found organisations for selection.
           $form['search_results'] = [
             '#type' => 'checkboxes',
             '#title' => 'Choose legal entities',
             '#description' => 'We have found ' . count($state['search_results']) . ' matching legal entities in the register.',
-            '#options' => $options,
+            '#options' => [],
           ];
-          foreach ($descriptions as $key => $description) {
-            $form['search_results'][$key] = [
-              '#description' => $description,
-            ];
+
+          // Add options and description to the checkboxes control.
+          /* @var OrganisationProfile $search_result */
+          foreach ($state['search_results'] as $ind => $search_result) {
+            $form['search_results']['#options'][$ind] = $search_result->getName();
+            $parts = [];
+            $parts[] = $search_result->getType();
+            $parts[] = $search_result->getId();
+            $parts = array_filter($parts);
+            $form['search_results'][$ind]['#description'] = implode(' - ', $parts);
           }
 
           // Button to continue having selected from search results.
@@ -258,7 +249,8 @@ class ParLegalEntitySelectForm extends ParFormPluginBase {
           ],
         ];
 
-        $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Search');
+        $label = (empty($state['search_results'])) ? 'Search' : 'Search again';
+        $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle($label);
 
         break;
 
@@ -272,36 +264,44 @@ class ParLegalEntitySelectForm extends ParFormPluginBase {
           ],
         ];
 
-        // Add a row for selected legal entity.
-        foreach ($state['selected_legal_entities'] as $delta => $selected_legal_entity) {
+        // Add a row for each selected legal entity.
+        /* @var OrganisationProfile $selected_legal_entity */
+        foreach ($state['selected_legal_entities'] as $ind => $selected_legal_entity) {
 
-          $form['confirm_entities'][$delta]['legal_entity'] = [
+          $name = $selected_legal_entity->getName();
+          $parts = [];
+          $parts[] = $selected_legal_entity->getType();
+          $parts[] = $selected_legal_entity->getId();
+          $parts = array_filter($parts);
+          $type_number = implode(' - ', $parts);
+
+          $form['confirm_entities'][$ind]['legal_entity'] = [
             '#type' => 'container',
             '#attributes' => ['class' => 'column-full'],
             'name' => [
               '#type' => 'html_tag',
               '#tag' => 'div',
-              '#value' => $selected_legal_entity->name,
+              '#value' => $name,
             ],
             'type_number' => [
               '#type' => 'html_tag',
               '#tag' => 'div',
-              '#value' => implode(' ', [$selected_legal_entity->type, $selected_legal_entity->number]),
+              '#value' => $type_number,
             ],
           ];
 
-          $form['confirm_entities'][$delta]['operations'] = [
+          $form['confirm_entities'][$ind]['operations'] = [
             '#type' => 'container',
             'remove' => [
               '#type' => 'button',
-              '#name' => 'remove-' . $delta,
+              '#name' => 'remove-' . $ind,
               '#value' => 'remove',
               '#attributes' => ['class' =>['btn-link']]
             ],
           ];
         }
 
-        // Add another button.
+        // Add 'select another' button.
         $form['select_another'] = [
           '#type' => 'button',
           '#name' => 'select-another',
@@ -334,6 +334,7 @@ class ParLegalEntitySelectForm extends ParFormPluginBase {
       case self::STEP_CHOOSE_EXISTING_LEGAL_ENTITY:
         $options = $form_state->getValue('existing_legal_entities');
         $chosen = [];
+
         foreach ($options as $key => $val) {
           if (is_string($val)) {
             $chosen[$key] = $val;
@@ -380,16 +381,11 @@ class ParLegalEntitySelectForm extends ParFormPluginBase {
 
         $state['registry'] = $registry;
 
-        switch ($state['registry']) {
-          case 'companies_house':
-            $state['step'] = self::STEP_REGISTRY_SEARCH;
-            break;
-          case 'charity_commission':
-            $state['step'] = self::STEP_REGISTRY_SEARCH;
-            break;
-          case 'internal':
-            $state['step'] = self::STEP_UNREGISTERED_LEGAL_ENTITY_ENTRY;
-            break;
+        if ($state['registry'] == 'internal') {
+          $state['step'] = self::STEP_UNREGISTERED_LEGAL_ENTITY_ENTRY;
+        }
+        else {
+          $state['step'] = self::STEP_REGISTRY_SEARCH;
         }
 
         $form_state->setRebuild();
@@ -397,13 +393,12 @@ class ParLegalEntitySelectForm extends ParFormPluginBase {
 
       case self::STEP_UNREGISTERED_LEGAL_ENTITY_ENTRY:
 
-        $state['selected_legal_entities'][] = (object)[
-          'entity_id' => 0,
-          'registry' => 'internal',
-          'name' => $form_state->getValue('legal_entity_name'),
+        $state['selected_legal_entities'][] = new OrganisationProfile([
+          'register' => 'internal',
           'type' => $form_state->getValue('legal_entity_type'),
-          'number' => NULL,
-        ];
+          'id' =>  NULL,
+          'name' => $form_state->getValue('legal_entity_name'),
+        ]);
 
         $state['step'] = self::STEP_CONFIRMATION;
         $form_state->setRebuild();
@@ -418,13 +413,15 @@ class ParLegalEntitySelectForm extends ParFormPluginBase {
         if ($triggeredElement['#name'] == 'choose_submit') {
 
           // Get chosen search results, if any.
-          $search_results = $form_state->getValue('search_results', []);
-          $chosen = [];
+          $chosen = array_keys(array_filter($form_state->getValue('search_results', []), function($val) {
+            return is_string($val);
+          }));
+/*          $search_results = $form_state->getValue('search_results', []);
           foreach ($search_results as $key => $val) {
             if (is_string($val)) {
               $chosen[] = $key;
             }
-          }
+          }*/
 
           // Error if nothing chosen.
           if (empty($chosen)) {
@@ -453,21 +450,15 @@ class ParLegalEntitySelectForm extends ParFormPluginBase {
 
         /* @var \Drupal\registered_organisations\OrganisationManager $om */
         $om = \Drupal::service('registered_organisations.organisation_manager');
-        $defs = $om->getDefinitions();
-        $results = $om->searchOrganisation($state['search_term'], $defs[$state['registry']]);
+        $def = $om->getDefinition($state['registry']);
+        $results = $om->searchOrganisation($state['search_term'], $def);
 
         $state['search_results'] = [];
         foreach ($results as $result) {
 
           // @todo Filter out LEs that we already have in our selected list or are already attached to the org.
 
-          $state['search_results'][] = (object)[
-            'entity_id' => 0,
-            'registry' => $result->getRegister(),
-            'name' => $result->getName(),
-            'type' => $result->getType(),
-            'number' => $result->getId(),
-          ];
+          $state['search_results'][] = $result;
         }
 
         $form_state->setRebuild();
@@ -502,9 +493,13 @@ class ParLegalEntitySelectForm extends ParFormPluginBase {
         if ($triggeredElement['#name'] == 'select-another') {
           $state['step'] = self::STEP_CHOOSE_EXISTING_LEGAL_ENTITY;
           $form_state->setRebuild();
+          break;
         }
 
         // User has confirmed the chosen legal entities.
+        // Copy legal entities to metadata for use by next step in flow and clear our state.
+        $this->getFlowDataHandler()->setMetaDataValue('legal_entities_to_add', $state['selected_legal_entities']);
+        $state = [];
 
         break;
 
