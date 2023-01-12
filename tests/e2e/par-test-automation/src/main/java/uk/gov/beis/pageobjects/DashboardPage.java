@@ -25,6 +25,9 @@ public class DashboardPage extends BasePageObject {
 
 	@FindBy(linkText = "Search partnerships")
 	WebElement searchPartnershipBtn;
+	
+	@FindBy(linkText = "Search for a partnership")
+	WebElement searchPartnershipBtn1;
 
 	@FindBy(linkText = "Manage authorities")
 	WebElement mangeAuthoritiesBtn;
@@ -55,6 +58,11 @@ public class DashboardPage extends BasePageObject {
 	public PartnershipAdvancedSearchPage selectSearchPartnerships() {
 		searchPartnershipBtn.click();
 		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
+	}
+	
+	public PartnershipSearchPage selectSearchforPartnership() {
+		searchPartnershipBtn1.click();
+		return PageFactory.initElements(driver, PartnershipSearchPage.class);
 	}
 
 	public String checkPage() {

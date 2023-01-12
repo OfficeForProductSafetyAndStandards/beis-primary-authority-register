@@ -16,6 +16,12 @@ import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.EmployeesPage;
+import uk.gov.beis.pageobjects.EnforcementActionPage;
+import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
+import uk.gov.beis.pageobjects.EnforcementDetailsPage;
+import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
+import uk.gov.beis.pageobjects.EnforcementNotificationPage;
+import uk.gov.beis.pageobjects.EnforcementReviewPage;
 import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.MemberListPage;
 import uk.gov.beis.pageobjects.ONSCodePage;
@@ -66,9 +72,15 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private EnforcementActionPage enforcementActionPage;
+	private EnforcementDetailsPage enforcementDetailsPage;
+	private EnforcementLegalEntityPage enforcementLegalEntityPage;
 	private BusinessConfirmationPage businessConfirmationPage;
+	private EnforcementContactDetailsPage enforcementContactDetailsPage;
 	private OrganisationDashboardPage organisationDashboardPage;
+	private EnforcementNotificationPage enforcementNotificationPage;
 	private ONSCodePage onsCodePage;
+	private EnforcementReviewPage enforcementReviewPage;
 	private RegulatoryFunctionPage regulatoryFunctionPage;
 	private AuthorityConfirmationPage authorityConfirmationPage;
 	private AuthorityAddressDetailsPage authorityAddressDetailsPage;
@@ -112,6 +124,12 @@ public class PARStepDefs {
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		enforcementReviewPage = PageFactory.initElements(driver, EnforcementReviewPage.class);
+		enforcementActionPage = PageFactory.initElements(driver, EnforcementActionPage.class);
+		enforcementDetailsPage = PageFactory.initElements(driver, EnforcementDetailsPage.class);
+		enforcementLegalEntityPage = PageFactory.initElements(driver, EnforcementLegalEntityPage.class);
+		enforcementContactDetailsPage = PageFactory.initElements(driver, EnforcementContactDetailsPage.class);
+		enforcementNotificationPage = PageFactory.initElements(driver, EnforcementNotificationPage.class);
 		businessConfirmationPage = PageFactory.initElements(driver, BusinessConfirmationPage.class);
 		organisationDashboardPage = PageFactory.initElements(driver, OrganisationDashboardPage.class);
 		onsCodePage = PageFactory.initElements(driver, ONSCodePage.class);
@@ -182,7 +200,7 @@ public class PARStepDefs {
 	public void the_user_logs_in_with_the_user_credentials(String user) throws Throwable {
 		DataStore.saveValue(UsableValues.LOGIN_USER, user);
 		String pass = PropertiesUtil.getConfigPropertyValue(user);
-		LOG.info("Logging in user with credentials; username: " + user + " and password +" + pass);
+		LOG.info("Logging in user with credentials; username: " + user + " and password " + pass);
 		parLoginPage.enterLoginDetails(user, pass);
 		parLoginPage.selectLogin();
 	}
@@ -249,11 +267,16 @@ public class PARStepDefs {
 	@When("^the user searches for the last created partnership$")
 	public void the_user_searches_for_the_last_created_partnership() throws Throwable {
 		parDashboardPage.checkAndAcceptCookies();
-
+		LOG.info("Login user is: " + DataStore.getSavedValue(UsableValues.LOGIN_USER));
 		if (DataStore.getSavedValue(UsableValues.LOGIN_USER).equalsIgnoreCase("par_helpdesk@example.com")) {
 			LOG.info("Selecting view partnerships");
 			parDashboardPage.selectSearchPartnerships();
 			partnershipAdvancedSearchPage.searchPartnerships();
+		} else if (DataStore.getSavedValue(UsableValues.LOGIN_USER)
+				.equalsIgnoreCase("par_enforcement_officer@example.com")) {
+			LOG.info("Selecting search for partnership");
+			parDashboardPage.selectSearchforPartnership();
+			partnershipSearchPage.searchPartnerships();
 		} else {
 			LOG.info("Search partnerships");
 			parDashboardPage.selectSeePartnerships();
@@ -357,11 +380,6 @@ public class PARStepDefs {
 		userProfileCompletionPage.completeApplication();
 	}
 
-	@When("^checks the user can approve or delete the partnership$")
-	public void checks_the_user_can_approve_or_delete_the_partnership() throws Throwable {
-
-	}
-
 	@When("^the user approves the partnership$")
 	public void the_user_approves_the_partnership() throws Throwable {
 		LOG.info("Approving last created partnership");
@@ -447,19 +465,20 @@ public class PARStepDefs {
 		Assert.assertTrue("Details don't check out", authorityConfirmationPage.checkAuthorityDetails());
 		authorityConfirmationPage.saveChanges();
 	}
-	
+
 	@When("^the user searches for the last created authority$")
 	public void the_user_searches_for_the_last_created_authority() throws Throwable {
 		LOG.info("Search for last created authority");
 		authoritiesDashboardPage.searchAuthority();
 		authoritiesDashboardPage.selectAuthority();
 	}
-	
+
 	@When("^the user updates all the fields for newly created authority$")
 	public void the_user_updates_all_the_fields_for_newly_created_authority() throws Throwable {
 		LOG.info("Updating all editble fields against selected authority");
 		authorityConfirmationPage.editAuthorityName();
-		DataStore.saveValue(UsableValues.AUTHORITY_NAME, DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + " Updated");
+		DataStore.saveValue(UsableValues.AUTHORITY_NAME,
+				DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + " Updated");
 		authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
 		authorityConfirmationPage.editAuthorityType();
 		DataStore.saveValue(UsableValues.AUTHORITY_TYPE, "District");
@@ -470,7 +489,7 @@ public class PARStepDefs {
 		authorityConfirmationPage.editRegFunction();
 		DataStore.saveValue(UsableValues.AUTHORITY_REGFUNCTION, "Alphabet learning");
 		regulatoryFunctionPage.selectRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
-		
+
 	}
 
 	@Then("^the update for the authority is successful$")
@@ -479,15 +498,17 @@ public class PARStepDefs {
 		Assert.assertTrue("Details don't check out", authorityConfirmationPage.checkAuthorityDetails());
 		authorityConfirmationPage.saveChanges();
 	}
-	
+
 	@Given("^the user updates all the fields for last created organisation$")
 	public void the_user_updates_all_the_fields_for_last_created_organisation() throws Throwable {
 		LOG.info("Update all fields");
 		businessConfirmationPage.editOrganisationName();
-		DataStore.saveValue(UsableValues.BUSINESS_NAME, DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + " Updated");
+		DataStore.saveValue(UsableValues.BUSINESS_NAME,
+				DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + " Updated");
 		parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 		businessConfirmationPage.editOrganisationDesc();
-		DataStore.saveValue(UsableValues.BUSINESS_DESC, DataStore.getSavedValue(UsableValues.BUSINESS_DESC) + " Updated");
+		DataStore.saveValue(UsableValues.BUSINESS_DESC,
+				DataStore.getSavedValue(UsableValues.BUSINESS_DESC) + " Updated");
 		parBusinessDetailsPage.enterBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
 		businessConfirmationPage.editTradingName();
 		DataStore.saveValue(UsableValues.TRADING_NAME, DataStore.getSavedValue(UsableValues.TRADING_NAME) + " Updated");
@@ -495,7 +516,7 @@ public class PARStepDefs {
 		businessConfirmationPage.editSICCode();
 		sicCodePage.selectSICCode("allow people to eat");
 	}
-	
+
 	@When("^the user searches for the last created organisation$")
 	public void the_user_searches_for_the_last_created_organisation() throws Throwable {
 		LOG.info("Search and select last created organisation");
@@ -503,11 +524,48 @@ public class PARStepDefs {
 		organisationDashboardPage.searchOrganisation();
 		organisationDashboardPage.selectOrganisation();
 	}
-	
+
 	@Then("^all the fields are updated correctly$")
 	public void all_the_fields_are_updated_correctly() throws Throwable {
 		LOG.info("Check all updated changes check out");
 		Assert.assertTrue("Details don't check out", businessConfirmationPage.checkAuthorityDetails());
 		businessConfirmationPage.saveChanges();
 	}
+
+	@When("^the user creates an enforcement notice against the partnership with the following details:$")
+	public void the_user_creates_an_enforcement_notice_against_the_partnership_with_the_following_details(
+			DataTable dets) throws Throwable {
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			LOG.info("Create enformcement notification against partnership");
+			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+			parPartnershipConfirmationPage.createEnforcement();
+			enforcementNotificationPage.proceed();
+			enforcementContactDetailsPage.proceed();
+			enforcementLegalEntityPage.selectLegalEntity(DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+			enforcementLegalEntityPage.proceed();
+			DataStore.saveValue(UsableValues.ENFORCEMENT_TYPE, data.get("Enforcement Action"));
+			enforcementDetailsPage.selectEnforcementType(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TYPE));
+			enforcementDetailsPage.enterEnforcementDescription("Enformcement description");
+			enforcementDetailsPage.proceed();
+			DataStore.saveValue(UsableValues.ENFORCEMENT_REGFUNC, data.get("Regulatory Function"));
+			enforcementActionPage.selectRegFunc(DataStore.getSavedValue(UsableValues.ENFORCEMENT_REGFUNC));
+			DataStore.saveValue(UsableValues.ENFORCEMENT_FILENAME, data.get("Attachment"));
+			enforcementActionPage.chooseFile(DataStore.getSavedValue(UsableValues.ENFORCEMENT_FILENAME));
+			DataStore.saveValue(UsableValues.ENFORCEMENT_DESCRIPTION, data.get("Description"));
+			enforcementActionPage.enterEnforcementDescription(
+					DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION).toLowerCase());
+			DataStore.saveValue(UsableValues.ENFORCEMENT_TITLE, data.get("Title"));
+			enforcementActionPage.enterTitle(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TITLE));
+			enforcementActionPage.proceed();
+
+		}
+	}
+
+	@Then("^all the fields for the enforcement are updated correctly$")
+	public void all_the_fields_for_the_enforcement_are_updated_correctly() throws Throwable {
+		LOG.info("Check all updated changes check out");
+		Assert.assertTrue("Details don't check out", enforcementReviewPage.checkEnforcementCreation());
+		enforcementReviewPage.saveChanges();
+	}
+
 }

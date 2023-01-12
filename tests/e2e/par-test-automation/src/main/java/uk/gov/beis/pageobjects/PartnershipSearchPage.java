@@ -32,6 +32,10 @@ public class PartnershipSearchPage extends BasePageObject {
 		driver.findElement(By.linkText(DataStore.getSavedValue(UsableValues.BUSINESS_NAME))).click();
 		return PageFactory.initElements(driver, DeclarationPage.class);
 	}
+	public PartnershipConfirmationPage selectBusinessNameLinkFromPartnership() {
+		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]")).click();
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
 
 	private String authority = "//td/a[contains(text(),'?')]";
 
