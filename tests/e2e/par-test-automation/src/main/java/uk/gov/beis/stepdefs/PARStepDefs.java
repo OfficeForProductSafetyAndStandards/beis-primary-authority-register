@@ -536,6 +536,7 @@ public class PARStepDefs {
 	public void the_user_creates_an_enforcement_notice_against_the_partnership_with_the_following_details(
 			DataTable dets) throws Throwable {
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			LOG.info("Create enformcement notification against partnership");
 			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
 			parPartnershipConfirmationPage.createEnforcement();
 			enforcementNotificationPage.proceed();
@@ -551,14 +552,15 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.ENFORCEMENT_FILENAME, data.get("Attachment"));
 			enforcementActionPage.chooseFile(DataStore.getSavedValue(UsableValues.ENFORCEMENT_FILENAME));
 			DataStore.saveValue(UsableValues.ENFORCEMENT_DESCRIPTION, data.get("Description"));
-			enforcementActionPage.enterEnforcementDescription(DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION).toLowerCase());
+			enforcementActionPage.enterEnforcementDescription(
+					DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION).toLowerCase());
 			DataStore.saveValue(UsableValues.ENFORCEMENT_TITLE, data.get("Title"));
 			enforcementActionPage.enterTitle(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TITLE));
 			enforcementActionPage.proceed();
-			
+
 		}
 	}
-	
+
 	@Then("^all the fields for the enforcement are updated correctly$")
 	public void all_the_fields_for_the_enforcement_are_updated_correctly() throws Throwable {
 		LOG.info("Check all updated changes check out");
