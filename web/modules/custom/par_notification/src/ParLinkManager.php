@@ -5,6 +5,7 @@ namespace Drupal\par_notification;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Link;
@@ -52,7 +53,7 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
    *
    * @var \Drupal\Core\Session\AccountInterface
    */
-  protected $user;
+  protected $currentUser;
 
   /**
    * Constructs a ParLinkManager instance.
@@ -83,7 +84,27 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
     $this->factory = new DefaultFactory($this->getDiscovery());
 
     $this->entityTypeManager = $entity_type_manager;
-    $this->user = $user;
+    $this->currentUser = $user;
+  }
+
+  /**
+   * Get message template storage.
+   *
+   * @return EntityStorageInterface
+   *   The entity storage for message template (bundle) entities.
+   */
+  public function getMessageTemplateStorage(): EntityStorageInterface {
+    return $this->entityTypeManager->getStorage('message_template');
+  }
+
+  /**
+   * Get the current user.
+   *
+   * @return AccountInterface
+   *   The current user.
+   */
+  public function getCurrentUser(): AccountInterface {
+    return $this->currentUser;
   }
 
   /**
@@ -109,7 +130,7 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
   public function createInstance($plugin_id, array $configuration = []): ?ParLinkActionInterface {
     /** @var ParLinkActionInterface $instance */
     $instance = parent::createInstance($plugin_id, $configuration);
-    $instance->setUser($this->user);
+    $instance->setUser($this->getCurrentUser());
     return $instance;
   }
 
@@ -166,7 +187,7 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
    *   An array of message templates that contain tasks.
    */
   public function getTaskTemplates(): array {
-    $message_templates = \Drupal::service('entity_type.manager')->getStorage('message_template')->loadMultiple();
+    $message_templates = $this->getMessageTemplateStorage()->loadMultiple();
 
     return array_filter($message_templates, function ($message_template) {
       return !empty($this->retrieveTasks($message_template));

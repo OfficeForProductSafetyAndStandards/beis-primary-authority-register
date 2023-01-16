@@ -12,9 +12,9 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataRelationship;
 use Drupal\par_notification\ParNotificationException;
-use Drupal\par_notification\ParNotificationSubscriberBase;
+use Drupal\par_notification\ParEventSubscriberBase;
 
-class NewInspectionPlanSubscriber extends ParNotificationSubscriberBase {
+class NewInspectionPlanSubscriber extends ParEventSubscriberBase {
 
   /**
    * The message template ID created for this notification.

@@ -11,9 +11,9 @@ use Drupal\par_data\Entity\ParDataGeneralEnquiry;
 use Drupal\par_data\Entity\ParDataInspectionFeedback;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_notification\ParNotificationException;
-use Drupal\par_notification\ParNotificationSubscriberBase;
+use Drupal\par_notification\ParEventSubscriberBase;
 
-class NewInspectionFeedbackReplySubscriber extends ParNotificationSubscriberBase {
+class NewInspectionFeedbackReplySubscriber extends ParEventSubscriberBase {
 
   /**
    * The message template ID created for this notification.

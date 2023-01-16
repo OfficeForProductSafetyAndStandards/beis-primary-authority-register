@@ -92,16 +92,16 @@ abstract class ParMessageSubscriberBase extends PluginBase implements ParMessage
     //  1) Users rarely known how to update their preferences
     //  2) Saving preferences on the contact record is doesn't
     //     work when we're emailing users who aren't a contact.
-    foreach ($this->getSubscribedEntities($message) as $subscribed_entity) {
-      if ($subscribed_entity instanceof ParDataMembershipInterface) {
-        $people = $subscribed_entity->getPerson();
-        foreach ($people as $person) {
-          if ($person && $person->hasNotificationPreference($message->getTemplate()->id())) {
-            $recipients[] = $person->getEmail();
-          }
-        }
-      }
-    }
+//    foreach ($this->getSubscribedEntities($message) as $subscribed_entity) {
+//      if ($subscribed_entity instanceof ParDataMembershipInterface) {
+//        $people = $subscribed_entity->getPerson();
+//        foreach ($people as $person) {
+//          if ($person && $person->hasNotificationPreference($message->getTemplate()->id())) {
+//            $recipients[] = $person->getEmail();
+//          }
+//        }
+//      }
+//    }
 
     return $recipients;
   }

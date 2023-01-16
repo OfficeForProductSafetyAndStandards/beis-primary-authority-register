@@ -2,16 +2,17 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\message\Entity\Message;
+use Drupal\message\MessageInterface;
+use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParNotificationException;
-use Drupal\par_notification\ParNotificationSubscriberBase;
+use Drupal\par_notification\ParEventSubscriberBase;
 
-class ApprovedEnforcementSubscriber extends ParNotificationSubscriberBase {
+class ApprovedEnforcementSubscriber extends ParEventSubscriberBase {
 
   /**
    * The message template ID created for this notification.
@@ -52,53 +53,40 @@ class ApprovedEnforcementSubscriber extends ParNotificationSubscriberBase {
    * @param ParDataEventInterface $event
    */
   public function onEvent(ParDataEventInterface $event) {
-    /** @var ParDataEntityInterface $par_data_enforcement_notice */
+    /** @var ParDataEnforcementNotice $par_data_enforcement_notice */
     $par_data_enforcement_notice = $event->getEntity();
 
     // Get the partnership for this notice.
     $partnership = $par_data_enforcement_notice->getPartnership(TRUE);
 
     // Only act on approved enforcement notices for direct partnerships
-    if ($par_data_enforcement_notice->isApproved()
-      && $partnership && $partnership instanceof ParDataPartnership && $partnership->isDirect()) {
-      // Get the contacts for this notification and build the message.
-      $contacts = $this->getRecipients($event);
+    if ($par_data_enforcement_notice instanceof ParDataEnforcementNotice &&
+      $partnership instanceof ParDataPartnership &&
+      $par_data_enforcement_notice->isApproved() &&
+      $partnership->isDirect()) {
 
-      foreach ($contacts as $contact) {
-        if (!isset($this->recipients[$contact->getEmail()])) {
-          // Record the recipient so that we don't send them the message twice.
-          $this->recipients[$contact->getEmail()] = $contact;
-          // Try and get the user account associated with this contact.
-          $account = $contact->getUserAccount();
-
-          try {
-            /** @var Message $message */
-            $message = $this->createMessage();
-          } catch (ParNotificationException $e) {
-            break;
-          }
-
-          // Add contextual information to this message.
-          if ($message->hasField('field_enforcement_notice')) {
-            $message->set('field_enforcement_notice', $par_data_enforcement_notice);
-          }
-
-          // Add some custom arguments to this message.
-          $message->setArguments([
-            '@first_name' => $contact->getFirstName(),
-            '@enforced_organisation' => $par_data_enforcement_notice->getEnforcedEntityName(),
-          ]);
-
-          // The owner is the user who this message belongs to.
-          if ($account) {
-            $message->setOwnerId($account->id());
-          }
-
-          // Send the message.
-          $this->sendMessage($message, $contact->getEmail());
-        }
+      // Create the message.
+      try {
+        $message = $this->getMessageHandler()->createMessage(static::MESSAGE_ID);
+      } catch (ParNotificationException $e) {
+        return;
       }
 
+      if ($message instanceof MessageInterface) {
+        // Add contextual information to this message.
+        if ($message->hasField('field_enforcement_notice')) {
+          $message->set('field_enforcement_notice', $par_data_enforcement_notice);
+        }
+
+        // Add some custom arguments to this message.
+        $arguments = array_merge($message->getArguments(), [
+          '@enforced_organisation' => $par_data_enforcement_notice->getEnforcedEntityName(),
+        ]);
+        $message->setArguments($arguments);
+
+        // Save the message (this will also send it).
+        $message->save();
+      }
     }
   }
 }

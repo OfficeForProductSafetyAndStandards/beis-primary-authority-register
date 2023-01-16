@@ -13,6 +13,26 @@ use Drupal\Core\Entity\EntityInterface;
 interface ParMessageHandlerInterface {
 
   /**
+   * Create a new message.
+   *
+   * @return MessageInterface
+   *   The newly created message.
+   */
+  public function createMessage(string $template_id);
+
+  /**
+   * Send a message.
+   *
+   * This is fired by whenever a new message is saved,
+   * @see par_notification_entity_presave()
+   * @see par_notification_entity_insert()
+   *
+   * @param MessageInterface $message
+   *   The message to send.
+   */
+  public function sendMessage(MessageInterface $message);
+
+  /**
    * Return the primary data associated with a message.
    *
    * This should be the data which relates best to this message,

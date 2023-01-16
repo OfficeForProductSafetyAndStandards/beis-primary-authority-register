@@ -5,13 +5,13 @@ namespace Drupal\par_subscriptions\EventSubscriber;
 use Drupal\Core\Url;
 use Drupal\message\Entity\Message;
 use Drupal\par_notification\ParNotificationException;
-use Drupal\par_notification\ParNotificationSubscriberBase;
+use Drupal\par_notification\ParEventSubscriberBase;
 use Drupal\par_subscriptions\Event\SubscriptionEventInterface;
 use Drupal\par_subscriptions\Event\SubscriptionEvents;
 use Drupal\par_subscriptions\ParSubscriptionManager;
 use Drupal\user\Entity\User;
 
-class VerifySubscriber extends ParNotificationSubscriberBase {
+class VerifySubscriber extends ParEventSubscriberBase {
 
   /**
    * The message template ID created for this notification.

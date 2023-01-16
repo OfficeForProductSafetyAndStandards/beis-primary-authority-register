@@ -8,9 +8,9 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParNotificationException;
-use Drupal\par_notification\ParNotificationSubscriberBase;
+use Drupal\par_notification\ParEventSubscriberBase;
 
-class PartnershipApprovedSubscriber extends ParNotificationSubscriberBase {
+class PartnershipApprovedSubscriber extends ParEventSubscriberBase {
 
   /**
    * The message template ID created for this notification.

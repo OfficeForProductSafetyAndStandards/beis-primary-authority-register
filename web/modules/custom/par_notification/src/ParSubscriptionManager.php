@@ -3,6 +3,7 @@
 namespace Drupal\par_notification;
 
 use Drupal\Component\Plugin\Factory\DefaultFactory;
+use Drupal\Component\Utility\EmailValidatorInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -39,6 +40,13 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
   const PAR_LOGGER_CHANNEL = 'par';
 
   /**
+   * The email validator service.
+   *
+   * @var EmailValidatorInterface
+   */
+  protected EmailValidatorInterface $emailValidator;
+
+  /**
    * Constructs a ParLinkManager instance.
    *
    * @param \Traversable $namespaces
@@ -48,8 +56,10 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
    *   Cache backend instance to use.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler to invoke the alter hook with.
+   * @param EmailValidatorInterface $email_validator
+   *  The email validator service.
    */
-  public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
+  public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler, EmailValidatorInterface $email_validator) {
     parent::__construct(
       'Plugin/ParMessageSubscriber',
       $namespaces,
@@ -61,6 +71,8 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
     $this->alterInfo('par_notification_message_subscriber_info');
     $this->setCacheBackend($cache_backend, 'par_notification_message_subscriber_info_plugins');
     $this->factory = new DefaultFactory($this->getDiscovery());
+
+    $this->emailValidator = $email_validator;
   }
 
   /**
@@ -71,6 +83,16 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
    */
   private function getRoleStorage(): RoleStorageInterface {
     return $this->roleStorage ?? \Drupal::entityTypeManager()->getStorage('user_role');
+  }
+
+  /**
+   * Get the email validator service.
+   *
+   * @return EmailValidatorInterface
+   *   The email validator.
+   */
+  public function getEmailValidator(): EmailValidatorInterface {
+    return $this->emailValidator;
   }
 
   /**
@@ -139,6 +161,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
    * {@inheritDoc}
    */
   public function getRecipients(MessageInterface $message): array {
+    $email_validator = $this->getEmailValidator();
     $recipients = [];
 
     /** @var ParMessageSubscriberInterface[] $subscribers */
@@ -146,12 +169,21 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
     foreach ($subscribers as $definition) {
       $subscriber = $this->createInstance($definition['id'], []);
       try {
-        //$recipients = array_merge($recipients, $subscriber->getRecipients($message));
+        $plugin_recipients = $subscriber->getRecipients($message);
       }
       catch (ParNotificationException $e) {
         // Do not bubble up subscriber errors.
+        continue;
       }
+
+      // Add the recipients to the return array.
+      $recipients = array_merge($recipients, $plugin_recipients);
     }
+
+    // Validate the email addresses.
+    $recipients = array_filter($recipients, function ($email) use ($email_validator) {
+      return $email_validator->isValid($email);
+    });
 
     return array_unique($recipients, SORT_REGULAR);
   }
@@ -167,11 +199,15 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
     foreach ($subscribers as $definition) {
       $subscriber = $this->createInstance($definition['id'], []);
       try {
-        $subscribed_entities = array_merge($subscribed_entities, $subscriber->getSubscribedEntities($message));
+        $plugin_subscribed_entities = $subscriber->getSubscribedEntities($message);
       }
       catch (ParNotificationException $e) {
         // Do not bubble up subscriber errors.
+        continue;
       }
+
+      // Add the subscribed entities to the return array.
+      $subscribed_entities = array_merge($subscribed_entities, $plugin_subscribed_entities);
     }
 
     return $subscribed_entities;

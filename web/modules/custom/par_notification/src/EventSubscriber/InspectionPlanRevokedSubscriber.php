@@ -10,9 +10,9 @@ use Drupal\par_data\ParDataRelationship;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParNotificationException;
-use Drupal\par_notification\ParNotificationSubscriberBase;
+use Drupal\par_notification\ParEventSubscriberBase;
 
-class InspectionPlanRevokedSubscriber extends ParNotificationSubscriberBase {
+class InspectionPlanRevokedSubscriber extends ParEventSubscriberBase {
 
   /**
    * The message template ID created for this notification.
