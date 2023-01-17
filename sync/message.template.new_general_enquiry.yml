@@ -7,7 +7,16 @@ label: 'New general enquiry'
 description: 'This notification is sent to the Primary Authority on the issuance of a new enquiry.'
 text:
   -
-    value: "<p>Dear @first_name,</p>\r\n\r\n<p>You've received a new enquiry about the @partnership_label.</p>\r\n\r\n<p>To respond, sign in to your primary authority account.</p>\r\n\r\n<p>^ Respond to enquiry: [message:primary-action]</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+    value: "<p>Dear @first_name</p>,\r\n"
+    format: basic_html
+  -
+    value: "<p>You've received a new enquiry about the <span>@partnership_label</span>.</p>\r\n"
+    format: basic_html
+  -
+    value: "<p>^ Respond to enquiry: [message:primary-action]</p>\r\n"
+    format: basic_html
+  -
+    value: "<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html
 settings:
   'token options':
