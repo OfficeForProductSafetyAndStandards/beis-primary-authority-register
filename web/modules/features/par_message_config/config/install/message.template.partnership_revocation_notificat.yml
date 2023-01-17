@@ -6,7 +6,13 @@ label: 'Partnership revocation notification'
 description: 'This notification is sent to the primary authority and the organisation when the partnership is revoked.'
 text:
   -
-    value: "<p>Dear @first_name,</p>\r\n\r\n<p>This message is to confirm that the @partnership_label has been revoked.</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
+    value: "<p>Dear @first_name</p>,\r\n"
+    format: basic_html
+  -
+    value: "<p>This message is to confirm that the <span>@partnership_label</span> has been revoked.</p>\r\n"
+    format: basic_html
+  -
+    value: "<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html
 settings:
   'token options':

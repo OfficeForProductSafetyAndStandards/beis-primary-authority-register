@@ -1,9 +1,3 @@
-langcode: en
-status: true
-dependencies: {  }
-template: partnership_confirmed_notificati
-label: 'Partnership confirmed notification'
-description: 'This notification is sent to the primary authority when the partnership is confirmed by the organisation.'
 text:
   -
     value: "<p>Dear @first_name</p>,\r\n"
@@ -17,9 +11,3 @@ text:
   -
     value: "<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html
-settings:
-  'token options':
-    clear: false
-    'token replace': true
-  purge_override: false
-  purge_methods: {  }

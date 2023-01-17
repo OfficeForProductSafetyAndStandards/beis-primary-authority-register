@@ -7,7 +7,19 @@ label: 'Subscription Verify Notification'
 description: 'Sent to any user after they subscribe to a mailing list so that they can verify their email address.'
 text:
   -
-    value: "<p>Dear subscriber,<br />\r\n<br />\r\nYou have&nbsp;subscribed to the subscription list&nbsp;@list.<br />\r\n<br />\r\nTo activate your subscription please verify your email address.<br />\r\n<br />\r\n^ Verify your email address: @verification_link<br />\r\n<br />\r\nIf you did not subscribe to this list you don't need to do anything.<br />\r\n<br />\r\nRegards, Primary Authority Register team</p>\r\n"
+    value: "<p>Dear subscriber</p>,\r\n"
+    format: basic_html
+  -
+    value: "<p>You have subscribed to the subscription list <span>@list</span>.</p>\r\n\r\n<p>To activate your subscription please verify your email address.</p>\r\n"
+    format: basic_html
+  -
+    value: "<p>^ Verify your email address: @verification_link</p>\r\n"
+    format: basic_html
+  -
+    value: "<p>If you did not subscribe to this list you don't need to do anything.</p>\r\n"
+    format: basic_html
+  -
+    value: "<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html
 settings:
   'token options':
