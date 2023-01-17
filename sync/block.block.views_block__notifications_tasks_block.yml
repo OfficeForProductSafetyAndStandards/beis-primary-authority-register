@@ -7,6 +7,7 @@ dependencies:
   module:
     - govuk_cookies
     - system
+    - user
     - views
   theme:
     - par_theme
@@ -32,3 +33,10 @@ visibility:
     id: request_path
     negate: false
     pages: "/dashboard\r\n/helpdesk"
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      authenticated: authenticated

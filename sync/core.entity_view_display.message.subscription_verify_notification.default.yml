@@ -16,12 +16,21 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
-  partial_0:
+  partial_1:
     settings: {  }
     third_party_settings: {  }
     weight: 0
     region: content
+  partial_3:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
 hidden:
   field_message_subject: true
+  partial_0: true
+  partial_2: true
+  partial_4: true
+  search_api_excerpt: true

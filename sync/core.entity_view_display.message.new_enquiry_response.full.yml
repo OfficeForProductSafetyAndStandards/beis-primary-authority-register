@@ -9,6 +9,8 @@ dependencies:
     - field.field.message.new_enquiry_response.field_message_subject
     - field.field.message.new_enquiry_response.field_to
     - message.template.new_enquiry_response
+  module:
+    - par_data
 id: message.new_enquiry_response.full
 targetEntityType: message
 bundle: new_enquiry_response
@@ -32,11 +34,22 @@ content:
     third_party_settings: {  }
     weight: 2
     region: content
-  partial_0:
+  field_message_subject:
+    type: par_list_formatter
+    label: above
+    settings:
+      display_original_value: false
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  partial_1:
     settings: {  }
     third_party_settings: {  }
     weight: 0
     region: content
 hidden:
-  field_message_subject: true
   field_to: true
+  partial_0: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true

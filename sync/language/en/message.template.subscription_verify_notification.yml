@@ -1,4 +1,0 @@
-text:
-  -
-    value: "<p>Dear subscriber,<br />\r\n<br />\r\nYou have&nbsp;subscribed to the subscription list&nbsp;@list.<br />\r\n<br />\r\nTo activate your subscription please verify your email address.<br />\r\n<br />\r\n^ Verify your email address: @verification_link<br />\r\n<br />\r\nIf you did not subscribe to this list you don't need to do anything.<br />\r\n<br />\r\nRegards, Primary Authority Register team</p>\r\n"
-    format: basic_html
