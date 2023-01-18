@@ -4,10 +4,10 @@ namespace Drupal\par_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
-use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_notification\ParNotificationException;
+use Drupal\par_data\Entity\ParDataInspectionFeedback;
+use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParEventSubscriberBase;
 
 class NewInspectionFeedbackSubscriber extends ParEventSubscriberBase {
@@ -31,82 +31,25 @@ class NewInspectionFeedbackSubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * Get all the recipients for this notification.
-   *
-   * @param $event
-   *
-   * @return ParDataPerson[]
+   * @param ParDataEventInterface $event
    */
-  public function getRecipients(EntityEvent $event) {
-    $contacts = [];
+  public function onEvent(ParDataEventInterface $event) {
+    $this->setEvent($event);
 
-    /** @var ParDataEntityInterface $entity */
+    /** @var ParDataInspectionFeedback $entity */
     $entity = $event->getEntity();
+    $par_data_partnership = $entity?->getPartnership(TRUE);
 
-    // Always notify the primary authority contact.
-    if ($primary_authority_contacts = $entity->getPrimaryAuthorityContacts()) {
-      foreach ($primary_authority_contacts as $contact) {
-        if (!isset($contacts[$contact->id()])) {
-          $contacts[$contact->id()] = $contact;
-        }
-      }
-    }
+    // Only send messages for active general enquiries.
+    if ($entity instanceof ParDataInspectionFeedback &&
+      $par_data_partnership instanceof ParDataPartnership &&
+      $entity->isActive()) {
 
-    // Notify secondary contacts if they've opted-in.
-    if ($secondary_contacts = $entity->getAllPrimaryAuthorityContacts()) {
-      foreach ($secondary_contacts as $contact) {
-        if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
-          $contacts[$contact->id()] = $contact;
-        }
-      }
-    }
-
-    return $contacts;
-  }
-
-  /**
-   * @param EntityEvent $event
-   */
-  public function onEvent(EntityEvent $event) {
-    /** @var ParDataEntityInterface $par_data_inspection_feedback */
-    $par_data_inspection_feedback = $event->getEntity();
-    $par_data_partnership = $par_data_inspection_feedback ? $par_data_inspection_feedback->getPartnership(TRUE) : NULL;
-
-    $contacts = $this->getRecipients($event);
-    foreach ($contacts as $contact) {
-      if (!isset($this->recipients[$contact->getEmail()])) {
-        // Record the recipient so that we don't send them the message twice.
-        $this->recipients[$contact->getEmail()] = $contact;
-        // Try and get the user account associated with this contact.
-        $account = $contact->getUserAccount();
-
-        try {
-          /** @var Message $message */
-          $message = $this->createMessage();
-        }
-        catch (ParNotificationException $e) {
-          break;
-        }
-
-        // Add contextual information to this message.
-        if ($message->hasField('field_inspection_feedback')) {
-          $message->set('field_inspection_feedback', $par_data_inspection_feedback);
-        }
-
-        // Add some custom arguments to this message.
-        $message->setArguments([
-          '@first_name' => $contact->getFirstName(),
-          '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
-        ]);
-
-        // The owner is the user who this message belongs to.
-        if ($account) {
-          $message->setOwnerId($account->id());
-        }
-
-        // Send the message.
-        $this->sendMessage($message, $contact->getEmail());
-      }
+      // Send the message.
+      $arguments = [
+        '@partnership_label' => strtolower($par_data_partnership->label()),
+      ];
+      $this->sendMessage($arguments);
     }
   }
 

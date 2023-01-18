@@ -33,60 +33,27 @@ class ApprovedEnforcementSubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * Get all the recipients for this notification.
-   *
-   * @param $event
-   *
-   * @return ParDataPerson[]
-   */
-  public function getRecipients(ParDataEventInterface $event) {
-    /** @var ParDataEntityInterface $entity */
-    $entity = $event->getEntity();
-
-    // Get the contact information for the primary business.
-    $contacts = $entity->getOrganisationContacts();
-
-    return $contacts;
-  }
-
-  /**
    * @param ParDataEventInterface $event
    */
   public function onEvent(ParDataEventInterface $event) {
-    /** @var ParDataEnforcementNotice $par_data_enforcement_notice */
-    $par_data_enforcement_notice = $event->getEntity();
+    $this->setEvent($event);
 
+    /** @var ParDataEnforcementNotice $entity */
+    $entity = $event->getEntity();
     // Get the partnership for this notice.
-    $partnership = $par_data_enforcement_notice->getPartnership(TRUE);
+    $partnership = $entity->getPartnership(TRUE);
 
     // Only act on approved enforcement notices for direct partnerships
-    if ($par_data_enforcement_notice instanceof ParDataEnforcementNotice &&
+    if ($entity instanceof ParDataEnforcementNotice &&
       $partnership instanceof ParDataPartnership &&
-      $par_data_enforcement_notice->isApproved() &&
+      $entity->isApproved() &&
       $partnership->isDirect()) {
 
-      // Create the message.
-      try {
-        $message = $this->getMessageHandler()->createMessage(static::MESSAGE_ID);
-      } catch (ParNotificationException $e) {
-        return;
-      }
-
-      if ($message instanceof MessageInterface) {
-        // Add contextual information to this message.
-        if ($message->hasField('field_enforcement_notice')) {
-          $message->set('field_enforcement_notice', $par_data_enforcement_notice);
-        }
-
-        // Add some custom arguments to this message.
-        $arguments = array_merge($message->getArguments(), [
-          '@enforced_organisation' => $par_data_enforcement_notice->getEnforcedEntityName(),
-        ]);
-        $message->setArguments($arguments);
-
-        // Save the message (this will also send it).
-        $message->save();
-      }
+      // Send the message.
+      $arguments = [
+        '@enforced_organisation' => $entity->getEnforcedEntityName(),
+      ];
+      $this->sendMessage($arguments);
     }
   }
 }

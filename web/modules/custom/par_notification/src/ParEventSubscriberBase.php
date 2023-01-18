@@ -2,16 +2,11 @@
 
 namespace Drupal\par_notification;
 
-use Drupal\Core\Link;
 use Drupal\Core\Logger\LoggerChannelTrait;
-use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\message\MessageTemplateInterface;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Event\ParDataEventInterface;
-use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\message_notify\MessageNotifier;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 abstract class ParEventSubscriberBase implements EventSubscriberInterface {
@@ -69,6 +64,48 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
    */
   public function setEvent($event) {
     $this->event = $event;
+  }
+
+  /**
+   * Send and save the message.
+   *
+   * @param array $arguments
+   *   An array of replacement arguments to be set on the message.
+   * @param ParDataEntityInterface[] $parameters
+   *   The additional data parameters to be added to the message.
+   */
+  public function sendMessage(array $arguments = [], array $parameters = []) {
+    $entity = $this->getEvent()?->getEntity();
+
+    // Create the message.
+    try {
+      $message = $this->getMessageHandler()->createMessage(static::MESSAGE_ID);
+    } catch (ParNotificationException $e) {
+      return;
+    }
+
+    if ($entity instanceof ParDataEntityInterface &&
+      $message instanceof MessageInterface) {
+
+      $field = $this->getMessageHandler()->getPrimaryField($message->getTemplate());
+      // Add the primary contextual information to this message.
+      if ($field && $message->hasField($field)) {
+        $message->set($field, $entity);
+      }
+      // Add any additional parameters to this message.
+      foreach ($parameters as $parameter_field => $parameter) {
+        if ($field && $message->hasField($parameter_field)) {
+          $message->set($parameter_field, $parameter);
+        }
+      }
+
+      // Add some custom arguments to this message.
+      $arguments = array_merge($message->getArguments(), $arguments);
+      $message->setArguments($arguments);
+
+      // Save the message (this will also send it).
+      $message->save();
+    }
   }
 
 }

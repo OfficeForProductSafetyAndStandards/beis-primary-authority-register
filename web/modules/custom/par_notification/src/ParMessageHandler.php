@@ -260,7 +260,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
    *   The field name.
    *
    */
-  private function getPrimaryField(MessageTemplateInterface $template): mixed {
+  public function getPrimaryField(MessageTemplateInterface $template): mixed {
     $message_types = [
       'approved_enforcement' => 'field_enforcement_notice',
       'inspection_plan_expiry_warning' => 'field_inspection_plan',
