@@ -1,6 +1,6 @@
 text:
   -
-    value: "<p>Dear @first_name</p>,\r\n"
+    value: "<p>Dear !first_name</p>,\r\n"
     format: basic_html
   -
     value: "<p>Feedback has been submitted from the inspection regarding the <span>@partnership_label</span>.</p>\r\n"

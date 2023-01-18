@@ -171,10 +171,20 @@ class ParMessageHandler implements ParMessageHandlerInterface {
       throw new ParNotificationException('No template could be found.');
     }
 
-    // Create the basic message.
+    /** @var MessageInterface $message */
     $message = $this->getMessageStorage()->create([
       'template' => $message_template?->id(),
     ]);
+
+    // Add the standard personalisation arguments.
+    $recipients = $this->getSubscriptionManager()->getRecipients($message);
+    $arguments = [
+      '!first_name' => [
+        'callback' => "par_notification.message_handler:personalise",
+        'callback arguments' => [$recipients]
+      ],
+    ];
+    $message->setArguments(array_merge($message->getArguments(), $arguments));
 
     // The owner is the user who created the message.
     // Even though they may not be the one who can see it.
@@ -214,6 +224,13 @@ class ParMessageHandler implements ParMessageHandlerInterface {
     else {
       $this->getLogger($this->getLoggerChannel())->warning('Could not send the \'%message_template\' message.', ['%message_template' => $message->getTemplate()->label()]);
     }
+  }
+
+  /**
+   * Message personalisation callback.
+   */
+  public function personalise($recipients) {
+    return 'Jasper James';
   }
 
   /**

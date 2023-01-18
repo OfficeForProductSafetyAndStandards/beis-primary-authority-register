@@ -27,7 +27,7 @@ The body text of the message is broken apart into [Message Partials](https://git
 The partials are ordered in a specific way to allow additional information to be displayed depending on how the message is being sent.
 
 The order for partials should be as follows:
-* 0 - The personalisation line for the email `Dear @first_name`.
+* 0 - The personalisation line for the email `Dear !first_name`.
 * 1 - The core of the message content.
 * _any further partials_ - The ParLinkAction link `[message:primary-action]`, and any additional content blocks.
 * _last_ - The sign off line for the email, e.g. `Regards, Primary Authority Register team`
