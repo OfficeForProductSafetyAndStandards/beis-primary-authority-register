@@ -32,7 +32,15 @@ class NewEnforcementSubscriber extends ParMessageSubscriberBase {
     try {
       /** @var ParDataEnforcementNotice[] $enforcement_notices */
       $enforcement_notices = $this->getMessageHandler()->getPrimaryData($message);
-      $partnerships = $enforcement_notices->getPartnership();
+      /** @var ParDataPartnership[] $partnerships */
+      $partnerships = [];
+
+      foreach ($enforcement_notices as $enforcement_notice) {
+        $partnerships = array_merge(
+          $partnerships,
+          $enforcement_notice->getPartnership()
+        );
+      }
     }
     catch (ParNotificationException $e) {
       return $recipients;
@@ -40,7 +48,10 @@ class NewEnforcementSubscriber extends ParMessageSubscriberBase {
 
     // Send this message to all primary authority contacts on the partnership.
     foreach ($partnerships as $partnership) {
-      $emails = array_column($partnership->getAuthorityPeople(), 'email');
+      $emails = $partnership->getAuthorityPeople();
+      array_walk($emails, function (&$value) {
+        $value = $value->getEmail();
+      });
       $recipients = array_merge(
         $recipients,
         $emails ?? [],

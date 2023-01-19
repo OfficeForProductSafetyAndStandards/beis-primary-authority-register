@@ -7,7 +7,7 @@ label: 'Reviewed deviation request'
 description: 'This notification is sent to the enforcing authority when a deviation request is approved or blocked.'
 text:
   -
-    value: "<p>Dear !first_name</p>,\r\n"
+    value: "<p>Dear @first_name</p>,\r\n"
     format: basic_html
   -
     value: "<p>The deviation request on the <span>@partnership_label</span> has been reviewed.</p>\r\n"

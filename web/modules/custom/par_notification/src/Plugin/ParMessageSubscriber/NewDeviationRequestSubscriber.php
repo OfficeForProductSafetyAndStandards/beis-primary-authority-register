@@ -4,6 +4,7 @@ namespace Drupal\par_notification\Plugin\ParMessageSubscriber;
 
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEnquiryInterface;
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataException;
 use Drupal\par_notification\ParMessageSubscriberBase;
 use Drupal\par_notification\ParNotificationException;
@@ -32,6 +33,7 @@ class NewDeviationRequestSubscriber extends ParMessageSubscriberBase {
     try {
       /** @var ParDataEnquiryInterface $deviation_requests [] */
       $deviation_requests = $this->getMessageHandler()->getPrimaryData($message);
+      /** @var ParDataPartnership[] $partnerships */
       $partnerships = [];
 
       foreach ($deviation_requests as $deviation_request) {
@@ -47,7 +49,10 @@ class NewDeviationRequestSubscriber extends ParMessageSubscriberBase {
 
     foreach ($partnerships as $partnership) {
       // This message should be viewed by the authority.
-      $emails = array_column($partnership->getAuthorityPeople(), 'email');
+      $emails = $partnership->getAuthorityPeople();
+      array_walk($emails, function (&$value) {
+        $value = $value->getEmail();
+      });
       $recipients = array_merge(
         $recipients,
         $emails ?? [],

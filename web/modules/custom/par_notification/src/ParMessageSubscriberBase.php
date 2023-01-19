@@ -75,10 +75,6 @@ abstract class ParMessageSubscriberBase extends PluginBase implements ParMessage
    *  - If there are no subscribed entities to further filter by
    *    then all users in all authenticated roles will be recipients.
    *
-   * User preference-based rules will also automatically be processed,
-   * where a user opts-in to receive certain notifications, provided:
-   *  - The user belongs to at least one of the subscribed entities.
-   *
    * Membership-based rules should be processed by the subscriber plugins
    * and tailored for each message type.
    *
@@ -86,22 +82,6 @@ abstract class ParMessageSubscriberBase extends PluginBase implements ParMessage
    */
   public function getRecipients(MessageInterface $message): array {
     $recipients = [];
-
-    // User preference-based rules.
-    // @todo Discussion needed on whether these are useful:
-    //  1) Users rarely known how to update their preferences
-    //  2) Saving preferences on the contact record is doesn't
-    //     work when we're emailing users who aren't a contact.
-//    foreach ($this->getSubscribedEntities($message) as $subscribed_entity) {
-//      if ($subscribed_entity instanceof ParDataMembershipInterface) {
-//        $people = $subscribed_entity->getPerson();
-//        foreach ($people as $person) {
-//          if ($person && $person->hasNotificationPreference($message->getTemplate()->id())) {
-//            $recipients[] = $person->getEmail();
-//          }
-//        }
-//      }
-//    }
 
     return $recipients;
   }

@@ -11,7 +11,7 @@ services:
 
   par_notification.message_handler:
     class: Drupal\par_notification\ParMessageHandler
-    arguments: ['@entity_type.manager', 'plugin.manager.par_subscription_manager', 'plugin.manager.par_link_manager', 'message_notify.sender']
+    arguments: ['@entity_type.manager', '@plugin.manager.par_subscription_manager', '@plugin.manager.par_link_manager', '@message_notify.sender', '@current_user']
 
   par_notification.approved_enforcement_subscriber:
     class: '\Drupal\par_notification\EventSubscriber\ApprovedEnforcementSubscriber'

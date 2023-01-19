@@ -38,7 +38,10 @@ class NewPartnershipSubscriber extends ParMessageSubscriberBase {
 
     foreach ($partnerships as $partnership) {
       // This message should be viewed by the organisation.
-      $emails = array_column($partnership->getOrganisationPeople(), 'email');
+      $emails = $partnership->getOrganisationPeople();
+      array_walk($emails, function (&$value) {
+        $value = $value->getEmail();
+      });
       $recipients = array_merge(
         $recipients,
         $emails ?? [],

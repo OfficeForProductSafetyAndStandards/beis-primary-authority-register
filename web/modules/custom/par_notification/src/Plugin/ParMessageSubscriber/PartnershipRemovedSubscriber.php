@@ -39,8 +39,16 @@ class PartnershipRemovedSubscriber extends ParMessageSubscriberBase {
 
     foreach ($partnerships as $partnership) {
       // This message should be viewed by the organisation.
-      $authority_emails = array_column($partnership->getAuthorityPeople(), 'email');
-      $organisation_emails = array_column($partnership->getOrganisationPeople(), 'email');
+      $authority_emails = $partnership->getAuthorityPeople();
+      array_walk($authority_emails, function (&$value) {
+        $value = $value->getEmail();
+      });
+
+      $organisation_emails = $partnership->getOrganisationPeople();
+      array_walk($organisation_emails, function (&$value) {
+        $value = $value->getEmail();
+      });
+
       $recipients = array_merge(
         $recipients,
         $authority_emails ?? [],

@@ -177,11 +177,10 @@ class ParMessageHandler implements ParMessageHandlerInterface {
     ]);
 
     // Add the standard personalisation arguments.
-    $recipients = $this->getSubscriptionManager()->getRecipients($message);
     $arguments = [
-      '!first_name' => [
-        'callback' => "par_notification.message_handler:personalise",
-        'callback arguments' => [$recipients]
+      '@first_name' => [
+        'callback' => [self::class, 'personalise'],
+        'pass message' => TRUE,
       ],
     ];
     $message->setArguments(array_merge($message->getArguments(), $arguments));
@@ -229,8 +228,8 @@ class ParMessageHandler implements ParMessageHandlerInterface {
   /**
    * Message personalisation callback.
    */
-  public function personalise($recipients) {
-    return 'Jasper James';
+  static function personalise(MessageInterface $message) {
+    return 'Primary Authority User';
   }
 
   /**

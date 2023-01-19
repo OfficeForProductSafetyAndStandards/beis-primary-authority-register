@@ -32,7 +32,7 @@ class NewInspectionPlanSubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * @param ParDataEventInterface $event
+   * @param EntityEvent $event
    */
   public function onEvent(ParDataEventInterface $event) {
     $this->setEvent($event);

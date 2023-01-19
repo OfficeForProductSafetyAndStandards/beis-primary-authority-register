@@ -8,6 +8,7 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Drupal\Core\Entity\EntityEvent;
 
 abstract class ParEventSubscriberBase implements EventSubscriberInterface {
 
@@ -19,9 +20,9 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
   const MESSAGE_ID = '';
 
   /**
-   * @var ParDataEventInterface $event
+   * @var ParDataEventInterface|EntityEvent $event
    */
-  protected ParDataEventInterface $event;
+  protected ParDataEventInterface|EntityEvent $event;
 
   /**
    * Returns the logger channel specific to errors logged by PAR Forms.

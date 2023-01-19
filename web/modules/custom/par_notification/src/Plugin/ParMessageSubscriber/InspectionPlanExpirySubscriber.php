@@ -31,12 +31,16 @@ class InspectionPlanExpirySubscriber extends ParMessageSubscriberBase {
     $recipients = parent::getRecipients($message);
 
     try {
-      /** @var ParDataPartnership[] $partnerships */
-      $partnerships = [];
       /** @var ParDataInspectionPlan[] $inspection_plans */
       $inspection_plans = $this->getMessageHandler()->getPrimaryData($message);
+      /** @var ParDataPartnership[] $partnerships */
+      $partnerships = [];
+
       foreach ($inspection_plans as $inspection_plan) {
-        $partnerships += $inspection_plan->getPartnerships();
+        $partnerships = array_merge(
+          $partnerships,
+          $inspection_plan->getPartnerships()
+        );
       }
     }
     catch (ParNotificationException $e) {
@@ -46,7 +50,10 @@ class InspectionPlanExpirySubscriber extends ParMessageSubscriberBase {
     // This message should be viewed by the primary authority
     // contacts on the partnership.
     foreach ($partnerships as $partnership) {
-      $emails = array_column($partnership->getAuthorityPeople(), 'email');
+      $emails = $partnership->getAuthorityPeople();
+      array_walk($emails, function (&$value) {
+        $value = $value->getEmail();
+      });
       $recipients = array_merge(
         $recipients,
         $emails ?? [],
@@ -63,12 +70,16 @@ class InspectionPlanExpirySubscriber extends ParMessageSubscriberBase {
     $subscriptions = parent::getSubscribedEntities($message);
 
     try {
-      /** @var ParDataPartnership[] $partnerships */
-      $partnerships = [];
       /** @var ParDataInspectionPlan[] $inspection_plans */
       $inspection_plans = $this->getMessageHandler()->getPrimaryData($message);
+      /** @var ParDataPartnership[] $partnerships */
+      $partnerships = [];
+
       foreach ($inspection_plans as $inspection_plan) {
-        $partnerships += $inspection_plan->getPartnerships();
+        $partnerships = array_merge(
+          $partnerships,
+          $inspection_plan->getPartnerships()
+        );
       }
     }
     catch (ParNotificationException $e) {

@@ -31,9 +31,9 @@ class NewEnforcementSubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * @param ParDataEventInterface $event
+   * @param EntityEvent $event
    */
-  public function onEvent(ParDataEventInterface $event) {
+  public function onEvent(EntityEvent $event) {
     $this->setEvent($event);
 
     /** @var ParDataEnforcementNotice $entity */

@@ -34,6 +34,7 @@ class ReviewedDeviationRequestSubscriber extends ParMessageSubscriberBase {
     try {
       /** @var ParDataEnquiryInterface $deviation_requests [] */
       $deviation_requests = $this->getMessageHandler()->getPrimaryData($message);
+      /** @var ParDataPartnership[] $partnerships */
       $partnerships = [];
 
       foreach ($deviation_requests as $deviation_request) {
@@ -49,7 +50,11 @@ class ReviewedDeviationRequestSubscriber extends ParMessageSubscriberBase {
 
     foreach ($partnerships as $partnership) {
       // This message should be viewed by the authority.
-      $emails = array_column($partnership->getAuthorityPeople(), 'email');
+      $authority_emails = $partnership->getAuthorityPeople();
+      array_walk($authority_emails, function (&$value) {
+        $value = $value->getEmail();
+      });
+
       $recipients = array_merge(
         $recipients,
         $emails ?? [],
