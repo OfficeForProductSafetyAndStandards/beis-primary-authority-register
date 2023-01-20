@@ -65,7 +65,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       $link_label = !empty($partnership_legal_entities) && count($partnership_legal_entities) >= 1
         ? "add another legal entity" : "add a legal entity";
       $add_link = $this->getFlowNegotiator()->getFlow()
-        ->getOperationLink('add_legal_entity', $link_label, ['par_data_partnership' => $partnership]);
+        ->getOperationLink('partnership_amend', $link_label, ['par_data_partnership' => $partnership]);
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);
