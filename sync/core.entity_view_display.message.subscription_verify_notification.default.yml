@@ -7,21 +7,11 @@ dependencies:
     - field.field.message.subscription_verify_notification.field_subscription
     - field.field.message.subscription_verify_notification.field_to
     - message.template.subscription_verify_notification
-  module:
-    - par_data
 id: message.subscription_verify_notification.default
 targetEntityType: message
 bundle: subscription_verify_notification
 mode: default
 content:
-  field_message_subject:
-    type: par_list_formatter
-    label: above
-    settings:
-      display_original_value: false
-    third_party_settings: {  }
-    weight: 4
-    region: content
   field_subscription:
     type: entity_reference_label
     label: above
@@ -30,10 +20,15 @@ content:
     third_party_settings: {  }
     weight: 2
     region: content
-  partial_1:
+  partial_0:
     settings: {  }
     third_party_settings: {  }
     weight: 0
+    region: content
+  partial_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
     region: content
   partial_3:
     settings: {  }
@@ -41,8 +36,8 @@ content:
     weight: 1
     region: content
 hidden:
+  field_message_subject: true
   field_to: true
-  partial_0: true
-  partial_2: true
+  partial_1: true
   partial_4: true
   search_api_excerpt: true

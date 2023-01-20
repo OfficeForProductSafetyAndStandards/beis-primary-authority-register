@@ -13,10 +13,15 @@ targetEntityType: message
 bundle: subscription_verify_notification
 mode: full
 content:
-  partial_1:
+  partial_0:
     settings: {  }
     third_party_settings: {  }
     weight: 0
+    region: content
+  partial_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
     region: content
   partial_3:
     settings: {  }
@@ -27,7 +32,6 @@ hidden:
   field_message_subject: true
   field_subscription: true
   field_to: true
-  partial_0: true
-  partial_2: true
+  partial_1: true
   partial_4: true
   search_api_excerpt: true
