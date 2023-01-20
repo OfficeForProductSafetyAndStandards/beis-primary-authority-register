@@ -9,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
+import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.utility.DataStore;
 
 public class PartnershipConfirmationPage extends BasePageObject {
@@ -45,13 +46,6 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	String tradename = "//div[contains(text(),'?')]";
 	String membersize = "//div[contains(text(),'?')]";
 
-	public void setJourneyPart(boolean value) {
-		this.twopartjourney = value;
-	}
-
-	public boolean getJourneyPart() {
-		return this.twopartjourney;
-	}
 	
 	public EnforcementNotificationPage createEnforcement() {
 		craeteEnforcementBtn.click();
@@ -59,7 +53,7 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	}
 
 	public PartnershipConfirmationPage confirmDetails() {
-		WebElement checkbox = getJourneyPart() ? driver.findElement(By.id("edit-terms-organisation-agreed"))
+		WebElement checkbox = ScenarioContext.secondJourneyPart ? driver.findElement(By.id("edit-terms-organisation-agreed"))
 				: driver.findElement(By.id("edit-terms-authority-agreed"));
 		if (!checkbox.isSelected())
 			checkbox.click();

@@ -229,7 +229,7 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, data.get("Partnership Info"));
 			LOG.info("Entering partnership description");
 			parPartnershipDescriptionPage.enterPartnershipDescription(data.get("Partnership Info"),
-					parPartnershipConfirmationPage.getJourneyPart());
+					ScenarioContext.secondJourneyPart);
 			LOG.info("Entering business/organisation name");
 			DataStore.saveValue(UsableValues.BUSINESS_NAME, RandomStringGenerator.getBusinessName(4));
 			parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
@@ -284,11 +284,11 @@ public class PARStepDefs {
 			partnershipSearchPage.searchPartnerships();
 
 			// select business/organisation link if still first part of journey
-			if (!parPartnershipConfirmationPage.getJourneyPart())
+			if (!ScenarioContext.secondJourneyPart)
 				partnershipSearchPage.selectBusinessNameLink();
 
 			// select authority link if in second part of journey
-			if (parPartnershipConfirmationPage.getJourneyPart())
+			if (ScenarioContext.secondJourneyPart)
 				partnershipSearchPage.selectAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
 		}
 	}
@@ -327,7 +327,7 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal entity Type"));
 			legalEntityPage.createLegalEntity(data.get("Legal entity Type"));
 			LOG.info("Set second part of journey part to true");
-			parPartnershipConfirmationPage.setJourneyPart(true);
+			ScenarioContext.secondJourneyPart = true;
 		}
 	}
 
@@ -423,7 +423,7 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.editAboutPartnership();
 		DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, desc);
 		parPartnershipDescriptionPage.enterPartnershipDescription(desc,
-				parPartnershipConfirmationPage.getJourneyPart());
+				ScenarioContext.secondJourneyPart);
 	}
 
 	@Then("^the partnership is updated correctly$")

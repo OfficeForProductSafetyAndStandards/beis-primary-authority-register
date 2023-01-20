@@ -98,7 +98,7 @@ Feature:
   Then all the fields are updated correctly
   
  @regression @enforcement
- Scenario: Verify Send Notification of Proposed Enforcement (Happy Path - PAR-1852)
+ Scenario: Verify Send Notification of Proposed Enforcement and Approval (Happy Path - PAR-1852, PAR-1853)
   Given the user is on the PAR login page
   And the user logs in with the "par_enforcement_officer@example.com" user credentials
   When the user searches for the last created partnership
@@ -107,6 +107,10 @@ Feature:
    | Proposed    				| Enforcement Title 1	| Cookie control			| Enforcement desc	| link.txt			|  
   Then all the fields for the enforcement are updated correctly
   
+  #Approve the Enforcement
+  Given the user is on the PAR login page
+  And the user logs in with the "par_authority@example.com" user credentials  
+  When the user searches for the last created partnership
   
   
   
