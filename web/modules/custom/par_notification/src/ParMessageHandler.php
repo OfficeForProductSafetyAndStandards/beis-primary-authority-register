@@ -176,15 +176,6 @@ class ParMessageHandler implements ParMessageHandlerInterface {
       'template' => $message_template?->id(),
     ]);
 
-    // Add the standard personalisation arguments.
-    $arguments = [
-      '@first_name' => [
-        'callback' => [self::class, 'personalise'],
-        'pass message' => TRUE,
-      ],
-    ];
-    $message->setArguments(array_merge($message->getArguments(), $arguments));
-
     // The owner is the user who created the message.
     // Even though they may not be the one who can see it.
     if ($this->getCurrentUser()->isAuthenticated()) {
@@ -298,7 +289,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
       'reviewed_enforcement' => 'field_enforcement_notice',
       'member_list_stale_warning' => 'field_partnership',
       'new_response' => NULL,
-      'subscription_verify_notification' => NULL,
+      'subscription_verify_notification' => 'field_subscription',
     ];
 
     return $message_types[$template->id()] ?? NULL;
@@ -358,7 +349,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
       'partnership_deleted_notification' => 'partnership_removal',
       'partnership_revocation_notificat' => 'partnership_removal',
       'member_list_stale_warning' => 'coordinated_membership',
-      'subscription_verify_notification' => NULL,
+      'subscription_verify_notification' => 'subscription',
     ];
 
     return $groups[$template->id()] ?? NULL;

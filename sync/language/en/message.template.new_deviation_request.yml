@@ -1,13 +1,7 @@
 text:
   -
-    value: "<p>Dear @first_name</p>,\r\n"
-    format: basic_html
-  -
     value: "<p>You've received a deviation request on the <span>@partnership_label</span>.</p>\r\n\r\n<p>If you don't respond to this request within 5 working days, it will be automatically accepted.</p>\r\n"
     format: basic_html
   -
     value: "<p>^ Respond to deviation request: [message:primary-action]</p>\r\n"
-    format: basic_html
-  -
-    value: "<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html

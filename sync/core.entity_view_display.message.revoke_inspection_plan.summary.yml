@@ -1,0 +1,31 @@
+uuid: 9b59da70-65a1-4f94-ad30-8f9b3636ab51
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.summary
+    - field.field.message.revoke_inspection_plan.field_inspection_plan
+    - field.field.message.revoke_inspection_plan.field_message_subject
+    - field.field.message.revoke_inspection_plan.field_to
+    - message.template.revoke_inspection_plan
+id: message.revoke_inspection_plan.summary
+targetEntityType: message
+bundle: revoke_inspection_plan
+mode: summary
+content:
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  partial_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_inspection_plan: true
+  field_message_subject: true
+  field_to: true
+  partial_2: true
+  search_api_excerpt: true

@@ -191,6 +191,37 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
   /**
    * {@inheritDoc}
    */
+  public function getRecipientsName(MessageInterface $message, string $email): array {
+    $email_validator = $this->getEmailValidator();
+    $recipients = [];
+
+    /** @var ParMessageSubscriberInterface[] $subscribers */
+    $subscribers = $this->getMessageDefinitions($message->getTemplate());
+    foreach ($subscribers as $definition) {
+      $subscriber = $this->createInstance($definition['id'], []);
+      try {
+        $plugin_recipients = $subscriber->getRecipients($message);
+      }
+      catch (ParNotificationException $e) {
+        // Do not bubble up subscriber errors.
+        continue;
+      }
+
+      // Add the recipients to the return array.
+      $recipients = array_merge($recipients, $plugin_recipients);
+    }
+
+    // Validate the email addresses.
+    $recipients = array_filter($recipients, function ($email) use ($email_validator) {
+      return $email_validator->isValid($email);
+    });
+
+    return array_unique($recipients, SORT_REGULAR);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public function getSubscribedEntities(MessageInterface $message): array {
     $subscribed_entities = [];
 

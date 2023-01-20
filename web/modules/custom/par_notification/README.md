@@ -22,17 +22,11 @@ The majority of the notifications within PAR are informational only, and alert t
 Tasks, on the other hand, are notifications that have an action that needs to be completed by the user, e.g. a partnership that needs to be approved.
 
 ### Message Partials
-The body text of the message is broken apart into [Message Partials](https://git.drupalcode.org/project/message/-/blob/8.x-1.x/README.md#partials) (see the Message module README.md for more information).
+The body text of the message is broken apart into [Message Partials](https://git.drupalcode.org/project/message/-/blob/8.x-1.x/README.md#partials) or message segments (see the Message module README.md for more information). Not all partials are displayed in all contexts.
 
-The partials are ordered in a specific way to allow additional information to be displayed depending on how the message is being sent.
+As a general rule we reserve the first **partial 0** for the most important part of the notification, this should be limited to one short sentence so that it can be shown in _all_ contexts, including the summary. All other partials can be configured as required for each display mode.
 
-The order for partials should be as follows:
-* 0 - The personalisation line for the email `Dear @first_name`.
-* 1 - The core of the message content.
-* _any further partials_ - The ParLinkAction link `[message:primary-action]`, and any additional content blocks.
-* _last_ - The sign off line for the email, e.g. `Regards, Primary Authority Register team`
-
-**Note:** When displaying a message within the site only the core of the message needs to be displayed (1).
+**Note:** The core of the message, **partial 0**, should be displayed in all view modes and contexts.
 
 ## Modules
 * Message

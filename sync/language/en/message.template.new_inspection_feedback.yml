@@ -1,13 +1,7 @@
 text:
   -
-    value: "<p>Dear @first_name</p>,\r\n"
-    format: basic_html
-  -
     value: "<p>Feedback has been submitted from the inspection regarding the <span>@partnership_label</span>.</p>\r\n"
     format: basic_html
   -
     value: "<p>^ Respond to feedback: [message:primary-action]</p>\r\n"
-    format: basic_html
-  -
-    value: "<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html

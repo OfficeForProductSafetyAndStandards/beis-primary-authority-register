@@ -36,6 +36,21 @@ function par_notification_help($route_name, RouteMatchInterface $route_match) {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function par_notification_theme($existing, $type, $theme, $path) {
+  return [
+    'par_notification' => [
+      'variables' => [
+        'first_name' => NULL,
+        'message' => NULL,
+      ],
+    ],
+  ];
+}
+
+
+/**
  * Implements hook_entity_presave().
  *
  * Adds the correct

@@ -13,13 +13,17 @@ bundle: revoke_inspection_plan
 mode: default
 content:
   field_inspection_plan:
-    type: entity_reference_entity_view
+    type: entity_reference_label
     label: hidden
     settings:
-      view_mode: title
       link: false
     third_party_settings: {  }
     weight: 1
+    region: content
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
     region: content
   partial_1:
     settings: {  }
@@ -29,6 +33,5 @@ content:
 hidden:
   field_message_subject: true
   field_to: true
-  partial_0: true
   partial_2: true
   search_api_excerpt: true

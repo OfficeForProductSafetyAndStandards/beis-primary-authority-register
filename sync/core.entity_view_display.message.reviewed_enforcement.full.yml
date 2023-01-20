@@ -13,30 +13,16 @@ targetEntityType: message
 bundle: reviewed_enforcement
 mode: full
 content:
-  field_enforcement_notice:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 1
-    region: content
-  field_message_subject:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  partial_1:
+  partial_0:
     settings: {  }
     third_party_settings: {  }
     weight: 0
     region: content
 hidden:
+  field_enforcement_notice: true
+  field_message_subject: true
   field_to: true
-  partial_0: true
+  partial_1: true
   partial_2: true
   partial_3: true
   search_api_excerpt: true

@@ -13,24 +13,16 @@ targetEntityType: message
 bundle: new_inspection_feedback
 mode: full
 content:
-  field_inspection_feedback:
-    type: entity_reference_entity_view
-    label: hidden
-    settings:
-      view_mode: title
-      link: false
-    third_party_settings: {  }
-    weight: 1
-    region: content
-  partial_1:
+  partial_0:
     settings: {  }
     third_party_settings: {  }
     weight: 0
     region: content
 hidden:
+  field_inspection_feedback: true
   field_message_subject: true
   field_to: true
-  partial_0: true
+  partial_1: true
   partial_2: true
   partial_3: true
   search_api_excerpt: true

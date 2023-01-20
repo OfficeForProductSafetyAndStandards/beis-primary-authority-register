@@ -7,16 +7,10 @@ label: 'New inspection feedback response'
 description: 'This notification is sent to the primary and enforcing authorities when inspection plan feedback is responded to.'
 text:
   -
-    value: "<p>Dear @first_name</p>,\r\n"
-    format: basic_html
-  -
     value: "<p>You've received a response to the feedback submission on the <span>@partnership_label.</span>.</p>\r\n"
     format: basic_html
   -
     value: "<p>^ Respond now: [message:primary-action]</p>\r\n"
-    format: basic_html
-  -
-    value: "<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html
 settings:
   'token options':

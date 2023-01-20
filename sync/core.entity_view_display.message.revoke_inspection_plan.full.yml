@@ -13,14 +13,10 @@ targetEntityType: message
 bundle: revoke_inspection_plan
 mode: full
 content:
-  field_inspection_plan:
-    type: entity_reference_entity_view
-    label: hidden
-    settings:
-      view_mode: title
-      link: false
+  partial_0:
+    settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 0
     region: content
   partial_1:
     settings: {  }
@@ -28,8 +24,8 @@ content:
     weight: 0
     region: content
 hidden:
+  field_inspection_plan: true
   field_message_subject: true
   field_to: true
-  partial_0: true
   partial_2: true
   search_api_excerpt: true

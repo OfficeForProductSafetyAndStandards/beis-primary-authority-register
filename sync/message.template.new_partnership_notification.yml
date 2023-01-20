@@ -7,16 +7,10 @@ label: 'New partnership notification'
 description: 'This notification is set to the organisation when a new partnership is created.'
 text:
   -
-    value: "<p>Dear @first_name</p>,\r\n"
-    format: basic_html
-  -
     value: "<p>This message is about your pending primary authority partnership with <span>@primary_authority</span>.</p>\r\n\r\n<p>Before your partnership can be submitted for nomination by the Secretary of State, you need to complete a few details about your organisation.</p>\r\n"
     format: basic_html
   -
     value: "<p>^ Complete the partnership: [message:primary-action]</p>\r\n"
-    format: basic_html
-  -
-    value: "<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html
 settings:
   'token options':

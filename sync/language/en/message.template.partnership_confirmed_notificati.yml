@@ -1,13 +1,7 @@
 text:
   -
-    value: "<p>Dear @first_name</p>,\r\n"
-    format: basic_html
-  -
     value: "<p><span>@organisation</span> has confirmed their details in relation to the partnership with <span>@primary_authority</span>. The application for nomination has been submitted to the Primary Authority Processing Team.</p>\r\n\r\n<p>We may be in touch to confirm some details about the application. If this happens, please respond as quickly as possible to avoid delays in nomination of the partnership.</p>\r\n\r\n<p>We'll notify you when the partnership has been nominated.</p>\r\n"
     format: basic_html
   -
     value: "<p>^ View the pending partnership: [message:primary-action]</p>\r\n"
-    format: basic_html
-  -
-    value: "<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html

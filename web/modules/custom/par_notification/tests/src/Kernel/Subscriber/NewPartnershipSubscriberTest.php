@@ -52,7 +52,7 @@ class NewPartnershipSubscriberTest extends ParNotificationTestBase {
    */
   public function testPartnershipCompletedSubscribers() {
     // Set up the entity events.
-    $this->parDataEvent = $this->getMockBuilder('Drupal\par_data\Event\ParDataEventInterface')
+    $this->parDataEvent = $this->getMockBuilder('Drupal\par_data\Event\ParNotificationEventInterface')
       ->setMethods(['getEntity'])
       ->disableOriginalConstructor()
       ->getMock();
@@ -78,7 +78,7 @@ class NewPartnershipSubscriberTest extends ParNotificationTestBase {
    */
   public function testPartnershipApprovedSubscribers() {
     // Set up the entity events.
-    $this->parDataEvent = $this->getMockBuilder('Drupal\par_data\Event\ParDataEventInterface')
+    $this->parDataEvent = $this->getMockBuilder('Drupal\par_data\Event\ParNotificationEventInterface')
       ->setMethods(['getEntity'])
       ->disableOriginalConstructor()
       ->getMock();
@@ -105,7 +105,7 @@ class NewPartnershipSubscriberTest extends ParNotificationTestBase {
    */
   public function testPartnershipRevocationSubscribers() {
     // Set up the entity events.
-    $this->parDataEvent = $this->getMockBuilder('Drupal\par_data\Event\ParDataEventInterface')
+    $this->parDataEvent = $this->getMockBuilder('Drupal\par_data\Event\ParNotificationEventInterface')
       ->setMethods(['getEntity'])
       ->disableOriginalConstructor()
       ->getMock();

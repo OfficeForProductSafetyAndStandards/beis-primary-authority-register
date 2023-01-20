@@ -1,13 +1,7 @@
 text:
   -
-    value: "<p>Dear @first_name</p>,\r\n"
-    format: basic_html
-  -
     value: "<p>We can see that the member details on your <span>@partnership_label</span> hasn't been updated for a while.</p>\r\n\r\n<p>It is a statutory requirement to keep your member list updated on the Register, please confirm that your member list is up-to-date.</p>\r\n"
     format: basic_html
   -
     value: "<p>^ Confirm the member list now: [message:primary-action]</p>\r\n"
-    format: basic_html
-  -
-    value: "<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html

@@ -1,13 +1,7 @@
 text:
   -
-    value: "<p>Dear @first_name</p>,\r\n"
-    format: basic_html
-  -
     value: "<p>The enforcement notification against <span>@enforced_organisation</span> has been reviewed.</p>\r\n"
     format: basic_html
   -
     value: "<p>^ View the enforcement notice: [message:primary-action]</p>\r\n"
-    format: basic_html
-  -
-    value: "<p>Regards, Primary Authority Register team</p>\r\n"
     format: basic_html

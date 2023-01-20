@@ -1,0 +1,17 @@
+{#
+/**
+ * @file
+ * Implementation of a message themed for sending by email.
+ *
+ * Available variables:
+ * - $first_name: The name of the recipient of the message
+ * - $message: The body of the message being sent out in the notification.
+ *
+ * @see template_preprocess()
+ * @see template_preprocess_message()
+ * @see template_process()
+ */
+#}
+<p>Dear {{ first_name }}</p>
+<p>{{ message }}</p>
+<p>Regards, the Primary Authority team</p>

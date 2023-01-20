@@ -2,14 +2,14 @@
 
 namespace Drupal\par_data\Event;
 
+use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
-use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * The par data event.
+ * The event fired for crud operations on PAR Data entities.
  */
-class ParDataEvent extends Event implements ParDataEventInterface {
+class ParDataEvent extends EntityEvent implements ParDataEventInterface {
 
   /**
    * The name of the event triggered when an existing par entity is updated.
@@ -30,22 +30,8 @@ class ParDataEvent extends Event implements ParDataEventInterface {
    */
   const ENTITY_CUSTOM_ACTION = 'par_data.entity.custom_action';
 
-  /**
-   * The entity being enacted upon.
-   *
-   * @var ParDataEntityInterface
-   */
-  protected ParDataEntityInterface $entity;
-
   public function __construct(ParDataEntityInterface $entity) {
-    $this->entity = $entity;
-  }
-
-  /**
-   * @return ParDataEntityInterface
-   */
-  public function getEntity(): ParDataEntityInterface {
-    return $this->entity;
+    parent::__construct($entity);
   }
 
   /**
