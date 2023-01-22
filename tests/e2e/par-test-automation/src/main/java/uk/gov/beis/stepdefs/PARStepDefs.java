@@ -17,11 +17,13 @@ import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.EmployeesPage;
 import uk.gov.beis.pageobjects.EnforcementActionPage;
+import uk.gov.beis.pageobjects.EnforcementCompletionPage;
 import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
 import uk.gov.beis.pageobjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.EnforcementReviewPage;
+import uk.gov.beis.pageobjects.EnforcementSearchPage;
 import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.MemberListPage;
 import uk.gov.beis.pageobjects.ONSCodePage;
@@ -53,6 +55,7 @@ import uk.gov.beis.pageobjects.PartnershipRevokedPage;
 import uk.gov.beis.pageobjects.PartnershipTermsPage;
 import uk.gov.beis.pageobjects.PartnershipTypePage;
 import uk.gov.beis.pageobjects.PasswordPage;
+import uk.gov.beis.pageobjects.ProposedEnforcementPage;
 import uk.gov.beis.pageobjects.RegulatoryFunctionPage;
 import uk.gov.beis.pageobjects.RestorePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
@@ -72,6 +75,7 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private EnforcementCompletionPage enforcementCompletionPage;
 	private EnforcementActionPage enforcementActionPage;
 	private EnforcementDetailsPage enforcementDetailsPage;
 	private EnforcementLegalEntityPage enforcementLegalEntityPage;
@@ -79,7 +83,9 @@ public class PARStepDefs {
 	private EnforcementContactDetailsPage enforcementContactDetailsPage;
 	private OrganisationDashboardPage organisationDashboardPage;
 	private EnforcementNotificationPage enforcementNotificationPage;
+	private EnforcementSearchPage enforcementSearchPage;
 	private ONSCodePage onsCodePage;
+	private ProposedEnforcementPage proposedEnforcementPage;
 	private EnforcementReviewPage enforcementReviewPage;
 	private RegulatoryFunctionPage regulatoryFunctionPage;
 	private AuthorityConfirmationPage authorityConfirmationPage;
@@ -124,7 +130,10 @@ public class PARStepDefs {
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		enforcementCompletionPage = PageFactory.initElements(driver, EnforcementCompletionPage.class);
+		proposedEnforcementPage = PageFactory.initElements(driver, ProposedEnforcementPage.class);
 		enforcementReviewPage = PageFactory.initElements(driver, EnforcementReviewPage.class);
+		enforcementSearchPage = PageFactory.initElements(driver, EnforcementSearchPage.class);
 		enforcementActionPage = PageFactory.initElements(driver, EnforcementActionPage.class);
 		enforcementDetailsPage = PageFactory.initElements(driver, EnforcementDetailsPage.class);
 		enforcementLegalEntityPage = PageFactory.initElements(driver, EnforcementLegalEntityPage.class);
@@ -566,6 +575,29 @@ public class PARStepDefs {
 		LOG.info("Check all updated changes check out");
 		Assert.assertTrue("Details don't check out", enforcementReviewPage.checkEnforcementCreation());
 		enforcementReviewPage.saveChanges();
+	}
+	
+	@When("^the user selects the last created enforcement$")
+	public void the_user_selects_the_last_created_enforcement() throws Throwable {
+		parDashboardPage.selectSeeEnforcementNotices();
+		enforcementSearchPage.searchPartnerships();
+		enforcementSearchPage.selectEnforcement();
+	}
+
+	@When("^the user approves the enforcement notice$")
+	public void the_user_approves_the_enforcement_notice() throws Throwable {
+		proposedEnforcementPage.selectAllow();
+		proposedEnforcementPage.proceed();
+		enforcementReviewPage.saveChanges();
+		enforcementCompletionPage.complete();
+	}
+
+	@Then("^the enforcement is set to approved status$")
+	public void the_enforcement_is_set_to_approved_status() throws Throwable {
+		enforcementSearchPage.searchPartnerships();
+		LOG.info("Status is: " + enforcementSearchPage.getStatus());
+		Assert.assertTrue("Enforcement Status doesn't check out", enforcementSearchPage.getStatus().equalsIgnoreCase("Approved"));
+
 	}
 
 }

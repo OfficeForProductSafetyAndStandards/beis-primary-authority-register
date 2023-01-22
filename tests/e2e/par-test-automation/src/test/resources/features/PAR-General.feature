@@ -110,7 +110,9 @@ Feature:
   #Approve the Enforcement
   Given the user is on the PAR login page
   And the user logs in with the "par_authority@example.com" user credentials  
-  When the user searches for the last created partnership
+  When the user selects the last created enforcement
+  And the user approves the enforcement notice
+  Then the enforcement is set to approved status 
   
   
   
