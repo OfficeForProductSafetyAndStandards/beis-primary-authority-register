@@ -3,10 +3,11 @@
 namespace Drupal\par_notification\Plugin\ParMessageSubscriber;
 
 use Drupal\message\MessageInterface;
-use Drupal\par_data\Entity\ParDataEnforcementNotice;
+use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_notification\ParMessageSubscriberBase;
 use Drupal\par_notification\ParNotificationException;
+use Drupal\par_notification\ParRecipient;
 
 /**
  * This message subscriber should apply to any message that should
@@ -39,15 +40,15 @@ class CoordinatedPartnershipSubscriber extends ParMessageSubscriberBase {
 
     foreach ($partnerships as $partnership) {
       // Send to the coordinator of this partnership.
-      $emails = $partnership->getOrganisationPeople();
-      array_walk($emails, function (&$value) {
-        $value = $value->getEmail();
-      });
-
-      $recipients = array_merge(
-        $recipients,
-        $emails ?? [],
-      );
+      /** @var ParDataPersonInterface $people */
+      $people = $partnership->getOrganisationPeople();
+      foreach ($people as $key => $person) {
+        $recipients[] = new ParRecipient(
+          $person->getEmail(),
+          $person->getFirstName(),
+          $person
+        );
+      }
     }
 
     return $recipients;

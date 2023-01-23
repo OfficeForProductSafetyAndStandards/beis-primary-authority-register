@@ -81,9 +81,7 @@ abstract class ParMessageSubscriberBase extends PluginBase implements ParMessage
    * {@inheritdoc}
    */
   public function getRecipients(MessageInterface $message): array {
-    $recipients = [];
-
-    return $recipients;
+    return [];
   }
 
   /**

@@ -5,7 +5,6 @@ namespace Drupal\par_notification;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Component\Utility\EmailValidatorInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Plugin\DefaultPluginManager;
@@ -13,6 +12,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\message\MessageInterface;
 use Drupal\message\MessageTemplateInterface;
+use Drupal\par_notification\ParRecipient;
 use Drupal\user\Entity\Role;
 use Drupal\user\RoleInterface;
 use Drupal\user\RoleStorageInterface;
@@ -169,6 +169,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
     foreach ($subscribers as $definition) {
       $subscriber = $this->createInstance($definition['id'], []);
       try {
+        /** @var ParRecipient[] $plugin_recipients */
         $plugin_recipients = $subscriber->getRecipients($message);
       }
       catch (ParNotificationException $e) {
@@ -181,42 +182,12 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
     }
 
     // Validate the email addresses.
-    $recipients = array_filter($recipients, function ($email) use ($email_validator) {
-      return $email_validator->isValid($email);
+    $recipients = array_filter($recipients, function ($recipient) use ($email_validator) {
+      return $email_validator->isValid($recipient->getEmail());
     });
 
-    return array_unique($recipients, SORT_REGULAR);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public function getRecipientsName(MessageInterface $message, string $email): array {
-    $email_validator = $this->getEmailValidator();
-    $recipients = [];
-
-    /** @var ParMessageSubscriberInterface[] $subscribers */
-    $subscribers = $this->getMessageDefinitions($message->getTemplate());
-    foreach ($subscribers as $definition) {
-      $subscriber = $this->createInstance($definition['id'], []);
-      try {
-        $plugin_recipients = $subscriber->getRecipients($message);
-      }
-      catch (ParNotificationException $e) {
-        // Do not bubble up subscriber errors.
-        continue;
-      }
-
-      // Add the recipients to the return array.
-      $recipients = array_merge($recipients, $plugin_recipients);
-    }
-
-    // Validate the email addresses.
-    $recipients = array_filter($recipients, function ($email) use ($email_validator) {
-      return $email_validator->isValid($email);
-    });
-
-    return array_unique($recipients, SORT_REGULAR);
+    // Compare the ParRecipient instances using string representation.
+    return array_unique($recipients, SORT_STRING);
   }
 
   /**
