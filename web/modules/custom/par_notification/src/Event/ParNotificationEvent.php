@@ -3,7 +3,9 @@
 namespace Drupal\par_notification\Event;
 
 use Drupal\message\MessageInterface;
+use Drupal\par_notification\ParRecipient;
 use Symfony\Contracts\EventDispatcher\Event;
+use Drupal\par_notification\ParSubscriptionManagerInterface;
 
 /**
  * The event fired whenever a notification is being sent out.
@@ -29,9 +31,9 @@ class ParNotificationEvent extends Event implements ParNotificationEventInterfac
   /**
    * The email address that the message is being sent to.
    *
-   * @param string $recipient
+   * @param ParRecipient $recipient
    */
-  protected string $recipient;
+  protected ParRecipient $recipient;
 
   /**
    * The rendered output of the message being sent.
@@ -44,35 +46,62 @@ class ParNotificationEvent extends Event implements ParNotificationEventInterfac
    */
   protected array $output;
 
-  public function __construct(MessageInterface $message, string $recipient, array $output) {
+  public function __construct(MessageInterface $message, string $email, array $output) {
     $this->message = $message;
-    $this->recipient = $recipient;
     $this->output = $output;
+
+    // Get all the recipients for this message.
+    $recipients = $this->getSubscriptionManager()->getRecipients($message);
+
+    // Filter for just this recipient
+    $recipients = array_filter($recipients, function ($recipient) use ($email) {
+      return $recipient->getEmail() === $email;
+    });
+    $this->recipient = current($recipients);
   }
 
   /**
-   * {@inheritDoc}
+   * Get the subscription manager.
+   *
+   * @return ParSubscriptionManagerInterface
+   */
+  public function getSubscriptionManager(): ParSubscriptionManagerInterface {
+    return \Drupal::service('plugin.manager.par_subscription_manager');
+  }
+
+  /**
+   * @return MessageInterface
    */
   public function getMessage(): MessageInterface {
     return $this->message;
   }
 
   /**
-   * {@inheritDoc}
+   * @return ParRecipient
    */
-  public function getRecipient(): string {
+  public function getRecipient(): ParRecipient {
     return $this->recipient;
   }
 
   /**
-   * {@inheritDoc}
+   * Get the message output.
+   *
+   * This will be an array with the keys:
+   *   - 'mail_subject'
+   *   - 'mail_body'
+   *
+   * @return array
    */
   public function getOutput(): array {
     return $this->output;
   }
 
   /**
-   * {@inheritDoc}
+   * Update the message output.
+   *
+   * This must be an array with the keys:
+   *   - 'mail_subject'
+   *   - 'mail_body'
    */
   public function setOutput(array $output) {
     if (isset($output['mail_subject']) && isset($output['mail_body'])) {

@@ -30,11 +30,8 @@ class PersonaliseEmailSubscriber implements EventSubscriberInterface {
    * @param ParNotificationEventInterface $event
    */
   public function onSend(ParNotificationEventInterface $event) {
-    $message = $event->getMessage();
-    $recipient = $event->getRecipient();
+    $first_name = $event->getRecipient()->getName();
     $output = $event->getOutput();
-
-    $first_name = 'First name';
 
     $themed_message = [
       '#theme' => 'par_notification',

@@ -72,7 +72,7 @@ class ParRecipient {
    * @return AccountInterface
    *   A user account if it exists.
    */
-  public function getUserAccount($permission): AccountInterface {
+  public function getAccount(): AccountInterface {
     // If the recipient entity is a user, return it.
     if ($this->getEntity() instanceof UserInterface) {
       $user = $this->getEntity();
