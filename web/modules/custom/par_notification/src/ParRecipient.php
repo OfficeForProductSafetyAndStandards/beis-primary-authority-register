@@ -85,8 +85,9 @@ class ParRecipient {
 
     // As a backup try to load a user account given the email provided.
     if (empty($user)) {
-      $user = $this->getUserStorage()
+      $users = $this->getUserStorage()
         ->loadByProperties(['mail' => $this->getEmail()]);
+      $user = current($users) instanceof UserInterface ? current($users) : NULL;
     }
 
     // Return an account object.
