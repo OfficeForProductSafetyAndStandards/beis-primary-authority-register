@@ -5,8 +5,10 @@ namespace Drupal\par_notification\Plugin\ParMessageSubscriber;
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_notification\ParMessageSubscriberBase;
 use Drupal\par_notification\ParNotificationException;
+use Drupal\par_notification\ParRecipient;
 
 /**
  * This message subscriber should apply to any message that deals
@@ -46,16 +48,17 @@ class NewEnforcementSubscriber extends ParMessageSubscriberBase {
       return $recipients;
     }
 
-    // Send this message to all primary authority contacts on the partnership.
     foreach ($partnerships as $partnership) {
-      $emails = $partnership->getAuthorityPeople();
-      array_walk($emails, function (&$value) {
-        $value = $value->getEmail();
-      });
-      $recipients = array_merge(
-        $recipients,
-        $emails ?? [],
-      );
+      // This message should be sent to the primary authority contacts at the authority.
+      /** @var ParDataPersonInterface $people */
+      $people = $partnership->getAuthorityPeople();
+      foreach ($people as $key => $person) {
+        $recipients[] = new ParRecipient(
+          $person->getEmail(),
+          $person->getFirstName(),
+          $person
+        );
+      }
     }
 
     return $recipients;

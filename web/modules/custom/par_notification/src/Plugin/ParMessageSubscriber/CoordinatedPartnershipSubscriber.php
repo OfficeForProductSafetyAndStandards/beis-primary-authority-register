@@ -39,7 +39,7 @@ class CoordinatedPartnershipSubscriber extends ParMessageSubscriberBase {
     }
 
     foreach ($partnerships as $partnership) {
-      // Send to the coordinator of this partnership.
+      // This message should be sent to the primary authority contacts at the authority.
       /** @var ParDataPersonInterface $people */
       $people = $partnership->getOrganisationPeople();
       foreach ($people as $key => $person) {

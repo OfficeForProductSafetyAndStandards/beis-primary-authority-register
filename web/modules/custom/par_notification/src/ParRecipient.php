@@ -3,8 +3,10 @@
 namespace Drupal\par_notification;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 
 /**
  * A class that defines relationships.
@@ -41,6 +43,13 @@ class ParRecipient {
   }
 
   /**
+   * Get the user storage.
+   */
+  public function getUserStorage() {
+    return \Drupal::service('entity_type.manager')->getStorage('user');
+  }
+
+  /**
    * The string representation of the recipient should be the email address.
    */
   public function __toString() {
@@ -55,6 +64,33 @@ class ParRecipient {
    */
   public function getEntity(): ?EntityInterface {
     return $this->entity;
+  }
+
+  /**
+   * If there is a user account associated with this recipient return it.
+   *
+   * @return AccountInterface
+   *   A user account if it exists.
+   */
+  public function getUserAccount($permission): AccountInterface {
+    // If the recipient entity is a user, return it.
+    if ($this->getEntity() instanceof UserInterface) {
+      $user = $this->getEntity();
+    }
+    // If the recipient entity is a ParDataPerson,
+    // return the associated user account, or skip if there is none.
+    else if ($this->getEntity() instanceof ParDataPersonInterface) {
+      $user = $this->getEntity()->retrieveUserAccount();
+    }
+
+    // As a backup try to load a user account given the email provided.
+    if (empty($user)) {
+      $user = $this->getUserStorage()
+        ->loadByProperties(['mail' => $this->getEmail()]);
+    }
+
+    // Return an account object.
+    return User::load($user?->id());
   }
 
   /**

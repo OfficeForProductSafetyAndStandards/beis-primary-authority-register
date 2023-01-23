@@ -16,6 +16,7 @@ use Drupal\par_notification\ParRecipient;
 use Drupal\user\Entity\Role;
 use Drupal\user\RoleInterface;
 use Drupal\user\RoleStorageInterface;
+use Drupal\user\UserInterface;
 
 /**
  * Provides a link management service for notifications.
@@ -184,6 +185,12 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
     // Validate the email addresses.
     $recipients = array_filter($recipients, function ($recipient) use ($email_validator) {
       return $email_validator->isValid($recipient->getEmail());
+    });
+
+    // Only allow users (including anonymous) who have the permission to see this message.
+    $permission = "receive {$message->getTemplate()->id()} notification";
+    $recipients = array_filter($recipients, function ($recipient) use ($permission) {
+      return $recipient->getAccount()->hasPermission($permission);
     });
 
     // Compare the ParRecipient instances using string representation.

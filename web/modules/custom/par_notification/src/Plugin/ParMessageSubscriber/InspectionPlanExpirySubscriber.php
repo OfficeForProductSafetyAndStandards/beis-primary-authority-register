@@ -50,8 +50,7 @@ class InspectionPlanExpirySubscriber extends ParMessageSubscriberBase {
     }
 
     foreach ($partnerships as $partnership) {
-      // This message should be viewed by the authority contacts
-      // on the partnership.
+      // This message should be sent to the primary authority contacts at the authority.
       /** @var ParDataPersonInterface $people */
       $people = $partnership->getAuthorityPeople();
       foreach ($people as $key => $person) {

@@ -4,8 +4,10 @@ namespace Drupal\par_notification\Plugin\ParMessageSubscriber;
 
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_notification\ParMessageSubscriberBase;
 use Drupal\par_notification\ParNotificationException;
+use Drupal\par_notification\ParRecipient;
 
 /**
  * This message subscriber should apply to any message that deals
@@ -38,22 +40,19 @@ class PartnershipRemovedSubscriber extends ParMessageSubscriberBase {
     }
 
     foreach ($partnerships as $partnership) {
-      // This message should be viewed by the organisation.
-      $authority_emails = $partnership->getAuthorityPeople();
-      array_walk($authority_emails, function (&$value) {
-        $value = $value->getEmail();
-      });
-
-      $organisation_emails = $partnership->getOrganisationPeople();
-      array_walk($organisation_emails, function (&$value) {
-        $value = $value->getEmail();
-      });
-
-      $recipients = array_merge(
-        $recipients,
-        $authority_emails ?? [],
-        $organisation_emails ?? [],
+      // This message should be sent to the authority and the organisation.
+      /** @var ParDataPersonInterface $people */
+      $people = array_merge(
+        $partnership->getAuthorityPeople(),
+        $partnership->getOrganisationPeople(),
       );
+      foreach ($people as $key => $person) {
+        $recipients[] = new ParRecipient(
+          $person->getEmail(),
+          $person->getFirstName(),
+          $person
+        );
+      }
     }
 
     return $recipients;
