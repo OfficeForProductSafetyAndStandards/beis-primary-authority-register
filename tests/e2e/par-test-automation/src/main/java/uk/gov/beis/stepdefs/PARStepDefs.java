@@ -431,8 +431,7 @@ public class PARStepDefs {
 	public void the_user_updates_the_partnership_information_with_the_following_info(String desc) throws Throwable {
 		parPartnershipConfirmationPage.editAboutPartnership();
 		DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, desc);
-		parPartnershipDescriptionPage.enterPartnershipDescription(desc,
-				ScenarioContext.secondJourneyPart);
+		parPartnershipDescriptionPage.enterPartnershipDescription(desc, ScenarioContext.secondJourneyPart);
 	}
 
 	@Then("^the partnership is updated correctly$")
@@ -576,9 +575,10 @@ public class PARStepDefs {
 		Assert.assertTrue("Details don't check out", enforcementReviewPage.checkEnforcementCreation());
 		enforcementReviewPage.saveChanges();
 	}
-	
+
 	@When("^the user selects the last created enforcement$")
 	public void the_user_selects_the_last_created_enforcement() throws Throwable {
+		LOG.info("Select last created enforcement");
 		parDashboardPage.selectSeeEnforcementNotices();
 		enforcementSearchPage.searchPartnerships();
 		enforcementSearchPage.selectEnforcement();
@@ -586,6 +586,7 @@ public class PARStepDefs {
 
 	@When("^the user approves the enforcement notice$")
 	public void the_user_approves_the_enforcement_notice() throws Throwable {
+		LOG.info("Approve the enforcement");
 		proposedEnforcementPage.selectAllow();
 		proposedEnforcementPage.proceed();
 		enforcementReviewPage.saveChanges();
@@ -594,9 +595,10 @@ public class PARStepDefs {
 
 	@Then("^the enforcement is set to approved status$")
 	public void the_enforcement_is_set_to_approved_status() throws Throwable {
+		LOG.info("Check the enformcement is approved");
 		enforcementSearchPage.searchPartnerships();
-		LOG.info("Status is: " + enforcementSearchPage.getStatus());
-		Assert.assertTrue("Enforcement Status doesn't check out", enforcementSearchPage.getStatus().equalsIgnoreCase("Approved"));
+		Assert.assertTrue("Enforcement Status doesn't check out",
+				enforcementSearchPage.getStatus().equalsIgnoreCase("Approved"));
 
 	}
 
