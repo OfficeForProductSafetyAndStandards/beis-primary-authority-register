@@ -450,5 +450,4 @@ class ParDataOrganisation extends ParDataEntity {
 
     return $fields;
   }
-
 }

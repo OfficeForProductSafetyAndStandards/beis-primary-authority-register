@@ -304,10 +304,10 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       }
       // The back action is a lesser version of the cancel action regressing
       // back a step but without removing any persistent data.
-      elseif ($this->getFlowNegotiator()->getFlow()->hasAction('back')) {
+      if ($this->getFlowNegotiator()->getFlow()->hasAction('back')) {
         $form['actions']['back'] = [
           '#type' => 'submit',
-          '#name' => 'cancel',
+          '#name' => 'back',
           '#value' => $this->getFlowNegotiator()->getFlow()->getSecondaryActionTitle('Back'),
           '#submit' => ['::backForm'],
           '#validate' => ['::validateCancelForm'],
