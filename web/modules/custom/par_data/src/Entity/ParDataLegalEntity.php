@@ -5,6 +5,7 @@ namespace Drupal\par_data\Entity;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_data\ParDataManager;
 use Drupal\par_data\ParDataRelationship;
 use Drupal\par_validation\Plugin\Validation\Constraint\ParRequired;
 
@@ -112,6 +113,39 @@ class ParDataLegalEntity extends ParDataEntity {
     }
   }
 
+  /**
+   * Lookup a legal entity in PAR.
+   *
+   * @param $registry
+   * @param $type
+   * @param $number
+   * @param $name
+
+   * @return \Drupal\Core\Entity\EntityInterface|ParDataLegalEntity|null
+   */
+  public static function find($registry, $type, $number, $name) {
+
+    /* @var ParDataManager $par_data_manager */
+    $par_data_manager = \Drupal::service('par_data.manager');
+
+    // Look up internal LEs by name and registered LEs by number.
+    if ($registry == 'internal') {
+      $legal_entities = $par_data_manager->getEntitiesByProperty('par_data_legal_entity', 'registered_name', $name);
+    }
+    else {
+      $legal_entities = $par_data_manager->getEntitiesByProperty('par_data_legal_entity', 'registered_number', $number);
+    }
+
+    // Return first with matching type.
+    /* @var ParDataLegalEntity $legal_entity */
+    foreach ($legal_entities as $legal_entity) {
+      if ($legal_entity->getTypeRaw() == $type) {
+        return $legal_entity;
+      }
+    }
+    return NULL;
+  }
+
   public function getName() {
     $name = $this->get('registered_name')->getString();
     return $name;
@@ -153,6 +187,8 @@ class ParDataLegalEntity extends ParDataEntity {
 
   /**
    * Merge all legal entities that use the same companies house ID.
+   *
+   * @Todo This function needs cater for multiple registries. See PAR-2019.
    */
   public function mergeLegalEntities() {
     // Lookup related legal entities.

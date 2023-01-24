@@ -570,3 +570,16 @@ par_partnership_flows.partnership_amend_terms:
     parameters:
       par_data_partnership:
         type: entity:par_data_partnership
+par_partnership_flows.partnership_amend_complete:
+  path: '/partnership/{par_data_partnership}/amend/complete'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsPartnershipAmendForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsPartnershipAmendForm::titleCallback'
+  requirements:
+    _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsPartnershipAmendForm::accessCallback'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership

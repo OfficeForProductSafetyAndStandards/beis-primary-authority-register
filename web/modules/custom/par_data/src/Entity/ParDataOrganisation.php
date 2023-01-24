@@ -466,5 +466,4 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
 
     return $fields;
   }
-
 }

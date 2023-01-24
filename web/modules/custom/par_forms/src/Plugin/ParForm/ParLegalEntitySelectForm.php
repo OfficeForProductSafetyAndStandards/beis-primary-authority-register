@@ -508,11 +508,6 @@ class ParLegalEntitySelectForm extends ParFormPluginBase {
           break;
         }
 
-        // User has confirmed the chosen legal entities.
-        // Copy legal entities to metadata for use by next step in flow and clear state for this plugin.
-        $this->getFlowDataHandler()->setMetaDataValue('legal_entities_to_add', $state['selected_legal_entities']);
-        $state = [];
-
         break;
 
       default:
