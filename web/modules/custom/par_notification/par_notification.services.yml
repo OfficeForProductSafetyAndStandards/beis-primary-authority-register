@@ -19,11 +19,11 @@ services:
       - { name: 'event_subscriber' }
 
   par_notification.approved_enforcement_subscriber:
-    class: '\Drupal\par_notification\EventSubscriber\ApprovedEnforcementSubscriber'
+    class: '\Drupal\par_notification\EventSubscriber\EnforcementApprovedSubscriber'
     tags:
       - { name: 'event_subscriber' }
-  par_notification.new_deviation_request_subscriber:
-    class: '\Drupal\par_notification\EventSubscriber\NewDeviationRequestSubscriber'
+  par_notification.deviation_request_created_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\DeviationRequestCreatedSubscriber'
     tags:
       - { name: 'event_subscriber' }
   par_notification.reviewed_deviation_request_subscriber:
@@ -34,8 +34,8 @@ services:
     class: '\Drupal\par_notification\EventSubscriber\NewGeneralEnquirySubscriber'
     tags:
       - { name: 'event_subscriber' }
-  par_notification.new_deviation_reply_subscriber:
-    class: '\Drupal\par_notification\EventSubscriber\NewDeviationRequestReplySubscriber'
+  par_notification.deviation_request_reply_received_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\DeviationRequestReplyReceivedSubscriber'
     tags:
       - { name: 'event_subscriber' }
   par_notification.new_enquiry_reply_subscriber:
@@ -58,8 +58,12 @@ services:
     class: '\Drupal\par_notification\EventSubscriber\PartnershipRevocationSubscriber'
     tags:
       - { name: 'event_subscriber' }
-  par_notification.partnership_approved_subscriber:
-    class: '\Drupal\par_notification\EventSubscriber\PartnershipApprovedSubscriber'
+  par_notification.partnership_nominate_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\PartnershipNominateSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_notification.partnership_nominated_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\PartnershipNominatedSubscriber'
     tags:
       - { name: 'event_subscriber' }
   par_notification.partnership_application_completed_subscriber:

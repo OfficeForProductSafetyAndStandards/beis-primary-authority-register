@@ -189,6 +189,7 @@ permissions:
   - 'manage par profile'
   - 'merge person'
   - 'receive inspection_plan_expiry_warning notification'
+  - 'receive partnership_nominate notification'
   - 'remove enforcement notice'
   - 'remove partnership advice'
   - 'remove partnership authority contact'

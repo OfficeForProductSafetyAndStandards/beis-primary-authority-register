@@ -45,8 +45,7 @@ class NewPartnershipSubscriber extends ParEventSubscriberBase {
 
     // Only send messages for active partnerships.
     if ($entity instanceof ParDataPartnership &&
-      $par_data_authority instanceof ParDataAuthority &&
-      $entity->isActive()) {
+      $par_data_authority instanceof ParDataAuthority) {
 
       // Send the message.
       $arguments = [

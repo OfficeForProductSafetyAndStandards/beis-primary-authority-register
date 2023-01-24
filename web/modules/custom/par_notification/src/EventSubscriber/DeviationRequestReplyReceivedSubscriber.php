@@ -15,7 +15,7 @@ use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParEventSubscriberBase;
 
-class NewDeviationRequestReplySubscriber extends ParEventSubscriberBase {
+class DeviationRequestReplyReceivedSubscriber extends ParEventSubscriberBase {
 
   /**
    * The message template ID created for this notification.

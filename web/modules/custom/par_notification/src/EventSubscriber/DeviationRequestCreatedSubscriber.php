@@ -11,7 +11,7 @@ use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParEventSubscriberBase;
 
-class NewDeviationRequestSubscriber extends ParEventSubscriberBase {
+class DeviationRequestCreatedSubscriber extends ParEventSubscriberBase {
 
   /**
    * The message template ID created for this notification.
@@ -43,8 +43,7 @@ class NewDeviationRequestSubscriber extends ParEventSubscriberBase {
 
     // Only send messages for active deviation requests.
     if ($entity instanceof ParDataDeviationRequest &&
-      $par_data_partnership instanceof ParDataPartnership &&
-      $entity->isActive()) {
+      $par_data_partnership instanceof ParDataPartnership) {
 
       // Send the message.
       $arguments = [

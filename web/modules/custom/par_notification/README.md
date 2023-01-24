@@ -16,6 +16,11 @@ This data is recorded alongside the message, and used to dynamically replace val
 
 As such messages can contain a link that will direct the user to the page that best displays this information or that allows the user to complete an action related to this information.
 
+#### Notification Events
+Event subscribers are used to detect when something happens to a piece of data and to act on this by sending out a notification.
+
+As a rule event subscribers should be named so that they correspond with the message_template that they send out.
+
 ### Informational Notifications vs Task Notifications
 The majority of the notifications within PAR are informational only, and alert the user to something they might want to be aware of.
 

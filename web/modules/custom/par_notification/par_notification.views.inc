@@ -54,4 +54,12 @@ function par_notification_views_data_alter(array &$data) {
       'id' => 'par_notification_for',
     ],
   ];
+  // Add a field to display the notification message.
+  $data['message']['notification_summary'] = [
+    'title' => t('Notification summary'),
+    'help' => t('The notification summary'),
+    'field' => [
+      'id' => 'par_notification_summary',
+    ],
+  ];
 }

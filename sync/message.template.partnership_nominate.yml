@@ -1,0 +1,19 @@
+uuid: b91e3647-5774-4cde-b87d-2a0d5ce4513b
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.basic_html
+template: partnership_nominate
+label: 'Partnership Nominate'
+description: 'Notifies the OSU that a new partnership is ready to be nominated'
+text:
+  -
+    value: "<p>The <span>@partnership_label is now ready to be nominated.</span></p>\r\n"
+    format: basic_html
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }

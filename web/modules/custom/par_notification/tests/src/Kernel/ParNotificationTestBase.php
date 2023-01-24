@@ -110,7 +110,7 @@ class ParNotificationTestBase extends ParDataTestBase
       ->getMock();
     $container->set('par_notification.new_deviation_reply_subscriber', $this->new_deviation_response_subscriber);
 
-    $this->new_deviation_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewDeviationRequestSubscriber')
+    $this->new_deviation_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\DeviationRequestCreatedSubscriber')
       ->setMethods(['getSubscribedEvents', 'onEvent'])
       ->disableOriginalConstructor()
       ->getMock();
@@ -182,7 +182,7 @@ class ParNotificationTestBase extends ParDataTestBase
       ->getMock();
     $container->set('par_notification.reviewed_enforcement_subscriber', $this->enforcement_reviewed_subscriber);
 
-    $this->enforcement_approved_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\ApprovedEnforcementSubscriber')
+    $this->enforcement_approved_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\EnforcementApprovedSubscriber')
       ->setMethods(['getSubscribedEvents', 'onEvent'])
       ->disableOriginalConstructor()
       ->getMock();

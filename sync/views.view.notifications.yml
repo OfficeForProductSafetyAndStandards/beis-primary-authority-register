@@ -179,16 +179,16 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        notification_for:
-          id: notification_for
+        notification_summary:
+          id: notification_summary
           table: message
-          field: notification_for
+          field: notification_summary
           relationship: none
           group_type: group
           admin_label: ''
           entity_type: message
-          plugin_id: par_notification_for
-          label: Message
+          plugin_id: par_notification_summary
+          label: Notification
           exclude: false
           alter:
             alter_text: false

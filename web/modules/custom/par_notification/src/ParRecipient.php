@@ -4,6 +4,7 @@ namespace Drupal\par_notification;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
@@ -91,7 +92,8 @@ class ParRecipient {
     }
 
     // Return an account object.
-    return User::load($user?->id());
+    return $user instanceof UserInterface ?
+      $this->getUserStorage()->load($user->id()) : new AnonymousUserSession();
   }
 
   /**

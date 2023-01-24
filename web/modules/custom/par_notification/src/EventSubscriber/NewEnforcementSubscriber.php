@@ -40,8 +40,7 @@ class NewEnforcementSubscriber extends ParEventSubscriberBase {
     $entity = $event->getEntity();
 
     // Only send messages for active deviation requests.
-    if ($entity instanceof ParDataEnforcementNotice &&
-      $entity->isActive()) {
+    if ($entity instanceof ParDataEnforcementNotice) {
 
       // Send the message.
       $arguments = [
