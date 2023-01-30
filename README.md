@@ -80,7 +80,7 @@ Once you have a working development environment PAR should be available at [http
 * [Docker](https://docs.docker.com/engine/install) - version 20.0 or higher
 * [Docker Compose](https://docs.docker.com/compose/install) - version 2.2.2 or higher
 * (Optional) A copy of the [latest sanitised PAR database](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/backups/drush-dump-production-sanitized-latest.sql.tar.gz) from the BEIS S3 artifacts bucket.
-* A copy of the [settings.local.php](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/backups/drush-dump-production-sanitized-latest.sql.tar.gz) configuration file required to setup the application locally.
+* A copy of the [settings.local.php](https://beis-par-artifacts.s3.eu-west-2.amazonaws.com/dev/settings.local.php) configuration file required to setup the application locally.
 
 #### Additional Windows prerequisites
 If on windows follow the instructions below, essentially docker performance on windows is poor and needs to run from the WSL distro (use the latest Ubuntu LTS).
