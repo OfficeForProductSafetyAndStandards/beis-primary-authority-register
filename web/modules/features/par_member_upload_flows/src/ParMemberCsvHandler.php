@@ -728,10 +728,15 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       $csv = file_get_contents($file->getFileUri());
       $data = $this->getSerializer()->decode($csv, 'csv');
 
+      // Must have at least one data row.
+      if (count($data) < 2) {
+        throw new ParDataException('There are too few rows in this CSV file. There must be at lest one data row after the header row');
+      }
+
       // We have a limit of that we can process to, this limit
-      // is tested with and anything over cannot be supported.
-      if (count($data) < 2 || count($data) > self::MAX_ROW_LIMIT) {
-        throw new ParDataException('There are too many or too few rows in this CSV file.');
+      // is tested and anything over cannot be supported.
+      if (count($data) > self::MAX_ROW_LIMIT) {
+        throw new ParDataException('There are too many rows in this CSV file. The limit is ' . self::MAX_ROW_LIMIT . '.');
       }
 
       // It is important to add the partnership ID to each row for later processing.
