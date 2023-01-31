@@ -72,14 +72,6 @@ class ParMemberUploadForm extends ParBaseForm {
         '#type' => 'link',
         '#title' => $this->t('Download membership list'),
         '#url' => Url::fromRoute('par_member_upload_flows.member_download', $this->getRouteParams()),
-        '#ajax' => [
-          'callback' => $csv_handler_class . '::_ajaxDownload',
-          'event' => 'click',
-          'progress' => [
-            'type' => 'throbber',
-            'message' => 'Generating member list',
-          ],
-        ],
         '#attributes' => [
           'id' => 'download-members-link',
         ],
