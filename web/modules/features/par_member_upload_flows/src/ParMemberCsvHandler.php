@@ -735,14 +735,11 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       }
 
       // It is important to add the partnership ID to each row for later processing.
+      if (!$partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
+        throw new ParDataException('The partnership can\'t be identified.');
+      }
       foreach ($data as $column => $row) {
-        $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-        if ($partnership) {
-          $data[$column]['partnership id'] = $this->getFlowDataHandler()->getParameter('par_data_partnership')->id();
-        }
-        else {
-          throw new ParDataException('The partnership can\'t be identified.');
-        }
+        $data[$column]['partnership id'] = $partnership->id();
       }
     }
     catch (UnexpectedValueException $exception) {
