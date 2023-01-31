@@ -17,11 +17,13 @@ import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.EmployeesPage;
 import uk.gov.beis.pageobjects.EnforcementActionPage;
+import uk.gov.beis.pageobjects.EnforcementCompletionPage;
 import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
 import uk.gov.beis.pageobjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.EnforcementReviewPage;
+import uk.gov.beis.pageobjects.EnforcementSearchPage;
 import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.MemberListPage;
 import uk.gov.beis.pageobjects.ONSCodePage;
@@ -53,6 +55,7 @@ import uk.gov.beis.pageobjects.PartnershipRevokedPage;
 import uk.gov.beis.pageobjects.PartnershipTermsPage;
 import uk.gov.beis.pageobjects.PartnershipTypePage;
 import uk.gov.beis.pageobjects.PasswordPage;
+import uk.gov.beis.pageobjects.ProposedEnforcementPage;
 import uk.gov.beis.pageobjects.RegulatoryFunctionPage;
 import uk.gov.beis.pageobjects.RestorePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
@@ -72,6 +75,7 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private EnforcementCompletionPage enforcementCompletionPage;
 	private EnforcementActionPage enforcementActionPage;
 	private EnforcementDetailsPage enforcementDetailsPage;
 	private EnforcementLegalEntityPage enforcementLegalEntityPage;
@@ -79,7 +83,9 @@ public class PARStepDefs {
 	private EnforcementContactDetailsPage enforcementContactDetailsPage;
 	private OrganisationDashboardPage organisationDashboardPage;
 	private EnforcementNotificationPage enforcementNotificationPage;
+	private EnforcementSearchPage enforcementSearchPage;
 	private ONSCodePage onsCodePage;
+	private ProposedEnforcementPage proposedEnforcementPage;
 	private EnforcementReviewPage enforcementReviewPage;
 	private RegulatoryFunctionPage regulatoryFunctionPage;
 	private AuthorityConfirmationPage authorityConfirmationPage;
@@ -124,7 +130,10 @@ public class PARStepDefs {
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		enforcementCompletionPage = PageFactory.initElements(driver, EnforcementCompletionPage.class);
+		proposedEnforcementPage = PageFactory.initElements(driver, ProposedEnforcementPage.class);
 		enforcementReviewPage = PageFactory.initElements(driver, EnforcementReviewPage.class);
+		enforcementSearchPage = PageFactory.initElements(driver, EnforcementSearchPage.class);
 		enforcementActionPage = PageFactory.initElements(driver, EnforcementActionPage.class);
 		enforcementDetailsPage = PageFactory.initElements(driver, EnforcementDetailsPage.class);
 		enforcementLegalEntityPage = PageFactory.initElements(driver, EnforcementLegalEntityPage.class);
@@ -229,7 +238,7 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, data.get("Partnership Info"));
 			LOG.info("Entering partnership description");
 			parPartnershipDescriptionPage.enterPartnershipDescription(data.get("Partnership Info"),
-					parPartnershipConfirmationPage.getJourneyPart());
+					ScenarioContext.secondJourneyPart);
 			LOG.info("Entering business/organisation name");
 			DataStore.saveValue(UsableValues.BUSINESS_NAME, RandomStringGenerator.getBusinessName(4));
 			parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
@@ -267,7 +276,6 @@ public class PARStepDefs {
 	@When("^the user searches for the last created partnership$")
 	public void the_user_searches_for_the_last_created_partnership() throws Throwable {
 		parDashboardPage.checkAndAcceptCookies();
-		LOG.info("Login user is: " + DataStore.getSavedValue(UsableValues.LOGIN_USER));
 		if (DataStore.getSavedValue(UsableValues.LOGIN_USER).equalsIgnoreCase("par_helpdesk@example.com")) {
 			LOG.info("Selecting view partnerships");
 			parDashboardPage.selectSearchPartnerships();
@@ -284,11 +292,11 @@ public class PARStepDefs {
 			partnershipSearchPage.searchPartnerships();
 
 			// select business/organisation link if still first part of journey
-			if (!parPartnershipConfirmationPage.getJourneyPart())
+			if (!ScenarioContext.secondJourneyPart)
 				partnershipSearchPage.selectBusinessNameLink();
 
 			// select authority link if in second part of journey
-			if (parPartnershipConfirmationPage.getJourneyPart())
+			if (ScenarioContext.secondJourneyPart)
 				partnershipSearchPage.selectAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
 		}
 	}
@@ -309,7 +317,6 @@ public class PARStepDefs {
 			LOG.info("Selecting SIC Code");
 			DataStore.saveValue(UsableValues.SIC_CODE, data.get("SIC Code"));
 			sicCodePage.selectSICCode(data.get("SIC Code"));
-			LOG.info("partnership type is: " + DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE));
 			if (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).equalsIgnoreCase("direct")) {
 				LOG.info("Selecting No of Employees");
 				DataStore.saveValue(UsableValues.NO_EMPLOYEES, data.get("No of Employees"));
@@ -327,7 +334,7 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal entity Type"));
 			legalEntityPage.createLegalEntity(data.get("Legal entity Type"));
 			LOG.info("Set second part of journey part to true");
-			parPartnershipConfirmationPage.setJourneyPart(true);
+			ScenarioContext.secondJourneyPart = true;
 		}
 	}
 
@@ -422,8 +429,7 @@ public class PARStepDefs {
 	public void the_user_updates_the_partnership_information_with_the_following_info(String desc) throws Throwable {
 		parPartnershipConfirmationPage.editAboutPartnership();
 		DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, desc);
-		parPartnershipDescriptionPage.enterPartnershipDescription(desc,
-				parPartnershipConfirmationPage.getJourneyPart());
+		parPartnershipDescriptionPage.enterPartnershipDescription(desc, ScenarioContext.secondJourneyPart);
 	}
 
 	@Then("^the partnership is updated correctly$")
@@ -566,6 +572,32 @@ public class PARStepDefs {
 		LOG.info("Check all updated changes check out");
 		Assert.assertTrue("Details don't check out", enforcementReviewPage.checkEnforcementCreation());
 		enforcementReviewPage.saveChanges();
+	}
+
+	@When("^the user selects the last created enforcement$")
+	public void the_user_selects_the_last_created_enforcement() throws Throwable {
+		LOG.info("Select last created enforcement");
+		parDashboardPage.selectSeeEnforcementNotices();
+		enforcementSearchPage.searchPartnerships();
+		enforcementSearchPage.selectEnforcement();
+	}
+
+	@When("^the user approves the enforcement notice$")
+	public void the_user_approves_the_enforcement_notice() throws Throwable {
+		LOG.info("Approve the enforcement");
+		proposedEnforcementPage.selectAllow();
+		proposedEnforcementPage.proceed();
+		enforcementReviewPage.saveChanges();
+		enforcementCompletionPage.complete();
+	}
+
+	@Then("^the enforcement is set to approved status$")
+	public void the_enforcement_is_set_to_approved_status() throws Throwable {
+		LOG.info("Check the enformcement is approved");
+		enforcementSearchPage.searchPartnerships();
+		Assert.assertTrue("Enforcement Status doesn't check out",
+				enforcementSearchPage.getStatus().equalsIgnoreCase("Approved"));
+
 	}
 
 }

@@ -19,9 +19,9 @@ public class EnforcementReviewPage extends BasePageObject {
 	@FindBy(xpath = "//input[contains(@value,'Save')]")
 	WebElement saveBtn;
 
-	public EnforcementActionPage saveChanges() {
+	public EnforcementCompletionPage saveChanges() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, EnforcementActionPage.class);
+		return PageFactory.initElements(driver, EnforcementCompletionPage.class);
 	}
 
 	String legEnt = "//fieldset/p[contains(text(),'?')]";

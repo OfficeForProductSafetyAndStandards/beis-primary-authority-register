@@ -19,6 +19,9 @@ public class DashboardPage extends BasePageObject {
 
 	@FindBy(linkText = "Apply for a new partnership")
 	WebElement applyPartnershipBtn;
+	
+	@FindBy(linkText = "See your enforcement notices")
+	WebElement seeEnforcementNoticesBtn;
 
 	@FindBy(linkText = "See your partnerships")
 	WebElement viewPartnershipBtn;
@@ -43,6 +46,11 @@ public class DashboardPage extends BasePageObject {
 	public AuthorityPage selectApplyForNewPartnership() {
 		applyPartnershipBtn.click();
 		return PageFactory.initElements(driver, AuthorityPage.class);
+	}
+	
+	public EnforcementSearchPage selectSeeEnforcementNotices() {
+		seeEnforcementNoticesBtn.click();
+		return PageFactory.initElements(driver, EnforcementSearchPage.class);
 	}
 
 	public PartnershipSearchPage selectSeePartnerships() {
