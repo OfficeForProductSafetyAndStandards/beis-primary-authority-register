@@ -276,7 +276,6 @@ public class PARStepDefs {
 	@When("^the user searches for the last created partnership$")
 	public void the_user_searches_for_the_last_created_partnership() throws Throwable {
 		parDashboardPage.checkAndAcceptCookies();
-		LOG.info("Login user is: " + DataStore.getSavedValue(UsableValues.LOGIN_USER));
 		if (DataStore.getSavedValue(UsableValues.LOGIN_USER).equalsIgnoreCase("par_helpdesk@example.com")) {
 			LOG.info("Selecting view partnerships");
 			parDashboardPage.selectSearchPartnerships();
@@ -318,7 +317,6 @@ public class PARStepDefs {
 			LOG.info("Selecting SIC Code");
 			DataStore.saveValue(UsableValues.SIC_CODE, data.get("SIC Code"));
 			sicCodePage.selectSICCode(data.get("SIC Code"));
-			LOG.info("partnership type is: " + DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE));
 			if (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).equalsIgnoreCase("direct")) {
 				LOG.info("Selecting No of Employees");
 				DataStore.saveValue(UsableValues.NO_EMPLOYEES, data.get("No of Employees"));
