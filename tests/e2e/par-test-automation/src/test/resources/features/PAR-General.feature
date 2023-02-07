@@ -118,7 +118,7 @@ Feature:
   Given the user is on the PAR login page
   And the user logs in with the "par_helpdesk@example.com" user credentials  
   When the user searches for the last created enforcement notice
-  Then the user removes it successfully
+  Then the user removes the enforcement notice successfully
   
   
   

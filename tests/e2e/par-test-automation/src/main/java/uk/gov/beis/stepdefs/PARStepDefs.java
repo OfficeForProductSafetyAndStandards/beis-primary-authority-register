@@ -613,8 +613,8 @@ public class PARStepDefs {
 		enforcementSearchPage.removeEnforcement();
 	}
 
-	@Then("^the user removes it successfully$")
-	public void the_user_removes_it_successfully() throws Throwable {
+	@Then("^the user removes the enforcement notice successfully$")
+	public void the_user_removes_the_enforcement_notice_successfully() throws Throwable {
 		LOG.info("Check enforcement notice is removed");
 		removeEnforcementPage.selectRevokeReason("This is a duplicate enforcement");
 		removeEnforcementPage.enterRevokeDescription("Revoking");
