@@ -57,6 +57,8 @@ import uk.gov.beis.pageobjects.PartnershipTypePage;
 import uk.gov.beis.pageobjects.PasswordPage;
 import uk.gov.beis.pageobjects.ProposedEnforcementPage;
 import uk.gov.beis.pageobjects.RegulatoryFunctionPage;
+import uk.gov.beis.pageobjects.RemoveEnforcementConfirmationPage;
+import uk.gov.beis.pageobjects.RemoveEnforcementPage;
 import uk.gov.beis.pageobjects.RestorePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.PartnershipSearchPage;
@@ -75,6 +77,7 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private RemoveEnforcementPage removeEnforcementPage;
 	private EnforcementCompletionPage enforcementCompletionPage;
 	private EnforcementActionPage enforcementActionPage;
 	private EnforcementDetailsPage enforcementDetailsPage;
@@ -127,9 +130,12 @@ public class PARStepDefs {
 	private TradingPage tradingPage;
 	private RestorePartnershipConfirmationPage restorePartnershipConfirmationPage;
 	private PartnershipRestoredPage partnershipRestoredPage;
+	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		removeEnforcementConfirmationPage = PageFactory.initElements(driver, RemoveEnforcementConfirmationPage.class);
+		removeEnforcementPage = PageFactory.initElements(driver, RemoveEnforcementPage.class);
 		enforcementCompletionPage = PageFactory.initElements(driver, EnforcementCompletionPage.class);
 		proposedEnforcementPage = PageFactory.initElements(driver, ProposedEnforcementPage.class);
 		enforcementReviewPage = PageFactory.initElements(driver, EnforcementReviewPage.class);
@@ -567,14 +573,14 @@ public class PARStepDefs {
 		}
 	}
 
-	@Then("^all the fields for the enforcement are updated correctly$")
+	@Then("^all the fields for the enforcement notice are updated correctly$")
 	public void all_the_fields_for_the_enforcement_are_updated_correctly() throws Throwable {
 		LOG.info("Check all updated changes check out");
 		Assert.assertTrue("Details don't check out", enforcementReviewPage.checkEnforcementCreation());
 		enforcementReviewPage.saveChanges();
 	}
 
-	@When("^the user selects the last created enforcement$")
+	@When("^the user selects the last created enforcement notice$")
 	public void the_user_selects_the_last_created_enforcement() throws Throwable {
 		LOG.info("Select last created enforcement");
 		parDashboardPage.selectSeeEnforcementNotices();
@@ -591,13 +597,29 @@ public class PARStepDefs {
 		enforcementCompletionPage.complete();
 	}
 
-	@Then("^the enforcement is set to approved status$")
-	public void the_enforcement_is_set_to_approved_status() throws Throwable {
+	@Then("^the enforcement notice is set to approved status$")
+	public void the_enforcement_notice_is_set_to_approved_status() throws Throwable {
 		LOG.info("Check the enformcement is approved");
 		enforcementSearchPage.searchPartnerships();
 		Assert.assertTrue("Enforcement Status doesn't check out",
 				enforcementSearchPage.getStatus().equalsIgnoreCase("Approved"));
-
 	}
 
+	@When("^the user searches for the last created enforcement notice$")
+	public void the_user_searches_for_the_last_created_enforcement_notice() throws Throwable {
+		LOG.info("Select last created enforcement");
+		parDashboardPage.selectManageEnforcementNotices();
+		enforcementSearchPage.searchPartnerships();
+		enforcementSearchPage.removeEnforcement();
+	}
+
+	@Then("^the user removes the enforcement notice successfully$")
+	public void the_user_removes_the_enforcement_notice_successfully() throws Throwable {
+		LOG.info("Check enforcement notice is removed");
+		removeEnforcementPage.selectRevokeReason("This is a duplicate enforcement");
+		removeEnforcementPage.enterRevokeDescription("Revoking");
+		removeEnforcementConfirmationPage.acceptTerms();
+		enforcementSearchPage.searchPartnerships();
+		Assert.assertTrue("Some results are returned indeed", enforcementSearchPage.confirmNoReturnedResults());
+	}
 }
