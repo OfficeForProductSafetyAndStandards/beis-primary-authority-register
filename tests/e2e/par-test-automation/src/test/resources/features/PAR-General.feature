@@ -84,7 +84,7 @@ Feature:
    | Council Area    	| 43453465	 | Cookie control				| 32 Bramtom Rd	| Windsor	| SL4 5PN		|  
   Then the authority is created sucessfully
   
-  # Update All Fields for newly created Authority
+  #Update All Fields for newly created Authority
   When the user searches for the last created authority
   And the user updates all the fields for newly created authority
   Then the update for the authority is successful
@@ -98,22 +98,27 @@ Feature:
   Then all the fields are updated correctly
   
  @regression @enforcement
- Scenario: Verify Send Notification of Proposed Enforcement and Approval (Happy Path - PAR-1852, PAR-1853)
+ Scenario: Verify Send Notification of Proposed Enforcement, Approval and Removal (Happy Path - PAR-1852, PAR-1853, PAR-1854, PAR-1855)
   Given the user is on the PAR login page
   And the user logs in with the "par_enforcement_officer@example.com" user credentials
   When the user searches for the last created partnership
   And the user creates an enforcement notice against the partnership with the following details:
    | Enforcement Action	| Title	 							| Regulatory Function	| Description				| Attachment		| 
    | Proposed    				| Enforcement Title 1	| Cookie control			| Enforcement desc	| link.txt			|  
-  Then all the fields for the enforcement are updated correctly
+  Then all the fields for the enforcement notice are updated correctly
   
-  #Approve the Enforcement
+  #Approve the Enforcement Notice
   Given the user is on the PAR login page
   And the user logs in with the "par_authority@example.com" user credentials  
-  When the user selects the last created enforcement
+  When the user selects the last created enforcement notice
   And the user approves the enforcement notice
-  Then the enforcement is set to approved status 
+  Then the enforcement notice is set to approved status 
   
+  #Remove the Enforcement Notice
+  Given the user is on the PAR login page
+  And the user logs in with the "par_helpdesk@example.com" user credentials  
+  When the user searches for the last created enforcement notice
+  Then the user removes it successfully
   
   
   

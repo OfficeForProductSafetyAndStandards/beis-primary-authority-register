@@ -16,10 +16,15 @@ public class EnforcementSearchPage extends BasePageObject {
 		super();
 	}
 
+	@FindBy(id = "//div/p[contains(text(),'Sorry, there are no sent or received notices')]")
+	WebElement noResults;
+
 	@FindBy(id = "edit-combine")
 	WebElement searchInput;
 
 	String status = "//td[contains(text(),'?')]/preceding-sibling::td[1]";
+
+	String removeEnfBtn = "//td[contains(text(),'?')]/following-sibling::td[1]/a[contains(text(),'remove enforcement')]";
 
 	@FindBy(xpath = "//input[contains(@value,'Apply')]")
 	WebElement searchBtn;
@@ -35,9 +40,22 @@ public class EnforcementSearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, ProposedEnforcementPage.class);
 	}
 
+	public boolean confirmNoReturnedResults() {
+		boolean value = false;
+		if (driver.findElement(By.xpath("//div/p[contains(text(),'Sorry, there are no sent or received notices')]"))
+				.isDisplayed())
+			value = true;
+		return value;
+	}
+
+	public RemoveEnforcementPage removeEnforcement() {
+		driver.findElement(By.xpath(removeEnfBtn.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME))))
+				.click();
+		return PageFactory.initElements(driver, RemoveEnforcementPage.class);
+	}
+
 	public String getStatus() {
 		return driver.findElement(By.xpath(status.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME))))
 				.getText();
-
 	}
 }
