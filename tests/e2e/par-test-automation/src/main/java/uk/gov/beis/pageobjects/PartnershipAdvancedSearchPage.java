@@ -34,6 +34,11 @@ public class PartnershipAdvancedSearchPage extends BasePageObject{
 		return PageFactory.initElements(driver, DeclarationPage.class);
 	}
 	
+	public PartnershipConfirmationPage selectPartnershipLink() {
+		driver.findElement(By.xpath("//td/a[contains(text(),'\" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + \"')]/parent::td/parent::tr/td[1]/a[1]")).click();
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
+	
 	public RevokePartnershipConfirmationPage selectRevokeBusinessNameLink() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td/a[contains(text(),'Revoke')]")).click();
 		return PageFactory.initElements(driver, RevokePartnershipConfirmationPage.class);
