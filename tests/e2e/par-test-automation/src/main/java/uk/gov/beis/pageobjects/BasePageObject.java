@@ -39,6 +39,7 @@ public class BasePageObject {
 				.ignoring(StaleElementReferenceException.class);
 		js = (JavascriptExecutor) driver;
 	}
+	
 
 	public WebElement waitUntilCickable(WebElement element) {
 		return wait.until(ExpectedConditions.elementToBeClickable(element));

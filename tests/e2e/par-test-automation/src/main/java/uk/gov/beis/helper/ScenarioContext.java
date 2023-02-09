@@ -6,4 +6,6 @@ public class ScenarioContext {
 
 	public static WebDriver lastDriver;
 	public static String lastUser;
+	public static boolean secondJourneyPart = false;
+	
 }

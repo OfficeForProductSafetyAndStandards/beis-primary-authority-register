@@ -11,7 +11,7 @@ import uk.gov.beis.helper.ScenarioContext;
 @RunWith(Cucumber.class)
 @CucumberOptions(strict = false, features = { "classpath:features" }, glue = {
 		"uk.gov.beis.stepdefs" }, format = {}, tags = {
-				"@smoke" }, plugin = { "json:target/cucumber-report/report.json" })
+				"@leo" }, plugin = { "json:target/cucumber-report/report.json" })
 
 // use this class to trigger all the tests
 
