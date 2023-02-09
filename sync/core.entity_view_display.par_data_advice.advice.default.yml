@@ -67,12 +67,11 @@ content:
     weight: 7
     region: content
   issue_date:
-    type: datetime_time_ago
+    type: datetime_default
     label: hidden
     settings:
-      future_format: '@interval hence'
-      past_format: '@interval ago'
-      granularity: 2
+      timezone_override: ''
+      format_type: gds_date_format
     third_party_settings: {  }
     weight: 5
     region: content
@@ -82,6 +81,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 6
+    region: content
+  par_label:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
     region: content
   regulatory_function:
     type: entity_reference_entity_view
@@ -105,7 +112,9 @@ hidden:
   archive_reason: true
   deleted_reason: true
   name: true
+  par_status: true
   revocation_reason: true
+  search_api_excerpt: true
   visible_authority: true
   visible_business: true
   visible_coordinator: true
