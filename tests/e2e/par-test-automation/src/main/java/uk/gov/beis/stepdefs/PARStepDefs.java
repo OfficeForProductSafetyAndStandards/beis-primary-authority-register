@@ -15,24 +15,9 @@ import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
-import uk.gov.beis.pageobjects.EmployeesPage;
-import uk.gov.beis.pageobjects.EnforcementActionPage;
-import uk.gov.beis.pageobjects.EnforcementCompletionPage;
-import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
-import uk.gov.beis.pageobjects.EnforcementDetailsPage;
-import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
-import uk.gov.beis.pageobjects.EnforcementNotificationPage;
-import uk.gov.beis.pageobjects.EnforcementReviewPage;
-import uk.gov.beis.pageobjects.EnforcementSearchPage;
-import uk.gov.beis.pageobjects.LegalEntityPage;
-import uk.gov.beis.pageobjects.MemberListPage;
-import uk.gov.beis.pageobjects.ONSCodePage;
-import uk.gov.beis.pageobjects.OrganisationDashboardPage;
-import uk.gov.beis.pageobjects.PartnershipAdvancedSearchPage;
-import uk.gov.beis.pageobjects.PartnershipApprovalPage;
-import uk.gov.beis.pageobjects.AuthorityDashboardPage;
 import uk.gov.beis.pageobjects.AuthorityAddressDetailsPage;
 import uk.gov.beis.pageobjects.AuthorityConfirmationPage;
+import uk.gov.beis.pageobjects.AuthorityDashboardPage;
 import uk.gov.beis.pageobjects.AuthorityNamePage;
 import uk.gov.beis.pageobjects.AuthorityPage;
 import uk.gov.beis.pageobjects.AuthorityTypePage;
@@ -44,14 +29,30 @@ import uk.gov.beis.pageobjects.BusinessInvitePage;
 import uk.gov.beis.pageobjects.BusinessPage;
 import uk.gov.beis.pageobjects.DashboardPage;
 import uk.gov.beis.pageobjects.DeclarationPage;
+import uk.gov.beis.pageobjects.EmployeesPage;
+import uk.gov.beis.pageobjects.EnforcementActionPage;
+import uk.gov.beis.pageobjects.EnforcementCompletionPage;
+import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
+import uk.gov.beis.pageobjects.EnforcementDetailsPage;
+import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
+import uk.gov.beis.pageobjects.EnforcementNotificationPage;
+import uk.gov.beis.pageobjects.EnforcementReviewPage;
+import uk.gov.beis.pageobjects.EnforcementSearchPage;
 import uk.gov.beis.pageobjects.HomePage;
+import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.LoginPage;
 import uk.gov.beis.pageobjects.MailLogPage;
+import uk.gov.beis.pageobjects.MemberListPage;
+import uk.gov.beis.pageobjects.ONSCodePage;
+import uk.gov.beis.pageobjects.OrganisationDashboardPage;
+import uk.gov.beis.pageobjects.PartnershipAdvancedSearchPage;
+import uk.gov.beis.pageobjects.PartnershipApprovalPage;
 import uk.gov.beis.pageobjects.PartnershipCompletionPage;
 import uk.gov.beis.pageobjects.PartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.PartnershipDescriptionPage;
 import uk.gov.beis.pageobjects.PartnershipRestoredPage;
 import uk.gov.beis.pageobjects.PartnershipRevokedPage;
+import uk.gov.beis.pageobjects.PartnershipSearchPage;
 import uk.gov.beis.pageobjects.PartnershipTermsPage;
 import uk.gov.beis.pageobjects.PartnershipTypePage;
 import uk.gov.beis.pageobjects.PasswordPage;
@@ -61,7 +62,6 @@ import uk.gov.beis.pageobjects.RemoveEnforcementConfirmationPage;
 import uk.gov.beis.pageobjects.RemoveEnforcementPage;
 import uk.gov.beis.pageobjects.RestorePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
-import uk.gov.beis.pageobjects.PartnershipSearchPage;
 import uk.gov.beis.pageobjects.SICCodePage;
 import uk.gov.beis.pageobjects.TradingPage;
 import uk.gov.beis.pageobjects.UserCommsPreferencesPage;
@@ -282,16 +282,22 @@ public class PARStepDefs {
 	@When("^the user searches for the last created partnership$")
 	public void the_user_searches_for_the_last_created_partnership() throws Throwable {
 		parDashboardPage.checkAndAcceptCookies();
-		if (DataStore.getSavedValue(UsableValues.LOGIN_USER).equalsIgnoreCase("par_helpdesk@example.com")) {
+		
+		String user = DataStore.getSavedValue(UsableValues.LOGIN_USER);
+		switch (user) {
+		case ("par_helpdesk@example.com"):
 			LOG.info("Selecting view partnerships");
 			parDashboardPage.selectSearchPartnerships();
 			partnershipAdvancedSearchPage.searchPartnerships();
-		} else if (DataStore.getSavedValue(UsableValues.LOGIN_USER)
-				.equalsIgnoreCase("par_enforcement_officer@example.com")) {
+			break;
+
+		case ("par_enforcement_officer@example.com"):
 			LOG.info("Selecting search for partnership");
 			parDashboardPage.selectSearchforPartnership();
 			partnershipSearchPage.searchPartnerships();
-		} else {
+			break;
+
+		default:
 			LOG.info("Search partnerships");
 			parDashboardPage.selectSeePartnerships();
 			LOG.info("Select organisation link details");
@@ -306,6 +312,30 @@ public class PARStepDefs {
 				partnershipSearchPage.selectAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
 		}
 	}
+
+	/*
+	 * if (DataStore.getSavedValue(UsableValues.LOGIN_USER).equalsIgnoreCase(
+	 * "par_helpdesk@example.com")) { LOG.info("Selecting view partnerships");
+	 * parDashboardPage.selectSearchPartnerships();
+	 * partnershipAdvancedSearchPage.searchPartnerships(); } else if
+	 * (DataStore.getSavedValue(UsableValues.LOGIN_USER)
+	 * .equalsIgnoreCase("par_enforcement_officer@example.com")) {
+	 * LOG.info("Selecting search for partnership");
+	 * parDashboardPage.selectSearchforPartnership();
+	 * partnershipSearchPage.searchPartnerships(); } else {
+	 * LOG.info("Search partnerships"); parDashboardPage.selectSeePartnerships();
+	 * LOG.info("Select organisation link details");
+	 * partnershipSearchPage.searchPartnerships();
+	 * 
+	 * // select business/organisation link if still first part of journey if
+	 * (!ScenarioContext.secondJourneyPart)
+	 * partnershipSearchPage.selectBusinessNameLink();
+	 * 
+	 * // select authority link if in second part of journey if
+	 * (ScenarioContext.secondJourneyPart)
+	 * partnershipSearchPage.selectAuthority(DataStore.getSavedValue(UsableValues.
+	 * AUTHORITY_NAME)); }
+	 */
 
 	@When("^the user completes the partnership application with the following details:$")
 	public void the_user_completes_the_partnership_application_with_the_following_details(DataTable details)
