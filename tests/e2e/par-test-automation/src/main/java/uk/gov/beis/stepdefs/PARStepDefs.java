@@ -282,7 +282,7 @@ public class PARStepDefs {
 	@When("^the user searches for the last created partnership$")
 	public void the_user_searches_for_the_last_created_partnership() throws Throwable {
 		parDashboardPage.checkAndAcceptCookies();
-		
+
 		String user = DataStore.getSavedValue(UsableValues.LOGIN_USER);
 		switch (user) {
 		case ("par_helpdesk@example.com"):
@@ -313,30 +313,6 @@ public class PARStepDefs {
 		}
 	}
 
-	/*
-	 * if (DataStore.getSavedValue(UsableValues.LOGIN_USER).equalsIgnoreCase(
-	 * "par_helpdesk@example.com")) { LOG.info("Selecting view partnerships");
-	 * parDashboardPage.selectSearchPartnerships();
-	 * partnershipAdvancedSearchPage.searchPartnerships(); } else if
-	 * (DataStore.getSavedValue(UsableValues.LOGIN_USER)
-	 * .equalsIgnoreCase("par_enforcement_officer@example.com")) {
-	 * LOG.info("Selecting search for partnership");
-	 * parDashboardPage.selectSearchforPartnership();
-	 * partnershipSearchPage.searchPartnerships(); } else {
-	 * LOG.info("Search partnerships"); parDashboardPage.selectSeePartnerships();
-	 * LOG.info("Select organisation link details");
-	 * partnershipSearchPage.searchPartnerships();
-	 * 
-	 * // select business/organisation link if still first part of journey if
-	 * (!ScenarioContext.secondJourneyPart)
-	 * partnershipSearchPage.selectBusinessNameLink();
-	 * 
-	 * // select authority link if in second part of journey if
-	 * (ScenarioContext.secondJourneyPart)
-	 * partnershipSearchPage.selectAuthority(DataStore.getSavedValue(UsableValues.
-	 * AUTHORITY_NAME)); }
-	 */
-
 	@When("^the user completes the partnership application with the following details:$")
 	public void the_user_completes_the_partnership_application_with_the_following_details(DataTable details)
 			throws Throwable {
@@ -353,16 +329,23 @@ public class PARStepDefs {
 			LOG.info("Selecting SIC Code");
 			DataStore.saveValue(UsableValues.SIC_CODE, data.get("SIC Code"));
 			sicCodePage.selectSICCode(data.get("SIC Code"));
-			if (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).equalsIgnoreCase("direct")) {
+
+			String partnershiptype = DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase();
+			switch (partnershiptype) {
+
+			case ("direct"):
 				LOG.info("Selecting No of Employees");
 				DataStore.saveValue(UsableValues.NO_EMPLOYEES, data.get("No of Employees"));
 				employeesPage.selectNoEmployees(data.get("No of Employees"));
-			}
-			if (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).equalsIgnoreCase("co-ordinated")) {
+				break;
+
+			case ("co-ordinated"):
 				LOG.info("Selecting Membership List size");
 				DataStore.saveValue(UsableValues.MEMBERLIST_SIZE, data.get("Member List Size"));
 				memberListPage.selectMemberSize(data.get("Member List Size"));
+				break;
 			}
+
 			LOG.info("Entering business trading name");
 			DataStore.saveValue(UsableValues.TRADING_NAME,
 					DataStore.getSavedValue(UsableValues.BUSINESS_NAME).replace("Business", "trading name"));
@@ -377,14 +360,21 @@ public class PARStepDefs {
 	@Then("^the second part of the partnership application is successfully completed$")
 	public void the_second_part_of_the_partnership_application_is_successfully_completed() throws Throwable {
 		LOG.info("Check and confirm changes");
-		if (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).equalsIgnoreCase("co-ordinated")) {
-			LOG.info("Check membership size");
-			parPartnershipConfirmationPage.checkMemberSize();
-		}
-		if (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).equalsIgnoreCase("direct")) {
+
+		String partnershiptype = DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase();
+		switch (partnershiptype) {
+
+		case ("direct"):
 			LOG.info("Check employee size");
 			parPartnershipConfirmationPage.checkNoEmployees();
+			break;
+
+		case ("co-ordinated"):
+			LOG.info("Check membership size");
+			parPartnershipConfirmationPage.checkMemberSize();
+			break;
 		}
+
 		Assert.assertTrue("Appliction not complete",
 				parPartnershipConfirmationPage.checkPartnershipApplicationSecondPart());
 		parPartnershipConfirmationPage.confirmDetails();

@@ -12,7 +12,7 @@ public class TradingPage extends BasePageObject {
 		super();
 	}
 
-	@FindBy(xpath = "//input[@type='text']")
+	@FindBy(id = "edit-trading-name")
 	WebElement tradingName;
 
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
