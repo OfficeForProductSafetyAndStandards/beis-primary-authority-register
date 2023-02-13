@@ -2,6 +2,8 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
+use Drupal\Core\Entity\EntityEvent;
+use Drupal\Core\Entity\EntityEvents;
 use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -26,26 +28,23 @@ class PartnershipDeletedSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    // Revocation event should fire after most default events to make sure
-    // revocation has not been cancelled.
-    $events[ParDataEvent::statusChange('par_data_partnership', 'deleted')][] = ['onEvent', -100];
+    // Notify on partnership removal.
+    $events[EntityEvents::predelete('par_data_partnership')][] = ['onEvent', -100];
 
     return $events;
   }
 
   /**
-   * @param ParDataEventInterface $event
+   * @param EntityEvent $event
    */
-  public function onEvent(ParDataEventInterface $event) {
+  public function onEvent(EntityEvent $event) {
     $this->setEvent($event);
 
     /** @var ParDataPartnership $entity */
     $entity = $event->getEntity();
 
     // Only send messages for partnerships.
-    // @TODO Confirm whether the partnership entity exists after it has been deleted??
     if ($entity instanceof ParDataPartnership) {
-
       // Send the message.
       $arguments = [
         '@partnership_label' => $entity->label(),
