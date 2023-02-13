@@ -3,27 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - message.template.approved_enforcement
-    - message.template.inspection_plan_expiry_warning
-    - message.template.member_list_stale_warning
-    - message.template.new_deviation_request
     - message.template.new_deviation_response
     - message.template.new_enforcement_notification
-    - message.template.new_enquiry_response
-    - message.template.new_general_enquiry
-    - message.template.new_inspection_feedback
-    - message.template.new_inspection_feedback_response
-    - message.template.new_inspection_plan
     - message.template.new_partnership_notification
-    - message.template.new_response
-    - message.template.partnership_approved_notificatio
-    - message.template.partnership_confirmed_notificati
-    - message.template.partnership_deleted_notification
-    - message.template.partnership_revocation_notificat
-    - message.template.reviewed_deviation_request
-    - message.template.reviewed_enforcement
-    - message.template.revoke_inspection_plan
-    - message.template.subscription_verify_notification
+    - message.template.partnership_nominate
   module:
     - better_exposed_filters
     - message
@@ -379,7 +362,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'access content'
+          perm: 'view own notifications'
       cache:
         type: none
         options: {  }
@@ -454,28 +437,10 @@ display:
           plugin_id: bundle
           operator: in
           value:
-            all: all
-            approved_enforcement: approved_enforcement
-            inspection_plan_expiry_warning: inspection_plan_expiry_warning
             new_enforcement_notification: new_enforcement_notification
-            new_deviation_request: new_deviation_request
             new_deviation_response: new_deviation_response
-            new_enquiry_response: new_enquiry_response
-            new_general_enquiry: new_general_enquiry
-            new_inspection_feedback: new_inspection_feedback
-            new_inspection_feedback_response: new_inspection_feedback_response
-            new_inspection_plan: new_inspection_plan
             new_partnership_notification: new_partnership_notification
-            new_response: new_response
-            partnership_approved_notificatio: partnership_approved_notificatio
-            partnership_confirmed_notificati: partnership_confirmed_notificati
-            partnership_deleted_notification: partnership_deleted_notification
-            partnership_revocation_notificat: partnership_revocation_notificat
-            reviewed_deviation_request: reviewed_deviation_request
-            reviewed_enforcement: reviewed_enforcement
-            revoke_inspection_plan: revoke_inspection_plan
-            member_list_stale_warning: member_list_stale_warning
-            subscription_verify_notification: subscription_verify_notification
+            partnership_nominate: partnership_nominate
           group: 1
           exposed: true
           expose:
@@ -756,10 +721,16 @@ display:
     display_options:
       defaults:
         pager: true
+        use_more: false
+        use_more_always: false
+        use_more_text: false
         filters: true
         filter_groups: true
         footer: false
       display_description: ''
+      use_more: false
+      use_more_always: false
+      use_more_text: 'View all tasks'
       footer: {  }
       display_extenders: {  }
       path: tasks

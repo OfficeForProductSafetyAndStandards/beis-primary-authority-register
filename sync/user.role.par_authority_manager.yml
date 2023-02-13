@@ -131,6 +131,7 @@ permissions:
   - 'view enforcement notice'
   - 'view general enquiry'
   - 'view inspection feedback'
+  - 'view own notifications'
   - 'view own private files'
   - 'view par profile'
   - 'view unpublished par_data_advice entities'

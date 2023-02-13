@@ -54,7 +54,7 @@ class PartnershipRemovedSubscriber extends ParMessageSubscriberBase {
         );
       }
     }
-    
+
     return $recipients;
   }
 

@@ -221,6 +221,7 @@ permissions:
   - 'view general enquiry'
   - 'view inspection feedback'
   - 'view list par_news'
+  - 'view own notifications'
   - 'view own private files'
   - 'view par profile'
   - 'view private files'

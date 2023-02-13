@@ -2,5 +2,4 @@ permission_callbacks:
   - 'Drupal\par_notification\Permissions\ParNotificationPermissions::permissions'
 view own notifications:
   title: 'View notifications'
-  description: 'Allow users to view notifications that they have received.'
-  restrict access: TRUE
+  description: 'Allow users to view notifications that either they or their institutions have received.'
