@@ -68,9 +68,9 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		return PageFactory.initElements(driver, PartnershipCompletionPage.class);
 	}
 	
-	public PartnershipCompletionPage selectSeeAllInspectionPlans() {
+	public InspectionPlanSearchPage selectSeeAllInspectionPlans() {
 		seeAllInspectionPlans.click();
-		return PageFactory.initElements(driver, PartnershipCompletionPage.class);
+		return PageFactory.initElements(driver, InspectionPlanSearchPage.class);
 	}
 
 	public PartnershipDescriptionPage editAboutPartnership() {

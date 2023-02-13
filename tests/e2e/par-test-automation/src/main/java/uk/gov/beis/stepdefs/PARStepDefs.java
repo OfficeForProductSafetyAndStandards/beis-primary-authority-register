@@ -39,6 +39,7 @@ import uk.gov.beis.pageobjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.EnforcementReviewPage;
 import uk.gov.beis.pageobjects.EnforcementSearchPage;
 import uk.gov.beis.pageobjects.HomePage;
+import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.LoginPage;
 import uk.gov.beis.pageobjects.MailLogPage;
@@ -64,6 +65,7 @@ import uk.gov.beis.pageobjects.RestorePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.SICCodePage;
 import uk.gov.beis.pageobjects.TradingPage;
+import uk.gov.beis.pageobjects.UploadInspectionPlanPage;
 import uk.gov.beis.pageobjects.UserCommsPreferencesPage;
 import uk.gov.beis.pageobjects.UserNotificationPreferencesPage;
 import uk.gov.beis.pageobjects.UserProfileCompletionPage;
@@ -77,6 +79,7 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private InspectionPlanSearchPage inspectionPlanSearchPage;
 	private RemoveEnforcementPage removeEnforcementPage;
 	private EnforcementCompletionPage enforcementCompletionPage;
 	private EnforcementActionPage enforcementActionPage;
@@ -107,6 +110,7 @@ public class PARStepDefs {
 	private UserSubscriptionPage userSubscriptionPage;
 	private MemberListPage memberListPage;
 	private LoginPage parLoginPage;
+	private UploadInspectionPlanPage uploadInspectionPlanPage;
 	private SICCodePage sicCodePage;
 	private DashboardPage parDashboardPage;
 	private AuthorityPage parAuthorityPage;
@@ -133,7 +137,9 @@ public class PARStepDefs {
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
-		driver = ScenarioContext.lastDriver;
+		driver = ScenarioContext.lastDriver; 
+		uploadInspectionPlanPage = PageFactory.initElements(driver, UploadInspectionPlanPage.class);
+		inspectionPlanSearchPage = PageFactory.initElements(driver, InspectionPlanSearchPage.class);
 		removeEnforcementConfirmationPage = PageFactory.initElements(driver, RemoveEnforcementConfirmationPage.class);
 		removeEnforcementPage = PageFactory.initElements(driver, RemoveEnforcementPage.class);
 		enforcementCompletionPage = PageFactory.initElements(driver, EnforcementCompletionPage.class);
@@ -641,5 +647,16 @@ public class PARStepDefs {
 		removeEnforcementConfirmationPage.acceptTerms();
 		enforcementSearchPage.searchPartnerships();
 		Assert.assertTrue("Some results are returned indeed", enforcementSearchPage.confirmNoReturnedResults());
+	}
+	
+	@When("^the user uploads an inspection plan against the partnership$")
+	public void the_user_uploads_an_inspection_plan_against_the_partnership() throws Throwable {
+		LOG.info("Upload inspection plan");
+		partnershipAdvancedSearchPage.selectPartnershipLink();
+		parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
+		inspectionPlanSearchPage.selectUploadLink();
+		uploadInspectionPlanPage.chooseFile("link.txt");
+		uploadInspectionPlanPage.uploadFile();
+		
 	}
 }
