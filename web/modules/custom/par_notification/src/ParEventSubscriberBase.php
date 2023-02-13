@@ -2,6 +2,7 @@
 
 namespace Drupal\par_notification;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\message\MessageInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -85,7 +86,7 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
       return;
     }
 
-    if ($entity instanceof ParDataEntityInterface &&
+    if ($entity instanceof EntityInterface &&
       $message instanceof MessageInterface) {
 
       $field = $this->getMessageHandler()->getPrimaryField($message->getTemplate());

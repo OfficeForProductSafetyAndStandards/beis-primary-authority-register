@@ -52,6 +52,7 @@ class NewInspectionPlanSubscriber extends ParEventSubscriberBase {
         '@partnership_label' => strtolower($par_data_partnership->label()),
         '@inspection_plan_title' =>  strtolower($entity->getTitle()),
       ];
+
       $this->sendMessage($arguments);
     }
   }

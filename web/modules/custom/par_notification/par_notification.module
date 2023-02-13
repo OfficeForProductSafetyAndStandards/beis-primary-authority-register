@@ -53,7 +53,7 @@ function par_notification_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_entity_presave().
  *
- * Adds the correct
+ * Adds the correct subscribers and recipients to the message.
  */
 function par_notification_entity_presave(EntityInterface $message) {
   // Only act on message entities.
@@ -93,7 +93,7 @@ function par_notification_entity_presave(EntityInterface $message) {
 /**
  * Implements hook_entity_insert().
  *
- * Adds the correct
+ * Sends the message to all recipients.
  */
 function par_notification_entity_insert(EntityInterface $message) {
   // Only act on message entities.

@@ -7,7 +7,7 @@ services:
   plugin.manager.par_subscription_manager:
     class: Drupal\par_notification\ParSubscriptionManager
     parent: default_plugin_manager
-    arguments: ['@email.validator']
+    arguments: ['@email.validator', '@current_user']
 
   par_notification.message_handler:
     class: Drupal\par_notification\ParMessageHandler

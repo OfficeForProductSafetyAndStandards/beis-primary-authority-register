@@ -52,7 +52,7 @@ class NewInspectionPlanSubscriber extends ParMessageSubscriberBase {
       // This message should be sent to the primary authority contacts at the authority.
       /** @var ParDataPersonInterface $people */
       $people = $partnership->getAuthorityPeople();
-      foreach ($people as $key => $person) {
+      foreach ($people as $person) {
         $recipients[] = new ParRecipient(
           $person->getEmail(),
           $person->getFirstName(),
@@ -68,7 +68,7 @@ class NewInspectionPlanSubscriber extends ParMessageSubscriberBase {
    * {@inheritdoc}
    */
   public function getSubscribedEntities(MessageInterface $message): array {
-    $subscriptions = $this->getSubscribedEntities($message);
+    $subscriptions = parent::getSubscribedEntities($message);
 
     try {
       /** @var ParDataInspectionPlan[] $inspection_plans */

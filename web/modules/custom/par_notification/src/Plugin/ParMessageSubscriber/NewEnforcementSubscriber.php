@@ -81,11 +81,11 @@ class NewEnforcementSubscriber extends ParMessageSubscriberBase {
     foreach ($enforcement_notices as $enforcement_notice) {
       // This message should be viewed by the enforcing authority
       // and the primary authority.
-      $subscriptions = array_filter([
+      $subscriptions = array_merge(
         $subscriptions,
-        ...$enforcement_notice->getEnforcingAuthority() ?? [],
-        ...$enforcement_notice->getPrimaryAuthority() ?? [],
-      ]);
+        $enforcement_notice->getEnforcingAuthority() ?? [],
+        $enforcement_notice->getPrimaryAuthority() ?? [],
+      );
     }
 
     return $subscriptions;

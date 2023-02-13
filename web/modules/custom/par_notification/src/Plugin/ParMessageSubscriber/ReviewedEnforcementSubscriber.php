@@ -27,21 +27,24 @@ class ReviewedEnforcementSubscriber extends ParMessageSubscriberBase {
    * {@inheritdoc}
    */
   public function getSubscribedEntities(MessageInterface $message): array {
+    $subscriptions = parent::getSubscribedEntities($message);
+
     try {
       /** @var ParDataEnforcementNotice[] $enforcement_notices */
       $enforcement_notices = $this->getMessageHandler()->getPrimaryData($message);
     }
     catch (ParNotificationException $e) {
-      return [];
+      return $subscriptions;
     }
 
     foreach ($enforcement_notices as $enforcement_notice) {
       // This message should be viewed by the enforcing authority
       // and the enforced organisation.
-      $subscribed_entities = array_filter([
-        ...$enforcement_notice->getEnforcingAuthority() ?? [],
-        ...$enforcement_notice->getEnforcedOrganisation() ?? [],
-      ]);
+      $subscribed_entities = array_merge(
+        $subscriptions,
+        $enforcement_notice->getEnforcingAuthority() ?? [],
+        $enforcement_notice->getEnforcedOrganisation() ?? [],
+      );
     }
 
     return $subscribed_entities ?? [];

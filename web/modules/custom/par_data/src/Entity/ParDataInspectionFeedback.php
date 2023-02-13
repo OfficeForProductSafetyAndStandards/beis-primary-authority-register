@@ -2,7 +2,10 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\comment\CommentManagerInterface;
+use Drupal\comment\CommentStorageInterface;
 use Drupal\comment\Entity\Comment;
+use Drupal\Console\Bootstrap\Drupal;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\ParDataException;
@@ -76,6 +79,23 @@ class ParDataInspectionFeedback extends ParDataEntity implements ParDataEnquiryI
   /**
    * {@inheritdoc}
    */
+  public function creator(): ParDataPersonInterface {
+    if ($this->hasField('field_person') &&
+      !$this->get('field_person')->isEmpty()) {
+      $enforcing_officers = $this->get('field_person')->referencedEntities();
+    }
+
+    // Validate that there is an enforcement officer.
+    if (empty($enforcing_officers)) {
+      throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
+    }
+
+    return current($enforcing_officers);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function sender(): ParDataAuthority {
     if ($this->hasField('field_enforcing_authority')) {
       $enforcing_authorities = $this->get('field_enforcing_authority')->referencedEntities();
@@ -93,41 +113,39 @@ class ParDataInspectionFeedback extends ParDataEntity implements ParDataEnquiryI
    * {@inheritdoc}
    */
   public function receiver(): array {
-    if (!$this->hasField('field_inspection_plan')
-      || $this->get('field_inspection_plan')->isEmpty()) {
-      throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
-    }
+    $partnerships = [];
 
-    $inspection_plans = $this->get('field_inspection_plan')->referencedEntities();
-    $authorities = [];
-
-    foreach ($inspection_plans as $inspection_plan) {
-      $partnerships = $inspection_plan->getPartnerships();
-      foreach ($partnerships as $partnership) {
-        $authority = (array) $partnership->getAuthority();
-        $authorities = array_merge($authorities, $authority ?? []);
+    if ($this->hasField('field_inspection_plan')) {
+      $inspection_plans = $this->get('field_inspection_plan')->referencedEntities();
+      foreach ($inspection_plans as $inspection_plan) {
+        $partnerships = array_merge($partnerships, $inspection_plan->getPartnerships());
       }
+    }
+    if ($this->hasField('field_partnership') && empty($primary_authorities)) {
+      $partnerships = $this->get('field_partnership')->referencedEntities();
     }
 
     // Validate that there is a receiving authority.
-    if (empty($authorities)) {
+    if (empty($partnerships)) {
       throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
     }
 
-    return $authorities;
+    $primary_authorities = [];
+    foreach ($partnerships as $partnership) {
+      $primary_authorities = array_merge($primary_authorities, $partnership->getAuthority());
+    }
+
+    return array_filter($primary_authorities);
   }
 
   /**
    * {@inheritDoc}>
    */
   public function getReplies(): array {
-    $cids = \Drupal::entityQuery('comment')
-      ->condition('entity_id', $this->id())
-      ->condition('entity_type', $this->getEntityTypeId())
-      ->sort('cid', 'DESC')
-      ->execute();
-
-    return !empty($cids) ? Comment::loadMultiple($cids) : [];
+    /** @var CommentStorageInterface $comment_storage */
+    $comment_storage = \Drupal::entityTypeManager()->getStorage('comment');
+    $thread = $comment_storage->loadThread($this, 'messages', CommentManagerInterface::COMMENT_MODE_FLAT);
+    return array_values($thread);
   }
 
   /**

@@ -48,6 +48,13 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
   protected EmailValidatorInterface $emailValidator;
 
   /**
+   * The account object.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $currentUser;
+
+  /**
    * Constructs a ParLinkManager instance.
    *
    * @param \Traversable $namespaces
@@ -59,8 +66,10 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
    *   The module handler to invoke the alter hook with.
    * @param EmailValidatorInterface $email_validator
    *  The email validator service.
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *   The current user.
    */
-  public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler, EmailValidatorInterface $email_validator) {
+  public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler, EmailValidatorInterface $email_validator, AccountInterface $user) {
     parent::__construct(
       'Plugin/ParMessageSubscriber',
       $namespaces,
@@ -74,6 +83,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
     $this->factory = new DefaultFactory($this->getDiscovery());
 
     $this->emailValidator = $email_validator;
+    $this->currentUser = $user;
   }
 
   /**
@@ -84,6 +94,16 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
    */
   private function getRoleStorage(): RoleStorageInterface {
     return $this->roleStorage ?? \Drupal::entityTypeManager()->getStorage('user_role');
+  }
+
+  /**
+   * Get the current user.
+   *
+   * @return AccountInterface
+   *   The current user.
+   */
+  public function getCurrentUser(): AccountInterface {
+    return $this->currentUser;
   }
 
   /**
@@ -163,6 +183,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
    */
   public function getRecipients(MessageInterface $message): array {
     $email_validator = $this->getEmailValidator();
+    $current_user = $this->getCurrentUser();
     $recipients = [];
 
     /** @var ParMessageSubscriberInterface[] $subscribers */
@@ -185,6 +206,12 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
     // Validate the email addresses.
     $recipients = array_filter($recipients, function ($recipient) use ($email_validator) {
       return $email_validator->isValid($recipient->getEmail());
+    });
+
+    // Exclude the current user from receiving notifications of their own actions.
+    $recipients = array_filter($recipients, function ($recipient) use ($current_user) {
+      return !$current_user->getEmail() ||
+        $current_user->getEmail() != $recipient->getEmail();
     });
 
     // Only allow users (including anonymous) who have the permission to see this message.

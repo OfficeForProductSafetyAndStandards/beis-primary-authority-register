@@ -2,7 +2,8 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\comment\Entity\Comment;
+use Drupal\comment\CommentInterface;
+use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\ParDataException;
 
 /**
@@ -11,6 +12,17 @@ use Drupal\par_data\ParDataException;
  * @ingroup par_data
  */
 interface ParDataEnquiryInterface {
+
+  /**
+   * Get the person who created this enquiry.
+   *
+   * @throws ParDataException
+   *   Throws an exception if any of the mandatory primary data is missing.
+   *
+   * @return ParDataPersonInterface
+   *   The enforcement officer who created the enquiry.
+   */
+  public function creator(): ParDataPersonInterface;
 
   /**
    * Get the authority that is responsible for sending this enquiry.
@@ -37,7 +49,7 @@ interface ParDataEnquiryInterface {
    * @throws ParDataException
    *   Throws an exception if any of the mandatory primary data is missing.
    *
-   * @return Comment[]
+   * @return CommentInterface[]
    *   An array of comments, or an empty array.
    */
   public function getReplies(): array;

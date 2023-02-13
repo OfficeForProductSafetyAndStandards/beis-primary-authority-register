@@ -2,7 +2,8 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\comment\Entity\Comment;
+use Drupal\comment\CommentManagerInterface;
+use Drupal\comment\CommentStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\ParDataException;
@@ -76,6 +77,23 @@ class ParDataGeneralEnquiry extends ParDataEntity implements ParDataEnquiryInter
   /**
    * {@inheritdoc}
    */
+  public function creator(): ParDataPersonInterface {
+    if ($this->hasField('field_person') &&
+      !$this->get('field_person')->isEmpty()) {
+      $enforcing_officers = $this->get('field_person')->referencedEntities();
+    }
+
+    // Validate that there is an enforcement officer.
+    if (empty($enforcing_officers)) {
+      throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
+    }
+
+    return current($enforcing_officers);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function sender(): ParDataAuthority {
     if ($this->hasField('field_enforcing_authority')) {
       $enforcing_authorities = $this->get('field_enforcing_authority')->referencedEntities();
@@ -96,26 +114,30 @@ class ParDataGeneralEnquiry extends ParDataEntity implements ParDataEnquiryInter
     if ($this->hasField('field_primary_authority')) {
       $primary_authorities = $this->get('field_primary_authority')->referencedEntities();
     }
+    if ($this->hasField('field_partnership') && empty($primary_authorities)) {
+      $partnerships = $this->get('field_partnership')->referencedEntities();
+      $primary_authorities = [];
+      foreach ($partnerships as $partnership) {
+        $primary_authorities = array_merge($primary_authorities, $partnership->getAuthority());
+      }
+    }
 
     // Validate that there is a primary authority.
     if (empty($primary_authorities)) {
       throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
     }
 
-    return $primary_authorities;
+    return array_filter($primary_authorities);
   }
 
   /**
    * {@inheritDoc}>
    */
   public function getReplies(): array {
-    $cids = \Drupal::entityQuery('comment')
-      ->condition('entity_id', $this->id())
-      ->condition('entity_type', $this->getEntityTypeId())
-      ->sort('cid', 'DESC')
-      ->execute();
-
-    return !empty($cids) ? Comment::loadMultiple($cids) : [];
+    /** @var CommentStorageInterface $comment_storage */
+    $comment_storage = \Drupal::entityTypeManager()->getStorage('comment');
+    $thread = $comment_storage->loadThread($this, 'messages', CommentManagerInterface::COMMENT_MODE_FLAT);
+    return array_values($thread);
   }
 
   /**
