@@ -134,10 +134,8 @@ class ParNotificationTestBase extends ParDataTestBase
     // person_2 & person_3 are secondary contacts for the partnership that will be added to the partnership.
     // person_4 & person_5 are members of the authority only, they have no relationship to the partnership.
     $person_2 = ParDataPerson::create(['email' => "person_2@{$name}.com"] + $this->getPersonValues());
-    $person_2->set('field_notification_preferences', $this->preferences);
     $person_3 = ParDataPerson::create(['email' => "person_3@{$name}.com"] + $this->getPersonValues());
     $person_4 = ParDataPerson::create(['email' => "person_4@{$name}.com"] + $this->getPersonValues());
-    $person_4->set('field_notification_preferences', $this->preferences);
     $person_5 = ParDataPerson::create(['email' => "person_5@{$name}.com"] + $this->getPersonValues());
     $person_2->save();
     $person_3->save();
@@ -164,10 +162,8 @@ class ParNotificationTestBase extends ParDataTestBase
     // person_7 & person_8 are secondary contacts for the organisation that will be added to the partnership.
     // person_9 & person_10 are members of the organisation only, they have no relationship to the partnership.
     $person_7 = ParDataPerson::create(['email' => 'person_7@organisation.com'] + $this->getPersonValues());
-    $person_7->set('field_notification_preferences', $this->preferences);
     $person_8 = ParDataPerson::create(['email' => 'person_8@organisation.com'] + $this->getPersonValues());
     $person_9 = ParDataPerson::create(['email' => 'person_9@organisation.com'] + $this->getPersonValues());
-    $person_9->set('field_notification_preferences', $this->preferences);
     $person_10 = ParDataPerson::create(['email' => 'person_10@organisation.com'] + $this->getPersonValues());
     $person_7->save();
     $person_8->save();
