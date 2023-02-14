@@ -209,6 +209,9 @@
             },
             "drupal/views_data_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-03-01/allow-configurable-filesystems_3200974-6.patch"
+            },
+            "drupal/a11y_autocomplete_element": {
+                "Adds correct classes for Gov UK theme": "./patches/govuk-theme-classes.patch"
             }
         }
     },
