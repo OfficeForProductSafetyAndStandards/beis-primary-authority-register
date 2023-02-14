@@ -247,7 +247,6 @@ class ParReviewForm extends ParBaseForm {
     $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
     $cid_invitation = $this->getFlowNegotiator()->getFormKey('par_invite');
     $subscriptions_cid = $this->getFlowNegotiator()->getFormKey('subscription_preferences');
-    $notifications_cid = $this->getFlowNegotiator()->getFormKey('notification_preferences');
 
     // Subscribe and unsubscribe the user from the relevant subscription lists.
     $lists = $this->getSubscriptionManager()->getLists();
@@ -267,13 +266,6 @@ class ParReviewForm extends ParBaseForm {
           $subscription->unsubscribe();
         }
       }
-    }
-
-    // Set the user's notification preferences.
-    $notification_preferences = array_filter($this->getFlowDataHandler()->getTempDataValue('notification_preferences', $notifications_cid));
-
-    if ($par_data_person && $notification_preferences) {
-      $par_data_person->set('field_notification_preferences', array_values($notification_preferences));
     }
 
     $role = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
