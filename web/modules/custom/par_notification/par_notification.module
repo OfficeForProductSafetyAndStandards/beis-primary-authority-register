@@ -145,13 +145,6 @@ function par_notification_entity_base_field_info(EntityTypeInterface $entity_typ
       ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
       ->setSetting('target_type', 'par_data_organisation');
 
-//    // Calculates which field is the primary entity for this message.
-//    $fields['primary_data'] = BaseFieldDefinition::create('text')
-//      ->setName('primary_entity')
-//      ->setLabel(t('Primary entity'))
-//      ->setComputed(TRUE)
-//      ->setClass(bbb::class);
-
     // A boolean field to determine whether action is required.
     $fields['link'] = BaseFieldDefinition::create('link')
       ->setName('link')
@@ -165,13 +158,6 @@ function par_notification_entity_base_field_info(EntityTypeInterface $entity_typ
         'type' => 'link_default',
         'weight' => -2,
       ]);
-//
-//    // A link field to add the appropriate destination for the message.
-//    $fields['link'] = BaseFieldDefinition::create('link')
-//      ->setName('notification_link')
-//      ->setLabel(t('Notification Url'))
-//      ->setComputed(TRUE)
-//      ->setClass(ParNotificationLinkField::class);
   }
 
   return $fields;

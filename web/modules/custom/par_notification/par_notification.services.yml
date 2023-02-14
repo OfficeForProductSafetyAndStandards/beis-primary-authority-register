@@ -99,3 +99,20 @@ services:
     tags:
       - { name: 'event_subscriber' }
 
+  par_notification.partnership_confirmed_task_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\PartnershipConfirmedTaskSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_notification.partnership_nominated_task_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\PartnershipNominatedTaskSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_notification.deviation_reviewed_task_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\DeviationReviewedTaskSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_notification.enforcement_reviewed_task_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\EnforcementReviewedTaskSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+

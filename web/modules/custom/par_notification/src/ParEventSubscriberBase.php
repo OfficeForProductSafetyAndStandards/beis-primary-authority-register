@@ -6,6 +6,8 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\message\MessageInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\message\MessageTemplateInterface;
+use Drupal\message_expire\MessageExpiryManagerInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -55,6 +57,16 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
   }
 
   /**
+   * Get the message expiry service.
+   *
+   * @return MessageExpiryManagerInterface
+   *   The message expiry service.
+   */
+  public function getMessageExpiryService(): MessageExpiryManagerInterface {
+    return \Drupal::service('message_expire.manager');
+  }
+
+  /**
    * Getter for the event.
    */
   public function getEvent() {
@@ -66,6 +78,28 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
    */
   public function setEvent($event) {
     $this->event = $event;
+  }
+
+  /**
+   * Get the messages associated with this event.
+   */
+  public function getMessages($event) {
+    $entity = $event->getEntity();
+
+    /** @var MessageTemplateInterface $template */
+    $template = $this->getMessageHandler()->getMessageTemplateStorage()->load(static::MESSAGE_ID);
+    $field = $this->getMessageHandler()->getPrimaryField($template);
+
+    $messages = [];
+    if ($field && $template instanceof MessageTemplateInterface) {
+      $messages = $this->getMessageHandler()->getMessageStorage()
+        ->loadByProperties([
+          'template' => $template?->id(),
+          $field => $entity->id(),
+        ]);
+    }
+
+    return $messages;
   }
 
   /**
