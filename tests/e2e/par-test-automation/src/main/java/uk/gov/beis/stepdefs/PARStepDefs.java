@@ -39,6 +39,7 @@ import uk.gov.beis.pageobjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.EnforcementReviewPage;
 import uk.gov.beis.pageobjects.EnforcementSearchPage;
 import uk.gov.beis.pageobjects.HomePage;
+import uk.gov.beis.pageobjects.InspectionPlanDetailsPage;
 import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.LoginPage;
@@ -132,12 +133,14 @@ public class PARStepDefs {
 	private PartnershipCompletionPage parPartnershipCompletionPage;
 	private BusinessAddressDetailsPage parBusinessAddressDetailsPage;
 	private TradingPage tradingPage;
+	private InspectionPlanDetailsPage inspectionPlanDetailsPage;
 	private RestorePartnershipConfirmationPage restorePartnershipConfirmationPage;
 	private PartnershipRestoredPage partnershipRestoredPage;
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
-		driver = ScenarioContext.lastDriver; 
+		driver = ScenarioContext.lastDriver;
+		inspectionPlanDetailsPage = PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
 		uploadInspectionPlanPage = PageFactory.initElements(driver, UploadInspectionPlanPage.class);
 		inspectionPlanSearchPage = PageFactory.initElements(driver, InspectionPlanSearchPage.class);
 		removeEnforcementConfirmationPage = PageFactory.initElements(driver, RemoveEnforcementConfirmationPage.class);
@@ -648,15 +651,22 @@ public class PARStepDefs {
 		enforcementSearchPage.searchPartnerships();
 		Assert.assertTrue("Some results are returned indeed", enforcementSearchPage.confirmNoReturnedResults());
 	}
-	
-	@When("^the user uploads an inspection plan against the partnership$")
-	public void the_user_uploads_an_inspection_plan_against_the_partnership() throws Throwable {
-		LOG.info("Upload inspection plan");
-		partnershipAdvancedSearchPage.selectPartnershipLink();
-		parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
-		inspectionPlanSearchPage.selectUploadLink();
-		uploadInspectionPlanPage.chooseFile("link.txt");
-		uploadInspectionPlanPage.uploadFile();
-		
+
+	@When("^the user uploads an inspection plan against the partnership with the following details:$")
+	public void the_user_uploads_an_inspection_plan_against_the_partnership_with_the_following_details(DataTable dets)
+			throws Throwable {
+		LOG.info("Upload inspection plan and save details");
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			partnershipAdvancedSearchPage.selectPartnershipLink();
+			parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
+			inspectionPlanSearchPage.selectUploadLink();
+			uploadInspectionPlanPage.chooseFile("link.txt");
+			uploadInspectionPlanPage.uploadFile();
+			DataStore.saveValue(UsableValues.INSPECTIONPLAN_TITLE, data.get("Title"));
+			inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
+			DataStore.saveValue(UsableValues.INSPECTIONPLAN_DESCRIPTION, data.get("Description"));
+			inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
+			inspectionPlanDetailsPage.save();
+		}
 	}
 }

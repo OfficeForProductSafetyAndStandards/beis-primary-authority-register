@@ -125,6 +125,9 @@ Feature:
   Given the user is on the PAR login page
   And the user logs in with the "par_helpdesk@example.com" user credentials
   When the user searches for the last created partnership
-  And the user uploads an inspection plan against the partnership
+  And the user uploads an inspection plan against the partnership with the following details:
+   | Title	 							| Description		| 
+   | INspection Title 1		| Test 1	      | 
+  
   
   
