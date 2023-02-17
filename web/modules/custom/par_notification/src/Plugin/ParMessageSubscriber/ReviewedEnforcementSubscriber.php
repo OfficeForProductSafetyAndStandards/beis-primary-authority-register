@@ -40,13 +40,13 @@ class ReviewedEnforcementSubscriber extends ParMessageSubscriberBase {
     foreach ($enforcement_notices as $enforcement_notice) {
       // This message should be viewed by the enforcing authority
       // and the enforced organisation.
-      $subscribed_entities = array_merge(
+      $subscriptions = array_merge(
         $subscriptions,
         $enforcement_notice->getEnforcingAuthority() ?? [],
         $enforcement_notice->getEnforcedOrganisation() ?? [],
       );
     }
 
-    return $subscribed_entities ?? [];
+    return $subscriptions ?? [];
   }
 }

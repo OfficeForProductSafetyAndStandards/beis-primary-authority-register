@@ -96,6 +96,6 @@ class InspectionPlanExpirySubscriber extends ParMessageSubscriberBase {
       );
     }
 
-    return $subscribed_entities;
+    return $subscriptions;
   }
 }
