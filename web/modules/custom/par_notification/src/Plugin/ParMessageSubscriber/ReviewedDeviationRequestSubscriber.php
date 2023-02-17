@@ -34,32 +34,26 @@ class ReviewedDeviationRequestSubscriber extends ParMessageSubscriberBase {
     $recipients = parent::getRecipients($message);
 
     try {
-      /** @var ParDataEnquiryInterface $deviation_requests [] */
+      /** @var ParDataEnquiryInterface[] $deviation_requests */
       $deviation_requests = $this->getMessageHandler()->getPrimaryData($message);
-      /** @var ParDataPartnership[] $partnerships */
-      $partnerships = [];
-
-      foreach ($deviation_requests as $deviation_request) {
-        $partnerships = array_merge(
-          $partnerships,
-          $deviation_request->getPartnerships(),
-        );
-      }
     }
     catch (ParNotificationException|ParDataException $e) {
       return $recipients;
     }
 
-    foreach ($partnerships as $partnership) {
-      // This message should be sent to the primary authority contacts at the authority.
-      /** @var ParDataPersonInterface $people */
-      $people = $partnership->getAuthorityPeople();
-      foreach ($people as $key => $person) {
-        $recipients[] = new ParRecipient(
-          $person->getEmail(),
-          $person->getFirstName(),
-          $person
-        );
+    foreach ($deviation_requests as $deviation_request) {
+      if ($deviation_request instanceof ParDataEnquiryInterface) {
+        // This message should be sent to the enforcement officer who created the request.
+        try {
+          $creator = $deviation_request->creator();
+          $recipients[] = new ParRecipient(
+            $creator->getEmail(),
+            $creator->getFirstName(),
+            $creator
+          );
+        } catch (ParDataException $e) {
+
+        }
       }
     }
 
