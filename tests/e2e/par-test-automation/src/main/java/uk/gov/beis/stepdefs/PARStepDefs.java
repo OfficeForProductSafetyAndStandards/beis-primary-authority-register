@@ -672,7 +672,6 @@ public class PARStepDefs {
 			inspectionPlanDetailsPage.save();
 			inspectionPlanExpirationPage.enterDate("ddMMYYYY");
 			inspectionPlanExpirationPage.save();
-			System.exit(1);
 		}
 	}
 }
