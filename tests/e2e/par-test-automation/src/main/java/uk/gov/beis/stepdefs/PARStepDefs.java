@@ -670,7 +670,7 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.INSPECTIONPLAN_DESCRIPTION, data.get("Description"));
 			inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
 			inspectionPlanDetailsPage.save();
-			inspectionPlanExpirationPage.enterDate("DDMMYYYY");
+			inspectionPlanExpirationPage.enterDate("ddMMYYYY");
 			inspectionPlanExpirationPage.save();
 			System.exit(1);
 		}
