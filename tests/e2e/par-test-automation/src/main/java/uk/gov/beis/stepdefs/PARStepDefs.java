@@ -40,6 +40,7 @@ import uk.gov.beis.pageobjects.EnforcementReviewPage;
 import uk.gov.beis.pageobjects.EnforcementSearchPage;
 import uk.gov.beis.pageobjects.HomePage;
 import uk.gov.beis.pageobjects.InspectionPlanDetailsPage;
+import uk.gov.beis.pageobjects.InspectionPlanExpirationPage;
 import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.LoginPage;
@@ -103,6 +104,7 @@ public class PARStepDefs {
 	private UserProfileConfirmationPage userProfileConfirmationPage;
 	private UserNotificationPreferencesPage userNotificationPreferencesPage;
 	private MailLogPage mailLogPage;
+	private InspectionPlanExpirationPage inspectionPlanExpirationPage;
 	private AuthorityDashboardPage authoritiesDashboardPage;
 	private PartnershipApprovalPage partnershipApprovalPage;
 	private UserProfileCompletionPage userProfileCompletionPage;
@@ -140,6 +142,7 @@ public class PARStepDefs {
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		inspectionPlanExpirationPage = PageFactory.initElements(driver, InspectionPlanExpirationPage.class);
 		inspectionPlanDetailsPage = PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
 		uploadInspectionPlanPage = PageFactory.initElements(driver, UploadInspectionPlanPage.class);
 		inspectionPlanSearchPage = PageFactory.initElements(driver, InspectionPlanSearchPage.class);
@@ -667,6 +670,9 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.INSPECTIONPLAN_DESCRIPTION, data.get("Description"));
 			inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
 			inspectionPlanDetailsPage.save();
+			inspectionPlanExpirationPage.enterDate("DDMMYYYY");
+			inspectionPlanExpirationPage.save();
+			System.exit(1);
 		}
 	}
 }
