@@ -7,7 +7,6 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_authority_person
     - field.field.par_data_partnership.partnership.field_coordinated_business
     - field.field.par_data_partnership.partnership.field_inspection_plan
-    - field.field.par_data_partnership.partnership.field_legal_entity
     - field.field.par_data_partnership.partnership.field_organisation
     - field.field.par_data_partnership.partnership.field_organisation_person
     - field.field.par_data_partnership.partnership.field_partnership_legal_entity
@@ -236,7 +235,6 @@ hidden:
   coordinator_suitable: true
   cost_recovery: true
   deleted_reason: true
-  field_legal_entity: true
   inspection_plan: true
   name: true
   organisation_change_comment: true
