@@ -39,13 +39,13 @@ class NewInspectionPlanSubscriber extends ParEventSubscriberBase {
 
     /** @var ParDataInspectionPlan $entity */
     $entity = $event->getEntity();
-    $partnership_relationships = $entity->getRelationships('par_data_partnership');
+    $partnership_relationships = $entity->getRelationships('par_data_partnership', NULL, TRUE);
     $par_data_partnership = !empty($partnership_relationships) ? current($partnership_relationships)->getEntity() : NULL;
 
     // Only send messages for active general enquiries.
     if ($entity instanceof ParDataInspectionPlan &&
       $par_data_partnership instanceof ParDataPartnership &&
-      $entity->isActive()) {
+      $par_data_partnership->isActive()) {
 
       // Send the message.
       $arguments = [
