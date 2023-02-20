@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.par_data_person.person.field_notification_preferences
     - field.field.par_data_person.person.field_user_account
     - par_data.par_data_person_type.person
   module:
@@ -12,16 +11,6 @@ targetEntityType: par_data_person
 bundle: person
 mode: default
 content:
-  field_notification_preferences:
-    type: entity_reference_autocomplete
-    weight: 27
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   field_user_account:
     type: entity_reference_autocomplete
     weight: 26

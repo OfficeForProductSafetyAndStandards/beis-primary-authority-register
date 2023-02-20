@@ -1376,7 +1376,7 @@ function par_data_update_9005() {
     ->setLabel(t('Status'))
     ->setDescription(t('The status of the PAR entity.'))
     ->setComputed(TRUE)
-    ->setClass(\Drupal\par_data\Plugin\Field\FieldType\ParStatusField::class)
+    ->setClass(ParStatusField::class)
     ->setRevisionable(TRUE)
     ->setSettings([
       'max_length' => 255,

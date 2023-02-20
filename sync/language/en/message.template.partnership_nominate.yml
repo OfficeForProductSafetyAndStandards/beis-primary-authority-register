@@ -1,0 +1,4 @@
+text:
+  -
+    value: "<p>The <span>@partnership_label is now ready to be nominated.</span></p>\r\n"
+    format: basic_html

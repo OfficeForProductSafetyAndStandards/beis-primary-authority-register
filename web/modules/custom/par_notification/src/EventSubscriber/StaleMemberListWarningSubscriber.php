@@ -10,9 +10,9 @@ use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_data\ParDataRelationship;
 use Drupal\par_notification\ParNotificationException;
-use Drupal\par_notification\ParNotificationSubscriberBase;
+use Drupal\par_notification\ParEventSubscriberBase;
 
-class StaleMemberListWarningSubscriber extends ParNotificationSubscriberBase {
+class StaleMemberListWarningSubscriber extends ParEventSubscriberBase {
 
   /**
    * The message template ID created for this notification.
@@ -34,64 +34,24 @@ class StaleMemberListWarningSubscriber extends ParNotificationSubscriberBase {
   }
 
   /**
-   * Get all the recipients for this notification.
-   *
-   * @param $event
-   *
-   * @return ParDataPerson[]
-   */
-  public function getRecipients(ParDataEventInterface $event) {
-    /** @var ParDataEntityInterface $entity */
-    $entity = $event->getEntity();
-
-    // Notify secondary contacts if they've opted-in.
-    $contacts = $entity->getOrganisationPeople();
-
-    return $contacts;
-  }
-
-  /**
    * @param ParDataEventInterface $event
    */
   public function onEvent(ParDataEventInterface $event) {
-    /** @var ParDataEntityInterface par_data_partnership */
-    $par_data_partnership = $event->getEntity();
+    $this->setEvent($event);
 
-    $contacts = $this->getRecipients($event);
-    foreach ($contacts as $contact) {
-      if (!isset($this->recipients[$contact->getEmail()])) {
-        // Record the recipient so that we don't send them the message twice.
-        $this->recipients[$contact->getEmail()] = $contact;
-        // Try and get the user account associated with this contact.
-        $account = $contact->getUserAccount();
+    /** @var ParDataPartnership $entity */
+    $entity = $event->getEntity();
 
-        try {
-          /** @var Message $message */
-          $message = $this->createMessage();
-        }
-        catch (ParNotificationException $e) {
-          break;
-        }
+    // Only send messages for active coordinated partnerships.
+    if ($entity instanceof ParDataPartnership &&
+      $entity->isCoordinated() &&
+      $entity->isActive()) {
 
-        // Add contextual information to this message.
-        if ($message->hasField('field_partnership')) {
-          $message->set('field_partnership', $par_data_partnership);
-        }
-
-        // Add some custom arguments to this message.
-        $message->setArguments([
-          '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
-          '@first_name' => $contact->getFirstName(),
-        ]);
-
-        // The owner is the user who this message belongs to.
-        if ($account) {
-          $message->setOwnerId($account->id());
-        }
-
-        // Send the message.
-        $this->sendMessage($message, $contact->getEmail());
-      }
+      // Send the message.
+      $arguments = [
+        '@partnership_label' => $entity->label(),
+      ];
+      $this->sendMessage($arguments);
     }
   }
 }

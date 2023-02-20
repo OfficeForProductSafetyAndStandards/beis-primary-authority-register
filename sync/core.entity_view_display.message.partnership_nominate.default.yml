@@ -1,0 +1,31 @@
+uuid: 36dcbb2b-b6c4-4c38-bf9f-0204df46cd60
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.partnership_nominate.field_message_subject
+    - field.field.message.partnership_nominate.field_partnership
+    - field.field.message.partnership_nominate.field_to
+    - message.template.partnership_nominate
+id: message.partnership_nominate.default
+targetEntityType: message
+bundle: partnership_nominate
+mode: default
+content:
+  field_partnership:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_message_subject: true
+  field_to: true
+  search_api_excerpt: true

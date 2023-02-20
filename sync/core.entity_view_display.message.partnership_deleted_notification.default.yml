@@ -12,11 +12,11 @@ targetEntityType: message
 bundle: partnership_deleted_notification
 mode: default
 content:
-  field_message_subject:
-    type: string
-    label: hidden
+  field_partnership:
+    type: entity_reference_label
+    label: above
     settings:
-      link_to_entity: false
+      link: true
     third_party_settings: {  }
     weight: 1
     region: content
@@ -25,6 +25,13 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
+  partial_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
-  field_partnership: true
+  field_message_subject: true
   field_to: true
+  partial_2: true
+  search_api_excerpt: true

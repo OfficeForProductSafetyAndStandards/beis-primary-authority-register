@@ -9,6 +9,7 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\message\MessageInterface;
 use Drupal\message_notify\Exception\MessageNotifyException;
 use Drupal\message_notify\Plugin\Notifier\MessageNotifierBase;
+use Drupal\par_notification\Event\ParNotificationEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -84,6 +85,13 @@ class PlainEmail extends MessageNotifierBase {
   }
 
   /**
+   * Get the Event Dispatcher service.
+   */
+  public function getEventDispatcher() {
+    return \Drupal::service('event_dispatcher');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function deliver(array $output = []) {
@@ -104,6 +112,11 @@ class PlainEmail extends MessageNotifierBase {
     else {
       $language = $this->message->language()->getId();
     }
+
+    // Allow the message to be altered and personalised prior to sending.
+    $event = new ParNotificationEvent($this->message, $mail, $output);
+    $this->getEventDispatcher()->dispatch(ParNotificationEvent::SEND, $event);
+    $output = $event->getOutput();
 
     // The subject in an email can't be with HTML, so strip it.
     $output['mail_subject'] = trim(strip_tags($output['mail_subject']));

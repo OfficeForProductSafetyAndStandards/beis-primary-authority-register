@@ -29,6 +29,7 @@ services:
         - par-net
       volumes:
         - ./data/postgres:/var/lib/postgresql/data
+      shm_size: 500m
       environment:
         POSTGRES_USER: par
         POSTGRES_PASSWORD: 123456

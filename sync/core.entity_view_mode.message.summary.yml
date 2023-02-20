@@ -1,0 +1,10 @@
+uuid: 60ba324a-6f66-4d99-a995-7673563454c7
+langcode: en
+status: true
+dependencies:
+  module:
+    - message
+id: message.summary
+label: Summary
+targetEntityType: message
+cache: true

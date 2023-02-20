@@ -2,14 +2,14 @@
 
 namespace Drupal\par_data\Event;
 
+use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
-use Symfony\Component\EventDispatcher\Event;
 
 /**
- * The par data event.
+ * The event fired for crud operations on PAR Data entities.
  */
-class ParDataEvent extends Event implements ParDataEventInterface {
+class ParDataEvent extends EntityEvent implements ParDataEventInterface {
 
   /**
    * The name of the event triggered when an existing par entity is updated.
@@ -30,22 +30,8 @@ class ParDataEvent extends Event implements ParDataEventInterface {
    */
   const ENTITY_CUSTOM_ACTION = 'par_data.entity.custom_action';
 
-  /**
-   * The entity being enacted upon.
-   *
-   * @var ParDataEntityInterface
-   */
-  protected $entity;
-
-  public function __construct(EntityInterface $entity) {
-    $this->entity = $entity;
-  }
-
-  /**
-   * @return ParDataEntityInterface
-   */
-  public function getEntity() {
-    return $this->entity;
+  public function __construct(ParDataEntityInterface $entity) {
+    parent::__construct($entity);
   }
 
   /**
@@ -58,7 +44,7 @@ class ParDataEvent extends Event implements ParDataEventInterface {
    *
    * @return string
    */
-  public static function statusChange($entity_type_id, $status) {
+  public static function statusChange(string $entity_type_id, string $status): string {
     return implode('.', [self::STATUS_CHANGE, $entity_type_id, $status]);
   }
 
@@ -72,7 +58,7 @@ class ParDataEvent extends Event implements ParDataEventInterface {
    *
    * @return string
    */
-  public static function customAction($entity_type, $action) {
+  public static function customAction(string $entity_type, string $action): string {
     return implode('.', [self::ENTITY_CUSTOM_ACTION, $entity_type, $action]);
   }
 

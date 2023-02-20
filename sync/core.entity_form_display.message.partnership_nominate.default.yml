@@ -1,0 +1,43 @@
+uuid: 5dffe8c5-e2fb-46c8-ad49-830d0342a259
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.partnership_nominate.field_message_subject
+    - field.field.message.partnership_nominate.field_partnership
+    - field.field.message.partnership_nominate.field_to
+    - message.template.partnership_nominate
+  module:
+    - link
+id: message.partnership_nominate.default
+targetEntityType: message
+bundle: partnership_nominate
+mode: default
+content:
+  field_message_subject:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_partnership:
+    type: entity_reference_autocomplete
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_to:
+    type: email_default
+    weight: -1
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+hidden: {  }

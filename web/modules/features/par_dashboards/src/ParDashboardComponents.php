@@ -7,8 +7,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
-use Drupal\Core\Entity\ContentEntityType;
-use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\Query\ConditionInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\RendererInterface;
@@ -16,16 +15,12 @@ use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\file\FileInterface;
-use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\ParDataManager;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\user\Entity\User;
-use Drupal\user\UserInterface;
+use Drupal\message\MessageInterface;
 
 /**
 * Manages all functionality universal to Par Data.
@@ -92,6 +87,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
    */
   public static function trustedCallbacks() {
     return [
+      'viewOutstandingTasksComponent',
       'managePartnershipComponent',
       'searchPartnershipComponent',
       'messagesComponent',

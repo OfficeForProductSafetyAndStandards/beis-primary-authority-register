@@ -34,14 +34,6 @@ Feature: New Direct Partnership For PA To Approve
         When I click on the checkbox "#edit-subscriptions-par-news"
         And I click on the button "#edit-next"
 
-        Then the element "h1.heading-xlarge" contains the text "Update notification preferences"
-        When I click on the checkbox "#edit-notification-preferences-new-deviation-response"
-        When I click on the checkbox "#edit-notification-preferences-new-enquiry-response"
-        When I click on the checkbox "#edit-notification-preferences-new-inspection-feedback-response"
-        When I click on the checkbox "#edit-notification-preferences-reviewed-deviation-request"
-        When I click on the checkbox "#edit-notification-preferences-reviewed-enforcement"
-        And I click on the button "#edit-next"
-
         Then the element "h1.heading-xlarge" contains the text "Profile review"
         And the element "#edit-name" contains the text "Dr Harry Bloggs"
         And the element "#edit-work-phone" contains the text "01865999000 (preferred)"
@@ -80,12 +72,6 @@ Feature: New Direct Partnership For PA To Approve
 
         Then the element "h1.heading-xlarge" contains the text "Update subscriptions"
         When I click on the checkbox "#edit-subscriptions-par-news"
-        And I click on the button "#edit-next"
-
-        Then the element "h1.heading-xlarge" contains the text "Update notification preferences"
-        When I click on the checkbox "#edit-notification-preferences-new-deviation-response"
-        When I click on the checkbox "#edit-notification-preferences-new-enquiry-response"
-        When I click on the checkbox "#edit-notification-preferences-reviewed-enforcement"
         And I click on the button "#edit-next"
 
         Then the element "h1.heading-xlarge" contains the text "Profile review"
