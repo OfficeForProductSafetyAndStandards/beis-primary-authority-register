@@ -7,8 +7,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class InspectionPlanSearchPage extends BasePageObject{
-	
+import uk.gov.beis.enums.UsableValues;
+import uk.gov.beis.utility.DataStore;
+
+public class InspectionPlanSearchPage extends BasePageObject {
+
 	public InspectionPlanSearchPage() throws ClassNotFoundException, IOException {
 		super();
 	}
@@ -19,6 +22,12 @@ public class InspectionPlanSearchPage extends BasePageObject{
 	public UploadInspectionPlanPage selectUploadLink() {
 		uploadBtn.click();
 		return PageFactory.initElements(driver, UploadInspectionPlanPage.class);
+	}
+
+	String planstatus = "//td/a[contains(text(),'?')]/parent::td/following-sibling::td[1]";
+
+	public String getPlanStatus() {
+		return driver.findElement(By.xpath(planstatus.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE)))).getText();
 	}
 
 }

@@ -668,10 +668,15 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.INSPECTIONPLAN_TITLE, data.get("Title"));
 			inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
 			DataStore.saveValue(UsableValues.INSPECTIONPLAN_DESCRIPTION, data.get("Description"));
-			inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
+			inspectionPlanDetailsPage
+					.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
 			inspectionPlanDetailsPage.save();
 			inspectionPlanExpirationPage.enterDate("ddMMYYYY");
 			inspectionPlanExpirationPage.save();
+			LOG.info("Check inspection plan status is set to \"Current\"");
+			Assert.assertTrue("Failed: Status not set to \"Current\"",
+					inspectionPlanSearchPage.getPlanStatus().equalsIgnoreCase("Current"));
+
 		}
 	}
 }
