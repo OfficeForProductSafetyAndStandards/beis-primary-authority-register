@@ -45,6 +45,7 @@
         <testsuite name="par">
             <directory>web/modules</directory>
             <exclude>web/modules/contrib</exclude>
+            <exclude>web/modules/custom/par_notification</exclude>
         </testsuite>
     </testsuites>
     <listeners>

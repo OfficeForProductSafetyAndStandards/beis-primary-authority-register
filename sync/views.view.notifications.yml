@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - message.template.new_deviation_response
+    - message.template.new_deviation_request
     - message.template.new_enforcement_notification
     - message.template.new_partnership_notification
     - message.template.partnership_nominate
@@ -356,7 +356,7 @@ display:
                 advanced:
                   sort_options: false
                   rewrite:
-                    filter_rewrite_values: ''
+                    filter_rewrite_values: "- Any -|- Any -\r\nNew Enforcement Notification|Notification of enforcement action needs approval\r\nNew deviation request|Deviation request needs approval\r\nNew partnership notification|Partnership application needs to be completed\r\nPartnership Nominate|Partnership application needs nomination"
                   collapsible: false
                   is_secondary: false
       access:
@@ -438,14 +438,14 @@ display:
           operator: in
           value:
             new_enforcement_notification: new_enforcement_notification
-            new_deviation_response: new_deviation_response
+            new_deviation_request: new_deviation_request
             new_partnership_notification: new_partnership_notification
             partnership_nominate: partnership_nominate
           group: 1
           exposed: true
           expose:
             operator_id: template_op
-            label: 'Notification type'
+            label: 'Task type'
             description: ''
             use_operator: false
             operator: template_op
