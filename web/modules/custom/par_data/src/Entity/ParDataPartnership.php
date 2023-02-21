@@ -682,8 +682,26 @@ class ParDataPartnership extends ParDataEntity {
    *
    * @return ParDataPartnershipLegalEntity[]
    */
-  public function getPartnershipLegalEntities($active = FALSE) {
+  public function getPartnershipLegalEntities($active = FALSE, $status = 'confirm_rd') {
+
+    /* @var ParDataPartnershipLegalEntity[] $partnership_legal_entities */
     $partnership_legal_entities = $this->get('field_partnership_legal_entity')->referencedEntities();
+
+    // Filter.
+    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) use ($active, $status) {
+
+      // Exclude inactive if requested.
+      if ($active && !$partnership_legal_entity->isActive()) {
+        return FALSE;
+      }
+
+      // Return only PLE with specific partnership legal entity status if requested.
+      if ($partnership_legal_entity->getPartnershipLegalEntityStatusRaw() != $status) {
+        return FALSE;
+      }
+
+      return TRUE;
+    });
 
     // Retain only the active partnership legal entities.
     if ($active) {

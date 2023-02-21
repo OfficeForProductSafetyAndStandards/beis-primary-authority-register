@@ -5,7 +5,6 @@
  */
 
 use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\link\LinkItemInterface;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -18,7 +17,6 @@ use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_data\Plugin\Field\FieldType\ParLabelField;
 use Drupal\par_data\Plugin\Field\FieldType\ParStatusField;
-use Drush\Drush;
 
 /**
  * Implements hook_install().
@@ -1378,7 +1376,7 @@ function par_data_update_9005() {
     ->setLabel(t('Status'))
     ->setDescription(t('The status of the PAR entity.'))
     ->setComputed(TRUE)
-    ->setClass(ParStatusField::class)
+    ->setClass(\Drupal\par_data\Plugin\Field\FieldType\ParStatusField::class)
     ->setRevisionable(TRUE)
     ->setSettings([
       'max_length' => 255,
@@ -1423,74 +1421,39 @@ function par_data_update_9006() {
 }
 
 /**
- * PAR-1943: Add the new registry field to par_data_legal_entity entity.
+ * PAR-2038 Create partnership amend process state fields.
  */
-function par_data_update_9007() {
+function par_data_update_9008() {
 
-  // Adding new field definitions to an entity.
-  // @see https://www.drupal.org/node/3034742#comment-14054069
-  $module_name = 'par_data';
-  $entity_type = 'par_data_legal_entity';
-  $fields = [
-    'registry',
-  ];
+  $entity_definition_manager = \Drupal::service('entity.definition_update_manager');
 
-  \Drupal::entityTypeManager()->clearCachedDefinitions();
+  $entity_type_id = 'par_data_partnership_le';
+  $field_name = 'partnership_legal_entity_status';
 
-  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
-  $field_definitions = \Drupal::service('entity_field.manager')
-    ->getFieldDefinitions($entity_type, $entity_type);
-  foreach ($fields as $field_name) {
-    if (!empty($field_definitions[$field_name]) && $field_definitions[$field_name] instanceof FieldStorageDefinitionInterface) {
-      $entity_definition_update_manager
-        ->installFieldStorageDefinition(
-          $field_name,
-          $entity_type,
-          $module_name,
-          $field_definitions[$field_name]);
-    }
-  }
+  // Add the partnership_legal_entity_status field.
+  $definition = BaseFieldDefinition::create('list_string')
+    ->setLabel(t('Partnership legal entity status'))
+    ->setDescription(t('The status of this partnership legal entity entity.'))
+    ->setDefaultValue('confirmed_rd')
+    ->setSettings([
+      'allowed_values' => [
+        'awaiting_review' => 'Awaiting review',
+        'confirmed_authority' => 'Confirmed by authority',
+        'confirmed_business' => 'Confirmed by business',
+        'confirmed_rd' => 'Active',
+      ],
+    ])
+    ->setDisplayOptions('view', [
+      'label' => 'visible',
+      'type' => 'list_default',
+      'weight' => 5,
+    ])
+    ->setDisplayOptions('form', [
+      'type' => 'options_select',
+      'weight' => 5,
+    ])
+    ->setDisplayConfigurable('view', TRUE)
+    ->setDisplayConfigurable('form', TRUE);
+
+  $entity_definition_manager->installFieldStorageDefinition($field_name, $entity_type_id, $entity_type_id, $definition);
 }
-
-/**
- * PAR-1943: Initialise new registry field on par_data_legal_entity entity.
- */
-function par_data_update_9008(&$sandbox) {
-
-  // All we need to do is to re-save all par_legal_entity entities.
-
-  // First time through set up batches of legal entities to process.
-  $batch_size = 100;
-  if (!isset($sandbox['total'])) {
-
-    $query = \Drupal::entityQuery('par_data_legal_entity');
-    $entity_ids = $query->execute();
-
-    // Set initial sandbox values.
-    $sandbox['batches'] = array_chunk($entity_ids, $batch_size);
-    $sandbox['current_batch'] = 0;
-    $sandbox['total'] = count($entity_ids);
-    $sandbox['count'] = 0;
-  }
-
-  // Process the current batch of legal entities.
-  $entity_ids = $sandbox['batches'][$sandbox['current_batch']];
-  $legal_entity_storage = \Drupal::entityTypeManager()->getStorage('par_data_legal_entity');
-  $legal_entities = $legal_entity_storage->loadMultiple($entity_ids);
-  foreach ($legal_entities as $legal_entity) {
-    $legal_entity->save();
-    $sandbox['count']++;
-  }
-  $sandbox['current_batch']++;
-
-  $message = "{$sandbox['count']} of {$sandbox['total']} legal entities updated, batch {$sandbox['current_batch']} complete.";
-
-  if ($sandbox['count'] >= $sandbox['total']) {
-    $sandbox['#finished'] = 1;
-  } else {
-    $sandbox['#finished'] = ($sandbox['count'] / $sandbox['total']);
-  }
-
-  return t($message);
-}
-
