@@ -263,6 +263,27 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
+   * Returns the internal value of the partnership_legal_entity_status base field.
+   *
+   * @return string
+   */
+  public function getPartnershipLegalEntityStatusRaw() {
+    return $this->get('partnership_legal_entity_status')->getString();
+  }
+
+
+  /**
+   * Returns the display value of the partnership_legal_entity_status base field.
+   *
+   * @return string
+   */
+  public function getPartnershipLegalEntityStatus() {
+    $value = $this->getPartnershipLegalEntityStatusRaw();
+    $type = !empty($value) ? $this->getTypeEntity()->getAllowedFieldlabel('partnership_legal_entity_status', $value) : NULL;
+    return $type;
+  }
+
+  /**
    * Test whether the partnership_legal_entity is active during a given period.
    *
    * @param DrupalDateTime | NULL $period_from
@@ -307,6 +328,33 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
+
+    // Partnership legal entity Status.
+    $fields['partnership_legal_entity_status'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Partnership Legal Entity Status'))
+      ->setDescription(t('The current status of the partnership legal entity itself.'))
+      ->addConstraint('par_required')
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'allowed_values' => [
+          'awaiting_review' => 'Awaiting review',
+          'confirmed_authority' => 'Confirmed by authority',
+          'confirmed_business' => 'Confirmed by business',
+          'confirmed_rd' => 'Active',
+        ],
+      ])
+      ->setDefaultValue('confirmed_rd')
+      ->setDisplayOptions('view', [
+        'label' => 'visible',
+        'type' => 'list_default',
+        'weight' => 5,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'options_select',
+        'weight' => 5,
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayConfigurable('form', TRUE);
 
     // Partnership legal entity approval date.
     $fields['date_legal_entity_approved'] = BaseFieldDefinition::create('datetime')
