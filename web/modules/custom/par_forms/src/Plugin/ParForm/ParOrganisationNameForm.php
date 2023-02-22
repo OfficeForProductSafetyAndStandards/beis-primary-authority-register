@@ -19,7 +19,7 @@ class ParOrganisationNameForm extends ParFormPluginBase {
    */
   protected $entityMapping = [
     ['name', 'par_data_organisation', 'organisation_name', NULL, NULL, 0, [
-      'You must fill in the missing information.' => "You must enter the organisation's name."
+      'You must fill in the missing information.' => "You must enter the organisations name."
     ]],
   ];
 

@@ -25,7 +25,7 @@
 {% for type, messages in message_list %}
   <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes|without('role', 'aria-label') }}>
     {% if type == 'error' %}
-    <div role="group" class="error-summary" tabindex="-1">
+    <div role="alert" class="govuk-error-summary">
     {% endif %}
 
       {% if status_headings[type] %}
@@ -33,8 +33,8 @@
       {% endif %}
 
       {% if type == 'error' %}
-      <h2 class="heading-medium error-summary-heading" id="error-summary-heading-example-1">
-        Please resolve the errors below
+      <h2 class="govuk-error-summary__title" id="error-summary-heading-example-1">
+        There is a problem
       </h2>
       {% endif %}
 

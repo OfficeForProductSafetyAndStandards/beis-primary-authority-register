@@ -1,0 +1,407 @@
+diff --git a/core/lib/Drupal/Core/Form/FormElementHelper.php b/core/lib/Drupal/Core/Form/FormElementHelper.php
+index a121127..3655657 100644
+--- a/core/lib/Drupal/Core/Form/FormElementHelper.php
++++ b/core/lib/Drupal/Core/Form/FormElementHelper.php
+@@ -60,4 +60,28 @@ public static function getElementTitle(array $element) {
+     return $title;
+   }
+ 
++  /**
++   * Returns the error for the element.
++   *
++   * @param array $element
++   *   An associative array containing the properties of the form element.
++   *
++   * @return string
++   *   The error of the element, or an empty string if none is found.
++   */
++  public static function getElementError(array $element) {
++    $error = '';
++    if (isset($element['#error'])) {
++      $error = $element['#error'];
++    }
++    else {
++      foreach (Element::children($element) as $key) {
++        if ($error = static::getElementError($element[$key])) {
++          break;
++        }
++      }
++    }
++    return $error;
++  }
++
+ }
+diff --git a/core/lib/Drupal/Core/Form/FormErrorHandler.php b/core/lib/Drupal/Core/Form/FormErrorHandler.php
+index dfb52c0..b8c65b2 100644
+--- a/core/lib/Drupal/Core/Form/FormErrorHandler.php
++++ b/core/lib/Drupal/Core/Form/FormErrorHandler.php
+@@ -5,6 +5,8 @@
+ use Drupal\Component\Utility\NestedArray;
+ use Drupal\Core\Messenger\MessengerTrait;
+ use Drupal\Core\Render\Element;
++use Drupal\Core\Render\RendererInterface;
++use Symfony\Component\DependencyInjection\ContainerInterface;
+ 
+ /**
+  * Handles form errors.
+@@ -14,6 +16,32 @@ class FormErrorHandler implements FormErrorHandlerInterface {
+   use MessengerTrait;
+ 
+   /**
++   * The renderer service.
++   *
++   * @var \Drupal\Core\Render\RendererInterface
++   */
++  protected $renderer;
++
++  /**
++   * Constructs a FormErrorHandler instance.
++   *
++   * @param \Drupal\Core\Render\RendererInterface $renderer
++   *   The renderer service.
++   */
++  public function __construct(RendererInterface $renderer) {
++    $this->renderer = $renderer;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container) {
++    return new static(
++      $container->get('renderer')
++    );
++  }
++
++  /**
+    * {@inheritdoc}
+    */
+   public function handleFormErrors(array &$form, FormStateInterface $form_state) {
+@@ -39,10 +67,34 @@ public function handleFormErrors(array &$form, FormStateInterface $form_state) {
+    */
+   protected function displayErrorMessages(array $form, FormStateInterface $form_state) {
+     $errors = $form_state->getErrors();
+-
+-    // Loop through all form errors and set an error message.
+-    foreach ($errors as $error) {
+-      $this->messenger()->addMessage($error, 'error');
++    $items = [
++      '#theme' => 'item_list',
++      '#items' => [],
++      '#list_type' => 'ul',
++    ];
++    // Loop through all form errors and sets an ID & error messages.
++    foreach ($errors as $name => $error) {
++      $form_element = FormElementHelper::getElementByName($name, $form);
++      $has_id = !empty($form_element['#id']);
++      if ($has_id) {
++        $items['#wrapper_attributes'] = [
++          'id' => $form_element['#id'] . '--error-message',
++        ];
++      }
++      $message = [
++        'message' => [
++          '#markup' => $error,
++        ],
++        'items' => $items,
++      ];
++      if ($has_id) {
++        // Render the error messages as HTML.
++        $message = $this->renderer->renderPlain($message);
++        $this->messenger()->addMessage($message, 'error');
++      }
++      else {
++        $this->messenger()->addMessage($error, 'error');
++      }
+     }
+   }
+ 
+@@ -163,6 +215,11 @@ protected function setElementErrorsFromFormState(array &$form, FormStateInterfac
+ 
+     // Store the errors for this element on the element directly.
+     $elements['#errors'] = $form_state->getError($elements);
++
++    // Add aria-describedby attribute to the form element.
++    if ((($elements['#errors']) !== NULL) && (($elements['#type']) !== 'radio') && (($elements['#type']) !== 'checkbox')) {
++      $elements['#attributes']['aria-describedby'] = $elements['#id'] . '--status-message';
++    }
+   }
+ 
+ }
+diff --git a/core/modules/inline_form_errors/inline_form_errors.module b/core/modules/inline_form_errors/inline_form_errors.module
+index 3bacd37..64741f2 100644
+--- a/core/modules/inline_form_errors/inline_form_errors.module
++++ b/core/modules/inline_form_errors/inline_form_errors.module
+@@ -7,6 +7,7 @@
+ 
+ use Drupal\Core\Routing\RouteMatchInterface;
+ use Drupal\inline_form_errors\RenderElementHelper;
++use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+ 
+ /**
+  * Implements hook_help().
+@@ -71,3 +72,17 @@ function _inline_form_errors_set_errors(&$variables) {
+     $variables['errors'] = $element['#errors'];
+   }
+ }
++
++/**
++ * Implements hook_preprocess_html().
++ */
++function inline_form_errors_preprocess_html(&$variables) {
++  $messenger = \Drupal::messenger();
++  $all_messages = $messenger->all();
++
++  if (!empty($all_messages['error'])) {
++    $variables['head_title']['title'] = t('Error: @current_title', [
++      '@current_title' => $variables['head_title']['title']
++    ]);
++  }
++}
+diff --git a/core/modules/inline_form_errors/src/FormErrorHandler.php b/core/modules/inline_form_errors/src/FormErrorHandler.php
+index 23cef62..a9ae856 100644
+--- a/core/modules/inline_form_errors/src/FormErrorHandler.php
++++ b/core/modules/inline_form_errors/src/FormErrorHandler.php
+@@ -79,13 +79,13 @@ protected function displayErrorMessages(array $form, FormStateInterface $form_st
+     // Loop through all form errors and check if we need to display a link.
+     foreach ($errors as $name => $error) {
+       $form_element = FormElementHelper::getElementByName($name, $form);
+-      $title = FormElementHelper::getElementTitle($form_element);
++      $title = strip_tags(FormElementHelper::getElementError($form_element));
+ 
+       // Only show links to erroneous elements that are visible.
+       $is_visible_element = Element::isVisibleElement($form_element);
+       // Only show links for elements that have a title themselves or have
+       // children with a title.
+-      $has_title = !empty($title);
++      $has_error = !empty($error);
+       // Only show links for elements with an ID.
+       $has_id = !empty($form_element['#id']);
+ 
+@@ -94,10 +94,11 @@ protected function displayErrorMessages(array $form, FormStateInterface $form_st
+       if (!empty($form_element['#error_no_message'])) {
+         unset($errors[$name]);
+       }
+-      elseif ($is_visible_element && $has_title && $has_id) {
+-        $error_links[] = Link::fromTextAndUrl($title, Url::fromRoute('<none>', [], ['fragment' => $form_element['#id'], 'external' => TRUE]))->toRenderable();
++      elseif ($is_visible_element && $has_error && $has_id) {
++        $error_links[] = Link::fromTextAndUrl($title . strip_tags($error), Url::fromRoute('<none>', [], ['fragment' => $form_element['#id'], 'external' => TRUE]))->toRenderable();
+         unset($errors[$name]);
+       }
++
+     }
+ 
+     // Set normal error messages for all remaining errors.
+@@ -108,12 +109,9 @@ protected function displayErrorMessages(array $form, FormStateInterface $form_st
+     if (!empty($error_links)) {
+       $render_array = [
+         [
+-         '#markup' => $this->formatPlural(count($error_links), '1 error has been found: ', '@count errors have been found: '),
+-        ],
+-        [
+           '#theme' => 'item_list',
+           '#items' => $error_links,
+-          '#context' => ['list_style' => 'comma-list'],
++          '#context' => ['list_style' => 'govuk-error-summary__list'],
+         ],
+       ];
+       $message = $this->renderer->renderPlain($render_array);
+diff --git a/core/modules/inline_form_errors/tests/src/Unit/FormErrorHandlerTest.php b/core/modules/inline_form_errors/tests/src/Unit/FormErrorHandlerTest.php
+index 962f107..79353a1 100644
+--- a/core/modules/inline_form_errors/tests/src/Unit/FormErrorHandlerTest.php
++++ b/core/modules/inline_form_errors/tests/src/Unit/FormErrorHandlerTest.php
+@@ -174,8 +174,11 @@ public function testErrorMessagesNotInline() {
+         ['this missing element is invalid', 'error', FALSE],
+       );
+ 
+-    $this->renderer->expects($this->never())
+-      ->method('renderPlain');
++    $this->renderer->expects($this->any())
++      ->method('renderPlain')
++      ->will($this->returnCallback(function ($message) {
++        return $message['message']['#markup'];
++      }));
+ 
+     $this->testForm['#disable_inline_form_errors'] = TRUE;
+ 
+diff --git a/core/tests/Drupal/Tests/Core/Form/FormElementHelperTest.php b/core/tests/Drupal/Tests/Core/Form/FormElementHelperTest.php
+index 9a6a5bf..55c2de6 100644
+--- a/core/tests/Drupal/Tests/Core/Form/FormElementHelperTest.php
++++ b/core/tests/Drupal/Tests/Core/Form/FormElementHelperTest.php
+@@ -1,174 +1 @@
+-<?php
+-
+-namespace Drupal\Tests\Core\Form;
+-
+-use Drupal\Core\Form\FormElementHelper;
+-use Drupal\Tests\UnitTestCase;
+-
+-/**
+- * Tests the form element helper.
+- *
+- * @group Drupal
+- * @group Form
+- *
+- * @coversDefaultClass \Drupal\Core\Form\FormElementHelper
+- */
+-class FormElementHelperTest extends UnitTestCase {
+-
+-  /**
+-   * Tests the getElementByName() method.
+-   *
+-   * @covers ::getElementByName
+-   *
+-   * @dataProvider getElementByNameProvider
+-   */
+-  public function testGetElementByName($name, $form, $expected) {
+-    $this->assertSame($expected, FormElementHelper::getElementByName($name, $form));
+-  }
+-
+-  /**
+-   * Provides test data.
+-   */
+-  public function getElementByNameProvider() {
+-    $data = [];
+-    $data[] = ['id', [], []];
+-    $data[] = [
+-      'id',
+-      [
+-        'id' => [
+-          '#title' => 'ID',
+-          '#parents' => ['id'],
+-        ],
+-      ],
+-      [
+-        '#title' => 'ID',
+-        '#parents' => ['id'],
+-      ],
+-    ];
+-    $data[] = [
+-      'id',
+-      [
+-        'fieldset' => [
+-          'id' => [
+-            '#title' => 'ID',
+-            '#parents' => ['id'],
+-          ],
+-          '#parents' => ['fieldset'],
+-        ],
+-      ],
+-      [
+-        '#title' => 'ID',
+-        '#parents' => ['id'],
+-      ],
+-    ];
+-    $data[] = [
+-      'fieldset',
+-      [
+-        'fieldset' => [
+-          'id' => [
+-            '#title' => 'ID',
+-            '#parents' => ['id'],
+-          ],
+-          '#parents' => ['fieldset'],
+-        ],
+-      ],
+-      [
+-        'id' => [
+-          '#title' => 'ID',
+-          '#parents' => ['id'],
+-        ],
+-        '#parents' => ['fieldset'],
+-      ],
+-    ];
+-    $data[] = [
+-      'fieldset][id',
+-      [
+-        'fieldset' => [
+-          '#tree' => TRUE,
+-          'id' => [
+-            '#title' => 'ID',
+-            '#parents' => ['fieldset', 'id'],
+-          ],
+-          '#parents' => ['fieldset'],
+-        ],
+-      ],
+-      [
+-        '#title' => 'ID',
+-        '#parents' => ['fieldset', 'id'],
+-      ],
+-    ];
+-    return $data;
+-  }
+-
+-  /**
+-   * Tests the getElementTitle() method.
+-   *
+-   * @covers ::getElementTitle
+-   *
+-   * @dataProvider getElementTitleProvider
+-   */
+-  public function testGetElementTitle($name, $form, $expected) {
+-    $element = FormElementHelper::getElementByName($name, $form);
+-    $this->assertSame($expected, FormElementHelper::getElementTitle($element));
+-  }
+-
+-  /**
+-   * Provides test data.
+-   */
+-  public function getElementTitleProvider() {
+-    $data = [];
+-    $data[] = ['id', [], ''];
+-    $data[] = [
+-      'id',
+-      [
+-        'id' => [
+-          '#title' => 'ID',
+-          '#parents' => ['id'],
+-        ],
+-      ],
+-      'ID',
+-    ];
+-    $data[] = [
+-      'id',
+-      [
+-        'fieldset' => [
+-          'id' => [
+-            '#title' => 'ID',
+-            '#parents' => ['id'],
+-          ],
+-          '#parents' => ['fieldset'],
+-        ],
+-      ],
+-      'ID',
+-    ];
+-    $data[] = [
+-      'fieldset',
+-      [
+-        'fieldset' => [
+-          'id' => [
+-            '#title' => 'ID',
+-            '#parents' => ['id'],
+-          ],
+-          '#parents' => ['fieldset'],
+-        ],
+-      ],
+-      'ID',
+-    ];
+-    $data[] = [
+-      'fieldset][id',
+-      [
+-        'fieldset' => [
+-          '#tree' => TRUE,
+-          'id' => [
+-            '#title' => 'ID',
+-            '#parents' => ['fieldset', 'id'],
+-          ],
+-          '#parents' => ['fieldset'],
+-        ],
+-      ],
+-      'ID',
+-    ];
+-    return $data;
+-  }
+-
+-}
++<?phpnamespace Drupal\Tests\inline_form_errors\Unit;use Drupal\Core\Form\FormState;use Drupal\Core\Messenger\MessengerInterface;use Drupal\Core\Render\RendererInterface;use Drupal\inline_form_errors\FormErrorHandler;use Drupal\Tests\UnitTestCase;/** * @coversDefaultClass \Drupal\inline_form_errors\FormErrorHandler * @group InlineFormErrors */class FormErrorHandlerTest extends UnitTestCase {  /**   * The form error handler.   *   * @var \Drupal\inline_form_errors\FormErrorHandler   */  protected $formErrorHandler;  /**   * The messenger.   *   * @var \Drupal\Core\Messenger\MessengerInterface|\PHPUnit\Framework\MockObject\MockObject   */  protected $messenger;  /**   * The renderer.   *   * @var \Drupal\Core\Render\RendererInterface|\PHPUnit\Framework\MockObject\MockObject   */  protected $renderer;  /**   * The link generator.   *   * @var \Drupal\Core\Utility\LinkGeneratorInterface|\PHPUnit\Framework\MockObject\MockObject   */  protected $linkGenerator;  /**   * Form for testing.   *   * @var array   */  protected $testForm;  /**   * {@inheritdoc}   */  protected function setUp(): void {    parent::setUp();    $this->renderer = $this->createMock(RendererInterface::class);    $this->messenger = $this->createMock(MessengerInterface::class);    $this->formErrorHandler = new FormErrorHandler($this->getStringTranslationStub(), $this->renderer, $this->messenger);    $this->testForm = [      '#parents' => [],      '#form_id' => 'test_form',      '#array_parents' => [],    ];    $this->testForm['test1'] = [      '#type' => 'textfield',      '#title' => 'Test 1',      '#parents' => ['test1'],      '#array_parents' => ['test1'],      '#id' => 'edit-test1',    ];    $this->testForm['test2'] = [      '#type' => 'textfield',      '#title' => 'Test 2 & a half',      '#parents' => ['test2'],      '#array_parents' => ['test2'],      '#id' => 'edit-test2',    ];    $this->testForm['fieldset'] = [      '#parents' => ['fieldset'],      '#array_parents' => ['fieldset'],      'test3' => [        '#type' => 'textfield',        '#title' => 'Test 3',        '#parents' => ['fieldset', 'test3'],        '#array_parents' => ['fieldset', 'test3'],        '#id' => 'edit-test3',      ],    ];    $this->testForm['test4'] = [      '#type' => 'textfield',      '#title' => 'Test 4',      '#parents' => ['test4'],      '#array_parents' => ['test4'],      '#id' => 'edit-test4',      '#error_no_message' => TRUE,    ];    $this->testForm['test5'] = [      '#type' => 'textfield',      '#parents' => ['test5'],      '#array_parents' => ['test5'],      '#id' => 'edit-test5',    ];    $this->testForm['test6'] = [      '#type' => 'value',      '#title' => 'Test 6',      '#parents' => ['test6'],      '#array_parents' => ['test6'],      '#id' => 'edit-test6',    ];  }  /**   * @covers ::handleFormErrors   * @covers ::displayErrorMessages   * @covers ::setElementErrorsFromFormState   */  public function testErrorMessagesInline() {    $this->messenger->expects($this->exactly(4))      ->method('addError')      ->withConsecutive(        ['no title given', FALSE],        ['element is invisible', FALSE],        ['this missing element is invalid', FALSE],        ['3 errors have been found: <ul-comma-list-mock><li-mock>Test 1</li-mock><li-mock>Test 2 &amp; a half</li-mock><li-mock>Test 3</li-mock></ul-comma-list-mock>', FALSE],      );    $this->renderer->expects($this->once())      ->method('renderPlain')      ->willReturnCallback(function ($render_array) {        $links = [];        foreach ($render_array[1]['#items'] as $item) {          $links[] = htmlspecialchars($item['#title']);        }        return $render_array[0]['#markup'] . '<ul-comma-list-mock><li-mock>' . implode('</li-mock><li-mock>', $links) . '</li-mock></ul-comma-list-mock>';      });    $form_state = new FormState();    $form_state->setErrorByName('test1', 'invalid');    $form_state->setErrorByName('test2', 'invalid');    $form_state->setErrorByName('fieldset][test3', 'invalid');    $form_state->setErrorByName('test4', 'no error message');    $form_state->setErrorByName('test5', 'no title given');    $form_state->setErrorByName('test6', 'element is invisible');    $form_state->setErrorByName('missing_element', 'this missing element is invalid');    $this->formErrorHandler->handleFormErrors($this->testForm, $form_state);    // Assert the #errors is populated for proper input.    $this->assertSame('invalid', $this->testForm['test1']['#errors']);    $this->assertSame('invalid', $this->testForm['test2']['#errors']);    $this->assertSame('invalid', $this->testForm['fieldset']['test3']['#errors']);    $this->assertSame('no error message', $this->testForm['test4']['#errors']);    $this->assertSame('no title given', $this->testForm['test5']['#errors']);    $this->assertSame('element is invisible', $this->testForm['test6']['#errors']);  }  /**   * Tests that opting out of Inline Form Errors works.   */  public function testErrorMessagesNotInline() {    // Asserts all messages are summarized.    $this->messenger->expects($this->exactly(7))      ->method('addMessage')      ->withConsecutive(        ['invalid', 'error', FALSE],        ['invalid', 'error', FALSE],        ['invalid', 'error', FALSE],        ['no error message', 'error', FALSE],        ['no title given', 'error', FALSE],        ['element is invisible', 'error', FALSE],        ['this missing element is invalid', 'error', FALSE],      );    $this->renderer->expects($this->any())      ->method('renderPlain')      ->will($this->returnCallback(function ($message) {        return $message['message']['#markup'];      }));    $this->testForm['#disable_inline_form_errors'] = TRUE;    $form_state = new FormState();    $form_state->setErrorByName('test1', 'invalid');    $form_state->setErrorByName('test2', 'invalid');    $form_state->setErrorByName('fieldset][test3', 'invalid');    $form_state->setErrorByName('test4', 'no error message');    $form_state->setErrorByName('test5', 'no title given');    $form_state->setErrorByName('test6', 'element is invisible');    $form_state->setErrorByName('missing_element', 'this missing element is invalid');    $this->formErrorHandler->handleFormErrors($this->testForm, $form_state);    // Assert the #errors is populated for proper input.    $this->assertSame('invalid', $this->testForm['test1']['#errors']);    $this->assertSame('invalid', $this->testForm['test2']['#errors']);    $this->assertSame('invalid', $this->testForm['fieldset']['test3']['#errors']);    $this->assertSame('no error message', $this->testForm['test4']['#errors']);    $this->assertSame('no title given', $this->testForm['test5']['#errors']);    $this->assertSame('element is invisible', $this->testForm['test6']['#errors']);  }}
+\ No newline at end of file
