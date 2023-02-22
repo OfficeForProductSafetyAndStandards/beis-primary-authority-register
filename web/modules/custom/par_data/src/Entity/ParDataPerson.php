@@ -548,51 +548,6 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     return isset($preference_message) ? $preference_message : null;
   }
 
-  /**
-   * Get the notification preferences as a string/id.
-   *
-   * @return string[]
-   *   Whether or not the person has choosen to receive additional notifications.
-   */
-  public function getNotificationPreferences() {
-    if (!$this->get('field_notification_preferences')->isEmpty()) {
-      $notification_preference_templates = $this->get('field_notification_preferences')->referencedEntities();
-
-      $notification_preferences = array_map(
-        function ($m) { return $m->id(); },
-        $notification_preference_templates
-      );
-
-      return $notification_preferences;
-    }
-
-    return NULL;
-  }
-
-  /**
-   * Whether the user has a specific notification preference.
-   *
-   * @param string $notification_type
-   *   The \Drupal\message\Entity\MessageTemplate::id() that indicates the notification type.
-   *
-   * @return bool
-   *   Whether or not the person has chosen to receive additional notifications.
-   */
-  public function hasNotificationPreference($notification_type) {
-    $notification_preferences = $this->getNotificationPreferences();
-
-    if ($notification_preferences) {
-      $notification_preferences = array_filter($notification_preferences, function ($preference) use ($notification_type) {
-        return ($notification_type === $preference);
-      });
-    }
-    else {
-      $notification_preferences = NULL;
-    }
-
-    return (!empty($notification_preferences));
-  }
-
   public function getReferencedLocations() {
     $locations = [];
     $relationships = $this->getRelationships(NULL, NULL, TRUE);

@@ -1,0 +1,31 @@
+uuid: 6915d6c2-752b-4998-97a0-cfaef3bbd176
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.summary
+    - field.field.message.partnership_revocation_notificat.field_message_subject
+    - field.field.message.partnership_revocation_notificat.field_partnership
+    - field.field.message.partnership_revocation_notificat.field_to
+    - message.template.partnership_revocation_notificat
+id: message.partnership_revocation_notificat.summary
+targetEntityType: message
+bundle: partnership_revocation_notificat
+mode: summary
+content:
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  partial_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_message_subject: true
+  field_partnership: true
+  field_to: true
+  partial_2: true
+  search_api_excerpt: true

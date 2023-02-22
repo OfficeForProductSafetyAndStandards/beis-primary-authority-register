@@ -7,7 +7,7 @@ par_notification.link_manager:
     _access: 'TRUE'
     message: \d+|\[message\:mid\] # Link needs to be able to generate with a message id replacement token.
   options:
-    no_cache: 'TRUE'
+    no_cache: TRUE
     parameters:
       message:
         type: entity:message
@@ -21,7 +21,7 @@ par_notification.link_access_denied:
     _access: 'TRUE'
     message: \d+
   options:
-    no_cache: 'TRUE'
+    no_cache: TRUE
     parameters:
       message:
         type: entity:message
@@ -35,7 +35,7 @@ par_notification.link_not_found:
     _access: 'TRUE'
     message: \d+
   options:
-    no_cache: 'TRUE'
+    no_cache: TRUE
     parameters:
       message:
         type: entity:message

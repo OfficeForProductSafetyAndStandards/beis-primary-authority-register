@@ -4,15 +4,13 @@ namespace Drupal\par_notification\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Routing\CurrentRouteMatch;
-use Drupal\Core\State\StateInterface;
 use Drupal\message\Entity\Message;
+use Drupal\message\MessageInterface;
 use Drupal\par_notification\ParLinkManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Controller for handling link manager requests.
@@ -70,7 +68,7 @@ class ParLinkManagerController extends ControllerBase {
   /**
    * Process a received request with help from the link manager.
    */
-  public function receive(Request $request, Message $message) {
+  public function receive(Request $request, MessageInterface $message) {
     // Disable page cache
     $this->killSwitch->trigger();
 

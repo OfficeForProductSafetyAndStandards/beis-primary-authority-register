@@ -35,6 +35,7 @@ use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\par_validation\Plugin\Validation\Constraint\FutureDate;
 use Drupal\par_validation\Plugin\Validation\Constraint\PastDate;
 use Drupal\par_validation\Plugin\Validation\Constraint\PastDateValidator;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Constraints\Choice;
@@ -117,7 +118,6 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       'organisation_name' => 'Organisation name',
       'address_line_1' => 'Address Line 1',
       'address_line_2' => 'Address Line 2',
-      'address_line_3' => 'Address Line 3',
       'town' => 'Town',
       'county' => 'County',
       'postcode' => 'Postcode',
@@ -223,7 +223,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   * Get serializer.
+   * Get data manager.
    *
    * @return ParDataManagerInterface
    */
@@ -310,7 +310,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       try {
         $date = \DateTime::createFromFormat(self::DATE_FORMAT . " H:i:s", $start_date_input . " 23:59:59");
         if (empty($date) || !$date instanceof \DateTimeInterface) {
-          throw new \Exception('The start date cannot be used to compare the end date.');
+          throw new \Exception('The start date is not valid.');
         }
         $start_date = $date->format(\DateTimeInterface::ATOM);
       }
@@ -726,23 +726,25 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     try {
       $csv = file_get_contents($file->getFileUri());
-      $data = $this->getSerializer()->decode($csv, 'csv');
+      $data = $this->getSerializer()->decode($csv, 'csv', [CsvEncoder::AS_COLLECTION_KEY => TRUE]);
 
-      // We have a limit of that we can process to, this limit
-      // is tested with and anything over cannot be supported.
-      if (count($data) < 2 || count($data) > self::MAX_ROW_LIMIT) {
-        throw new ParDataException('There are too many or too few rows in this CSV file.');
+      // Must have at least one data row.
+      if (count($data) < 1) {
+        throw new ParDataException('There are too few rows in this CSV file. There must be at lest one data row after the header row');
       }
 
-      // It is important to add the partnership ID to each row for later processing.
+      // We have a limit of that we can process to, this limit
+      // is tested and anything over cannot be supported.
+      if (count($data) > self::MAX_ROW_LIMIT) {
+        throw new ParDataException('There are too many rows in this CSV file. The limit is ' . self::MAX_ROW_LIMIT . '.');
+      }
+
+      // Add the partnership ID to each row for later processing.
+      if (!$partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
+        throw new ParDataException('The partnership can\'t be identified.');
+      }
       foreach ($data as $column => $row) {
-        $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-        if ($partnership) {
-          $data[$column]['partnership id'] = $this->getFlowDataHandler()->getParameter('par_data_partnership')->id();
-        }
-        else {
-          throw new ParDataException('The partnership can\'t be identified.');
-        }
+        $data[$column]['partnership id'] = $partnership->id();
       }
     }
     catch (UnexpectedValueException $exception) {
@@ -917,9 +919,6 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * The headings are defined once here (for compilation)
-   * and once on the self::getMappings() method for validation.
    */
   public function generate(array $members) {
     $rows = [];
@@ -932,7 +931,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   * AJAX helper form generating the downloaded member file.
+   * Helper form generating the members download file.
    *
    * @return mixed
    */

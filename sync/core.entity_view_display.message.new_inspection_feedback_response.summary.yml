@@ -1,0 +1,30 @@
+uuid: b3b103e3-72a7-4647-9058-f7b60b8208ed
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.summary
+    - field.field.message.new_inspection_feedback_response.field_comment
+    - field.field.message.new_inspection_feedback_response.field_inspection_feedback
+    - field.field.message.new_inspection_feedback_response.field_message_subject
+    - field.field.message.new_inspection_feedback_response.field_to
+    - message.template.new_inspection_feedback_response
+id: message.new_inspection_feedback_response.summary
+targetEntityType: message
+bundle: new_inspection_feedback_response
+mode: summary
+content:
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_comment: true
+  field_inspection_feedback: true
+  field_message_subject: true
+  field_to: true
+  partial_1: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true

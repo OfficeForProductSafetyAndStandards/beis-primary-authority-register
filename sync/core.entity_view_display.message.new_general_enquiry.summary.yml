@@ -1,0 +1,28 @@
+uuid: 1b00424e-96d6-4843-97ca-1b898654b0ed
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.summary
+    - field.field.message.new_general_enquiry.field_general_enquiry
+    - field.field.message.new_general_enquiry.field_message_subject
+    - field.field.message.new_general_enquiry.field_to
+    - message.template.new_general_enquiry
+id: message.new_general_enquiry.summary
+targetEntityType: message
+bundle: new_general_enquiry
+mode: summary
+content:
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_general_enquiry: true
+  field_message_subject: true
+  field_to: true
+  partial_1: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true

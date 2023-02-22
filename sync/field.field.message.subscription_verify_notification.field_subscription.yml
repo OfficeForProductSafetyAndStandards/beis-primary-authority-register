@@ -1,0 +1,29 @@
+uuid: c1bc5767-de72-40fa-beaa-4e8b904e8b96
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_subscription
+    - message.template.subscription_verify_notification
+    - par_subscriptions.par_subscription_list.par_news
+id: message.subscription_verify_notification.field_subscription
+field_name: field_subscription
+entity_type: message
+bundle: subscription_verify_notification
+label: Subscription
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:par_subscription'
+  handler_settings:
+    target_bundles:
+      par_news: par_news
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
