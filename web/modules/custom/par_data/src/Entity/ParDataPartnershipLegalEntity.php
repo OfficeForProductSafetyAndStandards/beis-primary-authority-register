@@ -284,6 +284,16 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
+   * Sets the partnership_legal_entity_status.
+   *
+   * @param String $status
+   *   The new status.
+   */
+  public function setPartnershipLegalEntityStatus($status) {
+    $this->set('partnership_legal_entity_status', $status);
+  }
+
+  /**
    * Test whether the partnership_legal_entity is active during a given period.
    *
    * @param DrupalDateTime | NULL $period_from
