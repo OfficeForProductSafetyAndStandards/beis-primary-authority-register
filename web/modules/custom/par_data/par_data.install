@@ -4,6 +4,7 @@
  * Installation hooks for par_data module.
  */
 
+use Drupal\Core\Database\Database;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\link\LinkItemInterface;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
@@ -1418,10 +1419,11 @@ function par_data_update_9006() {
     $partnership->set('member_link', NULL);
     $partnership->save();
   }
+
 }
 
 /**
- * PAR-2038 Create partnership amend process state fields.
+ * PAR-2038 Create partnership legal entity status field.
  */
 function par_data_update_9008() {
 
@@ -1456,4 +1458,18 @@ function par_data_update_9008() {
     ->setDisplayConfigurable('form', TRUE);
 
   $entity_definition_manager->installFieldStorageDefinition($field_name, $entity_type_id, $entity_type_id, $definition);
+}
+
+/**
+ * PAR-2038 Set partnership legal entity status on existing entity instances to confirmed_rd (Active).
+ */
+function par_data_update_9009() {
+  $connection = \Drupal::database();
+  $query = $connection->update('par_partnership_legal_entities_field_data')
+    ->fields([
+      'partnership_legal_entity_status' => 'confirmed_rd',
+    ]);
+  $count = $query->execute();
+
+  return t("Partnership legal entity status set to 'confirmed_rd' on $count partnership legal entities.");
 }
