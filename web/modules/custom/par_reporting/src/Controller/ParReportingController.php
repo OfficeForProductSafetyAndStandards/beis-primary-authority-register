@@ -59,7 +59,7 @@ class ParReportingController extends ControllerBase {
 
     // Statistics related to partnerships.
     $build['partnership_applications'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#title' => 'Partnership Applications',
       '#attributes' => ['class' => ['grid-row', 'form-group']],
     ];
@@ -86,8 +86,13 @@ class ParReportingController extends ControllerBase {
 
     // Statistics related to partnerships.
     $build['partnerships'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Partnerships',
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => t('Partnerships'),
+      ],
       '#attributes' => ['class' => ['grid-row', 'form-group']],
     ];
     $build['partnerships']['total'] = [
@@ -105,8 +110,13 @@ class ParReportingController extends ControllerBase {
 
     // Statistics related to organisations and legal entities.
     $build['businesses_in_partnership'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Organisations in a partnership',
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => t('Organisations in a partnership'),
+      ],
       '#attributes' => ['class' => ['grid-row', 'form-group']],
     ];
     $build['businesses_in_partnership']['total'] = [
@@ -124,8 +134,13 @@ class ParReportingController extends ControllerBase {
 
     // Statistics related to partnership documents.
     $build['documents'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Partnership documents',
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => t('Partnership documents'),
+      ],
       '#attributes' => ['class' => ['grid-row', 'form-group']],
     ];
     $build['documents']['inspection_plans'] = [
@@ -139,8 +154,13 @@ class ParReportingController extends ControllerBase {
 
     // Statistics related to organisations and legal entities.
     $build['authorities'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Authorities',
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => t('Authorities'),
+      ],
       '#attributes' => ['class' => ['grid-row', 'form-group']],
     ];
     $build['authorities']['total'] = [
@@ -154,8 +174,13 @@ class ParReportingController extends ControllerBase {
 
     // Statistics related to organisations and legal entities.
     $build['messages'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Notifications',
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => t('Notifications'),
+      ],
       '#attributes' => ['class' => ['grid-row', 'form-group']],
     ];
     $build['messages']['enforcements'] = [
@@ -169,8 +194,13 @@ class ParReportingController extends ControllerBase {
 
     // Statistics related to users.
     $build['users'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Users',
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => $this->t('Users'),
+      ],
       '#attributes' => ['class' => ['grid-row', 'form-group']],
     ];
     $build['users']['total'] = [

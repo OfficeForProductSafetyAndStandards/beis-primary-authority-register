@@ -100,7 +100,7 @@ class ParUserDetail extends ParFormPluginBase {
     $cache_tags = $this->getFlowDataHandler()->getDefaultValues('cache_tags', []);
 
     $form['user_account'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#weight' => -1,
       '#attributes' => ['class' => ['grid-row', 'form-group']],
       '#cache' => ['tags' => $cache_tags]
@@ -202,7 +202,7 @@ class ParUserDetail extends ParFormPluginBase {
     }
     elseif ($person_id = $this->getFlowDataHandler()->getFormPermValue('person_id')) {
       $form['contact'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#attributes' => ['class' => ['form-group']],
         'title' => [
           '#type' => 'html_tag',

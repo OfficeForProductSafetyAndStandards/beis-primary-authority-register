@@ -68,11 +68,14 @@ class ParPartnershipDocuments extends ParFormPluginBase {
     // Inspection plan link.
     if ($this->getFlowDataHandler()->getFormPermValue("show_inspection_plans")) {
       $form['details']['inspection_plans'] = [
-        '#type' => 'fieldset',
-        '#title' => t('Inspection plans'),
-        '#attributes' => ['class' => ['column-one-half']],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+        '#type' => 'container',
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h3',
+          '#attributes' => ['class' => ['heading-medium']],
+          '#value' => $this->t('Inspection plans'),
+        ],
+        '#attributes' => ['class' => ['column-one-half']]
       ];
 
       // Add the inspection plan link safely with access checks.
@@ -104,11 +107,14 @@ class ParPartnershipDocuments extends ParFormPluginBase {
     // Add the advice link safely with access checks.
     if ($this->getFlowDataHandler()->getFormPermValue("show_advice_documents")) {
       $form['details']['advice'] = [
-        '#type' => 'fieldset',
-        '#title' => t('Advice and Documents'),
-        '#attributes' => ['class' => ['column-one-half']],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+        '#type' => 'container',
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h3',
+          '#attributes' => ['class' => ['heading-medium']],
+          '#value' => $this->t('Advice and Documents'),
+        ],
+        '#attributes' => ['class' => ['column-one-half']]
       ];
 
       try {

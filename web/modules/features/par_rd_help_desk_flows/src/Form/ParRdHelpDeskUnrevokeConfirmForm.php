@@ -50,8 +50,13 @@ class ParRdHelpDeskUnrevokeConfirmForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $form['partnership_info'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Restore the partnership'),
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => $this->t('Restore the partnership'),
+      ],
       '#attributes' => ['class' => 'form-group'],
     ];
 
