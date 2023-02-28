@@ -4,6 +4,7 @@ namespace Drupal\par_notification\Plugin\ParLinkAction;
 
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_notification\ParLinkActionBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -19,21 +20,35 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *     "new_partnership_notification",
  *     "partnership_approved_notificatio",
  *     "partnership_revocation_notificat",
- *   }
+ *   },
+ *   field = "field_partnership",
  * )
  */
 class ParPartnershipOrganisationView extends ParLinkActionBase {
 
-  public function receive(MessageInterface $message) {
-    if ($message->hasField('field_partnership') && !$message->get('field_partnership')->isEmpty()) {
-      $par_data_partnership = current($message->get('field_partnership')->referencedEntities());
+  /**
+   * {@inheritdoc}
+   */
+  protected string $actionText = 'View the partnership';
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getUrl(MessageInterface $message): ?Url {
+    if ($message->hasField($this->getPrimaryField()) && !$message->get($this->getPrimaryField())->isEmpty()) {
+      $par_data_partnership = current($message->get($this->getPrimaryField())->referencedEntities());
 
       // The route for viewing enforcement notices.
-      $destination = Url::fromRoute('par_partnership_flows.organisation_details', ['par_data_partnership' => $par_data_partnership->id()]);
+      if ($par_data_partnership instanceof ParDataEntityInterface) {
+        $destination = Url::fromRoute('par_partnership_flows.organisation_details', ['par_data_partnership' => $par_data_partnership->id()]);
 
-      if (!$par_data_partnership->inProgress() && $destination->access($this->user)) {
-        return new RedirectResponse($destination->toString());
+        return $destination instanceof Url &&
+          !$par_data_partnership->inProgress() ?
+            $destination :
+            NULL;
       }
     }
+
+    return NULL;
   }
 }

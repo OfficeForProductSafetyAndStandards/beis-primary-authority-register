@@ -1,0 +1,28 @@
+uuid: 36871550-b354-4f83-876d-1abd3e839909
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.summary
+    - field.field.message.new_deviation_request.field_deviation_request
+    - field.field.message.new_deviation_request.field_message_subject
+    - field.field.message.new_deviation_request.field_to
+    - message.template.new_deviation_request
+id: message.new_deviation_request.summary
+targetEntityType: message
+bundle: new_deviation_request
+mode: summary
+content:
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_deviation_request: true
+  field_message_subject: true
+  field_to: true
+  partial_1: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true

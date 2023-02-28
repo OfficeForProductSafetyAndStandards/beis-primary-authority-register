@@ -5,12 +5,16 @@ namespace Drupal\par_notification\EventSubscriber;
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
 use Drupal\message\Entity\Message;
+use Drupal\par_data\Entity\ParDataDeviationRequest;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataGeneralEnquiry;
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParNotificationException;
-use Drupal\par_notification\ParNotificationSubscriberBase;
+use Drupal\par_notification\ParEventSubscriberBase;
 
-class NewGeneralEnquirySubscriber extends ParNotificationSubscriberBase {
+class NewGeneralEnquirySubscriber extends ParEventSubscriberBase {
 
   /**
    * The message template ID created for this notification.
@@ -31,82 +35,25 @@ class NewGeneralEnquirySubscriber extends ParNotificationSubscriberBase {
   }
 
   /**
-   * Get all the recipients for this notification.
-   *
-   * @param $event
-   *
-   * @return ParDataPerson[]
-   */
-  public function getRecipients(EntityEvent $event) {
-    $contacts = [];
-
-    /** @var ParDataEntityInterface $entity */
-    $entity = $event->getEntity();
-
-    // Always notify the primary authority contact.
-    if ($primary_authority_contacts = $entity->getPrimaryAuthorityContacts()) {
-      foreach ($primary_authority_contacts as $contact) {
-        if (!isset($contacts[$contact->id()])) {
-          $contacts[$contact->id()] = $contact;
-        }
-      }
-    }
-
-    // Notify secondary contacts if they've opted-in.
-    if ($secondary_contacts = $entity->getAllPrimaryAuthorityContacts()) {
-      foreach ($secondary_contacts as $contact) {
-        if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
-          $contacts[$contact->id()] = $contact;
-        }
-      }
-    }
-
-    return $contacts;
-  }
-
-  /**
    * @param EntityEvent $event
    */
   public function onEvent(EntityEvent $event) {
-    /** @var ParDataEntityInterface $par_data_general_enquiry */
-    $par_data_general_enquiry = $event->getEntity();
-    $par_data_partnership = $par_data_general_enquiry ? $par_data_general_enquiry->getPartnership(TRUE) : NULL;
+    $this->setEvent($event);
 
-    $contacts = $this->getRecipients($event);
-    foreach ($contacts as $contact) {
-      if (!isset($this->recipients[$contact->getEmail()])) {
-        // Record the recipient so that we don't send them the message twice.
-        $this->recipients[$contact->getEmail()] = $contact;
-        // Try and get the user account associated with this contact.
-        $account = $contact->getUserAccount();
+    /** @var ParDataGeneralEnquiry $entity */
+    $entity = $event->getEntity();
+    $par_data_partnership = $entity?->getPartnership(TRUE);
 
-        try {
-          /** @var Message $message */
-          $message = $this->createMessage();
-        }
-        catch (ParNotificationException $e) {
-          break;
-        }
+    // Only send messages for active general enquiries.
+    if ($entity instanceof ParDataGeneralEnquiry &&
+      $par_data_partnership instanceof ParDataPartnership &&
+      $entity->isActive()) {
 
-        // Add contextual information to this message.
-        if ($message->hasField('field_general_enquiry')) {
-          $message->set('field_general_enquiry', $par_data_general_enquiry);
-        }
-
-        // Add some custom arguments to this message.
-        $message->setArguments([
-          '@first_name' => $contact->getFirstName(),
-          '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
-        ]);
-
-        // The owner is the user who this message belongs to.
-        if ($account) {
-          $message->setOwnerId($account->id());
-        }
-
-        // Send the message.
-        $this->sendMessage($message, $contact->getEmail());
-      }
+      // Send the message.
+      $arguments = [
+        '@partnership_label' => strtolower($par_data_partnership->label()),
+      ];
+      $this->sendMessage($arguments);
     }
   }
 

@@ -52,7 +52,7 @@ class ApprovedEnforcementSubscriberTest extends ParNotificationTestBase {
    */
   public function testReviewedEnforcementSubscribers() {
     // Set up the entity events.
-    $this->parDataEvent = $this->getMockBuilder('Drupal\par_data\Event\ParDataEventInterface')
+    $this->parDataEvent = $this->getMockBuilder('Drupal\par_data\Event\ParNotificationEventInterface')
       ->setMethods(['getEntity'])
       ->disableOriginalConstructor()
       ->getMock();
@@ -78,7 +78,7 @@ class ApprovedEnforcementSubscriberTest extends ParNotificationTestBase {
    */
   public function testApprovedEnforcementSubscribers() {
     // Set up the entity events.
-    $this->parDataEvent = $this->getMockBuilder('Drupal\par_data\Event\ParDataEventInterface')
+    $this->parDataEvent = $this->getMockBuilder('Drupal\par_data\Event\ParNotificationEventInterface')
       ->setMethods(['getEntity'])
       ->disableOriginalConstructor()
       ->getMock();

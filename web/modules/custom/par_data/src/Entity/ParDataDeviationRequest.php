@@ -2,6 +2,8 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\comment\CommentManagerInterface;
+use Drupal\comment\CommentStorageInterface;
 use Drupal\comment\Entity\Comment;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -69,12 +71,106 @@ use Drupal\par_data\ParDataException;
  *   field_ui_base_route = "entity.par_data_deviation_request_t.edit_form"
  * )
  */
-class ParDataDeviationRequest extends ParDataEntity {
+class ParDataDeviationRequest extends ParDataEntity implements ParDataEnquiryInterface {
 
   use ParEnforcementEntityTrait;
 
   const APPROVED = 'approved';
   const BLOCKED = 'blocked';
+
+  /**
+   * {@inheritdoc}
+   */
+  public function creator(): ParDataPersonInterface {
+    if ($this->hasField('field_person') &&
+      !$this->get('field_person')->isEmpty()) {
+      $enforcing_officers = $this->get('field_person')->referencedEntities();
+    }
+
+    // Validate that there is an enforcement officer.
+    if (empty($enforcing_officers)) {
+      throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
+    }
+
+    return current($enforcing_officers);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function sender(): ParDataAuthority {
+    if ($this->hasField('field_enforcing_authority')) {
+      $enforcing_authorities = $this->get('field_enforcing_authority')->referencedEntities();
+    }
+
+    // Validate that there is an enforcing authority.
+    if (empty($enforcing_authorities)) {
+      throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
+    }
+
+    return current($enforcing_authorities);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function receiver(): array {
+    $partnerships = [];
+
+    if ($this->hasField('field_inspection_plan')) {
+      $inspection_plans = $this->get('field_inspection_plan')->referencedEntities();
+      foreach ($inspection_plans as $inspection_plan) {
+        $partnerships = array_merge($partnerships, $inspection_plan->getPartnerships());
+      }
+    }
+    if ($this->hasField('field_partnership') && empty($primary_authorities)) {
+      $partnerships = $this->get('field_partnership')->referencedEntities();
+    }
+
+    // Validate that there is a receiving authority.
+    if (empty($partnerships)) {
+      throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
+    }
+
+    $primary_authorities = [];
+    foreach ($partnerships as $partnership) {
+      $primary_authorities = array_merge($primary_authorities, $partnership->getAuthority());
+    }
+
+    return array_filter($primary_authorities);
+  }
+
+  /**
+   * {@inheritDoc}>
+   */
+  public function getReplies(): array {
+    /** @var CommentStorageInterface $comment_storage */
+    $comment_storage = \Drupal::entityTypeManager()->getStorage('comment');
+    $thread = $comment_storage->loadThread($this, 'messages', CommentManagerInterface::COMMENT_MODE_FLAT);
+    return array_values($thread);
+  }
+
+  /**
+   * Get the partnerships this deviation request is associated with.
+   */
+  public function getPartnerships(): array {
+    if (!$this->hasField('field_inspection_plan')
+      || $this->get('field_inspection_plan')->isEmpty()) {
+      throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
+    }
+
+    $inspection_plans = $this->get('field_inspection_plan')->referencedEntities();
+    $partnerships = [];
+
+    foreach ($inspection_plans as $inspection_plan) {
+      $partnerships = array_merge(
+        $partnerships,
+        $inspection_plan->getPartnerships(),
+      );
+    }
+
+    return $partnerships;
+  }
 
   /**
    * Check if this entity is approved.
@@ -195,21 +291,6 @@ class ParDataDeviationRequest extends ParDataEntity {
     }
 
     return parent::inProgress();
-  }
-
-  /**
-   * Get the message comments.
-   */
-  public function getReplies($single = FALSE) {
-    $cids = \Drupal::entityQuery('comment')
-      ->condition('entity_id', $this->id())
-      ->condition('entity_type', $this->getEntityTypeId())
-      ->sort('cid', 'DESC')
-      ->execute();
-    $messages = array_values(Comment::loadMultiple($cids));
-    $message = !empty($messages) ? current($messages): NULL;
-
-    return $single ? $message : $messages;
   }
 
   /**

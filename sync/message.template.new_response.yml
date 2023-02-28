@@ -7,7 +7,10 @@ label: 'New response'
 description: 'This is a legacy notification that is no longer used.'
 text:
   -
-    value: "<p>This is a legacy notification, please ignore.</p>\r\n\r\n<p>&nbsp;</p>\r\n"
+    value: "<p>This is a legacy notification, please ignore.</p>\r\n"
+    format: basic_html
+  -
+    value: "<p>^ Do nothing: [message:primary-action]</p>\r\n"
     format: basic_html
 settings:
   'token options':

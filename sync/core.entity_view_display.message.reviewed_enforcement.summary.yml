@@ -1,0 +1,28 @@
+uuid: 9b316c9d-f279-4dd5-a9b5-8847b12c5f28
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.summary
+    - field.field.message.reviewed_enforcement.field_enforcement_notice
+    - field.field.message.reviewed_enforcement.field_message_subject
+    - field.field.message.reviewed_enforcement.field_to
+    - message.template.reviewed_enforcement
+id: message.reviewed_enforcement.summary
+targetEntityType: message
+bundle: reviewed_enforcement
+mode: summary
+content:
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_enforcement_notice: true
+  field_message_subject: true
+  field_to: true
+  partial_1: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true

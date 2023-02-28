@@ -122,6 +122,23 @@ class ParDataInspectionPlan extends ParDataEntity {
   }
 
   /**
+   * Get all the partnerships that refer to this inspection plan.
+   *
+   * @return ParDataPartnership[]
+   *   The partnerships.
+   */
+  public function getPartnerships(): array {
+    $relationships = $this->getRelationships('par_data_partnership');
+    $partnerships = [];
+
+    foreach ($relationships as $relationship) {
+      $partnerships[] = $relationship->getEntity();
+    }
+
+    return $partnerships;
+  }
+
+  /**
    * Revoke if this entity is revokable and is not new.
    *
    *  @param boolean $save

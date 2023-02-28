@@ -6,4 +6,5 @@ package: PAR
 dependencies:
   - message
   - message_notify
+  - message_expire
   - par_data

@@ -923,7 +923,6 @@ class ParDataTestBase extends EntityKernelTestBase {
         'field_user_account' => [
           $this->account->id(),
         ],
-        'field_notification_preferences' => [],
       ] + $this->getBaseValues();
 
     return $values;

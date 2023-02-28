@@ -9,6 +9,8 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\message\Entity\Message;
+use Drupal\message\MessageInterface;
 use Drupal\par_dashboards\ParFlowAccessTrait;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParControllerTrait;
@@ -113,6 +115,7 @@ class ParDashboardsDashboardController extends ControllerBase {
       ],
     ];
 
+    // Get the permissions for managing partnerships.
     $can_manage_partnerships = $this->getCurrentUser()->hasPermission('confirm partnership') ||
       $this->getCurrentUser()->hasPermission('update partnership authority details') ||
       $this->getCurrentUser()->hasPermission('update partnership organisation details');
@@ -183,7 +186,7 @@ class ParDashboardsDashboardController extends ControllerBase {
     }
 
     // User controls.
-    if ($this->getCurrentUser()->hasPermission('manage par profile')) {
+    if ($this->getCurrentUser()->hasPermission('manage own par profile')) {
       $build['user'] = [
         '#lazy_builder' => [
           'par_dashboards.components:manageProfileComponent',

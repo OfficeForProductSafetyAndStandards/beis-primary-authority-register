@@ -18,14 +18,6 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 1
-    region: content
-  field_message_subject:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
     weight: 2
     region: content
   partial_0:
@@ -33,5 +25,15 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
+  partial_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
 hidden:
+  field_message_subject: true
   field_to: true
+  partial_1: true
+  partial_3: true
+  partial_4: true
+  search_api_excerpt: true

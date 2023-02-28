@@ -1,0 +1,28 @@
+uuid: a067a7ee-1850-40a3-a3a1-53efdfe1b166
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.summary
+    - field.field.message.new_inspection_plan.field_inspection_plan
+    - field.field.message.new_inspection_plan.field_message_subject
+    - field.field.message.new_inspection_plan.field_to
+    - message.template.new_inspection_plan
+id: message.new_inspection_plan.summary
+targetEntityType: message
+bundle: new_inspection_plan
+mode: summary
+content:
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_inspection_plan: true
+  field_message_subject: true
+  field_to: true
+  partial_1: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true

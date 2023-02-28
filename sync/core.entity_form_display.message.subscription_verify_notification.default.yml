@@ -4,8 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.message.subscription_verify_notification.field_message_subject
+    - field.field.message.subscription_verify_notification.field_subscription
     - field.field.message.subscription_verify_notification.field_to
     - message.template.subscription_verify_notification
+  module:
+    - link
 id: message.subscription_verify_notification.default
 targetEntityType: message
 bundle: subscription_verify_notification
@@ -16,6 +19,16 @@ content:
     weight: 0
     region: content
     settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_subscription:
+    type: entity_reference_autocomplete
+    weight: 2
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }

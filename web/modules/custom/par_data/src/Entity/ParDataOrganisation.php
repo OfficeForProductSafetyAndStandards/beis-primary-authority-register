@@ -68,7 +68,33 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   field_ui_base_route = "entity.par_data_organisation_type.edit_form"
  * )
  */
-class ParDataOrganisation extends ParDataEntity {
+class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInterface {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getMembers(): array {
+    /** @var ParDataPersonInterface[] $people */
+    $people = $this->getPerson();
+    $users = [];
+
+    foreach ($people as $person) {
+      $user = $person->getUserAccount();
+      $users[$user->getEmail()] = $person->getUserAccount();
+    }
+
+    return $users;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getPerson(bool $primary = FALSE): mixed {
+    $people = $this->get('field_person')->referencedEntities();
+    $person = !empty($people) ? current($people) : NULL;
+
+    return $primary ? $person : $people;
+  }
 
   /**
    * @var array
@@ -79,16 +105,6 @@ class ParDataOrganisation extends ParDataEntity {
     'par_data_person',
     'par_data_legal_entity',
   ];
-
-  /**
-   * Get the contacts for this Organisation.
-   */
-  public function getPerson($primary = FALSE) {
-    $people = $this->get('field_person')->referencedEntities();
-    $person = !empty($people) ? current($people) : NULL;
-
-    return $primary ? $person : $people;
-  }
 
   /**
    * Get the legal entites for this Organisation.
