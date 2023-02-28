@@ -6,6 +6,7 @@ module:
   automated_cron: 0
   better_exposed_filters: 0
   block: 0
+  block_classes: 0
   block_content: 0
   breakpoint: 0
   chosen: 0
@@ -65,6 +66,7 @@ module:
   menu_link_attributes: 0
   menu_ui: 0
   message: 0
+  message_expire: 0
   message_notify: 0
   migrate: 0
   migrate_drupal: 0

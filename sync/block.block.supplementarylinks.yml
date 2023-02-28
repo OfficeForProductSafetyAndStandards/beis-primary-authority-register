@@ -5,7 +5,6 @@ dependencies:
   config:
     - system.menu.supplementary-links
   module:
-    - govuk_cookies
     - system
   theme:
     - par_theme

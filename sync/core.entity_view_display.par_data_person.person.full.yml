@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.par_data_person.full
-    - field.field.par_data_person.person.field_notification_preferences
     - field.field.par_data_person.person.field_user_account
     - par_data.par_data_person_type.person
   module:
@@ -38,6 +37,14 @@ content:
     third_party_settings: {  }
     weight: 2
     region: content
+  par_label:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
   work_phone_pseudo_field:
     settings: {  }
     third_party_settings: {  }
@@ -50,16 +57,17 @@ hidden:
   communication_phone: true
   deleted_reason: true
   email: true
-  field_notification_preferences: true
   field_user_account: true
   first_name: true
   job_title: true
   last_name: true
   mobile_phone: true
   name: true
+  par_status: true
   person_name: true
   revocation_reason: true
   salutation: true
+  search_api_excerpt: true
   user_account: true
   user_id: true
   work_phone: true

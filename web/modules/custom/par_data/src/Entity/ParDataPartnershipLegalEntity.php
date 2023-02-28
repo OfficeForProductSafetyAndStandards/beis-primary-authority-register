@@ -16,7 +16,7 @@ use Drupal\par_data\ParDataException;
  * @ingroup par_data
  *
  * @ContentEntityType(
- *   id = "par_data_partnership_le",
+   *   id = "par_data_partnership_le",
  *   label = @Translation("PAR Partnership Legal Entity"),
  *   label_collection = @Translation("PAR Partnership Legal Entities"),
  *   label_singular = @Translation("PAR Partnership Legal Entity"),

@@ -72,14 +72,6 @@ class ParMemberUploadForm extends ParBaseForm {
         '#type' => 'link',
         '#title' => $this->t('Download membership list'),
         '#url' => Url::fromRoute('par_member_upload_flows.member_download', $this->getRouteParams()),
-        '#ajax' => [
-          'callback' => $csv_handler_class . '::_ajaxDownload',
-          'event' => 'click',
-          'progress' => [
-            'type' => 'throbber',
-            'message' => 'Generating member list',
-          ],
-        ],
         '#attributes' => [
           'id' => 'download-members-link',
         ],
@@ -102,7 +94,7 @@ class ParMemberUploadForm extends ParBaseForm {
       ];
     }
 
-    // Multiple file field.
+    // File field.
     $form['csv'] = [
       '#type' => 'managed_file',
       '#title' => t('Upload a list of members'),
@@ -126,6 +118,17 @@ class ParMemberUploadForm extends ParBaseForm {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
+
+    $elem = $form_state->getTriggeringElement();
+
+    // File delete button pressed.
+    if ($elem['#name'] == 'csv_remove_button') {
+      $csv = $form_state->getValue('csv');
+      $file = File::load( $csv[0] );
+      $file->delete();
+      $form_state->setRebuild();
+      return;
+    }
 
     // Define array variable.
     $rows = [];

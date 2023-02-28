@@ -67,12 +67,28 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   field_ui_base_route = "entity.par_data_authority_type.edit_form"
  * )
  */
-class ParDataAuthority extends ParDataEntity {
+class ParDataAuthority extends ParDataEntity implements ParDataMembershipInterface {
 
   /**
-   * Get the contacts for this Authority.
+   * {@inheritdoc}
    */
-  public function getPerson($primary = FALSE) {
+  public function getMembers(): array {
+    /** @var ParDataPersonInterface[] $people */
+    $people = $this->getPerson();
+    $users = [];
+
+    foreach ($people as $person) {
+      $user = $person->getUserAccount();
+      $users[$user->getEmail()] = $person->getUserAccount();
+    }
+
+    return $users;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getPerson(bool $primary = FALSE): mixed {
     $people = $this->get('field_person')->referencedEntities();
     $person = !empty($people) ? current($people) : NULL;
 

@@ -2,15 +2,15 @@
 
 namespace Drupal\par_subscriptions\Event;
 
+use Drupal\Core\Entity\EntityEvent;
 use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
-use Symfony\Component\EventDispatcher\Event;
 
 /**
- * An event for subscriptions.
+ * The event fired for crud operations on subscription entities.
  *
  * @package Drupal\par_subscriptions\Event
  */
-class SubscriptionEvent extends Event implements SubscriptionEventInterface {
+class SubscriptionEvent extends EntityEvent implements SubscriptionEventInterface {
 
   /**
    * The list name.
@@ -40,6 +40,8 @@ class SubscriptionEvent extends Event implements SubscriptionEventInterface {
     $this->listName = $subscription->getListName();
     $this->email = $subscription->getEmail();
     $this->subscription = $subscription;
+
+    parent::__construct($subscription);
   }
 
   /**

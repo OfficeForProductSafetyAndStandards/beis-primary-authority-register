@@ -70,4 +70,11 @@ class ParLinkAction extends Plugin {
    */
   public $action;
 
+  /**
+   * The field that contains the primary entity for this action.
+   *
+   * @var string
+   */
+  public $field;
+
 }

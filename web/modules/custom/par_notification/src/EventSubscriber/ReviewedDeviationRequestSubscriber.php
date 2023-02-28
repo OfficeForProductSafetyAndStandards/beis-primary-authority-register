@@ -3,14 +3,16 @@
 namespace Drupal\par_notification\EventSubscriber;
 
 use Drupal\message\Entity\Message;
+use Drupal\par_data\Entity\ParDataDeviationRequest;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParNotificationException;
-use Drupal\par_notification\ParNotificationSubscriberBase;
+use Drupal\par_notification\ParEventSubscriberBase;
 
-class ReviewedDeviationRequestSubscriber extends ParNotificationSubscriberBase {
+class ReviewedDeviationRequestSubscriber extends ParEventSubscriberBase {
 
   /**
    * The message template ID created for this notification.
@@ -32,78 +34,25 @@ class ReviewedDeviationRequestSubscriber extends ParNotificationSubscriberBase {
   }
 
   /**
-   * Get all the recipients for this notification.
-   *
-   * @param $event
-   *
-   * @return ParDataPerson[]
-   */
-  public function getRecipients(ParDataEventInterface $event) {
-    $contacts = [];
-
-    /** @var ParDataEntityInterface $entity */
-    $entity = $event->getEntity();
-
-    // Always notify the primary authority contact.
-    if ($enforcing_authority_contact = $entity->getEnforcingPerson(TRUE)) {
-      $contacts[$enforcing_authority_contact->id()] = $enforcing_authority_contact;
-    }
-
-    // Notify secondary contacts if they've opted-in.
-    if ($secondary_contacts = $entity->getEnforcingAuthorityContacts()) {
-      foreach ($secondary_contacts as $contact) {
-        if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
-          $contacts[$contact->id()] = $contact;
-        }
-      }
-    }
-
-    return $contacts;
-  }
-
-  /**
    * @param ParDataEventInterface $event
    */
   public function onEvent(ParDataEventInterface $event) {
-    /** @var ParDataEntityInterface $par_data_deviation_request */
-    $par_data_deviation_request = $event->getEntity();
-    $par_data_partnership = $par_data_deviation_request ? $par_data_deviation_request->getPartnership(TRUE) : NULL;
+    $this->setEvent($event);
 
-    $contacts = $this->getRecipients($event);
-    foreach ($contacts as $contact) {
-      if (!isset($this->recipients[$contact->getEmail()])) {
-        // Record the recipient so that we don't send them the message twice.
-        $this->recipients[$contact->getEmail()] = $contact;
-        // Try and get the user account associated with this contact.
-        $account = $contact->getUserAccount();
+    /** @var ParDataDeviationRequest $entity */
+    $entity = $event->getEntity();
+    $par_data_partnership = $entity?->getPartnership(TRUE);
 
-        try {
-          /** @var Message $message */
-          $message = $this->createMessage();
-        }
-        catch (ParNotificationException $e) {
-          break;
-        }
+    // Only send messages for active deviation requests.
+    if ($entity instanceof ParDataDeviationRequest &&
+      $par_data_partnership instanceof ParDataPartnership &&
+      ($entity->isApproved() || $entity->isBlocked())) {
 
-        // Add contextual information to this message.
-        if ($message->hasField('field_deviation_request')) {
-          $message->set('field_deviation_request', $par_data_deviation_request);
-        }
-
-        // Add some custom arguments to this message.
-        $message->setArguments([
-          '@first_name' => $contact->getFirstName(),
-          '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
-        ]);
-
-        // The owner is the user who this message belongs to.
-        if ($account) {
-          $message->setOwnerId($account->id());
-        }
-
-        // Send the message.
-        $this->sendMessage($message, $contact->getEmail());
-      }
+      // Send the message.
+      $arguments = [
+        '@partnership_label' => strtolower($par_data_partnership->label()),
+      ];
+      $this->sendMessage($arguments);
     }
   }
 }
