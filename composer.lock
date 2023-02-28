@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "40f36d660e04aa9f71aa2f6ae7dec594",
+    "content-hash": "df2f2890cba1eac8398664d28c7772be",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -495,24 +495,24 @@
         },
         {
             "name": "commerceguys/intl",
-            "version": "v1.1.2",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/commerceguys/intl.git",
-                "reference": "f6200ca01f8c095f2a2602782b353770f738db87"
+                "reference": "cab3b55dbf8c1753fe54457404082c777a8c154f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/commerceguys/intl/zipball/f6200ca01f8c095f2a2602782b353770f738db87",
-                "reference": "f6200ca01f8c095f2a2602782b353770f738db87",
+                "url": "https://api.github.com/repos/commerceguys/intl/zipball/cab3b55dbf8c1753fe54457404082c777a8c154f",
+                "reference": "cab3b55dbf8c1753fe54457404082c777a8c154f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.3"
+                "php": ">=7.1.3"
             },
             "require-dev": {
                 "mikey179/vfsstream": "1.*",
-                "phpunit/phpunit": "^9.5"
+                "phpunit/phpunit": "^7.5"
             },
             "type": "library",
             "extra": {
@@ -532,17 +532,14 @@
             "authors": [
                 {
                     "name": "Bojan Zivanovic"
-                },
-                {
-                    "name": "Jonathan Sacksick"
                 }
             ],
             "description": "Internationalization library powered by CLDR data.",
             "support": {
                 "issues": "https://github.com/commerceguys/intl/issues",
-                "source": "https://github.com/commerceguys/intl/tree/v1.1.2"
+                "source": "https://github.com/commerceguys/intl/tree/v1.1.1"
             },
-            "time": "2023-02-20T09:57:58+00:00"
+            "time": "2021-10-30T18:07:14+00:00"
         },
         {
             "name": "composer/installers",
@@ -2324,6 +2321,55 @@
             "homepage": "https://www.drupal.org/project/big_pipe_sessionless",
             "support": {
                 "source": "https://git.drupalcode.org/project/big_pipe_sessionless"
+            }
+        },
+        {
+            "name": "drupal/block_classes",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/block_classes.git",
+                "reference": "1.0.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/block_classes-1.0.2.zip",
+                "reference": "1.0.2",
+                "shasum": "3c97ca1da12b18fd7b0ed8ee25d41c114ef851fb"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9 || ^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "1.0.2",
+                    "datestamp": "1655363169",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Neslee Canil Pinto",
+                    "homepage": "https://www.drupal.org/u/neslee-canil-pinto",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Allows assigning the classes to title, content of the Blocks.",
+            "homepage": "https://www.drupal.org/project/block_classes",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/block_classes",
+                "issues": "https://www.drupal.org/project/issues/block_classes"
             }
         },
         {
@@ -4956,6 +5002,51 @@
             "homepage": "https://www.drupal.org/project/message",
             "support": {
                 "source": "https://git.drupalcode.org/project/message"
+            }
+        },
+        {
+            "name": "drupal/message_expire",
+            "version": "dev-1.0.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/message_expire.git",
+                "reference": "f048179ca0f8e4bb6670fdea685cbf27a6055f8a"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9 || ^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.0.x": "1.0.x-dev"
+                },
+                "drupal": {
+                    "version": "1.0.x-dev",
+                    "datestamp": "1676327217",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "kalpaitch",
+                    "homepage": "https://www.drupal.org/user/2547946"
+                },
+                {
+                    "name": "RogerB",
+                    "homepage": "https://www.drupal.org/user/63420"
+                }
+            ],
+            "description": "Message Expire",
+            "homepage": "https://www.drupal.org/project/message_expire",
+            "support": {
+                "source": "https://git.drupalcode.org/project/message_expire"
             }
         },
         {
@@ -8156,25 +8247,24 @@
         },
         {
             "name": "laminas/laminas-servicemanager",
-            "version": "3.20.0",
+            "version": "3.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-servicemanager.git",
-                "reference": "bc2c2cbe2dd90db8b9d16b0618f542692b76ab59"
+                "reference": "86b950f517814a2e6f19a6290e7d97aab18c886f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-servicemanager/zipball/bc2c2cbe2dd90db8b9d16b0618f542692b76ab59",
-                "reference": "bc2c2cbe2dd90db8b9d16b0618f542692b76ab59",
+                "url": "https://api.github.com/repos/laminas/laminas-servicemanager/zipball/86b950f517814a2e6f19a6290e7d97aab18c886f",
+                "reference": "86b950f517814a2e6f19a6290e7d97aab18c886f",
                 "shasum": ""
             },
             "require": {
                 "laminas/laminas-stdlib": "^3.2.1",
-                "php": "~8.0.0 || ~8.1.0 || ~8.2.0",
+                "php": "~7.4.0 || ~8.0.0 || ~8.1.0",
                 "psr/container": "^1.0"
             },
             "conflict": {
-                "ext-psr": "*",
                 "laminas/laminas-code": "<3.3.1",
                 "zendframework/zend-code": "<3.3.1",
                 "zendframework/zend-servicemanager": "*"
@@ -8186,16 +8276,17 @@
                 "container-interop/container-interop": "^1.2.0"
             },
             "require-dev": {
-                "composer/package-versions-deprecated": "^1.11.99.5",
-                "laminas/laminas-coding-standard": "~2.4.0",
-                "laminas/laminas-container-config-test": "^0.8",
-                "laminas/laminas-dependency-plugin": "^2.2",
-                "mikey179/vfsstream": "^1.6.11@alpha",
-                "ocramius/proxy-manager": "^2.14.1",
-                "phpbench/phpbench": "^1.2.7",
-                "phpunit/phpunit": "^9.5.26",
-                "psalm/plugin-phpunit": "^0.18.0",
-                "vimeo/psalm": "^5.0.0"
+                "composer/package-versions-deprecated": "^1.0",
+                "laminas/laminas-coding-standard": "~2.3.0",
+                "laminas/laminas-container-config-test": "^0.6",
+                "laminas/laminas-dependency-plugin": "^2.1.2",
+                "mikey179/vfsstream": "^1.6.10@alpha",
+                "ocramius/proxy-manager": "^2.11",
+                "phpbench/phpbench": "^1.1",
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.5.5",
+                "psalm/plugin-phpunit": "^0.16.1",
+                "vimeo/psalm": "^4.8"
             },
             "suggest": {
                 "ocramius/proxy-manager": "ProxyManager ^2.1.1 to handle lazy initialization of services"
@@ -8242,7 +8333,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2022-12-01T17:03:38+00:00"
+            "time": "2022-04-04T21:47:49+00:00"
         },
         {
             "name": "laminas/laminas-stdlib",
@@ -8305,31 +8396,29 @@
         },
         {
             "name": "laminas/laminas-text",
-            "version": "2.10.0",
+            "version": "2.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-text.git",
-                "reference": "40f7acdb284d41553d32db811e704d6e15e415b4"
+                "reference": "8879e75d03e09b0d6787e6680cfa255afd4645a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-text/zipball/40f7acdb284d41553d32db811e704d6e15e415b4",
-                "reference": "40f7acdb284d41553d32db811e704d6e15e415b4",
+                "url": "https://api.github.com/repos/laminas/laminas-text/zipball/8879e75d03e09b0d6787e6680cfa255afd4645a7",
+                "reference": "8879e75d03e09b0d6787e6680cfa255afd4645a7",
                 "shasum": ""
             },
             "require": {
-                "laminas/laminas-servicemanager": "^3.19.0",
-                "laminas/laminas-stdlib": "^3.7.1",
-                "php": "~8.0.0 || ~8.1.0 || ~8.2.0"
+                "laminas/laminas-servicemanager": "^3.4",
+                "laminas/laminas-stdlib": "^3.6",
+                "php": "^7.3 || ~8.0.0 || ~8.1.0"
             },
             "conflict": {
                 "zendframework/zend-text": "*"
             },
             "require-dev": {
-                "laminas/laminas-coding-standard": "~2.4.0",
-                "phpunit/phpunit": "^9.5",
-                "psalm/plugin-phpunit": "^0.18.4",
-                "vimeo/psalm": "^5.1"
+                "laminas/laminas-coding-standard": "~1.0.0",
+                "phpunit/phpunit": "^9.3"
             },
             "type": "library",
             "autoload": {
@@ -8361,7 +8450,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2022-12-11T15:36:27+00:00"
+            "time": "2021-09-02T16:50:53+00:00"
         },
         {
             "name": "league/container",
@@ -10228,16 +10317,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.9.18",
+            "version": "1.9.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "f2d5cf71be91172a57c649770b73c20ebcffb0bf"
+                "reference": "204e459e7822f2c586463029f5ecec31bb45a1f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f2d5cf71be91172a57c649770b73c20ebcffb0bf",
-                "reference": "f2d5cf71be91172a57c649770b73c20ebcffb0bf",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/204e459e7822f2c586463029f5ecec31bb45a1f2",
+                "reference": "204e459e7822f2c586463029f5ecec31bb45a1f2",
                 "shasum": ""
             },
             "require": {
@@ -10267,7 +10356,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.9.18"
+                "source": "https://github.com/phpstan/phpstan/tree/1.9.17"
             },
             "funding": [
                 {
@@ -10283,7 +10372,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-17T15:01:27+00:00"
+            "time": "2023-02-08T12:25:00+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
@@ -15508,38 +15597,35 @@
         },
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
-            "version": "v1.0.0",
+            "version": "v0.7.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/PHPCSStandards/composer-installer.git",
-                "reference": "4be43904336affa5c2f70744a348312336afd0da"
+                "url": "https://github.com/Dealerdirect/phpcodesniffer-composer-installer.git",
+                "reference": "1c968e542d8843d7cd71de3c5c9c3ff3ad71a1db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/composer-installer/zipball/4be43904336affa5c2f70744a348312336afd0da",
-                "reference": "4be43904336affa5c2f70744a348312336afd0da",
+                "url": "https://api.github.com/repos/Dealerdirect/phpcodesniffer-composer-installer/zipball/1c968e542d8843d7cd71de3c5c9c3ff3ad71a1db",
+                "reference": "1c968e542d8843d7cd71de3c5c9c3ff3ad71a1db",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.0 || ^2.0",
-                "php": ">=5.4",
+                "php": ">=5.3",
                 "squizlabs/php_codesniffer": "^2.0 || ^3.1.0 || ^4.0"
             },
             "require-dev": {
                 "composer/composer": "*",
-                "ext-json": "*",
-                "ext-zip": "*",
                 "php-parallel-lint/php-parallel-lint": "^1.3.1",
-                "phpcompatibility/php-compatibility": "^9.0",
-                "yoast/phpunit-polyfills": "^1.0"
+                "phpcompatibility/php-compatibility": "^9.0"
             },
             "type": "composer-plugin",
             "extra": {
-                "class": "PHPCSStandards\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin"
+                "class": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin"
             },
             "autoload": {
                 "psr-4": {
-                    "PHPCSStandards\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\": "src/"
+                    "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -15555,7 +15641,7 @@
                 },
                 {
                     "name": "Contributors",
-                    "homepage": "https://github.com/PHPCSStandards/composer-installer/graphs/contributors"
+                    "homepage": "https://github.com/Dealerdirect/phpcodesniffer-composer-installer/graphs/contributors"
                 }
             ],
             "description": "PHP_CodeSniffer Standards Composer Installer Plugin",
@@ -15579,10 +15665,10 @@
                 "tests"
             ],
             "support": {
-                "issues": "https://github.com/PHPCSStandards/composer-installer/issues",
-                "source": "https://github.com/PHPCSStandards/composer-installer"
+                "issues": "https://github.com/dealerdirect/phpcodesniffer-composer-installer/issues",
+                "source": "https://github.com/dealerdirect/phpcodesniffer-composer-installer"
             },
-            "time": "2023-01-05T11:28:13+00:00"
+            "time": "2022-02-04T12:51:07+00:00"
         },
         {
             "name": "dflydev/dot-access-configuration",
@@ -16266,14 +16352,14 @@
         },
         {
             "name": "drupal/coder",
-            "version": "8.3.17",
+            "version": "8.3.16",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/coder.git",
-                "reference": "1c4662337418ab88c9ddf40348f0638e35d49182"
+                "reference": "d6f6112e5e84ff4f6baaada223c93dadbd6d3887"
             },
             "require": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1 || ^1.0.0",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
                 "ext-mbstring": "*",
                 "php": ">=7.1",
                 "sirbrillig/phpcs-variable-analysis": "^2.11.7",
@@ -16307,7 +16393,7 @@
                 "issues": "https://www.drupal.org/project/issues/coder",
                 "source": "https://www.drupal.org/project/coder"
             },
-            "time": "2023-02-19T21:05:01+00:00"
+            "time": "2022-08-20T17:31:46+00:00"
         },
         {
             "name": "drupal/config_inspector",
@@ -20538,5 +20624,5 @@
         "php": "~8.1.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.2.0"
 }
