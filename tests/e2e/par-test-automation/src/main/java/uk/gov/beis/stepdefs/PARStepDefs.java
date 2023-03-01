@@ -414,7 +414,7 @@ public class PARStepDefs {
 		parBusinessContactDetailsPage.proceed();
 		userCommsPreferencesPage.proceed();
 		userSubscriptionPage.selectContinue();
-		userNotificationPreferencesPage.selectContinue();
+//		userNotificationPreferencesPage.selectContinue();
 	}
 
 	@Then("^the user journey creation is successful$")

@@ -28,7 +28,7 @@ Feature:
   And the user updates the partnership information with the following info: "Updated Partnership info"
   Then the partnership is updated correctly
   
- @regression @partnershipapplication @coordinated
+ @regression @partnershipapplication @coordinated 
  Scenario: Verify Coordinated Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
   Given the user is on the PAR home page
   And the user visits the login page
@@ -46,9 +46,9 @@ Feature:
    | allow people to eat	| Medium						| Limited Company			| Test Business					| 
   Then the second part of the partnership application is successfully completed
   
-  #Given the user is on the PAR login page
-  #And the user logs in with the "par_authority@example.com" user credentials
-  #When the user searches for the last created partnership
+  Given the user is on the PAR login page
+  And the user logs in with the "par_authority@example.com" user credentials
+  When the user searches for the last created partnership
   
  @regression @usermanagement
  Scenario: Verify Completion of User Creation journey (Happy Path - PAR-1904)
