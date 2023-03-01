@@ -60,12 +60,11 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     /* @var ParDataPartnershipLegalEntity[] $partnership_legal_entities */
     $partnership_legal_entities = $this->getDefaultValuesByKey('partnership_legal_entities', $cardinality, []);
 
-    // Generate the link to add a new partnership legal entity.
+    // Generate the link to amend the partnership.
     try {
-      $link_label = !empty($partnership_legal_entities) && count($partnership_legal_entities) >= 1
-        ? "add another legal entity" : "add a legal entity";
-      $add_link = $this->getFlowNegotiator()->getFlow()
-        ->getOperationLink('partnership_amend', $link_label, ['par_data_partnership' => $partnership]);
+      $add_link = $this->getFlowNegotiator()
+        ->getFlow()
+        ->getOperationLink('partnership_amend', 'add legal entities', ['par_data_partnership' => $partnership]);
     }
     catch (ParFlowException $e) {
       $this->getLogger($this->getLoggerChannel())->notice($e);

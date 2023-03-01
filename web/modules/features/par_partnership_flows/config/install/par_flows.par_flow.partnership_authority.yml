@@ -45,6 +45,7 @@ steps:
       edit_regulatory_functions: 3
       inspection_plans: 4
       advice: 5
+      partnership_amend: 19
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
@@ -162,3 +163,45 @@ steps:
     route: par_partnership_flows.authority_inspection_plan_details
     redirect:
       done: 4
+  19:
+    route: par_partnership_flows.authority_amend_select
+    form_id: par_partnership_authority_amend_select
+    components:
+      legal_entities_amend:
+        weight: -10
+        cardinality: 1
+        edit: true
+    redirect:
+      next: 20
+      cancel: 1
+  20:
+    route: par_partnership_flows.authority_amend_declaration
+    form_id: par_partnership_authority_amend_declaration
+    components:
+      declaration_for_partnership:
+        weight: -10
+        cardinality: 1
+    redirect:
+      next: 21
+      back: 19
+      cancel: 1
+  21:
+    route: par_partnership_flows.authority_amend_terms
+    form_id: par_partnership_authority_amend_terms
+    components:
+      terms_and_conditions:
+        weight: -10
+        cardinality: 1
+    redirect:
+      save: 22
+      back: 20
+      cancel: 1
+  22:
+    route: par_partnership_flows.authority_amend_complete
+    form_id: par_partnership_authority_amend_complete
+    components:
+      journey_complete:
+        weight: -10
+        cardinality: 1
+    redirect:
+      done: 1

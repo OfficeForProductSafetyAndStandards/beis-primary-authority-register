@@ -107,7 +107,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
   ];
 
   /**
-   * Get the legal entites for this Organisation.
+   * Get the legal entities for this Organisation.
    *
    * @return ParDataLegalEntity[]
    */
@@ -116,6 +116,21 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
     $legal_entity = !empty($legal_entities) ? current($legal_entities) : NULL;
 
     return $single ? $legal_entity : $legal_entities;
+  }
+
+  /**
+   * Check if a legal entity belongs to this organisation.
+   *
+   * @return bool
+   */
+  public function hasLegalEntity(ParDataLegalEntity $checkLegalEntity) {
+    $legalEntities = $this->getLegalEntity();
+    foreach ($legalEntities as $legalEntity) {
+      if ($legalEntity === $checkLegalEntity) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
   /**

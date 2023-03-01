@@ -51,16 +51,15 @@ class ParPartnershipFlowsPartnershipAmendForm extends ParBaseForm {
       $this->accessResult = AccessResult::forbidden('The user is not allowed to access this page.');
     }
 
-    // Restrict access when partnership is active to users with administrator role.
-    // @TODO Add back the permission to add/update when PAR-1915 is complete:
-    // && !$user->hasPermission('amend active partnerships')
-    if ($par_data_partnership->isActive()) {
-      $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
-    }
-
-    // Restrict business users who have already confirmed their business details.
-    if ($par_data_partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
-      $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
+    // Access according to route and user role.
+    switch ($route_match->getRouteName()) {
+      case 'par_partnership_flows.authority_amend_select':
+        if (!in_array('par_authority', $account->getRoles())) {
+          $this->accessResult = AccessResult::forbidden('The user is not allowed to access the authority partnership amendment page.');
+        }
+        break;
+      default:
+        $this->accessResult = AccessResult::forbidden('The user is not allowed to access this page.');
     }
 
     return parent::accessCallback($route, $route_match, $account);

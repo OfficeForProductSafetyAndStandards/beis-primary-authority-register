@@ -677,21 +677,23 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get partnership legal entities for this partnership.
    *
-   * @param boolean $active
+   * @param boolean $active_only
    *  If TRUE then only active PLEs are returned. Default FALSE.
+   * @param string $status
+   *  Return only PLEs with this partnership legal entity status.
    *
    * @return ParDataPartnershipLegalEntity[]
    */
-  public function getPartnershipLegalEntities($active = FALSE, $status = 'confirm_rd') {
+  public function getPartnershipLegalEntities($active_only = FALSE, $status = 'confirm_rd') {
 
     /* @var ParDataPartnershipLegalEntity[] $partnership_legal_entities */
     $partnership_legal_entities = $this->get('field_partnership_legal_entity')->referencedEntities();
 
     // Filter.
-    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) use ($active, $status) {
+    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) use ($active_only, $status) {
 
       // Exclude inactive if requested.
-      if ($active && !$partnership_legal_entity->isActive()) {
+      if ($active_only && !$partnership_legal_entity->isActive()) {
         return FALSE;
       }
 
@@ -702,13 +704,6 @@ class ParDataPartnership extends ParDataEntity {
 
       return TRUE;
     });
-
-    // Retain only the active partnership legal entities.
-    if ($active) {
-      $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) {
-        return $partnership_legal_entity->isActive();
-      });
-    }
 
     return $partnership_legal_entities;
   }

@@ -5,6 +5,7 @@ namespace Drupal\par_data\Entity;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_data\ParDataException;
 use Drupal\par_data\ParDataManager;
 use Drupal\par_data\ParDataRelationship;
 use Drupal\par_validation\Plugin\Validation\Constraint\ParRequired;
@@ -94,13 +95,61 @@ class ParDataLegalEntity extends ParDataEntity {
    * {@inheritdoc}
    *
    * Ensure that we can not create duplicates of legal entities with the same companies house number.
+   *
+   * @note PAR-1915 - If register is passed in then we know we are dealing with the authority partnership amend journey.
+   *       we first check to see if the legal entity already exists before creating a new LE instance.
+   *
+   * @todo Need to fix the handling of 'legacy' calls to create LE instances with proper register and legal_entity_type values.
    */
   public static function create(array $values = []) {
-    $par_data_manger = \Drupal::service('par_data.manager');
+
+    if (isset($values['registry'])) {
+
+      // Check that we have all the values.
+      if ($values['register'] == 'internal') {
+        if (!isset($values['legal_entity_type']) || !isset($values['registered_name'])) {
+          throw new ParDataException('Bad parameters: ' . print_r($values, TRUE));
+        }
+      }
+      else {
+        if (!isset($values['legal_entity_type']) || !isset($values['registered_number']) || !isset($values['registered_name'])) {
+          throw new ParDataException('Bad parameters: ' . print_r($values, TRUE));
+        }
+      }
+
+      // Lookup any existing instance.
+      $parStorage = \Drupal::entityTypeManager()->getStorage('par_data_legal_entity');
+
+      $query = $parStorage->getQuery()
+        ->condition('status', 1)
+        ->condition('registry', $values['registry'])
+        ->sort('created', 'ASC') // Oldest first any others are duplicates that should not exist.
+        ->pager(1);
+
+      if ($values['register'] == 'internal') {
+        $query->condition('registered_name', $values['registered_name']);
+      }
+      else {
+        $query->condition('registered_number', $values['registered_number']);
+      }
+
+      $ids = $query->execute();
+
+      $legalEntities = $parStorage->loadMultiple($ids);
+
+      if (!empty($legalEntities)) {
+        return $legalEntities[0];
+      }
+
+      return parent::create($values);
+    }
+
+    /* @var ParDataManager $par_data_manager */
+    $par_data_manager = \Drupal::service('par_data.manager');
 
     // Check to see if a legal entity already exists with this number.
     $legal_entities = !empty($values['registered_number']) ?
-      $par_data_manger->getEntitiesByProperty('par_data_legal_entity', 'registered_number', $values['registered_number']) :
+      $par_data_manager->getEntitiesByProperty('par_data_legal_entity', 'registered_number', $values['registered_number']) :
       NULL;
 
     // Use the first available legal entity if one is found, otherwise
