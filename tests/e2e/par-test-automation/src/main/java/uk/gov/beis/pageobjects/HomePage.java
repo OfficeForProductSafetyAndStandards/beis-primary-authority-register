@@ -30,8 +30,12 @@ public class HomePage extends BasePageObject {
 
 	public HomePage checkAndAcceptCookies() {
 		driver.manage().deleteAllCookies();
-		if (cookies.isDisplayed()) {
-			cookies.click();
+		try {
+			if (cookies.isDisplayed()) {
+				cookies.click();
+			}
+		} catch (Exception e) {
+			// do nothing
 		}
 		return PageFactory.initElements(driver, HomePage.class);
 	}
