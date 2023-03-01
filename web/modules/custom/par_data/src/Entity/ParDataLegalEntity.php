@@ -75,38 +75,21 @@ use Drupal\par_validation\Plugin\Validation\Constraint\ParRequired;
 class ParDataLegalEntity extends ParDataEntity {
 
   /**
-   * PAR-1943 Temporary mapping of legal entity type to registry. Used by temporary self::preSave() to set value of
-   * registry base field.
-   *
-   * To be removed once external registry integration is complete.
-   */
-  const TYPE_TO_REGISTRY_MAP = [
-    'partnership' => 'internal',
-    'registered_charity' => 'charity_commission',
-    'sole_trader' => 'internal',
-    'limited_company' => 'companies_house',
-    'public_limited_company' => 'companies_house',
-    'limited_partnership' => 'companies_house',
-    'limited_liability_partnership' => 'companies_house',
-    'other' => 'internal',
-  ];
-
-  /**
    * {@inheritdoc}
    *
    * Ensure that we can not create duplicates of legal entities with the same companies house number.
    *
-   * @note PAR-1915 - If register is passed in then we know we are dealing with the authority partnership amend journey.
+   * @note PAR-1915 - If registry is passed in then we know we are dealing with the authority partnership amend journey.
    *       we first check to see if the legal entity already exists before creating a new LE instance.
    *
-   * @todo Need to fix the handling of 'legacy' calls to create LE instances with proper register and legal_entity_type values.
+   * @todo Need to fix the handling of 'legacy' calls to create LE instances with proper registry and legal_entity_type values.
    */
   public static function create(array $values = []) {
 
     if (isset($values['registry'])) {
 
       // Check that we have all the values.
-      if ($values['register'] == 'internal') {
+      if ($values['registry'] == 'internal') {
         if (!isset($values['legal_entity_type']) || !isset($values['registered_name'])) {
           throw new ParDataException('Bad parameters: ' . print_r($values, TRUE));
         }
@@ -126,7 +109,7 @@ class ParDataLegalEntity extends ParDataEntity {
         ->sort('created', 'ASC') // Oldest first any others are duplicates that should not exist.
         ->pager(1);
 
-      if ($values['register'] == 'internal') {
+      if ($values['registry'] == 'internal') {
         $query->condition('registered_name', $values['registered_name']);
       }
       else {
@@ -288,22 +271,6 @@ class ParDataLegalEntity extends ParDataEntity {
 
     // This method will always save the entity.
     $this->save();
-  }
-
-  /**
-   * {@inheritdoc}
-   *
-   * PAR-1943 This override is here temporally to maintain the register field until the rest of
-   * the external registry integration is completed (PAR-1942).
-   */
-  public function preSave(EntityStorageInterface $storage) {
-    parent::preSave($storage);
-
-    $type = $this->getTypeRaw();
-
-    $registry = self::TYPE_TO_REGISTRY_MAP[$type] ?? 'internal';
-
-    $this->set('registry', $registry);
   }
 
   /**
