@@ -3,7 +3,7 @@ Feature:
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
   
- @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan
+ @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback
  Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
   Given the user is on the PAR home page
   And the user visits the login page
@@ -60,7 +60,7 @@ Feature:
   And the user completes the user creation journey
   Then the user journey creation is successful
  
- @regression @usermanagement @login @enforcement @inspectionplan
+ @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback
  Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
   Given the user is on the PAR login page
   And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -120,7 +120,7 @@ Feature:
   When the user searches for the last created enforcement notice
   Then the user removes the enforcement notice successfully
   
- @regression @inspectionplan
+ @regression @inspectionplan @inspectionfeedback
  Scenario: Verify Upload of Inspection Plan (Happy Path - PAR-1856)
   Given the user is on the PAR login page
   And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -140,7 +140,7 @@ Feature:
   
   #Re-login as primary authority and check and approve inspection feedback
   Given the user is on the PAR login page
-  And the user logs in with the "par_authority@example.com" user credential
+  And the user logs in with the "par_authority@example.com" user credentials
   When the user searches for the last created inspection feedback
   Then the user successfully approves the inspection feedback
   

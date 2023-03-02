@@ -39,6 +39,10 @@ import uk.gov.beis.pageobjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.EnforcementReviewPage;
 import uk.gov.beis.pageobjects.EnforcementSearchPage;
 import uk.gov.beis.pageobjects.HomePage;
+import uk.gov.beis.pageobjects.InspectionContactDetailsPage;
+import uk.gov.beis.pageobjects.InspectionFeedbackCompletionPage;
+import uk.gov.beis.pageobjects.InspectionFeedbackConfirmationPage;
+import uk.gov.beis.pageobjects.InspectionFeedbackDetailsPage;
 import uk.gov.beis.pageobjects.InspectionPlanDetailsPage;
 import uk.gov.beis.pageobjects.InspectionPlanExpirationPage;
 import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
@@ -81,7 +85,10 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private InspectionFeedbackConfirmationPage inspectionFeedbackConfirmationPage;
+	private InspectionFeedbackDetailsPage inspectionFeedbackDetailsPage;
 	private InspectionPlanSearchPage inspectionPlanSearchPage;
+	private InspectionContactDetailsPage inspectionContactDetailsPage;
 	private RemoveEnforcementPage removeEnforcementPage;
 	private EnforcementCompletionPage enforcementCompletionPage;
 	private EnforcementActionPage enforcementActionPage;
@@ -139,9 +146,14 @@ public class PARStepDefs {
 	private RestorePartnershipConfirmationPage restorePartnershipConfirmationPage;
 	private PartnershipRestoredPage partnershipRestoredPage;
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
+	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
-		driver = ScenarioContext.lastDriver;
+		driver = ScenarioContext.lastDriver;  
+		inspectionFeedbackCompletionPage = PageFactory.initElements(driver, InspectionFeedbackCompletionPage.class);
+		inspectionFeedbackConfirmationPage = PageFactory.initElements(driver, InspectionFeedbackConfirmationPage.class);
+		inspectionFeedbackDetailsPage = PageFactory.initElements(driver, InspectionFeedbackDetailsPage.class);
+		inspectionContactDetailsPage = PageFactory.initElements(driver, InspectionContactDetailsPage.class);
 		inspectionPlanExpirationPage = PageFactory.initElements(driver, InspectionPlanExpirationPage.class);
 		inspectionPlanDetailsPage = PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
 		uploadInspectionPlanPage = PageFactory.initElements(driver, UploadInspectionPlanPage.class);
@@ -676,7 +688,33 @@ public class PARStepDefs {
 			LOG.info("Check inspection plan status is set to \"Current\"");
 			Assert.assertTrue("Failed: Status not set to \"Current\"",
 					inspectionPlanSearchPage.getPlanStatus().equalsIgnoreCase("Current"));
-
 		}
+	}
+
+	@When("^the user submits an inspection feedback against the inspection plan with the following details:$")
+	public void the_user_submits_an_inspection_feedback_against_the_inspection_plan_with_the_following_details(
+			DataTable dets) throws Throwable {
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			LOG.info("Submit inspection feedback against partnership");
+			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+			parPartnershipConfirmationPage.selectSendInspectionFeedbk();
+			inspectionContactDetailsPage.proceed();
+			DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION, data.get("Description"));
+			inspectionFeedbackDetailsPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION));
+			inspectionFeedbackDetailsPage.chooseFile("link.txt");
+			inspectionFeedbackDetailsPage.proceed();
+			inspectionFeedbackConfirmationPage.saveChanges();
+			inspectionFeedbackCompletionPage.complete();
+		}
+	}
+
+	@When("^the user searches for the last created inspection feedback$")
+	public void the_user_searches_for_the_last_created_inspection_feedback() throws Throwable {
+
+	}
+
+	@Then("^the user successfully approves the inspection feedback$")
+	public void the_user_successfully_approves_the_inspection_feedback() throws Throwable {
+
 	}
 }
