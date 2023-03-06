@@ -121,7 +121,7 @@ class ParDataLegalEntity extends ParDataEntity {
       $legalEntities = $parStorage->loadMultiple($ids);
 
       if (!empty($legalEntities)) {
-        return $legalEntities[0];
+        return reset($legalEntities); // Return first item.
       }
 
       return parent::create($values);

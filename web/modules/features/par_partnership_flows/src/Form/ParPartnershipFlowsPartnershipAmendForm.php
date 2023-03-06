@@ -2,16 +2,21 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
+use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
+use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_flows\ParFlowDataHandlerInterface;
+use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use Drupal\registered_organisations\OrganisationProfile;
@@ -25,6 +30,27 @@ class ParPartnershipFlowsPartnershipAmendForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
+  /*
+   * Constructs a \Drupal\par_flows\Form\ParBaseForm.
+   *
+   * @param \Drupal\par_flows\ParFlowNegotiatorInterface $negotiation
+   *   The flow negotiator.
+   * @param \Drupal\par_flows\ParFlowDataHandlerInterface $data_handler
+   *   The flow data handler.
+   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
+   *   The par data manager.
+   * @param \Drupal\Component\Plugin\PluginManagerInterface $plugin_manager
+   *   The par form builder.
+   */
+  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager, UrlGeneratorInterface $url_generator) {
+    parent::__construct($negotiator, $data_handler, $par_data_manager, $plugin_manager, $url_generator);
+    $flow = $this->getFlowNegotiator()->getFlow();
+    $actions = $flow->getActions();
+    if (($key = array_search('save', $actions)) !== false) {
+      unset($actions[$key]);
+      $flow->setActions($actions);
+    }
+  }
   /**
    * {@inheritdoc}
    */
@@ -78,48 +104,16 @@ class ParPartnershipFlowsPartnershipAmendForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Conditions and term have been acepted so add the new legal entities to the partnership.
-    if ($this->getFormId() == 'par_partnership_partnership_amend_terms') {
-
-      $data = $this->getFlowDataHandler()->getMetaDataValue('legal_entity_select:state');
-
-      // Get the partnership, the organisation and LEs already attached to the organisation.
+    // Conditions and terms have been accepted by the authority.
+    if ($this->getFormId() == 'par_partnership_authority_amend_terms') {
       /* @var ParDataPartnership $partnership */
       $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-      $organisation = $partnership->getOrganisation(TRUE);
-
-      // Process the selected LEs.
-      /* @var OrganisationProfile $selected_legal_entity */
-      foreach ($data['selected_legal_entities'] as $selected_legal_entity) {
-
-        // Is this legal entity already recorded in PAR?
-        $legal_entity = ParDataLegalEntity::find($selected_legal_entity->getRegister(),
-                                                 $selected_legal_entity->getTypeRaw(),
-                                                 $selected_legal_entity->getId(),
-                                                 $selected_legal_entity->getName());
-
-        // If not found create the LE.
-        $legal_entity = ParDataLegalEntity::create([
-          'type' => 'legal_entity',
-          'registry' => $selected_legal_entity->getRegister(),
-          'name' => $selected_legal_entity->getName(),
-          'registered_name' => $selected_legal_entity->getName(),
-          'registered_number' => $selected_legal_entity->getId(),
-          'legal_entity_type' => $selected_legal_entity->getTypeRaw(),
-        ]);
-        $legal_entity->save();
-
-        // Add the legal entity to the organisation.
-        // If the LE already exists in PAR and is attached to the organisation it will not get added again.
-        $organisation->addLegalEntity($legal_entity);
-
-        // Now add the legal entity to the partnership.
-        $partnership->addLegalEntity($legal_entity);
+      $amend_partnership_legal_entities = $partnership->getPartnershipLegalEntities(FALSE, 'awaiting_review');
+      foreach ($amend_partnership_legal_entities as $amend_partnership_legal_entity) {
+        $amend_partnership_legal_entity->setPartnershipLegalEntityStatus('confirmed_authority');
+        $amend_partnership_legal_entity->save();
       }
 
-      // Commit partnership and organisation changes.
-      $partnership->save();
-      $organisation->save();
       $this->getFlowDataHandler()->deleteStore();
     }
 

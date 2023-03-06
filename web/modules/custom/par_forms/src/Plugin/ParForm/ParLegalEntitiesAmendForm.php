@@ -4,6 +4,7 @@ namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Render\Markup;
 use Drupal\par_data\Entity\ParDataLegalEntity;
+use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
@@ -147,14 +148,14 @@ class ParLegalEntitiesAmendForm extends ParFormPluginBase {
       case self::STEP_CHOOSE_EXISTING_LEGAL_ENTITY:
 
         // Get the set of list of legal entities already attached to the organisation.
-        $organisation_legal_entities = !empty($organisation) ? $organisation->getLegalEntity() : [];
+        $organisation_legal_entities = $organisation->getLegalEntity();
 
         // Remove legal entities already attached to the partnership.
         $partnership_legal_entities = $partnership->getLegalEntity();
         foreach ($organisation_legal_entities as $key => $organisation_legal_entity) {
           foreach ($partnership_legal_entities as $partnership_legal_entity) {
             if ($organisation_legal_entity === $partnership_legal_entity) {
-              unset($organisation_legal_entity[$key]);
+              unset($organisation_legal_entities[$key]);
               break;
             }
           }
@@ -164,7 +165,7 @@ class ParLegalEntitiesAmendForm extends ParFormPluginBase {
         foreach ($organisation_legal_entities as $key => $organisation_legal_entity) {
           foreach ($amend_partnership_legal_entities as $amend_partnership_legal_entity) {
             if ($organisation_legal_entity === $amend_partnership_legal_entity) {
-              unset($organisation_legal_entity[$key]);
+              unset($organisation_legal_entities[$key]);
               break;
             }
           }
@@ -431,6 +432,7 @@ class ParLegalEntitiesAmendForm extends ParFormPluginBase {
           $legal_entity = \Drupal::entityTypeManager()->getStorage('par_data_legal_entity')->load($id);
           $partnership->addLegalEntity($legal_entity, NULL, NULL, 'awaiting_review');
         }
+        $partnership->save();
 
         // Send the user back to the list step.
         $state['step'] = self::STEP_LIST_LEGAL_ENTITIES;
@@ -469,27 +471,43 @@ class ParLegalEntitiesAmendForm extends ParFormPluginBase {
           'name' => $form_state->getValue('legal_entity_name'),
         ]);
 
-        // If new we need to add LE to the organisation.
+        // LE is new.
         if ($legalEntity->isNew()) {
+
+          // Save and add to organisation.
           $legalEntity->save();
           $organisation->addLegalEntity($legalEntity);
         }
 
-        // If existing then we need to check that it belongs to our organisation.
+        // LE already existed in PAR.
         else {
+
+          // Not already attached to our organisation.
           if (!$organisation->hasLegalEntity($legalEntity)) {
-            $id = $this->getElementId(['legal_entity_name'], $form);
-            $form_state->setErrorByName(
-              $this->getElementName('legal_entity_name'),
-              $this->wrapErrorMessage(
-                $legalEntity->getName() .
-                ' already belongs to some other organisation, you may not add it to ' .
-                $organisation->getName() . '.', $id));
+
+            // Does it belong to some other organisation? If so report error.
+            $relationships = $legalEntity->getRelationships('par_data_organisation');
+            if (!empty($relationships)) {
+              /* @var ParDataOrganisation $owningOrganisation */
+              $owningOrganisation = reset($relationships)->getEntity();
+              $id = $this->getElementId(['legal_entity_name'], $form);
+              $form_state->setErrorByName(
+                $this->getElementName('legal_entity_name'),
+                $this->wrapErrorMessage(
+                  $legalEntity->getName() .
+                  ' already belongs to ' . $owningOrganisation->getName() .
+                  ', you may not add it to ' . $organisation->getName() . '.', $id));
+              return;
+            }
+
+            // LE is 'dangling'. We can claim it for our organisation.
+            $organisation->addLegalEntity($legalEntity);
           }
         }
 
         // Now add the legal entity to the partnership.
-        $partnership->addLegalEntity($legalEntity);
+        $partnership->addLegalEntity($legalEntity, NULL, NULL, 'awaiting_review');
+        $partnership->save();
 
         // Send user back to the list step.
         $state['step'] = self::STEP_LIST_LEGAL_ENTITIES;
