@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.message.subscription_verify_notification.field_message_subject
+    - field.field.message.subscription_verify_notification.field_subscription
     - field.field.message.subscription_verify_notification.field_to
     - message.template.subscription_verify_notification
 id: message.subscription_verify_notification.default
@@ -11,17 +12,32 @@ targetEntityType: message
 bundle: subscription_verify_notification
 mode: default
 content:
-  field_to:
-    type: basic_string
+  field_subscription:
+    type: entity_reference_label
     label: above
-    settings: {  }
+    settings:
+      link: true
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
   partial_0:
     settings: {  }
     third_party_settings: {  }
     weight: 0
     region: content
+  partial_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  partial_3:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
 hidden:
   field_message_subject: true
+  field_to: true
+  partial_1: true
+  partial_4: true
+  search_api_excerpt: true

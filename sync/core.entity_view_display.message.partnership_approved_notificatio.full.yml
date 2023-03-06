@@ -13,14 +13,6 @@ targetEntityType: message
 bundle: partnership_approved_notificatio
 mode: full
 content:
-  field_partnership:
-    type: entity_reference_label
-    label: hidden
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 1
-    region: content
   partial_0:
     settings: {  }
     third_party_settings: {  }
@@ -28,4 +20,9 @@ content:
     region: content
 hidden:
   field_message_subject: true
+  field_partnership: true
   field_to: true
+  partial_1: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true

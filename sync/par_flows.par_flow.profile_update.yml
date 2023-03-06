@@ -49,15 +49,6 @@ steps:
       contact_details: par_profile_update
       preferences: par_preferences_update
   6:
-    route: par_profile_update_flows.notification_preferences
-    form_id: par_notification_preferences
-    components:
-      notification_preferences: {  }
-    form_data:
-      select_person: par_choose_person
-      contact_details: par_profile_update
-      preferences: par_preferences_update
-  7:
     route: par_profile_update_flows.review
     form_id: par_profile_review
     form_data:
@@ -66,8 +57,7 @@ steps:
       contact_details: par_profile_update
       contact_preferences: par_preferences_update
       subscription_preferences: par_subscription_preferences
-      notification_preferences: par_notification_preferences
     redirect:
       save: 8
-  8:
+  7:
     route: par_profile_update_flows.completed

@@ -28,3 +28,6 @@ hidden:
   field_to: true
   partial_0: true
   partial_1: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true
