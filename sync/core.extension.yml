@@ -48,6 +48,7 @@ module:
   http_response_headers: 0
   image: 0
   inline_entity_form: 0
+  inline_form_errors: 0
   invite: 0
   invite_by_email: 0
   invite_link: 0
