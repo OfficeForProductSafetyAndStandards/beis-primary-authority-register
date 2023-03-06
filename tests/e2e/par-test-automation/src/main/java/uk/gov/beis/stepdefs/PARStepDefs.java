@@ -15,24 +15,9 @@ import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
-import uk.gov.beis.pageobjects.EmployeesPage;
-import uk.gov.beis.pageobjects.EnforcementActionPage;
-import uk.gov.beis.pageobjects.EnforcementCompletionPage;
-import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
-import uk.gov.beis.pageobjects.EnforcementDetailsPage;
-import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
-import uk.gov.beis.pageobjects.EnforcementNotificationPage;
-import uk.gov.beis.pageobjects.EnforcementReviewPage;
-import uk.gov.beis.pageobjects.EnforcementSearchPage;
-import uk.gov.beis.pageobjects.LegalEntityPage;
-import uk.gov.beis.pageobjects.MemberListPage;
-import uk.gov.beis.pageobjects.ONSCodePage;
-import uk.gov.beis.pageobjects.OrganisationDashboardPage;
-import uk.gov.beis.pageobjects.PartnershipAdvancedSearchPage;
-import uk.gov.beis.pageobjects.PartnershipApprovalPage;
-import uk.gov.beis.pageobjects.AuthorityDashboardPage;
 import uk.gov.beis.pageobjects.AuthorityAddressDetailsPage;
 import uk.gov.beis.pageobjects.AuthorityConfirmationPage;
+import uk.gov.beis.pageobjects.AuthorityDashboardPage;
 import uk.gov.beis.pageobjects.AuthorityNamePage;
 import uk.gov.beis.pageobjects.AuthorityPage;
 import uk.gov.beis.pageobjects.AuthorityTypePage;
@@ -44,14 +29,33 @@ import uk.gov.beis.pageobjects.BusinessInvitePage;
 import uk.gov.beis.pageobjects.BusinessPage;
 import uk.gov.beis.pageobjects.DashboardPage;
 import uk.gov.beis.pageobjects.DeclarationPage;
+import uk.gov.beis.pageobjects.EmployeesPage;
+import uk.gov.beis.pageobjects.EnforcementActionPage;
+import uk.gov.beis.pageobjects.EnforcementCompletionPage;
+import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
+import uk.gov.beis.pageobjects.EnforcementDetailsPage;
+import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
+import uk.gov.beis.pageobjects.EnforcementNotificationPage;
+import uk.gov.beis.pageobjects.EnforcementReviewPage;
+import uk.gov.beis.pageobjects.EnforcementSearchPage;
 import uk.gov.beis.pageobjects.HomePage;
+import uk.gov.beis.pageobjects.InspectionPlanDetailsPage;
+import uk.gov.beis.pageobjects.InspectionPlanExpirationPage;
+import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
+import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.LoginPage;
 import uk.gov.beis.pageobjects.MailLogPage;
+import uk.gov.beis.pageobjects.MemberListPage;
+import uk.gov.beis.pageobjects.ONSCodePage;
+import uk.gov.beis.pageobjects.OrganisationDashboardPage;
+import uk.gov.beis.pageobjects.PartnershipAdvancedSearchPage;
+import uk.gov.beis.pageobjects.PartnershipApprovalPage;
 import uk.gov.beis.pageobjects.PartnershipCompletionPage;
 import uk.gov.beis.pageobjects.PartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.PartnershipDescriptionPage;
 import uk.gov.beis.pageobjects.PartnershipRestoredPage;
 import uk.gov.beis.pageobjects.PartnershipRevokedPage;
+import uk.gov.beis.pageobjects.PartnershipSearchPage;
 import uk.gov.beis.pageobjects.PartnershipTermsPage;
 import uk.gov.beis.pageobjects.PartnershipTypePage;
 import uk.gov.beis.pageobjects.PasswordPage;
@@ -61,9 +65,9 @@ import uk.gov.beis.pageobjects.RemoveEnforcementConfirmationPage;
 import uk.gov.beis.pageobjects.RemoveEnforcementPage;
 import uk.gov.beis.pageobjects.RestorePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
-import uk.gov.beis.pageobjects.PartnershipSearchPage;
 import uk.gov.beis.pageobjects.SICCodePage;
 import uk.gov.beis.pageobjects.TradingPage;
+import uk.gov.beis.pageobjects.UploadInspectionPlanPage;
 import uk.gov.beis.pageobjects.UserCommsPreferencesPage;
 import uk.gov.beis.pageobjects.UserNotificationPreferencesPage;
 import uk.gov.beis.pageobjects.UserProfileCompletionPage;
@@ -77,6 +81,7 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private InspectionPlanSearchPage inspectionPlanSearchPage;
 	private RemoveEnforcementPage removeEnforcementPage;
 	private EnforcementCompletionPage enforcementCompletionPage;
 	private EnforcementActionPage enforcementActionPage;
@@ -99,6 +104,7 @@ public class PARStepDefs {
 	private UserProfileConfirmationPage userProfileConfirmationPage;
 	private UserNotificationPreferencesPage userNotificationPreferencesPage;
 	private MailLogPage mailLogPage;
+	private InspectionPlanExpirationPage inspectionPlanExpirationPage;
 	private AuthorityDashboardPage authoritiesDashboardPage;
 	private PartnershipApprovalPage partnershipApprovalPage;
 	private UserProfileCompletionPage userProfileCompletionPage;
@@ -107,6 +113,7 @@ public class PARStepDefs {
 	private UserSubscriptionPage userSubscriptionPage;
 	private MemberListPage memberListPage;
 	private LoginPage parLoginPage;
+	private UploadInspectionPlanPage uploadInspectionPlanPage;
 	private SICCodePage sicCodePage;
 	private DashboardPage parDashboardPage;
 	private AuthorityPage parAuthorityPage;
@@ -128,12 +135,17 @@ public class PARStepDefs {
 	private PartnershipCompletionPage parPartnershipCompletionPage;
 	private BusinessAddressDetailsPage parBusinessAddressDetailsPage;
 	private TradingPage tradingPage;
+	private InspectionPlanDetailsPage inspectionPlanDetailsPage;
 	private RestorePartnershipConfirmationPage restorePartnershipConfirmationPage;
 	private PartnershipRestoredPage partnershipRestoredPage;
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		inspectionPlanExpirationPage = PageFactory.initElements(driver, InspectionPlanExpirationPage.class);
+		inspectionPlanDetailsPage = PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
+		uploadInspectionPlanPage = PageFactory.initElements(driver, UploadInspectionPlanPage.class);
+		inspectionPlanSearchPage = PageFactory.initElements(driver, InspectionPlanSearchPage.class);
 		removeEnforcementConfirmationPage = PageFactory.initElements(driver, RemoveEnforcementConfirmationPage.class);
 		removeEnforcementPage = PageFactory.initElements(driver, RemoveEnforcementPage.class);
 		enforcementCompletionPage = PageFactory.initElements(driver, EnforcementCompletionPage.class);
@@ -282,16 +294,22 @@ public class PARStepDefs {
 	@When("^the user searches for the last created partnership$")
 	public void the_user_searches_for_the_last_created_partnership() throws Throwable {
 		parDashboardPage.checkAndAcceptCookies();
-		if (DataStore.getSavedValue(UsableValues.LOGIN_USER).equalsIgnoreCase("par_helpdesk@example.com")) {
+
+		String user = DataStore.getSavedValue(UsableValues.LOGIN_USER);
+		switch (user) {
+		case ("par_helpdesk@example.com"):
 			LOG.info("Selecting view partnerships");
 			parDashboardPage.selectSearchPartnerships();
 			partnershipAdvancedSearchPage.searchPartnerships();
-		} else if (DataStore.getSavedValue(UsableValues.LOGIN_USER)
-				.equalsIgnoreCase("par_enforcement_officer@example.com")) {
+			break;
+
+		case ("par_enforcement_officer@example.com"):
 			LOG.info("Selecting search for partnership");
 			parDashboardPage.selectSearchforPartnership();
 			partnershipSearchPage.searchPartnerships();
-		} else {
+			break;
+
+		default:
 			LOG.info("Search partnerships");
 			parDashboardPage.selectSeePartnerships();
 			LOG.info("Select organisation link details");
@@ -323,16 +341,23 @@ public class PARStepDefs {
 			LOG.info("Selecting SIC Code");
 			DataStore.saveValue(UsableValues.SIC_CODE, data.get("SIC Code"));
 			sicCodePage.selectSICCode(data.get("SIC Code"));
-			if (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).equalsIgnoreCase("direct")) {
+
+			String partnershiptype = DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase();
+			switch (partnershiptype) {
+
+			case ("direct"):
 				LOG.info("Selecting No of Employees");
 				DataStore.saveValue(UsableValues.NO_EMPLOYEES, data.get("No of Employees"));
 				employeesPage.selectNoEmployees(data.get("No of Employees"));
-			}
-			if (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).equalsIgnoreCase("co-ordinated")) {
+				break;
+
+			case ("co-ordinated"):
 				LOG.info("Selecting Membership List size");
 				DataStore.saveValue(UsableValues.MEMBERLIST_SIZE, data.get("Member List Size"));
 				memberListPage.selectMemberSize(data.get("Member List Size"));
+				break;
 			}
+
 			LOG.info("Entering business trading name");
 			DataStore.saveValue(UsableValues.TRADING_NAME,
 					DataStore.getSavedValue(UsableValues.BUSINESS_NAME).replace("Business", "trading name"));
@@ -347,14 +372,21 @@ public class PARStepDefs {
 	@Then("^the second part of the partnership application is successfully completed$")
 	public void the_second_part_of_the_partnership_application_is_successfully_completed() throws Throwable {
 		LOG.info("Check and confirm changes");
-		if (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).equalsIgnoreCase("co-ordinated")) {
-			LOG.info("Check membership size");
-			parPartnershipConfirmationPage.checkMemberSize();
-		}
-		if (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).equalsIgnoreCase("direct")) {
+
+		String partnershiptype = DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase();
+		switch (partnershiptype) {
+
+		case ("direct"):
 			LOG.info("Check employee size");
 			parPartnershipConfirmationPage.checkNoEmployees();
+			break;
+
+		case ("co-ordinated"):
+			LOG.info("Check membership size");
+			parPartnershipConfirmationPage.checkMemberSize();
+			break;
 		}
+
 		Assert.assertTrue("Appliction not complete",
 				parPartnershipConfirmationPage.checkPartnershipApplicationSecondPart());
 		parPartnershipConfirmationPage.confirmDetails();
@@ -382,7 +414,7 @@ public class PARStepDefs {
 		parBusinessContactDetailsPage.proceed();
 		userCommsPreferencesPage.proceed();
 		userSubscriptionPage.selectContinue();
-		userNotificationPreferencesPage.selectContinue();
+//		userNotificationPreferencesPage.selectContinue();
 	}
 
 	@Then("^the user journey creation is successful$")
@@ -621,5 +653,30 @@ public class PARStepDefs {
 		removeEnforcementConfirmationPage.acceptTerms();
 		enforcementSearchPage.searchPartnerships();
 		Assert.assertTrue("Some results are returned indeed", enforcementSearchPage.confirmNoReturnedResults());
+	}
+
+	@When("^the user uploads an inspection plan against the partnership with the following details:$")
+	public void the_user_uploads_an_inspection_plan_against_the_partnership_with_the_following_details(DataTable dets)
+			throws Throwable {
+		LOG.info("Upload inspection plan and save details");
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			partnershipAdvancedSearchPage.selectPartnershipLink();
+			parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
+			inspectionPlanSearchPage.selectUploadLink();
+			uploadInspectionPlanPage.chooseFile("link.txt");
+			uploadInspectionPlanPage.uploadFile();
+			DataStore.saveValue(UsableValues.INSPECTIONPLAN_TITLE, data.get("Title"));
+			inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
+			DataStore.saveValue(UsableValues.INSPECTIONPLAN_DESCRIPTION, data.get("Description"));
+			inspectionPlanDetailsPage
+					.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
+			inspectionPlanDetailsPage.save();
+			inspectionPlanExpirationPage.enterDate("ddMMYYYY");
+			inspectionPlanExpirationPage.save();
+			LOG.info("Check inspection plan status is set to \"Current\"");
+			Assert.assertTrue("Failed: Status not set to \"Current\"",
+					inspectionPlanSearchPage.getPlanStatus().equalsIgnoreCase("Current"));
+
+		}
 	}
 }
