@@ -1,0 +1,2 @@
+api_cache_maximum_age: 86400
+base_url: "http://api.postcodes.io"

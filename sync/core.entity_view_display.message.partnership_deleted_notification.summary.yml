@@ -1,0 +1,31 @@
+uuid: 7602b42b-a4e8-4177-81a5-afa0aeef6125
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.summary
+    - field.field.message.partnership_deleted_notification.field_message_subject
+    - field.field.message.partnership_deleted_notification.field_partnership
+    - field.field.message.partnership_deleted_notification.field_to
+    - message.template.partnership_deleted_notification
+id: message.partnership_deleted_notification.summary
+targetEntityType: message
+bundle: partnership_deleted_notification
+mode: summary
+content:
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  partial_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_message_subject: true
+  field_partnership: true
+  field_to: true
+  partial_2: true
+  search_api_excerpt: true

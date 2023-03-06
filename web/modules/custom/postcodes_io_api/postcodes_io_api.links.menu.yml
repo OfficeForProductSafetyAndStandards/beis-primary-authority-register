@@ -1,0 +1,5 @@
+postcodes_io_api.settings:
+  title: 'Postcodes.io API'
+  description: 'Configure Postcodes.io API.'
+  route_name: postcodes_io_api.settings
+  parent: system.admin_config_services

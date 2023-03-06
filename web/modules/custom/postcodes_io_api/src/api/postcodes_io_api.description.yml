@@ -1,0 +1,103 @@
+baseUrl: "http://api.postcodes.io"
+operations:
+  lookup:
+    uri: 'postcodes/{postcode}'
+    httpMethod: GET
+    responseModel: getResponse
+    parameters:
+      postcode:
+        location: uri
+        description: 'The postcode to look up.'
+        required: true
+  bulkLookup:
+    uri: postcodes
+    httpMethod: POST
+    responseModel: getResponse
+    parameters:
+      postcodes:
+        location: formParam
+        description: 'The postcodes to look up (max 100).'
+        required: true
+  reverseGeocode:
+    uri: 'postcodes/lon/{longitude}/lat/{latitude}'
+    httpMethod: GET
+    responseModel: getResponse
+    parameters:
+      longitude:
+        location: uri
+        description: 'The longitude to look up.'
+        required: true
+      latitude:
+        location: uri
+        description: 'The latitude to look up.'
+        required: true
+      limit:
+        location: query
+        description: 'Limit the number of postcodes returned (default 10, max 100).'
+        required: true
+      radius:
+        location: query
+        description: 'Limit the postcodes returned in metres (default 100, max 1000).'
+        required: true
+  bulkReverseGeocode:
+    uri: postcodes
+    httpMethod: POST
+    responseModel: getResponse
+    parameters:
+      geolocations:
+        location: formParam
+        description: 'The latitude and longitude coordinates to look up.'
+        required: true
+  matching:
+    uri: postcodes
+    httpMethod: GET
+    responseModel: getResponse
+    parameters:
+      query:
+        location: query
+        description: 'The postcode query.'
+      limit:
+        location: query
+        description: 'Limit the number of postcodes returned (default 10, max 100).'
+  validate:
+    uri: 'postcodes/{postcode}/validate'
+    httpMethod: GET
+    responseModel: getResponse
+    parameters:
+      postcode:
+        location: uri
+        description: 'The postcode to validate.'
+        required: true
+  autocomplete:
+    uri: 'postcodes/{postcode}/autocomplete'
+    httpMethod: GET
+    responseModel: getResponse
+    parameters:
+      postcode:
+        location: uri
+        description: 'The partial postcode to autocomplete.'
+        required: true
+      limit:
+        location: query
+        description: 'Limit the number of postcodes returned (default 10, max 100).'
+  random:
+    uri: random/postcodes
+    httpMethod: GET
+    responseModel: getResponse
+  outwardCodeLookup:
+    uri: 'outcodes/{outcode}'
+    httpMethod: GET
+    responseModel: getResponse
+    parameters:
+      outcode:
+        location: uri
+        description: 'The outward code (first half of postcode) to get location data for.'
+        required: true
+models:
+  getResponse:
+    type: object
+    properties:
+      statusCode:
+        location: statusCode
+    additionalProperties:
+      location: json

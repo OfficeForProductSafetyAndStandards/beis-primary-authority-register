@@ -1,0 +1,25 @@
+uuid: 3b6f7d02-697b-4dfa-bb97-622fbc5f0a33
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.full
+    - field.field.message.partnership_nominate.field_message_subject
+    - field.field.message.partnership_nominate.field_partnership
+    - field.field.message.partnership_nominate.field_to
+    - message.template.partnership_nominate
+id: message.partnership_nominate.full
+targetEntityType: message
+bundle: partnership_nominate
+mode: full
+content:
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_message_subject: true
+  field_partnership: true
+  field_to: true
+  search_api_excerpt: true

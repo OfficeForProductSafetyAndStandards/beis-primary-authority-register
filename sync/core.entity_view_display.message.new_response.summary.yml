@@ -1,0 +1,28 @@
+uuid: e11ce89d-2b2c-43b8-89b2-ee099bd9689d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.summary
+    - field.field.message.new_response.field_comment
+    - field.field.message.new_response.field_message_subject
+    - field.field.message.new_response.field_to
+    - message.template.new_response
+id: message.new_response.summary
+targetEntityType: message
+bundle: new_response
+mode: summary
+content:
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_comment: true
+  field_message_subject: true
+  field_to: true
+  partial_1: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true

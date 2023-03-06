@@ -1,0 +1,7 @@
+postcodes_io_api.settings:
+  path: 'admin/config/services/postcodes_io_api'
+  defaults:
+    _form:  '\Drupal\postcodes_io_api\Form\Settings'
+    _title: 'Postcodes.io API'
+  requirements:
+    _permission: 'administer site configuration'

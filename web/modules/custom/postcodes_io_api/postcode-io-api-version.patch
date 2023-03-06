@@ -1,0 +1,10 @@
+diff --git a/postcodes_io_api.info.yml b/postcodes_io_api.info.yml
+index b54cbf4..5a3e4d3 100644
+--- a/postcodes_io_api.info.yml
++++ b/postcodes_io_api.info.yml
+@@ -1,4 +1,4 @@
+ name: 'Postcodes.io API'
+ description: 'Integrates Postcodes.io API with Drupal'
+ type: module
+-core: 8.x
++core_version_requirement: ^8 || ^9

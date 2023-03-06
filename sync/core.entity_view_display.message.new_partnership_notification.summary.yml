@@ -1,0 +1,28 @@
+uuid: f163eba8-bec5-4adf-9a86-6727b0603b88
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.summary
+    - field.field.message.new_partnership_notification.field_message_subject
+    - field.field.message.new_partnership_notification.field_partnership
+    - field.field.message.new_partnership_notification.field_to
+    - message.template.new_partnership_notification
+id: message.new_partnership_notification.summary
+targetEntityType: message
+bundle: new_partnership_notification
+mode: summary
+content:
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_message_subject: true
+  field_partnership: true
+  field_to: true
+  partial_1: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true

@@ -1,0 +1,10 @@
+{
+  "name": "drupal/postcodes_io_api",
+  "description": "Integrates Postcodes.io API with Drupal",
+  "type": "drupal-module",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "guzzlehttp/guzzle-services": "^1.1"
+  }
+}

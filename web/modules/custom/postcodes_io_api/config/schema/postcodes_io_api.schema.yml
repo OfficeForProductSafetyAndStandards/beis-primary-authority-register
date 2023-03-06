@@ -1,0 +1,10 @@
+postcodes_io_api.settings:
+  type: config_object
+  label: 'Postcodes.io API settings'
+  mapping:
+    base_url:
+      type: string
+      label: 'Postcodes.io API Url'
+    api_cache_maximum_age:
+      type: integer
+      label: 'API cache time'

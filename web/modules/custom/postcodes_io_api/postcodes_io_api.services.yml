@@ -1,0 +1,4 @@
+services:
+  postcodes_io_api.client:
+    class: Drupal\postcodes_io_api\Service\PostcodesIoApiClient
+    arguments: ["@http_client_factory", "@config.factory", "@cache.default", "@logger.factory", "@module_handler"]

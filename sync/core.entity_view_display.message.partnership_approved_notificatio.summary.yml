@@ -1,0 +1,28 @@
+uuid: 0a7bae26-b6ea-41a8-afc4-a5fec53d1f54
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.summary
+    - field.field.message.partnership_approved_notificatio.field_message_subject
+    - field.field.message.partnership_approved_notificatio.field_partnership
+    - field.field.message.partnership_approved_notificatio.field_to
+    - message.template.partnership_approved_notificatio
+id: message.partnership_approved_notificatio.summary
+targetEntityType: message
+bundle: partnership_approved_notificatio
+mode: summary
+content:
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_message_subject: true
+  field_partnership: true
+  field_to: true
+  partial_1: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true
