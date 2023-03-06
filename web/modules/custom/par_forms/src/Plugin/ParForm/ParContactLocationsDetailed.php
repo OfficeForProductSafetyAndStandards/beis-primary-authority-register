@@ -84,8 +84,8 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
   public function getElements($form = [], $cardinality = 1) {
     if ($cardinality === 1) {
       $form['message_intro'] = [
-        '#type' => 'fieldset',
-        'title' => [
+        '#type' => 'container',
+        'heading' => [
           '#type' => 'html_tag',
           '#tag' => 'h2',
           '#value' => $this->t('Contacts'),
@@ -115,7 +115,7 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
       }
 
       $form['contact'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#weight' => 1,
         '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
         'name' => [
@@ -153,7 +153,7 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
     }
     else {
       $form['contact'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#attributes' => ['class' => ['form-group']],
         'title' => [
           '#type' => 'html_tag',

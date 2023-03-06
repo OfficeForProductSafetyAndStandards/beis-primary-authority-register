@@ -200,20 +200,25 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
     // Add the details about the enforcer.
     if ($enforcing_authority || $enforcing_officer_name) {
       $form['enforcer'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#attributes' => ['class' => ['grid-row', 'form-group', 'enforcement-officer']],
       ];
 
       if ($enforcing_officer_name) {
         $form['enforcer']['enforcement_officer'] = [
-          '#type' => 'fieldset',
-          '#title' => t('Enforcement officer'),
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#attributes' => ['class' => ['heading-medium']],
+            '#value' => t('Enforced officer'),
+          ],
           '#attributes' => ['class' => 'column-one-half'],
-          '#prefix' => '<p>',
-          '#suffix' => '</p>',
           'name' => [
             '#type' => 'markup',
             '#markup' => $enforcing_officer_name,
+            '#prefix' => '<p>',
+            '#suffix' => '</p>',
           ],
         ];
         if ($work_phone = $this->getDefaultValuesByKey('enforcing_officer_work_phone', $cardinality, NULL)) {
@@ -232,8 +237,13 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
 
       if ($enforcing_authority) {
         $form['enforcer']['enforcing_authority'] = [
-          '#type' => 'fieldset',
-          '#title' => t('Enforcing authority'),
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#attributes' => ['class' => ['heading-medium']],
+            '#value' => t('Enforced authority'),
+          ],
           '#attributes' => ['class' => 'column-one-half'],
           'enforcing_authority' => [
             '#type' => 'markup',
@@ -252,14 +262,19 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
     // Add the details about the partnership.
     if ($primary_authority || $enforced_organisation) {
       $form['partnership'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#attributes' => ['class' => ['grid-row', 'form-group']],
       ];
 
       if ($enforced_organisation) {
         $form['partnership']['enforced_organisation'] = [
-          '#type' => 'fieldset',
-          '#title' => t('Enforced organisation'),
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#attributes' => ['class' => ['heading-medium']],
+            '#value' => t('Enforced organisation'),
+          ],
           '#attributes' => ['class' => 'column-one-half'],
           'organisation_name' => [
             '#type' => 'markup',
@@ -286,8 +301,13 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
 
       if ($primary_authority) {
         $form['partnership']['primary_authority'] = [
-          '#type' => 'fieldset',
-          '#title' => t('Primary authority'),
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#attributes' => ['class' => ['heading-medium']],
+            '#value' => t('Primary authority'),
+          ],
           '#attributes' => ['class' => ['column-one-half', 'authority-officer']],
           'primary_authority_name' => [
             '#type' => 'markup',
@@ -299,12 +319,12 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
       }
       if ($pa_officer_name = $this->getDefaultValuesByKey('pa_officer_name', $cardinality, NULL)) {
         $form['partnership']['primary_authority']['pa_officer'] = [
-          '#type' => 'fieldset',
-          '#prefix' => '<p>',
-          '#suffix' => '</p>',
+          '#type' => 'container',
           'name' => [
             '#type' => 'markup',
             '#markup' => $pa_officer_name,
+            '#prefix' => '<p>',
+            '#suffix' => '</p>',
           ],
         ];
         if ($pa_officer_work_phone = $this->getDefaultValuesByKey('pa_officer_work_phone', $cardinality, NULL)) {
@@ -323,8 +343,13 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
 
       if ($referring_authority) {
         $form['partnership']['referring_authority'] = [
-          '#type' => 'fieldset',
-          '#title' => t('Referred by'),
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#attributes' => ['class' => ['heading-medium']],
+            '#value' => t('Referred by'),
+          ],
           '#attributes' => ['class' => 'column-one-half'],
           'referring_authority_name' => [
             '#type' => 'markup',
@@ -337,8 +362,13 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
 
       if ($enforcing_authority) {
         $form['enforcer']['enforcing_authority'] = [
-          '#type' => 'fieldset',
-          '#title' => t('Enforcing authority'),
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#attributes' => ['class' => ['heading-medium']],
+            '#value' => t('Enforcing authority'),
+          ],
           '#attributes' => ['class' => 'column-one-half'],
           'enforcing_authority' => [
             '#type' => 'markup',

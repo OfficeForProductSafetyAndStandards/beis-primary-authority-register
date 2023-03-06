@@ -80,10 +80,8 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
 
     // Display details about the partnership for information.
     $form['about_partnership'] = [
-      '#type' => 'fieldset',
-      '#title' => 'About the partnership',
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      '#markup' => '<h3 class="heading-medium">About the partnership</h3>',
       '#attributes' => ['class' => ['form-group']],
       'details' => $this->getDefaultValuesByKey('about_partnership', $cardinality, NULL),
     ];
@@ -110,8 +108,13 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
         '#type' => 'container',
         '#attributes' => ['class' => ['grid-row']],
         'regulatory_functions' => [
-          '#type' => 'fieldset',
-          '#title' => 'Partnered for',
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h3',
+            '#attributes' => ['class' => ['heading-medium']],
+            '#value' => $this->t('Partnered for'),
+          ],
           '#attributes' => ['class' => 'column-one-half'],
           'functions' => [
             '#theme' => 'item_list',
@@ -120,8 +123,13 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
           ]
         ],
         'approved_date' => [
-          '#type' => 'fieldset',
-          '#title' => 'In partnership since',
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h3',
+            '#attributes' => ['class' => ['heading-medium']],
+            '#value' => $this->t('In partnership since'),
+          ],
           '#attributes' => ['class' => 'column-one-half'],
           'value' => $this->getDefaultValuesByKey('date', $cardinality, NULL),
         ],

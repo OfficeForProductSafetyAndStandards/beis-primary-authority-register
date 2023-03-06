@@ -72,7 +72,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
     $params = $this->getRouteParams() + ['destination' => $return_path];
 
     $form['authority'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
     ];
 
     $form['authority']['name'] = [

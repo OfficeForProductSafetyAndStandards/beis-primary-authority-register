@@ -154,8 +154,13 @@ HEREDOC;
     // There must be a sender and a recipient to continue.
     if (!$this->getDefaultValuesByKey('from', $cardinality, FALSE) || !$this->getDefaultValuesByKey('to', $cardinality, FALSE)) {
       $form['no_recipient'] = [
-        '#type' => 'fieldset',
-        '#title' => t('No recipient'),
+        '#type' => 'container',
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h3',
+          '#attributes' => ['class' => ['heading-medium']],
+          '#value' => $this->t('No recipient'),
+        ],
       ];
       $form['no_recipient']['message'] = [
         '#markup' => '<p>We can\'t continue sending this invitation because no recipient has been selected, please return to the previous page and try again.</p>',
@@ -170,11 +175,8 @@ HEREDOC;
 
     // Set the sender values and display the email.
     $form['sender'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Sender\'s email address'),
-      [
-        '#markup' => "<p>{$this->getFlowDataHandler()->getDefaultValues('from')}</p>"
-      ],
+      '#type' => 'container',
+      '#markup' => "<h2 class='heading-medium'>" . $this->t('Sender\'s email address') . "</h2><p>{$this->getFlowDataHandler()->getDefaultValues('from')}</p>",
       'from' => [
         '#type' => 'hidden',
         '#value' => $this->getFlowDataHandler()->getDefaultValues('from'),
@@ -187,11 +189,8 @@ HEREDOC;
 
     // Set the recipient values and display the email.
     $form['recipient'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Recipient\'s email address'),
-      [
-        '#markup' => "<p>{$this->getFlowDataHandler()->getDefaultValues('to')}</p>"
-      ],
+      '#type' => 'container',
+      '#markup' => "<h2 class='heading-medium'>" . $this->t('Recipient\'s email address') . "</h2><p>{$this->getFlowDataHandler()->getDefaultValues('to')}</p>",
       'to' => [
         '#type' => 'hidden',
         '#value' => $this->getFlowDataHandler()->getDefaultValues('to'),
@@ -199,8 +198,13 @@ HEREDOC;
     ];
 
     $form['email'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Enter your message'),
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => $this->t('Enter your message'),
+      ],
       '#description' => 'Your partner business will be emailed this invitation to sign in to the Primary Authority Register and provide the information required to complete this application. You can amend the message if you wish but please do not change or delete the acceptance link.<br><br>'
     ];
 

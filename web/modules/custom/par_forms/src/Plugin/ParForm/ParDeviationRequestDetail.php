@@ -55,7 +55,7 @@ class ParDeviationRequestDetail extends ParFormPluginBase {
     $params = $this->getRouteParams() + ['destination' => $return_path];
 
     $form['deviation_request'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#attributes' => ['class' => ['form-group']],
       'title' => [
         '#type' => 'html_tag',

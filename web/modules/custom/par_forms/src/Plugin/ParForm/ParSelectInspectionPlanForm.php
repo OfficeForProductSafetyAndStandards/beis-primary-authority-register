@@ -40,8 +40,13 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
 
     if (!$inspection_plans or count($inspection_plans) <= 0) {
       $form['no_inspection_plans'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('There are no inspection plans'),
+        '#type' => 'container',
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#attributes' => ['class' => ['heading-medium']],
+          '#value' => $this->t('There are no inspection plans'),
+        ],
         'text' => [
           '#type' => 'markup',
           '#markup' => $this->t("This partnership is not covered by any inspection plans, please contact the primary authority to request an inspection plan be added first."),
