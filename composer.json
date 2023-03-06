@@ -192,7 +192,8 @@
             },
             "drupal/govuk_theme": {
                 "Remove style sheet": "https://www.drupal.org/files/issues/2021-03-29/3202722-5-remove_generated_css.patch",
-                "Correct version dependencies": "./patches/yargs-version.patch"
+                "Correct version dependencies": "./patches/yargs-version.patch",
+                "Enhance the mobile menu with aria roles and visibility switches": "./patches/aria-menu-enhancements.patch"
             },
             "drupal/login_destination": {
                 "Always redirects to current page on login": "https://www.drupal.org/files/issues/2022-10-12/3314925-7-revert_query_parameter.diff"
