@@ -22,36 +22,35 @@
  */
 #}
 <div class="full-width">
-{% for type, messages in message_list %}
-  <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes|without('role', 'aria-label') }}>
-    {% if type == 'error' %}
-    <div role="group" class="error-summary" tabindex="-1">
-    {% endif %}
-
-      {% if status_headings[type] %}
-        <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
-      {% endif %}
-
+  {% for type, messages in message_list %}
+    <div role="contentinfo" aria-label="{{ status_headings[type] }}"{{ attributes|without('role', 'aria-label') }}>
       {% if type == 'error' %}
-      <h2 class="heading-medium error-summary-heading" id="error-summary-heading-example-1">
-        Please resolve the errors below
-      </h2>
-      {% endif %}
+      <div role="alert" class="govuk-error-summary">
+        {% endif %}
 
-      {% if messages|length > 1 %}
-      <ul class="error-summary-list">
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-      </ul>
-      {% else %}
-        {{ messages|first }}
-      {% endif %}
+        {% if status_headings[type] %}
+          <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
+        {% endif %}
 
-    {% if type == 'error' %}
+        {% if type == 'error' %}
+          <h2 class="govuk-error-summary__title" id="error-summary-heading-example-1">
+            There is a problem
+          </h2>
+        {% endif %}
+
+        {% if messages|length > 1 %}
+          <ul class="error-summary-list">
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          {{ messages|first }}
+        {% endif %}
+
+        {% if type == 'error' %}
+      </div>
+      {% endif %}
     </div>
-    {% endif %}
-  </div>
-{% endfor %}
+  {% endfor %}
 </div>
-
