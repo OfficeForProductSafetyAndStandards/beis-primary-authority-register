@@ -680,8 +680,26 @@ class ParDataPartnership extends ParDataEntity {
    *
    * @return ParDataPartnershipLegalEntity[]
    */
-  public function getPartnershipLegalEntities($active = FALSE) {
+  public function getPartnershipLegalEntities($active = FALSE, $status = 'confirm_rd') {
+
+    /* @var ParDataPartnershipLegalEntity[] $partnership_legal_entities */
     $partnership_legal_entities = $this->get('field_partnership_legal_entity')->referencedEntities();
+
+    // Filter.
+    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) use ($active, $status) {
+
+      // Exclude inactive if requested.
+      if ($active && !$partnership_legal_entity->isActive()) {
+        return FALSE;
+      }
+
+      // Return only PLE with specific partnership legal entity status if requested.
+      if ($partnership_legal_entity->getPartnershipLegalEntityStatusRaw() != $status) {
+        return FALSE;
+      }
+
+      return TRUE;
+    });
 
     // Retain only the active partnership legal entities.
     if ($active) {
@@ -704,14 +722,18 @@ class ParDataPartnership extends ParDataEntity {
    *   Start date of period during which the LE is active.
    * @param DrupalDateTime | NULL $period_to
    *   End date of period during which the LE is active.
+   * @param String | NULL $status
+   *   Status of the PLE. By default is 'confirmed_rd' which will be correct when adding LE for a new partnership
+   *   application. Should be 'awaiting review' when adding LE via partnership amendment request authority journey.
    *
    * @return ParDataPartnershipLegalEntity
    *   The newly created partnership_legal_entity.
    */
-  public function addLegalEntity(ParDataLegalEntity $legal_entity, DrupalDateTime $period_from = NULL, DrupalDateTime $period_to = NULL) {
+  public function addLegalEntity(ParDataLegalEntity $legal_entity, DrupalDateTime $period_from = NULL, DrupalDateTime $period_to = NULL, $status = 'confirmed_rd') {
     // Create new partnership legal entity referencing the legal entity.
     $partnership_legal_entity = ParDataPartnershipLegalEntity::create([]);
     $partnership_legal_entity->setLegalEntity($legal_entity);
+    $partnership_legal_entity->setPartnershipLegalEntityStatus($status);
 
     if ($this->isActive() && !$period_from) {
       $period_from = new DrupalDateTime('now');

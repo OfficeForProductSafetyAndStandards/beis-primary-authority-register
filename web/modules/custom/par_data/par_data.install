@@ -4,6 +4,7 @@
  * Installation hooks for par_data module.
  */
 
+use Drupal\Core\Database\Database;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\link\LinkItemInterface;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
@@ -1418,4 +1419,57 @@ function par_data_update_9006() {
     $partnership->set('member_link', NULL);
     $partnership->save();
   }
+
+}
+
+/**
+ * PAR-2038 Create partnership legal entity status field.
+ */
+function par_data_update_9008() {
+
+  $entity_definition_manager = \Drupal::service('entity.definition_update_manager');
+
+  $entity_type_id = 'par_data_partnership_le';
+  $field_name = 'partnership_legal_entity_status';
+
+  // Add the partnership_legal_entity_status field.
+  $definition = BaseFieldDefinition::create('list_string')
+    ->setLabel(t('Partnership legal entity status'))
+    ->setDescription(t('The status of this partnership legal entity entity.'))
+    ->setDefaultValue('confirmed_rd')
+    ->setSettings([
+      'allowed_values' => [
+        'awaiting_review' => 'Awaiting review',
+        'confirmed_authority' => 'Confirmed by authority',
+        'confirmed_business' => 'Confirmed by business',
+        'confirmed_rd' => 'Active',
+      ],
+    ])
+    ->setDisplayOptions('view', [
+      'label' => 'visible',
+      'type' => 'list_default',
+      'weight' => 5,
+    ])
+    ->setDisplayOptions('form', [
+      'type' => 'options_select',
+      'weight' => 5,
+    ])
+    ->setDisplayConfigurable('view', TRUE)
+    ->setDisplayConfigurable('form', TRUE);
+
+  $entity_definition_manager->installFieldStorageDefinition($field_name, $entity_type_id, $entity_type_id, $definition);
+}
+
+/**
+ * PAR-2038 Set partnership legal entity status on existing entity instances to confirmed_rd (Active).
+ */
+function par_data_update_9009() {
+  $connection = \Drupal::database();
+  $query = $connection->update('par_partnership_legal_entities_field_data')
+    ->fields([
+      'partnership_legal_entity_status' => 'confirmed_rd',
+    ]);
+  $count = $query->execute();
+
+  return t("Partnership legal entity status set to 'confirmed_rd' on $count partnership legal entities.");
 }
