@@ -97,7 +97,7 @@ class ParAddressForm extends ParFormPluginBase {
     ];
 
     $form['country_code'] = [
-      '#type' => 'select',
+      '#type' => 'a11y_autocomplete',
       '#options' => $this->getCountryRepository()->getList(NULL),
       '#title' => $this->t('Country'),
       '#default_value' => $this->getDefaultValuesByKey('country_code', $cardinality, 'GB'),
