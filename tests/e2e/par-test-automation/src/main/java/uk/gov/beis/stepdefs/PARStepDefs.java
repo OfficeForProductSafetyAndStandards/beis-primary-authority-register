@@ -43,6 +43,7 @@ import uk.gov.beis.pageobjects.InspectionContactDetailsPage;
 import uk.gov.beis.pageobjects.InspectionFeedbackCompletionPage;
 import uk.gov.beis.pageobjects.InspectionFeedbackConfirmationPage;
 import uk.gov.beis.pageobjects.InspectionFeedbackDetailsPage;
+import uk.gov.beis.pageobjects.InspectionFeedbackSearchPage;
 import uk.gov.beis.pageobjects.InspectionPlanDetailsPage;
 import uk.gov.beis.pageobjects.InspectionPlanExpirationPage;
 import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
@@ -100,6 +101,7 @@ public class PARStepDefs {
 	private EnforcementNotificationPage enforcementNotificationPage;
 	private EnforcementSearchPage enforcementSearchPage;
 	private ONSCodePage onsCodePage;
+	private InspectionFeedbackSearchPage inspectionFeedbackSearchPage;
 	private ProposedEnforcementPage proposedEnforcementPage;
 	private EnforcementReviewPage enforcementReviewPage;
 	private RegulatoryFunctionPage regulatoryFunctionPage;
@@ -150,6 +152,7 @@ public class PARStepDefs {
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;  
+		inspectionFeedbackSearchPage = PageFactory.initElements(driver, InspectionFeedbackSearchPage.class);
 		inspectionFeedbackCompletionPage = PageFactory.initElements(driver, InspectionFeedbackCompletionPage.class);
 		inspectionFeedbackConfirmationPage = PageFactory.initElements(driver, InspectionFeedbackConfirmationPage.class);
 		inspectionFeedbackDetailsPage = PageFactory.initElements(driver, InspectionFeedbackDetailsPage.class);
@@ -710,11 +713,13 @@ public class PARStepDefs {
 
 	@When("^the user searches for the last created inspection feedback$")
 	public void the_user_searches_for_the_last_created_inspection_feedback() throws Throwable {
-
+		LOG.info("Search for last created inspection feedback");
+		parDashboardPage.selectSeeInspectionFeedbackNotices();
+		inspectionFeedbackSearchPage.selectInspectionFeedbackNotice();
 	}
 
 	@Then("^the user successfully approves the inspection feedback$")
 	public void the_user_successfully_approves_the_inspection_feedback() throws Throwable {
-
+		inspectionFeedbackConfirmationPage.checkInspectionFeedback();
 	}
 }

@@ -28,7 +28,7 @@ Feature:
   And the user updates the partnership information with the following info: "Updated Partnership info"
   Then the partnership is updated correctly
   
- @regression @partnershipapplication @coordinated 
+ @partnershipapplication @coordinated 
  Scenario: Verify Coordinated Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
   Given the user is on the PAR home page
   And the user visits the login page

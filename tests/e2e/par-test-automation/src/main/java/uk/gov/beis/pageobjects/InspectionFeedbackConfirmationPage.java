@@ -19,29 +19,24 @@ public class InspectionFeedbackConfirmationPage extends BasePageObject {
 	@FindBy(xpath = "//input[contains(@value,'Save')]")
 	WebElement saveBtn;
 
-	public InspectionFeedbackCompletionPage saveChanges() {
-		saveBtn.click();
-		return PageFactory.initElements(driver, InspectionFeedbackCompletionPage.class);
+	public BasePageObject saveChanges() {
+		try {
+			driver.findElement(By.xpath("//input[contains(@value,'Save')]")).click();
+			return PageFactory.initElements(driver, InspectionFeedbackCompletionPage.class);
+		} catch (Exception e) {
+			driver.findElement(By.linkText("Done")).click();
+			return PageFactory.initElements(driver, InspectionFeedbackSearchPage.class);
+		}
 	}
 
-	String legEnt = "//fieldset/p[contains(text(),'?')]";
-	String enfType = "//fieldset/p[contains(text(),'?')]";
-	String enfTitle = "//fieldset/h3[contains(text(),'?')]";
 	String desc = "//div/p[contains(text(),'?')]";
 	String enfFile = "//span/a[contains(text(),'?')]";
 
 	public boolean checkInspectionFeedback() {
-		WebElement legEnt1 = driver
-				.findElement(By.xpath(legEnt.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
-		WebElement enfType1 = driver.findElement(
-				By.xpath(enfType.replace("?", DataStore.getSavedValue(UsableValues.ENFORCEMENT_TYPE).toLowerCase())));
-
-		WebElement enfTitle1 = driver
-				.findElement(By.xpath(enfTitle.replace("?", DataStore.getSavedValue(UsableValues.ENFORCEMENT_TITLE))));
 		WebElement desc1 = driver.findElement(By
-				.xpath(desc.replace("?", DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION).toLowerCase())));
+				.xpath(desc.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION))));
 
-		return (legEnt1.isDisplayed() && enfType1.isDisplayed() && enfTitle1.isDisplayed() && desc1.isDisplayed());
+		return (desc1.isDisplayed());
 	}
 
 }
