@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\ParDataRelationship;
@@ -72,6 +73,23 @@ use Drupal\par_validation\Plugin\Validation\Constraint\ParRequired;
 class ParDataLegalEntity extends ParDataEntity {
 
   /**
+   * PAR-1943 Temporary mapping of legal entity type to registry. Used by temporary self::preSave() to set value of
+   * registry base field.
+   *
+   * To be removed once external registry integration is complete.
+   */
+  const TYPE_TO_REGISTRY_MAP = [
+    'partnership' => 'internal',
+    'registered_charity' => 'charity_commission',
+    'sole_trader' => 'internal',
+    'limited_company' => 'companies_house',
+    'public_limited_company' => 'companies_house',
+    'limited_partnership' => 'companies_house',
+    'limited_liability_partnership' => 'companies_house',
+    'other' => 'internal',
+  ];
+
+  /**
    * {@inheritdoc}
    *
    * Ensure that we can not create duplicates of legal entities with the same companies house number.
@@ -97,6 +115,11 @@ class ParDataLegalEntity extends ParDataEntity {
   public function getName() {
     $name = $this->get('registered_name')->getString();
     return $name;
+  }
+
+  public function getRegistry() {
+    $registry = $this->get('registry')->getString();
+    return $registry;
   }
 
   public function getRegisteredNumber() {
@@ -174,7 +197,7 @@ class ParDataLegalEntity extends ParDataEntity {
         }
       }
 
-      // Remove this person record.
+      // Remove this legal entity record.
       $legal_entity->delete();
     }
 
@@ -184,9 +207,47 @@ class ParDataLegalEntity extends ParDataEntity {
 
   /**
    * {@inheritdoc}
+   *
+   * PAR-1943 This override is here temporally to maintain the register field until the rest of
+   * the external registry integration is completed (PAR-1942).
+   */
+  public function preSave(EntityStorageInterface $storage) {
+    parent::preSave($storage);
+
+    $type = $this->getTypeRaw();
+
+    $registry = self::TYPE_TO_REGISTRY_MAP[$type] ?? 'internal';
+
+    $this->set('registry', $registry);
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
+
+    // Registry.
+    $fields['registry'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Registry'))
+      ->setDescription(t('The organisation where the legal entity is registered.'))
+      ->setRequired(FALSE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 32,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
 
     // Registered Name.
     $fields['registered_name'] = BaseFieldDefinition::create('string')
@@ -210,7 +271,7 @@ class ParDataLegalEntity extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Registered Name.
+    // Registered Number.
     $fields['registered_number'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Registered Number'))
       ->setDescription(t('The registered number of the legal entity.'))
