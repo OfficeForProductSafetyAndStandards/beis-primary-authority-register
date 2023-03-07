@@ -41,10 +41,11 @@ class ParDataCommands extends DrushCommands {
    * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
    *   The par_data.manager service.
    */
-  public function __construct(ParDataManagerInterface $par_data_manager, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(ParDataManagerInterface $par_data_manager, EntityTypeManagerInterface $entityTypeManager, \Drupal\Core\Database\Connection $database) {
     parent::__construct();
     $this->parDataManager = $par_data_manager;
     $this->entityTypeManager = $entityTypeManager;
+    $this->database = $database;
   }
 
   /**
@@ -161,10 +162,17 @@ class ParDataCommands extends DrushCommands {
    */
   public function legal_entity_registry_convert() {
 
-    $query = $this->database->query("SELECT count(*) FROM {par_legal_entities}");
-    $cnt = $result = $query->fetchField();
+    // List all values of legal_entity_type with counts.
+    $result = $this->database->query("SELECT led.legal_entity_type AS type, count(*) AS count FROM {par_legal_entities} AS le " .
+                                           "INNER JOIN {par_legal_entities_field_data} AS led ON le.id = led.id AND le.revision_id = led.revision_id " .
+                                           "GROUP BY led.legal_entity_type;");
 
-    $this->output->writeln("Count is $cnt.");
+    $this->output->writeln('Type - Count');
+    foreach ($result as $record) {
+      $this->output->writeln($record->type . ' - ' . $record->count);
+    }
+
+    //
 
     return "Done.";
   }
