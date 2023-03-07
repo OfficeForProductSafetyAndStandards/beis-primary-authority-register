@@ -29,6 +29,13 @@ class ParDataCommands extends DrushCommands {
   protected $entityTypeManager;
 
   /**
+   * The database service.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+
+  /**
    * ParDataCommands constructor.
    *
    * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
@@ -141,5 +148,24 @@ class ParDataCommands extends DrushCommands {
     }
 
     return "Index health good.";
+  }
+
+  /**
+   * Legal entity registry conversion.
+   *
+   * @validate-module-enabled par_data
+   *
+   * @command par-data:legal-entity-registry-convert
+   * @aliases plerc
+
+   */
+  public function legal_entity_registry_convert() {
+
+    $query = $this->database->query("SELECT count(*) FROM {par_legal_entities}");
+    $cnt = $result = $query->fetchField();
+
+    $this->output->writeln("Count is $cnt.");
+
+    return "Done.";
   }
 }

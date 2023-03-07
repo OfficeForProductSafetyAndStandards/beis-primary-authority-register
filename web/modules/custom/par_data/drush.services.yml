@@ -4,5 +4,6 @@ services:
     arguments:
       - '@par_data.manager'
       - '@entity_type.manager'
+      - '@database'
     tags:
       - { name: drush.command }
