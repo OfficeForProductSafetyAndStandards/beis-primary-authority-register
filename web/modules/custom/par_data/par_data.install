@@ -1479,7 +1479,7 @@ function par_data_update_9009() {
 /**
  * PAR-1943: Add the new registry field to par_data_legal_entity entity.
  */
-function par_data_update_9007() {
+function par_data_update_9010() {
 
   // Adding new field definitions to an entity.
   // @see https://www.drupal.org/node/3034742#comment-14054069
@@ -1509,7 +1509,7 @@ function par_data_update_9007() {
 /**
  * PAR-1943: Initialise new registry field on par_data_legal_entity entity.
  */
-function par_data_update_9008(&$sandbox) {
+/*function par_data_update_9008(&$sandbox) {
 
   // All we need to do is to re-save all par_legal_entity entities.
 
@@ -1546,5 +1546,4 @@ function par_data_update_9008(&$sandbox) {
   }
 
   return t($message);
-}
-
+}*/

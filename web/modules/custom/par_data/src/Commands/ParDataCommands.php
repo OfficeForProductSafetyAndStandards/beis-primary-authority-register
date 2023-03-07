@@ -162,9 +162,10 @@ class ParDataCommands extends DrushCommands {
    */
   public function legal_entity_registry_convert() {
 
-    // List all values of legal_entity_type with counts.
+    // For unconverted LEs list all values of legal_entity_type with counts.
     $result = $this->database->query("SELECT led.legal_entity_type AS type, count(*) AS count FROM {par_legal_entities} AS le " .
                                            "INNER JOIN {par_legal_entities_field_data} AS led ON le.id = led.id AND le.revision_id = led.revision_id " .
+                                           "WHERE led.registry IS NULL " .
                                            "GROUP BY led.legal_entity_type;");
 
     $this->output->writeln('Type - Count');
@@ -172,7 +173,7 @@ class ParDataCommands extends DrushCommands {
       $this->output->writeln($record->type . ' - ' . $record->count);
     }
 
-    //
+    // Process limited companies.
 
     return "Done.";
   }
