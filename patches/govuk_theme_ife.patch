@@ -1,3 +1,21 @@
+diff --git a/govuk.theme b/govuk.theme
+index 3633671..9b351f4 100755
+--- a/govuk.theme
++++ b/govuk.theme
+@@ -421,6 +421,7 @@ function _govuk_theme_get_setting($name, $default = NULL) {
+  * Implements hook_form_alter().
+  */
+ function govuk_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
++  $form['#attributes']['novalidate'] = 'novalidate';
+   if (strpos($form_id, 'webform') !== FALSE) {
+     $form['#attached']['library'][] = 'govuk/webform';
+   }
+@@ -433,3 +434,5 @@ function govuk_preprocess(&$variables) {
+   $handler = \Drupal::service('theme_handler');
+   $variables['govuk_directory'] = base_path() . $handler->getTheme('govuk')->getPath();
+ }
++
++
 diff --git a/templates/form/fieldset.html.twig b/templates/form/fieldset.html.twig
 index 5b96567..0780985 100755
 --- a/templates/form/fieldset.html.twig
