@@ -32,7 +32,7 @@ index a121127..3655657 100644
 +
  }
 diff --git a/core/lib/Drupal/Core/Form/FormErrorHandler.php b/core/lib/Drupal/Core/Form/FormErrorHandler.php
-index dfb52c0..b8c65b2 100644
+index dfb52c0..6db67c5 100644
 --- a/core/lib/Drupal/Core/Form/FormErrorHandler.php
 +++ b/core/lib/Drupal/Core/Form/FormErrorHandler.php
 @@ -5,6 +5,8 @@
@@ -44,7 +44,7 @@ index dfb52c0..b8c65b2 100644
  
  /**
   * Handles form errors.
-@@ -14,6 +16,32 @@ class FormErrorHandler implements FormErrorHandlerInterface {
+@@ -14,6 +16,22 @@ class FormErrorHandler implements FormErrorHandlerInterface {
    use MessengerTrait;
  
    /**
@@ -53,16 +53,6 @@ index dfb52c0..b8c65b2 100644
 +   * @var \Drupal\Core\Render\RendererInterface
 +   */
 +  protected $renderer;
-+
-+  /**
-+   * Constructs a FormErrorHandler instance.
-+   *
-+   * @param \Drupal\Core\Render\RendererInterface $renderer
-+   *   The renderer service.
-+   */
-+  public function __construct(RendererInterface $renderer) {
-+    $this->renderer = $renderer;
-+  }
 +
 +  /**
 +   * {@inheritdoc}
@@ -77,7 +67,7 @@ index dfb52c0..b8c65b2 100644
     * {@inheritdoc}
     */
    public function handleFormErrors(array &$form, FormStateInterface $form_state) {
-@@ -39,10 +67,34 @@ public function handleFormErrors(array &$form, FormStateInterface $form_state) {
+@@ -39,10 +57,34 @@ public function handleFormErrors(array &$form, FormStateInterface $form_state) {
     */
    protected function displayErrorMessages(array $form, FormStateInterface $form_state) {
      $errors = $form_state->getErrors();
@@ -116,7 +106,7 @@ index dfb52c0..b8c65b2 100644
      }
    }
  
-@@ -163,6 +215,11 @@ protected function setElementErrorsFromFormState(array &$form, FormStateInterfac
+@@ -163,6 +205,11 @@ protected function setElementErrorsFromFormState(array &$form, FormStateInterfac
  
      // Store the errors for this element on the element directly.
      $elements['#errors'] = $form_state->getError($elements);
