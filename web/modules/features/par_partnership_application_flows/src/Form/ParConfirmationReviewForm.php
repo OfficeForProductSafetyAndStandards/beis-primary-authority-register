@@ -174,7 +174,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Make sure the confirm box and terms box is ticked.
     if (!$form_state->getValue('terms_authority_agreed')) {
-      $message = $this->wrapErrorMessage('Please confirm you have read the terms & conditions.', $this->getElementId('terms_authority_agreed', $form));
+      $message = $this->wrapErrorMessage('Please confirm you have read the terms and conditions.', $this->getElementId('terms_authority_agreed', $form));
       $form_state->setErrorByName($this->getElementName('terms_authority_agreed'), $message);
     }
   }
