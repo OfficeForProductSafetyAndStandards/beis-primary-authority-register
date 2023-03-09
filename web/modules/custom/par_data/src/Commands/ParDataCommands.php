@@ -152,15 +152,18 @@ class ParDataCommands extends DrushCommands {
   }
 
   /**
-   * Legal entity registry conversion.
+   * Report numbers of legal entities yet to be converted.
+   *
+   * LEs that have not been converted have a null registry field. This command reports
+   * how many of these there are for each legal_entity_type.
    *
    * @validate-module-enabled par_data
    *
-   * @command par-data:legal-entity-registry-convert
-   * @aliases plerc
+   * @command par-data:legal-entity-registry-convert-summary
+   * @aliases plercs
 
    */
-  public function legal_entity_registry_convert() {
+  public function legal_entity_registry_convert_summary() {
 
     // For unconverted LEs list all values of legal_entity_type with counts.
     $result = $this->database->query("SELECT led.legal_entity_type AS type, count(*) AS count FROM {par_legal_entities} AS le " .
@@ -173,7 +176,88 @@ class ParDataCommands extends DrushCommands {
       $this->output->writeln($record->type . ' - ' . $record->count);
     }
 
-    // Process limited companies.
+    return "Done.";
+  }
+
+  /**
+   * Process legal entities that can be converted automatically.
+   *
+   * @validate-module-enabled par_data
+   *
+   * @command par-data:legal-entity-registry-convert-process
+   * @aliases plercp
+
+   */
+  public function legal_entity_registry_convert_process() {
+
+    // Mappings of legal entity types to new registry and legal entity type.
+    $mapping = [
+      'limited_company' => [
+        'registry' => 'companies_house',
+        'type' => 'ltd',
+      ],
+      'Limited Company' => [
+        'registry' => 'companies_house',
+        'type' => 'ltd',
+      ],
+      'Private limited Company' => [
+        'registry' => 'companies_house',
+        'type' => 'ltd',
+      ],
+      'public_limited_company' => [
+        'registry' => 'companies_house',
+        'type' => 'plc',
+      ],
+      'Public Limited Company' => [
+        'registry' => 'companies_house',
+        'type' => 'plc',
+      ],
+      'registered_charity' => [
+        'registry' => 'charity_commission',
+        'type' => 'registered-charity',
+      ],
+      'limited_partnership' => [
+        'registry' => 'companies_house',
+        'type' => 'limited-partnership',
+      ],
+      'Limited Partnership' => [
+        'registry' => 'companies_house',
+        'type' => 'limited-partnership',
+      ],
+      'limited_liability_partnership' => [
+        'registry' => 'companies_house',
+        'type' => 'llp',
+      ],
+      'partnership' => [
+        'registry' => 'internal',
+        'type' => 'partnership',
+      ],
+      'Partnership' => [
+        'registry' => 'internal',
+        'type' => 'partnership',
+      ],
+      'sole_trader' => [
+        'registry' => 'internal',
+        'type' => 'sole-trader',
+      ],
+      'Sole Trader' => [
+        'registry' => 'internal',
+        'type' => 'sole-trader',
+      ],
+    ];
+
+    // Process
+
+    // For unconverted LEs list all values of legal_entity_type with counts.
+    $result = $this->database->query("SELECT led.legal_entity_type AS type, count(*) AS count FROM {par_legal_entities} AS le " .
+      "INNER JOIN {par_legal_entities_field_data} AS led ON le.id = led.id AND le.revision_id = led.revision_id " .
+      "WHERE led.registry IS NULL " .
+      "GROUP BY led.legal_entity_type;");
+
+    $this->output->writeln('Type - Count');
+    foreach ($result as $record) {
+      $this->output->writeln($record->type . ' - ' . $record->count);
+    }
 
     return "Done.";
   }
