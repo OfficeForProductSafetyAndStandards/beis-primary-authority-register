@@ -201,7 +201,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Make sure the terms and conditions have been agreed.
     if (!$form_state->getValue('terms_organisation_agreed')) {
-      $message = $this->wrapErrorMessage('Please confirm you have read the terms & conditions.', $this->getElementId('terms_organisation_agreed', $form));
+      $message = $this->wrapErrorMessage('Please confirm you have read the terms and conditions.', $this->getElementId('terms_organisation_agreed', $form));
       $form_state->setErrorByName($this->getElementName('terms_organisation_agreed'), $message);
     }
 
