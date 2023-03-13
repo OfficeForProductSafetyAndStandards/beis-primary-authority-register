@@ -25,7 +25,7 @@ public class InspectionFeedbackSearchPage extends BasePageObject {
 		driver.findElement(By.xpath(feedbknotice.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME))))
 				.click();
 		return PageFactory.initElements(driver, InspectionFeedbackConfirmationPage.class);
-
 	}
 
+	
 }
