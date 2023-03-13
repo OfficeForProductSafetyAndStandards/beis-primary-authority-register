@@ -26,6 +26,10 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	@FindBy(linkText = "Send a notification of a proposed enforcement action")
 	WebElement craeteEnforcementBtn;
 	
+	@FindBy(linkText = "Submit feedback following an inspection")
+	WebElement sendInspectionFeedbackBtn;
+	
+	
 	@FindBy(linkText = "See all Inspection Plans")
 	WebElement seeAllInspectionPlans;
 
@@ -71,6 +75,11 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	public InspectionPlanSearchPage selectSeeAllInspectionPlans() {
 		seeAllInspectionPlans.click();
 		return PageFactory.initElements(driver, InspectionPlanSearchPage.class);
+	}
+	
+	public InspectionContactDetailsPage selectSendInspectionFeedbk() {
+		sendInspectionFeedbackBtn.click();
+		return PageFactory.initElements(driver, InspectionContactDetailsPage.class);
 	}
 
 	public PartnershipDescriptionPage editAboutPartnership() {
