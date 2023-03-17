@@ -1,5 +1,8 @@
 package uk.gov.beis.stepdefs;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -721,5 +724,30 @@ public class PARStepDefs {
 	@Then("^the user successfully approves the inspection feedback$")
 	public void the_user_successfully_approves_the_inspection_feedback() throws Throwable {
 		inspectionFeedbackConfirmationPage.checkInspectionFeedback();
+	}
+	
+	@Given("^the user clicks the PAR Home page link$")
+	public void the_user_clicks_the_PAR_Home_page_link() throws Throwable {
+		LOG.info("Click PAR header to navigate to the PAR Home Page");
+		parAuthorityPage.selectPageHeader();
+	}
+	
+	@When("^the user is on the search for a partnership page$")
+	public void the_user_is_on_the_search_for_a_partnership_page() throws Throwable {
+		LOG.info("Click Search Public List of Partnerships to navigate to PAR Search for Partnership Page");
+		parHomePage.selectPartnershipSearchLink();
+	}
+	
+	@Then("^the user can search for a PA Organisation Trading name Company number$")
+	public void the_user_can_search_for_a_PA_Organisation_Trading_name_Company_number() throws Throwable {
+		LOG.info("Enter business name and click the search button");
+		partnershipSearchPage.searchForPartnership(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		partnershipSearchPage.clickSearchButton();
+	}
+	
+	@Then("^the user is shown the information for that partnership$")
+	public void the_user_is_shown_the_information_for_that_partnership() throws Throwable {
+		LOG.info("Verify the Partnership contains the business name");
+		assertTrue(partnershipSearchPage.partnershipContains(DataStore.getSavedValue(UsableValues.BUSINESS_NAME)));
 	}
 }
