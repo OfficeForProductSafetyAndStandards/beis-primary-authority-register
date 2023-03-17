@@ -22,7 +22,10 @@ public class HomePage extends BasePageObject {
 
 	@FindBy(xpath = "//button[contains(text(),'Accept')]")
 	private WebElement cookies;
-
+	
+	@FindBy(xpath = "//a[contains(text(),'public list')]")
+	private WebElement searchPartnershipsLink;
+	
 	public HomePage navigateToUrl() {
 		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url"));
 		return PageFactory.initElements(driver, HomePage.class);
@@ -44,5 +47,9 @@ public class HomePage extends BasePageObject {
 		signinButton.click();
 		return PageFactory.initElements(driver, LoginPage.class);
 	}
-
+	
+	public PartnershipSearchPage selectPartnershipSearchLink() {
+		searchPartnershipsLink.click();
+		return PageFactory.initElements(driver, PartnershipSearchPage.class);
+	}
 }
