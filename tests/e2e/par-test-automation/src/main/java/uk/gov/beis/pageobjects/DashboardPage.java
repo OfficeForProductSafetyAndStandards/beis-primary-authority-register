@@ -41,6 +41,9 @@ public class DashboardPage extends BasePageObject {
 	@FindBy(linkText = "Manage organisations")
 	WebElement mangeOrganisationsBtn;
 	
+	@FindBy(linkText = "See your inspection feedback")
+	WebElement inspectionFeedbackNoticeBtn;
+	
 	public OrganisationDashboardPage selectManageOrganisations() {
 		mangeOrganisationsBtn.click();
 		return PageFactory.initElements(driver, OrganisationDashboardPage.class);
@@ -59,6 +62,11 @@ public class DashboardPage extends BasePageObject {
 	public EnforcementSearchPage selectManageEnforcementNotices() {
 		manageEnforcementNoticesBtn.click();
 		return PageFactory.initElements(driver, EnforcementSearchPage.class);
+	}
+	
+	public InspectionFeedbackSearchPage selectSeeInspectionFeedbackNotices() {
+		inspectionFeedbackNoticeBtn.click();
+		return PageFactory.initElements(driver, InspectionFeedbackSearchPage.class);
 	}
 
 	public PartnershipSearchPage selectSeePartnerships() {
