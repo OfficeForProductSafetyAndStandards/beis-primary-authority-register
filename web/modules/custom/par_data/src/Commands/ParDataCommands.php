@@ -19,6 +19,7 @@ class ParDataCommands extends DrushCommands {
   const COMPANIES_HOUSE_IMPORT_FILE = '../data/companies_house_data.csv';
   const CHARITY_COMMISSION_IMPORT_FILE = '../data/charity_commission_data.txt';
   const LEGAL_ENTITY_CONVERSION_WORK = 'legal_entity_conversion_work';
+  const LEGAL_ENTITY_CONVERSION_WORK_EXPORT_FILE = '../data/legal_entity_conversion_work.csv';
 
   /**
    * The par_data.manager service.
@@ -487,39 +488,40 @@ class ParDataCommands extends DrushCommands {
   }
 
   /**
-   * Full legal entity export
+   * Export the legal_entity_conversion_work table to CSV.
    *
-   * Exports LEs as CSV file.
-   *
-   * @command par-data:legal-entity-export-full
-   * @aliases pleef
+   * @command par-data:legal-entity-registry-work-export
+   * @aliases plerwe
 
    */
-  public function legal_entity_export_full() {
+  public function legal_entity_registry_work_export() {
 
     // Create writer.
-    $file_name = 'legal_entity_export_full.csv';
-    $writer = Writer::createFromPath('../data/' . $file_name, 'w+');
+    $writer = Writer::createFromPath(self::LEGAL_ENTITY_CONVERSION_WORK_EXPORT_FILE, 'w+');
 
-    // Export all LEs.
-    $sql = "
-    SELECT id, par_type, par_number
-           led.registered_name AS name,
-           led.registry AS registry,
-           led.legal_entity_type AS type,
-           led.registered_number AS number
-    FROM " . self::LEGAL_ENTITY_CONVERSION_WORK . "
-    ORDER BY led.id;";
+    // Column names.
+    $col_names = [
+      'id',
+      'par_type', 'par_number', 'par_name',
+      'clean_number',
+      'ch_type', 'ch_number', 'ch_name',
+      'cc_type', 'cc_number', 'cc_name',
+    ];
+
+    // Export all records.
+    $sql = "SELECT " . implode(', ', $col_names) . " " .
+           "FROM " . self::LEGAL_ENTITY_CONVERSION_WORK . " " .
+           "ORDER BY id;";
     $result = $this->database->query($sql);
 
     $cnt = 0;
-    $writer->insertOne(['id', 'registered_name', 'registry', 'legal_entity_type', 'registered_number']);
-    foreach ($result as $record) {
-      $writer->insertOne([$record->id, $record->name, $record->registry, $record->type, $record->number]);
+    $writer->insertOne($col_names);
+    while ($record = $result->fetchAssoc()) {
+      $writer->insertOne(array_values($record));
       $cnt++;
     }
 
-    $this->output->writeln("Exported details of $cnt legal entities written to file $file_name.");
+    $this->output->writeln("Exported details of $cnt rows written to file " . self::LEGAL_ENTITY_CONVERSION_WORK_EXPORT_FILE . ".");
     return "Done.";
   }
 }
