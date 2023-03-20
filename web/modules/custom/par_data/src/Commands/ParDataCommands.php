@@ -17,9 +17,7 @@ use League\Csv\Writer;
 class ParDataCommands extends DrushCommands {
 
   const COMPANIES_HOUSE_IMPORT_FILE = '../data/companies_house_data.csv';
-  const COMPANIES_HOUSE_DATA_TABLE_NAME = 'companies_house_data';
   const CHARITY_COMMISSION_IMPORT_FILE = '../data/charity_commission_data.txt';
-  const CHARITY_COMMISSION_DATA_TABLE_NAME = 'charity_commission_data';
   const LEGAL_ENTITY_CONVERSION_WORK = 'legal_entity_conversion_work';
 
   /**
