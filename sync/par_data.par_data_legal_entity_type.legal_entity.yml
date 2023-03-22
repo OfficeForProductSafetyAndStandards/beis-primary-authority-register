@@ -24,13 +24,4 @@ configuration:
       companies_house: 'Companies House'
       charity_commission: 'Charity Commission'
       internal: 'Internal'
-  legal_entity_type:
-    allowed_values:
-      partnership: Partnership
-      registered_charity: 'Registered Charities'
-      sole_trader: 'Sole Trader'
-      limited_company: 'Limited Company'
-      public_limited_company: 'Public Limited Company'
-      limited_partnership: 'Limited Partnership'
-      limited_liability_partnership: 'Limited Liability Partnership'
-      other: Other
+      legacy: 'Legacy'
