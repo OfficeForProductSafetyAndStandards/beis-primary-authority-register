@@ -18,6 +18,9 @@ public class InspectionFeedbackConfirmationPage extends BasePageObject {
 
 	@FindBy(xpath = "//input[contains(@value,'Save')]")
 	WebElement saveBtn;
+	
+	@FindBy(linkText = "Submit a response")
+	WebElement submitResponse;
 
 	public BasePageObject saveChanges() {
 		try {
@@ -27,6 +30,11 @@ public class InspectionFeedbackConfirmationPage extends BasePageObject {
 			driver.findElement(By.linkText("Done")).click();
 			return PageFactory.initElements(driver, InspectionFeedbackSearchPage.class);
 		}
+	}
+	
+	public ReplyInspectionFeedbackPage submitResponse() {
+		submitResponse.click();
+		return PageFactory.initElements(driver, ReplyInspectionFeedbackPage.class);
 	}
 
 	String desc = "//div/p[contains(text(),'?')]";

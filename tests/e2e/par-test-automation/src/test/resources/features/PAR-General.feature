@@ -147,11 +147,20 @@ Feature:
   #submit response to inspection feedback
   Given the user submits a response to the inspection feedback with the following details:
    | Description		| 
-   | Test 1	        | 
+   | Test Response  |
+  
+  Given the user is on the PAR login page
   And the user logs in with the "par_enforcement_officer@example.com" user credentials
   When the user searches for the last created inspection feedback
-  And the user sends s reply to the inspection feedback message
-  Then the message is sent successfully
+  And the user sends a reply to the inspection feedback message with the following details:
+   | Description		| 
+   | Test Reply     |  
+  
+  #login as authority and check message received correctly  
+  Given the user is on the PAR login page
+  And the user logs in with the "par_authority@example.com" user credentials
+  When the user searches for the last created inspection feedback
+  Then the message is received successfully
   
   @regression @publicRegistrySearch
   Scenario: Verify a Non-registered User can Search the Public Register (Happy Path - PAR-2057)
