@@ -40,7 +40,8 @@ class NewEnquirySubscriber extends ParMessageSubscriberBase {
       $partnerships = [];
 
       foreach ($enquiries as $enquiry) {
-        if ($enquiry->hasField('field_partnership') && empty($primary_authorities)) {
+        if ($enquiry->hasField('field_partnership')
+          && !$enquiry->get('field_partnership')->isEmpty()) {
           $partnerships = array_merge(
             $partnerships,
             $enquiry->get('field_partnership')->referencedEntities(),
