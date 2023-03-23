@@ -1,6 +1,7 @@
 package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -21,7 +22,10 @@ public class PartnershipSearchPage extends BasePageObject {
 
 	@FindBy(xpath = "//input[contains(@value,'Search')]")
 	WebElement searchBtn;
-
+	
+	@FindBy(xpath = "//td[@class='views-field views-field-organisation-name']")
+	private WebElement partnershipTableFirstElement;
+	
 	public AuthorityPage searchPartnerships() {
 		searchInput.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 		searchBtn.click();
@@ -43,5 +47,17 @@ public class PartnershipSearchPage extends BasePageObject {
 		WebElement link = driver.findElement(By.xpath(authority.replace("?", auth)));
 		link.click();
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
+	
+	public void searchForPartnership(String partnership) {
+		searchInput.sendKeys(partnership);
+	}
+	
+	public void clickSearchButton() {
+		searchBtn.click();
+	}
+	
+	public Boolean partnershipContains(String name) {
+		return partnershipTableFirstElement.getText().contains(name);
 	}
 }

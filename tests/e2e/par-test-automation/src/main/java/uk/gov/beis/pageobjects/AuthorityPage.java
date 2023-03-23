@@ -13,6 +13,9 @@ public class AuthorityPage extends BasePageObject {
 		super();
 	}
 
+	@FindBy(xpath = "//span[@class='govuk-header__logotype-text']")
+	private WebElement pageHeader;
+	
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 
@@ -24,5 +27,9 @@ public class AuthorityPage extends BasePageObject {
 		continueBtn.click();
 		return PageFactory.initElements(driver, PartnershipTypePage.class);
 	}
-
+	
+	public HomePage selectPageHeader() {
+		pageHeader.click();
+		return PageFactory.initElements(driver, HomePage.class);
+	}
 }
