@@ -118,7 +118,10 @@ function par_notification_update_undefined(&$sandbox) {
 
     // Add any recipients to the 'field_to'.
     if ($recipients = $subscription_manager->getRecipients($message)) {
-      $message->set('field_to', $recipients);
+      $emails = array_values(array_map(function($recipient) {
+        return $recipient->getEmail();
+      }, $recipients));
+      $message->set('field_to', $emails);
     }
 
     // Get the related entities.

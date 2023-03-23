@@ -4,9 +4,12 @@ namespace Drupal\par_notification\Plugin\ParMessageSubscriber;
 
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEnquiryInterface;
+use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\ParDataException;
 use Drupal\par_notification\ParMessageSubscriberBase;
 use Drupal\par_notification\ParNotificationException;
+use Drupal\par_notification\ParRecipient;
 
 /**
  * This message subscriber should apply to any message that deals
@@ -23,6 +26,49 @@ use Drupal\par_notification\ParNotificationException;
  * )
  */
 class NewEnquirySubscriber extends ParMessageSubscriberBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRecipients(MessageInterface $message): array {
+    $recipients = parent::getRecipients($message);
+
+    try {
+      /** @var ParDataEnquiryInterface $enquiries */
+      $enquiries = $this->getMessageHandler()->getPrimaryData($message);
+      /** @var ParDataPartnership[] $partnerships */
+      $partnerships = [];
+
+      foreach ($enquiries as $enquiry) {
+        if ($enquiry->hasField('field_partnership') && empty($primary_authorities)) {
+          $partnerships = array_merge(
+            $partnerships,
+            $enquiry->get('field_partnership')->referencedEntities(),
+          );
+        }
+      }
+    }
+    catch (ParNotificationException|ParDataException $e) {
+      return $recipients;
+    }
+
+    foreach ($partnerships as $partnership) {
+      // This message should be sent to the primary authority contacts for the
+      // partnership, if no partnership is associated with this enquiry then no
+      // recipients will receive this message.
+      /** @var ParDataPersonInterface $people */
+      $people = $partnership->getAuthorityPeople();
+      foreach ($people as $key => $person) {
+        $recipients[] = new ParRecipient(
+          $person->getEmail(),
+          $person->getFirstName(),
+          $person
+        );
+      }
+    }
+
+    return $recipients;
+  }
 
   /**
    * {@inheritdoc}

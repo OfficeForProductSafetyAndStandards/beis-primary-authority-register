@@ -105,6 +105,7 @@ class PlainEmail extends MessageNotifierBase {
     }
 
     $mail = $this->configuration['mail'] ?: $account->getEmail();
+    $from = $this->configuration['from'] ?: NULL;
 
     if (!$this->configuration['language override']) {
       $language = $account->getPreferredLangcode();
