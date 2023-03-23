@@ -86,7 +86,10 @@ function par_notification_entity_presave(EntityInterface $message) {
   // Add any recipients to the 'field_to'.
   if ($message->hasField('field_to') &&
     $recipients = $subscription_manager->getRecipients($message)) {
-    $message->set('field_to', $recipients);
+    $emails = array_values(array_map(function($recipient) {
+      return $recipient->getEmail();
+    }, $recipients));
+    $message->set('field_to', $emails);
   }
 }
 

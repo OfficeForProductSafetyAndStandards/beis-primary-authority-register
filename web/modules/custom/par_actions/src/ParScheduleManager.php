@@ -76,6 +76,10 @@ class ParScheduleManager extends DefaultPluginManager {
     if (!isset($definition['property'])) {
       $definition['property'] = 'created';
     }
+    // Assign a default frequency to run.
+    if (!isset($definition['property'])) {
+      $definition['property'] = NULL;
+    }
   }
 
   /**

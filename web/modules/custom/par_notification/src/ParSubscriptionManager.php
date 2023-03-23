@@ -189,7 +189,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
     /** @var ParMessageSubscriberInterface[] $subscribers */
     $subscribers = $this->getMessageDefinitions($message->getTemplate());
     foreach ($subscribers as $definition) {
-      $subscriber = $this->createInstance($definition['id'], []);
+      $subscriber = $this->createInstance($definition['id'], $definition);
       try {
         /** @var ParRecipient[] $plugin_recipients */
         $plugin_recipients = $subscriber->getRecipients($message);

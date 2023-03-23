@@ -33,7 +33,7 @@ class NewDeviationRequestSubscriber extends ParMessageSubscriberBase {
     $recipients = parent::getRecipients($message);
 
     try {
-      /** @var ParDataEnquiryInterface $deviation_requests [] */
+      /** @var ParDataEnquiryInterface[] $deviation_requests */
       $deviation_requests = $this->getMessageHandler()->getPrimaryData($message);
       /** @var ParDataPartnership[] $partnerships */
       $partnerships = [];
