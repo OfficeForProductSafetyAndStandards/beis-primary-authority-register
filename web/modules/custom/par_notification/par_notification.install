@@ -43,7 +43,7 @@ function par_notification_update_9001() {
 /**
  * Find all of the subscribed entities for each message.
  */
-function par_notification_update_undefined(&$sandbox) {
+function par_notification_update_9002(&$sandbox) {
   $batch_size = 100;
 
   // Initialize some variables during the first pass through.
