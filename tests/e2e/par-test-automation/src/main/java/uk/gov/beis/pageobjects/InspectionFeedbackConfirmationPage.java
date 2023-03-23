@@ -38,6 +38,8 @@ public class InspectionFeedbackConfirmationPage extends BasePageObject {
 	}
 
 	String desc = "//div/p[contains(text(),'?')]";
+	String resp = "//div/p[contains(text(),'?')]";
+	String reply = "//div/p[contains(text(),'?')]";
 	String enfFile = "//span/a[contains(text(),'?')]";
 
 	public boolean checkInspectionFeedback() {
@@ -45,6 +47,20 @@ public class InspectionFeedbackConfirmationPage extends BasePageObject {
 				.xpath(desc.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION))));
 
 		return (desc1.isDisplayed());
+	}
+	
+	public boolean checkInspectionResponse() {
+		WebElement resp1 = driver.findElement(By
+				.xpath(resp.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1))));
+
+		return (resp1.isDisplayed());
+	}
+	
+	public boolean checkInspectionReply() {
+		WebElement reply1 = driver.findElement(By
+				.xpath(reply.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE2))));
+
+		return (reply1.isDisplayed());
 	}
 
 }

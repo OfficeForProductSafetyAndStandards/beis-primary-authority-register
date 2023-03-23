@@ -727,7 +727,8 @@ public class PARStepDefs {
 
 	@Then("^the user successfully approves the inspection feedback$")
 	public void the_user_successfully_approves_the_inspection_feedback() throws Throwable {
-		inspectionFeedbackConfirmationPage.checkInspectionFeedback();
+		LOG.info("Verify the inspection feedback description");
+		Assert.assertTrue("Failed: Inspection feedback description doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionFeedback());
 	}
 
 	@Given("^the user clicks the PAR Home page link$")
@@ -758,6 +759,7 @@ public class PARStepDefs {
 	@Given("^the user submits a response to the inspection feedback with the following details:$")
 	public void the_user_submits_a_response_to_the_inspection_feedback_with_the_following_details(DataTable dets)
 			throws Throwable {
+		LOG.info("Submit response to inspection feedback request");
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
 			DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1, data.get("Description"));
 			inspectionFeedbackConfirmationPage.submitResponse();
@@ -765,12 +767,15 @@ public class PARStepDefs {
 					.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1));
 			replyInspectionFeedbackPage.chooseFile("link.txt");
 			replyInspectionFeedbackPage.proceed();
+			LOG.info("Verify the inspection feedback response");
+			Assert.assertTrue("Failed: Inspection feedback response doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionResponse());
 		}
 	}
 
 	@When("^the user sends a reply to the inspection feedback message with the following details:$")
 	public void the_user_sends_a_reply_to_the_inspection_feedback_message_with_the_following_details(DataTable dets)
 			throws Throwable {
+		LOG.info("Submit reply to inspection feedback response");
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
 			DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE2, data.get("Description"));
 			inspectionFeedbackConfirmationPage.submitResponse();
@@ -783,6 +788,7 @@ public class PARStepDefs {
 
 	@Then("^the message is received successfully$")
 	public void the_message_is_received_successfully() throws Throwable {
-
+		LOG.info("Verify the inspection feedback reply");
+		Assert.assertTrue("Failed: Inspection feedback reply doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionReply());
 	}
 }
