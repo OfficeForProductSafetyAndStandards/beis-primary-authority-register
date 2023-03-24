@@ -791,4 +791,29 @@ public class PARStepDefs {
 		LOG.info("Verify the inspection feedback reply");
 		Assert.assertTrue("Failed: Inspection feedback reply doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionReply());
 	}
+	
+	@When("^the user submits a deviation request against an inspection plan with the following details:$")
+	public void the_user_submits_a_deviation_request_against_an_inspection_plan_with_the_following_details(DataTable arg1) throws Throwable {
+	    
+	}
+
+	@When("^the user searches for the last created deviation request$")
+	public void the_user_searches_for_the_last_created_deviation_request() throws Throwable {
+	    
+	}
+
+	@Then("^the user successfully approves the deviation request$")
+	public void the_user_successfully_approves_the_deviation_request() throws Throwable {
+	    
+	}
+
+	@Given("^the user submits a response to the deviation request with the following details:$")
+	public void the_user_submits_a_response_to_the_deviation_request_with_the_following_details(DataTable arg1) throws Throwable {
+	    
+	}
+
+	@When("^the user sends a reply to the deviation request message with the following details:$")
+	public void the_user_sends_a_reply_to_the_deviation_request_message_with_the_following_details(DataTable arg1) throws Throwable {
+	   
+	}
 }
