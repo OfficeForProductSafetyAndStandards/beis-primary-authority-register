@@ -2,10 +2,10 @@
 
 namespace Drupal\par_notification;
 
+use Drupal\par_notification\ParRecipient;
 use Drupal\user\Entity\Role;
 use Drupal\message\MessageInterface;
 use Drupal\message\MessageTemplateInterface;
-use Drupal\par_notification\ParRecipient;
 use Drupal\par_data\Entity\ParDataMembershipInterface;
 
 /**
@@ -37,6 +37,20 @@ interface ParSubscriptionManagerInterface {
    *   An array of recipients to send the message to.
    */
   public function getRecipients(MessageInterface $message): array;
+
+  /**
+   * Gets the email addresses only for the recipients of a given message..
+   *
+   * @param MessageInterface $message
+   *   The message that is being sent.
+   *
+   * @throws ParNotificationException
+   *   When no subscribers can be found for the message.
+   *
+   * @return string[]
+   *   An array of email addresses.
+   */
+  public function getRecipientEmails(MessageInterface $message): array;
 
   /**
    * Get the PAR entities subscribed to a given message.

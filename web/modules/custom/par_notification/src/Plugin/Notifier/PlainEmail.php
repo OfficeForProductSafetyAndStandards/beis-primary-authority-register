@@ -61,6 +61,7 @@ class PlainEmail extends MessageNotifierBase {
     $configuration += [
       'mail' => FALSE,
       'language override' => FALSE,
+      'from' => FALSE,
     ];
 
     parent::__construct($configuration, $plugin_id, $plugin_definition, $logger, $entity_type_manager, $render, $message);

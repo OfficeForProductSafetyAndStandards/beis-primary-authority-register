@@ -224,6 +224,14 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
     return array_unique($recipients, SORT_STRING);
   }
 
+  public function getRecipientEmails(MessageInterface $message): array {
+    $recipients = $this->getRecipients($message);
+
+    return array_values(array_map(function($recipient) {
+      return $recipient->getEmail();
+    }, $recipients));
+  }
+
   /**
    * {@inheritDoc}
    */
