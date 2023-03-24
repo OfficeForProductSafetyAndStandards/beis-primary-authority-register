@@ -131,10 +131,7 @@ class ParNotificationCommands extends DrushCommands {
       }
 
       // Add any recipients to the 'field_to'.
-      if ($recipients = $this->subscriptionManager->getRecipients($message)) {
-        $emails = array_values(array_map(function($recipient) {
-          return $recipient->getEmail();
-        }, $recipients));
+      if ($emails = $this->subscriptionManager->getRecipientEmails($message)) {
         $message->set('field_to', $emails);
       }
 
