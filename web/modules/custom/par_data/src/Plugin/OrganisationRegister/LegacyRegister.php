@@ -22,6 +22,16 @@ use GuzzleHttp\Exception\ClientException;
 class LegacyRegister extends OrganisationRegisterApi {
 
   /**
+   * The organisation type enum.
+   */
+  const ORGANISATION_TYPE = [];
+
+  /**
+   * The organisation status enum.
+   */
+  const ORGANISATION_STATUS = [];
+
+  /**
    * {@inheritDoc}
    */
   public function findOrganisation(string $name, bool $active = TRUE): array {

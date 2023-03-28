@@ -159,15 +159,22 @@ class ParDataCommands extends DrushCommands {
   }
 
   /**
+   * The following commands (par-data:legal-entity-convert-*) are all used in process to convert legal entities to
+   * use the registered organisations plugins.
+   *
+   * @todo Remove after conversion complete.
+   */
+
+  /**
    * Full legal entity export
    *
-   * Exports LEs as CSV file.
+   * Exports all LEs as CSV file. Allows data to be examined in a spreadsheet.
    *
-   * @command par-data:legal-entity-export-full
-   * @aliases pleef
+   * @command par-data:legal-entity-convert-export-full
+   * @aliases plecef
 
    */
-  public function legal_entity_export_full() {
+  public function legal_entity_convert_export_full() {
 
     // Create writer.
     $file_name = 'legal_entity_export_full.csv';
@@ -203,13 +210,11 @@ class ParDataCommands extends DrushCommands {
    * LEs that have not been converted have a null registry field. This command reports
    * how many of these there are for each legal_entity_type.
    *
-   * @validate-module-enabled par_data
-   *
-   * @command par-data:legal-entity-registry-convert-summary
-   * @aliases plercs
+   * @command par-data:legal-entity-convert-summary
+   * @aliases plecs
 
    */
-  public function legal_entity_registry_convert_summary() {
+  public function legal_entity_convert_summary() {
 
     // For unconverted LEs list all values of legal_entity_type with counts.
     $result = $this->database->query("SELECT led.legal_entity_type AS type, count(*) AS count FROM {par_legal_entities} AS le " .
@@ -228,11 +233,11 @@ class ParDataCommands extends DrushCommands {
   /**
    * Get stats from CH download.
    *
-   * @command par-data:legal-entity-registry-ch-stats
-   * @aliases plerchs
+   * @command par-data:legal-entity-convert-companies-house-stats
+   * @aliases plecchs
 
    */
-  public function legal_entity_registry_ch_stats() {
+  public function legal_entity_convert_companies_house_stats() {
 
     $company_categories = [];
     $company_statuses = [];
@@ -282,11 +287,11 @@ class ParDataCommands extends DrushCommands {
   /**
    * Extract LEs to new legal_entity_convert_work table.
    *
-   * @command par-data:legal-entity-registry-extract
-   * @aliases plere
+   * @command par-data:legal-entity-convert-extract
+   * @aliases plece
 
    */
-  public function legal_entity_registry_extract() {
+  public function legal_entity_convert_extract() {
 
     // Drop any previous companies house table.
     $this->database->query("DROP TABLE IF EXISTS " . self::LEGAL_ENTITY_CONVERSION_WORK . ";");
@@ -370,11 +375,11 @@ class ParDataCommands extends DrushCommands {
   /**
    * Merge Companies House data into new legal_entity_convert_work table.
    *
-   * @command par-data:legal-entity-registry-companies-house-merge
-   * @aliases plerchm
+   * @command par-data:legal-entity-convert-companies-house-merge
+   * @aliases plecchm
 
    */
-  public function legal_entity_registry_companies_house_merge() {
+  public function legal_entity_convert_companies_house_merge() {
 
     // Process the Companies House file.
     $total_cnt = 0;
@@ -436,11 +441,11 @@ class ParDataCommands extends DrushCommands {
   /**
    * Merge Charity Commission data into new legal_entity_convert_work table.
    *
-   * @command par-data:legal-entity-registry-charity-commission-merge
-   * @aliases plerccm
+   * @command par-data:legal-entity-convert-charity-commission-merge
+   * @aliases plecccm
 
    */
-  public function legal_entity_registry_charity_commission_merge() {
+  public function legal_entity_convert_charity_commission_merge() {
 
     // Process the Charity Commission file.
     $total_cnt = 0;
@@ -490,11 +495,10 @@ class ParDataCommands extends DrushCommands {
   /**
    * Export the legal_entity_conversion_work table to CSV.
    *
-   * @command par-data:legal-entity-registry-work-export
-   * @aliases plerwe
-
+   * @command par-data:legal-entity-convert-work-export
+   * @aliases plecwe
    */
-  public function legal_entity_registry_work_export() {
+  public function legal_entity_convert_work_export() {
 
     // Create writer.
     $writer = Writer::createFromPath(self::LEGAL_ENTITY_CONVERSION_WORK_EXPORT_FILE, 'w+');
@@ -524,4 +528,138 @@ class ParDataCommands extends DrushCommands {
     $this->output->writeln("Exported details of $cnt rows written to file " . self::LEGAL_ENTITY_CONVERSION_WORK_EXPORT_FILE . ".");
     return "Done.";
   }
+
+  /**
+   * Import changes from the legal_entity_convert_work table.
+   *
+   * @command par-data:legal-entity-convert-update
+   *
+   * @aliases plecu
+   *
+   */
+  public function legal_entity_convert_update() {
+
+    // Mapping of existing PAR legal entity types to internal registry types.
+    $par_types_internal = [
+      'partnership' => 'partnership',
+      'sole_trader' => 'sole_trader',
+      'Partnership' => 'partnership',
+      'Sole Trader' => 'sole_trader',
+      'other' => 'other',
+    ];
+
+    // Maps the types in the CH download to the values used in the API.
+    // I expect these are different for 'legacy' reasons, but it is annoying.
+    $types = [
+      'PRI/LTD BY GUAR/NSC (Private, limited by guarantee, no share capital)' => 'private-limited-guarant-nsc-limited-exemption',
+      'Private Limited Company' => 'ltd',
+      'Other company type' => 'other',
+      'Charitable Incorporated Organisation' => 'charitable-incorporated-organisation',
+      'Community Interest Company' => 'other',
+      'Registered Society' => 'registered-society-non-jurisdictional',
+      'Limited Partnership' => 'limited-partnership',
+      'Limited Liability Partnership' => 'llp',
+      'Royal Charter Company' => 'royal-charter',
+      'PRI/LBG/NSC (Private, Limited by guarantee, no share capital, use of \'Limited\' exemption)' => 'private-limited-guarant-nsc-limited-exemption',
+      'Public Limited Company' => 'plc',
+      'Scottish Charitable Incorporated Organisation' => 'scottish-charitable-incorporated-organisation',
+      'Overseas Entity' => 'registered-overseas-entity',
+      'Private Unlimited Company' => 'private-unlimited-nsc',
+      'Old Public Company' => 'old-public-company',
+      'Private Unlimited' => 'private-unlimited',
+      'Scottish Partnership' => 'scottish-partnership',
+      'Investment Company with Variable Capital (Securities)' => 'icvc-securities',
+      'Investment Company with Variable Capital' => 'icvc-warrant',
+      'Industrial and Provident Society' => 'industrial-and-provident-society',
+      'United Kingdom Economic Interest Grouping' => 'ukeig',
+      'Investment Company with Variable Capital(Umbrella)' => 'icvc-umbrella',
+      'PRIV LTD SECT. 30 (Private limited company, section 30 of the Companies Act)' => 'private-limited-shares-section-30-exemption',
+      'Converted/Closed' => 'converted-or-closed',
+      'United Kingdom Societas' => 'united-kingdom-societas',
+      'Protected Cell Company' => 'protected-cell-company',
+      'Other Company Type' => 'other',
+      'Further Education and Sixth Form College Corps' => 'further-education-or-sixth-form-college-corporation',
+    ];
+
+    // Read all rows from the conversion work table.
+    $total_cnt = 0;
+    $already_processed_cnt = 0;
+    $empty_ignored_cnt = 0;
+    $matched_cc_cnt = 0;
+    $matched_ch_cnt = 0;
+    $set_to_internal_cnt = 0;
+    $set_to_legacy_cnt = 0;
+    $sql = "SELECT * FROM " . self::LEGAL_ENTITY_CONVERSION_WORK . " ORDER BY id";
+    $result = $this->database->query($sql);
+    foreach ($result as $row) {
+
+      $total_cnt++;
+      if (($total_cnt % 100) == 0) {
+        $this->output->writeln("Processed $total_cnt.");
+      }
+
+      /* @var \Drupal\par_data\Entity\ParDataLegalEntity $legalEntity */
+      $legalEntity = $this->entityTypeManager->getStorage('par_data_legal_entity')->load($row->id);
+
+      // This LE has already been processed by a previous run, so we ignore it.
+      // Allows us to do multiple passes. Clear the registry field of an LE to have it reprocessed.
+      if (!empty($legalEntity->getRegistry())) {
+        $already_processed_cnt++;
+        continue;
+      }
+
+      // Just ignore empty LEs. These need to be manually removed from PAR.
+      if (empty($row->par_type) && empty($row->par_number) && empty($row->par_name)) {
+        $empty_ignored_cnt++;
+        continue;
+      }
+
+      // Matched to charity commission download data.
+      if (!empty($row->cc_type)) {
+        $legalEntity->set('registry', 'charity_commission');
+        $legalEntity->set('registered_name', $row->cc_name);
+        $legalEntity->set('legal_entity_type', $row->cc_type);
+        $legalEntity->set('registered_number', $row->cc_number);
+        $matched_cc_cnt++;
+      }
+
+      // Matched to companies house download data.
+      elseif (!empty($row->ch_type) && isset($types[$row->ch_type])) {
+        $legalEntity->set('registry', 'companies_house');
+        $legalEntity->set('registered_name', $row->ch_name);
+        $legalEntity->set('legal_entity_type', $types[$row->ch_type]);
+        $legalEntity->set('registered_number', $row->ch_number);
+        $matched_ch_cnt++;
+      }
+
+      // LEs that are internal; unregistered partnership, sole traders etc.
+      elseif (isset($par_types_internal[$row->par_type])) {
+        $legalEntity->set('registry', 'internal');
+        $legalEntity->set('legal_entity_type', $par_types_internal[$row->par_type]);
+        $set_to_internal_cnt++;
+      }
+
+      // Everything else is marked as legacy.
+      else {
+        $legalEntity->set('registry', 'legacy');
+        $set_to_legacy_cnt++;
+      }
+
+      $legalEntity->save();
+    }
+
+    $this->output->writeln("Total number of legal entities processed from work table - $total_cnt");
+    $this->output->writeln("Legal entities ignored as already processed - $already_processed_cnt");
+    $this->output->writeln("Legal entities ignored as being completly blank - $empty_ignored_cnt");
+    $this->output->writeln("Legal entities matched to Charity Commission - $matched_cc_cnt");
+    $this->output->writeln("Legal entities matched to Companies House - $matched_ch_cnt");
+    $this->output->writeln("Legal entities set as internal - $set_to_internal_cnt");
+    $this->output->writeln("Legal entities set as legacy - $set_to_legacy_cnt");
+
+    return "Done.";
+  }
+
+  /**
+   * End of par-data:legal-entity-convert-* commands.
+   */
 }
