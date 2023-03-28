@@ -582,4 +582,3 @@ par_partnership_flows.organisation_inspection_plan_details:
         type: entity:par_data_partnership
       par_data_inspection_plan:
         type: entity:par_data_inspection_plan
-

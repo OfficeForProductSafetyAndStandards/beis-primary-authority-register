@@ -110,6 +110,19 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
    * Get the legal entities for this Organisation.
    *
    * @return ParDataLegalEntity[]
+   * Get the contacts for this Organisation.
+   */
+  public function getPerson($primary = FALSE) {
+    $people = $this->get('field_person')->referencedEntities();
+    $person = !empty($people) ? current($people) : NULL;
+
+    return $primary ? $person : $people;
+  }
+
+  /**
+   * Get the legal entites for this Organisation.
+   *
+   * @return ParDataLegalEntity[]
    */
   public function getLegalEntity($single = FALSE) {
     $legal_entities = $this->get('field_legal_entity')->referencedEntities();
