@@ -3,6 +3,7 @@
 namespace Drupal\par_data\Entity;
 
 use CommerceGuys\Addressing\Exception\UnknownCountryException;
+use Drupal\Core\Entity\Annotation\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 
@@ -108,19 +109,6 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
 
   /**
    * Get the legal entities for this Organisation.
-   *
-   * @return ParDataLegalEntity[]
-   * Get the contacts for this Organisation.
-   */
-  public function getPerson($primary = FALSE) {
-    $people = $this->get('field_person')->referencedEntities();
-    $person = !empty($people) ? current($people) : NULL;
-
-    return $primary ? $person : $people;
-  }
-
-  /**
-   * Get the legal entites for this Organisation.
    *
    * @return ParDataLegalEntity[]
    */
@@ -265,7 +253,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
   }
 
   /**
-   * Get the primary nation for this organisation.
+   * Set the primary nation for this organisation.
    *
    * @param string $nation
    *   The nation we want to add, this should be one of the allowed sub-country types.
@@ -278,7 +266,9 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
     if ($nation && isset($allowed_types[$nation])
       && ($this->get('nation')->isEmpty() || $force)) {
       $this->set('nation', $nation);
+      return TRUE;
     }
+    return FALSE;
   }
 
   /**

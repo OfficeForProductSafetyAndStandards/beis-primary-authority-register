@@ -2,13 +2,12 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\Annotation\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\ParDataException;
 use Drupal\par_data\ParDataManager;
 use Drupal\par_data\ParDataRelationship;
-use Drupal\par_validation\Plugin\Validation\Constraint\ParRequired;
 
 /**
  * Defines the par_data_legal_entity entity.
@@ -106,6 +105,7 @@ class ParDataLegalEntity extends ParDataEntity {
       $query = $parStorage->getQuery()
         ->condition('status', 1)
         ->condition('registry', $values['registry'])
+        ->accessCheck(FALSE)
         ->sort('created', 'ASC') // Oldest first any others are duplicates that should not exist.
         ->pager(1);
 

@@ -7,16 +7,12 @@ use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\par_data\ParDataManagerInterface;
-use Drupal\par_flows\Event\ParFlowEvent;
-use Drupal\par_flows\Event\ParFlowEvents;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParFlowDataHandler;
@@ -27,14 +23,12 @@ use Drupal\par_forms\ParEntityValidationMappingTrait;
 use Drupal\par_forms\ParFormBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Entity\EntityConstraintViolationListInterface;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\Core\Access\AccessResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * The base form controller for all PAR forms.
@@ -196,6 +190,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     if ($form_id = $this->getFlowNegotiator()->getFlow()->getFormIdByCurrentStep()) {
       return $form_id;
     }
+    return NULL;
   }
 
   /**

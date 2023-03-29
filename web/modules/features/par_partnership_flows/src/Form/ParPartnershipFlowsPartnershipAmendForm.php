@@ -2,24 +2,13 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
-use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
-use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_flows\ParFlowDataHandlerInterface;
-use Drupal\par_flows\ParFlowNegotiatorInterface;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
-use Drupal\registered_organisations\OrganisationProfile;
 use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
 
@@ -42,7 +31,7 @@ class ParPartnershipFlowsPartnershipAmendForm extends ParBaseForm {
    * @param \Drupal\Component\Plugin\PluginManagerInterface $plugin_manager
    *   The par form builder.
    */
-  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager, UrlGeneratorInterface $url_generator) {
+  /*public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager, UrlGeneratorInterface $url_generator) {
     parent::__construct($negotiator, $data_handler, $par_data_manager, $plugin_manager, $url_generator);
     $flow = $this->getFlowNegotiator()->getFlow();
     $actions = $flow->getActions();
@@ -50,7 +39,7 @@ class ParPartnershipFlowsPartnershipAmendForm extends ParBaseForm {
       unset($actions[$key]);
       $flow->setActions($actions);
     }
-  }
+  }*/
   /**
    * {@inheritdoc}
    */
@@ -80,6 +69,9 @@ class ParPartnershipFlowsPartnershipAmendForm extends ParBaseForm {
     // Access according to route and user role.
     switch ($route_match->getRouteName()) {
       case 'par_partnership_flows.authority_amend_select':
+      case 'par_partnership_flows.authority_amend_declaration':
+      case 'par_partnership_flows.authority_amend_terms':
+      case 'par_partnership_flows.authority_amend_complete':
         if (!in_array('par_authority', $account->getRoles())) {
           $this->accessResult = AccessResult::forbidden('The user is not allowed to access the authority partnership amendment page.');
         }
@@ -96,13 +88,18 @@ class ParPartnershipFlowsPartnershipAmendForm extends ParBaseForm {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
+    if ($this->getFormId() == 'par_partnership_authority_amend_terms') {
+      if (empty($form_state->getValue('terms_authority_agreed'))) {
+        $id = $this->getElementId(['terms_authority_agreed'], $form);
+        $form_state->setErrorByName($this->getElementName('terms_authority_agreed'), $this->wrapErrorMessage('You must agree to the terms and conditions.', $id));
+      }
+    }
   }
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
 
     // Conditions and terms have been accepted by the authority.
     if ($this->getFormId() == 'par_partnership_authority_amend_terms') {
@@ -113,9 +110,8 @@ class ParPartnershipFlowsPartnershipAmendForm extends ParBaseForm {
         $amend_partnership_legal_entity->setPartnershipLegalEntityStatus('confirmed_authority');
         $amend_partnership_legal_entity->save();
       }
-
-      $this->getFlowDataHandler()->deleteStore();
     }
 
+    parent::submitForm($form, $form_state);
   }
 }

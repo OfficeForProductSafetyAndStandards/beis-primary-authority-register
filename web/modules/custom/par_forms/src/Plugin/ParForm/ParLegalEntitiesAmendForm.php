@@ -6,6 +6,7 @@ use Drupal\Core\Render\Markup;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_flows\ParFlowException;
+use Drupal\par_forms\Annotation\ParForm;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 use Drupal\registered_organisations\OrganisationProfile;
@@ -78,7 +79,6 @@ class ParLegalEntitiesAmendForm extends ParFormPluginBase {
             '#type' => 'table',
             '#header' => [
               'Legal entity',
-              'Action',
             ],
           ];
           if ($config['edit'] == TRUE) {
@@ -429,6 +429,7 @@ class ParLegalEntitiesAmendForm extends ParFormPluginBase {
 
         // User has selected at least one of the existing legal entities. Add to the amendment set.
         foreach (array_keys($chosen) as $id) {
+          /* @var ParDataLegalEntity $legal_entity */
           $legal_entity = \Drupal::entityTypeManager()->getStorage('par_data_legal_entity')->load($id);
           $partnership->addLegalEntity($legal_entity, NULL, NULL, 'awaiting_review');
         }
@@ -557,7 +558,7 @@ class ParLegalEntitiesAmendForm extends ParFormPluginBase {
 
             // If existing then we need to check that it belongs to our organisation.
             else {
-              if ($organisation->hasLegalEntity($legalEntity)) {
+              if (!$organisation->hasLegalEntity($legalEntity)) {
                 $id = $this->getElementId(['search_results'], $form);
                 $form_state->setErrorByName(
                   $this->getElementName('search_results'),
@@ -569,7 +570,7 @@ class ParLegalEntitiesAmendForm extends ParFormPluginBase {
             }
 
             // Now add the legal entity to the partnership.
-            $partnership->addLegalEntity($legalEntity);
+            $partnership->addLegalEntity($legalEntity, NULL, NULL, 'awaiting_review');
           }
 
           // Save organisation and partnership changes.
@@ -604,7 +605,7 @@ class ParLegalEntitiesAmendForm extends ParFormPluginBase {
 
         if (empty($state['search_results'])) {
           $id = $this->getElementId(['search_term'], $form);
-          $form_state->setErrorByName($this->getElementName('search_term'), $this->wrapErrorMessage('No active charities found for the given search term.', $id));
+          $form_state->setErrorByName($this->getElementName('search_term'), $this->wrapErrorMessage('No active organisations found for the given search term.', $id));
           break;
         }
 

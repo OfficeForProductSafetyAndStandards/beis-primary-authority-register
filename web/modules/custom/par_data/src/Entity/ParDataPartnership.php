@@ -3,14 +3,14 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\Annotation\ContentEntityType;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\link\LinkItemInterface;
 use Drupal\par_data\ParDataException;
-use Drupal\user\UserInterface;
+use Exception;
 
 /**
  * Defines the par_data_partnership entity.
@@ -284,14 +284,10 @@ class ParDataPartnership extends ParDataEntity {
     switch ($this->getMemberDisplay()) {
       case self::MEMBER_DISPLAY_INTERNAL:
         return $this->countMembers();
-
-        break;
       case self::MEMBER_DISPLAY_EXTERNAL:
       case self::MEMBER_DISPLAY_REQUEST:
         return !$this->get('member_number')->isEmpty() ?
           (int) $this->get('member_number')->getString() : 0;
-
-        break;
     }
 
     return 0;
@@ -605,11 +601,10 @@ class ParDataPartnership extends ParDataEntity {
     $current_user_people = $this->getParDataManager()->getUserPeople($account);
 
     if (!empty($organisation_people_ids) && !empty($current_user_people)) {
-      return array_intersect_key(array_flip($organisation_people_ids), $current_user_people);
+      $found = array_intersect_key(array_flip($organisation_people_ids), $current_user_people);
+      return (!empty($found));
     }
-    else {
-      return FALSE;
-    }
+    return FALSE;
   }
 
   /**
@@ -626,11 +621,10 @@ class ParDataPartnership extends ParDataEntity {
     $current_user_people = $this->getParDataManager()->getUserPeople($account);
 
     if (!empty($authority_people_ids) && !empty($current_user_people)) {
-      return array_intersect_key(array_flip($authority_people_ids), $current_user_people);
+      $found = array_intersect_key(array_flip($authority_people_ids), $current_user_people);
+      return !empty($found);
     }
-    else {
-      return FALSE;
-    }
+    return FALSE;
   }
 
   /**
