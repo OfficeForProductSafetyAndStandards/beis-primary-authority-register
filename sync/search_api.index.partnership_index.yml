@@ -309,6 +309,14 @@ field_settings:
     dependencies:
       module:
         - par_data
+  partnership_status_date:
+    label: 'Status Date'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: par_status_date
+    type: date
+    dependencies:
+      module:
+        - par_data
   partnership_type:
     label: 'Partnership Type'
     datasource_id: 'entity:par_data_partnership'
