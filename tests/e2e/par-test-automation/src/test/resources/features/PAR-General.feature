@@ -160,7 +160,7 @@ Feature:
   Given the user is on the PAR login page
   And the user logs in with the "par_authority@example.com" user credentials
   When the user searches for the last created inspection feedback
-  Then the message is received successfully
+  Then the inspection feedback reply is received successfully
   
   @regression @deviationrequest
   Scenario: Verify Approval of Devia Submit feedback following an Inspection plan (Happy Path - PAR-1859)
@@ -193,7 +193,7 @@ Feature:
   Given the user is on the PAR login page
   And the user logs in with the "par_authority@example.com" user credentials
   When the user searches for the last created deviation request
-  Then the message is received successfully
+  Then the deviation reply received successfully
   
   @regression @publicRegistrySearch
   Scenario: Verify a Non-registered User can Search the Public Register (Happy Path - PAR-2057)
