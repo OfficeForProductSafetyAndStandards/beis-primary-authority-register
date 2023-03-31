@@ -56,14 +56,20 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     /* @var ParDataPartnershipLegalEntity[] $partnership_legal_entities */
     $partnership_legal_entities = $this->getDefaultValuesByKey('partnership_legal_entities', $cardinality, []);
 
-    // Generate the link to amend the partnership.
+    // Generate the links for authorities to amend the partnership and organisation to approve and OSU to authorise.
     try {
-      $add_link = $this->getFlowNegotiator()
+      $authority_amend_link = $this->getFlowNegotiator()
         ->getFlow()
         ->getOperationLink('partnership_amend', 'add legal entities', ['par_data_partnership' => $partnership]);
     }
     catch (ParFlowException $e) {
-      $this->getLogger($this->getLoggerChannel())->notice($e);
+    }
+    try {
+      $organisation_amend_approve_link = $this->getFlowNegotiator()
+        ->getFlow()
+        ->getOperationLink('organisation_amend_approval', 'approve legal entity additions', ['par_data_partnership' => $partnership]);
+    }
+    catch (ParFlowException $e) {
     }
 
     // Fieldset encompassing the partnership legal entities plugin display.
@@ -73,13 +79,22 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       '#attributes' => ['class' => ['form-group']],
     ];
 
-    // Display a link to add a legal entity. Weighted to sink to bottom.
-    if (isset($add_link) && $add_link instanceof Link) {
-      $form['partnership_legal_entities']['add'] = [
+    // Display links to add legal entities, approve amendments and nomminate them.
+    if (isset($authority_amend_link) && $authority_amend_link instanceof Link) {
+      $form['partnership_legal_entities']['authority_amend_link'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $add_link->toString(),
-        '#attributes' => ['class' => ['add-partnership-legal-entity']],
+        '#value' => $authority_amend_link->toString(),
+        '#attributes' => ['class' => ['authority-amend-link']],
+        '#weight' => 99,
+      ];
+    }
+    if (isset($organisation_amend_approve_link) && $organisation_amend_approve_link instanceof Link) {
+      $form['partnership_legal_entities']['organisation_approve_link'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $organisation_amend_approve_link->toString(),
+        '#attributes' => ['class' => ['organisation-approve-link']],
         '#weight' => 99,
       ];
     }

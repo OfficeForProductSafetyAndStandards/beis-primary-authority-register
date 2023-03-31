@@ -171,7 +171,6 @@ steps:
       legal_entities_amend:
         weight: -10
         cardinality: 1
-        edit: true
     redirect:
       next: 20
       cancel: 1
@@ -195,7 +194,7 @@ steps:
         cardinality: 1
     redirect:
       save: 22
-      back: 20
+      back: 19
       cancel: 1
   22:
     route: par_partnership_flows.authority_amend_complete

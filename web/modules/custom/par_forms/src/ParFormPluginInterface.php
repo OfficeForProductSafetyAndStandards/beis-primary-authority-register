@@ -32,6 +32,18 @@ interface ParFormPluginInterface extends PluginInspectionInterface, Configurable
   public function getPluginNamespace();
 
   /**
+   * Get the plugin's configuration.
+   *
+   * @return array
+   */
+  public function getConfiguration();
+
+  /**
+   * Set the plugin's configuration.
+   */
+  public function setConfiguration(array $configuration = []);
+
+  /**
    * Get's the mapping of each form element to the entity
    * property it will be eventually saved on.
    */

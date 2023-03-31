@@ -582,3 +582,43 @@ par_partnership_flows.organisation_inspection_plan_details:
         type: entity:par_data_partnership
       par_data_inspection_plan:
         type: entity:par_data_inspection_plan
+# Organisation legal entities amend approval journey routes.
+par_partnership_flows.organisation_amend_display:
+  path: '/partnership/{par_data_partnership}/organisation/amend/display'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsPartnershipAmendForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsPartnershipAmendForm::titleCallback'
+  requirements:
+    _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsPartnershipAmendForm::accessCallback'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.organisation_amend_terms:
+  path: '/partnership/{par_data_partnership}/organisation/amend/terms'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsPartnershipAmendForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsPartnershipAmendForm::titleCallback'
+  requirements:
+    _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsPartnershipAmendForm::accessCallback'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+par_partnership_flows.organisation_amend_complete:
+  path: '/partnership/{par_data_partnership}/organisation/amend/complete'
+  defaults:
+    _form: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsPartnershipAmendForm'
+    _title_callback: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsPartnershipAmendForm::titleCallback'
+  requirements:
+    _permission: 'update partnership organisation details'
+    _custom_access: '\Drupal\par_partnership_flows\Form\ParPartnershipFlowsPartnershipAmendForm::accessCallback'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership

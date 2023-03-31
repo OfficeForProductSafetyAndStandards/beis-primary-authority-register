@@ -53,7 +53,7 @@ steps:
       edit_employees_band: 12
       inspection_plans: 13
       advice: 15
-      partnership_amend: 19
+      organisation_amend_approval: 19
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
@@ -149,40 +149,29 @@ steps:
       save: 1
       cancel: 1
   19:
-    route: par_partnership_flows.partnership_amend_select
-    form_id: par_partnership_partnership_amend_select
+    route: par_partnership_flows.organisation_amend_display
+    form_id: par_partnership_organisation_amend_display
     components:
-      legal_entity_select:
+      legal_entities_amend:
         weight: -10
         cardinality: 1
     redirect:
       next: 20
       cancel: 1
   20:
-    route: par_partnership_flows.partnership_amend_declaration
-    form_id: par_partnership_partnership_amend_declaration
-    components:
-      declaration_for_partnership:
-        weight: -10
-        cardinality: 1
-    redirect:
-      next: 21
-      back: 19
-      cancel: 1
-  21:
-    route: par_partnership_flows.partnership_amend_terms
-    form_id: par_partnership_partnership_amend_terms
+    route: par_partnership_flows.organisation_amend_terms
+    form_id: par_partnership_organisation_amend_terms
     components:
       terms_and_conditions:
         weight: -10
         cardinality: 1
     redirect:
-      save: 22
-      back: 20
+      save: 21
+      back: 19
       cancel: 1
-  22:
-    route: par_partnership_flows.partnership_amend_complete
-    form_id: par_partnership_partnership_amend_complete
+  21:
+    route: par_partnership_flows.organisation_amend_complete
+    form_id: par_partnership_organisation_amend_complete
     components:
       journey_complete:
         weight: -10

@@ -675,6 +675,7 @@ class ParDataPartnership extends ParDataEntity {
    *  If TRUE then only active PLEs are returned. Default FALSE.
    * @param string $status
    *  Return only PLEs with this partnership legal entity status.
+   *  Blank to return all regardless of status.
    *
    * @return ParDataPartnershipLegalEntity[]
    */
@@ -692,7 +693,7 @@ class ParDataPartnership extends ParDataEntity {
       }
 
       // Return only PLE with specific partnership legal entity status if requested.
-      if ($partnership_legal_entity->getPartnershipLegalEntityStatusRaw() != $status) {
+      if (!empty($status) && $partnership_legal_entity->getPartnershipLegalEntityStatusRaw() != $status) {
         return FALSE;
       }
 

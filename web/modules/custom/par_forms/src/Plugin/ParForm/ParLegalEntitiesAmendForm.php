@@ -55,7 +55,7 @@ class ParLegalEntitiesAmendForm extends ParFormPluginBase {
     $organisation = $partnership->getOrganisation(TRUE);
 
     // Get the amendment PLEs in required state.
-    $amend_partnership_legal_entities = $partnership->getPartnershipLegalEntities(FALSE, 'awaiting_review');
+    $amend_partnership_legal_entities = $partnership->getPartnershipLegalEntities(FALSE, $config['ple_status']);
 
     // First time in.
     if (empty($state['step'])) {
@@ -75,6 +75,13 @@ class ParLegalEntitiesAmendForm extends ParFormPluginBase {
         // If there are legal entities or mode is display show the table of LEs.
         if (!empty($amend_partnership_legal_entities) || $config['edit'] == FALSE) {
 
+          $form['info_text'] = [
+            '#type' => 'markup',
+            '#markup' => 'These are the legal entities that will be added to the partnership.',
+            '#prefix' => '<p>',
+            '#suffix' => '</p>',
+          ];
+
           $form['legal_entities'] = [
             '#type' => 'table',
             '#header' => [
@@ -82,7 +89,7 @@ class ParLegalEntitiesAmendForm extends ParFormPluginBase {
             ],
           ];
           if ($config['edit'] == TRUE) {
-            $form['confirm_entities']['#header'][] = 'Action';
+            $form['legal_entities']['#header'][] = 'Action';
           }
 
           // Add a row for each PLE.
@@ -132,7 +139,7 @@ class ParLegalEntitiesAmendForm extends ParFormPluginBase {
             $form['select_another'] = [
               '#type' => 'button',
               '#name' => 'select-another',
-              '#value' => 'select another legal entity',
+              '#value' => 'add another legal entity',
               '#attributes' => ['class' => ['btn-link']]
             ];
           }
@@ -151,20 +158,10 @@ class ParLegalEntitiesAmendForm extends ParFormPluginBase {
         $organisation_legal_entities = $organisation->getLegalEntity();
 
         // Remove legal entities already attached to the partnership.
-        $partnership_legal_entities = $partnership->getLegalEntity();
+        $partnership_legal_entities = $partnership->getPartnershipLegalEntities(FALSE, '');
         foreach ($organisation_legal_entities as $key => $organisation_legal_entity) {
           foreach ($partnership_legal_entities as $partnership_legal_entity) {
-            if ($organisation_legal_entity === $partnership_legal_entity) {
-              unset($organisation_legal_entities[$key]);
-              break;
-            }
-          }
-        }
-
-        // Remove legal entities already included in this amendment.
-        foreach ($organisation_legal_entities as $key => $organisation_legal_entity) {
-          foreach ($amend_partnership_legal_entities as $amend_partnership_legal_entity) {
-            if ($organisation_legal_entity === $amend_partnership_legal_entity) {
+            if ($organisation_legal_entity === $partnership_legal_entity->getLegalEntity()) {
               unset($organisation_legal_entities[$key]);
               break;
             }

@@ -2,15 +2,10 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
+use Drupal\par_forms\Annotation\ParForm;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -45,6 +40,9 @@ class ParTermsConditions extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements($form = [], $cardinality = 1) {
+
+    $config = $this->getConfiguration();
+
     $url_address = 'https://www.gov.uk/government/publications/primary-authority-terms-and-conditions';
     $url = Url::fromUri($url_address, ['attributes' => ['target' => '_blank']]);
     $terms_link = Link::fromTextAndUrl(t('terms & conditions (opens in a new window)'), $url);
@@ -54,7 +52,7 @@ class ParTermsConditions extends ParFormPluginBase {
         $form[self::AUTHORITY_TERMS] = [
           '#type' => 'checkbox',
           '#title' => $this->t('I have read and agree to the @terms.', ['@terms' => $terms_link->toString()]),
-          '#default_value' => $this->getFlowDataHandler()->getDefaultValues(self::AUTHORITY_TERMS),
+          '#default_value' => 0,
           '#return_value' => 'on',
         ];
 
@@ -64,7 +62,7 @@ class ParTermsConditions extends ParFormPluginBase {
         $form[self::ORGANISATION_TERMS] = [
           '#type' => 'checkbox',
           '#title' => $this->t('I have read and agree to the @terms.', ['@terms' => $terms_link->toString()]),
-          '#default_value' => $this->getFlowDataHandler()->getDefaultValues(self::ORGANISATION_TERMS),
+          '#default_value' => 0,
           '#return_value' => 'on',
         ];
 
@@ -72,27 +70,29 @@ class ParTermsConditions extends ParFormPluginBase {
     }
 
     // Helptext.
-    $form['help_text'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
-    ];
+    if (!empty($config['help_paras'])) {
+      $form['help_text'] = [
+        '#type' => 'container',
+      ];
+      foreach ($config['help_paras'] as $i => $para) {
+        $form['help_text'][$i] = [
+          '#type' => 'markup',
+          '#markup' => $this->t($para),
+          '#prefix' => '<p>',
+          '#suffix' => '</p>',
+        ];
+      }
+    }
 
     return $form;
   }
 
-  /**
-   * Return no actions for this plugin.
-   */
-  public function getElementActions($cardinality = 1, $actions = []) {
-    return $actions;
-  }
+  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+    parent::validate($form, $form_state, $cardinality, $action);
 
-  /**
-   * Return no actions for this plugin.
-   */
-  public function getComponentActions($actions = [], $count = NULL) {
-    return $actions;
+    if (empty($form_state->getValue('terms_authority_agreed'))) {
+      $id = $this->getElementId(['terms_authority_agreed'], $form);
+      $form_state->setErrorByName($this->getElementName('terms_authority_agreed'), $this->wrapErrorMessage('You must agree to the terms and conditions.', $id));
+    }
   }
 }

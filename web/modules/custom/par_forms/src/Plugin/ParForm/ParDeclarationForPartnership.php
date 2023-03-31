@@ -2,16 +2,10 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
+use Drupal\par_forms\Annotation\ParForm;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -74,7 +68,7 @@ class ParDeclarationForPartnership extends ParFormPluginBase {
     $form['declaration'][self::DECLARATION] = [
       '#type' => 'checkbox',
       '#title' => $this->t('I confirm these conditions have been met'),
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues(self::DECLARATION),
+      '#default_value' => 0,
       '#return_value' => 'on',
     ];
 

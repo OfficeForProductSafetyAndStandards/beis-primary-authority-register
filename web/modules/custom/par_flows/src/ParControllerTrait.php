@@ -107,7 +107,11 @@ trait ParControllerTrait {
   }
 
   /**
-   * {@inheritdoc}
+   * Returns the array of component plugins.
+   *
+   * Instantiates the plugins on first call.
+   *
+   * @return ParFormPluginInterface[]
    */
   public function getComponents() {
     if (!empty($this->components)) {
