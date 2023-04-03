@@ -163,7 +163,7 @@ Feature:
   Then the inspection feedback reply is received successfully
   
   @regression @deviationrequest
-  Scenario: Verify Approval of Devia Submit feedback following an Inspection plan (Happy Path - PAR-1859)
+  Scenario: Verify Approval of Devia Submit feedback following an Inspection plan (Happy Path - PAR-1857, PAR-1859)
   Given the user is on the PAR login page
   And the user logs in with the "par_enforcement_officer@example.com" user credentials
   When the user searches for the last created partnership
