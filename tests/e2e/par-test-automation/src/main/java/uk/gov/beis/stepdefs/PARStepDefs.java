@@ -891,4 +891,39 @@ public class PARStepDefs {
 		Assert.assertTrue("Failed: Deviation reply doesn't check out ",
 				deviationReviewPage.checkDeviationResponse());
 	}
+	
+	@When("^the user submits a general enquiry with the following details:$")
+	public void the_user_submits_a_general_enquiry_with_the_following_details(DataTable arg1) throws Throwable {
+	    
+	}
+	
+	@When("^the user searches for the last created general enquiry$")
+	public void the_user_searches_for_the_last_created_general_enquiry() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new PendingException();
+	}
+
+	@Then("^the user successfully views the enquiry$")
+	public void the_user_successfully_views_the_enquiry() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new PendingException();
+	}
+
+	@Given("^the user submits a response to the general enquiry with the following details:$")
+	public void the_user_submits_a_response_to_the_general_enquiry_with_the_following_details(DataTable arg1) throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+	    // For automatic transformation, change DataTable to one of
+	    // List<YourType>, List<List<E>>, List<Map<K,V>> or Map<K,V>.
+	    // E,K,V must be a scalar (String, Integer, Date, enum etc)
+	    throw new PendingException();
+	}
+
+	@When("^the user sends a reply to the general enquiry with the following details:$")
+	public void the_user_sends_a_reply_to_the_general_enquiry_with_the_following_details(DataTable arg1) throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+	    // For automatic transformation, change DataTable to one of
+	    // List<YourType>, List<List<E>>, List<Map<K,V>> or Map<K,V>.
+	    // E,K,V must be a scalar (String, Integer, Date, enum etc)
+	    throw new PendingException();
+	}
 }
