@@ -202,7 +202,7 @@ Feature:
   When the user searches for the last created partnership
   And the user submits a general enquiry with the following details:
    | Description		| 
-   | Test 1	        | 
+   | Test Enquiry   | 
    
   #Re-login as primary authority and check the enquiry
   Given the user is on the PAR login page

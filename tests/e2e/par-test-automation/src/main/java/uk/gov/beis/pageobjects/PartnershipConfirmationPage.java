@@ -38,6 +38,9 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	@FindBy(linkText = "edit about the partnership")
 	WebElement editPartnershipLink;
 
+	@FindBy(linkText = "Send a general enquiry to the primary authority")
+	WebElement generalEnquiryLink;
+	
 	String partnershipDetails = "//div/p[contains(text(),'?')]";
 	String businessname = "//div[contains(text(),'?')]";
 	String businessAddress1 = "//div/p[contains(text(),'?')]";
@@ -77,6 +80,11 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	public InspectionPlanSearchPage selectSeeAllInspectionPlans() {
 		seeAllInspectionPlans.click();
 		return PageFactory.initElements(driver, InspectionPlanSearchPage.class);
+	}
+	
+	public EnquiryContactDetailsPage sendGeneralEnquiry() {
+		generalEnquiryLink.click();
+		return PageFactory.initElements(driver, EnquiryContactDetailsPage.class);
 	}
 	
 	public InspectionContactDetailsPage selectSendInspectionFeedbk() {
