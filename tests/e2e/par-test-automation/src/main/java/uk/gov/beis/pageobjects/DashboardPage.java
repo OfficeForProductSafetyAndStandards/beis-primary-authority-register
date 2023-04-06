@@ -44,6 +44,9 @@ public class DashboardPage extends BasePageObject {
 	@FindBy(linkText = "See your inspection feedback")
 	WebElement inspectionFeedbackNoticeBtn;
 	
+	@FindBy(linkText = "See your deviation requests")
+	WebElement deviationReqBtn;
+	
 	public OrganisationDashboardPage selectManageOrganisations() {
 		mangeOrganisationsBtn.click();
 		return PageFactory.initElements(driver, OrganisationDashboardPage.class);
@@ -67,6 +70,11 @@ public class DashboardPage extends BasePageObject {
 	public InspectionFeedbackSearchPage selectSeeInspectionFeedbackNotices() {
 		inspectionFeedbackNoticeBtn.click();
 		return PageFactory.initElements(driver, InspectionFeedbackSearchPage.class);
+	}
+	
+	public DeviationSearchPage selectSeeDeviationRequests() {
+		deviationReqBtn.click();
+		return PageFactory.initElements(driver, DeviationSearchPage.class);
 	}
 
 	public PartnershipSearchPage selectSeePartnerships() {

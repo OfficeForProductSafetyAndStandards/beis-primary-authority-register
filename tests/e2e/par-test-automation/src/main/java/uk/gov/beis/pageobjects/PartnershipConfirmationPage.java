@@ -29,6 +29,8 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	@FindBy(linkText = "Submit feedback following an inspection")
 	WebElement sendInspectionFeedbackBtn;
 	
+	@FindBy(linkText = "Request to deviate from the inspection plan")
+	WebElement reqToDeviateFromInspectionPlan;
 	
 	@FindBy(linkText = "See all Inspection Plans")
 	WebElement seeAllInspectionPlans;
@@ -80,6 +82,11 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	public InspectionContactDetailsPage selectSendInspectionFeedbk() {
 		sendInspectionFeedbackBtn.click();
 		return PageFactory.initElements(driver, InspectionContactDetailsPage.class);
+	}
+	
+	public EnforcementContactDetailsPage selectDeviateInspectionPlan() {
+		reqToDeviateFromInspectionPlan.click();
+		return PageFactory.initElements(driver, EnforcementContactDetailsPage.class);
 	}
 
 	public PartnershipDescriptionPage editAboutPartnership() {

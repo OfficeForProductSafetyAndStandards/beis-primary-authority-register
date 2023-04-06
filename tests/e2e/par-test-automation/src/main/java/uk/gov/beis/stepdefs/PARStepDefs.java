@@ -32,6 +32,10 @@ import uk.gov.beis.pageobjects.BusinessInvitePage;
 import uk.gov.beis.pageobjects.BusinessPage;
 import uk.gov.beis.pageobjects.DashboardPage;
 import uk.gov.beis.pageobjects.DeclarationPage;
+import uk.gov.beis.pageobjects.DeviationApprovalPage;
+import uk.gov.beis.pageobjects.DeviationCompletionPage;
+import uk.gov.beis.pageobjects.DeviationReviewPage;
+import uk.gov.beis.pageobjects.DeviationSearchPage;
 import uk.gov.beis.pageobjects.EmployeesPage;
 import uk.gov.beis.pageobjects.EnforcementActionPage;
 import uk.gov.beis.pageobjects.EnforcementCompletionPage;
@@ -71,7 +75,9 @@ import uk.gov.beis.pageobjects.ProposedEnforcementPage;
 import uk.gov.beis.pageobjects.RegulatoryFunctionPage;
 import uk.gov.beis.pageobjects.RemoveEnforcementConfirmationPage;
 import uk.gov.beis.pageobjects.RemoveEnforcementPage;
+import uk.gov.beis.pageobjects.ReplyDeviationRequestPage;
 import uk.gov.beis.pageobjects.ReplyInspectionFeedbackPage;
+import uk.gov.beis.pageobjects.RequestDeviationPage;
 import uk.gov.beis.pageobjects.RestorePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.SICCodePage;
@@ -90,6 +96,7 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private DeviationSearchPage deviationSearchPage;
 	private InspectionFeedbackConfirmationPage inspectionFeedbackConfirmationPage;
 	private InspectionFeedbackDetailsPage inspectionFeedbackDetailsPage;
 	private InspectionPlanSearchPage inspectionPlanSearchPage;
@@ -118,6 +125,7 @@ public class PARStepDefs {
 	private UserProfileConfirmationPage userProfileConfirmationPage;
 	private UserNotificationPreferencesPage userNotificationPreferencesPage;
 	private MailLogPage mailLogPage;
+	private RequestDeviationPage requestDeviationPage;
 	private InspectionPlanExpirationPage inspectionPlanExpirationPage;
 	private AuthorityDashboardPage authoritiesDashboardPage;
 	private PartnershipApprovalPage partnershipApprovalPage;
@@ -129,6 +137,7 @@ public class PARStepDefs {
 	private LoginPage parLoginPage;
 	private UploadInspectionPlanPage uploadInspectionPlanPage;
 	private SICCodePage sicCodePage;
+	private DeviationCompletionPage deviationCompletionPage;
 	private DashboardPage parDashboardPage;
 	private AuthorityPage parAuthorityPage;
 	private PartnershipSearchPage partnershipSearchPage;
@@ -154,9 +163,18 @@ public class PARStepDefs {
 	private PartnershipRestoredPage partnershipRestoredPage;
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
 	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
+	private DeviationReviewPage deviationReviewPage;
+	private DeviationApprovalPage deviationApprovalPage;
+	private ReplyDeviationRequestPage replyDeviationRequestPage;
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		replyDeviationRequestPage = PageFactory.initElements(driver, ReplyDeviationRequestPage.class);
+		deviationApprovalPage = PageFactory.initElements(driver, DeviationApprovalPage.class);
+		deviationSearchPage = PageFactory.initElements(driver, DeviationSearchPage.class);
+		deviationCompletionPage = PageFactory.initElements(driver, DeviationCompletionPage.class);
+		deviationReviewPage = PageFactory.initElements(driver, DeviationReviewPage.class);
+		requestDeviationPage = PageFactory.initElements(driver, RequestDeviationPage.class);
 		replyInspectionFeedbackPage = PageFactory.initElements(driver, ReplyInspectionFeedbackPage.class);
 		inspectionFeedbackSearchPage = PageFactory.initElements(driver, InspectionFeedbackSearchPage.class);
 		inspectionFeedbackCompletionPage = PageFactory.initElements(driver, InspectionFeedbackCompletionPage.class);
@@ -728,7 +746,8 @@ public class PARStepDefs {
 	@Then("^the user successfully approves the inspection feedback$")
 	public void the_user_successfully_approves_the_inspection_feedback() throws Throwable {
 		LOG.info("Verify the inspection feedback description");
-		Assert.assertTrue("Failed: Inspection feedback description doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionFeedback());
+		Assert.assertTrue("Failed: Inspection feedback description doesn't check out ",
+				inspectionFeedbackConfirmationPage.checkInspectionFeedback());
 	}
 
 	@Given("^the user clicks the PAR Home page link$")
@@ -768,7 +787,8 @@ public class PARStepDefs {
 			replyInspectionFeedbackPage.chooseFile("link.txt");
 			replyInspectionFeedbackPage.proceed();
 			LOG.info("Verify the inspection feedback response");
-			Assert.assertTrue("Failed: Inspection feedback response doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionResponse());
+			Assert.assertTrue("Failed: Inspection feedback response doesn't check out ",
+					inspectionFeedbackConfirmationPage.checkInspectionResponse());
 		}
 	}
 
@@ -786,9 +806,89 @@ public class PARStepDefs {
 		}
 	}
 
-	@Then("^the message is received successfully$")
-	public void the_message_is_received_successfully() throws Throwable {
+	@Then("^the inspection feedback_reply is received successfully$")
+	public void the_inspection_feedback_reply_is_received_successfully() throws Throwable {
 		LOG.info("Verify the inspection feedback reply");
-		Assert.assertTrue("Failed: Inspection feedback reply doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionReply());
+		Assert.assertTrue("Failed: Inspection feedback reply doesn't check out ",
+				inspectionFeedbackConfirmationPage.checkInspectionReply());
+	}
+
+	@When("^the user submits a deviation request against an inspection plan with the following details:$")
+	public void the_user_submits_a_deviation_request_against_an_inspection_plan_with_the_following_details(
+			DataTable dets) throws Throwable {
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			LOG.info("Submit deviation request");
+			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+			parPartnershipConfirmationPage.selectDeviateInspectionPlan();
+			enforcementContactDetailsPage.save();
+			DataStore.saveValue(UsableValues.DEVIATION_DESCRIPTION, data.get("Description"));
+			requestDeviationPage.enterDescription(DataStore.getSavedValue(UsableValues.DEVIATION_DESCRIPTION));
+			requestDeviationPage.chooseFile("link.txt");
+			requestDeviationPage.proceed();
+			LOG.info("Verify the deviation request is created");
+			Assert.assertTrue("Failed: Deviation request details don't check out ",
+					deviationReviewPage.checkDeviationCreation());
+			deviationReviewPage.saveChanges();
+			deviationCompletionPage.complete();
+		}
+	}
+
+	@When("^the user searches for the last created deviation request$")
+	public void the_user_searches_for_the_last_created_deviation_request() throws Throwable {
+		LOG.info("Search for last created deviation request");
+		parDashboardPage.selectSeeDeviationRequests();
+		deviationSearchPage.selectDeviationRequest();
+	}
+
+	@Then("^the user successfully approves the deviation request$")
+	public void the_user_successfully_approves_the_deviation_request() throws Throwable {
+		LOG.info("Approve the deviation request");
+		deviationApprovalPage.selectAllow();
+		deviationApprovalPage.proceed();
+		Assert.assertTrue("Failed: Deviation request status not correct", deviationReviewPage.checkDeviationStatus());
+		deviationReviewPage.saveChanges();
+		deviationCompletionPage.complete();
+	}
+
+	@Given("^the user submits a response to the deviation request with the following details:$")
+	public void the_user_submits_a_response_to_the_deviation_request_with_the_following_details(DataTable dets)
+			throws Throwable {
+		LOG.info("Submit response to the deviation request");
+		deviationSearchPage.selectDeviationRequest();
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1, data.get("Description"));
+			deviationReviewPage.submitResponse();
+			replyDeviationRequestPage
+					.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1));
+			replyDeviationRequestPage.chooseFile("link.txt");
+			replyDeviationRequestPage.proceed();
+			LOG.info("Verify the deviation response");
+			Assert.assertTrue("Failed: Deviation response doesn't check out ",
+					deviationReviewPage.checkDeviationResponse());
+		}
+	}
+
+	@When("^the user sends a reply to the deviation request message with the following details:$")
+	public void the_user_sends_a_reply_to_the_deviation_request_message_with_the_following_details(DataTable dets)
+			throws Throwable {
+		LOG.info("Submit reply to the deviation request");
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE2, data.get("Description"));
+			deviationReviewPage.submitResponse();
+			replyDeviationRequestPage
+					.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE2));
+			replyDeviationRequestPage.chooseFile("link.txt");
+			replyDeviationRequestPage.proceed();
+			LOG.info("Verify the deviation response");
+			Assert.assertTrue("Failed: Deviation reply doesn't check out ",
+					deviationReviewPage.checkDeviationResponse());
+		}
+	}
+	
+	@Then("^the deviation reply received successfully$")
+	public void the_deviation_reply_received_successfully() throws Throwable {
+		LOG.info("Verify the deviation response");
+		Assert.assertTrue("Failed: Deviation reply doesn't check out ",
+				deviationReviewPage.checkDeviationResponse());
 	}
 }
