@@ -26,10 +26,10 @@ public class PartnershipSearchPage extends BasePageObject {
 	@FindBy(xpath = "//td[@class='views-field views-field-organisation-name']")
 	private WebElement partnershipTableFirstElement;
 	
-	public AuthorityPage searchPartnerships() {
+	public PartnershipSearchPage searchPartnerships() {
 		searchInput.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 		searchBtn.click();
-		return PageFactory.initElements(driver, AuthorityPage.class);
+		return PageFactory.initElements(driver, PartnershipSearchPage.class);
 	}
 
 	public DeclarationPage selectBusinessNameLink() {

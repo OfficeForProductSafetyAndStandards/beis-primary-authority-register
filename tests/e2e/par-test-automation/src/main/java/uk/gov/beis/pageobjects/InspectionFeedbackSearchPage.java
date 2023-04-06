@@ -26,6 +26,4 @@ public class InspectionFeedbackSearchPage extends BasePageObject {
 				.click();
 		return PageFactory.initElements(driver, InspectionFeedbackConfirmationPage.class);
 	}
-
-	
 }
