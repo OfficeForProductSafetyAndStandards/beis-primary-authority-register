@@ -41,16 +41,19 @@ PRs should be tested against the Definition of Done.
 
 ### Deployment
 
-Tagging the master branch with a semver tag starting with a lowercase `v` will start a deployment build.
+Tagging the **master branch** with a **semver tag** starting with a lowercase `v` will start a production deployment build.
 
 ```
 git tag v0.0.31
 git push --tags
 ```
 
-Tagging any branch with any other tag will start a test deployment and allow the feature to be deployed to a test environment.
+Tagging **any branch** with **any other tag** will start a test deployment and allow the feature to be deployed to a test environment.
 
-All started jobs can be found on [CircleCI](https://app.circleci.com/pipelines/github/UKGovernmentBEIS/beis-primary-authority-register). And all tagged deployments will have to be manually released through CI.
+All started jobs can be found on [CircleCI](https://app.circleci.com/pipelines/github/UKGovernmentBEIS/beis-primary-authority-register), locate the tag you've just created under the "Branch / Commit" column:
+![image](https://user-images.githubusercontent.com/334114/230381309-a5b8a11e-5b27-4499-9db2-ae76757472b6.png)
+
+And all tagged deployments will have to be manually released through CI once they have passed manual regression testing. They will then be released to staging and production, or to the relevant test environment.
 
 ## Development environment
 

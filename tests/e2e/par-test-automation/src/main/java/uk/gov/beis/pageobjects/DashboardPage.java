@@ -44,6 +44,15 @@ public class DashboardPage extends BasePageObject {
 	@FindBy(linkText = "See your inspection feedback")
 	WebElement inspectionFeedbackNoticeBtn;
 	
+	@FindBy(linkText = "Manage your colleagues")
+	WebElement manageYourColleaguesBtn;
+	
+	@FindBy(linkText = "Manage your profile details")
+	WebElement manageYourProfileDetailsBtn;
+	
+	@FindBy(linkText = "Manage subscriptions")
+	WebElement helpDeskManageSubscriptionsBtn;
+	
 	@FindBy(linkText = "See your deviation requests")
 	WebElement deviationReqBtn;
 	
@@ -103,6 +112,21 @@ public class DashboardPage extends BasePageObject {
 	public PartnershipSearchPage selectSearchforPartnership() {
 		searchPartnershipBtn1.click();
 		return PageFactory.initElements(driver, PartnershipSearchPage.class);
+	}
+	
+	public ManageColleaguesPage selectManageColleagues() {
+		manageYourColleaguesBtn.click();
+		return PageFactory.initElements(driver, ManageColleaguesPage.class);
+	}
+	
+	public UserProfilePage selectManageProfileDetails() {
+		manageYourProfileDetailsBtn.click();
+		return PageFactory.initElements(driver, UserProfilePage.class);
+	}
+	
+	public NewsLetterSubscriptionPage selectManageSubscriptions() {
+		helpDeskManageSubscriptionsBtn.click();
+		return PageFactory.initElements(driver, NewsLetterSubscriptionPage.class);
 	}
 
 	public String checkPage() {
