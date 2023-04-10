@@ -151,7 +151,7 @@ Feature:
     When the user searches for the last created inspection feedback
     Then the message is received successfully
   
- @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest
+ @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry
  Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
   Given the user is on the PAR home page
   And the user visits the login page
@@ -208,7 +208,7 @@ Feature:
   And the user completes the user creation journey
   Then the user journey creation is successful
  
- @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest
+ @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry
  Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
   Given the user is on the PAR login page
   And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -310,8 +310,8 @@ Feature:
   When the user searches for the last created inspection feedback
   Then the inspection feedback reply is received successfully
   
-  @regression @deviationrequest
-  Scenario: Verify Approval of Devia Submit feedback following an Inspection plan (Happy Path - PAR-1859)
+ @regression @deviationrequest
+ Scenario: Verify Submission of Deviation request following an Inspection plan (Happy Path - PAR-1857, PAR-1859)
   Given the user is on the PAR login page
   And the user logs in with the "par_enforcement_officer@example.com" user credentials
   When the user searches for the last created partnership
@@ -319,7 +319,7 @@ Feature:
    | Description		| 
    | Test 1	        | 
    
-  #Re-login as primary authority and check and approve deviation request
+  #re-login as primary authority and check and approve deviation request
   Given the user is on the PAR login page
   And the user logs in with the "par_authority@example.com" user credentials
   When the user searches for the last created deviation request
@@ -343,6 +343,39 @@ Feature:
   When the user searches for the last created deviation request
   Then the deviation reply received successfully
   
+ @regression @enquiry
+ Scenario: Verify User can Submit a general enquiry (Happy Path - PAR-1861)
+  Given the user is on the PAR login page
+  And the user logs in with the "par_enforcement_officer@example.com" user credentials
+  When the user searches for the last created partnership
+  And the user submits a general enquiry with the following details:
+   | Description		| 
+   | Test Enquiry   | 
+   
+  #Re-login as primary authority and check the enquiry
+  Given the user is on the PAR login page
+  And the user logs in with the "par_authority@example.com" user credentials
+  When the user searches for the last created general enquiry
+  Then the user successfully views the enquiry
+  
+  #submit response to the general enquiry
+  Given the user submits a response to the general enquiry with the following details:
+   | Description		| 
+   | Test Response  |
+  
+  Given the user is on the PAR login page
+  And the user logs in with the "par_enforcement_officer@example.com" user credentials
+  When the user searches for the last created general enquiry
+  And the user sends a reply to the general enquiry with the following details:
+   | Description		| 
+   | Test Reply     |  
+  
+  #login as authority and check message received correctly  
+  Given the user is on the PAR login page
+  And the user logs in with the "par_authority@example.com" user credentials
+  When the user searches for the last created general enquiry
+  Then the user successfully views the enquiry
+  
   @regression @publicRegistrySearch
   Scenario: Verify a Non-registered User can Search the Public Register (Happy Path - PAR-2057)
     Given the user is on the PAR home page
@@ -352,13 +385,13 @@ Feature:
 
   @regression @publicRegistrySearch
   Scenario: Verify a Registered User can Search the Public Register (Happy Path - PAR-2057)
-    Given the user is on the PAR login page
-    And the user logs in with the "par_authority@example.com" user credentials
-    And the user clicks the PAR Home page link
-    When the user is on the search for a partnership page
-    Then the user can search for a PA Organisation Trading name Company number
-    And the user is shown the information for that partnership
-
+  Given the user is on the PAR login page
+  And the user logs in with the "par_authority@example.com" user credentials
+  And the user clicks the PAR Home page link
+  When the user is on the search for a partnership page
+  Then the user can search for a PA Organisation Trading name Company number
+  And the user is shown the information for that partnership
+  
   # Currently this test require the new person's name changing whilst we cannot remove a contact.
   @regression @PARNewsSubscription
   Scenario: Verify a new Authority contact is subscribed to PAR News (Happy Path - PAR-2072)

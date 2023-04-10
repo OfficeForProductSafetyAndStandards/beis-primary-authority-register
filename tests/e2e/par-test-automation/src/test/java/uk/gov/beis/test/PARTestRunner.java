@@ -5,12 +5,10 @@ import org.junit.runner.RunWith;
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
-//import uk.gov.beis.helper.ScenarioContext;
-
 
 @RunWith(Cucumber.class)
 @CucumberOptions(strict = false, features = { "classpath:features" }, glue = { "uk.gov.beis.stepdefs" }, 
-				tags = { "@inspectionfeedback" }, plugin = { "json:target/cucumber-report/report.json" })
+				tags = { "@enquiry" }, plugin = { "json:target/cucumber-report/report.json" })
 public class PARTestRunner {
 	@BeforeClass
 	public static void setUp() {

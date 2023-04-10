@@ -49,6 +49,10 @@ import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
 import uk.gov.beis.pageobjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.EnforcementReviewPage;
 import uk.gov.beis.pageobjects.EnforcementSearchPage;
+import uk.gov.beis.pageobjects.EnquiriesSearchPage;
+import uk.gov.beis.pageobjects.EnquiryCompletionPage;
+import uk.gov.beis.pageobjects.EnquiryContactDetailsPage;
+import uk.gov.beis.pageobjects.EnquiryReviewPage;
 import uk.gov.beis.pageobjects.HomePage;
 import uk.gov.beis.pageobjects.InspectionContactDetailsPage;
 import uk.gov.beis.pageobjects.InspectionFeedbackCompletionPage;
@@ -87,8 +91,10 @@ import uk.gov.beis.pageobjects.RegulatoryFunctionPage;
 import uk.gov.beis.pageobjects.RemoveEnforcementConfirmationPage;
 import uk.gov.beis.pageobjects.RemoveEnforcementPage;
 import uk.gov.beis.pageobjects.ReplyDeviationRequestPage;
+import uk.gov.beis.pageobjects.ReplyEnquiryPage;
 import uk.gov.beis.pageobjects.ReplyInspectionFeedbackPage;
 import uk.gov.beis.pageobjects.RequestDeviationPage;
+import uk.gov.beis.pageobjects.RequestEnquiryPage;
 import uk.gov.beis.pageobjects.RestorePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.SICCodePage;
@@ -112,7 +118,9 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private RequestEnquiryPage requestEnquiryPage;
 	private DeviationSearchPage deviationSearchPage;
+	private EnquiryReviewPage enquiryReviewPage;
 	private InspectionFeedbackConfirmationPage inspectionFeedbackConfirmationPage;
 	private InspectionFeedbackDetailsPage inspectionFeedbackDetailsPage;
 	private InspectionPlanSearchPage inspectionPlanSearchPage;
@@ -174,6 +182,8 @@ public class PARStepDefs {
 	private PartnershipCompletionPage parPartnershipCompletionPage;
 	private BusinessAddressDetailsPage parBusinessAddressDetailsPage;
 	private TradingPage tradingPage;
+	private EnquiryCompletionPage enquiryCompletionPage;
+	private EnquiryContactDetailsPage enquiryContactDetailsPage;
 	private InspectionPlanDetailsPage inspectionPlanDetailsPage;
 	private RestorePartnershipConfirmationPage restorePartnershipConfirmationPage;
 	private PartnershipRestoredPage partnershipRestoredPage;
@@ -199,10 +209,17 @@ public class PARStepDefs {
 	
 	private DeviationReviewPage deviationReviewPage;
 	private DeviationApprovalPage deviationApprovalPage;
+	private EnquiriesSearchPage enquiriesSearchPage;
 	private ReplyDeviationRequestPage replyDeviationRequestPage;
+	private ReplyEnquiryPage replyEnquiryPage;
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		replyEnquiryPage = PageFactory.initElements(driver, ReplyEnquiryPage.class);
+		enquiriesSearchPage = PageFactory.initElements(driver, EnquiriesSearchPage.class);
+		enquiryReviewPage = PageFactory.initElements(driver, EnquiryReviewPage.class);
+		requestEnquiryPage = PageFactory.initElements(driver, RequestEnquiryPage.class);
+		enquiryContactDetailsPage = PageFactory.initElements(driver, EnquiryContactDetailsPage.class);
 		replyDeviationRequestPage = PageFactory.initElements(driver, ReplyDeviationRequestPage.class);
 		deviationApprovalPage = PageFactory.initElements(driver, DeviationApprovalPage.class);
 		deviationSearchPage = PageFactory.initElements(driver, DeviationSearchPage.class);
@@ -233,6 +250,7 @@ public class PARStepDefs {
 		businessConfirmationPage = PageFactory.initElements(driver, BusinessConfirmationPage.class);
 		organisationDashboardPage = PageFactory.initElements(driver, OrganisationDashboardPage.class);
 		onsCodePage = PageFactory.initElements(driver, ONSCodePage.class);
+		enquiryCompletionPage = PageFactory.initElements(driver, EnquiryCompletionPage.class);
 		authorityConfirmationPage = PageFactory.initElements(driver, AuthorityConfirmationPage.class);
 		authorityTypePage = PageFactory.initElements(driver, AuthorityTypePage.class);
 		regulatoryFunctionPage = PageFactory.initElements(driver, RegulatoryFunctionPage.class);
@@ -934,12 +952,57 @@ public class PARStepDefs {
 					deviationReviewPage.checkDeviationResponse());
 		}
 	}
-	
+
 	@Then("^the deviation reply received successfully$")
 	public void the_deviation_reply_received_successfully() throws Throwable {
 		LOG.info("Verify the deviation response");
-		Assert.assertTrue("Failed: Deviation reply doesn't check out ",
-				deviationReviewPage.checkDeviationResponse());
+		Assert.assertTrue("Failed: Deviation reply doesn't check out ", deviationReviewPage.checkDeviationResponse());
+	}
+
+	@When("^the user submits a general enquiry with the following details:$")
+	public void the_user_submits_a_general_enquiry_with_the_following_details(DataTable dets) throws Throwable {
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			LOG.info("Send general query");
+			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+			parPartnershipConfirmationPage.sendGeneralEnquiry();
+			enquiryContactDetailsPage.proceed();
+			DataStore.saveValue(UsableValues.ENQUIRY_DESCRIPTION, data.get("Description"));
+			requestEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION));
+			requestEnquiryPage.chooseFile("link.txt");
+			requestEnquiryPage.proceed();
+			LOG.info("Verify the enquiry is created");
+			Assert.assertTrue("Failed: Enquiry details don't check out ", enquiryReviewPage.checkEnquiryCreation());
+			enquiryReviewPage.saveChanges();
+			enquiryCompletionPage.complete();
+		}
+	}
+
+	@When("^the user searches for the last created general enquiry$")
+	public void the_user_searches_for_the_last_created_general_enquiry() throws Throwable {
+		LOG.info("Search for last created enquiry");
+		parDashboardPage.selectGeneralEnquiries();
+		enquiriesSearchPage.selectEnquiry();
+	}
+
+	@Then("^the user successfully views the enquiry$")
+	public void the_user_successfully_views_the_enquiry() throws Throwable {
+		enquiryReviewPage.checkEnquiryCreation();
+	}
+
+	@Given("^the user submits a response to the general enquiry with the following details:$")
+	public void the_user_submits_a_response_to_the_general_enquiry_with_the_following_details(DataTable dets)
+			throws Throwable {
+		LOG.info("Submit reply to the enquiry");
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.ENQUIRY_REPLY, data.get("Description"));
+			enquiryReviewPage.submitResponse();
+			replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY));
+			replyEnquiryPage.chooseFile("link.txt");
+			replyEnquiryPage.proceed();
+			LOG.info("Verify the reply message");
+			Assert.assertTrue("Failed: Enquiry reply doesn't check out ", enquiryReviewPage.checkEnquiryReply());
+
+		}
 	}
 	
 	@When("^the user adds a new person to the contacts successfully with the following details:$")
