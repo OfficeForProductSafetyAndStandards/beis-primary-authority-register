@@ -834,7 +834,7 @@ class ParDataPartnership extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Partnership Status.
+    // Member list type.
     $fields['member_display'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Member list display'))
       ->setDescription(t('The list display type, one of: internal, external, request.'))
@@ -878,7 +878,7 @@ class ParDataPartnership extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Number of Members.
+    // Member link
     $fields['member_link'] = BaseFieldDefinition::create('link')
       ->setLabel(t('Member list link'))
       ->setDescription(t('The link to the publicly available external member list.'))
