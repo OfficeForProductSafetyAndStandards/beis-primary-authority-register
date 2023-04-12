@@ -578,16 +578,15 @@ display:
           use_highlighting: false
           multi_type: separator
           multi_separator: ', '
-        approved_date:
-          id: approved_date
-          table: search_api_datasource_partnership_index_entity_par_data_partnership
-          field: approved_date
+        partnership_status_date:
+          id: partnership_status_date
+          table: search_api_index_partnership_index
+          field: partnership_status_date
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: par_data_partnership
           plugin_id: search_api_field
-          label: Approved
+          label: 'Last Status Update'
           exclude: false
           alter:
             alter_text: false
@@ -1219,6 +1218,16 @@ display:
               allow_secondary: false
               secondary_label: 'Advanced options'
               secondary_open: false
+            sort:
+              plugin_id: default
+              advanced:
+                combine: true
+                combine_rewrite: "Last Status Update Desc|Most recently updated\r\nLast Status Update Asc|Least recently updated"
+                reset: false
+                reset_label: ''
+                collapsible: false
+                collapsible_label: 'Sort options'
+                is_secondary: false
             filter:
               search_api_fulltext:
                 plugin_id: default
@@ -1236,7 +1245,7 @@ display:
                     filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
-              partnership_status:
+              partnership_status_1:
                 plugin_id: default
                 advanced:
                   sort_options: false
@@ -1252,7 +1261,7 @@ display:
                     filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
-              advice_status:
+              advice_type:
                 plugin_id: default
                 advanced:
                   sort_options: false
@@ -1260,7 +1269,15 @@ display:
                     filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
-              inspection_plan_status:
+              advice_status_1:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  rewrite:
+                    filter_rewrite_values: ''
+                  collapsible: false
+                  is_secondary: false
+              inspection_plan_status_1:
                 plugin_id: default
                 advanced:
                   sort_options: false
@@ -1322,6 +1339,19 @@ display:
             label: ''
             field_identifier: ''
           exposed: false
+        partnership_status_date:
+          id: partnership_status_date
+          table: search_api_index_partnership_index
+          field: partnership_status_date
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api
+          order: DESC
+          expose:
+            label: 'Last Status Update'
+            field_identifier: partnership_status_date
+          exposed: true
       arguments: {  }
       filters:
         search_api_fulltext:
@@ -1934,9 +1964,12 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
         - user.permissions
       tags:
         - 'config:search_api.index.partnership_index'
+        - 'search_api_list:partnership_index'
   advanced_search:
     id: advanced_search
     display_title: 'Advanced Partnership Search'
@@ -1953,6 +1986,9 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
         - user.permissions
       tags:
         - 'config:search_api.index.partnership_index'
+        - 'search_api_list:partnership_index'

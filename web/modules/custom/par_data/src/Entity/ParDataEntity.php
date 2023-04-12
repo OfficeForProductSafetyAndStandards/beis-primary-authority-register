@@ -513,7 +513,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
     // Loop through all statuses and perform custom checks to
-    // find the most recent change the the specified status.
+    // find the most recent change the specified status.
     $check_status_query = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->getQuery();
     $check_status_query->allRevisions()
       ->condition('id', $this->id())
