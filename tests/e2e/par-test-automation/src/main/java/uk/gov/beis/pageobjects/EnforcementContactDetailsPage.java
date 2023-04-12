@@ -19,4 +19,9 @@ public class EnforcementContactDetailsPage extends BasePageObject {
 		continueBtn.click();
 		return PageFactory.initElements(driver, EnforcementLegalEntityPage.class);
 	}
+	
+	public RequestDeviationPage save() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, RequestDeviationPage.class);
+	}
 }

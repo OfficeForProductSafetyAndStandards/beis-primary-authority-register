@@ -18,12 +18,16 @@ import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
+import uk.gov.beis.pageobjects.AddPersonPage;
 import uk.gov.beis.pageobjects.AuthorityAddressDetailsPage;
+import uk.gov.beis.pageobjects.AuthorityChooseMembershipPage;
 import uk.gov.beis.pageobjects.AuthorityConfirmationPage;
 import uk.gov.beis.pageobjects.AuthorityDashboardPage;
+import uk.gov.beis.pageobjects.AuthorityGiveUserAccountPage;
 import uk.gov.beis.pageobjects.AuthorityNamePage;
 import uk.gov.beis.pageobjects.AuthorityPage;
 import uk.gov.beis.pageobjects.AuthorityTypePage;
+import uk.gov.beis.pageobjects.AuthorityUserTypeSelectionPage;
 import uk.gov.beis.pageobjects.BusinessAddressDetailsPage;
 import uk.gov.beis.pageobjects.BusinessConfirmationPage;
 import uk.gov.beis.pageobjects.BusinessContactDetailsPage;
@@ -32,6 +36,10 @@ import uk.gov.beis.pageobjects.BusinessInvitePage;
 import uk.gov.beis.pageobjects.BusinessPage;
 import uk.gov.beis.pageobjects.DashboardPage;
 import uk.gov.beis.pageobjects.DeclarationPage;
+import uk.gov.beis.pageobjects.DeviationApprovalPage;
+import uk.gov.beis.pageobjects.DeviationCompletionPage;
+import uk.gov.beis.pageobjects.DeviationReviewPage;
+import uk.gov.beis.pageobjects.DeviationSearchPage;
 import uk.gov.beis.pageobjects.EmployeesPage;
 import uk.gov.beis.pageobjects.EnforcementActionPage;
 import uk.gov.beis.pageobjects.EnforcementCompletionPage;
@@ -41,6 +49,10 @@ import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
 import uk.gov.beis.pageobjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.EnforcementReviewPage;
 import uk.gov.beis.pageobjects.EnforcementSearchPage;
+import uk.gov.beis.pageobjects.EnquiriesSearchPage;
+import uk.gov.beis.pageobjects.EnquiryCompletionPage;
+import uk.gov.beis.pageobjects.EnquiryContactDetailsPage;
+import uk.gov.beis.pageobjects.EnquiryReviewPage;
 import uk.gov.beis.pageobjects.HomePage;
 import uk.gov.beis.pageobjects.InspectionContactDetailsPage;
 import uk.gov.beis.pageobjects.InspectionFeedbackCompletionPage;
@@ -53,7 +65,13 @@ import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.LoginPage;
 import uk.gov.beis.pageobjects.MailLogPage;
+import uk.gov.beis.pageobjects.ManageColleaguesPage;
 import uk.gov.beis.pageobjects.MemberListPage;
+import uk.gov.beis.pageobjects.NewPersonCreationConfirmationPage;
+import uk.gov.beis.pageobjects.NewProfilePage;
+import uk.gov.beis.pageobjects.NewsLetterManageSubscriptionListPage;
+import uk.gov.beis.pageobjects.NewsLetterSubscriptionPage;
+import uk.gov.beis.pageobjects.NewsLetterSubscriptionReviewChangesPage;
 import uk.gov.beis.pageobjects.ONSCodePage;
 import uk.gov.beis.pageobjects.OrganisationDashboardPage;
 import uk.gov.beis.pageobjects.PartnershipAdvancedSearchPage;
@@ -67,20 +85,30 @@ import uk.gov.beis.pageobjects.PartnershipSearchPage;
 import uk.gov.beis.pageobjects.PartnershipTermsPage;
 import uk.gov.beis.pageobjects.PartnershipTypePage;
 import uk.gov.beis.pageobjects.PasswordPage;
+import uk.gov.beis.pageobjects.ProfileReviewPage;
 import uk.gov.beis.pageobjects.ProposedEnforcementPage;
 import uk.gov.beis.pageobjects.RegulatoryFunctionPage;
 import uk.gov.beis.pageobjects.RemoveEnforcementConfirmationPage;
 import uk.gov.beis.pageobjects.RemoveEnforcementPage;
+import uk.gov.beis.pageobjects.ReplyDeviationRequestPage;
+import uk.gov.beis.pageobjects.ReplyEnquiryPage;
 import uk.gov.beis.pageobjects.ReplyInspectionFeedbackPage;
+import uk.gov.beis.pageobjects.RequestDeviationPage;
+import uk.gov.beis.pageobjects.RequestEnquiryPage;
 import uk.gov.beis.pageobjects.RestorePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.SICCodePage;
 import uk.gov.beis.pageobjects.TradingPage;
+import uk.gov.beis.pageobjects.UpdateUserCommunicationPreferencesPage;
+import uk.gov.beis.pageobjects.UpdateUserConfirmationPage;
+import uk.gov.beis.pageobjects.UpdateUserContactDetailsPage;
+import uk.gov.beis.pageobjects.UpdateUserSubscriptionsPage;
 import uk.gov.beis.pageobjects.UploadInspectionPlanPage;
 import uk.gov.beis.pageobjects.UserCommsPreferencesPage;
 import uk.gov.beis.pageobjects.UserNotificationPreferencesPage;
 import uk.gov.beis.pageobjects.UserProfileCompletionPage;
 import uk.gov.beis.pageobjects.UserProfileConfirmationPage;
+import uk.gov.beis.pageobjects.UserProfilePage;
 import uk.gov.beis.pageobjects.UserSubscriptionPage;
 import uk.gov.beis.pageobjects.UserTermsPage;
 import uk.gov.beis.utility.DataStore;
@@ -90,6 +118,9 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private RequestEnquiryPage requestEnquiryPage;
+	private DeviationSearchPage deviationSearchPage;
+	private EnquiryReviewPage enquiryReviewPage;
 	private InspectionFeedbackConfirmationPage inspectionFeedbackConfirmationPage;
 	private InspectionFeedbackDetailsPage inspectionFeedbackDetailsPage;
 	private InspectionPlanSearchPage inspectionPlanSearchPage;
@@ -118,6 +149,7 @@ public class PARStepDefs {
 	private UserProfileConfirmationPage userProfileConfirmationPage;
 	private UserNotificationPreferencesPage userNotificationPreferencesPage;
 	private MailLogPage mailLogPage;
+	private RequestDeviationPage requestDeviationPage;
 	private InspectionPlanExpirationPage inspectionPlanExpirationPage;
 	private AuthorityDashboardPage authoritiesDashboardPage;
 	private PartnershipApprovalPage partnershipApprovalPage;
@@ -129,6 +161,7 @@ public class PARStepDefs {
 	private LoginPage parLoginPage;
 	private UploadInspectionPlanPage uploadInspectionPlanPage;
 	private SICCodePage sicCodePage;
+	private DeviationCompletionPage deviationCompletionPage;
 	private DashboardPage parDashboardPage;
 	private AuthorityPage parAuthorityPage;
 	private PartnershipSearchPage partnershipSearchPage;
@@ -149,14 +182,50 @@ public class PARStepDefs {
 	private PartnershipCompletionPage parPartnershipCompletionPage;
 	private BusinessAddressDetailsPage parBusinessAddressDetailsPage;
 	private TradingPage tradingPage;
+	private EnquiryCompletionPage enquiryCompletionPage;
+	private EnquiryContactDetailsPage enquiryContactDetailsPage;
 	private InspectionPlanDetailsPage inspectionPlanDetailsPage;
 	private RestorePartnershipConfirmationPage restorePartnershipConfirmationPage;
 	private PartnershipRestoredPage partnershipRestoredPage;
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
 	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
+	
+	private NewsLetterSubscriptionPage newsLetterSubscriptionPage;
+	private NewsLetterManageSubscriptionListPage newsLetterManageSubscriptionListPage;
+	private NewsLetterSubscriptionReviewChangesPage newsLetterSubscriptionReviewPage;
+	private AddPersonPage addPersonPage;
+	private AuthorityChooseMembershipPage authorityChooseMembershipPage;
+	private AuthorityGiveUserAccountPage authorityGiveUserAccountPage;
+	private AuthorityUserTypeSelectionPage authorityUserTypeSelectionPage;
+	private ManageColleaguesPage manageColleaguesPage;
+	private NewPersonCreationConfirmationPage newPersonCreationConfirmationPage;
+	private NewProfilePage newProfilePage;
+	private ProfileReviewPage profileReviewPage;
+	private UpdateUserCommunicationPreferencesPage updateUserCommunicationPreferencesPage;
+	private UpdateUserConfirmationPage updateUserConfirmationPage;
+	private UpdateUserContactDetailsPage updateUserContactDetailsPage;
+	private UpdateUserSubscriptionsPage updateUserSubscriptionsPage;
+	private UserProfilePage userProfilePage;
+	
+	private DeviationReviewPage deviationReviewPage;
+	private DeviationApprovalPage deviationApprovalPage;
+	private EnquiriesSearchPage enquiriesSearchPage;
+	private ReplyDeviationRequestPage replyDeviationRequestPage;
+	private ReplyEnquiryPage replyEnquiryPage;
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		replyEnquiryPage = PageFactory.initElements(driver, ReplyEnquiryPage.class);
+		enquiriesSearchPage = PageFactory.initElements(driver, EnquiriesSearchPage.class);
+		enquiryReviewPage = PageFactory.initElements(driver, EnquiryReviewPage.class);
+		requestEnquiryPage = PageFactory.initElements(driver, RequestEnquiryPage.class);
+		enquiryContactDetailsPage = PageFactory.initElements(driver, EnquiryContactDetailsPage.class);
+		replyDeviationRequestPage = PageFactory.initElements(driver, ReplyDeviationRequestPage.class);
+		deviationApprovalPage = PageFactory.initElements(driver, DeviationApprovalPage.class);
+		deviationSearchPage = PageFactory.initElements(driver, DeviationSearchPage.class);
+		deviationCompletionPage = PageFactory.initElements(driver, DeviationCompletionPage.class);
+		deviationReviewPage = PageFactory.initElements(driver, DeviationReviewPage.class);
+		requestDeviationPage = PageFactory.initElements(driver, RequestDeviationPage.class);
 		replyInspectionFeedbackPage = PageFactory.initElements(driver, ReplyInspectionFeedbackPage.class);
 		inspectionFeedbackSearchPage = PageFactory.initElements(driver, InspectionFeedbackSearchPage.class);
 		inspectionFeedbackCompletionPage = PageFactory.initElements(driver, InspectionFeedbackCompletionPage.class);
@@ -181,6 +250,7 @@ public class PARStepDefs {
 		businessConfirmationPage = PageFactory.initElements(driver, BusinessConfirmationPage.class);
 		organisationDashboardPage = PageFactory.initElements(driver, OrganisationDashboardPage.class);
 		onsCodePage = PageFactory.initElements(driver, ONSCodePage.class);
+		enquiryCompletionPage = PageFactory.initElements(driver, EnquiryCompletionPage.class);
 		authorityConfirmationPage = PageFactory.initElements(driver, AuthorityConfirmationPage.class);
 		authorityTypePage = PageFactory.initElements(driver, AuthorityTypePage.class);
 		regulatoryFunctionPage = PageFactory.initElements(driver, RegulatoryFunctionPage.class);
@@ -223,6 +293,22 @@ public class PARStepDefs {
 		parBusinessAddressDetailsPage = PageFactory.initElements(driver, BusinessAddressDetailsPage.class);
 		parPartnershipTermsPage = PageFactory.initElements(driver, PartnershipTermsPage.class);
 		partnershipSearchPage = PageFactory.initElements(driver, PartnershipSearchPage.class);
+		newsLetterSubscriptionPage = PageFactory.initElements(driver, NewsLetterSubscriptionPage.class);
+		newsLetterManageSubscriptionListPage = PageFactory.initElements(driver, NewsLetterManageSubscriptionListPage.class);
+		newsLetterSubscriptionReviewPage = PageFactory.initElements(driver, NewsLetterSubscriptionReviewChangesPage.class);
+		addPersonPage = PageFactory.initElements(driver, AddPersonPage.class);
+		authorityChooseMembershipPage = PageFactory.initElements(driver, AuthorityChooseMembershipPage.class);
+		authorityGiveUserAccountPage = PageFactory.initElements(driver, AuthorityGiveUserAccountPage.class);
+		authorityUserTypeSelectionPage = PageFactory.initElements(driver, AuthorityUserTypeSelectionPage.class);
+		manageColleaguesPage = PageFactory.initElements(driver, ManageColleaguesPage.class);
+		newPersonCreationConfirmationPage = PageFactory.initElements(driver, NewPersonCreationConfirmationPage.class);
+		newProfilePage = PageFactory.initElements(driver, NewProfilePage.class);
+		profileReviewPage = PageFactory.initElements(driver, ProfileReviewPage.class);
+		updateUserCommunicationPreferencesPage = PageFactory.initElements(driver, UpdateUserCommunicationPreferencesPage.class);
+		updateUserConfirmationPage = PageFactory.initElements(driver, UpdateUserConfirmationPage.class);
+		updateUserContactDetailsPage = PageFactory.initElements(driver, UpdateUserContactDetailsPage.class);
+		updateUserSubscriptionsPage = PageFactory.initElements(driver, UpdateUserSubscriptionsPage.class);
+		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
 	}
 
 	@Given("^the user is on the PAR home page$")
@@ -728,7 +814,8 @@ public class PARStepDefs {
 	@Then("^the user successfully approves the inspection feedback$")
 	public void the_user_successfully_approves_the_inspection_feedback() throws Throwable {
 		LOG.info("Verify the inspection feedback description");
-		Assert.assertTrue("Failed: Inspection feedback description doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionFeedback());
+		Assert.assertTrue("Failed: Inspection feedback description doesn't check out ",
+				inspectionFeedbackConfirmationPage.checkInspectionFeedback());
 	}
 
 	@Given("^the user clicks the PAR Home page link$")
@@ -768,7 +855,8 @@ public class PARStepDefs {
 			replyInspectionFeedbackPage.chooseFile("link.txt");
 			replyInspectionFeedbackPage.proceed();
 			LOG.info("Verify the inspection feedback response");
-			Assert.assertTrue("Failed: Inspection feedback response doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionResponse());
+			Assert.assertTrue("Failed: Inspection feedback response doesn't check out ",
+					inspectionFeedbackConfirmationPage.checkInspectionResponse());
 		}
 	}
 
@@ -786,9 +874,321 @@ public class PARStepDefs {
 		}
 	}
 
-	@Then("^the message is received successfully$")
-	public void the_message_is_received_successfully() throws Throwable {
+	@Then("^the inspection feedback_reply is received successfully$")
+	public void the_inspection_feedback_reply_is_received_successfully() throws Throwable {
 		LOG.info("Verify the inspection feedback reply");
-		Assert.assertTrue("Failed: Inspection feedback reply doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionReply());
+		Assert.assertTrue("Failed: Inspection feedback reply doesn't check out ",
+				inspectionFeedbackConfirmationPage.checkInspectionReply());
+	}
+
+	@When("^the user submits a deviation request against an inspection plan with the following details:$")
+	public void the_user_submits_a_deviation_request_against_an_inspection_plan_with_the_following_details(
+			DataTable dets) throws Throwable {
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			LOG.info("Submit deviation request");
+			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+			parPartnershipConfirmationPage.selectDeviateInspectionPlan();
+			enforcementContactDetailsPage.save();
+			DataStore.saveValue(UsableValues.DEVIATION_DESCRIPTION, data.get("Description"));
+			requestDeviationPage.enterDescription(DataStore.getSavedValue(UsableValues.DEVIATION_DESCRIPTION));
+			requestDeviationPage.chooseFile("link.txt");
+			requestDeviationPage.proceed();
+			LOG.info("Verify the deviation request is created");
+			Assert.assertTrue("Failed: Deviation request details don't check out ",
+					deviationReviewPage.checkDeviationCreation());
+			deviationReviewPage.saveChanges();
+			deviationCompletionPage.complete();
+		}
+	}
+
+	@When("^the user searches for the last created deviation request$")
+	public void the_user_searches_for_the_last_created_deviation_request() throws Throwable {
+		LOG.info("Search for last created deviation request");
+		parDashboardPage.selectSeeDeviationRequests();
+		deviationSearchPage.selectDeviationRequest();
+	}
+
+	@Then("^the user successfully approves the deviation request$")
+	public void the_user_successfully_approves_the_deviation_request() throws Throwable {
+		LOG.info("Approve the deviation request");
+		deviationApprovalPage.selectAllow();
+		deviationApprovalPage.proceed();
+		Assert.assertTrue("Failed: Deviation request status not correct", deviationReviewPage.checkDeviationStatus());
+		deviationReviewPage.saveChanges();
+		deviationCompletionPage.complete();
+	}
+
+	@Given("^the user submits a response to the deviation request with the following details:$")
+	public void the_user_submits_a_response_to_the_deviation_request_with_the_following_details(DataTable dets)
+			throws Throwable {
+		LOG.info("Submit response to the deviation request");
+		deviationSearchPage.selectDeviationRequest();
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1, data.get("Description"));
+			deviationReviewPage.submitResponse();
+			replyDeviationRequestPage
+					.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1));
+			replyDeviationRequestPage.chooseFile("link.txt");
+			replyDeviationRequestPage.proceed();
+			LOG.info("Verify the deviation response");
+			Assert.assertTrue("Failed: Deviation response doesn't check out ",
+					deviationReviewPage.checkDeviationResponse());
+		}
+	}
+
+	@When("^the user sends a reply to the deviation request message with the following details:$")
+	public void the_user_sends_a_reply_to_the_deviation_request_message_with_the_following_details(DataTable dets)
+			throws Throwable {
+		LOG.info("Submit reply to the deviation request");
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE2, data.get("Description"));
+			deviationReviewPage.submitResponse();
+			replyDeviationRequestPage
+					.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE2));
+			replyDeviationRequestPage.chooseFile("link.txt");
+			replyDeviationRequestPage.proceed();
+			LOG.info("Verify the deviation response");
+			Assert.assertTrue("Failed: Deviation reply doesn't check out ",
+					deviationReviewPage.checkDeviationResponse());
+		}
+	}
+
+	@Then("^the deviation reply received successfully$")
+	public void the_deviation_reply_received_successfully() throws Throwable {
+		LOG.info("Verify the deviation response");
+		Assert.assertTrue("Failed: Deviation reply doesn't check out ", deviationReviewPage.checkDeviationResponse());
+	}
+
+	@When("^the user submits a general enquiry with the following details:$")
+	public void the_user_submits_a_general_enquiry_with_the_following_details(DataTable dets) throws Throwable {
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			LOG.info("Send general query");
+			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+			parPartnershipConfirmationPage.sendGeneralEnquiry();
+			enquiryContactDetailsPage.proceed();
+			DataStore.saveValue(UsableValues.ENQUIRY_DESCRIPTION, data.get("Description"));
+			requestEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION));
+			requestEnquiryPage.chooseFile("link.txt");
+			requestEnquiryPage.proceed();
+			LOG.info("Verify the enquiry is created");
+			Assert.assertTrue("Failed: Enquiry details don't check out ", enquiryReviewPage.checkEnquiryCreation());
+			enquiryReviewPage.saveChanges();
+			enquiryCompletionPage.complete();
+		}
+	}
+
+	@When("^the user searches for the last created general enquiry$")
+	public void the_user_searches_for_the_last_created_general_enquiry() throws Throwable {
+		LOG.info("Search for last created enquiry");
+		parDashboardPage.selectGeneralEnquiries();
+		enquiriesSearchPage.selectEnquiry();
+	}
+
+	@Then("^the user successfully views the enquiry$")
+	public void the_user_successfully_views_the_enquiry() throws Throwable {
+		enquiryReviewPage.checkEnquiryCreation();
+	}
+
+	@Given("^the user submits a response to the general enquiry with the following details:$")
+	public void the_user_submits_a_response_to_the_general_enquiry_with_the_following_details(DataTable dets)
+			throws Throwable {
+		LOG.info("Submit reply to the enquiry");
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.ENQUIRY_REPLY, data.get("Description"));
+			enquiryReviewPage.submitResponse();
+			replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY));
+			replyEnquiryPage.chooseFile("link.txt");
+			replyEnquiryPage.proceed();
+			LOG.info("Verify the reply message");
+			Assert.assertTrue("Failed: Enquiry reply doesn't check out ", enquiryReviewPage.checkEnquiryReply());
+
+		}
+	}
+	
+	@When("^the user adds a new person to the contacts successfully with the following details:$")
+	public void the_user_adds_a_new_person_to_the_contacts_successfully_with_the_following_details(DataTable newPerson) throws Throwable {
+		parDashboardPage.selectManageColleagues();
+		manageColleaguesPage.selectAddPerson();
+		
+		LOG.info("Adding a new person to the Authority's contacts.");
+		for (Map<String, String> data : newPerson.asMaps(String.class, String.class)) {
+			
+			addPersonPage.enterTitle(data.get("Title"));
+			addPersonPage.enterFirstname(data.get("Firstname"));
+			addPersonPage.enterLastname(data.get("Lastname"));
+			addPersonPage.enterWorkPhoneNumber(data.get("WorkNumber"));
+			addPersonPage.enterMobilePhoneNumber(data.get("MobileNumber"));
+			addPersonPage.enterEmailAddress(data.get("Email"));
+			
+			DataStore.saveValue(UsableValues.PERSON_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.PERSON_FIRSTNAME, data.get("Firstname"));
+			DataStore.saveValue(UsableValues.PERSON_LASTNAME, data.get("Lastname"));
+			DataStore.saveValue(UsableValues.PERSON_EMAIL, data.get("Email"));
+		}
+		
+		addPersonPage.clickContinueButton();
+		authorityGiveUserAccountPage.selectExistingAccount();
+		authorityGiveUserAccountPage.clickContinueButton();
+		
+		authorityChooseMembershipPage.selectABCDMart();
+		authorityChooseMembershipPage.selectCityEnforcementSquad();
+		authorityChooseMembershipPage.clickContinueButton();
+		
+		authorityUserTypeSelectionPage.selectAuthorityMember();
+		authorityUserTypeSelectionPage.clickContinueButton();
+		
+		profileReviewPage.savePersonCreation();
+		newPersonCreationConfirmationPage.clickDoneButton();
+		newProfilePage.clickDoneButton();
+		manageColleaguesPage.clickDashboadButton();
+		LOG.info("Successfully added a new person to the Authority's contacts.");
+	}
+
+	@Then("^the user can update the new contact to subscribe to PAR News$")
+	public void the_user_can_update_the_new_contact_to_subscribe_to_PAR_News() throws Throwable {
+		
+		String contactsName = DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " " + DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " +
+				DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
+		
+		LOG.info("New contact's name: " + contactsName + ".");
+		
+		parDashboardPage.selectManageProfileDetails();
+		LOG.info("Updating the new contact details");
+		
+		userProfilePage.selectContactToUpdate(contactsName);
+		userProfilePage.selectContinueButton();
+		
+		LOG.info("Found the new contact to update.");
+		updateUserContactDetailsPage.selectContinueButton();
+		updateUserCommunicationPreferencesPage.selectContinueButton();
+		
+		updateUserSubscriptionsPage.selectPARNewsSubscription();
+		LOG.info("Subscribed to the PAR News Letter.");
+		updateUserSubscriptionsPage.selectContinueButton();
+		
+		profileReviewPage.saveContactUpdate();
+		updateUserConfirmationPage.selectDoneButton();
+		
+		LOG.info("Successfully updated the new contact's details.");
+	}
+	
+	@Then("^the user can update the new contact to unsubscribe from PAR News$")
+	public void the_user_can_update_the_new_contact_to_unsubscribe_from_PAR_News() throws Throwable {
+
+		String contactsName = DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " " + DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " +
+				DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
+		
+		LOG.info("New contact's name: " + contactsName + ".");
+		
+		parDashboardPage.selectManageProfileDetails();
+		LOG.info("Updating the new contact details");
+		
+		userProfilePage.selectContactToUpdate(contactsName);
+		userProfilePage.selectContinueButton();
+		
+		LOG.info("Found the new contact to update.");
+		updateUserContactDetailsPage.selectContinueButton();
+		updateUserCommunicationPreferencesPage.selectContinueButton();
+		
+		updateUserSubscriptionsPage.selectPARNewsSubscription();
+		LOG.info("Unsubscribed from PAR News Letter.");
+		updateUserSubscriptionsPage.selectContinueButton();
+		
+		profileReviewPage.saveContactUpdate();
+		updateUserConfirmationPage.selectDoneButton();
+		
+		LOG.info("Successfully updated the new contact's details.");
+	}
+	
+	@When("^the user is on the Subscriptions page$")
+	public void the_user_is_on_the_Subscriptions_page() throws Throwable {
+		parDashboardPage.selectManageSubscriptions();
+		LOG.info("Navigated to Manage Subscriptions Page.");
+	}
+
+	@When("^the user searches for the par_authority email \"([^\"]*)\"$")
+	public void the_user_searches_for_the_par_authority_email(String email) throws Throwable {
+		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.PERSON_EMAIL));
+		newsLetterSubscriptionPage.ClickSearchButton();
+		LOG.info("Searching for the Authority Email:" + DataStore.getSavedValue(UsableValues.PERSON_EMAIL) + ".");
+	}
+
+	@Then("^the user can verify the email is successfully in the Subscriptions List$")
+	public void the_user_can_verify_the_email_is_successfully_in_the_Subscriptions_List() throws Throwable {
+		LOG.info("Assert the Email is successfully added to the Subscription List.");
+		assertTrue(newsLetterSubscriptionPage.verifyTableElementExists());
+	}
+
+	@Then("^the user can verify the email is successfully removed from the Subscriptions List$")
+	public void the_user_can_verify_the_email_is_successfully_removed_from_the_Subscriptions_List() throws Throwable {
+		LOG.info("Assert the Email is removed successfully from the Subscription List.");
+		assertTrue(newsLetterSubscriptionPage.verifyTableElementIsNull());
+	}
+	
+	@When("^the user is on the Manage a subscription list page$")
+	public void the_user_is_on_the_Manage_a_subscription_list_page() throws Throwable {
+		parDashboardPage.selectManageSubscriptions();
+		newsLetterSubscriptionPage.selectManageSubsciptions();
+		LOG.info("Navigated to Manage Subscriptions Page.");
+	}
+
+	@When("^the user enters a new email to add to the list \"([^\"]*)\"$")
+	public void the_user_enters_a_new_email_to_add_to_the_list(String email) throws Throwable {
+		newsLetterManageSubscriptionListPage.selectInsertNewEmailRadioButton();
+		newsLetterManageSubscriptionListPage.AddNewEmail(email);
+		DataStore.saveValue(UsableValues.PAR_NEWS_EMAIL, email);
+		newsLetterManageSubscriptionListPage.clickContinueButton();
+		LOG.info("Adding a new email to the subscription list.");
+		newsLetterSubscriptionReviewPage.clickUpdateListButton();
+	}
+
+	@Then("^the user can verify the new email was added successfully$")
+	public void the_user_can_verify_the_new_email_was_added_successfully() throws Throwable {
+		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.PAR_NEWS_EMAIL));
+		newsLetterSubscriptionPage.ClickSearchButton();
+		
+		assertTrue(newsLetterSubscriptionPage.verifyTableElementExists());
+		LOG.info("Successfully added a new email to the Subscription list.");
+	}
+
+	@When("^the user enters an email to be removed from the list \"([^\"]*)\"$")
+	public void the_user_enters_an_email_to_be_removed_from_the_list(String email) throws Throwable {
+		newsLetterManageSubscriptionListPage.selectRemoveEmailRadioButton();
+		newsLetterManageSubscriptionListPage.RemoveEmail(email);
+		DataStore.saveValue(UsableValues.PAR_NEWS_EMAIL, email);
+		newsLetterManageSubscriptionListPage.clickContinueButton();
+		LOG.info("Removing an email from the subscription list.");
+		newsLetterSubscriptionReviewPage.clickUpdateListButton();
+	}
+
+	@Then("^the user can verify the email was removed successfully$")
+	public void the_user_can_verify_the_email_was_removed_successfully() throws Throwable {
+		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.PAR_NEWS_EMAIL));
+		newsLetterSubscriptionPage.ClickSearchButton();
+		
+		assertTrue(newsLetterSubscriptionPage.verifyTableElementIsNull());
+		LOG.info("Successfully removed an email from the Subscription list.");
+	}
+
+	@When("^the user enters a list of new emails to replace the subscription list:$")
+	public void the_user_enters_a_list_of_new_emails_to_replace_the_subscription_list(DataTable newEmails) throws Throwable {
+		newsLetterManageSubscriptionListPage.selectReplaceSubscriptionListRadioButton();
+		
+		for (Map<String, String> data : newEmails.asMaps(String.class, String.class)) {
+			newsLetterManageSubscriptionListPage.ReplaceSubscriptionList(data.get("Email"));
+		}
+		
+		newsLetterManageSubscriptionListPage.clickContinueButton();
+		LOG.info("Adding new emails to replace the original Subscription List.");
+		newsLetterSubscriptionReviewPage.clickUpdateListButton();
+	}
+
+	@Then("^the user can verify an email from the original list was removed successfully \"([^\"]*)\"$")
+	public void the_user_can_verify_an_email_from_the_original_list_was_removed_successfully(String email) throws Throwable {
+		newsLetterSubscriptionPage.EnterEmail(email);
+		newsLetterSubscriptionPage.ClickSearchButton();
+		
+		assertTrue(newsLetterSubscriptionPage.verifyTableElementIsNull());
+		LOG.info("Successfully replaced the original subscription list with a new list.");
 	}
 }
