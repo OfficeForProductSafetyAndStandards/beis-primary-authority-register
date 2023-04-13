@@ -6,8 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class AddPersonPage extends BasePageObject {
-	public AddPersonPage() throws ClassNotFoundException, IOException {
+public class AddPersonContactDetailsPage extends BasePageObject {
+	public AddPersonContactDetailsPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
@@ -36,32 +36,38 @@ public class AddPersonPage extends BasePageObject {
 	private WebElement cancelBtn;
 	
 	public void enterTitle(String title) {
+		titleField.clear();
 		titleField.sendKeys(title);
 	}
 	
 	public void enterFirstname(String firstname) {
+		firstnameField.clear();
 		firstnameField.sendKeys(firstname);
 	}
 	
 	public void enterLastname(String lastname) {
+		lastnameField.clear();
 		lastnameField.sendKeys(lastname);
 	}
 	
 	public void enterWorkPhoneNumber(String phoneNumber) {
+		workPhoneField.clear();
 		workPhoneField.sendKeys(phoneNumber);
 	}
 	
 	public void enterMobilePhoneNumber(String phoneNumber) {
+		mobilePhoneField.clear();
 		mobilePhoneField.sendKeys(phoneNumber);
 	}
 	
 	public void enterEmailAddress(String email) {
+		emailAddressField.clear();
 		emailAddressField.sendKeys(email);
 	}
 	
-	public AuthorityGiveUserAccountPage clickContinueButton() {
+	public GivePersonAccountPage clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, AuthorityGiveUserAccountPage.class);
+		return PageFactory.initElements(driver, GivePersonAccountPage.class);
 	}
 	
 	public DashboardPage clickCancelButton() {
