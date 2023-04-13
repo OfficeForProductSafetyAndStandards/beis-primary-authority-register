@@ -94,7 +94,7 @@
         "drupal/vbo_export": "~3.4.0",
         "drupal/views_bulk_operations": "~4.0.0",
         "drupal/views_contextual_filters_or": "~1.2.0",
-        "drupal/views_data_export": "~1.0.0",
+        "drupal/views_data_export": "~1.3.0",
         "drupal/views_field_view": "~1.0.0",
         "drupal/xmlsitemap": "~1.0.0",
         "drush/config-extra": "~1.0.0",

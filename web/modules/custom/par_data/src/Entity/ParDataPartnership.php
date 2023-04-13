@@ -5,12 +5,11 @@ namespace Drupal\par_data\Entity;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\link\LinkItemInterface;
 use Drupal\par_data\ParDataException;
-use Drupal\user\UserInterface;
+use Drupal\par_data\Plugin\Field\FieldType\ParMembersField;
 
 /**
  * Defines the par_data_partnership entity.
@@ -860,6 +859,30 @@ class ParDataPartnership extends ParDataEntity {
     $fields['member_number'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('Number of members'))
       ->setDescription(t('The number of coordinated members in this partnership.'))
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 6,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'number',
+        'weight' => 8,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'number_integer',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Number of Members.
+    $fields['member_count'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('Member Count'))
+      ->setDescription(t('The processed value for the number of coordinated members in this partnership.'))
+      ->setComputed(TRUE)
+      ->setClass(ParMembersField::class)
       ->setRevisionable(TRUE)
       ->setSettings([
         'max_length' => 6,

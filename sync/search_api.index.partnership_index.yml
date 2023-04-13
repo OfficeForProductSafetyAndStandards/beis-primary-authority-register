@@ -96,6 +96,14 @@ field_settings:
         - field.storage.par_data_partnership.field_advice
       module:
         - par_data
+  approved_date:
+    label: 'Partnership Approved Date'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: approved_date
+    type: date
+    dependencies:
+      module:
+        - par_data
   authority_name:
     label: 'Authority » Authority Name'
     datasource_id: 'entity:par_data_partnership'
@@ -105,6 +113,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.par_data_partnership.field_authority
+      module:
+        - par_data
+  authority_terms:
+    label: 'Authority Terms and Conditions'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: terms_authority_agreed
+    type: boolean
+    dependencies:
       module:
         - par_data
   changed:
@@ -205,7 +221,7 @@ field_settings:
       module:
         - par_data
   member_display:
-    label: 'Member list display'
+    label: 'Member List Display'
     datasource_id: 'entity:par_data_partnership'
     property_path: member_display
     type: string
@@ -232,6 +248,22 @@ field_settings:
       config:
         - field.storage.par_data_coordinated_business.field_legal_entity
         - field.storage.par_data_partnership.field_coordinated_business
+      module:
+        - par_data
+  member_link:
+    label: 'Member List Link'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: member_link
+    type: string
+    dependencies:
+      module:
+        - par_data
+  member_number:
+    label: 'Number of Members'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: member_count
+    type: integer
+    dependencies:
       module:
         - par_data
   member_organisation_about:
@@ -301,8 +333,16 @@ field_settings:
         - field.storage.par_data_partnership.field_organisation
       module:
         - par_data
+  organisation_terms:
+    label: 'Organisation Terms and Conditions'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: terms_organisation_agreed
+    type: boolean
+    dependencies:
+      module:
+        - par_data
   partnership_status:
-    label: Status
+    label: 'Partnership Status'
     datasource_id: 'entity:par_data_partnership'
     property_path: par_status
     type: string
@@ -310,7 +350,7 @@ field_settings:
       module:
         - par_data
   partnership_status_date:
-    label: 'Status Date'
+    label: 'Partnership Status Last Updated'
     datasource_id: 'entity:par_data_partnership'
     property_path: par_status_date
     type: date
@@ -356,8 +396,16 @@ field_settings:
     dependencies:
       config:
         - field.storage.par_data_partnership.field_regulatory_function
+  revocation_date:
+    label: 'Partnership Recovation Date'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: revocation_date
+    type: date
+    dependencies:
+      module:
+        - par_data
   revoked:
-    label: Revoked
+    label: 'Partnership Revoked'
     datasource_id: 'entity:par_data_partnership'
     property_path: revoked
     type: boolean
