@@ -11,15 +11,22 @@ public class ProfileReviewPage extends BasePageObject {
 		super();
 	}
 
+	@FindBy(xpath = "//h1[@class='heading-xlarge']")
+	private WebElement pageHeader;
+	
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 	
 	@FindBy(id = "edit-cancel")
 	private WebElement cancelBtn;
 	
-	public NewPersonCreationConfirmationPage savePersonCreation() {
+	public String getHeaderText() {
+		return pageHeader.getText();
+	}
+	
+	public PersonCompletionConfirmationPage savePersonCreation() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, NewPersonCreationConfirmationPage.class);
+		return PageFactory.initElements(driver, PersonCompletionConfirmationPage.class);
 	}
 	
 	public UpdateUserConfirmationPage saveContactUpdate() {

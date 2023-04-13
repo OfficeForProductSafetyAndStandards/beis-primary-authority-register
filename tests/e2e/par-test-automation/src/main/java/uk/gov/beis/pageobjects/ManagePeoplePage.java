@@ -6,8 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class ManageColleaguesPage extends BasePageObject {
-	public ManageColleaguesPage() throws ClassNotFoundException, IOException {
+public class ManagePeoplePage extends BasePageObject {
+	public ManagePeoplePage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
@@ -23,12 +23,19 @@ public class ManageColleaguesPage extends BasePageObject {
 	@FindBy(id = "edit-submit-par-people")
 	private WebElement submitBtn;
 	
+	//@FindBy(css = "views-field views-field-last-name")
+	@FindBy(xpath = "//td[@class='views-field views-field-last-name']")
+	private WebElement personNameTableElement;
+	
+	@FindBy(linkText = "Manage contact")
+	private WebElement manageContactBtn;
+	
 	@FindBy(linkText = "back to dashboard")
 	private WebElement dashboardBtn;
 	
-	public AddPersonPage selectAddPerson() {
+	public AddPersonContactDetailsPage selectAddPerson() {
 		addPersonBtn.click();
-		return PageFactory.initElements(driver, AddPersonPage.class);
+		return PageFactory.initElements(driver, AddPersonContactDetailsPage.class);
 	}
 	
 	public void enterNameOrEmail(String searchText) {
@@ -41,6 +48,15 @@ public class ManageColleaguesPage extends BasePageObject {
 	
 	public void clickSubmit() {
 		submitBtn.click();
+	}
+	
+	public String GetPersonName() {
+		return personNameTableElement.getText();
+	}
+	
+	public PersonsProfilePage clickManageContact() {
+		manageContactBtn.click();
+		return PageFactory.initElements(driver, PersonsProfilePage.class);
 	}
 	
 	public DashboardPage clickDashboadButton() {

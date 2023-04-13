@@ -8,7 +8,7 @@ import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(strict = false, features = { "classpath:features" }, glue = { "uk.gov.beis.stepdefs" }, 
-				tags = { "@enquiry" }, plugin = { "json:target/cucumber-report/report.json" })
+				tags = { "@DryRun" }, plugin = { "json:target/cucumber-report/report.json" })
 public class PARTestRunner {
 	@BeforeClass
 	public static void setUp() {
