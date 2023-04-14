@@ -50,6 +50,9 @@ public class DashboardPage extends BasePageObject {
 	@FindBy(linkText = "Manage people")
 	WebElement managePeopleBtn;
 	
+	@FindBy(linkText = "Manage general enquiries")
+	WebElement manageGeneralEnquiriesBtn;
+	
 	@FindBy(linkText = "Manage your profile details")
 	WebElement manageYourProfileDetailsBtn;
 	
@@ -125,6 +128,11 @@ public class DashboardPage extends BasePageObject {
 	public ManagePeoplePage selectManagePeople() {
 		managePeopleBtn.click();
 		return PageFactory.initElements(driver, ManagePeoplePage.class);
+	}
+	
+	public GeneralEnquiriesPage selectManageGeneralEnquiries() {
+		manageGeneralEnquiriesBtn.click();
+		return PageFactory.initElements(driver, GeneralEnquiriesPage.class);
 	}
 	
 	public UserProfilePage selectManageProfileDetails() {
