@@ -441,8 +441,8 @@ Feature:
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user creates a new person with the following details:
-      | Title | Firstname | Lastname | WorkNumber | MobileNumber | Email                     |
-      | Mr    | Marc      | Aureli    |       0170 |        07165 | marcus_aurelius@example.com |
+      | Title | Firstname | Lastname | WorkNumber | MobileNumber | Email                       |
+      | Mr    | Marc      | Aureli   |       0170 |        07165 | marcus_aurelius@example.com |
     Then the user can verify the person "Marc Aureli" was created successfully
 
   # Update existing person
@@ -452,6 +452,16 @@ Feature:
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for an existing person "Marc Aureli" successfully
     And the user updates an existing person with the following details:
-      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                     |
-      | Dr    | Marcus    | Aurelius   | 01204456511 |  07165439876 | marcus_aurelius@example.com |
+      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                       |
+      | Dr    | Marcus    | Aurelius | 01204456511 |  07165439876 | marcus_aurelius@example.com |
     Then the user can verify the person "Marcus Aurelius" was updated successfully
+
+  @regression @enquiry
+  Scenario: Verify the viewing of an Enforcement Notice and Enforcement Officers details
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for an enforcement notice "Test Business 6868" Organisation
+    And clicks the Title of Action "enforcement title 1" Link
+    Then the user can verify the enforcement officers details:
+      | Officer                                                         | Enforcing              | Organisation       | Primary                         |
+      | Grover Muppet, 01723456789, par_enforcement_officer@example.com | City Enforcement Squad | Test Business 6868 | Lower East Side Borough Council |

@@ -46,6 +46,7 @@ import uk.gov.beis.pageobjects.EnforcementCompletionPage;
 import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
+import uk.gov.beis.pageobjects.EnforcementNotificationActionReceivedPage;
 import uk.gov.beis.pageobjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.EnforcementReviewPage;
 import uk.gov.beis.pageobjects.EnforcementSearchPage;
@@ -190,6 +191,7 @@ public class PARStepDefs {
 	private PartnershipRestoredPage partnershipRestoredPage;
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
 	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
+	private EnforcementNotificationActionReceivedPage enforcementNotificationActionReceivedPage;
 	
 	// PAR News Letter
 	private UserProfilePage userProfilePage;
@@ -212,15 +214,12 @@ public class PARStepDefs {
 	private PersonCompletionConfirmationPage personCompletionConfirmationPage;
 	private PersonsProfilePage personsProfilePage;
 	
-	
 	private DeviationReviewPage deviationReviewPage;
 	private DeviationApprovalPage deviationApprovalPage;
 	private EnquiriesSearchPage enquiriesSearchPage;
 	private ReplyDeviationRequestPage replyDeviationRequestPage;
 	private ReplyEnquiryPage replyEnquiryPage;
 	
-	
-
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
 		replyEnquiryPage = PageFactory.initElements(driver, ReplyEnquiryPage.class);
@@ -301,6 +300,7 @@ public class PARStepDefs {
 		parBusinessAddressDetailsPage = PageFactory.initElements(driver, BusinessAddressDetailsPage.class);
 		parPartnershipTermsPage = PageFactory.initElements(driver, PartnershipTermsPage.class);
 		partnershipSearchPage = PageFactory.initElements(driver, PartnershipSearchPage.class);
+		enforcementNotificationActionReceivedPage = PageFactory.initElements(driver, EnforcementNotificationActionReceivedPage.class);
 		
 		// PAR News Letter
 		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
@@ -1319,5 +1319,32 @@ public class PARStepDefs {
 		managePeoplePage.clickSubmit();
 		
 		assertEquals(name, managePeoplePage.GetPersonName());
+	}
+	
+	@When("^the user searches for an enforcement notice \"([^\"]*)\" Organisation$")
+	public void the_user_searches_for_an_enforcement_notice_Organisation(String search) throws Throwable {
+	    parDashboardPage.selectManageEnforcementNotices();
+		enforcementSearchPage.searchForEnforcementNotice(search);
+		
+		LOG.info("Searching for an Enforcement Notice.");
+	}
+
+	@When("^clicks the Title of Action \"([^\"]*)\" Link$")
+	public void clicks_the_Title_of_Action_Link(String title) throws Throwable {
+	    enforcementSearchPage.clickTitleOfActionLink(title);
+	    
+	    LOG.info("Click the Title of Action Link.");
+	}
+
+	@Then("^the user can verify the enforcement officers details:$")
+	public void the_user_can_verify_the_enforcement_officers_details(DataTable details) throws Throwable {
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			assertEquals(data.get("Officer"), enforcementNotificationActionReceivedPage.getEnforcementOfficerDetails());
+			assertEquals(data.get("Enforcing"), enforcementNotificationActionReceivedPage.getEnforcingAuthorityName());
+			assertEquals(data.get("Organisation"), enforcementNotificationActionReceivedPage.getEnforcedOrganisationName());
+			assertEquals(data.get("Primary"), enforcementNotificationActionReceivedPage.getPrimaryAuthorityName());
+		}
+		
+		LOG.info("Asserting the Enforcement Notice Details.");
 	}
 }
