@@ -41,6 +41,14 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	@FindBy(linkText = "Send a general enquiry to the primary authority")
 	WebElement generalEnquiryLink;
 	
+	@FindBy(linkText = "Done")
+	private WebElement doneBtn;
+	
+	public PartnershipSearchPage clickDone() {
+		doneBtn.click();
+		return PageFactory.initElements(driver, PartnershipSearchPage.class);
+	}
+	
 	String partnershipDetails = "//div/p[contains(text(),'?')]";
 	String businessname = "//div[contains(text(),'?')]";
 	String businessAddress1 = "//div/p[contains(text(),'?')]";

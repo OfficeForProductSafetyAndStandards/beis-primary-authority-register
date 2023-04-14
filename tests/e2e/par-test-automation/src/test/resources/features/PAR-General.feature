@@ -406,7 +406,7 @@ Feature:
     Then the user can verify the email is successfully removed from the Subscriptions List
 
   @regression @PARNewsSubscription
-  Scenario: Verify a Helpdesk user can add an Email to the PAR News Subscription List
+  Scenario: Verify a Helpdesk user can add an Email to the PAR News Subscription List (Happy Path - PAR-2072)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user is on the Manage a subscription list page
@@ -414,7 +414,7 @@ Feature:
     Then the user can verify the new email was added successfully
 
   @regression @PARNewsSubscription
-  Scenario: Verify a Helpdesk user can remove an Email from the PAR News Subscription List
+  Scenario: Verify a Helpdesk user can remove an Email from the PAR News Subscription List (Happy Path - PAR-2072)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user is on the Manage a subscription list page
@@ -423,7 +423,7 @@ Feature:
 
   # Idea: add a step in the THEN method to replace to reset the Subscription list?
   @regression @PARNewsSubscription
-  Scenario: Verify a Helpdesk user can replace the PAR News Subscription List with a new List
+  Scenario: Verify a Helpdesk user can replace the PAR News Subscription List with a new List (Happy Path - PAR-2072)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user is on the Manage a subscription list page
@@ -437,7 +437,7 @@ Feature:
 
   # Person's details will need to be changed each time unless there is a way to remove these people after each test run.
   @regression @helpDesk @managePeople
-  Scenario: Verify the Addition of a new person as a Help Desk User
+  Scenario: Verify the Addition of a new person as a Help Desk User (Happy Path - PAR-2098)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user creates a new person with the following details:
@@ -447,7 +447,7 @@ Feature:
 
   # Update existing person
   @regression @helpDesk @managePeople
-  Scenario: Verify the Update of an existing person as a Help Desk User
+  Scenario: Verify the Update of an existing person as a Help Desk User (Happy Path - PAR-2098)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for an existing person "Marc Aureli" successfully
@@ -456,8 +456,8 @@ Feature:
       | Dr    | Marcus    | Aurelius | 01204456511 |  07165439876 | marcus_aurelius@example.com |
     Then the user can verify the person "Marcus Aurelius" was updated successfully
 
-  @regression @enquiry
-  Scenario: Verify the viewing of an Enforcement Notice and Enforcement Officers details
+  @regression @enforcement
+  Scenario: Verify the viewing of an Enforcement Notice and Enforcement Officers details (Happy Path - PAR-2095)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for an enforcement notice "Test Business 6868" Organisation
@@ -465,3 +465,19 @@ Feature:
     Then the user can verify the enforcement officers details:
       | Officer                                                         | Enforcing              | Organisation       | Primary                         |
       | Grover Muppet, 01723456789, par_enforcement_officer@example.com | City Enforcement Squad | Test Business 6868 | Lower East Side Borough Council |
+
+  @regression @enquiry
+  Scenario: Verify User can Submit a general enquiry (Happy Path - PAR-2096)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    When the user searches for a partnership with the Test Business "3698" name
+    Then the user can submit a general enquiry with description:
+      | Description              |
+      | Help Desk Enquiry Check. |
+    # Help Desk Enquiry Verification
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for an Enquiry with the Test Business "3698" name
+    Then the user can verify the Enforcement details:
+      | Officer                                                         | Enforcing              | Primary                         | Summary                  |
+      | Grover Muppet, 01723456789, par_enforcement_officer@example.com | City Enforcement Squad | Lower East Side Borough Council | Help Desk Enquiry Check. |
