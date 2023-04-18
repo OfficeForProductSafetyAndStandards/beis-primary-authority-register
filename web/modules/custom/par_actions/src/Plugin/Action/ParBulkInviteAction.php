@@ -130,25 +130,25 @@ HEREDOC;
   /**
    * {@inheritdoc}
    */
-  public function buildPreConfigurationForm(array $form, array $values, FormStateInterface $form_state) {
-    $form['par_bulk_invite_existing'] = [
+  public function buildPreConfigurationForm(array $element, array $values, FormStateInterface $form_state): array {
+    $element['par_bulk_invite_existing'] = [
       '#title' => $this->t('Invite existimg members'),
       '#description' => $this->t('If checked this will re-invite eixsting members.'),
       '#type' => 'checkbox',
-      '#default_value' => isset($values['par_bulk_invite_existing']) ? TRUE : FALSE,
+      '#default_value' => isset($values['par_bulk_invite_existing']),
     ];
-    $form['par_bulk_invite_message_body'] = [
+    $element['par_bulk_invite_message_body'] = [
       '#title' => $this->t('Message body'),
       '#type' => 'textarea',
-      '#default_value' => isset($values['par_bulk_invite_message_body']) ? $values['par_bulk_invite_message_body'] : $this->getDefaultMessage(),
+      '#default_value' => $values['par_bulk_invite_message_body'] ?? $this->getDefaultMessage(),
     ];
-    $form['par_bulk_invite_message_subject'] = [
+    $element['par_bulk_invite_message_subject'] = [
       '#title' => $this->t('Message subject'),
       '#type' => 'textfield',
-      '#default_value' => isset($values['par_bulk_invite_message_subject']) ? $values['par_bulk_invite_message_subject'] : 'New Primary Authority Register',
+      '#default_value' => $values['par_bulk_invite_message_subject'] ?? 'New Primary Authority Register',
     ];
 
-    return $form;
+    return $element;
   }
 
   /**
@@ -159,7 +159,7 @@ HEREDOC;
    *
    * @param array $form
    *   Form array.
-   * @param Drupal\Core\Form\FormStateInterface $form_state
+   * @param FormStateInterface $form_state
    *   The form state object.
    *
    * @return array

@@ -11,6 +11,7 @@ dependencies:
     - par_data
     - search_api
     - user
+    - views_bulk_operations
 id: advanced_partnership_search
 label: 'Advanced Partnership Search'
 module: views
@@ -1180,6 +1181,129 @@ display:
           hide_empty: true
           empty_zero: false
           hide_alter_empty: false
+        views_bulk_operations_bulk_form:
+          id: views_bulk_operations_bulk_form
+          table: views
+          field: views_bulk_operations_bulk_form
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: views_bulk_operations_bulk_form
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          batch: false
+          batch_size: 100
+          form_step: true
+          buttons: true
+          action_title: Action
+          clear_on_exposed: true
+          force_selection_info: true
+          selected_actions:
+            1:
+              action_id: vbo_export_generate_csv_action
+              preconfiguration:
+                add_confirmation: false
+                strip_tags: false
+                field_override: false
+                field_config:
+                  counter:
+                    active: false
+                    label: ''
+                  id:
+                    active: true
+                    label: 'Partnership ID'
+                  authority_name:
+                    active: true
+                    label: 'Authority Name'
+                  organisation_name:
+                    active: true
+                    label: 'Organisation Name'
+                  par_flow_link:
+                    active: false
+                    label: ''
+                  par_flow_link_5:
+                    active: false
+                    label: ''
+                  nothing_1:
+                    active: false
+                    label: ''
+                  partnership_type:
+                    active: true
+                    label: 'Partnership Type'
+                  partnership_status_1:
+                    active: true
+                    label: 'Partnership Status'
+                  partnership_status_date:
+                    active: true
+                    label: 'Partnership Last Updated On'
+                  function_name:
+                    active: true
+                    label: 'Regulatory Functions'
+                  trading_name:
+                    active: true
+                    label: 'Trading Names'
+                  search_api_excerpt:
+                    active: false
+                    label: ''
+                  revoked:
+                    active: false
+                    label: ''
+                  par_flow_link_1:
+                    active: false
+                    label: ''
+                  par_flow_link_2:
+                    active: false
+                    label: ''
+                  par_flow_link_3:
+                    active: false
+                    label: ''
+                  par_flow_link_4:
+                    active: false
+                    label: ''
+                  nothing:
+                    active: false
+                    label: ''
+                separator: ','
+                file_scheme: s3private
       pager:
         type: pagerer
         options:
@@ -1958,7 +2082,7 @@ display:
           class: link-back
       display_extenders: {  }
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -1980,7 +2104,7 @@ display:
       display_extenders: {  }
       path: search/advanced/partnerships
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
