@@ -3,6 +3,27 @@ Feature:
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
 
+  @regression @authority
+  Scenario: Verify Addition/Update of Authority (Happy Path - PAR-1849, PAR-1850)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user creates a new authority with the following details:
+      | Authority Type | ONS Code | Regulatory Function | addressline1  | town    | postcode |
+      | Council Area   | 43453465 | Cookie control      | 32 Bramtom Rd | Windsor | SL4 5PN  |
+    Then the authority is created sucessfully
+    #Update All Fields for newly created Authority
+    When the user searches for the last created authority
+    And the user updates all the fields for newly created authority
+    Then the update for the authority is successful
+
+  @regression @organisation
+  Scenario: Verify Update of Organisation (Happy Path - PAR-1851)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created organisation
+    And the user updates all the fields for last created organisation
+    Then all the fields are updated correctly
+  
   @regression @publicRegistrySearch
   Scenario: Verify a Non-registered User can Search the Public Register (Happy Path - PAR-2057)
     Given the user is on the PAR home page
