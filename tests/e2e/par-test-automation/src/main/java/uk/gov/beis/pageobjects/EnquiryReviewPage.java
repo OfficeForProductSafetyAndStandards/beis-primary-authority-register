@@ -44,16 +44,10 @@ public class EnquiryReviewPage extends BasePageObject {
 	}
 
 	public boolean checkEnquiryReply() {
-		WebElement reply1 = driver.findElement(
-				By.xpath(reply.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY))));
+		WebElement reply1 = driver
+				.findElement(By.xpath(reply.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY))));
 
 		return (reply1.isDisplayed());
-	}
-
-	public boolean checkDeviationStatus() {
-		WebElement status1 = driver.findElement(By.xpath(status.replace("?", "Approved")));
-
-		return (status1.isDisplayed());
 	}
 
 }
