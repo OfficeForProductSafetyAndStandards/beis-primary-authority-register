@@ -62,7 +62,7 @@ class ParNotificationAction extends FieldPluginBase {
     }
     else if (!empty($tasks)) {
       // Display a blue tag for tasks that have been completed.
-      $colour = 'govuk-tag--blue';
+      $colour = '';
       $status = 'Complete';
     }
     else {

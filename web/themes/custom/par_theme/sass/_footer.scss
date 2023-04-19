@@ -1,8 +1,6 @@
 /* Global footer */
 
 #footer {
-  background-color: $footer-background;
-  border-top: 1px solid $footer-border-top;
 
   .footer-wrapper {
     @extend %site-width-container;
