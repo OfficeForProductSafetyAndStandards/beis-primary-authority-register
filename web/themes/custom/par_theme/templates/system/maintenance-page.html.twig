@@ -48,39 +48,25 @@
 <!-- page template -->
 <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
 
-<div id="skiplink-container">
-  <div>
-    <a href="#content" class="skiplink">Skip to main content</a>
-  </div>
-</div>
+<a href="#content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 
 <div id="global-cookie-message">
   <p>GOV.UK uses cookies to make the site simpler. <a href="https://www.gov.uk/help/cookies">Find out more about cookies</a></p>
 </div>
 
-<header role="banner" id="global-header" class="with-proposition">
-  <div class="header-wrapper">
-    <div class="header-global">
-      <div class="header-logo">
-        <h1 id="logo" class="content">
-          Primary Authority
-        </h1>
-      </div>
-    </div>
-    <div class="header-proposition">
-      <div class="content">
-        <a href="#proposition-links" aria-hidden="true" class="js-header-toggle menu">Menu</a>
-        <nav id="proposition-menu">
-          <ul id="proposition-links"></ul>
-        </nav>
-
-        {{page.header}}
-      </div>
+<header class="govuk-header" role="banner" data-module="govuk-header">
+  <div class="govuk-header__container govuk-width-container">
+    {{ govuk_header }}
+    <div class="govuk-header__content">
+      <a href="{{ path('<front>') }}" class="govuk-header__link govuk-header__service-name">
+        {{ site_name }}
+      </a>
+      {% if page.navigation %}
+        {{ page.navigation }}
+      {% endif %}
     </div>
   </div>
 </header>
-
-<div id="global-header-bar"></div>
 
 <main id="content" role="main" tabindex="-1">
   <div class="phase-banner">
@@ -92,28 +78,38 @@
   {{ page.content }}
 </main>
 
-<footer class="group js-footer" id="footer" role="contentinfo">
+<footer class="govuk-footer" role="contentinfo">
+  <div class="govuk-width-container">
 
-  <div class="footer-wrapper">
-    <div class="footer-meta">
-      {{ page.footer }}
-      <div class="footer-meta-inner">
-        {{ page.footer_inner }}
-        <div class="open-government-licence">
-          <p class="logo"><a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence</a></p>
-
-          <p>All content is available under the <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open Government Licence v3.0</a>, except where otherwise stated</p>
-
-        </div>
+    {% if (page.footer_left or page.footer_right) %}
+      <div class="govuk-footer__navigation">
+        {% if page.footer_left %}
+          <div class="govuk-footer__section {{ footer_left_class }}">
+            {{ page.footer_left }}
+          </div>
+        {% endif %}
+        {% if page.footer_right %}
+          <div class="govuk-footer__section {{ footer_right_class }}">
+            {{ page.footer_right }}
+          </div>
+        {% endif %}
       </div>
+      <hr class="govuk-footer__section-break">
+    {% endif %}
 
-      <div class="copyright">
-        <a href="http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/copyright-and-re-use/crown-copyright/">© Crown copyright</a>
+    <div class="govuk-footer__meta">
+      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+        {% if page.footer %}
+          {{ page.footer }}
+        {% endif %}
+        {{ govuk_footer }}
       </div>
+      {{ govuk_meta }}
     </div>
   </div>
 
 </footer>
+
 
 <div id="global-app-error" class="app-error hidden"></div>
 
