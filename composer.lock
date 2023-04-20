@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1455f5e523c57026e5a544eb71aa8096",
+    "content-hash": "52b919c15947958b3fafb8fe7c03420a",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -3779,10 +3779,6 @@
                     "homepage": "https://www.drupal.org/user/2416470"
                 },
                 {
-                    "name": "pfaocle",
-                    "homepage": "https://www.drupal.org/user/9740"
-                },
-                {
                     "name": "roberto.rivera.ixis",
                     "homepage": "https://www.drupal.org/user/3632325"
                 }
@@ -6056,38 +6052,34 @@
         },
         {
             "name": "drupal/search_api_opensearch",
-            "version": "2.0.0-alpha2",
+            "version": "1.0.0-alpha9",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/search_api_opensearch.git",
-                "reference": "2.0.0-alpha2"
+                "reference": "1.0.0-alpha9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api_opensearch-2.0.0-alpha2.zip",
-                "reference": "2.0.0-alpha2",
-                "shasum": "5f0f1ff1b5893094494d897ab76c67aed1601ce8"
+                "url": "https://ftp.drupal.org/files/projects/search_api_opensearch-1.0.0-alpha9.zip",
+                "reference": "1.0.0-alpha9",
+                "shasum": "7108c79eaf6de3b0d6d46845aa98ff227c46e86f"
             },
             "require": {
-                "drupal/core": "^9 || ^10",
-                "drupal/search_api": "^1.23",
-                "makinacorpus/php-lucene": "^1.1",
-                "opensearch-project/opensearch-php": "^2.0",
-                "php": "^8"
+                "drupal/core": "^8 || ^9",
+                "drupal/search_api": "*",
+                "makinacorpus/php-lucene": "^1.0",
+                "opensearch-project/opensearch-php": "^1.0",
+                "php": "^8.0"
             },
             "require-dev": {
                 "drupal/coder": "^8.3",
-                "drupal/geofield": "^1.46",
                 "drush/drush": "^11.0"
-            },
-            "suggest": {
-                "drupal/geofield": "Required when using search_api_opensearch_location."
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.0-alpha2",
-                    "datestamp": "1677542045",
+                    "version": "1.0.0-alpha9",
+                    "datestamp": "1650492167",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -6100,8 +6092,9 @@
             ],
             "authors": [
                 {
-                    "name": "acbramley",
-                    "homepage": "https://www.drupal.org/user/1036766"
+                    "name": "Kim Pepper",
+                    "homepage": "https://www.drupal.org/user/1036766",
+                    "email": "kim@previousnext.com.au"
                 },
                 {
                     "name": "kim.pepper",
@@ -9248,16 +9241,16 @@
         },
         {
             "name": "mglaman/phpstan-drupal",
-            "version": "1.1.29",
+            "version": "1.1.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mglaman/phpstan-drupal.git",
-                "reference": "e6f6191c53b159013fcbd186d7f85511f3f96ff8"
+                "reference": "21b62499bb1233667f4d2bc6ce11db73500734fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mglaman/phpstan-drupal/zipball/e6f6191c53b159013fcbd186d7f85511f3f96ff8",
-                "reference": "e6f6191c53b159013fcbd186d7f85511f3f96ff8",
+                "url": "https://api.github.com/repos/mglaman/phpstan-drupal/zipball/21b62499bb1233667f4d2bc6ce11db73500734fe",
+                "reference": "21b62499bb1233667f4d2bc6ce11db73500734fe",
                 "shasum": ""
             },
             "require": {
@@ -9332,7 +9325,7 @@
             "description": "Drupal extension and rules for PHPStan",
             "support": {
                 "issues": "https://github.com/mglaman/phpstan-drupal/issues",
-                "source": "https://github.com/mglaman/phpstan-drupal/tree/1.1.29"
+                "source": "https://github.com/mglaman/phpstan-drupal/tree/1.1.30"
             },
             "funding": [
                 {
@@ -9348,7 +9341,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-08T21:44:03+00:00"
+            "time": "2023-04-07T13:36:19+00:00"
         },
         {
             "name": "mtdowling/jmespath.php",
@@ -9532,16 +9525,16 @@
         },
         {
             "name": "opensearch-project/opensearch-php",
-            "version": "2.1.0",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/opensearch-project/opensearch-php.git",
-                "reference": "9b7fd92a163c69b51aaa77a9eab2fdb5d3340355"
+                "reference": "d54af5ff2167bee3eb68d02e210283314ef74712"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opensearch-project/opensearch-php/zipball/9b7fd92a163c69b51aaa77a9eab2fdb5d3340355",
-                "reference": "9b7fd92a163c69b51aaa77a9eab2fdb5d3340355",
+                "url": "https://api.github.com/repos/opensearch-project/opensearch-php/zipball/d54af5ff2167bee3eb68d02e210283314ef74712",
+                "reference": "d54af5ff2167bee3eb68d02e210283314ef74712",
                 "shasum": ""
             },
             "require": {
@@ -9549,20 +9542,17 @@
                 "ext-json": ">=1.3.7",
                 "ezimuel/ringphp": "^1.1.2",
                 "php": "^7.3 || ^8.0",
-                "psr/log": "^1|^2|^3"
+                "psr/log": "^1|^2"
             },
             "require-dev": {
-                "aws/aws-sdk-php": "^3.0",
                 "ext-zip": "*",
                 "friendsofphp/php-cs-fixer": "^3.0",
                 "mockery/mockery": "^1.2",
-                "phpstan/phpstan": "^1.7.15",
-                "phpstan/phpstan-mockery": "^1.1.0",
+                "phpstan/phpstan": "^0.12",
                 "phpunit/phpunit": "^9.3",
-                "symfony/finder": "~4.0 || ~5.0"
+                "symfony/finder": "~4.0"
             },
             "suggest": {
-                "aws/aws-sdk-php": "Required (^3.0.0) in order to use the SigV4 handler",
                 "monolog/monolog": "Allows for client-level logging and tracing"
             },
             "type": "library",
@@ -9593,9 +9583,9 @@
             ],
             "support": {
                 "issues": "https://github.com/opensearch-project/opensearch-php/issues",
-                "source": "https://github.com/opensearch-project/opensearch-php/tree/2.1.0"
+                "source": "https://github.com/opensearch-project/opensearch-php/tree/1.0.2"
             },
-            "time": "2023-02-14T20:15:15+00:00"
+            "time": "2022-02-08T08:37:31+00:00"
         },
         {
             "name": "pear/archive_tar",
@@ -16577,16 +16567,16 @@
         },
         {
             "name": "drupal/coder",
-            "version": "8.3.17",
+            "version": "8.3.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pfrenssen/coder.git",
-                "reference": "1c4662337418ab88c9ddf40348f0638e35d49182"
+                "reference": "d5911f812b69ca3bda5524899bdd06b3b4e687ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/coder/zipball/1c4662337418ab88c9ddf40348f0638e35d49182",
-                "reference": "1c4662337418ab88c9ddf40348f0638e35d49182",
+                "url": "https://api.github.com/repos/pfrenssen/coder/zipball/d5911f812b69ca3bda5524899bdd06b3b4e687ff",
+                "reference": "d5911f812b69ca3bda5524899bdd06b3b4e687ff",
                 "shasum": ""
             },
             "require": {
@@ -16624,7 +16614,7 @@
                 "issues": "https://www.drupal.org/project/issues/coder",
                 "source": "https://www.drupal.org/project/coder"
             },
-            "time": "2023-02-19T21:05:01+00:00"
+            "time": "2023-04-18T12:07:59+00:00"
         },
         {
             "name": "drupal/config_inspector",
@@ -18150,16 +18140,16 @@
         },
         {
             "name": "phpspec/prophecy-phpunit",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy-phpunit.git",
-                "reference": "2d7a9df55f257d2cba9b1d0c0963a54960657177"
+                "reference": "9f26c224a2fa335f33e6666cc078fbf388255e87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy-phpunit/zipball/2d7a9df55f257d2cba9b1d0c0963a54960657177",
-                "reference": "2d7a9df55f257d2cba9b1d0c0963a54960657177",
+                "url": "https://api.github.com/repos/phpspec/prophecy-phpunit/zipball/9f26c224a2fa335f33e6666cc078fbf388255e87",
+                "reference": "9f26c224a2fa335f33e6666cc078fbf388255e87",
                 "shasum": ""
             },
             "require": {
@@ -18196,9 +18186,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phpspec/prophecy-phpunit/issues",
-                "source": "https://github.com/phpspec/prophecy-phpunit/tree/v2.0.1"
+                "source": "https://github.com/phpspec/prophecy-phpunit/tree/v2.0.2"
             },
-            "time": "2020-07-09T08:33:42+00:00"
+            "time": "2023-04-18T11:58:05+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",

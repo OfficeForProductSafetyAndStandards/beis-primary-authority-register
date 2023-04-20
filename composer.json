@@ -83,7 +83,7 @@
         "drupal/robotstxt": "~1.4.0",
         "drupal/role_delegation": "~1.1.0",
         "drupal/search_api": "~1.29.0",
-        "drupal/search_api_opensearch": "~2.0.0",
+        "drupal/search_api_opensearch": "~1.0.0",
         "drupal/symfony_mailer": "~1.0.0",
         "drupal/token": "~1.9.0",
         "drupal/trance": "8.x-1.x-dev",
@@ -204,9 +204,6 @@
             },
             "drupal/search_api": {
                 "Add support for rendering computed fields to the \"field\" views field handler": "https://git.drupalcode.org/project/search_api/-/merge_requests/75.diff"
-            },
-            "drupal/search_api_opensearch": {
-                "Incorrect 'tags' syntax for event listener": "https://git.drupalcode.org/project/search_api_opensearch/-/merge_requests/28.diff"
             },
             "drupal/vbo_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-11-23/allow_configurable_scheme-2988257-18.patch"
