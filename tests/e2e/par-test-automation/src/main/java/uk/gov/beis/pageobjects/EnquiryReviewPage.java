@@ -49,5 +49,12 @@ public class EnquiryReviewPage extends BasePageObject {
 
 		return (reply1.isDisplayed());
 	}
+	
+	public boolean checkEnquiryReply1() {
+		WebElement reply11 = driver
+				.findElement(By.xpath(reply.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY1))));
+
+		return (reply11.isDisplayed());
+	}
 
 }

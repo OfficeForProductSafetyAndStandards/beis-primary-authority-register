@@ -1079,6 +1079,20 @@ public class PARStepDefs {
 
 		}
 	}
+	
+	@When("^the user sends a reply to the general enquiry with the following details:$")
+	public void the_user_sends_a_reply_to_the_general_enquiry_with_the_following_details(DataTable dets) throws Throwable {
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.ENQUIRY_REPLY1, data.get("Description"));
+			enquiryReviewPage.submitResponse();
+			replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY1));
+			replyEnquiryPage.chooseFile("link.txt");
+			replyEnquiryPage.proceed();
+			LOG.info("Verify the reply message");
+			Assert.assertTrue("Failed: Enquiry reply doesn't check out ", enquiryReviewPage.checkEnquiryReply1());
+
+		}
+	}
 
 	@When("^the user adds a new person to the contacts successfully with the following details:$")
 	public void the_user_adds_a_new_person_to_the_contacts_successfully_with_the_following_details(DataTable newPerson)
