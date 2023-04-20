@@ -76,7 +76,7 @@ Feature:
   Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
   
  @regression @enforcement
- Scenario: Verify Send Notification of Proposed Enforcement, Approval and Removal (Happy Path - PAR-1852, PAR-1853, PAR-1854, PAR-1855)
+ Scenario: Verify Send Notification of Proposed Enforcement, Approval and Removal (Happy Path - PAR-1852, PAR-1853, PAR-1854)
   Given the user is on the PAR login page
   And the user logs in with the "par_enforcement_officer@example.com" user credentials
   When the user searches for the last created partnership
@@ -91,12 +91,6 @@ Feature:
   When the user selects the last created enforcement notice
   And the user approves the enforcement notice
   Then the enforcement notice is set to approved status 
-  
-  #Remove the Enforcement Notice
-  Given the user is on the PAR login page
-  And the user logs in with the "par_helpdesk@example.com" user credentials  
-  When the user searches for the last created enforcement notice
-  Then the user removes the enforcement notice successfully
   
  @regression @inspectionplan @inspectionfeedback @deviationrequest
  Scenario: Verify Upload of Inspection Plan (Happy Path - PAR-1856)
@@ -207,14 +201,19 @@ Feature:
   Then the user successfully views the enquiry
 
   @regression @enforcement
-  Scenario: Verify the viewing of an Enforcement Notice and Enforcement Officers details (Happy Path - PAR-2095)
+  Scenario: Verify the viewing of an Enforcement Notice and Enforcement Officers details (Happy Path - PAR-2095,PAR-1855)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user searches for an enforcement notice "Test Business 6868" Organisation
-    And clicks the Title of Action "enforcement title 1" Link
+    When the user selects the last created enforcement notice
     Then the user can verify the enforcement officers details:
       | Officer                                                         | Enforcing              | Organisation       | Primary                         |
       | Grover Muppet, 01723456789, par_enforcement_officer@example.com | City Enforcement Squad | Test Business 6868 | Lower East Side Borough Council |
+      
+    #Remove the Enforcement Notice
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials  
+    When the user searches for the last created enforcement notice
+    Then the user removes the enforcement notice successfully
 
   @regression 
   Scenario: Verify User can Submit a general enquiry (Happy Path - PAR-2096)

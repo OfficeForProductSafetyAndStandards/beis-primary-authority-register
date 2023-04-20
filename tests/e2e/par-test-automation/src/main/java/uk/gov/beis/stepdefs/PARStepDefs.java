@@ -742,65 +742,34 @@ public class PARStepDefs {
 		enforcementReviewPage.saveChanges();
 	}
 
-//	switch (user) {
-//	case ("par_helpdesk@example.com"):
-//		LOG.info("Selecting view partnerships");
-//		parDashboardPage.selectSearchPartnerships();
-//		partnershipAdvancedSearchPage.searchPartnerships();
-//		break;
-//
-//	case ("par_enforcement_officer@example.com"):
-//		LOG.info("Selecting search for partnership");
-//		parDashboardPage.selectSearchforPartnership();
-//		partnershipSearchPage.searchPartnerships();
-//		break;
-//
-//	default:
-//		LOG.info("Search partnerships");
-//		parDashboardPage.selectSeePartnerships();
-//		LOG.info("Select organisation link details");
-//		partnershipSearchPage.searchPartnerships();
-//
-//		// select business/organisation link if still first part of journey
-//		if (!ScenarioContext.secondJourneyPart)
-//			partnershipSearchPage.selectBusinessNameLink();
-//
-//		// select authority link if in second part of journey
-//		if (ScenarioContext.secondJourneyPart)
-//			partnershipSearchPage.selectAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
-//	}
-
 	@When("^the user selects the last created enforcement notice$")
 	public void the_user_selects_the_last_created_enforcement() throws Throwable {
 		String user = DataStore.getSavedValue(UsableValues.LOGIN_USER);
-
 		switch (user) {
 		case ("par_enforcement_officer@example.com"):
-
 			LOG.info("Select last created enforcement");
 			parDashboardPage.selectSeeEnforcementNotices();
 			enforcementSearchPage.searchPartnerships();
 			enforcementSearchPage.selectEnforcement();
+			break;
+
+		case ("par_authority@example.com"):
+			LOG.info("Select last created enforcement");
+			parDashboardPage.selectSeeEnforcementNotices();
+			enforcementSearchPage.searchPartnerships();
+			enforcementSearchPage.selectEnforcement();
+			break;
 
 		case ("par_helpdesk@example.com"):
+			LOG.info("Searching for an Enforcement Notice.");
 			parDashboardPage.selectManageEnforcementNotices();
 			enforcementSearchPage.searchForEnforcementNotice(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
-
-			LOG.info("Searching for an Enforcement Notice.");
+			break;
 
 		default:
 			// do nothing
 		}
-
 	}
-
-//	@When("^the user searches for an enforcement notice \"([^\"]*)\" Organisation$")
-//	public void the_user_searches_for_an_enforcement_notice_Organisation(String search) throws Throwable {
-//	    parDashboardPage.selectManageEnforcementNotices();
-//		enforcementSearchPage.searchForEnforcementNotice(search);
-//		
-//		LOG.info("Searching for an Enforcement Notice.");
-//	}
 
 	@When("^the user approves the enforcement notice$")
 	public void the_user_approves_the_enforcement_notice() throws Throwable {
@@ -1079,9 +1048,10 @@ public class PARStepDefs {
 
 		}
 	}
-	
+
 	@When("^the user sends a reply to the general enquiry with the following details:$")
-	public void the_user_sends_a_reply_to_the_general_enquiry_with_the_following_details(DataTable dets) throws Throwable {
+	public void the_user_sends_a_reply_to_the_general_enquiry_with_the_following_details(DataTable dets)
+			throws Throwable {
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
 			DataStore.saveValue(UsableValues.ENQUIRY_REPLY1, data.get("Description"));
 			enquiryReviewPage.submitResponse();
@@ -1410,13 +1380,6 @@ public class PARStepDefs {
 		enforcementSearchPage.searchForEnforcementNotice(search);
 
 		LOG.info("Searching for an Enforcement Notice.");
-	}
-
-	@When("^clicks the Title of Action \"([^\"]*)\" Link$")
-	public void clicks_the_Title_of_Action_Link(String title) throws Throwable {
-		enforcementSearchPage.clickTitleOfActionLink(title);
-
-		LOG.info("Click the Title of Action Link.");
 	}
 
 	@Then("^the user can verify the enforcement officers details:$")
