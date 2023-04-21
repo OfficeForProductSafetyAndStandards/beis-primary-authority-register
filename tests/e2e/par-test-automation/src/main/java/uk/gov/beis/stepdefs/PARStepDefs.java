@@ -912,7 +912,7 @@ public class PARStepDefs {
 		}
 	}
 
-	@Then("^the inspection feedback_reply is received successfully$")
+	@Then("^the inspection feedback reply is received successfully$")
 	public void the_inspection_feedback_reply_is_received_successfully() throws Throwable {
 		LOG.info("Verify the inspection feedback reply");
 		Assert.assertTrue("Failed: Inspection feedback reply doesn't check out ",
