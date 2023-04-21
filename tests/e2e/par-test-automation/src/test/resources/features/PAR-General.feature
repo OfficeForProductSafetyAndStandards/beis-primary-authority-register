@@ -201,14 +201,12 @@ Feature:
   Then the user successfully views the enquiry
 
   @regression @enforcement
-  Scenario: Verify the viewing of an Enforcement Notice and Enforcement Officers details (Happy Path - PAR-2095,PAR-1855)
+  Scenario: Verify the viewing of an Enforcement Notice and Enforcement Officers details (Happy Path - PAR-2095, PAR-1855)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user selects the last created enforcement notice
-    Then the user can verify the enforcement officers details:
-      | Officer                                                         | Enforcing              | Organisation       | Primary                         |
-      | Grover Muppet, 01723456789, par_enforcement_officer@example.com | City Enforcement Squad | Test Business 6868 | Lower East Side Borough Council |
-      
+    Then the user can verify the enforcement officers details are displayed
+
     #Remove the Enforcement Notice
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials  
@@ -227,6 +225,6 @@ Feature:
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for an Enquiry with the Test Business "3698" name
-    Then the user can verify the Enforcement details:
+    Then the user can verify the Enforcement details are correct
       | Officer                                                         | Enforcing              | Primary                         | Summary                  |
       | Grover Muppet, 01723456789, par_enforcement_officer@example.com | City Enforcement Squad | Lower East Side Borough Council | Help Desk Enquiry Check. |

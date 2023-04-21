@@ -63,10 +63,4 @@ public class EnforcementSearchPage extends BasePageObject {
 		searchInput.sendKeys(search);
 		searchBtn.click();
 	}
-	
-	public EnforcementNotificationActionReceivedPage clickTitleOfActionLink(String action) {
-		WebElement titleLink = driver.findElement(By.linkText(action));
-		titleLink.click();
-		return PageFactory.initElements(driver, EnforcementNotificationActionReceivedPage.class);
-	}
 }

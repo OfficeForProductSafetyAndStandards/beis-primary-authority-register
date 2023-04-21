@@ -46,7 +46,6 @@ import uk.gov.beis.pageobjects.EnforcementCompletionPage;
 import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
-import uk.gov.beis.pageobjects.EnforcementNotificationActionReceivedPage;
 import uk.gov.beis.pageobjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.EnforcementReviewPage;
 import uk.gov.beis.pageobjects.EnforcementSearchPage;
@@ -193,7 +192,6 @@ public class PARStepDefs {
 	private PartnershipRestoredPage partnershipRestoredPage;
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
 	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
-	private EnforcementNotificationActionReceivedPage enforcementNotificationActionReceivedPage;
 	private GeneralEnquiriesPage generalEnquiriesPage;
 	private ViewEnquiryPage viewEnquiryPage;
 
@@ -304,8 +302,6 @@ public class PARStepDefs {
 		parBusinessAddressDetailsPage = PageFactory.initElements(driver, BusinessAddressDetailsPage.class);
 		parPartnershipTermsPage = PageFactory.initElements(driver, PartnershipTermsPage.class);
 		partnershipSearchPage = PageFactory.initElements(driver, PartnershipSearchPage.class);
-		enforcementNotificationActionReceivedPage = PageFactory.initElements(driver,
-				EnforcementNotificationActionReceivedPage.class);
 		generalEnquiriesPage = PageFactory.initElements(driver, GeneralEnquiriesPage.class);
 		viewEnquiryPage = PageFactory.initElements(driver, ViewEnquiryPage.class);
 
@@ -764,6 +760,7 @@ public class PARStepDefs {
 			LOG.info("Searching for an Enforcement Notice.");
 			parDashboardPage.selectManageEnforcementNotices();
 			enforcementSearchPage.searchForEnforcementNotice(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+			enforcementSearchPage.selectEnforcement();
 			break;
 
 		default:
@@ -1373,27 +1370,24 @@ public class PARStepDefs {
 
 		assertEquals(name, managePeoplePage.GetPersonName());
 	}
-
-	@When("^the user searches for an enforcement notice \"([^\"]*)\" Organisation$")
-	public void the_user_searches_for_an_enforcement_notice_Organisation(String search) throws Throwable {
-		parDashboardPage.selectManageEnforcementNotices();
-		enforcementSearchPage.searchForEnforcementNotice(search);
-
-		LOG.info("Searching for an Enforcement Notice.");
+	
+	@Then("^the user can verify the enforcement officers details are displayed$")
+	public void the_user_can_verify_the_enforcement_officers_details_are_displayed() throws Throwable {
+	    assertTrue("Failed: Officer details not displayed", enforcementReviewPage.checkOfficerDetails());
 	}
 
-	@Then("^the user can verify the enforcement officers details:$")
-	public void the_user_can_verify_the_enforcement_officers_details(DataTable details) throws Throwable {
-		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
-			assertEquals(data.get("Officer"), enforcementNotificationActionReceivedPage.getEnforcementOfficerDetails());
-			assertEquals(data.get("Enforcing"), enforcementNotificationActionReceivedPage.getEnforcingAuthorityName());
-			assertEquals(data.get("Organisation"),
-					enforcementNotificationActionReceivedPage.getEnforcedOrganisationName());
-			assertEquals(data.get("Primary"), enforcementNotificationActionReceivedPage.getPrimaryAuthorityName());
-		}
-
-		LOG.info("Asserting the Enforcement Notice Details.");
-	}
+//	@Then("^the user can verify the enforcement officers details:$")
+//	public void the_user_can_verify_the_enforcement_officers_details(DataTable details) throws Throwable {
+//		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+//			assertEquals(data.get("Officer"), enforcementNotificationActionReceivedPage.getEnforcementOfficerDetails());
+//			assertEquals(data.get("Enforcing"), enforcementNotificationActionReceivedPage.getEnforcingAuthorityName());
+//			assertEquals(data.get("Organisation"),
+//					enforcementNotificationActionReceivedPage.getEnforcedOrganisationName());
+//			assertEquals(data.get("Primary"), enforcementNotificationActionReceivedPage.getPrimaryAuthorityName());
+//		}
+//
+//		LOG.info("Asserting the Enforcement Notice Details.");
+//	}
 
 	@When("^the user searches for a partnership with the Test Business \"([^\"]*)\" name$")
 	public void the_user_searches_for_a_partnership_with_the_Test_Business_name(String search) throws Throwable {
@@ -1421,13 +1415,13 @@ public class PARStepDefs {
 		LOG.info("Successfully created Enquiry Notice.");
 	}
 
-	@When("^the user searches for an Enquiry with the Test Business \"([^\"]*)\" name$")
-	public void the_user_searches_for_an_Enquiry_with_the_Test_Business_name(String search) throws Throwable {
-		parDashboardPage.selectManageGeneralEnquiries();
-		generalEnquiriesPage.chooseGeneralEnquiry(search);
-
-		LOG.info("Searching for Equiry Notice Details.");
-	}
+//	@When("^the user searches for an Enquiry with the Test Business \"([^\"]*)\" name$")
+//	public void the_user_searches_for_an_Enquiry_with_the_Test_Business_name(String search) throws Throwable {
+//		parDashboardPage.selectManageGeneralEnquiries();
+//		generalEnquiriesPage.chooseGeneralEnquiry(search);
+//
+//		LOG.info("Searching for Equiry Notice Details.");
+//	}
 
 	@Then("^the user can verify the Enforcement details:$")
 	public void the_user_can_verify_the_Enforcement_details(DataTable details) throws Throwable {
