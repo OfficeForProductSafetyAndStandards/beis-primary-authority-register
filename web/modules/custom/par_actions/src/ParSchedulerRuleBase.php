@@ -78,7 +78,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    * {@inheritdoc}
    */
   public function getFrequency() {
-    $frequency = $this->pluginDefinition['frequency'];
+    $frequency = $this->pluginDefinition['frequency'] ?? self::DEFAULT_FREQUENCY;
 
     // Only a limited subset of the relative time formats are allowed for simplicity.
     // e.g. 3 weeks, 2 months, 1 year

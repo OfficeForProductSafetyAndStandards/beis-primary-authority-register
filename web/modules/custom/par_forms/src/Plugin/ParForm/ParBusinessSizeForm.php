@@ -42,7 +42,7 @@ class ParBusinessSizeForm extends ParFormPluginBase {
 
     $form['info'] = [
       '#markup' => t('Enter the number of associations in your membership list'),
-      '#prefix' => '<h2 class="govuk-heading-m">',
+      '#prefix' => '<h2>',
       '#suffix' => '</h2>',
     ];
 

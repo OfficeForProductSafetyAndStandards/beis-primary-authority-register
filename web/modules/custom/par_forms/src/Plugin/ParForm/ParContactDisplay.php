@@ -98,8 +98,8 @@ class ParContactDisplay extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     if ($cardinality === 1) {
       $form['message_intro'] = [
-        '#type' => 'container',
-        'heading' => [
+        '#type' => 'fieldset',
+        'title' => [
           '#type' => 'html_tag',
           '#tag' => 'h2',
           '#value' => $this->t('Contacts'),
@@ -143,7 +143,7 @@ class ParContactDisplay extends ParFormPluginBase {
       }
 
       $form['contact'] = [
-        '#type' => 'container',
+        '#type' => 'fieldset',
         '#weight' => 1,
         '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
         'name' => [
@@ -180,7 +180,7 @@ class ParContactDisplay extends ParFormPluginBase {
     }
     else {
       $form['contact'] = [
-        '#type' => 'container',
+        '#type' => 'fieldset',
         '#attributes' => ['class' => ['form-group']],
         'title' => [
           '#type' => 'html_tag',

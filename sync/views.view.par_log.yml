@@ -6,6 +6,7 @@ dependencies:
     - audit_log
     - better_exposed_filters
     - pagerer
+    - user
 id: par_log
 label: 'PAR Log'
 module: views
@@ -526,8 +527,9 @@ display:
                   collapsible: false
                   is_secondary: false
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'access par reports'
       cache:
         type: tag
         options: {  }
@@ -746,6 +748,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.permissions
       tags: {  }
   log_page:
     id: log_page
@@ -771,4 +774,5 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.permissions
       tags: {  }

@@ -71,15 +71,10 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       $this->getLogger($this->getLoggerChannel())->notice($e);
     }
 
-    // Container encompassing the partnership legal entities plugin display.
+    // Fieldset encompassing the partnership legal entities plugin display.
     $form['partnership_legal_entities'] = [
-      '#type' => 'container',
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
-        '#value' => $this->t('Legal entities'),
-      ],
+      '#type' => 'fieldset',
+      '#title' => 'Legal entities',
       '#attributes' => ['class' => ['form-group']],
     ];
 

@@ -68,18 +68,18 @@ class ParConfirmationReviewForm extends ParBaseForm {
       // Show the organisation name.
       if ($par_data_organisation) {
         $form['partnership']['organisation'] = [
-          '#type' => 'container',
+          '#type' => 'fieldset',
           '#attributes' => ['class' => 'column-one-half'],
         ];
 
         // Display organisation name and organisation primary address.
         $form['partnership']['organisation']['organisation_name'] = [
-          '#type' => 'container',
+          '#type' => 'fieldset',
           '#attributes' => ['class' => 'form-group'],
           'title' => [
             '#type' => 'html_tag',
-            '#tag' => 'h2',
-            '#value' => $this->t('Organisation name'),
+            '#tag' => 'h3',
+            '#value' => 'Organisation name',
             '#attributes' => ['class' => 'heading-medium'],
           ],
           'name' => [
@@ -111,16 +111,16 @@ class ParConfirmationReviewForm extends ParBaseForm {
       // Show the primary authority name.
       if ($par_data_authority) {
         $form['partnership']['authority'] = [
-          '#type' => 'container',
+          '#type' => 'fieldset',
           '#attributes' => ['class' => 'column-one-half'],
         ];
         $form['partnership']['authority']['authority_name'] = [
-          '#type' => 'container',
+          '#type' => 'fieldset',
           '#attributes' => ['class' => 'form-group'],
           'title' => [
             '#type' => 'html_tag',
-            '#tag' => 'h2',
-            '#value' => $this->t('Primary authority name'),
+            '#tag' => 'h3',
+            '#value' => 'Primary authority name',
             '#attributes' => ['class' => 'heading-medium'],
           ],
           'name' => [
@@ -174,7 +174,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Make sure the confirm box and terms box is ticked.
     if (!$form_state->getValue('terms_authority_agreed')) {
-      $message = $this->wrapErrorMessage('Please confirm you have read the terms and conditions.', $this->getElementId('terms_authority_agreed', $form));
+      $message = $this->wrapErrorMessage('Please confirm you have read the terms & conditions.', $this->getElementId('terms_authority_agreed', $form));
       $form_state->setErrorByName($this->getElementName('terms_authority_agreed'), $message);
     }
   }

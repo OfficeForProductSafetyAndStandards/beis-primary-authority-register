@@ -104,14 +104,15 @@ class ParDashboardsDashboardController extends ControllerBase {
     $build = [];
 
     $build['welcome'] = [
-      '#type' => 'container',
+      '#type' => 'fieldset',
+      '#title' => $this->t('Welcome'),
       '#attributes' => ['class' => 'form-group'],
-    ];
-
-    $build['welcome']['title'] = [
-      '#type' => 'markup',
-      '#markup' => '<h2 class="heading-medium">' . $this->t('Your account') . '</h2>
-                    <p>Hello! Welcome to the Primary Authority Register.</p>',
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+      [
+        '#type' => 'markup',
+        '#markup' => "<p>Hello! Welcome to the Primary Authority Register.</p>",
+      ],
     ];
 
     // Get the permissions for managing partnerships.

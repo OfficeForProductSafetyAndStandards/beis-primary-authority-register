@@ -461,7 +461,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get the container wrapper for this component.
+   * Get the fieldset wrapper for this component.
    */
   public function getWrapper() {
     return [
@@ -480,7 +480,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get the container wrapper for this component.
+   * Get the fieldset wrapper for this component.
    */
   public function getElementWrapper($cardinality = 1) {
     return [
@@ -490,7 +490,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get the container wrapper for this component.
+   * Get the fieldset wrapper for this component.
    */
   public function getElementActions($cardinality = 1, $actions = []) {
     $count = $this->getNewCardinality();
@@ -513,7 +513,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get the container wrapper for this component.
+   * Get the fieldset wrapper for this component.
    */
   public function getComponentActions($actions = [], $count = NULL) {
     $count = isset($count) ? $count : $this->getNewCardinality();

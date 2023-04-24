@@ -56,7 +56,7 @@ class ParInspectionPlanForm extends ParFormPluginBase {
     ];
 
     $form['inspection_plan_type_help_text'] = [
-      '#type' => 'container',
+      '#type' => 'fieldset',
       '#attributes' => [
         'class' => ['form-group'],
       ],

@@ -75,7 +75,6 @@ class ParAddressForm extends ParFormPluginBase {
     $form['address_line1'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter Address Line 1'),
-      '#required' => TRUE,
       '#default_value' => $this->getDefaultValuesByKey('address_line1', $cardinality),
     ];
 
@@ -88,7 +87,6 @@ class ParAddressForm extends ParFormPluginBase {
     $form['town_city'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter Town / City'),
-      '#required' => TRUE,
       '#default_value' => $this->getDefaultValuesByKey('town_city', $cardinality),
     ];
 
@@ -99,7 +97,7 @@ class ParAddressForm extends ParFormPluginBase {
     ];
 
     $form['country_code'] = [
-      '#type' => 'a11y_autocomplete',
+      '#type' => 'select',
       '#options' => $this->getCountryRepository()->getList(NULL),
       '#title' => $this->t('Country'),
       '#default_value' => $this->getDefaultValuesByKey('country_code', $cardinality, 'GB'),
@@ -122,7 +120,6 @@ class ParAddressForm extends ParFormPluginBase {
     $form['postcode'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter Postcode'),
-      '#required' => TRUE,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("postcode"),
     ];
 

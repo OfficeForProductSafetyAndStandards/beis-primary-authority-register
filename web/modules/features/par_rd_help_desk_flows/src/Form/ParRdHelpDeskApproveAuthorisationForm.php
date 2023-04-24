@@ -79,13 +79,8 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
 
     // Present partnership info.
     $form['partnership_info'] = [
-      '#type' => 'container',
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h2',
-        '#attributes' => ['class' => ['heading-medium']],
-        '#value' => $this->t('Partnership between'),
-      ],
+      '#type' => 'fieldset',
+      '#title' => $this->t('Partnership between'),
       '#attributes' => ['class' => 'form-group'],
     ];
 

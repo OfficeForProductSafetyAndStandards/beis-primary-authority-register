@@ -3,7 +3,7 @@ Feature:
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
   
- @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan
+ @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback
  Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
   Given the user is on the PAR home page
   And the user visits the login page
@@ -28,7 +28,7 @@ Feature:
   And the user updates the partnership information with the following info: "Updated Partnership info"
   Then the partnership is updated correctly
   
- @regression @partnershipapplication @coordinated 
+ @partnershipapplication @coordinated 
  Scenario: Verify Coordinated Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
   Given the user is on the PAR home page
   And the user visits the login page
@@ -60,7 +60,7 @@ Feature:
   And the user completes the user creation journey
   Then the user journey creation is successful
  
- @regression @usermanagement @login @enforcement @inspectionplan
+ @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback
  Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
   Given the user is on the PAR login page
   And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -120,7 +120,7 @@ Feature:
   When the user searches for the last created enforcement notice
   Then the user removes the enforcement notice successfully
   
- @regression @inspectionplan
+ @regression @inspectionplan @inspectionfeedback
  Scenario: Verify Upload of Inspection Plan (Happy Path - PAR-1856)
   Given the user is on the PAR login page
   And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -129,5 +129,52 @@ Feature:
    | Title	 							| Description		| 
    | INspection Title 1		| Test 1	      | 
   
+ @regression @inspectionfeedback
+ Scenario: Verify User can Submit feedback following an Inspection plan (Happy Path - PAR-1858, PAR-1860)
+  Given the user is on the PAR login page
+  And the user logs in with the "par_enforcement_officer@example.com" user credentials
+  When the user searches for the last created partnership
+  And the user submits an inspection feedback against the inspection plan with the following details:
+   | Description		| 
+   | Test 1	        | 
   
+  #Re-login as primary authority and check and approve inspection feedback
+  Given the user is on the PAR login page
+  And the user logs in with the "par_authority@example.com" user credentials
+  When the user searches for the last created inspection feedback
+  Then the user successfully approves the inspection feedback
+  
+  #submit response to inspection feedback
+  Given the user submits a response to the inspection feedback with the following details:
+   | Description		| 
+   | Test Response  |
+  
+  Given the user is on the PAR login page
+  And the user logs in with the "par_enforcement_officer@example.com" user credentials
+  When the user searches for the last created inspection feedback
+  And the user sends a reply to the inspection feedback message with the following details:
+   | Description		| 
+   | Test Reply     |  
+  
+  #login as authority and check message received correctly  
+  Given the user is on the PAR login page
+  And the user logs in with the "par_authority@example.com" user credentials
+  When the user searches for the last created inspection feedback
+  Then the message is received successfully
+  
+  @regression @publicRegistrySearch
+  Scenario: Verify a Non-registered User can Search the Public Register (Happy Path - PAR-2057)
+  Given the user is on the PAR home page
+  When the user is on the search for a partnership page
+  Then the user can search for a PA Organisation Trading name Company number
+  And the user is shown the information for that partnership
+  
+  @regression @publicRegistrySearch
+  Scenario: Verify a Registered User can Search the Public Register (Happy Path - PAR-2057)
+  Given the user is on the PAR login page
+  And the user logs in with the "par_authority@example.com" user credentials
+  And the user clicks the PAR Home page link
+  When the user is on the search for a partnership page
+  Then the user can search for a PA Organisation Trading name Company number
+  And the user is shown the information for that partnership
   

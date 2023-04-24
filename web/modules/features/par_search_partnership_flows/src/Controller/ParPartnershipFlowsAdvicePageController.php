@@ -38,8 +38,10 @@ class ParPartnershipFlowsAdvicePageController extends ParBaseController {
 
     if ($par_data_advice->isArchived()) {
       $build['advice_details'] = [
-        '#type' => 'container',
+        '#type' => 'fieldset',
         '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
       ];
       $build['advice_details']['archived'] = [
         '#type' => 'markup',

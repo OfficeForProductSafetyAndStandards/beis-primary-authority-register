@@ -65,13 +65,8 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
 
     // Display the legal entities.
     $form['legal_entities'] = [
-      '#type' => 'container',
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
-        '#value' => $this->t('Legal entities'),
-      ],
+      '#type' => 'fieldset',
+      '#title' => 'Legal entities',
       '#attributes' => ['class' => ['form-group']],
       'legal_entity' => [
         '#type' => 'container',

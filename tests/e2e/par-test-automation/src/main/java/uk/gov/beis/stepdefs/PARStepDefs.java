@@ -1,5 +1,8 @@
 package uk.gov.beis.stepdefs;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -39,6 +42,11 @@ import uk.gov.beis.pageobjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.EnforcementReviewPage;
 import uk.gov.beis.pageobjects.EnforcementSearchPage;
 import uk.gov.beis.pageobjects.HomePage;
+import uk.gov.beis.pageobjects.InspectionContactDetailsPage;
+import uk.gov.beis.pageobjects.InspectionFeedbackCompletionPage;
+import uk.gov.beis.pageobjects.InspectionFeedbackConfirmationPage;
+import uk.gov.beis.pageobjects.InspectionFeedbackDetailsPage;
+import uk.gov.beis.pageobjects.InspectionFeedbackSearchPage;
 import uk.gov.beis.pageobjects.InspectionPlanDetailsPage;
 import uk.gov.beis.pageobjects.InspectionPlanExpirationPage;
 import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
@@ -63,6 +71,7 @@ import uk.gov.beis.pageobjects.ProposedEnforcementPage;
 import uk.gov.beis.pageobjects.RegulatoryFunctionPage;
 import uk.gov.beis.pageobjects.RemoveEnforcementConfirmationPage;
 import uk.gov.beis.pageobjects.RemoveEnforcementPage;
+import uk.gov.beis.pageobjects.ReplyInspectionFeedbackPage;
 import uk.gov.beis.pageobjects.RestorePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.SICCodePage;
@@ -81,7 +90,10 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private InspectionFeedbackConfirmationPage inspectionFeedbackConfirmationPage;
+	private InspectionFeedbackDetailsPage inspectionFeedbackDetailsPage;
 	private InspectionPlanSearchPage inspectionPlanSearchPage;
+	private InspectionContactDetailsPage inspectionContactDetailsPage;
 	private RemoveEnforcementPage removeEnforcementPage;
 	private EnforcementCompletionPage enforcementCompletionPage;
 	private EnforcementActionPage enforcementActionPage;
@@ -93,6 +105,7 @@ public class PARStepDefs {
 	private EnforcementNotificationPage enforcementNotificationPage;
 	private EnforcementSearchPage enforcementSearchPage;
 	private ONSCodePage onsCodePage;
+	private InspectionFeedbackSearchPage inspectionFeedbackSearchPage;
 	private ProposedEnforcementPage proposedEnforcementPage;
 	private EnforcementReviewPage enforcementReviewPage;
 	private RegulatoryFunctionPage regulatoryFunctionPage;
@@ -100,6 +113,7 @@ public class PARStepDefs {
 	private AuthorityAddressDetailsPage authorityAddressDetailsPage;
 	private AuthorityTypePage authorityTypePage;
 	private AuthorityNamePage authorityNamePage;
+	private ReplyInspectionFeedbackPage replyInspectionFeedbackPage;
 	private PartnershipAdvancedSearchPage partnershipAdvancedSearchPage;
 	private UserProfileConfirmationPage userProfileConfirmationPage;
 	private UserNotificationPreferencesPage userNotificationPreferencesPage;
@@ -139,9 +153,16 @@ public class PARStepDefs {
 	private RestorePartnershipConfirmationPage restorePartnershipConfirmationPage;
 	private PartnershipRestoredPage partnershipRestoredPage;
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
+	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		replyInspectionFeedbackPage = PageFactory.initElements(driver, ReplyInspectionFeedbackPage.class);
+		inspectionFeedbackSearchPage = PageFactory.initElements(driver, InspectionFeedbackSearchPage.class);
+		inspectionFeedbackCompletionPage = PageFactory.initElements(driver, InspectionFeedbackCompletionPage.class);
+		inspectionFeedbackConfirmationPage = PageFactory.initElements(driver, InspectionFeedbackConfirmationPage.class);
+		inspectionFeedbackDetailsPage = PageFactory.initElements(driver, InspectionFeedbackDetailsPage.class);
+		inspectionContactDetailsPage = PageFactory.initElements(driver, InspectionContactDetailsPage.class);
 		inspectionPlanExpirationPage = PageFactory.initElements(driver, InspectionPlanExpirationPage.class);
 		inspectionPlanDetailsPage = PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
 		uploadInspectionPlanPage = PageFactory.initElements(driver, UploadInspectionPlanPage.class);
@@ -676,7 +697,98 @@ public class PARStepDefs {
 			LOG.info("Check inspection plan status is set to \"Current\"");
 			Assert.assertTrue("Failed: Status not set to \"Current\"",
 					inspectionPlanSearchPage.getPlanStatus().equalsIgnoreCase("Current"));
-
 		}
+	}
+
+	@When("^the user submits an inspection feedback against the inspection plan with the following details:$")
+	public void the_user_submits_an_inspection_feedback_against_the_inspection_plan_with_the_following_details(
+			DataTable dets) throws Throwable {
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			LOG.info("Submit inspection feedback against partnership");
+			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+			parPartnershipConfirmationPage.selectSendInspectionFeedbk();
+			inspectionContactDetailsPage.proceed();
+			DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION, data.get("Description"));
+			inspectionFeedbackDetailsPage
+					.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION));
+			inspectionFeedbackDetailsPage.chooseFile("link.txt");
+			inspectionFeedbackDetailsPage.proceed();
+			inspectionFeedbackConfirmationPage.saveChanges();
+			inspectionFeedbackCompletionPage.complete();
+		}
+	}
+
+	@When("^the user searches for the last created inspection feedback$")
+	public void the_user_searches_for_the_last_created_inspection_feedback() throws Throwable {
+		LOG.info("Search for last created inspection feedback");
+		parDashboardPage.selectSeeInspectionFeedbackNotices();
+		inspectionFeedbackSearchPage.selectInspectionFeedbackNotice();
+	}
+
+	@Then("^the user successfully approves the inspection feedback$")
+	public void the_user_successfully_approves_the_inspection_feedback() throws Throwable {
+		LOG.info("Verify the inspection feedback description");
+		Assert.assertTrue("Failed: Inspection feedback description doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionFeedback());
+	}
+
+	@Given("^the user clicks the PAR Home page link$")
+	public void the_user_clicks_the_PAR_Home_page_link() throws Throwable {
+		LOG.info("Click PAR header to navigate to the PAR Home Page");
+		parAuthorityPage.selectPageHeader();
+	}
+
+	@When("^the user is on the search for a partnership page$")
+	public void the_user_is_on_the_search_for_a_partnership_page() throws Throwable {
+		LOG.info("Click Search Public List of Partnerships to navigate to PAR Search for Partnership Page");
+		parHomePage.selectPartnershipSearchLink();
+	}
+
+	@Then("^the user can search for a PA Organisation Trading name Company number$")
+	public void the_user_can_search_for_a_PA_Organisation_Trading_name_Company_number() throws Throwable {
+		LOG.info("Enter business name and click the search button");
+		partnershipSearchPage.searchForPartnership(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		partnershipSearchPage.clickSearchButton();
+	}
+
+	@Then("^the user is shown the information for that partnership$")
+	public void the_user_is_shown_the_information_for_that_partnership() throws Throwable {
+		LOG.info("Verify the Partnership contains the business name");
+		assertTrue(partnershipSearchPage.partnershipContains(DataStore.getSavedValue(UsableValues.BUSINESS_NAME)));
+	}
+
+	@Given("^the user submits a response to the inspection feedback with the following details:$")
+	public void the_user_submits_a_response_to_the_inspection_feedback_with_the_following_details(DataTable dets)
+			throws Throwable {
+		LOG.info("Submit response to inspection feedback request");
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1, data.get("Description"));
+			inspectionFeedbackConfirmationPage.submitResponse();
+			replyInspectionFeedbackPage
+					.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1));
+			replyInspectionFeedbackPage.chooseFile("link.txt");
+			replyInspectionFeedbackPage.proceed();
+			LOG.info("Verify the inspection feedback response");
+			Assert.assertTrue("Failed: Inspection feedback response doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionResponse());
+		}
+	}
+
+	@When("^the user sends a reply to the inspection feedback message with the following details:$")
+	public void the_user_sends_a_reply_to_the_inspection_feedback_message_with_the_following_details(DataTable dets)
+			throws Throwable {
+		LOG.info("Submit reply to inspection feedback response");
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE2, data.get("Description"));
+			inspectionFeedbackConfirmationPage.submitResponse();
+			replyInspectionFeedbackPage
+					.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE2));
+			replyInspectionFeedbackPage.chooseFile("link.txt");
+			replyInspectionFeedbackPage.proceed();
+		}
+	}
+
+	@Then("^the message is received successfully$")
+	public void the_message_is_received_successfully() throws Throwable {
+		LOG.info("Verify the inspection feedback reply");
+		Assert.assertTrue("Failed: Inspection feedback reply doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionReply());
 	}
 }

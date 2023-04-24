@@ -84,7 +84,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
     // Display the details for each Enforcement Action.
     if ($par_data_enforcement_actions = $this->getFlowDataHandler()->getParameter('par_data_enforcement_actions')) {
       $form = [
-        '#type' => 'container',
+        '#type' => 'fieldset',
         '#attributes' => ['class' => ['form-group', 'panel panel-border-wide']],
         'title' => [
           '#type' => 'html_tag',
@@ -154,7 +154,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
   }
 
   /**
-   * Get the container wrapper for this component.
+   * Get the fieldset wrapper for this component.
    */
   public function getWrapper() {
     $fieldset = parent::getWrapper();

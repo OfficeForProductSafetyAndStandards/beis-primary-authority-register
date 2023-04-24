@@ -63,13 +63,8 @@ class ParTradingNameDisplay extends ParFormPluginBase {
 
     // Display the trading_names.
     $form['trading_names'] = [
-      '#type' => 'container',
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
-        '#value' => $this->t('Trading names'),
-      ],
+      '#type' => 'fieldset',
+      '#title' => 'Trading names',
       '#attributes' => ['class' => ['form-group']],
       'trading_name' => [
         '#type' => 'container',

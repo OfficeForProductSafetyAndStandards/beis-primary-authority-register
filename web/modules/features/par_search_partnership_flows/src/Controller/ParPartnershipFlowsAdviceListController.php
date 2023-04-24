@@ -25,8 +25,10 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     $par_data_partnership_id = !empty($par_data_partnership) ? $par_data_partnership->id() : NULL;
 
     $build['partnership'] = [
-      '#type' => 'container',
+      '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
     ];
     $build['partnership']['title'] = [
       '#type' => 'markup',
