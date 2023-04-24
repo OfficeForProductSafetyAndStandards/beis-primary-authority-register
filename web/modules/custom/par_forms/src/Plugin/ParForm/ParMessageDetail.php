@@ -78,7 +78,7 @@ class ParMessageDetail extends ParFormPluginBase {
 
     if ($cardinality === 1) {
       $form['message_intro'] = [
-        '#type' => 'container',
+        '#type' => 'fieldset',
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'h2',
@@ -107,7 +107,7 @@ class ParMessageDetail extends ParFormPluginBase {
 
     if ($this->getDefaultValuesByKey('message', $cardinality, NULL)) {
       $form['message'] = [
-        '#type' => 'container',
+        '#type' => 'fieldset',
         '#attributes' => ['class' => ['form-group', 'panel panel-border-wide']],
         'title' => [
           '#type' => 'html_tag',
@@ -120,7 +120,7 @@ class ParMessageDetail extends ParFormPluginBase {
     }
     else {
       $form['message'] = [
-        '#type' => 'container',
+        '#type' => 'fieldset',
         '#attributes' => ['class' => ['form-group']],
         'title' => [
           '#type' => 'html_tag',

@@ -38,14 +38,11 @@ class ParRdHelpDeskRevokeForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership);
 
     $form['partnership_info'] =[
-      '#type' => 'container',
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h2',
-        '#attributes' => ['class' => ['heading-medium']],
-        '#value' => $this->t('The following partnership has been revoked'),
-      ],
+      '#type' => 'fieldset',
+      '#title' => $this->t('The following partnership has been revoked'),
       '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
     ];
 
     $form['partnership_info']['partnership_between'] = [

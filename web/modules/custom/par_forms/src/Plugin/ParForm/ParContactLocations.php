@@ -50,8 +50,8 @@ class ParContactLocations extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     if ($cardinality === 1) {
       $form['message_intro'] = [
-        '#type' => 'container',
-        'heading' => [
+        '#type' => 'fieldset',
+        'title' => [
           '#type' => 'html_tag',
           '#tag' => 'h2',
           '#value' => $this->t('Contact locations'),
@@ -83,7 +83,7 @@ class ParContactLocations extends ParFormPluginBase {
       ];
 
       $form['contact'] = [
-        '#type' => 'container',
+        '#type' => 'fieldset',
         '#weight' => 1,
         '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
         'locations' => [
@@ -96,9 +96,9 @@ class ParContactLocations extends ParFormPluginBase {
     }
     else {
       $form['contact'] = [
-        '#type' => 'container',
+        '#type' => 'fieldset',
         '#attributes' => ['class' => ['form-group']],
-        'heading' => [
+        'title' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => $this->t('There are no contacts records listed.'),

@@ -101,18 +101,19 @@ class ParPartnershipContacts extends ParFormPluginBase {
     }
 
     $form["{$contact_format}_contacts"] = [
-      '#type' => 'container',
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
-        '#value' => $section_title,
-      ],
+      '#type' => 'fieldset',
+      '#title' => $section_title,
       '#attributes' => ['class' => ['form-group']],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
       'person' => [
-        '#type' => 'container',
+        '#type' => 'fieldset',
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
         'items' => [
-          '#type' => 'container'
+          '#type' => 'fieldset',
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
         ],
         'pager' => [
           '#type' => 'pager',
@@ -124,7 +125,9 @@ class ParPartnershipContacts extends ParFormPluginBase {
           ],
         ],
         'operations' => [
-          '#type' => 'container',
+          '#type' => 'fieldset',
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
           'add' => [
             '#type' => 'html_tag',
             '#tag' => 'p',
@@ -161,8 +164,10 @@ class ParPartnershipContacts extends ParFormPluginBase {
       }
 
       $form["{$contact_format}_contacts"]['person']['items'][$delta] = [
-        '#type' => 'container',
+        '#type' => 'fieldset',
         '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
         'entity' => [
           '#type' => 'html_tag',
           '#tag' => 'div',

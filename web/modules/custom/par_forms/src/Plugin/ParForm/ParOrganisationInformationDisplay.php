@@ -66,14 +66,11 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
     $rendered_address = $entity_view_builder instanceof EntityViewBuilderInterface ?
       $entity_view_builder->view($address, 'summary') : NULL;
     $form['registered_address'] = [
-      '#type' => 'container',
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
-        '#value' => $this->t('Address'),
-      ],
-      '#attributes' => ['class' => 'form-group']
+      '#type' => 'fieldset',
+      '#title' => 'Address',
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
     ];
     if ($rendered_address) {
       $form['registered_address']['field_premises'] = [
@@ -116,14 +113,11 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
 
     // Display details about the partnership for information.
     $form['about'] = [
-      '#type' => 'container',
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
-        '#value' => $this->t('About the organisation'),
-      ],
+      '#type' => 'fieldset',
+      '#title' => 'About the organisation',
       '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
       'details' => $this->getDefaultValuesByKey('information', $cardinality, NULL),
     ];
     try {

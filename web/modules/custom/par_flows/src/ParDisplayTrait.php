@@ -81,8 +81,10 @@ trait ParDisplayTrait {
     $elements = [];
     foreach ($field as $delta => $value) {
       $elements[$delta] = [
-        '#type' => 'container',
+        '#type' => 'fieldset',
         '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
       ];
 
       $field_settings = $this->getParDataManager()->getFieldDisplay($entity, $field, 'default');
@@ -130,8 +132,10 @@ trait ParDisplayTrait {
       $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
       $rendered_entity = $entity_view_builder->view($entity, $view_mode);
       $elements[$delta] = [
-        '#type' => 'container',
+        '#type' => 'fieldset',
         '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
       ];
       $elements[$delta]['entity'] = $this->renderMarkupField($rendered_entity);
 
@@ -165,21 +169,17 @@ trait ParDisplayTrait {
    */
   public function renderEntities($section, $entities, $view_mode = 'summary', $operations = [], $single = FALSE) {
     $elements = [
-      '#type' => 'container',
+      '#type' => 'fieldset',
       '#title' => t("$section"),
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h2',
-        '#attributes' => ['class' => ['heading-medium']],
-        '#value' => t("$section"),
-      ],
     ];
     foreach ($entities as $delta => $entity) {
       $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
       $rendered_entity = $entity_view_builder->view($entity, $view_mode);
       $elements[$delta] = [
-        '#type' => 'container',
-        '#attributes' => ['class' => 'form-group']
+        '#type' => 'fieldset',
+        '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
       ];
       $elements[$delta]['entity'] = $this->renderMarkupField($rendered_entity);
 
@@ -284,8 +284,10 @@ trait ParDisplayTrait {
     }
 
     $element = [
-      '#type' => 'container',
+      '#type' => 'fieldset',
       '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
     ];
     if ($title) {
       $element['#title'] = t("$section");
@@ -300,7 +302,9 @@ trait ParDisplayTrait {
       $rows = [];
 
       $element[$field_name] = [
-        '#type' => 'container',
+        '#type' => 'fieldset',
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
       ];
 
       $field = $entity->get($field_name);
@@ -341,7 +345,9 @@ trait ParDisplayTrait {
       }
 
       $element[$field_name]['operations'] = [
-        '#type' => 'container',
+        '#type' => 'fieldset',
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
       ];
 
       // Only add the add link if it is in the allowed operations.
@@ -378,7 +384,9 @@ trait ParDisplayTrait {
 
       $element = [
         'items' => [
-          '#type' => 'container'
+          '#type' => 'fieldset',
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
         ],
         'pager' => [
           '#type' => 'pager',
@@ -400,7 +408,9 @@ trait ParDisplayTrait {
     else {
       $element = [
         'items' => [
-          '#type' => 'container'
+          '#type' => 'fieldset',
+          '#collapsible' => FALSE,
+          '#collapsed' => FALSE,
         ],
       ];
 

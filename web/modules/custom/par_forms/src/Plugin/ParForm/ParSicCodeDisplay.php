@@ -65,13 +65,8 @@ class ParSicCodeDisplay extends ParFormPluginBase {
 
     // Display the sic codes.
     $form['sic_codes'] = [
-      '#type' => 'container',
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
-        '#value' => $this->t('Standard industrial classification (SIC) codes'),
-      ],
+      '#type' => 'fieldset',
+      '#title' => 'Standard industrial classification (SIC) codes',
       '#attributes' => ['class' => ['form-group']],
       'sic_code' => [
         '#type' => 'container',

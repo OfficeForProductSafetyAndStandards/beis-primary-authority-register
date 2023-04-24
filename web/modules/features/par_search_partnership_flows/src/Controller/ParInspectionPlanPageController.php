@@ -39,8 +39,10 @@ class ParInspectionPlanPageController extends ParBaseController {
 
     if ($par_data_inspection_plan->isRevoked()) {
       $build['inspection_plan_details'] = [
-        '#type' => 'container',
+        '#type' => 'fieldset',
         '#attributes' => ['class' => 'form-group'],
+        '#collapsible' => FALSE,
+        '#collapsed' => FALSE,
       ];
       $build['inspection_plan_details']['revoked'] = [
         '#type' => 'markup',

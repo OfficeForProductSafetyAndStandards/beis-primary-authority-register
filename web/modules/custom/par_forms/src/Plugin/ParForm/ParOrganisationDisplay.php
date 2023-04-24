@@ -81,7 +81,7 @@ class ParOrganisationDisplay extends ParFormPluginBase {
     $params = $this->getRouteParams() + ['destination' => $return_path];
 
     $form['organisation'] = [
-      '#type' => 'container',
+      '#type' => 'fieldset',
     ];
 
     $form['organisation']['name'] = [

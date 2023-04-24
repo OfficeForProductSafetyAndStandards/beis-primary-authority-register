@@ -33,13 +33,8 @@ class ParAddressLookupForm extends ParAddressForm {
 
     // Retrieve the default form fields.
     $form['address'] = [
-      '#type' => 'container',
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h2',
-        '#attributes' => ['class' => ['heading-medium']],
-        '#value' => 'Enter the address',
-      ],
+      '#type' => 'fieldset',
+      '#title' => "Enter the address",
     ];
     $form = array_merge($form, parent::getElements($form, $cardinality));
 

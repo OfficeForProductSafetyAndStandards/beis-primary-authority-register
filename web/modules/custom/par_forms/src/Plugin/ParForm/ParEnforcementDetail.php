@@ -51,8 +51,8 @@ class ParEnforcementDetail extends ParFormPluginBase {
     $params = $this->getRouteParams() + ['destination' => $return_path];
 
     $form['enforcement_notice'] = [
-      '#type' => 'container',
-      'heading' => [
+      '#type' => 'fieldset',
+      'title' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
         '#value' => $this->t('Summary of notice'),

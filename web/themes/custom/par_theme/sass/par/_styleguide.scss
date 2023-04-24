@@ -1,27 +1,27 @@
-// Styleguide pagination - just provides some helpful classes.
-
-$module: 'styleguide';
-
-.#{$module}-example {
-
-  border: 1px solid #eee;
-  padding: 2em;
-
-  border: 1px solid $grey-2;
-  margin-top: 15px;
-  margin-bottom: 20px;
-  padding: 45px 30px 30px;
-  position: relative;
-
-  &:before {
-    background: #DDD;
-    color: white;
-    content: 'EXAMPLE';
-    font-size: 14px;
-    line-height: 1;
-    padding: em(10);
-    position: absolute; top:0; left: 0;
-    text-transform: uppercase;
-  }
-
-}
+//// Styleguide pagination - just provides some helpful classes.
+//
+//$module: 'styleguide';
+//
+//.#{$module}-example {
+//
+//  border: 1px solid #eee;
+//  padding: 2em;
+//
+//  border: 1px solid $grey-2;
+//  margin-top: 15px;
+//  margin-bottom: 20px;
+//  padding: 45px 30px 30px;
+//  position: relative;
+//
+//  &:before {
+//    background: #DDD;
+//    color: white;
+//    content: 'EXAMPLE';
+//    font-size: 14px;
+//    line-height: 1;
+//    padding: em(10);
+//    position: absolute; top:0; left: 0;
+//    text-transform: uppercase;
+//  }
+//
+//}

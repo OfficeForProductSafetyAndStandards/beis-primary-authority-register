@@ -89,13 +89,8 @@ class ParPartnershipMembers extends ParFormPluginBase {
     }
 
     $form['members'] = [
-      '#type' => 'container',
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h2',
-        '#attributes' => ['class' => ['heading-medium']],
-        '#value' => t('Number of members'),
-      ],
+      '#type' => 'fieldset',
+      '#title' => t('Number of members'),
       '#attributes' => ['class' => 'form-group'],
     ];
 

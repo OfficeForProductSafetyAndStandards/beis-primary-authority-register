@@ -6,7 +6,6 @@ par-kour:
     theme:
       css/par.css: {}
       css/govuk-template-print.css: { media: print }
-      assets/fonts/fonts.css: {}
   dependencies:
     - core/jquery
     - par_theme/par-conditionals
@@ -16,12 +15,6 @@ par-conditionals:
   version: 1.0
   js:
     javascript/ie.js: { browsers: { IE: 'lt IE 9', '!IE': false }}
-  css:
-    theme:
-      css/govuk-template-ie6.css: { browsers: { IE: 'IE 6', '!IE': false } }
-      css/govuk-template-ie7.css: { browsers: { IE: 'IE 8', '!IE': false } }
-      css/govuk-template-ie8.css: { browsers: { IE: 'IE 7', '!IE': false } }
-      assets/fonts/fonts-ie8.css: { browsers: { IE: 'lt IE 9', '!IE': false } }
 
 par-vendor:
   version: 1.0

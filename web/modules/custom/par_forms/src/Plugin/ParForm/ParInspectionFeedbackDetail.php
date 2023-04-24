@@ -50,7 +50,7 @@ class ParInspectionFeedbackDetail extends ParFormPluginBase {
     $params = $this->getRouteParams() + ['destination' => $return_path];
 
     $form['inspection_feedback'] = [
-      '#type' => 'container',
+      '#type' => 'fieldset',
       '#attributes' => ['class' => ['form-group']],
       'title' => [
         '#type' => 'html_tag',
