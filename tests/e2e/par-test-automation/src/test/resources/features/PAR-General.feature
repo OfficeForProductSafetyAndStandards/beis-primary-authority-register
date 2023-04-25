@@ -203,6 +203,7 @@ Feature:
     Then the user submits a general enquiry with the following details:
       | Description                  |
       | Enforcement Officer Enquiry. |
+      
     # View the last created general enquiry as a Help Desk user.
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
