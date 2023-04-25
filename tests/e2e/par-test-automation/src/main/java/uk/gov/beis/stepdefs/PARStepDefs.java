@@ -1090,7 +1090,7 @@ public class PARStepDefs {
 	    updateUserContactDetailsPage.selectContinueButton();
 	    updateUserCommunicationPreferencesPage.selectContinueButton();
 	    
-	    updateUserSubscriptionsPage.selectPARNewsSubscription();
+	    updateUserSubscriptionsPage.selectPARNewsUnsubscription();
 	    updateUserSubscriptionsPage.selectContinueButton();
 	    LOG.info("Successfully unsubscribed from PAR news letter.");
 	    
