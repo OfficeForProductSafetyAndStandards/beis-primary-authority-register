@@ -98,108 +98,6 @@ index 3633671..aad631a 100755
  }
 +
 +
-diff --git a/govuk_theme_ife.patch b/govuk_theme_ife.patch
-new file mode 100644
-index 0000000..bdfb312
---- /dev/null
-+++ b/govuk_theme_ife.patch
-@@ -0,0 +1,93 @@
-+diff --git a/govuk.theme b/govuk.theme
-+index 3633671..9b351f4 100755
-+--- a/govuk.theme
-++++ b/govuk.theme
-+@@ -421,6 +421,7 @@ function _govuk_theme_get_setting($name, $default = NULL) {
-+  * Implements hook_form_alter().
-+  */
-+ function govuk_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-++  $form['#attributes']['novalidate'] = 'novalidate';
-+   if (strpos($form_id, 'webform') !== FALSE) {
-+     $form['#attached']['library'][] = 'govuk/webform';
-+   }
-+@@ -433,3 +434,5 @@ function govuk_preprocess(&$variables) {
-+   $handler = \Drupal::service('theme_handler');
-+   $variables['govuk_directory'] = base_path() . $handler->getTheme('govuk')->getPath();
-+ }
-++
-++
-+diff --git a/templates/form/fieldset.html.twig b/templates/form/fieldset.html.twig
-+index 5b96567..0780985 100755
-+--- a/templates/form/fieldset.html.twig
-++++ b/templates/form/fieldset.html.twig
-+@@ -7,6 +7,9 @@
-+     'govuk-fieldset',
-+   ]
-+ %}
-++
-++{% set error_id = attributes.id ~ '--status-message' %}
-++
-+ <div class="govuk-form-group{% if errors %} govuk-form-group--error{% endif %}">
-+   <fieldset{{ attributes.addClass(classes) }}>
-+     {%
-+@@ -25,8 +28,8 @@
-+         <div{{ description.attributes.addClass('govuk-hint') }}>{{ description.content }}</div>
-+       {% endif %}
-+       {% if errors %}
-+-        <span class="govuk-error-message">
-+-          {{ errors }}
-++        <span class="error-message govuk-error-message" id="{{ error_id }}">
-++          {{ errors | striptags('<p>') }}
-+         </span>
-+       {% endif %}
-+       {% if prefix %}
-+diff --git a/templates/form/form-element.html.twig b/templates/form/form-element.html.twig
-+index ea37587..aadcf9a 100755
-+--- a/templates/form/form-element.html.twig
-++++ b/templates/form/form-element.html.twig
-+@@ -71,6 +71,8 @@
-+   ]
-+ %}
-+ 
-++{% set error_id = 'edit-' ~ name|clean_class ~ '--status-message' %}
-++
-+ {% if description_display == 'outside' and description.content and errors is empty %}
-+   <div{{ description.attributes.addClass(description_classes) }}>
-+       {{ description.content }}
-+@@ -83,7 +85,7 @@
-+   {% endif %}
-+ 
-+   {% if errors and type not in ['radio', 'checkbox'] %}
-+-    <span class="error-message govuk-error-message">
-++    <span class="error-message govuk-error-message" id="{{ error_id }}">
-+       {{ errors | striptags('<p>') }}
-+     </span>
-+   {% endif %}
-+diff --git a/templates/form/input--textfield.html.twig b/templates/form/input--textfield.html.twig
-+index 11dad12..cff7a63 100755
-+--- a/templates/form/input--textfield.html.twig
-++++ b/templates/form/input--textfield.html.twig
-+@@ -19,5 +19,8 @@
-+   ]
-+ %}
-+ 
-++{% if attributes.placeholder is not empty %}
-+ <span class="form-hint govuk-hint">{{ attributes.placeholder }}</span>
-++{% endif %}
-++
-+ <input{{ attributes.addClass(classes).removeAttribute('placeholder') }} />{{ children }}
-+diff --git a/templates/layout/item-list.html.twig b/templates/layout/item-list.html.twig
-+index ff80ab7..e293753 100755
-+--- a/templates/layout/item-list.html.twig
-++++ b/templates/layout/item-list.html.twig
-+@@ -19,7 +19,9 @@
-+  * @see template_preprocess_item_list()
-+  */
-+ #}
-+-{% if context.list_style %}
-++{% if context.list_style == 'govuk-error-summary__list' %}
-++{% set attributes = attributes.addClass('govuk-list govuk-error-summary__list') %}
-++{% elseif context.list_style %}
-+   {%- set attributes = attributes.addClass('item-list__' ~ context.list_style) %}
-+ {% endif %}
-+ 
-diff --git a/govuk_theme_update.patch b/govuk_theme_update.patch
-new file mode 100644
-index 0000000..e69de29
 diff --git a/js/govuk.js b/js/govuk.js
 index df70c90..8b13789 100755
 --- a/js/govuk.js
@@ -493,10 +391,10 @@ index d3d78af..8230a53 100755
      {{ page_top }}
      {{ page }}
 diff --git a/templates/layout/item-list.html.twig b/templates/layout/item-list.html.twig
-index ff80ab7..e293753 100755
+index ff80ab7..77a7d83 100755
 --- a/templates/layout/item-list.html.twig
 +++ b/templates/layout/item-list.html.twig
-@@ -19,7 +19,9 @@
+@@ -19,15 +19,26 @@
   * @see template_preprocess_item_list()
   */
  #}
@@ -507,6 +405,24 @@ index ff80ab7..e293753 100755
    {%- set attributes = attributes.addClass('item-list__' ~ context.list_style) %}
  {% endif %}
  
++{% if list_header_tag %}
++  {% set header_tag = list_header_tag %}
++{% else %}
++  {% set header_tag == 'h3' %}
++{% endif %}
++
++{% set list_header_tag_attributes = 'govuk-heading-s' %}
++
+ {%- set attributes = attributes.addClass('list') %}
+ 
+ {% if items or empty %}
++
+   {%- if title is not empty -%}
+-    <h3>{{ title }}</h3>
++    <{{ header_tag }} class="{{ list_header_tag_attributes }}">{{ title }}</{{ header_tag }}>
+   {%- endif -%}
+ 
+   {%- if items -%}
 diff --git a/templates/layout/maintenance-page.html.twig b/templates/layout/maintenance-page.html.twig
 index 75f66b9..29b1fb6 100755
 --- a/templates/layout/maintenance-page.html.twig

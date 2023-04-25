@@ -115,6 +115,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
           '#attributes' => ['class' => 'column-one-half'],
           'functions' => [
             '#theme' => 'item_list',
+            '#list_header_tag' => 'h2',
             '#list_type' => 'ul',
             '#items' => $this->getDefaultValuesByKey('regulatory_functions', $cardinality, NULL),
           ]
