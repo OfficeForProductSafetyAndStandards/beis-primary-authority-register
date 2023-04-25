@@ -18,10 +18,12 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Mail\MailFormatHelper;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItem;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\ParDataException;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
+use Drupal\par_data\Plugin\Field\FieldType\ParStatusChangedField;
 use Drupal\par_data\Plugin\Field\FieldType\ParStatusField;
 use Drupal\trance\Trance;
 use Drupal\Component\Datetime\TimeInterface;
@@ -511,7 +513,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
     // Loop through all statuses and perform custom checks to
-    // find the most recent change the the specified status.
+    // find the most recent change the specified status.
     $check_status_query = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->getQuery();
     $check_status_query->allRevisions()
       ->condition('id', $this->id())
@@ -1275,6 +1277,22 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ->setDisplayOptions('view', [
         'label' => 'hidden',
         'region' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['par_status_date'] = BaseFieldDefinition::create('datetime')
+      ->setName('par_status_date')
+      ->setLabel(t('Status Date'))
+      ->setComputed(TRUE)
+      ->setClass(ParStatusChangedField::class)
+      ->setSettings([
+        'datetime_type' => DateTimeItem::DATETIME_TYPE_DATE
+      ])
+      ->setDisplayOptions('view', [
+        'type' => 'datetime_default',
+        'label' => 'hidden',
+        'region' => 'hidden',
+        'weight' => 3,
       ])
       ->setDisplayConfigurable('view', TRUE);
 

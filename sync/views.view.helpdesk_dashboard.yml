@@ -1,6 +1,6 @@
 uuid: 96000516-8647-4f63-be9f-6f53899b788d
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - field.storage.par_data_partnership.field_advice
@@ -2253,83 +2253,83 @@ display:
                 field_override: true
                 field_config:
                   id_1:
-                    active: '1'
+                    active: true
                     label: 'Partnershp ID'
                   id:
-                    active: '1'
+                    active: true
                     label: 'Authority ID'
                   created:
-                    active: '1'
+                    active: true
                     label: 'Partnership Created'
                   authority_name:
-                    active: '1'
+                    active: true
                     label: 'Authority Name'
                   organisation_name:
-                    active: '1'
+                    active: true
                     label: 'Organisation Name'
                   trading_name_value:
-                    active: '1'
+                    active: true
                     label: 'Trading Name'
                   field_legal_entity:
-                    active: '1'
+                    active: true
                     label: 'Legal Entity'
                   field_legal_entity_1:
-                    active: '1'
+                    active: true
                     label: 'Number of Legal Entities'
                   partnership_type:
-                    active: '1'
+                    active: true
                     label: 'Partnership Type'
                   field_coordinated_business:
-                    active: '1'
+                    active: true
                     label: Members
                   size:
-                    active: '1'
+                    active: true
                     label: 'Business Size'
                   par_status:
-                    active: '1'
+                    active: true
                     label: 'Partnership Status'
                   par_status_time:
-                    active: '1'
+                    active: true
                     label: 'Partnership Last Updated'
                   field_regulatory_function:
-                    active: '1'
+                    active: true
                     label: 'Regulatory Functions'
                   field_authority_person:
-                    active: '1'
+                    active: true
                     label: 'Authority Contacts'
                   partnership_info_agreed_authority:
-                    active: '1'
+                    active: true
                     label: 'Authority Approved'
                   terms_authority_agreed:
-                    active: '1'
+                    active: true
                     label: 'Authority Terms Agreed'
                   partnership_info_agreed_business:
-                    active: '1'
+                    active: true
                     label: 'Business Approved'
                   terms_organisation_agreed:
-                    active: '1'
+                    active: true
                     label: 'Business Terms Agreed'
                   approved_date:
-                    active: '1'
+                    active: true
                     label: 'Approved On'
                   revocation_date:
-                    active: '1'
+                    active: true
                     label: 'Revoked On'
                   id_2:
-                    active: '1'
+                    active: true
                     label: 'Number of Enforcement Notices'
                   field_inspection_plan:
-                    active: '1'
+                    active: true
                     label: 'Number of Inspection Plans'
                   field_advice:
-                    active: '1'
+                    active: true
                     label: 'Number of Advice Documents'
                   nation:
-                    active: '1'
+                    active: true
                     label: 'Organisation''s Nation'
                   employees_band:
+                    active: false
                     label: ''
-                    active: 0
                 separator: ','
                 file_scheme: s3private
           preconfiguration:
