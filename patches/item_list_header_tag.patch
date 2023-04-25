@@ -1,0 +1,26 @@
+diff --git a/core/includes/theme.inc b/core/includes/theme.inc
+index 1af98c6..a8dad28 100644
+--- a/core/includes/theme.inc
++++ b/core/includes/theme.inc
+@@ -1152,6 +1152,12 @@ function template_preprocess_item_list(&$variables) {
+       if (isset($item['#wrapper_attributes'])) {
+         $attributes = $item['#wrapper_attributes'];
+       }
++
++      // Set a specific HTML element for the title
++      if (isset($item['#list_header_tag'])) {
++        $variables['list_header_tag'] = $item['#list_header_tag'];
++      }
++
+       // Determine whether there are any child elements in the item that are not
+       // fully-specified render arrays. If there are any, then the child
+       // elements present nested lists and we automatically inherit the render
+@@ -2056,7 +2062,7 @@ function drupal_common_theme() {
+       'variables' => ['status' => MARK_NEW],
+     ],
+     'item_list' => [
+-      'variables' => ['items' => [], 'title' => '', 'list_type' => 'ul', 'wrapper_attributes' => [], 'attributes' => [], 'empty' => NULL, 'context' => []],
++      'variables' => ['items' => [], 'title' => '', 'list_header_tag' => '', 'list_type' => 'ul', 'wrapper_attributes' => [], 'attributes' => [], 'empty' => NULL, 'context' => []],
+     ],
+     'feed_icon' => [
+       'variables' => ['url' => NULL, 'title' => NULL],
