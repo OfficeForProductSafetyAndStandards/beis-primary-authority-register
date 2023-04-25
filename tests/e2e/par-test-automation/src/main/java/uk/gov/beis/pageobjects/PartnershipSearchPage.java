@@ -49,6 +49,11 @@ public class PartnershipSearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 	
+	public PartnershipConfirmationPage selectPartnershipLink(String businessName) {
+		driver.findElement(By.xpath("//td/a[contains(text(),'" + businessName + "')]")).click();
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
+	
 	public void searchForPartnership(String partnership) {
 		searchInput.sendKeys(partnership);
 	}

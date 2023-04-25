@@ -34,6 +34,7 @@ public class EnquiryReviewPage extends BasePageObject {
 
 	String desc = "//div/p[contains(text(),'?')]";
 	String reply = "//div/p[contains(text(),'?')]";
+	String status; // This variable is seems to be missing.
 
 	public boolean checkEnquiryCreation() {
 		WebElement desc1 = driver

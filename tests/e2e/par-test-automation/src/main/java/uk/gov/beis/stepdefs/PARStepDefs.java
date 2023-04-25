@@ -18,16 +18,16 @@ import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
-import uk.gov.beis.pageobjects.AddPersonPage;
+import uk.gov.beis.pageobjects.AddPersonContactDetailsPage;
 import uk.gov.beis.pageobjects.AuthorityAddressDetailsPage;
-import uk.gov.beis.pageobjects.AuthorityChooseMembershipPage;
+import uk.gov.beis.pageobjects.ChoosePersonMembershipPage;
 import uk.gov.beis.pageobjects.AuthorityConfirmationPage;
 import uk.gov.beis.pageobjects.AuthorityDashboardPage;
-import uk.gov.beis.pageobjects.AuthorityGiveUserAccountPage;
+import uk.gov.beis.pageobjects.GivePersonAccountPage;
 import uk.gov.beis.pageobjects.AuthorityNamePage;
 import uk.gov.beis.pageobjects.AuthorityPage;
 import uk.gov.beis.pageobjects.AuthorityTypePage;
-import uk.gov.beis.pageobjects.AuthorityUserTypeSelectionPage;
+import uk.gov.beis.pageobjects.PersonUserRoleTypeSelectionPage;
 import uk.gov.beis.pageobjects.BusinessAddressDetailsPage;
 import uk.gov.beis.pageobjects.BusinessConfirmationPage;
 import uk.gov.beis.pageobjects.BusinessContactDetailsPage;
@@ -46,6 +46,7 @@ import uk.gov.beis.pageobjects.EnforcementCompletionPage;
 import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
+import uk.gov.beis.pageobjects.EnforcementNotificationActionReceivedPage;
 import uk.gov.beis.pageobjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.EnforcementReviewPage;
 import uk.gov.beis.pageobjects.EnforcementSearchPage;
@@ -53,6 +54,7 @@ import uk.gov.beis.pageobjects.EnquiriesSearchPage;
 import uk.gov.beis.pageobjects.EnquiryCompletionPage;
 import uk.gov.beis.pageobjects.EnquiryContactDetailsPage;
 import uk.gov.beis.pageobjects.EnquiryReviewPage;
+import uk.gov.beis.pageobjects.GeneralEnquiriesPage;
 import uk.gov.beis.pageobjects.HomePage;
 import uk.gov.beis.pageobjects.InspectionContactDetailsPage;
 import uk.gov.beis.pageobjects.InspectionFeedbackCompletionPage;
@@ -65,10 +67,10 @@ import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.LoginPage;
 import uk.gov.beis.pageobjects.MailLogPage;
-import uk.gov.beis.pageobjects.ManageColleaguesPage;
+import uk.gov.beis.pageobjects.ManagePeoplePage;
 import uk.gov.beis.pageobjects.MemberListPage;
-import uk.gov.beis.pageobjects.NewPersonCreationConfirmationPage;
-import uk.gov.beis.pageobjects.NewProfilePage;
+import uk.gov.beis.pageobjects.PersonCompletionConfirmationPage;
+import uk.gov.beis.pageobjects.PersonsProfilePage;
 import uk.gov.beis.pageobjects.NewsLetterManageSubscriptionListPage;
 import uk.gov.beis.pageobjects.NewsLetterSubscriptionPage;
 import uk.gov.beis.pageobjects.NewsLetterSubscriptionReviewChangesPage;
@@ -105,12 +107,14 @@ import uk.gov.beis.pageobjects.UpdateUserContactDetailsPage;
 import uk.gov.beis.pageobjects.UpdateUserSubscriptionsPage;
 import uk.gov.beis.pageobjects.UploadInspectionPlanPage;
 import uk.gov.beis.pageobjects.UserCommsPreferencesPage;
+import uk.gov.beis.pageobjects.InvitePersonToCreateAccountPage;
 import uk.gov.beis.pageobjects.UserNotificationPreferencesPage;
 import uk.gov.beis.pageobjects.UserProfileCompletionPage;
 import uk.gov.beis.pageobjects.UserProfileConfirmationPage;
 import uk.gov.beis.pageobjects.UserProfilePage;
 import uk.gov.beis.pageobjects.UserSubscriptionPage;
 import uk.gov.beis.pageobjects.UserTermsPage;
+import uk.gov.beis.pageobjects.ViewEnquiryPage;
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
 
@@ -189,30 +193,37 @@ public class PARStepDefs {
 	private PartnershipRestoredPage partnershipRestoredPage;
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
 	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
+	private EnforcementNotificationActionReceivedPage enforcementNotificationActionReceivedPage;
+	private GeneralEnquiriesPage generalEnquiriesPage;
+	private ViewEnquiryPage viewEnquiryPage;
 	
-	private NewsLetterSubscriptionPage newsLetterSubscriptionPage;
-	private NewsLetterManageSubscriptionListPage newsLetterManageSubscriptionListPage;
-	private NewsLetterSubscriptionReviewChangesPage newsLetterSubscriptionReviewPage;
-	private AddPersonPage addPersonPage;
-	private AuthorityChooseMembershipPage authorityChooseMembershipPage;
-	private AuthorityGiveUserAccountPage authorityGiveUserAccountPage;
-	private AuthorityUserTypeSelectionPage authorityUserTypeSelectionPage;
-	private ManageColleaguesPage manageColleaguesPage;
-	private NewPersonCreationConfirmationPage newPersonCreationConfirmationPage;
-	private NewProfilePage newProfilePage;
-	private ProfileReviewPage profileReviewPage;
+	// PAR News Letter
+	private UserProfilePage userProfilePage;
 	private UpdateUserCommunicationPreferencesPage updateUserCommunicationPreferencesPage;
 	private UpdateUserConfirmationPage updateUserConfirmationPage;
 	private UpdateUserContactDetailsPage updateUserContactDetailsPage;
 	private UpdateUserSubscriptionsPage updateUserSubscriptionsPage;
-	private UserProfilePage userProfilePage;
+	private NewsLetterSubscriptionPage newsLetterSubscriptionPage;
+	private NewsLetterManageSubscriptionListPage newsLetterManageSubscriptionListPage;
+	private NewsLetterSubscriptionReviewChangesPage newsLetterSubscriptionReviewPage;
+	
+	// Person Creation and Update
+	private ManagePeoplePage managePeoplePage;
+	private AddPersonContactDetailsPage addPersonsContactDetailsPage;
+	private GivePersonAccountPage givePersonAccountPage;
+	private ChoosePersonMembershipPage choosePersonMembershipPage;
+	private PersonUserRoleTypeSelectionPage personUserTypeSelectionPage;
+	private InvitePersonToCreateAccountPage invitePersonToCreateAccountPage;
+	private ProfileReviewPage profileReviewPage;
+	private PersonCompletionConfirmationPage personCompletionConfirmationPage;
+	private PersonsProfilePage personsProfilePage;
 	
 	private DeviationReviewPage deviationReviewPage;
 	private DeviationApprovalPage deviationApprovalPage;
 	private EnquiriesSearchPage enquiriesSearchPage;
 	private ReplyDeviationRequestPage replyDeviationRequestPage;
 	private ReplyEnquiryPage replyEnquiryPage;
-
+	
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
 		replyEnquiryPage = PageFactory.initElements(driver, ReplyEnquiryPage.class);
@@ -293,22 +304,30 @@ public class PARStepDefs {
 		parBusinessAddressDetailsPage = PageFactory.initElements(driver, BusinessAddressDetailsPage.class);
 		parPartnershipTermsPage = PageFactory.initElements(driver, PartnershipTermsPage.class);
 		partnershipSearchPage = PageFactory.initElements(driver, PartnershipSearchPage.class);
-		newsLetterSubscriptionPage = PageFactory.initElements(driver, NewsLetterSubscriptionPage.class);
-		newsLetterManageSubscriptionListPage = PageFactory.initElements(driver, NewsLetterManageSubscriptionListPage.class);
-		newsLetterSubscriptionReviewPage = PageFactory.initElements(driver, NewsLetterSubscriptionReviewChangesPage.class);
-		addPersonPage = PageFactory.initElements(driver, AddPersonPage.class);
-		authorityChooseMembershipPage = PageFactory.initElements(driver, AuthorityChooseMembershipPage.class);
-		authorityGiveUserAccountPage = PageFactory.initElements(driver, AuthorityGiveUserAccountPage.class);
-		authorityUserTypeSelectionPage = PageFactory.initElements(driver, AuthorityUserTypeSelectionPage.class);
-		manageColleaguesPage = PageFactory.initElements(driver, ManageColleaguesPage.class);
-		newPersonCreationConfirmationPage = PageFactory.initElements(driver, NewPersonCreationConfirmationPage.class);
-		newProfilePage = PageFactory.initElements(driver, NewProfilePage.class);
-		profileReviewPage = PageFactory.initElements(driver, ProfileReviewPage.class);
+		enforcementNotificationActionReceivedPage = PageFactory.initElements(driver, EnforcementNotificationActionReceivedPage.class);
+		generalEnquiriesPage = PageFactory.initElements(driver, GeneralEnquiriesPage.class);
+		viewEnquiryPage  = PageFactory.initElements(driver, ViewEnquiryPage.class);
+		
+		// PAR News Letter
+		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
 		updateUserCommunicationPreferencesPage = PageFactory.initElements(driver, UpdateUserCommunicationPreferencesPage.class);
 		updateUserConfirmationPage = PageFactory.initElements(driver, UpdateUserConfirmationPage.class);
 		updateUserContactDetailsPage = PageFactory.initElements(driver, UpdateUserContactDetailsPage.class);
 		updateUserSubscriptionsPage = PageFactory.initElements(driver, UpdateUserSubscriptionsPage.class);
-		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
+		newsLetterSubscriptionPage = PageFactory.initElements(driver, NewsLetterSubscriptionPage.class);
+		newsLetterManageSubscriptionListPage = PageFactory.initElements(driver, NewsLetterManageSubscriptionListPage.class);
+		newsLetterSubscriptionReviewPage = PageFactory.initElements(driver, NewsLetterSubscriptionReviewChangesPage.class);
+		
+		// Person Creation and Update
+		managePeoplePage = PageFactory.initElements(driver, ManagePeoplePage.class);
+		addPersonsContactDetailsPage = PageFactory.initElements(driver, AddPersonContactDetailsPage.class);
+		choosePersonMembershipPage = PageFactory.initElements(driver, ChoosePersonMembershipPage.class);
+		givePersonAccountPage = PageFactory.initElements(driver, GivePersonAccountPage.class);
+		personUserTypeSelectionPage = PageFactory.initElements(driver, PersonUserRoleTypeSelectionPage.class);
+		invitePersonToCreateAccountPage = PageFactory.initElements(driver, InvitePersonToCreateAccountPage.class);
+		profileReviewPage = PageFactory.initElements(driver, ProfileReviewPage.class);
+		personCompletionConfirmationPage = PageFactory.initElements(driver, PersonCompletionConfirmationPage.class);
+		personsProfilePage = PageFactory.initElements(driver, PersonsProfilePage.class);
 	}
 
 	@Given("^the user is on the PAR home page$")
@@ -1008,40 +1027,47 @@ public class PARStepDefs {
 	@When("^the user adds a new person to the contacts successfully with the following details:$")
 	public void the_user_adds_a_new_person_to_the_contacts_successfully_with_the_following_details(DataTable newPerson) throws Throwable {
 		parDashboardPage.selectManageColleagues();
-		manageColleaguesPage.selectAddPerson();
+		managePeoplePage.selectAddPerson();
 		
-		LOG.info("Adding a new person to the Authority's contacts.");
+		LOG.info("Adding a new person.");
 		for (Map<String, String> data : newPerson.asMaps(String.class, String.class)) {
 			
-			addPersonPage.enterTitle(data.get("Title"));
-			addPersonPage.enterFirstname(data.get("Firstname"));
-			addPersonPage.enterLastname(data.get("Lastname"));
-			addPersonPage.enterWorkPhoneNumber(data.get("WorkNumber"));
-			addPersonPage.enterMobilePhoneNumber(data.get("MobileNumber"));
-			addPersonPage.enterEmailAddress(data.get("Email"));
+			addPersonsContactDetailsPage.enterTitle(data.get("Title"));
+			addPersonsContactDetailsPage.enterFirstname(data.get("Firstname"));
+			addPersonsContactDetailsPage.enterLastname(data.get("Lastname"));
+			addPersonsContactDetailsPage.enterWorkPhoneNumber(data.get("WorkNumber"));
+			addPersonsContactDetailsPage.enterMobilePhoneNumber(data.get("MobileNumber"));
+			addPersonsContactDetailsPage.enterEmailAddress(data.get("Email"));
 			
 			DataStore.saveValue(UsableValues.PERSON_TITLE, data.get("Title"));
 			DataStore.saveValue(UsableValues.PERSON_FIRSTNAME, data.get("Firstname"));
 			DataStore.saveValue(UsableValues.PERSON_LASTNAME, data.get("Lastname"));
-			DataStore.saveValue(UsableValues.PERSON_EMAIL, data.get("Email"));
 		}
 		
-		addPersonPage.clickContinueButton();
-		authorityGiveUserAccountPage.selectExistingAccount();
-		authorityGiveUserAccountPage.clickContinueButton();
+		addPersonsContactDetailsPage.clickContinueButton();
 		
-		authorityChooseMembershipPage.selectABCDMart();
-		authorityChooseMembershipPage.selectCityEnforcementSquad();
-		authorityChooseMembershipPage.clickContinueButton();
+		givePersonAccountPage.selectExistingAccount();
+		givePersonAccountPage.clickContinueButton();
 		
-		authorityUserTypeSelectionPage.selectAuthorityMember();
-		authorityUserTypeSelectionPage.clickContinueButton();
+		//choosePersonMembershipPage.selectTestBusiness();
+		choosePersonMembershipPage.selectABCDMart();
+		choosePersonMembershipPage.selectDemolitionExperts();
+		choosePersonMembershipPage.selectPartnershipConfirmedByAuthority();
+		
+		choosePersonMembershipPage.selectCityEnforcementSquad();
+		choosePersonMembershipPage.selectUpperWestSideBoroughCouncil();
+		//choosePersonMembershipPage.selectLowerEstSideBoroughCouncil();
+		choosePersonMembershipPage.clickContinueButton();
+		
+		personUserTypeSelectionPage.selectEnforcementOfficer();
+		personUserTypeSelectionPage.clickProfileReviewContinueButton();
 		
 		profileReviewPage.savePersonCreation();
-		newPersonCreationConfirmationPage.clickDoneButton();
-		newProfilePage.clickDoneButton();
-		manageColleaguesPage.clickDashboadButton();
-		LOG.info("Successfully added a new person to the Authority's contacts.");
+		personCompletionConfirmationPage.clickDoneButton();
+		personsProfilePage.clickDoneButton();
+		
+		managePeoplePage.clickDashboadButton();
+		LOG.info("Successfully added a new person.");
 	}
 
 	@Then("^the user can update the new contact to subscribe to PAR News$")
@@ -1190,5 +1216,187 @@ public class PARStepDefs {
 		
 		assertTrue(newsLetterSubscriptionPage.verifyTableElementIsNull());
 		LOG.info("Successfully replaced the original subscription list with a new list.");
+	}
+	
+	@When("^the user creates a new person with the following details:$")
+	public void the_user_creates_a_new_person_with_the_following_details(DataTable newPerson) throws Throwable {
+		parDashboardPage.selectManagePeople();
+		managePeoplePage.selectAddPerson();
+		
+		LOG.info("Adding a new person.");
+		for (Map<String, String> data : newPerson.asMaps(String.class, String.class)) {
+			
+			addPersonsContactDetailsPage.enterTitle(data.get("Title"));
+			addPersonsContactDetailsPage.enterFirstname(data.get("Firstname"));
+			addPersonsContactDetailsPage.enterLastname(data.get("Lastname"));
+			addPersonsContactDetailsPage.enterWorkPhoneNumber(data.get("WorkNumber"));
+			addPersonsContactDetailsPage.enterMobilePhoneNumber(data.get("MobileNumber"));
+			addPersonsContactDetailsPage.enterEmailAddress(data.get("Email"));
+		}
+		
+		addPersonsContactDetailsPage.clickContinueButton();
+		givePersonAccountPage.selectInviteUserToCreateAccount();
+		givePersonAccountPage.clickContinueButton();
+		
+		choosePersonMembershipPage.selectOrganisation("32");
+		choosePersonMembershipPage.selectAuthority("10");
+		choosePersonMembershipPage.clickContinueButton();
+		
+		personUserTypeSelectionPage.selectEnforcementOfficer();
+		personUserTypeSelectionPage.clickContinueButton();
+		
+		invitePersonToCreateAccountPage.clickInviteButton();
+		
+		profileReviewPage.savePersonCreation();
+		personCompletionConfirmationPage.clickDoneButton();
+		personsProfilePage.clickDoneButton();
+		
+		LOG.info("Successfully added a new person.");
+	}
+
+	@Then("^the user can verify the person \"([^\"]*)\" was created successfully$")
+	public void the_user_can_verify_the_person_was_created_successfully(String name) throws Throwable {
+		managePeoplePage.enterNameOrEmail(name);
+		managePeoplePage.clickSubmit();
+		
+		assertEquals(name, managePeoplePage.GetPersonName()); // If this does not work, need to find the Table Element in a different way.
+	}
+
+	@When("^the user searches for an existing person \"([^\"]*)\" successfully$")
+	public void the_user_searches_for_an_existing_person_successfully(String name) throws Throwable {
+		parDashboardPage.selectManagePeople();
+		
+		managePeoplePage.enterNameOrEmail(name);
+		managePeoplePage.clickSubmit();
+		
+		managePeoplePage.clickManageContact();
+		
+		LOG.info("Found an existing user with the name: " + name);
+		
+		personsProfilePage.clickUpdateUserButton();
+	}
+	
+	@When("^the user updates an existing person with the following details:$")
+	public void the_user_updates_an_existing_person_with_the_following_details(DataTable updatePerson) throws Throwable {
+		for (Map<String, String> data : updatePerson.asMaps(String.class, String.class)) {
+			
+			addPersonsContactDetailsPage.enterTitle(data.get("Title"));
+			addPersonsContactDetailsPage.enterFirstname(data.get("Firstname"));
+			addPersonsContactDetailsPage.enterLastname(data.get("Lastname"));
+			addPersonsContactDetailsPage.enterWorkPhoneNumber(data.get("WorkNumber"));
+			addPersonsContactDetailsPage.enterMobilePhoneNumber(data.get("MobileNumber"));
+			addPersonsContactDetailsPage.enterEmailAddress(data.get("Email"));
+		}
+		
+		addPersonsContactDetailsPage.clickContinueButton();
+		
+		LOG.info("Successfully Updated an person's contact details.");
+		
+		givePersonAccountPage.selectInviteUserToCreateAccount();
+		givePersonAccountPage.clickContinueButton();
+		
+		LOG.info("Successfully Invited the person to create an account.");
+		
+		choosePersonMembershipPage.selectAuthority("10");
+		choosePersonMembershipPage.selectOrganisation("32");
+		choosePersonMembershipPage.clickContinueButton();
+		
+		LOG.info("Successfully Updated an person's Authority and Organisation Memberships.");
+		
+		personUserTypeSelectionPage.selectAuthorityMember();
+		personUserTypeSelectionPage.clickContinueButton();
+		
+		LOG.info("Successfully Updated an person's User Role.");
+		
+		invitePersonToCreateAccountPage.clickInviteButton();
+		
+		LOG.info("Successfully Updated the person's Account creation invite.");
+		
+		profileReviewPage.savePersonCreation();
+		personCompletionConfirmationPage.clickDoneButton();
+		personsProfilePage.clickDoneButton();
+		
+		LOG.info("Successfully Updated an existing person.");
+	}
+
+	@Then("^the user can verify the person \"([^\"]*)\" was updated successfully$")
+	public void the_user_can_verify_the_person_was_updated_successfully(String name) throws Throwable {
+		managePeoplePage.enterNameOrEmail(name);
+		managePeoplePage.clickSubmit();
+		
+		assertEquals(name, managePeoplePage.GetPersonName());
+	}
+	
+	@When("^the user searches for an enforcement notice \"([^\"]*)\" Organisation$")
+	public void the_user_searches_for_an_enforcement_notice_Organisation(String search) throws Throwable {
+	    parDashboardPage.selectManageEnforcementNotices();
+		enforcementSearchPage.searchForEnforcementNotice(search);
+		
+		LOG.info("Searching for an Enforcement Notice.");
+	}
+
+	@When("^clicks the Title of Action \"([^\"]*)\" Link$")
+	public void clicks_the_Title_of_Action_Link(String title) throws Throwable {
+	    enforcementSearchPage.clickTitleOfActionLink(title);
+	    
+	    LOG.info("Click the Title of Action Link.");
+	}
+
+	@Then("^the user can verify the enforcement officers details:$")
+	public void the_user_can_verify_the_enforcement_officers_details(DataTable details) throws Throwable {
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			assertEquals(data.get("Officer"), enforcementNotificationActionReceivedPage.getEnforcementOfficerDetails());
+			assertEquals(data.get("Enforcing"), enforcementNotificationActionReceivedPage.getEnforcingAuthorityName());
+			assertEquals(data.get("Organisation"), enforcementNotificationActionReceivedPage.getEnforcedOrganisationName());
+			assertEquals(data.get("Primary"), enforcementNotificationActionReceivedPage.getPrimaryAuthorityName());
+		}
+		
+		LOG.info("Asserting the Enforcement Notice Details.");
+	}
+	
+	@When("^the user searches for a partnership with the Test Business \"([^\"]*)\" name$")
+	public void the_user_searches_for_a_partnership_with_the_Test_Business_name(String search) throws Throwable {
+	    parDashboardPage.selectSearchforPartnership();
+	    
+	    partnershipSearchPage.selectPartnershipLink(search);
+	    parPartnershipConfirmationPage.sendGeneralEnquiry();
+	}
+
+	@Then("^the user can submit a general enquiry with description:$")
+	public void the_user_can_submit_a_general_enquiry_with_description(DataTable description) throws Throwable {
+		LOG.info("Creating Enquiry Notice.");
+		
+		enquiryContactDetailsPage.proceed();
+	    
+		for (Map<String, String> data : description.asMaps(String.class, String.class)) {
+			requestEnquiryPage.enterDescription(data.get("Description"));
+		}
+		
+		requestEnquiryPage.proceed();
+		enquiryReviewPage.saveChanges();
+		enquiryCompletionPage.complete();
+		parPartnershipConfirmationPage.clickDone();
+		
+		LOG.info("Successfully created Enquiry Notice.");
+	}
+
+	@When("^the user searches for an Enquiry with the Test Business \"([^\"]*)\" name$")
+	public void the_user_searches_for_an_Enquiry_with_the_Test_Business_name(String search) throws Throwable {
+		parDashboardPage.selectManageGeneralEnquiries();
+		generalEnquiriesPage.chooseGeneralEnquiry(search);
+		
+		LOG.info("Searching for Equiry Notice Details.");
+	}
+	
+	@Then("^the user can verify the Enforcement details:$")
+	public void the_user_can_verify_the_Enforcement_details(DataTable details) throws Throwable {
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			assertEquals(data.get("Officer"), viewEnquiryPage.getEnforcementOfficerDetails());
+			assertEquals(data.get("Enforcing"), viewEnquiryPage.getEnforcingAuthorityName());
+			assertEquals(data.get("Primary"), viewEnquiryPage.getPrimaryAuthorityName());
+			assertEquals(data.get("Summary"), viewEnquiryPage.getSummaryOfEnquiryText());
+		}
+		
+		LOG.info("Asserting the Equiry Notice Details.");
 	}
 }

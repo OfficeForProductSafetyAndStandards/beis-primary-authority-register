@@ -37,7 +37,7 @@ public class Hooks {
 		WebdriverFactory.checkBrowserRequired(isDifferentDriverRequired());
 		LOG.info("... Doing BeforeMethod createdriver routine...");
 		driver = WebdriverFactory.createWebdriver();
-		driver.manage().window().setSize(new Dimension(1840, 1200));
+		driver.manage().window().maximize(); //.setSize(new Dimension(1840, 1200));
 		ScenarioContext.lastDriver = driver;
 	}
 

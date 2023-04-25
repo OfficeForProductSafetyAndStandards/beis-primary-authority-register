@@ -58,4 +58,15 @@ public class EnforcementSearchPage extends BasePageObject {
 		return driver.findElement(By.xpath(status.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME))))
 				.getText();
 	}
+	
+	public void searchForEnforcementNotice(String search) {
+		searchInput.sendKeys(search);
+		searchBtn.click();
+	}
+	
+	public EnforcementNotificationActionReceivedPage clickTitleOfActionLink(String action) {
+		WebElement titleLink = driver.findElement(By.linkText(action));
+		titleLink.click();
+		return PageFactory.initElements(driver, EnforcementNotificationActionReceivedPage.class);
+	}
 }
