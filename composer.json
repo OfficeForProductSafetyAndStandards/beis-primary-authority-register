@@ -205,9 +205,6 @@
             "drupal/search_api": {
                 "Add support for rendering computed fields to the \"field\" views field handler": "https://git.drupalcode.org/project/search_api/-/merge_requests/75.diff"
             },
-            "drupal/search_api_opensearch": {
-                "Add validation for range params": "https://git.drupalcode.org/project/search_api_opensearch/-/merge_requests/29.diff"
-            },
             "drupal/vbo_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-11-23/allow_configurable_scheme-2988257-18.patch"
             },
