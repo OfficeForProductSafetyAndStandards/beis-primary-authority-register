@@ -42,8 +42,8 @@ public class ViewEnquiryPage extends BasePageObject {
 		return summaryOfEnquiryText.getText();
 	}
 	
-	public GeneralEnquiriesPage clickDoneButton() {
-		doneBtn.click();
-		return PageFactory.initElements(driver, GeneralEnquiriesPage.class);
-	}
+//	public GeneralEnquiriesPage clickDoneButton() {
+//		doneBtn.click();
+//		return PageFactory.initElements(driver, GeneralEnquiriesPage.class);
+//	}
 }
