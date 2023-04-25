@@ -37,6 +37,6 @@ class ParDataMemberNumber extends FieldPluginBase {
 
     return $entity instanceof ParDataPartnership && $entity->isCoordinated() ?
       $entity->numberOfMembers() :
-      0;
+      NULL;
   }
 }

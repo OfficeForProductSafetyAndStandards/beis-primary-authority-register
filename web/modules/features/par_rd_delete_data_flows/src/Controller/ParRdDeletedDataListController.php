@@ -214,13 +214,6 @@ class ParRdDeletedDataListController extends ControllerBase {
 //      '#markup' => "<p>{$manage_link}</p>",
 //    ];
 //
-//    $partnership_report = $this->getLinkByRoute('view.helpdesk_dashboard.helpdesk_csv');
-//    $partnership_report_link = $partnership_report->setText('Download CSV partnership report')->toString();
-//    $build['partnerships']['report'] = [
-//      '#type' => 'markup',
-//      '#markup' => "<p>{$partnership_report_link}</p>",
-//    ];
-//
 //    // Partnerships search link.
 //    $search_partnerships = $this->getLinkByRoute('view.partnership_search.search_partnerships');
 //    $search_link = $search_partnerships->setText('Search for a partnership')->toString();
