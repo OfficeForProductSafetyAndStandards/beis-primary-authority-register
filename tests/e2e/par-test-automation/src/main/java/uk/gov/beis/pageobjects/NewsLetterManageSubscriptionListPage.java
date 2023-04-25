@@ -46,6 +46,7 @@ public class NewsLetterManageSubscriptionListPage extends BasePageObject {
 	}
 	
 	private void generateNewEmailList() {
+		emailsTextArea.clear();
 		String number = "";
 		int id = 0;
 		
@@ -69,6 +70,7 @@ public class NewsLetterManageSubscriptionListPage extends BasePageObject {
 	}
 	
 	public void AddNewEmail(String email) {
+		emailsTextArea.clear();
 		emailsTextArea.sendKeys(email);
 	}
 	
