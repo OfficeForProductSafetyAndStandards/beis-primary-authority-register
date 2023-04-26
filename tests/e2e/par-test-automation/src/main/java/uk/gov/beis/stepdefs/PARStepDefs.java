@@ -1,11 +1,13 @@
 package uk.gov.beis.stepdefs;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Map;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -46,7 +48,6 @@ import uk.gov.beis.pageobjects.EnforcementCompletionPage;
 import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
-import uk.gov.beis.pageobjects.EnforcementNotificationActionReceivedPage;
 import uk.gov.beis.pageobjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.EnforcementReviewPage;
 import uk.gov.beis.pageobjects.EnforcementSearchPage;
@@ -54,7 +55,6 @@ import uk.gov.beis.pageobjects.EnquiriesSearchPage;
 import uk.gov.beis.pageobjects.EnquiryCompletionPage;
 import uk.gov.beis.pageobjects.EnquiryContactDetailsPage;
 import uk.gov.beis.pageobjects.EnquiryReviewPage;
-import uk.gov.beis.pageobjects.GeneralEnquiriesPage;
 import uk.gov.beis.pageobjects.HomePage;
 import uk.gov.beis.pageobjects.InspectionContactDetailsPage;
 import uk.gov.beis.pageobjects.InspectionFeedbackCompletionPage;
@@ -193,10 +193,8 @@ public class PARStepDefs {
 	private PartnershipRestoredPage partnershipRestoredPage;
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
 	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
-	private EnforcementNotificationActionReceivedPage enforcementNotificationActionReceivedPage;
-	private GeneralEnquiriesPage generalEnquiriesPage;
 	private ViewEnquiryPage viewEnquiryPage;
-	
+
 	// PAR News Letter
 	private UserProfilePage userProfilePage;
 	private UpdateUserCommunicationPreferencesPage updateUserCommunicationPreferencesPage;
@@ -206,7 +204,7 @@ public class PARStepDefs {
 	private NewsLetterSubscriptionPage newsLetterSubscriptionPage;
 	private NewsLetterManageSubscriptionListPage newsLetterManageSubscriptionListPage;
 	private NewsLetterSubscriptionReviewChangesPage newsLetterSubscriptionReviewPage;
-	
+
 	// Person Creation and Update
 	private ManagePeoplePage managePeoplePage;
 	private AddPersonContactDetailsPage addPersonsContactDetailsPage;
@@ -217,13 +215,13 @@ public class PARStepDefs {
 	private ProfileReviewPage profileReviewPage;
 	private PersonCompletionConfirmationPage personCompletionConfirmationPage;
 	private PersonsProfilePage personsProfilePage;
-	
+
 	private DeviationReviewPage deviationReviewPage;
 	private DeviationApprovalPage deviationApprovalPage;
 	private EnquiriesSearchPage enquiriesSearchPage;
 	private ReplyDeviationRequestPage replyDeviationRequestPage;
 	private ReplyEnquiryPage replyEnquiryPage;
-	
+
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
 		replyEnquiryPage = PageFactory.initElements(driver, ReplyEnquiryPage.class);
@@ -304,20 +302,21 @@ public class PARStepDefs {
 		parBusinessAddressDetailsPage = PageFactory.initElements(driver, BusinessAddressDetailsPage.class);
 		parPartnershipTermsPage = PageFactory.initElements(driver, PartnershipTermsPage.class);
 		partnershipSearchPage = PageFactory.initElements(driver, PartnershipSearchPage.class);
-		enforcementNotificationActionReceivedPage = PageFactory.initElements(driver, EnforcementNotificationActionReceivedPage.class);
-		generalEnquiriesPage = PageFactory.initElements(driver, GeneralEnquiriesPage.class);
-		viewEnquiryPage  = PageFactory.initElements(driver, ViewEnquiryPage.class);
-		
+		viewEnquiryPage = PageFactory.initElements(driver, ViewEnquiryPage.class);
+
 		// PAR News Letter
 		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
-		updateUserCommunicationPreferencesPage = PageFactory.initElements(driver, UpdateUserCommunicationPreferencesPage.class);
+		updateUserCommunicationPreferencesPage = PageFactory.initElements(driver,
+				UpdateUserCommunicationPreferencesPage.class);
 		updateUserConfirmationPage = PageFactory.initElements(driver, UpdateUserConfirmationPage.class);
 		updateUserContactDetailsPage = PageFactory.initElements(driver, UpdateUserContactDetailsPage.class);
 		updateUserSubscriptionsPage = PageFactory.initElements(driver, UpdateUserSubscriptionsPage.class);
 		newsLetterSubscriptionPage = PageFactory.initElements(driver, NewsLetterSubscriptionPage.class);
-		newsLetterManageSubscriptionListPage = PageFactory.initElements(driver, NewsLetterManageSubscriptionListPage.class);
-		newsLetterSubscriptionReviewPage = PageFactory.initElements(driver, NewsLetterSubscriptionReviewChangesPage.class);
-		
+		newsLetterManageSubscriptionListPage = PageFactory.initElements(driver,
+				NewsLetterManageSubscriptionListPage.class);
+		newsLetterSubscriptionReviewPage = PageFactory.initElements(driver,
+				NewsLetterSubscriptionReviewChangesPage.class);
+
 		// Person Creation and Update
 		managePeoplePage = PageFactory.initElements(driver, ManagePeoplePage.class);
 		addPersonsContactDetailsPage = PageFactory.initElements(driver, AddPersonContactDetailsPage.class);
@@ -740,10 +739,32 @@ public class PARStepDefs {
 
 	@When("^the user selects the last created enforcement notice$")
 	public void the_user_selects_the_last_created_enforcement() throws Throwable {
-		LOG.info("Select last created enforcement");
-		parDashboardPage.selectSeeEnforcementNotices();
-		enforcementSearchPage.searchPartnerships();
-		enforcementSearchPage.selectEnforcement();
+		String user = DataStore.getSavedValue(UsableValues.LOGIN_USER);
+		switch (user) {
+		case ("par_enforcement_officer@example.com"):
+			LOG.info("Select last created enforcement");
+			parDashboardPage.selectSeeEnforcementNotices();
+			enforcementSearchPage.searchPartnerships();
+			enforcementSearchPage.selectEnforcement();
+			break;
+
+		case ("par_authority@example.com"):
+			LOG.info("Select last created enforcement");
+			parDashboardPage.selectSeeEnforcementNotices();
+			enforcementSearchPage.searchPartnerships();
+			enforcementSearchPage.selectEnforcement();
+			break;
+
+		case ("par_helpdesk@example.com"):
+			LOG.info("Searching for an Enforcement Notice.");
+			parDashboardPage.selectManageEnforcementNotices();
+			enforcementSearchPage.searchForEnforcementNotice(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+			enforcementSearchPage.selectEnforcement();
+			break;
+
+		default:
+			// do nothing
+		}
 	}
 
 	@When("^the user approves the enforcement notice$")
@@ -893,7 +914,7 @@ public class PARStepDefs {
 		}
 	}
 
-	@Then("^the inspection feedback_reply is received successfully$")
+	@Then("^the inspection feedback reply is received successfully$")
 	public void the_inspection_feedback_reply_is_received_successfully() throws Throwable {
 		LOG.info("Verify the inspection feedback reply");
 		Assert.assertTrue("Failed: Inspection feedback reply doesn't check out ",
@@ -1023,122 +1044,73 @@ public class PARStepDefs {
 
 		}
 	}
-	
-	@When("^the user adds a new person to the contacts successfully with the following details:$")
-	public void the_user_adds_a_new_person_to_the_contacts_successfully_with_the_following_details(DataTable newPerson) throws Throwable {
-		parDashboardPage.selectManageColleagues();
-		managePeoplePage.selectAddPerson();
-		
-		LOG.info("Adding a new person.");
-		for (Map<String, String> data : newPerson.asMaps(String.class, String.class)) {
-			
-			addPersonsContactDetailsPage.enterTitle(data.get("Title"));
-			addPersonsContactDetailsPage.enterFirstname(data.get("Firstname"));
-			addPersonsContactDetailsPage.enterLastname(data.get("Lastname"));
-			addPersonsContactDetailsPage.enterWorkPhoneNumber(data.get("WorkNumber"));
-			addPersonsContactDetailsPage.enterMobilePhoneNumber(data.get("MobileNumber"));
-			addPersonsContactDetailsPage.enterEmailAddress(data.get("Email"));
-			
-			DataStore.saveValue(UsableValues.PERSON_TITLE, data.get("Title"));
-			DataStore.saveValue(UsableValues.PERSON_FIRSTNAME, data.get("Firstname"));
-			DataStore.saveValue(UsableValues.PERSON_LASTNAME, data.get("Lastname"));
+
+	@When("^the user sends a reply to the general enquiry with the following details:$")
+	public void the_user_sends_a_reply_to_the_general_enquiry_with_the_following_details(DataTable dets)
+			throws Throwable {
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.ENQUIRY_REPLY1, data.get("Description"));
+			enquiryReviewPage.submitResponse();
+			replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY1));
+			replyEnquiryPage.chooseFile("link.txt");
+			replyEnquiryPage.proceed();
+			LOG.info("Verify the reply message");
+			Assert.assertTrue("Failed: Enquiry reply doesn't check out ", enquiryReviewPage.checkEnquiryReply1());
+
 		}
-		
-		addPersonsContactDetailsPage.clickContinueButton();
-		
-		givePersonAccountPage.selectExistingAccount();
-		givePersonAccountPage.clickContinueButton();
-		
-		//choosePersonMembershipPage.selectTestBusiness();
-		choosePersonMembershipPage.selectABCDMart();
-		choosePersonMembershipPage.selectDemolitionExperts();
-		choosePersonMembershipPage.selectPartnershipConfirmedByAuthority();
-		
-		choosePersonMembershipPage.selectCityEnforcementSquad();
-		choosePersonMembershipPage.selectUpperWestSideBoroughCouncil();
-		//choosePersonMembershipPage.selectLowerEstSideBoroughCouncil();
-		choosePersonMembershipPage.clickContinueButton();
-		
-		personUserTypeSelectionPage.selectEnforcementOfficer();
-		personUserTypeSelectionPage.clickProfileReviewContinueButton();
-		
-		profileReviewPage.savePersonCreation();
-		personCompletionConfirmationPage.clickDoneButton();
-		personsProfilePage.clickDoneButton();
-		
-		managePeoplePage.clickDashboadButton();
-		LOG.info("Successfully added a new person.");
 	}
 
-	@Then("^the user can update the new contact to subscribe to PAR News$")
-	public void the_user_can_update_the_new_contact_to_subscribe_to_PAR_News() throws Throwable {
-		
-		String contactsName = DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " " + DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " +
-				DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
-		
-		LOG.info("New contact's name: " + contactsName + ".");
-		
+	@When("^the user selects a contact to update$")
+	public void the_user_selects_a_contact_to_update() throws Throwable {
+		DataStore.saveValue(UsableValues.PERSON_EMAIL, DataStore.getSavedValue(UsableValues.LOGIN_USER));
 		parDashboardPage.selectManageProfileDetails();
-		LOG.info("Updating the new contact details");
-		
-		userProfilePage.selectContactToUpdate(contactsName);
-		userProfilePage.selectContinueButton();
-		
-		LOG.info("Found the new contact to update.");
+	    
+	    DataStore.saveValue(UsableValues.ACCOUNT_ID, userProfilePage.getAccountID()); // This can be used in a manage colleagues update person test.
+	    
+	    userProfilePage.selectContactToUpdate();
+	    userProfilePage.selectContinueButton();
+	    LOG.info("Selected user contact to update.");
+	}
+
+	@Then("^the user can successfully subscribe to PAR News$")
+	public void the_user_can_successfully_subscribe_to_PAR_News() throws Throwable {
 		updateUserContactDetailsPage.selectContinueButton();
-		updateUserCommunicationPreferencesPage.selectContinueButton();
-		
-		updateUserSubscriptionsPage.selectPARNewsSubscription();
-		LOG.info("Subscribed to the PAR News Letter.");
-		updateUserSubscriptionsPage.selectContinueButton();
-		
-		profileReviewPage.saveContactUpdate();
-		updateUserConfirmationPage.selectDoneButton();
-		
-		LOG.info("Successfully updated the new contact's details.");
+	    updateUserCommunicationPreferencesPage.selectContinueButton();
+	    
+	    updateUserSubscriptionsPage.selectPARNewsSubscription();
+	    updateUserSubscriptionsPage.selectContinueButton();
+	    LOG.info("Successfully subscribed from PAR news letter.");
+	    
+	    profileReviewPage.saveContactUpdate();
+	    updateUserConfirmationPage.selectDoneButton();
+	}
+
+	@Then("^the user can successfully unsubscribe from PAR News$")
+	public void the_user_can_successfully_unsubscribe_from_PAR_News() throws Throwable {
+	    updateUserContactDetailsPage.selectContinueButton();
+	    updateUserCommunicationPreferencesPage.selectContinueButton();
+	    
+	    updateUserSubscriptionsPage.selectPARNewsUnsubscription();
+	    updateUserSubscriptionsPage.selectContinueButton();
+	    LOG.info("Successfully unsubscribed from PAR news letter.");
+	    
+	    profileReviewPage.saveContactUpdate();
+	    updateUserConfirmationPage.selectDoneButton();
 	}
 	
-	@Then("^the user can update the new contact to unsubscribe from PAR News$")
-	public void the_user_can_update_the_new_contact_to_unsubscribe_from_PAR_News() throws Throwable {
-
-		String contactsName = DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " " + DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " +
-				DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
-		
-		LOG.info("New contact's name: " + contactsName + ".");
-		
-		parDashboardPage.selectManageProfileDetails();
-		LOG.info("Updating the new contact details");
-		
-		userProfilePage.selectContactToUpdate(contactsName);
-		userProfilePage.selectContinueButton();
-		
-		LOG.info("Found the new contact to update.");
-		updateUserContactDetailsPage.selectContinueButton();
-		updateUserCommunicationPreferencesPage.selectContinueButton();
-		
-		updateUserSubscriptionsPage.selectPARNewsSubscription();
-		LOG.info("Unsubscribed from PAR News Letter.");
-		updateUserSubscriptionsPage.selectContinueButton();
-		
-		profileReviewPage.saveContactUpdate();
-		updateUserConfirmationPage.selectDoneButton();
-		
-		LOG.info("Successfully updated the new contact's details.");
-	}
-	
-	@When("^the user is on the Subscriptions page$")
-	public void the_user_is_on_the_Subscriptions_page() throws Throwable {
-		parDashboardPage.selectManageSubscriptions();
-		LOG.info("Navigated to Manage Subscriptions Page.");
-	}
-
-	@When("^the user searches for the par_authority email \"([^\"]*)\"$")
-	public void the_user_searches_for_the_par_authority_email(String email) throws Throwable {
+	@When("^the user searches for the par_authority email$")
+	public void the_user_searches_for_the_par_authority_email() throws Throwable {
 		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.PERSON_EMAIL));
 		newsLetterSubscriptionPage.ClickSearchButton();
 		LOG.info("Searching for the Authority Email:" + DataStore.getSavedValue(UsableValues.PERSON_EMAIL) + ".");
 	}
 
+	@When("^the user is on the Subscriptions page$")
+	public void the_user_is_on_the_Subscriptions_page() throws Throwable {
+		parDashboardPage.selectManageSubscriptions();
+		LOG.info("Navigated to Manage Subscriptions Page.");
+	}
+	
 	@Then("^the user can verify the email is successfully in the Subscriptions List$")
 	public void the_user_can_verify_the_email_is_successfully_in_the_Subscriptions_List() throws Throwable {
 		LOG.info("Assert the Email is successfully added to the Subscription List.");
@@ -1156,6 +1128,7 @@ public class PARStepDefs {
 		parDashboardPage.selectManageSubscriptions();
 		newsLetterSubscriptionPage.selectManageSubsciptions();
 		LOG.info("Navigated to Manage Subscriptions Page.");
+		LOG.info("Email with the largest number: " + DataStore.getSavedValue(UsableValues.LAST_PAR_NEWS_EMAIL));
 	}
 
 	@When("^the user enters a new email to add to the list \"([^\"]*)\"$")
@@ -1167,15 +1140,17 @@ public class PARStepDefs {
 		LOG.info("Adding a new email to the subscription list.");
 		newsLetterSubscriptionReviewPage.clickUpdateListButton();
 	}
+	
 
 	@Then("^the user can verify the new email was added successfully$")
 	public void the_user_can_verify_the_new_email_was_added_successfully() throws Throwable {
 		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.PAR_NEWS_EMAIL));
 		newsLetterSubscriptionPage.ClickSearchButton();
-		
+
 		assertTrue(newsLetterSubscriptionPage.verifyTableElementExists());
 		LOG.info("Successfully added a new email to the Subscription list.");
 	}
+	
 
 	@When("^the user enters an email to be removed from the list \"([^\"]*)\"$")
 	public void the_user_enters_an_email_to_be_removed_from_the_list(String email) throws Throwable {
@@ -1186,208 +1161,192 @@ public class PARStepDefs {
 		LOG.info("Removing an email from the subscription list.");
 		newsLetterSubscriptionReviewPage.clickUpdateListButton();
 	}
+	
 
 	@Then("^the user can verify the email was removed successfully$")
 	public void the_user_can_verify_the_email_was_removed_successfully() throws Throwable {
 		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.PAR_NEWS_EMAIL));
 		newsLetterSubscriptionPage.ClickSearchButton();
-		
+
 		assertTrue(newsLetterSubscriptionPage.verifyTableElementIsNull());
 		LOG.info("Successfully removed an email from the Subscription list.");
 	}
+	
 
-	@When("^the user enters a list of new emails to replace the subscription list:$")
-	public void the_user_enters_a_list_of_new_emails_to_replace_the_subscription_list(DataTable newEmails) throws Throwable {
+	@When("^the user enters a list of new emails to replace the subscription list$")
+	public void the_user_enters_a_list_of_new_emails_to_replace_the_subscription_list() throws Throwable {
+		
 		newsLetterManageSubscriptionListPage.selectReplaceSubscriptionListRadioButton();
-		
-		for (Map<String, String> data : newEmails.asMaps(String.class, String.class)) {
-			newsLetterManageSubscriptionListPage.ReplaceSubscriptionList(data.get("Email"));
-		}
-		
 		newsLetterManageSubscriptionListPage.clickContinueButton();
 		LOG.info("Adding new emails to replace the original Subscription List.");
+		
 		newsLetterSubscriptionReviewPage.clickUpdateListButton();
 	}
 
-	@Then("^the user can verify an email from the original list was removed successfully \"([^\"]*)\"$")
-	public void the_user_can_verify_an_email_from_the_original_list_was_removed_successfully(String email) throws Throwable {
-		newsLetterSubscriptionPage.EnterEmail(email);
-		newsLetterSubscriptionPage.ClickSearchButton();
+	@Then("^the user can verify an email from the original list was removed successfully$")
+	public void the_user_can_verify_an_email_from_the_original_list_was_removed_successfully() throws Throwable {
 		
+		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.LAST_PAR_NEWS_EMAIL));
+		newsLetterSubscriptionPage.ClickSearchButton();
+
 		assertTrue(newsLetterSubscriptionPage.verifyTableElementIsNull());
 		LOG.info("Successfully replaced the original subscription list with a new list.");
 	}
-	
-	@When("^the user creates a new person with the following details:$")
-	public void the_user_creates_a_new_person_with_the_following_details(DataTable newPerson) throws Throwable {
+
+	@When("^the user creates a new person$")
+	public void the_user_creates_a_new_person() throws Throwable {
 		parDashboardPage.selectManagePeople();
 		managePeoplePage.selectAddPerson();
-		
+
 		LOG.info("Adding a new person.");
-		for (Map<String, String> data : newPerson.asMaps(String.class, String.class)) {
-			
-			addPersonsContactDetailsPage.enterTitle(data.get("Title"));
-			addPersonsContactDetailsPage.enterFirstname(data.get("Firstname"));
-			addPersonsContactDetailsPage.enterLastname(data.get("Lastname"));
-			addPersonsContactDetailsPage.enterWorkPhoneNumber(data.get("WorkNumber"));
-			addPersonsContactDetailsPage.enterMobilePhoneNumber(data.get("MobileNumber"));
-			addPersonsContactDetailsPage.enterEmailAddress(data.get("Email"));
-		}
+		String firstName = RandomStringUtils.randomAlphabetic(8);
+		String lastName = RandomStringUtils.randomAlphabetic(8);
+
+		addPersonsContactDetailsPage.enterTitle("Mr");
+		addPersonsContactDetailsPage.enterFirstname(firstName);
+		addPersonsContactDetailsPage.enterLastname(lastName);
+		addPersonsContactDetailsPage.enterWorkPhoneNumber("012");
+		addPersonsContactDetailsPage.enterMobilePhoneNumber("0745");
+		addPersonsContactDetailsPage.enterEmailAddress(firstName + "@" + lastName + ".com");
+		
+		DataStore.saveValue(UsableValues.PERSON_FIRSTNAME, firstName); 
+		DataStore.saveValue(UsableValues.PERSON_LASTNAME, lastName);
 		
 		addPersonsContactDetailsPage.clickContinueButton();
 		givePersonAccountPage.selectInviteUserToCreateAccount();
 		givePersonAccountPage.clickContinueButton();
-		
-		choosePersonMembershipPage.selectOrganisation("32");
+
 		choosePersonMembershipPage.selectAuthority("10");
+		choosePersonMembershipPage.selectOrganisation("Dry Cleaner");
 		choosePersonMembershipPage.clickContinueButton();
-		
+
 		personUserTypeSelectionPage.selectEnforcementOfficer();
 		personUserTypeSelectionPage.clickContinueButton();
-		
+
 		invitePersonToCreateAccountPage.clickInviteButton();
-		
+
 		profileReviewPage.savePersonCreation();
 		personCompletionConfirmationPage.clickDoneButton();
 		personsProfilePage.clickDoneButton();
-		
+
 		LOG.info("Successfully added a new person.");
 	}
 
-	@Then("^the user can verify the person \"([^\"]*)\" was created successfully$")
-	public void the_user_can_verify_the_person_was_created_successfully(String name) throws Throwable {
-		managePeoplePage.enterNameOrEmail(name);
-		managePeoplePage.clickSubmit();
+	@Then("^the user can verify the person was created successfully$")
+	public void the_user_can_verify_the_person_was_created_successfully() throws Throwable {
+		String personsName = DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
 		
-		assertEquals(name, managePeoplePage.GetPersonName()); // If this does not work, need to find the Table Element in a different way.
+		LOG.info("New Persons Name: " + personsName);
+		managePeoplePage.enterNameOrEmail(personsName);
+		managePeoplePage.clickSubmit();
+
+		assertEquals(personsName, managePeoplePage.GetPersonName());
 	}
 
-	@When("^the user searches for an existing person \"([^\"]*)\" successfully$")
-	public void the_user_searches_for_an_existing_person_successfully(String name) throws Throwable {
+	@When("^the user searches for an existing person successfully$")
+	public void the_user_searches_for_an_existing_person_successfully() throws Throwable {
 		parDashboardPage.selectManagePeople();
+
+		String personsName = DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
 		
-		managePeoplePage.enterNameOrEmail(name);
+		managePeoplePage.enterNameOrEmail(personsName);
 		managePeoplePage.clickSubmit();
-		
+
 		managePeoplePage.clickManageContact();
-		
-		LOG.info("Found an existing user with the name: " + name);
-		
+
+		LOG.info("Found an existing user with the name: " + personsName);
+
 		personsProfilePage.clickUpdateUserButton();
 	}
-	
-	@When("^the user updates an existing person with the following details:$")
-	public void the_user_updates_an_existing_person_with_the_following_details(DataTable updatePerson) throws Throwable {
-		for (Map<String, String> data : updatePerson.asMaps(String.class, String.class)) {
-			
-			addPersonsContactDetailsPage.enterTitle(data.get("Title"));
-			addPersonsContactDetailsPage.enterFirstname(data.get("Firstname"));
-			addPersonsContactDetailsPage.enterLastname(data.get("Lastname"));
-			addPersonsContactDetailsPage.enterWorkPhoneNumber(data.get("WorkNumber"));
-			addPersonsContactDetailsPage.enterMobilePhoneNumber(data.get("MobileNumber"));
-			addPersonsContactDetailsPage.enterEmailAddress(data.get("Email"));
-		}
+
+	@When("^the user updates an existing person$")
+	public void the_user_updates_an_existing_person_with_the_following_details() throws Throwable {
+		LOG.info("Updating an existing person.");
+		String firstName = RandomStringUtils.randomAlphabetic(8);
+		String lastName = RandomStringUtils.randomAlphabetic(8);
+
+		addPersonsContactDetailsPage.enterTitle("Dr");
+		addPersonsContactDetailsPage.enterFirstname(firstName);
+		addPersonsContactDetailsPage.enterLastname(lastName);
+		addPersonsContactDetailsPage.enterWorkPhoneNumber("012046588031");
+		addPersonsContactDetailsPage.enterMobilePhoneNumber("07450606901");
+		addPersonsContactDetailsPage.enterEmailAddress(firstName + "@" + lastName + ".com");
+		
+		DataStore.saveValue(UsableValues.PERSON_FIRSTNAME, firstName); 
+		DataStore.saveValue(UsableValues.PERSON_LASTNAME, lastName);
 		
 		addPersonsContactDetailsPage.clickContinueButton();
-		
+
 		LOG.info("Successfully Updated an person's contact details.");
-		
+
 		givePersonAccountPage.selectInviteUserToCreateAccount();
 		givePersonAccountPage.clickContinueButton();
-		
+
 		LOG.info("Successfully Invited the person to create an account.");
-		
+
 		choosePersonMembershipPage.selectAuthority("10");
-		choosePersonMembershipPage.selectOrganisation("32");
+		choosePersonMembershipPage.selectOrganisation("Cafe");
 		choosePersonMembershipPage.clickContinueButton();
-		
+
 		LOG.info("Successfully Updated an person's Authority and Organisation Memberships.");
-		
+
 		personUserTypeSelectionPage.selectAuthorityMember();
 		personUserTypeSelectionPage.clickContinueButton();
-		
+
 		LOG.info("Successfully Updated an person's User Role.");
-		
+
 		invitePersonToCreateAccountPage.clickInviteButton();
-		
+
 		LOG.info("Successfully Updated the person's Account creation invite.");
-		
+
 		profileReviewPage.savePersonCreation();
 		personCompletionConfirmationPage.clickDoneButton();
 		personsProfilePage.clickDoneButton();
-		
+
 		LOG.info("Successfully Updated an existing person.");
 	}
 
-	@Then("^the user can verify the person \"([^\"]*)\" was updated successfully$")
-	public void the_user_can_verify_the_person_was_updated_successfully(String name) throws Throwable {
-		managePeoplePage.enterNameOrEmail(name);
+	@Then("^the user can verify the person was updated successfully$")
+	public void the_user_can_verify_the_person_was_updated_successfully() throws Throwable {
+		String personsName = DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
+		
+		managePeoplePage.enterNameOrEmail(personsName);
 		managePeoplePage.clickSubmit();
-		
-		assertEquals(name, managePeoplePage.GetPersonName());
+
+		assertEquals(personsName, managePeoplePage.GetPersonName());
 	}
 	
-	@When("^the user searches for an enforcement notice \"([^\"]*)\" Organisation$")
-	public void the_user_searches_for_an_enforcement_notice_Organisation(String search) throws Throwable {
-	    parDashboardPage.selectManageEnforcementNotices();
-		enforcementSearchPage.searchForEnforcementNotice(search);
-		
-		LOG.info("Searching for an Enforcement Notice.");
+	@Then("^the user can verify the enforcement officers details are displayed$")
+	public void the_user_can_verify_the_enforcement_officers_details_are_displayed() throws Throwable {
+	    assertTrue("Failed: Officer details not displayed", enforcementReviewPage.checkOfficerDetails());
 	}
 
-	@When("^clicks the Title of Action \"([^\"]*)\" Link$")
-	public void clicks_the_Title_of_Action_Link(String title) throws Throwable {
-	    enforcementSearchPage.clickTitleOfActionLink(title);
-	    
-	    LOG.info("Click the Title of Action Link.");
-	}
-
-	@Then("^the user can verify the enforcement officers details:$")
-	public void the_user_can_verify_the_enforcement_officers_details(DataTable details) throws Throwable {
-		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
-			assertEquals(data.get("Officer"), enforcementNotificationActionReceivedPage.getEnforcementOfficerDetails());
-			assertEquals(data.get("Enforcing"), enforcementNotificationActionReceivedPage.getEnforcingAuthorityName());
-			assertEquals(data.get("Organisation"), enforcementNotificationActionReceivedPage.getEnforcedOrganisationName());
-			assertEquals(data.get("Primary"), enforcementNotificationActionReceivedPage.getPrimaryAuthorityName());
-		}
-		
-		LOG.info("Asserting the Enforcement Notice Details.");
-	}
-	
 	@When("^the user searches for a partnership with the Test Business \"([^\"]*)\" name$")
 	public void the_user_searches_for_a_partnership_with_the_Test_Business_name(String search) throws Throwable {
-	    parDashboardPage.selectSearchforPartnership();
-	    
-	    partnershipSearchPage.selectPartnershipLink(search);
-	    parPartnershipConfirmationPage.sendGeneralEnquiry();
+		parDashboardPage.selectSearchforPartnership();
+
+		partnershipSearchPage.selectPartnershipLink(search);
+		parPartnershipConfirmationPage.sendGeneralEnquiry();
 	}
 
 	@Then("^the user can submit a general enquiry with description:$")
 	public void the_user_can_submit_a_general_enquiry_with_description(DataTable description) throws Throwable {
 		LOG.info("Creating Enquiry Notice.");
-		
+
 		enquiryContactDetailsPage.proceed();
-	    
+
 		for (Map<String, String> data : description.asMaps(String.class, String.class)) {
 			requestEnquiryPage.enterDescription(data.get("Description"));
 		}
-		
+
 		requestEnquiryPage.proceed();
 		enquiryReviewPage.saveChanges();
 		enquiryCompletionPage.complete();
 		parPartnershipConfirmationPage.clickDone();
-		
+
 		LOG.info("Successfully created Enquiry Notice.");
 	}
 
-	@When("^the user searches for an Enquiry with the Test Business \"([^\"]*)\" name$")
-	public void the_user_searches_for_an_Enquiry_with_the_Test_Business_name(String search) throws Throwable {
-		parDashboardPage.selectManageGeneralEnquiries();
-		generalEnquiriesPage.chooseGeneralEnquiry(search);
-		
-		LOG.info("Searching for Equiry Notice Details.");
-	}
-	
 	@Then("^the user can verify the Enforcement details:$")
 	public void the_user_can_verify_the_Enforcement_details(DataTable details) throws Throwable {
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
@@ -1396,7 +1355,7 @@ public class PARStepDefs {
 			assertEquals(data.get("Primary"), viewEnquiryPage.getPrimaryAuthorityName());
 			assertEquals(data.get("Summary"), viewEnquiryPage.getSummaryOfEnquiryText());
 		}
-		
+
 		LOG.info("Asserting the Equiry Notice Details.");
 	}
 }

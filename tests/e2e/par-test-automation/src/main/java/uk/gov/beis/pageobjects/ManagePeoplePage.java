@@ -23,7 +23,6 @@ public class ManagePeoplePage extends BasePageObject {
 	@FindBy(id = "edit-submit-par-people")
 	private WebElement submitBtn;
 	
-	//@FindBy(css = "views-field views-field-last-name")
 	@FindBy(xpath = "//td[@class='views-field views-field-last-name']")
 	private WebElement personNameTableElement;
 	

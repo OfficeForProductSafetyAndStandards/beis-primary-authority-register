@@ -62,8 +62,11 @@ public class DashboardPage extends BasePageObject {
 	@FindBy(linkText = "See your deviation requests")
 	WebElement deviationReqBtn;
 	
-	@FindBy(linkText = "See your general enquiries")
+	@FindBy(partialLinkText = "general enquiries")
 	WebElement generalEnquiriesBtn;
+	
+//	@FindBy(linkText = "See your general enquiries")
+//	WebElement generalEnquiriesBtn;
 	
 	public OrganisationDashboardPage selectManageOrganisations() {
 		mangeOrganisationsBtn.click();
@@ -128,11 +131,6 @@ public class DashboardPage extends BasePageObject {
 	public ManagePeoplePage selectManagePeople() {
 		managePeopleBtn.click();
 		return PageFactory.initElements(driver, ManagePeoplePage.class);
-	}
-	
-	public GeneralEnquiriesPage selectManageGeneralEnquiries() {
-		manageGeneralEnquiriesBtn.click();
-		return PageFactory.initElements(driver, GeneralEnquiriesPage.class);
 	}
 	
 	public UserProfilePage selectManageProfileDetails() {

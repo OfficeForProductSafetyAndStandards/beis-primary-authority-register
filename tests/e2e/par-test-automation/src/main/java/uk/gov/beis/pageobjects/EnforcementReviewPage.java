@@ -18,6 +18,20 @@ public class EnforcementReviewPage extends BasePageObject {
 
 	@FindBy(xpath = "//input[contains(@value,'Save')]")
 	WebElement saveBtn;
+	
+	@FindBy(xpath = "//legend/span[contains(text(),'Enforcement officer')]")
+	WebElement officer;
+	
+	@FindBy(xpath = "//legend/span[contains(text(),'Enforcing authority')]")
+	WebElement enforceingAuthority;
+	
+	@FindBy(xpath = "//legend/span[contains(text(),'Enforced organisation')]")
+	WebElement enforcedOrganisation;
+	
+	@FindBy(xpath = "//legend/span[contains(text(),'Primary authority')]")
+	WebElement primaryAuthority;
+	
+	
 
 	public EnforcementCompletionPage saveChanges() {
 		saveBtn.click();
@@ -42,5 +56,10 @@ public class EnforcementReviewPage extends BasePageObject {
 				.xpath(desc.replace("?", DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION).toLowerCase())));
 
 		return (legEnt1.isDisplayed() && enfType1.isDisplayed() && enfTitle1.isDisplayed() && desc1.isDisplayed());
+	}
+	
+	public boolean checkOfficerDetails() {
+		return (officer.isDisplayed() && enforceingAuthority.isDisplayed() && enforcedOrganisation.isDisplayed() && primaryAuthority.isDisplayed());
+		
 	}
 }

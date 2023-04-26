@@ -6,6 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import uk.gov.beis.enums.UsableValues;
+import uk.gov.beis.utility.DataStore;
+
 public class NewsLetterManageSubscriptionListPage extends BasePageObject {
 	public NewsLetterManageSubscriptionListPage() throws ClassNotFoundException, IOException {
 		super();
@@ -39,18 +42,40 @@ public class NewsLetterManageSubscriptionListPage extends BasePageObject {
 	
 	public void selectReplaceSubscriptionListRadioButton() {
 		replaceSubscriptionListRadioBtn.click();
+		generateNewEmailList();
+	}
+	
+	private void generateNewEmailList() {
+		emailsTextArea.clear();
+		String number = "";
+		int id = 0;
+		
+		// Get the number from the Last created Email
+		String lastEmail = DataStore.getSavedValue(UsableValues.LAST_PAR_NEWS_EMAIL);
+		
+		char[] chars = lastEmail.toCharArray(); 
+		for(char c : chars) {
+			if(Character.isDigit(c)) {
+				number += c;
+			}
+		}
+		
+		id = Integer.parseInt(number);
+		
+		// Create the new emails
+		for(int i = 0; i < 4; i++) {
+			emailsTextArea.sendKeys("user@newsletter" + (id + 1) + ".com" + "\n");
+			id++;
+		}
 	}
 	
 	public void AddNewEmail(String email) {
+		emailsTextArea.clear();
 		emailsTextArea.sendKeys(email);
 	}
 	
 	public void RemoveEmail(String email) {
 		emailsTextArea.sendKeys(email);
-	}
-	
-	public void ReplaceSubscriptionList(String email) {
-		emailsTextArea.sendKeys(email + "\n");
 	}
 	
 	public NewsLetterSubscriptionReviewChangesPage clickContinueButton() {
