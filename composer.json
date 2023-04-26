@@ -178,7 +178,8 @@
                 "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2020-07-19/2551893-85.patch",
                 "Non-exposed and exposed default sort order": "https://www.drupal.org/files/issues/2021-05-20/3120847-23.patch",
                 "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2021-01-19/case_sensitive_email-2490294-37.patch",
-                "Add aria labelling for form states": "./patches/states-aria.patch"
+                "Add aria labelling for form states": "./patches/states-aria.patch",
+                "Allow a header tag to be set on item-list theme items": "./patches/item_list_header_tag.patch"
             },
             "drupal/devel": {
                 "Webprofiler related crash: requested a non-existent service": "https://gitlab.com/drupalspoons/devel/uploads/8c8ddd9716570d17fa46b9182d22aa7f/419-Webprofiler-related-crash-in-core-9.4.2.patch"
@@ -192,7 +193,8 @@
             },
             "drupal/govuk_theme": {
                 "Remove style sheet": "https://www.drupal.org/files/issues/2021-03-29/3202722-5-remove_generated_css.patch",
-                "Correct version dependencies": "./patches/yargs-version.patch"
+                "Correct version dependencies": "./patches/yargs-version.patch",
+                "Update core version": "./patches/govuk_theme_update.patch"
             },
             "drupal/login_destination": {
                 "Always redirects to current page on login": "https://www.drupal.org/files/issues/2022-10-12/3314925-7-revert_query_parameter.diff"
