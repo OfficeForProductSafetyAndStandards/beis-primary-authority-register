@@ -184,7 +184,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
 
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
-      '#title' => '',
+      '#title' => 'Regulatory Functions',
       '#options' => $regulatory_function_options,
       '#default_value' => $this->getDefaultValuesByKey('regulatory_functions', $cardinality, []),
       '#attributes' => ['class' => ['form-group']],
