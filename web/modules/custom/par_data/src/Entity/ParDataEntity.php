@@ -437,10 +437,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function getRawStatus() {
     if ($this->isRevoked()) {
-      return 'revoked';
+      return self::REVOKE_FIELD;
     }
     if ($this->isArchived()) {
-      return 'archived';
+      return self::ARCHIVE_FIELD;
     }
     if (!$this->isTransitioned()) {
       return 'n/a';
@@ -506,38 +506,55 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       return $status_revision;
     }
 
-    if (!$this->hasStatus()) {
+    if (!$this->hasStatus() || !$status) {
       return NULL;
     }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
-    // Loop through all statuses and perform custom checks to
-    // find the most recent change the specified status.
+    // Loop through all statuses to find the revision when the status was changed.
     $check_status_query = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->getQuery();
     $check_status_query->allRevisions()
       ->condition('id', $this->id())
-      ->sort('revision_timestamp', 'ASC');
+      ->sort('revision_timestamp', 'DESC');
     $results = $check_status_query->execute();
 
-    $status_revision = NULL;
+    $previous_revision = NULL;
     if (!empty($results)) {
-      foreach ($results as $revision_id => $r) {
+      foreach ($results as $revision_id => $rev) {
         $revision = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->loadRevision($revision_id);
-
-        // If the status matches then we can save this as the status.
-        if ($revision && $revision->get($field_name)->getString() === $status) {
-          $status_revision = $revision;
+        if (!$revision) {
+          continue;
         }
-        // If we have already found an appropriate revision and the status
-        // has changed then don't go any further.
-        if ($status_revision && $revision->get($field_name)->getString() !== $status) {
+
+        // Get the status of the revision.
+        switch ($status) {
+          case self::REVOKE_FIELD:
+            $revision_status = !empty($revision->get(self::REVOKE_FIELD)->getString()) ? self::REVOKE_FIELD : NULL;
+
+            break;
+          case self::ARCHIVE_FIELD:
+            $revision_status = !empty($revision->get(self::ARCHIVE_FIELD)->getString()) ? self::ARCHIVE_FIELD : NULL;
+
+            break;
+          default:
+            $revision_status = $revision->get($field_name)->getString();
+        }
+
+        // Stop looking for previous revisions if one has already been found
+        // and the current revision doesn't match the status that is being searched for.
+        if ($previous_revision && $status !== $revision_status) {
           break;
+        }
+
+        // Set the revision.
+        if ($status === $revision_status) {
+          $previous_revision = $revision;
         }
       }
     }
 
-    return $status_revision;
+    return $previous_revision;
   }
 
   /**
