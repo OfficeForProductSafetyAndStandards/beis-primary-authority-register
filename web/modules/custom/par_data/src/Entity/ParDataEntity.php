@@ -334,6 +334,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
+
       $this->get(ParDataEntity::REVOKE_REASON_FIELD)->setValue([
         'value' => $reason,
         'format' => 'plain_text',
@@ -348,17 +349,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function unrevoke($save = TRUE) {
-    if ($this->isNew()) {
-      $save = FALSE;
-    }
-
-    if ($this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
-      $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
-      $this->set(ParDataEntity::REVOKE_REASON_FIELD, NULL);
-
-      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
-    }
-    return FALSE;
+    return $this->restore($save);
   }
 
   /**
@@ -391,13 +382,27 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function restore($save = TRUE) {
+    // Stop recursive loops for new entities.
     if ($this->isNew()) {
       $save = FALSE;
     }
 
-    if ($this->getTypeEntity()->isRevokable() && $this->isArchived()) {
+    // Updated revoked and archived fields.
+    $changed = FALSE;
+    if ($this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
+      $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
+      $this->set(ParDataEntity::REVOKE_REASON_FIELD, NULL);
+      $changed = TRUE;
+    }
+    if ($this->getTypeEntity()->isArchivable() && $this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
       $this->set(ParDataEntity::ARCHIVE_REASON_FIELD, NULL);
+      $changed = TRUE;
+    }
+
+    if ($changed) {
+      // Always revision status changes.
+      $this->setNewRevision(TRUE);
 
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
@@ -437,10 +442,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function getRawStatus() {
     if ($this->isRevoked()) {
-      return 'revoked';
+      return self::REVOKE_FIELD;
     }
     if ($this->isArchived()) {
-      return 'archived';
+      return self::ARCHIVE_FIELD;
     }
     if (!$this->isTransitioned()) {
       return 'n/a';
@@ -506,38 +511,41 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       return $status_revision;
     }
 
-    if (!$this->hasStatus()) {
+    if (!$this->hasStatus() || !$status) {
       return NULL;
     }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
-    // Loop through all statuses and perform custom checks to
-    // find the most recent change the specified status.
+    // Loop through all statuses to find the revision when the status was changed.
     $check_status_query = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->getQuery();
     $check_status_query->allRevisions()
       ->condition('id', $this->id())
-      ->sort('revision_timestamp', 'ASC');
+      ->sort('revision_timestamp', 'DESC');
     $results = $check_status_query->execute();
 
-    $status_revision = NULL;
+    $previous_revision = NULL;
     if (!empty($results)) {
-      foreach ($results as $revision_id => $r) {
+      foreach ($results as $revision_id => $rev) {
         $revision = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->loadRevision($revision_id);
-
-        // If the status matches then we can save this as the status.
-        if ($revision && $revision->get($field_name)->getString() === $status) {
-          $status_revision = $revision;
+        if (!$revision) {
+          continue;
         }
-        // If we have already found an appropriate revision and the status
-        // has changed then don't go any further.
-        if ($status_revision && $revision->get($field_name)->getString() !== $status) {
+
+        // Stop looking for previous revisions if one has already been found
+        // and the current revision doesn't match the status that is being searched for.
+        if ($previous_revision && $status !== $revision->getRawStatus()) {
           break;
+        }
+
+        // Set the revision.
+        if ($status === $revision->getRawStatus()) {
+          $previous_revision = $revision;
         }
       }
     }
 
-    return $status_revision;
+    return $previous_revision;
   }
 
   /**
