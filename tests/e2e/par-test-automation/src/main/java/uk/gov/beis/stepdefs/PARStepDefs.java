@@ -1,13 +1,11 @@
 package uk.gov.beis.stepdefs;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Map;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -151,7 +149,7 @@ public class PARStepDefs {
 	private ReplyInspectionFeedbackPage replyInspectionFeedbackPage;
 	private PartnershipAdvancedSearchPage partnershipAdvancedSearchPage;
 	private UserProfileConfirmationPage userProfileConfirmationPage;
-	private UserNotificationPreferencesPage userNotificationPreferencesPage;
+	private UserNotificationPreferencesPage userNotificationPreferencesPage; // Note for Leo: This is not being used, does it need removing?
 	private MailLogPage mailLogPage;
 	private RequestDeviationPage requestDeviationPage;
 	private InspectionPlanExpirationPage inspectionPlanExpirationPage;
@@ -1193,54 +1191,47 @@ public class PARStepDefs {
 		LOG.info("Successfully replaced the original subscription list with a new list.");
 	}
 
-	@When("^the user creates a new person$")
-	public void the_user_creates_a_new_person() throws Throwable {
+	@When("^the user creates a new person:$")
+	public void the_user_creates_a_new_person(DataTable person) throws Throwable { 
 		parDashboardPage.selectManagePeople();
 		managePeoplePage.selectAddPerson();
 
 		LOG.info("Adding a new person.");
-		String firstName = RandomStringUtils.randomAlphabetic(8);
-		String lastName = RandomStringUtils.randomAlphabetic(8);
-
-		addPersonsContactDetailsPage.enterTitle("Mr");
-		addPersonsContactDetailsPage.enterFirstname(firstName);
-		addPersonsContactDetailsPage.enterLastname(lastName);
-		addPersonsContactDetailsPage.enterWorkPhoneNumber("012");
-		addPersonsContactDetailsPage.enterMobilePhoneNumber("0745");
-		addPersonsContactDetailsPage.enterEmailAddress(firstName + "@" + lastName + ".com");
-		
-		DataStore.saveValue(UsableValues.PERSON_FIRSTNAME, firstName); 
-		DataStore.saveValue(UsableValues.PERSON_LASTNAME, lastName);
-		
+		addPersonsContactDetailsPage.enterContactDetails(person);
 		addPersonsContactDetailsPage.clickContinueButton();
+		
+		LOG.info("Successfully entered new contact details.");
+		
 		givePersonAccountPage.selectInviteUserToCreateAccount();
 		givePersonAccountPage.clickContinueButton();
 
-		choosePersonMembershipPage.selectAuthority("10");
-		choosePersonMembershipPage.selectOrganisation("Dry Cleaner");
+		LOG.info("Successfully chose to invite the person to create an account.");
+		
+		choosePersonMembershipPage.selectAuthority();
+		choosePersonMembershipPage.selectOrganisation();
 		choosePersonMembershipPage.clickContinueButton();
-
+		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
+		LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
+		
 		personUserTypeSelectionPage.selectEnforcementOfficer();
 		personUserTypeSelectionPage.clickContinueButton();
-
+		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
+		
 		invitePersonToCreateAccountPage.clickInviteButton();
 
+		LOG.info("Successfully sent account invite.");
+		
 		profileReviewPage.savePersonCreation();
 		personCompletionConfirmationPage.clickDoneButton();
-		personsProfilePage.clickDoneButton();
-
-		LOG.info("Successfully added a new person.");
 	}
 
-	@Then("^the user can verify the person was created successfully$")
-	public void the_user_can_verify_the_person_was_created_successfully() throws Throwable {
-		String personsName = DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
-		
-		LOG.info("New Persons Name: " + personsName);
-		managePeoplePage.enterNameOrEmail(personsName);
-		managePeoplePage.clickSubmit();
-
-		assertEquals(personsName, managePeoplePage.GetPersonName());
+	@Then("^the user can verify the person was created successfully and can see resend an account invite$")
+	public void the_user_can_verify_the_person_was_created_successfully_and_can_see_resend_an_account_invite() throws Throwable {
+		assertTrue("Failed: Header does not contain the person's fullname and title.", personsProfilePage.checkHeaderForName());
+		assertTrue("Failed: Cannot find the Re-send account creation invite link.", personsProfilePage.checkForUserAccountInvitationLink());
+		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", personsProfilePage.checkContactName());
+		assertTrue("Failed: Contact email field does not contain the correct email address.", personsProfilePage.checkContactEmail());
+		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", personsProfilePage.checkContactPhoneNumbers());
 	}
 
 	@When("^the user searches for an existing person successfully$")
@@ -1259,61 +1250,47 @@ public class PARStepDefs {
 		personsProfilePage.clickUpdateUserButton();
 	}
 
-	@When("^the user updates an existing person$")
-	public void the_user_updates_an_existing_person_with_the_following_details() throws Throwable {
+	@When("^the user updates an existing person:$")
+	public void the_user_updates_an_existing_person_with_the_following_details(DataTable person) throws Throwable {
 		LOG.info("Updating an existing person.");
-		String firstName = RandomStringUtils.randomAlphabetic(8);
-		String lastName = RandomStringUtils.randomAlphabetic(8);
-
-		addPersonsContactDetailsPage.enterTitle("Dr");
-		addPersonsContactDetailsPage.enterFirstname(firstName);
-		addPersonsContactDetailsPage.enterLastname(lastName);
-		addPersonsContactDetailsPage.enterWorkPhoneNumber("012046588031");
-		addPersonsContactDetailsPage.enterMobilePhoneNumber("07450606901");
-		addPersonsContactDetailsPage.enterEmailAddress(firstName + "@" + lastName + ".com");
 		
-		DataStore.saveValue(UsableValues.PERSON_FIRSTNAME, firstName); 
-		DataStore.saveValue(UsableValues.PERSON_LASTNAME, lastName);
-		
+		addPersonsContactDetailsPage.enterContactDetails(person);
 		addPersonsContactDetailsPage.clickContinueButton();
 
-		LOG.info("Successfully Updated an person's contact details.");
+		LOG.info("Successfully entered new contact details.");
 
 		givePersonAccountPage.selectInviteUserToCreateAccount();
 		givePersonAccountPage.clickContinueButton();
 
-		LOG.info("Successfully Invited the person to create an account.");
+		LOG.info("Successfully chose to invite the person to create an account.");
 
-		choosePersonMembershipPage.selectAuthority("10");
-		choosePersonMembershipPage.selectOrganisation("Cafe");
+		choosePersonMembershipPage.selectAuthority();
+		choosePersonMembershipPage.selectOrganisation();
 		choosePersonMembershipPage.clickContinueButton();
 
-		LOG.info("Successfully Updated an person's Authority and Organisation Memberships.");
+		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
+		LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
 
 		personUserTypeSelectionPage.selectAuthorityMember();
 		personUserTypeSelectionPage.clickContinueButton();
 
-		LOG.info("Successfully Updated an person's User Role.");
+		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
 
 		invitePersonToCreateAccountPage.clickInviteButton();
 
-		LOG.info("Successfully Updated the person's Account creation invite.");
+		LOG.info("Successfully sent account invite.");
 
 		profileReviewPage.savePersonCreation();
 		personCompletionConfirmationPage.clickDoneButton();
-		personsProfilePage.clickDoneButton();
-
-		LOG.info("Successfully Updated an existing person.");
 	}
 
-	@Then("^the user can verify the person was updated successfully$")
-	public void the_user_can_verify_the_person_was_updated_successfully() throws Throwable {
-		String personsName = DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
-		
-		managePeoplePage.enterNameOrEmail(personsName);
-		managePeoplePage.clickSubmit();
-
-		assertEquals(personsName, managePeoplePage.GetPersonName());
+	@Then("^the user can verify the person was updated successfully and can see resend an account invite$")
+	public void the_user_can_verify_the_person_was_updated_successfully_and_can_see_resend_an_account_invite() throws Throwable {
+		assertTrue("Failed: Header does not contain the person's fullname and title.", personsProfilePage.checkHeaderForName());
+		assertTrue("Failed: Cannot find the Re-send account creation invite link.", personsProfilePage.checkForUserAccountInvitationLink());
+		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", personsProfilePage.checkContactName());
+		assertTrue("Failed: Contact email field does not contain the correct email address.", personsProfilePage.checkContactEmail());
+		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", personsProfilePage.checkContactPhoneNumbers());
 	}
 	
 	@Then("^the user can verify the enforcement officers details are displayed$")

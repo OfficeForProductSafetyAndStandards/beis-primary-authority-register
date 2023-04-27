@@ -2,9 +2,13 @@ package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import uk.gov.beis.enums.UsableValues;
+import uk.gov.beis.utility.DataStore;
 
 public class PersonUserRoleTypeSelectionPage extends BasePageObject {
 	public PersonUserRoleTypeSelectionPage() throws ClassNotFoundException, IOException {
@@ -38,29 +42,34 @@ public class PersonUserRoleTypeSelectionPage extends BasePageObject {
 	
 	public void selectOrganisationMember() { // Disappeared from the page but was there when I first created this Class??
 		organisationMemberRadioBtn.click();
+		getRoleName();
 	}
 	
 	public void selectAuthorityMember() {
 		authorityMemberRadioBtn.click();
+		getRoleName();
 	}
 	
 	public void selectAuthorityManager() {
 		authorityManagerRadioBtn.click();
+		getRoleName();
 	}
 	
 	public void selectEnforcementOfficer() {
 		enforcementOfficerRadioBtn.click();
+		getRoleName();
 	}
 	
 	public void selectProcessingTeamMember() {
 		processingTeamMemberRadioBtn.click();
+		getRoleName();
 	}
 	
 	public void selectSeniorAdministrationOfficer() {
 		seniorAdministrationOfficerRadioBtn.click();
+		getRoleName();
 	}
 	
-	// Check these Steps
 	public InvitePersonToCreateAccountPage clickContinueButton() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, InvitePersonToCreateAccountPage.class);
@@ -74,5 +83,13 @@ public class PersonUserRoleTypeSelectionPage extends BasePageObject {
 	public DashboardPage clickCancelButton() {
 		cancelBtn.click();
 		return PageFactory.initElements(driver, DashboardPage.class);
+	}
+	
+	private void getRoleName() {
+		for(WebElement div : driver.findElements(By.className("govuk-radios__item"))) {
+			if(div.findElement(By.tagName("input")).isSelected()) {
+				DataStore.saveValue(UsableValues.ACCOUNT_TYPE, div.findElement(By.tagName("label")).getText());
+			}
+		}
 	}
 }

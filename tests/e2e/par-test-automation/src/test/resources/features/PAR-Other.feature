@@ -46,7 +46,6 @@ Feature:
     And the user logs in with the "par_authority@example.com" user credentials
     When the user selects a contact to update
     Then the user can successfully subscribe to PAR News
-    
     #Helpdesk Verification
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -60,7 +59,6 @@ Feature:
     And the user logs in with the "par_authority@example.com" user credentials
     When the user selects a contact to update
     Then the user can successfully unsubscribe from PAR News
-    
     #Helpdesk Verification
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -96,13 +94,17 @@ Feature:
   Scenario: Verify the Addition of a new person as a Help Desk User (Happy Path - PAR-2098)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user creates a new person
-    Then the user can verify the person was created successfully
+    When the user creates a new person:
+      | Title | WorkNumber | MobileNumber |
+      | Mr    |      01204 |              |
+    Then the user can verify the person was created successfully and can see resend an account invite
 
   @regression @helpDesk @managePeople
-  Scenario: Verify the Update of an existing person as a Help Desk User (Happy Path - PAR-2098)
+  Scenario: Verify the Update of an existing person that has not created an account as a Help Desk User (Happy Path - PAR-2098)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for an existing person successfully
-    And the user updates an existing person
-    Then the user can verify the person was updated successfully
+    And the user updates an existing person:
+      | Title | WorkNumber  | MobileNumber |
+      | Dr    | 01204996501 |  07405882265 |
+    Then the user can verify the person was updated successfully and can see resend an account invite
