@@ -334,6 +334,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
+
       $this->get(ParDataEntity::REVOKE_REASON_FIELD)->setValue([
         'value' => $reason,
         'format' => 'plain_text',
@@ -348,17 +349,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function unrevoke($save = TRUE) {
-    if ($this->isNew()) {
-      $save = FALSE;
-    }
-
-    if ($this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
-      $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
-      $this->set(ParDataEntity::REVOKE_REASON_FIELD, NULL);
-
-      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
-    }
-    return FALSE;
+    return $this->restore($save);
   }
 
   /**
@@ -391,13 +382,27 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function restore($save = TRUE) {
+    // Stop recursive loops for new entities.
     if ($this->isNew()) {
       $save = FALSE;
     }
 
-    if ($this->getTypeEntity()->isRevokable() && $this->isArchived()) {
+    // Updated revoked and archived fields.
+    $changed = FALSE;
+    if ($this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
+      $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
+      $this->set(ParDataEntity::REVOKE_REASON_FIELD, NULL);
+      $changed = TRUE;
+    }
+    if ($this->getTypeEntity()->isArchivable() && $this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
       $this->set(ParDataEntity::ARCHIVE_REASON_FIELD, NULL);
+      $changed = TRUE;
+    }
+
+    if ($changed) {
+      // Always revision status changes.
+      $this->setNewRevision(TRUE);
 
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
@@ -527,28 +532,14 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
           continue;
         }
 
-        // Get the status of the revision.
-        switch ($status) {
-          case self::REVOKE_FIELD:
-            $revision_status = !empty($revision->get(self::REVOKE_FIELD)->getString()) ? self::REVOKE_FIELD : NULL;
-
-            break;
-          case self::ARCHIVE_FIELD:
-            $revision_status = !empty($revision->get(self::ARCHIVE_FIELD)->getString()) ? self::ARCHIVE_FIELD : NULL;
-
-            break;
-          default:
-            $revision_status = $revision->get($field_name)->getString();
-        }
-
         // Stop looking for previous revisions if one has already been found
         // and the current revision doesn't match the status that is being searched for.
-        if ($previous_revision && $status !== $revision_status) {
+        if ($previous_revision && $status !== $revision->getRawStatus()) {
           break;
         }
 
         // Set the revision.
-        if ($status === $revision_status) {
+        if ($status === $revision->getRawStatus()) {
           $previous_revision = $revision;
         }
       }

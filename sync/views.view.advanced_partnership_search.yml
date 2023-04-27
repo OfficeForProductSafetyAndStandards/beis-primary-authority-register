@@ -2381,7 +2381,7 @@ display:
             link_to_item: false
             use_highlighting: false
             multi_type: separator
-            multi_separator: '; '
+            multi_separator: ', '
         partnership_status_1:
           id: partnership_status_1
           table: search_api_index_partnership_index
@@ -2567,7 +2567,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: '; '
+          separator: ', '
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api
