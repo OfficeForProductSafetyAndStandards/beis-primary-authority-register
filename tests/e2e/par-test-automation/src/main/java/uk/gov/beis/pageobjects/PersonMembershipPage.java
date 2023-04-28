@@ -110,9 +110,9 @@ public class PersonMembershipPage extends BasePageObject {
 		DataStore.saveValue(UsableValues.CHOSEN_AUTHORITY, randomAuthority);
 	}
 	
-	public PersonUserRoleTypeSelectionPage clickContinueButton() {
+	public PersonUserRoleTypePage clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, PersonUserRoleTypeSelectionPage.class);
+		return PageFactory.initElements(driver, PersonUserRoleTypePage.class);
 	}
 	
 	public DashboardPage clickCancelButton() {

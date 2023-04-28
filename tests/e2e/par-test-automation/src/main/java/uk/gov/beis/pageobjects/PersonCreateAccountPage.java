@@ -6,8 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class InvitePersonToCreateAccountPage extends BasePageObject {
-	public InvitePersonToCreateAccountPage() throws ClassNotFoundException, IOException {
+public class PersonCreateAccountPage extends BasePageObject {
+	public PersonCreateAccountPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	

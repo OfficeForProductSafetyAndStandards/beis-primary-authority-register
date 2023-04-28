@@ -38,6 +38,12 @@ public class PersonsProfilePage extends BasePageObject {
 	@FindBy(partialLinkText = "Update")
 	private WebElement updateUserBtn;
 	
+	@FindBy(css = ".summary")
+	private WebElement moreInformationBtn;
+	
+	@FindBy(id = "contact-detail-locations-1")
+	private WebElement whereToContactDetails;
+	
 	@FindBy(linkText = "Done")
 	private WebElement doneBtn;
 	
@@ -89,6 +95,23 @@ public class PersonsProfilePage extends BasePageObject {
 	public UpdateUserContactDetailsPage clickUpdateUserButton() {
 		updateUserBtn.click();
 		return PageFactory.initElements(driver, UpdateUserContactDetailsPage.class);
+	}
+	
+	public Boolean seeMoreContactInformation() {
+		moreInformationBtn.click();
+		
+		if(whereToContactDetails.isDisplayed()) {
+			if(whereToContactDetails.getText().contains(DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY)) && 
+					whereToContactDetails.getText().contains(DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION))) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public ManagePeoplePage clickDoneButton() {

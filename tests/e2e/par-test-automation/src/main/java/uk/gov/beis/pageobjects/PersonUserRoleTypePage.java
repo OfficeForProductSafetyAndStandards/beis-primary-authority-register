@@ -10,8 +10,8 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.utility.DataStore;
 
-public class PersonUserRoleTypeSelectionPage extends BasePageObject {
-	public PersonUserRoleTypeSelectionPage() throws ClassNotFoundException, IOException {
+public class PersonUserRoleTypePage extends BasePageObject {
+	public PersonUserRoleTypePage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
@@ -70,9 +70,9 @@ public class PersonUserRoleTypeSelectionPage extends BasePageObject {
 		getRoleName();
 	}
 	
-	public InvitePersonToCreateAccountPage clickContinueButton() {
+	public PersonCreateAccountPage clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, InvitePersonToCreateAccountPage.class);
+		return PageFactory.initElements(driver, PersonCreateAccountPage.class);
 	}
 	
 	public UserProfileConfirmationPage clickProfileReviewContinueButton() {
