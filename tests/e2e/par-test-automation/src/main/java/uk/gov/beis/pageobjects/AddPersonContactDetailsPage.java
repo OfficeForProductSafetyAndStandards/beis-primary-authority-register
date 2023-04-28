@@ -57,11 +57,11 @@ public class AddPersonContactDetailsPage extends BasePageObject {
 			emailAddressField.sendKeys(emailAddress);
 			
 			DataStore.saveValue(UsableValues.PERSON_TITLE, data.get("Title"));
-			DataStore.saveValue(UsableValues.PERSON_FIRSTNAME, firstName); 
-			DataStore.saveValue(UsableValues.PERSON_LASTNAME, lastName);
+			DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, firstName); 
+			DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, lastName);
 			DataStore.saveValue(UsableValues.PERSON_WORK_NUMBER, data.get("WorkNumber"));
 			DataStore.saveValue(UsableValues.PERSON_MOBILE_NUMBER, data.get("MobileNumber"));
-			DataStore.saveValue(UsableValues.PERSON_EMAIL, emailAddress);
+			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, emailAddress);
 		}
 	}
 	

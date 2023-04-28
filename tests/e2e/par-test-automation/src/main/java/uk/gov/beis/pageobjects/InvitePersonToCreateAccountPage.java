@@ -17,9 +17,9 @@ public class InvitePersonToCreateAccountPage extends BasePageObject {
 	@FindBy(id = "edit-cancel")
 	private WebElement cancelBtn;
 	
-	public ProfileReviewPage clickInviteButton() {
+	public UserProfileConfirmationPage clickInviteButton() {
 		inviteBtn.click();
-		return PageFactory.initElements(driver, ProfileReviewPage.class);
+		return PageFactory.initElements(driver, UserProfileConfirmationPage.class);
 	}
 	
 	public DashboardPage clickCancelButton() {

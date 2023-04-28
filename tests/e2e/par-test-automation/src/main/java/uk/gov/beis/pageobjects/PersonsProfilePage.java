@@ -50,7 +50,7 @@ public class PersonsProfilePage extends BasePageObject {
 	}
 	
 	public Boolean checkUserAccountEmail() {
-		return userAccountEmail.getText().contains(DataStore.getSavedValue(UsableValues.PERSON_EMAIL));
+		return userAccountEmail.getText().contains(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 	}
 	
 	public Boolean checkUserAccountType() {
@@ -62,7 +62,7 @@ public class PersonsProfilePage extends BasePageObject {
 	}
 	
 	public Boolean checkContactEmail() {
-		return userContactEmail.getText().contains(DataStore.getSavedValue(UsableValues.PERSON_EMAIL).toLowerCase());
+		return userContactEmail.getText().contains(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL).toLowerCase());
 	}
 	
 	public String getContactEmail() {
@@ -98,7 +98,7 @@ public class PersonsProfilePage extends BasePageObject {
 	
 	private String getPersonsName() {
 		 return DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " " 
-				+ DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " 
-				+ DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
+			+ DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " " 
+			+ DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
 	}
 }
