@@ -18,12 +18,12 @@ import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
-import uk.gov.beis.pageobjects.AddPersonContactDetailsPage;
+import uk.gov.beis.pageobjects.PersonContactDetailsPage;
 import uk.gov.beis.pageobjects.AuthorityAddressDetailsPage;
-import uk.gov.beis.pageobjects.ChoosePersonMembershipPage;
+import uk.gov.beis.pageobjects.PersonMembershipPage;
 import uk.gov.beis.pageobjects.AuthorityConfirmationPage;
 import uk.gov.beis.pageobjects.AuthorityDashboardPage;
-import uk.gov.beis.pageobjects.GivePersonAccountPage;
+import uk.gov.beis.pageobjects.PersonAccountPage;
 import uk.gov.beis.pageobjects.AuthorityNamePage;
 import uk.gov.beis.pageobjects.AuthorityPage;
 import uk.gov.beis.pageobjects.AuthorityTypePage;
@@ -201,9 +201,9 @@ public class PARStepDefs {
 
 	// Person Creation and Update
 	private ManagePeoplePage managePeoplePage;
-	private AddPersonContactDetailsPage addPersonsContactDetailsPage;
-	private GivePersonAccountPage givePersonAccountPage;
-	private ChoosePersonMembershipPage choosePersonMembershipPage;
+	private PersonContactDetailsPage addPersonsContactDetailsPage;
+	private PersonAccountPage givePersonAccountPage;
+	private PersonMembershipPage choosePersonMembershipPage;
 	private PersonUserRoleTypeSelectionPage personUserTypeSelectionPage;
 	private InvitePersonToCreateAccountPage invitePersonToCreateAccountPage;
 	private PersonsProfilePage personsProfilePage;
@@ -309,9 +309,9 @@ public class PARStepDefs {
 
 		// Person Creation and Update
 		managePeoplePage = PageFactory.initElements(driver, ManagePeoplePage.class);
-		addPersonsContactDetailsPage = PageFactory.initElements(driver, AddPersonContactDetailsPage.class);
-		choosePersonMembershipPage = PageFactory.initElements(driver, ChoosePersonMembershipPage.class);
-		givePersonAccountPage = PageFactory.initElements(driver, GivePersonAccountPage.class);
+		addPersonsContactDetailsPage = PageFactory.initElements(driver, PersonContactDetailsPage.class);
+		choosePersonMembershipPage = PageFactory.initElements(driver, PersonMembershipPage.class);
+		givePersonAccountPage = PageFactory.initElements(driver, PersonAccountPage.class);
 		personUserTypeSelectionPage = PageFactory.initElements(driver, PersonUserRoleTypeSelectionPage.class);
 		invitePersonToCreateAccountPage = PageFactory.initElements(driver, InvitePersonToCreateAccountPage.class);
 		personsProfilePage = PageFactory.initElements(driver, PersonsProfilePage.class);

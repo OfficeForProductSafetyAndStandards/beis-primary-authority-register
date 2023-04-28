@@ -7,8 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class GivePersonAccountPage extends BasePageObject {
-	public GivePersonAccountPage() throws ClassNotFoundException, IOException {
+public class PersonAccountPage extends BasePageObject {
+	public PersonAccountPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
@@ -43,9 +43,9 @@ public class GivePersonAccountPage extends BasePageObject {
 		createUserAccountRadioBtn.click();
 	}
 	
-	public ChoosePersonMembershipPage clickContinueButton() {
+	public PersonMembershipPage clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, ChoosePersonMembershipPage.class);
+		return PageFactory.initElements(driver, PersonMembershipPage.class);
 	}
 	
 	public DashboardPage clickCancelButton() {

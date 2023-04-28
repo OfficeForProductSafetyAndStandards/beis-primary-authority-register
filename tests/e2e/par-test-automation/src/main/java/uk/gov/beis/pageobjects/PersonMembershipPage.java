@@ -13,8 +13,8 @@ import org.openqa.selenium.support.ui.Select;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.utility.DataStore;
 
-public class ChoosePersonMembershipPage extends BasePageObject {
-	public ChoosePersonMembershipPage() throws ClassNotFoundException, IOException {
+public class PersonMembershipPage extends BasePageObject {
+	public PersonMembershipPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 

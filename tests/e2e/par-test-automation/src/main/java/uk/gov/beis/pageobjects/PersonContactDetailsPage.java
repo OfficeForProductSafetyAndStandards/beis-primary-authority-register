@@ -12,8 +12,8 @@ import cucumber.api.DataTable;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.utility.DataStore;
 
-public class AddPersonContactDetailsPage extends BasePageObject {
-	public AddPersonContactDetailsPage() throws ClassNotFoundException, IOException {
+public class PersonContactDetailsPage extends BasePageObject {
+	public PersonContactDetailsPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
@@ -65,9 +65,9 @@ public class AddPersonContactDetailsPage extends BasePageObject {
 		}
 	}
 	
-	public GivePersonAccountPage clickContinueButton() {
+	public PersonAccountPage clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, GivePersonAccountPage.class);
+		return PageFactory.initElements(driver, PersonAccountPage.class);
 	}
 	
 	public DashboardPage clickCancelButton() {
