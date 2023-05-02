@@ -221,7 +221,7 @@ display:
           admin_label: ''
           entity_type: message
           plugin_id: par_notification_link
-          label: ''
+          label: Action
           exclude: false
           alter:
             alter_text: false
@@ -529,7 +529,7 @@ display:
           columns:
             mid: mid
             created: created
-            notification_for: notification_for
+            notification_summary: notification_summary
             notification_link: notification_link
             tasks: tasks
           default: '-1'
@@ -548,11 +548,11 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            notification_for:
+            notification_summary:
               sortable: false
               default_sort_order: asc
               align: ''
-              separator: '<br><br>'
+              separator: ''
               empty_column: false
               responsive: ''
             notification_link:

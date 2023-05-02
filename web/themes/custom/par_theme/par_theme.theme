@@ -143,3 +143,15 @@ function par_theme_page_attachments_alter(array &$attachments) {
     $attachments['#attached']['library'][] = 'par_theme/tota11y';
   }
 }
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ *
+ * Add views template suggestions.
+ *
+ * @inheritdoc
+ */
+function par_theme_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
+  $suggestions[] = 'views_view__' . $variables['view']->id();
+}
+

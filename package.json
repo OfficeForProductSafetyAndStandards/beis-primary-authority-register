@@ -12,8 +12,6 @@
   "engine-trict": true,
   "dependencies": {
     "chosen-js": "^1.8.7",
-    "govuk_frontend_toolkit": "~6.0.4",
-    "govuk-elements-sass": "^3.1.3",
     "gulp": "^4.0.0",
     "gulp-cli": "^2.1.0",
     "gulp-sass": "^4.0.0",

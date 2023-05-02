@@ -46,38 +46,42 @@
  * @ingroup themeable
  */
 #}
+{% if page.footer_left %}
+  {% set footer_left_class = 'govuk-grid-column-full' %}
+{% endif %}
+
+{% if page.footer_right %}
+  {% set footer_left_class = 'govuk-grid-column-two-thirds' %}
+  {% set footer_right_class = 'govuk-grid-column-one-thirds' %}
+{% endif %}
+
 {% if page.cookies %}
-    {{ page.cookies }}
+  {{ page.cookies }}
 {% endif %}
 
 {% if govuk_cookie %}
   {{ govuk_cookie }}
 {% endif %}
 
-<div id="skiplink-container">
-  <div>
-    <a href="#content" class="skiplink govuk-skip-link" title="Skip to main content">Skip to main content</a>
-  </div>
-</div>
+<a href="#content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 
-<header class="govuk-header" id="global-header" role="banner" data-module="govuk-header">
+<header class="govuk-header" role="banner" data-module="govuk-header">
   <div class="govuk-header__container govuk-width-container">
     {{ govuk_header }}
-    {% if page.navigation %}
-      <div class="hamburger icon" onclick="toggleMobileMenu();">
-        <i class="fa fa-bars"></i>
-      </div>
-      {{ page.navigation }}
-    {% endif %}
-    {% if search_box %}
-      {{ search_box }}
-    {% endif %}
+    <div class="govuk-header__content">
+      <a href="{{ path('<front>') }}" class="govuk-header__link govuk-header__service-name">
+        {{ site_name }}
+      </a>
+      {% if page.navigation %}
+        {{ page.navigation }}
+      {% endif %}
+    </div>
   </div>
-  <div id="mobile-menu"></div>
 </header>
-<div class="govuk-width-container">
+
+<div class="govuk-width-container app-width-container">
   {% if govuk_phase_banner %}
-    {{  govuk_phase_banner }}
+    {{ govuk_phase_banner }}
   {% endif %}
 
   {% if page.pre_content %}
@@ -116,17 +120,35 @@
     </div>
   </main>
 </div>
-<footer class="govuk-footer" id="footer" role="contentinfo">
-    <div class="govuk-width-container ">
-      <div class="govuk-footer__meta">
-        <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
-          {% if page.footer %}
-            {{ page.footer }}
-          {% endif %}
-          {{ govuk_footer }}
-        </div>
-        {{ govuk_meta }}
+
+<footer class="govuk-footer" role="contentinfo">
+  <div class="govuk-width-container">
+
+    {% if (page.footer_left or page.footer_right) %}
+    <div class="govuk-footer__navigation">
+      {% if page.footer_left %}
+      <div class="govuk-footer__section {{ footer_left_class }}">
+        {{ page.footer_left }}
       </div>
+      {% endif %}
+      {% if page.footer_right %}
+      <div class="govuk-footer__section {{ footer_right_class }}">
+        {{ page.footer_right }}
+      </div>
+      {% endif %}
     </div>
-  </footer>
-<!-- ends page template -->
+    <hr class="govuk-footer__section-break">
+    {% endif %}
+
+    <div class="govuk-footer__meta">
+      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+        {% if page.footer %}
+          {{ page.footer }}
+        {% endif %}
+        {{ govuk_footer }}
+      </div>
+      {{ govuk_meta }}
+    </div>
+  </div>
+
+</footer>
