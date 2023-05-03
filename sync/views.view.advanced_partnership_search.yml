@@ -2454,7 +2454,7 @@ display:
           field: partnership_status_date
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: partnership_status
           plugin_id: search_api_field
           label: 'Last Status Update'
           exclude: false
@@ -3749,26 +3749,77 @@ display:
         type: data_field
         options:
           field_options:
-            nothing_1:
-              alias: ''
+            id:
+              alias: ID
+              raw_output: false
+            authority_name:
+              alias: authority_name
+              raw_output: false
+            organisation_name:
+              alias: organisation_name
               raw_output: false
             partnership_type:
-              alias: ''
-              raw_output: false
-            partnership_status_1:
-              alias: ''
-              raw_output: false
-            partnership_status_date:
-              alias: ''
+              alias: partnership_type
               raw_output: false
             function_name:
-              alias: ''
+              alias: regulatory_function_names
+              raw_output: false
+            partnership_status_1:
+              alias: partnership_status
+              raw_output: false
+            partnership_status_date:
+              alias: partnership_last_updated
               raw_output: false
             trading_name:
-              alias: ''
+              alias: trading_names
               raw_output: false
-            nothing:
-              alias: ''
+            registered_name:
+              alias: legal_entity_names
+              raw_output: false
+            registered_number:
+              alias: legal_entity_numbers
+              raw_output: false
+            member_display:
+              alias: member_list_type
+              raw_output: false
+            member_number:
+              alias: number_members
+              raw_output: false
+            member_list_updated:
+              alias: member_list_updated
+              raw_output: false
+            inspection_plan_title:
+              alias: inspection_plan_titles
+              raw_output: false
+            inspection_plan_status:
+              alias: inspection_plan_statuses
+              raw_output: false
+            inspection_plan_end_date:
+              alias: inspection_plan_end_dates
+              raw_output: false
+            advice_title:
+              alias: advice_titles
+              raw_output: false
+            advice_type:
+              alias: advice_types
+              raw_output: false
+            advice_regulatory_function:
+              alias: advice_regulatory_functions
+              raw_output: false
+            advice_status:
+              alias: advice_statuses
+              raw_output: false
+            authority_terms:
+              alias: authority_terms_and_conditions
+              raw_output: false
+            organisation_terms:
+              alias: organisation_terms_and_conditions
+              raw_output: false
+            partnership_info_agreed_authority:
+              alias: authority_agreed_partnership_information
+              raw_output: false
+            partnership_info_agreed_business:
+              alias: organisation_agreed_partnership_information
               raw_output: false
       defaults:
         title: false
@@ -3785,7 +3836,7 @@ display:
       export_method: batch
       export_batch_size: 100
       export_limit: 0
-      export_filesystem: s3private
+      export_filesystem: public
       custom_redirect_path: false
       redirect_to_display: advanced_search
       include_query_params: false
