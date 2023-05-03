@@ -1228,9 +1228,9 @@ display:
               plugin_id: default
               advanced:
                 combine: true
-                combine_rewrite: "Last Status Update Desc|Most recently updated\r\nLast Status Update Asc|Least recently updated"
-                reset: false
-                reset_label: ''
+                combine_rewrite: "Created Desc|Most recently created\r\nCreated Asc|Least recently created\r\nLast Status Update Desc|Most recently updated\r\nLast Status Update Asc|Least recently updated\r\nNumber of Members Desc|Most coordinated members\r\nNumber of Members Asc|Least coordinated members"
+                reset: true
+                reset_label: 'Original order'
                 collapsible: false
                 collapsible_label: 'Sort options'
                 is_secondary: false
@@ -1342,8 +1342,8 @@ display:
           plugin_id: search_api
           order: DESC
           expose:
-            label: ''
-            field_identifier: ''
+            label: Created
+            field_identifier: created
           exposed: false
         partnership_status_date:
           id: partnership_status_date
@@ -1357,6 +1357,19 @@ display:
           expose:
             label: 'Last Status Update'
             field_identifier: partnership_status_date
+          exposed: true
+        member_number:
+          id: member_number
+          table: search_api_index_partnership_index
+          field: member_number
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api
+          order: DESC
+          expose:
+            label: 'Number of Members'
+            field_identifier: member_number
           exposed: true
       arguments: {  }
       filters:
@@ -3335,7 +3348,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: '; '
+          separator: ', '
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api_entity
