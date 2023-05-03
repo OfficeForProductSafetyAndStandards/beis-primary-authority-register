@@ -2401,7 +2401,7 @@ display:
           field: partnership_status
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: partnership_status
           plugin_id: search_api
           label: 'Partnership Status'
           exclude: false
@@ -2454,7 +2454,7 @@ display:
           field: partnership_status_date
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: partnership_status
           plugin_id: search_api_field
           label: 'Last Status Update'
           exclude: false
