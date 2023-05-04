@@ -1228,7 +1228,7 @@ display:
               plugin_id: default
               advanced:
                 combine: true
-                combine_rewrite: "Created Desc|Most recently created\r\nCreated Asc|Least recently created\r\nLast Status Update Desc|Most recently updated\r\nLast Status Update Asc|Least recently updated\r\nNumber of Members Desc|Most coordinated members\r\nNumber of Members Asc|Least coordinated members"
+                combine_rewrite: "Created Desc|Newest\r\nCreated Asc|Oldest\r\nLast Status Update Desc|Most recently updated\r\nLast Status Update Asc|Least recently updated\r\nNumber of Members Desc|Most coordinated members\r\nNumber of Members Asc|Least coordinated members"
                 reset: true
                 reset_label: 'Original order'
                 collapsible: false
@@ -1344,7 +1344,7 @@ display:
           expose:
             label: Created
             field_identifier: created
-          exposed: false
+          exposed: true
         partnership_status_date:
           id: partnership_status_date
           table: search_api_index_partnership_index
