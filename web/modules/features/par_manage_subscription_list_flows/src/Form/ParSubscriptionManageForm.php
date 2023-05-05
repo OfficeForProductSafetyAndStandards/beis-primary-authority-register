@@ -22,8 +22,9 @@ class ParSubscriptionManageForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function titleCallback() {
-    return 'Help Desk | Manage a subscription list';
+  public function titleCallback($list = NULL) {
+      $list_name = $list ? $this->getSubscriptionManager()->getListName($list) : 'Subscription List';
+    return "Manage a subscription list | $list_name";
   }
 
   public function getEmailValidator() {

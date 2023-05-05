@@ -574,7 +574,7 @@ display:
           empty: true
           title: 'Manage subscriptions to PAR News'
           assistive_text: ''
-          link: /helpdesk/subscriptions/par-news/manage
+          link: /subscriptions/par-news/manage
           class: ''
         par_flow_link_1:
           id: par_flow_link_1
@@ -587,7 +587,7 @@ display:
           empty: false
           title: 'Manage subscriptions for Release Notifications'
           assistive_text: ''
-          link: /helpdesk/subscriptions/par-releases/manage
+          link: /subscriptions/par-releases/manage
           class: ''
       footer:
         par_flow_link:

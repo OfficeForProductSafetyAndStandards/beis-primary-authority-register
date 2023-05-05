@@ -23,7 +23,7 @@ class ParFlowStorage extends ConfigEntityStorage {
    *   An array of flows keyed by id or an empty array if none were found.
    */
   public function loadByRoute($route) {
-    $cache = \Drupal::cache('par_flows')->get("route:{$route}");
+    $cache = \Drupal::cache()->get("par_flows_route:{$route}");
     if ($cache) {
       return $cache->data;
     }
@@ -36,7 +36,7 @@ class ParFlowStorage extends ConfigEntityStorage {
           $tags[] = "par_flow:{$flow->id()}";
         }
       }
-      \Drupal::cache('par_flows')->set("route:{$route}", $flows, Cache::PERMANENT, $tags);
+      \Drupal::cache()->set("par_flows_route:{$route}", $flows, Cache::PERMANENT, $tags);
     }
 
     return $flows;
@@ -52,7 +52,7 @@ class ParFlowStorage extends ConfigEntityStorage {
    *   An array of flows keyed by id or an empty array if none were found.
    */
   public function loadByForm($form) {
-    $cache = \Drupal::cache('par_flows')->get("form:{$form}");
+    $cache = \Drupal::cache()->get("par_flows_form:{$form}");
     if ($cache) {
       return $cache->data;
     }
@@ -65,7 +65,7 @@ class ParFlowStorage extends ConfigEntityStorage {
           $tags[] = "par_flow:{$flow->id()}";
         }
       }
-      \Drupal::cache('par_flows')->set("form:{$form}", $flows, Cache::PERMANENT, $tags);
+      \Drupal::cache()->set("par_flows_form:{$form}", $flows, Cache::PERMANENT, $tags);
     }
 
     return $flows;
