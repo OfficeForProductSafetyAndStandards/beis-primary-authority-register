@@ -19,9 +19,13 @@ public class PartnershipDescriptionPage extends BasePageObject {
 	public BusinessPage enterPartnershipDescription(String description, boolean secondJourney) throws Throwable {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
-		WebElement button = secondJourney ? driver.findElement(By.id("edit-save"))
-				: driver.findElement(By.id("edit-next"));
-		button.click();
+		try {
+			scrollToElement(driver.findElement(By.id("edit-next")));
+			driver.findElement(By.id("edit-next")).click();
+		} catch (Exception e) {
+			scrollToElement(driver.findElement(By.id("edit-save")));
+			driver.findElement(By.id("edit-save")).click();
+		}
 
 		return PageFactory.initElements(driver, BusinessPage.class);
 	}
