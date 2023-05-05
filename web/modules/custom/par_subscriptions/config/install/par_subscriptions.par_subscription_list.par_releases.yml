@@ -1,0 +1,4 @@
+id: par_releases
+label: 'PAR Releases'
+description: 'A subscription list for receiving information about releases and updates to the PAR digital service.'
+verification: true

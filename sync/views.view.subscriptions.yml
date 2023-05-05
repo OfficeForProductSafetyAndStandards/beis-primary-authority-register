@@ -4,15 +4,16 @@ status: true
 dependencies:
   config:
     - par_subscriptions.par_subscription_list.par_news
+    - par_subscriptions.par_subscription_list.par_releases
   module:
     - better_exposed_filters
-    - csv_serialization
     - pagerer
     - par_data
+    - par_member_upload_flows
+    - par_roles
     - par_subscriptions
     - rest
     - serialization
-    - user
     - views_data_export
 id: subscriptions
 label: Subscriptions
@@ -337,9 +338,12 @@ display:
                 rewrite:
                   filter_rewrite_values: ''
       access:
-        type: perm
+        type: views_access_multiple_permissions
         options:
-          perm: 'administer list par_news'
+          mult_perm:
+            'administer list par_news': 'administer list par_news'
+            'administer list par_releases': 'administer list par_releases'
+          mult_perm_all: 0
       cache:
         type: none
         options: {  }
@@ -361,8 +365,9 @@ display:
           value:
             all: all
             par_news: par_news
+            par_releases: par_releases
           group: 1
-          exposed: false
+          exposed: true
           expose:
             operator_id: list_op
             label: List
@@ -570,6 +575,19 @@ display:
           title: 'Manage subscriptions to PAR News'
           assistive_text: ''
           link: /helpdesk/subscriptions/par-news/manage
+          class: ''
+        par_flow_link_1:
+          id: par_flow_link_1
+          table: views
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: par_flow_link
+          empty: false
+          title: 'Manage subscriptions for Release Notifications'
+          assistive_text: ''
+          link: /helpdesk/subscriptions/par-releases/manage
           class: ''
       footer:
         par_flow_link:

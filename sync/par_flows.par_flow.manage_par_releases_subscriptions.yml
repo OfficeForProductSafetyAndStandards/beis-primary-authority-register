@@ -1,0 +1,26 @@
+uuid: 50d32912-04bb-4118-837a-e425c15272ca
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: O03O_Ct7RogX4esk7oJFHmJJ-ZI-dlc2pSfYcE5RRHo
+id: manage_par_releases_subscriptions
+label: 'Manage PAR Releases Subscriptions'
+default_title: null
+default_section_title: null
+description: 'The operations to manage subscription lists in bulk.'
+save_method: end
+states: null
+final_routes:
+  - view.subscriptions.subscription_list
+steps:
+  1:
+    route: par_manage_subscription_list_flows.par_releases.manage
+    form_id: manage_subscriptions
+    redirect:
+      next: 2
+  2:
+    route: par_manage_subscription_list_flows.par_releases.review
+    form_id: review_subscriptions
+    form_data:
+      manage: manage_subscriptions
