@@ -184,7 +184,7 @@ Feature:
     Then the user successfully views the enquiry
 
   @regression @enforcement
-  Scenario: Verify a Help Desk user can view Enforcement Notice details (Happy Path - PAR-2095, PAR-1855)
+  Scenario: Verify a Help Desk user can view Enforcement Notice details (Happy Path - PAR-2099, PAR-1855)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user selects the last created enforcement notice
@@ -196,7 +196,7 @@ Feature:
     Then the user removes the enforcement notice successfully
 
   @regression @enquiry
-  Scenario: Verify a Help Desk user can view general enquiry details (Happy Path - PAR-2096)
+  Scenario: Verify a Help Desk user can view general enquiry details (Happy Path - PAR-2100)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created partnership

@@ -25,11 +25,11 @@ public class UserProfileConfirmationPage extends BasePageObject {
 	
 	public boolean checkUserCreation() {
 		WebElement businessFirstName = driver.findElement(
-				By.xpath(businessFName.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME)).toLowerCase()));
+				By.xpath(businessFName.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME))));
 		WebElement businessLastName = driver.findElement(
-				By.xpath(businessLName.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME)).toLowerCase()));
+				By.xpath(businessLName.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME))));
 		WebElement businessEmail = driver.findElement(
-				By.xpath(businessEmailid.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL)).toLowerCase()));
+				By.xpath(businessEmailid.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL))));
 
 		return (businessFirstName.isDisplayed() && businessLastName.isDisplayed()
 				&& businessEmail.isDisplayed());
