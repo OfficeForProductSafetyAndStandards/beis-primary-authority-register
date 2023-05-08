@@ -135,6 +135,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
       [
         '#theme' => 'item_list',
         '#list_type' => 'ul',
+        '#list_header_tag' => 'h2',
         '#title' => 'The following regulatory functions will be added',
         '#items' => $regulatory_function_options,
         '#attributes' => ['class' => ['list', 'list-bullet']],
@@ -184,7 +185,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
 
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
-      '#title' => '',
+      '#title' => 'Regulatory Functions',
       '#options' => $regulatory_function_options,
       '#default_value' => $this->getDefaultValuesByKey('regulatory_functions', $cardinality, []),
       '#attributes' => ['class' => ['form-group']],

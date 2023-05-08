@@ -64,6 +64,7 @@ class ParGdprForm extends ParFormPluginBase {
 
     $form['summary'] = [
       '#theme' => 'item_list',
+      '#list_header_tag' => 'h2',
       '#title' => $this->t('Your personal information is used to'),
       '#items' => [
         'notify you of any updates to partnerships you have control of',

@@ -25,6 +25,7 @@ class ParPartnershipActionsForm extends ParFormPluginBase {
     // Create a list of links for the actions that can be performed on this partnership.
     $form['partnership_actions'] = [
       '#theme' => 'item_list',
+      '#list_header_tag' => 'h2',
       '#list_type' => 'ul',
       '#title' => t('Send a message about this organisation'),
       '#items' => [],
