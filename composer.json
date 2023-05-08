@@ -44,7 +44,7 @@
         "drupal/config_readonly": "~1.0.0",
         "drupal/config_split": "~1.7.0",
         "drupal/config_update": "~1.7.0",
-        "drupal/core": "~9.4.0",
+        "drupal/core": "~9.5.0",
         "drupal/core-composer-scaffold": "~9.3",
         "drupal/core-recommended": "~9.3",
         "drupal/csv_serialization": "~2.1",
@@ -173,10 +173,10 @@
             },
             "drupal/core": {
                 "Ensure the table alias is no longer than 60 characters long": "https://www.drupal.org/files/issues/2022-06-30/571548-165.patch",
-                "Form API #ajax not working on link element": "https://www.drupal.org/files/issues/2021-04-28/core-allow-form-ajax-for-links-2915954-21.patch",
-                "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2020-07-19/2551893-85.patch",
-                "Non-exposed and exposed default sort order": "https://www.drupal.org/files/issues/2021-05-20/3120847-23.patch",
-                "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2021-01-19/case_sensitive_email-2490294-37.patch",
+                "Form API #ajax not working on link element": "https://www.drupal.org/files/issues/2023-01-11/core-allow-form-ajax-for-links-2915954-9.5.1.patch",
+                "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2022-12-22/2551893-99.patch",
+                "Non-exposed and exposed default sort order": "https://www.drupal.org/files/issues/2021-02-16/3120847-20.patch",
+                "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2022-12-19/drupal-case_sensitive_email-2490294-58-d95.patch",
                 "Add aria labelling for form states": "./patches/states-aria.patch",
                 "Allow a header tag to be set on item-list theme items": "./patches/item_list_header_tag.patch"
             },
