@@ -9,7 +9,7 @@ _core:
 id: govuk_par_page_title
 theme: govuk_par
 region: content
-weight: -6
+weight: -7
 provider: null
 plugin: page_title_block
 settings:

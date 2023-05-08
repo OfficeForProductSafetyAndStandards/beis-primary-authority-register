@@ -1,0 +1,29 @@
+uuid: 26246d74-29d8-4116-be29-e3733a165990
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.notifications
+  module:
+    - govuk_cookies
+    - views
+  theme:
+    - govuk_par
+id: views_block__notifications_tasks_block_2
+theme: govuk_par
+region: content
+weight: -6
+provider: null
+plugin: 'views_block:notifications-tasks_block'
+settings:
+  id: 'views_block:notifications-tasks_block'
+  label: ''
+  label_display: '0'
+  provider: views
+  views_label: ''
+  items_per_page: none
+visibility:
+  govuk_cookie:
+    id: govuk_cookie
+    enable: 0
+    negate: false

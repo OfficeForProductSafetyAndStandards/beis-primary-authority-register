@@ -1,0 +1,30 @@
+uuid: 437346dd-bb7f-4f2a-9d73-aa8151409813
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.footer
+  module:
+    - govuk_cookies
+    - system
+  theme:
+    - govuk_par
+id: footer_2
+theme: govuk_par
+region: footer
+weight: 0
+provider: null
+plugin: 'system_menu_block:footer'
+settings:
+  id: 'system_menu_block:footer'
+  label: Footer
+  label_display: '0'
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  govuk_cookie:
+    id: govuk_cookie
+    enable: 0
+    negate: false

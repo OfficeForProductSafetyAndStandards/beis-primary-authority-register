@@ -20,8 +20,7 @@
   },
   "scripts": {
     "gulp": "gulp",
-    "install-govuk-theme": "cd web/themes/contrib/govuk_theme && npm install && npm run gulp build -- --ce --ct --cf --cl",
     "install-par-theme": "cd web/themes/custom/govuk_par && npm install",
-    "frontend": "npm i && npm run install-govuk-theme && npm run install-par-theme && npm run gulp"
+    "frontend": "npm i && npm run install-par-theme && npm run gulp"
   }
 }

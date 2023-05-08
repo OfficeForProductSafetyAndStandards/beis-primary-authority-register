@@ -1,0 +1,70 @@
+.form-text {
+  background: none;
+}
+.app-phase-banner {
+  border-bottom: 0;
+}
+.app-cookie-banner {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: $govuk-body-background-colour;
+  .govuk-width-container {
+    font-family: "GDS Transport",Arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.14286;
+    color: govuk-colour("light-green");
+  }
+}
+.govuk-header__logo {
+  width: auto;
+  float: left;
+  padding-right: 0;
+  .govuk-header__link {
+    white-space: nowrap;
+  }
+}
+.govuk-header__product-name {
+  padding-left: 10px;
+}
+#block-mainnavigation {
+  float: left;
+  padding-left: 20px;
+  .govuk-header__navigation {
+    margin-bottom: 0;
+  }
+}
+.govuk-grid-column-one-third {
+  .views-element-container {
+    @include govuk-media-query($from: desktop) {
+      float: right;
+    }
+  }
+}
+.govuk-character-count {
+  .text-count-message {
+    @extend .govuk-hint;
+    @extend .govuk-character-count__message;
+  }
+}
+.webform-element {
+  label {
+    font-weight: bold;
+  }
+}
+.govuk-tabs {
+  margin-bottom: 0;
+}
+.govuk-main-wrapper.has-breadcrumb {
+  padding-top: 20px;
+}
+.govuk-main-wrapper.has-local-tasks {
+  #block-govuk-content {
+    @extend .govuk-tabs__panel;
+  }
+}

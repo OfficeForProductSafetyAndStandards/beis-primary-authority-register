@@ -1,0 +1,24 @@
+uuid: efb5d146-eec4-4600-9de6-650b8ccd3eaf
+langcode: en
+status: true
+dependencies:
+  module:
+    - govuk_cookies
+  theme:
+    - govuk_par
+id: cookiebanner_2
+theme: govuk_par
+region: cookies
+weight: 0
+provider: null
+plugin: cookie_banner
+settings:
+  id: cookie_banner
+  label: 'Cookie Banner'
+  label_display: '0'
+  provider: govuk_cookies
+visibility:
+  govuk_cookie:
+    id: govuk_cookie
+    enable: 1
+    negate: true

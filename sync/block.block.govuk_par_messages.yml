@@ -10,8 +10,8 @@ _core:
   default_config_hash: KHQIJ7Vfl25lTjzIc7qIvnuistt-Mw2O0kG4jCofmkI
 id: govuk_par_messages
 theme: govuk_par
-region: content
-weight: -8
+region: highlighted
+weight: -6
 provider: null
 plugin: system_messages_block
 settings:

@@ -1,0 +1,91 @@
+{#
+/**
+ * @file
+ * Default template for the 'govuk_cookie' banner.
+ *
+ * Available variables:
+ *   - title: The title for the cookie banner.
+ *   - cookie_policy: The types of cookies that the site sets.
+ *   - cookie: The GOVUK cookie.
+ *
+ * @see https://design-system.service.gov.uk/components/cookie-banner/
+ *
+ * @ingroup themeable
+ */
+#}
+{% if cookie_policy|length >= 1 %}
+  {% set type = (cookie_policy|length == 1) and (cookie_policy|first == 'analytics') ? 'analytics' : 'additional' %}
+{% endif %}
+
+{% if not cookie %}
+<div class="govuk-cookie-banner" role="region" aria-label="{{ title }}">
+  <div id="govuk-cookies-alert" class="govuk-cookie-banner__message govuk-width-container">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-cookie-banner__heading govuk-heading-m">{{ title }}</h2>
+
+        <div class="govuk-cookie-banner__content">
+          <p>We use some essential cookies to make this service work.</p>
+
+          {% if type == 'analytics' %}
+            <p>We'd also like to use analytics cookies so we can understand how you use the service and make improvements.</p>
+          {% elseif type == 'additional' %}
+            <p>We'd like to set additional cookies so we can remember your settings, understand how people use the service and make improvements.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="govuk-button-group">
+      {% if type %}
+        <button value="accept" type="button" name="cookies" class="govuk-button" onclick="acceptCookiePolicy();" data-cookie-name="{{ cookie_name }}" data-cookie-policy="{{ cookie_policy|join(',') }}" data-module="govuk-button">
+          Accept {{ type }} cookies
+        </button>
+        <button value="reject" type="button" name="cookies" class="govuk-button" onclick="rejectCookiePolicy();" data-cookie-name="{{ cookie_name }}" data-module="govuk-button">
+          Reject {{ type }} cookies
+        </button>
+      {% endif %}
+      {% if not type %}
+        <button value="hide" type="button" class="govuk-button hide" data-module="govuk-button">
+          Hide this message
+        </button>
+      {% endif %}
+      <a class="govuk-link" href="/cookies">View cookies</a>
+    </div>
+  </div>
+
+  <div id="govuk-cookies-accepted" class="govuk-cookie-banner__message govuk-width-container" role="alert" tabindex="-1" hidden>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <div class="govuk-cookie-banner__content">
+          <p>You've accepted {{ type }} cookies. You can <a href="/cookies">change your cookie settings</a> at any time.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="govuk-button-group">
+      <button value="hide" class="govuk-button" data-module="govuk-button">
+        Hide this message
+      </button>
+    </div>
+  </div>
+
+  <div id="govuk-cookies-rejected" class="govuk-cookie-banner__message govuk-width-container" role="alert" tabindex="-1" hidden>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+
+        <div class="govuk-cookie-banner__content">
+          <p>You've rejected {{ type }} cookies. You can <a href="/cookies">change your cookie settings</a> at any time.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="govuk-button-group">
+      <button value="hide" class="govuk-button" data-module="govuk-button">
+        Hide this message
+      </button>
+    </div>
+  </div>
+</div>
+{% endif %}

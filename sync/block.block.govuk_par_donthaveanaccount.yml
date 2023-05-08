@@ -12,7 +12,7 @@ dependencies:
 id: govuk_par_donthaveanaccount
 theme: govuk_par
 region: content
-weight: 1
+weight: 0
 provider: null
 plugin: 'block_content:63f4e86b-35dd-460c-a40a-21d578c4e592'
 settings:

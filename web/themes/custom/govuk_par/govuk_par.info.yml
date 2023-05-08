@@ -1,14 +1,16 @@
 name: PAR (GOVUK)
 type: theme
-version: v1.0.0
-package: Custom
-description: A Drupal 8 theme based on the GDS GOV.UK Frontend inherrited from govuk_theme.
-core: 8.x
-core_version_requirement: ^8 || ^9
-base theme: govuk
+version: v2.0.0
+package: PAR
+core_version_requirement: ^8 || ^9 || ^10
+base theme: false
+description: A fully responsive theme utilising the GOV.UK Design System Frontend.
+
 libraries:
-  - govuk_par/par-core
+  - govuk_par/framework
+
 regions:
+  cookies: 'Cookies'
   header: 'Header'
   navigation: 'Navigation'
   pre_content: 'Pre-content'
@@ -19,5 +21,5 @@ regions:
   page_top: 'Page top'
   sidebar_first: 'First sidebar'
   footer: 'Footer'
-  footer_inner: Footer Meta Links
-screenshot: govuk-par-thumb.png
+  footer_left: 'Footer Left'
+  footer_right: 'Footer Right'

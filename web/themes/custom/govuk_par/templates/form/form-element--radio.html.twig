@@ -1,0 +1,10 @@
+<div{{ attributes.addClass('govuk-radios__item') }}>
+  {{ children }}
+  {% set label = label|merge({'#attributes': {'class': 'govuk-radios__label' }}) %}
+  {{ label }}
+  {% if description.content %}
+    <span class="govuk-hint govuk-radios__hint">
+      {{ description.content }}
+    </span>
+  {% endif %}
+</div>

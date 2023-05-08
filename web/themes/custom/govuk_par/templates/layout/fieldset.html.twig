@@ -1,0 +1,88 @@
+{#
+/**
+ * @file
+ * Theme override for a fieldset element and its children.
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the fieldset element.
+ * - errors: (optional) Any errors for this fieldset element, may not be set.
+ * - required: Boolean indicating whether the fieldeset element is required.
+ * - legend: The legend element containing the following properties:
+ *   - title: Title of the fieldset, intended for use as the text of the legend.
+ *   - attributes: HTML attributes to apply to the legend.
+ * - description: The description element containing the following properties:
+ *   - content: The description content of the fieldset.
+ *   - attributes: HTML attributes to apply to the description container.
+ * - children: The rendered child elements of the fieldset.
+ * - prefix: The content to add before the fieldset children.
+ * - suffix: The content to add after the fieldset children.
+ *
+ * @see template_preprocess_fieldset()
+ */
+#}
+{%
+  set classes = [
+    'js-form-item',
+    'form-item',
+    'js-form-wrapper',
+    'form-wrapper',
+    'govuk-fieldset'
+  ]
+%}
+
+{%
+  set wrapper_classes = [
+    'form-group-wrapper',
+    errors ? 'form-group-error'
+  ]
+%}
+
+{%
+  set legend_header_classes = [
+    'heading-medium',
+    'fieldset-legend',
+    'govuk-fieldset__heading',
+    required ? 'js-form-required',
+    required ? 'form-required',
+  ]
+%}
+
+{% if child_count <= 2 %}
+  {% set classes = classes|merge(['inline']) %}
+{% endif %}
+
+{% if errors %}
+<div class="form-group-error">
+{% else %}
+<div>
+{% endif %}
+
+  <fieldset{{ attributes.addClass(classes).removeClass('form-group-error') }}>
+
+    {% if legend.title or description.content %}
+    <legend{{ legend.attributes.addClass('govuk-fieldset__legend govuk-fieldset__legend--xl') }}>
+      {% if legend.title %}<h1{{ legend_span.attributes.addClass(legend_header_classes) }}>{{ legend.title }}</h1>{% endif %}
+      {% if description.content %}
+        <span{{ description.attributes.addClass('form-hint govuk-hint') }}>{{ description.content }}</span>
+      {% endif %}
+    </legend>
+    {% endif %}
+
+    {% if errors %}
+      <span class="error-message">
+        {{ errors | striptags('<p>') }}
+      </span>
+    {% endif %}
+
+    {% if prefix %}
+      <span class="field-prefix govuk-hint">{{ prefix.attributes.addClass('govuk-hint') }}{{ prefix }}</span>
+    {% endif %}
+
+    {{ children }}
+
+    {% if suffix %}
+      <span class="field-suffix">{{ suffix }}</span>
+    {% endif %}
+  </fieldset>
+
+</div>

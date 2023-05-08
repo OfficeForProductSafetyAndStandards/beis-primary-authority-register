@@ -1,30 +1,21 @@
-par-core:
-  version: 1.0
-  js:
-    js/par.js: {}
+framework:
+  version: 1.x
   css:
     theme:
-      css/par.css: {}
-  dependencies:
-    - govuk_par/par-vendor
-
-par-vendor:
-  version: 1.0
+      css/style.css: {}
   js:
-    javascript/vendor/console.log-wrapper/consolelog.min.js: {}
-    javascript/vendor/console.log-wrapper/consolelog.detailprint.min.js: {}
+    node_modules/govuk-frontend/govuk/all.js: {weight: 0}
+    js/govuk.js: {}
   dependencies:
     - core/jquery
-    - core/drupal.ajax
-    - core/drupal
-    - core/drupalSettings
     - core/jquery.once
-    - core/jquery.ui
-    - core/jquery.ui.tabs
+    - core/drupal
 
-tota11y:
-  remote: https://khan.github.io/tota11y
-  version: VERSION
-  license: MIT
+webform:
+  version: 1.x
   js:
-    https://cdn.rawgit.com/Khan/tota11y/master/build/tota11y.min.js: { type: external, minified: true }
+    js/webform.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal

@@ -1,7 +1,7 @@
 features:
-  node_user_picture: 1
-  comment_user_picture: 1
-  comment_user_verification: 1
+  node_user_picture: 0
+  comment_user_picture: 0
+  comment_user_verification: 0
   favicon: 1
 logo:
   use_default: 1
@@ -21,3 +21,13 @@ govuk_cookie_policy:
   other: other
 govuk_team: BEIS
 govuk_team_link: 'https://www.8manj.co.uk'
+govuk_par_cookie: 1
+govuk_par_cookie_name: _cookie_policy
+govuk_par_cookie_policy:
+  analytics: analytics
+  functional: functional
+  other: other
+govuk_par_breadcrumb: 0
+govuk_par_phase_banner: alpha
+govuk_par_team: ''
+govuk_par_team_link: ''

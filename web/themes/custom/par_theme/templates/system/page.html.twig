@@ -59,15 +59,15 @@
   {{ page.cookies }}
 {% endif %}
 
-{% if govuk_cookie %}
-  {{ govuk_cookie }}
+{% if govuk_par_cookie %}
+  {{ govuk_par_cookie }}
 {% endif %}
 
 <a href="#content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 
 <header class="govuk-header" role="banner" data-module="govuk-header">
   <div class="govuk-header__container govuk-width-container">
-    {{ govuk_header }}
+    {{ govuk_par_header }}
     <div class="govuk-header__content">
       <a href="{{ path('<front>') }}" class="govuk-header__link govuk-header__service-name">
         {{ site_name }}
@@ -80,8 +80,8 @@
 </header>
 
 <div class="govuk-width-container app-width-container">
-  {% if govuk_phase_banner %}
-    {{ govuk_phase_banner }}
+  {% if govuk_par_phase_banner %}
+    {{ govuk_par_phase_banner }}
   {% endif %}
 
   {% if page.pre_content %}
@@ -147,7 +147,7 @@
         {% endif %}
         {{ govuk_footer }}
       </div>
-      {{ govuk_meta }}
+      {{ govuk_par_meta }}
     </div>
   </div>
 
