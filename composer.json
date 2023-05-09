@@ -178,7 +178,8 @@
                 "Non-exposed and exposed default sort order": "https://www.drupal.org/files/issues/2021-02-16/3120847-20.patch",
                 "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2022-12-19/drupal-case_sensitive_email-2490294-58-d95.patch",
                 "Add aria labelling for form states": "./patches/states-aria.patch",
-                "Allow a header tag to be set on item-list theme items": "./patches/item_list_header_tag.patch"
+                "Allow a header tag to be set on item-list theme items": "./patches/item_list_header_tag.patch",
+                "Fix inline form errors": "./patches/inline_form_errors.patch"
             },
             "drupal/devel": {
                 "Webprofiler related crash: requested a non-existent service": "https://gitlab.com/drupalspoons/devel/uploads/8c8ddd9716570d17fa46b9182d22aa7f/419-Webprofiler-related-crash-in-core-9.4.2.patch"
