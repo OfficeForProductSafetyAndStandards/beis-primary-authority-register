@@ -103,13 +103,11 @@
       page.content.govuk_local_tasks|render|striptags|trim is not empty ? 'has-local-tasks'
     ]
   %}
-  <main {{ attributes.addClass(main_classes) }} id="content" role="main">
+
+  <main {{ attributes.addClass(main_classes) }} id="main-content" role="main">
     <div class="govuk-grid-row">
-      {% if page.sidebar_first %}
-        <div class="govuk-grid-column-two-thirds">
-      {% else %}
-        <div class="govuk-grid-column-full">
-      {% endif %}
+
+      <div class="{% if page.sidebar_first %}govuk-grid-column-two-thirds{% else %}govuk-grid-column-full">
         {{ page.content }}
       </div>
       {% if page.sidebar_first %}
@@ -125,19 +123,19 @@
   <div class="govuk-width-container">
 
     {% if (page.footer_left or page.footer_right) %}
-    <div class="govuk-footer__navigation">
-      {% if page.footer_left %}
-      <div class="govuk-footer__section {{ footer_left_class }}">
-        {{ page.footer_left }}
+      <div class="govuk-footer__navigation">
+        {% if page.footer_left %}
+          <div class="govuk-footer__section {{ footer_left_class }}">
+            {{ page.footer_left }}
+          </div>
+        {% endif %}
+        {% if page.footer_right %}
+          <div class="govuk-footer__section {{ footer_right_class }}">
+            {{ page.footer_right }}
+          </div>
+        {% endif %}
       </div>
-      {% endif %}
-      {% if page.footer_right %}
-      <div class="govuk-footer__section {{ footer_right_class }}">
-        {{ page.footer_right }}
-      </div>
-      {% endif %}
-    </div>
-    <hr class="govuk-footer__section-break">
+      <hr class="govuk-footer__section-break">
     {% endif %}
 
     <div class="govuk-footer__meta">
@@ -145,7 +143,7 @@
         {% if page.footer %}
           {{ page.footer }}
         {% endif %}
-        {{ govuk_footer }}
+        {{ govuk_par_footer }}
       </div>
       {{ govuk_par_meta }}
     </div>

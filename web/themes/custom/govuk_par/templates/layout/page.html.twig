@@ -91,11 +91,8 @@
   %}
   <main {{ attributes.addClass(main_classes) }} id="main-content" role="main">
     <div class="govuk-grid-row">
-      {% if page.sidebar_first %}
-        <div class="govuk-grid-column-two-thirds">
-      {% else %}
-        <div class="govuk-grid-column-full">
-      {% endif %}
+
+      <div class="{% if page.sidebar_first %}govuk-grid-column-two-thirds{% else %}govuk-grid-column-full">
         {{ page.content }}
       </div>
       {% if page.sidebar_first %}
@@ -131,7 +128,7 @@
         {% if page.footer %}
           {{ page.footer }}
         {% endif %}
-        {{ govuk_footer }}
+        {{ govuk_par_footer }}
       </div>
       {{ govuk_par_meta }}
     </div>
