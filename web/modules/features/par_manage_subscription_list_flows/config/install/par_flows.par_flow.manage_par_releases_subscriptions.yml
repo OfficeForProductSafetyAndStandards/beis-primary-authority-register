@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+id: manage_par_releases_subscriptions
+label: 'Manage PAR Releases Subscriptions'
+default_title: null
+default_section_title: null
+description: 'The operations to manage subscription lists in bulk.'
+save_method: end
+final_routes:
+  - view.subscriptions.subscription_list
+steps:
+  1:
+    route: par_manage_subscription_list_flows.par_releases.manage
+    form_id: manage_subscriptions
+    redirect:
+      next: 2
+  2:
+    route: par_manage_subscription_list_flows.par_releases.review
+    form_id: review_subscriptions
+    form_data:
+      manage: manage_subscriptions

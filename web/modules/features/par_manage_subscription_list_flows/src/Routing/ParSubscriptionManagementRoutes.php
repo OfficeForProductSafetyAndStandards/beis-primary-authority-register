@@ -61,7 +61,7 @@ class ParSubscriptionManagementRoutes implements ContainerInjectionInterface {
 
       // Manage a list in bulk.
       $route = new Route(
-        "/helpdesk/subscriptions/$list_slug/manage",
+        "/subscriptions/$list_slug/manage",
         [
           '_form' => 'Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionManageForm',
           '_title_callback' => 'Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionManageForm::titleCallback',
@@ -75,7 +75,7 @@ class ParSubscriptionManagementRoutes implements ContainerInjectionInterface {
 
       // Review changes to a list.
       $route = new Route(
-        "/helpdesk/subscriptions/$list_slug/validate",
+        "/subscriptions/$list_slug/validate",
         [
           '_form' => 'Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionValidateForm',
           '_title_callback' => 'Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionValidateForm::titleCallback',
@@ -89,7 +89,7 @@ class ParSubscriptionManagementRoutes implements ContainerInjectionInterface {
 
       // Review changes to a list.
       $route = new Route(
-        "/helpdesk/subscriptions/$list_slug/review",
+        "/subscriptions/$list_slug/review",
         [
           '_form' => 'Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionReviewForm',
           '_title_callback' => 'Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionReviewForm::titleCallback',
