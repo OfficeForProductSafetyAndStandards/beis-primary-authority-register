@@ -3831,12 +3831,12 @@ display:
       path: search/advanced/partnerships/download
       auth:
         - cookie
-      filename: partnership-report-download.csv
+      filename: 'Partnership Report - [date:gds_date_format].csv'
       automatic_download: true
       export_method: batch
       export_batch_size: 100
       export_limit: 0
-      export_filesystem: public
+      export_filesystem: s3private
       custom_redirect_path: false
       redirect_to_display: advanced_search
       include_query_params: false
