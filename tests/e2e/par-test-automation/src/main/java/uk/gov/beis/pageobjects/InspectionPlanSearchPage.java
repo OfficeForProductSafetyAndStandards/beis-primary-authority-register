@@ -18,10 +18,18 @@ public class InspectionPlanSearchPage extends BasePageObject {
 
 	@FindBy(linkText = "Upload inspection plan")
 	WebElement uploadBtn;
+	
+	@FindBy(linkText = "Edit inspection plan")
+	WebElement editBtn;
 
 	public UploadInspectionPlanPage selectUploadLink() {
 		uploadBtn.click();
 		return PageFactory.initElements(driver, UploadInspectionPlanPage.class);
+	}
+	
+	public InspectionPlanDetailsPage selectEditLink() {
+		editBtn.click();
+		return PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
 	}
 
 	String planstatus = "//td/a[contains(text(),'?')]/parent::td/following-sibling::td[1]";
