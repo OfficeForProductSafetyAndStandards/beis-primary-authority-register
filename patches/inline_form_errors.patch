@@ -1,36 +1,3 @@
-diff --git a/core/lib/Drupal/Core/Form/FormElementHelper.php b/core/lib/Drupal/Core/Form/FormElementHelper.php
-index a121127..3655657 100644
---- a/core/lib/Drupal/Core/Form/FormElementHelper.php
-+++ b/core/lib/Drupal/Core/Form/FormElementHelper.php
-@@ -60,4 +60,28 @@ public static function getElementTitle(array $element) {
-     return $title;
-   }
- 
-+  /**
-+   * Returns the error for the element.
-+   *
-+   * @param array $element
-+   *   An associative array containing the properties of the form element.
-+   *
-+   * @return string
-+   *   The error of the element, or an empty string if none is found.
-+   */
-+  public static function getElementError(array $element) {
-+    $error = '';
-+    if (isset($element['#error'])) {
-+      $error = $element['#error'];
-+    }
-+    else {
-+      foreach (Element::children($element) as $key) {
-+        if ($error = static::getElementError($element[$key])) {
-+          break;
-+        }
-+      }
-+    }
-+    return $error;
-+  }
-+
- }
 diff --git a/core/lib/Drupal/Core/Form/FormErrorHandler.php b/core/lib/Drupal/Core/Form/FormErrorHandler.php
 index dfb52c0..6db67c5 100644
 --- a/core/lib/Drupal/Core/Form/FormErrorHandler.php
@@ -149,7 +116,7 @@ index 3bacd37..64741f2 100644
 +  }
 +}
 diff --git a/core/modules/inline_form_errors/src/FormErrorHandler.php b/core/modules/inline_form_errors/src/FormErrorHandler.php
-index 23cef62..a9ae856 100644
+index da28610..d0cd8aa 100644
 --- a/core/modules/inline_form_errors/src/FormErrorHandler.php
 +++ b/core/modules/inline_form_errors/src/FormErrorHandler.php
 @@ -79,13 +79,13 @@ protected function displayErrorMessages(array $form, FormStateInterface $form_st
@@ -182,20 +149,6 @@ index 23cef62..a9ae856 100644
      }
  
      // Set normal error messages for all remaining errors.
-@@ -108,12 +109,9 @@ protected function displayErrorMessages(array $form, FormStateInterface $form_st
-     if (!empty($error_links)) {
-       $render_array = [
-         [
--         '#markup' => $this->formatPlural(count($error_links), '1 error has been found: ', '@count errors have been found: '),
--        ],
--        [
-           '#theme' => 'item_list',
-           '#items' => $error_links,
--          '#context' => ['list_style' => 'comma-list'],
-+          '#context' => ['list_style' => 'govuk-error-summary__list'],
-         ],
-       ];
-       $message = $this->renderer->renderPlain($render_array);
 diff --git a/core/modules/inline_form_errors/tests/src/Unit/FormErrorHandlerTest.php b/core/modules/inline_form_errors/tests/src/Unit/FormErrorHandlerTest.php
 index 962f107..79353a1 100644
 --- a/core/modules/inline_form_errors/tests/src/Unit/FormErrorHandlerTest.php
@@ -215,7 +168,7 @@ index 962f107..79353a1 100644
      $this->testForm['#disable_inline_form_errors'] = TRUE;
  
 diff --git a/core/tests/Drupal/Tests/Core/Form/FormElementHelperTest.php b/core/tests/Drupal/Tests/Core/Form/FormElementHelperTest.php
-index 9a6a5bf..55c2de6 100644
+index 9a6a5bf..0a79bf0 100644
 --- a/core/tests/Drupal/Tests/Core/Form/FormElementHelperTest.php
 +++ b/core/tests/Drupal/Tests/Core/Form/FormElementHelperTest.php
 @@ -1,174 +1 @@
