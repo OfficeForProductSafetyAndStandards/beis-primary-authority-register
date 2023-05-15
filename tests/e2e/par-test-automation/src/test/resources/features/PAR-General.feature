@@ -104,6 +104,7 @@ Feature:
     And the user updates the last created inspection plan against the partnership with the following details:
       | Title              | Description |
       | Inspection Title 2 | Test 2      |
+    Then the inspection plan is updated correctly
 
   @regression @inspectionfeedback
   Scenario: Verify User can Submit feedback following an Inspection plan (Happy Path - PAR-1858, PAR-1860)

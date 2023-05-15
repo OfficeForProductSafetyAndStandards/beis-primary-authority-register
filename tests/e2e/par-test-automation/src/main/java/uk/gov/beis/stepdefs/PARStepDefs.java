@@ -61,6 +61,7 @@ import uk.gov.beis.pageobjects.InspectionFeedbackDetailsPage;
 import uk.gov.beis.pageobjects.InspectionFeedbackSearchPage;
 import uk.gov.beis.pageobjects.InspectionPlanDetailsPage;
 import uk.gov.beis.pageobjects.InspectionPlanExpirationPage;
+import uk.gov.beis.pageobjects.InspectionPlanReviewPage;
 import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.LoginPage;
@@ -119,6 +120,7 @@ public class PARStepDefs {
 	private HomePage parHomePage;
 	private RequestEnquiryPage requestEnquiryPage;
 	private DeviationSearchPage deviationSearchPage;
+	private InspectionPlanReviewPage inspectionPlanReviewPage;
 	private EnquiryReviewPage enquiryReviewPage;
 	private InspectionFeedbackConfirmationPage inspectionFeedbackConfirmationPage;
 	private InspectionFeedbackDetailsPage inspectionFeedbackDetailsPage;
@@ -217,6 +219,7 @@ public class PARStepDefs {
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		inspectionPlanReviewPage = PageFactory.initElements(driver, InspectionPlanReviewPage.class);
 		replyEnquiryPage = PageFactory.initElements(driver, ReplyEnquiryPage.class);
 		enquiriesSearchPage = PageFactory.initElements(driver, EnquiriesSearchPage.class);
 		enquiryReviewPage = PageFactory.initElements(driver, EnquiryReviewPage.class);
@@ -829,7 +832,16 @@ public class PARStepDefs {
 			inspectionPlanDetailsPage
 					.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
 			inspectionPlanDetailsPage.save();
+			inspectionPlanExpirationPage.save();
+			inspectionPlanSearchPage.selectInspectionPlan();
 		}
+	}
+
+	@Then("^the inspection plan is updated correctly$")
+	public void the_inspection_plan_is_updated_correctly() throws Throwable {
+		LOG.info("Check the inspection plan details are correct");
+		Assert.assertTrue("Failed: inspection plan details not correct",
+				inspectionPlanReviewPage.checkInspectionPlan());
 	}
 
 	@When("^the user submits an inspection feedback against the inspection plan with the following details:$")

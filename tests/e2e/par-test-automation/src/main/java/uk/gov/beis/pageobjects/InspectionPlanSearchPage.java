@@ -31,6 +31,11 @@ public class InspectionPlanSearchPage extends BasePageObject {
 		editBtn.click();
 		return PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
 	}
+	
+	public InspectionPlanReviewPage selectInspectionPlan() {
+		driver.findElement(By.linkText(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE))).click();
+		return PageFactory.initElements(driver, InspectionPlanReviewPage.class);
+	}
 
 	String planstatus = "//td/a[contains(text(),'?')]/parent::td/following-sibling::td[1]";
 
