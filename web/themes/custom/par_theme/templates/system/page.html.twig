@@ -63,7 +63,7 @@
   {{ govuk_par_cookie }}
 {% endif %}
 
-<a href="#content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+<a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 
 <header class="govuk-header" role="banner" data-module="govuk-header">
   <div class="govuk-header__container govuk-width-container">
@@ -107,7 +107,7 @@
   <main {{ attributes.addClass(main_classes) }} id="main-content" role="main">
     <div class="govuk-grid-row">
 
-      <div class="{% if page.sidebar_first %}govuk-grid-column-two-thirds{% else %}govuk-grid-column-full">
+      <div class="{% if page.sidebar_first %}govuk-grid-column-two-thirds{% else %}govuk-grid-column-full{% endif %}">
         {{ page.content }}
       </div>
       {% if page.sidebar_first %}
