@@ -66,8 +66,13 @@ class ParLegalEntityForm extends ParFormPluginBase {
 
     if ($cardinality === 1) {
       $form['legal_entity_intro_fieldset'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('What is a legal entity?'),
+        '#type' => 'container',
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#attributes' => ['class' => ['govuk-heading-m']],
+          '#value' => $this->t('What is a legal entity?'),
+        ],
         'intro' => [
           '#type' => 'markup',
           '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
@@ -89,7 +94,7 @@ class ParLegalEntityForm extends ParFormPluginBase {
       $this->t('Legal Entity');
 
     $form['legal_entity'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#title' => $legal_entity_label,
     ];
 

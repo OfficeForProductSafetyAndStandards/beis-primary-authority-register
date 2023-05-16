@@ -64,7 +64,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
         '#type' => 'html_tag',
         '#tag' => 'h2',
         '#value' => "Contact information",
-        '#attributes' => ['class' => 'heading-large'],
+        '#attributes' => ['class' => 'govuk-heading-l'],
       ];
     }
 
@@ -101,19 +101,18 @@ class ParPartnershipContacts extends ParFormPluginBase {
     }
 
     $form["{$contact_format}_contacts"] = [
-      '#type' => 'fieldset',
-      '#title' => $section_title,
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $section_title,
+      ],
       '#attributes' => ['class' => ['form-group']],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
       'person' => [
-        '#type' => 'fieldset',
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+        '#type' => 'container',
         'items' => [
-          '#type' => 'fieldset',
-          '#collapsible' => FALSE,
-          '#collapsed' => FALSE,
+          '#type' => 'container'
         ],
         'pager' => [
           '#type' => 'pager',
@@ -125,9 +124,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
           ],
         ],
         'operations' => [
-          '#type' => 'fieldset',
-          '#collapsible' => FALSE,
-          '#collapsed' => FALSE,
+          '#type' => 'container',
           'add' => [
             '#type' => 'html_tag',
             '#tag' => 'p',
@@ -164,28 +161,23 @@ class ParPartnershipContacts extends ParFormPluginBase {
       }
 
       $form["{$contact_format}_contacts"]['person']['items'][$delta] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+        '#type' => 'container',
+        '#attributes' => ['class' => ['form-group', 'contact-details']],
         'entity' => [
           '#type' => 'html_tag',
-          '#tag' => 'div',
+          '#tag' => 'p',
           '#value' => $rendered_field ? $rendered_field : '<p>(none)</p>',
-          '#attributes' => ['class' => ['column-full']],
         ],
         'operations' => [
           'update' => [
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $update_contact_link ? $update_contact_link->toString() : '',
-            '#attributes' => ['class' => ['column-one-third']],
           ],
           'remove' => [
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $remove_contact_link ? $remove_contact_link->toString() : '',
-            '#attributes' => ['class' => ['column-two-thirds']],
           ],
         ],
       ];

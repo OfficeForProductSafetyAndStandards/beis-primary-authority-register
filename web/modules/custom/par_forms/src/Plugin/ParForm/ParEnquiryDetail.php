@@ -50,13 +50,13 @@ class ParEnquiryDetail extends ParFormPluginBase {
     $params = $this->getRouteParams() + ['destination' => $return_path];
 
     $form['general_enquiry'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#attributes' => ['class' => ['form-group']],
       'title' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
         '#value' => $this->t('Summary of enquiry'),
-        '#attributes' => ['class' => 'heading-large'],
+        '#attributes' => ['class' => 'govuk-heading-l'],
       ],
       'date' => $this->getDefaultValuesByKey('request_date', $cardinality, NULL),
       'notes' => $this->getDefaultValuesByKey('notes', $cardinality, NULL),

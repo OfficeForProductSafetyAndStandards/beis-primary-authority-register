@@ -110,8 +110,13 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
     // Prevent modifying of email address when un-editable.
     if ($this->getDefaultValuesByKey('email_readonly', $cardinality, FALSE)) {
       $form['email_readonly'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('Email address'),
+        '#type' => 'container',
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#attributes' => ['class' => ['govuk-heading-m']],
+          '#value' => $this->t('Email address'),
+        ],
         '#description' => $this->t('You cannot update this person\'s email address because they already have an account.'),
         '#attributes' => ['class' => ['form-group']],
         'email_address' => [

@@ -65,12 +65,17 @@ class ParSicCodeDisplay extends ParFormPluginBase {
 
     // Display the sic codes.
     $form['sic_codes'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Standard industrial classification (SIC) codes',
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('Standard industrial classification (SIC) codes'),
+      ],
       '#attributes' => ['class' => ['form-group']],
       'sic_code' => [
         '#type' => 'container',
-        '#attributes' => ['class' => ['grid-row']],
+        '#attributes' => ['class' => ['govuk-grid-row']],
       ],
     ];
 
@@ -81,10 +86,10 @@ class ParSicCodeDisplay extends ParFormPluginBase {
 
       $form['sic_codes']['sic_code'][$delta] = [
         '#type' => 'container',
-        '#attributes' => ['class' => 'column-full'],
+        '#attributes' => ['class' => 'govuk-grid-column-full'],
         'code' => [
           '#type' => 'html_tag',
-          '#tag' => 'div',
+          '#tag' => 'p',
           '#value' => $label,
           '#attributes' => ['class' => 'sic-code'],
         ],
@@ -118,14 +123,14 @@ class ParSicCodeDisplay extends ParFormPluginBase {
       if (!empty(array_filter($operations))) {
         $form['sic_codes']['sic_code'][$delta]['operations'] = [
           '#type' => 'container',
-          '#attributes' => ['class' => ['grid-row']],
+          '#attributes' => ['class' => ['govuk-grid-row']],
         ];
         if (isset($operations['edit']) && $operations['edit'] instanceof Link) {
           $form['sic_codes']['sic_code'][$delta]['operations']['edit'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $operations['edit']->toString(),
-            '#attributes' => ['class' => ['edit-sic-code', 'column-one-third']],
+            '#attributes' => ['class' => ['edit-sic-code', 'govuk-grid-column-one-third']],
           ];
         }
         if (isset($operations['remove']) && $operations['remove'] instanceof Link) {
@@ -133,7 +138,7 @@ class ParSicCodeDisplay extends ParFormPluginBase {
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $operations['remove']->setText("remove sic code")->toString(),
-            '#attributes' => ['class' => ['remove-sic-code', 'column-one-third']],
+            '#attributes' => ['class' => ['remove-sic-code', 'govuk-grid-column-one-third']],
           ];
         }
       }

@@ -89,8 +89,13 @@ class ParPartnershipMembers extends ParFormPluginBase {
     }
 
     $form['members'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Number of members'),
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => t('Number of members'),
+      ],
       '#attributes' => ['class' => 'form-group'],
     ];
 
@@ -169,14 +174,14 @@ class ParPartnershipMembers extends ParFormPluginBase {
         // Display the member.
         $form['members']['list']['items'][$delta] = [
           '#type' => 'container',
-          '#attributes' => ['class' => ['grid-row', 'form-group', 'coordinated-member']],
+          '#attributes' => ['class' => ['govuk-grid-row', 'form-group', 'coordinated-member']],
           '#collapsible' => FALSE,
           '#collapsed' => FALSE,
           'entity' => [
             '#type' => 'html_tag',
             '#tag' => 'div',
             '#value' => $entity->label(),
-            '#attributes' => ['class' => ['column-full']],
+            '#attributes' => ['class' => ['govuk-grid-column-full']],
           ],
         ];
       }

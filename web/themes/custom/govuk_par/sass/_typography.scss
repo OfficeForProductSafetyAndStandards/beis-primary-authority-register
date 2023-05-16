@@ -42,7 +42,9 @@ p {
   @extend .govuk-body;
 }
 
-div {
+div,
+time,
+details {
   @include govuk-typography-common;
-  @include govuk-font(16);
+  font-size: 19px;
 }

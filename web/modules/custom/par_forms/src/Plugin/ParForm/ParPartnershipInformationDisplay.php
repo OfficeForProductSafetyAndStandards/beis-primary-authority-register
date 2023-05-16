@@ -75,15 +75,13 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
       '#type' => 'html_tag',
       '#tag' => 'h2',
       '#value' => "<span class='heading-secondary'>In partnership with</span>" . $this->getDefaultValuesByKey('name', $cardinality, NULL),
-      '#attributes' => ['class' => ['heading-large', 'form-group', 'authority-name']],
+      '#attributes' => ['class' => ['govuk-heading-l', 'form-group', 'authority-name']],
     ];
 
     // Display details about the partnership for information.
     $form['about_partnership'] = [
-      '#type' => 'fieldset',
-      '#title' => 'About the partnership',
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      '#markup' => '<h3 class="govuk-heading-m">About the partnership</h3>',
       '#attributes' => ['class' => ['form-group']],
       'details' => $this->getDefaultValuesByKey('about_partnership', $cardinality, NULL),
     ];
@@ -108,11 +106,16 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
     if ($this->getDefaultValuesByKey('approved', $cardinality, FALSE)) {
       $form['details'] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['grid-row']],
+        '#attributes' => ['class' => ['govuk-grid-row']],
         'regulatory_functions' => [
-          '#type' => 'fieldset',
-          '#title' => 'Partnered for',
-          '#attributes' => ['class' => 'column-one-half'],
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h3',
+            '#attributes' => ['class' => ['govuk-heading-m']],
+            '#value' => $this->t('Partnered for'),
+          ],
+          '#attributes' => ['class' => 'govuk-grid-column-one-half'],
           'functions' => [
             '#theme' => 'item_list',
             '#list_header_tag' => 'h2',
@@ -121,9 +124,14 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
           ]
         ],
         'approved_date' => [
-          '#type' => 'fieldset',
-          '#title' => 'In partnership since',
-          '#attributes' => ['class' => 'column-one-half'],
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h3',
+            '#attributes' => ['class' => ['govuk-heading-m']],
+            '#value' => $this->t('In partnership since'),
+          ],
+          '#attributes' => ['class' => 'govuk-grid-column-one-half'],
           'value' => $this->getDefaultValuesByKey('date', $cardinality, NULL),
         ],
       ];

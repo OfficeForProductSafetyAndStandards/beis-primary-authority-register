@@ -75,7 +75,7 @@ trait ParRedirectTrait {
   public function getLinkByUrl(Url $url, $text = '', $link_options = []) {
     $link_options += [
       'absolute' => TRUE,
-      'attributes' => ['class' => 'flow-link']
+      'attributes' => ['class' => 'govuk-link']
     ];
 
     $url->mergeOptions($link_options);

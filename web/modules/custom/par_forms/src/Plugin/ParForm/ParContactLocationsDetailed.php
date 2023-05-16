@@ -84,12 +84,12 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
   public function getElements($form = [], $cardinality = 1) {
     if ($cardinality === 1) {
       $form['message_intro'] = [
-        '#type' => 'fieldset',
-        'title' => [
+        '#type' => 'container',
+        'heading' => [
           '#type' => 'html_tag',
           '#tag' => 'h2',
           '#value' => $this->t('Contacts'),
-          '#attributes' => ['class' => ['heading-large']],
+          '#attributes' => ['class' => ['govuk-heading-l']],
         ],
         'info' => [
           '#type' => 'html_tag',
@@ -115,31 +115,31 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
       }
 
       $form['contact'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#weight' => 1,
         '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
         'name' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => $this->getDefaultValuesByKey('name', $cardinality, NULL),
-          '#attributes' => ['class' => ['column-two-thirds']],
+          '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
         ],
         'actions' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => isset($actions) ? $actions : 'Update contact details',
-          '#attributes' => ['class' => ['column-one-third']],
+          '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         ],
         'email' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => $this->getDefaultValuesByKey('email_preferences', $cardinality, NULL),
-          '#attributes' => ['class' => ['column-two-thirds']],
+          '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
         ],
         'phone' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#attributes' => ['class' => ['column-one-third']],
+          '#attributes' => ['class' => ['govuk-grid-column-one-third']],
           '#value' => $this->getDefaultValuesByKey('work_phone', $cardinality, NULL) . '<br>' . $this->getDefaultValuesByKey('mobile_phone', $cardinality, NULL),
         ],
         'locations' => [
@@ -153,7 +153,7 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
     }
     else {
       $form['contact'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#attributes' => ['class' => ['form-group']],
         'title' => [
           '#type' => 'html_tag',
@@ -179,7 +179,7 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
     $details = [
       '#type' => 'html_tag',
       '#tag' => 'details',
-      '#attributes' => ['class' => ['column-full', 'contact-locations'], 'role' => 'group'],
+      '#attributes' => ['class' => ['govuk-grid-column-full', 'contact-locations'], 'role' => 'group'],
       'summary' => [
         '#type' => 'html_tag',
         '#tag' => 'summary',

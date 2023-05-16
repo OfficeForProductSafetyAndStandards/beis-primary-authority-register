@@ -81,7 +81,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
     if (empty($regulatory_function_options)) {
       try {
         $params = ['par_data_authority' => $this->getDefaultValuesByKey('partnership_authority_id', $cardinality, NULL)];
-        $link_options = ['attributes' => ['class' => ['flow-link'], 'target' => '_blank']];
+        $link_options = ['attributes' => ['class' => ['govuk-link'], 'target' => '_blank']];
         $authority_update_link = $this->getLinkByRoute('par_authority_update_flows.authority_update_review', $params, $link_options)
             ->setText('Update the authority\'s regulatory functions')
             ->toString();

@@ -85,8 +85,13 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
     }
 
     $form['partnership_info'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Revoke the partnership'),
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => $this->t('Revoke the partnership'),
+      ],
       '#attributes' => ['class' => 'form-group'],
     ];
 

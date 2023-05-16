@@ -41,8 +41,13 @@ class ParEnforcementActionForm extends ParFormPluginBase {
       $this->t('Details of Enforcement Action');
 
     $form['action'] = [
-      '#type' => 'fieldset',
-      '#title' => $action_label,
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $action_label,
+      ],
     ];
 
     $form['title'] = [

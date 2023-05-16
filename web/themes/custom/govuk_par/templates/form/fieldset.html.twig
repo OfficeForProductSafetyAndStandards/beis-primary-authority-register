@@ -21,7 +21,7 @@
       ]
     %}
     {#  Always wrap fieldset legends in a SPAN for CSS positioning. #}
-    <legend{{ legend.attributes.addClass('govuk-fieldset__legend', 'govuk-fieldset__legend--m') }}>
+    <legend{{ legend.attributes.addClass('govuk-fieldset__legend') }}>
       <span{{ legend_span.attributes.addClass(legend_span_classes).removeClass('visually-hidden') }}>{{ legend.title }}</span>
     </legend>
       {% if description.content %}

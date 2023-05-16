@@ -65,12 +65,17 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
 
     // Display the legal entities.
     $form['legal_entities'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Legal entities',
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('Legal entities'),
+      ],
       '#attributes' => ['class' => ['form-group']],
       'legal_entity' => [
         '#type' => 'container',
-        '#attributes' => ['class' => ['grid-row']],
+        '#attributes' => ['class' => ['govuk-grid-row']],
       ],
     ];
 
@@ -81,7 +86,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
 
       $form['legal_entities']['legal_entity'][$delta] = [
         '#type' => 'container',
-        '#attributes' => ['class' => 'column-full'],
+        '#attributes' => ['class' => 'govuk-grid-column-full'],
         'name' => [
           '#type' => 'html_tag',
           '#tag' => 'div',
@@ -117,14 +122,14 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
       if (!empty(array_filter($operations))) {
         $form['legal_entities']['legal_entity'][$delta]['operations'] = [
           '#type' => 'container',
-          '#attributes' => ['class' => ['grid-row']],
+          '#attributes' => ['class' => ['govuk-grid-row']],
         ];
         if (isset($operations['edit']) && $operations['edit'] instanceof Link) {
           $form['legal_entities']['legal_entity'][$delta]['operations']['edit'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $operations['edit']->toString(),
-            '#attributes' => ['class' => ['edit-legal-entity', 'column-one-third']],
+            '#attributes' => ['class' => ['edit-legal-entity', 'govuk-grid-column-one-third']],
           ];
         }
         if (isset($operations['remove']) && $operations['remove'] instanceof Link) {
@@ -132,7 +137,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $operations['remove']->setText("remove legal entity")->toString(),
-            '#attributes' => ['class' => ['remove-legal-entity', 'column-one-third']],
+            '#attributes' => ['class' => ['remove-legal-entity', 'govuk-grid-column-one-third']],
           ];
         }
       }

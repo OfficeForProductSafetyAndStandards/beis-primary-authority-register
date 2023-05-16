@@ -61,7 +61,7 @@ class ParChecklistForm extends ParBaseForm {
         '#type' => 'html_tag',
         '#tag' => 'h2',
         '#value' => $this->t('Primary authority contact'),
-        '#attributes' => ['class' => 'heading-large'],
+        '#attributes' => ['class' => 'govuk-heading-l'],
       ],
       'details' => $this->getFlowDataHandler()->getDefaultValues('notice_summary', NULL),
     ];

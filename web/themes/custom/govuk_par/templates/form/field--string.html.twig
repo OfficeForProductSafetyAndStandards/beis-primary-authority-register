@@ -39,14 +39,14 @@
 
 {% if label_hidden %}
   {% if multiple %}
-    <div{{ attributes.addClass(field_name) }}>
+    <div{{ attributes.addClass(field_name, 'govuk-body-m') }}>
       {% for item in items %}
-        <div{{ item.attributes }}>{{ item.content }}</div>
+        <p{{ item.attributes }}>{{ item.content }}</p>
       {% endfor %}
     </div>
   {% else %}
     {% for item in items %}
-      <div{{ attributes.addClass(field_name) }}>{{ item.content }}</div>
+      <p{{ attributes.addClass(field_name) }}>{{ item.content }}</p>
     {% endfor %}
   {% endif %}
 {% else %}
@@ -56,7 +56,7 @@
     <div>
       {% endif %}
       {% for item in items %}
-        <div{{ item.attributes.addClass(field_name) }}>{{ item.content }}</div>
+        <p{{ item.attributes.addClass(field_name) }}>{{ item.content }}</p>
       {% endfor %}
       {% if multiple %}
     </div>

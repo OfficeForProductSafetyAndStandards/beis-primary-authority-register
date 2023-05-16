@@ -107,7 +107,7 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticBaseIn
   public function renderStat() {
     return [
       '#theme' => 'gds_data',
-      '#attributes' => ['class' => 'column-one-third'],
+      '#attributes' => ['class' => 'govuk-grid-column-one-third'],
       '#value' => number_format($this->getStat(), 0, '', ','),
       '#label' => $this->getTitle(),
       '#description' => $this->getDescription(),

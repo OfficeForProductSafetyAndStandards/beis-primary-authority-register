@@ -50,12 +50,12 @@ class ParContactLocations extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     if ($cardinality === 1) {
       $form['message_intro'] = [
-        '#type' => 'fieldset',
-        'title' => [
+        '#type' => 'container',
+        'heading' => [
           '#type' => 'html_tag',
           '#tag' => 'h2',
           '#value' => $this->t('Contact locations'),
-          '#attributes' => ['class' => ['heading-large']],
+          '#attributes' => ['class' => ['govuk-heading-l']],
         ],
         'info' => [
           '#type' => 'html_tag',
@@ -83,7 +83,7 @@ class ParContactLocations extends ParFormPluginBase {
       ];
 
       $form['contact'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#weight' => 1,
         '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
         'locations' => [
@@ -96,9 +96,9 @@ class ParContactLocations extends ParFormPluginBase {
     }
     else {
       $form['contact'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#attributes' => ['class' => ['form-group']],
-        'title' => [
+        'heading' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => $this->t('There are no contacts records listed.'),

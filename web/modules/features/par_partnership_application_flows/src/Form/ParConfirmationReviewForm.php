@@ -62,24 +62,24 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
       $form['partnership'] = [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => ['grid-row', 'form-group']],
+        '#attributes' => ['class' => ['govuk-grid-row', 'form-group']],
       ];
 
       // Show the organisation name.
       if ($par_data_organisation) {
         $form['partnership']['organisation'] = [
-          '#type' => 'fieldset',
-          '#attributes' => ['class' => 'column-one-half'],
+          '#type' => 'container',
+          '#attributes' => ['class' => 'govuk-grid-column-one-half'],
         ];
 
         // Display organisation name and organisation primary address.
         $form['partnership']['organisation']['organisation_name'] = [
-          '#type' => 'fieldset',
+          '#type' => 'container',
           '#attributes' => ['class' => 'form-group'],
           'title' => [
             '#type' => 'html_tag',
-            '#tag' => 'h3',
-            '#value' => 'Organisation name',
+            '#tag' => 'h2',
+            '#value' => $this->t('Organisation name'),
             '#attributes' => ['class' => 'heading-medium'],
           ],
           'name' => [
@@ -111,16 +111,16 @@ class ParConfirmationReviewForm extends ParBaseForm {
       // Show the primary authority name.
       if ($par_data_authority) {
         $form['partnership']['authority'] = [
-          '#type' => 'fieldset',
-          '#attributes' => ['class' => 'column-one-half'],
+          '#type' => 'container',
+          '#attributes' => ['class' => 'govuk-grid-column-one-half'],
         ];
         $form['partnership']['authority']['authority_name'] = [
-          '#type' => 'fieldset',
+          '#type' => 'container',
           '#attributes' => ['class' => 'form-group'],
           'title' => [
             '#type' => 'html_tag',
-            '#tag' => 'h3',
-            '#value' => 'Primary authority name',
+            '#tag' => 'h2',
+            '#value' => $this->t('Primary authority name'),
             '#attributes' => ['class' => 'heading-medium'],
           ],
           'name' => [

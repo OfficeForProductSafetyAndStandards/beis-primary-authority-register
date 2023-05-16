@@ -71,8 +71,13 @@ class ParReportingReferencesController extends ControllerBase {
     foreach ($references as $entity_type => $fields) {
       // Display the Entity type.
       $build['references'][$entity_type] = [
-        '#type' => 'fieldset',
-        '#title' => $entity_type,
+        '#type' => 'container',
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#attributes' => ['class' => ['govuk-heading-m']],
+          '#value' => $entity_type
+        ],
         '#attributes' => ['class' => ['form-group']],
       ];
 

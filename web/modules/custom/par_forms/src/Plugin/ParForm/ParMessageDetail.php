@@ -78,12 +78,12 @@ class ParMessageDetail extends ParFormPluginBase {
 
     if ($cardinality === 1) {
       $form['message_intro'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'h2',
           '#value' => $this->t('Responses'),
-          '#attributes' => ['class' => ['heading-large']],
+          '#attributes' => ['class' => ['govuk-heading-l']],
         ],
         '#attributes' => ['class' => ['form-group']],
       ];
@@ -107,7 +107,7 @@ class ParMessageDetail extends ParFormPluginBase {
 
     if ($this->getDefaultValuesByKey('message', $cardinality, NULL)) {
       $form['message'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#attributes' => ['class' => ['form-group', 'panel panel-border-wide']],
         'title' => [
           '#type' => 'html_tag',
@@ -120,7 +120,7 @@ class ParMessageDetail extends ParFormPluginBase {
     }
     else {
       $form['message'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#attributes' => ['class' => ['form-group']],
         'title' => [
           '#type' => 'html_tag',

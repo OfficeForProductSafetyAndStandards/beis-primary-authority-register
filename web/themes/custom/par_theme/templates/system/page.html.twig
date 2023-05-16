@@ -99,6 +99,7 @@
   {%
     set main_classes = [
       'govuk-main-wrapper',
+      'govuk-body-m',
       show_breadcrumb ? 'has-breadcrumb',
       page.content.govuk_local_tasks|render|striptags|trim is not empty ? 'has-local-tasks'
     ]
