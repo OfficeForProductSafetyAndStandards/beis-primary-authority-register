@@ -19,6 +19,14 @@ public class InspectionPlanSearchPage extends BasePageObject {
 	@FindBy(linkText = "Upload inspection plan")
 	WebElement uploadBtn;
 
+	@FindBy(linkText = "Revoke inspection plan")
+	WebElement revokeBtn;
+
+	public RevokeReasonInspectionPlanPage selectRevokeLink() {
+		revokeBtn.click();
+		return PageFactory.initElements(driver, RevokeReasonInspectionPlanPage.class);
+	}
+
 	public UploadInspectionPlanPage selectUploadLink() {
 		uploadBtn.click();
 		return PageFactory.initElements(driver, UploadInspectionPlanPage.class);
@@ -27,7 +35,14 @@ public class InspectionPlanSearchPage extends BasePageObject {
 	String planstatus = "//td/a[contains(text(),'?')]/parent::td/following-sibling::td[1]";
 
 	public String getPlanStatus() {
-		return driver.findElement(By.xpath(planstatus.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE)))).getText();
+		try {
+			return driver
+					.findElement(By
+							.xpath(planstatus.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE))))
+					.getText();
+		} catch (Exception e) {
+			return ("No results returned");
+		}
 	}
 
 }
