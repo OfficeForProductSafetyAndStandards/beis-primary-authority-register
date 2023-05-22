@@ -1,0 +1,13 @@
+diff --git a/js/a11y-autocomplete.js b/js/a11y-autocomplete.js
+index af23bdf..944576b 100644
+--- a/js/a11y-autocomplete.js
++++ b/js/a11y-autocomplete.js
+@@ -30,7 +30,7 @@
+     };
+     const input = document.createElement('input');
+     input.type = 'text';
+-    input.classList.add('form-text', 'form-element', 'form-element--type-text');
++    input.classList.add('form-text', 'form-element', 'form-control', 'form-element--type-text', 'govuk-select', 'govuk-input');
+     const parent = el.parentNode;
+     el.classList.add('visually-hidden');
+     parent.insertBefore(input, el);

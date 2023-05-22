@@ -1,6 +1,7 @@
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc
 module:
+  a11y_autocomplete_element: 0
   address: 0
   admin_toolbar: 0
   admin_toolbar_tools: 0
@@ -18,7 +19,6 @@ module:
   comment: 0
   config: 0
   config_filter: 0
-  config_readonly: 0
   config_split: 0
   config_translation: 0
   config_update: 0
@@ -28,6 +28,7 @@ module:
   ctools: 0
   datetime: 0
   datetime_range: 0
+  dblog: 0
   default_content: 0
   devel_generate: 0
   dynamic_page_cache: 0
@@ -50,6 +51,7 @@ module:
   http_response_headers: 0
   image: 0
   inline_entity_form: 0
+  inline_form_errors: 0
   invite: 0
   invite_by_email: 0
   invite_link: 0

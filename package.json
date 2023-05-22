@@ -11,6 +11,7 @@
   },
   "engine-trict": true,
   "dependencies": {
+    "@drupal/autocomplete": "0.0.2",
     "chosen-js": "^1.8.7",
     "gulp": "^4.0.0",
     "gulp-cli": "^2.1.0",

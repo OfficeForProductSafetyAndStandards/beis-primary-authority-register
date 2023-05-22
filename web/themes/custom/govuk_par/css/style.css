@@ -2069,9 +2069,9 @@ ol + .govuk-heading-s {
 .govuk-input[type="number"] {
   -moz-appearance: textfield; }
 
-.govuk-input--error {
+.govuk-input--error, input.error {
   border-color: #d4351c; }
-  .govuk-input--error:focus {
+  .govuk-input--error:focus, input.error:focus {
     border-color: #0b0c0c; }
 
 .govuk-input--extra-letter-spacing {
@@ -6062,5 +6062,13 @@ details {
 
 .app-related-items .govuk-list > li, .app-related-items ul > li, .app-related-items ol > li {
   margin-bottom: 10px; }
+
+.govuk-error-summary__list {
+  list-style: none;
+  padding-left: 0; }
+  .govuk-error-summary__list .item-list__comma-list li {
+    display: block; }
+    .govuk-error-summary__list .item-list__comma-list li:after {
+      content: ""; }
 
 /*# sourceMappingURL=../map/style.css.map */

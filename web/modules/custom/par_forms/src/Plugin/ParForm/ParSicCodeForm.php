@@ -54,7 +54,7 @@ class ParSicCodeForm extends ParFormPluginBase {
       $this->formatPlural($cardinality, 'Add a new SIC Code to your organisation', 'Add a new SIC Code to your organisation (optional)');
 
     $form['sic_code'] = [
-      '#type' => 'select',
+      '#type' => 'a11y_autocomplete',
       '#title' => $intro_text,
       '#options' => ['' => ''] + $this->getParDataManager()->getEntitiesAsOptions($sic_codes),
       '#default_value' => $this->getDefaultValuesByKey('sic_code', $cardinality, NULL),
