@@ -5914,6 +5914,16 @@ details {
 .govuk-main-wrapper.has-breadcrumb {
   padding-top: 20px; }
 
+.toolbar-tray-name {
+  color: #0b0c0c; }
+
+.toolbar div,
+.toolbar-menu {
+  font-size: 16px !important; }
+  .toolbar div ul > li,
+  .toolbar-menu ul > li {
+    margin-bottom: 0 !important; }
+
 .search-header {
   width: 100%;
   float: left; }

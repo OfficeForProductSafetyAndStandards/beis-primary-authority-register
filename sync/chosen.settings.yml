@@ -4,16 +4,18 @@ minimum_single: 20
 minimum_multiple: 20
 disable_search_threshold: 0
 minimum_width: 0
+max_shown_results: null
 use_relative_width: false
 jquery_selector: 'select:visible'
 search_contains: false
 disable_search: false
 allow_single_deselect: false
 disabled_themes:
+  govuk_par: govuk_par
+  par_theme: par_theme
   bartik: '0'
   seven: '0'
-  par_theme: '0'
-chosen_include: 1
+chosen_include: 0
 placeholder_text_multiple: 'Choose some options'
 placeholder_text_single: 'Choose an option'
 no_results_text: 'No results match'

@@ -14,7 +14,7 @@ dependencies:
 id: views_block__notifications_tasks_block
 theme: par_theme
 region: content
-weight: -8
+weight: -6
 provider: null
 plugin: 'views_block:notifications-tasks_block'
 settings:

@@ -68,3 +68,16 @@
     @extend .govuk-tabs__panel;
   }
 }
+
+.toolbar-tray-name {
+  color: govuk-colour("black");
+}
+
+.toolbar div,
+.toolbar-menu {
+  font-size: 16px !important;
+
+  ul > li {
+    margin-bottom: 0 !important;
+  }
+}
