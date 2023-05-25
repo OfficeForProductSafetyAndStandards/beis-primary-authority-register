@@ -2,10 +2,14 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\ParDataRelationship;
-use Drupal\par_validation\Plugin\Validation\Constraint\ParRequired;
+use Drupal\registered_organisations\OrganisationManagerInterface;
+use Drupal\registered_organisations\OrganisationRegisterInterface;
+use Drupal\registered_organisations\OrganisationInterface;
+use Drupal\Core\Entity\EntityStorageInterface;
 
 /**
  * Defines the par_data_legal_entity entity.
@@ -72,6 +76,34 @@ use Drupal\par_validation\Plugin\Validation\Constraint\ParRequired;
 class ParDataLegalEntity extends ParDataEntity {
 
   /**
+   * The default location for obtaining legal entity data.
+   *
+   * If no register is set the storage as internal.
+   */
+  const DEFAULT_REGISTER = 'internal';
+
+  /**
+   * The default status for all legal entities.
+   */
+  const DEFAULT_STATUS = 'active';
+
+  /**
+   * Store the organisation profile.
+   *
+   * @var ?OrganisationInterface
+   */
+  protected ?OrganisationInterface $profile = NULL;
+
+  /**
+   * Get the registered organisation manager.
+   *
+   * @return OrganisationManagerInterface
+   */
+  public function getOrganisationManager(): OrganisationManagerInterface {
+    return \Drupal::service('registered_organisations.organisation_manager');
+  }
+
+  /**
    * {@inheritdoc}
    *
    * Ensure that we can not create duplicates of legal entities with the same companies house number.
@@ -94,24 +126,182 @@ class ParDataLegalEntity extends ParDataEntity {
     }
   }
 
-  public function getName() {
-    $name = $this->get('registered_name')->getString();
-    return $name;
+  /**
+   * Migrate legacy legal entities.
+   *
+   * Legacy legal entities are those created before the registered_organisations
+   * plugins were used to match the data with external registers.
+   *
+   * They are characterised by no value for the 'registry' field, and have a fixed
+   * number of potential values for the 'legal_entity_type' field which correspond
+   * to whether the legal entity is a registered organisation.
+   *
+   * @TODO Revisit once the majority of legacy legal entities are updated.
+   */
+  protected function updateLegacyEntities() {
+    // Legacy registered organisation mapping.
+    $legacy_registered_types = [
+      'partnership' => 'Partnership',
+      'limited_company' => 'Limited Company',
+      'public_limited_company' => 'Public Limited Company',
+      'limited_partnership' => 'Limited Partnership',
+      'limited_liability_partnership' => 'Limited Liability Partnership',
+    ];
+
+    // Get the entity values needed for lookup.
+    $id = $this->get('registered_number')->getString();
+    $type = $this->get('legal_entity_type')->getString();
+
+    // If no registry is set, and the legal_entityCheck for legacy legal entity types.
+    if ($this->get('registry')->isEmpty() && !empty($id) && !empty($type) &&
+        (isset($legacy_registered_types[$type]) ||
+        array_search($type, $legacy_registered_types) !== FALSE)) {
+
+      // Lookup the legacy legal entity.
+      $profile = $this->getOrganisationManager()
+        ->lookupOrganisation('companies_house', $id);
+
+      // Set the register value if an organisation profile is found.
+      if ($profile instanceof OrganisationInterface) {
+        $this->set('registry', $profile->getRegistry()->getPluginId());
+      }
+    }
   }
 
-  public function getRegisteredNumber() {
-    $number = $this->get('registered_number')->getString();
-    return $number;
+  /**
+   * {@inheritdoc}
+   */
+  public function preSave(EntityStorageInterface $storage) {
+    parent::preSave($storage);
+
+    // Update legacy legal entities.
+    $this->updateLegacyEntities();
+
+    // If this legal entity is a registered organisation.
+    if ($profile = $this->getOrganisationProfile()) {
+      // Save the true values from the registry.
+      $this->set('registered_name', $profile->getName());
+      $this->set('registered_number', $profile->getId());
+      $this->set('legal_entity_type', $profile->getType());
+    }
   }
 
-  public function getTypeRaw() {
-    return $this->get('legal_entity_type')->getString();
+  /**
+   * Get the register id for this legal entity.
+   *
+   * @return string
+   */
+  public function getRegisterId(): string {
+    return !$this->get('registry')->isEmpty() ?
+      $this->get('registry')->getString() : self::DEFAULT_REGISTER;
   }
 
-  public function getType() {
-    $value = $this->getTypeRaw();
-    $type = !empty($value) ? $this->getTypeEntity()->getAllowedFieldlabel('legal_entity_type', $value) : NULL;
-    return $type;
+  /**
+   * Whether the legal entity is a registered organisation.
+   *
+   * @return bool
+   */
+  public function isRegisteredOrganisation(): bool {
+    $definition = $this->getOrganisationManager()
+      ->getDefinition($this->getRegisterId(), FALSE);
+
+    return ($definition !== NULL);
+  }
+
+  /**
+   * Get the registered organisation profile.
+   *
+   * @return ?OrganisationInterface
+   */
+  public function getOrganisationProfile(): ?OrganisationInterface {
+    if ($this->profile) {
+      return $this->profile;
+    }
+
+    // Organisation profiles only exist for registered organisations.
+    if ($this->isRegisteredOrganisation()) {
+      // Get the organisation profile.
+      $profile = $this->getOrganisationManager()
+        ->lookupOrganisation($this->getRegisterId(), $this->getId());
+
+      // Save the profile.
+      if ($profile instanceof OrganisationInterface) {
+        $this->profile = $profile;
+      }
+      return $profile;
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Get the organisation id of the legal entity.
+   *
+   * @return string|int
+   */
+  public function getId(): string|int {
+    return $this->isRegisteredOrganisation() ?
+      $this->get('registered_number')->getString() : $this->id();
+  }
+
+  /**
+   * Get the registered number of the legal entity.
+   *
+   * @return string
+   *   The registered number of the legal entity.
+   */
+  public function getRegisteredNumber(): string {
+    return $this->isRegisteredOrganisation() ?
+      $this->getOrganisationProfile()?->getId() :
+      $this->get('registered_number')->getString();
+  }
+
+  /**
+   * Get the name of the legal entity.
+   *
+   * @return string
+   *   The name of the legal entity.
+   */
+  public function getName(): string {
+    return $this->isRegisteredOrganisation() ?
+      $this->getOrganisationProfile()?->getName() :
+      $this->get('registered_name')->getString();
+  }
+
+  /**
+   * Get the name of the legal entity.
+   *
+   * @return string
+   *   The name of the legal entity.
+   */
+  public function getType(): string {
+    return $this->isRegisteredOrganisation() ?
+      $this->getOrganisationProfile()?->getType() :
+      $this->get('legal_entity_type')->getString();
+  }
+
+  /**
+   * Get the name of the legal entity.
+   *
+   * @return string
+   *   The name of the legal entity.
+   */
+  public function getStatus(): string {
+    return $this->isRegisteredOrganisation() ?
+      $this->getOrganisationProfile()?->getStatus() :
+      self::DEFAULT_STATUS;
+  }
+
+  /**
+   * Get the SIC classification of the legal entity.
+   *
+   * @return array
+   *   The classification of the legal entity.
+   */
+  public function getClassification(): array {
+    return $this->isRegisteredOrganisation() ?
+      $this->getOrganisationProfile()?->getClassification() :
+      [];
   }
 
   /**
@@ -188,6 +378,28 @@ class ParDataLegalEntity extends ParDataEntity {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
+    // Registry.
+    $fields['registry'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Registry'))
+      ->setDescription(t('The organisation where the legal entity is registered.'))
+      ->setRequired(FALSE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 32,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 1,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     // Registered Name.
     $fields['registered_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Registered Name'))
@@ -210,7 +422,7 @@ class ParDataLegalEntity extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Registered Name.
+    // Registered Number.
     $fields['registered_number'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Registered Number'))
       ->setDescription(t('The registered number of the legal entity.'))

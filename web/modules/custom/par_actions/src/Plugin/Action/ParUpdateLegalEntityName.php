@@ -24,14 +24,13 @@ class ParUpdateLegalEntityName extends ActionBase {
   public function execute($entity = NULL) {
     if ($entity instanceof ParDataEntityInterface) {
       $organisation_register_manager = \Drupal::service('registered_organisations.organisation_manager');
-      $companies_house_register = $organisation_register_manager->getDefinition('companies_house');
 
       // Only certain legal entity types are registered with Companies House.
       $companies_house_types = ['partnership', 'limited_company', 'public_limited_company', 'limited_partnership', 'limited_liability_partnership'];
 
       if ($entity->getType() && !empty($entity->getRegisteredNumber()) &&
         in_array($entity->get('legal_entity_type')->getString(), $companies_house_types)) {
-        $company_profile = $organisation_register_manager->lookupOrganisation($entity->getRegisteredNumber(), $companies_house_register);
+        $company_profile = $organisation_register_manager->lookupOrganisation('companies_house', $entity->getRegisteredNumber());
 
         $companies_house_name = $company_profile?->getName();
         if ($companies_house_name && $companies_house_name !== $entity->getName()) {
