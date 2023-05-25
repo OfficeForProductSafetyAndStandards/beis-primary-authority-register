@@ -127,48 +127,6 @@ class ParDataLegalEntity extends ParDataEntity {
   }
 
   /**
-   * Migrate legacy legal entities.
-   *
-   * Legacy legal entities are those created before the registered_organisations
-   * plugins were used to match the data with external registers.
-   *
-   * They are characterised by no value for the 'registry' field, and have a fixed
-   * number of potential values for the 'legal_entity_type' field which correspond
-   * to whether the legal entity is a registered organisation.
-   *
-   * @TODO Revisit once the majority of legacy legal entities are updated.
-   */
-  protected function updateLegacyEntities() {
-    // Legacy registered organisation mapping.
-    $legacy_registered_types = [
-      'partnership' => 'Partnership',
-      'limited_company' => 'Limited Company',
-      'public_limited_company' => 'Public Limited Company',
-      'limited_partnership' => 'Limited Partnership',
-      'limited_liability_partnership' => 'Limited Liability Partnership',
-    ];
-
-    // Get the entity values needed for lookup.
-    $id = $this->get('registered_number')->getString();
-    $type = $this->get('legal_entity_type')->getString();
-
-    // If no registry is set, and the legal_entityCheck for legacy legal entity types.
-    if ($this->get('registry')->isEmpty() && !empty($id) && !empty($type) &&
-        (isset($legacy_registered_types[$type]) ||
-        array_search($type, $legacy_registered_types) !== FALSE)) {
-
-      // Lookup the legacy legal entity.
-      $profile = $this->getOrganisationManager()
-        ->lookupOrganisation('companies_house', $id);
-
-      // Set the register value if an organisation profile is found.
-      if ($profile instanceof OrganisationInterface) {
-        $this->set('registry', $profile->getRegistry()->getPluginId());
-      }
-    }
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function preSave(EntityStorageInterface $storage) {
@@ -319,57 +277,101 @@ class ParDataLegalEntity extends ParDataEntity {
   }
 
   /**
-   * Merge all legal entities that use the same companies house ID.
+   * Migrate legacy legal entities.
+   *
+   * Legacy legal entities are those created before the registered_organisations
+   * plugins were used to match the data with external registers.
+   *
+   * They are characterised by no value for the 'registry' field, and have a fixed
+   * number of potential values for the 'legal_entity_type' field which correspond
+   * to whether the legal entity is a registered organisation.
+   *
+   * @TODO Revisit once the majority of legacy legal entities are updated.
    */
-  public function mergeLegalEntities() {
-    // Lookup related legal entities.
-    $legal_entities = !empty($this->getRegisteredNumber()) ? $this->getParDataManager()->getEntitiesByProperty($this->getEntityTypeId(), 'registered_number', $this->getRegisteredNumber()) : [];
+  public function updateLegacyEntities() {
+    // If no registry is set, and the legal_entityCheck for legacy legal entity types.
+    if ($this->isLegacyEntity() && $register = $this->convertLegacyTypeToRegister()) {
+      switch ($register) {
+        case self::DEFAULT_REGISTER:
+          // Set the register value if a name was found.
+          $name = $this->get('registered_name')->getString();
+          if (!empty($name)) {
+            $this->set('registry', self::DEFAULT_REGISTER);
+          }
 
-    foreach ($legal_entities as $legal_entity) {
-      // Skip modifications of the current legal entity.
-      if ($legal_entity->id() === $this->id()) {
-        continue;
+          break;
+
+        default:
+          // Lookup the legacy legal entity.
+          $id = $this->get('registered_number')->getString();
+          $profile = $this->getOrganisationManager()->lookupOrganisation('companies_house', $id);
+
+          // Set the register value if an organisation profile is found.
+          if ($profile instanceof OrganisationInterface) {
+            $this->set('registry', $profile->getRegistry()->getPluginId());
+          }
+
+          break;
+
       }
+    }
+  }
 
-      // Get all the entities that reference this legal entity.
-      $relationships = $legal_entity->getRelationships(NULL, NULL, TRUE);
-      foreach ($relationships as $relationship) {
-        if ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE) {
-          // Only update the related entity if it does not already reference the updated record.
-          $update = TRUE;
-          foreach ($relationship->getEntity()->get($relationship->getField()->getName())->referencedEntities() as $e) {
-            if ($e->id() === $this->id()) {
-              $update = FALSE;
-            }
-          }
+  /**
+   * Determines whether this is a legacy legal entity that needs updating.
+   *
+   * @TODO Revisit once the majority of legacy legal entities are updated.
+   *
+   * @return bool
+   */
+  public function isLegacyEntity(): bool {
+    return $this->get('registry')->isEmpty();
+  }
 
-          // Update all entities that reference the soon to be merged legal entity.
-          if ($update) {
-            $relationship->getEntity()->get($relationship->getField()->getName())->appendItem($this->id());
-            $relationship->getEntity()->save();
-          }
+  /**
+   * Determines whether this is a legacy legal entity that needs updating.
+   *
+   * @TODO Revisit once the majority of legacy legal entities are updated.
+   *
+   * @return ?string
+   *   Returns the new register based on the legacy type, or null if
+   *   an invalid value is found for the legacy type.
+   *   Null values indicate the legal entity will need manual correction.
+   */
+  protected function convertLegacyTypeToRegister(): ?string  {
+    // Legacy registered organisation mapping.
+    $legacy_types = [
+      'companies_house' => [
+        'partnership' => 'Partnership',
+        'limited_company' => 'Limited Company',
+        'public_limited_company' => 'Public Limited Company',
+        'limited_partnership' => 'Limited Partnership',
+        'limited_liability_partnership' => 'Limited Liability Partnership',
+      ],
+      'charity_commission' => [
+        'registered_charity' => 'Registered Charities',
+      ],
+      self::DEFAULT_REGISTER => [
+        'other' => 'Other',
+        'sole_trader' => 'Sole Trader',
+      ]
+    ];
 
-          // Delete methods check to see if there are any related entities that
-          // require this entity, @see ParDataEntity::isDeletable(), all references
-          // must be removed before the entity can be deleted.
-          $field_items = $relationship->getEntity()->get($relationship->getField()->getName())->getValue();
-          if(!empty($field_items)) {
-            // Find & remove this person from the referenced entity.
-            $key = array_search($legal_entity->id(), array_column($field_items, 'target_id'));
-            if (false !== $key && $relationship->getEntity()->get($relationship->getField()->getName())->offsetExists($key)) {
-              $relationship->getEntity()->get($relationship->getField()->getName())->removeItem($key);
-              $relationship->getEntity()->save();
-            }
-          }
-        }
-      }
-
-      // Remove this person record.
-      $legal_entity->delete();
+    // If no type is set assume the default.
+    $type = $this->get('legal_entity_type')->getString();
+    if (empty($type)) {
+      return NULL;
     }
 
-    // This method will always save the entity.
-    $this->save();
+    // Search the legacy types, if the type value matches one of the
+    // keys or values then it should be converted with that register plugin.
+    foreach ($legacy_types as $register => $types) {
+      if (isset($types[$type]) || in_array($type, $types)) {
+        return $register;
+      }
+    }
+
+    return NULL;
   }
 
   /**
