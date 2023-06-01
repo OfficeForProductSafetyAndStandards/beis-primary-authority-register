@@ -15,10 +15,10 @@ bundle: legal_entity
 mode: summary
 content:
   legal_entity_type:
-    type: par_list_formatter
+    type: par_registered_organisations_formatter
     label: hidden
     settings:
-      display_original_value: false
+      display_original_value: '1'
     third_party_settings: {  }
     weight: 1
     region: content
@@ -42,5 +42,10 @@ hidden:
   archive_reason: true
   deleted_reason: true
   name: true
+  par_label: true
+  par_status: true
+  par_status_date: true
+  registry: true
   revocation_reason: true
+  search_api_excerpt: true
   user_id: true

@@ -159,6 +159,17 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         ],
       ];
 
+      // Check if this legal entity needs updating.
+      if ($legal_entity->isLegacyEntity()) {
+        $legacy_message = "This legal entity needs to be updated.";
+        $form['partnership_legal_entities']['table'][$delta]['legal_entity']['warning'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'strong',
+          '#value' => $legacy_message,
+          '#attributes' => ['class' => ['govuk-warning-text']],
+        ];
+      }
+
       // Date columns only present once partnership becomes active.
       if ($partnership->isActive()) {
         // Start date cell is empty if the is no start date. LE is effective from the start of the partnership.

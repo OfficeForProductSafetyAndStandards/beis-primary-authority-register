@@ -172,12 +172,13 @@ class ParDataLegalEntity extends ParDataEntity {
    * @return ?OrganisationInterface
    */
   public function getOrganisationProfile(): ?OrganisationInterface {
-    if ($this->profile) {
-      return $this->profile;
-    }
-
     // Organisation profiles only exist for registered organisations.
     if ($this->isRegisteredOrganisation()) {
+      // Return the cached profile.
+      if ($this->profile) {
+        return $this->profile;
+      }
+
       // Get the organisation profile.
       $profile = $this->getOrganisationManager()
         ->lookupOrganisation($this->getRegisterId(), $this->getId());
@@ -186,6 +187,7 @@ class ParDataLegalEntity extends ParDataEntity {
       if ($profile instanceof OrganisationInterface) {
         $this->profile = $profile;
       }
+
       return $profile;
     }
 
@@ -227,27 +229,50 @@ class ParDataLegalEntity extends ParDataEntity {
   }
 
   /**
-   * Get the name of the legal entity.
+   * Get the type of the legal entity.
    *
    * @return string
-   *   The name of the legal entity.
+   *   The type of the legal entity.
    */
-  public function getType(): string {
-    return $this->isRegisteredOrganisation() ?
-      $this->getOrganisationProfile()?->getType() :
-      $this->get('legal_entity_type')->getString();
+  public function getType(bool $processed = TRUE): string {
+    if ($this->isRegisteredOrganisation()) {
+      return $this->getOrganisationProfile()?->getType($processed);
+    }
+    else {
+      $bundle_entity = $this->type?->entity;
+      $value = $this->get('legal_entity_type')->getString();
+      return $processed ?
+        $bundle_entity?->getFieldLabel('legal_entity_type') :
+        $value;
+    }
   }
 
   /**
-   * Get the name of the legal entity.
+   * Get the status of the legal entity.
    *
    * @return string
-   *   The name of the legal entity.
+   *   The status of the legal entity.
    */
   public function getStatus(): string {
     return $this->isRegisteredOrganisation() ?
       $this->getOrganisationProfile()?->getStatus() :
       self::DEFAULT_STATUS;
+  }
+
+  /**
+   * Get the processed value for the type of the legal entity.
+   *
+   * @return string
+   *   The type of the legal entity.
+   */
+  public function processStatus(): string {
+    if ($this->isRegisteredOrganisation()) {
+      return $this->getOrganisationProfile()?->getType(TRUE);
+    }
+    else {
+      $bundle_entity = $this->type?->entity;
+      return $bundle_entity?->getFieldLabel('legal_entity_status');
+    }
   }
 
   /**
