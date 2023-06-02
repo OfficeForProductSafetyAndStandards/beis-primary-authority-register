@@ -73,6 +73,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     'file',
     'image',
     'views',
+    'registered_organisations',
   ];
 
   /**
