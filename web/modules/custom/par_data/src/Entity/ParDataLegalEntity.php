@@ -288,7 +288,7 @@ class ParDataLegalEntity extends ParDataEntity {
       $bundle_entity = $this->type?->entity;
       $value = $this->get('legal_entity_type')->getString();
       return $processed ?
-        $bundle_entity?->getFieldLabel('legal_entity_type') :
+        $bundle_entity?->getFieldLabel('legal_entity_type', $value) :
         $value;
     }
   }
@@ -317,7 +317,8 @@ class ParDataLegalEntity extends ParDataEntity {
     }
     else {
       $bundle_entity = $this->type?->entity;
-      return $bundle_entity?->getFieldLabel('legal_entity_status');
+      $value = $this->get('legal_entity_status')->getString();
+      return $bundle_entity?->getFieldLabel('legal_entity_status', $value);
     }
   }
 
