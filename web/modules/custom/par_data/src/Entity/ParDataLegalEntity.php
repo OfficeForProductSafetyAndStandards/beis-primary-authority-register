@@ -4,7 +4,9 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
 use Drupal\registered_organisations\OrganisationManagerInterface;
 use Drupal\registered_organisations\OrganisationRegisterInterface;
@@ -104,26 +106,70 @@ class ParDataLegalEntity extends ParDataEntity {
   }
 
   /**
+   * Get the par data manager.
+   *
+   * @return EntityTypeManagerInterface
+   */
+  public function getEntityTypeManager(): EntityTypeManagerInterface {
+    return \Drupal::service('entity_type.manager');
+  }
+
+  /**
    * {@inheritdoc}
    *
    * Ensure that we can not create duplicates of legal entities with the same companies house number.
    */
   public static function create(array $values = []) {
-    $par_data_manger = \Drupal::service('par_data.manager');
+    // Set the default registry value if none exists.
+    $values['registry'] ??= self::DEFAULT_REGISTER;
 
-    // Check to see if a legal entity already exists with this number.
-    $legal_entities = !empty($values['registered_number']) ?
-      $par_data_manger->getEntitiesByProperty('par_data_legal_entity', 'registered_number', $values['registered_number']) :
-      NULL;
+    $entity = parent::create($values);
 
-    // Use the first available legal entity if one is found, otherwise
-    // create a new record.
+    // De-duplicate the entity.
+    return $entity->deduplicate();
+  }
+
+  /**
+   * Tries to de-duplicate the current legal entity.
+   *
+   * @return \Drupal\par_data\Entity\ParDataEntityInterface
+   *   The original legal entity OR
+   *   the duplicate legal entity if found.
+   */
+  public function deduplicate(): ParDataEntityInterface {
+    // The de-duplication parameters will vary depending on the registry type.
+    switch ($this->getRegisterId()) {
+      case self::DEFAULT_REGISTER:
+        $registered_name = $this->get('registered_name')->getString();
+        if (!empty($registered_name)) {
+          $properties = [
+            'registry' => $this->getRegisterId(),
+            'registered_name' => $registered_name,
+          ];
+        }
+        break;
+
+      default:
+        $registered_number = $this->get('registered_number')->getString();
+        if (!empty($registered_number)) {
+          $properties = [
+            'registry' => $this->getRegisterId(),
+            'registered_number' => $registered_number,
+          ];
+        }
+    }
+
+    // Check to see if a legal entity already exists with this name or number.
+    $legal_entities = !empty($properties) ?
+      $this->getEntityTypeManager()->getStorage('par_data_legal_entity')
+        ->loadByProperties($properties) : [];
+
     if (!empty($legal_entities)) {
       return current($legal_entities);
     }
-    else {
-      return parent::create($values);
-    }
+
+    return $this;
+
   }
 
   /**
@@ -181,7 +227,7 @@ class ParDataLegalEntity extends ParDataEntity {
 
       // Get the organisation profile.
       $profile = $this->getOrganisationManager()
-        ->lookupOrganisation($this->getRegisterId(), $this->getId());
+        ->lookupOrganisation($this->getRegisterId(), (string) $this->getId());
 
       // Save the profile.
       if ($profile instanceof OrganisationInterface) {
@@ -201,7 +247,7 @@ class ParDataLegalEntity extends ParDataEntity {
    */
   public function getId(): string|int {
     return $this->isRegisteredOrganisation() ?
-      $this->get('registered_number')->getString() : $this->id();
+      trim($this->get('registered_number')->getString()) : $this->id();
   }
 
   /**
@@ -329,7 +375,7 @@ class ParDataLegalEntity extends ParDataEntity {
         default:
           // Lookup the legacy legal entity.
           $id = $this->get('registered_number')->getString();
-          $profile = $this->getOrganisationManager()->lookupOrganisation('companies_house', $id);
+          $profile = $this->getOrganisationManager()->lookupOrganisation($register, $id);
 
           // Set the register value if an organisation profile is found.
           if ($profile instanceof OrganisationInterface) {
