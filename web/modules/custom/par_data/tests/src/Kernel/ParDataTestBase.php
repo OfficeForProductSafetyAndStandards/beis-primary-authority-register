@@ -641,9 +641,10 @@ class ParDataTestBase extends EntityKernelTestBase {
   public function getLegalEntityValues($values = []) {
     $values += [
         'type' => 'legal_entity',
+        'registry' => ParDataLegalEntity::DEFAULT_REGISTER,
         'registered_name' => 'Jo\' Coffee Ltd',
         'registered_number' => '0123456789',
-        'legal_entity_type' => 'limited_company',
+        'legal_entity_type' => 'other',
       ] + $this->getBaseValues();
 
     return $values;
