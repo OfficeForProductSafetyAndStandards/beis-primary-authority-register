@@ -1431,6 +1431,7 @@ function par_data_update_9007() {
   $entity_type = 'par_data_legal_entity';
   $fields = [
     'registry',
+    'organisation',
   ];
 
   \Drupal::entityTypeManager()->clearCachedDefinitions();

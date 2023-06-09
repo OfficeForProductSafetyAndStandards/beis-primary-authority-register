@@ -2,10 +2,10 @@
 
 namespace Drupal\par_data\Commands;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Database\Connection;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_data\Entity\ParDataLegalEntity;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\registered_organisations\OrganisationManagerInterface;
 use Drupal\search_api\ConsoleException;
 use Drush\Commands\DrushCommands;
 
@@ -17,16 +17,23 @@ class ParDataCommands extends DrushCommands {
   /**
    * The par_data.manager service.
    *
-   * @var \Drupal\par_data\ParDataManagerInterface
+   * @var ParDataManagerInterface
    */
-  protected $parDataManager;
+  protected ParDataManagerInterface $parDataManager;
 
   /**
    * The entity_type.manager service.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var EntityTypeManagerInterface
    */
-  protected $entityTypeManager;
+  protected EntityTypeManagerInterface $entityTypeManager;
+
+  /**
+   * The registered_organisations.organisation_manager service.
+   *
+   * @var OrganisationManagerInterface
+   */
+  protected OrganisationManagerInterface $organisationManager;
 
   /**
    * ParDataCommands constructor.
@@ -34,10 +41,11 @@ class ParDataCommands extends DrushCommands {
    * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
    *   The par_data.manager service.
    */
-  public function __construct(ParDataManagerInterface $par_data_manager, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(ParDataManagerInterface $par_data_manager, EntityTypeManagerInterface $entityTypeManager, OrganisationManagerInterface $organisationManager) {
     parent::__construct();
     $this->parDataManager = $par_data_manager;
     $this->entityTypeManager = $entityTypeManager;
+    $this->organisationManager = $organisationManager;
   }
 
   /**
@@ -141,5 +149,58 @@ class ParDataCommands extends DrushCommands {
     }
 
     return "Index health good.";
+  }
+
+  /**
+   * Update registered entities.
+   *
+   * @param ?string $register
+   *   The register to update or NULL to update entities not assigned to a register.
+   *
+   * @validate-module-enabled par_data
+   *
+   * @command par-data:update-registered-organisations
+   * @aliases puro
+
+   */
+  public function update_registered_organisations(?string $register = NULL) {
+    $count = 0;
+
+    // Check that the register is valid.
+    $register_is_valid = $register === ParDataLegalEntity::DEFAULT_REGISTER ??
+      (NULL !== $this->organisationManager->getDefinition($register, FALSE));
+    $registry = $register_is_valid ? $register : NULL;
+
+    $storage = $this->entityTypeManager
+      ->getStorage('par_data_legal_entity');
+
+    $query = $storage->getQuery()
+      ->accessCheck(FALSE)
+      ->sort('changed' , 'ASC')
+      ->range(0, 250);
+
+    if ($register_is_valid) {
+      $query->condition('registry', $registry);
+    }
+    else {
+      $query->condition('registry', NULL, 'IS NULL');
+    }
+
+    $results = $query->execute();
+    /** @var ParDataLegalEntity $entities */
+    $entities = $storage->loadMultiple(array_unique($results));
+
+    foreach ($entities as $entity) {
+      // Update legacy legal entities.
+      $updated = $entity->updateLegacyEntities();
+
+      if ($updated) {
+        $entity->save();
+        $count++;
+        $this->output->writeln(dt('Legacy legal entity @entity updated to the registry %registry', ['@entity' => $entity->label(), '%registry' => $registry]));
+      }
+    }
+
+    return "$count legacy entities updated.";
   }
 }

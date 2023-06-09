@@ -117,6 +117,14 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       // Get the actual legal entity instance.
       $legal_entity = $partnership_legal_entity->getLegalEntity();
 
+      // @TODO Remove updateLegacyEntities() once the majority of legacy legal entities are updated.
+      if ($legal_entity?->isLegacyEntity()) {
+        $updated = $legal_entity->updateLegacyEntities();
+        if ($updated) {
+          $legal_entity->save();
+        }
+      }
+
       // Get all the operations available for this legal entity.
       $operations = [
         'revoke_legal_entity' => 'Revoke',

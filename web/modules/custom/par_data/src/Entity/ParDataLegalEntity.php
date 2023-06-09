@@ -8,10 +8,14 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
+use Drupal\registered_organisations\DataException;
+use Drupal\registered_organisations\Organisation;
 use Drupal\registered_organisations\OrganisationManagerInterface;
 use Drupal\registered_organisations\OrganisationRegisterInterface;
 use Drupal\registered_organisations\OrganisationInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\TypedData\Exception\MissingDataException;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Defines the par_data_legal_entity entity.
@@ -90,13 +94,6 @@ class ParDataLegalEntity extends ParDataEntity {
   const DEFAULT_STATUS = 'active';
 
   /**
-   * Store the organisation profile.
-   *
-   * @var ?OrganisationInterface
-   */
-  protected ?OrganisationInterface $profile = NULL;
-
-  /**
    * Get the registered organisation manager.
    *
    * @return OrganisationManagerInterface
@@ -115,6 +112,15 @@ class ParDataLegalEntity extends ParDataEntity {
   }
 
   /**
+   * Get the serialization service.
+   *
+   * @return SerializerInterface
+   */
+  public function getSerializer(): SerializerInterface {
+    return \Drupal::service('serializer');
+  }
+
+  /**
    * {@inheritdoc}
    *
    * Ensure that we can not create duplicates of legal entities with the same companies house number.
@@ -127,6 +133,16 @@ class ParDataLegalEntity extends ParDataEntity {
 
     // De-duplicate the entity.
     return $entity->deduplicate();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function preSave(EntityStorageInterface $storage) {
+    parent::preSave($storage);
+
+    // Update legacy legal entities.
+    $this->updateLegacyEntities();
   }
 
   /**
@@ -173,21 +189,77 @@ class ParDataLegalEntity extends ParDataEntity {
   }
 
   /**
-   * {@inheritdoc}
+   * Whether the legal entity is a registered organisation.
+   *
+   * @return bool
    */
-  public function preSave(EntityStorageInterface $storage) {
-    parent::preSave($storage);
-
-    // Update legacy legal entities.
-    $this->updateLegacyEntities();
-
-    // If this legal entity is a registered organisation.
-    if ($profile = $this->getOrganisationProfile()) {
-      // Save the true values from the registry.
-      $this->set('registered_name', $profile->getName());
-      $this->set('registered_number', $profile->getId());
-      $this->set('legal_entity_type', $profile->getType());
+  public function isRegisteredOrganisation(): bool {
+    // Known unregistered values.
+    if ($this->getRegisterId() === self::DEFAULT_REGISTER) {
+      return FALSE;
     }
+
+    // Check that the register is valid.
+    $definition = $this->getOrganisationManager()
+      ->getDefinition($this->getRegisterId(), FALSE);
+
+    return ($definition !== NULL);
+  }
+
+  /**
+   * Get the cached Organisation Profile.
+   *
+   * @return \Drupal\registered_organisations\OrganisationInterface|null
+   */
+  public function getOrganisationProfile(): ?OrganisationInterface {
+    try {
+      $data = !$this->get('organisation')->isEmpty() ?
+        $this->get('organisation')->first()->getValue() : NULL;
+      $register = $this->getOrganisationManager()
+        ->getRegistry($this->getRegisterId());
+
+      return !empty($data) && $register instanceof OrganisationRegisterInterface ?
+        new Organisation($register, $data) :
+        NULL;
+    }
+    catch (MissingDataException|DataException $e) {
+      return NULL;
+    }
+  }
+
+  /**
+   * Get the registered organisation profile.
+   *
+   * @return ?OrganisationInterface
+   */
+  public function lookupOrganisationProfile(): ?OrganisationInterface {
+    // Organisation profiles only exist for registered organisations.
+    if ($this->isRegisteredOrganisation()) {
+      // Try to return the cached profile.
+      if ($profile = $this->getOrganisationProfile()) {
+        return $profile;
+      }
+
+      // Lookup the organisation profile.
+      $profile = $this->getOrganisationManager()
+        ->lookupOrganisation($this->getRegisterId(), (string) $this->getId());
+
+      // Save the profile.
+      if ($profile instanceof OrganisationInterface) {
+        $this->setOrganisation($profile);
+        return $profile;
+      }
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Store the serialized Organisation Profile.
+   * @param \Drupal\registered_organisations\OrganisationInterface $profile
+   */
+  protected function setOrganisation(OrganisationInterface $profile) {
+    $this->set('organisation', $profile->getData());
   }
 
   /**
@@ -198,46 +270,6 @@ class ParDataLegalEntity extends ParDataEntity {
   public function getRegisterId(): string {
     return !$this->get('registry')->isEmpty() ?
       $this->get('registry')->getString() : self::DEFAULT_REGISTER;
-  }
-
-  /**
-   * Whether the legal entity is a registered organisation.
-   *
-   * @return bool
-   */
-  public function isRegisteredOrganisation(): bool {
-    $definition = $this->getOrganisationManager()
-      ->getDefinition($this->getRegisterId(), FALSE);
-
-    return ($definition !== NULL);
-  }
-
-  /**
-   * Get the registered organisation profile.
-   *
-   * @return ?OrganisationInterface
-   */
-  public function getOrganisationProfile(): ?OrganisationInterface {
-    // Organisation profiles only exist for registered organisations.
-    if ($this->isRegisteredOrganisation()) {
-      // Return the cached profile.
-      if ($this->profile) {
-        return $this->profile;
-      }
-
-      // Get the organisation profile.
-      $profile = $this->getOrganisationManager()
-        ->lookupOrganisation($this->getRegisterId(), (string) $this->getId());
-
-      // Save the profile.
-      if ($profile instanceof OrganisationInterface) {
-        $this->profile = $profile;
-      }
-
-      return $profile;
-    }
-
-    return NULL;
   }
 
   /**
@@ -258,7 +290,7 @@ class ParDataLegalEntity extends ParDataEntity {
    */
   public function getRegisteredNumber(): string {
     return $this->isRegisteredOrganisation() ?
-      $this->getOrganisationProfile()?->getId() :
+      $this->lookupOrganisationProfile()?->getId() :
       $this->get('registered_number')->getString();
   }
 
@@ -270,7 +302,7 @@ class ParDataLegalEntity extends ParDataEntity {
    */
   public function getName(): string {
     return $this->isRegisteredOrganisation() ?
-      $this->getOrganisationProfile()?->getName() :
+      $this->lookupOrganisationProfile()?->getName() :
       $this->get('registered_name')->getString();
   }
 
@@ -282,7 +314,7 @@ class ParDataLegalEntity extends ParDataEntity {
    */
   public function getType(bool $processed = TRUE): string {
     if ($this->isRegisteredOrganisation()) {
-      return $this->getOrganisationProfile()?->getType($processed);
+      return $this->lookupOrganisationProfile()?->getType($processed);
     }
     else {
       $bundle_entity = $this->type?->entity;
@@ -301,7 +333,7 @@ class ParDataLegalEntity extends ParDataEntity {
    */
   public function getStatus(): string {
     return $this->isRegisteredOrganisation() ?
-      $this->getOrganisationProfile()?->getStatus() :
+      $this->lookupOrganisationProfile()?->getStatus() :
       self::DEFAULT_STATUS;
   }
 
@@ -313,7 +345,7 @@ class ParDataLegalEntity extends ParDataEntity {
    */
   public function processStatus(): string {
     if ($this->isRegisteredOrganisation()) {
-      return $this->getOrganisationProfile()?->getType(TRUE);
+      return $this->lookupOrganisationProfile()?->getType(TRUE);
     }
     else {
       $bundle_entity = $this->type?->entity;
@@ -330,7 +362,7 @@ class ParDataLegalEntity extends ParDataEntity {
    */
   public function getClassification(): array {
     return $this->isRegisteredOrganisation() ?
-      $this->getOrganisationProfile()?->getClassification() :
+      $this->lookupOrganisationProfile()?->getClassification() :
       [];
   }
 
@@ -359,8 +391,11 @@ class ParDataLegalEntity extends ParDataEntity {
    * to whether the legal entity is a registered organisation.
    *
    * @TODO Revisit once the majority of legacy legal entities are updated.
+   *
+   * @return bool
+   *   Whether the legal entity was updated.
    */
-  public function updateLegacyEntities() {
+  public function updateLegacyEntities(): bool {
     // If no registry is set, and the legal_entityCheck for legacy legal entity types.
     if ($this->isLegacyEntity() && $register = $this->convertLegacyTypeToRegister()) {
       switch ($register) {
@@ -369,6 +404,8 @@ class ParDataLegalEntity extends ParDataEntity {
           $name = $this->get('registered_name')->getString();
           if (!empty($name)) {
             $this->set('registry', self::DEFAULT_REGISTER);
+
+            return TRUE;
           }
 
           break;
@@ -381,12 +418,24 @@ class ParDataLegalEntity extends ParDataEntity {
           // Set the register value if an organisation profile is found.
           if ($profile instanceof OrganisationInterface) {
             $this->set('registry', $profile->getRegistry()->getPluginId());
+
+            // Store the profile data with the legal entity.
+            $this->setOrganisation($profile);
+
+            // Save the true values from the registry.
+            $this->set('registered_name', $profile->getName());
+            $this->set('registered_number', $profile->getId());
+            $this->set('legal_entity_type', $profile->getType());
+
+            return TRUE;
           }
 
           break;
 
       }
     }
+
+    return FALSE;
   }
 
   /**
@@ -473,6 +522,13 @@ class ParDataLegalEntity extends ParDataEntity {
         'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
+
+    // Organisation profile.
+    $fields['organisation'] = BaseFieldDefinition::create('map')
+      ->setLabel(t('Organisation Profile'))
+      ->setDescription(t('A local cache of the organisation profile retrieved from the register.'))
+      ->setRequired(FALSE)
+      ->setDefaultValue('');
 
     // Registered Name.
     $fields['registered_name'] = BaseFieldDefinition::create('string')

@@ -5845,7 +5845,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/registered_organisations.git",
-                "reference": "599adb706eea1d5bb93fc95f7087787e37056539"
+                "reference": "f6181ee057fa83ecfe613d7af2676fd8624a28be"
             },
             "require": {
                 "drupal/core": "^8 || ^9 || ^10",
@@ -5860,7 +5860,7 @@
                 },
                 "drupal": {
                     "version": "1.0.x-dev",
-                    "datestamp": "1686177145",
+                    "datestamp": "1686210788",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -14759,16 +14759,16 @@
         },
         {
             "name": "uk-government-beis/companieshouse-php-client",
-            "version": "v1.0.0-alpha5",
+            "version": "v1.0.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/UKGovernmentBEIS/companieshouse-api-php-client.git",
-                "reference": "69f6cf6919c62b39ff12a334e7ab77ea6b3c8008"
+                "reference": "be4419fc6a9e4df72489f45371820427ae979dd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UKGovernmentBEIS/companieshouse-api-php-client/zipball/69f6cf6919c62b39ff12a334e7ab77ea6b3c8008",
-                "reference": "69f6cf6919c62b39ff12a334e7ab77ea6b3c8008",
+                "url": "https://api.github.com/repos/UKGovernmentBEIS/companieshouse-api-php-client/zipball/be4419fc6a9e4df72489f45371820427ae979dd2",
+                "reference": "be4419fc6a9e4df72489f45371820427ae979dd2",
                 "shasum": ""
             },
             "require": {
@@ -14793,9 +14793,9 @@
             ],
             "description": "API Wrapper for the Companies House API",
             "support": {
-                "source": "https://github.com/UKGovernmentBEIS/companieshouse-api-php-client/tree/v1.0.0-alpha5"
+                "source": "https://github.com/UKGovernmentBEIS/companieshouse-api-php-client/tree/v1.0.0-alpha6"
             },
-            "time": "2023-05-25T14:03:23+00:00"
+            "time": "2023-06-08T10:00:51+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
