@@ -2,9 +2,12 @@
 
 namespace Drupal\par_data\Commands;
 
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\registered_organisations\OrganisationManagerInterface;
 use Drupal\search_api\ConsoleException;
 use Drush\Commands\DrushCommands;
@@ -164,43 +167,20 @@ class ParDataCommands extends DrushCommands {
 
    */
   public function update_registered_organisations(?string $register = NULL) {
-    $count = 0;
+    $scheduler = \Drupal::service('plugin.manager.par_scheduler');
 
-    // Check that the register is valid.
-    $register_is_valid = $register === ParDataLegalEntity::DEFAULT_REGISTER ??
-      (NULL !== $this->organisationManager->getDefinition($register, FALSE));
-    $registry = $register_is_valid ? $register : NULL;
-
-    $storage = $this->entityTypeManager
-      ->getStorage('par_data_legal_entity');
-
-    $query = $storage->getQuery()
-      ->accessCheck(FALSE)
-      ->sort('changed' , 'ASC')
-      ->range(0, 250);
-
-    if ($register_is_valid) {
-      $query->condition('registry', $registry);
-    }
-    else {
-      $query->condition('registry', NULL, 'IS NULL');
-    }
-
-    $results = $query->execute();
-    /** @var ParDataLegalEntity $entities */
-    $entities = $storage->loadMultiple(array_unique($results));
-
-    foreach ($entities as $entity) {
-      // Update legacy legal entities.
-      $updated = $entity->updateLegacyEntities();
-
-      if ($updated) {
-        $entity->save();
-        $count++;
-        $this->output->writeln(dt('Legacy legal entity @entity updated to the registry %registry', ['@entity' => $entity->label(), '%registry' => $registry]));
+    try {
+      $definitions = $scheduler->getDefinitions();
+      $plugin_definition = $definitions['legal_entity_registry_convert'] ?? NULL;
+      if ($plugin_definition) {
+        $plugin = $scheduler->createInstance($plugin_definition['id'], $plugin_definition);
+        $plugin->run();
       }
     }
+    catch (PluginNotFoundException $e) {
+      return "Failed to convert legacy legal entities.";
+    }
 
-    return "$count legacy entities updated.";
+    return "All legacy entities updated for processing.";
   }
 }

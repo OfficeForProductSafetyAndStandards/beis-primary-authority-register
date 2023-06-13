@@ -1198,16 +1198,16 @@
         },
         {
             "name": "consolidation/self-update",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/self-update.git",
-                "reference": "714b09fdf0513f83292874bb12de0566066040c2"
+                "reference": "972a1016761c9b63314e040836a12795dff6953a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/self-update/zipball/714b09fdf0513f83292874bb12de0566066040c2",
-                "reference": "714b09fdf0513f83292874bb12de0566066040c2",
+                "url": "https://api.github.com/repos/consolidation/self-update/zipball/972a1016761c9b63314e040836a12795dff6953a",
+                "reference": "972a1016761c9b63314e040836a12795dff6953a",
                 "shasum": ""
             },
             "require": {
@@ -1247,9 +1247,9 @@
             "description": "Provides a self:update command for Symfony Console applications.",
             "support": {
                 "issues": "https://github.com/consolidation/self-update/issues",
-                "source": "https://github.com/consolidation/self-update/tree/2.1.0"
+                "source": "https://github.com/consolidation/self-update/tree/2.2.0"
             },
-            "time": "2023-02-21T19:33:55+00:00"
+            "time": "2023-03-18T01:37:41+00:00"
         },
         {
             "name": "consolidation/site-alias",
@@ -3994,26 +3994,26 @@
         },
         {
             "name": "drupal/http_response_headers",
-            "version": "2.0.0-rc1",
+            "version": "2.0.0-rc2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/http_response_headers.git",
-                "reference": "8.x-2.0-rc1"
+                "reference": "8.x-2.0-rc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/http_response_headers-8.x-2.0-rc1.zip",
-                "reference": "8.x-2.0-rc1",
-                "shasum": "783a096671595d4415c19bde9af3d03b002f7a53"
+                "url": "https://ftp.drupal.org/files/projects/http_response_headers-8.x-2.0-rc2.zip",
+                "reference": "8.x-2.0-rc2",
+                "shasum": "501bdf90485688b48b046a30a4ff51f7989e4414"
             },
             "require": {
-                "drupal/core": "^8 || ^9"
+                "drupal/core": "^9.3 || ^10"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.0-rc1",
-                    "datestamp": "1590148876",
+                    "version": "8.x-2.0-rc2",
+                    "datestamp": "1686522686",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "RC releases are not covered by Drupal security advisories."
@@ -5845,7 +5845,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/registered_organisations.git",
-                "reference": "f6181ee057fa83ecfe613d7af2676fd8624a28be"
+                "reference": "c7b1334444aae81f15b88abaa08e6a46c041a8c5"
             },
             "require": {
                 "drupal/core": "^8 || ^9 || ^10",
@@ -5860,7 +5860,7 @@
                 },
                 "drupal": {
                     "version": "1.0.x-dev",
-                    "datestamp": "1686210788",
+                    "datestamp": "1686302550",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -15194,6 +15194,7 @@
                 "issues": "https://github.com/minkphp/MinkGoutteDriver/issues",
                 "source": "https://github.com/minkphp/MinkGoutteDriver/tree/v1.3.0"
             },
+            "abandoned": "behat/mink-browserkit-driver",
             "time": "2021-10-12T11:35:46+00:00"
         },
         {
@@ -16579,24 +16580,24 @@
         },
         {
             "name": "drupal/coder",
-            "version": "8.3.18",
+            "version": "8.3.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pfrenssen/coder.git",
-                "reference": "d5911f812b69ca3bda5524899bdd06b3b4e687ff"
+                "reference": "9a152b41efb39b66dd452da5e94e3b852a13b027"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pfrenssen/coder/zipball/d5911f812b69ca3bda5524899bdd06b3b4e687ff",
-                "reference": "d5911f812b69ca3bda5524899bdd06b3b4e687ff",
+                "url": "https://api.github.com/repos/pfrenssen/coder/zipball/9a152b41efb39b66dd452da5e94e3b852a13b027",
+                "reference": "9a152b41efb39b66dd452da5e94e3b852a13b027",
                 "shasum": ""
             },
             "require": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1 || ^1.0.0",
                 "ext-mbstring": "*",
-                "php": ">=7.1",
+                "php": ">=7.2",
                 "sirbrillig/phpcs-variable-analysis": "^2.11.7",
-                "slevomat/coding-standard": "^7.0 || ^8.0",
+                "slevomat/coding-standard": "^8.11",
                 "squizlabs/php_codesniffer": "^3.7.1",
                 "symfony/yaml": ">=3.4.0"
             },
@@ -16626,7 +16627,7 @@
                 "issues": "https://www.drupal.org/project/issues/coder",
                 "source": "https://www.drupal.org/project/coder"
             },
-            "time": "2023-04-18T12:07:59+00:00"
+            "time": "2023-05-06T10:16:21+00:00"
         },
         {
             "name": "drupal/config_inspector",
@@ -18567,16 +18568,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.6.8",
+            "version": "9.6.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "17d621b3aff84d0c8b62539e269e87d8d5baa76e"
+                "reference": "a9aceaf20a682aeacf28d582654a1670d8826778"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/17d621b3aff84d0c8b62539e269e87d8d5baa76e",
-                "reference": "17d621b3aff84d0c8b62539e269e87d8d5baa76e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a9aceaf20a682aeacf28d582654a1670d8826778",
+                "reference": "a9aceaf20a682aeacf28d582654a1670d8826778",
                 "shasum": ""
             },
             "require": {
@@ -18650,7 +18651,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.8"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.9"
             },
             "funding": [
                 {
@@ -18666,7 +18667,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-11T05:14:45+00:00"
+            "time": "2023-06-11T06:13:56+00:00"
         },
         {
             "name": "sebastian/cli-parser",

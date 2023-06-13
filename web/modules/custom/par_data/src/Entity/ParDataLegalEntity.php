@@ -8,8 +8,10 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
-use Drupal\registered_organisations\DataException;
 use Drupal\registered_organisations\Organisation;
+use Drupal\registered_organisations\DataException;
+use Drupal\registered_organisations\TemporaryException;
+use Drupal\registered_organisations\RegisterException;
 use Drupal\registered_organisations\OrganisationManagerInterface;
 use Drupal\registered_organisations\OrganisationRegisterInterface;
 use Drupal\registered_organisations\OrganisationInterface;
@@ -141,8 +143,21 @@ class ParDataLegalEntity extends ParDataEntity {
   public function preSave(EntityStorageInterface $storage) {
     parent::preSave($storage);
 
-    // Update legacy legal entities.
-    $this->updateLegacyEntities();
+    try {
+      // Update legacy legal entities.
+      $this->updateLegacyEntities();
+    }
+    catch (RegisterException|TemporaryException|DataException $ignored) {
+      // Catch all errors silently.
+    }
+
+    // Ensure all required fields are up-to-date with the organisation profile.
+    if ($this->isRegisteredOrganisation() && $profile = $this->getOrganisationProfile()) {
+      // Save the true values from the registry.
+      $this->set('registered_name', $profile->getName());
+      $this->set('registered_number', $profile->getId());
+      $this->set('legal_entity_type', $profile->getType());
+    }
   }
 
   /**
@@ -200,10 +215,15 @@ class ParDataLegalEntity extends ParDataEntity {
     }
 
     // Check that the register is valid.
-    $definition = $this->getOrganisationManager()
-      ->getDefinition($this->getRegisterId(), FALSE);
+    try {
+      $definition = $this->getOrganisationManager()
+        ->getDefinition($this->getRegisterId());
+      return ($definition !== NULL);
 
-    return ($definition !== NULL);
+    }
+    catch (PluginNotFoundException $e) {
+      return FALSE;
+    }
   }
 
   /**
@@ -214,17 +234,22 @@ class ParDataLegalEntity extends ParDataEntity {
   public function getOrganisationProfile(): ?OrganisationInterface {
     try {
       $data = !$this->get('organisation')->isEmpty() ?
-        $this->get('organisation')->first()->getValue() : NULL;
-      $register = $this->getOrganisationManager()
-        ->getRegistry($this->getRegisterId());
-
-      return !empty($data) && $register instanceof OrganisationRegisterInterface ?
-        new Organisation($register, $data) :
+        $this->get('organisation')->first()->getValue() :
         NULL;
+      $register = $this->isRegisteredOrganisation() ?
+        $this->getOrganisationManager()->getRegistry($this->getRegisterId()) :
+        NULL;
+
+      if (!empty($data) && $register instanceof OrganisationRegisterInterface) {
+        $register = $this->getOrganisationManager()->getRegistry($this->getRegisterId());
+        return new Organisation($register, $data);
+      }
     }
     catch (MissingDataException|DataException $e) {
       return NULL;
     }
+
+    return NULL;
   }
 
   /**
@@ -232,17 +257,22 @@ class ParDataLegalEntity extends ParDataEntity {
    *
    * @return ?OrganisationInterface
    */
-  public function lookupOrganisationProfile(): ?OrganisationInterface {
+  public function lookupOrganisationProfile($cacheable = TRUE): ?OrganisationInterface {
     // Organisation profiles only exist for registered organisations.
     if ($this->isRegisteredOrganisation()) {
       // Try to return the cached profile.
-      if ($profile = $this->getOrganisationProfile()) {
+      if ($cacheable && $profile = $this->getOrganisationProfile()) {
         return $profile;
       }
 
-      // Lookup the organisation profile.
-      $profile = $this->getOrganisationManager()
-        ->lookupOrganisation($this->getRegisterId(), (string) $this->getId());
+      //
+      try {
+        $profile = $this->getOrganisationManager()
+          ->lookupOrganisation($this->getRegisterId(), (string) $this->getId());
+      }
+      catch (\Exception $e) {
+
+      }
 
       // Save the profile.
       if ($profile instanceof OrganisationInterface) {
@@ -390,7 +420,10 @@ class ParDataLegalEntity extends ParDataEntity {
    * number of potential values for the 'legal_entity_type' field which correspond
    * to whether the legal entity is a registered organisation.
    *
-   * @TODO Revisit once the majority of legacy legal entities are updated.
+   * @TODO Revisit once the majority of legacy legal entities are updated
+   *
+   * @throws DataException|TemporaryException|RegisterException
+   *   In the event of an error looking up the organisation.
    *
    * @return bool
    *   Whether the legal entity was updated.
@@ -413,19 +446,15 @@ class ParDataLegalEntity extends ParDataEntity {
         default:
           // Lookup the legacy legal entity.
           $id = $this->get('registered_number')->getString();
-          $profile = $this->getOrganisationManager()->lookupOrganisation($register, $id);
+          $processed_id = trim($id);
+          $profile = $this->getOrganisationManager()->lookupOrganisation($register, $processed_id);
 
           // Set the register value if an organisation profile is found.
           if ($profile instanceof OrganisationInterface) {
-            $this->set('registry', $profile->getRegistry()->getPluginId());
+            $this->set('registry', $register);
 
             // Store the profile data with the legal entity.
             $this->setOrganisation($profile);
-
-            // Save the true values from the registry.
-            $this->set('registered_name', $profile->getName());
-            $this->set('registered_number', $profile->getId());
-            $this->set('legal_entity_type', $profile->getType());
 
             return TRUE;
           }
