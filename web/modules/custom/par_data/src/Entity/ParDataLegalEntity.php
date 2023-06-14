@@ -128,10 +128,15 @@ class ParDataLegalEntity extends ParDataEntity {
    * Ensure that we can not create duplicates of legal entities with the same companies house number.
    */
   public static function create(array $values = []) {
-    // Set the default registry value if none exists.
-    $values['registry'] ??= self::DEFAULT_REGISTER;
-
     $entity = parent::create($values);
+
+    // Update legacy legal entities.
+    try {
+      $entity->updateLegacyEntities();
+    }
+    catch (RegisterException|TemporaryException|DataException $ignored) {
+      // Catch all errors silently.
+    }
 
     // De-duplicate the entity.
     return $entity->deduplicate();
@@ -143,8 +148,8 @@ class ParDataLegalEntity extends ParDataEntity {
   public function preSave(EntityStorageInterface $storage) {
     parent::preSave($storage);
 
+    // Update legacy legal entities.
     try {
-      // Update legacy legal entities.
       $this->updateLegacyEntities();
     }
     catch (RegisterException|TemporaryException|DataException $ignored) {
