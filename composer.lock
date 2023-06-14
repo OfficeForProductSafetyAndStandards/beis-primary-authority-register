@@ -5845,7 +5845,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/registered_organisations.git",
-                "reference": "3546985b2ed750a87189226ce2dd9723098d18ee"
+                "reference": "b59bf19e182a92735e4fb8f5f4cbc9a12728c971"
             },
             "require": {
                 "drupal/core": "^8 || ^9 || ^10",
@@ -5860,7 +5860,7 @@
                 },
                 "drupal": {
                     "version": "1.0.x-dev",
-                    "datestamp": "1686661126",
+                    "datestamp": "1686745163",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
