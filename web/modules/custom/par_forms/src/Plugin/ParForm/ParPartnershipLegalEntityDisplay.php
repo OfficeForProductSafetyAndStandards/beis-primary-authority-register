@@ -14,6 +14,9 @@ use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
+use Drupal\registered_organisations\DataException;
+use Drupal\registered_organisations\RegisterException;
+use Drupal\registered_organisations\TemporaryException;
 
 /**
  * Partnership Legal entity display.
@@ -119,9 +122,14 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
 
       // @TODO Remove updateLegacyEntities() once the majority of legacy legal entities are updated.
       if ($legal_entity?->isLegacyEntity()) {
-        $updated = $legal_entity->updateLegacyEntities();
-        if ($updated) {
-          $legal_entity->save();
+        try {
+          $updated = $legal_entity->updateLegacyEntities();
+          if ($updated) {
+            $legal_entity->save();
+          }
+        }
+        catch (RegisterException|TemporaryException|DataException $ignored) {
+          // Catch all errors silently.
         }
       }
 
