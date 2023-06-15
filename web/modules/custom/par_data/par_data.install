@@ -12,6 +12,7 @@ use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\Entity\ParDataPremises;
@@ -1417,5 +1418,35 @@ function par_data_update_9006() {
     ->getStorage('par_data_partnership')->load($id);
     $partnership->set('member_link', NULL);
     $partnership->save();
+  }
+}
+
+/**
+ * PAR-1943: Add the new registry field to par_data_legal_entity entity.
+ */
+function par_data_update_9007() {
+  // Adding new field definitions to an entity.
+  // @see https://www.drupal.org/node/3034742#comment-14054069
+  $module_name = 'par_data';
+  $entity_type = 'par_data_legal_entity';
+  $fields = [
+    'registry',
+    'organisation',
+  ];
+
+  \Drupal::entityTypeManager()->clearCachedDefinitions();
+
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $field_definitions = \Drupal::service('entity_field.manager')
+    ->getFieldDefinitions($entity_type, $entity_type);
+  foreach ($fields as $field_name) {
+    if (!empty($field_definitions[$field_name]) && $field_definitions[$field_name] instanceof FieldStorageDefinitionInterface) {
+      $entity_definition_update_manager
+        ->installFieldStorageDefinition(
+          $field_name,
+          $entity_type,
+          $module_name,
+          $field_definitions[$field_name]);
+    }
   }
 }

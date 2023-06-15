@@ -146,7 +146,9 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * @return ParDataLegalEntity
    */
   public function getLegalEntity() {
-    return current($this->get('field_legal_entity')->referencedEntities());
+    return !$this->get('field_legal_entity')->isEmpty() ?
+      current($this->get('field_legal_entity')->referencedEntities()) :
+      NULL;
   }
 
   /**

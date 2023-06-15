@@ -25,6 +25,11 @@ hidden:
   deleted_reason: true
   legal_entity_type: true
   name: true
+  par_label: true
+  par_status: true
+  par_status_date: true
   registered_number: true
+  registry: true
   revocation_reason: true
+  search_api_excerpt: true
   user_id: true

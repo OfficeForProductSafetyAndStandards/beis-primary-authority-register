@@ -1058,6 +1058,15 @@ $config['govuk_notify.settings']['default_template_id'] = getenv('PAR_GOVUK_NOTI
 $config['registered_organisations.settings']['companies_house_api_key'] = getenv('COMPANIES_HOUSE_API_KEY');
 
 /**
+ * Set the Charity Commission connection settings.
+ *
+ * These are confidential and should be set with ENV variables.
+ *
+ * @see https://api-portal.charitycommission.gov.uk
+ */
+$config['registered_organisations.settings']['charity_commission_api_key'] = getenv('CHARITY_COMMISSION_API_KEY');
+
+/**
  * Set Ideal Postcodes settings.
  *
  * These are confidential and should be set with ENV variables.
