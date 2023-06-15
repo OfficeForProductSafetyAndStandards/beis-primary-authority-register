@@ -18,6 +18,9 @@ class ParLegalEntityForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   protected $entityMapping = [
+    ['registry', 'par_data_legal_entity', 'registry', NULL, NULL, 0, [
+      'This value should not be null.' => 'You must enter the name of this legal entity.'
+    ]],
     ['registered_name', 'par_data_legal_entity', 'registered_name', NULL, NULL, 0, [
       'This value should not be null.' => 'You must enter the name of this legal entity.'
     ]],
@@ -52,6 +55,20 @@ class ParLegalEntityForm extends ParFormPluginBase {
   }
 
   /**
+   * Get the registered organisations manager.
+   */
+  public function getOrganisationManager() {
+    return \Drupal::service('registered_organisations.organisation_manager');
+  }
+
+  public function getRegistryOptions() {
+    $registry_options = $this->getOrganisationManager()->getDefinitions();
+    array_walk($registry_options, function (&$value, $key) {
+      $value = $value['label'];
+    });
+  }
+
+  /**
    * @defaults
    */
   protected $formDefaults = [
@@ -64,7 +81,33 @@ class ParLegalEntityForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
+    $registry_options = $this->getOrganisationManager()->getDefinitions();
+    array_walk($registry_options, function (&$value, $key) {
+      $value = $value['label'];
+    });
+    $registry_options = [
+      'companies_house' => [
+        'label' => [],
+        'description' => [
+
+        ],
+      ]
+    ];
+
+
     if ($cardinality === 1) {
+      $form['registry'] = [
+        '#type' => 'radios',
+        '#title' => 'What type of legal entity is this?',
+        '#options' => $registry_options,
+        '#options_descriptions' => array(
+          'default' => 'Either for normal partnerships, where the organisation only has one partnership, or for sequenced partnerships, where a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities do not overlap.',
+          'bespoke' => 'Bespoke partnerships should only be selected when a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities overlap.',
+        ),
+        '#default_value' => $default ? 'default' : 'bespoke',
+      ];
+
+
       $form['legal_entity_intro_fieldset'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('What is a legal entity?'),
