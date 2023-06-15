@@ -139,9 +139,7 @@ class ParDataLegalEntity extends ParDataEntity {
     }
 
     // De-duplicate the entity.
-    $entity = $entity->deduplicate();
-    var_dump($entity->id()); die;
-    return $entity;
+    return $entity->deduplicate();
   }
 
   /**
@@ -200,7 +198,6 @@ class ParDataLegalEntity extends ParDataEntity {
 
       default:
         $registered_number = $this->get('registered_number')->getString();
-        $registered_name = $this->get('registered_name')->getString();
         if (!empty($registered_number)) {
           $properties = [
             'registry' => $this->getRegisterId(),
