@@ -175,6 +175,17 @@ class ParDataLegalEntity extends ParDataEntity {
   public function deduplicate(): ParDataEntityInterface {
     // The de-duplication parameters will vary depending on the registry type.
     switch ($this->getRegisterId()) {
+      case 'companies_house':
+      case 'charity_commission':
+        $registered_number = $this->get('registered_number')->getString();
+        if (!empty($registered_number)) {
+          $properties = [
+            'registry' => $this->getRegisterId(),
+            'registered_number' => $registered_number,
+          ];
+        }
+
+        break;
       case self::DEFAULT_REGISTER:
         $registered_name = $this->get('registered_name')->getString();
         if (!empty($registered_name)) {
