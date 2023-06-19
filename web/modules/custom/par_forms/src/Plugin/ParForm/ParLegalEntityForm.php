@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -81,17 +82,34 @@ class ParLegalEntityForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
-    $registry_options = $this->getOrganisationManager()->getDefinitions();
-    array_walk($registry_options, function (&$value, $key) {
-      $value = $value['label'];
-    });
-    $registry_options = [
-      'companies_house' => [
-        'label' => [],
-        'description' => [
+    $form['legal_entity_intro_fieldset'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('What is a legal entity?'),
+      'intro' => [
+        '#type' => 'markup',
+        '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
+      ],
+    ];
 
-        ],
-      ]
+    if ($this->getFlowDataHandler()->getFormPermValue('coordinated_partnership')) {
+      $form['legal_entity_intro_fieldset']['note'] = [
+        '#type' => 'markup',
+        '#markup' => '<div class="form-group notice">
+              <i class="icon icon-important"><span class="visually-hidden">Warning</span></i>
+              <strong class="bold-small">Please enter the legal entities for the members covered by this partnership not the co-ordinator.</strong>
+            </div>',
+      ];
+    }
+
+    $registry_options = [
+      'companies_house' => 'A registered organisation',
+      'charity_commission' => 'A charity',
+      ParDataLegalEntity::DEFAULT_REGISTER => 'An unregistered entity',
+    ];
+    $registry_options_descriptions = [
+      'companies_house' => 'Please choose this option if the organisation or partnership is registered with Companies House.',
+      'charity_commission' => 'Please choose this option if the charity is registered with the Charity Commission but isn\'t a registered company.',
+      ParDataLegalEntity::DEFAULT_REGISTER => 'Please choose this option for sole traders and all other legal entity types.',
     ];
 
 
@@ -100,73 +118,94 @@ class ParLegalEntityForm extends ParFormPluginBase {
         '#type' => 'radios',
         '#title' => 'What type of legal entity is this?',
         '#options' => $registry_options,
-        '#options_descriptions' => array(
-          'default' => 'Either for normal partnerships, where the organisation only has one partnership, or for sequenced partnerships, where a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities do not overlap.',
-          'bespoke' => 'Bespoke partnerships should only be selected when a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities overlap.',
-        ),
-        '#default_value' => $default ? 'default' : 'bespoke',
-      ];
-
-
-      $form['legal_entity_intro_fieldset'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('What is a legal entity?'),
-        'intro' => [
-          '#type' => 'markup',
-          '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
+        '#options_descriptions' => $registry_options_descriptions,
+        '#default_value' => $this->getDefaultValuesByKey('registered_name', $cardinality, ),
+        '#after_build' => [
+          [get_class($this), 'optionsDescriptions'],
+        ],
+        '#attributes' => [
+          'class' => ['form-group'],
         ],
       ];
-      if ($this->getFlowDataHandler()->getFormPermValue('coordinated_partnership')) {
-        $form['legal_entity_intro_fieldset']['note'] = [
-          '#type' => 'markup',
-          '#markup' => '<div class="form-group notice">
-              <i class="icon icon-important"><span class="visually-hidden">Warning</span></i>
-              <strong class="bold-small">Please enter the legal entities for the members covered by this partnership not the co-ordinator.</strong>
-            </div>',
-        ];
-      }
+
+      // Follow-up inputs for registered entities.
+      $form['registered'] = [
+        '#type' => 'container',
+        '#states' => [
+          'visible' => [
+            'input[name="' . $this->getTargetName($this->getElementKey('registry', $cardinality)) . '"]' => [
+              ['value' => 'companies_house'],
+              ['value' => 'charity_commission'],
+            ],
+          ],
+        ],
+        '#attributes' => [
+          'class' => ['form-group', 'govuk-radios__conditional'],
+        ],
+      ];
+      $form['registered']['number'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Provide the registration number'),
+        '#default_value' => $this->getDefaultValuesByKey('registered_number', $cardinality),
+      ];
+
+      // Follow-up inputs for unregistered entities.
+      $form['unregistered'] = [
+        '#type' => 'container',
+        '#states' => [
+          'visible' => [
+            'input[name="' . $this->getTargetName($this->getElementKey('registry', $cardinality)) . '"]' => [
+              ['value' => ParDataLegalEntity::DEFAULT_REGISTER],
+            ],
+          ],
+        ],
+        '#attributes' => [
+          'class' => ['form-group', 'govuk-radios__conditional'],
+        ],
+      ];
+      $unregistered_type_options = [
+        'partnership' => 'Partnership',
+        'sole_trader' => 'Sole trader',
+        'unincorporated_association' => 'Unincorporated association',
+        'other' => 'Other',
+      ];
+      $unregistered_type_options_descriptions = [
+        'partnership' => 'A partnership is a contractual arrangement between two or more people that is set up with a view to profit and to share the profits amongst the partners',
+        'sole_trader' => 'A sole trader is an individual who is registered with HMRC for tax purposes',
+        'unincorporated_association' => 'A simple way for a group of volunteers to run an organisation for a common purpose',
+      ];
+      $form['unregistered']['legal_entity_type'] = [
+        '#type' => 'radios',
+        '#title' => $this->t('How is this entity structured?'),
+        '#default_value' => $this->getDefaultValuesByKey('legal_entity_type', $cardinality),
+        '#options' => $unregistered_type_options,
+        '#options_descriptions' => $unregistered_type_options_descriptions,
+        '#after_build' => [
+          [get_class($this), 'optionsDescriptions'],
+        ],
+        '#attributes' => [
+          'class' => ['govuk-radios--small', 'form-group'],
+        ],
+      ];
+
+      $form['unregistered']['name'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Enter name of the legal entity'),
+        '#default_value' => $this->getDefaultValuesByKey('registered_name', $cardinality),
+        '#attributes' => [
+          'class' => ['form-group'],
+        ],
+      ];
     }
 
     $legal_entity_label = $this->getCardinality() !== 1 ?
       $this->formatPlural($cardinality, 'Legal Entity @index', 'Legal Entity @index (Optional)', ['@index' => $cardinality]) :
       $this->t('Legal Entity');
 
-    $form['legal_entity'] = [
-      '#type' => 'fieldset',
-      '#title' => $legal_entity_label,
-    ];
-
-    $form['registered_name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Enter name of the legal entity'),
-      '#default_value' => $this->getDefaultValuesByKey('registered_name', $cardinality),
-    ];
-
-    $form['legal_entity_type'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Select type of Legal Entity'),
-      '#default_value' => $this->getDefaultValuesByKey('legal_entity_type', $cardinality, $this->getFormDefaultByKey('legal_entity_type')),
-      '#options' => ['' => ''] + $legal_entity_bundle->getAllowedValues('legal_entity_type'),
-    ];
-
-    $form['registered_number'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Provide the registration number'),
-      '#default_value' => $this->getDefaultValuesByKey('registered_number', $cardinality),
-      '#states' => [
-        'visible' => [
-          'select[name="' . $this->getTargetName($this->getElementKey('legal_entity_type', $cardinality)) . '"]' => [
-            ['value' => 'limited_company'],
-            ['value' => 'public_limited_company'],
-            ['value' => 'limited_liability_partnership'],
-            ['value' => 'registered_charity'],
-            ['value' => 'partnership'],
-            ['value' => 'limited_partnership'],
-            ['value' => 'other'],
-          ],
-        ],
-      ],
-    ];
+//    $form['legal_entity'] = [
+//      '#type' => 'fieldset',
+//      '#title' => $legal_entity_label,
+//    ];
 
     return $form;
   }
