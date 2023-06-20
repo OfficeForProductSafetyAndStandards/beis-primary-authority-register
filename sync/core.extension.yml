@@ -31,6 +31,7 @@ module:
   dynamic_page_cache: 0
   editor: 0
   email_registration: 0
+  encrypt: 0
   features: 0
   features_ui: 0
   field: 0
@@ -56,6 +57,7 @@ module:
   jquery_ui_checkboxradio: 0
   jquery_ui_controlgroup: 0
   jquery_ui_slider: 0
+  key: 0
   language: 0
   link: 0
   locale: 0
@@ -146,6 +148,7 @@ module:
   queue_ui: 0
   raven: 0
   rdf: 0
+  real_aes: 0
   redis: 0
   registered_organisations: 0
   rest: 0

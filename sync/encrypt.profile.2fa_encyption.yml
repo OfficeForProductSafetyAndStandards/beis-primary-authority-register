@@ -1,0 +1,13 @@
+uuid: fa0c86ab-51cd-4095-b1b4-8ef0110acec0
+langcode: en
+status: true
+dependencies:
+  config:
+    - key.key.2fa_key
+  module:
+    - real_aes
+id: 2fa_encyption
+label: '2FA Encyption'
+encryption_method: real_aes
+encryption_method_configuration: {  }
+encryption_key: 2fa_key
