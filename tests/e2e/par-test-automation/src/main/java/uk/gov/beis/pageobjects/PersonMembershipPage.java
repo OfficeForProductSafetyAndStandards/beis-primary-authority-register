@@ -1,15 +1,20 @@
 package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Random;
 
-import org.openqa.selenium.Keys;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-public class ChoosePersonMembershipPage extends BasePageObject {
-	public ChoosePersonMembershipPage() throws ClassNotFoundException, IOException {
+import uk.gov.beis.enums.UsableValues;
+import uk.gov.beis.utility.DataStore;
+
+public class PersonMembershipPage extends BasePageObject {
+	public PersonMembershipPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
@@ -37,6 +42,9 @@ public class ChoosePersonMembershipPage extends BasePageObject {
 	// Help Desk Membership Selection Page Elements
 	@FindBy(xpath = "//*[@id=\"edit_par_data_organisation_id_chosen\"]/ul/li/input")
 	private WebElement organisationChoiceInput;
+	
+	@FindBy(className = "chosen-drop")
+	private WebElement organisationChoiceList;
 	
 	@FindBy(id = "edit_par_data_authority_id_chosen")
 	private WebElement authorityChoiceDiv;
@@ -82,23 +90,47 @@ public class ChoosePersonMembershipPage extends BasePageObject {
 	}
 	
 	// Help Desk Membership Selection Page Methods
-	public void selectOrganisation(String option) {
-		organisationChoiceInput.sendKeys(option);
-		organisationChoiceInput.sendKeys(Keys.ENTER);
+	public void selectOrganisation() {
+		organisationChoiceInput.click();
+		
+		WebElement randomOrganisation = chooseRandomOrganisation();
+		
+		String organisation = randomOrganisation.getText();
+		randomOrganisation.click();
+		
+		DataStore.saveValue(UsableValues.CHOSEN_ORGANISATION, organisation);
 	}
 	
-	public void selectAuthority(String option) {
+	public void selectAuthority() {
 		Select selectObject = new Select(authorityDropDown);
-		selectObject.selectByValue(option);
+		
+		String randomAuthority = chooseRandomAuthority(selectObject).getText();
+		selectObject.selectByVisibleText(randomAuthority);
+		
+		DataStore.saveValue(UsableValues.CHOSEN_AUTHORITY, randomAuthority);
 	}
 	
-	public PersonUserRoleTypeSelectionPage clickContinueButton() {
+	public PersonUserRoleTypePage clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, PersonUserRoleTypeSelectionPage.class);
+		return PageFactory.initElements(driver, PersonUserRoleTypePage.class);
 	}
 	
 	public DashboardPage clickCancelButton() {
 		cancelBtn.click();
 		return PageFactory.initElements(driver, DashboardPage.class);
+	}
+	
+	private WebElement chooseRandomOrganisation() {
+		Random random = new Random();
+		List<WebElement> organisations = driver.findElements(By.cssSelector("div.chosen-drop ul.chosen-results li.active-result"));
+		
+		return organisations.get(random.nextInt(organisations.size()));
+	}
+	
+	private WebElement chooseRandomAuthority(Select selectList) {
+		Random random = new Random();
+		List<WebElement> authorities = selectList.getOptions();
+		
+		return authorities.get(random.nextInt(authorities.size()));
 	}
 }

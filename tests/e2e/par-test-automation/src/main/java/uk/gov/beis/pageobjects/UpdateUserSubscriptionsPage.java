@@ -31,9 +31,9 @@ public class UpdateUserSubscriptionsPage extends BasePageObject {
 			parNewsCheckbox.click();
 	}
 
-	public UpdateUserConfirmationPage selectContinueButton() {
+	public UserProfileConfirmationPage selectContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, UpdateUserConfirmationPage.class);
+		return PageFactory.initElements(driver, UserProfileConfirmationPage.class);
 	}
 
 	public DashboardPage selectCancelButton() {

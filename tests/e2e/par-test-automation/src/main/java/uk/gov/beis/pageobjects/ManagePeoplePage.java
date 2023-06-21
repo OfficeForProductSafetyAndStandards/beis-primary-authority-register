@@ -32,9 +32,9 @@ public class ManagePeoplePage extends BasePageObject {
 	@FindBy(linkText = "back to dashboard")
 	private WebElement dashboardBtn;
 	
-	public AddPersonContactDetailsPage selectAddPerson() {
+	public PersonContactDetailsPage selectAddPerson() {
 		addPersonBtn.click();
-		return PageFactory.initElements(driver, AddPersonContactDetailsPage.class);
+		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
 	}
 	
 	public void enterNameOrEmail(String searchText) {

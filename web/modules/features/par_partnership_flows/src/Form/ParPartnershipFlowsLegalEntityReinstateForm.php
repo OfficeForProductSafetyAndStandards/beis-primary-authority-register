@@ -93,7 +93,7 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
     ];
 
     // Only show registered number for types that allow it.
-    if (in_array($par_data_legal_entity->getTypeRaw(),
+    if (in_array($par_data_legal_entity->getType(FALSE),
       ['limited_company', 'public_limited_company', 'limited_liability_partnership',
         'registered_charity', 'partnership', 'limited_partnership', 'other'])) {
       $form['registered_number'] = [

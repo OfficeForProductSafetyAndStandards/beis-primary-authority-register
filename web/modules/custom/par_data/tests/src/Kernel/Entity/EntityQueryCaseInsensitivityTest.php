@@ -137,20 +137,28 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
     // Create 3 similar legal entities that vary on case.
     $legal_values = [
       'sentence' => [
-        'registered_name' => "WillowBrook Nursing Services Ltd",
+        'registry' => "internal",
+        'registered_name' => "First WillowBrook Nursing Services Ltd",
         'registered_number' => "EG123456",
+        'legal_entity_type' => "other",
       ],
       'upper' => [
-        'registered_name' => "WILLOWBROOK NURSING SERVICES LTD",
+        'registry' => "internal",
+        'registered_name' => "SECOND WILLOWBROOK NURSING SERVICES LTD",
         'registered_number' => "EG234567",
+        'legal_entity_type' => "other",
       ],
       'lower' => [
-        'registered_name' => "willowbrook nursing services ltd",
+        'registry' => "internal",
+        'registered_name' => "third willowbrook nursing services ltd",
         'registered_number' => "EG345678",
+        'legal_entity_type' => "other",
       ],
       'mismatch' => [
+        'registry' => "internal",
         'registered_name' => "WillowBrook Mismatched Nursing Services Ltd",
         'registered_number' => "EG999999",
+        'legal_entity_type' => "other",
       ]
     ];
     foreach ($legal_values as $key => $values) {

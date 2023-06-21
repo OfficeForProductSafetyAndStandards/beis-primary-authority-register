@@ -2,12 +2,16 @@ package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class PersonUserRoleTypeSelectionPage extends BasePageObject {
-	public PersonUserRoleTypeSelectionPage() throws ClassNotFoundException, IOException {
+import uk.gov.beis.enums.UsableValues;
+import uk.gov.beis.utility.DataStore;
+
+public class PersonUserRoleTypePage extends BasePageObject {
+	public PersonUserRoleTypePage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
@@ -38,41 +42,54 @@ public class PersonUserRoleTypeSelectionPage extends BasePageObject {
 	
 	public void selectOrganisationMember() { // Disappeared from the page but was there when I first created this Class??
 		organisationMemberRadioBtn.click();
+		getRoleName();
 	}
 	
 	public void selectAuthorityMember() {
 		authorityMemberRadioBtn.click();
+		getRoleName();
 	}
 	
 	public void selectAuthorityManager() {
 		authorityManagerRadioBtn.click();
+		getRoleName();
 	}
 	
 	public void selectEnforcementOfficer() {
 		enforcementOfficerRadioBtn.click();
+		getRoleName();
 	}
 	
 	public void selectProcessingTeamMember() {
 		processingTeamMemberRadioBtn.click();
+		getRoleName();
 	}
 	
 	public void selectSeniorAdministrationOfficer() {
 		seniorAdministrationOfficerRadioBtn.click();
+		getRoleName();
 	}
 	
-	// Check these Steps
-	public InvitePersonToCreateAccountPage clickContinueButton() {
+	public PersonCreateAccountPage clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, InvitePersonToCreateAccountPage.class);
+		return PageFactory.initElements(driver, PersonCreateAccountPage.class);
 	}
 	
-	public ProfileReviewPage clickProfileReviewContinueButton() {
+	public UserProfileConfirmationPage clickProfileReviewContinueButton() {
 		  continueBtn.click(); 
-		  return PageFactory.initElements(driver,ProfileReviewPage.class); 
+		  return PageFactory.initElements(driver,UserProfileConfirmationPage.class); 
 	}
 	
 	public DashboardPage clickCancelButton() {
 		cancelBtn.click();
 		return PageFactory.initElements(driver, DashboardPage.class);
+	}
+	
+	private void getRoleName() {
+		for(WebElement div : driver.findElements(By.className("govuk-radios__item"))) {
+			if(div.findElement(By.tagName("input")).isSelected()) {
+				DataStore.saveValue(UsableValues.ACCOUNT_TYPE, div.findElement(By.tagName("label")).getText());
+			}
+		}
 	}
 }

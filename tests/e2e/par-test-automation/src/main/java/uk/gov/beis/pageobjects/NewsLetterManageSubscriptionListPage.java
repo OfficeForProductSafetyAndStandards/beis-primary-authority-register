@@ -78,9 +78,9 @@ public class NewsLetterManageSubscriptionListPage extends BasePageObject {
 		emailsTextArea.sendKeys(email);
 	}
 	
-	public NewsLetterSubscriptionReviewChangesPage clickContinueButton() {
+	public NewsLetterSubscriptionReviewPage clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, NewsLetterSubscriptionReviewChangesPage.class);
+		return PageFactory.initElements(driver, NewsLetterSubscriptionReviewPage.class);
 	}
 	
 	public NewsLetterSubscriptionPage clickCancelButton() {

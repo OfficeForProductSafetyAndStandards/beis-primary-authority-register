@@ -6,8 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class InvitePersonToCreateAccountPage extends BasePageObject {
-	public InvitePersonToCreateAccountPage() throws ClassNotFoundException, IOException {
+public class PersonCreateAccountPage extends BasePageObject {
+	public PersonCreateAccountPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
@@ -17,9 +17,9 @@ public class InvitePersonToCreateAccountPage extends BasePageObject {
 	@FindBy(id = "edit-cancel")
 	private WebElement cancelBtn;
 	
-	public ProfileReviewPage clickInviteButton() {
+	public UserProfileConfirmationPage clickInviteButton() {
 		inviteBtn.click();
-		return PageFactory.initElements(driver, ProfileReviewPage.class);
+		return PageFactory.initElements(driver, UserProfileConfirmationPage.class);
 	}
 	
 	public DashboardPage clickCancelButton() {

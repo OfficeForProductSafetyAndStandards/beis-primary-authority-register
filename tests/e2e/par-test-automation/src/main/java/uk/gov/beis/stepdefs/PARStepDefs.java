@@ -1,13 +1,11 @@
 package uk.gov.beis.stepdefs;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Map;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -20,16 +18,16 @@ import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
-import uk.gov.beis.pageobjects.AddPersonContactDetailsPage;
+import uk.gov.beis.pageobjects.PersonContactDetailsPage;
 import uk.gov.beis.pageobjects.AuthorityAddressDetailsPage;
-import uk.gov.beis.pageobjects.ChoosePersonMembershipPage;
+import uk.gov.beis.pageobjects.PersonMembershipPage;
 import uk.gov.beis.pageobjects.AuthorityConfirmationPage;
 import uk.gov.beis.pageobjects.AuthorityDashboardPage;
-import uk.gov.beis.pageobjects.GivePersonAccountPage;
+import uk.gov.beis.pageobjects.PersonAccountPage;
 import uk.gov.beis.pageobjects.AuthorityNamePage;
 import uk.gov.beis.pageobjects.AuthorityPage;
 import uk.gov.beis.pageobjects.AuthorityTypePage;
-import uk.gov.beis.pageobjects.PersonUserRoleTypeSelectionPage;
+import uk.gov.beis.pageobjects.PersonUserRoleTypePage;
 import uk.gov.beis.pageobjects.BusinessAddressDetailsPage;
 import uk.gov.beis.pageobjects.BusinessConfirmationPage;
 import uk.gov.beis.pageobjects.BusinessContactDetailsPage;
@@ -69,11 +67,10 @@ import uk.gov.beis.pageobjects.LoginPage;
 import uk.gov.beis.pageobjects.MailLogPage;
 import uk.gov.beis.pageobjects.ManagePeoplePage;
 import uk.gov.beis.pageobjects.MemberListPage;
-import uk.gov.beis.pageobjects.PersonCompletionConfirmationPage;
 import uk.gov.beis.pageobjects.PersonsProfilePage;
 import uk.gov.beis.pageobjects.NewsLetterManageSubscriptionListPage;
 import uk.gov.beis.pageobjects.NewsLetterSubscriptionPage;
-import uk.gov.beis.pageobjects.NewsLetterSubscriptionReviewChangesPage;
+import uk.gov.beis.pageobjects.NewsLetterSubscriptionReviewPage;
 import uk.gov.beis.pageobjects.ONSCodePage;
 import uk.gov.beis.pageobjects.OrganisationDashboardPage;
 import uk.gov.beis.pageobjects.PartnershipAdvancedSearchPage;
@@ -87,7 +84,6 @@ import uk.gov.beis.pageobjects.PartnershipSearchPage;
 import uk.gov.beis.pageobjects.PartnershipTermsPage;
 import uk.gov.beis.pageobjects.PartnershipTypePage;
 import uk.gov.beis.pageobjects.PasswordPage;
-import uk.gov.beis.pageobjects.ProfileReviewPage;
 import uk.gov.beis.pageobjects.ProposedEnforcementPage;
 import uk.gov.beis.pageobjects.RegulatoryFunctionPage;
 import uk.gov.beis.pageobjects.RemoveEnforcementConfirmationPage;
@@ -102,12 +98,11 @@ import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.SICCodePage;
 import uk.gov.beis.pageobjects.TradingPage;
 import uk.gov.beis.pageobjects.UpdateUserCommunicationPreferencesPage;
-import uk.gov.beis.pageobjects.UpdateUserConfirmationPage;
 import uk.gov.beis.pageobjects.UpdateUserContactDetailsPage;
 import uk.gov.beis.pageobjects.UpdateUserSubscriptionsPage;
 import uk.gov.beis.pageobjects.UploadInspectionPlanPage;
 import uk.gov.beis.pageobjects.UserCommsPreferencesPage;
-import uk.gov.beis.pageobjects.InvitePersonToCreateAccountPage;
+import uk.gov.beis.pageobjects.PersonCreateAccountPage;
 import uk.gov.beis.pageobjects.UserNotificationPreferencesPage;
 import uk.gov.beis.pageobjects.UserProfileCompletionPage;
 import uk.gov.beis.pageobjects.UserProfileConfirmationPage;
@@ -151,7 +146,7 @@ public class PARStepDefs {
 	private ReplyInspectionFeedbackPage replyInspectionFeedbackPage;
 	private PartnershipAdvancedSearchPage partnershipAdvancedSearchPage;
 	private UserProfileConfirmationPage userProfileConfirmationPage;
-	private UserNotificationPreferencesPage userNotificationPreferencesPage;
+	private UserNotificationPreferencesPage userNotificationPreferencesPage; // Note for Leo: This is not being used, does it need removing?
 	private MailLogPage mailLogPage;
 	private RequestDeviationPage requestDeviationPage;
 	private InspectionPlanExpirationPage inspectionPlanExpirationPage;
@@ -198,22 +193,19 @@ public class PARStepDefs {
 	// PAR News Letter
 	private UserProfilePage userProfilePage;
 	private UpdateUserCommunicationPreferencesPage updateUserCommunicationPreferencesPage;
-	private UpdateUserConfirmationPage updateUserConfirmationPage;
 	private UpdateUserContactDetailsPage updateUserContactDetailsPage;
 	private UpdateUserSubscriptionsPage updateUserSubscriptionsPage;
 	private NewsLetterSubscriptionPage newsLetterSubscriptionPage;
 	private NewsLetterManageSubscriptionListPage newsLetterManageSubscriptionListPage;
-	private NewsLetterSubscriptionReviewChangesPage newsLetterSubscriptionReviewPage;
+	private NewsLetterSubscriptionReviewPage newsLetterSubscriptionReviewPage;
 
 	// Person Creation and Update
 	private ManagePeoplePage managePeoplePage;
-	private AddPersonContactDetailsPage addPersonsContactDetailsPage;
-	private GivePersonAccountPage givePersonAccountPage;
-	private ChoosePersonMembershipPage choosePersonMembershipPage;
-	private PersonUserRoleTypeSelectionPage personUserTypeSelectionPage;
-	private InvitePersonToCreateAccountPage invitePersonToCreateAccountPage;
-	private ProfileReviewPage profileReviewPage;
-	private PersonCompletionConfirmationPage personCompletionConfirmationPage;
+	private PersonContactDetailsPage personsContactDetailsPage;
+	private PersonAccountPage personAccountPage;
+	private PersonMembershipPage personMembershipPage;
+	private PersonUserRoleTypePage personUserTypePage;
+	private PersonCreateAccountPage personCreateAccountPage;
 	private PersonsProfilePage personsProfilePage;
 
 	private DeviationReviewPage deviationReviewPage;
@@ -306,26 +298,22 @@ public class PARStepDefs {
 
 		// PAR News Letter
 		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
-		updateUserCommunicationPreferencesPage = PageFactory.initElements(driver,
-				UpdateUserCommunicationPreferencesPage.class);
-		updateUserConfirmationPage = PageFactory.initElements(driver, UpdateUserConfirmationPage.class);
+		updateUserCommunicationPreferencesPage = PageFactory.initElements(driver, UpdateUserCommunicationPreferencesPage.class);
 		updateUserContactDetailsPage = PageFactory.initElements(driver, UpdateUserContactDetailsPage.class);
 		updateUserSubscriptionsPage = PageFactory.initElements(driver, UpdateUserSubscriptionsPage.class);
 		newsLetterSubscriptionPage = PageFactory.initElements(driver, NewsLetterSubscriptionPage.class);
 		newsLetterManageSubscriptionListPage = PageFactory.initElements(driver,
 				NewsLetterManageSubscriptionListPage.class);
 		newsLetterSubscriptionReviewPage = PageFactory.initElements(driver,
-				NewsLetterSubscriptionReviewChangesPage.class);
+				NewsLetterSubscriptionReviewPage.class);
 
 		// Person Creation and Update
 		managePeoplePage = PageFactory.initElements(driver, ManagePeoplePage.class);
-		addPersonsContactDetailsPage = PageFactory.initElements(driver, AddPersonContactDetailsPage.class);
-		choosePersonMembershipPage = PageFactory.initElements(driver, ChoosePersonMembershipPage.class);
-		givePersonAccountPage = PageFactory.initElements(driver, GivePersonAccountPage.class);
-		personUserTypeSelectionPage = PageFactory.initElements(driver, PersonUserRoleTypeSelectionPage.class);
-		invitePersonToCreateAccountPage = PageFactory.initElements(driver, InvitePersonToCreateAccountPage.class);
-		profileReviewPage = PageFactory.initElements(driver, ProfileReviewPage.class);
-		personCompletionConfirmationPage = PageFactory.initElements(driver, PersonCompletionConfirmationPage.class);
+		personsContactDetailsPage = PageFactory.initElements(driver, PersonContactDetailsPage.class);
+		personMembershipPage = PageFactory.initElements(driver, PersonMembershipPage.class);
+		personAccountPage = PageFactory.initElements(driver, PersonAccountPage.class);
+		personUserTypePage = PageFactory.initElements(driver, PersonUserRoleTypePage.class);
+		personCreateAccountPage = PageFactory.initElements(driver, PersonCreateAccountPage.class);
 		personsProfilePage = PageFactory.initElements(driver, PersonsProfilePage.class);
 	}
 
@@ -545,7 +533,7 @@ public class PARStepDefs {
 	@Then("^the user journey creation is successful$")
 	public void the_user_journey_creation_is_successful() throws Throwable {
 		LOG.info("Checking user creation is sucessful");
-//		userProfileConfirmationPage.checkUserCreation();
+		//userProfileConfirmationPage.checkUserCreation();
 		userProfileConfirmationPage.saveChanges();
 		userProfileCompletionPage.completeApplication();
 	}
@@ -1062,7 +1050,7 @@ public class PARStepDefs {
 
 	@When("^the user selects a contact to update$")
 	public void the_user_selects_a_contact_to_update() throws Throwable {
-		DataStore.saveValue(UsableValues.PERSON_EMAIL, DataStore.getSavedValue(UsableValues.LOGIN_USER));
+		DataStore.saveValue(UsableValues.BUSINESS_EMAIL, DataStore.getSavedValue(UsableValues.LOGIN_USER));
 		parDashboardPage.selectManageProfileDetails();
 	    
 	    DataStore.saveValue(UsableValues.ACCOUNT_ID, userProfilePage.getAccountID()); // This can be used in a manage colleagues update person test.
@@ -1081,8 +1069,9 @@ public class PARStepDefs {
 	    updateUserSubscriptionsPage.selectContinueButton();
 	    LOG.info("Successfully subscribed from PAR news letter.");
 	    
-	    profileReviewPage.saveContactUpdate();
-	    updateUserConfirmationPage.selectDoneButton();
+	    userProfileConfirmationPage.saveChanges();
+	    userProfileCompletionPage.completeApplication();
+	    
 	}
 
 	@Then("^the user can successfully unsubscribe from PAR News$")
@@ -1094,15 +1083,16 @@ public class PARStepDefs {
 	    updateUserSubscriptionsPage.selectContinueButton();
 	    LOG.info("Successfully unsubscribed from PAR news letter.");
 	    
-	    profileReviewPage.saveContactUpdate();
-	    updateUserConfirmationPage.selectDoneButton();
+	    userProfileConfirmationPage.saveChanges();
+	    userProfileCompletionPage.completeApplication();
+	    
 	}
 	
 	@When("^the user searches for the par_authority email$")
 	public void the_user_searches_for_the_par_authority_email() throws Throwable {
-		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.PERSON_EMAIL));
+		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 		newsLetterSubscriptionPage.ClickSearchButton();
-		LOG.info("Searching for the Authority Email:" + DataStore.getSavedValue(UsableValues.PERSON_EMAIL) + ".");
+		LOG.info("Searching for the Authority Email:" + DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL) + ".");
 	}
 
 	@When("^the user is on the Subscriptions page$")
@@ -1114,13 +1104,13 @@ public class PARStepDefs {
 	@Then("^the user can verify the email is successfully in the Subscriptions List$")
 	public void the_user_can_verify_the_email_is_successfully_in_the_Subscriptions_List() throws Throwable {
 		LOG.info("Assert the Email is successfully added to the Subscription List.");
-		assertTrue(newsLetterSubscriptionPage.verifyTableElementExists());
+		assertTrue("Failed: Email address was not added to the PAR News Subscription List.", newsLetterSubscriptionPage.verifyTableElementExists());
 	}
 
 	@Then("^the user can verify the email is successfully removed from the Subscriptions List$")
 	public void the_user_can_verify_the_email_is_successfully_removed_from_the_Subscriptions_List() throws Throwable {
 		LOG.info("Assert the Email is removed successfully from the Subscription List.");
-		assertTrue(newsLetterSubscriptionPage.verifyTableElementIsNull());
+		assertTrue("Failed: Email address was not removed from the PAR News Subscription List.", newsLetterSubscriptionPage.verifyTableElementIsNull());
 	}
 	
 	@When("^the user is on the Manage a subscription list page$")
@@ -1193,61 +1183,55 @@ public class PARStepDefs {
 		LOG.info("Successfully replaced the original subscription list with a new list.");
 	}
 
-	@When("^the user creates a new person$")
-	public void the_user_creates_a_new_person() throws Throwable {
+	@When("^the user creates a new person:$")
+	public void the_user_creates_a_new_person(DataTable person) throws Throwable { 
 		parDashboardPage.selectManagePeople();
 		managePeoplePage.selectAddPerson();
 
 		LOG.info("Adding a new person.");
-		String firstName = RandomStringUtils.randomAlphabetic(8);
-		String lastName = RandomStringUtils.randomAlphabetic(8);
-
-		addPersonsContactDetailsPage.enterTitle("Mr");
-		addPersonsContactDetailsPage.enterFirstname(firstName);
-		addPersonsContactDetailsPage.enterLastname(lastName);
-		addPersonsContactDetailsPage.enterWorkPhoneNumber("012");
-		addPersonsContactDetailsPage.enterMobilePhoneNumber("0745");
-		addPersonsContactDetailsPage.enterEmailAddress(firstName + "@" + lastName + ".com");
+		personsContactDetailsPage.enterContactDetails(person);
+		personsContactDetailsPage.clickContinueButton();
 		
-		DataStore.saveValue(UsableValues.PERSON_FIRSTNAME, firstName); 
-		DataStore.saveValue(UsableValues.PERSON_LASTNAME, lastName);
+		LOG.info("Successfully entered new contact details.");
 		
-		addPersonsContactDetailsPage.clickContinueButton();
-		givePersonAccountPage.selectInviteUserToCreateAccount();
-		givePersonAccountPage.clickContinueButton();
+		personAccountPage.selectInviteUserToCreateAccount();
+		personAccountPage.clickContinueButton();
 
-		choosePersonMembershipPage.selectAuthority("10");
-		choosePersonMembershipPage.selectOrganisation("Dry Cleaner");
-		choosePersonMembershipPage.clickContinueButton();
+		LOG.info("Successfully chose to invite the person to create an account.");
+		
+		personMembershipPage.selectAuthority();
+		personMembershipPage.selectOrganisation();
+		personMembershipPage.clickContinueButton();
+		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
+		LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
+		
+		personUserTypePage.selectEnforcementOfficer();
+		personUserTypePage.clickContinueButton();
+		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
+		
+		personCreateAccountPage.clickInviteButton();
 
-		personUserTypeSelectionPage.selectEnforcementOfficer();
-		personUserTypeSelectionPage.clickContinueButton();
-
-		invitePersonToCreateAccountPage.clickInviteButton();
-
-		profileReviewPage.savePersonCreation();
-		personCompletionConfirmationPage.clickDoneButton();
-		personsProfilePage.clickDoneButton();
-
-		LOG.info("Successfully added a new person.");
+		LOG.info("Successfully sent account invite.");
+		
+		userProfileConfirmationPage.saveChanges();
+		userProfileCompletionPage.completeApplication();
 	}
 
-	@Then("^the user can verify the person was created successfully$")
-	public void the_user_can_verify_the_person_was_created_successfully() throws Throwable {
-		String personsName = DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
-		
-		LOG.info("New Persons Name: " + personsName);
-		managePeoplePage.enterNameOrEmail(personsName);
-		managePeoplePage.clickSubmit();
-
-		assertEquals(personsName, managePeoplePage.GetPersonName());
+	@Then("^the user can verify the person was created successfully and can see resend an account invite$")
+	public void the_user_can_verify_the_person_was_created_successfully_and_can_see_resend_an_account_invite() throws Throwable {
+		assertTrue("Failed: Header does not contain the person's fullname and title.", personsProfilePage.checkHeaderForName());
+		assertTrue("Failed: Cannot find the Re-send account creation invite link.", personsProfilePage.checkForUserAccountInvitationLink());
+		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", personsProfilePage.checkContactName());
+		assertTrue("Failed: Contact email field does not contain the correct email address.", personsProfilePage.checkContactEmail());
+		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", personsProfilePage.checkContactPhoneNumbers());
+		assertTrue("Failed: Contact Locations are not displayed.", personsProfilePage.seeMoreContactInformation());
 	}
 
 	@When("^the user searches for an existing person successfully$")
 	public void the_user_searches_for_an_existing_person_successfully() throws Throwable {
 		parDashboardPage.selectManagePeople();
 
-		String personsName = DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
+		String personsName = DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
 		
 		managePeoplePage.enterNameOrEmail(personsName);
 		managePeoplePage.clickSubmit();
@@ -1259,61 +1243,48 @@ public class PARStepDefs {
 		personsProfilePage.clickUpdateUserButton();
 	}
 
-	@When("^the user updates an existing person$")
-	public void the_user_updates_an_existing_person_with_the_following_details() throws Throwable {
+	@When("^the user updates an existing person:$")
+	public void the_user_updates_an_existing_person_with_the_following_details(DataTable person) throws Throwable {
 		LOG.info("Updating an existing person.");
-		String firstName = RandomStringUtils.randomAlphabetic(8);
-		String lastName = RandomStringUtils.randomAlphabetic(8);
-
-		addPersonsContactDetailsPage.enterTitle("Dr");
-		addPersonsContactDetailsPage.enterFirstname(firstName);
-		addPersonsContactDetailsPage.enterLastname(lastName);
-		addPersonsContactDetailsPage.enterWorkPhoneNumber("012046588031");
-		addPersonsContactDetailsPage.enterMobilePhoneNumber("07450606901");
-		addPersonsContactDetailsPage.enterEmailAddress(firstName + "@" + lastName + ".com");
 		
-		DataStore.saveValue(UsableValues.PERSON_FIRSTNAME, firstName); 
-		DataStore.saveValue(UsableValues.PERSON_LASTNAME, lastName);
+		personsContactDetailsPage.enterContactDetails(person);
+		personsContactDetailsPage.clickContinueButton();
+
+		LOG.info("Successfully entered new contact details.");
+
+		personAccountPage.selectInviteUserToCreateAccount();
+		personAccountPage.clickContinueButton();
+
+		LOG.info("Successfully chose to invite the person to create an account.");
+
+		personMembershipPage.selectAuthority();
+		personMembershipPage.selectOrganisation();
+		personMembershipPage.clickContinueButton();
+
+		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
+		LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
+
+		personUserTypePage.selectAuthorityMember();
+		personUserTypePage.clickContinueButton();
+
+		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
+
+		personCreateAccountPage.clickInviteButton();
+
+		LOG.info("Successfully sent account invite.");
 		
-		addPersonsContactDetailsPage.clickContinueButton();
-
-		LOG.info("Successfully Updated an person's contact details.");
-
-		givePersonAccountPage.selectInviteUserToCreateAccount();
-		givePersonAccountPage.clickContinueButton();
-
-		LOG.info("Successfully Invited the person to create an account.");
-
-		choosePersonMembershipPage.selectAuthority("10");
-		choosePersonMembershipPage.selectOrganisation("Cafe");
-		choosePersonMembershipPage.clickContinueButton();
-
-		LOG.info("Successfully Updated an person's Authority and Organisation Memberships.");
-
-		personUserTypeSelectionPage.selectAuthorityMember();
-		personUserTypeSelectionPage.clickContinueButton();
-
-		LOG.info("Successfully Updated an person's User Role.");
-
-		invitePersonToCreateAccountPage.clickInviteButton();
-
-		LOG.info("Successfully Updated the person's Account creation invite.");
-
-		profileReviewPage.savePersonCreation();
-		personCompletionConfirmationPage.clickDoneButton();
-		personsProfilePage.clickDoneButton();
-
-		LOG.info("Successfully Updated an existing person.");
+		userProfileConfirmationPage.saveChanges();
+		userProfileCompletionPage.completeApplication();
 	}
 
-	@Then("^the user can verify the person was updated successfully$")
-	public void the_user_can_verify_the_person_was_updated_successfully() throws Throwable {
-		String personsName = DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
-		
-		managePeoplePage.enterNameOrEmail(personsName);
-		managePeoplePage.clickSubmit();
-
-		assertEquals(personsName, managePeoplePage.GetPersonName());
+	@Then("^the user can verify the person was updated successfully and can see resend an account invite$")
+	public void the_user_can_verify_the_person_was_updated_successfully_and_can_see_resend_an_account_invite() throws Throwable {
+		assertTrue("Failed: Header does not contain the person's fullname and title.", personsProfilePage.checkHeaderForName());
+		assertTrue("Failed: Cannot find the Re-send account creation invite link.", personsProfilePage.checkForUserAccountInvitationLink());
+		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", personsProfilePage.checkContactName());
+		assertTrue("Failed: Contact email field does not contain the correct email address.", personsProfilePage.checkContactEmail());
+		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", personsProfilePage.checkContactPhoneNumbers());
+		assertTrue("Failed: Contact Locations are not displayed.", personsProfilePage.seeMoreContactInformation());
 	}
 	
 	@Then("^the user can verify the enforcement officers details are displayed$")

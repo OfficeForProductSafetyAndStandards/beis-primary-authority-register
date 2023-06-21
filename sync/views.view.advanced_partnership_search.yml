@@ -1228,9 +1228,9 @@ display:
               plugin_id: default
               advanced:
                 combine: true
-                combine_rewrite: "Last Status Update Desc|Most recently updated\r\nLast Status Update Asc|Least recently updated"
-                reset: false
-                reset_label: ''
+                combine_rewrite: "Created Desc|Newest\r\nCreated Asc|Oldest\r\nLast Status Update Desc|Most recently updated\r\nLast Status Update Asc|Least recently updated\r\nNumber of Members Desc|Most coordinated members\r\nNumber of Members Asc|Least coordinated members"
+                reset: true
+                reset_label: 'Original order'
                 collapsible: false
                 collapsible_label: 'Sort options'
                 is_secondary: false
@@ -1342,9 +1342,9 @@ display:
           plugin_id: search_api
           order: DESC
           expose:
-            label: ''
-            field_identifier: ''
-          exposed: false
+            label: Created
+            field_identifier: created
+          exposed: true
         partnership_status_date:
           id: partnership_status_date
           table: search_api_index_partnership_index
@@ -1357,6 +1357,19 @@ display:
           expose:
             label: 'Last Status Update'
             field_identifier: partnership_status_date
+          exposed: true
+        member_number:
+          id: member_number
+          table: search_api_index_partnership_index
+          field: member_number
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api
+          order: DESC
+          expose:
+            label: 'Number of Members'
+            field_identifier: member_number
           exposed: true
       arguments: {  }
       filters:
@@ -2441,7 +2454,7 @@ display:
           field: partnership_status_date
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: partnership_status
           plugin_id: search_api_field
           label: 'Last Status Update'
           exclude: false
@@ -2639,7 +2652,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
@@ -2709,7 +2722,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
@@ -2850,7 +2863,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api_numeric
           fallback_options:
             set_precision: false
@@ -3002,7 +3015,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
@@ -3197,7 +3210,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
@@ -3335,7 +3348,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: '; '
+          separator: ', '
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api_entity
@@ -3736,26 +3749,77 @@ display:
         type: data_field
         options:
           field_options:
-            nothing_1:
-              alias: ''
+            id:
+              alias: ID
+              raw_output: false
+            authority_name:
+              alias: authority_name
+              raw_output: false
+            organisation_name:
+              alias: organisation_name
               raw_output: false
             partnership_type:
-              alias: ''
-              raw_output: false
-            partnership_status_1:
-              alias: ''
-              raw_output: false
-            partnership_status_date:
-              alias: ''
+              alias: partnership_type
               raw_output: false
             function_name:
-              alias: ''
+              alias: regulatory_function_names
+              raw_output: false
+            partnership_status_1:
+              alias: partnership_status
+              raw_output: false
+            partnership_status_date:
+              alias: partnership_last_updated
               raw_output: false
             trading_name:
-              alias: ''
+              alias: trading_names
               raw_output: false
-            nothing:
-              alias: ''
+            registered_name:
+              alias: legal_entity_names
+              raw_output: false
+            registered_number:
+              alias: legal_entity_numbers
+              raw_output: false
+            member_display:
+              alias: member_list_type
+              raw_output: false
+            member_number:
+              alias: number_members
+              raw_output: false
+            member_list_updated:
+              alias: member_list_updated
+              raw_output: false
+            inspection_plan_title:
+              alias: inspection_plan_titles
+              raw_output: false
+            inspection_plan_status:
+              alias: inspection_plan_statuses
+              raw_output: false
+            inspection_plan_end_date:
+              alias: inspection_plan_end_dates
+              raw_output: false
+            advice_title:
+              alias: advice_titles
+              raw_output: false
+            advice_type:
+              alias: advice_types
+              raw_output: false
+            advice_regulatory_function:
+              alias: advice_regulatory_functions
+              raw_output: false
+            advice_status:
+              alias: advice_statuses
+              raw_output: false
+            authority_terms:
+              alias: authority_terms_and_conditions
+              raw_output: false
+            organisation_terms:
+              alias: organisation_terms_and_conditions
+              raw_output: false
+            partnership_info_agreed_authority:
+              alias: authority_agreed_partnership_information
+              raw_output: false
+            partnership_info_agreed_business:
+              alias: organisation_agreed_partnership_information
               raw_output: false
       defaults:
         title: false
@@ -3767,7 +3831,7 @@ display:
       path: search/advanced/partnerships/download
       auth:
         - cookie
-      filename: partnership-report-download.csv
+      filename: 'Partnership Report - [date:gds_date_format].csv'
       automatic_download: true
       export_method: batch
       export_batch_size: 100

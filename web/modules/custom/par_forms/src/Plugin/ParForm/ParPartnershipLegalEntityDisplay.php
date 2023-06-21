@@ -14,6 +14,9 @@ use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
+use Drupal\registered_organisations\DataException;
+use Drupal\registered_organisations\RegisterException;
+use Drupal\registered_organisations\TemporaryException;
 
 /**
  * Partnership Legal entity display.
@@ -122,6 +125,19 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       // Get the actual legal entity instance.
       $legal_entity = $partnership_legal_entity->getLegalEntity();
 
+      // @TODO Remove updateLegacyEntities() once the majority of legacy legal entities are updated.
+      if ($legal_entity?->isLegacyEntity()) {
+        try {
+          $updated = $legal_entity->updateLegacyEntities();
+          if ($updated) {
+            $legal_entity->save();
+          }
+        }
+        catch (RegisterException|TemporaryException|DataException $ignored) {
+          // Catch all errors silently.
+        }
+      }
+
       // Get all the operations available for this legal entity.
       $operations = [
         'revoke_legal_entity' => 'Revoke',
@@ -163,6 +179,17 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
           '#attributes' => ['class' => $classes],
         ],
       ];
+
+      // Check if this legal entity needs updating.
+      if ($legal_entity->isLegacyEntity()) {
+        $legacy_message = "This legal entity needs to be updated.";
+        $form['partnership_legal_entities']['table'][$delta]['legal_entity']['warning'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'strong',
+          '#value' => $legacy_message,
+          '#attributes' => ['class' => ['govuk-warning-text']],
+        ];
+      }
 
       // Date columns only present once partnership becomes active.
       if ($partnership->isActive()) {
