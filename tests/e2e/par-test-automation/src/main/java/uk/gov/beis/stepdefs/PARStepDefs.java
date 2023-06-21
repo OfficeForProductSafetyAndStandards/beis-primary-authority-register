@@ -61,6 +61,7 @@ import uk.gov.beis.pageobjects.InspectionFeedbackDetailsPage;
 import uk.gov.beis.pageobjects.InspectionFeedbackSearchPage;
 import uk.gov.beis.pageobjects.InspectionPlanDetailsPage;
 import uk.gov.beis.pageobjects.InspectionPlanExpirationPage;
+import uk.gov.beis.pageobjects.InspectionPlanReviewPage;
 import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.LoginPage;
@@ -119,6 +120,7 @@ public class PARStepDefs {
 	private HomePage parHomePage;
 	private RequestEnquiryPage requestEnquiryPage;
 	private DeviationSearchPage deviationSearchPage;
+	private InspectionPlanReviewPage inspectionPlanReviewPage;
 	private EnquiryReviewPage enquiryReviewPage;
 	private InspectionFeedbackConfirmationPage inspectionFeedbackConfirmationPage;
 	private InspectionFeedbackDetailsPage inspectionFeedbackDetailsPage;
@@ -146,7 +148,8 @@ public class PARStepDefs {
 	private ReplyInspectionFeedbackPage replyInspectionFeedbackPage;
 	private PartnershipAdvancedSearchPage partnershipAdvancedSearchPage;
 	private UserProfileConfirmationPage userProfileConfirmationPage;
-	private UserNotificationPreferencesPage userNotificationPreferencesPage; // Note for Leo: This is not being used, does it need removing?
+	private UserNotificationPreferencesPage userNotificationPreferencesPage; // Note for Leo: This is not being used,
+																				// does it need removing?
 	private MailLogPage mailLogPage;
 	private RequestDeviationPage requestDeviationPage;
 	private InspectionPlanExpirationPage inspectionPlanExpirationPage;
@@ -216,6 +219,7 @@ public class PARStepDefs {
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		inspectionPlanReviewPage = PageFactory.initElements(driver, InspectionPlanReviewPage.class);
 		replyEnquiryPage = PageFactory.initElements(driver, ReplyEnquiryPage.class);
 		enquiriesSearchPage = PageFactory.initElements(driver, EnquiriesSearchPage.class);
 		enquiryReviewPage = PageFactory.initElements(driver, EnquiryReviewPage.class);
@@ -298,14 +302,14 @@ public class PARStepDefs {
 
 		// PAR News Letter
 		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
-		updateUserCommunicationPreferencesPage = PageFactory.initElements(driver, UpdateUserCommunicationPreferencesPage.class);
+		updateUserCommunicationPreferencesPage = PageFactory.initElements(driver,
+				UpdateUserCommunicationPreferencesPage.class);
 		updateUserContactDetailsPage = PageFactory.initElements(driver, UpdateUserContactDetailsPage.class);
 		updateUserSubscriptionsPage = PageFactory.initElements(driver, UpdateUserSubscriptionsPage.class);
 		newsLetterSubscriptionPage = PageFactory.initElements(driver, NewsLetterSubscriptionPage.class);
 		newsLetterManageSubscriptionListPage = PageFactory.initElements(driver,
 				NewsLetterManageSubscriptionListPage.class);
-		newsLetterSubscriptionReviewPage = PageFactory.initElements(driver,
-				NewsLetterSubscriptionReviewPage.class);
+		newsLetterSubscriptionReviewPage = PageFactory.initElements(driver, NewsLetterSubscriptionReviewPage.class);
 
 		// Person Creation and Update
 		managePeoplePage = PageFactory.initElements(driver, ManagePeoplePage.class);
@@ -533,7 +537,7 @@ public class PARStepDefs {
 	@Then("^the user journey creation is successful$")
 	public void the_user_journey_creation_is_successful() throws Throwable {
 		LOG.info("Checking user creation is sucessful");
-		//userProfileConfirmationPage.checkUserCreation();
+		// userProfileConfirmationPage.checkUserCreation();
 		userProfileConfirmationPage.saveChanges();
 		userProfileCompletionPage.completeApplication();
 	}
@@ -814,6 +818,32 @@ public class PARStepDefs {
 		}
 	}
 
+	@When("^the user updates the last created inspection plan against the partnership with the following details:$")
+	public void the_user_updates_the_last_created_inspection_plan_against_the_partnership_with_the_following_details(
+			DataTable dets) throws Throwable {
+		LOG.info("Edit inspection plan and save details");
+		partnershipAdvancedSearchPage.selectPartnershipLink();
+		parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
+		inspectionPlanSearchPage.selectEditLink();
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.INSPECTIONPLAN_TITLE, data.get("Title"));
+			inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
+			DataStore.saveValue(UsableValues.INSPECTIONPLAN_DESCRIPTION, data.get("Description"));
+			inspectionPlanDetailsPage
+					.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
+			inspectionPlanDetailsPage.save();
+			inspectionPlanExpirationPage.save();
+			inspectionPlanSearchPage.selectInspectionPlan();
+		}
+	}
+
+	@Then("^the inspection plan is updated correctly$")
+	public void the_inspection_plan_is_updated_correctly() throws Throwable {
+		LOG.info("Check the inspection plan details are correct");
+		Assert.assertTrue("Failed: inspection plan details not correct",
+				inspectionPlanReviewPage.checkInspectionPlan());
+	}
+
 	@When("^the user submits an inspection feedback against the inspection plan with the following details:$")
 	public void the_user_submits_an_inspection_feedback_against_the_inspection_plan_with_the_following_details(
 			DataTable dets) throws Throwable {
@@ -1052,42 +1082,44 @@ public class PARStepDefs {
 	public void the_user_selects_a_contact_to_update() throws Throwable {
 		DataStore.saveValue(UsableValues.BUSINESS_EMAIL, DataStore.getSavedValue(UsableValues.LOGIN_USER));
 		parDashboardPage.selectManageProfileDetails();
-	    
-	    DataStore.saveValue(UsableValues.ACCOUNT_ID, userProfilePage.getAccountID()); // This can be used in a manage colleagues update person test.
-	    
-	    userProfilePage.selectContactToUpdate();
-	    userProfilePage.selectContinueButton();
-	    LOG.info("Selected user contact to update.");
+
+		DataStore.saveValue(UsableValues.ACCOUNT_ID, userProfilePage.getAccountID()); // This can be used in a manage
+																						// colleagues update person
+																						// test.
+
+		userProfilePage.selectContactToUpdate();
+		userProfilePage.selectContinueButton();
+		LOG.info("Selected user contact to update.");
 	}
 
 	@Then("^the user can successfully subscribe to PAR News$")
 	public void the_user_can_successfully_subscribe_to_PAR_News() throws Throwable {
 		updateUserContactDetailsPage.selectContinueButton();
-	    updateUserCommunicationPreferencesPage.selectContinueButton();
-	    
-	    updateUserSubscriptionsPage.selectPARNewsSubscription();
-	    updateUserSubscriptionsPage.selectContinueButton();
-	    LOG.info("Successfully subscribed from PAR news letter.");
-	    
-	    userProfileConfirmationPage.saveChanges();
-	    userProfileCompletionPage.completeApplication();
-	    
+		updateUserCommunicationPreferencesPage.selectContinueButton();
+
+		updateUserSubscriptionsPage.selectPARNewsSubscription();
+		updateUserSubscriptionsPage.selectContinueButton();
+		LOG.info("Successfully subscribed from PAR news letter.");
+
+		userProfileConfirmationPage.saveChanges();
+		userProfileCompletionPage.completeApplication();
+
 	}
 
 	@Then("^the user can successfully unsubscribe from PAR News$")
 	public void the_user_can_successfully_unsubscribe_from_PAR_News() throws Throwable {
-	    updateUserContactDetailsPage.selectContinueButton();
-	    updateUserCommunicationPreferencesPage.selectContinueButton();
-	    
-	    updateUserSubscriptionsPage.selectPARNewsUnsubscription();
-	    updateUserSubscriptionsPage.selectContinueButton();
-	    LOG.info("Successfully unsubscribed from PAR news letter.");
-	    
-	    userProfileConfirmationPage.saveChanges();
-	    userProfileCompletionPage.completeApplication();
-	    
+		updateUserContactDetailsPage.selectContinueButton();
+		updateUserCommunicationPreferencesPage.selectContinueButton();
+
+		updateUserSubscriptionsPage.selectPARNewsUnsubscription();
+		updateUserSubscriptionsPage.selectContinueButton();
+		LOG.info("Successfully unsubscribed from PAR news letter.");
+
+		userProfileConfirmationPage.saveChanges();
+		userProfileCompletionPage.completeApplication();
+
 	}
-	
+
 	@When("^the user searches for the par_authority email$")
 	public void the_user_searches_for_the_par_authority_email() throws Throwable {
 		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
@@ -1100,19 +1132,21 @@ public class PARStepDefs {
 		parDashboardPage.selectManageSubscriptions();
 		LOG.info("Navigated to Manage Subscriptions Page.");
 	}
-	
+
 	@Then("^the user can verify the email is successfully in the Subscriptions List$")
 	public void the_user_can_verify_the_email_is_successfully_in_the_Subscriptions_List() throws Throwable {
 		LOG.info("Assert the Email is successfully added to the Subscription List.");
-		assertTrue("Failed: Email address was not added to the PAR News Subscription List.", newsLetterSubscriptionPage.verifyTableElementExists());
+		assertTrue("Failed: Email address was not added to the PAR News Subscription List.",
+				newsLetterSubscriptionPage.verifyTableElementExists());
 	}
 
 	@Then("^the user can verify the email is successfully removed from the Subscriptions List$")
 	public void the_user_can_verify_the_email_is_successfully_removed_from_the_Subscriptions_List() throws Throwable {
 		LOG.info("Assert the Email is removed successfully from the Subscription List.");
-		assertTrue("Failed: Email address was not removed from the PAR News Subscription List.", newsLetterSubscriptionPage.verifyTableElementIsNull());
+		assertTrue("Failed: Email address was not removed from the PAR News Subscription List.",
+				newsLetterSubscriptionPage.verifyTableElementIsNull());
 	}
-	
+
 	@When("^the user is on the Manage a subscription list page$")
 	public void the_user_is_on_the_Manage_a_subscription_list_page() throws Throwable {
 		parDashboardPage.selectManageSubscriptions();
@@ -1130,7 +1164,6 @@ public class PARStepDefs {
 		LOG.info("Adding a new email to the subscription list.");
 		newsLetterSubscriptionReviewPage.clickUpdateListButton();
 	}
-	
 
 	@Then("^the user can verify the new email was added successfully$")
 	public void the_user_can_verify_the_new_email_was_added_successfully() throws Throwable {
@@ -1140,7 +1173,6 @@ public class PARStepDefs {
 		assertTrue(newsLetterSubscriptionPage.verifyTableElementExists());
 		LOG.info("Successfully added a new email to the Subscription list.");
 	}
-	
 
 	@When("^the user enters an email to be removed from the list \"([^\"]*)\"$")
 	public void the_user_enters_an_email_to_be_removed_from_the_list(String email) throws Throwable {
@@ -1151,7 +1183,6 @@ public class PARStepDefs {
 		LOG.info("Removing an email from the subscription list.");
 		newsLetterSubscriptionReviewPage.clickUpdateListButton();
 	}
-	
 
 	@Then("^the user can verify the email was removed successfully$")
 	public void the_user_can_verify_the_email_was_removed_successfully() throws Throwable {
@@ -1161,21 +1192,20 @@ public class PARStepDefs {
 		assertTrue(newsLetterSubscriptionPage.verifyTableElementIsNull());
 		LOG.info("Successfully removed an email from the Subscription list.");
 	}
-	
 
 	@When("^the user enters a list of new emails to replace the subscription list$")
 	public void the_user_enters_a_list_of_new_emails_to_replace_the_subscription_list() throws Throwable {
-		
+
 		newsLetterManageSubscriptionListPage.selectReplaceSubscriptionListRadioButton();
 		newsLetterManageSubscriptionListPage.clickContinueButton();
 		LOG.info("Adding new emails to replace the original Subscription List.");
-		
+
 		newsLetterSubscriptionReviewPage.clickUpdateListButton();
 	}
 
 	@Then("^the user can verify an email from the original list was removed successfully$")
 	public void the_user_can_verify_an_email_from_the_original_list_was_removed_successfully() throws Throwable {
-		
+
 		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.LAST_PAR_NEWS_EMAIL));
 		newsLetterSubscriptionPage.ClickSearchButton();
 
@@ -1184,46 +1214,52 @@ public class PARStepDefs {
 	}
 
 	@When("^the user creates a new person:$")
-	public void the_user_creates_a_new_person(DataTable person) throws Throwable { 
+	public void the_user_creates_a_new_person(DataTable person) throws Throwable {
 		parDashboardPage.selectManagePeople();
 		managePeoplePage.selectAddPerson();
 
 		LOG.info("Adding a new person.");
 		personsContactDetailsPage.enterContactDetails(person);
 		personsContactDetailsPage.clickContinueButton();
-		
+
 		LOG.info("Successfully entered new contact details.");
-		
+
 		personAccountPage.selectInviteUserToCreateAccount();
 		personAccountPage.clickContinueButton();
 
 		LOG.info("Successfully chose to invite the person to create an account.");
-		
+
 		personMembershipPage.selectAuthority();
 		personMembershipPage.selectOrganisation();
 		personMembershipPage.clickContinueButton();
 		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
 		LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
-		
+
 		personUserTypePage.selectEnforcementOfficer();
 		personUserTypePage.clickContinueButton();
 		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
-		
+
 		personCreateAccountPage.clickInviteButton();
 
 		LOG.info("Successfully sent account invite.");
-		
+
 		userProfileConfirmationPage.saveChanges();
 		userProfileCompletionPage.completeApplication();
 	}
 
 	@Then("^the user can verify the person was created successfully and can see resend an account invite$")
-	public void the_user_can_verify_the_person_was_created_successfully_and_can_see_resend_an_account_invite() throws Throwable {
-		assertTrue("Failed: Header does not contain the person's fullname and title.", personsProfilePage.checkHeaderForName());
-		assertTrue("Failed: Cannot find the Re-send account creation invite link.", personsProfilePage.checkForUserAccountInvitationLink());
-		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", personsProfilePage.checkContactName());
-		assertTrue("Failed: Contact email field does not contain the correct email address.", personsProfilePage.checkContactEmail());
-		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", personsProfilePage.checkContactPhoneNumbers());
+	public void the_user_can_verify_the_person_was_created_successfully_and_can_see_resend_an_account_invite()
+			throws Throwable {
+		assertTrue("Failed: Header does not contain the person's fullname and title.",
+				personsProfilePage.checkHeaderForName());
+		assertTrue("Failed: Cannot find the Re-send account creation invite link.",
+				personsProfilePage.checkForUserAccountInvitationLink());
+		assertTrue("Failed: Contact name field does not contain the person's fullname and title.",
+				personsProfilePage.checkContactName());
+		assertTrue("Failed: Contact email field does not contain the correct email address.",
+				personsProfilePage.checkContactEmail());
+		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers",
+				personsProfilePage.checkContactPhoneNumbers());
 		assertTrue("Failed: Contact Locations are not displayed.", personsProfilePage.seeMoreContactInformation());
 	}
 
@@ -1231,8 +1267,9 @@ public class PARStepDefs {
 	public void the_user_searches_for_an_existing_person_successfully() throws Throwable {
 		parDashboardPage.selectManagePeople();
 
-		String personsName = DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
-		
+		String personsName = DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " "
+				+ DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
+
 		managePeoplePage.enterNameOrEmail(personsName);
 		managePeoplePage.clickSubmit();
 
@@ -1246,7 +1283,7 @@ public class PARStepDefs {
 	@When("^the user updates an existing person:$")
 	public void the_user_updates_an_existing_person_with_the_following_details(DataTable person) throws Throwable {
 		LOG.info("Updating an existing person.");
-		
+
 		personsContactDetailsPage.enterContactDetails(person);
 		personsContactDetailsPage.clickContinueButton();
 
@@ -1272,24 +1309,30 @@ public class PARStepDefs {
 		personCreateAccountPage.clickInviteButton();
 
 		LOG.info("Successfully sent account invite.");
-		
+
 		userProfileConfirmationPage.saveChanges();
 		userProfileCompletionPage.completeApplication();
 	}
 
 	@Then("^the user can verify the person was updated successfully and can see resend an account invite$")
-	public void the_user_can_verify_the_person_was_updated_successfully_and_can_see_resend_an_account_invite() throws Throwable {
-		assertTrue("Failed: Header does not contain the person's fullname and title.", personsProfilePage.checkHeaderForName());
-		assertTrue("Failed: Cannot find the Re-send account creation invite link.", personsProfilePage.checkForUserAccountInvitationLink());
-		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", personsProfilePage.checkContactName());
-		assertTrue("Failed: Contact email field does not contain the correct email address.", personsProfilePage.checkContactEmail());
-		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", personsProfilePage.checkContactPhoneNumbers());
+	public void the_user_can_verify_the_person_was_updated_successfully_and_can_see_resend_an_account_invite()
+			throws Throwable {
+		assertTrue("Failed: Header does not contain the person's fullname and title.",
+				personsProfilePage.checkHeaderForName());
+		assertTrue("Failed: Cannot find the Re-send account creation invite link.",
+				personsProfilePage.checkForUserAccountInvitationLink());
+		assertTrue("Failed: Contact name field does not contain the person's fullname and title.",
+				personsProfilePage.checkContactName());
+		assertTrue("Failed: Contact email field does not contain the correct email address.",
+				personsProfilePage.checkContactEmail());
+		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers",
+				personsProfilePage.checkContactPhoneNumbers());
 		assertTrue("Failed: Contact Locations are not displayed.", personsProfilePage.seeMoreContactInformation());
 	}
-	
+
 	@Then("^the user can verify the enforcement officers details are displayed$")
 	public void the_user_can_verify_the_enforcement_officers_details_are_displayed() throws Throwable {
-	    assertTrue("Failed: Officer details not displayed", enforcementReviewPage.checkOfficerDetails());
+		assertTrue("Failed: Officer details not displayed", enforcementReviewPage.checkOfficerDetails());
 	}
 
 	@When("^the user searches for a partnership with the Test Business \"([^\"]*)\" name$")
