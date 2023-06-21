@@ -192,11 +192,7 @@ jobs:
           command: |
             echo "$(pwd)"
             composer install -v
-            rm -f web/themes/contrib/govuk_theme/css/styles.css
-            npm run install-govuk-theme
-            npm run install-par-theme
-            npm install
-            npm run gulp
+            npm run frontend
       - run:
           name: "Installing tests"
           command: |

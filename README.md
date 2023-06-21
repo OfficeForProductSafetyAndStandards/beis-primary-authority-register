@@ -112,10 +112,7 @@ This is best run from outside the primary docker container (very slow within the
 The theme and the tests dependencies are both managed with NPM, any changes to `package.json` or `tests/package.json`, run:
 
 ```
-npm install
-npm run install-govuk-theme
-npm run install-par-theme
-npm run gulp
+npm run frontend
 ```
 
 #### Database (optional)
