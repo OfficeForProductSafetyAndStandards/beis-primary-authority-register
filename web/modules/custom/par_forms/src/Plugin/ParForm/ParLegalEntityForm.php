@@ -2,8 +2,13 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataLegalEntity;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
+use Drupal\registered_organisations\DataException;
+use Drupal\registered_organisations\TemporaryException;
 
 /**
  * Legal Entity form plugin.
@@ -20,16 +25,7 @@ class ParLegalEntityForm extends ParFormPluginBase {
    */
   protected $entityMapping = [
     ['registry', 'par_data_legal_entity', 'registry', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must enter the name of this legal entity.'
-    ]],
-    ['registered_name', 'par_data_legal_entity', 'registered_name', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must enter the name of this legal entity.'
-    ]],
-    ['legal_entity_type', 'par_data_legal_entity', 'legal_entity_type', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must choose what type of legal entity this is.'
-    ]],
-    ['registered_number', 'par_data_legal_entity', 'registered_number', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the registered number for this legal entity.'
+      'This value should not be null.' => 'You must choose the type of legal entity.'
     ]],
   ];
 
@@ -62,13 +58,6 @@ class ParLegalEntityForm extends ParFormPluginBase {
     return \Drupal::service('registered_organisations.organisation_manager');
   }
 
-  public function getRegistryOptions() {
-    $registry_options = $this->getOrganisationManager()->getDefinitions();
-    array_walk($registry_options, function (&$value, $key) {
-      $value = $value['label'];
-    });
-  }
-
   /**
    * @defaults
    */
@@ -82,14 +71,16 @@ class ParLegalEntityForm extends ParFormPluginBase {
   public function getElements($form = [], $cardinality = 1) {
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
-    $form['legal_entity_intro_fieldset'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('What is a legal entity?'),
-      'intro' => [
-        '#type' => 'markup',
-        '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
-      ],
-    ];
+    if ($cardinality === 1) {
+      $form['legal_entity_intro_fieldset'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('What is a legal entity?'),
+        'intro' => [
+          '#type' => 'markup',
+          '#markup' => "<p>" . $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities.") . "</p>",
+        ],
+      ];
+    }
 
     if ($this->getFlowDataHandler()->getFormPermValue('coordinated_partnership')) {
       $form['legal_entity_intro_fieldset']['note'] = [
@@ -112,8 +103,7 @@ class ParLegalEntityForm extends ParFormPluginBase {
       ParDataLegalEntity::DEFAULT_REGISTER => 'Please choose this option for sole traders and all other legal entity types.',
     ];
 
-
-    if ($cardinality === 1) {
+//    if ($cardinality === 1) {
       $form['registry'] = [
         '#type' => 'radios',
         '#title' => 'What type of legal entity is this?',
@@ -196,7 +186,7 @@ class ParLegalEntityForm extends ParFormPluginBase {
           'class' => ['form-group'],
         ],
       ];
-    }
+//    }
 
     $legal_entity_label = $this->getCardinality() !== 1 ?
       $this->formatPlural($cardinality, 'Legal Entity @index', 'Legal Entity @index (Optional)', ['@index' => $cardinality]) :
@@ -209,4 +199,84 @@ class ParLegalEntityForm extends ParFormPluginBase {
 
     return $form;
   }
+
+  /**
+   * Validate date field.
+   */
+  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+    $registry_key = $this->getElementKey('registry', $cardinality);
+    $register_id = $form_state->getValue($registry_key);
+
+    if ($register_id === ParDataLegalEntity::DEFAULT_REGISTER) {
+      $type_key = $this->getElementKey('legal_entity_type', $cardinality);
+      if ($form_state->isValueEmpty($type_key)) {
+//        $type_error_key = $this->getElementKey('legal_entity_type', $cardinality);
+        $message = $this->wrapErrorMessage('You must choose which legal entity type you are adding.', $this->getElementId($type_key, $form));
+        $form_state->setErrorByName($this->getElementName($type_key), $message);
+      }
+
+      $name_key = $this->getElementKey('name', $cardinality);
+      if ($form_state->isValueEmpty($name_key)) {
+//        $name_error_key = $this->getElementKey('name', $cardinality);
+        $message = $this->wrapErrorMessage('Please enter a name for this legal entity.', $this->getElementId($name_key, $form));
+        $form_state->setErrorByName($this->getElementName($name_key), $message);
+      }
+
+      // Validate additional rules.
+      parent::validate($form, $form_state, $cardinality, $action);
+    }
+    else if (in_array($register_id, ['companies_house', 'charity_commission'])) {
+      $registered_number_key = $this->getElementKey('number', $cardinality);
+
+      $legal_entity_number = trim((string) $form_state->getValue('number'));
+      var_dump(array_keys($form_state->getValues()), $legal_entity_number);
+      if (empty($legal_entity_number)) {
+        // If no legal entity number has been submitted.
+        $number_id_key = $this->getElementKey('number', $cardinality, TRUE);
+        $message = $this->wrapErrorMessage('Please enter the legal entity number.', $this->getElementId($number_id_key, $form));
+        $form_state->setErrorByName($this->getElementName($registered_number_key), $message);
+      }
+      else {
+        $legal_entity_number = trim($form_state->getValue($registered_number_key));
+      }
+
+      try {
+        $registry = $this->getOrganisationManager()->getRegistry($register_id);
+
+        if (!empty($legal_entity_number) && !$registry->isValidId($legal_entity_number)) {
+          // The legal entity number is in an invalid format.
+          $number_key = $this->getElementKey('number', $cardinality, TRUE);
+          $message = $this->wrapErrorMessage('The legal entity number you entered is not valid.', $this->getElementId($number_key, $form));
+          $form_state->setErrorByName($this->getElementName($number_key), $message);
+        }
+      }
+      catch (PluginNotFoundException $ignore) {
+        // Ignore system errors.
+      }
+
+//      try {
+//        $profile = !empty($legal_entity_number) ?
+//          $this->getOrganisationManager()->lookupOrganisation($legal_entity_number) :
+//          NULL;
+//      }
+//      catch (DataException $e) {
+//        // If the legal entity number does not exist.
+//        $number_key = $this->getElementKey('number', $cardinality, TRUE);
+//        $message = $this->wrapErrorMessage('The legal entity number you entered could not be found.', $this->getElementId($number_key, $form));
+//        $form_state->setErrorByName($this->getElementName($number_key), $message);
+//      }
+//      catch (TemporaryException $ignore) {
+//        // Users are not responsible for temporary or rate limiting errors.
+//      }
+
+      // Validate additional rules if a profile was found.
+      parent::validate($form, $form_state, $cardinality, $action);
+    }
+    else {
+      $number_key = $this->getElementKey('registry', $cardinality, TRUE);
+      $message = $this->wrapErrorMessage('Please choose whether this is a registered or unregistered legal entity.', $this->getElementId($number_key, $form));
+      $form_state->setErrorByName($this->getElementName($number_key), $message);
+    }
+  }
+
 }
