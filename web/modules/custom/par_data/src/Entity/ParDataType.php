@@ -176,11 +176,31 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
     return isset($status_field) && !empty($allowed_statuses) ? key($allowed_statuses) : NULL;
   }
 
+  public function getFieldLabel($field_name, $value): ?string {
+    // If the field is configured with allowed values.
+    if (!empty($this->getAllowedValues($field_name))) {
+      return $this->getAllowedFieldlabel($field_name, $value);
+    }
+    // If the field is configured with boolean values.
+    elseif (!empty($this->getBooleanValues($field_name))) {
+      return $this->getBooleanFieldLabel($field_name, $value);
+    }
+
+    return $value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getBooleanValues($field_name) {
+    return $this->getConfigurationElementByType($field_name, 'boolean_values');
+  }
+
   /**
    * {@inheritdoc}
    */
   public function getBooleanFieldLabel($field_name, bool $value = FALSE) {
-    $boolean_values = $this->getConfigurationElementByType($field_name, 'boolean_values');
+    $boolean_values = $this->getBooleanValues($field_name);
     $key = $value ? 'on' : 'off';
     return isset($boolean_values[$key]) ? $boolean_values[$key] : FALSE;
   }
