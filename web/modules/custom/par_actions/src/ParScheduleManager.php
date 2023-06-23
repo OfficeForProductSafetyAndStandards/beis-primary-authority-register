@@ -26,9 +26,10 @@ class ParScheduleManager extends DefaultPluginManager {
   const PAR_LOGGER_CHANNEL = 'par';
 
   /**
-   * The minimum interval required between runs.
+   * The minimum interval required between runs
    *
-   * This allows the queued items to be processed before the next run.
+   * Scheduled rules can be run at most once a day, this allows the
+   * queued items to be processed before the next run.
    */
   const MIN_INTERVAL = 3600;
 

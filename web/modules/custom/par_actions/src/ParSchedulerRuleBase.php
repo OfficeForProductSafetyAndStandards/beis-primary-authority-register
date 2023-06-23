@@ -66,7 +66,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    * {@inheritdoc}
    */
   public function getTime() {
-    $time = $this->pluginDefinition['time'];
+    $time = $this->pluginDefinition['time'] ?? NULL;
 
     // If using our custom 'working days' relative time format convert this to
     // a php supported time format before processing.
@@ -165,49 +165,49 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    * {@inheritdoc}
    */
   public function query() {
-    $current_time = $this->getCurrentTime();
-    // Base the scheduled time off the assigned current time.
-    $scheduled_time = clone $current_time;
-    $scheduled_time->modify($this->getTime());
-
-    // We need to make additional calculations if counting working days only.
-    if ($this->countWorkingDays()) {
-      // Find date to process.
-      $holidays = array_column(UkBankHolidayFactory::getAll(), 'date', 'date');
-
-      $calculator = new BusinessDaysCalculator(
-        $current_time,
-        $holidays,
-        [BusinessDaysCalculator::SATURDAY, BusinessDaysCalculator::SUNDAY]
-      );
-
-      // Calculate the constituent parts based on the relative time diff.
-      $diff = $current_time->diff($scheduled_time);
-      $days = $diff->format("%a");
-      if ($diff->invert) {
-        $calculator->removeBusinessDays($days);
-      }
-      else {
-        $calculator->addBusinessDays($days);
-      }
-
-      // Replace default scheduled time with working day scheduled time.
-      $scheduled_time = $calculator->getDate();
-    }
-
-    // The only supported operator at the moment is "<=" meaning that
-    // the modified expiry (calculator) date provided by the 'time' property
-    // must be greater than or equal to the entity's date property.
-    // e.g. $entity->date <= $calculator->date
-    $operator = '<=';
-
     $query = \Drupal::entityQuery($this->getEntity());
 
     // Only run the default query if specified.
     // The default query condition compares a relative time format to
     // a specified date field on the entity.
     // It does not handle timestamp fields.
-    if ($this->getProperty()) {
+    if ($this->getProperty() && $this->getTime()) {
+      $current_time = $this->getCurrentTime();
+
+      // Base the scheduled time off the assigned current time.
+      $scheduled_time = clone $current_time;
+      $scheduled_time->modify($this->getTime());
+
+      // We need to make additional calculations if counting working days only.
+      if ($this->countWorkingDays()) {
+        // Find date to process.
+        $holidays = array_column(UkBankHolidayFactory::getAll(), 'date', 'date');
+
+        $calculator = new BusinessDaysCalculator(
+          $current_time,
+          $holidays,
+          [BusinessDaysCalculator::SATURDAY, BusinessDaysCalculator::SUNDAY]
+        );
+
+        // Calculate the constituent parts based on the relative time diff.
+        $diff = $current_time->diff($scheduled_time);
+        $days = $diff->format("%a");
+        if ($diff->invert) {
+          $calculator->removeBusinessDays($days);
+        }
+        else {
+          $calculator->addBusinessDays($days);
+        }
+
+        // Replace default scheduled time with working day scheduled time.
+        $scheduled_time = $calculator->getDate();
+      }
+
+      // The only supported operator at the moment is "<=" meaning that
+      // the modified expiry (calculator) date provided by the 'time' property
+      // must be greater than or equal to the entity's date property.
+      // e.g. $entity->date <= $calculator->date
+      $operator = '<=';
       $query->condition($this->getProperty(), $scheduled_time->format('Y-m-d'), $operator);
     }
 

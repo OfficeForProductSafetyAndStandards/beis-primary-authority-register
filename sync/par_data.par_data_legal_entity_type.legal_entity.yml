@@ -29,3 +29,8 @@ configuration:
       limited_partnership: 'Limited Partnership'
       limited_liability_partnership: 'Limited Liability Partnership'
       other: Other
+  registry:
+    allowed_values:
+      companies_house: 'Companies House'
+      charity_commission: 'Charity Commission'
+      internal: Internal
