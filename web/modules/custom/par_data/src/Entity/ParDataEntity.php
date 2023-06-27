@@ -476,6 +476,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
     $raw_status = $this->getRawStatus();
+
     return $raw_status ? $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status) : '';
   }
 

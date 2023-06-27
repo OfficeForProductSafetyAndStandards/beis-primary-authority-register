@@ -107,13 +107,10 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       '#type' => 'table',
       '#header' => [
         'Name',
+        'Status',
       ],
     ];
     $headers = &$form['partnership_legal_entities']['table']['#header'];
-    // Only show start/end date columns for active partnerships.
-    if ($partnership->isActive()) {
-      array_push($headers, 'Active from', 'Active until');
-    }
 
     // Add a row for each partnership legal entity.
     foreach ($partnership_legal_entities as $delta => $partnership_legal_entity) {
@@ -166,7 +163,6 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
 
       $form['partnership_legal_entities']['table'][$delta]['legal_entity'] = [
         '#type' => 'container',
-        '#attributes' => ['class' => 'column-full'],
         'name' => [
           '#type' => 'html_tag',
           '#tag' => 'div',
@@ -186,38 +182,33 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         ];
       }
 
-      // @TODO Need to handle better other partnership legal entity statuses.
-      // for example awaiting approval.
+      // Get the status message to display.
+      $status_message = "@status";
 
-      // Date columns only present once partnership becomes active.
-      if ($partnership->isActive() &&
-        $start_date = $partnership_legal_entity->getStartDate()) {
+      // Get the start and end dates.
+      $start_date = $partnership_legal_entity->getStartDate()?->getTimestamp();
+      $end_date = $partnership_legal_entity->getEndDate()?->getTimestamp();
 
-        $form['partnership_legal_entities']['table'][$delta]['start_date'] = [
-          '#type' => 'html_tag',
-          '#tag' => 'span',
-          '#attributes' => ['class' => 'start-date'],
-          '#value' => $this->getDateFormatter()->format($start_date->getTimestamp(), 'gds_date_format'),
-        ];
+      if ($partnership_legal_entity->isActive() && $start_date) {
+        // Add the date the legal entity was nominated.
+        $status_message .= "<br>Since %start";
       }
-      else {
-        $form['partnership_legal_entities']['table'][$delta]['start_date'] = [];
+      else if ($partnership_legal_entity->isRevoked() && $start_date && $end_date) {
+        // Add the dates the legal entity was active during.
+        $status_message .= "<br>%start to %end";
       }
 
-      // Only show end date if the PLE has been revoked.
-      if ($partnership_legal_entity->isRevoked() &&
-        $end_date = $partnership_legal_entity->getEndDate()) {
+      // Get the replacement values.
+      $status = $partnership_legal_entity->getParStatus();
+      $start = $start_date ? $this->getDateFormatter()->format($start_date, 'gds_date_format') : NULL;
+      $end = $end_date ? $this->getDateFormatter()->format($end_date, 'gds_date_format') : NULL;
 
-        $form['partnership_legal_entities']['table'][$delta]['end_date'] = [
-          '#type' => 'html_tag',
-          '#tag' => 'span',
-          '#attributes' => ['class' => 'end-date'],
-          '#value' => $this->getDateFormatter()->format($end_date->getTimestamp(), 'gds_date_format'),
-        ];
-      }
-      else {
-        $form['partnership_legal_entities']['table'][$delta]['end_date'] = [];
-      }
+      $form['partnership_legal_entities']['table'][$delta]['status'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#attributes' => ['class' => 'status'],
+        '#value' => $this->t($status_message, ['@status' => $status, '%start' => $start, '%end' => $end]),
+      ];
 
       if (!empty($legal_entity_actions)) {
         // Operation links will go in the last column.

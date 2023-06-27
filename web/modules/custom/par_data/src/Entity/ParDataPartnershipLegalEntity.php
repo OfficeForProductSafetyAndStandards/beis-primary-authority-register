@@ -213,7 +213,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * Get the partnership for this partnership legal entity.
    *
-   * @return ParDataPartnership|null
+   * @return ?ParDataPartnership
    */
   public function getPartnership() {
     // Make sure not to request this more than once for a given entity.
@@ -275,11 +275,8 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * @return ?DrupalDateTime
    */
   public function getStartDate(): ?DrupalDateTime {
-    // If the partnerships is revoked, the revocation date can be used.
-    $partnership_nomination_date = $this->getPartnership()?->isActive() ?
-      $this->getPartnership()?->getApprovedDate() : NULL;
 
-    return $this->getRawStartDate() ?? $partnership_nomination_date;
+    return $this->getRawStartDate() ?? $this->getPartnership()?->getApprovedDate();
   }
 
   /**
@@ -301,7 +298,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    */
   public function getRawEndDate(): ?DrupalDateTime {
     return !$this->get('date_legal_entity_revoked')->isEmpty() ?
-      $this->date_legal_entity_approved->date :
+      $this->date_legal_entity_revoked->date :
       NULL;
   }
 

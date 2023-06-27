@@ -27,4 +27,7 @@ configuration:
         - confirmed_business
   legal_entity_status:
     allowed_values:
-      git : Active
+      awaiting_review: 'Awaiting Review'
+      confirmed_authority: 'Confirmed by the Authority'
+      confirmed_business: 'Confirmed by the Organisation'
+      confirmed_rd: Active
