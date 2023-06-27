@@ -34,6 +34,9 @@ default:
   archived:
     -
       value: false
+  legal_entity_status:
+    -
+      value: confirmed_rd
   field_legal_entity:
     -
       entity: 7e78d205-5451-4819-9518-a5f48d090553
