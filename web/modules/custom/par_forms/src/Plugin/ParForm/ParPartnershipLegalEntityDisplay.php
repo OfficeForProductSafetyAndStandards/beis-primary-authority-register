@@ -189,7 +189,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       // Date columns only present once partnership becomes active.
       if ($partnership->isActive()) {
         // Start date cell is empty if the is no start date. LE is effective from the start of the partnership.
-        $start_date = $partnership_legal_entity-->getStartDate();
+        $start_date = $partnership_legal_entity->getStartDate();
         if ($start_date) {
           $form['partnership_legal_entities']['table'][$delta]['start_date'] = [
             '#type' => 'html_tag',
