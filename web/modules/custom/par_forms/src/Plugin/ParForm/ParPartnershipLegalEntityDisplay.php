@@ -193,31 +193,30 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       if ($partnership->isActive() &&
         $start_date = $partnership_legal_entity->getStartDate()) {
 
-          $form['partnership_legal_entities']['table'][$delta]['start_date'] = [
-            '#type' => 'html_tag',
-            '#tag' => 'span',
-            '#attributes' => ['class' => 'start-date'],
-            '#value' => $this->getDateFormatter()->format($start_date->getTimestamp(), 'gds_date_format'),
-          ];
-        }
-        else {
-          $form['partnership_legal_entities']['table'][$delta]['start_date'] = [];
-        }
+        $form['partnership_legal_entities']['table'][$delta]['start_date'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#attributes' => ['class' => 'start-date'],
+          '#value' => $this->getDateFormatter()->format($start_date->getTimestamp(), 'gds_date_format'),
+        ];
+      }
+      else {
+        $form['partnership_legal_entities']['table'][$delta]['start_date'] = [];
+      }
 
-        // Only show end date if the PLE has been revoked.
-        if ($partnership_legal_entity->isRevoked() &&
-          $end_date = $partnership_legal_entity->getEndDate()) {
+      // Only show end date if the PLE has been revoked.
+      if ($partnership_legal_entity->isRevoked() &&
+        $end_date = $partnership_legal_entity->getEndDate()) {
 
-          $form['partnership_legal_entities']['table'][$delta]['end_date'] = [
-            '#type' => 'html_tag',
-            '#tag' => 'span',
-            '#attributes' => ['class' => 'end-date'],
-            '#value' => $this->getDateFormatter()->format($end_date->getTimestamp(), 'gds_date_format'),
-          ];
-        }
-        else {
-          $form['partnership_legal_entities']['table'][$delta]['end_date'] = [];
-        }
+        $form['partnership_legal_entities']['table'][$delta]['end_date'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#attributes' => ['class' => 'end-date'],
+          '#value' => $this->getDateFormatter()->format($end_date->getTimestamp(), 'gds_date_format'),
+        ];
+      }
+      else {
+        $form['partnership_legal_entities']['table'][$delta]['end_date'] = [];
       }
 
       if (!empty($legal_entity_actions)) {
