@@ -186,11 +186,13 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         ];
       }
 
+      // @TODO Need to handle better other partnership legal entity statuses.
+      // for example awaiting approval.
+
       // Date columns only present once partnership becomes active.
-      if ($partnership->isActive()) {
-        // Start date cell is empty if the is no start date. LE is effective from the start of the partnership.
-        $start_date = $partnership_legal_entity->getStartDate();
-        if ($start_date) {
+      if ($partnership->isActive() &&
+        $start_date = $partnership_legal_entity->getStartDate()) {
+
           $form['partnership_legal_entities']['table'][$delta]['start_date'] = [
             '#type' => 'html_tag',
             '#tag' => 'span',
@@ -203,12 +205,14 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         }
 
         // Only show end date if the PLE has been revoked.
-        if ($partnership_legal_entity->isRevoked()) {
+        if ($partnership_legal_entity->isRevoked() &&
+          $end_date = $partnership_legal_entity->getEndDate()) {
+
           $form['partnership_legal_entities']['table'][$delta]['end_date'] = [
             '#type' => 'html_tag',
             '#tag' => 'span',
             '#attributes' => ['class' => 'end-date'],
-            '#value' => $this->getDateFormatter()->format($partnership_legal_entity->getEndDate()->getTimestamp(), 'gds_date_format'),
+            '#value' => $this->getDateFormatter()->format($end_date->getTimestamp(), 'gds_date_format'),
           ];
         }
         else {
