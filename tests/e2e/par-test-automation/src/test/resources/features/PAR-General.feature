@@ -17,7 +17,7 @@ Feature:
     When the user searches for the last created partnership
     And the user completes the partnership application with the following details:
       | SIC Code            | No of Employees | Legal entity Type | Business Description |
-      | allow people to eat | 10 to 49        | Limited Company   | Test Business        |
+      | cookies on your premises | 10 to 49        | Limited Company   | Test Business        |
     Then the second part of the partnership application is successfully completed
     #verify update of newly created partnership
     Given the user is on the PAR login page
@@ -40,7 +40,7 @@ Feature:
     When the user searches for the last created partnership
     And the user completes the partnership application with the following details:
       | SIC Code            | Member List Size | Legal entity Type | Business Description |
-      | allow people to eat | Medium           | Limited Company   | Test Business        |
+      | cookies on your premises | Medium           | Limited Company   | Test Business        |
     Then the second part of the partnership application is successfully completed
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
