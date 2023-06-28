@@ -19,7 +19,7 @@ public class InspectionFeedbackSearchPage extends BasePageObject {
 	@FindBy(linkText = "Upload inspection plan")
 	WebElement uploadBtn;
 
-	String feedbknotice = "(//tr/td[contains(text(),'?')]/following-sibling::td[3])[1]";
+	String feedbknotice = "(//tr/td[contains(text(),'?')]/following-sibling::td[3]/a)[1]";
 
 	public InspectionFeedbackConfirmationPage selectInspectionFeedbackNotice() {
 		driver.findElement(By.xpath(feedbknotice.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME))))
