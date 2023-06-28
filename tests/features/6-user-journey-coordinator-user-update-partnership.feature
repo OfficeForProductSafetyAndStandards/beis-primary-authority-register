@@ -99,7 +99,7 @@ Feature: Coordinator User - Update Partnership
         And I click on the button "#edit-save"
         Then the element "a*=New Member One" does not exist
         Then the element "Cease membership" does not exist
-        And the element "td.views-field.views-field-date-membership-ceased" contains the text "02 February 2018"
+        And the element "td.views-field.views-field-date-membership-ceased" contains the text "2 February 2018"
         And I click the link text "back to partnership"
 
         # EDIT REGISTERED ADDRESS
