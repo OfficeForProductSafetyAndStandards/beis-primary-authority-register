@@ -6,6 +6,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\TypedData\Type\DateTimeInterface;
 use Drupal\Core\Url;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItem;
 use Drupal\link\LinkItemInterface;
@@ -133,7 +134,34 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  public function nominate($save = TRUE) {
+    // Do not nominate partnerships that are already nominated.
+    if ($this->isActive()) {
+      return FALSE;
+    }
+
+    // Set the status to active.
+    $this->setParStatus('confirmed_rd');
+
+    // Set the approved date.
+    $current_date = new DrupalDateTime();
+    $this->setApprovedDate($current_date);
+
+    // Ensure that nominating a revoked partnership succeeds.
+    $this->unrevoke(FALSE);
+
+    return !$save || $this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function revoke($save = TRUE, $reason = '') {
+    // Do not revoke partnerships that are already revoked.
+    if ($this->isRevoked()) {
+      return FALSE;
+    }
+
     // Revoke/archive all dependent entities as well.
     $inspection_plans = $this->getInspectionPlan();
     foreach ($inspection_plans as $inspection_plan) {
@@ -147,6 +175,13 @@ class ParDataPartnership extends ParDataEntity {
       $advice->revoke($save, $this::ADVICE_REVOKE_REASON);
     }
 
+    // Set the revocation date.
+    $current_date = new DrupalDateTime();
+    $this->setRevocationDate($current_date);
+
+    // Ensure the approved date is re-set.
+    $this->setApprovedDate(NULL);
+
     return parent::revoke($save, $reason);
   }
 
@@ -154,6 +189,11 @@ class ParDataPartnership extends ParDataEntity {
    * {@inheritdoc}
    */
   public function unrevoke($save = TRUE) {
+    // Only restore partnerships that are revoked.
+    if (!$this->isRevoked()) {
+      return FALSE;
+    }
+
     // Revoke/archive all dependent entities as well.
     $inspection_plans = $this->getInspectionPlan();
     foreach ($inspection_plans as $inspection_plan) {
@@ -165,7 +205,19 @@ class ParDataPartnership extends ParDataEntity {
       $advice->unrevoke($save);
     }
 
-    parent::unrevoke($save);
+    // Restore the partnership.
+    $restored = parent::unrevoke(FALSE);
+
+    // Set the revocation date.
+    $this->setRevocationDate(NULL);
+
+    // Re-nominate if the original status was nominated.
+    $this->nominate(FALSE);
+
+    // Only save the changes if the partnership was changed.
+    if ($restored) {
+      return !$save || $this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW;
+    }
   }
 
   /**
@@ -491,9 +543,60 @@ class ParDataPartnership extends ParDataEntity {
 
   /**
    * Get the approved date for this partnership.
+   *
+   * Note: The legacy method for looking up approval dates uses the entity
+   * revisions logs, if no approved date is found lookup the revision.
    */
-  public function getApprovedDate() {
-    return !$this->get('approved_date')->isEmpty() ? $this->approved_date->date : NULL;
+  public function getApprovedDate(): ?DrupalDateTime {
+    // Get the approval date.
+    if (!$this->get('approved_date')->isEmpty()) {
+      return $this->approved_date?->date;
+    }
+    // Or look it up using the entity's revisions logs.
+    else if ($timestamp = $this->getStatusTime('confirmed_rd')) {
+      return DrupalDateTime::createFromTimestamp($timestamp);
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Sets the date the partnership was nominated.
+   *
+   * @param ?DrupalDateTime $date
+   *   The date this partnership was nominated.
+   */
+  public function setApprovedDate(DrupalDateTime $date = NULL): void {
+    $this->set('approved_date', $date?->format('Y-m-d'));
+  }
+
+  /**
+   * Get the revocation date for this partnership.
+   *
+   * Note: The legacy method for looking up revocation dates uses the entity
+   * revisions logs, if no revocation date is found lookup the revision.
+   */
+  public function getRevocationDate(): ?DrupalDateTime {
+    // Get the revocation date.
+    if (!$this->get('revocation_date')->isEmpty()) {
+      return $this->revocation_date?->date;
+    }
+    // Or look it up using the entity's revisions logs.
+    else if ($timestamp = $this->getStatusTime(ParDataEntity::REVOKE_FIELD)) {
+      return DrupalDateTime::createFromTimestamp($timestamp);
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Sets the date the partnership was revoked.
+   *
+   * @param ?DrupalDateTime $date
+   *   The date this partnership was revoked.
+   */
+  public function setRevocationDate(DrupalDateTime $date = NULL): void {
+    $this->set('revocation_date', $date?->format('Y-m-d'));
   }
 
   /**
@@ -659,29 +762,45 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
-   * Get legal entities for this partnership.
+   * Create a new partnership legal entity wrapper for this partnership.
+   *
+   * De-duplication checks will be performed to make sure the legal entity
+   * being added is not already active on the partnership. It is legitimate,
+   * however,
+   *
+   * @param ParDataLegalEntity $legal_entity
+   *  The legal entity to add.
+   *
+   * @return ParDataPartnershipLegalEntity
+   *   Return a new or existing partnership legal entity.
    */
-  public function getLegalEntity($single = FALSE) {
-    $partnership_legal_entities = $this->getPartnershipLegalEntities(TRUE);
-
-    $legal_entities = [];
-    foreach ($partnership_legal_entities as $partnership_legal_entity) {
-      $legal_entities[] = $partnership_legal_entity->getLegalEntity();
+  private function createPartnershipLegalEntity(ParDataLegalEntity $legal_entity): ParDataPartnershipLegalEntity {
+    // Loop through all existing partnership legal entities and check
+    // whether an active legal entity is already existing on the partnership.
+    foreach ($this->getPartnershipLegalEntities(TRUE) as $field_delta => $partnership_legal_entity) {
+      if ($partnership_legal_entity->getLegalEntity()?->id() === $legal_entity->id()) {
+        // Return the existing legal entity if found.
+        return $partnership_legal_entity;
+      }
     }
-    $legal_entity = !empty($legal_entities) ? current($legal_entities) : NULL;
 
-    return $single ? $legal_entity : $legal_entities;
+    // Create a new partnership legal entity wrapper.]
+    $partnership_legal_entity = ParDataPartnershipLegalEntity::create([]);
+    // Set the legal entity.
+    $partnership_legal_entity->setLegalEntity($legal_entity);
+
+    return $partnership_legal_entity;
   }
 
   /**
    * Get partnership legal entities for this partnership.
    *
-   * @param boolean $active
+   * @param bool $active
    *  If TRUE then only active PLEs are returned. Default FALSE.
    *
    * @return ParDataPartnershipLegalEntity[]
    */
-  public function getPartnershipLegalEntities($active = FALSE) {
+  public function getPartnershipLegalEntities(bool $active = FALSE): array {
     $partnership_legal_entities = $this->get('field_partnership_legal_entity')->referencedEntities();
 
     // Retain only the active partnership legal entities.
@@ -695,52 +814,78 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * Get legal entities for this partnership.
+   */
+  public function getLegalEntity(bool $single = FALSE) {
+    $legal_entities = $this->getPartnershipLegalEntities(TRUE);
+
+    // Convert the partnership legal entities into legal entities.
+    array_walk($legal_entities, function (&$value) {
+      $value = $value->getLegalEntity();
+    });
+
+    // Return a single item if requested.
+    $legal_entity = !empty($legal_entities) ? current($legal_entities) : NULL;
+
+    return $single ? $legal_entity : $legal_entities;
+  }
+
+  /**
    * Add a legal entity to partnership.
    *
-   * Method creates a partnership_legal_entity object that links the given legal_entity to the partnership.
+   * This includes the wrapping entity and checks to make sure duplicates
+   * are not added to the partnership.
    *
    * @param ParDataLegalEntity $legal_entity
    *   A PAR Legal Entity to add.
-   * @param DrupalDateTime | NULL $period_from
-   *   Start date of period during which the LE is active.
-   * @param DrupalDateTime | NULL $period_to
-   *   End date of period during which the LE is active.
    *
    * @return ParDataPartnershipLegalEntity
    *   The newly created partnership_legal_entity.
    */
-  public function addLegalEntity(ParDataLegalEntity $legal_entity, DrupalDateTime $period_from = NULL, DrupalDateTime $period_to = NULL) {
-    // Create new partnership legal entity referencing the legal entity.
-    $partnership_legal_entity = ParDataPartnershipLegalEntity::create([]);
-    $partnership_legal_entity->setLegalEntity($legal_entity);
+  public function addLegalEntity(ParDataLegalEntity $legal_entity): ParDataPartnershipLegalEntity {
+    $partnership_legal_entity = $this->createPartnershipLegalEntity($legal_entity);
 
-    if ($this->isActive() && !$period_from) {
-      $period_from = new DrupalDateTime('now');
+    // If the partnership legal entity is existing nothing needs to change.
+    if (!$partnership_legal_entity->isNew()) {
+      return $partnership_legal_entity;
     }
-    $partnership_legal_entity->setStartDate($period_from);
-    $partnership_legal_entity->setEndDate($period_to);
 
+    // Save the partnership legal entity.
     $partnership_legal_entity->save();
 
-    // Append new partnership legal entity to existing list of legal entities covered by this partnership.
+    // Append new partnership legal entity to this partnership.
     $this->get('field_partnership_legal_entity')->appendItem($partnership_legal_entity);
 
     return $partnership_legal_entity;
   }
 
-  public function removeLegalEntity(ParDataPartnershipLegalEntity $partnership_legal_entity) {
+  /**
+   * Remove a legal entity to partnership.
+   *
+   * @param ParDataLegalEntity $legal_entity
+   *   A PAR Legal Entity to add.
+   */
+  public function removeLegalEntity(ParDataLegalEntity $legal_entity) {
+    $partnership_legal_entities = array_filter($this->getPartnershipLegalEntities(), function ($partnership_legal_entity) use ($legal_entity) {
+      return $partnership_legal_entity->getLegalEntity()?->id() === $legal_entity->id();
+    });
 
-    $index = NULL;
-    foreach ($this->get('field_partnership_legal_entity') as $delta => $item) {
-      if ($partnership_legal_entity->id() == $item->getValue()['target_id']) {
-        $index = $delta;
-        break;
-      }
-    };
-    $this->get('field_partnership_legal_entity')->removeItem($index);
-    $this->save();
+    // Remove the field reference.
+    foreach ($partnership_legal_entities as $field_delta => $partnership_legal_entity) {
+      // Remove the field reference.
+      $this->get('field_partnership_legal_entity')->removeItem($field_delta);
+    }
 
-    $partnership_legal_entity->delete();
+    // Save the partnership entity, field references must be removed
+    // and saved before the partnership legal entity can be deleted.
+    if (!empty($partnership_legal_entities)) {
+      $this->save();
+    }
+
+    // Delete the partnership legal entity.
+    foreach ($partnership_legal_entities as $field_delta => $partnership_legal_entity) {
+      $partnership_legal_entity->delete();
+    }
   }
 
   /**

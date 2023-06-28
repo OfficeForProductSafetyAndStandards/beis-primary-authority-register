@@ -12,7 +12,7 @@ configuration:
   entity:
     label_fields:
       - field_legal_entity
-    status_field: partnership_legal_entity_status
+    status_field: legal_entity_status
     status_transitions:
       awaiting_review:
         - default
@@ -24,7 +24,7 @@ configuration:
         - confirmed_authority
       confirmed_rd:
         - confirmed_business
-  partnership_legal_entity_status:
+  legal_entity_status:
     allowed_values:
       awaiting_review: 'Awaiting Review'
       confirmed_authority: 'Confirmed by the Authority'

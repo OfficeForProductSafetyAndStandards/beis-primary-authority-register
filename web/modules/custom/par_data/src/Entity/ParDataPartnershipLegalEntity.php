@@ -103,9 +103,40 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  public function nominate($save = TRUE) {
+    // Do not nominate partnerships that are already nominated.
+    if ($this->isActive()) {
+      return FALSE;
+    }
+
+    // Set the status to active.
+    $this->setParStatus('confirmed_rd');
+
+    // Set the approved date.
+    $current_date = new DrupalDateTime();
+    $this->setApprovedDate($current_date);
+
+    // Ensure that nominating a revoked partnership succeeds.
+    $this->unrevoke(FALSE);
+
+    return !$save || $this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function revoke($save = TRUE, $reason = '') {
+    // Do not revoke partnerships that are already revoked.
+    if ($this->isRevoked()) {
+      return FALSE;
+    }
+
+    // Set the revocation date.
     $current_date = new DrupalDateTime();
     $this->setEndDate($current_date);
+
+    // Ensure the approved date is re-set.
+    $this->setStartDate(NULL);
 
     return parent::revoke($save, $reason);
   }
@@ -114,16 +145,75 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * {@inheritdoc}
    */
   public function unrevoke($save = TRUE) {
+    // Only restore legal entities that are revoked.
+    if (!$this->isRevoked()) {
+      return FALSE;
+    }
+
     // Unset the revocation date.
     $this->setEndDate(NULL);
 
-    return parent::unrevoke($save);
+    $restored = parent::unrevoke(FALSE);
+
+    // Re-nominate if the original status was nominated.
+    $this->nominate(FALSE);
+
+    // Only save the changes if the legal entity was changed.
+    if ($restored) {
+      return !$save || $this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isActive() {
+    // Whether an entity is complete and can be acted upon as a finished, live.
+    $awaiting_statuses = [
+      $this->getTypeEntity()->getDefaultStatus(),
+      'confirmed_authority',
+      'confirmed_business'
+    ];
+
+    if (in_array($this->getRawStatus(), $awaiting_statuses)) {
+      return FALSE;
+    }
+
+    // If there is no start date.
+    if (!$this->getStartDate()) {
+      return FALSE;
+    }
+
+    return parent::isActive();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function inProgress() {
+    // Freeze partnerships that are awaiting approval.
+    $awaiting_statuses = [
+      $this->getTypeEntity()->getDefaultStatus(),
+      'confirmed_authority',
+      'confirmed_business'
+    ];
+
+    if (in_array($this->getRawStatus(), $awaiting_statuses)) {
+      return TRUE;
+    }
+
+    // If there is no start date.
+    if (!$this->getStartDate()) {
+      return TRUE;
+    }
+
+    return parent::inProgress();
   }
 
   /**
    * Get the partnership for this partnership legal entity.
    *
-   * @return ParDataPartnership|null
+   * @return ?ParDataPartnership
    */
   public function getPartnership() {
     // Make sure not to request this more than once for a given entity.
@@ -164,17 +254,16 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
-   * Gets the legal entity approval date.
+   * Gets the raw legal entity approval date.
    *
-   * Defaults to the partnership's approval date if
-   * not explicitly set.
+   * Only includes the date set on this legal entity.
    *
-   * @return null|DrupalDateTime
+   * @return ?DrupalDateTime
    */
-  public function getStartDate($full = FALSE) {
+  public function getRawStartDate(): ?DrupalDateTime {
     return !$this->get('date_legal_entity_approved')->isEmpty() ?
       $this->date_legal_entity_approved->date :
-      null;
+      NULL;
   }
 
   /**
@@ -183,17 +272,17 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * Defaults to the partnership's approval date if
    * not explicitly set.
    *
-   * @return null|DrupalDateTime
+   * @return ?DrupalDateTime
    */
-  public function getFullStartDate() {
-    $partnership_start_date = $this->getPartnership()?->getApprovedDate();
-    return $this->getStartDate() ?? $partnership_start_date;
+  public function getStartDate(): ?DrupalDateTime {
+
+    return $this->getRawStartDate() ?? $this->getPartnership()?->getApprovedDate();
   }
 
   /**
    * Sets the legal entity approval date.
    *
-   * @param DrupalDateTime $date
+   * @param ?DrupalDateTime $date
    *   The date this legal entity was approved.
    */
   public function setStartDate(DrupalDateTime $date = NULL) {
@@ -201,18 +290,38 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
-   * Gets the legal entity revocation date.
+   * Gets the raw legal entity end date.
    *
-   * @return null|DrupalDateTime
+   * Only includes the date set on this legal entity.
+   *
+   * @return ?DrupalDateTime
    */
-  public function getEndDate() {
-    return $this->get('date_legal_entity_revoked')->isEmpty() ? NULL : $this->date_legal_entity_revoked->date;
+  public function getRawEndDate(): ?DrupalDateTime {
+    return !$this->get('date_legal_entity_revoked')->isEmpty() ?
+      $this->date_legal_entity_revoked->date :
+      NULL;
+  }
+
+  /**
+   * Gets the legal entity end date.
+   *
+   * If none is set, and the partnership is revoked, use the partnership revocation date.
+   *
+   * @return ?DrupalDateTime
+   */
+  public function getEndDate(): ?DrupalDateTime {
+    // If the partnerships is revoked, the revocation date can be used.
+    $partnership_revocation_date = $this->getPartnership()?->isRevoked() ?
+      $this->getPartnership()?->getRevocationDate() : NULL;
+
+    return $this->getRawEndDate() ?? $partnership_revocation_date;
+
   }
 
   /**
    * Sets the legal entity revocation date.
    *
-   * @param DrupalDateTime $date
+   * @param ?DrupalDateTime $date
    *   The date this legal entity was revoked.
    */
   public function setEndDate(DrupalDateTime $date = NULL) {
@@ -222,7 +331,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * Check whether the legal entity can be removed.
    *
-   * Partnership Legal Entities can be removed if:
+   * Partnership Legal Entities can be removed if any of these are true:
    *  - they are not attached to a partnership
    *  - the partnership they are attached to is not active
    *  - they were added within the last 24 hours
@@ -231,18 +340,32 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    *   TRUE if the legal entity can be removed.
    */
   public function isRemovable() {
+    $partnership = $this->getPartnership();
+
+    // If there's no partnership, or the partnership is not active.
+    if (!$partnership || !$partnership->isActive()) {
+      return TRUE;
+    }
+
+    // If the legal entity is pending.
+    if ($this->inProgress()) {
+      return TRUE;
+    }
+
     $request_time = \Drupal::time()->getRequestTime();
     $now = DrupalDateTime::createFromTimestamp($request_time);
-    $partnership = $this->getPartnership();
-    return (!$partnership
-        || !$partnership->isActive()
-        || $this->getFullStartDate() > $now->modify('-1 day'));
+    // If there's no start date, or the start date is less than 1 day ago.
+    if ($this->getStartDate() > $now->modify('-1 day')) {
+      return TRUE;
+    }
+
+    return FALSE;
   }
 
   /**
    * Check whether this partnership legal entity can be reinstated.
    *
-   * A partnership legal entity can be reinstated if:
+   * A partnership legal entity can be reinstated if ALL of these are true:
    *  - It has been revoked
    *  - There is not already existent another active partnership legal entity for the same legal entity.
    *
@@ -250,11 +373,20 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    *   TRUE if the legal entity can be reinstated.
    */
   public function isReinstatable() {
-
-    if (!$this->isRevoked()) {
+    // If the legal entity isn't revoked.
+    if (!$this->isRevoked() || !$this->getEndDate()) {
       return FALSE;
     }
 
+    // If this legal entity was revoked more than 1 day ago.
+    $request_time = \Drupal::time()->getRequestTime();
+    $now = DrupalDateTime::createFromTimestamp($request_time);
+    // If there's no start date, or the start date is less than 1 day ago.
+    if ($this->getEndDate() < $now->modify('-1 day')) {
+      return FALSE;
+    }
+
+    // If this legal entity id is already active on the partnership.
     foreach ($this->getPartnership()->getPartnershipLegalEntities(TRUE) as $active_partnership_le) {
       if ($this->getLegalEntity()->id() == $active_partnership_le->getLegalEntity()->id()) {
         return FALSE;
@@ -276,7 +408,6 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    *   TRUE if the given period overlaps with the active period of the PLE.
    */
   public function isActiveDuringPeriod(DrupalDateTime $period_from = NULL, DrupalDateTime $period_to = NULL) {
-
     /**
      * Annoyingly DrupalDateTime objects have no comparison method, so we use DateTime objects representing the periods
      * because these are easy to compare.
@@ -310,6 +441,29 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
+    // Partnership legal entity status.
+    $fields['legal_entity_status'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Legal Entity Status'))
+      ->setDescription(t('The current status of the legal entity on the partnership. For example, active, revoked.'))
+      ->addConstraint('par_required')
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'region' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     // Partnership legal entity approval date.
     $fields['date_legal_entity_approved'] = BaseFieldDefinition::create('datetime')
       ->setLabel(t('Approval Date'))
@@ -326,6 +480,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
+        'region' => 'hidden',
         'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
@@ -341,6 +496,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
       ])
       ->setDisplayOptions('form', [
         'type' => 'datetime_default',
+        'region' => 'hidden',
         'weight' => 4,
       ])
       ->setDisplayConfigurable('form', FALSE)

@@ -38,6 +38,9 @@ default:
   par_status:
     -
       value: active
+  legal_entity_status:
+    -
+      value: confirmed_rd
   date_legal_entity_approved:
     -
       value: '2022-09-01'
