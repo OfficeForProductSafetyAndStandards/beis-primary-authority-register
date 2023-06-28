@@ -331,7 +331,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * Check whether the legal entity can be removed.
    *
-   * Partnership Legal Entities can be removed if:
+   * Partnership Legal Entities can be removed if any of these are true:
    *  - they are not attached to a partnership
    *  - the partnership they are attached to is not active
    *  - they were added within the last 24 hours
@@ -365,7 +365,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * Check whether this partnership legal entity can be reinstated.
    *
-   * A partnership legal entity can be reinstated if:
+   * A partnership legal entity can be reinstated if ALL of these are true:
    *  - It has been revoked
    *  - There is not already existent another active partnership legal entity for the same legal entity.
    *
@@ -373,10 +373,20 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    *   TRUE if the legal entity can be reinstated.
    */
   public function isReinstatable() {
-    if (!$this->isRevoked()) {
+    // If the legal entity isn't revoked.
+    if (!$this->isRevoked() || !$this->getEndDate()) {
       return FALSE;
     }
 
+    // If this legal entity was revoked more than 1 day ago.
+    $request_time = \Drupal::time()->getRequestTime();
+    $now = DrupalDateTime::createFromTimestamp($request_time);
+    // If there's no start date, or the start date is less than 1 day ago.
+    if ($this->getEndDate() < $now->modify('-1 day')) {
+      return FALSE;
+    }
+
+    // If this legal entity id is already active on the partnership.
     foreach ($this->getPartnership()->getPartnershipLegalEntities(TRUE) as $active_partnership_le) {
       if ($this->getLegalEntity()->id() == $active_partnership_le->getLegalEntity()->id()) {
         return FALSE;

@@ -191,11 +191,11 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
 
       if ($partnership_legal_entity->isActive() && $start_date) {
         // Add the date the legal entity was nominated.
-        $status_message .= "<br>Since %start";
+        $status_message .= "<br>@start to present";
       }
       else if ($partnership_legal_entity->isRevoked() && $start_date && $end_date) {
         // Add the dates the legal entity was active during.
-        $status_message .= "<br>%start to %end";
+        $status_message .= "<br>@start to @end";
       }
 
       // Get the replacement values.
@@ -207,7 +207,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         '#type' => 'html_tag',
         '#tag' => 'span',
         '#attributes' => ['class' => 'status'],
-        '#value' => $this->t($status_message, ['@status' => $status, '%start' => $start, '%end' => $end]),
+        '#value' => $this->t($status_message, ['@status' => $status, '@start' => $start, '@end' => $end]),
       ];
 
       if (!empty($legal_entity_actions)) {
