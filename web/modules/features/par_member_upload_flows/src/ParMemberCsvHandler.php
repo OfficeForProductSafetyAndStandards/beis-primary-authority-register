@@ -801,9 +801,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // Exclude processed properties if not requested.
     if (!$processed) {
-      $mappings = array_filter($mappings, function($key, $value) use ($processed_properties) {
+      $mappings = array_filter($mappings, function($key) use ($processed_properties) {
         return !in_array($key, $processed_properties);
-      });
+      }, ARRAY_FILTER_USE_KEY);
     }
 
     return array_values($mappings);
