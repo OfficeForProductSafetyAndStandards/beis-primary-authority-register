@@ -40,8 +40,13 @@ interface ParMemberCsvHandlerInterface {
 
   /**
    * Get the column headings for this CSV file.
+   *
+   * @param bool $processed
+   *   Whether to include processed properties.
+   *   Processed properties should not be entered by users and therefore
+   *   should be excluded from all user validation.
    */
-  public function getColumns();
+  public function getColumns(bool $processed = TRUE);
 
   /**
    * Lock the partnership member lock.
