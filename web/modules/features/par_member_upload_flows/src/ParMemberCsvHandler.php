@@ -790,8 +790,24 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getColumns() {
-    return array_values($this->getMappings());
+  public function getColumns($processed = TRUE) {
+    $mappings = $this->getMappings();
+
+    // These mappings contain processed values.
+    $processed_properties = [
+      'partnership_id',
+      'country_code',
+      'ceased',
+    ];
+
+    // Exclude processed properties if not requested.
+    if (!$processed) {
+      $mappings = array_filter($mappings, function($key) use ($processed_properties) {
+        return !in_array($key, $processed_properties);
+      }, ARRAY_FILTER_USE_KEY);
+    }
+
+    return array_values($mappings);
   }
 
   /**
@@ -846,8 +862,13 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   public function validate(array $rows) {
     $errors = [];
 
+    // Use the headings from the first row.
+    $headings = array_keys($rows[0]);
+    // Get all the columns we want to validate.
+    $columns = $this->getColumns(FALSE);
+
     // Use the first row to check that all headings in the csv are supported.
-    $unknown_keys = array_udiff(array_keys($rows[0]), $this->getColumns(), 'strcasecmp');
+    $unknown_keys = array_udiff($headings, $this->getColumns(), 'strcasecmp');
     $unknown_keys_string = implode(', ', $unknown_keys);
     if (!empty($unknown_keys)) {
       $errors['headers_unknown'] = new ParCsvViolation(
@@ -859,7 +880,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     }
 
     // Use the first row to check that all headers are present.
-    $missing_keys = array_udiff($this->getColumns(), array_keys($rows[0]), 'strcasecmp');
+    $missing_keys = array_udiff($columns, $headings, 'strcasecmp');
     $missing_keys_string = implode(', ', $missing_keys);
     if (!empty($missing_keys)) {
       $errors['headers_missing'] = new ParCsvViolation(
