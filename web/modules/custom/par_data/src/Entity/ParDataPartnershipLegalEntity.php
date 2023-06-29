@@ -101,11 +101,57 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
+   * Check whether statuses are supported for this legal entity.
+   *
+   * Statuses are only supported for active partnerships, if the partnership
+   * has any other status it is assumed that all legal entities will mirror
+   * this.
+   *
+   * @example If a partnership is revoked, then all the legal entities will be
+   * revoked.
+   * @example But if a partnership is active then it is possible for a new legal
+   * entity to be awaiting_approval or an old one to be revoked.
+   *
+   * @return bool
+   *   Whether this legal entity is allowed to have its own status record.
+   */
+  public function supportsStatus(): bool {
+    return (bool) $this->getPartnership()?->isActive();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setParStatus($value, $ignore_transition_check = FALSE) {
+    // Only set the status if allowed.
+    if ($this->supportsStatus()) {
+      parent::setParStatus($value, $ignore_transition_check);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRawStatus() {
+    $status = parent::getParStatus();
+
+    // Return the status if supported, or the partnerships status.
+    return $this->supportsStatus() && $status ?
+      $status :
+      $this->getPartnership()?->getRawStatus();
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function nominate($save = TRUE) {
-    // Do not nominate partnerships that are already nominated.
+    // Do not nominate legal entities that are already nominated.
     if ($this->isActive()) {
+      return FALSE;
+    }
+
+    // Do not nominate if status isn't supported.
+    if (!$this->supportsStatus()) {
       return FALSE;
     }
 
@@ -126,8 +172,13 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * {@inheritdoc}
    */
   public function revoke($save = TRUE, $reason = '') {
-    // Do not revoke partnerships that are already revoked.
+    // Do not revoke legal entities that are already revoked.
     if ($this->isRevoked()) {
+      return FALSE;
+    }
+
+    // Do not revoke if status isn't supported.
+    if (!$this->supportsStatus()) {
       return FALSE;
     }
 
@@ -147,6 +198,11 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   public function unrevoke($save = TRUE) {
     // Only restore legal entities that are revoked.
     if (!$this->isRevoked()) {
+      return FALSE;
+    }
+
+    // Do not unrevoke if status isn't supported.
+    if (!$this->supportsStatus()) {
       return FALSE;
     }
 
