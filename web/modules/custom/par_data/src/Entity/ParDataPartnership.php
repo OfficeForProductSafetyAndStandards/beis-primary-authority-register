@@ -150,7 +150,17 @@ class ParDataPartnership extends ParDataEntity {
     // Ensure that nominating a revoked partnership succeeds.
     $this->unrevoke(FALSE);
 
-    return !$save || $this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW;
+    // Save the changes.
+    $completed = !$save || $this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW;
+
+    if ($completed) {
+      // Nominate all the partnership legal entities after the partnership is saved.
+      foreach ($this->getPartnershipLegalEntities() as $legal_entity) {
+        $legal_entity->nominate($save);
+      }
+    }
+
+    return $completed;
   }
 
   /**
@@ -182,7 +192,17 @@ class ParDataPartnership extends ParDataEntity {
     // Ensure the approved date is re-set.
     $this->setApprovedDate(NULL);
 
-    return parent::revoke($save, $reason);
+    // Save the changes.
+    $completed = parent::revoke($save, $reason);
+
+    if ($completed) {
+      // Revoke all the partnership legal entities after the partnership is saved.
+      foreach ($this->getPartnershipLegalEntities() as $legal_entity) {
+        $legal_entity->nominate($save);
+      }
+    }
+
+    return $completed;
   }
 
   /**
@@ -216,7 +236,16 @@ class ParDataPartnership extends ParDataEntity {
 
     // Only save the changes if the partnership was changed.
     if ($restored) {
-      return !$save || $this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW;
+      $completed = !$save || $this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW;
+
+      if ($completed) {
+        // Unrevoke all the partnership legal entities after the partnership is saved.
+        foreach ($this->getPartnershipLegalEntities() as $legal_entity) {
+          $legal_entity->nominate($save);
+        }
+      }
+
+      return $completed;
     }
   }
 
