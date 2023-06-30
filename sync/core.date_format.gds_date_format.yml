@@ -5,4 +5,4 @@ dependencies: {  }
 id: gds_date_format
 label: 'GDS Date Format'
 locked: false
-pattern: 'd F Y'
+pattern: 'j F Y'

@@ -81,8 +81,6 @@ trait ParRedirectTrait {
     $url->mergeOptions($link_options);
     $link = Link::fromTextAndUrl($text, $url);
 
-
-
     return ($url->access() && $url->isRouted()) ? $link : NULL;
   }
 

@@ -14,10 +14,10 @@ public class EnquiriesSearchPage extends BasePageObject {
 		super();
 	}
 
-	String devReq = "(//tr/td[contains(text(),'?')]/following-sibling::td[3])[1]";
+	String enq = "(//tr/td[contains(text(),'?')]/following-sibling::td[3]/a)[1]";
 
 	public BasePageObject selectEnquiry() {
-		driver.findElement(By.xpath(devReq.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME)))).click();
+		driver.findElement(By.xpath(enq.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME)))).click();
 		return PageFactory.initElements(driver, BasePageObject.class);
 	}
 }

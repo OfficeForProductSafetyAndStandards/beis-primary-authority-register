@@ -19,16 +19,16 @@ public class EnforcementReviewPage extends BasePageObject {
 	@FindBy(xpath = "//input[contains(@value,'Save')]")
 	WebElement saveBtn;
 	
-	@FindBy(xpath = "//legend/span[contains(text(),'Enforcement officer')]")
+	@FindBy(xpath = "//div/h2[contains(text(),'Enforced officer')]")
 	WebElement officer;
 	
-	@FindBy(xpath = "//legend/span[contains(text(),'Enforcing authority')]")
+	@FindBy(xpath = "//div/h2[contains(text(),'Enforcing authority')]")
 	WebElement enforceingAuthority;
 	
-	@FindBy(xpath = "//legend/span[contains(text(),'Enforced organisation')]")
+	@FindBy(xpath = "//div/h2[contains(text(),'Enforced organisation')]")
 	WebElement enforcedOrganisation;
 	
-	@FindBy(xpath = "//legend/span[contains(text(),'Primary authority')]")
+	@FindBy(xpath = "//div/h2[contains(text(),'Primary authority')]")
 	WebElement primaryAuthority;
 	
 	
@@ -38,9 +38,9 @@ public class EnforcementReviewPage extends BasePageObject {
 		return PageFactory.initElements(driver, EnforcementCompletionPage.class);
 	}
 
-	String legEnt = "//fieldset/p[contains(text(),'?')]";
-	String enfType = "//fieldset/p[contains(text(),'?')]";
-	String enfTitle = "//fieldset/h3[contains(text(),'?')]";
+	String legEnt = "//div/p[contains(text(),'?')]";
+	String enfType = "//div/p[contains(text(),'?')]";
+	String enfTitle = "//div/h3[contains(text(),'?')]";
 	String desc = "//div/p[contains(text(),'?')]";
 	String enfFile = "//span/a[contains(text(),'?')]";
 
