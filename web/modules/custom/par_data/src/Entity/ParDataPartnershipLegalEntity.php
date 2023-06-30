@@ -160,7 +160,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
 
     // Set the approved date.
     $current_date = new DrupalDateTime();
-    $this->setApprovedDate($current_date);
+    $this->setStartDate($current_date);
 
     // Ensure that nominating a revoked partnership succeeds.
     $this->unrevoke(FALSE);
