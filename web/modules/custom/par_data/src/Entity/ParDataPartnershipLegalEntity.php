@@ -135,7 +135,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   public function getRawStatus() {
     $status = parent::getParStatus();
 
-    // Return the status if supported, or the partnerships status.
+    // Return the status if supported, or the partnership's status.
     return $this->supportsStatus() && $status ?
       $status :
       $this->getPartnership()?->getRawStatus();
