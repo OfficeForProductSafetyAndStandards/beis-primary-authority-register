@@ -200,9 +200,6 @@
             "drupal/role_delegation": {
                 "Temporary patch to enable module uninstall": "./patches/tmp-patch-fix-for-d9-upgrade.patch"
             },
-            "drupal/search_api": {
-                "Unable to render EntityFields in views with search_api_opensearch": "https://www.drupal.org/files/issues/2022-03-17/3262507-10-unable_to_render_entity_fields.patch"
-            },
             "drupal/vbo_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-11-23/allow_configurable_scheme-2988257-18.patch"
             },
