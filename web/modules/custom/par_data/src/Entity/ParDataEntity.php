@@ -453,7 +453,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
-    if ($this->hasStatus()) {
+    if ($this->hasStatus() && !$this->get($field_name)->isEmpty()) {
       $status = $this->get($field_name)->getString();
     }
 
@@ -464,18 +464,19 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function getParStatus() {
-    if ($this->isRevoked()) {
+    $raw_status = $this->getRawStatus();
+
+    if ($raw_status === self::REVOKE_FIELD) {
       return 'Revoked';
     }
-    if ($this->isArchived()) {
+    if ($raw_status === self::ARCHIVE_FIELD) {
       return 'Archived';
     }
-    if (!$this->isTransitioned()) {
+    if ($raw_status === 'n/a') {
       return 'Not transitioned from PAR2';
     }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-    $raw_status = $this->getRawStatus();
 
     return $raw_status ? $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status) : '';
   }
