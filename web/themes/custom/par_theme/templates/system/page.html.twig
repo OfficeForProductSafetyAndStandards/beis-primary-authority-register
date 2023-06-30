@@ -55,8 +55,8 @@
   {% set footer_right_class = 'govuk-grid-column-one-thirds' %}
 {% endif %}
 
-{% if govuk_par_cookie %}
-  {{ govuk_par_cookie }}
+{% if page.cookies %}
+  {{ page.cookies }}
 {% endif %}
 
 <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
