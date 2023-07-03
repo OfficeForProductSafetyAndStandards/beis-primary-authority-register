@@ -133,10 +133,15 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * {@inheritdoc}
    */
   public function getRawStatus() {
+    // The default status should come from the partnership instead.
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+    $default_status = key($this->getTypeEntity()->getAllowedValues($field_name));
+
     $status = parent::getRawStatus();
 
-    // Return the status if supported, or the partnership's status.
-    return $this->supportsStatus() && $status ?
+    // If status is not supported for this legal entity, or it does not have one,
+    // then return the partnership status.
+    return $this->supportsStatus() && $status && $status !== $default_status ?
       $status :
       $this->getPartnership()?->getRawStatus();
   }
