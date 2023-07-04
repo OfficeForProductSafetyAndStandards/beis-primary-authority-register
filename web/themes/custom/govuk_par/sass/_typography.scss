@@ -48,3 +48,7 @@ details {
   @include govuk-typography-common;
   font-size: 19px;
 }
+
+.button {
+  @extend .govuk-button;
+}

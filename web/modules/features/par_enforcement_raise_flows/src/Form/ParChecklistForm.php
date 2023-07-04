@@ -89,7 +89,7 @@ class ParChecklistForm extends ParBaseForm {
         '#title' => $this->t('Discuss this enforcement'),
         '#url' => Url::fromRoute('par_enquiry_send_flows.select_authority', $this->getRouteParams()),
         '#prefix' => '<p class="form-group">',
-        '#suffix' => '<br><br><br></p>',
+        '#suffix' => '</p>',
       ];
     }
 
