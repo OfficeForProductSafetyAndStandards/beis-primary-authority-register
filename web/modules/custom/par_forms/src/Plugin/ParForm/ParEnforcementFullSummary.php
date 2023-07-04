@@ -211,7 +211,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
             '#type' => 'html_tag',
             '#tag' => 'h2',
             '#attributes' => ['class' => ['govuk-heading-m']],
-            '#value' => t('Enforced officer'),
+            '#value' => t('Enforcement officer'),
           ],
           '#attributes' => ['class' => 'govuk-grid-column-one-half'],
           'name' => [
