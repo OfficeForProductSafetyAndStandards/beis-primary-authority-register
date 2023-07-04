@@ -7,7 +7,7 @@ _core:
 id: enquiry
 label: Enquiry
 default_title: null
-default_section_title: 'general enquiry'
+default_section_title: 'General Enquiry'
 description: ''
 save_method: end
 states:
