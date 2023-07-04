@@ -5,6 +5,8 @@ package: PAR
 core_version_requirement: ^8 || ^9 || ^10
 base theme: false
 description: A fully responsive theme utilising the GOV.UK Design System Frontend.
+dependencies:
+  - drupal:govuk_cookies
 
 libraries:
   - govuk_par/framework

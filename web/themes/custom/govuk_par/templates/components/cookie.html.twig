@@ -17,6 +17,8 @@
   {% set type = (cookie_policy|length == 1) and (cookie_policy|first == 'analytics') ? 'analytics' : 'additional' %}
 {% endif %}
 
+{{ attach_library('govuk_cookies/banner') }}
+
 {% if not cookie %}
 <div class="govuk-cookie-banner" role="region" aria-label="{{ title }}">
   <div id="govuk-cookies-alert" class="govuk-cookie-banner__message govuk-width-container">
