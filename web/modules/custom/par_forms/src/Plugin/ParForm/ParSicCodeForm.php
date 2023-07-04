@@ -58,6 +58,7 @@ class ParSicCodeForm extends ParFormPluginBase {
       '#title' => $intro_text,
       '#options' => ['' => ''] + $this->getParDataManager()->getEntitiesAsOptions($sic_codes),
       '#default_value' => $this->getDefaultValuesByKey('sic_code', $cardinality, NULL),
+      '#required' => TRUE,
     ];
 
     return $form;

@@ -101,6 +101,7 @@ class ParAddressForm extends ParFormPluginBase {
       '#options' => $this->getCountryRepository()->getList(NULL),
       '#title' => $this->t('Country'),
       '#default_value' => $this->getDefaultValuesByKey('country_code', $cardinality, 'GB'),
+      '#required' => TRUE,
     ];
 
     $form['nation'] = [
