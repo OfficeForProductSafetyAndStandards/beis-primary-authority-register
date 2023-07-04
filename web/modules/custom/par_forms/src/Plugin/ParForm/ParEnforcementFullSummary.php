@@ -275,7 +275,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
             '#attributes' => ['class' => ['govuk-heading-m']],
             '#value' => t('Enforced organisation'),
           ],
-          '#attributes' => ['class' => 'column-one-half'],
+          '#attributes' => ['class' => 'govuk-grid-column-one-half'],
           'organisation_name' => [
             '#type' => 'markup',
             '#markup' => $enforced_organisation,
@@ -308,7 +308,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
             '#attributes' => ['class' => ['govuk-heading-m']],
             '#value' => t('Primary authority'),
           ],
-          '#attributes' => ['class' => ['column-one-half', 'authority-officer']],
+          '#attributes' => ['class' => ['govuk-grid-column-one-half', 'authority-officer']],
           'primary_authority_name' => [
             '#type' => 'markup',
             '#markup' => $primary_authority,
@@ -361,7 +361,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
       }
 
       if ($enforcing_authority) {
-        $form['enforcer']['enforcing_authority'] = [
+        $form['partnership']['enforcing_authority'] = [
           '#type' => 'container',
           'heading' => [
             '#type' => 'html_tag',
