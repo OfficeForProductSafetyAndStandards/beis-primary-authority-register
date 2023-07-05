@@ -24,6 +24,8 @@ configuration:
       confirmed_business:
         - confirmed_authority
       confirmed_rd:
+        - awaiting_review
+        - confirmed_authority
         - confirmed_business
   legal_entity_status:
     allowed_values:
