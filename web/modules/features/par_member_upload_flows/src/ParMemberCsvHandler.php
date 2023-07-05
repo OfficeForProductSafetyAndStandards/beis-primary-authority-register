@@ -868,7 +868,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $columns = $this->getColumns(FALSE);
 
     // Use the first row to check that all headings in the csv are supported.
-    $unknown_keys = array_udiff($headings, $this->getColumns(), 'strcasecmp');
+    $unknown_keys = array_filter(array_udiff($headings, $this->getColumns(), 'strcasecmp'));
     $unknown_keys_string = implode(', ', $unknown_keys);
     if (!empty($unknown_keys)) {
       $errors['headers_unknown'] = new ParCsvViolation(
