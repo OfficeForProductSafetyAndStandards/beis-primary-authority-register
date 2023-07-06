@@ -1,6 +1,6 @@
 name: PAR (GOVUK)
 type: theme
-version: v2.0.0
+version: v3.0.1
 package: PAR
 core_version_requirement: ^8 || ^9 || ^10
 base theme: false
