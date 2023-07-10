@@ -891,12 +891,15 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Remove a legal entity to partnership.
    *
-   * @param ParDataLegalEntity $legal_entity
-   *   A PAR Legal Entity to add.
+   * Unlike the other two methods getLegalEntity() and addLegalEntity()
+   * this method acts on ParDataPartnershipLegalEntity instances.
+   *
+   * @param ParDataPartnershipLegalEntity $partnership_legal_entity
+   *   A PAR Legal Entity to remove.
    */
-  public function removeLegalEntity(ParDataLegalEntity $legal_entity) {
-    $partnership_legal_entities = array_filter($this->getPartnershipLegalEntities(), function ($partnership_legal_entity) use ($legal_entity) {
-      return $partnership_legal_entity->getLegalEntity()?->id() === $legal_entity->id();
+  public function removeLegalEntity(ParDataPartnershipLegalEntity $partnership_legal_entity) {
+    $partnership_legal_entities = array_filter($this->getPartnershipLegalEntities(), function ($entity) use ($partnership_legal_entity) {
+      return $entity->id() === $partnership_legal_entity->id();
     });
 
     // Remove the field reference.
@@ -916,6 +919,7 @@ class ParDataPartnership extends ParDataEntity {
       $partnership_legal_entity->delete();
     }
   }
+
 
   /**
    * {@inheritdoc}
