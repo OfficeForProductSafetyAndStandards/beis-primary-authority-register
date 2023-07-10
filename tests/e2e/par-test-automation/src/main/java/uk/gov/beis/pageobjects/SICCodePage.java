@@ -20,12 +20,10 @@ public class SICCodePage extends BasePageObject {
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 
-	String sic = "//li[contains(text(),'?')]";
+	String sic = "//select/option[contains(text(),'?')]";
 
 	public BasePageObject selectSICCode(String code) {
-		driver.findElement(By.xpath("//input[@type='text']")).sendKeys(code);
-		WebElement autocompleteDropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//ul[@role='listbox']")));
-		autocompleteDropdown.findElement(By.xpath(sic.replace("?", code))).click();
+		driver.findElement(By.xpath(sic.replace("?", code))).click();
 		try {
 			driver.findElement(By.id("edit-next")).click();
 			return PageFactory.initElements(driver, EmployeesPage.class);

@@ -33,7 +33,7 @@ public class DeviationReviewPage extends BasePageObject {
 	}
 
 	String desc = "//div/p[contains(text(),'?')]";
-	String status = "//div/p[contains(text(),'?')]";
+	String status = "//fieldset/p[contains(text(),'?')]";
 	String response = "//div/p[contains(text(),'?')]";
 
 
