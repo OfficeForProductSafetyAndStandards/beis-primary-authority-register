@@ -199,6 +199,26 @@ field_settings:
         - field.storage.par_data_partnership.field_inspection_plan
       module:
         - par_data
+  legal_entity_revoked:
+    label: 'Partnership Legal Entity » PAR Partnership Legal Entity » Revoked'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_partnership_legal_entity:entity:revoked'
+    type: boolean
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_partnership_legal_entity
+      module:
+        - par_data
+  legal_entity_status:
+    label: 'Partnership Legal Entity » PAR Partnership Legal Entity » Status'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_partnership_legal_entity:entity:par_status'
+    type: string
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_partnership_legal_entity
+      module:
+        - par_data
   legal_entity_type:
     label: 'Partnership Legal Entity » PAR Partnership Legal Entity » Legal Entity » PAR Legal Entity » Legal Entity Type'
     datasource_id: 'entity:par_data_partnership'

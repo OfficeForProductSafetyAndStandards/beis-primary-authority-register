@@ -461,7 +461,6 @@ public class PARStepDefs {
 			LOG.info("Selecting SIC Code");
 			DataStore.saveValue(UsableValues.SIC_CODE, data.get("SIC Code"));
 			sicCodePage.selectSICCode(data.get("SIC Code"));
-
 			String partnershiptype = DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase();
 			switch (partnershiptype) {
 
