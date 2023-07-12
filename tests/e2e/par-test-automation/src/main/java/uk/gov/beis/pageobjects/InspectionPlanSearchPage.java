@@ -24,10 +24,18 @@ public class InspectionPlanSearchPage extends BasePageObject {
 
 	@FindBy(linkText = "Revoke inspection plan")
 	WebElement revokeBtn;
+	
+	@FindBy(linkText = "Remove inspection plan")
+	WebElement removeBtn;
 
 	public RevokeReasonInspectionPlanPage selectRevokeLink() {
 		revokeBtn.click();
 		return PageFactory.initElements(driver, RevokeReasonInspectionPlanPage.class);
+	}
+	
+	public RemoveReasonInspectionPlanPage selectRemoveLink() {
+		removeBtn.click();
+		return PageFactory.initElements(driver, RemoveReasonInspectionPlanPage.class);
 	}
 
 	public UploadInspectionPlanPage selectUploadLink() {

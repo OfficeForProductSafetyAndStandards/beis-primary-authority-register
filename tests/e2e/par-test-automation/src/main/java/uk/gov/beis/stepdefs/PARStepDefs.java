@@ -89,6 +89,7 @@ import uk.gov.beis.pageobjects.ProposedEnforcementPage;
 import uk.gov.beis.pageobjects.RegulatoryFunctionPage;
 import uk.gov.beis.pageobjects.RemoveEnforcementConfirmationPage;
 import uk.gov.beis.pageobjects.RemoveEnforcementPage;
+import uk.gov.beis.pageobjects.RemoveReasonInspectionPlanPage;
 import uk.gov.beis.pageobjects.ReplyDeviationRequestPage;
 import uk.gov.beis.pageobjects.ReplyEnquiryPage;
 import uk.gov.beis.pageobjects.ReplyInspectionFeedbackPage;
@@ -173,6 +174,7 @@ public class PARStepDefs {
 	private PartnershipTermsPage parPartnershipTermsPage;
 	private PartnershipDescriptionPage parPartnershipDescriptionPage;
 	private BusinessPage parBusinessPage;
+	private RemoveReasonInspectionPlanPage removeReasonInspectionPlanPage;
 	private RevokePartnershipConfirmationPage revokePartnershipConfirmationPage;
 	private PartnershipRevokedPage partnershipRevokedPage;
 	private UserTermsPage userTermsPage;
@@ -221,6 +223,7 @@ public class PARStepDefs {
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver; 
+		removeReasonInspectionPlanPage = PageFactory.initElements(driver, RemoveReasonInspectionPlanPage.class);
 		revokeReasonInspectionPlanPage = PageFactory.initElements(driver, RevokeReasonInspectionPlanPage.class);
 		inspectionPlanReviewPage = PageFactory.initElements(driver, InspectionPlanReviewPage.class);
 		replyEnquiryPage = PageFactory.initElements(driver, ReplyEnquiryPage.class);
@@ -1374,7 +1377,7 @@ public class PARStepDefs {
 		LOG.info("Asserting the Equiry Notice Details.");
 	}
 	
-	@Then("^the user successfully removes the last created inspection plan$")
+	@Then("^the user successfully revokes the last created inspection plan$")
 	public void the_user_successfully_removes_the_last_created_inspection_plan() throws Throwable {
 		LOG.info("Revoking inspection plan and confirming it is revoked");
 		partnershipAdvancedSearchPage.selectPartnershipLink();
@@ -1382,5 +1385,18 @@ public class PARStepDefs {
 		inspectionPlanSearchPage.selectRevokeLink();
 		revokeReasonInspectionPlanPage.enterRevokeDescription();
 		assertEquals(inspectionPlanSearchPage.getPlanStatus(), "Revoked");
+	}
+	
+	@When("^the user revokes the last created inspection plan$")
+	public void the_user_revokes_the_last_created_inspection_plan() throws Throwable {
+		LOG.info("Removing inspection plan");
+		inspectionPlanSearchPage.selectRemoveLink();
+		removeReasonInspectionPlanPage.enterRemoveDescription();
+	}
+
+	@Then("^the inspection plan is successfully removed$")
+	public void the_inspection_plan_is_successfully_removed() throws Throwable {
+		LOG.info("Confirm inspection plan is removed");
+		assertEquals(inspectionPlanSearchPage.getPlanStatus(), "No results returned");
 	}
 }
