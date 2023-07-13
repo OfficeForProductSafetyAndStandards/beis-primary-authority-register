@@ -163,6 +163,19 @@ Feature:
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created deviation request
     Then the deviation reply received successfully
+    
+  @regression @inspectionplan
+  Scenario: Verify Revocation and Removal of Inspection Plan (Happy Path - PAR-1866, PAR-1867)
+   Given the user is on the PAR login page
+   And the user logs in with the "par_helpdesk@example.com" user credentials
+   When the user searches for the last created partnership
+   Then the user successfully revokes the last created inspection plan
+   
+   #remove the inspection plan
+   When the user revokes the last created inspection plan
+   Then the inspection plan is successfully removed
+   
+   
 
   @regression @enquiry
   Scenario: Verify User can Submit a general enquiry (Happy Path - PAR-1861)
