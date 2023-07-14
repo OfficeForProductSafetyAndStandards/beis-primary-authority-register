@@ -191,9 +191,6 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
     $current_date = new DrupalDateTime();
     $this->setEndDate($current_date);
 
-    // Ensure the approved date is re-set.
-    $this->setStartDate(NULL);
-
     return parent::revoke($save, $reason);
   }
 
@@ -214,61 +211,141 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
     // Unset the revocation date.
     $this->setEndDate(NULL);
 
-    $restored = parent::unrevoke(FALSE);
+    return parent::unrevoke(FALSE);
+  }
 
-    // Re-nominate if the original status was nominated.
-    $this->nominate(FALSE);
+  /**
+   * Check whether the legal entity can be removed from a partnership.
+   *
+   * Partnership Legal Entities can be removed if any of these are true:
+   *  - they are not attached to a partnership
+   *  - the partnership they are attached to is awaiting approval
+   *  - the legal entity is pending
+   *  - they were added within the last 24 hours
+   *  - it is not the last legal entity on the partnership
+   *
+   * @return bool
+   *   TRUE if the legal entity can be removed.
+   */
+  public function isDeletable() {
+    $partnership = $this->getPartnership();
+    // Get the current date.
+    $request_time = \Drupal::time()->getRequestTime();
+    $now = DrupalDateTime::createFromTimestamp($request_time);
 
-    // Only save the changes if the legal entity was changed.
-    if ($restored) {
-      return !$save || $this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW;
-    }
+    // Rule 1: Is not attached to a revoked partnership
+    $no_revoked_partnership = !$partnership ||
+      !$partnership->isRevoked();
+
+    // Rule 2: It was not approved in the last day.
+    $inactive_or_recently_approved = !$this->isActive() ||
+      $this->getStartDate() > $now->modify('-1 day');
+
+    // Rule 3: There is at least one other legal entity on this partnership,
+    // if the partnership is not active the legal entities don't have to be.
+    $legal_entity_count = $partnership?->getPartnershipLegalEntities($partnership->isActive()) ?? 0;
+    $not_last_legal_entity = count($legal_entity_count) > 1;
+
+    return parent::isDeletable() &&
+      $no_revoked_partnership &&
+      $inactive_or_recently_approved &&
+      $not_last_legal_entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isRevocable() {
+    $partnership = $this->getPartnership();
+
+    // Rule 1: Check if the partnership is active.
+    $partnership_is_active = $partnership &&
+      $partnership->isActive();
+
+    // Rule 2: Check if the legal entity is active.
+    $is_active = $this->isActive();
+
+    // Rule 3: There is at least one other active legal entity on this partnership.
+    $legal_entity_count = $partnership?->getPartnershipLegalEntities($partnership->isActive()) ?? 0;
+    $not_last_legal_entity = count($legal_entity_count) > 1;
+
+    // Only some PAR entities can be deleted.
+    return parent::isRevocable() &&
+      $partnership_is_active &&
+      $is_active &&
+      $not_last_legal_entity;
+  }
+
+  /**
+   * Check whether this partnership legal entity can be reinstated.
+   *
+   * A partnership legal entity can be reinstated if ALL of these are true:
+   *  - It has been revoked
+   *  - There is not already existent another active partnership legal entity for the same legal entity.
+   *
+   * @return bool
+   *   TRUE if the legal entity can be reinstated.
+   */
+  public function isRestorable() {
+    $partnership = $this->getPartnership();
+    // Get the current date.
+    $request_time = \Drupal::time()->getRequestTime();
+    $now = DrupalDateTime::createFromTimestamp($request_time);
+
+    // Rule 1: There is an active partnership.
+    $active_partnership = $partnership &&
+      $partnership->isActive();
+
+    // Rule 2: The same legal entity is not active on the partnership.
+    $active_legal_entities = (array) $this->getPartnership()?->getLegalEntity();
+    $id = $this->id();
+    $similar_legal_entity = array_filter($active_legal_entities, function ($legal_entity) use ($id) {
+      return $legal_entity->id() == $id;
+    });
+
+    // Rule 3: The legal entity was revoked less than 1 day ago.
+    $recently_revoked = $this->getEndDate() > $now->modify('-1 day');
+
+    return parent::isRestorable() &&
+      $active_partnership &&
+      empty($similar_legal_entity) &&
+      $recently_revoked;
   }
 
   /**
    * {@inheritdoc}
    */
   public function isActive() {
-    // Whether an entity is complete and can be acted upon as a finished, live.
+    return parent::isActive() &&
+      $this->getStartDate() &&
+      !$this->isPending();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isPending() {
     $awaiting_statuses = [
       $this->getTypeEntity()->getDefaultStatus(),
       'confirmed_authority',
       'confirmed_business'
     ];
 
-    if (in_array($this->getRawStatus(), $awaiting_statuses)) {
-      return FALSE;
-    }
-
-    // If there is no start date.
-    if (!$this->getStartDate()) {
-      return FALSE;
-    }
-
-    return parent::isActive();
+    return in_array($this->getRawStatus(), $awaiting_statuses);
   }
 
   /**
    * {@inheritdoc}
    */
   public function inProgress() {
-    // Freeze partnerships that are awaiting approval.
-    $awaiting_statuses = [
-      $this->getTypeEntity()->getDefaultStatus(),
-      'confirmed_authority',
-      'confirmed_business'
-    ];
+    return $this->isPending();
+  }
 
-    if (in_array($this->getRawStatus(), $awaiting_statuses)) {
-      return TRUE;
-    }
-
-    // If there is no start date.
-    if (!$this->getStartDate()) {
-      return TRUE;
-    }
-
-    return parent::inProgress();
+  /**
+   * {@inheritdoc}
+   */
+  public function isRevoked() {
+    return $this->getPartnership()?->isRevoked() || parent::isRevoked();
   }
 
   /**
@@ -336,7 +413,6 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * @return ?DrupalDateTime
    */
   public function getStartDate(): ?DrupalDateTime {
-
     return $this->getRawStartDate() ?? $this->getPartnership()?->getApprovedDate();
   }
 
@@ -387,74 +463,6 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    */
   public function setEndDate(DrupalDateTime $date = NULL) {
     $this->set('date_legal_entity_revoked', $date?->format('Y-m-d'));
-  }
-
-  /**
-   * Check whether the legal entity can be removed.
-   *
-   * Partnership Legal Entities can be removed if any of these are true:
-   *  - they are not attached to a partnership
-   *  - the partnership they are attached to is not active
-   *  - they were added within the last 24 hours
-   *
-   * @return bool
-   *   TRUE if the legal entity can be removed.
-   */
-  public function isRemovable() {
-    $partnership = $this->getPartnership();
-
-    // If there's no partnership, or the partnership is not active.
-    if (!$partnership || !$partnership->isActive()) {
-      return TRUE;
-    }
-
-    // If the legal entity is pending.
-    if ($this->inProgress()) {
-      return TRUE;
-    }
-
-    $request_time = \Drupal::time()->getRequestTime();
-    $now = DrupalDateTime::createFromTimestamp($request_time);
-    // If there's no start date, or the start date is less than 1 day ago.
-    if ($this->getStartDate() > $now->modify('-1 day')) {
-      return TRUE;
-    }
-
-    return FALSE;
-  }
-
-  /**
-   * Check whether this partnership legal entity can be reinstated.
-   *
-   * A partnership legal entity can be reinstated if ALL of these are true:
-   *  - It has been revoked
-   *  - There is not already existent another active partnership legal entity for the same legal entity.
-   *
-   * @return bool
-   *   TRUE if the legal entity can be reinstated.
-   */
-  public function isReinstatable() {
-    // If the legal entity isn't revoked.
-    if (!$this->isRevoked() || !$this->getEndDate()) {
-      return FALSE;
-    }
-
-    // If this legal entity was revoked more than 1 day ago.
-    $request_time = \Drupal::time()->getRequestTime();
-    $now = DrupalDateTime::createFromTimestamp($request_time);
-    // If there's no start date, or the start date is less than 1 day ago.
-    if ($this->getEndDate() < $now->modify('-1 day')) {
-      return FALSE;
-    }
-
-    // If this legal entity id is already active on the partnership.
-    foreach ($this->getPartnership()->getPartnershipLegalEntities(TRUE) as $active_partnership_le) {
-      if ($this->getLegalEntity()->id() == $active_partnership_le->getLegalEntity()->id()) {
-        return FALSE;
-      }
-    }
-
-    return TRUE;
   }
 
   /**

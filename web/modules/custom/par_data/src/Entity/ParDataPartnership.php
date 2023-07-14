@@ -156,7 +156,12 @@ class ParDataPartnership extends ParDataEntity {
     if ($completed) {
       // Nominate all the partnership legal entities after the partnership is saved.
       foreach ($this->getPartnershipLegalEntities() as $legal_entity) {
-        $legal_entity->nominate($save);
+        try {
+          $legal_entity->nominate($save);
+        }
+        catch (ParDataException $ignore) {
+
+        }
       }
     }
 
@@ -189,20 +194,8 @@ class ParDataPartnership extends ParDataEntity {
     $current_date = new DrupalDateTime();
     $this->setRevocationDate($current_date);
 
-    // Ensure the approved date is re-set.
-    $this->setApprovedDate(NULL);
-
     // Save the changes.
-    $completed = parent::revoke($save, $reason);
-
-    if ($completed) {
-      // Revoke all the partnership legal entities after the partnership is saved.
-      foreach ($this->getPartnershipLegalEntities() as $legal_entity) {
-        $legal_entity->nominate($save);
-      }
-    }
-
-    return $completed;
+    return parent::revoke($save, $reason);
   }
 
   /**
@@ -225,63 +218,99 @@ class ParDataPartnership extends ParDataEntity {
       $advice->unrevoke($save);
     }
 
-    // Restore the partnership.
-    $restored = parent::unrevoke(FALSE);
-
     // Set the revocation date.
     $this->setRevocationDate(NULL);
 
-    // Re-nominate if the original status was nominated.
-    $this->nominate(FALSE);
+    return parent::unrevoke($save);
+  }
 
-    // Only save the changes if the partnership was changed.
-    if ($restored) {
-      $completed = !$save || $this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW;
+  /**
+   * {@inheritdoc}
+   */
+  public function isDeletable() {
+    // Get the current date.
+    $request_time = \Drupal::time()->getRequestTime();
+    $now = DrupalDateTime::createFromTimestamp($request_time);
 
-      if ($completed) {
-        // Unrevoke all the partnership legal entities after the partnership is saved.
-        foreach ($this->getPartnershipLegalEntities() as $legal_entity) {
-          $legal_entity->nominate($save);
-        }
-      }
+    // Rule 1: Check if the partnership isn't active or was approved in the last day.
+    $inactive_or_recently_approved = $this->isPending() ||
+      $this->getApprovedDate() > $now->modify('-1 day');
 
-      return $completed;
-    }
+    // Rule 2: Check there are no pending enforcement notices on this partnership.
+    $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
+    $enforcement_notices = array_filter($enforcement_notices, function ($relationship) {
+      return $relationship->getEntity()->inProgress();
+    });
+    $no_pending_enforcements = empty($enforcement_notices);
+
+    // Only some PAR entities can be deleted.
+    return parent::isDeletable() &&
+      $inactive_or_recently_approved &&
+      $no_pending_enforcements;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isRevocable() {
+    // Rule 1: Check if the partnership is active.
+    $is_active = $this->isActive();
+
+    // Rule 2: Check there are no pending enforcement notices on this partnership.
+    $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
+    $enforcement_notices = array_filter($enforcement_notices, function ($relationship) {
+      return $relationship->getEntity()->inProgress();
+    });
+    $no_pending_enforcements = empty($enforcement_notices);
+
+    // Only some PAR entities can be deleted.
+    return parent::isRevocable() &&
+      $is_active &&
+      $no_pending_enforcements;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isRestorable() {
+    // Get the current date.
+    $request_time = \Drupal::time()->getRequestTime();
+    $now = DrupalDateTime::createFromTimestamp($request_time);
+
+    // Rule 1: Check if the partnership was revoked in the last day.
+    $recently_revoked = $this->getRevocationDate() &&
+      $this->getRevocationDate() > $now->modify('-1 day');
+
+    // Only some PAR entities can be deleted.
+    return parent::isRestorable() &&
+      $recently_revoked;
   }
 
   /**
    * {@inheritdoc}
    */
   public function isActive() {
-    // Whether an entity is complete and can be acted upon as a finished, live.
+    return parent::isActive() &&
+      !$this->isPending();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isPending() {
     $awaiting_statuses = [
       $this->getTypeEntity()->getDefaultStatus(),
       'confirmed_authority',
       'confirmed_business'
     ];
 
-    if (in_array($this->getRawStatus(), $awaiting_statuses)) {
-      return FALSE;
-    }
-
-    return parent::isActive();
+    return in_array($this->getRawStatus(), $awaiting_statuses);
   }
 
   /**
    * {@inheritdoc}
    */
   public function inProgress() {
-    // Freeze partnerships that are awaiting approval.
-    $awaiting_statuses = [
-      $this->getTypeEntity()->getDefaultStatus(),
-      'confirmed_authority',
-      'confirmed_business'
-    ];
-
-    if (in_array($this->getRawStatus(), $awaiting_statuses)) {
-      return TRUE;
-    }
-
     // Freeze partnerships that have un approved enforcement notices
     $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
     foreach ($enforcement_notices as $uuid => $relationship) {
@@ -290,7 +319,8 @@ class ParDataPartnership extends ParDataEntity {
       }
     }
 
-    return parent::inProgress();
+    // Freeze partnerships that are awaiting approval.
+    return $this->isPending();
   }
 
   /**
@@ -891,12 +921,15 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Remove a legal entity to partnership.
    *
-   * @param ParDataLegalEntity $legal_entity
-   *   A PAR Legal Entity to add.
+   * Unlike the other two methods getLegalEntity() and addLegalEntity()
+   * this method acts on ParDataPartnershipLegalEntity instances.
+   *
+   * @param ParDataPartnershipLegalEntity $partnership_legal_entity
+   *   A PAR Legal Entity to remove.
    */
-  public function removeLegalEntity(ParDataLegalEntity $legal_entity) {
-    $partnership_legal_entities = array_filter($this->getPartnershipLegalEntities(), function ($partnership_legal_entity) use ($legal_entity) {
-      return $partnership_legal_entity->getLegalEntity()?->id() === $legal_entity->id();
+  public function removeLegalEntity(ParDataPartnershipLegalEntity $partnership_legal_entity) {
+    $partnership_legal_entities = array_filter($this->getPartnershipLegalEntities(), function ($entity) use ($partnership_legal_entity) {
+      return $entity->id() === $partnership_legal_entity->id();
     });
 
     // Remove the field reference.
@@ -916,6 +949,7 @@ class ParDataPartnership extends ParDataEntity {
       $partnership_legal_entity->delete();
     }
   }
+
 
   /**
    * {@inheritdoc}
