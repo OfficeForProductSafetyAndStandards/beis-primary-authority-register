@@ -234,7 +234,6 @@ class ParDataPartnership extends ParDataEntity {
 
     // Rule 1: Check if the partnership isn't active or was approved in the last day.
     $inactive_or_recently_approved = $this->isPending() ||
-      !$this->getApprovedDate() ||
       $this->getApprovedDate() > $now->modify('-1 day');
 
     // Rule 2: Check there are no pending enforcement notices on this partnership.

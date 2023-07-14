@@ -238,7 +238,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
       !$partnership->isRevoked();
 
     // Rule 2: It was not approved in the last day.
-    $inactive_or_recently_approved = $this->isPending() ||
+    $inactive_or_recently_approved = !$this->isActive() ||
       $this->getStartDate() > $now->modify('-1 day');
 
     // Rule 3: There is at least one other legal entity on this partnership,
@@ -304,8 +304,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
     });
 
     // Rule 3: The legal entity was revoked less than 1 day ago.
-    $recently_revoked = !$this->getEndDate() &&
-      $this->getEndDate() > $now->modify('-1 day');
+    $recently_revoked = $this->getEndDate() > $now->modify('-1 day');
 
     return parent::isRestorable() &&
       $active_partnership &&
