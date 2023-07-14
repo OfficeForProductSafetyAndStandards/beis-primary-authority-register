@@ -60,15 +60,11 @@ class ParPartnershipFlowsLegalEntityRemoveForm extends ParBaseForm {
     }
 
     // Prohibit deletion if partnership is active and the legal entity was added more than 24 hours ago.
-    if (!$par_data_partnership_le->isRemovable()) {
+    if (!$par_data_partnership_le->isDeletable()) {
       $this->accessResult = AccessResult::forbidden('The Legal entity can not be removed from the partnership.');
     }
-
-    // Prohibit removing of the last legal entity.
-    if (count($par_data_partnership->getPartnershipLegalEntities(TRUE)) <= 1) {
-      $this->accessResult = AccessResult::forbidden('The last legal entity can\'t be removed.');
-    }
-
+  /**/
+/**/
     return parent::accessCallback($route, $route_match, $account);
   }
 

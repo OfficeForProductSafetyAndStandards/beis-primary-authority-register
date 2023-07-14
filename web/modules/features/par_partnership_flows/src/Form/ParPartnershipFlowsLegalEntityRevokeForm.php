@@ -61,18 +61,13 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
     }
 
     // Partnership legal entities that are removable shouldn't provide the option to revoke..
-    if ($par_data_partnership_le->isRemovable()) {
+    if ($par_data_partnership_le->isDeletable()) {
       $this->accessResult = AccessResult::forbidden('This legal entity can be removed instead of revoked.');
     }
 
     // Partnership legal entities that are already revoked cannot be revoked again.
     if ($par_data_partnership_le->isRevoked()) {
       $this->accessResult = AccessResult::forbidden('This legal entity has already been revoked.');
-    }
-
-    // Prohibit revoking of the last legal entity.
-    if (count($par_data_partnership->getPartnershipLegalEntities(TRUE)) <= 1) {
-      $this->accessResult = AccessResult::forbidden('The last legal entity can\'t be revoked.');
     }
 
     return parent::accessCallback($route, $route_match, $account);

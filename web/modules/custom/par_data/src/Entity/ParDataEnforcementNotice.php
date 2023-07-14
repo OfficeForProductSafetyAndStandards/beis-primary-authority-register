@@ -202,7 +202,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
     foreach ($par_data_partnerships as $partnership) {
       $authority = $partnership->getAuthority(TRUE);
 
-      if ($partnership->isLiving() && $authority->isLiving() && $authority->id() != $primary_authority->id()) {
+      if ($authority?->id() != $primary_authority->id()) {
         $authorities[$authority->id()] = $authority->label();
       }
     }
@@ -261,9 +261,6 @@ class ParDataEnforcementNotice extends ParDataEntity {
     }
     if ($this->isArchived()) {
       return 'archived';
-    }
-    if (!$this->isTransitioned()) {
-      return 'n/a';
     }
 
     // Loop through all actions to determine status.
