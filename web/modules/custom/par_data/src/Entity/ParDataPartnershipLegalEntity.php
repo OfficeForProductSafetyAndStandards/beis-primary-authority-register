@@ -243,7 +243,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
 
     // Rule 3: There is at least one other legal entity on this partnership,
     // if the partnership is not active the legal entities don't have to be.
-    $legal_entity_count = $partnership?->getPartnershipLegalEntities($partnership->isActive()) ?? 0;
+    $legal_entity_count = $partnership?->getPartnershipLegalEntities($partnership->isActive()) ?? [];
     $not_last_legal_entity = count($legal_entity_count) > 1;
 
     return parent::isDeletable() &&
@@ -266,7 +266,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
     $is_active = $this->isActive();
 
     // Rule 3: There is at least one other active legal entity on this partnership.
-    $legal_entity_count = $partnership?->getPartnershipLegalEntities($partnership->isActive()) ?? 0;
+    $legal_entity_count = $partnership?->getPartnershipLegalEntities($partnership->isActive()) ?? [];
     $not_last_legal_entity = count($legal_entity_count) > 1;
 
     // Only some PAR entities can be deleted.
