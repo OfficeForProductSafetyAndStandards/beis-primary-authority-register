@@ -124,7 +124,7 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // Check the partnership can be revoked before progressing.
-    if (!$par_data_partnership->isRevocable()) {
+    if ($par_data_partnership->isRevocable()) {
       $revoked = $par_data_partnership->revoke(TRUE, $this->getFlowDataHandler()->getTempDataValue('revocation_reason'));
 
       if ($revoked) {
