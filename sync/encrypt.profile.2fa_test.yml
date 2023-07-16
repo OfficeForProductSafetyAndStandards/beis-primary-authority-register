@@ -1,0 +1,13 @@
+uuid: 51f8680f-4ae0-44c6-bcff-3999957c2e9a
+langcode: en
+status: true
+dependencies:
+  config:
+    - key.key.2fa_test_key
+  module:
+    - real_aes
+id: 2fa_test
+label: '2fa Test'
+encryption_method: real_aes
+encryption_method_configuration: {  }
+encryption_key: 2fa_test_key
