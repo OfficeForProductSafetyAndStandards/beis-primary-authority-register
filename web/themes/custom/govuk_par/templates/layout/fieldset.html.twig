@@ -39,9 +39,8 @@
 
 {%
   set legend_header_classes = [
-    'heading-medium',
+    'govuk-heading-m',
     'fieldset-legend',
-    'govuk-fieldset__heading',
     required ? 'js-form-required',
     required ? 'form-required',
   ]
@@ -61,7 +60,7 @@
 
     {% if legend.title or description.content %}
     <legend{{ legend.attributes.addClass('govuk-fieldset__legend govuk-fieldset__legend--xl') }}>
-      {% if legend.title %}<h1{{ legend_span.attributes.addClass(legend_header_classes) }}>{{ legend.title }}</h1>{% endif %}
+      {% if legend.title %}<h2{{ legend_span.attributes.addClass(legend_header_classes) }}>{{ legend.title }}</h2>{% endif %}
       {% if description.content %}
         <span{{ description.attributes.addClass('form-hint govuk-hint') }}>{{ description.content }}</span>
       {% endif %}

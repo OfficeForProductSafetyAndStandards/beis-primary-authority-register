@@ -117,7 +117,7 @@ class ParReportingController extends ControllerBase {
         '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => t('Organisations in a partnership'),
       ],
-      '#attributes' => ['class' => ['govuk-grid--row', 'form-group']],
+      '#attributes' => ['class' => ['govuk-grid-row', 'form-group']],
     ];
     $build['businesses_in_partnership']['total'] = [
       '#lazy_builder' => ['par_reporting.manager:render', ['total_unique_businesses']],
@@ -181,7 +181,7 @@ class ParReportingController extends ControllerBase {
         '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => t('Notifications'),
       ],
-      '#attributes' => ['class' => ['govuk-grid--row', 'form-group']],
+      '#attributes' => ['class' => ['govuk-grid-row', 'form-group']],
     ];
     $build['messages']['enforcements'] = [
       '#lazy_builder' => ['par_reporting.manager:render', ['total_enforcement_notices']],
