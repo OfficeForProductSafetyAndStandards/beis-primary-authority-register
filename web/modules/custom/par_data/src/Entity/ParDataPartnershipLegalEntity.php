@@ -349,6 +349,26 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   }
 
   /**
+   * Override the default status time.
+   *
+   * {@inheritdoc}
+   */
+  public function getStatusTime($status) {
+    switch ($status) {
+      case 'confirmed_rd':
+        $status_time = $this->getStartDate()?->getTimestamp();
+        return $status_time ?? parent::getStatusTime($status);
+
+      case self::REVOKE_FIELD:
+        $status_time = $this->getEndDate()?->getTimestamp();
+        return $status_time ?? parent::getStatusTime($status);
+
+      default:
+        return parent::getStatusTime($status);
+    }
+  }
+
+  /**
    * Get the partnership for this partnership legal entity.
    *
    * @return ?ParDataPartnership

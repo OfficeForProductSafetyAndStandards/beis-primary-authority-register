@@ -324,6 +324,26 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * Override the default status time.
+   *
+   * {@inheritdoc}
+   */
+  public function getStatusTime($status) {
+    switch ($status) {
+      case 'confirmed_rd':
+        $status_time = $this->getApprovedDateField()?->getTimestamp();
+        return $status_time ?? parent::getStatusTime($status);
+
+      case self::REVOKE_FIELD:
+        $status_time = $this->getRevocationDateField()?->getTimestamp();
+        return $status_time ?? parent::getStatusTime($status);
+
+      default:
+        return parent::getStatusTime($status);
+    }
+  }
+
+  /**
    * Generate filename.
    */
   public function membershipLockKey() {
@@ -608,8 +628,8 @@ class ParDataPartnership extends ParDataEntity {
    */
   public function getApprovedDate(): ?DrupalDateTime {
     // Get the approval date.
-    if (!$this->get('approved_date')->isEmpty()) {
-      return $this->approved_date?->date;
+    if ($date = $this->getApprovedDateField()) {
+      return $date;
     }
     // Or look it up using the entity's revisions logs.
     else if ($timestamp = $this->getStatusTime('confirmed_rd')) {
@@ -617,6 +637,12 @@ class ParDataPartnership extends ParDataEntity {
     }
 
     return NULL;
+  }
+
+  private function getApprovedDateField(): ?DrupalDateTime {
+    return $this->hasField('approved_date') && !$this->get('approved_date')->isEmpty() ?
+      $this->approved_date?->date :
+      NULL;
   }
 
   /**
@@ -637,8 +663,8 @@ class ParDataPartnership extends ParDataEntity {
    */
   public function getRevocationDate(): ?DrupalDateTime {
     // Get the revocation date.
-    if (!$this->get('revocation_date')->isEmpty()) {
-      return $this->revocation_date?->date;
+    if ($date = $this->getRevocationDateField()) {
+      return $date;
     }
     // Or look it up using the entity's revisions logs.
     else if ($timestamp = $this->getStatusTime(ParDataEntity::REVOKE_FIELD)) {
@@ -646,6 +672,12 @@ class ParDataPartnership extends ParDataEntity {
     }
 
     return NULL;
+  }
+
+  private function getRevocationDateField(): ?DrupalDateTime {
+    return $this->hasField('revocation_date') && !$this->get('revocation_date')->isEmpty() ?
+      $this->approved_date?->date :
+      NULL;
   }
 
   /**
