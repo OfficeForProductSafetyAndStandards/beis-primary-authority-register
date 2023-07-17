@@ -78,7 +78,7 @@ class ParConfirmListDetailsForm extends ParBaseForm {
         '#type' => 'html_tag',
         '#tag' => 'h3',
         '#value' => $this->t('Number of members'),
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
       ],
       'value' => [
         '#type' => 'html_tag',
@@ -127,7 +127,7 @@ class ParConfirmListDetailsForm extends ParBaseForm {
           '#type' => 'html_tag',
           '#tag' => 'h3',
           '#value' => $this->t('Member link'),
-          '#attributes' => ['class' => ['heading-medium']],
+          '#attributes' => ['class' => ['govuk-heading-m']],
         ],
         'value' => [
           '#type' => 'html_tag',

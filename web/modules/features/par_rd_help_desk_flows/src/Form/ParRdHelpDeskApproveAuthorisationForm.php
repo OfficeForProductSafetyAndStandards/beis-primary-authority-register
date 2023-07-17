@@ -83,7 +83,7 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Partnership between'),
       ],
       '#attributes' => ['class' => 'form-group'],

@@ -99,7 +99,7 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
       '#attributes' => [
         'class' => ['form-group'],
       ],
-      '#title' => '<h3 class="heading-medium">' . $this->t('Inspection plan title')  . '</h3>',
+      '#title' => '<h3 class="govuk-heading-m">' . $this->t('Inspection plan title')  . '</h3>',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('title'),
     ];
 
@@ -109,7 +109,7 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
       '#attributes' => [
         'class' => ['form-group'],
       ],
-      '#title' => '<h3 class="heading-medium">' . $this->t('Provide summarised details of this inspection plan') . '</h3>',
+      '#title' => '<h3 class="govuk-heading-m">' . $this->t('Provide summarised details of this inspection plan') . '</h3>',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('summary'),
       '#description' => '<p>Use this section to give a brief overview of the inspection plan document, include any information you feel may be useful to someone to search for this inspection plan.</p>',
     ];

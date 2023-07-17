@@ -60,7 +60,7 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('What is a legal entity?'),
       ],
       'text' => [

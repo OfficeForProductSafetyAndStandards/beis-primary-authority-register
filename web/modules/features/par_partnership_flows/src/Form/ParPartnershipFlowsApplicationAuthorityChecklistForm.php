@@ -55,7 +55,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
       $form['section_one']['header'] = [
         '#type' => 'markup',
         '#markup' => $this->t('Please confirm the following'),
-        '#prefix' => '<h3 class="heading-medium">',
+        '#prefix' => '<h3 class="govuk-heading-m">',
         '#suffix' => '</h3>',
       ];
 
@@ -140,7 +140,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
       $form['section_one']['header'] = [
         '#type' => 'markup',
         '#markup' => $this->t('Please confirm the following'),
-        '#prefix' => '<h3 class="heading-medium">',
+        '#prefix' => '<h3 class="govuk-heading-m">',
         '#suffix' => '</h3>',
       ];
 

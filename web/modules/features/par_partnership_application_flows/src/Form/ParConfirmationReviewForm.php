@@ -80,7 +80,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
             '#type' => 'html_tag',
             '#tag' => 'h2',
             '#value' => $this->t('Organisation name'),
-            '#attributes' => ['class' => 'heading-medium'],
+            '#attributes' => ['class' => 'govuk-heading-m'],
           ],
           'name' => [
             '#type' => 'markup',
@@ -121,7 +121,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
             '#type' => 'html_tag',
             '#tag' => 'h2',
             '#value' => $this->t('Primary authority name'),
-            '#attributes' => ['class' => 'heading-medium'],
+            '#attributes' => ['class' => 'govuk-heading-m'],
           ],
           'name' => [
             '#type' => 'markup',

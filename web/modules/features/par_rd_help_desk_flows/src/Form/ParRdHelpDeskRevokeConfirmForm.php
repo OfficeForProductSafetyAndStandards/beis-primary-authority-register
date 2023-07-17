@@ -89,7 +89,7 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Revoke the partnership'),
       ],
       '#attributes' => ['class' => 'form-group'],
