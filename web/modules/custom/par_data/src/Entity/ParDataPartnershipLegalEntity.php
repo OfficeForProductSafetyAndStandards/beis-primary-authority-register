@@ -211,7 +211,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
     // Unset the revocation date.
     $this->setEndDate(NULL);
 
-    return parent::unrevoke(FALSE);
+    return parent::unrevoke($save);
   }
 
   /**

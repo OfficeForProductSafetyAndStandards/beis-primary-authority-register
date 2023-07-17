@@ -90,7 +90,7 @@
         "drupal/twig_field_value": "~2.0.0",
         "drupal/twig_tweak": "~3.1.0",
         "drupal/ultimate_cron": "~2.0.0",
-        "drupal/upgrade_status": "^3.14.0",
+        "drupal/upgrade_status": "^4.0.0",
         "drupal/vbo_export": "~4.1.0",
         "drupal/views_bulk_operations": "~4.2.0",
         "drupal/views_contextual_filters_or": "~1.2.0",
