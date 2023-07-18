@@ -41,7 +41,7 @@ Feature: Helpdesk approve partnership
 
         # GO BACK TO HELPDESK
 
-    @ci-ignore @directpartnership @iostest
+    @ci @directpartnership @iostest
     Scenario: Helpdesk revoke partnership
 
         # REVOKE DIRECT PARTNERSHIP

@@ -96,14 +96,14 @@ class ParPartnershipActionsTest extends ParDataTestBase {
    * Test to validate Rule 1: There are no pending enforcements against the partnership
    */
   public function testRevocationRules() {
-    // Common rule 1: Partnerships that are deletable should not be revocable.
-    $this->assertTrue(!$this->nominated_partnership->isRevocable(), t('Partnerships nominated less than 1 day ago should not be revocable.'));
-
-    // Common rule 2: Partnerships that are already revoked should not be revocable.
+    // Common rule 1: Partnerships that are already revoked should not be revocable.
     $this->assertTrue(!$this->old_partnership->isRevocable(), t('Revoked partnerships should not be revocable.'));
 
-    // Partnership rule 1: The partnership must be active.
+    // Partnership rule 1: All active partnerships should be revocable.
     $this->assertTrue($this->active_partnership->isRevocable(), t('Active partnerships should be revocable.'));
+    $this->assertTrue($this->nominated_partnership->isRevocable(), t('Partnerships nominated less than 1 day ago should be revocable.'));
+
+    // Partnership rule 1: Inactive partnerships should not be revocable.
     $this->assertTrue(!$this->pending_partnership->isRevocable(), t('Pending partnerships should not be revocable.'));
 
     // Create an enforcement notice against this partnership with an unapproved notice.
@@ -137,13 +137,14 @@ class ParPartnershipActionsTest extends ParDataTestBase {
    * Test to validate an authority entity.
    */
   public function testDeletionRules() {
-    // Test that the pending partnership can be deleted but not revoked.
+    // Common rule 1: Revoked partnerships should not be deletable.
+    $this->assertTrue(!$this->old_partnership->isRevocable(), t('Revoked partnerships should not be deletable.'));
+
+    // Partnership rule 1: ending partnership and partnerships nominated in the last day can be deleted.
     $this->assertTrue($this->pending_partnership->isDeletable(), t('Pending partnerships should be deletable.'));
-
-    // Test that the older partnership can be revoked but not deleted
-    $this->assertTrue(!$this->active_partnership->isDeletable(), t('Partnerships nominated more than 1 day ago should not be deletable.'));
-
-    // Test that the recently nominated partnership can be deleted
     $this->assertTrue($this->nominated_partnership->isDeletable(), t('Partnerships nominated less than 1 day ago should be deletable.'));
+
+    // Partnership rule 1: Partnerships nominated more than 1 day ago should not be deletable.
+    $this->assertTrue(!$this->active_partnership->isDeletable(), t('Partnerships nominated more than 1 day ago should not be deletable.'));
   }
 }

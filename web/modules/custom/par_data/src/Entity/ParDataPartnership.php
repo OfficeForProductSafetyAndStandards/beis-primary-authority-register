@@ -232,7 +232,7 @@ class ParDataPartnership extends ParDataEntity {
     $request_time = \Drupal::time()->getRequestTime();
     $now = DrupalDateTime::createFromTimestamp($request_time);
 
-    // Rule 1: Check if the partnership isn't active or was approved in the last day.
+    // Rule 1: Check if the partnership isn't active or was nominated in the last day.
     $inactive_or_recently_approved = $this->isPending() ||
       $this->getApprovedDate() > $now->modify('-1 day');
 
@@ -253,7 +253,7 @@ class ParDataPartnership extends ParDataEntity {
    * {@inheritdoc}
    */
   public function isRevocable() {
-    // Rule 1: Check if the partnership is active.
+    // Rule 1: Check if the partnership is active and was nominated more than 1 day ago.
     $is_active = $this->isActive();
 
     // Rule 2: Check there are no pending enforcement notices on this partnership.

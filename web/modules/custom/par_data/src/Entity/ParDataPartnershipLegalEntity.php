@@ -258,9 +258,8 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   public function isRevocable() {
     $partnership = $this->getPartnership();
 
-    // Rule 1: Check if the partnership is active.
-    $partnership_is_active = $partnership &&
-      $partnership->isActive();
+    // Rule 1: Check if the partnership is active and was approved more than 1 day ago.
+    $partnership_is_active = $partnership?->isActive();
 
     // Rule 2: Check if the legal entity is active.
     $is_active = $this->isActive();

@@ -219,8 +219,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function isRevocable() {
     // Only some PAR entities can be revoked.
     return $this->getTypeEntity()->isRevokable() &&
-      !$this->isRevoked() &&
-      !$this->isDeletable();
+      !$this->isRevoked();
   }
 
   /**
@@ -229,8 +228,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function isArchivable() {
     // Only some PAR entities can be archived.
     return $this->getTypeEntity()->isArchivable() &&
-      !$this->isArchived() &&
-      !$this->isDeletable();
+      !$this->isArchived();
   }
 
   /**
