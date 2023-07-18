@@ -258,9 +258,8 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   public function isRevocable() {
     $partnership = $this->getPartnership();
 
-    // Rule 1: Check if the partnership is active.
-    $partnership_is_active = $partnership &&
-      $partnership->isActive();
+    // Rule 1: Check if the partnership is active and was approved more than 1 day ago.
+    $partnership_is_active = $partnership?->isActive();
 
     // Rule 2: Check if the legal entity is active.
     $is_active = $this->isActive();
@@ -346,6 +345,26 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    */
   public function isRevoked() {
     return $this->getPartnership()?->isRevoked() || parent::isRevoked();
+  }
+
+  /**
+   * Override the default status time.
+   *
+   * {@inheritdoc}
+   */
+  public function getStatusTime($status) {
+    switch ($status) {
+      case 'confirmed_rd':
+        $status_time = $this->getStartDate()?->getTimestamp();
+        return $status_time ?? parent::getStatusTime($status);
+
+      case self::REVOKE_FIELD:
+        $status_time = $this->getEndDate()?->getTimestamp();
+        return $status_time ?? parent::getStatusTime($status);
+
+      default:
+        return parent::getStatusTime($status);
+    }
   }
 
   /**
