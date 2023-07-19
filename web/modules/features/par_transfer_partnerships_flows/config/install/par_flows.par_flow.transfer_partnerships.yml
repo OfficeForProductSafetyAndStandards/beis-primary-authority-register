@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+id: transfer_partnerships
+label: "Transfer Partnerships Flow"
+default_title: null
+default_section_title: 'Transfer a partnership'
+description: ''
+save_method: end
+final_routes:
+  - par_help_desks_flows.helpdesk_dashboard
+states: {  }
+steps:
+  1:
+    route: par_transfer_partnerships_flows.authority
+    form_id: par_transfer_partnerships_select_authority
+  2:
+    route: par_transfer_partnerships_flows.partnerships
+    form_id: par_transfer_partnerships_select_partnerships

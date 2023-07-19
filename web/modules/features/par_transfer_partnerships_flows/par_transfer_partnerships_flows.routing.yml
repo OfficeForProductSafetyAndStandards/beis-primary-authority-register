@@ -1,0 +1,17 @@
+par_transfer_partnerships_flows.authority:
+  path: '/transfer/partnerships/'
+  defaults:
+    _form: '\Drupal\par_transfer_partnerships_flows\Form\ParSelectAuthoritiesForm'
+    _title_callback: '\Drupal\par_transfer_partnerships_flows\Form\ParSelectAuthoritiesForm::titleCallback'
+  requirements:
+    _permission: 'transfer partnerships'
+    _custom_access: '\Drupal\par_transfer_partnerships_flows\Form\ParSelectAuthoritiesForm::accessCallback'
+
+par_transfer_partnerships_flows.partnerships:
+  path: '/transfer/partnerships/'
+  defaults:
+    _form: '\Drupal\par_transfer_partnerships_flows\Form\ParSelectPartnershipsForm'
+    _title_callback: '\Drupal\par_transfer_partnerships_flows\Form\ParSelectPartnershipsForm::titleCallback'
+  requirements:
+    _permission: 'transfer partnerships'
+    _custom_access: '\Drupal\par_transfer_partnerships_flows\Form\ParSelectPartnershipsForm::accessCallback'
