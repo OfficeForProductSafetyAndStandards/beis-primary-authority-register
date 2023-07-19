@@ -17,3 +17,14 @@ steps:
   2:
     route: par_transfer_partnerships_flows.partnerships
     form_id: par_transfer_partnerships_select_partnerships
+  3:
+    route: par_transfer_partnerships_flows.regulatory_functions
+    form_id: par_transfer_partnerships_regulatory_functions
+  4:
+    route: par_transfer_partnerships_flows.transfer_date
+    form_id: par_transfer_partnerships_date
+  5:
+    route: par_transfer_partnerships_flows.review
+    form_id: par_transfer_partnerships_review
+  6:
+    route: par_transfer_partnerships_flows.complete

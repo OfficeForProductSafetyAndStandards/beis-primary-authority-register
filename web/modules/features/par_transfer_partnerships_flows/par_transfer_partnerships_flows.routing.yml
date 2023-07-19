@@ -1,5 +1,5 @@
 par_transfer_partnerships_flows.authority:
-  path: '/transfer/partnerships/'
+  path: '/transfer/authorities'
   defaults:
     _form: '\Drupal\par_transfer_partnerships_flows\Form\ParSelectAuthoritiesForm'
     _title_callback: '\Drupal\par_transfer_partnerships_flows\Form\ParSelectAuthoritiesForm::titleCallback'
@@ -8,10 +8,46 @@ par_transfer_partnerships_flows.authority:
     _custom_access: '\Drupal\par_transfer_partnerships_flows\Form\ParSelectAuthoritiesForm::accessCallback'
 
 par_transfer_partnerships_flows.partnerships:
-  path: '/transfer/partnerships/'
+  path: '/transfer/partnerships'
   defaults:
     _form: '\Drupal\par_transfer_partnerships_flows\Form\ParSelectPartnershipsForm'
     _title_callback: '\Drupal\par_transfer_partnerships_flows\Form\ParSelectPartnershipsForm::titleCallback'
   requirements:
     _permission: 'transfer partnerships'
     _custom_access: '\Drupal\par_transfer_partnerships_flows\Form\ParSelectPartnershipsForm::accessCallback'
+
+par_transfer_partnerships_flows.regulatory_functions:
+  path: '/transfer/partnerships/regulatory-functions'
+  defaults:
+    _form: '\Drupal\par_transfer_partnerships_flows\Form\ParManageFunctionsForm'
+    _title_callback: '\Drupal\par_transfer_partnerships_flows\Form\ParManageFunctionsForm::titleCallback'
+  requirements:
+    _permission: 'transfer partnerships'
+    _custom_access: '\Drupal\par_transfer_partnerships_flows\Form\ParManageFunctionsForm::accessCallback'
+
+par_transfer_partnerships_flows.transfer_date:
+  path: '/transfer/partnerships/date'
+  defaults:
+    _form: '\Drupal\par_transfer_partnerships_flows\Form\ParTransferDateForm'
+    _title_callback: '\Drupal\par_transfer_partnerships_flows\Form\ParTransferDateForm::titleCallback'
+  requirements:
+    _permission: 'transfer partnerships'
+    _custom_access: '\Drupal\par_transfer_partnerships_flows\Form\ParTransferDateForm::accessCallback'
+
+par_transfer_partnerships_flows.review:
+  path: '/transfer/partnerships/review'
+  defaults:
+    _form: '\Drupal\par_transfer_partnerships_flows\Form\ParReviewForm'
+    _title_callback: '\Drupal\par_transfer_partnerships_flows\Form\ParReviewForm::titleCallback'
+  requirements:
+    _permission: 'transfer partnerships'
+    _custom_access: '\Drupal\par_transfer_partnerships_flows\Form\ParReviewForm::accessCallback'
+
+par_transfer_partnerships_flows.complete:
+  path: '/transfer/partnerships/complete'
+  defaults:
+    _controller: '\Drupal\par_transfer_partnerships_flows\Controller\ParCompleteController::content'
+    _title_callback: '\Drupal\par_transfer_partnerships_flows\Controller\ParCompleteController::titleCallback'
+  requirements:
+    _permission: 'transfer partnerships'
+    _custom_access: '\Drupal\par_transfer_partnerships_flows\Controller\ParCompleteController::accessCallback'
