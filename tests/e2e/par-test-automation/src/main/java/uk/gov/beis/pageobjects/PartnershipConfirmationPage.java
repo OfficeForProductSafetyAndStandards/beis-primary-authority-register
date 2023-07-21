@@ -34,6 +34,9 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	
 	@FindBy(linkText = "See all Inspection Plans")
 	WebElement seeAllInspectionPlans;
+	
+	@FindBy(linkText = "See all Advice")
+	WebElement seeAllAdvice;
 
 	@FindBy(linkText = "edit about the partnership")
 	WebElement editPartnershipLink;
@@ -88,6 +91,11 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	public InspectionPlanSearchPage selectSeeAllInspectionPlans() {
 		seeAllInspectionPlans.click();
 		return PageFactory.initElements(driver, InspectionPlanSearchPage.class);
+	}
+	
+	public AdviceNoticeSearchPage selectSeeAllAdviceNotices() {
+		seeAllAdvice.click();
+		return PageFactory.initElements(driver, AdviceNoticeSearchPage.class);
 	}
 	
 	public EnquiryContactDetailsPage sendGeneralEnquiry() {
