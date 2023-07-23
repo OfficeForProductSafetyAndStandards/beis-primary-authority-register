@@ -2,9 +2,17 @@
 
 namespace Drupal\par_transfer_partnerships_flows\Form;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_data\Entity\ParDataAuthority;
+use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
+use Drupal\par_data\Entity\ParDataLegalEntity;
+use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_forms\ParFormBuilder;
 
 /**
  * The form for reviewing any changes before they are made.
@@ -26,16 +34,130 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $par_data_inspection_plan = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
+    // Set the data values on the entities
+    $entities = $this->createEntities();
+    extract($entities);
+    /** @var ParDataPartnership[] $partnerships */
+    /** @var ParDataAuthority $old_authority */
+    /** @var ParDataAuthority $new_authority */
 
+    // Display the authorities.
+    $form['authorities'] = [
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => $this->t('Authorities'),
+      ],
+      'intro' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t("The partnerships will be transferred from @old to @new",
+            ['@old' => $old_authority->label(), '@new' => $new_authority->label()]
+          ),
+      ],
+    ];
+
+    // Display the partnerships that will be transferred.
+    $count = count($partnerships);
+    $labels = $this->getParDataManager()->getEntitiesAsOptions($partnerships);
+    $form['partnerships'] = [
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => $this->t('Partnerships'),
+      ],
+      'description' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->formatPlural($count,
+          "The following partnership will be transferred, please check this is correct.",
+          "The following @count partnerships will be transferred, please check this is correct.",
+          ['@count' => count($partnerships)]),
+      ],
+      'list' => [
+        '#theme' => 'item_list',
+        '#items' => $labels,
+        '#attributes' => ['class' => ['list', 'list-bullet']],
+      ],
+    ];
+
+    // Display the authorities.
+    $transfer_date = $this->getDateFormatter()->format($transfer_date->getTimestamp(), 'gds_date_format');
+    $form['date'] = [
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => $this->t('Date'),
+      ],
+      'intro' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t("This transfer will be effective from @date, this information will be shown on the partnership.", ['@date' => $transfer_date]),
+      ],
+    ];
+
+    $form['confirmation'] = [
+      '#type' => 'checkbox',
+      '#title' => 'Please check everything is correct, once you confirm these details the partnerships will be transferred.',
+      '#wrapper_attributes' => ['class' => 'govuk-!-margin-top-8'],
+    ];
 
     // Change the main button title to 'remove'.
-    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Remove');
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Transfer');
 
-    // Make sure to add the person cacheability data to this form.
-    $this->addCacheableDependency($par_data_partnership);
+    // Make sure to add the authority cacheability data to this form.
+    $this->addCacheableDependency($par_data_authority);
 
     return parent::buildForm($form, $form_state);
+  }
+
+  public function createEntities() {
+    // Get the old authority.
+    $old_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');
+
+    // Get the new authority.
+    $authority_cid = $this->getFlowNegotiator()->getFormKey('authority');
+    $authority_id = $this->getFlowDataHandler()->getTempDataValue('authority_id', $authority_cid);
+    $new_authority = $authority_id ? \Drupal::entityTypeManager()->getStorage('par_data_authority')
+      ->load($authority_id) : NULL;
+
+    // Get the transfer date.
+    $date_cid = $this->getFlowNegotiator()->getFormKey('date');
+    $date_value = $this->getFlowDataHandler()->getTempDataValue('date', $date_cid);
+    $date = $date_value ? DrupalDateTime::createFromFormat('Y-m-d', $date_value, ['validate_format' => FALSE]) : NULL;
+
+    // Get the partnerships to transfer.
+    $partnerships_cid = $this->getFlowNegotiator()->getFormKey('partnerships');
+    $partnership_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_partnership_id', $partnerships_cid);
+    $partnerships = $partnership_ids ? \Drupal::entityTypeManager()->getStorage('par_data_partnership')
+      ->loadMultiple($partnership_ids) : [];
+
+    foreach ($partnerships as $partnership) {
+      // Change the authority on the partnership.
+      if ($new_authority instanceof ParDataAuthority) {
+        $partnership->set('field_authority', $new_authority->id());
+      }
+
+      // Create a new revision.
+      $revision_message = '';
+      $partnership->setNewRevision(TRUE, $revision_message);
+
+      // Set the record of transfer on the partnership.
+    }
+
+    return [
+      'partnerships' => $partnerships,
+      'old_authority' => $old_authority,
+      'new_authority' => $new_authority,
+      'transfer_date' => $date,
+    ];
   }
 
   /**
@@ -44,9 +166,44 @@ class ParReviewForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    if (!$form_state->getValue('remove_reason')) {
-      $id = $this->getElementId('remove_reason', $form);
-      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please enter the reason you are removing this inspection plan.', $id));
+    // Set the data values on the entities
+    $entities = $this->createEntities();
+    extract($entities);
+    /** @var ParDataPartnership[] $partnerships */
+    /** @var ParDataAuthority $old_authority */
+    /** @var ParDataAuthority $new_authority */
+
+    // Ensure that the transfer has been confirmed.
+    if (!$form_state->getValue('confirmation')) {
+      $id = $this->getElementId('confirmation', $form);
+      $form_state->setErrorByName($this->getElementName(['confirmation']), $this->wrapErrorMessage('Please confirm the transfer of partnerships.', $id));
+    }
+
+    // Validate that the new authority has the same regulatory functions as the
+    // old authority.
+    if ($old_authority instanceof ParDataAuthority && $new_authority instanceof ParDataAuthority) {
+      $old_functions = array_values($old_authority->get('field_regulatory_function')->getValue());
+      $new_functions = array_values($new_authority->get('field_regulatory_function')->getValue());
+
+      // Sort the array elements
+      sort($old_functions);
+      sort($new_functions);
+
+      if ($old_functions !== $new_functions) {
+        $id_key = $this->getElementKey('authority', 1, TRUE);
+        $message = $this->t("The regulatory functions do not match those offered by @old_authority.", ['@old_authority' => $old_authority->label()])->render();
+        $form_state->setErrorByName('authorities', $this->wrapErrorMessage($message, $this->getElementId($id_key, $form)));
+      }
+    }
+    // Validate that there are two valid authorities to transfer between.
+    else {
+      $id_key = $this->getElementKey('authority', 1, TRUE);
+      $form_state->setErrorByName('authorities', $this->wrapErrorMessage('This transfer cannot be made at this time.', $this->getElementId($id_key, $form)));
+    }
+
+    // Validate that there are some partnerships to transfer.
+    if (empty($partnerships)) {
+      $form_state->setErrorByName('partnerships', $this->wrapErrorMessage($message, $this->getElementId($id_key, $form)));
     }
   }
 
@@ -56,9 +213,17 @@ class ParReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
-    $delta = $this->getFlowDataHandler()->getTempDataValue('delta');
+    // Set the data values on the entities
+    $entities = $this->createEntities();
+    extract($entities);
+    /** @var ParDataPartnership[] $partnerships */
+    /** @var ParDataAuthority $old_authority */
+    /** @var ParDataAuthority $new_authority */
+
+    foreach ($partnerships as $partnership) {
+//      $partnership->save();
+//      $this->getFlowDataHandler()->deleteStore();
+    }
   }
 
 }

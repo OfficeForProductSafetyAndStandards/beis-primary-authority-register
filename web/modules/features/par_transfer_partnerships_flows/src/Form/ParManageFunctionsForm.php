@@ -3,8 +3,10 @@
 namespace Drupal\par_transfer_partnerships_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * The form for managing regulatory functions.
@@ -26,14 +28,16 @@ class ParManageFunctionsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $par_data_inspection_plan = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
+    // This form isn't yet required, the initial functionality doesn't handle
+    // situations where there is a mismatch of regulatory functions between
+    // the authorities.
+    // @TODO introduce functionality to handle mismatched regulatory functions.
+    $url = $this->getFlowNegotiator()->getFlow()->progress();
+    return new RedirectResponse($url->toString());
 
-
-    // Change the main button title to 'remove'.
-    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Remove');
-
-    // Make sure to add the person cacheability data to this form.
-    $this->addCacheableDependency($par_data_partnership);
+    // Make sure to add the authority cacheability data to this form.
+    $this->addCacheableDependency($par_data_authority);
 
     return parent::buildForm($form, $form_state);
   }

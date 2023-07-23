@@ -3,7 +3,7 @@
 namespace Drupal\par_transfer_partnerships_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_flows\Form\ParBaseForm;
 
 /**
@@ -11,14 +11,12 @@ use Drupal\par_flows\Form\ParBaseForm;
  */
 class ParSelectAuthoritiesForm extends ParBaseForm {
 
-  protected $pageTitle = 'Which authority would you like to transfer the partnerships away from?';
+  protected $pageTitle = 'Which authority would you like to transfer to?';
 
   /**
    * Load the data for this form.
    */
   public function loadData() {
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
 
     parent::loadData();
   }
@@ -26,14 +24,9 @@ class ParSelectAuthoritiesForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $par_data_inspection_plan = NULL) {
-
-
-    // Change the main button title to 'remove'.
-    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Remove');
-
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
     // Make sure to add the person cacheability data to this form.
-    $this->addCacheableDependency($par_data_partnership);
+    $this->addCacheableDependency($par_data_authority);
 
     return parent::buildForm($form, $form_state);
   }
@@ -41,12 +34,29 @@ class ParSelectAuthoritiesForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
+  public function validateForm(array &$form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
     parent::validateForm($form, $form_state);
 
-    if (!$form_state->getValue('remove_reason')) {
-      $id = $this->getElementId('remove_reason', $form);
-      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please enter the reason you are removing this inspection plan.', $id));
+    // Validate that the new authority has the same regulatory functions as the
+    // old authority.
+    $from = $this->getFlowDataHandler()->getParameter('par_data_authority');
+    $authority_id = $this->getFlowDataHandler()->getTempDataValue('authority_id');
+    $to = $authority_id ? \Drupal::entityTypeManager()->getStorage('par_data_authority')
+      ->load($authority_id) : NULL;
+
+    if ($from instanceof ParDataAuthority && $to instanceof ParDataAuthority) {
+      $old_functions = array_values($from->get('field_regulatory_function')->getValue());
+      $new_functions = array_values($to->get('field_regulatory_function')->getValue());
+
+      // Sort the array elements
+      sort($old_functions);
+      sort($new_functions);
+
+      if ($old_functions !== $new_functions) {
+        $id_key = $this->getElementKey('authority', 1, TRUE);
+        $message = $this->t("The regulatory functions do not match those offered by @old_authority.", ['@old_authority' => $from->label()])->render();
+        $form_state->setErrorByName('authority', $this->wrapErrorMessage($message, $this->getElementId($id_key, $form)));
+      }
     }
   }
 
@@ -55,10 +65,6 @@ class ParSelectAuthoritiesForm extends ParBaseForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
-    $delta = $this->getFlowDataHandler()->getTempDataValue('delta');
   }
 
 }

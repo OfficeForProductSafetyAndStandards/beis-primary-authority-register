@@ -3,40 +3,51 @@
 namespace Drupal\par_transfer_partnerships_flows\Controller;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_flows\ParFlowException;
 
 /**
  * The controller for rendering journey completion.
  */
 class ParCompleteController extends ParBaseController {
 
-  protected $pageTitle = 'Confirm this transfer';
+  protected $pageTitle = 'The transfer has been completed';
 
   /**
    * Load the data for this form.
    */
-  public function loadData() {
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
+  public function content($build = []) {
+    $build['intro'] = [
+      '#type' => 'container',
+      'intro' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t("The partnerships have been transferred to the new authority."),
+      ],
+    ];
 
-    parent::loadData();
-  }
+    $build['next'] = [
+      '#title' => $this->t('What happens next?'),
+      '#type' => 'fieldset',
+    ];
+    $build['next']['info'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => "The Primary Authority for these partnerships will now be changed to the new authority and the name of the old authority will be marked on the partnership along with the date of the transfer.",
+    ];
+    $build['next']['search'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => "The partnership will now only show up in search results when the new authority is searched for.",
+    ];
 
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $par_data_inspection_plan = NULL) {
+    // Change the action to save.
+    $this->getFlowNegotiator()->getFlow()->setActions(['done']);
 
-
-    // Change the main button title to 'remove'.
-    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Remove');
-
-    // Make sure to add the person cacheability data to this form.
-    $this->addCacheableDependency($par_data_partnership);
-
-    return parent::buildForm($form, $form_state);
+    return parent::build($build);
   }
 
   /**

@@ -1,16 +1,19 @@
+uuid: 05f08ae8-1861-4119-b667-7c7519c15051
 langcode: en
 status: true
 dependencies: {  }
+_core:
+  default_config_hash: GMwfX20fJ81036oSNBH2MUjJofGXux9WnwkbTcSoewY
 id: transfer_partnerships
-label: "Transfer Partnerships Flow"
+label: 'Transfer Partnerships Flow'
 default_title: null
 default_section_title: 'Transfer a partnership'
 description: ''
 save_method: end
-final_routes:
-  - par_help_desks_flows.helpdesk_dashboard
 states:
   - par_data_authority
+final_routes:
+  - par_help_desks_flows.helpdesk_dashboard
 steps:
   1:
     route: par_transfer_partnerships_flows.authority
