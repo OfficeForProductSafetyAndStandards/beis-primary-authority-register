@@ -676,7 +676,7 @@ class ParDataPartnership extends ParDataEntity {
 
   private function getRevocationDateField(): ?DrupalDateTime {
     return $this->hasField('revocation_date') && !$this->get('revocation_date')->isEmpty() ?
-      $this->approved_date?->date :
+      $this->revocation_date?->date :
       NULL;
   }
 
