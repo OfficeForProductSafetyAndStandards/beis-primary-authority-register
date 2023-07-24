@@ -153,11 +153,11 @@ class ParPartnershipActionsTest extends ParDataTestBase {
    */
   public function testRestorationRules() {
     // Common rule 1: Revoked partnerships should be restorable.
-    $this->assertTrue($this->revoked_partnership->isRevocable(), t('Revoked partnerships should be restorable.'));
-    $this->assertTrue(!$this->nominated_partnership->isRevocable(), t('Active partnerships should not be restorable.'));
-    $this->assertTrue(!$this->active_partnership->isRevocable(), t('Active partnerships should not be restorable.'));
+    $this->assertTrue($this->revoked_partnership->isRestorable(), t('Revoked partnerships should be restorable.'));
+    $this->assertTrue(!$this->nominated_partnership->isRestorable(), t('Active partnerships should not be restorable.'));
+    $this->assertTrue(!$this->active_partnership->isRestorable(), t('Active partnerships should not be restorable.'));
 
     // Rule 1: Partnerships revoked more than a day ago should not be restorable.
-    $this->assertTrue(!$this->old_partnership->isRevocable(), t('Partnerships revoked more than a day ago should not be restorable.'));
+    $this->assertTrue(!$this->old_partnership->isRestorable(), t('Partnerships revoked more than a day ago should not be restorable.'));
   }
 }
