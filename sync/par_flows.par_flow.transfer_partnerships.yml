@@ -13,7 +13,7 @@ save_method: end
 states:
   - par_data_authority
 final_routes:
-  - par_help_desks_flows.helpdesk_dashboard
+  - view.helpdesk_authorities.authority_page
 steps:
   1:
     route: par_transfer_partnerships_flows.authority

@@ -139,19 +139,6 @@ class ParReviewForm extends ParBaseForm {
     $partnerships = $partnership_ids ? \Drupal::entityTypeManager()->getStorage('par_data_partnership')
       ->loadMultiple($partnership_ids) : [];
 
-    foreach ($partnerships as $partnership) {
-      // Change the authority on the partnership.
-      if ($new_authority instanceof ParDataAuthority) {
-        $partnership->set('field_authority', $new_authority->id());
-      }
-
-      // Create a new revision.
-      $revision_message = '';
-      $partnership->setNewRevision(TRUE, $revision_message);
-
-      // Set the record of transfer on the partnership.
-    }
-
     return [
       'partnerships' => $partnerships,
       'old_authority' => $old_authority,
@@ -221,9 +208,12 @@ class ParReviewForm extends ParBaseForm {
     /** @var ParDataAuthority $new_authority */
 
     foreach ($partnerships as $partnership) {
-//      $partnership->save();
-//      $this->getFlowDataHandler()->deleteStore();
+      if ($old_authority instanceof ParDataAuthority && $new_authority instanceof ParDataAuthority) {
+        $partnership->transfer($old_authority, $new_authority);
+        $partnership->save();
+      }
     }
+    $this->getFlowDataHandler()->deleteStore();
   }
 
 }

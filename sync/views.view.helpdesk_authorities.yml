@@ -652,8 +652,8 @@ display:
         - url.query_args
         - user.permissions
       tags: {  }
-  par_helpdesk_authority_page:
-    id: par_helpdesk_authority_page
+  authority_page:
+    id: authority_page
     display_title: Page
     display_plugin: page
     position: 1

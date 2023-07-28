@@ -2,6 +2,7 @@
 
 namespace Drupal\par_transfer_partnerships_flows\Form;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -28,8 +29,6 @@ class ParTransferDateForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
-
-
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_authority);
 
@@ -41,6 +40,18 @@ class ParTransferDateForm extends ParBaseForm {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
+
+    // Get the current date.
+    $request_time = \Drupal::time()->getRequestTime();
+    $now = DrupalDateTime::createFromTimestamp($request_time);
+
+    $date_value = $this->getFlowDataHandler()->getTempDataValue('date');
+    $date = $date_value ? DrupalDateTime::createFromFormat('Y-m-d', $date_value, ['validate_format' => FALSE]) : NULL;
+    if ($date > $now) {
+      $id_key = $this->getElementKey('date', 1, TRUE);
+      $message = $this->t("The date cannot be in the future.")->render();
+      $form_state->setErrorByName('date', $this->wrapErrorMessage($message, $this->getElementId($id_key, $form)));
+    }
   }
 
   /**

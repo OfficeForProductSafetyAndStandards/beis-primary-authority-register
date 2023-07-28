@@ -99,6 +99,11 @@ class ParDataPartnership extends ParDataEntity {
   const MEMBER_LIST_REVISION_PREFIX = 'PAR_MEMBER_LIST_UPDATE';
 
   /**
+   * The revision prefix for identifying when the partnership name changed.
+   */
+  const PARTNERSHIP_NAME_CHANGE = 'PAR_PARTNERSHIP_NAME_CHANGE';
+
+  /**
    * Get the time service.
    */
   public function getTime() {
@@ -982,6 +987,29 @@ class ParDataPartnership extends ParDataEntity {
     }
   }
 
+  /**
+   * Get the names a partnership was previously known by.
+   */
+  public function setPreviousName(string $name) {
+    return $this->get('previous_names')->appendItem($name);
+  }
+
+  /**
+   * Transfer the partnership to a new authority.
+   */
+  public function transfer(ParDataAuthority $old, ParDataAuthority $new) {
+    // Set the record of transfer on the partnership.
+    $previous_name = $this->label();
+    $this->setPreviousName($previous_name);
+
+    // Create a new revision.
+    $message = "The partnership has been transferred from {$old->label()} to {$new->label()}.";
+    $revision_message = implode(':', [ParDataPartnership::MEMBER_LIST_REVISION_PREFIX, $message]);
+    $this->setNewRevision(TRUE, $revision_message);
+
+    // Change the authority on the partnership.
+    $this->set('field_authority', $new->id());
+  }
 
   /**
    * {@inheritdoc}
@@ -1029,6 +1057,29 @@ class ParDataPartnership extends ParDataEntity {
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    // Previous names the partnership was known by.
+    $fields['previous_names'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Previous names'))
+      ->setDescription(t('Any previous names this partnership was known as.'))
+      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 501,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 11,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'region' => 'hidden',
         'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);

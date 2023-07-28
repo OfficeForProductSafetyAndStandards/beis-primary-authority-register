@@ -9,6 +9,11 @@ services:
     tags:
       - { name: audit_log_event_subscriber }
       - { name: par_log_event_subscriber }
+  par_log.event_subscriber.par_data_transfer_partnership:
+    class: Drupal\par_log\EventSubscriber\ParDataTransferPartnership
+    tags:
+      - { name: audit_log_event_subscriber }
+      - { name: par_log_event_subscriber }
   logger.channel.par:
     parent: logger.channel_base
     arguments: ['par']
