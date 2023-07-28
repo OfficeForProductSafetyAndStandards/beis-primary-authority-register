@@ -33,21 +33,15 @@ class ParDataTransferPartnership implements EventSubscriberInterface {
 
     /** @var \Drupal\par_data\Entity\ParDataEntityInterface $entity */
     $entity = $event->getEntity();
-    $current_previous_names = $entity->get('previous_names')->getString();
-    $old_previous_names = $entity->original?->get('previous_names')->getString();
 
-    // If the previous name field is empty.
-    if (empty($current_previous_names)) {
-      return FALSE;
-    }
+    $old_name = strtolower((string) $entity->original?->label());
+    $new_name = strtolower((string) $entity->label());
 
     // If the old previous names field value is the same as the current value.
-    if ($old_previous_names === $current_previous_names) {
+    if ($old_name === $new_name) {
       return FALSE;
     }
 
-    $old_name = strtolower((string) $this->original?->label());
-    $new_name = strtolower($entity->label());
 
     // Set the message format for PAR Entity deletions.
     $message = "The $old_name has been renamed to the $new_name.";
