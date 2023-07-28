@@ -20,6 +20,27 @@ public class PartnershipConfirmationPage extends BasePageObject {
 
 	private boolean twopartjourney = false;
 
+	@FindBy(linkText = "edit about the partnership")
+	WebElement editPartnershipLink;
+	
+	@FindBy(linkText = "edit the regulatory functions")
+	WebElement editRegulatoryFunctionsLink;
+	
+	@FindBy(linkText = "edit address")
+	WebElement editOrganisationAddressLink;
+	
+	@FindBy(linkText = "edit about the organisation")
+	WebElement editAboutOrganisationLink;
+	
+	@FindBy(linkText = "edit sic code")
+	WebElement editSICCodeLink;
+	
+	// Data Fields
+	@FindBy(id = "edit-regulatory-functions")
+	private WebElement regulatoryFunctionText;
+	
+	
+	//
 	@FindBy(xpath = "//input[contains(@value,'Save')]")
 	WebElement saveBtn;
 	
@@ -35,21 +56,27 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	@FindBy(linkText = "See all Inspection Plans")
 	WebElement seeAllInspectionPlans;
 
-	@FindBy(linkText = "edit about the partnership")
-	WebElement editPartnershipLink;
-
 	@FindBy(linkText = "Send a general enquiry to the primary authority")
 	WebElement generalEnquiryLink;
 	
 	@FindBy(linkText = "Done")
 	private WebElement doneBtn;
 	
+	@FindBy(id = "edit-done")
+	private WebElement saveButton;
+	
 	public PartnershipSearchPage clickDone() {
 		doneBtn.click();
 		return PageFactory.initElements(driver, PartnershipSearchPage.class);
 	}
 	
+	public PartnershipAdvancedSearchPage clickSave() {
+		saveButton.click();
+		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
+	}
+	
 	String partnershipDetails = "//div/p[contains(text(),'?')]";
+	String partnershipRegFunc = "//ul/li[contains(text(),'?')]";
 	String businessname = "//div[contains(text(),'?')]";
 	String businessAddress1 = "//div/p[contains(text(),'?')]";
 	String businessTown1 = "//div/p[contains(text(),'?')]";
@@ -66,7 +93,6 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	String tradename = "//div[contains(text(),'?')]";
 	String membersize = "//div[contains(text(),'?')]";
 
-	
 	public EnforcementNotificationPage createEnforcement() {
 		craeteEnforcementBtn.click();
 		return PageFactory.initElements(driver, EnforcementNotificationPage.class);
@@ -105,17 +131,30 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		return PageFactory.initElements(driver, EnforcementContactDetailsPage.class);
 	}
 
+	// Update Partnership Details
 	public PartnershipDescriptionPage editAboutPartnership() {
 		editPartnershipLink.click();
 		return PageFactory.initElements(driver, PartnershipDescriptionPage.class);
 	}
-
+	
+	public RegulatoryFunctionPage editRegulatoryFunctions() {
+		editRegulatoryFunctionsLink.click();
+		return PageFactory.initElements(driver, RegulatoryFunctionPage.class);
+	}
+	
+	
+	// Check Partnership Details
 	public boolean checkPartnershipInfo() {
-		WebElement partnershipDets = driver.findElement(
-				By.xpath(partnershipDetails.replace("?", DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO))));
+		WebElement partnershipDets = driver.findElement(By.xpath(partnershipDetails.replace("?", DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO))));
 		return partnershipDets.isDisplayed();
 	}
 
+	public boolean checkRegulatoryFunctions() {
+		regulatoryFunctionText = driver.findElement(By.xpath(partnershipRegFunc.replace("?", DataStore.getSavedValue(UsableValues.PARTNERSHIP_REGFUNC))));
+		return regulatoryFunctionText.isDisplayed();
+	}
+	
+	// Coordinated Partnership Details
 	public boolean checkNoEmployees() {
 		WebElement nEmplyees = driver
 				.findElement(By.xpath(noEmplyees.replace("?", DataStore.getSavedValue(UsableValues.NO_EMPLOYEES))));

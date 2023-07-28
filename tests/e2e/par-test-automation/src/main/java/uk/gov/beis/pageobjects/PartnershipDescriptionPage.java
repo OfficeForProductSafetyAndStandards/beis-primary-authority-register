@@ -14,7 +14,10 @@ public class PartnershipDescriptionPage extends BasePageObject {
 	}
 
 	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
-	WebElement descriptionBox;
+	private WebElement descriptionBox;
+	
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
 
 	public BusinessPage enterPartnershipDescription(String description, boolean secondJourney) throws Throwable {
 		descriptionBox.clear();
@@ -29,5 +32,14 @@ public class PartnershipDescriptionPage extends BasePageObject {
 
 		return PageFactory.initElements(driver, BusinessPage.class);
 	}
-
+	
+	public void enterDescription(String description) {
+		descriptionBox.clear();
+		descriptionBox.sendKeys(description);
+	}
+	
+	public PartnershipConfirmationPage clickSave() {
+		saveBtn.click();
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
 }
