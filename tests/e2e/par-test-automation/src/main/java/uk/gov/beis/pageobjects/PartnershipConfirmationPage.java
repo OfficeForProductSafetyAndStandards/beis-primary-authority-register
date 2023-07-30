@@ -58,11 +58,11 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	String businessLName = "//div[contains(text(),'?')]";
 	String businessEmailid = "//a[contains(text(),'?')]";
 	String authorityName = "//div[contains(text(),'?')]";
-	String sic = "//div/p[contains(text(),'?')]";
+	String sic = "//div[contains(text(),'?')]";
 	String noEmplyees = "//div[contains(text(),'?')]";
-	String entName = "//div/p[contains(text(),'?')]";
-	String entType = "//div/p[contains(text(),'?')]";
-	String regNo = "//div/p[contains(text(),'?')]";
+	String entName = "//div[contains(text(),'?')]";
+	String entType = "//div[contains(text(),'?')]";
+	String regNo = "//div[contains(text(),'?')]";
 	String tradename = "//div[contains(text(),'?')]";
 	String membersize = "//div[contains(text(),'?')]";
 

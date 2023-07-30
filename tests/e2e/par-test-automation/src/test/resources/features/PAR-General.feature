@@ -17,7 +17,7 @@ Feature:
     When the user searches for the last created partnership
     And the user completes the partnership application with the following details:
       | SIC Code            | No of Employees | Legal entity Type | Business Description |
-      | cookies on your premises | 10 to 49        | Limited Company   | Test Business        |
+      | allow people to eat | 10 to 49        | Limited Company   | Test Business        |
     Then the second part of the partnership application is successfully completed
     #verify update of newly created partnership
     Given the user is on the PAR login page
@@ -40,7 +40,7 @@ Feature:
     When the user searches for the last created partnership
     And the user completes the partnership application with the following details:
       | SIC Code            | Member List Size | Legal entity Type | Business Description |
-      | cookies on your premises | Medium           | Limited Company   | Test Business        |
+      | allow people to eat | Medium           | Limited Company   | Test Business        |
     Then the second part of the partnership application is successfully completed
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
@@ -163,6 +163,19 @@ Feature:
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created deviation request
     Then the deviation reply received successfully
+    
+  @regression @inspectionplan
+  Scenario: Verify Revocation and Removal of Inspection Plan (Happy Path - PAR-1866, PAR-1867)
+   Given the user is on the PAR login page
+   And the user logs in with the "par_helpdesk@example.com" user credentials
+   When the user searches for the last created partnership
+   Then the user successfully revokes the last created inspection plan
+   
+   #remove the inspection plan
+   When the user revokes the last created inspection plan
+   Then the inspection plan is successfully removed
+   
+   
 
   @regression @enquiry
   Scenario: Verify User can Submit a general enquiry (Happy Path - PAR-1861)

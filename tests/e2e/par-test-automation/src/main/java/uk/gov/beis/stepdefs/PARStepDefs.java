@@ -89,6 +89,7 @@ import uk.gov.beis.pageobjects.ProposedEnforcementPage;
 import uk.gov.beis.pageobjects.RegulatoryFunctionPage;
 import uk.gov.beis.pageobjects.RemoveEnforcementConfirmationPage;
 import uk.gov.beis.pageobjects.RemoveEnforcementPage;
+import uk.gov.beis.pageobjects.RemoveReasonInspectionPlanPage;
 import uk.gov.beis.pageobjects.ReplyDeviationRequestPage;
 import uk.gov.beis.pageobjects.ReplyEnquiryPage;
 import uk.gov.beis.pageobjects.ReplyInspectionFeedbackPage;
@@ -96,6 +97,7 @@ import uk.gov.beis.pageobjects.RequestDeviationPage;
 import uk.gov.beis.pageobjects.RequestEnquiryPage;
 import uk.gov.beis.pageobjects.RestorePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.RevokeReasonInspectionPlanPage;
 import uk.gov.beis.pageobjects.SICCodePage;
 import uk.gov.beis.pageobjects.TradingPage;
 import uk.gov.beis.pageobjects.UpdateUserCommunicationPreferencesPage;
@@ -118,6 +120,7 @@ public class PARStepDefs {
 
 	public static WebDriver driver;
 	private HomePage parHomePage;
+	private RevokeReasonInspectionPlanPage revokeReasonInspectionPlanPage;
 	private RequestEnquiryPage requestEnquiryPage;
 	private DeviationSearchPage deviationSearchPage;
 	private InspectionPlanReviewPage inspectionPlanReviewPage;
@@ -171,6 +174,7 @@ public class PARStepDefs {
 	private PartnershipTermsPage parPartnershipTermsPage;
 	private PartnershipDescriptionPage parPartnershipDescriptionPage;
 	private BusinessPage parBusinessPage;
+	private RemoveReasonInspectionPlanPage removeReasonInspectionPlanPage;
 	private RevokePartnershipConfirmationPage revokePartnershipConfirmationPage;
 	private PartnershipRevokedPage partnershipRevokedPage;
 	private UserTermsPage userTermsPage;
@@ -218,7 +222,9 @@ public class PARStepDefs {
 	private ReplyEnquiryPage replyEnquiryPage;
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
-		driver = ScenarioContext.lastDriver;
+		driver = ScenarioContext.lastDriver; 
+		removeReasonInspectionPlanPage = PageFactory.initElements(driver, RemoveReasonInspectionPlanPage.class);
+		revokeReasonInspectionPlanPage = PageFactory.initElements(driver, RevokeReasonInspectionPlanPage.class);
 		inspectionPlanReviewPage = PageFactory.initElements(driver, InspectionPlanReviewPage.class);
 		replyEnquiryPage = PageFactory.initElements(driver, ReplyEnquiryPage.class);
 		enquiriesSearchPage = PageFactory.initElements(driver, EnquiriesSearchPage.class);
@@ -1368,7 +1374,29 @@ public class PARStepDefs {
 			assertEquals(data.get("Primary"), viewEnquiryPage.getPrimaryAuthorityName());
 			assertEquals(data.get("Summary"), viewEnquiryPage.getSummaryOfEnquiryText());
 		}
-
 		LOG.info("Asserting the Equiry Notice Details.");
+	}
+	
+	@Then("^the user successfully revokes the last created inspection plan$")
+	public void the_user_successfully_removes_the_last_created_inspection_plan() throws Throwable {
+		LOG.info("Revoking inspection plan and confirming it is revoked");
+		partnershipAdvancedSearchPage.selectPartnershipLink();
+		parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
+		inspectionPlanSearchPage.selectRevokeLink();
+		revokeReasonInspectionPlanPage.enterRevokeDescription();
+		assertEquals(inspectionPlanSearchPage.getPlanStatus(), "Revoked");
+	}
+	
+	@When("^the user revokes the last created inspection plan$")
+	public void the_user_revokes_the_last_created_inspection_plan() throws Throwable {
+		LOG.info("Removing inspection plan");
+		inspectionPlanSearchPage.selectRemoveLink();
+		removeReasonInspectionPlanPage.enterRemoveDescription();
+	}
+
+	@Then("^the inspection plan is successfully removed$")
+	public void the_inspection_plan_is_successfully_removed() throws Throwable {
+		LOG.info("Confirm inspection plan is removed");
+		assertEquals(inspectionPlanSearchPage.getPlanStatus(), "No results returned");
 	}
 }

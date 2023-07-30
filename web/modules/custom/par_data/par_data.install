@@ -1483,7 +1483,7 @@ function par_data_update_9008() {
 /**
  * PAR-2038 Set partnership legal entity status on existing entity instances to confirmed_rd (Active).
  */
-function par_data_update_9011(&$sandbox) {
+function par_data_update_9009(&$sandbox) {
   /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
   $par_data_manager = \Drupal::service('par_data.manager');
   $batch_size = 100;

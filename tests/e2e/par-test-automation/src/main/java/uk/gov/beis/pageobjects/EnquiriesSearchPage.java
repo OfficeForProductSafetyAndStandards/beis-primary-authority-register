@@ -14,7 +14,7 @@ public class EnquiriesSearchPage extends BasePageObject {
 		super();
 	}
 
-	String enq = "(//tr/td[contains(text(),'?')]/following-sibling::td[3]/a)[1]";
+	String enq = "(//tr/td[contains(text(),'?')]/following-sibling::td[3])[1]";
 
 	public BasePageObject selectEnquiry() {
 		driver.findElement(By.xpath(enq.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME)))).click();

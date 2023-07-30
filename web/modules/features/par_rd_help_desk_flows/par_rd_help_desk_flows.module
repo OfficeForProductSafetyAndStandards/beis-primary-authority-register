@@ -24,7 +24,7 @@ function par_rd_help_desk_flows_form_views_exposed_form_alter(&$form, FormStateI
     isset($form['keywords']['#wrapper_attributes']['class']) || $form['keywords']['#wrapper_attributes']['class'] = [];
     $form['keywords']['#wrapper_attributes']['class'][] = 'govuk-grid-column-full';
 
-    // All list filters are one thirds witdh.
+    // All list filters are one third width.
     $list_filters = ['partnership_type', 'partnership_status', 'regulatory_function', 'advice_type', 'advice_status', 'inspection_plan_status', 'member_display', 'partnership_status_date', 'sort_bef_combine'];
     foreach ($list_filters as $filter) {
       isset($form[$filter]['#wrapper_attributes']['class']) || $form[$filter]['#wrapper_attributes']['class'] = [];
