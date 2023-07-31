@@ -44,6 +44,7 @@ dependencies:
     - par_roles
     - par_search_partnership_flows
     - par_subscriptions
+    - par_transfer_partnerships_flows
     - par_user_block_flows
     - toolbar
 id: senior_administration_officer
@@ -203,6 +204,7 @@ permissions:
   - 'revoke partnership inspection plan'
   - 'revoke partnerships'
   - 'search partnerships'
+  - 'transfer partnerships'
   - 'unblock user'
   - 'unlock membership list'
   - 'update coordinated member'
