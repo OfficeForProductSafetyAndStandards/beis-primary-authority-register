@@ -64,9 +64,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
 
       // Display the previous name, only display the last one if more than one.
       if ($par_data_partnership->hasField('previous_names')) {
-        $previous_names_field = $par_data_partnership->get('previous_names')->filterEmptyItems();
-        $main_property_path = $previous_names_field->getFieldDefinition()->getFieldStorageDefinition()->getMainPropertyName();
-        $previous_name = $previous_names_field->get($previous_names_field->count() - 1)->getValue()[$main_property_path];
+        $previous_name = $par_data_partnership->getPreviousName();
         $this->setDefaultValuesByKey("previous_names", $cardinality, $previous_name);
       }
     }

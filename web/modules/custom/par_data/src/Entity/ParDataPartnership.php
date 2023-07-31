@@ -996,6 +996,17 @@ class ParDataPartnership extends ParDataEntity {
   }
 
   /**
+   * Get the most recent previous name a partnership was known by.
+   */
+  public function getPreviousName() {
+    $previous_names_field = $this->get('previous_names')->filterEmptyItems();
+    $main_property_path = $previous_names_field->getFieldDefinition()->getFieldStorageDefinition()->getMainPropertyName();
+    $previous_names = $previous_names_field->getValue();
+
+    return end($previous_names)[$main_property_path];
+  }
+
+  /**
    * Transfer the partnership to a new authority.
    */
   public function transfer(ParDataAuthority $old, ParDataAuthority $new, DateTimePlus $transfer_date) {
