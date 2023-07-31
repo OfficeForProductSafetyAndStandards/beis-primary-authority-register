@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -997,7 +998,7 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Transfer the partnership to a new authority.
    */
-  public function transfer(ParDataAuthority $old, ParDataAuthority $new) {
+  public function transfer(ParDataAuthority $old, ParDataAuthority $new, DateTimePlus $transfer_date) {
     // Set the record of transfer on the partnership.
     $previous_name = $this->label();
     $this->setPreviousName($previous_name);
@@ -1006,9 +1007,134 @@ class ParDataPartnership extends ParDataEntity {
     $message = "The partnership has been transferred from {$old->label()} to {$new->label()}.";
     $revision_message = implode(':', [ParDataPartnership::MEMBER_LIST_REVISION_PREFIX, $message]);
     $this->setNewRevision(TRUE, $revision_message);
+    // Set the date of the revision.
+    if (!$this->isNew()) {
+      $this->setRevisionCreationTime($transfer_date->getTimestamp());
+    }
 
     // Change the authority on the partnership.
     $this->set('field_authority', $new->id());
+
+    // Add the partnership's primary authority contacts to this new authority.
+    foreach ($this->getAuthorityPeople() as $person) {
+      $new->addPerson($person);
+    }
+    $new->save();
+
+    // Transfer all pending enquiry types, and set all other types against the old authority.
+    $enquiries = array_merge(
+      $this->getEnforcements(),
+      $this->getDeviationRequests(),
+      $this->getInspectionPlanFeedback(),
+      $this->getGeneralEnquiry(),
+    );
+    foreach ($enquiries as $enquiry) {
+      $authority = $enquiry->inProgress() ?
+        $new : $old;
+
+      $enquiry->setPrimaryAuthority($authority);
+      $enquiry->save();
+    }
+  }
+
+  /**
+   * Get the enforcements associated with this partnership.
+   *
+   * @return ParDataEnforcementNotice[]
+   */
+  public function getEnforcements(): array {
+    // Make sure not to request this more than once for a given entity.
+    $enforcements = &drupal_static(__FUNCTION__ . ':' . $this->uuid());
+    if (isset($enforcements)) {
+      return $enforcements;
+    }
+
+    // Get all enforcement notices for this partnership.
+    $conditions = [
+      'partnership' => [
+        'AND' => [
+          ['field_partnership', $this->id()],
+        ]
+      ],
+    ];
+
+    // Get the enforcement notices.
+    return $this->getParDataManager()->getEntitiesByQuery('par_data_enforcement_notice', $conditions);
+  }
+
+  /**
+   * Get the deviation requests associated with this partnership.
+   *
+   * @return ParDataDeviationRequest[]
+   */
+  public function getDeviationRequests(): array {
+    // Make sure not to request this more than once for a given entity.
+    $deviation_requests = &drupal_static(__FUNCTION__ . ':' . $this->uuid());
+    if (isset($deviation_requests)) {
+      return $deviation_requests;
+    }
+
+    // Get all deviation requests for this partnership.
+    $conditions = [
+      'partnership' => [
+        'AND' => [
+          ['field_partnership', $this->id()],
+        ]
+      ],
+    ];
+
+    // Get the enforcement notices.
+    return $this->getParDataManager()->getEntitiesByQuery('par_data_deviation_request', $conditions);
+  }
+
+  /**
+   * Get the inspection plan feedback associated with this partnership.
+   *
+   * @return ParDataInspectionFeedback[]
+   */
+  public function getInspectionPlanFeedback(): array {
+    // Make sure not to request this more than once for a given entity.
+    $inspection_feedback = &drupal_static(__FUNCTION__ . ':' . $this->uuid());
+    if (isset($inspection_feedback)) {
+      return $inspection_feedback;
+    }
+
+    // Get all inspection feedback for this partnership.
+    $conditions = [
+      'partnership' => [
+        'AND' => [
+          ['field_partnership', $this->id()],
+        ]
+      ],
+    ];
+
+    // Get the enforcement notices.
+    return $this->getParDataManager()->getEntitiesByQuery('par_data_inspection_feedback', $conditions);
+  }
+
+  /**
+   * Get the general enquiries associated with this partnership.
+   *
+   * @return ParDataGeneralEnquiry[]
+   */
+  public function getGeneralEnquiry(): array {
+    // Make sure not to request this more than once for a given entity.
+    $general_enquiries = &drupal_static(__FUNCTION__ . ':' . $this->uuid());
+    if (isset($general_enquiries)) {
+      return $general_enquiries;
+    }
+
+    // Get all inspection feedback for this partnership.
+    $conditions = [
+      'partnership' => [
+        'AND' => [
+          ['field_partnership', $this->id()],
+        ]
+      ],
+    ];
+
+    // Get the enforcement notices.
+    return $this->getParDataManager()->getEntitiesByQuery('par_data_general_enquiry', $conditions);
   }
 
   /**

@@ -42,7 +42,6 @@ class ParDataTransferPartnership implements EventSubscriberInterface {
       return FALSE;
     }
 
-
     // Set the message format for PAR Entity deletions.
     $message = "The $old_name has been renamed to the $new_name.";
     $event->setMessage($message);

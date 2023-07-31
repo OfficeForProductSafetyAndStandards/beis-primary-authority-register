@@ -3,6 +3,7 @@
 namespace Drupal\par_transfer_partnerships_flows\Form;
 
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
@@ -42,6 +43,33 @@ class ParReviewForm extends ParBaseForm {
     /** @var ParDataAuthority $old_authority */
     /** @var ParDataAuthority $new_authority */
 
+    // Get all the contacts for each of the partnerships.
+    $primary_authority_contacts = [];
+    foreach ($partnerships as $partnership) {
+      foreach ($partnership->getAuthorityPeople() as $person) {
+        $primary_authority_contacts[$person->id()] = $person;
+      }
+    }
+
+    // Get all the enforcements and deviation requests awaiting approval.
+    $pending_enforcements = [];
+    $pending_deviation_requests = [];
+    foreach ($partnerships as $partnership) {
+      // Only return inactive enforcements.
+      $enforcement_notices = $partnership->getEnforcements();
+      $enforcement_notices = array_filter($enforcement_notices, function ($enforcement) {
+        return $enforcement->inProgress();
+      });
+      $pending_enforcements = array_merge($pending_enforcements, $enforcement_notices);
+
+      // Only return inactive deviation requests.
+      $deviation_requests = $partnership->getDeviationRequests();
+      $deviation_requests = array_filter($deviation_requests, function ($deviation) {
+        return $deviation->inProgress();
+      });
+      $pending_deviation_requests = array_merge($pending_deviation_requests, $deviation_requests);
+    }
+
     // Display the authorities.
     $form['authorities'] = [
       '#type' => 'container',
@@ -61,8 +89,8 @@ class ParReviewForm extends ParBaseForm {
     ];
 
     // Display the partnerships that will be transferred.
-    $count = count($partnerships);
-    $labels = $this->getParDataManager()->getEntitiesAsOptions($partnerships);
+    $partnership_count = count($partnerships);
+    $partnership_labels = $this->getParDataManager()->getEntitiesAsOptions($partnerships);
     $form['partnerships'] = [
       '#type' => 'container',
       'heading' => [
@@ -74,19 +102,81 @@ class ParReviewForm extends ParBaseForm {
       'description' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->formatPlural($count,
+        '#value' => $this->formatPlural($partnership_count,
           "The following partnership will be transferred, please check this is correct.",
           "The following @count partnerships will be transferred, please check this is correct.",
-          ['@count' => count($partnerships)]),
+          ['@count' => $partnership_count]),
       ],
       'list' => [
         '#theme' => 'item_list',
-        '#items' => $labels,
+        '#items' => $partnership_labels,
         '#attributes' => ['class' => ['list', 'list-bullet']],
       ],
     ];
 
-    // Display the authorities.
+    // Display the partnerships that will be transferred.
+    $contact_count = count($primary_authority_contacts);
+    $contact_records = $this->getParDataManager()->getEntitiesAsOptions($primary_authority_contacts, [], 'summary');
+    $form['contacts'] = [
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => $this->t('Primary Authority Contacts'),
+      ],
+      'description' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->formatPlural($contact_count,
+          "This primary authority contact will be added to the new authority.",
+          "The following @count primary authority contacts will be transferred to the new authority.",
+          ['@count' => $contact_count]),
+      ],
+      'list' => [
+        '#theme' => 'item_list',
+        '#items' => $contact_records,
+        '#attributes' => ['class' => ['list', 'list-bullet']],
+      ],
+      'intro' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t("If there are any primary authority contacts that you don't want transferred to the new authority you must update the partnership with the new records before you transfer the partnership."),
+      ],
+    ];
+
+    // Display the partnerships that will be transferred.
+    $pending_enquiry_count = count($pending_enforcements + $pending_deviation_requests);
+    $enquiries = array_merge($pending_enforcements, $pending_deviation_requests);
+    $enquiry_labels = $this->getParDataManager()->getEntitiesAsOptions($enquiries);
+    $form['enquiries'] = [
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => $this->t('Enforcements & Enquiries'),
+      ],
+    ];
+    if ($pending_enquiry_count > 0) {
+      $form['enquiries']['pending'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->formatPlural($pending_enquiry_count,
+          "There is @count pending notice of enforcement action or deviation request, this will be transferred to the new authority.",
+          "There are @count pending notices of enforcement action or deviation requests, these will be transferred to the new authority.",
+          ['@count' => $pending_enquiry_count]),
+      ];
+    }
+    $form['enquiries']['description'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => $pending_enquiry_count > 0 ?
+        $this->t("All other notices of enforcement action and deviation requests that have been approved, along with all inspection plan feedback and all other enquiries will remain with the existing authority and will not be transferred.") :
+        $this->t("All notices of enforcement action, deviation requests, inspection plan feedback and all other enquiries will remain with the existing authority and will not be transferred."),
+    ];
+
+    // Display the date of change.
     $transfer_date = $this->getDateFormatter()->format($transfer_date->getTimestamp(), 'gds_date_format');
     $form['date'] = [
       '#type' => 'container',
@@ -206,13 +296,16 @@ class ParReviewForm extends ParBaseForm {
     /** @var ParDataPartnership[] $partnerships */
     /** @var ParDataAuthority $old_authority */
     /** @var ParDataAuthority $new_authority */
+    /** @var DrupalDateTime $transfer_date */
 
+    // Transfer the partnership.
     foreach ($partnerships as $partnership) {
       if ($old_authority instanceof ParDataAuthority && $new_authority instanceof ParDataAuthority) {
-        $partnership->transfer($old_authority, $new_authority);
+        $partnership->transfer($old_authority, $new_authority, $transfer_date);
         $partnership->save();
       }
     }
+
     $this->getFlowDataHandler()->deleteStore();
   }
 

@@ -96,6 +96,31 @@ class ParDataAuthority extends ParDataEntity implements ParDataMembershipInterfa
   }
 
   /**
+   * {@inheritDoc}
+   */
+  public function addPerson(ParDataPersonInterface $person): void {
+    if (!$this->hasPerson($person)) {
+      $this->get('field_person')->appendItem($person->id());
+    }
+  }
+
+  /**
+   * Whether the person is already on the authority.
+   *
+   * @return bool
+   *   TRUE if the person already exists on the authority.
+   *   FALSE if not found on the authority.
+   */
+  public function hasPerson(ParDataPersonInterface $person): bool {
+    foreach ($this->get('field_person')->referencedEntities() as $existing) {
+      if ($existing->id() === $person->id()) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  /**
    * Get the regulatory functions for this Partnership.
    */
   public function getRegulatoryFunction($single = FALSE) {
