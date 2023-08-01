@@ -390,6 +390,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         }
       }
     }
+
+    // Re-store the values in case they were modified by any components.
+    $values = $this->cleanseFormDefaults($form_state->getValues());
+    $values = $this->cleanseMultipleValues($values);
+    $this->getFlowDataHandler()->setFormTempData($values);
   }
 
   /**

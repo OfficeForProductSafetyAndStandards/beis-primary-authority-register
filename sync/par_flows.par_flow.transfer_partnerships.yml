@@ -1,0 +1,46 @@
+uuid: 05f08ae8-1861-4119-b667-7c7519c15051
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: GMwfX20fJ81036oSNBH2MUjJofGXux9WnwkbTcSoewY
+id: transfer_partnerships
+label: 'Transfer Partnerships Flow'
+default_title: null
+default_section_title: 'Transfer a partnership'
+description: ''
+save_method: end
+states:
+  - par_data_authority
+final_routes:
+  - view.helpdesk_authorities.authority_page
+steps:
+  1:
+    route: par_transfer_partnerships_flows.authority
+    form_id: par_transfer_partnerships_select_authority
+    components:
+      advanced_authority_select: {  }
+  2:
+    route: par_transfer_partnerships_flows.partnerships
+    form_id: par_transfer_partnerships_select_partnerships
+    components:
+      partnership_select:
+        allow_multiple: true
+  3:
+    route: par_transfer_partnerships_flows.regulatory_functions
+    form_id: par_transfer_partnerships_regulatory_functions
+  4:
+    route: par_transfer_partnerships_flows.transfer_date
+    form_id: par_transfer_partnerships_date
+    components:
+      date: {  }
+  5:
+    route: par_transfer_partnerships_flows.review
+    form_id: par_transfer_partnerships_review
+    form_data:
+      date: par_transfer_partnerships_date
+      regulatory_functions: par_transfer_partnerships_regulatory_functions
+      partnerships: par_transfer_partnerships_select_partnerships
+      authority: par_transfer_partnerships_select_authority
+  6:
+    route: par_transfer_partnerships_flows.complete

@@ -232,7 +232,7 @@ class ParRdDeletedDataListController extends ControllerBase {
 //      '#collapsible' => FALSE,
 //      '#collapsed' => FALSE,
 //    ];
-//    $manage_authorities_link = $this->getLinkByRoute('view.helpdesk_authorities.par_helpdesk_authority_page');
+//    $manage_authorities_link = $this->getLinkByRoute('view.helpdesk_authorities.authority_page');
 //    if ($manage_authorities_link) {
 //      $build['institutions']['authorities'] = [
 //        '#type' => 'markup',
