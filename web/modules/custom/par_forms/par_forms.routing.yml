@@ -1,0 +1,8 @@
+# Generic autocomplete callback
+par_forms.autocomplete:
+  path: '/admin/autocomplete/callback/{plugin}'
+  defaults:
+    _controller: '\Drupal\par_forms\Controller\ParAutocompleteController::callback'
+    _format: json
+  requirements:
+    _permission: 'par autocomplete'

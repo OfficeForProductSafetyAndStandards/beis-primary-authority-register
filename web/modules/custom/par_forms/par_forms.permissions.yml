@@ -1,0 +1,4 @@
+par autocomplete:
+  title: 'Access autocomplete'
+  description: 'A permission to access autocomplete callbacks in PAR forms.'
+  restrict access: TRUE

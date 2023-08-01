@@ -31,6 +31,8 @@ class ParDataRemoveField implements EventSubscriberInterface {
       return FALSE;
     }
 
+    return FALSE;
+
     /** @var \Drupal\par_data\Entity\ParDataEntityInterface $entity */
     $entity = $event->getEntity();
     $removed = []; $revision = [];
@@ -90,6 +92,7 @@ EOT;
       $event->setPreviousState($entity->original->getRawStatus());
       $event->setCurrentState($entity->getRawStatus());
     }
+
     return TRUE;
   }
 

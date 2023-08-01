@@ -1,0 +1,4 @@
+transfer partnerships:
+  title: 'Transfer partnerships'
+  description: 'Move partnerships from one authority to another.'
+  restrict access: TRUE
