@@ -7,6 +7,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -364,7 +365,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
     $entities = [];
 
     foreach ($this->getMapping() as $entity_name => $form_items) {
-      list($type, $bundle) = explode(':', $entity_name . ':');
+      [$type, $bundle] = explode(':', $entity_name . ':');
 
       $entity_class = $this->getParDataManager()->getParEntityType($type)->getClass();
       // If the entity already exists as a data parameter use that.
@@ -390,6 +391,24 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   public function setData(&$params = []) {
     // @TODO Add automatic setting of data based on the mapping (self::getMapping)
     // between self::getElements() and self::getFlowDataHandler()->getParameters()
+  }
+
+  /**
+   * An #after_build callback to set options descriptions for
+   * elements that support #options such as checkboxes and radios.
+   */
+  public static function optionsDescriptions(array $element, FormStateInterface $form_state) {
+    if (!$element['#options'] || !$element['#options_descriptions']) {
+      return $element;
+    }
+
+    foreach (Element::children($element) as $key) {
+      if (isset($element['#options_descriptions'][$key])) {
+        $element[$key]['#description'] = $element['#options_descriptions'][$key];
+      }
+    }
+
+    return $element;
   }
 
   /**
