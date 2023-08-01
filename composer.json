@@ -184,7 +184,6 @@
                 "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2022-12-19/drupal-case_sensitive_email-2490294-58-d95.patch",
                 "Add aria labelling for form states": "./patches/states-aria.patch",
                 "Extends IFE to prefix page title and use error messages in the summary": "./patches/inline_form_errors.patch"
-
             },
             "drupal/devel": {
                 "Webprofiler related crash: requested a non-existent service": "https://gitlab.com/drupalspoons/devel/uploads/8c8ddd9716570d17fa46b9182d22aa7f/419-Webprofiler-related-crash-in-core-9.4.2.patch"
