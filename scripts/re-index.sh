@@ -60,6 +60,7 @@ if [[ $REBUILD == y ]]; then
   # Rebuild all indexes and schedule for re-indexing.
   echo "Rebuilding the index..."
   ../vendor/drush/drush/drush search-api:rebuild-tracker $INDEX
+  ../vendor/drush/drush/drush search-api:clear $INDEX
 fi
 
 # Re-index all indexes.
