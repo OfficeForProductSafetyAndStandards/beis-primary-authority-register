@@ -40,6 +40,7 @@ import uk.gov.beis.pageobjects.DeviationApprovalPage;
 import uk.gov.beis.pageobjects.DeviationCompletionPage;
 import uk.gov.beis.pageobjects.DeviationReviewPage;
 import uk.gov.beis.pageobjects.DeviationSearchPage;
+import uk.gov.beis.pageobjects.EditRegisteredAddressPage;
 import uk.gov.beis.pageobjects.EmployeesPage;
 import uk.gov.beis.pageobjects.EnforcementActionPage;
 import uk.gov.beis.pageobjects.EnforcementCompletionPage;
@@ -196,6 +197,7 @@ public class PARStepDefs {
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
 	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
 	private ViewEnquiryPage viewEnquiryPage;
+	private EditRegisteredAddressPage editRegisteredAddressPage;
 
 	// PAR News Letter
 	private UserProfilePage userProfilePage;
@@ -305,6 +307,7 @@ public class PARStepDefs {
 		parPartnershipTermsPage = PageFactory.initElements(driver, PartnershipTermsPage.class);
 		partnershipSearchPage = PageFactory.initElements(driver, PartnershipSearchPage.class);
 		viewEnquiryPage = PageFactory.initElements(driver, ViewEnquiryPage.class);
+		editRegisteredAddressPage = PageFactory.initElements(driver, EditRegisteredAddressPage.class);
 
 		// PAR News Letter
 		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
@@ -1450,14 +1453,40 @@ public class PARStepDefs {
 		LOG.info("Updating all the remaining Partnership details.");
 		
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
-			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("Street"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("Address1"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE2, data.get("Address2"));
 			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("Town"));
 			DataStore.saveValue(UsableValues.BUSINESS_COUNTY, data.get("County"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTRY, data.get("Country"));
+			DataStore.saveValue(UsableValues.BUSINESS_NATION, data.get("Nation Value"));
 			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("Post Code"));
 			DataStore.saveValue(UsableValues.BUSINESS_DESC, data.get("About the Organisation"));
 			DataStore.saveValue(UsableValues.SIC_CODE, data.get("SIC Code"));
 			DataStore.saveValue(UsableValues.TRADING_NAME, data.get("Trading Name"));
 		}
+		
+		parPartnershipConfirmationPage.editOrganisationAddress();
+		editRegisteredAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1),
+				DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN),
+				DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY),
+				DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY),
+				DataStore.getSavedValue(UsableValues.BUSINESS_NATION),
+				DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		editRegisteredAddressPage.clickSaveButton();
+		
+		LOG.info("Selected Country: " + DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY));
+		LOG.info("Selected Nation: " + DataStore.getSavedValue(UsableValues.BUSINESS_NATION));
+		
+		parPartnershipConfirmationPage.editAboutTheOrganisation();
+		parPartnershipDescriptionPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
+		parPartnershipDescriptionPage.clickSave();
+		
+		parPartnershipConfirmationPage.editSICCode();
+		sicCodePage.editSICCode(DataStore.getSavedValue(UsableValues.SIC_CODE));
+		
+		parPartnershipConfirmationPage.editTradingName();
+		tradingPage.editTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
 	}
 
 	@Then("^all of the Partnership details have been updated successfully$")
@@ -1465,6 +1494,11 @@ public class PARStepDefs {
 		LOG.info("Verifying all the remaining Partnership details have been updated Successfully.");
 		
 		// Verifying the updated values are visible on the Partnerships Details Page.
+		
+		assertTrue(parPartnershipConfirmationPage.checkOrganisationAddress());
+		assertTrue(parPartnershipConfirmationPage.checkAboutTheOrganisation());
+		assertTrue(parPartnershipConfirmationPage.checkSICCode());
+		assertTrue(parPartnershipConfirmationPage.checkTradingName());
 		
 		parPartnershipConfirmationPage.clickSave();
 	}

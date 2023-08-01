@@ -14,6 +14,7 @@ public class PartnershipDescriptionPage extends BasePageObject {
 	}
 
 	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
+	//@FindBy(id = "edit-about-business")
 	private WebElement descriptionBox;
 	
 	@FindBy(id = "edit-save")

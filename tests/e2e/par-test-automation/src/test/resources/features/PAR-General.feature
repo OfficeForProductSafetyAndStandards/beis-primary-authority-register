@@ -241,6 +241,6 @@ Feature:
     # Change Partnership details page to updated the rest of the Partnership
     When the user searches for the last created partnership Organisation
     And the user updates the Partnerships details with the following:
-      | Street           | Town | County             | Post Code | About the Organisation | SIC Code | Trading Name             |
-      | 01 Bridge Street | Bury | Greater Manchester | BL2 4BL   | Updated Organisation   |     1111 | Test Trading Name Update |
+      | Address1    | Address2 | Town | County             | Country | Nation Value | Post Code | About the Organisation | SIC Code          | Trading Name |
+      | 01 new road | Market   | Bury | Greater Manchester | GB      | GB-SCT       | BL2 4BD   | Updated Info           | you sell cookies. | Name Update  |
     Then all of the Partnership details have been updated successfully

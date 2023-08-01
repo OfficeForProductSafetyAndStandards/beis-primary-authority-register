@@ -12,11 +12,15 @@ public class TradingPage extends BasePageObject {
 		super();
 	}
 
-	@FindBy(xpath = "//div/input[@class='form-text form-control govuk-input']")
-	WebElement tradingName;
+	//@FindBy(xpath = "//div/input[@class='form-text form-control govuk-input']")
+	@FindBy(id = "edit-trading-name")
+	private WebElement tradingName;
+	
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
 
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
+	private WebElement continueBtn;
 
 	public BasePageObject enterTradingName(String name) {
 		tradingName.clear();
@@ -28,5 +32,13 @@ public class TradingPage extends BasePageObject {
 			driver.findElement(By.id("edit-save")).click();
 			return PageFactory.initElements(driver, BusinessConfirmationPage.class);
 		}
+	}
+	
+	public PartnershipConfirmationPage editTradingName(String name) {
+		tradingName.clear();
+		tradingName.sendKeys(name);
+		
+		saveBtn.click();
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 }
