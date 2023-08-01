@@ -1,0 +1,4 @@
+amend partnerships:
+  title: 'Amend partnerships'
+  description: 'Add legal entities to existing partnerships.'
+  restrict access: TRUE

@@ -1,0 +1,83 @@
+par_partnership_amend_flows.authority:
+  path: '/transfer/{par_data_authority}/authority'
+  defaults:
+    _form: '\Drupal\par_partnership_amend_flows\Form\ParSelectAuthoritiesForm'
+    _title_callback: '\Drupal\par_partnership_amend_flows\Form\ParSelectAuthoritiesForm::titleCallback'
+  requirements:
+    _permission: 'transfer partnerships'
+    _par_transfer_partnerships_access_check: 'TRUE'
+    par_data_authority: \d+
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
+
+par_partnership_amend_flows.partnerships:
+  path: '/transfer/{par_data_authority}/partnerships'
+  defaults:
+    _form: '\Drupal\par_partnership_amend_flows\Form\ParSelectPartnershipsForm'
+    _title_callback: '\Drupal\par_partnership_amend_flows\Form\ParSelectPartnershipsForm::titleCallback'
+  requirements:
+    _permission: 'transfer partnerships'
+    _par_transfer_partnerships_access_check: 'TRUE'
+    par_data_authority: \d+
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
+
+par_partnership_amend_flows.regulatory_functions:
+  path: '/transfer/{par_data_authority}/regulatory-functions'
+  defaults:
+    _form: '\Drupal\par_partnership_amend_flows\Form\ParManageFunctionsForm'
+    _title_callback: '\Drupal\par_partnership_amend_flows\Form\ParManageFunctionsForm::titleCallback'
+  requirements:
+    _permission: 'transfer partnerships'
+    _par_transfer_partnerships_access_check: 'TRUE'
+    par_data_authority: \d+
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
+
+par_partnership_amend_flows.transfer_date:
+  path: '/transfer/{par_data_authority}/date'
+  defaults:
+    _form: '\Drupal\par_partnership_amend_flows\Form\ParTransferDateForm'
+    _title_callback: '\Drupal\par_partnership_amend_flows\Form\ParTransferDateForm::titleCallback'
+  requirements:
+    _permission: 'transfer partnerships'
+    _par_transfer_partnerships_access_check: 'TRUE'
+    par_data_authority: \d+
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
+
+par_partnership_amend_flows.review:
+  path: '/transfer/{par_data_authority}/review'
+  defaults:
+    _form: '\Drupal\par_partnership_amend_flows\Form\ParReviewForm'
+    _title_callback: '\Drupal\par_partnership_amend_flows\Form\ParReviewForm::titleCallback'
+  requirements:
+    _permission: 'transfer partnerships'
+    _par_transfer_partnerships_access_check: 'TRUE'
+    par_data_authority: \d+
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
+
+par_partnership_amend_flows.complete:
+  path: '/transfer/{par_data_authority}/complete'
+  defaults:
+    _controller: '\Drupal\par_partnership_amend_flows\Controller\ParCompleteController::content'
+    _title_callback: '\Drupal\par_partnership_amend_flows\Controller\ParCompleteController::titleCallback'
+  requirements:
+    _permission: 'transfer partnerships'
+    _custom_access: '\Drupal\par_partnership_amend_flows\Controller\ParCompleteController::accessCallback'
+    par_data_authority: \d+
+  options:
+    parameters:
+      par_data_authority:
+        type: entity:par_data_authority
