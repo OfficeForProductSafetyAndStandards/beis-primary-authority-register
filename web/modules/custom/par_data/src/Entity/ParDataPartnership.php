@@ -1003,7 +1003,7 @@ class ParDataPartnership extends ParDataEntity {
     $main_property_path = $previous_names_field->getFieldDefinition()->getFieldStorageDefinition()->getMainPropertyName();
     $previous_names = $previous_names_field->getValue();
 
-    return end($previous_names)[$main_property_path];
+    return $previous_names ? end($previous_names)[$main_property_path] : NULL;
   }
 
   /**
