@@ -49,7 +49,8 @@ class ParSelectPartnershipForm extends ParFormPluginBase {
     }
     // If only one partnership submit the form automatically and go to the next step.
     elseif ($partnership_count === 1) {
-      $this->getFlowDataHandler()->setTempDataValue('par_data_partnership_id', key($partnerships));
+      $partnership_ids = [key($partnerships) => key($partnerships)];
+      $this->getFlowDataHandler()->setTempDataValue('par_data_partnership_id', $partnership_ids);
       $url = $this->getFlowNegotiator()->getFlow()->progress();
       return new RedirectResponse($url->toString());
     }
