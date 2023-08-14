@@ -1974,7 +1974,7 @@ display:
           title: 'back to dashboard'
           assistive_text: ''
           link: /dashboard
-          class: link-back
+          class: govuk-back-link
         par_flow_link_1:
           id: par_flow_link_1
           table: views
@@ -1987,7 +1987,7 @@ display:
           title: 'back to dashboard'
           assistive_text: ''
           link: /helpdesk
-          class: link-back
+          class: govuk-back-link
       display_extenders: {  }
     cache_metadata:
       max-age: -1
