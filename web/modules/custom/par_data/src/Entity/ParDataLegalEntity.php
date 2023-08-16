@@ -157,7 +157,13 @@ class ParDataLegalEntity extends ParDataEntity {
     }
 
     // Ensure all required fields are up-to-date with the organisation profile.
-    if ($this->isRegisteredOrganisation() && $profile = $this->getOrganisationProfile()) {
+    $this->lookup();
+  }
+
+  public function lookup() {
+    // Lookup any registered organisations and update the information based on
+    // the returned organisation profile.
+    if ($this->isRegisteredOrganisation() && $profile = $this->lookupOrganisationProfile()) {
       // Save the true values from the registry.
       $this->set('registered_name', $profile->getName());
       $this->set('registered_number', $profile->getId());

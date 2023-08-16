@@ -784,6 +784,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
 
     if (!empty($actions)) {
       $actions['#type'] = 'actions';
+      return $actions;
     }
     else {
       return NULL;
@@ -810,6 +811,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
 
     if (!empty($actions)) {
       $actions['#type'] = 'actions';
+      return $actions;
     }
     else {
       return NULL;

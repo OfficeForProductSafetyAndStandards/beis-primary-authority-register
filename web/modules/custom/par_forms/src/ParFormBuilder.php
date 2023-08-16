@@ -106,7 +106,6 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
    *   The form elements for the rendered component.
    */
   public function build(ParFormPluginInterface $component, int $index = NULL): array|RedirectResponse {
-    var_dump($index);
     // If the component supports a summary list
     if ($this->supportsSummaryList($component)) {
       // If a specific index is requested build it.
@@ -266,8 +265,12 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
       // Add the component elements to the form array.
       $elements[$component->getPrefix()][$delta] = $element;
 
+      // No actions are shown for form elements that support the summary list.
+      $hide_element_actions = $this->supportsSummaryList($component) &&
+        !$this->displaySummaryList($component, $index);
+
       // Add any element actions.
-      if ($element_actions = $component->getElementActions($i)) {
+      if ($element_actions = $component->getElementActions($i) && !$hide_element_actions) {
         // Don't show the 'change' button when displaying form elements.
         unset($element_actions['change']);
 

@@ -82,7 +82,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     // the instance incomplete and clear the data.
     $registry_key = $this->getItemKey(['registry']);
     $name_key = $this->getItemKey(['unregistered', 'legal_entity_name']);
-    $number_key = $this->getItemKey(['unregistered', 'legal_entity_number']);
+    $number_key = $this->getItemKey(['registered', 'legal_entity_number']);
     $type_key = $this->getItemKey(['unregistered', 'legal_entity_type']);
 
     // Do not provide extra filtering if no registry value is set.
@@ -94,6 +94,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     $name = NestedArray::getValue($item, $name_key);
     $type = NestedArray::getValue($item, $type_key);
     $number = NestedArray::getValue($item, $number_key);
+
     // Unset the registry key if the required values are not completed.
     if ($registry === ParDataLegalEntity::DEFAULT_REGISTER &&
       (empty($name) || empty($type))) {
@@ -131,6 +132,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
         'registered_number' => $this->getDefaultValuesByKey(['registered', 'legal_entity_number'], $index,  ''),
         'legal_entity_type' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_type'], $index,  ''),
       ]);
+      $legal_entity->lookup();
 
       // Display the row data as an item.
       $view_builder = \Drupal::entityTypeManager()
@@ -239,7 +241,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     $form['registered']['legal_entity_number'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Provide the registration number'),
-      '#default_value' => $this->getDefaultValuesByKey('legal_entity_number', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey(['registered', 'legal_entity_number'], $cardinality),
     ];
 
     // Follow-up inputs for unregistered entities.
@@ -270,7 +272,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     $form['unregistered']['legal_entity_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('How is this entity structured?'),
-      '#default_value' => $this->getDefaultValuesByKey('legal_entity_type', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_type'], $cardinality),
       '#options' => $unregistered_type_options,
       '#options_descriptions' => $unregistered_type_options_descriptions,
       '#after_build' => [
@@ -284,7 +286,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     $form['unregistered']['legal_entity_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter name of the legal entity'),
-      '#default_value' => $this->getDefaultValuesByKey('legal_entity_name', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_name'], $cardinality),
       '#attributes' => [
         'class' => ['form-group'],
       ],

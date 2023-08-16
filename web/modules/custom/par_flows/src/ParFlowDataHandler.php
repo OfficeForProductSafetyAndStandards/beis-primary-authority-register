@@ -177,6 +177,15 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  public function deleteTempDataValue($key, $cid = NULL) {
+    $data = $this->getFormTempData($cid);
+    NestedArray::unsetValue($data, (array) $key);
+    $this->setFormTempData($data, $cid);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getFormTempData($cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowKey() : $cid;
 
@@ -204,6 +213,18 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function deleteFormTempData($cid = NULL) {
+    $cid = empty($cid) ? $this->negotiator->getFlowKey() : $cid;
+
+    // Start an anonymous session if required.
+    $this->startAnonymousSession();
+
+    $this->store->delete(self::TEMP_PREFIX . $cid);
+  }
+
+  /**
    * Get the data submitted by a given plugin.
    *
    * If the plugin allows multiple values this data will be structured and the
@@ -215,18 +236,6 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
     return $plugin->isFlattened() ?
       $this->getFormTempData($cid) :
       $this->getTempDataValue($plugin->getPrefix(), $cid);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function deleteFormTempData($cid = NULL) {
-    $cid = empty($cid) ? $this->negotiator->getFlowKey() : $cid;
-
-    // Start an anonymous session if required.
-    $this->startAnonymousSession();
-
-    $this->store->delete(self::TEMP_PREFIX . $cid);
   }
 
   /**

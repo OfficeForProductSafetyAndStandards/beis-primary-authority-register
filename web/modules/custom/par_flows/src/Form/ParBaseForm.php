@@ -489,6 +489,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Remove the value from the form state.
     $form_state->unsetValue($item_key);
 
+    // Remove the value from the temporary data store.
+    $this->getFlowDataHandler()->deleteTempDataValue($item_key);
+
     // Store the data.
     $this->storeData($form_state);
 
@@ -583,24 +586,46 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   protected function storeData(FormStateInterface $form_state) {
     // Remove non-user submitted form values.
     $submitted_values = $form_state->cleanValues()->getValues();
-    var_dump(array_keys($submitted_values)); die;
+    // Remove the triggering element button from the form_state.
+    $triggering_element = $form_state->getTriggeringElement()['#name'];
+    if (isset($submitted_values[$triggering_element])) {
+      unset($submitted_values[$triggering_element]);
+    }
+
     // Filter out empty values.
     $submitted_values = $this->cleanseValues($submitted_values);
 
     if (!empty($submitted_values)) {
-      $key = 'par_component_legal_entity';
-      // Merge the submitted values with the existing values.
-      $existing_values = $this->getFlowDataHandler()->getFormTempData();
-      $stored_values = NestedArray::mergeDeepArray([$submitted_values, $existing_values], TRUE);
-
-      var_dump(array_keys($submitted_values));
-      var_dump(array_keys($existing_values));
-      var_dump(array_keys($stored_values));
-      die;
+      // Merge data with existing values.
+      $data = $this->mergeData($submitted_values);
 
       // Set the new form values.
-      $this->getFlowDataHandler()->setFormTempData($stored_values);
+      $this->getFlowDataHandler()->setFormTempData($data);
     }
+  }
+
+  /**
+   * Merge the data with any existing values in the temporary data store.
+   *
+   * @param $data
+   *   The data to be added.
+   *
+   * @return array
+   *   The merged data.
+   */
+  protected function mergeData($data): array {
+    // For components that support the summary list only add the data that has been changed.
+    foreach ($this->getComponents() as $component) {
+      if ($this->getFormBuilder()->supportsSummaryList($component)) {
+        // Merge the submitted values with the existing values.
+        $existing_data = $this->getFlowDataHandler()->getFormTempData();
+
+        // Ensure any existing items are added to the data.
+        $data[$component->getPrefix()] = $data[$component->getPrefix()] + $existing_data[$component->getPrefix()];
+      }
+    }
+
+    return $data;
   }
 
   /**

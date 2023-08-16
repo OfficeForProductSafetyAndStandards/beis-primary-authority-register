@@ -49,7 +49,6 @@ class ParLegalEntitySummaryForm extends ParFormPluginBase implements ParSummaryL
 
     // Data will be returned either structured or flattened depending on the plugin.
     $data = $this->getFlowDataHandler()->getPluginTempData($this);
-    var_dump($data);
 
 //    $cid = $this->getFlowNegotiator()->getFormKey('add_legal_entity');
 //    $form_data = $this->getFlowDataHandler()->getPluginData($cid, $plugin);
