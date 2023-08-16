@@ -204,6 +204,20 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   }
 
   /**
+   * Get the data submitted by a given plugin.
+   *
+   * If the plugin allows multiple values this data will be structured and the
+   * resulting array will be an array of plugin data keyed by cardinality values.
+   */
+  public function getPluginTempData($plugin, $cid = NULL) {
+    // If the plugin data is flattened return all the form data,
+    // otherwise return just the data found for the given plugin prefix.
+    return $plugin->isFlattened() ?
+      $this->getFormTempData($cid) :
+      $this->getTempDataValue($plugin->getPrefix(), $cid);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function deleteFormTempData($cid = NULL) {

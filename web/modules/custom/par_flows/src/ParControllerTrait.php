@@ -278,7 +278,7 @@ trait ParControllerTrait {
   public function loadData() {
     // Load data for all the registered components of the form.
     foreach ($this->getComponents() as $component) {
-      $this->getFormBuilder()->loadPluginData($component);
+      $this->getFormBuilder()->loadData($component);
     }
   }
 

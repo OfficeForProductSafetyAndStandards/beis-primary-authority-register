@@ -126,8 +126,7 @@ trait ParEntityValidationMappingTrait {
    */
   public function wrapErrorMessage($message, $id) {
     $url = Url::fromUri('internal:#', ['fragment' => $id]);
-    $link = Link::fromTextAndUrl($message, $url)->toString();
-    return $link;
+    return Link::fromTextAndUrl($message, $url)->toString();
   }
 
   /**

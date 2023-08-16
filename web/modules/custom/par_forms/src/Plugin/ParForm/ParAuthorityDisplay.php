@@ -91,7 +91,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
         '#value' => $this->getDefaultValuesByKey('authority_name', $cardinality, NULL),
       ],
     ];
-
+    $params = $this->getRouteParams() + ['destination' => $return_path];
     // Add operation link for updating authority details.
     try {
       $link = $this->getFlowNegotiator()->getFlow()

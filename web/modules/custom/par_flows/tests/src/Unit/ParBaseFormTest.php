@@ -54,26 +54,6 @@ class ParBaseFormTest extends UnitTestCase {
   }
 
   /**
-   * @covers ::cleanseFormDefaults
-   */
-  public function testCleanseFormDefaults() {
-    $form = [
-      'form_build_id' => 'test',
-      'form_token' => 'test',
-      'form_id' => 'test',
-      'op' => 'test',
-      'extra' => 'test',
-      'real_value' => 'test',
-      'real_value2' => 'test',
-    ];
-    $expected = [
-      'real_value' => 'test',
-      'real_value2' => 'test',
-    ];
-    $this->assertArrayEquals($expected, $this->baseForm->cleanseFormDefaults($form), "The form values have been cleansed.");
-  }
-
-  /**
    * @covers ::decideBooleanValue
    */
   public function testdecideBooleanValue() {

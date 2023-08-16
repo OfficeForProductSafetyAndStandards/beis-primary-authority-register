@@ -428,6 +428,13 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  public function getStepFormDataKey($index, $key) {
+    return $this->getStepFormDataKeys($index)[$key] ?? NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getStepOperations($index) {
     $step = $this->getStep($index);
     $redirects = isset($step['redirect']) ? $step['redirect'] : [];
@@ -454,17 +461,24 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
-  public function getStepByFormId($form_id) {
+  public function getStepByFormId($form_key) {
+    // Look up the form id from the form data config, the form data keys map to form IDs
+    // and provide a consistent way for components to refer to similar forms across different journeys.
+    $form_data_step = $this->getStepFormDataKey($this->getCurrentStep(), $form_key);
+
+    // If the form data keys contained a reference to a form id then use this, otherwise
+    // use the form key directly to look up the step.
+    $form_id = $form_data_step ?? $form_key;
+
+    // Look through all steps in the journey to find a form id that matches.
     foreach ($this->getSteps() as $key => $step) {
       if (isset($step['form_id']) && $form_id === $step['form_id']) {
-        $match = [
-          'step' => $key,
-        ] + $step;
+        return $key;
       }
     }
 
-    // If there is no step we'll go back to the beginning.
-    return isset($match['step']) ? $match['step'] : NULL;
+    // If no step can be found that represents this form id.
+    return NULL;
   }
 
   /**

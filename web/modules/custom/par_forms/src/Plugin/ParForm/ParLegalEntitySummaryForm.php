@@ -3,11 +3,8 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
-use Drupal\Component\Utility\NestedArray;
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 use Drupal\par_forms\ParSummaryListInterface;
@@ -18,32 +15,16 @@ use Drupal\registered_organisations\TemporaryException;
  * Legal Entity form plugin.
  *
  * @ParForm(
- *   id = "legal_entity",
- *   title = @Translation("Legal entity form.")
+ *   id = "legal_entity_summary",
+ *   title = @Translation("Legal entity summary form.")
  * )
  */
-class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInterface {
+class ParLegalEntitySummaryForm extends ParFormPluginBase implements ParSummaryListInterface {
 
   /**
    * {@inheritdoc}
    */
-  protected $entityMapping = [
-    ['registry', 'par_data_legal_entity', 'registry', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must choose the type of legal entity.'
-    ]],
-  ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected $wrapperName = 'legal entity';
-
-  /**
-   * @defaults
-   */
-  protected $formDefaults = [
-    'legal_entity_type' => 'none',
-  ];
+  protected $wrapperName = 'legal entity summary list';
 
   /**
    * Get the registered organisations manager.
@@ -53,9 +34,34 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
   }
 
   /**
+   * @defaults
+   */
+  protected $formDefaults = [
+    'legal_entity_type' => 'none',
+  ];
+
+  /**
    * Load the data for this form.
    */
   public function loadData($cardinality = 1) {
+    // This component is designed to complement the `legal_entity` component,
+    // allowing multiple legal entities to be added.
+
+    // Data will be returned either structured or flattened depending on the plugin.
+    $data = $this->getFlowDataHandler()->getPluginTempData($this);
+    var_dump($data);
+
+//    $cid = $this->getFlowNegotiator()->getFormKey('add_legal_entity');
+//    $form_data = $this->getFlowDataHandler()->getPluginData($cid, $plugin);
+//
+//    // Form data is flattened if there is only a single item.
+//    if ($form_data[$plugin_prefix])
+//    $legal_entity_names = $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $cid_[$plugin_id]) ?: [];
+//
+//    if () {
+//
+//    }
+    //
     if ($par_data_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity')) {
       $this->getFlowDataHandler()->setFormPermValue("registered_name", $par_data_legal_entity->get('registered_name')->getString());
       $this->getFlowDataHandler()->setFormPermValue("legal_entity_type", $par_data_legal_entity->get('legal_entity_type')->getString());
@@ -67,109 +73,6 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     }
 
     parent::loadData();
-  }
-
-  /**
-   * Apply additional filtering to each instance so that incomplete plugin data
-   * is not submitted when validation is bypassed.
-   *
-   * {@inheritdoc}
-   */
-  public function filterItem(array $item) {
-    $item = parent::filterItem($item);
-
-    // If a registry value is set but no other accompanying values then consider
-    // the instance incomplete and clear the data.
-    $registry_key = $this->getItemKey(['registry']);
-    $name_key = $this->getItemKey(['unregistered', 'legal_entity_name']);
-    $number_key = $this->getItemKey(['unregistered', 'legal_entity_number']);
-    $type_key = $this->getItemKey(['unregistered', 'legal_entity_type']);
-
-    // Do not provide extra filtering if no registry value is set.
-    $registry = NestedArray::getValue($item, $registry_key);
-    if (empty($registry)) {
-      return $item;
-    }
-
-    $name = NestedArray::getValue($item, $name_key);
-    $type = NestedArray::getValue($item, $type_key);
-    $number = NestedArray::getValue($item, $number_key);
-    // Unset the registry key if the required values are not completed.
-    if ($registry === ParDataLegalEntity::DEFAULT_REGISTER &&
-      (empty($name) || empty($type))) {
-      NestedArray::unsetValue($item, $registry_key);
-    }
-    else if (in_array($registry, ['companies_house', 'charity_commission']) &&
-      empty($number)) {
-      NestedArray::unsetValue($item, $registry_key);
-    }
-
-    return $item;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  public function getSummaryList(array $form = []): mixed {
-    // Get a number formatter to display the row values in words.
-    $formatter = new \NumberFormatter('en_UK', \NumberFormatter::SPELLOUT);
-    $formatter->setTextAttribute(\NumberFormatter::DEFAULT_RULESET, "%spellout-ordinal");
-
-    $form = [
-      '#type' => 'container',
-      '#attributes' => ['class' => ['govuk-summary-list']],
-    ];
-
-    $data = $this->getData();
-    foreach ($data as $delta => $row) {
-      $index = $delta + 1;
-
-      // Turn the data into a legal entity.
-      $legal_entity = ParDataLegalEntity::create([
-        'registry' => $this->getDefaultValuesByKey(['registry'], $index,  ParDataLegalEntity::DEFAULT_REGISTER),
-        'registered_name' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_name'], $index,  ''),
-        'registered_number' => $this->getDefaultValuesByKey(['registered', 'legal_entity_number'], $index,  ''),
-        'legal_entity_type' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_type'], $index,  ''),
-      ]);
-
-      // Display the row data as an item.
-      $view_builder = \Drupal::entityTypeManager()
-        ->getViewBuilder($legal_entity->getEntityTypeId());
-      $item = $view_builder
-        ->view($legal_entity, 'summary');
-
-      $form[$delta] = [
-        '#type' => 'container',
-        '#attributes' => ['class' => ['govuk-summary-list__row']],
-        'key' => [
-          '#type' => 'html_tag',
-          '#tag' => 'dt',
-          '#value' => $this->t("@number legal entity", ['@number' => ucfirst($formatter->format($index))]),
-          '#attributes' => ['class' => ['govuk-summary-list__key']],
-        ],
-        'value' => [
-          '#type' => 'html_tag',
-          '#tag' => 'dd',
-          '#value' => \Drupal::service('renderer')->render($item),
-          '#attributes' => ['class' => ['govuk-summary-list__value']],
-        ],
-      ];
-
-      // Get the supported actions.
-      if ($element_actions = $this->getElementActions($index)) {
-        $form[$delta]['actions'] = $element_actions;
-        $form[$delta]['actions']['#attributes'] = ['class' => ['govuk-summary-list__actions']];
-      }
-    }
-
-    return $form;
-  }
-
-  /**
-   * Remove Item.
-   */
-  static function removeItem() {
-
   }
 
   /**
@@ -359,7 +262,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       // Validate additional rules if a profile was found.
       parent::validate($form, $form_state, $cardinality, $action);
     }
-    else if ($registry_element) {
+    else {
       $message = 'Please choose whether this is a registered or unregistered legal entity.';
       $this->setError($form, $form_state, $registry_element, $message);
     }
