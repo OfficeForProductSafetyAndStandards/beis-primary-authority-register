@@ -16,7 +16,7 @@ public class DeviationSearchPage extends BasePageObject {
 		super();
 	}
 
-	String devReq = "(//tr/td[contains(text(),'?')]/following-sibling::td[5])[1]";
+	String devReq = "(//tr/td[contains(text(),'?')]/following-sibling::td[5]/a)[1]";
 
 	public BasePageObject selectDeviationRequest() {
 		driver.findElement(By.xpath(devReq.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME))))
