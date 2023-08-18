@@ -12,6 +12,7 @@ use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\invite\InviteConstants;
+use Drupal\par_forms\ParFormPluginInterface;
 
 /**
  * A controller for displaying the application confirmation.
@@ -37,7 +38,7 @@ class ParProfileController extends ParBaseController {
    */
   public function titleCallback() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
-    $name = $par_data_person ? $par_data_person->getFullName() : NULL;
+    $name = $par_data_person?->getFullName();
 
     if (!empty($name)) {
       $this->pageTitle = ucfirst($name);
@@ -51,8 +52,8 @@ class ParProfileController extends ParBaseController {
 
   public function loadData() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
-    $user = $par_data_person ? $par_data_person->getUserAccount() : NULL;
-
+    $user = $par_data_person?->getUserAccount();
+    
     if ($user) {
       $this->getFlowDataHandler()->setParameter('user', $user);
     }
@@ -82,11 +83,33 @@ class ParProfileController extends ParBaseController {
       // We have some legacy data which has caused some people to have over 100 contacts.
       // An upper limit needs to be set as this can't all be processed within the same page.
       $this->getFlowDataHandler()->setParameter('contacts', array_slice($people, 0, 100, TRUE));
-      $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'contact_locations_detail', $people);
+
+      // In order to display multiple cardinality the contact_locations_detail
+      // plugin needs to know how many instances of data to display, it doesn't
+      // use this data other than to know how many instances of data to display.
+      // The actual displayed data comes from the contacts parameter set above.
+      $contact_locations_detail_component = $this->getComponent('contact_locations_detail');
+      if ($contact_locations_detail_component instanceof ParFormPluginInterface) {
+        $values = [];
+        foreach ($people as $person) {
+          $values[] = ['username' => $person->label()];
+        }
+        $this->getFlowDataHandler()->setPluginTempData($contact_locations_detail_component, $values);
+      }
     }
-    else {
+    else if ($par_data_person) {
       $this->getFlowDataHandler()->setParameter('contacts', [$par_data_person]);
-      $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'contact_locations_detail', [$par_data_person]);
+
+      // In order to display multiple cardinality the contact_locations_detail
+      // plugin needs to know how many instances of data to display, it doesn't
+      // use this data other than to know how many instances of data to display.
+      // The actual displayed data comes from the contacts parameter set above.
+      $contact_locations_detail_component = $this->getComponent('contact_locations_detail');
+      if ($contact_locations_detail_component instanceof ParFormPluginInterface) {
+        // Set a single value.
+        $values = [ ['username' => $par_data_person->label()] ];
+        $this->getFlowDataHandler()->setPluginTempData($contact_locations_detail_component, $values);
+      }
     }
 
     parent::loadData();

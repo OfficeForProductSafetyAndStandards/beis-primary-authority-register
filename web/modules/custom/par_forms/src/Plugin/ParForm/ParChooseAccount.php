@@ -34,7 +34,7 @@ class ParChooseAccount extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
+  public function defaultConfiguration(): array {
     return ['require_user' => FALSE] + parent::defaultConfiguration();
   }
 

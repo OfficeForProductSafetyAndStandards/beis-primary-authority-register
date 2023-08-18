@@ -24,7 +24,7 @@ class ParSelectRoleForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
+  public function defaultConfiguration(): array {
     return ['roles' => ['par_enforcement', 'par_authority', 'par_authority_manager', 'par_organisation', 'par_helpdesk', 'senior_administration_officer']] + parent::defaultConfiguration();
   }
 
