@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\Url;
 use Drupal\par_forms\ParFormBuilder;
@@ -21,21 +22,21 @@ class ParGdprForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $account = $this->getFlowDataHandler()->getParameter('user');
     if ($account && ('1' === $account->get('field_gdpr')->getString() || $account->get('field_gdpr')->getString() === TRUE)) {
-      $this->setDefaultValuesByKey("gdpr_agreement", $cardinality, TRUE);
+      $this->setDefaultValuesByKey("gdpr_agreement", $index, TRUE);
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // If this notice has already been reviewed then skip this form.
-    if ($this->getDefaultValuesByKey('gdpr_agreement', $cardinality, FALSE)) {
+    if ($this->getDefaultValuesByKey('gdpr_agreement', $index, FALSE)) {
       $url = $this->getFlowNegotiator()->getFlow()->progress();
       return new RedirectResponse($url->toString());
     }
@@ -86,14 +87,14 @@ class ParGdprForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $data_policy_key = $this->getElementKey('data_policy');
     if ($form_state->getValue($data_policy_key) !== 'on') {
-      $id_key = $this->getElementKey('data_policy', $cardinality, TRUE);
+      $id_key = $this->getElementKey('data_policy', $index, TRUE);
       $message = $this->wrapErrorMessage('Please confirm you have read the Privacy Notice and understand how the Office intend to use your personal data.', $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($data_policy_key), $message);
     }
 
-    return parent::validate($form, $form_state, $cardinality, $action);
+    return parent::validate($form, $form_state, $index, $action);
   }
 }

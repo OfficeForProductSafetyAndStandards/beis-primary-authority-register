@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -17,7 +18,7 @@ class ParCeaseDateForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected $entityMapping = [
+  protected array $entityMapping = [
     ['date_membership_ceased', 'par_data_coordinated_business', 'date_membership_ceased', NULL, NULL, 0, [
       'You must fill in the missing information.' => 'You must enter the date the membership ended e.g. 2017-9-21.'
     ]],
@@ -35,25 +36,25 @@ class ParCeaseDateForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     if ($coordinated_member = $this->getFlowDataHandler()->getParameter('par_data_coordinated_business')) {
       $this->getFlowDataHandler()->setFormPermValue('date_membership_ceased', $coordinated_member->get('date_membership_ceased')->getString());
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
 
     // Membership begin date.
     $form['date_membership_ceased'] = [
       '#type' => 'gds_date',
       '#title' => $this->t('Enter the date the membership ended'),
       '#description' => $this->t('For example: 01/01/2020'),
-      '#default_value' => $this->getDefaultValuesByKey('date_membership_ceased', $cardinality, $this->getFormDefaultByKey('date_membership_ceased')),
+      '#default_value' => $this->getDefaultValuesByKey('date_membership_ceased', $index, $this->getFormDefaultByKey('date_membership_ceased')),
     ];
 
     return $form;

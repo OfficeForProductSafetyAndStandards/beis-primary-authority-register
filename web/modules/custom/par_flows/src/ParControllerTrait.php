@@ -3,22 +3,29 @@
 namespace Drupal\par_flows;
 
 use Drupal\Component\Plugin\Exception\PluginException;
-use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_forms\ParFormPluginInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Drupal\Core\Routing\UrlGeneratorInterface;
+use Drupal\par_flows\ParFlowNegotiatorInterface;
+use Drupal\par_flows\ParFlowDataHandlerInterface;
+use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_forms\ParFormBuilderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Drupal\Core\Path\PathValidatorInterface;
+use Drupal\Core\Routing\RouteProviderInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Component\Plugin\PluginInspectionInterface;
 
 trait ParControllerTrait {
 
   /**
    * Default page title.
    *
-   * @var \Drupal\Core\StringTranslation\TranslatableMarkup
+   * @var string
    */
   protected $defaultTitle = 'Primary Authority Register';
 
@@ -32,42 +39,42 @@ trait ParControllerTrait {
   /**
    * The account for the current logged in user.
    *
-   * @var \Drupal\user\Entity\User
+   * @var User
    */
   protected $currentUser;
 
   /**
    * The form component plugins.
    *
-   * @var \Drupal\Component\Plugin\PluginInspectionInterface[]
+   * @var PluginInspectionInterface[]
    */
-  protected $components = [];
+  protected array $components = [];
 
   /**
    * The flow negotiator.
    *
-   * @var \Drupal\par_flows\ParFlowNegotiatorInterface
+   * @var ParFlowNegotiatorInterface
    */
-  protected $negotiator;
+  protected ParFlowNegotiatorInterface $negotiator;
 
   /**
    * The flow data manager.
    *
-   * @var \Drupal\par_flows\ParFlowDataHandlerInterface
+   * @var ParFlowDataHandlerInterface
    */
-  protected $flowDataHandler;
+  protected ParFlowDataHandlerInterface $flowDataHandler;
 
   /**
    * The PAR data manager.
    *
-   * @var \Drupal\par_data\ParDataManagerInterface
+   * @var ParDataManagerInterface
    */
-  protected $parDataManager;
+  protected ParDataManagerInterface $parDataManager;
 
   /**
    * The PAR form builder.
    *
-   * @var \Drupal\par_data\ParDataManagerInterface
+   * @var ParFormBuilderInterface
    */
   protected $formBuilder;
 
@@ -75,9 +82,9 @@ trait ParControllerTrait {
   /**
    * The url generator used in par forms.
    *
-   * @var \Drupal\Core\Routing\UrlGeneratorInterface
+   * @var UrlGeneratorInterface
    */
-  protected $urlGenerator;
+  protected UrlGeneratorInterface $urlGenerator;
 
   /**
    * Get the current user account.
@@ -152,35 +159,35 @@ trait ParControllerTrait {
   }
 
   /**
-   * {@inheritdoc}
+   * @return \Drupal\par_flows\ParFlowNegotiatorInterface
    */
   public function getFlowNegotiator() {
     return $this->negotiator;
   }
 
   /**
-   * {@inheritdoc}
+   * @return \Drupal\par_flows\ParFlowDataHandlerInterface
    */
   public function getFlowDataHandler() {
     return $this->flowDataHandler;
   }
 
   /**
-   * {@inheritdoc}
+   * @return \Drupal\par_data\ParDataManagerInterface
    */
   public function getParDataManager() {
     return $this->parDataManager;
   }
 
   /**
-   * {@inheritdoc}
+   * @return \Drupal\par_forms\ParFormBuilderInterface
    */
-  public function getFormBuilder() {
+  public function getFormBuilder(): ParFormBuilderInterface {
     return $this->formBuilder;
   }
 
   /**
-   * {@inheritdoc}
+   * @return UrlGeneratorInterface
    */
   public function getUrlGenerator() {
     return $this->urlGenerator;

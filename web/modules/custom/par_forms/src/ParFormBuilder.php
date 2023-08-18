@@ -10,6 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use JetBrains\PhpStorm\NoReturn;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -118,31 +119,48 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
     }
   }
 
-  public function validate(ParFormPluginInterface $component, $form, FormStateInterface &$form_state, $index = NULL): void {
-    $count = $component->countItems();
-
-    // The delta of the element is zero-based whereas the index starts at 1.
-    $delta = $index - 1;
+  /**
+   * {@inheritDoc}
+   */
+  public function validate(ParFormPluginInterface $component, array $form, FormStateInterface &$form_state, $index = NULL): void {
+    // Get the data to validate from the form_state.
+    $data = $form_state->cleanValues()->getValues();
 
     // Get the maximum index (for a new item).
     $max = $component->getNewCardinality();
     for ($i = 1; $i <= $max; $i++) {
-      // For components that use the Summary List pattern, single indexes should be validated only.
-      if ($this->supportsSummaryList($component) && $index && $i !== $index) {
-        // If it is not the requested index don't validate the elements.
+      if (!$component->isFlattened()) {
+        $delta = $i - 1;
+        $item = $data[$component->getPrefix()][$delta] ?? NULL;
+      }
+      else if ($i === 1) {
+        $item = $data ?? NULL;
+      }
+
+      // If the data item doesn't exist in the form state don't validate this item.
+      if (!$item) {
         continue;
       }
 
-      // There are two actions to perform when validating component data, errors
-      // can either be set or the data can be cleared from the form.
-//      $action = ($component->getCardinality() === 1 || $i === 1 || $i < $count) ? self::PAR_ERROR_DISPLAY : self::PAR_ERROR_CLEAR;
-      $action = self::PAR_ERROR_DISPLAY;
+      // Single cardinality plugins should always be validated.
+      if (!$component->isMultiple()) {
+        $action = self::PAR_ERROR_DISPLAY;
+      }
+      // Plugins that support the summary list should always be validated.
+      else if (!$this->supportsSummaryList($component)) {
+        $action = self::PAR_ERROR_DISPLAY;
+      }
+      // Multi value plugins that aren't the last item should be validated.
+      else if ($i < $max) {
+        $action = self::PAR_ERROR_DISPLAY;
+      }
+      // All other validation should be cleared.
+      else {
+        $action = self::PAR_ERROR_CLEAR;
+      }
 
       // Only validate if there is data.
-      if ($component->getDataItem($i)) {
-        $item_cardinality = $i + 1;
-        $component->validate($form, $form_state, $item_cardinality, $action);
-      }
+      $component->validate($form, $form_state, $i, $action);
     }
   }
 
@@ -204,16 +222,13 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
       $elements = [
         $component->getPrefix() => $component->getWrapper()
       ];
-      $elements[$component->getPrefix()]['#attributes']['class'][] = 'component-summary-list';
 
       // Add the summary list.
       $elements[$component->getPrefix()] += $summary_list;
 
       // Always show the 'add another' button on the summary list.
       if ($component_actions = $component->getComponentActions()) {
-        $elements[$component->getPrefix()] += [
-          'actions' => $component_actions,
-        ];
+        $elements[$component->getPrefix()]['actions'] = $component_actions;
       }
     }
 
@@ -251,9 +266,6 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
       // The element delta is zero-based whereas the index is numerical and starts at 1.
       $delta = $i - 1;
 
-      // Add the component element wrappers.
-      $elements[$component->getPrefix()][$delta] = $component->getElementWrapper($i);
-
       // Generate the form elements for this index.
       $element = $component->getElements([], $i);
 
@@ -262,25 +274,24 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
         return $element;
       }
 
-      // Add the component elements to the form array.
-      $elements[$component->getPrefix()][$delta] = $element;
+      // Add the component wrappers and elements.
+      $elements[$component->getPrefix()][$delta] = $component->getElementWrapper($i) + $element;
 
       // No actions are shown for form elements that support the summary list.
       $hide_element_actions = $this->supportsSummaryList($component) &&
         !$this->displaySummaryList($component, $index);
 
       // Add any element actions.
-      if ($element_actions = $component->getElementActions($i) && !$hide_element_actions) {
-        // Don't show the 'change' button when displaying form elements.
-        unset($element_actions['change']);
-
+      $element_actions = $component->getElementActions($i);
+      if ($element_actions && !$hide_element_actions) {
         $elements[$component->getPrefix()][$delta]['actions'] = $element_actions;
       }
     }
 
     // Only show the 'add another' button for components that support multiple
     // items but don't use the summary list component.
-    if ($component_actions = $component->getComponentActions() && !$this->supportsSummaryList($component)) {
+    $component_actions = $component->getComponentActions();
+    if ($component_actions && !$this->supportsSummaryList($component)) {
       $elements[$component->getPrefix()]['actions'] = $component_actions;
     }
 

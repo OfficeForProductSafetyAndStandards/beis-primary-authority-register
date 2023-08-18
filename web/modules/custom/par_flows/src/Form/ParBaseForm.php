@@ -25,6 +25,7 @@ use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\par_forms\ParEntityValidationMappingTrait;
 use Drupal\par_forms\ParFormBuilder;
+use Drupal\par_forms\ParFormPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityConstraintViolationListInterface;
@@ -282,11 +283,12 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       // The save button is meant to indicate the step makes permanent changes,
       // usually with the effect of completing the flow and redirecting onwards.
       elseif ($this->getFlowNegotiator()->getFlow()->hasAction('save')) {
+        array_push($primary_submit_handers, '::saveForm');
         $form['actions']['save'] = [
           '#type' => 'submit',
           '#name' => 'save',
           '#button_type' => 'primary',
-          '#submit' => array_push($primary_submit_handers, '::saveForm'),
+          '#submit' => $primary_submit_handers,
           '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Save'),
           '#attributes' => [
             'class' => ['cta-submit', 'govuk-button'],
@@ -366,22 +368,18 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // We don't want to validate if just removing items.
-    $remove_action = strpos($form_state->getTriggeringElement()['#name'], 'remove:');
-    if ($remove_action !== FALSE) {
-      return;
-    }
-
-    // If there's is a cardinality parameter present display only this item.
-    // @TODO Consider re-using this pattern, but not needed now.
-    $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
-
     // Validate all the plugins first.
     foreach ($this->getComponents() as $component) {
-      $this->getFormBuilder()->validate($component, $form, $form_state, $cardinality);
+      // Get the index value to validate the component for.
+      $index_key = ['_index', $component->getPrefix()];
+      $index = $form_state->getValue($index_key);
+
+      // Validate the component
+      $this->getFormBuilder()->validate($component, $form, $form_state, $index);
     }
 
     // Validate all the form elements.
+    // @TODO @deprecated All forms should use form plugin components going forward.
     foreach ($this->createMappedEntities() as $entity) {
       $values = $form_state->getValues();
       $this->buildEntity($entity, $values);
@@ -447,8 +445,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function addAnother(array &$form, FormStateInterface $form_state) {
-    // Ensure that destination query params don't redirect.
-    $this->selfRedirect($form, $form_state);
+    // Rebuild the form rather than redirect to ensure that form state values are persisted.
+    $form_state->setRebuild(TRUE);
 
     // Loop through all the components and update the cardinality value.
     foreach ($this->getComponents() as $component) {
@@ -462,14 +460,18 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   }
 
   public function changeItem(array &$form, FormStateInterface $form_state) {
-    // Ensure that destination query params don't redirect.
-    $this->selfRedirect($form, $form_state);
+    // Rebuild the form rather than redirect to ensure that form state values are persisted.
+    $form_state->setRebuild(TRUE);
 
     [$button, $plugin_namespace, $index] = explode(':', $form_state->getTriggeringElement()['#name']);
-    $item_key = [ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_namespace, (int) $index - 1];
 
     // Get the component.
     $component = $this->getComponent($plugin_namespace);
+
+    // Items can only be changed if the cardinality allows for multiple elements.
+    if (!$component instanceof ParFormPluginInterface || !$component->isMultiple()) {
+      return;
+    }
 
     // Set the index for the item to update.
     $index_key = ['_index', $component->getPrefix()];
@@ -479,24 +481,37 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * {@inheritdoc}
    */
-  public function removeItem(array &$form, FormStateInterface $form_state) {
+  public function removeItem(array &$form, FormStateInterface &$form_state) {
     // Ensure that destination query params don't redirect.
     $this->selfRedirect($form, $form_state);
 
     [$button, $plugin_namespace, $index] = explode(':', $form_state->getTriggeringElement()['#name']);
-    $item_key = [ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_namespace, (int) $index - 1];
 
-    // Remove the value from the form state.
-    $form_state->unsetValue($item_key);
+    // Get the component.
+    $component = $this->getComponent($plugin_namespace);
 
-    // Remove the value from the temporary data store.
-    $this->getFlowDataHandler()->deleteTempDataValue($item_key);
+    // Items can only be removed from multiple cardinality components.
+    if (!$component instanceof ParFormPluginInterface || !$component->isMultiple()) {
+      return;
+    }
 
-    // Store the data.
-    $this->storeData($form_state);
+    $delta = (int) $index - 1;
 
-    // Validate the components and remove any unvalidated last item.
-//    $component->validate($form, $form_state, $last_index, ParFormBuilder::PAR_ERROR_CLEAR);
+    // Get the data.
+    $data = $component->getData();
+
+    // Unset the value.
+    unset($data[$delta]);
+    // Unset the form state value.
+    $item_key = [ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_namespace, (int) $delta];
+    if ($form_state->hasValue($item_key)) {
+      $form_state->unsetValue($item_key);
+      $form_state->setValue($item_key, NULL);
+    }
+
+    // Store the value.
+    $component->setData($data);
+
   }
 
   /**
@@ -573,19 +588,18 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     }
   }
 
-  public function cleanValues(FormStateInterface $form_state) {
-//    foreach ($form_state->getButtons() as $button) {
-//
-//    }
-//    return $values;
-  }
-
   /**
-   * Save the form data.
+   * Clean the submitted values from the form state.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @return array
+   *   The cleaned form state values.
    */
-  protected function storeData(FormStateInterface $form_state) {
+  public function cleanFormState(FormStateInterface $form_state): array {
     // Remove non-user submitted form values.
     $submitted_values = $form_state->cleanValues()->getValues();
+
     // Remove the triggering element button from the form_state.
     $triggering_element = $form_state->getTriggeringElement()['#name'];
     if (isset($submitted_values[$triggering_element])) {
@@ -593,13 +607,52 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     }
 
     // Filter out empty values.
-    $submitted_values = $this->cleanseValues($submitted_values);
+    return $this->cleanValues($submitted_values);
+  }
+
+  /**
+   * Helper function to cleanse empty multiple values for a multi value form plugin.
+   *
+   * @param array $data
+   *   The data array to cleanse.
+   *
+   * @return array
+   *   An array of values that represent keys to be removed from the form data.
+   */
+  public function cleanValues(array $data) {
+    // Filter out empty data from each form component.
+    foreach ($this->getComponents() as $component) {
+      if ($component->isFlattened()) {
+        $component_data =& $data;
+      }
+      else {
+        $component_data =& $data[$component->getPrefix()];
+      }
+
+      // Only filter if there is some component data submitted.
+      if (!empty($component_data)) {
+        $component_data = $component->filter($component_data);
+      }
+    }
+
+    // Remove all final empty values.
+    return $this->getFlowDataHandler()->filter($data);
+  }
+
+  /**
+   * Save the form data.
+   */
+  protected function storeData(FormStateInterface $form_state) {
+    $submitted_values = $this->cleanFormState($form_state);
 
     if (!empty($submitted_values)) {
       // Merge data with existing values.
       $data = $this->mergeData($submitted_values);
 
-      // Set the new form values.
+      // Reindex all data multiple cardinality plugin data.
+      $this->reindexData($data);
+
+        // Set the new form values.
       $this->getFlowDataHandler()->setFormTempData($data);
     }
   }
@@ -621,10 +674,38 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         $existing_data = $this->getFlowDataHandler()->getFormTempData();
 
         // Ensure any existing items are added to the data.
-        $data[$component->getPrefix()] = $data[$component->getPrefix()] + $existing_data[$component->getPrefix()];
+        if (isset($existing_data[$component->getPrefix()])) {
+          $data[$component->getPrefix()] = $data[$component->getPrefix()] + $existing_data[$component->getPrefix()];
+        }
       }
     }
 
+    // Filter empty values from merged data also.
+    return $data;
+  }
+
+  /**
+   * Merge the data with any existing values in the temporary data store.
+   *
+   * @param $data
+   *   The data to be added.
+   *
+   * @return array
+   *   The merged data.
+   */
+  protected function reindexData($data): array {
+    // For components that support multiple cardinality allow the values to be reindexed.
+    foreach ($this->getComponents() as $component) {
+      if ($component->isMultiple() && isset($data[$component->getPrefix()])) {
+        // Filter the data.
+        $data = $this->getFlowDataHandler()->filter($data);
+
+        // Reinded the data.
+        $data[$component->getPrefix()] = array_values($data[$component->getPrefix()]);
+      }
+    }
+
+    // Filter empty values from merged data also.
     return $data;
   }
 
@@ -664,16 +745,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @param FormStateInterface $form_state
    */
   public function selfRedirect(array &$form, FormStateInterface $form_state) {
-//    $options = [];
-//    $query = $this->getRequest()->query;
-//    if ($query->has('destination')) {
-//      $options['query']['destination'] = $query->get('destination');
-//      $query->remove('destination');
-//    }
-//    $params = $this->getRouteParams() + ['cardinality' => 3];
-//    $form_state->setRedirect('<current>', $params, $options);
-
-    $form_state->setRebuild(TRUE);
+    // Setting a redirection allows form values to be cleared.
+    $options = [];
+    $query = $this->getRequest()->query;
+    if ($query->has('destination')) {
+      $options['query']['destination'] = $query->get('destination');
+      $query->remove('destination');
+    }
+    $params = $this->getRouteParams();
+    $form_state->setRedirect('<current>', $params, $options);
   }
 
   /**
@@ -711,34 +791,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     return $form_element_page_anchor;
 
-  }
-
-  /**
-   * Helper function to cleanse empty multiple values for a multi value form plugin.
-   *
-   * @param array $data
-   *   The data array to cleanse.
-   *
-   * @return array
-   *   An array of values that represent keys to be removed from the form data.
-   */
-  public function cleanseValues(array $data) {
-    // Filter out empty data from each form component.
-    foreach ($this->getComponents() as $component) {
-      if ($component->isFlattened()) {
-        $component_data =& $data;
-      }
-      else {
-        $component_data =& $data[$component->getPrefix()];
-      }
-
-      // Only filter if there is some component data submitted.
-      if (!empty($component_data)) {
-        $component_data = $component->filter($component_data);
-      }
-    }
-
-    return $data;
   }
 
   /**

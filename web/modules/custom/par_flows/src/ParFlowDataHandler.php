@@ -177,15 +177,6 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
-  public function deleteTempDataValue($key, $cid = NULL) {
-    $data = $this->getFormTempData($cid);
-    NestedArray::unsetValue($data, (array) $key);
-    $this->setFormTempData($data, $cid);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getFormTempData($cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowKey() : $cid;
 
@@ -230,12 +221,26 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    * If the plugin allows multiple values this data will be structured and the
    * resulting array will be an array of plugin data keyed by cardinality values.
    */
-  public function getPluginTempData($plugin, $cid = NULL) {
+  public function getPluginTempData(ParFormPluginInterface $plugin, $cid = NULL) {
     // If the plugin data is flattened return all the form data,
     // otherwise return just the data found for the given plugin prefix.
     return $plugin->isFlattened() ?
       $this->getFormTempData($cid) :
       $this->getTempDataValue($plugin->getPrefix(), $cid);
+  }
+
+  /**
+   * Set the data for a given plugin.
+   *
+   * If the plugin allows multiple values this data will be structured and the
+   * resulting array will be an array of plugin data keyed by cardinality values.
+   */
+  public function setPluginTempData(ParFormPluginInterface $plugin, array $data, $cid = NULL) {
+    // If the plugin data is flattened set all the form data,
+    // otherwise set just the data found for the given plugin prefix.
+    $plugin->isFlattened() ?
+      $this->setFormTempData($data, $cid) :
+      $this->setTempDataValue($plugin->getPrefix(), $data, $cid);
   }
 
   /**
@@ -428,5 +433,31 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
       $_SESSION['session_started'] = TRUE;
       $this->sessionManager->start();
     }
+  }
+
+  /**
+   * Filters a nested array recursively.
+   *
+   * This is a copy of NestedArray::filter() with the changes made to filter
+   * multidimensional arrays correctly.
+   * @see https://www.drupal.org/project/drupal/issues/3381640
+   *
+   * @param array $array
+   *   The filtered nested array.
+   * @param callable|null $callable
+   *   The callable to apply for filtering.
+   *
+   * @return array
+   *   The filtered array.
+   */
+  public function filter(array $array, callable $callable = NULL) {
+    foreach ($array as &$element) {
+      if (is_array($element)) {
+        $element = static::filter($element, $callable);
+      }
+    }
+
+    // Filter the parents after the child elements.
+    return is_callable($callable) ? array_filter($array, $callable) : array_filter($array);
   }
 }

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Access\AccessResult;
@@ -28,16 +29,9 @@ use Drupal\user\UserInterface;
 class ParUserDetail extends ParFormPluginBase {
 
   /**
-   * @return DateFormatterInterface
-   */
-  protected function getDateFormatter() {
-    return \Drupal::service('date.formatter');
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $user = $this->getFlowDataHandler()->getParameter('user');
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
@@ -48,8 +42,8 @@ class ParUserDetail extends ParFormPluginBase {
 
       $this->getFlowDataHandler()->setFormPermValue('user_account', $user->getEmail());
       $last_login_date = $user->getLastLoginTime() ? $this->getDateFormatter()->format($user->getLastLoginTime(), 'gds_date_format') : NULL;
-      $this->setDefaultValuesByKey('user_login', $cardinality, $last_login_date);
-      $this->setDefaultValuesByKey('user_active', $cardinality, (bool) $user->isActive());
+      $this->setDefaultValuesByKey('user_login', $index, $last_login_date);
+      $this->setDefaultValuesByKey('user_active', $index, (bool) $user->isActive());
 
       // Disable blocking of last user in an authority/organisation.
       try {
@@ -66,7 +60,7 @@ class ParUserDetail extends ParFormPluginBase {
       catch (ParDataException $e) {
         $isLastSurvingOrganisationMember = FALSE;
       }
-      $this->setDefaultValuesByKey('user_unblockable', $cardinality, (bool) ($isLastSurvingAuthorityMember || $isLastSurvingOrganisationMember));
+      $this->setDefaultValuesByKey('user_unblockable', $index, (bool) ($isLastSurvingAuthorityMember || $isLastSurvingOrganisationMember));
 
 
       $roles = Role::loadMultiple($user->getRoles());
@@ -77,7 +71,7 @@ class ParUserDetail extends ParFormPluginBase {
         }
       }
 
-      $this->setDefaultValuesByKey("user_roles", $cardinality, implode(', ', $user_roles));
+      $this->setDefaultValuesByKey("user_roles", $index, implode(', ', $user_roles));
       $this->getFlowDataHandler()->setFormPermValue("user_id", $user->id());
     }
     elseif ($par_data_person instanceof ParDataEntityInterface) {
@@ -88,13 +82,13 @@ class ParUserDetail extends ParFormPluginBase {
 
     $this->getFlowDataHandler()->setFormPermValue('cache_tags', $cache_tags);
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Get the current invitation expiry date if one has already been sent.
     $invitation_expiry = $this->getFlowDataHandler()->getDefaultValues('invitation_expiration', FALSE);
     $cache_tags = $this->getFlowDataHandler()->getDefaultValues('cache_tags', []);
@@ -105,7 +99,7 @@ class ParUserDetail extends ParFormPluginBase {
       '#attributes' => ['class' => ['grid-row', 'form-group']],
       '#cache' => ['tags' => $cache_tags]
     ];
-    if ($cardinality === 1) {
+    if ($index === 1) {
       $form['user_account'] += [
         'title' => [
           '#type' => 'html_tag',
@@ -126,24 +120,24 @@ class ParUserDetail extends ParFormPluginBase {
       $form['user_account']['email'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => '<strong>E-mail</strong><br>' . $this->getDefaultValuesByKey('user_account', $cardinality, ''),
+        '#value' => '<strong>E-mail</strong><br>' . $this->getDefaultValuesByKey('user_account', $index, ''),
         '#attributes' => ['class' => ['column-full']],
       ];
       $form['user_account']['roles'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => '<strong>Type of account</strong><br>' . $this->getDefaultValuesByKey('user_roles', $cardinality, ''),
+        '#value' => '<strong>Type of account</strong><br>' . $this->getDefaultValuesByKey('user_roles', $index, ''),
         '#attributes' => ['class' => ['column-two-thirds']],
       ];
 
       // Check whether the user is active.
-      $active = $this->getDefaultValuesByKey('user_active', $cardinality, FALSE);
-      $unblockable = $this->getDefaultValuesByKey('user_unblockable', $cardinality, FALSE);
+      $active = $this->getDefaultValuesByKey('user_active', $index, FALSE);
+      $unblockable = $this->getDefaultValuesByKey('user_unblockable', $index, FALSE);
       if ($active) {
         $form['user_account']['last_access'] = [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => '<strong>Last sign in</strong><br>' . $this->getDefaultValuesByKey('user_login', $cardinality, 'Never signed in'),
+          '#value' => '<strong>Last sign in</strong><br>' . $this->getDefaultValuesByKey('user_login', $index, 'Never signed in'),
           '#attributes' => ['class' => ['column-one-third']],
         ];
       }
@@ -240,7 +234,7 @@ class ParUserDetail extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

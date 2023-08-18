@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
@@ -20,7 +21,7 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
       $inspection_plans = $par_data_partnership->getInspectionPlan();
       $options = $inspection_plans ?
@@ -29,13 +30,13 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
       $this->getFlowDataHandler()->setFormPermValue('inspection_plan_options', $options);
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     $inspection_plans = $this->getFlowDataHandler()->getFormPermValue('inspection_plan_options');
 
     if (!$inspection_plans or count($inspection_plans) <= 0) {
@@ -65,7 +66,7 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
       '#title' => t('Choose which inspection plan you\'re request is related to'),
       '#options' => $inspection_plans,
       // Automatically check all legal entities if no form data is found.
-      '#default_value' => $this->getDefaultValuesByKey('inspection_plan', $cardinality, []),
+      '#default_value' => $this->getDefaultValuesByKey('inspection_plan', $index, []),
     ];
 
     return $form;
@@ -74,7 +75,7 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $inspection_plan_key = $this->getElementKey('inspection_plan_id');
     $inspection_plan_values = array_filter($form_state->getValue($inspection_plan_key) ?? []);
     if (!$inspection_plan_values) {
@@ -83,11 +84,11 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
         "You can not complete this journey because this partnership doesn't have any inspection plans." :
         "You must select at least one inspection plan.";
 
-      $id_key = $this->getElementKey('inspection_plan_id', $cardinality, TRUE);
+      $id_key = $this->getElementKey('inspection_plan_id', $index, TRUE);
       $message = $this->wrapErrorMessage($message, $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($inspection_plan_key), $message);
     }
 
-    return parent::validate($form, $form_state, $cardinality, $action);
+    return parent::validate($form, $form_state, $index, $action);
   }
 }

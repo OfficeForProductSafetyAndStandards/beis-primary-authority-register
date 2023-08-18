@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -25,7 +26,7 @@ class ParTradingNameDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
     if (!$par_data_organisation && $par_data_partnership instanceof ParDataEntityInterface) {
@@ -34,17 +35,17 @@ class ParTradingNameDisplay extends ParFormPluginBase {
     if ($par_data_organisation) {
       // Get the trading names.
       $trading_names = $par_data_organisation->extractValues('trading_name');
-      $this->setDefaultValuesByKey("trading_names", $cardinality, $trading_names);
+      $this->setDefaultValuesByKey("trading_names", $index, $trading_names);
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
-    $trading_names = $this->getDefaultValuesByKey('trading_names', $cardinality, []);
+  public function getElements(array $form = [], int $index = 1) {
+    $trading_names = $this->getDefaultValuesByKey('trading_names', $index, []);
 
     // Generate the add a trading name link.
     try {
@@ -151,7 +152,7 @@ class ParTradingNameDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

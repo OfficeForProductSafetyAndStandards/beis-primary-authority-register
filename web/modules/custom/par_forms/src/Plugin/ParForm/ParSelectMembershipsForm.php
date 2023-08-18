@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
@@ -21,12 +22,12 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $user_organisations = [];
     $user_authorities = [];
 
     // If the person being edited has an ordinary user account get all the user's
-    // memberships. Otherwise use the person being edited if there is one.
+    // memberships, otherwise use the person being edited if there is one.
     if ($account = $this->getFlowDataHandler()->getParameter('user')) {
       $memberships = $this->getParDataManager()->hasMemberships($account, TRUE);
 
@@ -86,13 +87,13 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
     $this->getFlowDataHandler()->setFormPermValue('organisation_options', $this->getParDataManager()->getEntitiesAsOptions($organisation_options, []));
     $this->getFlowDataHandler()->setFormPermValue('authority_options', $this->getParDataManager()->getEntitiesAsOptions($authority_options, []));
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed organisations and authorities.
     $organisation_options = $this->getFlowDataHandler()->getFormPermValue('organisation_options');
     $authority_options = $this->getFlowDataHandler()->getFormPermValue('authority_options');
@@ -119,7 +120,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
     }
 
     if (!empty($organisation_options)) {
-      $default_value = $this->getDefaultValuesByKey("par_data_organisation_id", $cardinality, NULL);
+      $default_value = $this->getDefaultValuesByKey("par_data_organisation_id", $index, NULL);
       $form['par_data_organisation_id'] = $base + [
         '#title' => t('Which organisations are they a member of?'),
         '#options' => $organisation_options,
@@ -131,7 +132,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
     if (!empty($authority_options)) {
       $multiple = $this->getFlowDataHandler()->getDefaultValues('allow_multiple', FALSE);
 
-      $default_value = $this->getDefaultValuesByKey("par_data_authority_id", $cardinality, NULL);
+      $default_value = $this->getDefaultValuesByKey("par_data_authority_id", $index, NULL);
       $form['par_data_authority_id'] = $base + [
         '#title' => t('Which authorities are they a member of?'),
         '#options' => $authority_options,
@@ -155,7 +156,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     // Allow validation to be disabled if memberships are not required.
     $required = $this->getFlowDataHandler()->getDefaultValues('required', TRUE);
 
@@ -164,13 +165,13 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
     $authority_options = $this->getFlowDataHandler()->getFormPermValue('authority_options');
 
     // If multiple choices are allowed the resulting value may be an array with keys but empty values.
-    $organisation_element_key = $this->getElementKey('par_data_organisation_id', $cardinality);
+    $organisation_element_key = $this->getElementKey('par_data_organisation_id', $index);
     $organisations_selected = $this->getFlowDataHandler()->getDefaultValues('allow_multiple', FALSE) ?
       NestedArray::filter((array) $form_state->getValue($organisation_element_key)) :
       $form_state->getValue($organisation_element_key);
 
     // If multiple choices are allowed the resulting value may be an array with keys but empty values.
-    $authority_element_key = $this->getElementKey('par_data_authority_id', $cardinality);
+    $authority_element_key = $this->getElementKey('par_data_authority_id', $index);
     $authorities_selected = $this->getFlowDataHandler()->getDefaultValues('allow_multiple', FALSE) ?
       NestedArray::filter((array) $form_state->getValue($authority_element_key)) :
       $form_state->getValue($authority_element_key);
@@ -179,13 +180,13 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
     if ($required
       && (empty($organisation_options) || empty($organisations_selected))
       && (empty($authority_options) || empty($authorities_selected))) {
-      $organisation_id_key = $this->getElementKey('par_data_organisation_id', $cardinality, TRUE);
-      $authority_id_key = $this->getElementKey('par_data_authority_id', $cardinality, TRUE);
+      $organisation_id_key = $this->getElementKey('par_data_organisation_id', $index, TRUE);
+      $authority_id_key = $this->getElementKey('par_data_authority_id', $index, TRUE);
 
       $form_state->setErrorByName($this->getElementName($organisation_element_key), $this->wrapErrorMessage('You must add this person to at least one organisation or authority.', $this->getElementId($organisation_id_key, $form)));
       $form_state->setErrorByName($this->getElementName($authority_element_key), $this->wrapErrorMessage('You must add this person to at least one organisation or authority.', $this->getElementId($authority_id_key, $form)));
     }
 
-    return parent::validate($form, $form_state, $cardinality, $action);
+    return parent::validate($form, $form_state, $index, $action);
   }
 }

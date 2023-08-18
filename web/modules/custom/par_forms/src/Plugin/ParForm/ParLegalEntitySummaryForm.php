@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataLegalEntity;
@@ -24,7 +25,7 @@ class ParLegalEntitySummaryForm extends ParFormPluginBase implements ParSummaryL
   /**
    * {@inheritdoc}
    */
-  protected $wrapperName = 'legal entity summary list';
+  protected string $wrapperName = 'legal entity summary list';
 
   /**
    * Get the registered organisations manager.
@@ -36,14 +37,14 @@ class ParLegalEntitySummaryForm extends ParFormPluginBase implements ParSummaryL
   /**
    * @defaults
    */
-  protected $formDefaults = [
+  protected array $formDefaults = [
     'legal_entity_type' => 'none',
   ];
 
   /**
    * Load the data for this form.
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     // This component is designed to complement the `legal_entity` component,
     // allowing multiple legal entities to be added.
 
@@ -71,19 +72,19 @@ class ParLegalEntitySummaryForm extends ParFormPluginBase implements ParSummaryL
       $this->getFlowDataHandler()->setFormPermValue('coordinated_partnership', $par_data_partnership->isCoordinated());
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // For this form plugin only one cardinality should be active at a time.
     $delta = $this->getflowDataHandler()->getParameter('delta') ?? 1;
     $legal_entity_bundle = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
     $legal_entity_label = $this->getCardinality() !== 1 ?
-      $this->formatPlural($cardinality, 'Legal Entity @index', 'Legal Entity @index (Optional)', ['@index' => $cardinality]) :
+      $this->formatPlural($index, 'Legal Entity @index', 'Legal Entity @index (Optional)', ['@index' => $index]) :
       $this->t('Legal Entity');
 
     $registry_options = [
@@ -114,7 +115,7 @@ class ParLegalEntitySummaryForm extends ParFormPluginBase implements ParSummaryL
       '#description' => $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities."),
       '#options' => $registry_options,
       '#options_descriptions' => $registry_options_descriptions,
-      '#default_value' => $this->getDefaultValuesByKey('registry', $cardinality, ),
+      '#default_value' => $this->getDefaultValuesByKey('registry', $index, ),
       '#after_build' => [
         [get_class($this), 'optionsDescriptions'],
       ],
@@ -128,7 +129,7 @@ class ParLegalEntitySummaryForm extends ParFormPluginBase implements ParSummaryL
       '#type' => 'container',
       '#states' => [
         'visible' => [
-          'input[name="' . $this->getTargetName($this->getElementKey('registry', $cardinality)) . '"]' => [
+          'input[name="' . $this->getTargetName($this->getElementKey('registry', $index)) . '"]' => [
             ['value' => 'companies_house'],
             ['value' => 'charity_commission'],
           ],
@@ -141,7 +142,7 @@ class ParLegalEntitySummaryForm extends ParFormPluginBase implements ParSummaryL
     $form['registered']['legal_entity_number'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Provide the registration number'),
-      '#default_value' => $this->getDefaultValuesByKey('legal_entity_number', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('legal_entity_number', $index),
     ];
 
     // Follow-up inputs for unregistered entities.
@@ -149,7 +150,7 @@ class ParLegalEntitySummaryForm extends ParFormPluginBase implements ParSummaryL
       '#type' => 'container',
       '#states' => [
         'visible' => [
-          'input[name="' . $this->getTargetName($this->getElementKey('registry', $cardinality)) . '"]' => [
+          'input[name="' . $this->getTargetName($this->getElementKey('registry', $index)) . '"]' => [
             ['value' => ParDataLegalEntity::DEFAULT_REGISTER],
           ],
         ],
@@ -172,7 +173,7 @@ class ParLegalEntitySummaryForm extends ParFormPluginBase implements ParSummaryL
     $form['unregistered']['legal_entity_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('How is this entity structured?'),
-      '#default_value' => $this->getDefaultValuesByKey('legal_entity_type', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('legal_entity_type', $index),
       '#options' => $unregistered_type_options,
       '#options_descriptions' => $unregistered_type_options_descriptions,
       '#after_build' => [
@@ -186,7 +187,7 @@ class ParLegalEntitySummaryForm extends ParFormPluginBase implements ParSummaryL
     $form['unregistered']['legal_entity_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter name of the legal entity'),
-      '#default_value' => $this->getDefaultValuesByKey('legal_entity_name', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('legal_entity_name', $index),
       '#attributes' => [
         'class' => ['form-group'],
       ],
@@ -198,14 +199,14 @@ class ParLegalEntitySummaryForm extends ParFormPluginBase implements ParSummaryL
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
-    $registry_element = $this->getElement($form, ['registry'], $cardinality);
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+    $registry_element = $this->getElement($form, ['registry'], $index);
     $register_id = $registry_element ? $form_state->getValue($registry_element['#parents']) : NULL;
 
     if ($register_id === ParDataLegalEntity::DEFAULT_REGISTER) {
-      $type_element = $this->getElement($form, ['unregistered','legal_entity_type'], $cardinality);
+      $type_element = $this->getElement($form, ['unregistered','legal_entity_type'], $index);
       $legal_entity_type = $type_element ? $form_state->getValue($type_element['#parents']) : NULL;
-      $name_element = $this->getElement($form, ['unregistered','legal_entity_name'], $cardinality);
+      $name_element = $this->getElement($form, ['unregistered','legal_entity_name'], $index);
       $legal_entity_name = $name_element ? $form_state->getValue($name_element['#parents']) : NULL;
 
       if (empty($legal_entity_type)) {
@@ -219,11 +220,11 @@ class ParLegalEntitySummaryForm extends ParFormPluginBase implements ParSummaryL
       }
 
       // Validate additional rules.
-      parent::validate($form, $form_state, $cardinality, $action);
+      parent::validate($form, $form_state, $index, $action);
     }
     else if (in_array($register_id, ['companies_house', 'charity_commission'])) {
       // Get the legal entity number to look up.
-      $number_element = $this->getElement($form, ['registered','legal_entity_number'], $cardinality);
+      $number_element = $this->getElement($form, ['registered','legal_entity_number'], $index);
       $legal_entity_number = $number_element ? trim((string) $form_state->getValue($number_element['#parents'])) : NULL;
 
       if (empty($legal_entity_number)) {
@@ -259,7 +260,7 @@ class ParLegalEntitySummaryForm extends ParFormPluginBase implements ParSummaryL
       }
 
       // Validate additional rules if a profile was found.
-      parent::validate($form, $form_state, $cardinality, $action);
+      parent::validate($form, $form_state, $index, $action);
     }
     else {
       $message = 'Please choose whether this is a registered or unregistered legal entity.';

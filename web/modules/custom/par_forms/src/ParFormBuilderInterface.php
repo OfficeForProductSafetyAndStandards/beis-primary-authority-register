@@ -25,20 +25,20 @@ interface ParFormBuilderInterface {
    *
    * @param ParFormPluginInterface $component
    *   The form component plugin to build.
+   * @param ?int $index
+   *   A index value to influence which elements are displayed.
    *
    * @return array|RedirectResponse
    *   The form elements for the rendered component.
    */
-  public function build(ParFormPluginInterface $component): array|RedirectResponse;
+  public function build(ParFormPluginInterface $component, int $index): array|RedirectResponse;
 
   /**
-   * @param \Drupal\par_forms\ParFormPluginInterface $component
-   * @param $form
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   * @param ParFormPluginInterface $component
+   * @param array $form
+   * @param FormStateInterface $form_state
    * @param $cardinality
-   *
-   * @return mixed
    */
-  public function validate(ParFormPluginInterface $component, $form, FormStateInterface &$form_state, $cardinality = NULL): void;
+  public function validate(ParFormPluginInterface $component, array $form, FormStateInterface &$form_state, $index = NULL): void;
 
 }

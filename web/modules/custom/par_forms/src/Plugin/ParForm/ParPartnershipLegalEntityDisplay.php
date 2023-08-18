@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -29,39 +30,30 @@ use Drupal\registered_organisations\TemporaryException;
 class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
 
   /**
-   * Return the date formatter service.
-   *
-   * @return DateFormatterInterface
-   */
-  protected function getDateFormatter() {
-    return \Drupal::service('date.formatter');
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     /* @var ParDataPartnership $par_data_partnership */
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     if ($par_data_partnership instanceof ParDataEntityInterface) {
-      $this->setDefaultValuesByKey("partnership", $cardinality, $par_data_partnership);
+      $this->setDefaultValuesByKey("partnership", $index, $par_data_partnership);
       $partnership_legal_entities = $par_data_partnership->getPartnershipLegalEntities();
-      $this->setDefaultValuesByKey("partnership_legal_entities", $cardinality, $partnership_legal_entities);
+      $this->setDefaultValuesByKey("partnership_legal_entities", $index, $partnership_legal_entities);
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
 
     /* @var ParDataPartnership $partnership */
-    $partnership = $this->getDefaultValuesByKey('partnership', $cardinality, []);
+    $partnership = $this->getDefaultValuesByKey('partnership', $index, []);
     /* @var ParDataPartnershipLegalEntity[] $partnership_legal_entities */
-    $partnership_legal_entities = $this->getDefaultValuesByKey('partnership_legal_entities', $cardinality, []);
+    $partnership_legal_entities = $this->getDefaultValuesByKey('partnership_legal_entities', $index, []);
 
     // Generate the link to add a new partnership legal entity.
     try {
@@ -234,7 +226,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

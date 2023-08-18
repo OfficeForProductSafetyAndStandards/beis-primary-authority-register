@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -17,12 +18,12 @@ class ParAuthorityTypeForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected $entityMapping = [];
+  protected array $entityMapping = [];
 
   /**
    * Load the data for this form.
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');
     if ($par_data_authority) {
         $this->getFlowDataHandler()->setFormPermValue("authority_type", $par_data_authority->get('authority_type')->getString());
@@ -37,19 +38,19 @@ class ParAuthorityTypeForm extends ParFormPluginBase {
     }
 
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     $form['authority_type'] = [
       '#type' => 'radios',
       '#title' => 'Choose an authority type',
       '#attributes' => ['class' => ['form-group']],
       '#options' => $this->getFlowDataHandler()->getFormPermValue('authority_type_options'),
-      '#default_value' => $this->getDefaultValuesByKey('authority_type', $cardinality, NULL),
+      '#default_value' => $this->getDefaultValuesByKey('authority_type', $index, NULL),
     ];
 
     return $form;

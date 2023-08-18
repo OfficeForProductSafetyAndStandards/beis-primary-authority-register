@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -17,7 +18,7 @@ class ParSicCodeForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected $entityMapping = [
+  protected array $entityMapping = [
     ['sic_code', 'par_data_organisation', 'field_sic_code', NULL, NULL, 0, [
       'This value should be of the correct primitive type.' => 'You must choose the most relevant SIC code for the organisation.'
     ]],
@@ -26,7 +27,7 @@ class ParSicCodeForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
     $sic_code_delta = $this->getFlowDataHandler()->getParameter('sic_code_delta');
 //    if ($par_data_organisation) {
@@ -39,25 +40,25 @@ class ParSicCodeForm extends ParFormPluginBase {
 //    }
 
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     $sic_codes = $this->getParDataManager()->getEntitiesByType('par_data_sic_code');
 
     // Display the correct introductory text based on the action that is being performed.
     $intro_text = $this->getFlowDataHandler()->getFormPermValue("sic_code", NULL) ?
-      $this->formatPlural($cardinality, 'Change the SIC Code of your organisation', 'Change the SIC Code of your organisation (optional)') :
-      $this->formatPlural($cardinality, 'Add a new SIC Code to your organisation', 'Add a new SIC Code to your organisation (optional)');
+      $this->formatPlural($index, 'Change the SIC Code of your organisation', 'Change the SIC Code of your organisation (optional)') :
+      $this->formatPlural($index, 'Add a new SIC Code to your organisation', 'Add a new SIC Code to your organisation (optional)');
 
     $form['sic_code'] = [
       '#type' => 'select',
-      '#title' => $intro_text,
-      '#options' => ['' => ''] + $this->getParDataManager()->getEntitiesAsOptions($sic_codes),
-      '#default_value' => $this->getDefaultValuesByKey('sic_code', $cardinality, NULL),
+      '#title' => $intro_text->render(),
+      '#options' => $this->getParDataManager()->getEntitiesAsOptions($sic_codes),
+      '#default_value' => $this->getDefaultValuesByKey('sic_code', $index, NULL),
     ];
 
     return $form;

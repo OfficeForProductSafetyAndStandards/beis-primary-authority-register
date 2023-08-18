@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -18,7 +19,7 @@ class ParContactDetailsBasicForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected $entityMapping = [
+  protected array $entityMapping = [
     ['first_name', 'par_data_person', 'first_name', NULL, NULL, 0, [
       'You must fill in the missing information.' => 'You must enter the first name for this contact.'
     ]],
@@ -33,36 +34,36 @@ class ParContactDetailsBasicForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
-      $this->setDefaultValuesByKey("first_name", $cardinality, $par_data_person->get('first_name')->getString());
-      $this->setDefaultValuesByKey("last_name", $cardinality, $par_data_person->get('last_name')->getString());
-      $this->setDefaultValuesByKey("work_phone", $cardinality, $par_data_person->get('work_phone')->getString());
+      $this->setDefaultValuesByKey("first_name", $index, $par_data_person->get('first_name')->getString());
+      $this->setDefaultValuesByKey("last_name", $index, $par_data_person->get('last_name')->getString());
+      $this->setDefaultValuesByKey("work_phone", $index, $par_data_person->get('work_phone')->getString());
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     $form['first_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the first name'),
-      '#default_value' => $this->getDefaultValuesByKey('first_name', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('first_name', $index),
     ];
 
     $form['last_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the last name'),
-      '#default_value' => $this->getDefaultValuesByKey('work_phone', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('work_phone', $index),
     ];
 
     $form['work_phone'] = [
       '#type' => 'tel',
       '#title' => $this->t('Enter the work phone number'),
-      '#default_value' => $this->getDefaultValuesByKey('work_phone', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('work_phone', $index),
     ];
 
     return $form;
