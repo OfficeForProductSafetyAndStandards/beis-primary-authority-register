@@ -124,6 +124,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
 
       // Merge the component elements into the build array.
       $build = array_merge($build, $plugin);
+    }
 
     // Add all the action links.
     if ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
