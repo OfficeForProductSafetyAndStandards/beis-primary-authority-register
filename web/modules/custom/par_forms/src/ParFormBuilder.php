@@ -147,7 +147,7 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
         $action = self::PAR_ERROR_DISPLAY;
       }
       // Plugins that support the summary list should always be validated.
-      else if (!$this->supportsSummaryList($component)) {
+      else if ($this->supportsSummaryList($component)) {
         $action = self::PAR_ERROR_DISPLAY;
       }
       // Multi value plugins that aren't the last item should be validated.
@@ -159,8 +159,10 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
         $action = self::PAR_ERROR_CLEAR;
       }
 
-      // Only validate if there is data.
-      $component->validate($form, $form_state, $i, $action);
+      // Only validate the chosen items.
+      if ($action === self::PAR_ERROR_DISPLAY) {
+        $component->validate($form, $form_state, $i, $action);
+      }
     }
   }
 
