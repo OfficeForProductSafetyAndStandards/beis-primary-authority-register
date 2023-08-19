@@ -784,7 +784,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
           '#validate' => ['::validateCancelForm'],
           '#limit_validation_errors' => [],
           '#attributes' => [
-            'class' => ['btn-link'],
+            'class' => ['btn-link', 'change-action'],
             'aria-label' => "Change {$this->getWrapperName()} $index",
             'data-prevent-double-click' => 'true',
             'data-module' => 'govuk-button',
@@ -801,7 +801,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
         '#validate' => ['::validateCancelForm'],
         '#limit_validation_errors' => [],
         '#attributes' => [
-          'class' => ['btn-link'],
+          'class' => ['btn-link', 'remove-action'],
           'aria-label' => "Remove {$this->getWrapperName()} $index",
           'data-prevent-double-click' => 'true',
           'data-module' => 'govuk-button',
@@ -829,7 +829,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
         '#submit' => ['::addAnother'],
         '#value' => $this->t('Add another'),
         '#attributes' => [
-          'class' => ['btn-link'],
+          'class' => ['btn-link', 'add-action'],
           'data-prevent-double-click' => 'true',
           'data-module' => 'govuk-button',
         ],
