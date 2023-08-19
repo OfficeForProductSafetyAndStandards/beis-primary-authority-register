@@ -100,19 +100,39 @@ When('I complete the trading names', function () {
 When('I complete the legal entities', function () {
   return shared
   .assert.containsText('h1.heading-xlarge','Confirm the legal entity')
-  .setValue('#edit-par-component-legal-entity-0-registered-name', 'New LLP Company')
-  .click('#edit-par-component-legal-entity-0-legal-entity-type option[value="limited_liability_partnership"]')
-  .assert.containsText('.form-item-par-component-legal-entity-0-registered-number label','Provide the registration number')
-  .setValue('#edit-par-component-legal-entity-0-registered-number', '1234567890')
+      // Add a registered legal entity.
+  .click('#edit-par-component-legal-entity-0-registry-companies-house')
+  .setValue('#edit-par-component-legal-entity-0-registered-legal-entity-number', '09537751')
+  .click('#edit-next')
   .click('.add-action')
-  .setValue('#edit-par-component-legal-entity-1-registered-name', 'First Sole Trader')
-  .click('#edit-par-component-legal-entity-1-legal-entity-type option[value="sole_trader"]')
+
+  .click('#edit-par-component-legal-entity-1-registry-charity-commission')
+  .setValue('#edit-par-component-legal-entity-1-registered-legal-entity-number', '1146244')
+  .click('#edit-next')
   .click('.add-action')
-  .setValue('#edit-par-component-legal-entity-2-registered-name', 'Second New LLP Company')
-  .click('#edit-par-component-legal-entity-2-legal-entity-type option[value="limited_liability_partnership"]')
-  .setValue('#edit-par-component-legal-entity-2-registered-number', '0000000000')
+
+  .click('#edit-par-component-legal-entity-2-registry-internal')
+  .click('#edit-par-component-legal-entity-2-unregistered-legal-entity-type-sole-trader')
+  .setValue('#edit-par-component-legal-entity-2-unregistered-legal-entity-name', 'Test Sole Trader')
+  .click('#edit-next')
+
+
+  .assert.containsText('.govuk-summary-list registered_name','KALPAITCH LTD')
+  .assert.containsText('.govuk-summary-list registered_name','THE SUTTON TRUST')
+  .assert.containsText('.govuk-summary-list registered_name','Test Sole Trader')
+
+
   .click('.add-action')
-  .click('#edit-par-component-legal-entity-2-remove')
+
+  .click('#edit-par-component-legal-entity-3-registry-internal')
+  .click('#edit-par-component-legal-entity-3-unregistered-legal-entity-type-other')
+  .setValue('#edit-par-component-legal-entity-3-unregistered-legal-entity-name', 'Fake Entity Name')
+  .click('#edit-next')
+  .click('#edit-par-component-legal-entity-list-3-actions-0-change')
+  .setValue('#edit-par-component-legal-entity-3-unregistered-legal-entity-name', 'Correct Entity Name')
+  .click('#edit-next')
+  .click('#edit-par-component-legal-entity-list-3-actions-0-remove')
+
   .click('#edit-next')
 });
 
@@ -138,15 +158,19 @@ When('I change the completed legal entities', function () {
   return shared
     .clickLinkByPureText('Change the legal entities')
     .assert.containsText('h1.heading-xlarge','Confirm the legal entity')
-    .click('#edit-par-component-legal-entity-1-remove')
-    .setValue('#edit-par-component-legal-entity-0-registered-name','Changed to Public Company')
-    .click('#edit-par-component-legal-entity-0-legal-entity-type option[value="public_limited_company"]')
-    .assert.containsText('.form-item-par-component-legal-entity-0-registered-number label','Provide the registration number')
-    .setValue('#edit-par-component-legal-entity-0-registered-number','55555555558')
+      .click('#edit-par-component-legal-entity-list-1-actions-0-remove')
+
+    .click('#edit-par-component-legal-entity-list-0-actions-0-change')
+    .click('#edit-par-component-legal-entity-2-registry-internal')
+    .click('#edit-par-component-legal-entity-2-unregistered-legal-entity-type-other')
+    .setValue('#edit-par-component-legal-entity-2-unregistered-legal-entity-name', 'Change to other unregistered name')
     .click('#edit-next')
+
+    .assert.containsText('.govuk-summary-list registered_name','Change to other unregistered name')
+    .click('#edit-next')
+
     .assert.containsText('h1.heading-xlarge','Check partnership information')
-    .assert.containsText('#edit-legal-entities','Changed to Public Company')
-    .assert.containsText('#edit-legal-entities','55555555558')
+    .assert.containsText('#edit-legal-entities','Change to other unregistered name')
 });
 
 // Starting point: at beginning of this application step
