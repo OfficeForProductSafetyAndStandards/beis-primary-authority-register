@@ -18,7 +18,7 @@ class ParDateForm extends ParFormPluginBase {
   /**
    * @defaults
    */
-  public function getFormDefaults() {
+  public function getFormDefaults(): array {
     return [
       'date' => ['year' => date('Y'), 'month' => date('m'), 'day' => date('d')],
     ];

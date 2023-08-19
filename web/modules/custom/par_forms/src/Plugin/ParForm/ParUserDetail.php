@@ -207,15 +207,14 @@ class ParUserDetail extends ParFormPluginBase {
         ],
       ];
 
-      // Try to add an invite link.
+      // Try to add an invitation link.
       try {
         $params = ['par_data_person' => $person_id];
         $link_options = ['attributes' => ['class' => ['column-full']]];
         $invite_flow = ParFlow::load('user_invite');
         $link_text = $invitation_expiry ? 'Re-send the invitation' : 'Invite the user to create an account';
-        $invite_link = $invite_flow ?
-          $invite_flow->getStartLink(1, $link_text, $params, $link_options) : NULL;
-        if ($invite_link && $invite_link instanceof Link) {
+        $invite_link = $invite_flow?->getStartLink(1, $link_text, $params, $link_options);
+        if ($invite_link instanceof Link) {
           $form['user_account']['invite'] = [
             '#type' => 'markup',
             '#markup' => t('@link', [

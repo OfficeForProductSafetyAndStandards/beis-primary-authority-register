@@ -140,6 +140,6 @@ class ParDedupePersonForm extends ParFormPluginBase {
       $form_state->setErrorByName($this->getElementName($person_id_key), $this->wrapErrorMessage('You must select a contact record.', $this->getElementId($id_key, $form)));
     }
 
-    return parent::validate($form, $form_state, $index, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

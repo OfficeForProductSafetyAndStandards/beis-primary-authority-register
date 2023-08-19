@@ -95,8 +95,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
     try {
       $params = ['type' => $contact_format];
       $contact_add_flow = ParFlow::load('partnership_contact_add');
-      $add_contact_link = $contact_add_flow ?
-        $contact_add_flow->getStartLink(1, "add another {$contact_format} contact", $params) : NULL;
+      $add_contact_link = $contact_add_flow?->getStartLink(1, "add another {$contact_format} contact", $params);
     } catch (ParFlowException $e) {
 
     }
@@ -150,16 +149,14 @@ class ParPartnershipContacts extends ParFormPluginBase {
       try {
         $params = ['type' => $contact_format, 'par_data_person' => $entity->id()];
         $contact_update_flow = ParFlow::load('partnership_contact_update');
-        $update_contact_link = $contact_update_flow ?
-          $contact_update_flow->getStartLink(1, 'edit ' . strtolower($entity->label()), $params) : NULL;
+        $update_contact_link = $contact_update_flow?->getStartLink(1, 'edit ' . strtolower($entity->label()), $params);
       } catch (ParFlowException $e) {
 
       }
       try {
         $params = ['type' => $contact_format, 'par_data_person' => $entity->id()];
         $contact_remove_flow = ParFlow::load('partnership_contact_remove');
-        $remove_contact_link = $contact_remove_flow ?
-          $contact_remove_flow->getStartLink(1, 'remove ' . strtolower($entity->label()) . ' from this partnership', $params) : NULL;
+        $remove_contact_link = $contact_remove_flow?->getStartLink(1, 'remove ' . strtolower($entity->label()) . ' from this partnership', $params);
       } catch (ParFlowException $e) {
 
       }
@@ -172,8 +169,12 @@ class ParPartnershipContacts extends ParFormPluginBase {
         'entity' => [
           '#type' => 'html_tag',
           '#tag' => 'div',
-          '#value' => $rendered_field ? $rendered_field : '<p>(none)</p>',
           '#attributes' => ['class' => ['column-full']],
+          [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $this->t('(none)'),
+          ]
         ],
         'operations' => [
           'update' => [
@@ -185,7 +186,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
           'remove' => [
             '#type' => 'html_tag',
             '#tag' => 'p',
-            '#value' => $remove_contact_link ? $remove_contact_link->toString() : '',
+            '#value' => $remove_contact_link ? $remove_contact_link?->toString() : '',
             '#attributes' => ['class' => ['column-two-thirds']],
           ],
         ],

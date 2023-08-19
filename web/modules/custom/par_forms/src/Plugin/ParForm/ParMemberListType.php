@@ -38,9 +38,6 @@ class ParMemberListType extends ParFormPluginBase {
 
       $list_options = $par_data_partnership->getTypeEntity()
         ->getAllowedValues('member_display');
-      foreach ($list_options as $option) {
-
-      }
       $this->getFlowDataHandler()->setFormPermValue("list_type_options", $list_options);
     }
 

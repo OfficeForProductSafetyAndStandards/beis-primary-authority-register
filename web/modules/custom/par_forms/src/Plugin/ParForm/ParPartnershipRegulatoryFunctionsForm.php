@@ -229,6 +229,6 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
       $form_state->setErrorByName($this->getElementName($partnership_cover_key), $message);
     }
 
-    return parent::validate($form, $form_state, $index, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

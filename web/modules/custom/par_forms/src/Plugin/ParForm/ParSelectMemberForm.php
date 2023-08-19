@@ -99,6 +99,6 @@ class ParSelectMemberForm extends ParFormPluginBase {
       $form_state->setErrorByName($this->getElementName($organisation_id_key), $this->wrapErrorMessage('You must select an organisation.', $this->getElementId($id_key, $form)));
     }
 
-    return parent::validate($form, $form_state, $index, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

@@ -139,6 +139,6 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
 //      $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'This action cannot be changed because it has already been reviewed.');
 //    }
 
-    return parent::validate($form, $form_state, $index, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

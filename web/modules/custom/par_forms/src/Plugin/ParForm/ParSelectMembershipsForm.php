@@ -143,10 +143,10 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
 
     if (empty($organisation_options) && empty($authority_options)) {
       $form['intro'] = [
-        '#type' => 'markup',
-        '#markup' => "There are no memberships to select from.",
-        '#prefix' => '<p class=""form-group">',
-        '#suffix' => '</p>',
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#attributes' => ['class' => ['form-group']],
+        '#value' => $this->t('There are no memberships to select from.'),
       ];
     }
 
@@ -187,6 +187,6 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
       $form_state->setErrorByName($this->getElementName($authority_element_key), $this->wrapErrorMessage('You must add this person to at least one organisation or authority.', $this->getElementId($authority_id_key, $form)));
     }
 
-    return parent::validate($form, $form_state, $index, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

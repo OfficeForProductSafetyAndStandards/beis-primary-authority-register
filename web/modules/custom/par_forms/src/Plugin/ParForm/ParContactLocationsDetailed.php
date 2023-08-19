@@ -58,6 +58,7 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
    * {@inheritdoc}
    */
   public function loadData(int $index = 1): void {
+    /** @var ParDataPersonInterface $contact */
     $contact = $this->getPerson($index);
     if ($contact instanceof ParDataEntityInterface) {
       $this->setDefaultValuesByKey("name", $index, $contact->getFullName());

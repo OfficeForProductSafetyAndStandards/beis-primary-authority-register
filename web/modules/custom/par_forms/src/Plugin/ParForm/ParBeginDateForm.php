@@ -27,7 +27,7 @@ class ParBeginDateForm extends ParFormPluginBase {
   /**
    * @defaults
    */
-  public function getFormDefaults() {
+  public function getFormDefaults(): array {
     return [
       'date_membership_began' => ['year' => date('Y'), 'month' => date('m'), 'day' => date('d')],
     ];

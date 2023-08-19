@@ -47,13 +47,13 @@ class ParContactDisplay extends ParFormPluginBase {
       $contacts = $par_data_organisation->getPerson();
     }
 
-    return isset($contacts) ? $contacts : NULL;
+    return $contacts ?? NULL;
   }
 
   /**
    * Alter the number of items being displayed.
    */
-  public function countItems($data = NULL) {
+  public function countItems($data = NULL): int {
     if ($contacts = $this->getContacts()) {
       return count($contacts);
     }

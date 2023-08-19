@@ -42,10 +42,10 @@ class ParSelectPartnershipForm extends ParFormPluginBase {
     // If no suggestions were found cancel out of the journey.
     if ($partnership_count <= 0) {
       $form['intro'] = [
-        '#type' => 'markup',
-        '#markup' => "There are no partnerships to choose from.",
-        '#prefix' => '<p class=""form-group">',
-        '#suffix' => '</p>',
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#attributes' => ['class' => ['form-group']],
+        '#value' => $this->t('There are no partnerships to choose from.'),
       ];
     }
     // If only one partnership submit the form automatically and go to the next step.
@@ -137,6 +137,6 @@ class ParSelectPartnershipForm extends ParFormPluginBase {
       $form_state->setErrorByName($this->getElementName($partnership_id_key), $this->wrapErrorMessage('You must select a partnership.', $this->getElementId($id_key, $form)));
     }
 
-    return parent::validate($form, $form_state, $index, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

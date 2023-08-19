@@ -95,6 +95,6 @@ class ParGdprForm extends ParFormPluginBase {
       $form_state->setErrorByName($this->getElementName($data_policy_key), $message);
     }
 
-    return parent::validate($form, $form_state, $index, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

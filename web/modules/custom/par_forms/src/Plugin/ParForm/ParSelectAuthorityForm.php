@@ -91,10 +91,10 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
     }
     else {
       $form['intro'] = [
-        '#type' => 'markup',
-        '#markup' => "There are no authorities to choose from.",
-        '#prefix' => '<p class=""form-group">',
-        '#suffix' => '</p>',
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#attributes' => ['class' => ['form-group']],
+        '#value' => $this->t('There are no authorities to choose from.'),
       ];
     }
 
@@ -118,6 +118,6 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
       $form_state->setErrorByName($this->getElementName($authority_element_key), $this->wrapErrorMessage('You must select an authority.', $this->getElementId($id_key, $form)));
     }
 
-    return parent::validate($form, $form_state, $index, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

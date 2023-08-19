@@ -101,6 +101,6 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
       $form_state->setErrorByName($this->getElementName($alternative_legal_entity), $this->wrapErrorMessage('You must choose a legal entity.', $this->getElementId($id_key, $form)));
     }
 
-    return parent::validate($form, $form_state, $index, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

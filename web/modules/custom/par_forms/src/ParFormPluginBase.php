@@ -242,20 +242,6 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * A Helper function to get the form data cache id for a given form in the flow.
-   *
-   * @param string $form_key
-   *   The form data key or form id that maps to a given form id.
-   *
-   * @deprecated
-   *
-   * @return ?string
-   */
-  public function getFormCid(string $form_key): ?string {
-    return $this->getFlowNegotiator()->getFormKey($form_key);
-  }
-
-  /**
    * Identify whether this plugin instance supports multiple values.
    *
    * @return bool

@@ -133,10 +133,10 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
     }
     // Otherwise assume we're on the raise flow and use this data.
     else {
-      $enforcing_officer_cid = $this->getFormCid('enforcing_officer');
-      $enforcing_authority_cid = $this->getFormCid('authority_selection');
-      $enforced_organisation_cid = $this->getFormCid('organisation_selection');
-      $enforced_legal_entity_cid = $this->getFormCid('select_legal');
+      $enforcing_officer_cid = $this->getFlowNegotiator()->getFormKey('enforcing_officer');
+      $enforcing_authority_cid = $this->getFlowNegotiator()->getFormKey('authority_selection');
+      $enforced_organisation_cid = $this->getFlowNegotiator()->getFormKey('organisation_selection');
+      $enforced_legal_entity_cid = $this->getFlowNegotiator()->getFormKey('select_legal');
 
       // Set the enforcement officer details.
       if ($enforcing_officer_id = $this->getDefaultValuesByKey('enforcement_officer_id', $index, NULL, $enforcing_officer_cid)) {

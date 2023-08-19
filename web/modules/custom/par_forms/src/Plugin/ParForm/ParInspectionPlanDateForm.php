@@ -27,7 +27,7 @@ class ParInspectionPlanDateForm extends ParFormPluginBase {
   /**
    * @defaults
    */
-  public function getFormDefaults() {
+  public function getFormDefaults(): array {
     return [
       'start' => ['year' => date('Y'), 'month' => date('m'), 'day' => date('d')],
 //      'expire' => ['year' => date('Y'), 'month' => date('m'), 'day' => date('d')],

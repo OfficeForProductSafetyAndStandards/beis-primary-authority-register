@@ -38,7 +38,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
     // Cardinality is not a zero-based index like the stored fields deltas.
     $par_data_enforcement_action = $par_data_enforcement_actions[$delta] ?? NULL;
 
-    if ($par_data_enforcement_action && $par_data_enforcement_action instanceof ParDataEnforcementAction) {
+    if ($par_data_enforcement_action instanceof ParDataEnforcementAction) {
       $this->setDefaultValuesByKey("action_title", $index, $par_data_enforcement_action->label());
 
       if ($par_data_enforcement_action->getRawStatus() === ParDataEnforcementAction::APPROVED) {

@@ -27,7 +27,7 @@ class ParCeaseDateForm extends ParFormPluginBase {
   /**
    * @defaults
    */
-  public function getFormDefaults() {
+  public function getFormDefaults(): array {
     return [
       'date_membership_ceased' => ['year' => date('Y'), 'month' => date('m'), 'day' => date('d')],
     ];

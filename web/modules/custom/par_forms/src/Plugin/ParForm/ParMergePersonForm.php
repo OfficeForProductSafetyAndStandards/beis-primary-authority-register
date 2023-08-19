@@ -70,6 +70,6 @@ class ParMergePersonForm extends ParFormPluginBase {
       $form_state->setErrorByName($this->getElementName($person_id_key), $this->wrapErrorMessage('You must select at least two contact records to merge.', $this->getElementId($id_key, $form)));
     }
 
-    return parent::validate($form, $form_state, $index, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

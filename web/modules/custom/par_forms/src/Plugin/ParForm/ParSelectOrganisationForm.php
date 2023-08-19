@@ -90,10 +90,10 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
     }
     else {
       $form['intro'] = [
-        '#type' => 'markup',
-        '#markup' => "There are no organisations to choose from.",
-        '#prefix' => '<p class=""form-group">',
-        '#suffix' => '</p>',
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#attributes' => ['class' => ['form-group']],
+        '#value' => $this->t('There are no organisations to choose from.'),
       ];
     }
 
@@ -117,6 +117,6 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
       $form_state->setErrorByName($this->getElementName($organisation_element_key), $this->wrapErrorMessage('You must select an organisation.', $this->getElementId($id_key, $form)));
     }
 
-    return parent::validate($form, $form_state, $index, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }
