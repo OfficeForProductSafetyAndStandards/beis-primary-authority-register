@@ -274,15 +274,18 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
 
     // Set the data for the legal entities.
-    $legal_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_add_legal_entity');
-    $legal_entities = $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $legal_cid) ?: [];
+    $legal_entity_prefix = ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity';
+    $legal_cid = $this->getFlowNegotiator()->getFormKey('legal_entity_add');
+    $legal_entities = $this->getFlowDataHandler()->getTempDataValue($legal_entity_prefix, $legal_cid) ?: [];
     $par_data_legal_entities = [];
-    foreach ($this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $legal_cid) as $delta => $legal_entity) {
-      // These ones need to be saved fresh.
+    // Loop through all stored values and create the legal entity.
+    foreach ($legal_entities as $delta => $legal_entity) {
+      // Creating the legal entity and using ParDataLegalEntity::lookup() allows
+      // information to be retrieved from a registered source like Companies House.
       $par_data_legal_entities[$delta] = ParDataLegalEntity::create([
-        'registry' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'registry'], $legal_cid),
-        'registered_name' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'unregistered', 'legal_entity_name'], $legal_cid),
-        'registered_number' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'registered', 'legal_entity_number'], $legal_cid),
+        'registry' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'registry'], $legal_cid),
+        'registered_name' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'unregistered', 'legal_entity_name'], $legal_cid),
+        'registered_number' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'registered', 'legal_entity_number'], $legal_cid),
         'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'unregistered', 'legal_entity_type'], $legal_cid),
       ]);
       $par_data_legal_entities[$delta]->lookup();

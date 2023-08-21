@@ -91,17 +91,12 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     /* @var ParDataPartnership $partnership */
     $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
-    // Set the data for the legal entities.
-    $legal_entity_name = $this->getFlowDataHandler()->getTempDataValue('registered_name');
-    $legal_entity_number = $this->getFlowDataHandler()->getTempDataValue('registered_number');
-    $legal_entity_type = $this->getFlowDataHandler()->getTempDataValue('legal_entity_type');
-
-    // If a legal entity exists with the same registered_number
-    // the existing entity will be returned.
+    // Creating the legal entity and validate it doesn't already exist.
     $legal_entity = ParDataLegalEntity::create([
-      'registered_name' => $legal_entity_name,
-      'registered_number' => $legal_entity_number,
-      'legal_entity_type' => $legal_entity_type,
+      'registry' => $this->getFlowDataHandler()->getTempDataValue('registry'),
+      'registered_name' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_name'),
+      'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'),
+      'registered_number' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_number'),
     ]);
 
     // If this is an existing legal entity check that it is not already active on the partnership.
@@ -131,27 +126,24 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
     $legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
 
-    // Legal entities that accept registered numbers.
-    $registered_number_types = [
-      'limited_company',
-      'public_limited_company',
-      'limited_liability_partnership',
-      'registered_charity',
-      'partnership',
-      'limited_partnership',
-      'other',
-    ];
 
-    // Nullify registered number if not one of the types specified.
-    if ($legal_entity && !in_array($this->getFlowDataHandler()->getTempDataValue('legal_entity_type'), $registered_number_types)) {
-      $this->getFlowDataHandler()->setTempDataValue('registered_number', NULL);
-    }
+    // Creating the legal entity and using ParDataLegalEntity::lookup() allows
+    // information to be retrieved from a registered source like Companies House.
+    $par_data_legal_entity = ParDataLegalEntity::create([
+      'registry' => $this->getFlowDataHandler()->getTempDataValue('registry'),
+      'registered_name' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_name'),
+      'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'),
+      'registered_number' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_number'),
+    ]);
 
     // Edit existing legal entity / add new legal entity.
     if ($legal_entity) {
-      $legal_entity->set('registered_name', $this->getFlowDataHandler()->getTempDataValue('registered_name'));
+      // Legal entity information may be altered by the registered organisation
+      // provider when saving the data.
+      $legal_entity->set('registry', $this->getFlowDataHandler()->getTempDataValue('registry'));
+      $legal_entity->set('registered_name', $this->getFlowDataHandler()->getTempDataValue('legal_entity_name'));
       $legal_entity->set('legal_entity_type', $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'));
-      $legal_entity->set('registered_number', $this->getFlowDataHandler()->getTempDataValue('registered_number'));
+      $legal_entity->set('registered_number', $this->getFlowDataHandler()->getTempDataValue('legal_entity_number'));
 
       if ($legal_entity->save()) {
         $this->getFlowDataHandler()->deleteStore();
@@ -166,13 +158,13 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       }
     }
     else {
-      // Create a new legal entity.
+      // Legal entity information may be altered by the registered organisation
+      // provider when saving the data.
       $legal_entity = ParDataLegalEntity::create([
-        'type' => 'legal_entity',
-        'name' => $this->getFlowDataHandler()->getTempDataValue('registered_name'),
-        'registered_name' => $this->getFlowDataHandler()->getTempDataValue('registered_name'),
-        'registered_number' => $this->getFlowDataHandler()->getTempDataValue('registered_number'),
+        'registry' => $this->getFlowDataHandler()->getTempDataValue('registry'),
+        'registered_name' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_name'),
         'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'),
+        'registered_number' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_number'),
       ]);
       $legal_entity->save();
 

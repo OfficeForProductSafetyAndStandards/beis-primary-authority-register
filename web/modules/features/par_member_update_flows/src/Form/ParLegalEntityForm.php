@@ -36,14 +36,15 @@ class ParLegalEntityForm extends ParBaseForm {
 
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
 
-    $par_data_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity') ?: ParDataLegalEntity::create([
-      'type' => 'legal_entity',
+    // Creating the legal entity and using ParDataLegalEntity::lookup() allows
+    // information to be retrieved from a registered source like Companies House.
+    $par_data_legal_entity = ParDataLegalEntity::create([
+      'registry' => $this->getFlowDataHandler()->getTempDataValue('registry'),
+      'registered_name' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_name'),
+      'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'),
+      'registered_number' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_number'),
     ]);
-
-    $par_data_legal_entity->set('name', $this->getFlowDataHandler()->getTempDataValue('registered_name'));
-    $par_data_legal_entity->set('registered_name', $this->getFlowDataHandler()->getTempDataValue('registered_name'));
-    $par_data_legal_entity->set('registered_number', $this->getFlowDataHandler()->getTempDataValue('registered_number'));
-    $par_data_legal_entity->set('legal_entity_type', $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'));
+    $par_data_legal_entity->lookup();
 
     $new = $par_data_legal_entity->isNew();
     $saved = $par_data_legal_entity->save();
