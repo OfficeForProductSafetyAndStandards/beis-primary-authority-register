@@ -60,6 +60,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $form['member_contact']['#attributes']['class'][] = 'form-group';
 
     // Display legal entities.
+    var_dump(count($par_data_legal_entities));
     $form['legal_entities'] = $this->renderEntities('Legal entities', $par_data_legal_entities);
     $form['legal_entities']['#attributes']['class'][] = 'form-group';
 
@@ -123,7 +124,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Set the data for the legal entities.
     $legal_entity_prefix = ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity';
-    $legal_cid = $this->getFlowNegotiator()->getFormKey('legal_entity_add');
+    $legal_cid = $this->getFlowNegotiator()->getFormKey('legal_select');
     $legal_entities = $this->getFlowDataHandler()->getTempDataValue($legal_entity_prefix, $legal_cid) ?: [];
     $par_data_legal_entities = [];
     // Loop through all stored values and create the legal entity.
