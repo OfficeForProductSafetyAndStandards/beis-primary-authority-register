@@ -446,7 +446,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function addAnother(array &$form, FormStateInterface $form_state) {
     // Rebuild the form rather than redirect to ensure that form state values are persisted.
-    $form_state->setRebuild(TRUE);
+    $this->selfRedirect($form, $form_state, TRUE);
 
     // Loop through all the components and update the cardinality value.
     foreach ($this->getComponents() as $component) {
@@ -461,7 +461,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
   public function changeItem(array &$form, FormStateInterface $form_state) {
     // Rebuild the form rather than redirect to ensure that form state values are persisted.
-    $form_state->setRebuild(TRUE);
+    $this->selfRedirect($form, $form_state, TRUE);
 
     [$button, $plugin_namespace, $index] = explode(':', $form_state->getTriggeringElement()['#name']);
 
@@ -483,7 +483,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function removeItem(array &$form, FormStateInterface &$form_state) {
     // Ensure that destination query params don't redirect.
-    $this->selfRedirect($form, $form_state);
+    $this->selfRedirect($form, $form_state, FALSE);
 
     [$button, $plugin_namespace, $index] = explode(':', $form_state->getTriggeringElement()['#name']);
 
@@ -744,7 +744,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @param array $form
    * @param FormStateInterface $form_state
    */
-  public function selfRedirect(array &$form, FormStateInterface $form_state) {
+  public function selfRedirect(array &$form, FormStateInterface $form_state, bool $rebuild = TRUE) {
     // Setting a redirection allows form values to be cleared.
     $options = [];
     $query = $this->getRequest()->query;
@@ -753,7 +753,15 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       $query->remove('destination');
     }
     $params = $this->getRouteParams();
-    $form_state->setRedirect('<current>', $params, $options);
+
+    // If $rebuild is set the form will simply be rebuilt.
+    if ($rebuild) {
+      $form_state->setRebuild(TRUE);
+    }
+    // There are some instances, however, where forms must be self-redirected.
+    else {
+      $form_state->setRedirect('<current>', $params, $options);
+    }
   }
 
   /**

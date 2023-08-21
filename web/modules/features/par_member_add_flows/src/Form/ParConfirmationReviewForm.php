@@ -137,6 +137,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
         'registered_number' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'registered', 'legal_entity_number'], $legal_cid),
       ]);
       $par_data_legal_entities[$delta]->lookup();
+
+      // Ensure they are ordered correctly.
+      ksort($par_data_legal_entities);
     }
 
     // Create the entities.

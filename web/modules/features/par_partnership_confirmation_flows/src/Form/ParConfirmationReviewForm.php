@@ -289,6 +289,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
         'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'unregistered', 'legal_entity_type'], $legal_cid),
       ]);
       $par_data_legal_entities[$delta]->lookup();
+
+      // Ensure they are ordered correctly.
+      ksort($par_data_legal_entities);
     }
 
     $existing_legal_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_select_legal_entities');
