@@ -231,8 +231,8 @@ display:
                     active: true
                     label: 'Enforcement ID'
                   id_1:
-                    label: ''
                     active: false
+                    label: ''
                   notice_date:
                     active: true
                     label: 'Notice Date'
@@ -240,11 +240,11 @@ display:
                     active: true
                     label: Title
                   par_flow_link_1:
-                    label: ''
                     active: false
+                    label: ''
                   par_flow_link:
-                    label: ''
                     active: false
+                    label: ''
                   field_enforcing_authority:
                     active: true
                     label: 'Enforcing Authority Name'
@@ -252,14 +252,14 @@ display:
                     active: true
                     label: 'Primary Authority Name'
                   notice_type:
-                    label: ''
                     active: false
+                    label: ''
                   par_status_author:
-                    label: ''
                     active: false
+                    label: ''
                   par_status_time_1:
-                    label: ''
                     active: false
+                    label: ''
                   par_status:
                     active: true
                     label: Status
@@ -267,17 +267,17 @@ display:
                     active: true
                     label: 'Organisation Name'
                   authority_name:
-                    label: ''
                     active: false
+                    label: ''
                   authority_name_1:
-                    label: ''
                     active: false
+                    label: ''
                   organisation_name:
-                    label: ''
                     active: false
+                    label: ''
                   summary__value:
-                    label: ''
                     active: false
+                    label: ''
                 separator: ','
                 file_scheme: s3private
         notice_date:
