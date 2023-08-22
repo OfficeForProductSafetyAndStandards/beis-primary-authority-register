@@ -124,7 +124,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    */
   public function setParStatus($value, $ignore_transition_check = FALSE) {
     // Only set the status if allowed.
-    if ($this->supportsStatus()) {
+    if ($this->supportsStatus() || $ignore_transition_check) {
       parent::setParStatus($value, $ignore_transition_check);
     }
   }

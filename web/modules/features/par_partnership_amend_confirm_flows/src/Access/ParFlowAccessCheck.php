@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_partnership_amend_flows\Access;
+namespace Drupal\par_partnership_amend_confirm_flows\Access;
 
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -80,9 +80,15 @@ class ParFlowAccessCheck implements AccessInterface {
 
     }
 
+    $partnership_legal_entities = $par_data_partnership->getPartnershipLegalEntities();
+    // Get only the partnership legal entities that are awaiting confirmation.
+    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) {
+      return $partnership_legal_entity->getRawStatus() === 'confirmed_authority';
+    });
+
     // Only active partnerships can be amended.
-    if (!$par_data_partnership->isActive()) {
-//      return AccessResult::forbidden('Only active partnerships can be amended.');
+    if (count($partnership_legal_entities) <= 0) {
+      return AccessResult::forbidden('Only partnerships with pending legal entity amendments can be confirmed.');
     }
 
     return AccessResult::allowed();

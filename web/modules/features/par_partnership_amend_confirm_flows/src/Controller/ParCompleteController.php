@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_partnership_amend_flows\Controller;
+namespace Drupal\par_partnership_amend_confirm_flows\Controller;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
@@ -14,7 +14,7 @@ use Drupal\par_flows\ParFlowException;
  */
 class ParCompleteController extends ParBaseController {
 
-  protected $pageTitle = 'The amendment has been completed';
+  protected $pageTitle = 'The amendments have been confirmed';
 
   /**
    * Load the data for this form.

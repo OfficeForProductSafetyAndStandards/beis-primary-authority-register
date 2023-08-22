@@ -22,6 +22,7 @@ dependencies:
     - par_inspection_feedback_view_flows
     - par_invite_user_flows
     - par_notification
+    - par_partnership_amend_flows
     - par_partnership_application_flows
     - par_partnership_confirmation_flows
     - par_partnership_contact_add_flows
@@ -76,6 +77,7 @@ permissions:
   - 'add par_data_regulatory_function entities'
   - 'add par_data_sic_code entities'
   - 'add partnership authority contact'
+  - 'amend own partnerships'
   - 'apply for partnership'
   - 'approve enforcement notice'
   - 'assign par_authority role'

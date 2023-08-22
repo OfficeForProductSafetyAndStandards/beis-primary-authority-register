@@ -228,56 +228,56 @@ display:
                 field_override: true
                 field_config:
                   id:
-                    active: true
+                    active: '1'
                     label: 'Enforcement ID'
                   id_1:
-                    active: false
                     label: ''
+                    active: 0
                   notice_date:
-                    active: true
+                    active: '1'
                     label: 'Notice Date'
                   title:
-                    active: true
+                    active: '1'
                     label: Title
                   par_flow_link_1:
-                    active: false
                     label: ''
+                    active: 0
                   par_flow_link:
-                    active: false
                     label: ''
+                    active: 0
                   field_enforcing_authority:
-                    active: true
+                    active: '1'
                     label: 'Enforcing Authority Name'
                   field_primary_authority:
-                    active: true
+                    active: '1'
                     label: 'Primary Authority Name'
                   notice_type:
-                    active: false
                     label: ''
+                    active: 0
                   par_status_author:
-                    active: false
                     label: ''
+                    active: 0
                   par_status_time_1:
-                    active: false
                     label: ''
+                    active: 0
                   par_status:
-                    active: true
+                    active: '1'
                     label: Status
                   field_organisation:
-                    active: true
+                    active: '1'
                     label: 'Organisation Name'
                   authority_name:
-                    active: false
                     label: ''
+                    active: 0
                   authority_name_1:
-                    active: false
                     label: ''
+                    active: 0
                   organisation_name:
-                    active: false
                     label: ''
+                    active: 0
                   summary__value:
-                    active: false
                     label: ''
+                    active: 0
                 separator: ','
                 file_scheme: s3private
         notice_date:

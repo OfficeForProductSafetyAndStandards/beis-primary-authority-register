@@ -299,7 +299,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $par_data_legal_entities_existing = [];
     foreach ($existing_legal_entities as $delta => $existing_legal_entity) {
       if ($existing = ParDataLegalEntity::load($existing_legal_entity)) {
-        $par_data_legal_entities_existing[$delta] = ParDataLegalEntity::load($existing_legal_entity);
+        $par_data_legal_entities_existing[$delta] = $existing;
       }
     }
 

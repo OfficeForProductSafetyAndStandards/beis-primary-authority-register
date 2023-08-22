@@ -880,8 +880,7 @@ class ParDataPartnership extends ParDataEntity {
         return $partnership_legal_entity;
       }
     }
-
-    // Create a new partnership legal entity wrapper.]
+    // Create a new partnership legal entity wrapper.
     $partnership_legal_entity = ParDataPartnershipLegalEntity::create([]);
     // Set the legal entity.
     $partnership_legal_entity->setLegalEntity($legal_entity);

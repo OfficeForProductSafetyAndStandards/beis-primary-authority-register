@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\par_partnership_amend_flows\Controller;
+namespace Drupal\par_partnership_amend_nominate_flows\Controller;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
@@ -14,7 +14,7 @@ use Drupal\par_flows\ParFlowException;
  */
 class ParCompleteController extends ParBaseController {
 
-  protected $pageTitle = 'The amendment has been completed';
+  protected $pageTitle = 'The amendments have been confirmed';
 
   /**
    * Load the data for this form.
@@ -25,7 +25,7 @@ class ParCompleteController extends ParBaseController {
       'intro' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t("The partnership amendment has been submitted to the business."),
+        '#value' => $this->t("The partnership amendment has been nominated."),
       ],
     ];
 
@@ -36,17 +36,7 @@ class ParCompleteController extends ParBaseController {
     $build['next']['notification_organisation'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => "The business will get a notification asking them to confirm the changes to this partnership.",
-    ];
-    $build['next']['notification_helpdesk'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'p',
-      '#value' => "Once the business has confirmed these changes the Primary Authority Register team will review the changes and approve the new partnership details.",
-    ];
-    $build['next']['help'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'p',
-      '#value' => "Please contact the Primary Authority Register team if you'd like to discuss this amendment.",
+      '#value' => "The business and the authority will be notified that the partnership has been updated.",
     ];
 
     // Change the action to save.

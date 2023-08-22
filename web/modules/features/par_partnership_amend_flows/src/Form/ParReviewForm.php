@@ -10,8 +10,10 @@ use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
+use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
 
@@ -20,220 +22,112 @@ use Drupal\par_forms\ParFormBuilder;
  */
 class ParReviewForm extends ParBaseForm {
 
-  protected $pageTitle = 'Confirm this transfer';
+  protected $pageTitle = 'Confirm this amendment';
 
   /**
    * Load the data for this form.
    */
   public function loadData() {
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
-
+    // Nothing to load at the moment.
     parent::loadData();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     // Set the data values on the entities
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership[] $partnerships */
-    /** @var ParDataAuthority $old_authority */
-    /** @var ParDataAuthority $new_authority */
-
-    // Get all the contacts for each of the partnerships.
-    $primary_authority_contacts = [];
-    foreach ($partnerships as $partnership) {
-      foreach ($partnership->getAuthorityPeople() as $person) {
-        $primary_authority_contacts[$person->id()] = $person;
-      }
-    }
-
-    // Get all the enforcements and deviation requests awaiting approval.
-    $pending_enforcements = [];
-    $pending_deviation_requests = [];
-    foreach ($partnerships as $partnership) {
-      // Only return inactive enforcements.
-      $enforcement_notices = $partnership->getEnforcements();
-      $enforcement_notices = array_filter($enforcement_notices, function ($enforcement) {
-        return $enforcement->inProgress();
-      });
-      $pending_enforcements = array_merge($pending_enforcements, $enforcement_notices);
-
-      // Only return inactive deviation requests.
-      $deviation_requests = $partnership->getDeviationRequests();
-      $deviation_requests = array_filter($deviation_requests, function ($deviation) {
-        return $deviation->inProgress();
-      });
-      $pending_deviation_requests = array_merge($pending_deviation_requests, $deviation_requests);
-    }
+    /** @var ParDataLegalEntity[] $par_data_legal_entities */
 
     // Display the authorities.
-    $form['authorities'] = [
+    $form['partnership'] = [
       '#type' => 'container',
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
         '#attributes' => ['class' => ['heading-medium']],
-        '#value' => $this->t('Authorities'),
+        '#value' => $this->t('Partnership'),
       ],
       'intro' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t("The partnerships will be transferred from @old to @new",
-            ['@old' => $old_authority->label(), '@new' => $new_authority->label()]
-          ),
+        '#value' => $this->t("Please review the proposed amendment to the @partnership.",
+          ['@partnership' => $par_data_partnership->label()]
+        ),
       ],
     ];
 
-    // Display the partnerships that will be transferred.
-    $partnership_count = count($partnerships);
-    $partnership_labels = $this->getParDataManager()->getEntitiesAsOptions($partnerships);
-    $form['partnerships'] = [
-      '#type' => 'container',
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
-        '#value' => $this->t('Partnerships'),
-      ],
-      'description' => [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $this->formatPlural($partnership_count,
-          "The following partnership will be transferred, please check this is correct.",
-          "The following @count partnerships will be transferred, please check this is correct.",
-          ['@count' => $partnership_count]),
-      ],
-      'list' => [
-        '#theme' => 'item_list',
-        '#items' => $partnership_labels,
-        '#attributes' => ['class' => ['list', 'list-bullet']],
-      ],
-    ];
-
-    // Display the partnerships that will be transferred.
-    $contact_count = count($primary_authority_contacts);
-    $contact_records = $this->getParDataManager()->getEntitiesAsOptions($primary_authority_contacts, [], 'summary');
-    $form['contacts'] = [
-      '#type' => 'container',
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
-        '#value' => $this->t('Primary Authority Contacts'),
-      ],
-      'description' => [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $this->formatPlural($contact_count,
-          "This primary authority contact will be added to the new authority.",
-          "The following @count primary authority contacts will be transferred to the new authority.",
-          ['@count' => $contact_count]),
-      ],
-      'list' => [
-        '#theme' => 'item_list',
-        '#items' => $contact_records,
-        '#attributes' => ['class' => ['list', 'list-bullet']],
-      ],
-      'intro' => [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $this->t("If there are any primary authority contacts that you don't want transferred to the new authority you must update the partnership with the new records before you transfer the partnership."),
-      ],
-    ];
-
-    // Display the partnerships that will be transferred.
-    $pending_enquiry_count = count($pending_enforcements + $pending_deviation_requests);
-    $enquiries = array_merge($pending_enforcements, $pending_deviation_requests);
-    $enquiry_labels = $this->getParDataManager()->getEntitiesAsOptions($enquiries);
-    $form['enquiries'] = [
-      '#type' => 'container',
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
-        '#value' => $this->t('Enforcements & Enquiries'),
-      ],
-    ];
-    if ($pending_enquiry_count > 0) {
-      $form['enquiries']['pending'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $this->formatPlural($pending_enquiry_count,
-          "There is @count pending notice of enforcement action or deviation request, this will be transferred to the new authority.",
-          "There are @count pending notices of enforcement action or deviation requests, these will be transferred to the new authority.",
-          ['@count' => $pending_enquiry_count]),
-      ];
+    // Get the list of legal entity names.
+    $legal_entity_render_arrays = [];
+    foreach ($par_data_legal_entities as $delta => $legal_entity) {
+      $view_builder = \Drupal::entityTypeManager()
+        ->getViewBuilder($legal_entity->getEntityTypeId());
+      $legal_entity_render_arrays[$delta] = $view_builder
+        ->view($legal_entity, 'summary');
     }
-    $form['enquiries']['description'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'p',
-      '#value' => $pending_enquiry_count > 0 ?
-        $this->t("All other notices of enforcement action and deviation requests that have been approved, along with all inspection plan feedback and all other enquiries will remain with the existing authority and will not be transferred.") :
-        $this->t("All notices of enforcement action, deviation requests, inspection plan feedback and all other enquiries will remain with the existing authority and will not be transferred."),
-    ];
 
-    // Display the date of change.
-    $transfer_date = $this->getDateFormatter()->format($transfer_date->getTimestamp(), 'gds_date_format');
-    $form['date'] = [
+    // Display the legal entities.
+    $form['legal_entities'] = [
       '#type' => 'container',
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
         '#attributes' => ['class' => ['heading-medium']],
-        '#value' => $this->t('Date'),
+        '#value' => $this->t('Legal Entities'),
       ],
       'intro' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t("This transfer will be effective from @date, this information will be shown on the partnership.", ['@date' => $transfer_date]),
+        '#value' => $this->t("The following legal entities will be added to the partnership:"),
+      ],
+      'list' => [
+        '#theme' => 'item_list',
+        '#items' => $legal_entity_render_arrays,
+        '#attributes' => ['class' => ['list', 'list-bullet']],
       ],
     ];
 
     $form['confirmation'] = [
       '#type' => 'checkbox',
-      '#title' => 'Please check everything is correct, once you confirm these details the partnerships will be transferred.',
+      '#title' => 'Please check everything is correct, once you submit this amendment the organisation will be asked to confirm the details.',
       '#wrapper_attributes' => ['class' => 'govuk-!-margin-top-8'],
     ];
 
     // Change the main button title to 'remove'.
-    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Transfer');
+    $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Submit amendment');
 
-    // Make sure to add the authority cacheability data to this form.
-    $this->addCacheableDependency($par_data_authority);
+    // Make sure to add the partnership cacheability data to this form.
+    $this->addCacheableDependency($par_data_partnership);
 
     return parent::buildForm($form, $form_state);
   }
 
   public function createEntities() {
-    // Get the old authority.
-    $old_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');
+    // Set the data for the legal entities.
+    $legal_entity_prefix = ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity';
+    $legal_cid = $this->getFlowNegotiator()->getFormKey('legal_entity_add');
+    $legal_entities = $this->getFlowDataHandler()->getTempDataValue($legal_entity_prefix, $legal_cid) ?: [];
+    $par_data_legal_entities = [];
+    // Loop through all stored values and create the legal entity.
+    foreach ($legal_entities as $delta => $legal_entity) {
+      // Creating the legal entity and using ParDataLegalEntity::lookup() allows
+      // information to be retrieved from a registered source like Companies House.
+      $par_data_legal_entities[$delta] = ParDataLegalEntity::create([
+        'registry' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'registry'], $legal_cid),
+        'registered_name' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'unregistered', 'legal_entity_name'], $legal_cid),
+        'registered_number' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'registered', 'legal_entity_number'], $legal_cid),
+        'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'unregistered', 'legal_entity_type'], $legal_cid),
+      ]);
+      $par_data_legal_entities[$delta]->lookup();
 
-    // Get the new authority.
-    $authority_cid = $this->getFlowNegotiator()->getFormKey('authority');
-    $authority_id = $this->getFlowDataHandler()->getTempDataValue('authority_id', $authority_cid);
-    $new_authority = $authority_id ? \Drupal::entityTypeManager()->getStorage('par_data_authority')
-      ->load($authority_id) : NULL;
-
-    // Get the transfer date.
-    $date_cid = $this->getFlowNegotiator()->getFormKey('date');
-    $date_value = $this->getFlowDataHandler()->getTempDataValue('date', $date_cid);
-    $date = $date_value ? DrupalDateTime::createFromFormat('Y-m-d', $date_value, ['validate_format' => FALSE]) : NULL;
-
-    // Get the partnerships to transfer.
-    $partnerships_cid = $this->getFlowNegotiator()->getFormKey('partnerships');
-    $partnership_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_partnership_id', $partnerships_cid);
-    $partnerships = $partnership_ids ? \Drupal::entityTypeManager()->getStorage('par_data_partnership')
-      ->loadMultiple($partnership_ids) : [];
+      // Ensure they are ordered correctly.
+      ksort($par_data_legal_entities);
+    }
 
     return [
-      'partnerships' => $partnerships,
-      'old_authority' => $old_authority,
-      'new_authority' => $new_authority,
-      'transfer_date' => $date,
+      'par_data_legal_entities' => $par_data_legal_entities,
     ];
   }
 
@@ -246,41 +140,12 @@ class ParReviewForm extends ParBaseForm {
     // Set the data values on the entities
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership[] $partnerships */
-    /** @var ParDataAuthority $old_authority */
-    /** @var ParDataAuthority $new_authority */
+    /** @var ParDataLegalEntity[] $par_data_legal_entities */
 
-    // Ensure that the transfer has been confirmed.
+    // Ensure that the amendment has been confirmed.
     if (!$form_state->getValue('confirmation')) {
       $id = $this->getElementId('confirmation', $form);
-      $form_state->setErrorByName($this->getElementName(['confirmation']), $this->wrapErrorMessage('Please confirm the transfer of partnerships.', $id));
-    }
-
-    // Validate that the new authority has the same regulatory functions as the
-    // old authority.
-    if ($old_authority instanceof ParDataAuthority && $new_authority instanceof ParDataAuthority) {
-      $old_functions = array_values($old_authority->get('field_regulatory_function')->getValue());
-      $new_functions = array_values($new_authority->get('field_regulatory_function')->getValue());
-
-      // Sort the array elements
-      sort($old_functions);
-      sort($new_functions);
-
-      if ($old_functions !== $new_functions) {
-        $id_key = $this->getElementKey('authority', 1, TRUE);
-        $message = $this->t("The regulatory functions do not match those offered by @old_authority.", ['@old_authority' => $old_authority->label()])->render();
-        $form_state->setErrorByName('authorities', $this->wrapErrorMessage($message, $this->getElementId($id_key, $form)));
-      }
-    }
-    // Validate that there are two valid authorities to transfer between.
-    else {
-      $id_key = $this->getElementKey('authority', 1, TRUE);
-      $form_state->setErrorByName('authorities', $this->wrapErrorMessage('This transfer cannot be made at this time.', $this->getElementId($id_key, $form)));
-    }
-
-    // Validate that there are some partnerships to transfer.
-    if (empty($partnerships)) {
-      $form_state->setErrorByName('partnerships', $this->wrapErrorMessage($message, $this->getElementId($id_key, $form)));
+      $form_state->setErrorByName($this->getElementName(['confirmation']), $this->wrapErrorMessage('Please confirm the amendment to this partnership.', $id));
     }
   }
 
@@ -290,20 +155,49 @@ class ParReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
+    // Get the partnership.
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+
     // Set the data values on the entities
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership[] $partnerships */
-    /** @var ParDataAuthority $old_authority */
-    /** @var ParDataAuthority $new_authority */
-    /** @var DrupalDateTime $transfer_date */
+    /** @var ParDataLegalEntity[] $par_data_legal_entities */
 
     // Transfer the partnership.
-    foreach ($partnerships as $partnership) {
-      if ($old_authority instanceof ParDataAuthority && $new_authority instanceof ParDataAuthority) {
-        $partnership->transfer($old_authority, $new_authority, $transfer_date);
-        $partnership->save();
+    $partnership_legal_entities = [];
+    foreach ($par_data_legal_entities as $delta => $par_data_legal_entity) {
+      if ($par_data_partnership instanceof ParDataPartnership && $par_data_legal_entity instanceof ParDataLegalEntity) {
+        $partnership_legal_entity = $par_data_partnership->addLegalEntity($par_data_legal_entity);
+        try {
+          // Only update the status if the partnership legal entity is new.
+          $default_status = $partnership_legal_entity->getTypeEntity()->getDefaultStatus();
+          if (!$partnership_legal_entity->getRawStatus() ||
+            $partnership_legal_entity->getRawStatus() === $default_status) {
+
+            // Setting the status before the partnership legal entity has been
+            // saved to the partnership needs to bypass transition checks.
+            $partnership_legal_entity->setParStatus('confirmed_authority', TRUE);
+            $partnership_legal_entity->save();
+            $partnership_legal_entities[$delta] = $partnership_legal_entity;
+          }
+        }
+        catch (ParDataException $ignored) {
+
+        }
       }
+    }
+
+    if (count($partnership_legal_entities) >= 1) {
+      $par_data_partnership->save();
+    }
+    // Log an error.
+    else {
+      $message = $this->t('The partnership amendment for the @partnership could not be saved, @count legal entities could not be added.');
+      $replacements = [
+        '@partnership' => $par_data_partnership->label(),
+        '@count' => count($par_data_legal_entities) - count($partnership_legal_entities),
+      ];
+      $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
     }
 
     $this->getFlowDataHandler()->deleteStore();

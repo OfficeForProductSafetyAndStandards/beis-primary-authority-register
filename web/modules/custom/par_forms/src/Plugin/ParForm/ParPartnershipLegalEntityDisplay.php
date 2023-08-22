@@ -55,32 +55,79 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     /* @var ParDataPartnershipLegalEntity[] $partnership_legal_entities */
     $partnership_legal_entities = $this->getDefaultValuesByKey('partnership_legal_entities', $index, []);
 
-    // Generate the link to add a new partnership legal entity.
+    $actions = [];
+    // Generate the link to add a new partnership legal entity for pending partnerships.
     try {
       $link_label = !empty($partnership_legal_entities) && count($partnership_legal_entities) >= 1
         ? "add another legal entity" : "add a legal entity";
-      $add_link = $this->getFlowNegotiator()->getFlow()
+      $link = $this->getFlowNegotiator()->getFlow()
         ->getOperationLink('add_legal_entity', $link_label, ['par_data_partnership' => $partnership]);
+      if ($link instanceof Link) {
+        $actions['add'] = $link;
+      }
     }
-    catch (ParFlowException $e) {
-      $this->getLogger($this->getLoggerChannel())->notice($e);
+    catch (ParFlowException $ignored) {
+
+    }
+    // Generate the partnership amendment link for active partnerships.
+    try {
+      $link = $this->getFlowNegotiator()->getFlow('amend_partnership')
+        ->getStartLink(1, "Amend the legal entities");
+      if ($link instanceof Link) {
+        $actions['amend'] = $link;
+      }
+    }
+    catch (ParFlowException $ignored) {
+
+    }
+    // Generate the partnership amendment confirmation link for active partnerships.
+    try {
+      $link = $this->getFlowNegotiator()->getFlow('confirm_partnership_amendment')
+        ->getStartLink(1, "Confirm the amendments");
+      if ($link instanceof Link) {
+        $actions['amend_confirm'] = $link;
+      }
+    }
+    catch (ParFlowException $ignored) {
+
+    }
+    // Generate the partnership amendment nomination link for active partnerships.
+    try {
+      $link = $this->getFlowNegotiator()->getFlow('nominate_partnership_amendment')
+        ->getStartLink(1, "Nominate the amendments");
+      if ($link instanceof Link) {
+        $actions['amend_nominate'] = $link;
+      }
+    }
+    catch (ParFlowException $ignored) {
+
     }
 
     // Fieldset encompassing the partnership legal entities plugin display.
     $form['partnership_legal_entities'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Legal entities',
+      '#type' => 'container',
       '#attributes' => ['class' => ['form-group']],
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => $this->t('Legal Entities'),
+      ],
+      'actions' => [
+        '#theme' => 'item_list',
+        '#attributes' => ['class' => ['list']],
+        '#weight' => 99
+      ],
     ];
 
-    // Display a link to add a legal entity. Weighted to sink to bottom.
-    if (isset($add_link) && $add_link instanceof Link) {
-      $form['partnership_legal_entities']['add'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $add_link->toString(),
-        '#attributes' => ['class' => ['add-partnership-legal-entity']],
-        '#weight' => 99,
+    // Render all the links as a list.
+    foreach ($actions as $key => $action) {
+      /** @var Link $action */
+      $form['partnership_legal_entities']['actions']['#items'][$key] = [
+        '#type' => 'link',
+        '#title' => $action->getText(),
+        '#url' => $action->getUrl(),
+        '#options' => $action->getUrl()->getOptions(),
       ];
     }
 
