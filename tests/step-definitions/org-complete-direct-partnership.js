@@ -117,9 +117,9 @@ When('I complete the legal entities', function () {
   .click('#edit-next')
 
 
-  .assert.containsText('.govuk-summary-list registered_name','KALPAITCH LTD')
-  .assert.containsText('.govuk-summary-list registered_name','THE SUTTON TRUST')
-  .assert.containsText('.govuk-summary-list registered_name','Test Sole Trader')
+  .assert.containsText('.govuk-summary-list .registered_name','KALPAITCH LTD')
+  .assert.containsText('.govuk-summary-list .registered_name','THE SUTTON TRUST')
+  .assert.containsText('.govuk-summary-list .registered_name','Test Sole Trader')
 
 
   .click('.add-action')
@@ -166,7 +166,7 @@ When('I change the completed legal entities', function () {
     .setValue('#edit-par-component-legal-entity-2-unregistered-legal-entity-name', 'Change to other unregistered name')
     .click('#edit-next')
 
-    .assert.containsText('.govuk-summary-list registered_name','Change to other unregistered name')
+    .assert.containsText('.govuk-summary-list .registered_name','Change to other unregistered name')
     .click('#edit-next')
 
     .assert.containsText('h1.heading-xlarge','Check partnership information')
