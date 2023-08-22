@@ -117,9 +117,9 @@ When('I complete the legal entities', function () {
   .click('#edit-next')
 
 
-  .assert.containsText('.govuk-summary-list .registered_name','KALPAITCH LTD')
-  .assert.containsText('.govuk-summary-list .registered_name','THE SUTTON TRUST')
-  .assert.containsText('.govuk-summary-list .registered_name','Test Sole Trader')
+  .assert.containsText('.govuk-summary-list .govuk-summary-list__row:nth-child(1) .registered_name','KALPAITCH LTD')
+  .assert.containsText('.govuk-summary-list .govuk-summary-list__row:nth-child(2) .registered_name','THE SUTTON TRUST')
+  .assert.containsText('.govuk-summary-list .govuk-summary-list__row:nth-child(3) .registered_name','Test Sole Trader')
 
 
   .click('.add-action')
@@ -158,15 +158,15 @@ When('I change the completed legal entities', function () {
   return shared
     .clickLinkByPureText('Change the legal entities')
     .assert.containsText('h1.heading-xlarge','Confirm the legal entity')
-      .click('#edit-par-component-legal-entity-list-1-actions-0-remove')
+    .click('#edit-par-component-legal-entity-list-1-actions-0-remove')
 
     .click('#edit-par-component-legal-entity-list-0-actions-0-change')
-    .click('#edit-par-component-legal-entity-2-registry-internal')
-    .click('#edit-par-component-legal-entity-2-unregistered-legal-entity-type-other')
-    .setValue('#edit-par-component-legal-entity-2-unregistered-legal-entity-name', 'Change to other unregistered name')
+    .click('#edit-par-component-legal-entity-0-registry-internal')
+    .click('#edit-par-component-legal-entity-0-unregistered-legal-entity-type-other')
+    .setValue('#edit-par-component-legal-entity-0-unregistered-legal-entity-name', 'Change to other unregistered name')
     .click('#edit-next')
 
-    .assert.containsText('.govuk-summary-list .registered_name','Change to other unregistered name')
+    .assert.containsText('.govuk-summary-list .govuk-summary-list__row:nth-child(1) .registered_name','Change to other unregistered name')
     .click('#edit-next')
 
     .assert.containsText('h1.heading-xlarge','Check partnership information')
