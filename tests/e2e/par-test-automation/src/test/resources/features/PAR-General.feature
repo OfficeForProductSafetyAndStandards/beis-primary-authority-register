@@ -16,8 +16,8 @@ Feature:
     #second part of partnership application
     When the user searches for the last created partnership
     And the user completes the partnership application with the following details:
-      | SIC Code            | No of Employees | Legal entity Type | Business Description |
-      | allow people to eat | 10 to 49        | Limited Company   | Test Business        |
+      | SIC Code            | No of Employees |	Legal Entity Name	| Legal entity Type 			| Company number	|	Business Description |
+      | allow people to eat | 10 to 49        |	LE1								| unregistered  				  | 12345678				|	Test Business        |
     Then the second part of the partnership application is successfully completed
     #verify update of newly created partnership
     Given the user is on the PAR login page
