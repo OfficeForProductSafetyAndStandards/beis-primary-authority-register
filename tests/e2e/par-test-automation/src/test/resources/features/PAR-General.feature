@@ -39,8 +39,8 @@ Feature:
     #second part of partnership application
     When the user searches for the last created partnership
     And the user completes the partnership application with the following details:
-      | SIC Code            | Member List Size | Legal entity Type | Business Description |
-      | allow people to eat | Medium           | Limited Company   | Test Business        |
+      | SIC Code            | Member List Size | Business Description |	Legal Entity Name	| Legal entity Type 			| Company number	|	
+      | allow people to eat | Medium           | Test Business        | LE1								| unregistered  				  | 12345678				|
     Then the second part of the partnership application is successfully completed
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
