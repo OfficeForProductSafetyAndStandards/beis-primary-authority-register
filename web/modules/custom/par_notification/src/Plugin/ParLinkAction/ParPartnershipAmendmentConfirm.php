@@ -16,22 +16,22 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  * Send user to the partnership completion pages.
  *
  * @ParLinkAction(
- *   id = "partnership_complete",
- *   title = @Translation("View the partnership completion journey"),
+ *   id = "partnership_amendment_confirm",
+ *   title = @Translation("View the partnership amendment confirmation journey"),
  *   status = TRUE,
  *   weight = 9,
  *   notification = {
- *     "new_partnership_notification",
+ *     "new_partnership_amendment",
  *   },
  *   field = "field_partnership",
  * )
  */
-class ParPartnershipComplete extends ParLinkActionBase implements ParTaskInterface {
+class ParPartnershipAmendmentConfirm extends ParLinkActionBase implements ParTaskInterface {
 
   /**
    * {@inheritdoc}
    */
-  protected string $actionText = 'Complete the partnership application';
+  protected string $actionText = 'Confirm the partnership amendments';
 
   /**
    * {@inheritDoc}
@@ -45,14 +45,16 @@ class ParPartnershipComplete extends ParLinkActionBase implements ParTaskInterfa
 
     /** @var ParDataPartnership[] $partnerships */
     $partnerships = $message->get($this->getPrimaryField())->referencedEntities();
+
     // If any of the partnerships are awaiting business confirmation this is not complete.
     foreach ($partnerships as $partnership) {
-      $incomplete_statuses = [
-        $partnership->getTypeEntity()->getDefaultStatus(),
-        'confirmed_authority'
-      ];
+      $partnership_legal_entities = $partnership->getPartnershipLegalEntities();
+      // Get only the partnership legal entities that are awaiting confirmation.
+      $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) {
+        return $partnership_legal_entity->getRawStatus() === 'confirmed_authority';
+      });
 
-      if (in_array($partnership->getRawStatus(), $incomplete_statuses)) {
+      if (!empty($partnership_legal_entities)) {
         return FALSE;
       }
     }
@@ -69,7 +71,7 @@ class ParPartnershipComplete extends ParLinkActionBase implements ParTaskInterfa
 
       // The route for viewing enforcement notices.
       if ($par_data_partnership instanceof ParDataEntityInterface) {
-        $destination = Url::fromRoute('par_partnership_confirmation_flows.partnership_confirmation_authority_checklist', ['par_data_partnership' => $par_data_partnership->id()]);
+        $destination = Url::fromRoute('par_partnership_amend_confirm_flows.review', ['par_data_partnership' => $par_data_partnership->id()]);
 
         return $destination instanceof Url &&
           $par_data_partnership->inProgress() ?

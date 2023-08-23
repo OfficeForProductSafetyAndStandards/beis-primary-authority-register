@@ -1,0 +1,33 @@
+uuid: ef702e88-467d-4a81-9c08-952ba3612b1f
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.full
+    - field.field.message.partnership_amendment_confirmed.field_message_subject
+    - field.field.message.partnership_amendment_confirmed.field_partnership
+    - field.field.message.partnership_amendment_confirmed.field_to
+    - message.template.partnership_amendment_confirmed
+id: message.partnership_amendment_confirmed.full
+targetEntityType: message
+bundle: partnership_amendment_confirmed
+mode: full
+content:
+  field_partnership:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_message_subject: true
+  field_to: true
+  partial_1: true
+  search_api_excerpt: true

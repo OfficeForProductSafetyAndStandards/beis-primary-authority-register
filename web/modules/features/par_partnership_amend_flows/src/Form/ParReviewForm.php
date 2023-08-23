@@ -13,6 +13,7 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
+use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
@@ -187,8 +188,15 @@ class ParReviewForm extends ParBaseForm {
       }
     }
 
-    if (count($partnership_legal_entities) >= 1) {
+    if (!empty($partnership_legal_entities)) {
       $par_data_partnership->save();
+
+      // Dispatch a custom event for the whole amendment process,
+      // this must be done after they are saved to the partnership.
+      $dispatcher = \Drupal::service('event_dispatcher');
+      $event = new ParDataEvent($par_data_partnership);
+      $action = ParDataEvent::customAction($par_data_partnership->getEntityTypeId(), 'amendment_submitted');
+      $dispatcher->dispatch($action, $event);
     }
     // Log an error.
     else {

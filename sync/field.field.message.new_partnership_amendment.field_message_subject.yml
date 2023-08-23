@@ -1,0 +1,21 @@
+uuid: e12fb657-ce0c-4d62-b1a4-f8c17157f926
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_message_subject
+    - message.template.new_partnership_amendment
+id: message.new_partnership_amendment.field_message_subject
+field_name: field_message_subject
+entity_type: message
+bundle: new_partnership_amendment
+label: 'Message Subject'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 'Primary Authority: Partnership amendment submitted'
+default_value_callback: ''
+settings: {  }
+field_type: string

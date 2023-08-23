@@ -13,6 +13,7 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
+use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
@@ -149,7 +150,15 @@ class ParReviewForm extends ParBaseForm {
       }
     }
 
-    if (empty($partnership_legal_entities)) {
+    if (!empty($partnership_legal_entities)) {
+      // Dispatch a custom event for the whole amendment process,
+      // this must be done after all the legal entities are updated.
+      $dispatcher = \Drupal::service('event_dispatcher');
+      $event = new ParDataEvent($par_data_partnership);
+      $action = ParDataEvent::customAction($par_data_partnership->getEntityTypeId(), 'amendment_confirmed');
+      $dispatcher->dispatch($action, $event);
+    }
+    else {
       $message = $this->t('The partnership amendment for the @partnership could not be confirmed, there were no legal entities to be updated.');
       $replacements = [
         '@partnership' => $par_data_partnership->label(),

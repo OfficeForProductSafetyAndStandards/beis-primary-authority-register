@@ -1,0 +1,22 @@
+uuid: b41087ed-f6b6-4fb6-a9f3-e47fce404d17
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.basic_html
+template: new_partnership_amendment
+label: 'New Partnership Amendment'
+description: 'Notifies the business when a new amendment has been submitted for a partnership'
+text:
+  -
+    value: "<p><em>This message is about your primary authority partnership with @primary_authority. The Primary Authority has made some amendments to the legal entities on this partnership.</em></p>\r\n"
+    format: basic_html
+  -
+    value: "<p><em>Before these amendments can be submitted for nomination you need to confirm the details are correct and that you are willing to make these amendments.</em></p>\r\n\r\n<p><em>^ Confirm the amendments now: [message:primary-action]</em></p>\r\n"
+    format: basic_html
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }

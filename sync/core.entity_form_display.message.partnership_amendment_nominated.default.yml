@@ -1,0 +1,43 @@
+uuid: 4cb80dc8-dc8f-4758-98dd-26a30e3ee395
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.partnership_amendment_nominated.field_message_subject
+    - field.field.message.partnership_amendment_nominated.field_partnership
+    - field.field.message.partnership_amendment_nominated.field_to
+    - message.template.partnership_amendment_nominated
+  module:
+    - link
+id: message.partnership_amendment_nominated.default
+targetEntityType: message
+bundle: partnership_amendment_nominated
+mode: default
+content:
+  field_message_subject:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_partnership:
+    type: entity_reference_autocomplete
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_to:
+    type: email_default
+    weight: -1
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+hidden: {  }
