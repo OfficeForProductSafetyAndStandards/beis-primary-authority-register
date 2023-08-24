@@ -174,6 +174,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         'revoke_legal_entity' => 'Revoke',
         'reinstate_legal_entity' => 'Reinstate',
         'remove_legal_entity' => 'Remove',
+        'edit_legal_entity' => 'Update',
       ];
       $link_params = [
         'par_data_partnership' => $partnership,
@@ -184,7 +185,9 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         // Attempt to generate the link.
         try {
           $link = $this->getFlowNegotiator()->getFlow()->getOperationLink($link_name, $link_label, $link_params);
-          $legal_entity_actions[$link_name] = $link;
+          if ($link instanceof Link){
+            $legal_entity_actions[$link_name] = $link;
+          }
         }
         catch (ParFlowException $e) {
           $this->getLogger($this->getLoggerChannel())->notice($e);
