@@ -133,6 +133,7 @@ permissions:
   - 'receive new_inspection_feedback_response notification'
   - 'receive new_inspection_plan notification'
   - 'receive new_partnership_notification notification'
+  - 'receive partnership_amendment_nominated notification'
   - 'receive partnership_approved_notificatio notification'
   - 'receive partnership_confirmed_notificati notification'
   - 'receive partnership_deleted_notification notification'

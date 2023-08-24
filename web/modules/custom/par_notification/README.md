@@ -21,14 +21,16 @@ There are a few steps to create a new notification:
 - Create a message template (see the message module & [Message Partials](#message-partials))
 - Add the required fields to the message template (see [Message Fields](#message-fields))
 - Configure the display of the message fields
-  - Default: should display all message partials except those with the primary action link
-  - Full content: should display all message partials except those with the primary action link
+  - Default & Full content: should display all message partials except those with the primary action link
   - Notify - Email body: should display all message partials
   - Notify - Email subject: should display the field_subject _only_
   - Summary: should display message partial 0 _only_
 - Create a new Notification Event (event subscriber) to create the notification
-- Create a new ParMessageSubscriber plugin that dictates how the message should get it's subscribers (users and par entities)
+- Create a new ParMessageSubscriber plugin that dictates how the message should get its subscribers (users and par entities)
 - Create a new ParLinkAction plugin that determines how the Primary Action Link for this message should be redirected
+- If the ParLinkAction is a 'task' that needs to be completed, create an additional event subscriber that acts on the completion of this action and expires the message (@see message_expiry module)
+- Ensure all users who should see the notification have the 'Receive MESSAGE_TEMPLATE_ID notifications' permission
+- Add a key for the message template id into ParMessageHandler::getPrimaryField() and ParMessageHandler::getMessageGroup() for added functionality
 
 ### Notification Events
 Event subscribers are responsible for reaching to the action completed by a user or a change in the data, and to send out a notification in response

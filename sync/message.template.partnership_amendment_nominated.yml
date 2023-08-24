@@ -9,10 +9,10 @@ label: 'Partnership Amendment Nominated'
 description: 'Notifies the primary authority and the business when a partnership amendment has been nominated'
 text:
   -
-    value: "<p><em>The Primary Authority Processing Team have now nominated the amendments to the @partnership, these are now active on your partnership.</em></p>\r\n"
+    value: "<p>The Primary Authority Processing Team have now nominated the amendments to the @partnership, these are now active on your partnership.</p>\r\n"
     format: basic_html
   -
-    value: "<p><em>^ View the partnership: [message:primary-action]</em></p>\r\n"
+    value: "<p>^ View the partnership: [message:primary-action]</p>\r\n"
     format: basic_html
 settings:
   'token options':

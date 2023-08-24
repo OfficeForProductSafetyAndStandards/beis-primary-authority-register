@@ -80,14 +80,19 @@ class ParFlowAccessCheck implements AccessInterface {
 
     }
 
+    // Only active partnerships can be amended.
+    if (!$par_data_partnership->isActive()) {
+      return AccessResult::forbidden('Only active partnerships can be amended.');
+    }
+
     $partnership_legal_entities = $par_data_partnership->getPartnershipLegalEntities();
     // Get only the partnership legal entities that are awaiting nomination.
     $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) {
       return $partnership_legal_entity->getRawStatus() === 'confirmed_business';
     });
 
-    // Only active partnerships can be amended.
-    if (count($partnership_legal_entities) <= 0) {
+    // Can only be nominated if there are some entities to nominate.
+    if (empty($partnership_legal_entities)) {
       return AccessResult::forbidden('Only partnerships with pending legal entity amendments can be nominated.');
     }
 

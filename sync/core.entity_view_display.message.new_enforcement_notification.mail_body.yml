@@ -18,7 +18,18 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
+  partial_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  partial_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_enforcement_notice: true
   field_message_subject: true
   field_to: true
+  search_api_excerpt: true

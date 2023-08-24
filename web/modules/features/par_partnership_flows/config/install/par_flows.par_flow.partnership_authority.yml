@@ -45,6 +45,9 @@ steps:
       edit_regulatory_functions: 3
       inspection_plans: 4
       advice: 5
+      revoke_legal_entity: 19
+      reinstate_legal_entity: 20
+      remove_legal_entity: 21
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
@@ -162,3 +165,21 @@ steps:
     route: par_partnership_flows.authority_inspection_plan_details
     redirect:
       done: 4
+  19:
+    route: par_partnership_flows.legal_entity_revoke
+    form_id: par_partnership_legal_entity_revoke
+    redirect:
+      save: 1
+      cancel: 1
+  20:
+    route: par_partnership_flows.legal_entity_reinstate
+    form_id: par_partnership_legal_entity_reinstate
+    redirect:
+      save: 1
+      cancel: 1
+  21:
+    route: par_partnership_flows.legal_entity_remove
+    form_id: par_partnership_legal_entity_remove
+    redirect:
+      save: 1
+      cancel: 1

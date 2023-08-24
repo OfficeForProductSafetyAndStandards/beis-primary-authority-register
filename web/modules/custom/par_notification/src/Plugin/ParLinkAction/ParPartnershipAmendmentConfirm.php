@@ -74,7 +74,7 @@ class ParPartnershipAmendmentConfirm extends ParLinkActionBase implements ParTas
         $destination = Url::fromRoute('par_partnership_amend_confirm_flows.review', ['par_data_partnership' => $par_data_partnership->id()]);
 
         return $destination instanceof Url &&
-          $par_data_partnership->inProgress() ?
+          $par_data_partnership->isActive() ?
             $destination :
             NULL;
       }

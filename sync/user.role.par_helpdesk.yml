@@ -204,6 +204,7 @@ permissions:
   - 'manage par profile'
   - 'merge person'
   - 'receive inspection_plan_expiry_warning notification'
+  - 'receive partnership_amendment_confirmed notification'
   - 'receive partnership_nominate notification'
   - 'remove partnership authority contact'
   - 'remove partnership organisation contact'
