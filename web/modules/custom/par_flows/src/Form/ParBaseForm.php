@@ -229,13 +229,20 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       // the form elements will self-submit to render the summary list.
       if ($this->getFormBuilder()->supportsSummaryList($component) &&
         !$this->getFormBuilder()->displaySummaryList($component, $index)) {
+
+        // Only change the primary submit handler if the summary list is not displayed.
         $primary_submit_handers = array_merge(['::selfRedirect'], $primary_submit_handers);
-        $secondary_submit_handlers = array_merge(['::selfRedirect'], $secondary_submit_handlers);
+
+        // Only change the secondary submit handler if there is data.
+        if (!empty($component->getData())) {
+          $secondary_submit_handlers = array_merge(['::selfRedirect'], $secondary_submit_handlers);
+        }
       }
 
       // Merge the component elements into the form array.
       $form = array_merge($form, $plugin);
     }
+
 
     // Enable the default actions wrapper.
     $form['actions'] = [
