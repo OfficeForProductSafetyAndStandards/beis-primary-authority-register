@@ -407,8 +407,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       }
     }
 
-    // Store values post validation to ensure plugins can manipulate form data.
-    $this->storeData($form_state);
+    // Store values post validation if there were no errors to ensure plugins
+    // can manipulate form data.
+    if (!$form_state->hasAnyErrors()) {
+      $this->storeData($form_state);
+    }
   }
 
   /**

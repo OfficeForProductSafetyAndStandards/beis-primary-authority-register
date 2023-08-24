@@ -302,11 +302,22 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     $registry_element = $this->getElement($form, ['registry'], $index);
     $register_id = $registry_element ? $form_state->getValue($registry_element['#parents']) : NULL;
 
+    // For multi cardinality plugin instances get the existing plugin data
+    // to validate against.
+    if ($this->isMultiple()) {
+      $existing_data = $this->getFlowDataHandler()->getPluginTempData($this);
+      // Ignore the current index.
+      $delta = $index - 1;
+      if (isset($existing_data[$delta])) {
+        unset($existing_data[$delta]);
+      }
+    }
+
     if ($register_id === ParDataLegalEntity::DEFAULT_REGISTER) {
       $type_element = $this->getElement($form, ['unregistered','legal_entity_type'], $index);
       $legal_entity_type = $type_element ? $form_state->getValue($type_element['#parents']) : NULL;
       $name_element = $this->getElement($form, ['unregistered','legal_entity_name'], $index);
-      $legal_entity_name = $name_element ? $form_state->getValue($name_element['#parents']) : NULL;
+      $legal_entity_name = $name_element ? trim((string) $form_state->getValue($name_element['#parents'])) : NULL;
 
       if (empty($legal_entity_type)) {
         $message = 'You must choose which legal entity type you are adding.';
@@ -316,6 +327,18 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       if (empty($legal_entity_name)) {
         $message = 'Please enter the name of the legal entity.';
         $this->setError($form, $form_state, $name_element, $message);
+      }
+
+      // Check that this legal entity isn't already used by another item.
+      if (isset($existing_data)) {
+        foreach ($existing_data as $item) {
+          $item_name = NestedArray::getValue($item, ['unregistered','legal_entity_name']);
+          $item_name = trim((string) $item_name);
+          if ($legal_entity_name === $item_name) {
+            $message = 'This legal entity has already been added.';
+            $this->setError($form, $form_state, $name_element, $message);
+          }
+        }
       }
 
       // Validate additional rules.
@@ -355,6 +378,18 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
         }
         catch (PluginNotFoundException $ignore) {
           // Ignore system errors.
+        }
+      }
+
+      // Check that this legal entity isn't already used by another item.
+      if (isset($existing_data)) {
+        foreach ($existing_data as $item) {
+          $item_number = NestedArray::getValue($item, ['registered','legal_entity_number']);
+          $item_number = trim((string) $item_number);
+          if ($legal_entity_number === $item_number) {
+            $message = 'This legal entity has already been added.';
+            $this->setError($form, $form_state, $number_element, $message);
+          }
         }
       }
 

@@ -217,12 +217,18 @@ class ParDataLegalEntity extends ParDataEntity {
       $this->getEntityTypeManager()->getStorage('par_data_legal_entity')
         ->loadByProperties($properties) : [];
 
+    $id = $this->id();
+    // Remove this legal entity from the list.
+    $legal_entities = array_filter($legal_entities, function($legal_entity) use ($id) {
+      return $legal_entity->id() !== $id;
+    });
+
+    // If there are any duplicates return these instead.
     if (!empty($legal_entities)) {
       return current($legal_entities);
     }
 
     return $this;
-
   }
 
   /**
