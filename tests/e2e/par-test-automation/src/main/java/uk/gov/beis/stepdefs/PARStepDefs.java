@@ -19,6 +19,8 @@ import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.PersonContactDetailsPage;
+import uk.gov.beis.pageobjects.AdviceNoticeDetailsPage;
+import uk.gov.beis.pageobjects.AdviceNoticeSearchPage;
 import uk.gov.beis.pageobjects.AuthorityAddressDetailsPage;
 import uk.gov.beis.pageobjects.PersonMembershipPage;
 import uk.gov.beis.pageobjects.AuthorityConfirmationPage;
@@ -65,6 +67,8 @@ import uk.gov.beis.pageobjects.InspectionPlanExpirationPage;
 import uk.gov.beis.pageobjects.InspectionPlanReviewPage;
 import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.LegalEntityPage;
+import uk.gov.beis.pageobjects.LegalEntityReviewPage;
+import uk.gov.beis.pageobjects.LegalEntityTypePage;
 import uk.gov.beis.pageobjects.LoginPage;
 import uk.gov.beis.pageobjects.MailLogPage;
 import uk.gov.beis.pageobjects.ManagePeoplePage;
@@ -104,6 +108,7 @@ import uk.gov.beis.pageobjects.TradingPage;
 import uk.gov.beis.pageobjects.UpdateUserCommunicationPreferencesPage;
 import uk.gov.beis.pageobjects.UpdateUserContactDetailsPage;
 import uk.gov.beis.pageobjects.UpdateUserSubscriptionsPage;
+import uk.gov.beis.pageobjects.UploadAdviceNoticePage;
 import uk.gov.beis.pageobjects.UploadInspectionPlanPage;
 import uk.gov.beis.pageobjects.UserCommsPreferencesPage;
 import uk.gov.beis.pageobjects.PersonCreateAccountPage;
@@ -126,6 +131,7 @@ public class PARStepDefs {
 	private DeviationSearchPage deviationSearchPage;
 	private InspectionPlanReviewPage inspectionPlanReviewPage;
 	private EnquiryReviewPage enquiryReviewPage;
+	private AdviceNoticeDetailsPage adviceNoticeDetailsPage;
 	private InspectionFeedbackConfirmationPage inspectionFeedbackConfirmationPage;
 	private InspectionFeedbackDetailsPage inspectionFeedbackDetailsPage;
 	private InspectionPlanSearchPage inspectionPlanSearchPage;
@@ -141,6 +147,7 @@ public class PARStepDefs {
 	private EnforcementNotificationPage enforcementNotificationPage;
 	private EnforcementSearchPage enforcementSearchPage;
 	private ONSCodePage onsCodePage;
+	private UploadAdviceNoticePage uploadAdviceNoticePage;
 	private InspectionFeedbackSearchPage inspectionFeedbackSearchPage;
 	private ProposedEnforcementPage proposedEnforcementPage;
 	private EnforcementReviewPage enforcementReviewPage;
@@ -148,7 +155,9 @@ public class PARStepDefs {
 	private AuthorityConfirmationPage authorityConfirmationPage;
 	private AuthorityAddressDetailsPage authorityAddressDetailsPage;
 	private AuthorityTypePage authorityTypePage;
+	private AdviceNoticeSearchPage adviceNoticeSearchPage;
 	private AuthorityNamePage authorityNamePage;
+	private LegalEntityReviewPage legalEntityReviewPage;
 	private ReplyInspectionFeedbackPage replyInspectionFeedbackPage;
 	private PartnershipAdvancedSearchPage partnershipAdvancedSearchPage;
 	private UserProfileConfirmationPage userProfileConfirmationPage;
@@ -180,6 +189,7 @@ public class PARStepDefs {
 	private PartnershipRevokedPage partnershipRevokedPage;
 	private UserTermsPage userTermsPage;
 	private LegalEntityPage legalEntityPage;
+	private LegalEntityTypePage legalEntityTypePage;
 	private EmployeesPage employeesPage;
 	private BusinessDetailsPage parBusinessDetailsPage;
 	private DeclarationPage parDeclarationPage;
@@ -224,7 +234,11 @@ public class PARStepDefs {
 	private ReplyEnquiryPage replyEnquiryPage;
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
-		driver = ScenarioContext.lastDriver; 
+		driver = ScenarioContext.lastDriver;  
+		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
+		uploadAdviceNoticePage = PageFactory.initElements(driver, UploadAdviceNoticePage.class);
+		adviceNoticeSearchPage = PageFactory.initElements(driver, AdviceNoticeSearchPage.class);
+		legalEntityReviewPage = PageFactory.initElements(driver, LegalEntityReviewPage.class);
 		removeReasonInspectionPlanPage = PageFactory.initElements(driver, RemoveReasonInspectionPlanPage.class);
 		revokeReasonInspectionPlanPage = PageFactory.initElements(driver, RevokeReasonInspectionPlanPage.class);
 		inspectionPlanReviewPage = PageFactory.initElements(driver, InspectionPlanReviewPage.class);
@@ -308,6 +322,7 @@ public class PARStepDefs {
 		partnershipSearchPage = PageFactory.initElements(driver, PartnershipSearchPage.class);
 		viewEnquiryPage = PageFactory.initElements(driver, ViewEnquiryPage.class);
 		editRegisteredAddressPage = PageFactory.initElements(driver, EditRegisteredAddressPage.class);
+		legalEntityTypePage = PageFactory.initElements(driver, LegalEntityTypePage.class);
 
 		// PAR News Letter
 		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
@@ -487,8 +502,11 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.TRADING_NAME,
 					DataStore.getSavedValue(UsableValues.BUSINESS_NAME).replace("Business", "trading name"));
 			tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Legal Entity Name"));
 			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal entity Type"));
-			legalEntityPage.createLegalEntity(data.get("Legal entity Type"));
+			DataStore.saveValue(UsableValues.ENTITY_NUMBER, data.get("Company number"));
+			legalEntityTypePage.selectEntityType(DataStore.getSavedValue(UsableValues.ENTITY_NAME),DataStore.getSavedValue(UsableValues.ENTITY_TYPE),DataStore.getSavedValue(UsableValues.ENTITY_NUMBER));
+			legalEntityReviewPage.proceed();
 			LOG.info("Set second part of journey part to true");
 			ScenarioContext.secondJourneyPart = true;
 		}
@@ -514,6 +532,13 @@ public class PARStepDefs {
 
 		Assert.assertTrue("Appliction not complete",
 				parPartnershipConfirmationPage.checkPartnershipApplicationSecondPart());
+		if (ScenarioContext.registered == true) {
+			parPartnershipConfirmationPage.checkRegNo();
+		}
+		if (ScenarioContext.registered == false) {
+			parPartnershipConfirmationPage.checkEntityName();
+		}
+
 		parPartnershipConfirmationPage.confirmDetails();
 		parPartnershipConfirmationPage.saveChanges();
 		parPartnershipCompletionPage.completeApplication();
@@ -804,6 +829,55 @@ public class PARStepDefs {
 
 	@When("^the user uploads an inspection plan against the partnership with the following details:$")
 	public void the_user_uploads_an_inspection_plan_against_the_partnership_with_the_following_details(DataTable dets)
+			throws Throwable {
+		LOG.info("Upload inspection plan and save details");
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			partnershipAdvancedSearchPage.selectPartnershipLink();
+			parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
+			inspectionPlanSearchPage.selectUploadLink();
+			uploadInspectionPlanPage.chooseFile("link.txt");
+			uploadInspectionPlanPage.uploadFile();
+			DataStore.saveValue(UsableValues.INSPECTIONPLAN_TITLE, data.get("Title"));
+			inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
+			DataStore.saveValue(UsableValues.INSPECTIONPLAN_DESCRIPTION, data.get("Description"));
+			inspectionPlanDetailsPage
+					.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
+			inspectionPlanDetailsPage.save();
+			inspectionPlanExpirationPage.enterDate("ddMMYYYY");
+			inspectionPlanExpirationPage.save();
+			LOG.info("Check inspection plan status is set to \"Current\"");
+			Assert.assertTrue("Failed: Status not set to \"Current\"",
+					inspectionPlanSearchPage.getPlanStatus().equalsIgnoreCase("Current"));
+		}
+	}
+
+	@When("^the user uploads an advice notice against the partnership with the following details:$")
+	public void the_user_uploads_an_advice_notice_against_the_partnership_with_the_following_details(DataTable dets)
+			throws Throwable {
+		LOG.info("Upload advice notice and save details");
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			partnershipAdvancedSearchPage.selectPartnershipLink();
+			parPartnershipConfirmationPage.selectSeeAllAdviceNotices();
+			adviceNoticeSearchPage.selectUploadLink();
+			uploadAdviceNoticePage.chooseFile("link.txt");
+			uploadAdviceNoticePage.uploadFile();
+			DataStore.saveValue(UsableValues.ADVICENOTICE_TITLE, data.get("Title"));
+			adviceNoticeDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+			DataStore.saveValue(UsableValues.ADVICENOTICE_TYPE, data.get("Type of Advice"));
+			adviceNoticeDetailsPage.selectAdviceType(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TYPE));
+			DataStore.saveValue(UsableValues.ADVICENOTICE_REGFUNCTION, data.get("Reg Function"));
+			adviceNoticeDetailsPage.selectRegFunc(DataStore.getSavedValue(UsableValues.ADVICENOTICE_REGFUNCTION));
+			DataStore.saveValue(UsableValues.ADVICENOTICE_DESCRIPTION, data.get("Description"));
+			adviceNoticeDetailsPage.enterDescription(DataStore.getSavedValue(UsableValues.ADVICENOTICE_DESCRIPTION));
+			adviceNoticeDetailsPage.save();
+			LOG.info("Check advice notice status is set to \"Active\"");
+			Assert.assertTrue("Failed: Status not set to \"Active\"",
+					adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Active"));
+		}
+	}
+
+	@When("^the user uploads an advice plan against the partnership with the following details:$")
+	public void the_user_uploads_an_insection_plan_against_the_partnership_with_the_following_details(DataTable dets)
 			throws Throwable {
 		LOG.info("Upload inspection plan and save details");
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
@@ -1379,7 +1453,7 @@ public class PARStepDefs {
 		}
 		LOG.info("Asserting the Equiry Notice Details.");
 	}
-	
+
 	@Then("^the user successfully revokes the last created inspection plan$")
 	public void the_user_successfully_removes_the_last_created_inspection_plan() throws Throwable {
 		LOG.info("Revoking inspection plan and confirming it is revoked");
@@ -1389,7 +1463,7 @@ public class PARStepDefs {
 		revokeReasonInspectionPlanPage.enterRevokeDescription();
 		assertEquals(inspectionPlanSearchPage.getPlanStatus(), "Revoked");
 	}
-	
+
 	@When("^the user revokes the last created inspection plan$")
 	public void the_user_revokes_the_last_created_inspection_plan() throws Throwable {
 		LOG.info("Removing inspection plan");
@@ -1492,9 +1566,7 @@ public class PARStepDefs {
 	@Then("^all of the Partnership details have been updated successfully$")
 	public void all_of_the_Partnership_details_have_been_updated_successfully() throws Throwable {
 		LOG.info("Verifying all the remaining Partnership details have been updated Successfully.");
-		
-		// Verifying the updated values are visible on the Partnerships Details Page.
-		
+
 		assertTrue(parPartnershipConfirmationPage.checkOrganisationAddress());
 		assertTrue(parPartnershipConfirmationPage.checkAboutTheOrganisation());
 		assertTrue(parPartnershipConfirmationPage.checkSICCode());
