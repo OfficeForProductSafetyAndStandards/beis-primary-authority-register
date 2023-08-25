@@ -98,8 +98,8 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
           $field => $entity->id(),
         ]);
 
-      // Sort the messages in descending order.
-
+      // Sort the messages in descending order with the most recent first.
+      ksort($messages);
     }
 
     return $messages;
