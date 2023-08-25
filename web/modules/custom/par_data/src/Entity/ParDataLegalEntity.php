@@ -160,6 +160,10 @@ class ParDataLegalEntity extends ParDataEntity {
     $this->lookup();
   }
 
+  /**
+   * @return ParDataEntityInterface
+   *   The legal entity.
+   */
   public function lookup() {
     // Lookup any registered organisations and update the information based on
     // the returned organisation profile.
@@ -169,12 +173,14 @@ class ParDataLegalEntity extends ParDataEntity {
       $this->set('registered_number', $profile->getId());
       $this->set('legal_entity_type', $profile->getType());
     }
+
+    return $this;
   }
 
   /**
    * Tries to de-duplicate the current legal entity.
    *
-   * @return \Drupal\par_data\Entity\ParDataEntityInterface
+   * @return ParDataEntityInterface
    *   The original legal entity OR
    *   the duplicate legal entity if found.
    */
@@ -225,6 +231,8 @@ class ParDataLegalEntity extends ParDataEntity {
 
     // If there are any duplicates return these instead.
     if (!empty($legal_entities)) {
+      // Sort so it always returns the same result.
+      sort($legal_entities);
       return current($legal_entities);
     }
 
@@ -234,12 +242,17 @@ class ParDataLegalEntity extends ParDataEntity {
   /**
    * Whether this legal entity is editable.
    *
-   *  - If it isn't a registered organisation or internal entity
+   *  - If it isn't yet saved
    *  - If it is a legacy entity
    *
    * @return bool
    */
   public function isEditable(): bool {
+    // If the legal entity is new and not yet saved.
+    if ($this->isNew()) {
+      return TRUE;
+    }
+
     // All legacy entities can be edited.
     if ($this->isLegacyEntity()) {
       return TRUE;

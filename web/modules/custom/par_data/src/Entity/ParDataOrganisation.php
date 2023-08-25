@@ -135,25 +135,62 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
   /**
    * Add a legal entity to this Organisation.
    *
-   * @param ParDataLegalEntity $new_legal_entity
+   * @param ParDataLegalEntity $legal_entity
    *   A PAR Legal Entity to add.
    */
-  public function addLegalEntity(ParDataLegalEntity $new_legal_entity) {
-    $new_legal_entity = $new_legal_entity->deduplicate();
-
-    // Get the legal entities already attached to the organisation.
-    $legal_entities = $this->getLegalEntity();
+  public function addLegalEntity(ParDataLegalEntity $legal_entity) {
+    // The legal entity must be saved before adding.
+    if ($legal_entity->isNew()) {
+      $legal_entity->save();
+    }
 
     // If this legal entity is already attached then don't attach it again.
     /* @var ParDataLegalEntity $legal_entity */
-    foreach ($legal_entities as $legal_entity) {
-      if ($legal_entity->id() == $new_legal_entity->id()) {
+    foreach ($this->getLegalEntity() as $delta => $existing_legal_entity) {
+      if ($existing_legal_entity->id() === $legal_entity->id()) {
         return;
       }
     }
 
     // Attach the new legal entity.
-    $this->get('field_legal_entity')->appendItem($new_legal_entity);
+    $this->get('field_legal_entity')->appendItem($legal_entity);
+  }
+
+  public function updateLegalEntity(ParDataLegalEntity $legal_entity) {
+    // Before updating any legal entity check there isn't a duplicate.
+    $deduplicated = $legal_entity->deduplicate();
+
+    // If no duplicate was found there is nothing to update.
+    if ($deduplicated->id() === $legal_entity->id()) {
+      return;
+    }
+
+    // Find the field delta for the original item.
+    $original_delta = NULL;
+    foreach ($this->getLegalEntity() as $delta => $existing_legal_entity) {
+      if ($existing_legal_entity->id() === $legal_entity->id()) {
+        $original_delta = $delta;
+      }
+    }
+
+    // Find the field delta for the duplicate item.
+    $deduplicated_delta = NULL;
+    foreach ($this->getLegalEntity() as $delta => $existing_legal_entity) {
+      // If this legal entity is already attached then don't attach it again.
+      if ($existing_legal_entity->id() === $deduplicated->id()) {
+        $deduplicated_delta = $delta;
+      }
+    }
+
+    // Remove the original legal entity if the deduplicated legal entity is already on the organisation.
+    if (is_int($original_delta) && is_int($deduplicated_delta)) {
+      // Replace an existing legal entity.
+      $this->get('field_legal_entity')->offsetUnset($original_delta);
+    }
+    // Replace the original legal entity with the deduplicated one.
+    else if (is_int($original_delta) && !is_int($deduplicated_delta)) {
+      $this->get('field_legal_entity')->set($original_delta, $deduplicated->id());
+    }
   }
 
   /**

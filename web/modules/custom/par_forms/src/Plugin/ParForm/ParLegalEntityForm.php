@@ -70,7 +70,10 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
           break;
 
         case ParDataLegalEntity::DEFAULT_REGISTER:
-          $this->setDefaultValuesByKey(['unregistered','legal_entity_type'], $index, $par_data_legal_entity->getType());
+          $unregistered_types = ['partnership', 'sole_trader', 'unincorporated_association', 'other'];
+          if (in_array($par_data_legal_entity->getType(), $unregistered_types)) {
+            $this->setDefaultValuesByKey(['unregistered', 'legal_entity_type'], $index, $par_data_legal_entity->getType());
+          }
           $this->setDefaultValuesByKey(['unregistered','legal_entity_name'], $index, $par_data_legal_entity->getName());
           break;
 
@@ -190,13 +193,6 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     }
 
     return $form;
-  }
-
-  /**
-   * Remove Item.
-   */
-  static function removeItem() {
-
   }
 
   /**
