@@ -42,6 +42,7 @@ import uk.gov.beis.pageobjects.DeviationApprovalPage;
 import uk.gov.beis.pageobjects.DeviationCompletionPage;
 import uk.gov.beis.pageobjects.DeviationReviewPage;
 import uk.gov.beis.pageobjects.DeviationSearchPage;
+import uk.gov.beis.pageobjects.EditRegisteredAddressPage;
 import uk.gov.beis.pageobjects.EmployeesPage;
 import uk.gov.beis.pageobjects.EnforcementActionPage;
 import uk.gov.beis.pageobjects.EnforcementCompletionPage;
@@ -206,6 +207,7 @@ public class PARStepDefs {
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
 	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
 	private ViewEnquiryPage viewEnquiryPage;
+	private EditRegisteredAddressPage editRegisteredAddressPage;
 
 	// PAR News Letter
 	private UserProfilePage userProfilePage;
@@ -319,6 +321,7 @@ public class PARStepDefs {
 		parPartnershipTermsPage = PageFactory.initElements(driver, PartnershipTermsPage.class);
 		partnershipSearchPage = PageFactory.initElements(driver, PartnershipSearchPage.class);
 		viewEnquiryPage = PageFactory.initElements(driver, ViewEnquiryPage.class);
+		editRegisteredAddressPage = PageFactory.initElements(driver, EditRegisteredAddressPage.class);
 		legalEntityTypePage = PageFactory.initElements(driver, LegalEntityTypePage.class);
 
 		// PAR News Letter
@@ -1472,5 +1475,103 @@ public class PARStepDefs {
 	public void the_inspection_plan_is_successfully_removed() throws Throwable {
 		LOG.info("Confirm inspection plan is removed");
 		assertEquals(inspectionPlanSearchPage.getPlanStatus(), "No results returned");
+	}
+	
+	@When("^the user searches for the last created partnership Authority$")
+	public void the_user_searches_for_the_last_created_partnership_Authority() throws Throwable {
+		LOG.info("Searching for and selecting the latest Partnerships Primary Authority.");
+		
+		parDashboardPage.selectSearchPartnerships();
+		
+		partnershipAdvancedSearchPage.searchPartnerships();
+		partnershipAdvancedSearchPage.selectPrimaryAuthorityLink();
+	}
+	
+	@When("^the user updates the About the Partnership and Regulatory Functions:$")
+	public void the_user_updates_the_About_the_Partnership_and_Regulatory_Functions(DataTable details) throws Throwable {
+		LOG.info("Updating about the Partnership and Regulatory Functions.");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, data.get("About the Partnership"));
+		}
+		
+		parPartnershipConfirmationPage.editAboutPartnership();
+		parPartnershipDescriptionPage.enterDescription(DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO));
+		parPartnershipDescriptionPage.clickSave();
+		
+		parPartnershipConfirmationPage.editRegulatoryFunctions(); // The Partnership must be Active to edit the Regulatory Functions.
+		regulatoryFunctionPage.updateRegFunction();
+	}
+
+	@Then("^the About the Partnership and Regulatory Functions are updated Successfully$")
+	public void the_About_the_Partnership_and_Regulatory_Functions_are_updated_Successfully() throws Throwable {
+		LOG.info("Verifying About the Partnership and Regulatory Functions have been updated Successfully.");
+		
+		// Verifying the updated values are visible on the Partnerships Details Page.
+		assertTrue(parPartnershipConfirmationPage.checkPartnershipInfo());
+		assertTrue(parPartnershipConfirmationPage.checkRegulatoryFunctions());
+		
+		parPartnershipConfirmationPage.clickSave();
+	}
+	
+	@When("^the user searches for the last created partnership Organisation$")
+	public void the_user_searches_for_the_last_created_partnership_Organisation() throws Throwable {
+		LOG.info("Searching for and selecting the latest Partnerships Organisation.");
+		
+		partnershipAdvancedSearchPage.searchPartnerships();
+		partnershipAdvancedSearchPage.selectOrganisationLink();
+	}
+	
+	@When("^the user updates the Partnerships details with the following:$")
+	public void the_user_updates_the_Partnerships_details_with_the_following(DataTable details) throws Throwable {
+		LOG.info("Updating all the remaining Partnership details.");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("Address1"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE2, data.get("Address2"));
+			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("Town"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTY, data.get("County"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTRY, data.get("Country"));
+			DataStore.saveValue(UsableValues.BUSINESS_NATION, data.get("Nation Value"));
+			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("Post Code"));
+			DataStore.saveValue(UsableValues.BUSINESS_DESC, data.get("About the Organisation"));
+			DataStore.saveValue(UsableValues.SIC_CODE, data.get("SIC Code"));
+			DataStore.saveValue(UsableValues.TRADING_NAME, data.get("Trading Name"));
+		}
+		
+		parPartnershipConfirmationPage.editOrganisationAddress();
+		editRegisteredAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1),
+				DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN),
+				DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY),
+				DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY),
+				DataStore.getSavedValue(UsableValues.BUSINESS_NATION),
+				DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		editRegisteredAddressPage.clickSaveButton();
+		
+		LOG.info("Selected Country: " + DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY));
+		LOG.info("Selected Nation: " + DataStore.getSavedValue(UsableValues.BUSINESS_NATION));
+		
+		parPartnershipConfirmationPage.editAboutTheOrganisation();
+		parPartnershipDescriptionPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
+		parPartnershipDescriptionPage.clickSave();
+		
+		parPartnershipConfirmationPage.editSICCode();
+		sicCodePage.editSICCode(DataStore.getSavedValue(UsableValues.SIC_CODE));
+		
+		parPartnershipConfirmationPage.editTradingName();
+		tradingPage.editTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+	}
+
+	@Then("^all of the Partnership details have been updated successfully$")
+	public void all_of_the_Partnership_details_have_been_updated_successfully() throws Throwable {
+		LOG.info("Verifying all the remaining Partnership details have been updated Successfully.");
+
+		assertTrue(parPartnershipConfirmationPage.checkOrganisationAddress());
+		assertTrue(parPartnershipConfirmationPage.checkAboutTheOrganisation());
+		assertTrue(parPartnershipConfirmationPage.checkSICCode());
+		assertTrue(parPartnershipConfirmationPage.checkTradingName());
+		
+		parPartnershipConfirmationPage.clickSave();
 	}
 }
