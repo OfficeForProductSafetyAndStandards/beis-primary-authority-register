@@ -3,7 +3,7 @@ Feature:
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
 
-  @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry
+  @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice
   Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -56,7 +56,7 @@ Feature:
     And the user completes the user creation journey
     Then the user journey creation is successful
 
-  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry
+  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice
   Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -170,11 +170,18 @@ Feature:
    And the user logs in with the "par_helpdesk@example.com" user credentials
    When the user searches for the last created partnership
    Then the user successfully revokes the last created inspection plan
-   
    #remove the inspection plan
    When the user revokes the last created inspection plan
    Then the inspection plan is successfully removed
    
+  @regression @advicenotice
+  Scenario: Verify Upload of Advice Notice (Happy Path - PAR-1873)
+   Given the user is on the PAR login page
+   And the user logs in with the "par_helpdesk@example.com" user credentials
+   When the user searches for the last created partnership
+   And the user uploads an advice notice against the partnership with the following details:
+      | Title          | Type of Advice 				| Reg Function 			| Description	|
+      | Advice Title 1 | Background information	| Cookie control		| Test Advice	|
    
 
   @regression @enquiry
