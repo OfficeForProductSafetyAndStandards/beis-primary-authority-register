@@ -1483,7 +1483,7 @@ function par_data_update_9008() {
 /**
  * PAR-2038 Set partnership legal entity status on existing entity instances to confirmed_rd (Active).
  */
-function par_data_update_9011(&$sandbox) {
+function par_data_update_9009(&$sandbox) {
   /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
   $par_data_manager = \Drupal::service('par_data.manager');
   $batch_size = 100;
@@ -1535,4 +1535,34 @@ function par_data_update_9011(&$sandbox) {
     ($results_updated / $sandbox['total']);
 
   return t($message);
+}
+
+/**
+ * PAR-2193: Add the new previous names field to par_data_partnership entities
+ * to record transfers of partnerships.
+ */
+function par_data_update_9010() {
+  // Adding new field definitions to an entity.
+  // @see https://www.drupal.org/node/3034742#comment-14054069
+  $module_name = 'par_data';
+  $entity_type = 'par_data_partnership';
+  $fields = [
+    'previous_names',
+  ];
+
+  \Drupal::entityTypeManager()->clearCachedDefinitions();
+
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $field_definitions = \Drupal::service('entity_field.manager')
+    ->getFieldDefinitions($entity_type, $entity_type);
+  foreach ($fields as $field_name) {
+    if (!empty($field_definitions[$field_name]) && $field_definitions[$field_name] instanceof FieldStorageDefinitionInterface) {
+      $entity_definition_update_manager
+        ->installFieldStorageDefinition(
+          $field_name,
+          $entity_type,
+          $module_name,
+          $field_definitions[$field_name]);
+    }
+  }
 }

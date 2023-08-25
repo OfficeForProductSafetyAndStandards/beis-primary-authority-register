@@ -66,6 +66,8 @@ import uk.gov.beis.pageobjects.InspectionPlanExpirationPage;
 import uk.gov.beis.pageobjects.InspectionPlanReviewPage;
 import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.LegalEntityPage;
+import uk.gov.beis.pageobjects.LegalEntityReviewPage;
+import uk.gov.beis.pageobjects.LegalEntityTypePage;
 import uk.gov.beis.pageobjects.LoginPage;
 import uk.gov.beis.pageobjects.MailLogPage;
 import uk.gov.beis.pageobjects.ManagePeoplePage;
@@ -154,6 +156,7 @@ public class PARStepDefs {
 	private AuthorityTypePage authorityTypePage;
 	private AdviceNoticeSearchPage adviceNoticeSearchPage;
 	private AuthorityNamePage authorityNamePage;
+	private LegalEntityReviewPage legalEntityReviewPage;
 	private ReplyInspectionFeedbackPage replyInspectionFeedbackPage;
 	private PartnershipAdvancedSearchPage partnershipAdvancedSearchPage;
 	private UserProfileConfirmationPage userProfileConfirmationPage;
@@ -185,6 +188,7 @@ public class PARStepDefs {
 	private PartnershipRevokedPage partnershipRevokedPage;
 	private UserTermsPage userTermsPage;
 	private LegalEntityPage legalEntityPage;
+	private LegalEntityTypePage legalEntityTypePage;
 	private EmployeesPage employeesPage;
 	private BusinessDetailsPage parBusinessDetailsPage;
 	private DeclarationPage parDeclarationPage;
@@ -232,6 +236,7 @@ public class PARStepDefs {
 		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
 		uploadAdviceNoticePage = PageFactory.initElements(driver, UploadAdviceNoticePage.class);
 		adviceNoticeSearchPage = PageFactory.initElements(driver, AdviceNoticeSearchPage.class);
+		legalEntityReviewPage = PageFactory.initElements(driver, LegalEntityReviewPage.class);
 		removeReasonInspectionPlanPage = PageFactory.initElements(driver, RemoveReasonInspectionPlanPage.class);
 		revokeReasonInspectionPlanPage = PageFactory.initElements(driver, RevokeReasonInspectionPlanPage.class);
 		inspectionPlanReviewPage = PageFactory.initElements(driver, InspectionPlanReviewPage.class);
@@ -314,6 +319,7 @@ public class PARStepDefs {
 		parPartnershipTermsPage = PageFactory.initElements(driver, PartnershipTermsPage.class);
 		partnershipSearchPage = PageFactory.initElements(driver, PartnershipSearchPage.class);
 		viewEnquiryPage = PageFactory.initElements(driver, ViewEnquiryPage.class);
+		legalEntityTypePage = PageFactory.initElements(driver, LegalEntityTypePage.class);
 
 		// PAR News Letter
 		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
@@ -493,8 +499,11 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.TRADING_NAME,
 					DataStore.getSavedValue(UsableValues.BUSINESS_NAME).replace("Business", "trading name"));
 			tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Legal Entity Name"));
 			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal entity Type"));
-			legalEntityPage.createLegalEntity(data.get("Legal entity Type"));
+			DataStore.saveValue(UsableValues.ENTITY_NUMBER, data.get("Company number"));
+			legalEntityTypePage.selectEntityType(DataStore.getSavedValue(UsableValues.ENTITY_NAME),DataStore.getSavedValue(UsableValues.ENTITY_TYPE),DataStore.getSavedValue(UsableValues.ENTITY_NUMBER));
+			legalEntityReviewPage.proceed();
 			LOG.info("Set second part of journey part to true");
 			ScenarioContext.secondJourneyPart = true;
 		}
@@ -520,6 +529,13 @@ public class PARStepDefs {
 
 		Assert.assertTrue("Appliction not complete",
 				parPartnershipConfirmationPage.checkPartnershipApplicationSecondPart());
+		if (ScenarioContext.registered == true) {
+			parPartnershipConfirmationPage.checkRegNo();
+		}
+		if (ScenarioContext.registered == false) {
+			parPartnershipConfirmationPage.checkEntityName();
+		}
+
 		parPartnershipConfirmationPage.confirmDetails();
 		parPartnershipConfirmationPage.saveChanges();
 		parPartnershipCompletionPage.completeApplication();
