@@ -1,0 +1,30 @@
+uuid: 06b551d9-53bd-4505-a11f-6dfd0068abd9
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: pFSmPH8qbQW8JwMtWCdVHTegzWxBFhhzRhmRiYbuB3k
+id: amend_partnership
+label: 'Amend Partnership Flow'
+default_title: null
+default_section_title: 'Amend a partnership'
+description: ''
+save_method: end
+states:
+  - par_data_partnership
+final_routes:
+  - par_partnership_flows.authority_details
+steps:
+  1:
+    route: par_partnership_amend_flows.add_legal_entity
+    form_id: par_partnership_amend_add_legal_entity
+    components:
+      legal_entity:
+        cardinality: -1
+  2:
+    route: par_partnership_amend_flows.review
+    form_id: par_transfer_partnerships_review
+    form_data:
+      legal_entity_add: par_partnership_amend_add_legal_entity
+  3:
+    route: par_partnership_amend_flows.complete

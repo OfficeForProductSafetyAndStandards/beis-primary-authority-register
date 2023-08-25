@@ -18,6 +18,7 @@ dependencies:
     - par_member_upload_flows
     - par_notification
     - par_organisation_update_flows
+    - par_partnership_amend_confirm_flows
     - par_partnership_confirmation_flows
     - par_partnership_contact_add_flows
     - par_partnership_contact_remove_flows
@@ -78,6 +79,7 @@ permissions:
   - 'business partnership journey'
   - 'cease coordinated member'
   - 'confirm partnership'
+  - 'confirm partnership amendments'
   - 'create files'
   - 'create organisation user'
   - 'create par person'
@@ -118,7 +120,9 @@ permissions:
   - 'manage par person'
   - 'manage par profile'
   - 'receive new_inspection_plan notification'
+  - 'receive new_partnership_amendment notification'
   - 'receive new_partnership_notification notification'
+  - 'receive partnership_amendment_nominated notification'
   - 'receive partnership_approved_notificatio notification'
   - 'receive partnership_confirmed_notificati notification'
   - 'receive partnership_deleted_notification notification'

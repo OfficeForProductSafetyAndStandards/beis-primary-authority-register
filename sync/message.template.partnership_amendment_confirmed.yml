@@ -1,0 +1,22 @@
+uuid: 19f1d97a-d442-43dd-b14e-6cb3a7643ea7
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.basic_html
+template: partnership_amendment_confirmed
+label: 'Partnership Amendment Confirmed'
+description: 'A notification to OSU users when a new partnership amendment has been confirmed by the business'
+text:
+  -
+    value: "<p><span>@organisation has confirmed the amendments to their partnership. The amendments are now ready to be nominated.</span></p>\r\n"
+    format: basic_html
+  -
+    value: "<p><span>If there are any issues with the amendments please contact the Primary Authority to make the necessary changes.<br />\r\n<br />\r\n<br />\r\n^ Nominate the amendments now: [message:primary-action]</span></p>\r\n"
+    format: basic_html
+settings:
+  'token options':
+    clear: false
+    'token replace': true
+  purge_override: false
+  purge_methods: {  }
