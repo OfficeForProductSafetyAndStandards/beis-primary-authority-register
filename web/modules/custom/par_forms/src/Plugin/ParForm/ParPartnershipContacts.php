@@ -143,7 +143,6 @@ class ParPartnershipContacts extends ParFormPluginBase {
     foreach ($chunk as $delta => $entity) {
       $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
       $entity_view = $entity_view_builder->view($entity, 'detailed');
-      $rendered_field = $this->getRenderer()->render($entity_view);
 
       // Get update and remove links.
       try {
@@ -162,7 +161,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
       }
 
       $form["{$contact_format}_contacts"]['person']['items'][$delta] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
@@ -170,11 +169,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
           '#type' => 'html_tag',
           '#tag' => 'div',
           '#attributes' => ['class' => ['column-full']],
-          [
-            '#type' => 'html_tag',
-            '#tag' => 'p',
-            '#value' => $this->t('(none)'),
-          ]
+          [...$entity_view],
         ],
         'operations' => [
           'update' => [
