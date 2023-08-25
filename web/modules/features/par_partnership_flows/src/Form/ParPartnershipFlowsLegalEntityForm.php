@@ -126,16 +126,6 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
     $legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
 
-
-    // Creating the legal entity and using ParDataLegalEntity::lookup() allows
-    // information to be retrieved from a registered source like Companies House.
-    $par_data_legal_entity = ParDataLegalEntity::create([
-      'registry' => $this->getFlowDataHandler()->getTempDataValue('registry'),
-      'registered_name' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_name'),
-      'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'),
-      'registered_number' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_number'),
-    ]);
-
     // Edit existing legal entity / add new legal entity.
     if ($legal_entity) {
       // Legal entity information may be altered by the registered organisation

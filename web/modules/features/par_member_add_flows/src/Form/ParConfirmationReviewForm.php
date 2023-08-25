@@ -60,7 +60,6 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $form['member_contact']['#attributes']['class'][] = 'form-group';
 
     // Display legal entities.
-    var_dump(count($par_data_legal_entities));
     $form['legal_entities'] = $this->renderEntities('Legal entities', $par_data_legal_entities);
     $form['legal_entities']['#attributes']['class'][] = 'form-group';
 
@@ -196,7 +195,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
     foreach ($par_data_legal_entities as $par_data_legal_entity) {
       if ($par_data_legal_entity->save()) {
-        $par_data_organisation->get('field_legal_entity')->appendItem($par_data_legal_entity);
+        $par_data_organisation->addLegalEntity($par_data_legal_entity);
         $par_data_coordinated_business->get('field_legal_entity')->appendItem($par_data_legal_entity);
       }
     }

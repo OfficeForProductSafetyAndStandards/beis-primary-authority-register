@@ -35,21 +35,32 @@ class ParLegalEntityForm extends ParBaseForm {
     parent::submitForm($form, $form_state);
 
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
+    $legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity');
 
-    // Creating the legal entity and using ParDataLegalEntity::lookup() allows
-    // information to be retrieved from a registered source like Companies House.
-    $par_data_legal_entity = ParDataLegalEntity::create([
-      'registry' => $this->getFlowDataHandler()->getTempDataValue('registry'),
-      'registered_name' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_name'),
-      'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'),
-      'registered_number' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_number'),
-    ]);
-    $par_data_legal_entity->lookup();
+    // Edit existing legal entity / add new legal entity.
+    if ($legal_entity) {
+      // Legal entity information may be altered by the registered organisation
+      // provider when saving the data.
+      $legal_entity->set('registry', $this->getFlowDataHandler()->getTempDataValue('registry'));
+      $legal_entity->set('registered_name', $this->getFlowDataHandler()->getTempDataValue('legal_entity_name'));
+      $legal_entity->set('legal_entity_type', $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'));
+      $legal_entity->set('registered_number', $this->getFlowDataHandler()->getTempDataValue('legal_entity_number'));
+    }
+    else {
+      // Creating the legal entity and using ParDataLegalEntity::lookup() allows
+      // information to be retrieved from a registered source like Companies House.
+      $par_data_legal_entity = ParDataLegalEntity::create([
+        'registry' => $this->getFlowDataHandler()->getTempDataValue('registry'),
+        'registered_name' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_name'),
+        'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'),
+        'registered_number' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_number'),
+      ]);
+    }
 
     $new = $par_data_legal_entity->isNew();
     $saved = $par_data_legal_entity->save();
     if ($new && $saved) {
-      $par_data_organisation->get('field_legal_entity')->appendItem($par_data_legal_entity);
+      $par_data_organisation->addLegalEntity($par_data_legal_entity);
 
       $saved = $par_data_organisation->save();
     }

@@ -135,11 +135,11 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
   /**
    * Add a legal entity to this Organisation.
    *
-   * @param ParDataLegalEntity $legal_entity
+   * @param ParDataLegalEntity $new_legal_entity
    *   A PAR Legal Entity to add.
-
    */
   public function addLegalEntity(ParDataLegalEntity $new_legal_entity) {
+    $new_legal_entity = $new_legal_entity->deduplicate();
 
     // Get the legal entities already attached to the organisation.
     $legal_entities = $this->getLegalEntity();
@@ -153,8 +153,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
     }
 
     // Attach the new legal entity.
-    $legal_entities[] = $new_legal_entity;
-    $this->set('field_legal_entity', $legal_entities);
+    $this->get('field_legal_entity')->appendItem($new_legal_entity);
   }
 
   /**

@@ -1029,7 +1029,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
           $par_data_organisation->set('field_person', $par_data_person);
         }
         if (current($par_data_legal_entity)->id()) {
-          $par_data_organisation->set('field_legal_entity', $par_data_legal_entity);
+          $par_data_organisation->addLegalEntity($par_data_legal_entity);
         }
 
         // Try to save the organisation.

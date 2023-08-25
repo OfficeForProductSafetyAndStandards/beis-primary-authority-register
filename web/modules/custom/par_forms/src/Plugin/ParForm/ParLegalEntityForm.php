@@ -58,9 +58,26 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
    */
   public function loadData(int $index = 1): void {
     if ($par_data_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity')) {
-      $this->getFlowDataHandler()->setFormPermValue("registered_name", $par_data_legal_entity->get('registered_name')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("legal_entity_type", $par_data_legal_entity->get('legal_entity_type')->getString());
-      $this->getFlowDataHandler()->setFormPermValue("registered_number", $par_data_legal_entity->get('registered_number')->getString());
+      // Set the registry id.
+      $this->setDefaultValuesByKey(['registry'], $index, $par_data_legal_entity->getRegisterId());
+
+      // Set the requisite pieces of data depending on the type of legal entity.
+      switch ($par_data_legal_entity->getRegisterId()) {
+        case 'companies_house':
+        case 'charity_commission':
+
+          $this->setDefaultValuesByKey(['registered','legal_entity_number'], $index, $par_data_legal_entity->getRegisteredNumber());
+          break;
+
+        case ParDataLegalEntity::DEFAULT_REGISTER:
+          $this->setDefaultValuesByKey(['unregistered','legal_entity_type'], $index, $par_data_legal_entity->getType());
+          $this->setDefaultValuesByKey(['unregistered','legal_entity_name'], $index, $par_data_legal_entity->getName());
+          break;
+
+        default:
+          $this->setDefaultValuesByKey(['registered','legal_entity_number'], $index, $par_data_legal_entity->getRegisteredNumber());
+
+      }
     }
 
     if ($par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership')) {

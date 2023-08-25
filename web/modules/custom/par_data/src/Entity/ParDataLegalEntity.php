@@ -232,6 +232,23 @@ class ParDataLegalEntity extends ParDataEntity {
   }
 
   /**
+   * Whether this legal entity is editable.
+   *
+   *  - If it isn't a registered organisation or internal entity
+   *  - If it is a legacy entity
+   *
+   * @return bool
+   */
+  public function isEditable(): bool {
+    // All legacy entities can be edited.
+    if ($this->isLegacyEntity()) {
+      return TRUE;
+    }
+
+    return FALSE;
+  }
+
+  /**
    * Whether the legal entity is a registered organisation.
    *
    * @return bool

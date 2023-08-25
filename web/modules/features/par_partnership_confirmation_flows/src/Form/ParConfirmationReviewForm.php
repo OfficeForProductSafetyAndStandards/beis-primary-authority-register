@@ -357,9 +357,8 @@ class ParConfirmationReviewForm extends ParBaseForm {
       // Save the new legal entities and add to the organisation.
       if ($legal_entity->isNew()) {
         $legal_entity = $legal_entity->deduplicate();
-        var_dump($legal_entity->id());
         $legal_entity->save();
-        $par_data_organisation->get('field_legal_entity')->appendItem($legal_entity);
+        $par_data_organisation->addLegalEntity($legal_entity);
       }
       $par_data_partnership->addLegalEntity($legal_entity);
     }
