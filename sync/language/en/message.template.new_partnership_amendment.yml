@@ -1,0 +1,7 @@
+text:
+  -
+    value: "<p>This message is about your primary authority partnership with @primary_authority. The Primary Authority has made some amendments to the legal entities on this partnership.</p>\r\n"
+    format: basic_html
+  -
+    value: "<p>Before these amendments can be submitted for nomination you need to confirm the details are correct and that you are willing to make these amendments.</p>\r\n\r\n<p>^ Confirm the amendments now: [message:primary-action]</p>\r\n"
+    format: basic_html

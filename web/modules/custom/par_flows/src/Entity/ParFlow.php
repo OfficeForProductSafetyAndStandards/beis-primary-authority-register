@@ -197,7 +197,8 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getCurrentRouteMatch() {
     // Submit the route with all the same parameters.
-    return isset($this->currentRoute) ? $this->currentRoute : \Drupal::service('par_flows.negotiator')->getRoute();
+    return $this->currentRoute ?? \Drupal::service('par_flows.negotiator')
+      ->getRoute();
   }
 
   /**
@@ -298,7 +299,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    * {@inheritdoc}
    */
   public function getStep($index) {
-    return isset($this->steps[$index]) ? $this->steps[$index] : NULL;
+    return $this->steps[$index] ?? NULL;
   }
 
   /**
@@ -320,7 +321,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   public function getCurrentStep() {
     // Lookup the current step to more accurately determine the next step.
     $current_step = $this->getStepByRoute($this->getCurrentRoute());
-    return isset($current_step) ? $current_step : NULL;
+    return $current_step ?? NULL;
   }
 
   /**
@@ -414,7 +415,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getStepComponents($index) {
     $step = $this->getStep($index);
-    return isset($step['components']) ? $step['components'] : [];
+    return $step['components'] ?? [];
   }
 
   /**
@@ -422,7 +423,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getStepFormDataKeys($index) {
     $step = $this->getStep($index);
-    return isset($step['form_data']) ? $step['form_data'] : [];
+    return $step['form_data'] ?? [];
   }
 
   /**
@@ -437,7 +438,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getStepOperations($index) {
     $step = $this->getStep($index);
-    $redirects = isset($step['redirect']) ? $step['redirect'] : [];
+    $redirects = $step['redirect'] ?? [];
 
     // Get the default actions, these can be disabled
     // if required on a form by form basis.
@@ -493,7 +494,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       }
     }
 
-    return isset($match['step']) ? $match['step'] : NULL;
+    return $match['step'] ?? NULL;
   }
 
   /**
@@ -510,9 +511,9 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getStepByOperation($index, $operation) {
     $step = $this->getStep($index);
-    $redirects = isset($step['redirect']) ? $step['redirect'] : [];
+    $redirects = $step['redirect'] ?? [];
 
-    return isset($redirects[$operation]) ? $redirects[$operation] : NULL;
+    return $redirects[$operation] ?? NULL;
   }
 
   /**
@@ -520,7 +521,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getRouteByStep($index) {
     $step = $this->getStep($index);
-    return isset($step['route']) ? $step['route'] : NULL;
+    return $step['route'] ?? NULL;
   }
 
   /**
@@ -528,7 +529,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getFormIdByStep($index) {
     $step = $this->getStep($index);
-    return isset($step['form_id']) ? $step['form_id'] : NULL;
+    return $step['form_id'] ?? NULL;
   }
 
   /**

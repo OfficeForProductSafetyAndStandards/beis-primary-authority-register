@@ -11,7 +11,7 @@ use Drupal\par_notification\ParRecipient;
 
 /**
  * This message subscriber should apply to any message that deals
- * with a new partnership application.
+ * with a new partnership application, including new partnership amendments.
  *
  * @ParMessageSubscriber(
  *   id = "new_partnership",
@@ -19,6 +19,7 @@ use Drupal\par_notification\ParRecipient;
  *   status = TRUE,
  *   message = {
  *     "new_partnership_notification",
+ *     "new_partnership_amendment",
  *   },
  * )
  */

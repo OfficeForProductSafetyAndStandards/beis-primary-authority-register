@@ -6,7 +6,6 @@ use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
-use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
@@ -25,21 +24,21 @@ class ParFlowAccessCheck implements AccessInterface {
    *
    * @var \Drupal\par_data\ParDataManagerInterface
    */
-  private $parDataManager;
+  private ParDataManagerInterface $parDataManager;
 
   /**
    * The PAR Flow Negotiator.
    *
    * @var \Drupal\par_flows\ParFlowNegotiatorInterface
    */
-  private $flowNegotiator;
+  private ParFlowNegotiatorInterface $flowNegotiator;
 
   /**
    * CustomAccessCheck constructor.
    *
-   * @param \Drupal\par_data\ParDataManagerInterface
+   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
    *   Data Manager Service
-   * @param \Drupal\par_flows\ParFlowNegotiatorInterface
+   * @param \Drupal\par_flows\ParFlowNegotiatorInterface $flow_negotiator
    *   Flow Negotiator Service
    */
   public function __construct(ParDataManagerInterface $par_data_manager, ParFlowNegotiatorInterface $flow_negotiator) {
@@ -73,7 +72,7 @@ class ParFlowAccessCheck implements AccessInterface {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataAuthority $par_data_authority = NULL) {
+  public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
     try {
       // Get a new flow negotiator that points to the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
@@ -81,14 +80,22 @@ class ParFlowAccessCheck implements AccessInterface {
 
     }
 
-    $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
-
-    // Check the user has permission to manage the partnership.
-    if (!$account->hasPermission('bypass par_data membership')
-      && (!$user || !$this->parDataManager->isMember($par_data_authority, $user))) {
-
-      return AccessResult::forbidden('User does not have permissions to manage this partnership.');
+    // Only active partnerships can be amended.
+    if (!$par_data_partnership->isActive()) {
+      return AccessResult::forbidden('Only active partnerships can be amended.');
     }
+
+    $partnership_legal_entities = $par_data_partnership->getPartnershipLegalEntities();
+    // Get all the pending partnership legal entities.
+    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) {
+      return $partnership_legal_entity->isPending();
+    });
+
+    // Partnership amendments cannot be made if one is already in progress.
+    if (!empty($partnership_legal_entities)) {
+      return AccessResult::forbidden('Only partnerships with pending legal entity amendments can be confirmed.');
+    }
+
 
     return AccessResult::allowed();
   }

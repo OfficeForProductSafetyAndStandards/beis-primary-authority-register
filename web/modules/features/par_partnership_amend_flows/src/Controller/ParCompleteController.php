@@ -14,7 +14,7 @@ use Drupal\par_flows\ParFlowException;
  */
 class ParCompleteController extends ParBaseController {
 
-  protected $pageTitle = 'The transfer has been completed';
+  protected $pageTitle = 'The amendment has been completed';
 
   /**
    * Load the data for this form.
@@ -25,7 +25,7 @@ class ParCompleteController extends ParBaseController {
       'intro' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t("The partnerships have been transferred to the new authority."),
+        '#value' => $this->t("The partnership amendment has been submitted to the business."),
       ],
     ];
 
@@ -33,44 +33,26 @@ class ParCompleteController extends ParBaseController {
       '#title' => $this->t('What happens next?'),
       '#type' => 'fieldset',
     ];
-    $build['next']['info'] = [
+    $build['next']['notification_organisation'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => "The Primary Authority for these partnerships will now be changed to the new authority and the name of the old authority will be marked on the partnership along with the date of the transfer.",
+      '#value' => "The business will get a notification asking them to confirm the changes to this partnership.",
     ];
-    $build['next']['search'] = [
+    $build['next']['notification_helpdesk'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => "The partnership will now only show up in search results when the new authority is searched for.",
+      '#value' => "Once the business has confirmed these changes the Primary Authority Register team will review the changes and approve the new partnership details.",
+    ];
+    $build['next']['help'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => "Please contact the Primary Authority Register team if you'd like to discuss this amendment.",
     ];
 
     // Change the action to save.
     $this->getFlowNegotiator()->getFlow()->setActions(['done']);
 
     return parent::build($build);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-
-    if (!$form_state->getValue('remove_reason')) {
-      $id = $this->getElementId('remove_reason', $form);
-      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please enter the reason you are removing this inspection plan.', $id));
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
-
-    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
-    $delta = $this->getFlowDataHandler()->getTempDataValue('delta');
   }
 
 }

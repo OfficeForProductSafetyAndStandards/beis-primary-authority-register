@@ -27,6 +27,8 @@ dependencies:
     - par_member_upload_flows
     - par_notification
     - par_organisation_update_flows
+    - par_partnership_amend_confirm_flows
+    - par_partnership_amend_flows
     - par_partnership_confirmation_flows
     - par_partnership_contact_add_flows
     - par_partnership_contact_remove_flows
@@ -101,6 +103,7 @@ permissions:
   - 'add partnership authority contact'
   - 'add partnership organisation contact'
   - 'administer users'
+  - 'amend own partnerships'
   - 'approve enforcement notice'
   - 'approve partnerships'
   - 'approve partnerships via help desk'
@@ -116,6 +119,7 @@ permissions:
   - 'cancel partnership applications'
   - 'cease coordinated member'
   - 'confirm partnership'
+  - 'confirm partnership amendments'
   - 'create article content'
   - 'create authority user'
   - 'create enforcement user'
@@ -200,6 +204,7 @@ permissions:
   - 'manage par profile'
   - 'merge person'
   - 'receive inspection_plan_expiry_warning notification'
+  - 'receive partnership_amendment_confirmed notification'
   - 'receive partnership_nominate notification'
   - 'remove partnership authority contact'
   - 'remove partnership organisation contact'

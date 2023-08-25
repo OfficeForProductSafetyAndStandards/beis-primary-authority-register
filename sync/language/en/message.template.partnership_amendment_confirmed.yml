@@ -1,0 +1,7 @@
+text:
+  -
+    value: "<p><span>@organisation has confirmed the amendments to their partnership. The amendments are now ready to be nominated.</span></p>\r\n"
+    format: basic_html
+  -
+    value: "<p><span>If there are any issues with the amendments please contact the Primary Authority to make the necessary changes.<br />\r\n<br />\r\n<br />\r\n^ Nominate the amendments now: [message:primary-action]</span></p>\r\n"
+    format: basic_html

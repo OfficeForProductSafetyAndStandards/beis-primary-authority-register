@@ -1,0 +1,22 @@
+uuid: 832f42bd-0758-4da0-84e5-6da32b2dfb30
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: yV5xKSTc0ijsBxxJLiaVzpIhQRlts29MI8B3Tsxr7YQ
+id: nominate_partnership_amendment
+label: 'Nominate Partnership Amendment Flow'
+default_title: null
+default_section_title: 'Nominate partnership amendments'
+description: ''
+save_method: end
+states:
+  - par_data_partnership
+final_routes:
+  - par_partnership_flows.authority_details
+steps:
+  1:
+    route: par_partnership_amend_nominate_flows.review
+    form_id: partnership_amend_nominate_review
+  2:
+    route: par_partnership_amend_nominate_flows.complete
