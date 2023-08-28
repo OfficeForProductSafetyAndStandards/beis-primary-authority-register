@@ -55,13 +55,15 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     /* @var ParDataPartnershipLegalEntity[] $partnership_legal_entities */
     $partnership_legal_entities = $this->getDefaultValuesByKey('partnership_legal_entities', $index, []);
 
+    $route_params = ['par_data_partnership' => $partnership];
     $actions = [];
     // Generate the link to add a new partnership legal entity for pending partnerships.
     try {
       $link_label = !empty($partnership_legal_entities) && count($partnership_legal_entities) >= 1
-        ? "add another legal entity" : "add a legal entity";
+        ? "Add another legal entity" : "Add a legal entity";
+      $link_options = [ 'attributes' => ['class' => ['add-action']] ];
       $link = $this->getFlowNegotiator()->getFlow()
-        ->getOperationLink('add_legal_entity', $link_label, ['par_data_partnership' => $partnership]);
+        ->getOperationLink('add_legal_entity', $link_label, $route_params, $link_options);
       if ($link instanceof Link) {
         $actions['add'] = $link;
       }
@@ -71,8 +73,9 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     }
     // Generate the partnership amendment link for active partnerships.
     try {
+      $link_options = [ 'attributes' => ['class' => ['amend-partnership-action']] ];
       $link = $this->getFlowNegotiator()->getFlow('amend_partnership')
-        ->getStartLink(1, "Amend the legal entities");
+        ->getStartLink(1, "Amend the legal entities", $route_params, $link_options);
       if ($link instanceof Link) {
         $actions['amend'] = $link;
       }
@@ -82,8 +85,9 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     }
     // Generate the partnership amendment confirmation link for active partnerships.
     try {
+      $link_options = [ 'attributes' => ['class' => ['confirm-amendment-action']] ];
       $link = $this->getFlowNegotiator()->getFlow('confirm_partnership_amendment')
-        ->getStartLink(1, "Confirm the amendments");
+        ->getStartLink(1, "Confirm the amendments", $route_params, $link_options);
       if ($link instanceof Link) {
         $actions['amend_confirm'] = $link;
       }
@@ -93,8 +97,9 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     }
     // Generate the partnership amendment nomination link for active partnerships.
     try {
+      $link_options = [ 'attributes' => ['class' => ['nominate-amendment-action']] ];
       $link = $this->getFlowNegotiator()->getFlow('nominate_partnership_amendment')
-        ->getStartLink(1, "Nominate the amendments");
+        ->getStartLink(1, "Nominate the amendments", $route_params, $link_options);
       if ($link instanceof Link) {
         $actions['amend_nominate'] = $link;
       }
