@@ -677,21 +677,24 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *   The merged data.
    */
   protected function mergeData($data): array {
+    // Combine with any data already submitted.
+    $existing_data = $this->getFlowDataHandler()->getFormTempData();
+
     // For components that support the summary list only add the data that has been changed.
     foreach ($this->getComponents() as $component) {
-      if ($this->getFormBuilder()->supportsSummaryList($component)) {
-        // Merge the submitted values with the existing values.
-        $existing_data = $this->getFlowDataHandler()->getFormTempData();
-
-        // Ensure any existing items are added to the data.
-        if (isset($existing_data[$component->getPrefix()])) {
-          $data[$component->getPrefix()] = $data[$component->getPrefix()] + $existing_data[$component->getPrefix()];
-        }
+      // For summary lists ensure only the indexes being modified are added.
+      if ($this->getFormBuilder()->supportsSummaryList($component)
+        && !$component->isFlattened()) {
+        $data[$component->getPrefix()] = $data[$component->getPrefix()] + $existing_data[$component->getPrefix()];
+      }
+      // There are no other situations where existing structured component data is persisted.
+      if (!$component->isFlattened()) {
+        unset($existing_data[$component->getPrefix()]);
       }
     }
 
-    // Filter empty values from merged data also.
-    return $data;
+    // Ensure that any data outside the components can be maintained in the existing data.
+    return NestedArray::mergeDeep($existing_data, $data);
   }
 
   /**

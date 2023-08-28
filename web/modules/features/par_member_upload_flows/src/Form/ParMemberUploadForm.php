@@ -163,7 +163,9 @@ class ParMemberUploadForm extends ParBaseForm {
       }
 
       if (count($rows) > 0) {
-        $form_state->setValue('coordinated_members', $rows);
+        // Set the data directly on the ParFlowDataHandler because FormState
+        // data is filtered (with empty values removed) on submission.
+        $this->getFlowDataHandler()->setTempDataValue('coordinated_members', $rows);
       }
     }
   }
