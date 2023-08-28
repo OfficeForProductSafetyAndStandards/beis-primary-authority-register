@@ -693,7 +693,8 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
             case ParFormBuilder::PAR_ERROR_DISPLAY:
               try {
                 $element = $this->getElement($form, $mapping->getElement(), $index);
-                $this->setError($form, $form_state, $element, $violation->getMessage());
+                $message = $mapping->getErrorMessage($violation->getMessage());
+                $this->setError($form, $form_state, $element, $message);
               }
               catch (ParFlowException $ignore) {
                 // The element could not be found.
