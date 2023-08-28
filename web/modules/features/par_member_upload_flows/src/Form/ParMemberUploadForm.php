@@ -59,40 +59,53 @@ class ParMemberUploadForm extends ParBaseForm {
     ];
 
     // Allow a member list to be downloaded.
+    $url_options = [
+      'attributes' => [
+        'id' => 'download-members-link',
+        'class' => ['download-action']
+      ],
+    ];
     if ($par_data_partnership->countMembers(0, TRUE) > 0) {
-      $form['download'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('Download list of members'),
-        '#description' => $this->t('Please download the latest members list before making any changes to it.'),
-        '#attributes' => [
-          'class' => ['form-group'],
-        ]
-      ];
-      $form['download']['download_link'] = [
-        '#type' => 'link',
-        '#title' => $this->t('Download membership list'),
-        '#url' => Url::fromRoute('par_member_upload_flows.member_download', $this->getRouteParams()),
-        '#attributes' => [
-          'id' => 'download-members-link',
-        ],
-      ];
+      $download_heading = 'Download list of members';
+      $download_description = 'Please download the latest members list before making any changes to it.';
+      // Get the link.
+      $download_url = Url::fromRoute('par_member_upload_flows.member_download', $this->getRouteParams(), $url_options);
+      $download_link = Link::fromTextAndUrl('Download list of members', $download_url);
     }
     else {
-      $form['download'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('Download membership template'),
-        '#description' => $this->t('Please download the member list template to ensure you fill in the correct information.'),
-        '#attributes' => [
-          'class' => ['form-group'],
-        ]
-      ];
+      $download_heading = 'Download membership template';
+      $download_description = 'Please download the member list template to ensure you fill in the correct information.';
+      // Get the link.
       $module_handler = \Drupal::service('module_handler');
       $path = $module_handler->getModule('par_member_upload_flows')->getPath() . '/assets/par_membership_blank_template.csv';
-      $form['download']['download_link'] = [
-        '#type' => 'markup',
-        '#markup' => "<a href='/$path'>{$this->t('Download membership template')}</a>",
-      ];
+      $download_url = Url::fromUri("internal:/$path");
+      $download_link = Link::fromTextAndUrl('Download membership template', $download_url);
     }
+
+    $form['download'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['form-group'],
+      ],
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => $this->t($download_heading),
+      ],
+      'description' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#attributes' => ['class' => ['govuk-hint']],
+        '#value' => $download_description,
+      ],
+      'link' => [
+        '#type' => 'link',
+        '#title' => $download_link?->getText(),
+        '#url' => $download_link?->getUrl(),
+        '#options' => $download_link?->getUrl()->getOptions(),
+      ],
+    ];
 
     // File field.
     $form['csv'] = [
