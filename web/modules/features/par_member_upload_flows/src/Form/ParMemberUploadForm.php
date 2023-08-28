@@ -9,6 +9,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\Entity\File;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
@@ -153,13 +154,13 @@ class ParMemberUploadForm extends ParBaseForm {
 
       // Loop through each csv row from uploaded file and save in $row array.
       foreach ($files as $file) {
-        $error = $this->getCsvHandler()->loadFile($file, $rows);
-      }
-
-      // If there was an error we want to invalidate the form.
-      if (isset($error)) {
-        $id = $this->getElementId(['csv'], $form);
-        $form_state->setErrorByName($this->getElementName('csv'), $this->wrapErrorMessage($error, $id));
+        try {
+          $this->getCsvHandler()->loadFile($file, $rows);
+        }
+        catch (ParDataException $exception) {
+          $id = $this->getElementId(['csv'], $form);
+          $form_state->setErrorByName($this->getElementName('csv'), $this->wrapErrorMessage($exception, $id));
+        }
       }
 
       if (count($rows) > 0) {

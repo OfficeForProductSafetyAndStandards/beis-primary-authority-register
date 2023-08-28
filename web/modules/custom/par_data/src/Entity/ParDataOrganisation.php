@@ -137,6 +137,9 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
    *
    * @param ParDataLegalEntity $legal_entity
    *   A PAR Legal Entity to add.
+   *
+   * @throws EntityStorageException
+   *    In case of failures an exception is thrown.
    */
   public function addLegalEntity(ParDataLegalEntity $legal_entity) {
     // The legal entity must be saved before adding.
