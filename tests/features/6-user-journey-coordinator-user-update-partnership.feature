@@ -41,9 +41,10 @@ Feature: Coordinator User - Update Partnership
         And I click on the button "#edit-next"
 
         And I click on the radio "#edit-par-component-legal-entity-0-registry-companies-house"
-        And I add "12345678" to the inputfield "#edit-par-component-legal-entity-0-registered-legal-entity-number"
+        And I click on the radio "edit-par-component-legal-entity-0-unregistered-legal-entity-type-sole-trader"
+        And I add "New LLP Company" to the inputfield "edit-par-component-legal-entity-0-unregistered-legal-entity-name"
         And I click on the button "#edit-next"
-        Then the element ".govuk-summary-list .govuk-summary-list__row:nth-child(1) .registered_number" contains the text "12345678"
+        Then the element ".govuk-summary-list .govuk-summary-list__row:nth-child(1) .registered_name" contains the text "New LLP Company"
         And I click on the button "#edit-next"
 
         And I click on the radio "#edit-covered-by-inspection-1"
@@ -56,7 +57,7 @@ Feature: Coordinator User - Update Partnership
         And the element "#block-par-theme-content" contains the text "United Kingdom"
         And the element "#block-par-theme-content" contains the text "14 January 2018"
         And the element "#block-par-theme-content" contains the text "A trading Name"
-        And the element "#block-par-theme-content" contains the text "12345678"
+        And the element "#block-par-theme-content" contains the text "New LLP Company"
         And the element "#block-par-theme-content" contains the text "14 January 2018"
         When I click on the button "#edit-save"
         And the element "h1.heading-xlarge" contains the text "Member added"
