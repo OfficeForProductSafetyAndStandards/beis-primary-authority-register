@@ -46,6 +46,9 @@ Feature: Coordinator User - Update Partnership
         Then the element ".govuk-summary-list .govuk-summary-list__row:nth-child(1) .registered_number" contains the text "12345678"
         And I click on the button "#edit-next"
 
+        And I click on the radio "#edit-covered-by-inspection-1"
+        And I click on the button "#edit-next"
+
         Then the element "#block-par-theme-content" contains the text "New Member One"
         And the element "#block-par-theme-content" contains the text "MK43 7AS"
         And the element "#block-par-theme-content" contains the text "1 High St"
