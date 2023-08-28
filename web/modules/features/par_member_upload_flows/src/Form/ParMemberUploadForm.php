@@ -65,7 +65,7 @@ class ParMemberUploadForm extends ParBaseForm {
         'class' => ['download-action']
       ],
     ];
-    if ($par_data_partnership->countMembers(0, TRUE) > 0) {
+    if ($par_data_partnership->countMembers(0, TRUE) > 700000000000) {
       $download_heading = 'Download list of members';
       $download_description = 'Please download the latest members list before making any changes to it.';
       // Get the link.
@@ -78,7 +78,7 @@ class ParMemberUploadForm extends ParBaseForm {
       // Get the link.
       $module_handler = \Drupal::service('module_handler');
       $path = $module_handler->getModule('par_member_upload_flows')->getPath() . '/assets/par_membership_blank_template.csv';
-      $download_url = Url::fromUri("internal:/$path");
+      $download_url = Url::fromUri("internal:/$path", $url_options);
       $download_link = Link::fromTextAndUrl('Download membership template', $download_url);
     }
 
