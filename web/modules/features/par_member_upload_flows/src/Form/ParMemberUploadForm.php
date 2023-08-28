@@ -65,7 +65,7 @@ class ParMemberUploadForm extends ParBaseForm {
         'class' => ['download-action']
       ],
     ];
-    if ($par_data_partnership->countMembers(0, TRUE) > 700000000000) {
+    if ($par_data_partnership->countMembers(0, TRUE) >= 1) {
       $download_heading = 'Download list of members';
       $download_description = 'Please download the latest members list before making any changes to it.';
       // Get the link.
