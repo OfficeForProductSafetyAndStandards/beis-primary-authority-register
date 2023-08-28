@@ -117,8 +117,8 @@ When('I complete the legal entities', function () {
   .click('#edit-next')
 
 
-  .assert.containsText('.govuk-summary-list .govuk-summary-list__row:nth-child(1) .registered_name','KALPAITCH LTD')
-  .assert.containsText('.govuk-summary-list .govuk-summary-list__row:nth-child(2) .registered_name','THE SUTTON TRUST')
+  .assert.containsText('.govuk-summary-list .govuk-summary-list__row:nth-child(1) .registered_number','09537751')
+  .assert.containsText('.govuk-summary-list .govuk-summary-list__row:nth-child(2) .registered_number','1146244')
   .assert.containsText('.govuk-summary-list .govuk-summary-list__row:nth-child(3) .registered_name','Test Sole Trader')
 
 
