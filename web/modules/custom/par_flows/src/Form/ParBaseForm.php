@@ -682,13 +682,14 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     // For components that support the summary list only add the data that has been changed.
     foreach ($this->getComponents() as $component) {
+      $has_existing_data = !$component->isFlattened() && isset($existing_data[$component->getPrefix()]);
+
       // For summary lists ensure only the indexes being modified are added.
-      if ($this->getFormBuilder()->supportsSummaryList($component)
-        && !$component->isFlattened()) {
-        $data[$component->getPrefix()] = $data[$component->getPrefix()] + $existing_data[$component->getPrefix()];
+      if ($this->getFormBuilder()->supportsSummaryList($component) && $has_existing_data) {
+          $data[$component->getPrefix()] = $data[$component->getPrefix()] + $existing_data[$component->getPrefix()];
       }
       // There are no other situations where existing structured component data is persisted.
-      if (!$component->isFlattened()) {
+      if ($has_existing_data) {
         unset($existing_data[$component->getPrefix()]);
       }
     }
