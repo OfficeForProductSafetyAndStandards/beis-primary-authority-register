@@ -137,7 +137,7 @@ When('I complete the legal entities', function () {
 
   .click('#edit-par-component-legal-entity-list-3-actions-0-remove')
 
-  .assert.not.elementPresent('.govuk-summary-list .govuk-summary-list__row:nth-child(4)')
+  .assert.elementNotPresent('.govuk-summary-list .govuk-summary-list__row:nth-child(4)')
 
   .click('#edit-next')
 });
