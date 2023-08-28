@@ -40,7 +40,7 @@ Feature: Coordinator User - Update Partnership
         And I add "A trading Name" to the inputfield "#edit-par-component-trading-name-0-trading-name"
         And I click on the button "#edit-next"
 
-        And I click "#edit-par-component-legal-entity-0-registry-companies-house"
+        And I click on the radio "#edit-par-component-legal-entity-0-registry-companies-house"
         And I add "12345678" to the inputfield "#edit-par-component-legal-entity-0-registered-number"
         And I click on the button "#edit-next"
         Then the element ".govuk-summary-list .govuk-summary-list__row:nth-child(1) .registered_number" contains the text "12345678"
