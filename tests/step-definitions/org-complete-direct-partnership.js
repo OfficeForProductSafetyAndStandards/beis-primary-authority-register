@@ -116,11 +116,9 @@ When('I complete the legal entities', function () {
   .setValue('#edit-par-component-legal-entity-2-unregistered-legal-entity-name', 'Test Sole Trader')
   .click('#edit-next')
 
-
   .assert.containsText('.govuk-summary-list .govuk-summary-list__row:nth-child(1) .registered_number','09537751')
   .assert.containsText('.govuk-summary-list .govuk-summary-list__row:nth-child(2) .registered_number','1146244')
   .assert.containsText('.govuk-summary-list .govuk-summary-list__row:nth-child(3) .registered_name','Test Sole Trader')
-
 
   .click('.add-action')
 
@@ -128,10 +126,18 @@ When('I complete the legal entities', function () {
   .click('#edit-par-component-legal-entity-3-unregistered-legal-entity-type-other')
   .setValue('#edit-par-component-legal-entity-3-unregistered-legal-entity-name', 'Fake Entity Name')
   .click('#edit-next')
+
+  .assert.containsText('.govuk-summary-list .govuk-summary-list__row:nth-child(4) .registered_name','Fake Entity Name')
+
   .click('#edit-par-component-legal-entity-list-3-actions-0-change')
   .setValue('#edit-par-component-legal-entity-3-unregistered-legal-entity-name', 'Correct Entity Name')
   .click('#edit-next')
+
+  .assert.containsText('.govuk-summary-list .govuk-summary-list__row:nth-child(4) .registered_name','Correct Entity Name')
+
   .click('#edit-par-component-legal-entity-list-3-actions-0-remove')
+
+  .assert.not.elementPresent('.govuk-summary-list .govuk-summary-list__row:nth-child(4)')
 
   .click('#edit-next')
 });

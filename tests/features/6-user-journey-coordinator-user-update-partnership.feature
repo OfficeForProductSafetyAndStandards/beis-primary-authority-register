@@ -39,11 +39,13 @@ Feature: Coordinator User - Update Partnership
         And I click on the button "#edit-next"
         And I add "A trading Name" to the inputfield "#edit-par-component-trading-name-0-trading-name"
         And I click on the button "#edit-next"
-        And I add "New LLP Company" to the inputfield "#edit-par-component-legal-entity-0-registered-name"
-        And I select the option with the value "limited_liability_partnership" for element "#edit-par-component-legal-entity-0-legal-entity-type"
-        When I add "1234567890" to the inputfield "#edit-par-component-legal-entity-0-registered-number"
+
+        And I click "#edit-par-component-legal-entity-0-registry-companies-house"
+        And I add "12345678" to the inputfield "#edit-par-component-legal-entity-0-registered-number"
         And I click on the button "#edit-next"
+        Then the element ".govuk-summary-list .govuk-summary-list__row:nth-child(1) .registered_number" contains the text "12345678"
         And I click on the button "#edit-next"
+
         Then the element "#block-par-theme-content" contains the text "New Member One"
         And the element "#block-par-theme-content" contains the text "MK43 7AS"
         And the element "#block-par-theme-content" contains the text "1 High St"
