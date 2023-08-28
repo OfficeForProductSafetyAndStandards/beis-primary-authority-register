@@ -41,7 +41,7 @@ Feature: Coordinator User - Update Partnership
         And I click on the button "#edit-next"
 
         And I click on the radio "#edit-par-component-legal-entity-0-registry-companies-house"
-        And I add "12345678" to the inputfield "#edit-par-component-legal-entity-0-registered-number"
+        And I add "12345678" to the inputfield "#edit-par-component-legal-entity-0-registered-legal-entity-number"
         And I click on the button "#edit-next"
         Then the element ".govuk-summary-list .govuk-summary-list__row:nth-child(1) .registered_number" contains the text "12345678"
         And I click on the button "#edit-next"
