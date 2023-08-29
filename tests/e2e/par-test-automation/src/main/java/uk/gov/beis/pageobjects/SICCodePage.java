@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.utility.DataStore;
@@ -17,8 +18,11 @@ public class SICCodePage extends BasePageObject {
 	}
 
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
+	private WebElement continueBtn;
 
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
+	
 	String sic = "//select/option[contains(text(),'?')]";
 
 	public BasePageObject selectSICCode(String code) {
@@ -30,5 +34,12 @@ public class SICCodePage extends BasePageObject {
 			driver.findElement(By.id("edit-save")).click();
 			return PageFactory.initElements(driver, BusinessConfirmationPage.class);
 		}
+	}
+	
+	public PartnershipConfirmationPage editSICCode(String code) {
+		driver.findElement(By.xpath(sic.replace("?", code))).click();
+		
+		saveBtn.click();
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 }

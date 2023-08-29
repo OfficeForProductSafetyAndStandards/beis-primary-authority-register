@@ -12,7 +12,7 @@ description: ''
 save_method: end
 states: null
 final_routes:
-  - view.helpdesk_authorities.par_helpdesk_authority_page
+  - view.helpdesk_authorities.authority_page
 steps:
   1:
     route: par_authority_add_flows.authority_add_name

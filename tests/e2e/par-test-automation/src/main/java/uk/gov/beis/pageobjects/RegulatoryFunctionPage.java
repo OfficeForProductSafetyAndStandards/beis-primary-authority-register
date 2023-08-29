@@ -8,6 +8,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import uk.gov.beis.enums.UsableValues;
+import uk.gov.beis.utility.DataStore;
+
 public class RegulatoryFunctionPage extends BasePageObject {
 
 	public RegulatoryFunctionPage() throws ClassNotFoundException, IOException {
@@ -15,10 +18,22 @@ public class RegulatoryFunctionPage extends BasePageObject {
 	}
 
 	private String regFunction = "//div/label[contains(text(),'?')]/preceding-sibling::input";
-
+	
+	@FindBy(id = "edit-partnership-cover-default")
+	private WebElement normalOrSequencedRadio;
+	
+	@FindBy(id = "edit-partnership-cover-bespoke")
+	private WebElement bespokeRadio;
+	
+	@FindBy(id = "edit-regulatory-functions-4")	// Note: May have more check boxes in the future.
+	private WebElement bespokeCheckbox;
+	
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
-
+	private WebElement continueBtn;
+	
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
+	
 	public AuthorityConfirmationPage selectRegFunction(String reg) {
 		List<WebElement> boxes = driver.findElements(By.xpath("//div/label/preceding-sibling::input"));
 		// clear up boxes first
@@ -39,5 +54,28 @@ public class RegulatoryFunctionPage extends BasePageObject {
 	public PartnershipApprovalPage proceed() {
 		driver.findElement(By.xpath("//input[contains(@value,'Continue')]")).click();
 		return PageFactory.initElements(driver, PartnershipApprovalPage.class);
+	}
+	
+	public PartnershipConfirmationPage updateRegFunction() {
+		if(normalOrSequencedRadio.isSelected()) {
+			bespokeRadio.click();
+			
+			if(!bespokeCheckbox.isSelected()) {
+				bespokeCheckbox.click();
+			}
+		}
+		else if(bespokeRadio.isSelected()) {
+			normalOrSequencedRadio.click();
+		}
+		
+		DataStore.saveValue(UsableValues.PARTNERSHIP_REGFUNC, "Cookie control"); // Would be better to use Bespoke and Normal or Sequenced as the value.
+		
+		saveBtn.click();
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
+	
+	public PartnershipConfirmationPage clickSave() {
+		saveBtn.click();
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 }

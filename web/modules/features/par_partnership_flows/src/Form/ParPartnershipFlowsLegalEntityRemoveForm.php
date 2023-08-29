@@ -50,7 +50,7 @@ class ParPartnershipFlowsLegalEntityRemoveForm extends ParBaseForm {
     }
 
     // Restrict access when partnership is active to users with administrator role.
-    if ($par_data_partnership->isActive() && !$user->hasPermission('amend active partnerships')) {
+    if ($par_data_partnership?->isActive() &&  !$account->hasPermission('amend active partnerships')) {
       $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
     }
 
@@ -59,14 +59,9 @@ class ParPartnershipFlowsLegalEntityRemoveForm extends ParBaseForm {
       $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
     }
 
-    // Prohibit deletion if partnership is active and the legal entity was added more than 24 hours ago.
-    if (!$par_data_partnership_le->isRemovable()) {
+    // If the partnership legal entity cannot be removed.
+    if (!$par_data_partnership_le->isDeletable()) {
       $this->accessResult = AccessResult::forbidden('The Legal entity can not be removed from the partnership.');
-    }
-
-    // Prohibit removing of the last legal entity.
-    if (count($par_data_partnership->getPartnershipLegalEntities(TRUE)) <= 1) {
-      $this->accessResult = AccessResult::forbidden('The last legal entity can\'t be removed.');
     }
 
     return parent::accessCallback($route, $route_match, $account);
@@ -131,6 +126,22 @@ class ParPartnershipFlowsLegalEntityRemoveForm extends ParBaseForm {
   }
 
   /**
+   * Validate the form to make sure the correct values have been entered.
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+
+    /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
+    $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
+
+    // We can't reinstate a PLE if there is already an active PLE for the same LE.
+    if (!$partnership_legal_entity->isDeletable()) {
+      $id = $this->getElementId(['registered_name'], $form);
+      $form_state->setErrorByName($this->getElementName('registered_number'), $this->wrapErrorMessage('This legal entity is not deletable.', $id));
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
@@ -141,6 +152,8 @@ class ParPartnershipFlowsLegalEntityRemoveForm extends ParBaseForm {
     /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
     $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
 
-    $partnership->removeLegalEntity($partnership_legal_entity);
+    if ($partnership_legal_entity->isDeletable()) {
+      $partnership->removeLegalEntity($partnership_legal_entity);
+    }
   }
 }

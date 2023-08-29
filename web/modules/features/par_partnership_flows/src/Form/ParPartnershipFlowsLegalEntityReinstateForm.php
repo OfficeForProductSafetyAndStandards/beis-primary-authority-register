@@ -49,23 +49,13 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
       $this->accessResult = AccessResult::forbidden('The user is not allowed to access this page.');
     }
 
-    // Partnership must be active.
-    if (!$par_data_partnership->isActive()) {
-      $this->accessResult = AccessResult::forbidden('This partnership is not active so legal entities cannot be reinstated.');
-    }
-
     // Restrict access when partnership is active to users with administrator role.
-    if ($par_data_partnership->isActive() && !$user->hasPermission('amend active partnerships')) {
+    if ($par_data_partnership->isActive() && !$account->hasPermission('amend active partnerships')) {
       $this->accessResult = AccessResult::forbidden('This partnership is active and user\'s role does not allow changes to be made.');
     }
 
-    // Only revoked PLEs may be reinstated.
-    if (!$par_data_partnership_le->isRevoked()) {
-      $this->accessResult = AccessResult::forbidden('This legal entity is already active.');
-    }
-
-    // We can't reinstate a PLE if there is already an active PLE for the same LE.
-    if (!$par_data_partnership_le->isReinstatable()) {
+    // If the partnership legal entity cannot be restored.
+    if (!$par_data_partnership_le->isRestorable()) {
       $this->accessResult = AccessResult::forbidden('Another instance of this legal entity is already active.');
     }
 
@@ -138,7 +128,7 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
     $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
 
     // We can't reinstate a PLE if there is already an active PLE for the same LE.
-    if (!$partnership_legal_entity->isReinstatable()) {
+    if (!$partnership_legal_entity->isRestorable()) {
       $id = $this->getElementId(['registered_number'], $form);
       $form_state->setErrorByName($this->getElementName('registered_number'), $this->wrapErrorMessage('This legal entity is already an active participant in the partnership.', $id));
     }
@@ -153,6 +143,8 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
     /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
     $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
 
-    $partnership_legal_entity->unrevoke(TRUE);
+    if (!$partnership_legal_entity->isRevocable()) {
+      $partnership_legal_entity->unrevoke(TRUE);
+    }
   }
 }

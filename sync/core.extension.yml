@@ -31,7 +31,6 @@ module:
   dynamic_page_cache: 0
   editor: 0
   email_registration: 0
-  encrypt: 0
   features: 0
   features_ui: 0
   field: 0
@@ -57,7 +56,6 @@ module:
   jquery_ui_checkboxradio: 0
   jquery_ui_controlgroup: 0
   jquery_ui_slider: 0
-  key: 0
   language: 0
   link: 0
   locale: 0
@@ -136,7 +134,7 @@ module:
   par_roles: 0
   par_search_partnership_flows: 0
   par_subscriptions: 0
-  par_tfa_sms: 0
+  par_transfer_partnerships_flows: 0
   par_user_block_flows: 0
   par_validation: 0
   password_policy: 0
@@ -149,7 +147,6 @@ module:
   queue_ui: 0
   raven: 0
   rdf: 0
-  real_aes: 0
   redis: 0
   registered_organisations: 0
   rest: 0
@@ -164,7 +161,6 @@ module:
   taxonomy: 0
   telephone: 0
   text: 0
-  tfa: 0
   token: 0
   toolbar: 0
   trance: 0

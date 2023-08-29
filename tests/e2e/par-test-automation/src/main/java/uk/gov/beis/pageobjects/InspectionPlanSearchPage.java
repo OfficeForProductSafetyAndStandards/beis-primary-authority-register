@@ -18,16 +18,52 @@ public class InspectionPlanSearchPage extends BasePageObject {
 
 	@FindBy(linkText = "Upload inspection plan")
 	WebElement uploadBtn;
+	
+	@FindBy(linkText = "Edit inspection plan")
+	WebElement editBtn;
+
+	@FindBy(linkText = "Revoke inspection plan")
+	WebElement revokeBtn;
+	
+	@FindBy(linkText = "Remove inspection plan")
+	WebElement removeBtn;
+
+	public RevokeReasonInspectionPlanPage selectRevokeLink() {
+		revokeBtn.click();
+		return PageFactory.initElements(driver, RevokeReasonInspectionPlanPage.class);
+	}
+	
+	public RemoveReasonInspectionPlanPage selectRemoveLink() {
+		removeBtn.click();
+		return PageFactory.initElements(driver, RemoveReasonInspectionPlanPage.class);
+	}
 
 	public UploadInspectionPlanPage selectUploadLink() {
 		uploadBtn.click();
 		return PageFactory.initElements(driver, UploadInspectionPlanPage.class);
 	}
+	
+	public InspectionPlanDetailsPage selectEditLink() {
+		editBtn.click();
+		return PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
+	}
+	
+	public InspectionPlanReviewPage selectInspectionPlan() {
+		driver.findElement(By.linkText(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE))).click();
+		return PageFactory.initElements(driver, InspectionPlanReviewPage.class);
+	}
 
 	String planstatus = "//td/a[contains(text(),'?')]/parent::td/following-sibling::td[1]";
 
 	public String getPlanStatus() {
-		return driver.findElement(By.xpath(planstatus.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE)))).getText();
+		try {
+			return driver
+					.findElement(By
+							.xpath(planstatus.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE))))
+					.getText();
+		} catch (Exception e) {
+			return ("No results returned");
+		}
 	}
 
 }

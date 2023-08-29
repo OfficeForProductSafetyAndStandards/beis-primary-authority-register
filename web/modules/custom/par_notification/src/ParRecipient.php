@@ -35,7 +35,7 @@ class ParRecipient {
    * Constructs an instance of a PAR Recipient class.
    *
    * @param ?EntityInterface $entity
-   *   The related entity.
+   *   The related entity, usually a user or contact record.
    */
   public function __construct(string $email, string $name = NULL, EntityInterface $entity = NULL) {
     $this->email = $email;

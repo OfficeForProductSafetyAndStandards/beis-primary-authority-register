@@ -21,7 +21,7 @@ trait ParEnforcementEntityTrait {
   }
 
   /**
-   * Get the primary authority for this Deviation Request.
+   * Get the primary authority for this enquiry.
    *
    * @param boolean $single
    *
@@ -30,7 +30,7 @@ trait ParEnforcementEntityTrait {
    */
   public function getPrimaryAuthority($single = FALSE) {
     // Get the authority from the authority field if it exists.
-    // Otherwise use the partnership's authority if it exists.
+    // Otherwise, use the partnership's authority if it exists.
     if ($this->hasField('field_primary_authority') && !$this->get('field_primary_authority')->isEmpty()) {
       $authorities = $this->get('field_primary_authority')->referencedEntities();
       $authority = $authorities ? current($authorities) : NULL;
@@ -42,6 +42,20 @@ trait ParEnforcementEntityTrait {
     }
 
     return NULL;
+  }
+
+  /**
+   * Set the primary authority for this enquiry.
+   *
+   * @param ParDataAuthority $authority
+   *
+   * @return ParDataAuthority|ParDataAuthority[]
+   *
+   */
+  public function setPrimaryAuthority(ParDataAuthority $par_data_authority) {
+    if ($this->hasField('field_primary_authority')) {
+      $this->set('field_primary_authority', $par_data_authority);
+    }
   }
 
   /**

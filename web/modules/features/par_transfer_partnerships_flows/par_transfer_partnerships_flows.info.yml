@@ -1,0 +1,10 @@
+name: 'PAR Transfer Partnerships Flows'
+type: module
+description: 'Allows partnerships to be transferred from one authority to another.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

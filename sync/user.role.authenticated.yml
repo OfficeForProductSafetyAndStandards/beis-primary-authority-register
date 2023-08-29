@@ -6,6 +6,7 @@ dependencies:
     - comment
     - media
     - par_dashboards
+    - par_forms
     - par_notification
     - par_profile_view_flows
     - par_roles
@@ -30,6 +31,7 @@ permissions:
   - 'access site-wide contact form'
   - 'block user'
   - 'manage own par profile'
+  - 'par autocomplete'
   - 'post comments'
   - 'receive subscription_verify_notification notification'
   - 'search content'

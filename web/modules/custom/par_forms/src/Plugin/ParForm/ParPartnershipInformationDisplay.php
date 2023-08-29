@@ -61,6 +61,12 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
         $regulatory_function_labels = $this->getParDataManager()->getEntitiesAsOptions($regulatory_functions);
         $this->setDefaultValuesByKey("regulatory_functions", $cardinality, $regulatory_function_labels);
       }
+
+      // Display the previous name, only display the last one if more than one.
+      if ($par_data_partnership->hasField('previous_names')) {
+        $previous_name = $par_data_partnership->getPreviousName();
+        $this->setDefaultValuesByKey("previous_names", $cardinality, $previous_name);
+      }
     }
 
     parent::loadData();
@@ -77,6 +83,14 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
       '#value' => "<span class='heading-secondary'>In partnership with</span>" . $this->getDefaultValuesByKey('name', $cardinality, NULL),
       '#attributes' => ['class' => ['heading-large', 'form-group', 'authority-name']],
     ];
+    if ($previous_names = $this->getDefaultValuesByKey('previous_names', $cardinality, NULL)) {
+      $form['previous_names'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => "Previously known as: " . $previous_names,
+        '#attributes' => ['class' => ['govuk-body-s']],
+      ];
+    }
 
     // Display details about the partnership for information.
     $form['about_partnership'] = [

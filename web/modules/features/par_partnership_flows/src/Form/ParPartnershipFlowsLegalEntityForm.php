@@ -68,7 +68,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
     // Restrict access when partnership is active to users with administrator role.
     // @TODO Add back the permission to add/update when PAR-1915 is complete:
-    // && !$user->hasPermission('amend active partnerships')
+    // && !$account->hasPermission('amend active partnerships')
     if ($par_data_partnership->isActive()) {
       $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
     }

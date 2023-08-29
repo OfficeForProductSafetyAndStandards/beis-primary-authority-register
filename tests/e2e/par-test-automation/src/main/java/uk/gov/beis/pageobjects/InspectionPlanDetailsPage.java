@@ -25,6 +25,7 @@ public class InspectionPlanDetailsPage extends BasePageObject {
 	private String locator = "//label[contains(text(),'?')]";
 
 	public InspectionPlanDetailsPage enterTitle(String value) {
+		title.clear();
 		title.sendKeys(value);
 		return PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
 	}
