@@ -108,7 +108,6 @@ class ParRemoveAdviceForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-
     parent::validateForm($form, $form_state);
 
     if (!$form_state->getValue('remove_reason')) {

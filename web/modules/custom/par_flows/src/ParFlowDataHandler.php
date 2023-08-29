@@ -444,7 +444,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    *
    * @param array $array
    *   The filtered nested array.
-   * @param callable|null $callable
+   * @param ?callable $callable
    *   The callable to apply for filtering.
    *
    * @return array
@@ -459,5 +459,25 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
 
     // Filter the parents after the child elements.
     return is_callable($callable) ? array_filter($array, $callable) : array_filter($array);
+  }
+
+  /**
+   * A custom method to filter submitted values.
+   *
+   * Values that should be treated as empty:
+   * - NULL
+   * - "" or empty strings
+   *
+   * Values that should not be treated as empty:
+   * - False
+   * - 0
+   *
+   * @param mixed $value
+   *
+   * @return bool
+   */
+  public static function filterValues(mixed $value): bool {
+    // Exclude bool and numeric values from the filtering.
+    return !empty($value) || is_numeric($value) || is_bool($value);
   }
 }

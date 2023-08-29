@@ -370,7 +370,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
       }
 
       // Ensure that empty plugin instances are ignored.
-      $data = $this->getFlowDataHandler()->filter($data);
+      $data = $this->getFlowDataHandler()->filter($data, [ParFlowDataHandler::class, 'filterValues']);
     }
 
     return $data;
@@ -389,7 +389,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
     unset($item['actions']);
 
     // If the data is flattened
-    $item = $this->getFlowDataHandler()->filter($item);
+    $item = $this->getFlowDataHandler()->filter($item, [ParFlowDataHandler::class, 'filterValues']);
 
     $defaults = $this->getFormDefaults();
     return array_filter($item, function ($value, $key) use ($defaults) {

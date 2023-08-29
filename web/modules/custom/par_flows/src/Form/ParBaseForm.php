@@ -646,7 +646,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     }
 
     // Remove all final empty values.
-    return $this->getFlowDataHandler()->filter($data);
+    return $this->getFlowDataHandler()->filter($data, [ParFlowDataHandler::class, 'filterValues']);
   }
 
   /**
@@ -712,7 +712,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     foreach ($this->getComponents() as $component) {
       if ($component->isMultiple() && isset($data[$component->getPrefix()])) {
         // Filter the data.
-        $data = $this->getFlowDataHandler()->filter($data);
+        $data = $this->getFlowDataHandler()->filter($data, [ParFlowDataHandler::class, 'filterValues']);
 
         // Reinded the data.
         $data[$component->getPrefix()] = array_values($data[$component->getPrefix()]);
@@ -728,9 +728,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function getFinalRoute() {
     // Get the route that we entered on.
-    $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
-
-    return NULL;
+    return $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
   }
 
   /**
