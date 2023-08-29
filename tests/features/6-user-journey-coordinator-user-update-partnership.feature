@@ -41,7 +41,7 @@ Feature: Coordinator User - Update Partnership
         And I click on the button "#edit-next"
 
         And I click on the radio "#edit-par-component-legal-entity-0-registry-internal"
-        And I click on the radio "edit-par-component-legal-entity-0-unregistered-legal-entity-type-sole-trader"
+        And I click on the radio "#edit-par-component-legal-entity-0-unregistered-legal-entity-type-sole-trader"
         And I add "New LLP Company" to the inputfield "edit-par-component-legal-entity-0-unregistered-legal-entity-name"
         And I click on the button "#edit-next"
         Then the element ".govuk-summary-list .govuk-summary-list__row:nth-child(1) .registered_name" contains the text "New LLP Company"
