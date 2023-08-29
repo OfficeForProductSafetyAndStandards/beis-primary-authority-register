@@ -1,0 +1,10 @@
+name: 'PAR Partnership Amend Flows'
+type: module
+description: 'Allows new legal entities to be added to a partnership through an approval process.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

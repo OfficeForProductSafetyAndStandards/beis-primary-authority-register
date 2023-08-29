@@ -84,7 +84,7 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
    * Get the messages associated with this event.
    */
   public function getMessages($event) {
-    $entity = $event->getEntity();
+    $entity = $event?->getEntity();
 
     /** @var MessageTemplateInterface $template */
     $template = $this->getMessageHandler()->getMessageTemplateStorage()->load(static::MESSAGE_ID);
@@ -97,6 +97,9 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
           'template' => $template?->id(),
           $field => $entity->id(),
         ]);
+
+      // Sort the messages in descending order with the most recent first.
+      ksort($messages);
     }
 
     return $messages;

@@ -17,7 +17,7 @@ Feature: Coordinator User - Upload Members
 
         # SUPPORT LINKS
         And the element "#edit-info--description em a" contains the text "Member Guidance Page"
-        And the element "#download-members-link" does exist
+        And the element ".download-action" does exist
 
         # VALIDATION
         When I upload the file "files/csv_test_errors.csv" to field "#edit-csv-upload"

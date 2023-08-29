@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\par_data\Entity\ParDataDeviationRequest;
 use Drupal\par_data\Entity\ParDataLegalEntity;
@@ -23,16 +24,16 @@ class ParDeviationRequestReviewForm extends ParDeviationRequestDetail {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
-    parent::loadData($cardinality);
+  public function loadData(int $index = 1): void {
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Inherit the base plugin.
-    $form = parent::getElements($form, $cardinality);
+    $form = parent::getElements($form, $index);
 
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
@@ -48,7 +49,7 @@ class ParDeviationRequestReviewForm extends ParDeviationRequestDetail {
       '#weight' => 10,
       '#title' => $this->t('Decide to allow or block this request to deviate from an inspection plan'),
       '#options' => $statuses,
-      '#default_value' => $this->getDefaultValuesByKey('primary_authority_status', $cardinality, ParDataDeviationRequest::APPROVED),
+      '#default_value' => $this->getDefaultValuesByKey('primary_authority_status', $index, ParDataDeviationRequest::APPROVED),
       '#required' => TRUE,
       '#attributes' => ['class' => ['form-group']],
     ];
@@ -57,10 +58,10 @@ class ParDeviationRequestReviewForm extends ParDeviationRequestDetail {
       '#type' => 'textarea',
       '#weight' => 11,
       '#title' => $this->t('If you plan to block this deviation request you must provide the enforcing authority with a reason.'),
-      '#default_value' => $this->getDefaultValuesByKey(['action', 'primary_authority_notes'], $cardinality, ''),
+      '#default_value' => $this->getDefaultValuesByKey(['action', 'primary_authority_notes'], $index, ''),
       '#states' => [
         'visible' => [
-          ':input[name="' . $this->getTargetName($this->getElementKey('primary_authority_status', $cardinality)) . '"]' => ['value' => ParDataDeviationRequest::BLOCKED],
+          ':input[name="' . $this->getTargetName($this->getElementKey('primary_authority_status', $index)) . '"]' => ['value' => ParDataDeviationRequest::BLOCKED],
         ]
       ],
     ];

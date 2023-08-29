@@ -25,6 +25,7 @@ use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\par_forms\ParEntityValidationMappingTrait;
 use Drupal\par_forms\ParFormBuilder;
+use Drupal\par_forms\ParFormPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityConstraintViolationListInterface;
@@ -51,20 +52,19 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   use ParEntityValidationMappingTrait;
 
   /**
+   * Do not serialize the components, they will be fetched as required.
+   */
+  public function __sleep() {
+    $ignore = ['components'];
+    return array_diff(parent::__sleep(), $ignore);
+  }
+
+  /**
    * The access result
    *
    * @var \Drupal\Core\Access\AccessResult
    */
   protected $accessResult;
-
-  /**
-   * Keys to be ignored for the saved data.
-   *
-   * Example: ['save', 'next', 'cancel'].
-   *
-   * @var array
-   */
-  protected $ignoreValues = ['save', 'done', 'next', 'cancel', 'back'];
 
   /**
    * List the mapping between the entity field and the form field.
@@ -207,21 +207,47 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Attach the JS form libraries.
     $form['#attached']['library'][] = 'par_flows/flow_core';
 
+    // Set the default submission handlers, some components may alter this.
+    $primary_submit_handers = ['::submitForm'];
+    $secondary_submit_handlers = [];
+
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
-      // If there's is a cardinality parameter present display only this item.
-      $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
-      $index = isset($cardinality) ? (int) $cardinality : NULL;
+      // Get the index value to alter the display of elements.
+      $index_key = ['_index', $component->getPrefix()];
+      $index = $form_state->getValue($index_key);
 
-      // Handle instances where FormBuilderInterface should return a redirect response.
-      $plugin = $this->getFormBuilder()->getPluginElements($component, $form, $index);
+      // Build the plugin.
+      $plugin = $this->getFormBuilder()->build($component, $index);
+
+      // Handle instances where the form component plugin returns a redirect response.
       if ($plugin instanceof RedirectResponse) {
         return $plugin;
       }
+
+      // Components that support the summary list component but are displaying
+      // the form elements will self-submit to render the summary list.
+      if ($this->getFormBuilder()->supportsSummaryList($component) &&
+        !$this->getFormBuilder()->displaySummaryList($component, $index)) {
+
+        // Only change the primary submit handler if the summary list is not displayed.
+        $primary_submit_handers = array_merge(['::selfRedirect'], $primary_submit_handers);
+
+        // Only change the secondary submit handler if there is data.
+        if (!empty($component->getData())) {
+          $secondary_submit_handlers = array_merge(['::selfRedirect'], $secondary_submit_handlers);
+        }
+      }
+
+      // Merge the component elements into the form array.
+      $form = array_merge($form, $plugin);
     }
 
+
     // Enable the default actions wrapper.
-    $form['actions']['#type'] = 'actions';
+    $form['actions'] = [
+      '#type' => 'actions',
+    ];
 
     // The 'done' is a primary and final action, meaning no other actions should be performed.
     // The 'upload', 'save' and 'next are all primary actions with varying subtleties.
@@ -233,6 +259,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       $form['actions']['done'] = [
         '#type' => 'submit',
         '#name' => 'done',
+        '#button_type' => 'primary',
+        '#submit' => $primary_submit_handers,
         '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Done'),
         '#limit_validation_errors' => [],
         '#attributes' => [
@@ -249,6 +277,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         $form['actions']['upload'] = [
           '#type' => 'submit',
           '#name' => 'upload',
+          '#button_type' => 'primary',
+          '#submit' => $primary_submit_handers,
           '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Upload'),
           '#attributes' => [
             'class' => ['cta-submit', 'govuk-button'],
@@ -260,10 +290,12 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       // The save button is meant to indicate the step makes permanent changes,
       // usually with the effect of completing the flow and redirecting onwards.
       elseif ($this->getFlowNegotiator()->getFlow()->hasAction('save')) {
+        array_push($primary_submit_handers, '::saveForm');
         $form['actions']['save'] = [
           '#type' => 'submit',
           '#name' => 'save',
-          '#submit' => ['::submitForm', '::saveForm'],
+          '#button_type' => 'primary',
+          '#submit' => $primary_submit_handers,
           '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Save'),
           '#attributes' => [
             'class' => ['cta-submit', 'govuk-button'],
@@ -278,6 +310,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         $form['actions']['next'] = [
           '#type' => 'submit',
           '#name' => 'next',
+          '#button_type' => 'primary',
+          '#submit' => $primary_submit_handers,
           '#value' => $this->getFlowNegotiator()->getFlow()->getPrimaryActionTitle('Continue'),
           '#attributes' => [
             'class' => ['cta-submit', 'govuk-button'],
@@ -293,8 +327,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         $form['actions']['cancel'] = [
           '#type' => 'submit',
           '#name' => 'cancel',
+          '#submit' => !empty($secondary_submit_handlers) ? $secondary_submit_handlers : ['::cancelForm'],
           '#value' => $this->getFlowNegotiator()->getFlow()->getSecondaryActionTitle('Cancel'),
-          '#submit' => ['::cancelForm'],
           '#validate' => ['::validateCancelForm'],
           '#limit_validation_errors' => [],
           '#attributes' => [
@@ -307,9 +341,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       elseif ($this->getFlowNegotiator()->getFlow()->hasAction('back')) {
         $form['actions']['back'] = [
           '#type' => 'submit',
-          '#name' => 'cancel',
+          '#name' => 'back',
+          '#submit' => !empty($secondary_submit_handlers) ? $secondary_submit_handlers : ['::backForm'],
           '#value' => $this->getFlowNegotiator()->getFlow()->getSecondaryActionTitle('Back'),
-          '#submit' => ['::backForm'],
           '#validate' => ['::validateCancelForm'],
           '#limit_validation_errors' => [],
           '#attributes' => [
@@ -330,8 +364,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     return $form + $cache;
   }
 
-
-
   /**
    * A false validation handler.
    */
@@ -343,27 +375,18 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // Always store the values whenever we submit the form.
-    $values = $this->cleanseFormDefaults($form_state->getValues());
-    $values = $this->cleanseMultipleValues($values);
-    $this->getFlowDataHandler()->setFormTempData($values);
-
-    // We don't want to validate if just removing items.
-    $remove_action = strpos($form_state->getTriggeringElement()['#name'], 'remove:');
-    if ($remove_action !== FALSE) {
-      return;
-    }
-
-    // If there's is a cardinality parameter present display only this item.
-    // @TODO Consider re-using this pattern, but not needed now.
-    $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
-
     // Validate all the plugins first.
     foreach ($this->getComponents() as $component) {
-      $this->getFormBuilder()->validatePluginElements($component, $form, $form_state, $cardinality);
+      // Get the index value to validate the component for.
+      $index_key = ['_index', $component->getPrefix()];
+      $index = $form_state->getValue($index_key);
+
+      // Validate the component
+      $this->getFormBuilder()->validate($component, $form, $form_state, $index);
     }
 
     // Validate all the form elements.
+    // @TODO @deprecated All forms should use form plugin components going forward.
     foreach ($this->createMappedEntities() as $entity) {
       $values = $form_state->getValues();
       $this->buildEntity($entity, $values);
@@ -391,10 +414,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       }
     }
 
-    // Re-store the values in case they were modified by any components.
-    $values = $this->cleanseFormDefaults($form_state->getValues());
-    $values = $this->cleanseMultipleValues($values);
-    $this->getFlowDataHandler()->setFormTempData($values);
+    // Store values post validation if there were no errors to ensure plugins
+    // can manipulate form data.
+    if (!$form_state->hasAnyErrors()) {
+      $this->storeData($form_state);
+    }
   }
 
   /**
@@ -402,9 +426,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Always store the values whenever we submit the form.
-    $values = $this->cleanseFormDefaults($form_state->getValues());
-    $values = $this->cleanseMultipleValues($values);
-    $this->getFlowDataHandler()->setFormTempData($values);
+    $this->storeData($form_state);
 
     try {
       // Get the redirect route to the next form based on the flow configuration
@@ -432,43 +454,74 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * {@inheritdoc}
    */
-  public function multipleItemActionsSubmit(array &$form, FormStateInterface $form_state) {
-    // Ensure that destination query params don't redirect.
-    $this->selfRedirect($form_state);
+  public function addAnother(array &$form, FormStateInterface $form_state) {
+    // Rebuild the form rather than redirect to ensure that form state values are persisted.
+    $this->selfRedirect($form, $form_state, TRUE);
 
-    // Always store the values whenever we submit the form.
-    $values = $this->cleanseFormDefaults($form_state->getValues());
-    $values = $this->cleanseMultipleValues($values);
-    $this->getFlowDataHandler()->setFormTempData($values);
+    // Loop through all the components and update the cardinality value.
+    foreach ($this->getComponents() as $component) {
+      if ($component->isMultiple()) {
+        // Get the index value to alter the display of elements.
+        $index_key = ['_index', $component->getPrefix()];
+        $new_index = $component->getNewCardinality();
+        $form_state->setValue($index_key, $new_index);
+      }
+    }
+  }
+
+  public function changeItem(array &$form, FormStateInterface $form_state) {
+    // Rebuild the form rather than redirect to ensure that form state values are persisted.
+    $this->selfRedirect($form, $form_state, TRUE);
+
+    [$button, $plugin_namespace, $index] = explode(':', $form_state->getTriggeringElement()['#name']);
+
+    // Get the component.
+    $component = $this->getComponent($plugin_namespace);
+
+    // Items can only be changed if the cardinality allows for multiple elements.
+    if (!$component instanceof ParFormPluginInterface || !$component->isMultiple()) {
+      return;
+    }
+
+    // Set the index for the item to update.
+    $index_key = ['_index', $component->getPrefix()];
+    $form_state->setValue($index_key, $index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function removeItem(array &$form, FormStateInterface $form_state) {
+  public function removeItem(array &$form, FormStateInterface &$form_state) {
     // Ensure that destination query params don't redirect.
-    $this->selfRedirect($form_state);
+    $this->selfRedirect($form, $form_state, FALSE);
 
-    // Always store the values whenever we submit the form.
-    $values = $this->cleanseFormDefaults($form_state->getValues());
-    $values = $this->cleanseMultipleValues($values);
-    $this->getFlowDataHandler()->setFormTempData($values);
+    [$button, $plugin_namespace, $index] = explode(':', $form_state->getTriggeringElement()['#name']);
 
-    list($button, $plugin_namespace, $cardinality) = explode(':', $form_state->getTriggeringElement()['#name']);
-    $values = $form_state->getValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_namespace);
-    end($values);
-    $last_index = (int) key($values);
+    // Get the component.
     $component = $this->getComponent($plugin_namespace);
 
-    $form_state->unsetValue([ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_namespace, (int) $cardinality - 1]);
+    // Items can only be removed from multiple cardinality components.
+    if (!$component instanceof ParFormPluginInterface || !$component->isMultiple()) {
+      return;
+    }
 
-    // Validate the components and remove any unvalidated last item.
-    $component->validate($form, $form_state, $last_index, ParFormBuilder::PAR_ERROR_CLEAR);
+    $delta = (int) $index - 1;
 
-    // Resave the values based on the newly removed items.
-    $values = $this->cleanseFormDefaults($form_state->getValues());
-    $values = $this->cleanseMultipleValues($values);
-    $this->getFlowDataHandler()->setFormTempData($values);
+    // Get the data.
+    $data = $component->getData();
+
+    // Unset the value.
+    unset($data[$delta]);
+    // Unset the form state value.
+    $item_key = [ParFormBuilder::PAR_COMPONENT_PREFIX . $plugin_namespace, (int) $delta];
+    if ($form_state->hasValue($item_key)) {
+      $form_state->unsetValue($item_key);
+      $form_state->setValue($item_key, NULL);
+    }
+
+    // Store the value.
+    $component->setData($data);
+
   }
 
   /**
@@ -546,13 +599,136 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   }
 
   /**
+   * Clean the submitted values from the form state.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @return array
+   *   The cleaned form state values.
+   */
+  public function cleanFormState(FormStateInterface $form_state): array {
+    // Remove non-user submitted form values.
+    $submitted_values = $form_state->cleanValues()->getValues();
+
+    // Remove the triggering element button from the form_state.
+    $triggering_element = $form_state->getTriggeringElement()['#name'];
+    if (isset($submitted_values[$triggering_element])) {
+      unset($submitted_values[$triggering_element]);
+    }
+
+    // Filter out empty values.
+    return $this->cleanValues($submitted_values);
+  }
+
+  /**
+   * Helper function to cleanse empty multiple values for a multi value form plugin.
+   *
+   * @param array $data
+   *   The data array to cleanse.
+   *
+   * @return array
+   *   An array of values that represent keys to be removed from the form data.
+   */
+  public function cleanValues(array $data) {
+    // Filter out empty data from each form component.
+    foreach ($this->getComponents() as $component) {
+      if ($component->isFlattened()) {
+        $component_data =& $data;
+      }
+      else {
+        $component_data =& $data[$component->getPrefix()];
+      }
+
+      // Only filter if there is some component data submitted.
+      if (!empty($component_data)) {
+        $component_data = $component->filter($component_data);
+      }
+    }
+
+    // Remove all final empty values.
+    return $this->getFlowDataHandler()->filter($data, [ParFlowDataHandler::class, 'filterValues']);
+  }
+
+  /**
+   * Save the form data.
+   */
+  protected function storeData(FormStateInterface $form_state) {
+    $submitted_values = $this->cleanFormState($form_state);
+
+    if (!empty($submitted_values)) {
+      // Merge data with existing values.
+      $data = $this->mergeData($submitted_values);
+
+      // Reindex all data multiple cardinality plugin data.
+      $this->reindexData($data);
+
+        // Set the new form values.
+      $this->getFlowDataHandler()->setFormTempData($data);
+    }
+  }
+
+  /**
+   * Merge the data with any existing values in the temporary data store.
+   *
+   * @param $data
+   *   The data to be added.
+   *
+   * @return array
+   *   The merged data.
+   */
+  protected function mergeData($data): array {
+    // Combine with any data already submitted.
+    $existing_data = $this->getFlowDataHandler()->getFormTempData();
+
+    // For components that support the summary list only add the data that has been changed.
+    foreach ($this->getComponents() as $component) {
+      $has_existing_data = !$component->isFlattened() && isset($existing_data[$component->getPrefix()]);
+
+      // For summary lists ensure only the indexes being modified are added.
+      if ($this->getFormBuilder()->supportsSummaryList($component) && $has_existing_data) {
+          $data[$component->getPrefix()] = $data[$component->getPrefix()] + $existing_data[$component->getPrefix()];
+      }
+      // There are no other situations where existing structured component data is persisted.
+      if ($has_existing_data) {
+        unset($existing_data[$component->getPrefix()]);
+      }
+    }
+
+    // Ensure that any data outside the components can be maintained in the existing data.
+    return NestedArray::mergeDeep($existing_data, $data);
+  }
+
+  /**
+   * Merge the data with any existing values in the temporary data store.
+   *
+   * @param $data
+   *   The data to be added.
+   *
+   * @return array
+   *   The merged data.
+   */
+  protected function reindexData($data): array {
+    // For components that support multiple cardinality allow the values to be reindexed.
+    foreach ($this->getComponents() as $component) {
+      if ($component->isMultiple() && isset($data[$component->getPrefix()])) {
+        // Filter the data.
+        $data = $this->getFlowDataHandler()->filter($data, [ParFlowDataHandler::class, 'filterValues']);
+
+        // Reinded the data.
+        $data[$component->getPrefix()] = array_values($data[$component->getPrefix()]);
+      }
+    }
+
+    // Filter empty values from merged data also.
+    return $data;
+  }
+
+  /**
    * Get the route to return to once the journey has been completed.
    */
   public function getFinalRoute() {
     // Get the route that we entered on.
-    $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
-
-    return NULL;
+    return $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
   }
 
   /**
@@ -577,16 +753,27 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * A helper function to ensure in form buttons don't redirect away.
    *
-   * @param $form_state
+   * @param array $form
+   * @param FormStateInterface $form_state
    */
-  public function selfRedirect(&$form_state) {
+  public function selfRedirect(array &$form, FormStateInterface $form_state, bool $rebuild = TRUE) {
+    // Setting a redirection allows form values to be cleared.
     $options = [];
     $query = $this->getRequest()->query;
     if ($query->has('destination')) {
       $options['query']['destination'] = $query->get('destination');
       $query->remove('destination');
     }
-    $form_state->setRedirect('<current>', $this->getRouteParams(), $options);
+    $params = $this->getRouteParams();
+
+    // If $rebuild is set the form will simply be rebuilt.
+    if ($rebuild) {
+      $form_state->setRebuild(TRUE);
+    }
+    // There are some instances, however, where forms must be self-redirected.
+    else {
+      $form_state->setRedirect('<current>', $params, $options);
+    }
   }
 
   /**
@@ -624,65 +811,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     return $form_element_page_anchor;
 
-  }
-
-  /**
-   * Helper function to cleanse the drupal default values from the form values.
-   *
-   * @param array $data
-   *   The data array to cleanse.
-   *
-   * @return array
-   *   An array of values that represent keys to be removed from the form data.
-   */
-  public function cleanseFormDefaults(array $data) {
-    $defaults = ['form_id', 'form_build_id', 'form_token', 'op'];
-    return array_diff_key($data, array_flip(array_merge($defaults, $this->getIgnoredValues())));
-  }
-
-  /**
-   * Helper function to cleanse empty multiple values for a multi value form plugin..
-   *
-   * @param array $data
-   *   The data array to cleanse.
-   *
-   * @return array
-   *   An array of values that represent keys to be removed from the form data.
-   */
-  public function cleanseMultipleValues(array $data) {
-    // Add all the registered components to the form.
-    foreach ($this->getComponents() as $component) {
-      $values = $data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginNamespace()] ?? NULL;
-
-      if ($values) {
-        // Always remove the 'remove' link.
-        foreach ($values as $cardinality => $value) {
-          if (isset($value['remove'])) {
-            unset($value['remove']);
-          }
-
-          $value = NestedArray::filter($value);
-
-          $values[$cardinality] = array_filter($value, function ($value, $key) use ($component) {
-            $default_value = $component->getFormDefaultByKey($key);
-            if (empty($value)) {
-              return FALSE;
-            }
-
-            if (!$default_value) {
-              return TRUE;
-            }
-
-            return $default_value !== $value;
-          }, ARRAY_FILTER_USE_BOTH);
-        }
-
-        $data[ParFormBuilder::PAR_COMPONENT_PREFIX . $component->getPluginNamespace()] = NestedArray::filter($values);
-      }
-
-    }
-
-    return $data;
   }
 
   /**

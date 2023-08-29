@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\Xss;
 use Drupal\par_forms\ParFormPluginBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,7 +24,7 @@ class ParSubscriptionPreferencesForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $lists = $this->getSubscriptionManager()->getLists();
     $account = $this->getFlowDataHandler()->getParameter('user');
 
@@ -39,13 +40,13 @@ class ParSubscriptionPreferencesForm extends ParFormPluginBase {
     $this->getFlowDataHandler()->setFormPermValue('subscription_lists', $subscription_lists);
     $this->getFlowDataHandler()->setFormPermValue('subscription_preferences', $subscription_preferences);
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Skip this form if there are no lists.
     $subscription_lists = $this->getFlowDataHandler()->getFormPermValue('subscription_lists');
     if (count($subscription_lists) <= 0) {
@@ -59,7 +60,7 @@ class ParSubscriptionPreferencesForm extends ParFormPluginBase {
       '#title' => $this->t('Subscribe to the mailing list'),
       '#description' => '<p>All out news letters are sent round no more than once a month, you can unsubscribe at any time.</p>',
       '#options' => $subscription_lists,
-      '#default_value' => $this->getDefaultValuesByKey('subscriptions', $cardinality, array_keys($subscription_preferences)),
+      '#default_value' => $this->getDefaultValuesByKey('subscriptions', $index, array_keys($subscription_preferences)),
       '#return_value' => 'on',
     ];
 

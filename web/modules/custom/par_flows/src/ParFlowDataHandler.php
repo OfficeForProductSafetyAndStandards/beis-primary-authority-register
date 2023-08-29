@@ -216,6 +216,34 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   }
 
   /**
+   * Get the data submitted by a given plugin.
+   *
+   * If the plugin allows multiple values this data will be structured and the
+   * resulting array will be an array of plugin data keyed by cardinality values.
+   */
+  public function getPluginTempData(ParFormPluginInterface $plugin, $cid = NULL) {
+    // If the plugin data is flattened return all the form data,
+    // otherwise return just the data found for the given plugin prefix.
+    return $plugin->isFlattened() ?
+      $this->getFormTempData($cid) :
+      $this->getTempDataValue($plugin->getPrefix(), $cid);
+  }
+
+  /**
+   * Set the data for a given plugin.
+   *
+   * If the plugin allows multiple values this data will be structured and the
+   * resulting array will be an array of plugin data keyed by cardinality values.
+   */
+  public function setPluginTempData(ParFormPluginInterface $plugin, array $data, $cid = NULL) {
+    // If the plugin data is flattened set all the form data,
+    // otherwise set just the data found for the given plugin prefix.
+    $plugin->isFlattened() ?
+      $this->setFormTempData($data, $cid) :
+      $this->setTempDataValue($plugin->getPrefix(), $data, $cid);
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getAllTempData() {
@@ -405,5 +433,51 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
       $_SESSION['session_started'] = TRUE;
       $this->sessionManager->start();
     }
+  }
+
+  /**
+   * Filters a nested array recursively.
+   *
+   * This is a copy of NestedArray::filter() with the changes made to filter
+   * multidimensional arrays correctly.
+   * @see https://www.drupal.org/project/drupal/issues/3381640
+   *
+   * @param array $array
+   *   The filtered nested array.
+   * @param ?callable $callable
+   *   The callable to apply for filtering.
+   *
+   * @return array
+   *   The filtered array.
+   */
+  public function filter(array $array, callable $callable = NULL) {
+    foreach ($array as &$element) {
+      if (is_array($element)) {
+        $element = static::filter($element, $callable);
+      }
+    }
+
+    // Filter the parents after the child elements.
+    return is_callable($callable) ? array_filter($array, $callable) : array_filter($array);
+  }
+
+  /**
+   * A custom method to filter submitted values.
+   *
+   * Values that should be treated as empty:
+   * - NULL
+   * - "" or empty strings
+   *
+   * Values that should not be treated as empty:
+   * - False
+   * - 0
+   *
+   * @param mixed $value
+   *
+   * @return bool
+   */
+  public static function filterValues(mixed $value): bool {
+    // Exclude bool and numeric values from the filtering.
+    return !empty($value) || is_numeric($value) || is_bool($value);
   }
 }

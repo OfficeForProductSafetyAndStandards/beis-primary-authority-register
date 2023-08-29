@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * @ParLinkAction(
  *   id = "partnership_complete",
- *   title = @Translation("Vew the partnership completion journey"),
+ *   title = @Translation("View the partnership completion journey"),
  *   status = TRUE,
  *   weight = 9,
  *   notification = {

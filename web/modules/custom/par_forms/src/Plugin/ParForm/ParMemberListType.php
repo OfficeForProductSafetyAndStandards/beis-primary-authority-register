@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -28,28 +29,25 @@ class ParMemberListType extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     if ($par_data_partnership instanceof ParDataEntityInterface && $par_data_partnership->isCoordinated()) {
       // Set the type of list.
-      $this->setDefaultValuesByKey('member_list_type', $cardinality, $par_data_partnership->getMemberDisplay());
+      $this->setDefaultValuesByKey('member_list_type', $index, $par_data_partnership->getMemberDisplay());
 
       $list_options = $par_data_partnership->getTypeEntity()
         ->getAllowedValues('member_display');
-      foreach ($list_options as $option) {
-
-      }
       $this->getFlowDataHandler()->setFormPermValue("list_type_options", $list_options);
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // This form should only be displayed for coordinated partnerships.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if (!$par_data_partnership instanceof ParDataEntityInterface || !$par_data_partnership->isCoordinated()) {
@@ -65,7 +63,7 @@ class ParMemberListType extends ParFormPluginBase {
       '#type' => 'radios',
       '#title' => t('Choose which format to display the member list in'),
       '#options' => $list_options,
-      '#default_value' => $this->getDefaultValuesByKey('member_list_type', $cardinality, NULL),
+      '#default_value' => $this->getDefaultValuesByKey('member_list_type', $index, NULL),
       '#attributes' => ['class' => ['form-group']],
     ];
 
@@ -125,7 +123,7 @@ class ParMemberListType extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

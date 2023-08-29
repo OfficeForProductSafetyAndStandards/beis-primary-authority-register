@@ -17,6 +17,7 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\Core\Access\AccessResult;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
+use Drupal\par_forms\ParFormPluginInterface;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -52,7 +53,20 @@ class ParEnforcementReviewForm extends ParBaseForm {
 
     if ($par_data_enforcement_actions) {
       $this->getFlowDataHandler()->setParameter('par_data_enforcement_actions', $par_data_enforcement_actions);
-      $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_detail', $par_data_enforcement_actions);
+
+      // In order to display multiple cardinality the enforcement_action_detail
+      // plugin needs to know how many instances of data to display, it doesn't
+      // use this data other than to know how many instances of data to display.
+      // The actual displayed data comes from the par_data_enforcement_actions
+      // parameter set above.
+      $action_detail_component = $this->getComponent('enforcement_action_detail');
+      if ($action_detail_component instanceof ParFormPluginInterface) {
+        $values = [];
+        foreach ($par_data_enforcement_actions as $action) {
+          $values[] = ['action_title' => $action->label()];
+        }
+        $this->getFlowDataHandler()->setPluginTempData($action_detail_component, $values);
+      }
     }
 
     parent::loadData();
@@ -61,7 +75,7 @@ class ParEnforcementReviewForm extends ParBaseForm {
   public function createEntities() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
-    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    // Get the cache IDs for the various forms that needs to be extracted from.
     $enforcement_notice_cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_raise_details');
     $enforcement_actions_cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_add_action');
     $enforcement_officer_cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_officer_details');
@@ -102,7 +116,7 @@ class ParEnforcementReviewForm extends ParBaseForm {
 
     $par_data_enforcement_actions = [];
     foreach ($enforcement_actions as $delta => $enforcement_action) {
-      // These ones need to be saved fresh.
+      // These need to be saved fresh.
       $par_data_enforcement_actions[$delta] = ParDataEnforcementAction::create([
         'title' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action', $delta, 'title'], $enforcement_actions_cid),
         'details' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action', $delta, 'details'], $enforcement_actions_cid),

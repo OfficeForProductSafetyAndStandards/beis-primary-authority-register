@@ -2,6 +2,7 @@
 
 namespace Drupal\par_flows;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteProvider;
@@ -73,12 +74,13 @@ trait ParRedirectTrait {
    * Get link for any given step.
    */
   public function getLinkByUrl(Url $url, $text = '', $link_options = []) {
-    $link_options += [
+    $defaults = [
       'absolute' => TRUE,
-      'attributes' => ['class' => 'flow-link']
+      'attributes' => ['class' => ['flow-link']]
     ];
+    $options = NestedArray::mergeDeep($link_options, $defaults);
 
-    $url->mergeOptions($link_options);
+    $url->mergeOptions($options);
     $link = Link::fromTextAndUrl($text, $url);
 
     return ($url->access() && $url->isRouted()) ? $link : NULL;

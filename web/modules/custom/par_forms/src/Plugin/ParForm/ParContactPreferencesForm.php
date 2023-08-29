@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -17,7 +18,7 @@ class ParContactPreferencesForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected $entityMapping = [
+  protected array $entityMapping = [
     ['notes', 'par_data_person', 'communication_notes', NULL, NULL, 0, [
       'You must fill in the missing information.' => 'You must enter any communication notes that are relevant to this contact.'
     ]],
@@ -26,9 +27,9 @@ class ParContactPreferencesForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
-      $this->setDefaultValuesByKey("notes", $cardinality, $par_data_person->getPlain('communication_notes'));
+      $this->setDefaultValuesByKey("notes", $index, $par_data_person->getPlain('communication_notes'));
 
       // Get preferred contact methods.
       $contact_options = [
@@ -38,16 +39,16 @@ class ParContactPreferencesForm extends ParFormPluginBase {
       ];
 
       // Checkboxes works nicely with keys, filtering booleans for "1" value.
-      $this->setDefaultValuesByKey('preferred_contact', $cardinality, array_keys($contact_options, 1));
+      $this->setDefaultValuesByKey('preferred_contact', $index, array_keys($contact_options, 1));
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Get preferred contact methods labels.
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');
     $contact_options = [
@@ -60,14 +61,14 @@ class ParContactPreferencesForm extends ParFormPluginBase {
       '#type' => 'checkboxes',
       '#title' => $this->t('Select the preferred methods of contact (optional)'),
       '#options' => $contact_options,
-      '#default_value' => $this->getDefaultValuesByKey('preferred_contact', $cardinality, []),
+      '#default_value' => $this->getDefaultValuesByKey('preferred_contact', $index, []),
       '#return_value' => 'on',
     ];
 
     $form['notes'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide contact notes (optional)'),
-      '#default_value' => $this->getDefaultValuesByKey('notes', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('notes', $index),
       '#description' => 'Add any additional notes about how best to contact this person.',
     ];
 

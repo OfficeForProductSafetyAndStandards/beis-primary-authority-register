@@ -1,0 +1,29 @@
+uuid: 0ceaad79-affd-429d-ba4f-33c47053bd35
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - field.field.message.new_partnership_amendment.field_message_subject
+    - field.field.message.new_partnership_amendment.field_partnership
+    - field.field.message.new_partnership_amendment.field_to
+    - message.template.new_partnership_amendment
+id: message.new_partnership_amendment.mail_subject
+targetEntityType: message
+bundle: new_partnership_amendment
+mode: mail_subject
+content:
+  field_message_subject:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_partnership: true
+  field_to: true
+  partial_0: true
+  partial_1: true
+  search_api_excerpt: true

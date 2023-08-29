@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\par_data\Entity\ParDataAuthority;
@@ -24,7 +25,7 @@ class ParAdvancedAuthoritySelectForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     // Determine the selection mechanism based
     if ($this->getFlowDataHandler()->getCurrentUser()->hasPermission('bypass par_data membership')) {
       $selection_mechanism = 'autocomplete';
@@ -32,13 +33,13 @@ class ParAdvancedAuthoritySelectForm extends ParFormPluginBase {
     else {
       $selection_mechanism = 'checkboxes';
     }
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     $form['authority'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the new authority'),
@@ -62,8 +63,8 @@ class ParAdvancedAuthoritySelectForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
-    $authority_id_key = $this->getElementKey('authority', $cardinality);
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+    $authority_id_key = $this->getElementKey('authority', $index);
 
     $authority = $form_state->getValue($authority_id_key);
     $authority_id = ParAutocompleteController::extractEntityIdFromAutocompleteInput($authority);
@@ -72,10 +73,10 @@ class ParAdvancedAuthoritySelectForm extends ParFormPluginBase {
       $form_state->setValue('authority_id', (int) $authority_id);
     }
     else {
-      $id_key = $this->getElementKey('authority', $cardinality, TRUE);
+      $id_key = $this->getElementKey('authority', $index, TRUE);
       $form_state->setErrorByName('authority', $this->wrapErrorMessage('You must select an authority.', $this->getElementId($id_key, $form)));
     }
 
-    parent::validate($form, $form_state, $cardinality, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

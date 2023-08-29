@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -21,13 +22,6 @@ use Drupal\par_forms\ParFormPluginBase;
  * )
  */
 class ParContactDisplay extends ParFormPluginBase {
-
-  /**
-   * @return DateFormatterInterface
-   */
-  protected function getDateFormatter() {
-    return \Drupal::service('date.formatter');
-  }
 
   public function getContacts() {
     // Get the configured field to get the contact records from.
@@ -53,13 +47,13 @@ class ParContactDisplay extends ParFormPluginBase {
       $contacts = $par_data_organisation->getPerson();
     }
 
-    return isset($contacts) ? $contacts : NULL;
+    return $contacts ?? NULL;
   }
 
   /**
    * Alter the number of items being displayed.
    */
-  public function countItems($data = NULL) {
+  public function countItems($data = NULL): int {
     if ($contacts = $this->getContacts()) {
       return count($contacts);
     }
@@ -71,32 +65,34 @@ class ParContactDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $contacts = $this->getContacts();
 
+    $delta = $index - 1;
+
     // Reset the array keys so there are no gaps.
-    $contacts = $contacts && !empty($contacts) ? array_values($contacts) : [];
+    $contacts = !empty($contacts) ? array_values($contacts) : [];
     // Cardinality is not a zero-based index like the stored fields deltas.
-    $contact = isset($contacts[$cardinality-1]) ? $contacts[$cardinality-1] : NULL;
+    $contact = $contacts[$delta] ?? NULL;
 
     if ($contact instanceof ParDataEntityInterface) {
-      $this->setDefaultValuesByKey("name", $cardinality, $contact->getFullName());
-      $this->setDefaultValuesByKey("email", $cardinality, $contact->getEmail());
-      $this->setDefaultValuesByKey("email_preferences", $cardinality, $contact->getEmailWithPreferences());
-      $this->setDefaultValuesByKey("work_phone", $cardinality, $contact->getWorkPhone());
-      $this->setDefaultValuesByKey("mobile_phone", $cardinality, $contact->getMobilePhone());
+      $this->setDefaultValuesByKey("name", $index, $contact->getFullName());
+      $this->setDefaultValuesByKey("email", $index, $contact->getEmail());
+      $this->setDefaultValuesByKey("email_preferences", $index, $contact->getEmailWithPreferences());
+      $this->setDefaultValuesByKey("work_phone", $index, $contact->getWorkPhone());
+      $this->setDefaultValuesByKey("mobile_phone", $index, $contact->getMobilePhone());
 
-      $this->setDefaultValuesByKey("person_id", $cardinality, $contact->id());
+      $this->setDefaultValuesByKey("person_id", $index, $contact->id());
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
-    if ($cardinality === 1) {
+  public function getElements(array $form = [], int $index = 1) {
+    if ($index === 1) {
       $form['message_intro'] = [
         '#type' => 'fieldset',
         'title' => [
@@ -114,24 +110,24 @@ class ParContactDisplay extends ParFormPluginBase {
       ];
     }
 
-    if ($this->getDefaultValuesByKey('email', $cardinality, NULL)) {
+    if ($this->getDefaultValuesByKey('email', $index, NULL)) {
       $locations = [
         'summary' => [
           '#type' => 'html_tag',
           '#tag' => 'summary',
-          '#attributes' => ['class' => ['form-group'], 'role' => 'button', 'aria-controls' => "contact-detail-locations-$cardinality"],
+          '#attributes' => ['class' => ['form-group'], 'role' => 'button', 'aria-controls' => "contact-detail-locations-$index"],
           '#value' => '<span class="summary">More information on where this contact is used</span>',
         ],
         'details' => [
           '#type' => 'html_tag',
           '#tag' => 'div',
-          '#attributes' => ['class' => ['form-group'], 'id' => "contact-detail-locations-$cardinality"],
-          '#value' => $this->getDefaultValuesByKey('locations', $cardinality, ''),
+          '#attributes' => ['class' => ['form-group'], 'id' => "contact-detail-locations-$index"],
+          '#value' => $this->getDefaultValuesByKey('locations', $index, ''),
         ],
       ];
       try {
-        $params = ['par_data_person' => $this->getDefaultValuesByKey('person_id', $cardinality, NULL)];
-        $title = 'Update ' . $this->getDefaultValuesByKey('name', $cardinality, 'person');
+        $params = ['par_data_person' => $this->getDefaultValuesByKey('person_id', $index, NULL)];
+        $title = 'Update ' . $this->getDefaultValuesByKey('name', $index, 'person');
         $update_flow = ParFlow::load('person_update');
         $link = $update_flow ?
           $update_flow->getStartLink(1, $title, $params) : NULL;
@@ -149,7 +145,7 @@ class ParContactDisplay extends ParFormPluginBase {
         'name' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $this->getDefaultValuesByKey('name', $cardinality, NULL),
+          '#value' => $this->getDefaultValuesByKey('name', $index, NULL),
           '#attributes' => ['class' => ['column-two-thirds']],
         ],
         'actions' => [
@@ -161,14 +157,14 @@ class ParContactDisplay extends ParFormPluginBase {
         'email' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $this->getDefaultValuesByKey('email_preferences', $cardinality, NULL),
+          '#value' => $this->getDefaultValuesByKey('email_preferences', $index, NULL),
           '#attributes' => ['class' => ['column-two-thirds']],
         ],
         'phone' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#attributes' => ['class' => ['column-one-third']],
-          '#value' => $this->getDefaultValuesByKey('work_phone', $cardinality, NULL) . '<br>' . $this->getDefaultValuesByKey('mobile_phone', $cardinality, NULL),
+          '#value' => $this->getDefaultValuesByKey('work_phone', $index, NULL) . '<br>' . $this->getDefaultValuesByKey('mobile_phone', $index, NULL),
         ],
         'locations' => [
           '#type' => 'html_tag',
@@ -196,7 +192,7 @@ class ParContactDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

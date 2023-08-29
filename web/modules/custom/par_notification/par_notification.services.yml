@@ -74,6 +74,18 @@ services:
     class: '\Drupal\par_notification\EventSubscriber\NewPartnershipSubscriber'
     tags:
       - { name: 'event_subscriber' }
+  par_notification.new_partnership_amendment_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\NewPartnershipAmendmentSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_notification.partnership_amendment_confirmed:
+    class: '\Drupal\par_notification\EventSubscriber\PartnershipAmendmentConfirmedSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_notification.partnership_amendment_nominated:
+    class: '\Drupal\par_notification\EventSubscriber\PartnershipAmendmentNominatedSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
   par_notification.reviewed_enforcement_subscriber:
     class: '\Drupal\par_notification\EventSubscriber\ReviewedEnforcementSubscriber'
     tags:
@@ -111,8 +123,11 @@ services:
     class: '\Drupal\par_notification\EventSubscriber\DeviationReviewedTaskSubscriber'
     tags:
       - { name: 'event_subscriber' }
-  par_notification.enforcement_reviewed_task_subscriber:
-    class: '\Drupal\par_notification\EventSubscriber\EnforcementReviewedTaskSubscriber'
+  par_notification.partnership_amendment_confirmed_task_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\PartnershipAmendmentConfirmedTaskSubscriber'
     tags:
       - { name: 'event_subscriber' }
-
+  par_notification.partnership_amendment_nominated_task_subscriber:
+    class: '\Drupal\par_notification\EventSubscriber\PartnershipAmendmentNominatedTaskSubscriber'
+    tags:
+      - { name: 'event_subscriber' }

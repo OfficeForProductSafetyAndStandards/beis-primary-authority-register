@@ -1,6 +1,9 @@
 text:
   -
-    value: "<p>You've received a notification of enforcement action against <span>@enforced_organisation</span>.</p>\r\n\r\n<p>If you don't respond to this notification within 5 working days, it will be automatically accepted.</p>\r\n"
+    value: "<p>You've received a notification of enforcement action against <span>@enforced_organisation</span>.</p>\r\n"
+    format: basic_html
+  -
+    value: "<p>If you don't respond to this notification within 5 working days, it will be automatically accepted.</p>\r\n"
     format: basic_html
   -
     value: "<p>^ Respond to notification: [message:primary-action]</p>\r\n"

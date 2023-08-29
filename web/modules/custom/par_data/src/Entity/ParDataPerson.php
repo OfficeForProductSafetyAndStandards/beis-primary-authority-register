@@ -111,7 +111,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * {@inheritdoc}
    */
-  public function lookupUserAccount() {
+  public function lookupUserAccount(): ?UserInterface {
     $entities = \Drupal::entityTypeManager()
       ->getStorage('user')
       ->loadByProperties(['mail' => $this->get('email')->getString()]);
@@ -144,7 +144,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
    * b) the user account is not set (as above) but the email matches the user account email
    * @see ParDataManager::getUserPeople()
    */
-  public function getUserAccount() {
+  public function getUserAccount(): ?UserInterface {
     return $this->hasUserAccount() ?
       $this->retrieveUserAccount() : $this->lookupUserAccount();
   }
@@ -152,14 +152,14 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * {@inheritdoc}
    */
-  public function setUserAccount($account) {
+  public function setUserAccount(mixed $account) {
     $this->set('field_user_account', $account);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getSimilarPeople($link_up = TRUE) {
+  public function getSimilarPeople(bool $link_up = TRUE): array {
     $account = $this->getUserAccount();
 
     // Link this entity to the Drupal User if one exists.
@@ -206,7 +206,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * {@inheritdoc}
    */
-  public function linkAccounts(UserInterface $account = NULL) {
+  public function linkAccounts(UserInterface $account = NULL): ?UserInterface {
     $saved = FALSE;
     if (!$account) {
       $account = $this->lookupUserAccount();
@@ -219,7 +219,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
       $saved = $this->save();
     }
 
-    return $saved ? $account : NULL;
+    return !$saved ? NULL : $account;
   }
 
   /**
@@ -418,12 +418,9 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   }
 
   /**
-   * Get PAR Person's full name.
-   *
-   * @return string
-   *   Their full name including title/salutation field.
+   * {@inheritDoc}
    */
-  public function getFullName() {
+  public function getFullName(): string {
     return implode(" ", [
       $this->get('salutation')->getString(),
       $this->getFirstName(),
@@ -480,7 +477,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEmail() {
+  public function getEmail(): ?string {
     return $this->get('email')->getString();
   }
 

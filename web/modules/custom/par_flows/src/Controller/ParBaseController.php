@@ -116,15 +116,14 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
 
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
-      // If there's is a cardinality parameter present display only this item.
-      $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
-      $index = isset($cardinality) ? (int) $cardinality : NULL;
+      // If there is a cardinality parameter present display only this item.
+      $index = $this->getFlowDataHandler()->getParameter('cardinality');
 
-      // Handle instances where FormBuilderInterface should return a redirect response.
-      $plugin = $this->getFormBuilder()->getPluginElements($component, $build, $index);
-      if ($plugin instanceof RedirectResponse) {
-        return $plugin;
-      }
+      // Build the plugin.
+      $plugin = $this->getFormBuilder()->build($component, $index);
+
+      // Merge the component elements into the build array.
+      $build = array_merge($build, $plugin);
     }
 
     // Add all the action links.

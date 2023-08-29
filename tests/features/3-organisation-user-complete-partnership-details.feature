@@ -67,4 +67,4 @@ Feature: Business User - Complete organisation details
         And the element "p.add-partnership-legal-entity" does not exist
         And I go to manage the partnership "Partnership confirmed by organisation" with status "confirmed_business"
         Then the element "h1.heading-xlarge" contains the text "Partnership confirmed by organisation"
-        And the element "p.add-partnership-legal-entity" contains the text "add another legal entity"
+        And the element ".component-partnership-legal-entity-display .add-action" contains the text "Add another legal entity"
