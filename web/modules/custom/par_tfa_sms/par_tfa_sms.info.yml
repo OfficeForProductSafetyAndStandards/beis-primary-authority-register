@@ -1,0 +1,7 @@
+name: PAR TFA SMS Plugin
+type: module
+description: SMS plugin for the TFA module.
+core_version_requirement: ^8 || ^9
+package: PAR
+dependencies:
+  - tfa

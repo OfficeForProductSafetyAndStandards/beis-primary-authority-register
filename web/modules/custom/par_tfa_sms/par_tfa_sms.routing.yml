@@ -1,0 +1,10 @@
+par_tfa_sms.validation.setup:
+  path: '/user/{user}/security/tfa/sms'
+  defaults:
+    _form: 'Drupal\par_tfa_sms\Form\ParTfaSmsSetupForm'
+    _title: 'SMS authentication setup'
+  requirements:
+    _custom_access: '\Drupal\par_tfa_sms\Controller\ParTfaSmsLoginController::accessSelfOrAdmin'
+    _permission: 'setup own tfa'
+  options:
+    _admin_route: TRUE

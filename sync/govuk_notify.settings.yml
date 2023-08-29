@@ -1,4 +1,6 @@
-api_key: PAR_GOVUK_NOTIFY_KEY_DO_NOT_EXPORT
-default_template_id: PAR_GOVUK_NOTIFY_TEMPLATE_DO_NOT_EXPORT
+api_key: par_2fa-e1aed33a-9639-47d8-93fe-d9ac5235676b-ad6286b4-53a6-4d31-b7dd-0dc202fe2b3a
+default_template_id: ef4d180d-a250-45e4-9b8d-0a6e3c10f125
 force_temporary_failure: 0
 force_permanent_failure: 0
+notification_service: uk
+default_sms_template_id: ef4d180d-a250-45e4-9b8d-0a6e3c10f125

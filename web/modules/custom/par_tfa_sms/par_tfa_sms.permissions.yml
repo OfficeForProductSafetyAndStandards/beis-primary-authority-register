@@ -1,0 +1,4 @@
+setup own tfa:
+  title: 'Set up SMS TFA for account'
+  description: 'Allow users to set up SMS TFA for their account.'
+  restrict access: FALSE

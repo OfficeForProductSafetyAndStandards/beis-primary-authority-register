@@ -86,6 +86,7 @@
         "drupal/role_delegation": "~1.1.0",
         "drupal/search_api": "~1.29.0",
         "drupal/search_api_opensearch": "~1.0.0",
+        "drupal/sms": "^2.1",
         "drupal/symfony_mailer": "~1.0.0",
         "drupal/tfa": "^2.0@alpha",
         "drupal/token": "~1.9.0",
@@ -213,6 +214,9 @@
             },
             "drupal/views_data_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-03-01/allow-configurable-filesystems_3200974-6.patch"
+            },
+            "drupal/tfa": {
+                "Allow users validation plugins to work during login": "./patches/tfa_allow_user_validation_plugins_on_login.patch"
             }
         }
     },

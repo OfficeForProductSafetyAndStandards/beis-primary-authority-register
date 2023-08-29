@@ -136,6 +136,7 @@ module:
   par_roles: 0
   par_search_partnership_flows: 0
   par_subscriptions: 0
+  par_tfa_sms: 0
   par_user_block_flows: 0
   par_validation: 0
   password_policy: 0

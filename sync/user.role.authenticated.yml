@@ -10,6 +10,7 @@ dependencies:
     - par_profile_view_flows
     - par_roles
     - par_subscriptions
+    - par_tfa_sms
     - par_user_block_flows
     - shortcut
     - system
