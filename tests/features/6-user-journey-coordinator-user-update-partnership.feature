@@ -40,7 +40,7 @@ Feature: Coordinator User - Update Partnership
         And I add "A trading Name" to the inputfield "#edit-par-component-trading-name-0-trading-name"
         And I click on the button "#edit-next"
 
-        And I click on the radio "#edit-par-component-legal-entity-0-registry-companies-house"
+        And I click on the radio "#edit-par-component-legal-entity-0-registry-internal"
         And I click on the radio "edit-par-component-legal-entity-0-unregistered-legal-entity-type-sole-trader"
         And I add "New LLP Company" to the inputfield "edit-par-component-legal-entity-0-unregistered-legal-entity-name"
         And I click on the button "#edit-next"
