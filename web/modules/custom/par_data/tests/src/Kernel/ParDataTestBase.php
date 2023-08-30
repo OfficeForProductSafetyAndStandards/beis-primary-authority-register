@@ -50,7 +50,7 @@ use org\bovigo\vfs\vfsStream;
  */
 class ParDataTestBase extends EntityKernelTestBase {
 
-  static $modules = [
+  protected static $modules = [
     'user',
     'system',
     'field',
@@ -124,7 +124,7 @@ class ParDataTestBase extends EntityKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     // Must change the bytea_output to the format "escape" before running tests.
     // @see https://www.drupal.org/node/2810049
     //db_query("ALTER DATABASE 'par' SET bytea_output = 'escape';")->execute();

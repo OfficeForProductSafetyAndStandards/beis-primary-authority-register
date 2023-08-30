@@ -37,7 +37,7 @@ class AccessParPartnershipsTest extends ParDataTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setup();
 
     // PAR-1747: https://app.circleci.com/pipelines/github/UKGovernmentBEIS/beis-primary-authority-register/5477/workflows/c6161291-91d0-453b-96a5-5d8dc4dc8667/jobs/17606

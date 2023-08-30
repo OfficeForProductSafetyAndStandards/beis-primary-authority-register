@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "45e7168d4def814061184150a45a7b43",
+    "content-hash": "4a12151ecb181afa3671ffe227537fc5",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -5433,32 +5433,6 @@
                 "source": "https://git.drupalcode.org/project/password_policy",
                 "issues": "https://www.drupal.org/project/issues/password_policy"
             }
-        },
-        {
-            "name": "drupal/password_strength",
-            "version": "dev-8.x-2.x",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/UKGovernmentBEIS/password-strength.git",
-                "reference": "ce4a496c18ed4b75a1547bcadfedd771929bf173"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/UKGovernmentBEIS/password-strength/zipball/ce4a496c18ed4b75a1547bcadfedd771929bf173",
-                "reference": "ce4a496c18ed4b75a1547bcadfedd771929bf173",
-                "shasum": ""
-            },
-            "require": {
-                "bjeavons/zxcvbn-php": "^1.1.0"
-            },
-            "default-branch": true,
-            "type": "drupal-module",
-            "description": "Integrates the Password Strength into Drupal's Password Policy module.",
-            "support": {
-                "source": "https://github.com/UKGovernmentBEIS/password-strength/tree/8.x-2.x",
-                "issues": "https://github.com/UKGovernmentBEIS/password-strength/issues"
-            },
-            "time": "2022-01-07T11:01:40+00:00"
         },
         {
             "name": "drupal/queue_ui",
@@ -20899,7 +20873,6 @@
     "stability-flags": {
         "deblan/csv-validator": 20,
         "drupal/govuk_cookies": 20,
-        "drupal/password_strength": 20,
         "drupal/registered_organisations": 20,
         "drupal/trance": 20
     },

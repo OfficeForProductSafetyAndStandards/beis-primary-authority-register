@@ -281,7 +281,7 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
       'title' => $this->t('Generating Content'),
       'operations' => $operations,
       'finished' => 'devel_generate_batch_finished',
-      'file' => drupal_get_path('module', 'devel_generate') . '/devel_generate.batch.inc',
+      'file' => \Drupal::service('extension.list.module')->getPath('devel_generate') . '/devel_generate.batch.inc',
     );
     batch_set($batch);
   }
