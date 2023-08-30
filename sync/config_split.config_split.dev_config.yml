@@ -12,10 +12,14 @@ module:
   dblog: 0
   devel: 0
   par_data_test: 0
+  update: 0
+  upgrade_status: 0
   webprofiler: 0
 theme: {  }
 blacklist:
   - par_data.settings
+  - update.settings
+  - upgrade_status.settings
 graylist: {  }
 graylist_dependents: true
 graylist_skip_equal: true
