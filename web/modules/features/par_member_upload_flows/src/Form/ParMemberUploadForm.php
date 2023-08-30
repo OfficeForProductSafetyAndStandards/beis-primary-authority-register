@@ -9,6 +9,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\Entity\File;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
@@ -59,40 +60,53 @@ class ParMemberUploadForm extends ParBaseForm {
     ];
 
     // Allow a member list to be downloaded.
-    if ($par_data_partnership->countMembers(0, TRUE) > 0) {
-      $form['download'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('Download list of members'),
-        '#description' => $this->t('Please download the latest members list before making any changes to it.'),
-        '#attributes' => [
-          'class' => ['form-group'],
-        ]
-      ];
-      $form['download']['download_link'] = [
-        '#type' => 'link',
-        '#title' => $this->t('Download membership list'),
-        '#url' => Url::fromRoute('par_member_upload_flows.member_download', $this->getRouteParams()),
-        '#attributes' => [
-          'id' => 'download-members-link',
-        ],
-      ];
+    $url_options = [
+      'attributes' => [
+        'id' => 'download-members-link',
+        'class' => ['download-action']
+      ],
+    ];
+    if ($par_data_partnership->countMembers(0, TRUE) >= 1) {
+      $download_heading = 'Download list of members';
+      $download_description = 'Please download the latest members list before making any changes to it.';
+      // Get the link.
+      $download_url = Url::fromRoute('par_member_upload_flows.member_download', $this->getRouteParams(), $url_options);
+      $download_link = Link::fromTextAndUrl('Download list of members', $download_url);
     }
     else {
-      $form['download'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('Download membership template'),
-        '#description' => $this->t('Please download the member list template to ensure you fill in the correct information.'),
-        '#attributes' => [
-          'class' => ['form-group'],
-        ]
-      ];
+      $download_heading = 'Download membership template';
+      $download_description = 'Please download the member list template to ensure you fill in the correct information.';
+      // Get the link.
       $module_handler = \Drupal::service('module_handler');
       $path = $module_handler->getModule('par_member_upload_flows')->getPath() . '/assets/par_membership_blank_template.csv';
-      $form['download']['download_link'] = [
-        '#type' => 'markup',
-        '#markup' => "<a href='/$path'>{$this->t('Download membership template')}</a>",
-      ];
+      $download_url = Url::fromUri("internal:/$path", $url_options);
+      $download_link = Link::fromTextAndUrl('Download membership template', $download_url);
     }
+
+    $form['download'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['form-group'],
+      ],
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['heading-medium']],
+        '#value' => $this->t($download_heading),
+      ],
+      'description' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#attributes' => ['class' => ['govuk-hint']],
+        '#value' => $download_description,
+      ],
+      'link' => [
+        '#type' => 'link',
+        '#title' => $download_link?->getText(),
+        '#url' => $download_link?->getUrl(),
+        '#options' => $download_link?->getUrl()->getOptions(),
+      ],
+    ];
 
     // File field.
     $form['csv'] = [
@@ -140,17 +154,19 @@ class ParMemberUploadForm extends ParBaseForm {
 
       // Loop through each csv row from uploaded file and save in $row array.
       foreach ($files as $file) {
-        $error = $this->getCsvHandler()->loadFile($file, $rows);
-      }
-
-      // If there was an error we want to invalidate the form.
-      if (isset($error)) {
-        $id = $this->getElementId(['csv'], $form);
-        $form_state->setErrorByName($this->getElementName('csv'), $this->wrapErrorMessage($error, $id));
+        try {
+          $this->getCsvHandler()->loadFile($file, $rows);
+        }
+        catch (ParDataException $exception) {
+          $id = $this->getElementId(['csv'], $form);
+          $form_state->setErrorByName($this->getElementName('csv'), $this->wrapErrorMessage($exception, $id));
+        }
       }
 
       if (count($rows) > 0) {
-        $form_state->setValue('coordinated_members', $rows);
+        // Set the data directly on the ParFlowDataHandler because FormState
+        // data is filtered (with empty values removed) on submission.
+        $this->getFlowDataHandler()->setTempDataValue('coordinated_members', $rows);
       }
     }
   }

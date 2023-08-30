@@ -32,7 +32,7 @@ interface ParFlowNegotiatorInterface {
   public function getRoute();
 
   /**
-   * Get's the current user account.
+   * Gets the current user account.
    *
    * @return \Drupal\user\UserInterface|null
    */

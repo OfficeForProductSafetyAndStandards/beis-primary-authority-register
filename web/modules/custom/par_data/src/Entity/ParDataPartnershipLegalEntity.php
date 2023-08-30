@@ -124,7 +124,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    */
   public function setParStatus($value, $ignore_transition_check = FALSE) {
     // Only set the status if allowed.
-    if ($this->supportsStatus()) {
+    if ($this->supportsStatus() || $ignore_transition_check) {
       parent::setParStatus($value, $ignore_transition_check);
     }
   }
@@ -243,8 +243,13 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
 
     // Rule 3: There is at least one other legal entity on this partnership,
     // if the partnership is not active the legal entities don't have to be.
-    $legal_entity_count = $partnership?->getPartnershipLegalEntities($partnership->isActive()) ?? [];
-    $not_last_legal_entity = count($legal_entity_count) > 1;
+    $partnership_legal_entities = $partnership?->getPartnershipLegalEntities($partnership->isActive()) ?? [];
+    // Exclude this legal entity from the list.
+    $id = $this->id();
+    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($legal_entity) use ($id) {
+      return $legal_entity->id() !== $id;
+    });
+    $not_last_legal_entity = !empty($partnership_legal_entities);
 
     return parent::isDeletable() &&
       $no_revoked_partnership &&
@@ -264,9 +269,15 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
     // Rule 2: Check if the legal entity is active.
     $is_active = $this->isActive();
 
-    // Rule 3: There is at least one other active legal entity on this partnership.
-    $legal_entity_count = $partnership?->getPartnershipLegalEntities($partnership->isActive()) ?? [];
-    $not_last_legal_entity = count($legal_entity_count) > 1;
+    // Rule 3: There is at least one other legal entity on this partnership,
+    // if the partnership is not active the legal entities don't have to be.
+    $partnership_legal_entities = $partnership?->getPartnershipLegalEntities($partnership->isActive()) ?? [];
+    // Exclude this legal entity from the list.
+    $id = $this->id();
+    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($legal_entity) use ($id) {
+      return $legal_entity->id() !== $id;
+    });
+    $not_last_legal_entity = !empty($partnership_legal_entities);
 
     // Only some PAR entities can be deleted.
     return parent::isRevocable() &&
@@ -299,7 +310,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
     $active_legal_entities = (array) $this->getPartnership()?->getLegalEntity();
     $id = $this->id();
     $similar_legal_entity = array_filter($active_legal_entities, function ($legal_entity) use ($id) {
-      return $legal_entity->id() == $id;
+      return $legal_entity->id() === $id;
     });
 
     // Rule 3: The legal entity was revoked less than 1 day ago.

@@ -180,7 +180,7 @@ class ParReviewForm extends ParBaseForm {
 
     if ($par_data_person) {
       // Store the original email to check if it changes.
-      $this->getFlowDataHandler()->setFormPermValue('orginal_email', $par_data_person->getEmail());
+      $this->getFlowDataHandler()->setFormPermValue('original_email', $par_data_person->getEmail());
 
       // Update the person record with the new values.
       $par_data_person->set('salutation', $this->getFlowDataHandler()->getTempDataValue('salutation', $contact_details_cid));
@@ -250,7 +250,8 @@ class ParReviewForm extends ParBaseForm {
 
     // Subscribe and unsubscribe the user from the relevant subscription lists.
     $lists = $this->getSubscriptionManager()->getLists();
-    $subscriptions = array_filter($this->getFlowDataHandler()->getTempDataValue('subscriptions', $subscriptions_cid));
+    $subscriptions = $this->getFlowDataHandler()->getTempDataValue('subscriptions', $subscriptions_cid);
+    $subscriptions = array_filter((array) $subscriptions);
     foreach ($lists as $list) {
       // Create a new subscription.
       if (isset($subscriptions[$list])) {
@@ -307,7 +308,7 @@ class ParReviewForm extends ParBaseForm {
     // Merge all accounts (and save them) or just save the person straight up.
     if ($par_data_person->save()) {
       // Also save the user if the email has been updated.
-      if ($account->getEmail() !== $this->getFlowDataHandler()->getFormPermValue('orginal_email')) {
+      if ($account->getEmail() !== $this->getFlowDataHandler()->getFormPermValue('original_email')) {
         $account->save();
         $this->getParDataManager()->getMessenger()->addMessage(t('The email address you use to login has been updated to @email', ['@email' => $account->getEmail()]));
       }

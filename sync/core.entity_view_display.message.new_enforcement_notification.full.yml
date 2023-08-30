@@ -13,6 +13,11 @@ targetEntityType: message
 bundle: new_enforcement_notification
 mode: full
 content:
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
   partial_1:
     settings: {  }
     third_party_settings: {  }
@@ -22,7 +27,6 @@ hidden:
   field_enforcement_notice: true
   field_message_subject: true
   field_to: true
-  partial_0: true
   partial_2: true
   partial_3: true
   search_api_excerpt: true

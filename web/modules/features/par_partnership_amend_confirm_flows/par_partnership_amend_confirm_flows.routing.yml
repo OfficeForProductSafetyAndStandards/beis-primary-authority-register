@@ -1,0 +1,26 @@
+par_partnership_amend_confirm_flows.review:
+  path: '/partnership/{par_data_partnership}/amendment/confirm'
+  defaults:
+    _form: '\Drupal\par_partnership_amend_confirm_flows\Form\ParReviewForm'
+    _title_callback: '\Drupal\par_partnership_amend_confirm_flows\Form\ParReviewForm::titleCallback'
+  requirements:
+    _permission: 'confirm partnership amendments'
+    _par_partnership_amendment_confirm_access_check: 'TRUE'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_partnership_amend_confirm_flows.complete:
+  path: '/partnership/{par_data_partnership}/amendment/complete'
+  defaults:
+    _controller: '\Drupal\par_partnership_amend_confirm_flows\Controller\ParCompleteController::content'
+    _title_callback: '\Drupal\par_partnership_amend_confirm_flows\Controller\ParCompleteController::titleCallback'
+  requirements:
+    _permission: 'confirm partnership amendments'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership

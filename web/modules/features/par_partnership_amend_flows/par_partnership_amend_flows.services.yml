@@ -1,0 +1,6 @@
+services:
+  par_partnership_amend_flows.par_flow_access:
+    class: Drupal\par_partnership_amend_flows\Access\ParFlowAccessCheck
+    arguments: ['@par_data.manager', '@par_flows.negotiator']
+    tags:
+      - { name: access_check, applies_to: _par_amend_partnerships_access_check }

@@ -1,0 +1,19 @@
+uuid: f766ed13-4ef6-43bc-a8a5-eed40c783ecf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_to
+    - message.template.new_partnership_amendment
+id: message.new_partnership_amendment.field_to
+field_name: field_to
+entity_type: message
+bundle: new_partnership_amendment
+label: To
+description: 'The email address of the message recipient.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

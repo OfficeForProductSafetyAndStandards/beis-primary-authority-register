@@ -3,6 +3,7 @@
 namespace Drupal\par_flows;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Http\RequestStack;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\ParDataManagerInterface;
@@ -165,17 +166,12 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
 
   public function getFormKey($form_id, $state = NULL, $flow_name = NULL) {
     $flow_name = !empty($flow_name) ? $flow_name : $this->getFlowName();
-
     $flow = $this->getFlow($flow_name);
 
-    // If the form_id represents a form_data key get the step based on that key.
-    // This is useful for situations where the form_id is ambiguous (used more than once) in the flow.
-    $step = $flow->getStepByCurrentFormDataKey($form_id);
-    // Otherwise look for the form_id in the flow.
-    if (!$step) {
-      $step = $flow->getStepByFormId($form_id);
-    }
+    // Get the step based on a form data key or form id.
+    $step = $flow->getStepByFormId($form_id);
 
+    // Get the route for the given step.
     $route_name = $flow->getRouteByStep($step);
 
     return $this->getFlowKey($route_name, $state, $flow_name);
@@ -196,7 +192,7 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
   /**
    * {@inheritdoc}
    */
-  public function getFlowStateKey($step_id = NULL, $state = NULL, $flow_name = NULL) {
+  public function getFlowStateKey($state = NULL, $flow_name = NULL) {
     $state = !empty($state) ? $state : $this->getState();
     $flow_name = !empty($flow_name) ? $flow_name : $this->getFlowName();
 

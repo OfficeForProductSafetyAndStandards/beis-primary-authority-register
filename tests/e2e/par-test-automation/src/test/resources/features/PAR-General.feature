@@ -3,7 +3,7 @@ Feature:
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
 
-  @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry
+  @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice
   Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -16,8 +16,8 @@ Feature:
     #second part of partnership application
     When the user searches for the last created partnership
     And the user completes the partnership application with the following details:
-      | SIC Code            | No of Employees | Legal entity Type | Business Description |
-      | allow people to eat | 10 to 49        | Limited Company   | Test Business        |
+      | SIC Code            | No of Employees |	Legal Entity Name	| Legal entity Type 			| Company number	|	Business Description |
+      | allow people to eat | 10 to 49        |	LE1								| unregistered  				  | 12345678				|	Test Business        |
     Then the second part of the partnership application is successfully completed
     #verify update of newly created partnership
     Given the user is on the PAR login page
@@ -39,8 +39,8 @@ Feature:
     #second part of partnership application
     When the user searches for the last created partnership
     And the user completes the partnership application with the following details:
-      | SIC Code            | Member List Size | Legal entity Type | Business Description |
-      | allow people to eat | Medium           | Limited Company   | Test Business        |
+      | SIC Code            | Member List Size | Business Description |	Legal Entity Name	| Legal entity Type 			| Company number	|	
+      | allow people to eat | Medium           | Test Business        | LE1								| unregistered  				  | 12345678				|
     Then the second part of the partnership application is successfully completed
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
@@ -56,7 +56,8 @@ Feature:
     And the user completes the user creation journey
     Then the user journey creation is successful
 
-  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry
+
+  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct
   Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -95,7 +96,7 @@ Feature:
     And the user uploads an inspection plan against the partnership with the following details:
       | Title              | Description |
       | INspection Title 1 | Test 1      |
-      
+
   @regression @inspectionplan @inspectionfeedback
   Scenario: Verify Update of Inspection Plan (Happy Path - PAR-1865)
     Given the user is on the PAR login page
@@ -163,19 +164,33 @@ Feature:
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created deviation request
     Then the deviation reply received successfully
-    
+
   @regression @inspectionplan
   Scenario: Verify Revocation and Removal of Inspection Plan (Happy Path - PAR-1866, PAR-1867)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    Then the user successfully revokes the last created inspection plan
+    #remove the inspection plan
+    When the user revokes the last created inspection plan
+    Then the inspection plan is successfully removed
+
    Given the user is on the PAR login page
    And the user logs in with the "par_helpdesk@example.com" user credentials
    When the user searches for the last created partnership
    Then the user successfully revokes the last created inspection plan
-   
    #remove the inspection plan
    When the user revokes the last created inspection plan
    Then the inspection plan is successfully removed
    
-   
+  @regression @advicenotice
+  Scenario: Verify Upload of Advice Notice (Happy Path - PAR-1873)
+   Given the user is on the PAR login page
+   And the user logs in with the "par_helpdesk@example.com" user credentials
+   When the user searches for the last created partnership
+   And the user uploads an advice notice against the partnership with the following details:
+      | Title          | Type of Advice 				| Reg Function 			| Description	|
+      | Advice Title 1 | Background information	| Cookie control		| Test Advice	|
 
   @regression @enquiry
   Scenario: Verify User can Submit a general enquiry (Happy Path - PAR-1861)
@@ -226,9 +241,24 @@ Feature:
     Then the user submits a general enquiry with the following details:
       | Description                  |
       | Enforcement Officer Enquiry. |
-      
     # View the last created general enquiry as a Help Desk user.
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created general enquiry
     Then the user successfully views the enquiry
+
+  @regression @direct @partnershipapplication @update
+  Scenario: Update all Partnership details successfully (Happy Path - PAR-2214)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership Authority
+    And the user updates the About the Partnership and Regulatory Functions:
+      | About the Partnership |
+      | Updated Partnership   |
+    Then the About the Partnership and Regulatory Functions are updated Successfully
+    # Change Partnership details page to updated the rest of the Partnership
+    When the user searches for the last created partnership Organisation
+    And the user updates the Partnerships details with the following:
+      | Address1    | Address2 | Town | County             | Country | Nation Value | Post Code | About the Organisation | SIC Code          | Trading Name |
+      | 01 new road | Market   | Bury | Greater Manchester | GB      | GB-SCT       | BL2 4BD   | Updated Info           | you sell cookies. | Name Update  |
+    Then all of the Partnership details have been updated successfully

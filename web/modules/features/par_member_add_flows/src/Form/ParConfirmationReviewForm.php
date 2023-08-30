@@ -121,17 +121,25 @@ class ParConfirmationReviewForm extends ParBaseForm {
       'email' => $this->getFlowDataHandler()->getTempDataValue('email', $contact_cid),
     ];
 
-    // Get the legal entity data.
-    $legal_cid = $this->getFlowNegotiator()->getFormKey('par_member_add_legal_entity');
-    $legal_entities = $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $legal_cid) ?: [];
+    // Set the data for the legal entities.
+    $legal_entity_prefix = ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity';
+    $legal_cid = $this->getFlowNegotiator()->getFormKey('legal_select');
+    $legal_entities = $this->getFlowDataHandler()->getTempDataValue($legal_entity_prefix, $legal_cid) ?: [];
     $par_data_legal_entities = [];
+    // Loop through all stored values and create the legal entity.
     foreach ($legal_entities as $delta => $legal_entity) {
-      // These ones need to be saved fresh.
+      // Creating the legal entity and using ParDataLegalEntity::lookup() allows
+      // information to be retrieved from a registered source like Companies House.
       $par_data_legal_entities[$delta] = ParDataLegalEntity::create([
-        'registered_name' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'registered_name'], $legal_cid),
-        'registered_number' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'registered_number'], $legal_cid),
-        'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'legal_entity_type'], $legal_cid),
+        'registry' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'registry'], $legal_cid),
+        'registered_name' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'unregistered', 'legal_entity_name'], $legal_cid),
+        'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'unregistered', 'legal_entity_type'], $legal_cid),
+        'registered_number' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'registered', 'legal_entity_number'], $legal_cid),
       ]);
+      $par_data_legal_entities[$delta]->lookup();
+
+      // Ensure they are ordered correctly.
+      ksort($par_data_legal_entities);
     }
 
     // Create the entities.
@@ -187,7 +195,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
     foreach ($par_data_legal_entities as $par_data_legal_entity) {
       if ($par_data_legal_entity->save()) {
-        $par_data_organisation->get('field_legal_entity')->appendItem($par_data_legal_entity);
+        $par_data_organisation->addLegalEntity($par_data_legal_entity);
         $par_data_coordinated_business->get('field_legal_entity')->appendItem($par_data_legal_entity);
       }
     }
