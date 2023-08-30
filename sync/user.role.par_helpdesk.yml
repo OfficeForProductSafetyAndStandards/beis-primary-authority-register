@@ -45,6 +45,7 @@ dependencies:
     - par_search_partnership_flows
     - par_subscriptions
     - par_user_block_flows
+    - role_delegation
     - toolbar
 id: par_helpdesk
 label: 'Processing Team Member'
@@ -53,9 +54,6 @@ is_admin: null
 permissions:
   - 'access content overview'
   - 'access helpdesk'
-  - 'access helpdesk dashboard'
-  - 'access par journey transition business'
-  - 'access par journey transition coordinator'
   - 'access par reports'
   - 'access par_data_advice entities'
   - 'access par_data_authority entities'
@@ -104,7 +102,6 @@ permissions:
   - 'amend own partnerships'
   - 'approve enforcement notice'
   - 'approve partnerships'
-  - 'approve partnerships via help desk'
   - 'assign all memberships'
   - 'assign par_authority role'
   - 'assign par_authority_manager role'
@@ -113,7 +110,6 @@ permissions:
   - 'assign par_organisation role'
   - 'block user'
   - 'bypass par_data membership'
-  - 'bypass partnership journey'
   - 'cancel partnership applications'
   - 'cease coordinated member'
   - 'confirm partnership'
@@ -125,9 +121,6 @@ permissions:
   - 'create organisation user'
   - 'create page content'
   - 'create par person'
-  - 'create par profile'
-  - 'delete any document files'
-  - 'delete any image files'
   - 'delete invite entities'
   - 'delete own article content'
   - 'delete own page content'
@@ -151,9 +144,6 @@ permissions:
   - 'delete par_data_regulatory_function entities'
   - 'delete par_data_sic_code entities'
   - 'edit any article content'
-  - 'edit any csv files'
-  - 'edit any document files'
-  - 'edit any image files'
   - 'edit any page content'
   - 'edit invite entities'
   - 'edit own article content'
@@ -179,10 +169,7 @@ permissions:
   - 'invite authority members'
   - invite_type_invite_organisation_member
   - 'manage all authorities'
-  - 'manage all organisation'
   - 'manage all organisations'
-  - 'manage my authorities'
-  - 'manage my organisations'
   - 'manage own authority'
   - 'manage own organisation'
   - 'manage par person'
@@ -216,9 +203,7 @@ permissions:
   - 'view inspection feedback'
   - 'view list par_news'
   - 'view own notifications'
-  - 'view own private files'
   - 'view par profile'
-  - 'view private files'
   - 'view published invite entities'
   - 'view unpublished invite entities'
   - 'view unpublished par_data_advice entities'

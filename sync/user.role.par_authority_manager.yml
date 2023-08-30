@@ -34,6 +34,7 @@ dependencies:
     - par_profile_view_flows
     - par_roles
     - par_search_partnership_flows
+    - role_delegation
 id: par_authority_manager
 label: 'Authority Manager'
 weight: -6
@@ -143,7 +144,6 @@ permissions:
   - 'view general enquiry'
   - 'view inspection feedback'
   - 'view own notifications'
-  - 'view own private files'
   - 'view par profile'
   - 'view unpublished par_data_advice entities'
   - 'view unpublished par_data_authority entities'

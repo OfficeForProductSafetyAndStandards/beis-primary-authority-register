@@ -49,6 +49,7 @@ dependencies:
     - par_subscriptions
     - par_transfer_partnerships_flows
     - par_user_block_flows
+    - role_delegation
     - toolbar
 id: senior_administration_officer
 label: 'Senior Administration Officer'
@@ -127,8 +128,6 @@ permissions:
   - 'create organisation user'
   - 'create page content'
   - 'create par person'
-  - 'delete any document files'
-  - 'delete any image files'
   - 'delete invite entities'
   - 'delete own article content'
   - 'delete own page content'
@@ -152,9 +151,6 @@ permissions:
   - 'delete par_data_regulatory_function entities'
   - 'delete par_data_sic_code entities'
   - 'edit any article content'
-  - 'edit any csv files'
-  - 'edit any document files'
-  - 'edit any image files'
   - 'edit any page content'
   - 'edit invite entities'
   - 'edit own article content'
@@ -219,9 +215,7 @@ permissions:
   - 'view inspection feedback'
   - 'view list par_news'
   - 'view own notifications'
-  - 'view own private files'
   - 'view par profile'
-  - 'view private files'
   - 'view published invite entities'
   - 'view unpublished invite entities'
   - 'view unpublished par_data_advice entities'

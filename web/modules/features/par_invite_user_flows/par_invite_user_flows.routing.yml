@@ -18,14 +18,14 @@ par_invite_user_flows.choose_role:
     _form: '\Drupal\par_invite_user_flows\Form\ParRoleForm'
     _title_callback: '\Drupal\par_invite_user_flows\Form\ParRoleForm::titleCallback'
   requirements:
-    _permission: 'create par profile'
+    _permission: 'manage par profile'
     _custom_access: '\Drupal\par_invite_user_flows\Form\ParRoleForm::accessCallback'
     par_data_person: \d+
   options:
     parameters:
       par_data_person:
         type: entity:par_data_person
-        
+
 par_invite_user_flows.choose_institution:
   path: '/person/{par_data_person}/invite/membership'
   defaults:

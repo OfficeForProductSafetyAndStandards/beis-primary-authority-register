@@ -34,6 +34,7 @@ dependencies:
     - par_profile_view_flows
     - par_roles
     - par_search_partnership_flows
+    - role_delegation
 id: par_authority
 label: 'Authority Member'
 weight: -7
@@ -87,7 +88,6 @@ permissions:
   - 'create authority user'
   - 'create enforcement user'
   - 'create par person'
-  - 'create par profile'
   - 'edit par_data_advice entities'
   - 'edit par_data_authority entities'
   - 'edit par_data_coordinated_business entities'
@@ -109,7 +109,6 @@ permissions:
   - 'invite authority members'
   - 'invite user'
   - invite_type_invite_organisation_member
-  - 'manage my authorities'
   - 'manage own authority'
   - 'manage par person'
   - 'manage par profile'
@@ -133,7 +132,6 @@ permissions:
   - 'receive revoke_inspection_plan notification'
   - 'remove partnership authority contact'
   - 'review deviation request'
-  - 'search partnership'
   - 'search partnerships'
   - 'send general enquiry'
   - 'submit deviation request'
@@ -141,14 +139,12 @@ permissions:
   - 'update partnership authority contact'
   - 'update partnership authority details'
   - 'use text format basic_html'
-  - 'view authority enquiries'
   - 'view deviation request'
   - 'view enforcement notice'
   - 'view general enquiry'
   - 'view inspection feedback'
   - 'view own notifications'
   - 'view own par profile'
-  - 'view own private files'
   - 'view par profile'
   - 'view unpublished par_data_advice entities'
   - 'view unpublished par_data_authority entities'

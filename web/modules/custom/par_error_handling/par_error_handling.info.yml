@@ -1,5 +1,5 @@
 name: PAR Ereror Handling
 type: module
 description: Adds friendly handling of fatal messages.
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9 || ^10
 package: PAR

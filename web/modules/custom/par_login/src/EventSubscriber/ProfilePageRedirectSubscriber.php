@@ -7,7 +7,7 @@ use Drupal\Core\Url;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
@@ -52,10 +52,10 @@ class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
   /**
    * Redirect requests for the user page to the relevant dashboard.
    *
-   * @param GetResponseEvent $event
+   * @param RequestEvent $event
    * @return void
    */
-  public function redirectProfilePage(GetResponseEvent $event) {
+  public function redirectProfilePage(RequestEvent $event) {
     $request = $event->getRequest();
 
     if ($this->account->isAuthenticated()) {

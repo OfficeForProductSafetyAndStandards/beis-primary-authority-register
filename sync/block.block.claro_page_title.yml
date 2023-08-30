@@ -1,15 +1,15 @@
-uuid: 34046f50-e5fe-472c-96e5-778c3df81e6a
+uuid: 3a9a4ae5-6d7a-4ff8-b1c0-83d08927850e
 langcode: en
 status: true
 dependencies:
   theme:
-    - bartik
+    - claro
 _core:
-  default_config_hash: 7rR9chwXvdM2H8OYMAYx9Zj3GGlPMrZp_M3ZA4thYTk
-id: bartik_page_title
-theme: bartik
-region: content
-weight: -50
+  default_config_hash: fNwDdW063tk_ktzSWzZVeQS9wzvLooVO280BQ9WrsIs
+id: claro_page_title
+theme: claro
+region: header
+weight: -30
 provider: null
 plugin: page_title_block
 settings:

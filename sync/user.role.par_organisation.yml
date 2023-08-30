@@ -28,13 +28,13 @@ dependencies:
     - par_person_update_flows
     - par_profile_view_flows
     - par_roles
+    - role_delegation
 id: par_organisation
 label: 'Organisation Member'
 weight: -5
 is_admin: null
 permissions:
   - 'access par dashboard'
-  - 'access par journey transition business'
   - 'access par_data_advice entities'
   - 'access par_data_authority entities'
   - 'access par_data_coordinated_business entities'
@@ -75,13 +75,11 @@ permissions:
   - 'add par_data_sic_code entities'
   - 'add partnership organisation contact'
   - 'assign par_organisation role'
-  - 'business partnership journey'
   - 'cease coordinated member'
   - 'confirm partnership'
   - 'confirm partnership amendments'
   - 'create organisation user'
   - 'create par person'
-  - 'create par profile'
   - 'edit par_data_advice entities'
   - 'edit par_data_authority entities'
   - 'edit par_data_coordinated_business entities'
@@ -102,7 +100,6 @@ permissions:
   - 'edit par_data_sic_code entities'
   - 'invite user'
   - invite_type_invite_organisation_member
-  - 'manage my organisations'
   - 'manage own organisation'
   - 'manage par person'
   - 'manage par profile'
@@ -124,9 +121,7 @@ permissions:
   - 'use text format basic_html'
   - 'view enforcement notice'
   - 'view own notifications'
-  - 'view own private files'
   - 'view par profile'
-  - 'view private files'
   - 'view unpublished par_data_advice entities'
   - 'view unpublished par_data_authority entities'
   - 'view unpublished par_data_coordinated_business entities'

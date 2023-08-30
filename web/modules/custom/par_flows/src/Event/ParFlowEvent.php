@@ -4,7 +4,7 @@ namespace Drupal\par_flows\Event;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\par_flows\Event\ParFlowEvents;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\par_flows\Entity\ParFlowInterface;
