@@ -6,6 +6,7 @@ dependencies:
     - field.field.user.user.field_gdpr
     - field.field.user.user.field_last_password_reset
     - field.field.user.user.field_password_expiration
+    - field.field.user.user.field_pending_expire_sent
     - field.field.user.user.user_picture
   module:
     - datetime
@@ -43,6 +44,7 @@ content:
 hidden:
   contact: true
   field_gdpr: true
+  field_pending_expire_sent: true
   langcode: true
   language: true
   timezone: true

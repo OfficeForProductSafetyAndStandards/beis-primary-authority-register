@@ -21,7 +21,6 @@ module:
   content_translation: 0
   contextual: 0
   csv_serialization: 0
-  ctools: 0
   datetime: 0
   datetime_range: 0
   default_content: 0
@@ -52,7 +51,9 @@ module:
   jquery_ui_button: 0
   jquery_ui_checkboxradio: 0
   jquery_ui_controlgroup: 0
+  jquery_ui_datepicker: 0
   jquery_ui_slider: 0
+  jquery_ui_touch_punch: 0
   language: 0
   link: 0
   locale: 0
@@ -67,10 +68,8 @@ module:
   message_notify: 0
   migrate: 0
   migrate_drupal: 0
-  migrate_file_to_media: 0
   migrate_plus: 0
   migrate_tools: 0
-  no_autocomplete: 0
   node: 0
   options: 0
   page_cache: 0
