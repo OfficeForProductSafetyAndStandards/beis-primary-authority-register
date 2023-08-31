@@ -1,0 +1,34 @@
+diff --git a/src/Form/TfaLoginForm.php b/src/Form/TfaLoginForm.php
+index 08fd712..8a73910 100644
+--- a/src/Form/TfaLoginForm.php
++++ b/src/Form/TfaLoginForm.php
+@@ -89,10 +89,28 @@ class TfaLoginForm extends UserLoginForm {
+       parent::submitForm($form, $form_state);
+     }
+     else {
+-      // Setup TFA.
++      // Check if any user validation plugins are set up/enabled.
++      $user_settings = $this->userData->get('tfa', $uid, 'tfa_user_settings');
++      $user_enabled_validation_plugins = $user_settings['data']['plugins'] ?? [];
++
++      // Check if TFA is default, set up and ready.
+       if ($this->isReady()) {
+         $this->loginWithTfa($form_state);
+       }
++      elseif (!empty($user_enabled_validation_plugins) && $user_settings['data']['sms']) {
++        $user_enabled_validation_plugins = array_values($user_enabled_validation_plugins);
++        $validation_plugin = $this->tfaPluginManager->createInstance($user_enabled_validation_plugins[0], ['uid' => $this->user->id()]);
++        if (isset($validation_plugin) && $validation_plugin->ready()) {
++          $user = $this->getUser();
++          $parameters['uid'] = $user->id();
++          $parameters['hash'] = $this->getLoginHash($user);
++          $parameters['plugin'] = $user_enabled_validation_plugins[0];
++          $form_state->setRedirect('tfa.entry', $parameters);
++
++          // Store UID in order to later verify access to entry form.
++          $this->privateTempStore->set('tfa-entry-uid', $user->id());
++        }
++      }
+       else {
+         $this->loginWithoutTfa($form_state);
+       }

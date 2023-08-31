@@ -2,7 +2,6 @@
 
 namespace Drupal\par_tfa_sms\Plugin\Tfa;
 
-use ParagonIE\ConstantTime\Encoding;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\govuk_notify\NotifyService\GovUKNotifyService;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -15,6 +14,7 @@ use Drupal\encrypt\EncryptServiceInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\tfa\Plugin\TfaSetupInterface;
 use Drupal\user\UserStorageInterface;
+use Drupal\Core\Database\Connection;
 use Drupal\user\UserDataInterface;
 use Drupal\tfa\TfaBasePlugin;
 use Drupal\user\Entity\User;
@@ -101,6 +101,13 @@ class ParTfaSms extends TfaBasePlugin implements TfaValidationInterface, TfaSetu
   protected $encryptService;
 
   /**
+   * Database connection.
+   *
+   * @var \Drupal\Core\Database\Connection;
+   */
+  protected $dbConnection;
+
+  /**
    * Constructs a new Tfa plugin object.
    *
    * @param array $configuration
@@ -123,6 +130,8 @@ class ParTfaSms extends TfaBasePlugin implements TfaValidationInterface, TfaSetu
    *   The datetime service.
    * @param \Drupal\user\UserDataInterface $user_data
    *   User data object to store user specific information.
+   * @param \Drupal\Core\Database\Connection $db_connection
+   *   The database connection.
    */
   public function __construct(
       array $configuration, $plugin_id, $plugin_definition,
@@ -133,6 +142,7 @@ class ParTfaSms extends TfaBasePlugin implements TfaValidationInterface, TfaSetu
       EncryptServiceInterface $encrypt_service,
       TimeInterface $time,
       UserDataInterface $user_data,
+      Connection $db_connection,
     ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->auth = new \StdClass();
@@ -159,6 +169,7 @@ class ParTfaSms extends TfaBasePlugin implements TfaValidationInterface, TfaSetu
     $this->time = $time;
     $this->timeSkew = $settings['time_skew'];
     $this->userData = $user_data;
+    $this->dbConnection = $db_connection;
   }
 
   /**
@@ -175,7 +186,8 @@ class ParTfaSms extends TfaBasePlugin implements TfaValidationInterface, TfaSetu
       $container->get('encrypt.encryption_profile.manager'),
       $container->get('encryption'),
       $container->get('datetime.time'),
-      $container->get('user.data')
+      $container->get('user.data'),
+      $container->get('database')
     );
   }
 
@@ -287,8 +299,8 @@ class ParTfaSms extends TfaBasePlugin implements TfaValidationInterface, TfaSetu
     // Send the SMS.
     if ($this->sendSms()) {
       // Display the verification form.
-      $message = $this->t('A code has been sent to your registered mobile number ending in @last_three_digits', [
-        '@last_three_digits' => $this->getMobileNumberLastThreeDigits(),
+      $message = $this->t('A code has been sent to your registered mobile device. @mobile_number', [
+        '@mobile_number' => $this->getObfuscatedMobileNumber(),
       ]);
 
       $form['code'] = [
@@ -388,13 +400,34 @@ class ParTfaSms extends TfaBasePlugin implements TfaValidationInterface, TfaSetu
    *   Decrypted account OTP seed or FALSE if none exists.
    */
   protected function getMobileNumber() {
-    // Check if a mobile number is on the users account.
-    $user = User::load($this->uid);
-    $mobile_number = $user->get('phone_number')->value;
+    // Get the users mobile number from their person data.
+    $query = $this->dbConnection->select(
+      'par_people_field_data',
+      'pfd',
+    );
+    $query->fields('pfd', ['mobile_phone']);
+    $query->condition('pfd.user_id', $this->uid);
+    $mobile_number = $query->execute()->fetchField();
+
     if (!empty($mobile_number)) {
       return $mobile_number;
     }
     return FALSE;
+  }
+
+  /**
+   * @param $mobile_number
+   *
+   * @return void
+   */
+  public function setMobileNumber($mobile_number, $uid): void {
+    $this->dbConnection
+      ->update('par_people_field_data')
+      ->condition('user_id', $uid)
+      ->fields([
+        'mobile_phone' => $mobile_number,
+      ])
+      ->execute();
   }
 
   /**
@@ -404,10 +437,10 @@ class ParTfaSms extends TfaBasePlugin implements TfaValidationInterface, TfaSetu
    *
    * @return string
    */
-  protected function getMobileNumberLastThreeDigits() {
+  protected function getObfuscatedMobileNumber() {
     $mobile_number = $this->getMobileNumber();
     if (!empty($mobile_number)) {
-      return substr($mobile_number, -3);
+      return '********' . substr($mobile_number, -3);
     }
   }
 
@@ -501,8 +534,8 @@ class ParTfaSms extends TfaBasePlugin implements TfaValidationInterface, TfaSetu
     }
 
     $user = $this->userStorage->load($this->uid);
-    if (!empty($user) && $user->hasField('phone_number')) {
-      $user->set('phone_number', $form_state->getValue('sms_phone_number'));
+    if (!empty($user) && $user->hasField('mobile_number')) {
+      $user->set('mobile_number', $form_state->getValue('sms_phone_number'));
       $user->save();
 
       // Enable SMS plugin in the userData.

@@ -2,19 +2,10 @@
 
 namespace Drupal\par_tfa_sms\Form;
 
-use Drupal\encrypt\Exception\EncryptException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\Password\PasswordInterface;
-use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_tfa_sms\ParTfaSmsSetup;
-use Drupal\user\UserStorageInterface;
-use Drupal\user\UserDataInterface;
 use Drupal\tfa\Form\TfaSetupForm;
-use Drupal\tfa\TfaUserDataTrait;
-use Drupal\tfa\TfaPluginManager;
 use Drupal\user\Entity\User;
 
 /**
@@ -79,7 +70,10 @@ class ParTfaSmsSetupForm extends TfaSetupForm {
     else {
       // Record methods progressed.
       $plugin = $this->tfaPluginManager->getDefinition($method, FALSE);
+
+      /** @var \Drupal\tfa\Plugin\TfaSetupInterface $setup_plugin */
       $setup_plugin = $this->tfaPluginManager->createInstance($plugin['id'], ['uid' => $user->id()]);
+
       $par_tfa_sms_setup = new ParTfaSmsSetup($setup_plugin);
       $form = $par_tfa_sms_setup->getForm($form, $form_state, $reset);
       $storage[$method] = $par_tfa_sms_setup;
@@ -190,10 +184,7 @@ class ParTfaSmsSetupForm extends TfaSetupForm {
 
       // Log and notify if this was full setup.
       if (!empty($storage['step_method'])) {
-        $data = [
-          'plugins' => $storage['step_method'],
-          'sms' => TRUE,
-        ];
+        $data = ['plugins' => $storage['step_method']];
         $this->tfaSaveTfaData($account->id(), $data);
         $this->logger('tfa')->info('SMS enabled for user @name UID @uid', [
           '@name' => $account->getAccountName(),
@@ -205,12 +196,13 @@ class ParTfaSmsSetupForm extends TfaSetupForm {
       }
     }
     elseif (!empty($values['sms_phone_number'])) {
-      $user = $this->userStorage->load($account->uid->value);
-      $phone_number_stored = $user->get('phone_number')->value;
+      $phone_number_stored = $this->getMobileNumber($account->uid->value);
 
       if (empty($phone_number_stored)) {
-        $user->set('phone_number', $form_state->getValue('sms_phone_number'));
-        $user->save();
+        $this->setMobileNumber(
+          $form_state->getValue('sms_phone_number'),
+          $account->uid->value
+        );
       }
 
       $storage['mobile_provided'] = TRUE;
@@ -267,6 +259,43 @@ class ParTfaSmsSetupForm extends TfaSetupForm {
       $form_state->setRebuild();
     }
     $form_state->setStorage($storage);
+  }
+
+  /**
+   * Get mobile number for this account.
+   *
+   * @return string
+   *   Decrypted account OTP seed or FALSE if none exists.
+   */
+  protected function getMobileNumber($uid) {
+    // Get the users mobile number from their person data.
+    $query = \Drupal::database()->select(
+      'par_people_field_data',
+      'pfd',
+    );
+    $query->fields('pfd', ['mobile_phone']);
+    $query->condition('pfd.user_id', $uid);
+    $mobile_number = $query->execute()->fetchField();
+
+    if (!empty($mobile_number)) {
+      return $mobile_number;
+    }
+    return FALSE;
+  }
+
+  /**
+   * @param $mobile_number
+   *
+   * @return void
+   */
+  protected function setMobileNumber($mobile_number, $uid): void {
+    \Drupal::database()
+      ->update('par_people_field_data')
+      ->condition('user_id', $uid)
+      ->fields([
+        'mobile_phone' => $mobile_number,
+      ])
+      ->execute();
   }
 
 }

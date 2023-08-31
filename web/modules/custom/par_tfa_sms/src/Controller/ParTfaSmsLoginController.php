@@ -19,6 +19,68 @@ class ParTfaSmsLoginController {
   use TfaLoginTrait;
 
   /**
+   * Denies access unless user matches hash value.
+   *
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route
+   *   The route to be checked.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The current logged in user, if any.
+   *
+   * @return \Drupal\Core\Access\AccessResult
+   *   The access result.
+   */
+  public function access(RouteMatchInterface $route, AccountInterface $account) {
+    // Start with a positive access check which is cacheable for the current
+    // route, which includes both route name and parameters.
+    $access = AccessResult::allowed();
+    $access->addCacheContexts(['route']);
+
+    // Use uids here instead of user objects to prevent enumeration attacks.
+    $uid = (int) $route->getParameter('uid');
+
+    // If stored uid is invalid, the sms process didn't start in this session.
+    $temp_store = \Drupal::service('tempstore.private')->get('par_tfa_sms');
+    $uid_check = $temp_store->get('par-tfa-sms-entry-uid');
+    if (!is_numeric($uid_check) || ($uid !== (int) $uid_check)) {
+      return $access->andIf(AccessResult::forbidden('Invalid session.'));
+    }
+    else {
+      $metadata = $temp_store->getMetadata('par-tfa-sms-entry-uid');
+      $updated = is_null($metadata) ? 0 : $metadata->getUpdated();
+      // Deny access, after 5 minutes since the start of the tfa process.
+      if ($updated < (time() - 300)) {
+        $temp_store->delete('par-tfa-sms-entry-uid');
+        return $access->andIf(AccessResult::forbidden('Timeout expired.'));
+      }
+    }
+
+    // Attempt to retrieve a user from the uid.
+    /** @var \Drupal\user\UserInterface $user */
+    $user = User::load($uid);
+    if (!$user instanceof UserInterface) {
+      return $access->andIf(AccessResult::forbidden('Invalid user.'));
+    }
+
+    // Since we're about to check the login hash, which is based on properties
+    // of the user, we now need to vary the cache based on the user object.
+    $access->addCacheableDependency($user);
+    // If the login hash doesn't match, forbid access.
+    if ($this->getLoginHash($user) !== $route->getParameter('hash')) {
+      return $access->andIf(AccessResult::forbidden('Invalid hash value.'));
+    }
+
+    // If we've gotten here, we need to check that the current user is allowed
+    // to use TFA SMS features for this account. To make this decision, we need to
+    // vary the cache based on the current user.
+    $access->addCacheableDependency($account);
+    if ($account->isAuthenticated()) {
+      return $access->andIf($this->accessSelfOrAdmin($route, $account));
+    }
+
+    return $access;
+  }
+
+  /**
    * Checks that current user is selected user or is admin.
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route
