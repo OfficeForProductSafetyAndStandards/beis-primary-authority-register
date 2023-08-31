@@ -1042,7 +1042,7 @@ function par_data_update_8044() {
 
         $field_name = $field->getName();
         // Get all partnerships that have the format issue within the about business field.
-        $query = \Drupal::entityQuery($entity_type_id);
+        $query = \Drupal::entityQuery($entity_type_id)->accessCheck();
         $query->condition($field_name . '__value', ', basic_html', 'CONTAINS');
         $entity_ids = $query->execute();
 

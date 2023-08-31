@@ -86,7 +86,7 @@ class ParDataTypeTest extends UnitTestCase {
     ];
     $actual = $this->parDataType->getConfigurationElement('field_salutation');
 
-    $this->assertArrayEquals($expected, $actual, "The configuration element for the field_salutation field has been returned.");
+    $this->assertSame($expected, $actual, "The configuration element for the field_salutation field has been returned.");
   }
 
   /**
@@ -94,7 +94,7 @@ class ParDataTypeTest extends UnitTestCase {
    */
   public function testElementConfigurationEmpty() {
     $actual = $this->parDataType->getConfigurationElement('field_unknown');
-    $this->assertArrayEquals([], $actual, "Unknown field configuration not found.");
+    $this->assertSame([], $actual, "Unknown field configuration not found.");
   }
 
   /**
@@ -116,7 +116,7 @@ class ParDataTypeTest extends UnitTestCase {
     ];
     $actual = $this->parDataType->getConfigurationByType('allowed_values');
 
-    $this->assertArrayEquals($expected, $actual, "Allowed values have been returned.");
+    $this->assertSame($expected, $actual, "Allowed values have been returned.");
   }
 
   /**
@@ -124,7 +124,7 @@ class ParDataTypeTest extends UnitTestCase {
    */
   public function testTypeConfigurationEmpty() {
     $actual = $this->parDataType->getConfigurationByType('unknown_configuration');
-    $this->assertArrayEquals([], $actual, "Unknown configuration not found.");
+    $this->assertSame([], $actual, "Unknown configuration not found.");
   }
 
   /**
@@ -137,7 +137,7 @@ class ParDataTypeTest extends UnitTestCase {
     ];
     $actual = $this->parDataType->getConfigurationElementByType('field_terms', 'boolean_values');
 
-    $this->assertArrayEquals($expected, $actual, "Boolean values for the field_terms field have been returned.");
+    $this->assertSame($expected, $actual, "Boolean values for the field_terms field have been returned.");
 
     $label_field = $this->parDataType->getConfigurationElementByType('entity', 'label_field');
     $this->assertEquals('field_name', $label_field, "The label field is correctly configured.");
@@ -168,7 +168,7 @@ class ParDataTypeTest extends UnitTestCase {
    * @covers ::getAllowedValues
    */
   public function testGetAllowedValues() {
-    $this->assertArrayEquals([], $this->parDataType->getAllowedValues('field_unknown'), "Empty array returned for unspecified allowed values.");
+    $this->assertSame([], $this->parDataType->getAllowedValues('field_unknown'), "Empty array returned for unspecified allowed values.");
   }
 
   /**

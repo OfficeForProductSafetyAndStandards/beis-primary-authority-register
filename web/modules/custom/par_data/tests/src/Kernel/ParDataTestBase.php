@@ -4,7 +4,7 @@ namespace Drupal\Tests\par_data\Kernel;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\file\Entity\File;
-use Drupal\Core\Url;
+use Drupal\file\FileInterface;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataAdviceType;
@@ -12,16 +12,12 @@ use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataAuthorityType;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataCoordinatedBusinessType;
-use Drupal\par_data\Entity\ParDataDeviationRequest;
 use Drupal\par_data\Entity\ParDataDeviationRequestType;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementActionType;
 use Drupal\par_data\Entity\ParDataEnforcementNoticeType;
-use Drupal\par_data\Entity\ParDataGeneralEnquiry;
 use Drupal\par_data\Entity\ParDataGeneralEnquiryType;
-use Drupal\par_data\Entity\ParDataInformationReferral;
 use Drupal\par_data\Entity\ParDataInformationReferralType;
-use Drupal\par_data\Entity\ParDataInspectionFeedback;
 use Drupal\par_data\Entity\ParDataInspectionFeedbackType;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
 use Drupal\par_data\Entity\ParDataInspectionPlanType;
@@ -41,7 +37,6 @@ use Drupal\par_data\Entity\ParDataRegulatoryFunction;
 use Drupal\par_data\Entity\ParDataRegulatoryFunctionType;
 use Drupal\par_data\Entity\ParDataSicCode;
 use Drupal\par_data\Entity\ParDataSicCodeType;
-use org\bovigo\vfs\vfsStream;
 
 /**
  * Tests PAR Data test base.
@@ -315,7 +310,7 @@ class ParDataTestBase extends EntityKernelTestBase {
       'filename' => $filename,
       'uri' => "public://$filename",
       'filemime' => 'text/plain',
-      'status' => FILE_STATUS_PERMANENT,
+      'status' => FileInterface::STATUS_PERMANENT,
     ]);
     file_put_contents($file->getFileUri(), 'This is a par test document');
     $file->save();

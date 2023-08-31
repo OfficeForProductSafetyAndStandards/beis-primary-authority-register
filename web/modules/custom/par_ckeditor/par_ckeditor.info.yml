@@ -1,0 +1,9 @@
+name: PAR CKEditor
+type: module
+description: "PAR CKEditor."
+package: Core
+core_version_requirement: ^8 || ^9
+version: VERSION
+dependencies:
+  - ckeditor
+
