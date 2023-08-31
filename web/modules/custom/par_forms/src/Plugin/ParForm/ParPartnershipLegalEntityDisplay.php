@@ -63,7 +63,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         ? "Add another legal entity" : "Add a legal entity";
       $link_options = [ 'attributes' => ['class' => ['add-action']] ];
       $link = $this->getFlowNegotiator()->getFlow()
-        ->getOperationLink('add_legal_entityadd_legal_entity', $link_label, $route_params, $link_options);
+        ->getOperationLink('add_legal_entity', $link_label, $route_params, $link_options);
       if ($link instanceof Link) {
         $actions['add'] = $link;
       }
