@@ -63,7 +63,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         ? "Add another legal entity" : "Add a legal entity";
       $link_options = [ 'attributes' => ['class' => ['add-action']] ];
       $link = $this->getFlowNegotiator()->getFlow()
-        ->getOperationLink('add_legal_entity', $link_label, $route_params, $link_options);
+        ->getOperationLink('add_legal_entityadd_legal_entity', $link_label, $route_params, $link_options);
       if ($link instanceof Link) {
         $actions['add'] = $link;
       }
@@ -257,20 +257,20 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         '#value' => $this->t($status_message, ['@status' => $status, '@start' => $start, '@end' => $end]),
       ];
 
-      if (!empty($legal_entity_actions)) {
+      if (array_search('Actions', $headers) === false) {
         // Operation links will go in the last column.
-        $form['partnership_legal_entities']['table'][$delta]['operations'] = [];
+        $form['partnership_legal_entities']['table'][$delta]['operations'] = ['#type' => 'container'];
+      }
 
-        // Display the link.
-        foreach ($legal_entity_actions as $link_name => $link) {
-          if ($link instanceof Link) {
-            $form['partnership_legal_entities']['table'][$delta]['operations'][$link_name] = [
-              '#type' => 'html_tag',
-              '#tag' => 'p',
-              '#value' => $link->toString(),
-              '#attributes' => ['class' => [$link_name]],
-            ];
-          }
+      // Display the link.
+      foreach ($legal_entity_actions as $link_name => $link) {
+        if ($link instanceof Link) {
+          $form['partnership_legal_entities']['table'][$delta]['operations'][$link_name] = [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $link->toString(),
+            '#attributes' => ['class' => [$link_name]],
+          ];
         }
       }
     }
