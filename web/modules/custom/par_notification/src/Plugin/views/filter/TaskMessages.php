@@ -13,7 +13,8 @@ use Drupal\views\Plugin\views\filter\FilterPluginBase;
  */
 class TaskMessages extends FilterPluginBase {
 
-  public function query() {// Ensure the base table.
+  public function query() {
+    // Ensure the base table.
     $this->ensureMyTable();
 
     // Get the data table alias.

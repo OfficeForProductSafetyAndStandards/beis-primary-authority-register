@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -29,20 +30,20 @@ class ParMemberListNumber extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     if ($par_data_partnership instanceof ParDataEntityInterface && $par_data_partnership->isCoordinated()) {
-      $this->setDefaultValuesByKey('number_members', $cardinality, $par_data_partnership->numberOfMembers());
+      $this->setDefaultValuesByKey('number_members', $index, $par_data_partnership->numberOfMembers());
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // This form should only be displayed for coordinated partnerships.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if (!$par_data_partnership instanceof ParDataEntityInterface || !$par_data_partnership->isCoordinated()) {
@@ -54,7 +55,7 @@ class ParMemberListNumber extends ParFormPluginBase {
       '#type' => 'number',
       '#title' => $this->t('Enter the number of members in the list'),
       '#description' => 'Coordinated member lists support between 1 and 10,000 members.',
-      '#default_value' => $this->getDefaultValuesByKey('number_members', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('number_members', $index),
     ];
 
     return $form;
@@ -63,23 +64,23 @@ class ParMemberListNumber extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $number_member_key = $this->getElementKey('number_members');
 
     $number = $form_state->getValue($number_member_key);
     if ((int) $number < 1 || (int) $number > 100000) {
-      $id_key = $this->getElementKey('number_members', $cardinality, TRUE);
+      $id_key = $this->getElementKey('number_members', $index, TRUE);
       $message = $this->wrapErrorMessage('The number of members needs to be between 1 and 100,000.', $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($number_member_key), $message);
     }
 
-    return parent::validate($form, $form_state, $cardinality, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

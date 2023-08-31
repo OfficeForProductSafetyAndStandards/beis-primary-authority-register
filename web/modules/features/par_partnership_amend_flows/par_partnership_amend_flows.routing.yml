@@ -1,0 +1,40 @@
+par_partnership_amend_flows.add_legal_entity:
+  path: '/partnership/{par_data_partnership}/amend'
+  defaults:
+    _form: '\Drupal\par_partnership_amend_flows\Form\ParAddLegalEntityForm'
+    _title_callback: '\Drupal\par_partnership_amend_flows\Form\ParAddLegalEntityForm::titleCallback'
+  requirements:
+    _permission: 'amend own partnerships'
+    _par_amend_partnerships_access_check: 'TRUE'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_partnership_amend_flows.review:
+  path: '/partnership/{par_data_partnership}/amend/review'
+  defaults:
+    _form: '\Drupal\par_partnership_amend_flows\Form\ParReviewForm'
+    _title_callback: '\Drupal\par_partnership_amend_flows\Form\ParReviewForm::titleCallback'
+  requirements:
+    _permission: 'amend own partnerships'
+    _par_amend_partnerships_access_check: 'TRUE'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_partnership_amend_flows.complete:
+  path: '/partnership/{par_data_partnership}/amend/complete'
+  defaults:
+    _controller: '\Drupal\par_partnership_amend_flows\Controller\ParCompleteController::content'
+    _title_callback: '\Drupal\par_partnership_amend_flows\Controller\ParCompleteController::titleCallback'
+  requirements:
+    _permission: 'amend own partnerships'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership

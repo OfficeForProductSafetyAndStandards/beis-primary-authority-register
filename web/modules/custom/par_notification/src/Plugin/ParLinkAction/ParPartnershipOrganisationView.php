@@ -20,6 +20,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *     "new_partnership_notification",
  *     "partnership_approved_notificatio",
  *     "partnership_revocation_notificat",
+ *     "new_partnership_amendment",
+ *     "partnership_amendment_nominated",
  *   },
  *   field = "field_partnership",
  * )

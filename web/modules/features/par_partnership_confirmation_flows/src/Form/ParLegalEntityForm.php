@@ -27,7 +27,7 @@ class ParLegalEntityForm extends ParBaseForm {
   public function loadData() {
     // Must tell the component plugin where to get data for the selection screen.
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_select_legal_entities');
-    $this->getFlowDataHandler()->setParameter('select_legal_entity_cid', $cid);
+//    $this->getFlowDataHandler()->setParameter('select_legal_entity_cid', $cid);
 
     parent::loadData();
   }

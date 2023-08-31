@@ -119,6 +119,9 @@ module:
   par_migrate_files: 0
   par_notification: 0
   par_organisation_update_flows: 0
+  par_partnership_amend_confirm_flows: 0
+  par_partnership_amend_flows: 0
+  par_partnership_amend_nominate_flows: 0
   par_partnership_application_flows: 0
   par_partnership_confirmation_flows: 0
   par_partnership_contact_add_flows: 0

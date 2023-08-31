@@ -872,16 +872,18 @@ class ParDataPartnership extends ParDataEntity {
    *   Return a new or existing partnership legal entity.
    */
   private function createPartnershipLegalEntity(ParDataLegalEntity $legal_entity): ParDataPartnershipLegalEntity {
+    $legal_entity = $legal_entity->deduplicate();
+
     // Loop through all existing partnership legal entities and check
     // whether an active legal entity is already existing on the partnership.
-    foreach ($this->getPartnershipLegalEntities(TRUE) as $field_delta => $partnership_legal_entity) {
+    $existing_legal_entities = $this->getPartnershipLegalEntities($this->isActive());
+    foreach ($existing_legal_entities as $field_delta => $partnership_legal_entity) {
       if ($partnership_legal_entity->getLegalEntity()?->id() === $legal_entity->id()) {
         // Return the existing legal entity if found.
         return $partnership_legal_entity;
       }
     }
-
-    // Create a new partnership legal entity wrapper.]
+    // Create a new partnership legal entity wrapper.
     $partnership_legal_entity = ParDataPartnershipLegalEntity::create([]);
     // Set the legal entity.
     $partnership_legal_entity->setLegalEntity($legal_entity);

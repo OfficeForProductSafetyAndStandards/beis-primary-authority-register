@@ -70,6 +70,7 @@ steps:
       business_size: par_partnership_confirmation_business_size
       trading_name: par_partnership_confirmation_trading_name
       legal_select: par_partnership_confirmation_select_legal_entities
+      legal_entity_add: par_partnership_confirmation_add_legal_entity
     redirect:
       about_business: 2
       address: 3

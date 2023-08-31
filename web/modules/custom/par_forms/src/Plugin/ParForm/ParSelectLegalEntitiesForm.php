@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -18,7 +19,7 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $this->getflowDataHandler()->getParameter('par_data_organisation');
 
@@ -40,13 +41,13 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
       $this->getFlowDataHandler()->setFormPermValue('coordinated_partnership', $par_data_partnership->isCoordinated());
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $radio_options = $this->getFlowDataHandler()->getFormPermValue('legal_entity_options');
 
@@ -83,7 +84,7 @@ limited company or partnership, as well as other types of organisations such as 
       '#title' => t('Choose which legal entities this partnership relates to'),
       '#options' => $radio_options,
       // Automatically check all legal entities if no form data is found.
-      '#default_value' => $this->getDefaultValuesByKey('field_legal_entity', $cardinality, $partnership_legal_entities),
+      '#default_value' => $this->getDefaultValuesByKey('field_legal_entity', $index, $partnership_legal_entities),
     ];
 
     // A note to the user that they can add a new legal entity on the next step.

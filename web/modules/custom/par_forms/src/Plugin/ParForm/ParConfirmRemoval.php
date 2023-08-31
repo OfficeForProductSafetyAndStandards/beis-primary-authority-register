@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -30,17 +31,17 @@ class ParConfirmRemoval extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $item_name = $this->getConfiguration()['item'] ?? 'Item';
     $this->getFlowDataHandler()->setFormPermValue("item_name", $item_name);
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     $item = $this->getFlowDataHandler()->getFormPermValue("item_name");
 
     $form['confirm'] = [
@@ -57,13 +58,13 @@ class ParConfirmRemoval extends ParFormPluginBase {
   /**
    * Validate checkbox.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     if (!$form_state->getValue('confirm') ||
       $form_state->getValue('confirm') != ParConfirmRemoval::REMOVAL_CONFIRM) {
       $id = $this->getElementId('confirm', $form);
       $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('You must confirm you wish to remove this item.', $id));
     }
 
-    parent::validate($form, $form_state, $cardinality, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }
