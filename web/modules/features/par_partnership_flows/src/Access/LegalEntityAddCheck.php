@@ -92,6 +92,11 @@ class LegalEntityAddCheck implements AccessInterface {
       return AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
     }
 
+    // Restrict access when partnership is revoked.
+    if ($par_data_partnership->isRevoked()) {
+      return AccessResult::forbidden('This partnership is revoked therefore the legal entities cannot be added.');
+    }
+
     // Restrict business users who have already confirmed their business details.
     if ($par_data_partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
       return AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
