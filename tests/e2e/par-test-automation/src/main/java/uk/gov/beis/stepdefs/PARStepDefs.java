@@ -296,6 +296,8 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, RandomStringGenerator.getEmail(4));
 		}
 		
+		ScenarioContext.secondJourneyPart = false;
+		
 		LOG.info("Select apply new partnership");
 		parDashboardPage.selectApplyForNewPartnership();
 		
@@ -309,7 +311,7 @@ public class PARStepDefs {
 		parPartnershipTermsPage.acceptTerms();
 		
 		LOG.info("Entering partnership description");
-		parPartnershipDescriptionPage.enterPartnershipDescription(DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO), ScenarioContext.secondJourneyPart);
+		parPartnershipDescriptionPage.enterPartnershipDescription(DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO));
 		
 		LOG.info("Entering business/organisation name");
 		parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
@@ -329,10 +331,11 @@ public class PARStepDefs {
 	@Then("^the first part of the partnership application is successfully completed$")
 	public void the_first_part_of_the_partnership_application_is_successfully_completed() throws Throwable {
 		LOG.info("Confirm/check partnership details");
-		parPartnershipConfirmationPage.confirmDetails();
+		parPartnershipConfirmationPage.confirmDetailsAsAuthority();
+		
 		Assert.assertTrue("Partnership info missing", parPartnershipConfirmationPage.checkPartnershipInfo());
-		Assert.assertTrue("Partnership appliction information not correct",
-				parPartnershipConfirmationPage.checkPartnershipApplication());
+		Assert.assertTrue("Partnership appliction information not correct", parPartnershipConfirmationPage.checkPartnershipApplication());
+		
 		LOG.info("Saving changes");
 		parPartnershipConfirmationPage.saveChanges();
 		parPartnershipCompletionPage.completeApplication();
@@ -376,46 +379,63 @@ public class PARStepDefs {
 	public void the_user_completes_the_partnership_application_with_the_following_details(DataTable details)
 			throws Throwable {
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
-			LOG.info("Accepting terms");
-			parDeclarationPage.acceptTerms();
-			LOG.info("Add business description");
+			
 			DataStore.saveValue(UsableValues.BUSINESS_DESC, data.get("Business Description"));
-			parBusinessDetailsPage.enterBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
-			LOG.info("Confirming address details");
-			parBusinessAddressDetailsPage.proceed();
-			LOG.info("Confirming contact details");
-			parBusinessContactDetailsPage.proceed();
-			LOG.info("Selecting SIC Code");
 			DataStore.saveValue(UsableValues.SIC_CODE, data.get("SIC Code"));
-			sicCodePage.selectSICCode(data.get("SIC Code"));
-			String partnershiptype = DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase();
-			switch (partnershiptype) {
+			
+			switch (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase()) {
 
 			case ("direct"):
-				LOG.info("Selecting No of Employees");
 				DataStore.saveValue(UsableValues.NO_EMPLOYEES, data.get("No of Employees"));
-				employeesPage.selectNoEmployees(data.get("No of Employees"));
 				break;
 
 			case ("co-ordinated"):
-				LOG.info("Selecting Membership List size");
 				DataStore.saveValue(UsableValues.MEMBERLIST_SIZE, data.get("Member List Size"));
-				memberListPage.selectMemberSize(data.get("Member List Size"));
 				break;
 			}
-
-			LOG.info("Entering business trading name");
-			DataStore.saveValue(UsableValues.TRADING_NAME,
-					DataStore.getSavedValue(UsableValues.BUSINESS_NAME).replace("Business", "trading name"));
-			tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+			
+			DataStore.saveValue(UsableValues.TRADING_NAME, DataStore.getSavedValue(UsableValues.BUSINESS_NAME).replace("Business", "trading name"));
 			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Legal Entity Name"));
 			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal entity Type"));
 			DataStore.saveValue(UsableValues.ENTITY_NUMBER, data.get("Company number"));
-			legalEntityTypePage.selectEntityType(DataStore.getSavedValue(UsableValues.ENTITY_NAME),DataStore.getSavedValue(UsableValues.ENTITY_TYPE),DataStore.getSavedValue(UsableValues.ENTITY_NUMBER));
-			legalEntityReviewPage.proceed();
-			LOG.info("Set second part of journey part to true");
-			ScenarioContext.secondJourneyPart = true;
 		}
+		
+		LOG.info("Accepting terms");
+		parDeclarationPage.acceptTerms();
+		
+		LOG.info("Add business description");
+		parBusinessDetailsPage.enterBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
+		
+		LOG.info("Confirming address details");
+		parBusinessAddressDetailsPage.proceed();
+		
+		LOG.info("Confirming contact details");
+		parBusinessContactDetailsPage.proceed();
+		
+		LOG.info("Selecting SIC Code");
+		sicCodePage.selectSICCode(DataStore.getSavedValue(UsableValues.SIC_CODE));
+		
+		switch (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase()) {
+
+		case ("direct"):
+			LOG.info("Selecting No of Employees");
+			employeesPage.selectNoEmployees(DataStore.getSavedValue(UsableValues.NO_EMPLOYEES));
+			break;
+
+		case ("co-ordinated"):
+			LOG.info("Selecting Membership List size");
+			memberListPage.selectMemberSize(DataStore.getSavedValue(UsableValues.MEMBERLIST_SIZE));
+			break;
+		}
+
+		LOG.info("Entering business trading name");
+		tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+		
+		legalEntityTypePage.selectEntityType(DataStore.getSavedValue(UsableValues.ENTITY_NAME),DataStore.getSavedValue(UsableValues.ENTITY_TYPE),DataStore.getSavedValue(UsableValues.ENTITY_NUMBER));
+		legalEntityReviewPage.proceed();
+		
+		LOG.info("Set second part of journey part to true");
+		ScenarioContext.secondJourneyPart = true;
 	}
 
 	@Then("^the second part of the partnership application is successfully completed$")
@@ -523,7 +543,7 @@ public class PARStepDefs {
 	public void the_user_updates_the_partnership_information_with_the_following_info(String desc) throws Throwable {
 		parPartnershipConfirmationPage.editAboutPartnership();
 		DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, desc);
-		parPartnershipDescriptionPage.enterPartnershipDescription(desc, ScenarioContext.secondJourneyPart);
+		parPartnershipDescriptionPage.enterPartnershipDescription(desc);
 	}
 
 	@Then("^the partnership is updated correctly$")
@@ -603,16 +623,18 @@ public class PARStepDefs {
 	public void the_user_updates_all_the_fields_for_last_created_organisation() throws Throwable {
 		LOG.info("Update all fields");
 		businessConfirmationPage.editOrganisationName();
-		DataStore.saveValue(UsableValues.BUSINESS_NAME,
-				DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + " Updated");
+		
+		DataStore.saveValue(UsableValues.BUSINESS_NAME, DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + " Updated");
 		parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 		businessConfirmationPage.editOrganisationDesc();
-		DataStore.saveValue(UsableValues.BUSINESS_DESC,
-				DataStore.getSavedValue(UsableValues.BUSINESS_DESC) + " Updated");
+		
+		DataStore.saveValue(UsableValues.BUSINESS_DESC, DataStore.getSavedValue(UsableValues.BUSINESS_DESC) + " Updated");
 		parBusinessDetailsPage.enterBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
 		businessConfirmationPage.editTradingName();
+		
 		DataStore.saveValue(UsableValues.TRADING_NAME, DataStore.getSavedValue(UsableValues.TRADING_NAME) + " Updated");
 		tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+		
 		businessConfirmationPage.editSICCode();
 		sicCodePage.selectSICCode("allow people to eat");
 	}
@@ -1370,8 +1392,8 @@ public class PARStepDefs {
 		assertEquals(inspectionPlanSearchPage.getPlanStatus(), "Revoked");
 	}
 
-	@When("^the user revokes the last created inspection plan$")
-	public void the_user_revokes_the_last_created_inspection_plan() throws Throwable {
+	@When("^the user has revoked the last created inspection plan$")
+	public void the_user_has_revoked_the_last_created_inspection_plan() throws Throwable {
 		LOG.info("Removing inspection plan");
 		inspectionPlanSearchPage.selectRemoveLink();
 		removeReasonInspectionPlanPage.enterRemoveDescription();

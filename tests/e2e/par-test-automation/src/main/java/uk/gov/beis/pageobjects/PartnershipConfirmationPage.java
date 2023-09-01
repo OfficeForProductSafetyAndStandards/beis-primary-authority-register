@@ -118,12 +118,21 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		return PageFactory.initElements(driver, EnforcementNotificationPage.class);
 	}
 
-	public PartnershipConfirmationPage confirmDetails() {
-		WebElement checkbox = ScenarioContext.secondJourneyPart
-				? driver.findElement(By.id("edit-terms-organisation-agreed"))
-				: driver.findElement(By.id("edit-terms-authority-agreed"));
+	public PartnershipConfirmationPage confirmDetailsAsAuthority() {
+		WebElement checkbox = driver.findElement(By.id("edit-terms-authority-agreed"));
+		
 		if (!checkbox.isSelected())
 			checkbox.click();
+		
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
+	
+	public PartnershipConfirmationPage confirmDetails() {
+		WebElement checkbox = ScenarioContext.secondJourneyPart ? driver.findElement(By.id("edit-terms-organisation-agreed")) : driver.findElement(By.id("edit-terms-authority-agreed"));
+		
+		if (!checkbox.isSelected())
+			checkbox.click();
+		
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 
