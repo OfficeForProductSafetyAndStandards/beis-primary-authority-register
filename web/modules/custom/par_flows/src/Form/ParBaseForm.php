@@ -682,20 +682,21 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     // For components that support the summary list only add the data that has been changed.
     foreach ($this->getComponents() as $component) {
-      $has_existing_data = !$component->isFlattened() && isset($existing_data[$component->getPrefix()]);
+      // Don't merge any component data if the component has singular cardinality or is empty.
+      if (!$component->isMultiple() || !$component->hasData()) {
+        continue;
+      }
 
       // For summary lists ensure only the indexes being modified are added.
-      if ($this->getFormBuilder()->supportsSummaryList($component) && $has_existing_data) {
+      if ($this->getFormBuilder()->supportsSummaryList($component)) {
           $data[$component->getPrefix()] = $data[$component->getPrefix()] + $existing_data[$component->getPrefix()];
       }
       // There are no other situations where existing structured component data is persisted.
-      if ($has_existing_data) {
-        unset($existing_data[$component->getPrefix()]);
-      }
+      unset($existing_data[$component->getPrefix()]);
     }
 
     // Ensure that any data outside the components can be maintained in the existing data.
-    return NestedArray::mergeDeep($existing_data, $data);
+    return NestedArray::mergeDeepArray([$existing_data, $data], TRUE);
   }
 
   /**
@@ -710,13 +711,16 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   protected function reindexData($data): array {
     // For components that support multiple cardinality allow the values to be reindexed.
     foreach ($this->getComponents() as $component) {
-      if ($component->isMultiple() && isset($data[$component->getPrefix()])) {
-        // Filter the data.
-        $data = $this->getFlowDataHandler()->filter($data, [ParFlowDataHandler::class, 'filterValues']);
-
-        // Reinded the data.
-        $data[$component->getPrefix()] = array_values($data[$component->getPrefix()]);
+      // Don't reindex any components that have singular cardinality or are empty.
+      if (!$component->isMultiple() || !$component->hasData()) {
+        continue;
       }
+
+      // Filter the data.
+      $data = $this->getFlowDataHandler()->filter($data, [ParFlowDataHandler::class, 'filterValues']);
+
+      // Reinded the data.
+      $data[$component->getPrefix()] = array_values($data[$component->getPrefix()]);
     }
 
     // Filter empty values from merged data also.
