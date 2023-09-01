@@ -66,7 +66,7 @@ Feature: General
     When the user searches for the last created partnership
     And the user uploads an inspection plan against the partnership with the following details:
       | Title              | Description |
-      | INspection Title 1 | Test 1      |
+      | Inspection Title 1 | Test 1      |
 
   @regression @inspectionplan @inspectionfeedback
   Scenario: Verify Update of Inspection Plan (Happy Path - PAR-1865)
@@ -109,7 +109,6 @@ Feature: General
     
 	# Create an Enforcement Notice and Block Enforcement Notice Test goes here.
 	
-	# Remove Enforcement Notice Test goes here.
 	@regression @enforcement
   Scenario: Verify a Help Desk user can remove an Enforcement Notice Successfully (Happy Path - PAR-1855)
     Given the user is on the PAR login page
@@ -216,7 +215,7 @@ Feature: General
 		# Add the Help Desk Response to General Enquiry.
 	
 	@regression @inspectionplan
-  Scenario: Verify Revocation pf an Inspection Plan (Happy Path - PAR-1866, PAR-1867)
+  Scenario: Verify Revocation of an Inspection Plan (Happy Path - PAR-1866)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created partnership
@@ -226,7 +225,7 @@ Feature: General
     Then the inspection plan is successfully removed
 
 	@regression @inspectionplan
-  Scenario: Verify Removal of an Inspection Plan (Happy Path - PAR-1866, PAR-1867)
+  Scenario: Verify Removal of an Inspection Plan (Happy Path - PAR-1867)
    	Given the user is on the PAR login page
    	And the user logs in with the "par_helpdesk@example.com" user credentials
    	When the user searches for the last created partnership
