@@ -38,6 +38,68 @@ interface ParFormPluginInterface extends PluginInspectionInterface, Configurable
   public function getMapping();
 
   /**
+   * Identify whether this plugin instance supports multiple values.
+   *
+   * @return bool
+   *   TRUE if the component instance supports more than 1 item
+   *   FALSE if the component instance only allows a single item value
+   */
+  public function isMultiple(): bool;
+
+  /**
+   * Whether the data will be flattened when dealing with the form data.
+   *
+   * @return bool
+   *   TRUE for single value components that don't maintain their form structure
+   *   FALSE for multi value components that maintain their form structure with #tree
+   */
+  public function isFlattened(): bool;
+
+  /**
+   * Identify whether the plugin has already added all the available items
+   * for this component instance or whether another item can be added.
+   *
+   * @return bool
+   *   TRUE if no more items can be added.
+   *   FALSE if more items can be added.
+   */
+  public function isFull(): bool;
+
+  /**
+   * Count the cardinality of already submitted values.
+   *
+   * @param mixed $data
+   *   If required the data to be counted can be switched to the form_state values.
+   *
+   * @return integer
+   */
+  public function countItems(array $data = NULL): int;
+
+  /**
+   * Whether the plugin has any data.
+   *
+   * @return bool
+   */
+  public function hasData(): bool;
+
+  /**
+   * Get the plugin data.
+   *
+   * @return array
+   *   An array of data,
+   *   or an empty array if no data was found.
+   */
+  public function getData(): array;
+
+  /**
+   * Set the plugin data.
+   *
+   * @param array $data
+   *   The plugin data to store.
+   */
+  public function setData(array $data): void;
+
+  /**
    * Returns all the form elements for this form component.
    *
    * @param array $form
