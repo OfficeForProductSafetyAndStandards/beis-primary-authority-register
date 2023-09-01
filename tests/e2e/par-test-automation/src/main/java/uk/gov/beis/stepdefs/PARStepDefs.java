@@ -280,44 +280,50 @@ public class PARStepDefs {
 	}
 
 	@When("^the user creates a new \"([^\"]*)\" partnership application with the following details:$")
-	public void the_user_creates_a_new_partnership_application_with_the_following_details(String type,
-			DataTable details) throws Throwable {
+	public void the_user_creates_a_new_partnership_application_with_the_following_details(String type, DataTable details) throws Throwable {
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
-			LOG.info("Select apply new partnership");
-
-			parDashboardPage.selectApplyForNewPartnership();
-			LOG.info("Choose authority");
+			
 			DataStore.saveValue(UsableValues.AUTHORITY_NAME, data.get("Authority"));
-			parAuthorityPage.selectAuthority(data.get("Authority"));
-			LOG.info("Select partnership type");
 			DataStore.saveValue(UsableValues.PARTNERSHIP_TYPE, type);
-			parPartnershipTypePage.selectPartnershipType(type);
-			LOG.info("Accepting terms");
-			parPartnershipTermsPage.acceptTerms();
 			DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, data.get("Partnership Info"));
-			LOG.info("Entering partnership description");
-			parPartnershipDescriptionPage.enterPartnershipDescription(data.get("Partnership Info"),
-					ScenarioContext.secondJourneyPart);
-			LOG.info("Entering business/organisation name");
 			DataStore.saveValue(UsableValues.BUSINESS_NAME, RandomStringGenerator.getBusinessName(4));
-			parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
-			LOG.info("Enter address details");
-			parBusinessAddressDetailsPage.enterAddressDetails(data.get("addressline1"), data.get("town"),
-					data.get("postcode"));
 			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("addressline1"));
 			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("town"));
 			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("postcode"));
-
-			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, RandomStringGenerator.getEmail(4));
-			LOG.info("Enter contact details");
-			parBusinessContactDetailsPage.enterContactDetails(data.get("firstname"), data.get("lastname"),
-					data.get("phone"), DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 			DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, data.get("firstname"));
 			DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, data.get("lastname"));
 			DataStore.saveValue(UsableValues.BUSINESS_PHONE, data.get("phone"));
-			LOG.info("Send invitation to user");
-			parBusinessInvitePage.sendInvite();
+			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, RandomStringGenerator.getEmail(4));
 		}
+		
+		LOG.info("Select apply new partnership");
+		parDashboardPage.selectApplyForNewPartnership();
+		
+		LOG.info("Choose authority");
+		parAuthorityPage.selectAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		
+		LOG.info("Select partnership type");
+		parPartnershipTypePage.selectPartnershipType(type);
+		
+		LOG.info("Accepting terms");
+		parPartnershipTermsPage.acceptTerms();
+		
+		LOG.info("Entering partnership description");
+		parPartnershipDescriptionPage.enterPartnershipDescription(DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO), ScenarioContext.secondJourneyPart);
+		
+		LOG.info("Entering business/organisation name");
+		parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		
+		LOG.info("Enter address details");
+		parBusinessAddressDetailsPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_TOWN),
+				DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		
+		LOG.info("Enter contact details");
+		parBusinessContactDetailsPage.enterContactDetails(DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME), DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME),
+				DataStore.getSavedValue(UsableValues.BUSINESS_PHONE), DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
+		
+		LOG.info("Send invitation to user");
+		parBusinessInvitePage.sendInvite();
 	}
 
 	@Then("^the first part of the partnership application is successfully completed$")

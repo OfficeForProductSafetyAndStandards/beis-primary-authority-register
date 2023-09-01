@@ -1,4 +1,4 @@
-Feature: 
+Feature: Other
   As a user of the PAR service
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
