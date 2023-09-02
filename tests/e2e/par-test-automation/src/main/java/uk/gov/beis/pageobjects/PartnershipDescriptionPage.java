@@ -20,7 +20,7 @@ public class PartnershipDescriptionPage extends BasePageObject {
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 
-	public BusinessPage enterPartnershipDescription(String description, boolean secondJourney) throws Throwable {
+	public BusinessPage enterPartnershipDescription(String description) throws Throwable {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
 		try {
