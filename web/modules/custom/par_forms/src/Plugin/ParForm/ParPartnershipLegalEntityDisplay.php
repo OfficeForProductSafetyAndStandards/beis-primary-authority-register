@@ -156,6 +156,9 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     ];
     $headers = &$form['partnership_legal_entities']['table']['#header'];
 
+    // Record which legal entities have actions.
+    $legal_entity_actions = [];
+
     // Add a row for each partnership legal entity.
     foreach ($partnership_legal_entities as $delta => $partnership_legal_entity) {
       // Get the actual legal entity instance.
@@ -185,13 +188,15 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         'par_data_partnership' => $partnership,
         'par_data_partnership_le' => $partnership_legal_entity,
       ];
-      $legal_entity_actions = [];
+      $actions = [];
       foreach ($operations as $link_name => $link_label) {
         // Attempt to generate the link.
         try {
-          $link = $this->getFlowNegotiator()->getFlow()->getOperationLink($link_name, $link_label, $link_params);
-          if ($link instanceof Link){
-            $legal_entity_actions[$link_name] = $link;
+          $link = $this->getFlowNegotiator()
+            ->getFlow()
+            ->getOperationLink($link_name, $link_label, $link_params);
+          if ($link instanceof Link) {
+            $actions[$link_name] = $link;
           }
         }
         catch (ParFlowException $e) {
@@ -199,12 +204,12 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
           continue;
         }
       }
-
-      // Only show the operations column if user has access to modify the legal entities.
-      if (!empty($legal_entity_actions) && array_search('Actions', $headers) === false) {
-        $headers[3] = 'Actions';
+      if (!empty($actions)) {
+        $legal_entity_actions[$delta] = $actions;
       }
-      $legal_entity_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
+
+      $legal_entity_view_builder = $this->getParDataManager()
+        ->getViewBuilder('par_data_legal_entity');
       $legal_entity_summary = $legal_entity_view_builder->view($legal_entity, 'summary');
       $classes = ['legal-entity'];
 
@@ -240,37 +245,56 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         // Add the date the legal entity was nominated.
         $status_message .= "<br>@start to present";
       }
-      else if ($partnership_legal_entity->isRevoked() && $start_date && $end_date) {
-        // Add the dates the legal entity was active during.
-        $status_message .= "<br>@start to @end";
+      else {
+        if ($partnership_legal_entity->isRevoked() && $start_date && $end_date) {
+          // Add the dates the legal entity was active during.
+          $status_message .= "<br>@start to @end";
+        }
       }
 
       // Get the replacement values.
       $status = $partnership_legal_entity->getParStatus();
-      $start = $start_date ? $this->getDateFormatter()->format($start_date, 'gds_date_format') : NULL;
-      $end = $end_date ? $this->getDateFormatter()->format($end_date, 'gds_date_format') : NULL;
+      $start = $start_date ? $this->getDateFormatter()
+        ->format($start_date, 'gds_date_format') : NULL;
+      $end = $end_date ? $this->getDateFormatter()
+        ->format($end_date, 'gds_date_format') : NULL;
 
       $form['partnership_legal_entities']['table'][$delta]['status'] = [
         '#type' => 'html_tag',
         '#tag' => 'span',
         '#attributes' => ['class' => 'status'],
-        '#value' => $this->t($status_message, ['@status' => $status, '@start' => $start, '@end' => $end]),
+        '#value' => $this->t($status_message, [
+          '@status' => $status,
+          '@start' => $start,
+          '@end' => $end
+        ]),
       ];
+    }
 
-      if (array_search('Actions', $headers) === false) {
+    // Only show the operations column if user has access to modify the legal entities.
+    if (!empty($legal_entity_actions) && array_search('Actions', $headers) === false) {
+      $headers[3] = 'Actions';
+    }
+
+    // Add all the actions.
+    if (!empty($legal_entity_actions)) {
+      foreach ($partnership_legal_entities as $delta => $legal_entity) {
+        $actions = $legal_entity_actions[$delta] ?? [];
         // Operation links will go in the last column.
-        $form['partnership_legal_entities']['table'][$delta]['operations'] = ['#type' => 'container'];
-      }
+        if (array_search('Actions', $headers) !== FALSE) {
+          $form['partnership_legal_entities']['table'][$delta]['operations'] = ['#type' => 'container'];
+        }
 
-      // Display the link.
-      foreach ($legal_entity_actions as $link_name => $link) {
-        if ($link instanceof Link) {
-          $form['partnership_legal_entities']['table'][$delta]['operations'][$link_name] = [
-            '#type' => 'html_tag',
-            '#tag' => 'p',
-            '#value' => $link->toString(),
-            '#attributes' => ['class' => [$link_name]],
-          ];
+        // Display the link.
+        foreach ($actions as $link_name => $link) {
+          if ($link instanceof Link) {
+            $form['partnership_legal_entities']['table'][$delta]['operations'][$link_name] = [
+              '#type' => 'html_tag',
+              '#tag' => 'p',
+              '#value' => $link->toString(),
+              '#attributes' => ['class' => [$link_name]],
+            ];
+          }
         }
       }
     }
