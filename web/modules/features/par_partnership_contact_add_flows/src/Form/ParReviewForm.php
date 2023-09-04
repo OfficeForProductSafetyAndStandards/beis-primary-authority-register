@@ -203,7 +203,14 @@ class ParReviewForm extends ParBaseForm {
         'work_phone' => $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid),
         'mobile_phone' => $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid),
       ]);
-      $par_data_person->updateEmail($this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid), $account);
+
+      // Update the email address.
+      $email = $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid);
+      if (!empty($email)) {
+        $account instanceof User ?
+          $par_data_person->updateEmail($email, $account) :
+          $par_data_person->updateEmail($email);
+      }
 
       if ($communication_notes = $this->getFlowDataHandler()->getTempDataValue('notes', $contact_details_cid)) {
         $par_data_person->set('communication_notes', $communication_notes);

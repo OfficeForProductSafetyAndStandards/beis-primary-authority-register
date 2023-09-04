@@ -187,7 +187,7 @@ class ParReviewForm extends ParBaseForm {
   public function createEntities() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
-    // If the user account should also be updated.
+    // If the user account exists this should also be updated.
     $account = $this->getFlowDataHandler()->getParameter('user');
 
     // Get the cache IDs for the various forms that needs to be extracted from.
