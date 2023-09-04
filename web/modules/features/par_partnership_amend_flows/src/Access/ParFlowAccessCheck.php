@@ -80,6 +80,13 @@ class ParFlowAccessCheck implements AccessInterface {
 
     }
 
+    // Limit access to partnership pages.
+    $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
+    if (!$account->hasPermission('bypass par_data membership') &&
+      (!$user || !$this->getParDataManager()->isMember($par_data_partnership, $user))) {
+      return AccessResult::forbidden('The user is not allowed to access this page.');
+    }
+
     // Only active partnerships can be amended.
     if (!$par_data_partnership->isActive()) {
       return AccessResult::forbidden('Only active partnerships can be amended.');
