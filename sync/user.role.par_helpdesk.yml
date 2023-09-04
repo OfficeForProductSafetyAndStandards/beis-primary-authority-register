@@ -37,6 +37,7 @@ dependencies:
     - par_person_create_flows
     - par_person_merge_flows
     - par_person_update_flows
+    - par_profile_update_flows
     - par_profile_view_flows
     - par_rd_delete_data_flows
     - par_rd_help_desk_flows
@@ -196,6 +197,7 @@ permissions:
   - 'manage all authorities'
   - 'manage all organisation'
   - 'manage all organisations'
+  - 'manage all profiles'
   - 'manage my authorities'
   - 'manage my organisations'
   - 'manage own authority'
