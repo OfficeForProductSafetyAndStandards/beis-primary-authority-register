@@ -400,13 +400,21 @@ class ParTfaSms extends TfaBasePlugin implements TfaValidationInterface, TfaSetu
    *   Decrypted account OTP seed or FALSE if none exists.
    */
   protected function getMobileNumber() {
+    // Load the user.
+    $user = \Drupal::entityTypeManager()
+      ->getStorage('user')
+      ->load($this->uid);
+
+    // Get users email.
+    $users_email = $user->get('mail')->value;
+
     // Get the users mobile number from their person data.
     $query = $this->dbConnection->select(
       'par_people_field_data',
       'pfd',
     );
     $query->fields('pfd', ['mobile_phone']);
-    $query->condition('pfd.user_id', $this->uid);
+    $query->condition('pfd.email', $users_email);
     $mobile_number = $query->execute()->fetchField();
 
     if (!empty($mobile_number)) {
@@ -420,10 +428,10 @@ class ParTfaSms extends TfaBasePlugin implements TfaValidationInterface, TfaSetu
    *
    * @return void
    */
-  public function setMobileNumber($mobile_number, $uid): void {
+  public function setMobileNumber($mobile_number, $email): void {
     $this->dbConnection
       ->update('par_people_field_data')
-      ->condition('user_id', $uid)
+      ->condition('email', $email)
       ->fields([
         'mobile_phone' => $mobile_number,
       ])
@@ -475,6 +483,7 @@ class ParTfaSms extends TfaBasePlugin implements TfaValidationInterface, TfaSetu
     $form['sms_phone_number'] = [
       '#type' => 'tel',
       '#placeholder' => $this->t('Mobile Number'),
+      '#default_value' => $this->getMobileNumber() ?? '',
     ];
 
     $form['actions']['#type'] = 'actions';
@@ -527,26 +536,22 @@ class ParTfaSms extends TfaBasePlugin implements TfaValidationInterface, TfaSetu
   /**
    * {@inheritdoc}
    */
-  public function submitSetupForm(array $form, FormStateInterface $form_state) {
+  public function submitSetupForm(array $form, FormStateInterface $form_state): void {
     if (empty($this->uid)) {
       $values = $form_state->getValues();
       $this->uid = $values['account']->uid->value;
     }
 
-    $user = $this->userStorage->load($this->uid);
-    if (!empty($user) && $user->hasField('mobile_number')) {
-      $user->set('mobile_number', $form_state->getValue('sms_phone_number'));
-      $user->save();
+    // Save the mobile number in the database.
+    $this->setMobileNumber(
+      $form_state->getValue('sms_phone_number'),
+      $values['account']->mail->value,
+    );
 
-      // Enable SMS plugin in the userData.
-      $this->tfaSaveTfaData($this->uid, [
-        'plugins' => 'par_tfa_sms',
-      ]);
-
-      return TRUE;
-    }
-
-    return FALSE;
+    // Enable SMS plugin in the userData.
+    $this->tfaSaveTfaData($this->uid, [
+      'plugins' => 'par_tfa_sms',
+    ]);
   }
 
   /**

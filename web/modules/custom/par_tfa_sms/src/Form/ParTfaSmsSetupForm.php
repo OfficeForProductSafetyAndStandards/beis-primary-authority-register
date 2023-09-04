@@ -168,14 +168,6 @@ class ParTfaSmsSetupForm extends TfaSetupForm {
         if (!empty($storage['full_setup'])) {
           $this->parTfaSmsNextSetupStep($form_state, $method, $storage[$method], $skipped_method);
         }
-
-        // Plugin form submit.
-        $setup_class = $storage[$method];
-        if (!$setup_class->submitForm($form, $form_state)) {
-          $this->messenger()->addError($this->t('There was an error during TFA setup. Your settings have not been saved.'));
-          $form_state->setRedirect('tfa.overview', ['user' => $account->id()]);
-          return;
-        }
       }
 
       // Setup complete and return to overview page.
@@ -196,14 +188,10 @@ class ParTfaSmsSetupForm extends TfaSetupForm {
       }
     }
     elseif (!empty($values['sms_phone_number'])) {
-      $phone_number_stored = $this->getMobileNumber($account->uid->value);
-
-      if (empty($phone_number_stored)) {
-        $this->setMobileNumber(
-          $form_state->getValue('sms_phone_number'),
-          $account->uid->value
-        );
-      }
+      $this->setMobileNumber(
+        $form_state->getValue('sms_phone_number'),
+        $account->mail->value,
+      );
 
       $storage['mobile_provided'] = TRUE;
       $form_state->setRebuild();
@@ -268,13 +256,21 @@ class ParTfaSmsSetupForm extends TfaSetupForm {
    *   Decrypted account OTP seed or FALSE if none exists.
    */
   protected function getMobileNumber($uid) {
+    // Load the user.
+    $user = \Drupal::entityTypeManager()
+      ->getStorage('user')
+      ->load($uid);
+
+    // Get users email.
+    $users_email = $user->get('mail')->value;
+
     // Get the users mobile number from their person data.
     $query = \Drupal::database()->select(
       'par_people_field_data',
       'pfd',
     );
     $query->fields('pfd', ['mobile_phone']);
-    $query->condition('pfd.user_id', $uid);
+    $query->condition('pfd.email', $users_email);
     $mobile_number = $query->execute()->fetchField();
 
     if (!empty($mobile_number)) {
@@ -288,10 +284,10 @@ class ParTfaSmsSetupForm extends TfaSetupForm {
    *
    * @return void
    */
-  protected function setMobileNumber($mobile_number, $uid): void {
+  protected function setMobileNumber($mobile_number, $email): void {
     \Drupal::database()
       ->update('par_people_field_data')
-      ->condition('user_id', $uid)
+      ->condition('email', $email)
       ->fields([
         'mobile_phone' => $mobile_number,
       ])
