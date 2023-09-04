@@ -16,8 +16,8 @@ Feature: General
     #second part of partnership application
     When the user searches for the last created partnership
     And the user completes the partnership application with the following details:
-      | SIC Code            | No of Employees |	Legal Entity Name	| Legal entity Type 			| Company number	|	Business Description |
-      | allow people to eat | 10 to 49        |	LE1								| unregistered  				  | 12345678				|	Test Business        |
+      | SIC Code            | No of Employees | Legal Entity Name | Legal entity Type | Company number | Business Description |
+      | allow people to eat | 10 to 49        | LE1               | unregistered      |       12345678 | Test Business        |
     Then the second part of the partnership application is successfully completed
     #verify update of newly created partnership
     Given the user is on the PAR login page
@@ -26,7 +26,7 @@ Feature: General
     And the user updates the partnership information with the following info: "Updated Partnership info"
     Then the partnership is updated correctly
 
-@regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct
+  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct
   Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -41,7 +41,7 @@ Feature: General
     And the user searches again for the last created partnership
     Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
 
-	@regression @direct @partnershipapplication @update
+  @regression @direct @partnershipapplication @update
   Scenario: Update all Partnership details successfully (Happy Path - PAR-2214)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -57,9 +57,8 @@ Feature: General
       | 01 new road | Market   | Bury | Greater Manchester | GB      | GB-SCT       | BL2 4BD   | Updated Info           | you sell cookies. | Name Update  |
     Then all of the Partnership details have been updated successfully
 
-	# Update Legal Entities, Primary Authority Contact and Organisation Contact Tests go here.
-
-	@regression @inspectionplan @inspectionfeedback @deviationrequest
+  # Update Legal Entities, Primary Authority Contact and Organisation Contact Tests go here.
+  @regression @inspectionplan @inspectionfeedback @deviationrequest
   Scenario: Verify Upload of Inspection Plan (Happy Path - PAR-1856)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -77,21 +76,19 @@ Feature: General
       | Title              | Description |
       | Inspection Title 2 | Test 2      |
     Then the inspection plan is updated correctly
-	
-	@regression @advicenotice
+
+  @regression @advicenotice
   Scenario: Verify Upload of Advice Notice (Happy Path - PAR-1873)
-   Given the user is on the PAR login page
-   And the user logs in with the "par_helpdesk@example.com" user credentials
-   When the user searches for the last created partnership
-   And the user uploads an advice notice against the partnership with the following details:
-      | Title          | Type of Advice 				| Reg Function 			| Description	|
-      | Advice Title 1 | Background information	| Cookie control		| Test Advice	|
-	
-	# Update and Archive Advice Test goes here.
-	
-	# Upload and Remove Advice Test goes here.
-	
-	@regression @enforcement
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user uploads an advice notice against the partnership with the following details:
+      | Title          | Type of Advice         | Reg Function   | Description |
+      | Advice Title 1 | Background information | Cookie control | Test Advice |
+
+  # Update and Archive Advice Test goes here.
+  # Upload and Remove Advice Test goes here.
+  @regression @enforcement
   Scenario: Verify Send Notification of Proposed Enforcement, Approval and Removal (Happy Path - PAR-1852, PAR-1853, PAR-1854)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
@@ -106,22 +103,18 @@ Feature: General
     When the user selects the last created enforcement notice
     And the user approves the enforcement notice
     Then the enforcement notice is set to approved status
-    
-	# Create an Enforcement Notice and Block Enforcement Notice Test goes here.
-	
-	@regression @enforcement
+
+  # Create an Enforcement Notice and Block Enforcement Notice Test goes here.
+  @regression @enforcement
   Scenario: Verify a Help Desk user can remove an Enforcement Notice Successfully (Happy Path - PAR-1855)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created enforcement notice
     Then the user removes the enforcement notice successfully
-	
-	
-	# Discuss an Enforcement Notice Test goes here.
-	
-	# Create a Deviation Request and Block the Deviation Request Test goes here.
-	
-	@regression @deviationrequest
+
+  # Discuss an Enforcement Notice Test goes here.
+  # Create a Deviation Request and Block the Deviation Request Test goes here.
+  @regression @deviationrequest
   Scenario: Verify Submission of Deviation request following an Inspection plan (Happy Path - PAR-1857, PAR-1859)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
@@ -149,10 +142,9 @@ Feature: General
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created deviation request
     Then the deviation reply received successfully
-    
-    # Add the Help Desk Response to the Deviation Request.
-    
-	@regression @inspectionfeedback
+
+  # Add the Help Desk Response to the Deviation Request.
+  @regression @inspectionfeedback
   Scenario: Verify User can Submit feedback following an Inspection plan (Happy Path - PAR-1858, PAR-1860)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
@@ -180,10 +172,9 @@ Feature: General
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created inspection feedback
     Then the inspection feedback reply is received successfully
-	
-		# Add the Help Desk Response to Inspection Feedback.
-		
-	@regression @enquiry
+
+  # Add the Help Desk Response to Inspection Feedback.
+  @regression @enquiry
   Scenario: Verify User can Submit a general enquiry (Happy Path - PAR-1861)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
@@ -211,10 +202,9 @@ Feature: General
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created general enquiry
     Then the user successfully views the enquiry
-	
-		# Add the Help Desk Response to General Enquiry.
-	
-	@regression @inspectionplan
+
+  # Add the Help Desk Response to General Enquiry.
+  @regression @inspectionplan
   Scenario: Verify Revocation and then Removal of an Inspection Plan (Happy Path - PAR-1866, PAR-1867)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -223,10 +213,8 @@ Feature: General
     #remove the inspection plan
     When the user has revoked the last created inspection plan
     Then the inspection plan is successfully removed
-	
-	# Remove a Partnership Test goes here.
-	
-	
+
+  # Remove a Partnership Test goes here.
   @regression @partnershipapplication @coordinated
   Scenario: Verify Coordinated Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
     Given the user is on the PAR home page
@@ -240,21 +228,17 @@ Feature: General
     #second part of partnership application
     When the user searches for the last created partnership
     And the user completes the partnership application with the following details:
-      | SIC Code            | Member List Size | Business Description |	Legal Entity Name	| Legal entity Type 			| Company number	|	
-      | allow people to eat | Medium           | Test Business        | LE1								| unregistered  				  | 12345678				|
+      | SIC Code            | Member List Size | Business Description | Legal Entity Name | Legal entity Type | Company number |
+      | allow people to eat | Medium           | Test Business        | LE1               | unregistered      |       12345678 |
     Then the second part of the partnership application is successfully completed
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created partnership
-	
-	# Nominate the Co-ordinated Partnership Test goes here. (This step is imprtant for other tests such as searching the Puplic registry, PAR-2079)
-	
-	# Add, Update and Cease a Member Test goes here.
-	
-	# Upload a Members list Test goes here.
-	
-	# Change the Members list type Test goes here.
 
+  # Nominate the Co-ordinated Partnership Test goes here. (This step is imprtant for other tests such as searching the Puplic registry, PAR-2079)
+  # Add, Update and Cease a Member Test goes here.
+  # Upload a Members list Test goes here.
+  # Change the Members list type Test goes here.
   @regression @usermanagement
   Scenario: Verify Completion of User Creation journey (Happy Path - PAR-1904)
     Given the user is on the PAR login page
@@ -264,6 +248,3 @@ Feature: General
     And the user follows the invitation link
     And the user completes the user creation journey
     Then the user journey creation is successful
-
-
-  

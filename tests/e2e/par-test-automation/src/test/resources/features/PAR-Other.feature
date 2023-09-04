@@ -3,7 +3,7 @@ Feature: Other
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
 
-  @regression @authority
+  @regression @authority @authorityManagement
   Scenario: Verify Addition/Update of Authority (Happy Path - PAR-1849, PAR-1850)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials

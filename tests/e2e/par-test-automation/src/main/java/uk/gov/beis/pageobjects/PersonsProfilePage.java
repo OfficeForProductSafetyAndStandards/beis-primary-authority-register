@@ -20,19 +20,16 @@ public class PersonsProfilePage extends BasePageObject {
 	@FindBy(linkText = "Re-send the invitation")
 	private WebElement reSendAccountInvitationLink;
 
-	@FindBy(xpath = "//div[@class='component-user-detail']//p[2]")
-	private WebElement userAccountEmail;
-
 	@FindBy(xpath = "//div[@class='component-user-detail']//p[3]")
 	private WebElement userAccountType;
 
-	@FindBy(css = "div[class='component-contact-locations-detail'] p:nth-child(2)")
+	@FindBy(xpath = "//fieldset/p[@class='column-two-thirds'][1]")
 	private WebElement userContactName;
 
-	@FindBy(xpath = "//div[@class='component-contact-locations-detail']//p[3]")
+	@FindBy(xpath = "//fieldset/p[@class='column-two-thirds'][2]")
 	private WebElement userContactEmail;
 
-	@FindBy(css = "div[class='component-contact-locations-detail'] p:nth-child(5)")
+	@FindBy(xpath = "//fieldset/p[@class='column-one-third'][2]")
 	private WebElement userContactPhoneNumbers;
 
 	@FindBy(partialLinkText = "Update")
@@ -56,7 +53,7 @@ public class PersonsProfilePage extends BasePageObject {
 	}
 
 	public Boolean checkUserAccountEmail() {
-		return userAccountEmail.getText().contains(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
+		return userContactEmail.getText().contains(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 	}
 
 	public Boolean checkUserAccountType() {
@@ -80,15 +77,18 @@ public class PersonsProfilePage extends BasePageObject {
 	}
 
 	public Boolean checkContactPhoneNumbers() {
+		Boolean numbersDisplayed = false;
+		
 		if (userContactPhoneNumbers.getText().contains(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER))) {
-			return true;
-		} else if (userContactPhoneNumbers.getText().contains(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER))
-				&& userContactPhoneNumbers.getText()
-						.contains(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER))) {
-			return true;
+			numbersDisplayed = true;
+		} else if (userContactPhoneNumbers.getText().contains(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER)) 
+				&& userContactPhoneNumbers.getText().contains(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER))) {
+			numbersDisplayed = true;
 		} else {
-			return false;
+			numbersDisplayed = false;
 		}
+		
+		return numbersDisplayed;
 	}
 
 	public UpdateUserContactDetailsPage clickUpdateUserButton() {
@@ -98,17 +98,18 @@ public class PersonsProfilePage extends BasePageObject {
 
 	public Boolean seeMoreContactInformation() {
 		moreInformationBtn.click();
-		boolean found = false;
+		
+		Boolean locationsDisplayed = false;
+		
 		if (whereToContactDetails.isDisplayed()) {
-			if (whereToContactDetails.getText().contains(DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY))
-					&& whereToContactDetails.getText()
-							.contains(DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION))) {
-				found = true;
+			if (whereToContactDetails.getText().contains(DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY)) && whereToContactDetails.getText().contains(DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION))) {
+				locationsDisplayed = true;
 			} else {
-				found = false;
+				locationsDisplayed = false;
 			}
 		}
-		return found;
+		
+		return locationsDisplayed;
 	}
 
 	public ManagePeoplePage clickDoneButton() {
