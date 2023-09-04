@@ -308,7 +308,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
 
     // Rule 2: The same legal entity is not active on the partnership.
     $active_legal_entities = (array) $this->getPartnership()?->getLegalEntity();
-    $id = $this->id();
+    $id = $this->getLegalEntity()->id();
     $similar_legal_entity = array_filter($active_legal_entities, function ($legal_entity) use ($id) {
       return $legal_entity->id() === $id;
     });
