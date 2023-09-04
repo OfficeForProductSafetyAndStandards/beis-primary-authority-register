@@ -224,17 +224,16 @@ class ParReviewForm extends ParBaseForm {
       $par_data_person->set('communication_notes', $communication_notes);
     }
 
-    if ($preferred_contact = $this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_preferences_cid)) {
-      $email_preference_value = !empty($preferred_contact['communication_email']);
+    if ($communication_preferences = $this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_preferences_cid)) {
+      $email_preference_value = !empty($communication_preferences['communication_email']);
       $par_data_person->set('communication_email', $email_preference_value);
 
       // Save the work phone preference.
-      $work_phone_preference_value = !empty($preferred_contact['communication_phone']);
+      $work_phone_preference_value = !empty($communication_preferences['communication_phone']);
       $par_data_person->set('communication_phone', $work_phone_preference_value);
 
       // Save the mobile phone preference.
-      $mobile_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_preferences_cid)['communication_mobile'])
-        && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_preferences_cid)['communication_mobile']);
+      $mobile_phone_preference_value = !empty($communication_preferences['communication_mobile']);
       $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
     }
 
@@ -281,7 +280,7 @@ class ParReviewForm extends ParBaseForm {
     $lists = $this->getSubscriptionManager()->getLists();
     $subscriptions = $this->getFlowDataHandler()->getTempDataValue('subscriptions', $subscriptions_cid);
     $subscriptions = array_filter((array) $subscriptions);
-    $original_email = $this->getFlowDataHandler()->setFormPermValue('original_email');
+    $original_email = $this->getFlowDataHandler()->getFormPermValue('original_email');
     $new_email = $account?->getEmail();
     foreach ($lists as $list) {
       // Create a new subscription.
