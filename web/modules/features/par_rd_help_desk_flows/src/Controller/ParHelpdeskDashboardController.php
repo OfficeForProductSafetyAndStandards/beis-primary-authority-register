@@ -5,11 +5,13 @@ namespace Drupal\par_rd_help_desk_flows\Controller;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Link;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParFlowException;
@@ -243,6 +245,33 @@ class ParHelpdeskDashboardController extends ControllerBase {
       '#type' => 'markup',
       '#markup' => "<p>{$general_enquiries_link}</p>",
     ];
+
+    $build['user'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Your account'),
+      '#attributes' => ['class' => 'form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    // Profile management link.
+    try {
+      $params = ['user' => $this->getCurrentUser()->id()];
+      $manage_profile_flow = ParFlow::load('profile_update');
+      $manage_profile_link = $manage_profile_flow?->getStartLink(1, 'Manage your profile details', $params);
+    } catch (ParFlowException $e) {
+
+    }
+
+    if ($manage_profile_link instanceof Link) {
+      $build['user']['profile'] = [
+        '#type' => 'link',
+        '#title' => $manage_profile_link->getText(),
+        '#url' => $manage_profile_link->getUrl(),
+        '#options' => $manage_profile_link->getUrl()->getOptions(),
+      ];
+    }
+
 
     return $build;
   }
