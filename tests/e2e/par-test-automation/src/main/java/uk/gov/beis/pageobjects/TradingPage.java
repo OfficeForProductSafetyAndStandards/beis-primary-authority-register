@@ -12,8 +12,7 @@ public class TradingPage extends BasePageObject {
 		super();
 	}
 
-	//@FindBy(xpath = "//div/input[@class='form-text form-control govuk-input']")
-	@FindBy(id = "edit-trading-name")
+	@FindBy(xpath = "//div/input[@class='form-text form-control govuk-input']")
 	private WebElement tradingName;
 	
 	@FindBy(id = "edit-save")
@@ -25,6 +24,7 @@ public class TradingPage extends BasePageObject {
 	public BasePageObject enterTradingName(String name) {
 		tradingName.clear();
 		tradingName.sendKeys(name);
+		
 		try {
 			driver.findElement(By.id("edit-next")).click();
 			return PageFactory.initElements(driver, LegalEntityPage.class);
