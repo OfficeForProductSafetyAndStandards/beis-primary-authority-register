@@ -41,7 +41,9 @@ public class RegulatoryFunctionPage extends BasePageObject {
 			if (bx.isSelected())
 				bx.click();
 		}
+		
 		driver.findElement(By.xpath(regFunction.replace("?", reg))).click();
+		
 		try {
 			driver.findElement(By.id("edit-next")).click();
 			return PageFactory.initElements(driver, AuthorityConfirmationPage.class);

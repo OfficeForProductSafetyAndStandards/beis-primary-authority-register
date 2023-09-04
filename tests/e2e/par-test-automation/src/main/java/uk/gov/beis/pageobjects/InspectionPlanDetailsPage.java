@@ -2,7 +2,6 @@ package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -22,7 +21,7 @@ public class InspectionPlanDetailsPage extends BasePageObject {
 	@FindBy(id = "edit-title")
 	WebElement title;
 
-	private String locator = "//label[contains(text(),'?')]";
+	//private String locator = "//label[contains(text(),'?')]";
 
 	public InspectionPlanDetailsPage enterTitle(String value) {
 		title.clear();

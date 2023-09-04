@@ -6,10 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-
-import uk.gov.beis.enums.UsableValues;
-import uk.gov.beis.utility.DataStore;
 
 public class SICCodePage extends BasePageObject {
 
@@ -23,10 +19,11 @@ public class SICCodePage extends BasePageObject {
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 	
-	String sic = "//select/option[contains(text(),'?')]";
+	private String sic = "//select/option[contains(text(),'?')]";
 
 	public BasePageObject selectSICCode(String code) {
 		driver.findElement(By.xpath(sic.replace("?", code))).click();
+		
 		try {
 			driver.findElement(By.id("edit-next")).click();
 			return PageFactory.initElements(driver, EmployeesPage.class);

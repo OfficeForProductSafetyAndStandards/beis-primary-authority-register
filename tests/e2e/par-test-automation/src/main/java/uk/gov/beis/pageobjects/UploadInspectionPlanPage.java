@@ -7,9 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import uk.gov.beis.enums.UsableValues;
-import uk.gov.beis.utility.DataStore;
-
 public class UploadInspectionPlanPage extends BasePageObject {
 
 	public UploadInspectionPlanPage() throws ClassNotFoundException, IOException {
@@ -17,7 +14,7 @@ public class UploadInspectionPlanPage extends BasePageObject {
 	}
 
 	@FindBy(xpath = "//input[@id='edit-inspection-plan-files-upload']")
-	WebElement chooseFile1;
+	private WebElement chooseFile1;
 
 	public InspectionPlanDetailsPage uploadFile() {
 		driver.findElement(By.id("edit-upload")).click();

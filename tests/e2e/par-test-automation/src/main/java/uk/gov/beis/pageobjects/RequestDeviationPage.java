@@ -2,7 +2,6 @@ package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -14,10 +13,10 @@ public class RequestDeviationPage extends BasePageObject{
 	}
 
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
+	private WebElement continueBtn;
 
 	@FindBy(xpath = "//input[@id='edit-files-upload']")
-	WebElement chooseFile1;
+	private WebElement chooseFile1;
 
 
 	public RequestDeviationPage chooseFile(String filename) {
