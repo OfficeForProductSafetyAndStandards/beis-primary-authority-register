@@ -40,7 +40,7 @@ public class EnforcementReviewPage extends BasePageObject {
 
 	String legEnt = "//fieldset/p[contains(text(),'?')]";
 	String enfType = "//fieldset/p[contains(text(),'?')]";
-	String enfTitle = "//fieldset/h3[contains(text(),'?')]";
+	String enfTitle = "//div/h3[contains(text(),'?')]";
 	String desc = "//div/p[contains(text(),'?')]";
 	String enfFile = "//span/a[contains(text(),'?')]";
 

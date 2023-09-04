@@ -641,7 +641,8 @@ public class PARStepDefs {
 			parPartnershipConfirmationPage.createEnforcement();
 			enforcementNotificationPage.proceed();
 			enforcementContactDetailsPage.proceed();
-			enforcementLegalEntityPage.selectLegalEntity(DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+			enforcementLegalEntityPage.enterEntity(DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+			//enforcementLegalEntityPage.selectLegalEntity(DataStore.getSavedValue(UsableValues.ENTITY_NAME));
 			enforcementLegalEntityPage.proceed();
 			DataStore.saveValue(UsableValues.ENFORCEMENT_TYPE, data.get("Enforcement Action"));
 			enforcementDetailsPage.selectEnforcementType(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TYPE));

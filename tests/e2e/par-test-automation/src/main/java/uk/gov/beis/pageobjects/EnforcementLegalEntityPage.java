@@ -16,10 +16,19 @@ public class EnforcementLegalEntityPage extends BasePageObject {
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 	
+	@FindBy(id = "edit-alternative-legal-entity")
+	WebElement ent;
+	
+	
 	String legEnt = "//div/label[contains(text(),'?')]";
 
 	public EnforcementLegalEntityPage selectLegalEntity(String ent) {
 		driver.findElement(By.xpath(legEnt.replace("?", ent))).click();
+		return PageFactory.initElements(driver, EnforcementLegalEntityPage.class);
+	}
+	
+	public EnforcementLegalEntityPage enterEntity(String entity) {
+		ent.sendKeys(entity);
 		return PageFactory.initElements(driver, EnforcementLegalEntityPage.class);
 	}
 
