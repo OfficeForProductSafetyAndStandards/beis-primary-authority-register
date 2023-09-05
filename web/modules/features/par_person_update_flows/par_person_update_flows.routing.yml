@@ -4,7 +4,7 @@ par_person_update_flows.update_contact:
     _form: '\Drupal\par_person_update_flows\Form\ParContactForm'
     _title_callback: '\Drupal\par_person_update_flows\Form\ParContactForm::titleCallback'
   requirements:
-    _permission: 'manage par person'
+    _permission: 'manage people'
     _custom_access: '\Drupal\par_person_update_flows\Form\ParContactForm::accessCallback'
     par_data_person: \d+
   options:
@@ -18,7 +18,7 @@ par_person_update_flows.choose_account:
     _form: '\Drupal\par_person_update_flows\Form\ParAccountForm'
     _title_callback: '\Drupal\par_person_update_flows\Form\ParAccountForm::titleCallback'
   requirements:
-    _permission: 'manage par person'
+    _permission: 'manage people'
     _custom_access: '\Drupal\par_person_update_flows\Form\ParAccountForm::accessCallback'
     par_data_person: \d+
   options:
@@ -32,7 +32,7 @@ par_person_update_flows.choose_institution:
     _form: '\Drupal\par_person_update_flows\Form\ParUpdateInstitutionForm'
     _title_callback: '\Drupal\par_person_update_flows\Form\ParUpdateInstitutionForm::titleCallback'
   requirements:
-    _permission: 'manage par person'
+    _permission: 'manage people'
     _custom_access: '\Drupal\par_person_update_flows\Form\ParUpdateInstitutionForm::accessCallback'
     par_data_person: \d+
   options:
@@ -46,7 +46,7 @@ par_person_update_flows.choose_role:
     _form: '\Drupal\par_person_update_flows\Form\ParRoleForm'
     _title_callback: '\Drupal\par_person_update_flows\Form\ParRoleForm::titleCallback'
   requirements:
-    _permission: 'manage par person'
+    _permission: 'manage people'
     _custom_access: '\Drupal\par_person_update_flows\Form\ParRoleForm::accessCallback'
     par_data_person: \d+
   options:
@@ -60,7 +60,7 @@ par_person_update_flows.invite_contact:
     _form: '\Drupal\par_person_update_flows\Form\ParInviteForm'
     _title_callback: '\Drupal\par_person_update_flows\Form\ParInviteForm::titleCallback'
   requirements:
-    _permission: 'manage par person'
+    _permission: 'manage people'
     _custom_access: '\Drupal\par_person_update_flows\Form\ParInviteForm::accessCallback'
     par_data_person: \d+
   options:
@@ -74,7 +74,7 @@ par_person_update_flows.edit_review:
     _form: '\Drupal\par_person_update_flows\Form\ParReviewForm'
     _title_callback: '\Drupal\par_person_update_flows\Form\ParReviewForm::titleCallback'
   requirements:
-    _permission: 'manage par person'
+    _permission: 'manage people'
     _custom_access: '\Drupal\par_person_update_flows\Form\ParReviewForm::accessCallback'
     par_data_person: \d+
   options:
@@ -88,7 +88,7 @@ par_person_update_flows.edit_completed:
     _controller: '\Drupal\par_person_update_flows\Controller\ParConfirmedController::content'
     _title_callback: '\Drupal\par_person_update_flows\Controller\ParConfirmedController::titleCallback'
   requirements:
-    _permission: 'manage par person'
+    _permission: 'manage people'
     _custom_access: '\Drupal\par_person_update_flows\Controller\ParConfirmedController::accessCallback'
     par_data_person: \d+
   options:

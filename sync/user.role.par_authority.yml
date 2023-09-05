@@ -30,7 +30,6 @@ dependencies:
     - par_partnership_contact_update_flows
     - par_partnership_flows
     - par_person_create_flows
-    - par_person_update_flows
     - par_profile_view_flows
     - par_roles
     - par_search_partnership_flows
@@ -110,7 +109,6 @@ permissions:
   - 'invite user'
   - invite_type_invite_organisation_member
   - 'manage own authority'
-  - 'manage par person'
   - 'raise enforcement notice'
   - 'receive new_deviation_request notification'
   - 'receive new_deviation_response notification'

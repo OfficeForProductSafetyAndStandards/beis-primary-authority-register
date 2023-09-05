@@ -1,4 +1,8 @@
-manage par person:
-  title: 'Manage people'
-  description: 'Allow users to manage people.'
+manage own people:
+  title: 'Manage team people'
+  description: 'Allow users to manage people within their institutions.'
+  restrict access: TRUE
+manage all people:
+  title: 'Manage all people'
+  description: 'Allow users to manage all people.'
   restrict access: TRUE

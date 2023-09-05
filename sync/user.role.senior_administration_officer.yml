@@ -178,10 +178,11 @@ permissions:
   - invite_type_invite_organisation_member
   - 'manage all authorities'
   - 'manage all organisations'
+  - 'manage all people'
   - 'manage all profiles'
   - 'manage own authority'
   - 'manage own organisation'
-  - 'manage par person'
+  - 'manage own people'
   - 'merge person'
   - 'nominate partnership amendments'
   - 'receive inspection_plan_expiry_warning notification'
