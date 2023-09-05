@@ -216,7 +216,7 @@ permissions:
   - 'view inspection feedback'
   - 'view list par_news'
   - 'view own notifications'
-  - 'view par profile'
+  - 'view own profile'
   - 'view published invite entities'
   - 'view unpublished invite entities'
   - 'view unpublished par_data_advice entities'

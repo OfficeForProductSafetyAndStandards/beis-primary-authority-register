@@ -120,7 +120,7 @@ permissions:
   - 'use text format basic_html'
   - 'view enforcement notice'
   - 'view own notifications'
-  - 'view par profile'
+  - 'view own profile'
   - 'view unpublished par_data_advice entities'
   - 'view unpublished par_data_authority entities'
   - 'view unpublished par_data_coordinated_business entities'
