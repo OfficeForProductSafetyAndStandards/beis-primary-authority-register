@@ -242,34 +242,21 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Identify whether this plugin instance supports multiple values.
-   *
-   * @return bool
-   *   TRUE if the component instance supports more than 1 item
-   *   FALSE if the component instance only allows a single item value
+   * {@inheritdoc}
    */
   public function isMultiple(): bool {
     return $this->getCardinality() !== 1;
   }
 
   /**
-   * Whether the data will be flattened when dealing with the form data.
-   *
-   * @return bool
-   *   TRUE for single value components that don't maintain their form structure
-   *   FALSE for multi value components that maintain their form structure with #tree
+   * {@inheritdoc}
    */
   public function isFlattened(): bool {
     return !$this->isMultiple();
   }
 
   /**
-   * Identify whether the plugin has already added all the available items
-   * for this component instance or whether another item can be added.
-   *
-   * @return bool
-   *   TRUE if no more items can be added.
-   *   FALSE if more items can be added.
+   * {@inheritdoc}
    */
   public function isFull(): bool {
     return $this->getCardinality() !== FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED &&
@@ -277,11 +264,14 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get the plugin data.
-   *
-   * @return array
-   *   An array of data,
-   *   or an empty array if no data was found.
+   * {@inheritdoc}
+   */
+  public function hasData(): bool {
+    return !empty($this->getData());
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function getData(): array {
     // Ensure that at the very
@@ -295,10 +285,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Set the plugin data.
-   *
-   * @param array $data
-   *   The plugin data to store.
+   * {@inheritdoc}
    */
   public function setData(array $data): void {
     // Allow plugins to filter
@@ -424,14 +411,9 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Count the cardinality of already submitted values.
-   *
-   * @param mixed $data
-   *   If required the data to be counted can be switched to the form_state values.
-   *
-   * @return integer
+   * {@inheritdoc}
    */
-  public function countItems(array $data = NULL): int{
+  public function countItems(array $data = NULL): int {
     // If data is not passed attempt to retrieve it from the data handler.
     if (empty($data)) {
       $data = $this->getData();
