@@ -149,6 +149,7 @@ module:
   registered_organisations: 0
   rest: 0
   robotstxt: 0
+  role_delegation: 0
   search_api: 0
   search_api_db: 0
   search_api_opensearch: 0
