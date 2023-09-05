@@ -30,6 +30,7 @@ dependencies:
     - par_partnership_contact_update_flows
     - par_partnership_flows
     - par_person_create_flows
+    - par_person_update_flows
     - par_profile_view_flows
     - par_roles
     - par_search_partnership_flows
@@ -86,7 +87,7 @@ permissions:
   - 'confirm partnership'
   - 'create authority user'
   - 'create enforcement user'
-  - 'create par person'
+  - 'create person'
   - 'edit par_data_advice entities'
   - 'edit par_data_authority entities'
   - 'edit par_data_coordinated_business entities'
@@ -109,6 +110,7 @@ permissions:
   - 'invite user'
   - invite_type_invite_organisation_member
   - 'manage own authority'
+  - 'manage people'
   - 'raise enforcement notice'
   - 'receive new_deviation_request notification'
   - 'receive new_deviation_response notification'
@@ -141,7 +143,7 @@ permissions:
   - 'view general enquiry'
   - 'view inspection feedback'
   - 'view own notifications'
-  - 'view own par profile'
+  - 'view own profile'
   - 'view par profile'
   - 'view unpublished par_data_advice entities'
   - 'view unpublished par_data_authority entities'

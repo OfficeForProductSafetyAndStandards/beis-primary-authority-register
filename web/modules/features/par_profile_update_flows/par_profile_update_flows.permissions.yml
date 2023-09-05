@@ -1,7 +1,3 @@
 manage own profile:
   title: 'Update own profile'
   description: 'Allow users to update their own user profile.'
-manage all profiles:
-  title: 'Manage profiles'
-  description: 'Allow users to manage all user profiles.'
-  restrict access: TRUE

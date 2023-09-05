@@ -36,4 +36,4 @@ permissions:
   - 'subscribe to par_news'
   - 'view media'
   - 'view own notifications'
-  - 'view own par profile'
+  - 'view own profile'

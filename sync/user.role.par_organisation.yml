@@ -79,7 +79,7 @@ permissions:
   - 'confirm partnership'
   - 'confirm partnership amendments'
   - 'create organisation user'
-  - 'create par person'
+  - 'create person'
   - 'edit par_data_advice entities'
   - 'edit par_data_authority entities'
   - 'edit par_data_coordinated_business entities'
@@ -101,7 +101,7 @@ permissions:
   - 'invite user'
   - invite_type_invite_organisation_member
   - 'manage own organisation'
-  - 'manage own people'
+  - 'manage people'
   - 'receive new_inspection_plan notification'
   - 'receive new_partnership_amendment notification'
   - 'receive new_partnership_notification notification'
