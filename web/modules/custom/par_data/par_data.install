@@ -94,7 +94,6 @@ function par_data_update_8007() {
     if ($entity->hasField('field_coordinator_number')) {
       $entity->set('coordinator_number', $entity->get('field_coordinator_number')->getString());
     }
-    $entity->type = 'organisation';
     $entity->save();
   }
 
@@ -163,7 +162,6 @@ function par_data_update_8010() {
     if ($entity->hasField('field_coordinator_number')) {
       $entity->set('coordinator_number', $entity->get('field_coordinator_number')->getString());
     }
-    $entity->type = 'organisation';
     $entity->save();
   }
 

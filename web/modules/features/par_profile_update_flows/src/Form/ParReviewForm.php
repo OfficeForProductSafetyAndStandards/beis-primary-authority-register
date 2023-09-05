@@ -16,6 +16,7 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
+use Drupal\par_forms\Plugin\ParForm\ParConfirmRemoval;
 use Drupal\par_profile_update_flows\ParFlowAccessTrait;
 use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 use Drupal\user\Entity\User;
@@ -27,6 +28,11 @@ use Drupal\user\UserInterface;
 class ParReviewForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
+
+  /**
+   * The boolean value for confirming the update of the user account.
+   */
+  const ACCOUNT_UPDATE = 'account_update';
 
   /**
    * {@inheritdoc}
@@ -47,40 +53,46 @@ class ParReviewForm extends ParBaseForm {
     $cid_person_select = $this->getFlowNegotiator()->getFormKey('par_choose_person');
     $person = $this->getFlowDataHandler()->getDefaultValues('user_person', '', $cid_person_select);
     if ($par_data_person = ParDataPerson::load($person)) {
-      $this->getFlowDataHandler()->setParameter('par_data_person', $par_data_person);
+      $this->getFlowDataHandler()
+        ->setParameter('par_data_person', $par_data_person);
+    }
 
-      // Set the data values on the entities
-      $entities = $this->createEntities();
-      extract($entities);
-      /** @var ParDataPerson $par_data_person */
-      /** @var User $account */
-      /** @var ParDataAuthority[] $par_data_authority */
-      /** @var ParDataOrganisation[] $par_data_organisation */
+    // Set the data values on the entities
+    $entities = $this->createEntities();
+    extract($entities);
+    /** @var ParDataPerson $par_data_person */
+    /** @var User $account */
+    /** @var ParDataAuthority[] $par_data_authority */
+    /** @var ParDataOrganisation[] $par_data_organisation */
 
-      $this->getFlowDataHandler()->setFormPermValue("full_name", $par_data_person->getFullName());
-      $this->getFlowDataHandler()->setFormPermValue("work_phone", $par_data_person->getWorkPhone());
-      $this->getFlowDataHandler()->setFormPermValue("mobile_phone", $par_data_person->getMobilePhone());
-      $this->getFlowDataHandler()->setFormPermValue("email", $par_data_person->getEmailWithPreferences());
-      if (!$par_data_person->get('communication_notes')->isEmpty()) {
-        $communication_notes = $par_data_person->communication_notes->view('full');
-        $this->getFlowDataHandler()->setFormPermValue("communication_notes", $communication_notes);
-      }
+    $this->getFlowDataHandler()->setFormPermValue("full_name", $par_data_person->getFullName());
+    $this->getFlowDataHandler()->setFormPermValue("work_phone", $par_data_person->getWorkPhone());
+    $this->getFlowDataHandler()->setFormPermValue("mobile_phone", $par_data_person->getMobilePhone());
+    $this->getFlowDataHandler()->setFormPermValue("email", $par_data_person->getEmailWithPreferences());
+    if (!$par_data_person->get('communication_notes')->isEmpty()) {
+      $communication_notes = $par_data_person->communication_notes->view('full');
+      $this->getFlowDataHandler()->setFormPermValue("communication_notes", $communication_notes);
+    }
 
-      if ($account && $account->isAuthenticated() && $people = $this->getParDataManager()->getUserPeople($account)) {
-        if (count($people) > 1) {
-          $this->getFlowDataHandler()->setFormPermValue("multiple_people", TRUE);
-        }
-      }
-
-      if ($par_data_authority) {
-        $authority_names = $this->getParDataManager()->getEntitiesAsOptions($par_data_authority, []);
-        $this->getFlowDataHandler()->setFormPermValue("authorities", implode('<br>', $authority_names));
-      }
-      if ($par_data_organisation) {
-        $organisation_names = $this->getParDataManager()->getEntitiesAsOptions($par_data_organisation, []);
-        $this->getFlowDataHandler()->setFormPermValue("organisations", implode('<br>', $organisation_names));
+    if ($account && $account->isAuthenticated() && $people = $this->getParDataManager()->getUserPeople($account)) {
+      if (count($people) > 1) {
+        $this->getFlowDataHandler()->setFormPermValue("multiple_people", TRUE);
       }
     }
+
+    if ($par_data_authority) {
+      $authority_names = $this->getParDataManager()->getEntitiesAsOptions($par_data_authority, []);
+      $this->getFlowDataHandler()->setFormPermValue("authorities", implode('<br>', $authority_names));
+    }
+    if ($par_data_organisation) {
+      $organisation_names = $this->getParDataManager()->getEntitiesAsOptions($par_data_organisation, []);
+      $this->getFlowDataHandler()->setFormPermValue("organisations", implode('<br>', $organisation_names));
+    }
+
+    // Whether to show the account update option.
+    $email = $par_data_person?->getEmail();
+    $update_account = $account instanceof User && $email && $account->getEmail() !== $email;
+    $this->getFlowDataHandler()->setFormPermValue("update_account", $update_account);
 
     parent::loadData();
   }
@@ -109,7 +121,7 @@ class ParReviewForm extends ParBaseForm {
         '#attributes' => ['class' => 'form-group'],
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('email', ''),
-        ]
+        ],
       ],
       'work_phone' => [
         '#type' => 'fieldset',
@@ -133,7 +145,6 @@ class ParReviewForm extends ParBaseForm {
         '#title' => 'Communication notes',
         0 => $this->getFlowDataHandler()->getDefaultValues('communication_notes', ['#markup' => '(none)']),
       ],
-
     ];
 
     $form['memberships'] = [
@@ -160,64 +171,81 @@ class ParReviewForm extends ParBaseForm {
       ];
     }
 
+    if ($this->getFlowDataHandler()->getFormPermValue('update_account')) {
+      $form['confirm_account'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Would you like to update the user account?'),
+        '#description' => $this->t('This will change the email address that is used to sign into this service.'),
+        '#return_value' => self::ACCOUNT_UPDATE,
+        '#attributes' => ['class' => ['form-group']],
+      ];
+    }
+
     return parent::buildForm($form, $form_state);
   }
 
   public function createEntities() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
-    $current_user = $this->getCurrentUser();
 
-    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    // If the user account exists this should also be updated.
+    $account = $this->getFlowDataHandler()->getParameter('user');
+
+    // Get the cache IDs for the various forms that needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_profile_update');
     $contact_preferences_cid = $this->getFlowNegotiator()->getFormKey('par_preferences_update');
-    $link_account_cid = $this->getFlowNegotiator()->getFormKey('par_profile_update_link');
     $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
     $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
 
-    // If there is an existing user attach it to this person.
-    $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $link_account_cid);
-    $account = $user_id ? User::load($user_id) : $this->getFlowDataHandler()->getParameter('user');
+    // Create a new profile record if one doesn't exist.
+    $par_data_person = $par_data_person ?? ParDataPerson::create([
+      'type' => 'person',
+    ]);
 
-    if ($par_data_person) {
-      // Store the original email to check if it changes.
-      $this->getFlowDataHandler()->setFormPermValue('original_email', $par_data_person->getEmail());
+    // Store the original email to check if it changes.
+    $this->getFlowDataHandler()->setFormPermValue('original_email', $par_data_person->getEmail());
 
-      // Update the person record with the new values.
-      $par_data_person->set('salutation', $this->getFlowDataHandler()->getTempDataValue('salutation', $contact_details_cid));
-      $par_data_person->set('first_name', $this->getFlowDataHandler()->getTempDataValue('first_name', $contact_details_cid));
-      $par_data_person->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_details_cid));
-      $par_data_person->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid));
-      $par_data_person->set('mobile_phone', $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid));
-      $par_data_person->updateEmail($this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid), $current_user);
+    // Update the person record with the new values.
+    $par_data_person->set('salutation', $this->getFlowDataHandler()->getTempDataValue('salutation', $contact_details_cid));
+    $par_data_person->set('first_name', $this->getFlowDataHandler()->getTempDataValue('first_name', $contact_details_cid));
+    $par_data_person->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_details_cid));
+    $par_data_person->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid));
+    $par_data_person->set('mobile_phone', $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid));
 
-      if ($communication_notes = $this->getFlowDataHandler()->getTempDataValue('notes', $contact_preferences_cid)) {
-        $par_data_person->set('communication_notes', $communication_notes);
-      }
+    // Update the email address, but only update the user account if confirmed.
+    $email = $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid);
+    $update_user_account = $this->getFlowDataHandler()->getTempDataValue('confirm_account') === ParReviewForm::ACCOUNT_UPDATE;
+    if (!empty($email)) {
+      $update_user_account ?
+        $par_data_person->updateEmail($email, $account) :
+        $par_data_person->updateEmail($email);
+    }
 
-      if ($preferred_contact = $this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_preferences_cid)) {
-        $email_preference_value = isset($preferred_contact['communication_email']) && !empty($preferred_contact['communication_email']);
-        $par_data_person->set('communication_email', $email_preference_value);
+    if ($communication_notes = $this->getFlowDataHandler()->getTempDataValue('notes', $contact_preferences_cid)) {
+      $par_data_person->set('communication_notes', $communication_notes);
+    }
 
-        // Save the work phone preference.
-        $work_phone_preference_value = isset($preferred_contact['communication_phone']) && !empty($preferred_contact['communication_phone']);
-        $par_data_person->set('communication_phone', $work_phone_preference_value);
+    if ($communication_preferences = $this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_preferences_cid)) {
+      $email_preference_value = !empty($communication_preferences['communication_email']);
+      $par_data_person->set('communication_email', $email_preference_value);
 
-        // Save the mobile phone preference.
-        $mobile_phone_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_preferences_cid)['communication_mobile'])
-          && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact', $contact_preferences_cid)['communication_mobile']);
-        $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
-      }
+      // Save the work phone preference.
+      $work_phone_preference_value = !empty($communication_preferences['communication_phone']);
+      $par_data_person->set('communication_phone', $work_phone_preference_value);
 
-      // Get the authorities and organisations that will be associated with the person.
-      $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
-      $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
-      $par_data_authorities = $par_data_person->updateAuthorityMemberships($authority_ids);
-      $par_data_organisations = $par_data_person->updateOrganisationMemberships($organisation_ids);
+      // Save the mobile phone preference.
+      $mobile_phone_preference_value = !empty($communication_preferences['communication_mobile']);
+      $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
+    }
 
-      // Make sure to save the related user account.
-      if ($account) {
-        $par_data_person->setUserAccount($account);
-      }
+    // Get the authorities and organisations that will be associated with the person.
+    $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
+    $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
+    $par_data_authorities = $par_data_person->updateAuthorityMemberships($authority_ids);
+    $par_data_organisations = $par_data_person->updateOrganisationMemberships($organisation_ids);
+
+    // Make sure to save the related user account.
+    if ($account) {
+      $par_data_person->setUserAccount($account);
     }
 
     return [
@@ -252,19 +280,29 @@ class ParReviewForm extends ParBaseForm {
     $lists = $this->getSubscriptionManager()->getLists();
     $subscriptions = $this->getFlowDataHandler()->getTempDataValue('subscriptions', $subscriptions_cid);
     $subscriptions = array_filter((array) $subscriptions);
+    $original_email = $this->getFlowDataHandler()->getFormPermValue('original_email');
+    $new_email = $account?->getEmail();
     foreach ($lists as $list) {
       // Create a new subscription.
       if (isset($subscriptions[$list])) {
-        $subscription = $this->getSubscriptionManager()->createSubscription($list, $account->getEmail());
+        $subscription = $this->getSubscriptionManager()->createSubscription($list, $new_email);
         if ($subscription instanceof ParSubscriptionInterface) {
           $subscription->subscribe();
         }
       }
       // Unsubscribe a user from the list.
       else {
-        $subscription = $this->getSubscriptionManager()->getSubscriptionByEmail($list, $account->getEmail());
+        $subscription = $this->getSubscriptionManager()->getSubscriptionByEmail($list, $new_email);
         if ($subscription instanceof ParSubscriptionInterface) {
           $subscription->unsubscribe();
+        }
+      }
+
+      // Unsubscribe the old email address if it has changed.
+      if ($original_email !== $new_email) {
+        $original_subscription = $this->getSubscriptionManager()->getSubscriptionByEmail($list, $original_email);
+        if ($original_subscription instanceof ParSubscriptionInterface) {
+          $original_subscription->unsubscribe();
         }
       }
     }
@@ -308,7 +346,8 @@ class ParReviewForm extends ParBaseForm {
     // Merge all accounts (and save them) or just save the person straight up.
     if ($par_data_person->save()) {
       // Also save the user if the email has been updated.
-      if ($account->getEmail() !== $this->getFlowDataHandler()->getFormPermValue('original_email')) {
+      $update_user_account = $this->getFlowDataHandler()->getTempDataValue('confirm_account') === ParReviewForm::ACCOUNT_UPDATE;
+      if ($account?->getEmail() && $update_user_account) {
         $account->save();
         $this->getParDataManager()->getMessenger()->addMessage(t('The email address you use to login has been updated to @email', ['@email' => $account->getEmail()]));
       }

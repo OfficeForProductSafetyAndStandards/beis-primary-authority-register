@@ -40,6 +40,7 @@ dependencies:
     - par_person_create_flows
     - par_person_merge_flows
     - par_person_update_flows
+    - par_profile_update_flows
     - par_profile_view_flows
     - par_rd_delete_data_flows
     - par_rd_help_desk_flows
@@ -177,10 +178,10 @@ permissions:
   - invite_type_invite_organisation_member
   - 'manage all authorities'
   - 'manage all organisations'
+  - 'manage all profiles'
   - 'manage own authority'
   - 'manage own organisation'
   - 'manage par person'
-  - 'manage par profile'
   - 'merge person'
   - 'nominate partnership amendments'
   - 'receive inspection_plan_expiry_warning notification'

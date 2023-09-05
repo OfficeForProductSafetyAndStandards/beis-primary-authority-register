@@ -8,6 +8,7 @@ dependencies:
     - par_dashboards
     - par_forms
     - par_notification
+    - par_profile_update_flows
     - par_profile_view_flows
     - par_roles
     - par_subscriptions
@@ -26,7 +27,7 @@ permissions:
   - 'access par dashboard'
   - 'access shortcuts'
   - 'block user'
-  - 'manage own par profile'
+  - 'manage own profile'
   - 'par autocomplete'
   - 'post comments'
   - 'receive subscription_verify_notification notification'

@@ -102,7 +102,6 @@ permissions:
   - invite_type_invite_organisation_member
   - 'manage own organisation'
   - 'manage par person'
-  - 'manage par profile'
   - 'receive new_inspection_plan notification'
   - 'receive new_partnership_amendment notification'
   - 'receive new_partnership_notification notification'

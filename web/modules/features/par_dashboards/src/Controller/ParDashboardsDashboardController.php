@@ -175,7 +175,7 @@ class ParDashboardsDashboardController extends ControllerBase {
 //    }
 
     // User management
-    if ($this->getCurrentUser()->hasPermission('manage par profile')) {
+    if ($this->getCurrentUser()->hasPermission('view par profile')) {
       $build['people'] = [
         '#lazy_builder' => [
           'par_dashboards.components:manageUsersComponent',
@@ -186,7 +186,7 @@ class ParDashboardsDashboardController extends ControllerBase {
     }
 
     // User controls.
-    if ($this->getCurrentUser()->hasPermission('manage own par profile')) {
+    if ($this->getCurrentUser()->hasPermission('manage own profile')) {
       $build['user'] = [
         '#lazy_builder' => [
           'par_dashboards.components:manageProfileComponent',
