@@ -68,7 +68,7 @@ class ErrorPageSubscriber implements EventSubscriberInterface {
    * @param ExceptionEvent $event
    */
   public function onException(ExceptionEvent $event) {
-    $exception = $event->getException();
+    $exception = $event->getThrowable();
     $error = Error::decodeException($exception);
 
     // Log all errors with a custom code.

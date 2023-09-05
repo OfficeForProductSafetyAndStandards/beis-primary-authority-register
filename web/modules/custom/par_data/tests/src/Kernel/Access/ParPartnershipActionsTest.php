@@ -57,7 +57,7 @@ class ParPartnershipActionsTest extends ParDataTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setup();
 
     $request_time = \Drupal::time()->getRequestTime();

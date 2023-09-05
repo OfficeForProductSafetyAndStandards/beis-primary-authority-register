@@ -34,6 +34,7 @@ dependencies:
     - par_profile_view_flows
     - par_roles
     - par_search_partnership_flows
+    - role_delegation
 id: par_authority_manager
 label: 'Authority Manager'
 weight: -6
@@ -86,19 +87,7 @@ permissions:
   - 'confirm partnership'
   - 'create authority user'
   - 'create enforcement user'
-  - 'create files'
   - 'create par person'
-  - 'delete own document files'
-  - 'delete own image files'
-  - 'download any csv files'
-  - 'download any document files'
-  - 'download any image files'
-  - 'download own csv files'
-  - 'download own document files'
-  - 'download own image files'
-  - 'edit own csv files'
-  - 'edit own document files'
-  - 'edit own image files'
   - 'edit par_data_advice entities'
   - 'edit par_data_authority entities'
   - 'edit par_data_coordinated_business entities'
@@ -155,7 +144,6 @@ permissions:
   - 'view general enquiry'
   - 'view inspection feedback'
   - 'view own notifications'
-  - 'view own private files'
   - 'view par profile'
   - 'view unpublished par_data_advice entities'
   - 'view unpublished par_data_authority entities'

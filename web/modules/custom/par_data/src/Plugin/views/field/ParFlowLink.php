@@ -112,6 +112,6 @@ class ParFlowLink extends FieldPluginBase {
     // Hide the link
     $text = empty($this->options['hidden']) ? $text : '';
 
-    return !empty($link) && $url->access() && $url->isRouted() ? render($link) : $text;
+    return !empty($link) && $url->access() && $url->isRouted() ? \Drupal::service('renderer')->render($link) : $text;
   }
 }

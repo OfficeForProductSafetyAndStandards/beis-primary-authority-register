@@ -174,7 +174,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     // Get the entity query.
     $query = $this->entityTypeManager()
       ->getStorage($this->getEntityTypeId())
-      ->getQuery('OR');
+      ->getQuery('OR')->accessCheck();
 
     $query->condition('email', $email, '=');
 

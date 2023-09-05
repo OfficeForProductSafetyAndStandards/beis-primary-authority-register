@@ -105,7 +105,7 @@ class EntityMergeTest extends ParDataTestBase {
    *       ├── Org Contact 11
    *       └── Org Contact 12
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Create 12 people with two different email addresses.

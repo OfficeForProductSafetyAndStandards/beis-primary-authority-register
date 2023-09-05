@@ -237,7 +237,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
     $entity_type = $this->getEntityTypeManager()->getDefinition('message');
     $bundle_key = $entity_type->getKey('bundle');
 
-    $qry = $this->getEntityTypeManager()->getStorage('message')->getQuery();
+    $qry = $this->getEntityTypeManager()->getStorage('message')->getQuery()->accessCheck();
 
     $or = $qry->orConditionGroup();
     foreach ($templates as $template) {

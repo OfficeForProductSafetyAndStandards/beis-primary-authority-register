@@ -133,7 +133,7 @@ class ParDataCommands extends DrushCommands {
       $count = 0;
       foreach ($entity_types as $key => $type) {
         $entity_storage = $this->entityTypeManager->getStorage($type);
-        $count += $entity_storage->getQuery()->count()->execute();
+        $count += $entity_storage->getQuery()->accessCheck()->count()->execute();
       }
 
       $index_health = (($total == $indexed) && ($indexed == $count));

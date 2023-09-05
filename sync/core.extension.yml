@@ -11,8 +11,6 @@ module:
   breakpoint: 0
   chosen: 0
   chosen_lib: 0
-  ckeditor: 0
-  color: 0
   comment: 0
   config: 0
   config_filter: 0
@@ -23,7 +21,6 @@ module:
   content_translation: 0
   contextual: 0
   csv_serialization: 0
-  ctools: 0
   datetime: 0
   datetime_range: 0
   default_content: 0
@@ -42,7 +39,6 @@ module:
   google_analytics: 0
   govuk_cookies: 0
   govuk_notify: 0
-  hal: 0
   health_check: 0
   help: 0
   http_response_headers: 0
@@ -55,7 +51,9 @@ module:
   jquery_ui_button: 0
   jquery_ui_checkboxradio: 0
   jquery_ui_controlgroup: 0
+  jquery_ui_datepicker: 0
   jquery_ui_slider: 0
+  jquery_ui_touch_punch: 0
   language: 0
   link: 0
   locale: 0
@@ -70,10 +68,8 @@ module:
   message_notify: 0
   migrate: 0
   migrate_drupal: 0
-  migrate_file_to_media: 0
   migrate_plus: 0
   migrate_tools: 0
-  no_autocomplete: 0
   node: 0
   options: 0
   page_cache: 0
@@ -82,7 +78,6 @@ module:
   par_authority_add_flows: 0
   par_authority_update_flows: 0
   par_cache: 0
-  par_ckeditor: 0
   par_cookies: 0
   par_dashboards: 0
   par_data: 0
@@ -149,11 +144,11 @@ module:
   pgsql: 0
   queue_ui: 0
   raven: 0
-  rdf: 0
   redis: 0
   registered_organisations: 0
   rest: 0
   robotstxt: 0
+  role_delegation: 0
   search_api: 0
   search_api_db: 0
   search_api_opensearch: 0
@@ -180,9 +175,8 @@ module:
   views: 10
   standard: 1000
 theme:
-  bartik: 0
-  seven: 0
   par_theme: 0
   govuk: 0
   govuk_par: 0
+  claro: 0
 profile: standard

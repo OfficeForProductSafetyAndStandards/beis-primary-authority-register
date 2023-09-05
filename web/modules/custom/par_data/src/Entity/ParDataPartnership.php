@@ -455,7 +455,7 @@ class ParDataPartnership extends ParDataEntity {
 
         if ($coordinated_businesses) {
           $member_storage = $this->entityTypeManager()->getStorage('par_data_coordinated_business');
-          $member_query = $member_storage->getQuery()
+          $member_query = $member_storage->getQuery()->accessCheck()
             ->condition('id', $coordinated_businesses, 'IN')
             ->sort('changed', 'DESC')
             ->range(0, 1);
@@ -472,7 +472,7 @@ class ParDataPartnership extends ParDataEntity {
       case self::MEMBER_DISPLAY_REQUEST:
         $partnership_storage = $this->entityTypeManager()->getStorage($this->getEntityTypeId());
 
-        $revision_query = $partnership_storage->getQuery()->allRevisions()
+        $revision_query = $partnership_storage->getQuery()->accessCheck()->allRevisions()
           ->condition('id', $this->id())
           ->condition($this->getEntityType()->getRevisionMetadataKey('revision_log_message'), self::MEMBER_LIST_REVISION_PREFIX, 'STARTS_WITH')
           ->sort($this->getEntityType()->getRevisionMetadataKey('revision_created'), 'DESC')
