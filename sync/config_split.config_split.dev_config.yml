@@ -12,6 +12,7 @@ module:
   dblog: 0
   devel: 0
   par_data_test: 0
+  masquerade: 0
   update: 0
   upgrade_status: 0
   webprofiler: 0
