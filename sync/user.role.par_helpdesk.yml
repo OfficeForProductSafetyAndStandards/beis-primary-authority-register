@@ -203,7 +203,6 @@ permissions:
   - 'manage own authority'
   - 'manage own organisation'
   - 'manage par person'
-  - 'manage par profile'
   - 'merge person'
   - 'receive inspection_plan_expiry_warning notification'
   - 'receive partnership_amendment_confirmed notification'

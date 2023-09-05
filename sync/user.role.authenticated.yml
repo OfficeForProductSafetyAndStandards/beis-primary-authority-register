@@ -29,7 +29,6 @@ permissions:
   - 'access shortcuts'
   - 'access site-wide contact form'
   - 'block user'
-  - 'manage own par profile'
   - 'manage own profile'
   - 'par autocomplete'
   - 'post comments'

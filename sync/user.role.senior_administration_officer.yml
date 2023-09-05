@@ -198,7 +198,6 @@ permissions:
   - 'manage own authority'
   - 'manage own organisation'
   - 'manage par person'
-  - 'manage par profile'
   - 'merge person'
   - 'nominate partnership amendments'
   - 'receive inspection_plan_expiry_warning notification'
