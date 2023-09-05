@@ -13,7 +13,7 @@ par_person_create_flows.choose_account:
     _form: '\Drupal\par_person_create_flows\Form\ParAccountForm'
     _title_callback: '\Drupal\par_person_create_flows\Form\ParAccountForm::titleCallback'
   requirements:
-    _permission: 'manage all people'
+    _permission: 'create person'
     _custom_access: '\Drupal\par_person_create_flows\Form\ParAccountForm::accessCallback'
 
 par_person_create_flows.choose_institution:
