@@ -3,7 +3,6 @@ package uk.gov.beis.pageobjects;
 import java.io.IOException;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -18,25 +17,25 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		super();
 	}
 
-	private boolean twopartjourney = false;
+	//private boolean twopartjourney = false;
 
 	@FindBy(linkText = "edit about the partnership")
-	WebElement editPartnershipLink;
+	private WebElement editPartnershipLink;
 	
 	@FindBy(linkText = "edit the regulatory functions")
-	WebElement editRegulatoryFunctionsLink;
+	private WebElement editRegulatoryFunctionsLink;
 	
 	@FindBy(linkText = "edit address")
-	WebElement editOrganisationAddressLink;
+	private WebElement editOrganisationAddressLink;
 	
 	@FindBy(linkText = "edit about the organisation")
-	WebElement editAboutOrganisationLink;
+	private WebElement editAboutOrganisationLink;
 	
 	@FindBy(linkText = "edit sic code")
-	WebElement editSICCodeLink;
+	private WebElement editSICCodeLink;
 	
 	@FindBy(linkText = "edit trading name")
-	WebElement editTradingNameLink;
+	private WebElement editTradingNameLink;
 	
 	// Data Fields
 	@FindBy(id = "edit-regulatory-functions")
@@ -49,25 +48,25 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	private WebElement tradingNameText;
 
 	@FindBy(xpath = "//input[contains(@value,'Save')]")
-	WebElement saveBtn;
+	private WebElement saveBtn;
 
 	@FindBy(linkText = "Send a notification of a proposed enforcement action")
-	WebElement craeteEnforcementBtn;
+	private WebElement craeteEnforcementBtn;
 
 	@FindBy(linkText = "Submit feedback following an inspection")
-	WebElement sendInspectionFeedbackBtn;
+	private WebElement sendInspectionFeedbackBtn;
 
 	@FindBy(linkText = "Request to deviate from the inspection plan")
-	WebElement reqToDeviateFromInspectionPlan;
+	private WebElement reqToDeviateFromInspectionPlan;
 
 	@FindBy(linkText = "See all Inspection Plans")
-	WebElement seeAllInspectionPlans;
+	private WebElement seeAllInspectionPlans;
 	
 	@FindBy(linkText = "See all Advice")
-	WebElement seeAllAdvice;
+	private WebElement seeAllAdvice;
 
 	@FindBy(linkText = "Send a general enquiry to the primary authority")
-	WebElement generalEnquiryLink;
+	private WebElement generalEnquiryLink;
 
 	@FindBy(linkText = "Done")
 	private WebElement doneBtn;
@@ -118,12 +117,21 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		return PageFactory.initElements(driver, EnforcementNotificationPage.class);
 	}
 
-	public PartnershipConfirmationPage confirmDetails() {
-		WebElement checkbox = ScenarioContext.secondJourneyPart
-				? driver.findElement(By.id("edit-terms-organisation-agreed"))
-				: driver.findElement(By.id("edit-terms-authority-agreed"));
+	public PartnershipConfirmationPage confirmDetailsAsAuthority() {
+		WebElement checkbox = driver.findElement(By.id("edit-terms-authority-agreed"));
+		
 		if (!checkbox.isSelected())
 			checkbox.click();
+		
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
+	
+	public PartnershipConfirmationPage confirmDetails() {
+		WebElement checkbox = ScenarioContext.secondJourneyPart ? driver.findElement(By.id("edit-terms-organisation-agreed")) : driver.findElement(By.id("edit-terms-authority-agreed"));
+		
+		if (!checkbox.isSelected())
+			checkbox.click();
+		
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 
@@ -188,7 +196,6 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		return PageFactory.initElements(driver, TradingPage.class);
 	}
 	
-	
 	// Check Partnership Details
 	public boolean checkPartnershipInfo() {
 		WebElement partnershipDets = driver.findElement(By.xpath(partnershipDetails.replace("?", DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO))));
@@ -225,8 +232,6 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	public boolean checkTradingName() {
 		tradingNameText = driver.findElement(By.xpath(tradename.replace("?", DataStore.getSavedValue(UsableValues.TRADING_NAME))));
 		return tradingNameText.isDisplayed();
-		
-		//WebElement tradeNm = driver.findElement(By.xpath(tradename.replace("?", DataStore.getSavedValue(UsableValues.TRADING_NAME))));
 	}
 	
 	// Coordinated Partnership Details
