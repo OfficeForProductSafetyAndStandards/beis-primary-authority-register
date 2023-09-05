@@ -20,7 +20,106 @@ import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
-import uk.gov.beis.pageobjects.*;
+
+import uk.gov.beis.pageobjects.PersonContactDetailsPage;
+import uk.gov.beis.pageobjects.AdviceNoticeDetailsPage;
+import uk.gov.beis.pageobjects.AdviceNoticeSearchPage;
+import uk.gov.beis.pageobjects.AuthorityAddressDetailsPage;
+import uk.gov.beis.pageobjects.PersonMembershipPage;
+import uk.gov.beis.pageobjects.AuthorityConfirmationPage;
+import uk.gov.beis.pageobjects.AuthorityDashboardPage;
+import uk.gov.beis.pageobjects.PersonAccountPage;
+import uk.gov.beis.pageobjects.AuthorityNamePage;
+import uk.gov.beis.pageobjects.AuthorityPage;
+import uk.gov.beis.pageobjects.AuthorityTypePage;
+import uk.gov.beis.pageobjects.PersonUserRoleTypePage;
+import uk.gov.beis.pageobjects.BusinessAddressDetailsPage;
+import uk.gov.beis.pageobjects.BusinessConfirmationPage;
+import uk.gov.beis.pageobjects.BusinessContactDetailsPage;
+import uk.gov.beis.pageobjects.BusinessDetailsPage;
+import uk.gov.beis.pageobjects.BusinessInvitePage;
+import uk.gov.beis.pageobjects.BusinessPage;
+import uk.gov.beis.pageobjects.DashboardPage;
+import uk.gov.beis.pageobjects.DeclarationPage;
+import uk.gov.beis.pageobjects.DeviationApprovalPage;
+import uk.gov.beis.pageobjects.DeviationCompletionPage;
+import uk.gov.beis.pageobjects.DeviationReviewPage;
+import uk.gov.beis.pageobjects.DeviationSearchPage;
+import uk.gov.beis.pageobjects.EditRegisteredAddressPage;
+import uk.gov.beis.pageobjects.EmployeesPage;
+import uk.gov.beis.pageobjects.EnforcementActionPage;
+import uk.gov.beis.pageobjects.EnforcementCompletionPage;
+import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
+import uk.gov.beis.pageobjects.EnforcementDetailsPage;
+import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
+import uk.gov.beis.pageobjects.EnforcementNotificationPage;
+import uk.gov.beis.pageobjects.EnforcementReviewPage;
+import uk.gov.beis.pageobjects.EnforcementSearchPage;
+import uk.gov.beis.pageobjects.EnquiriesSearchPage;
+import uk.gov.beis.pageobjects.EnquiryCompletionPage;
+import uk.gov.beis.pageobjects.EnquiryContactDetailsPage;
+import uk.gov.beis.pageobjects.EnquiryReviewPage;
+import uk.gov.beis.pageobjects.HomePage;
+import uk.gov.beis.pageobjects.InspectionContactDetailsPage;
+import uk.gov.beis.pageobjects.InspectionFeedbackCompletionPage;
+import uk.gov.beis.pageobjects.InspectionFeedbackConfirmationPage;
+import uk.gov.beis.pageobjects.InspectionFeedbackDetailsPage;
+import uk.gov.beis.pageobjects.InspectionFeedbackSearchPage;
+import uk.gov.beis.pageobjects.InspectionPlanDetailsPage;
+import uk.gov.beis.pageobjects.InspectionPlanExpirationPage;
+import uk.gov.beis.pageobjects.InspectionPlanReviewPage;
+import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
+import uk.gov.beis.pageobjects.LegalEntityReviewPage;
+import uk.gov.beis.pageobjects.LegalEntityTypePage;
+import uk.gov.beis.pageobjects.LoginPage;
+import uk.gov.beis.pageobjects.MailLogPage;
+import uk.gov.beis.pageobjects.ManagePeoplePage;
+import uk.gov.beis.pageobjects.MemberListPage;
+import uk.gov.beis.pageobjects.PersonsProfilePage;
+import uk.gov.beis.pageobjects.NewsLetterManageSubscriptionListPage;
+import uk.gov.beis.pageobjects.NewsLetterSubscriptionPage;
+import uk.gov.beis.pageobjects.NewsLetterSubscriptionReviewPage;
+import uk.gov.beis.pageobjects.ONSCodePage;
+import uk.gov.beis.pageobjects.OrganisationDashboardPage;
+import uk.gov.beis.pageobjects.PartnershipAdvancedSearchPage;
+import uk.gov.beis.pageobjects.PartnershipApprovalPage;
+import uk.gov.beis.pageobjects.PartnershipCompletionPage;
+import uk.gov.beis.pageobjects.PartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipDescriptionPage;
+import uk.gov.beis.pageobjects.PartnershipRestoredPage;
+import uk.gov.beis.pageobjects.PartnershipRevokedPage;
+import uk.gov.beis.pageobjects.PartnershipSearchPage;
+import uk.gov.beis.pageobjects.PartnershipTermsPage;
+import uk.gov.beis.pageobjects.PartnershipTypePage;
+import uk.gov.beis.pageobjects.PasswordPage;
+import uk.gov.beis.pageobjects.ProposedEnforcementPage;
+import uk.gov.beis.pageobjects.RegulatoryFunctionPage;
+import uk.gov.beis.pageobjects.RemoveEnforcementConfirmationPage;
+import uk.gov.beis.pageobjects.RemoveEnforcementPage;
+import uk.gov.beis.pageobjects.RemoveReasonInspectionPlanPage;
+import uk.gov.beis.pageobjects.ReplyDeviationRequestPage;
+import uk.gov.beis.pageobjects.ReplyEnquiryPage;
+import uk.gov.beis.pageobjects.ReplyInspectionFeedbackPage;
+import uk.gov.beis.pageobjects.RequestDeviationPage;
+import uk.gov.beis.pageobjects.RequestEnquiryPage;
+import uk.gov.beis.pageobjects.RestorePartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.RevokeReasonInspectionPlanPage;
+import uk.gov.beis.pageobjects.SICCodePage;
+import uk.gov.beis.pageobjects.TradingPage;
+import uk.gov.beis.pageobjects.UpdateUserCommunicationPreferencesPage;
+import uk.gov.beis.pageobjects.UpdateUserContactDetailsPage;
+import uk.gov.beis.pageobjects.UpdateUserSubscriptionsPage;
+import uk.gov.beis.pageobjects.UploadAdviceNoticePage;
+import uk.gov.beis.pageobjects.UploadInspectionPlanPage;
+import uk.gov.beis.pageobjects.UserCommsPreferencesPage;
+import uk.gov.beis.pageobjects.PersonCreateAccountPage;
+import uk.gov.beis.pageobjects.UserProfileCompletionPage;
+import uk.gov.beis.pageobjects.UserProfileConfirmationPage;
+import uk.gov.beis.pageobjects.UserProfilePage;
+import uk.gov.beis.pageobjects.UserSubscriptionPage;
+import uk.gov.beis.pageobjects.UserTermsPage;
+import uk.gov.beis.pageobjects.ViewEnquiryPage;
 
 public class PARStepDefs {
 
@@ -61,8 +160,6 @@ public class PARStepDefs {
 	private ReplyInspectionFeedbackPage replyInspectionFeedbackPage;
 	private PartnershipAdvancedSearchPage partnershipAdvancedSearchPage;
 	private UserProfileConfirmationPage userProfileConfirmationPage;
-	//private UserNotificationPreferencesPage userNotificationPreferencesPage; // Note for Leo: This is not being used,
-																				// does it need removing?
 	private MailLogPage mailLogPage;
 	private RequestDeviationPage requestDeviationPage;
 	private InspectionPlanExpirationPage inspectionPlanExpirationPage;
@@ -88,7 +185,6 @@ public class PARStepDefs {
 	private RevokePartnershipConfirmationPage revokePartnershipConfirmationPage;
 	private PartnershipRevokedPage partnershipRevokedPage;
 	private UserTermsPage userTermsPage;
-	//private LegalEntityPage legalEntityPage;
 	private LegalEntityTypePage legalEntityTypePage;
 	private EmployeesPage employeesPage;
 	private BusinessDetailsPage parBusinessDetailsPage;
@@ -195,13 +291,11 @@ public class PARStepDefs {
 		userProfileConfirmationPage = PageFactory.initElements(driver, UserProfileConfirmationPage.class);
 		userSubscriptionPage = PageFactory.initElements(driver, UserSubscriptionPage.class);
 		employeesPage = PageFactory.initElements(driver, EmployeesPage.class);
-		//userNotificationPreferencesPage = PageFactory.initElements(driver, UserNotificationPreferencesPage.class);
 		userTermsPage = PageFactory.initElements(driver, UserTermsPage.class);
 		userProfileCompletionPage = PageFactory.initElements(driver, UserProfileCompletionPage.class);
 		passwordPage = PageFactory.initElements(driver, PasswordPage.class);
 		mailLogPage = PageFactory.initElements(driver, MailLogPage.class);
 		memberListPage = PageFactory.initElements(driver, MemberListPage.class);
-		//legalEntityPage = PageFactory.initElements(driver, LegalEntityPage.class);
 		tradingPage = PageFactory.initElements(driver, TradingPage.class);
 		sicCodePage = PageFactory.initElements(driver, SICCodePage.class);
 		parHomePage = PageFactory.initElements(driver, HomePage.class);
@@ -487,13 +581,11 @@ public class PARStepDefs {
 		parBusinessContactDetailsPage.proceed();
 		userCommsPreferencesPage.proceed();
 		userSubscriptionPage.selectContinue();
-//		userNotificationPreferencesPage.selectContinue();
 	}
 
 	@Then("^the user journey creation is successful$")
 	public void the_user_journey_creation_is_successful() throws Throwable {
 		LOG.info("Checking user creation is sucessful");
-		// userProfileConfirmationPage.checkUserCreation();
 		userProfileConfirmationPage.saveChanges();
 		userProfileCompletionPage.completeApplication();
 	}
@@ -605,8 +697,8 @@ public class PARStepDefs {
 		authorityConfirmationPage.editAuthorityName();
 		DataStore.saveValue(UsableValues.AUTHORITY_NAME, DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + " Updated");
 		authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
-		authorityConfirmationPage.editAuthorityType();
 		
+		authorityConfirmationPage.editAuthorityType();
 		DataStore.saveValue(UsableValues.AUTHORITY_TYPE, "District");
 		authorityTypePage.selectAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
 		
@@ -686,11 +778,8 @@ public class PARStepDefs {
 		enforcementDetailsPage.proceed();
 		
 		enforcementActionPage.selectRegFunc(DataStore.getSavedValue(UsableValues.ENFORCEMENT_REGFUNC));
-		
 		enforcementActionPage.chooseFile(DataStore.getSavedValue(UsableValues.ENFORCEMENT_FILENAME));
-		
 		enforcementActionPage.enterEnforcementDescription(DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION).toLowerCase());
-		
 		enforcementActionPage.enterTitle(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TITLE));
 		enforcementActionPage.proceed();
 	}
