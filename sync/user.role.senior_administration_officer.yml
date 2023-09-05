@@ -178,9 +178,9 @@ permissions:
   - invite_type_invite_organisation_member
   - 'manage all authorities'
   - 'manage all organisations'
-  - 'manage all profiles'
   - 'manage own authority'
   - 'manage own organisation'
+  - 'manage own profile'
   - 'manage people'
   - 'merge person'
   - 'nominate partnership amendments'
