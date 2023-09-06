@@ -98,12 +98,21 @@ trait ParRedirectTrait {
    *   Any additional options to add to the Url.
    */
   public function mergeOptions(Url &$url, array $url_options = []): void {
-    // Preserve all query parameters to ensure paging remains constant.
+    // Set the defaults.
     $defaults = [
       'absolute' => TRUE,
-      'query' => \Drupal::request()->query->all(),
       'attributes' => ['class' => ['flow-link']]
     ];
+
+    // Preserve selected known query parameters to ensure paging remains constant.
+    $query = \Drupal::request()->query;
+    $query_params = array_filter([
+      'page' => $query->get('page'),
+    ]);
+    if (!empty($query_params)) {
+      $defaults['query'] = $query_params;
+    }
+
     $options = NestedArray::mergeDeep($url_options, $defaults);
 
     $url->mergeOptions($options);
