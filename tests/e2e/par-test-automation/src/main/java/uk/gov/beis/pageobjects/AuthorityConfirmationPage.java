@@ -24,7 +24,7 @@ public class AuthorityConfirmationPage extends BasePageObject {
 	@FindBy(linkText = "Change the regulatory functions")
 	private WebElement regFunctions;
 	
-	@FindBy(xpath = "//input[contains(@value,'Save')]")
+	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 	
 	public AuthorityConfirmationPage() throws ClassNotFoundException, IOException {
@@ -70,7 +70,13 @@ public class AuthorityConfirmationPage extends BasePageObject {
 	}
 	
 	public AuthorityDashboardPage saveChanges() {
-		saveBtn.click();
+		
+		if(saveBtn.isEnabled()) {
+			LOG.info("Save Button Enabled!");
+			
+			saveBtn.click(); // This button is not being clicked properly.
+		}
+		
 		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
 	}
 }
