@@ -236,6 +236,15 @@ Feature: General
     When the user searches for the last created partnership
 
   # Nominate the Co-ordinated Partnership Test goes here. (This step is imprtant for other tests such as searching the Puplic registry, PAR-2079)
+  @regression @partnershipapplication @coordinated
+  Scenario: Successfully Nominate a Coordinated Partnership (Happy Path - PAR-2261)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user approves the partnership
+    And the user searches again for the last created partnership
+    Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
+    
   # Add, Update and Cease a Member Test goes here.
   # Upload a Members list Test goes here.
   # Change the Members list type Test goes here.
