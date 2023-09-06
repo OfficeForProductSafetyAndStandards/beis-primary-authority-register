@@ -759,7 +759,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'view par profile'
+          perm: 'manage people'
       cache:
         type: none
         options: {  }

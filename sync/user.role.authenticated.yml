@@ -8,6 +8,7 @@ dependencies:
     - par_dashboards
     - par_forms
     - par_notification
+    - par_profile_update_flows
     - par_profile_view_flows
     - par_roles
     - par_subscriptions
@@ -24,19 +25,15 @@ permissions:
   - 'access comments'
   - 'access content'
   - 'access par dashboard'
-  - 'access partnerships dashboard'
   - 'access shortcuts'
-  - 'access site-wide contact form'
   - 'block user'
-  - 'manage own par profile'
+  - 'manage own profile'
   - 'par autocomplete'
   - 'post comments'
   - 'receive subscription_verify_notification notification'
-  - 'search content'
   - 'search public register'
   - 'skip comment approval'
   - 'subscribe to par_news'
-  - 'view files'
   - 'view media'
   - 'view own notifications'
-  - 'view own par profile'
+  - 'view own profile'

@@ -250,7 +250,8 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
         $this->develGenerateContentAddEntity($values);
         if ($this->isDrush8() && function_exists('drush_log') && $i % drush_get_option('feedback', 1000) == 0) {
           $now = time();
-          drush_log(dt('Completed @feedback entities (@rate nodes/min)', array('@feedback' => drush_get_option('feedback', 1000), '@rate' => (drush_get_option('feedback', 1000) * 60) / ($now - $start))), 'ok');
+          $message = dt('Completed @feedback entities (@rate nodes/min)', array('@feedback' => drush_get_option('feedback', 1000), '@rate' => (drush_get_option('feedback', 1000) * 60) / ($now - $start)));
+          $this->logger->log('ok', $message);
           $start = $now;
         }
       }
@@ -281,7 +282,7 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
       'title' => $this->t('Generating Content'),
       'operations' => $operations,
       'finished' => 'devel_generate_batch_finished',
-      'file' => drupal_get_path('module', 'devel_generate') . '/devel_generate.batch.inc',
+      'file' => \Drupal::service('extension.list.module')->getPath('devel_generate') . '/devel_generate.batch.inc',
     );
     batch_set($batch);
   }
@@ -318,7 +319,8 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
     $values['num'] = array_shift($args);
     $all_types = array_keys(\Drupal::service('par_data.manager')->getParEntityTypes());
     if ($this->isDrush8()) {
-      $selected_types = _convert_csv_to_array(drush_get_option('types', []));
+      $args = drush_get_option('types', []);
+      $selected_types = StringUtils::csvToArray($args);
     }
     else {
       $selected_types = StringUtils::csvToArray($options['types'] ?: []);

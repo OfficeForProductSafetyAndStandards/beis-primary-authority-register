@@ -37,6 +37,7 @@ dependencies:
     - par_person_create_flows
     - par_person_merge_flows
     - par_person_update_flows
+    - par_profile_update_flows
     - par_profile_view_flows
     - par_rd_delete_data_flows
     - par_rd_help_desk_flows
@@ -45,6 +46,7 @@ dependencies:
     - par_search_partnership_flows
     - par_subscriptions
     - par_user_block_flows
+    - role_delegation
     - toolbar
 id: par_helpdesk
 label: 'Processing Team Member'
@@ -53,10 +55,6 @@ is_admin: null
 permissions:
   - 'access content overview'
   - 'access helpdesk'
-  - 'access helpdesk dashboard'
-  - 'access par journey transition business'
-  - 'access par journey transition coordinator'
-  - 'access par journey transition partnership details'
   - 'access par reports'
   - 'access par_data_advice entities'
   - 'access par_data_authority entities'
@@ -76,7 +74,6 @@ permissions:
   - 'access par_data_premises entities'
   - 'access par_data_regulatory_function entities'
   - 'access par_data_sic_code entities'
-  - 'access partnerships dashboard'
   - 'access toolbar'
   - 'access user profiles'
   - 'add authority'
@@ -106,7 +103,6 @@ permissions:
   - 'amend own partnerships'
   - 'approve enforcement notice'
   - 'approve partnerships'
-  - 'approve partnerships via help desk'
   - 'assign all memberships'
   - 'assign par_authority role'
   - 'assign par_authority_manager role'
@@ -115,7 +111,6 @@ permissions:
   - 'assign par_organisation role'
   - 'block user'
   - 'bypass par_data membership'
-  - 'bypass partnership journey'
   - 'cancel partnership applications'
   - 'cease coordinated member'
   - 'confirm partnership'
@@ -123,18 +118,12 @@ permissions:
   - 'create article content'
   - 'create authority user'
   - 'create enforcement user'
-  - 'create files'
   - 'create helpdesk user'
   - 'create organisation user'
   - 'create page content'
-  - 'create par person'
-  - 'create par profile'
-  - 'delete any document files'
-  - 'delete any image files'
+  - 'create person'
   - 'delete invite entities'
   - 'delete own article content'
-  - 'delete own document files'
-  - 'delete own image files'
   - 'delete own page content'
   - 'delete par data'
   - 'delete par_data_advice entities'
@@ -155,22 +144,10 @@ permissions:
   - 'delete par_data_premises entities'
   - 'delete par_data_regulatory_function entities'
   - 'delete par_data_sic_code entities'
-  - 'download any csv files'
-  - 'download any document files'
-  - 'download any image files'
-  - 'download own csv files'
-  - 'download own document files'
-  - 'download own image files'
   - 'edit any article content'
-  - 'edit any csv files'
-  - 'edit any document files'
-  - 'edit any image files'
   - 'edit any page content'
   - 'edit invite entities'
   - 'edit own article content'
-  - 'edit own csv files'
-  - 'edit own document files'
-  - 'edit own image files'
   - 'edit own page content'
   - 'edit par_data_advice entities'
   - 'edit par_data_authority entities'
@@ -190,18 +167,14 @@ permissions:
   - 'edit par_data_premises entities'
   - 'edit par_data_regulatory_function entities'
   - 'edit par_data_sic_code entities'
-  - 'enforce organisation'
   - 'invite authority members'
   - invite_type_invite_organisation_member
   - 'manage all authorities'
-  - 'manage all organisation'
   - 'manage all organisations'
-  - 'manage my authorities'
-  - 'manage my organisations'
   - 'manage own authority'
   - 'manage own organisation'
-  - 'manage par person'
-  - 'manage par profile'
+  - 'manage own profile'
+  - 'manage people'
   - 'merge person'
   - 'receive inspection_plan_expiry_warning notification'
   - 'receive partnership_amendment_confirmed notification'
@@ -231,9 +204,7 @@ permissions:
   - 'view inspection feedback'
   - 'view list par_news'
   - 'view own notifications'
-  - 'view own private files'
-  - 'view par profile'
-  - 'view private files'
+  - 'view own profile'
   - 'view published invite entities'
   - 'view unpublished invite entities'
   - 'view unpublished par_data_advice entities'

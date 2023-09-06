@@ -178,7 +178,7 @@ class ParReviewForm extends ParBaseForm {
   public function createEntities() {
     $current_user = $this->getCurrentUser();
 
-    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    // Get the cache IDs for the various forms that needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_update_contact');
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $cid_invitation = $this->getFlowNegotiator()->getFormKey('invite');
@@ -200,7 +200,15 @@ class ParReviewForm extends ParBaseForm {
       $par_data_person->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_details_cid));
       $par_data_person->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid));
       $par_data_person->set('mobile_phone', $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid));
-      $par_data_person->updateEmail($this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid), $current_user);
+
+      // Update the email address.
+      $email = $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid);
+      if (!empty($email)) {
+        $account instanceof User ?
+          $par_data_person->updateEmail($email, $account) :
+          $par_data_person->updateEmail($email);
+      }
+
 
       if ($communication_notes = $this->getFlowDataHandler()->getTempDataValue('notes', $contact_details_cid)) {
         $par_data_person->set('communication_notes', $communication_notes);

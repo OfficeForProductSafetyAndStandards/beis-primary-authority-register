@@ -174,7 +174,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     // Get the entity query.
     $query = $this->entityTypeManager()
       ->getStorage($this->getEntityTypeId())
-      ->getQuery('OR');
+      ->getQuery('OR')->accessCheck();
 
     $query->condition('email', $email, '=');
 
@@ -227,16 +227,14 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
    *
    * @param string $email
    *   The email address to update.
-   * @param User $account
+   * @param ?User $account
    */
-  public function updateEmail($email, User &$account = NULL) {
+  public function updateEmail(string $email, User &$account = NULL): void {
     $this->set('email', $email);
 
-    if (!$account) {
-      $account = $this->lookupUserAccount();
-    }
     if ($account) {
       $account->setEmail($email);
+      $account->setUsername($email);
     }
   }
 
