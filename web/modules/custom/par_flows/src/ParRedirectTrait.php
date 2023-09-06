@@ -5,7 +5,7 @@ namespace Drupal\par_flows;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Routing\RouteProvider;
+use Symfony\Component\HttpFoundation\Request;
 use Drupal\Core\Url;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -72,18 +72,41 @@ trait ParRedirectTrait {
 
   /**
    * Get link for any given step.
+   *
+   * @param Url $url
+   *    The Url to convert to a link.
+   * @param string $text
+   *    The title for the link.
+   * @param array $link_options
+   *    Any additional options to add to the Link.
+   *
+   * @return ?Link
    */
-  public function getLinkByUrl(Url $url, $text = '', $link_options = []) {
-    $defaults = [
-      'absolute' => TRUE,
-      'attributes' => ['class' => ['flow-link']]
-    ];
-    $options = NestedArray::mergeDeep($link_options, $defaults);
-
-    $url->mergeOptions($options);
+  public function getLinkByUrl(Url $url, $text = '', $link_options = []): ?Link {
+    $this->mergeOptions($url, $link_options);
     $link = Link::fromTextAndUrl($text, $url);
 
     return ($url->access() && $url->isRouted()) ? $link : NULL;
+  }
+
+  /**
+   * Merge Url with default options.
+   *
+   * @param Url &$url
+   *   The Url object to set default options form.
+   * @param array $url_options
+   *   Any additional options to add to the Url.
+   */
+  public function mergeOptions(Url &$url, array $url_options = []): void {
+    // Preserve all query parameters to ensure paging remains constant.
+    $defaults = [
+      'absolute' => TRUE,
+      'query' => \Drupal::request()->query->all(),
+      'attributes' => ['class' => ['flow-link']]
+    ];
+    $options = NestedArray::mergeDeep($url_options, $defaults);
+
+    $url->mergeOptions($options);
   }
 
   /**
@@ -91,7 +114,15 @@ trait ParRedirectTrait {
    */
   public function getCurrentRoute() {
     // Submit the route with all the same parameters.
-    return $route_params = \Drupal::routeMatch()->getRouteName();
+    return \Drupal::routeMatch()->getRouteName();
+  }
+
+  /**
+   * Get the current Url.
+   */
+  public function getCurrentUrl(): Url {
+    $request = \Drupal::request();
+    return Url::createFromRequest($request);
   }
 
   /**
