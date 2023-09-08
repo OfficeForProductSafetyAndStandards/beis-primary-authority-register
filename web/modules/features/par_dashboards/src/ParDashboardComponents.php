@@ -136,12 +136,14 @@ class ParDashboardComponents implements TrustedCallbackInterface {
 
   public function managePartnershipComponent($count = FALSE) {
     $build['partnerships'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Your partnerships'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
       '#cache' => ['contexts' => ['user.par_memberships:authority']],
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => t('Your partnerships'),
+      ],
     ];
 
     // Append a new partnership count to the link.
@@ -184,11 +186,13 @@ class ParDashboardComponents implements TrustedCallbackInterface {
 
   public function searchPartnershipComponent() {
     $build['partnerships_find'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Find a partnership'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => t('Find a partnership'),
+      ],
     ];
 
     try {
@@ -231,11 +235,13 @@ class ParDashboardComponents implements TrustedCallbackInterface {
 
     if ($manage_authorities_link || $manage_organisations_link) {
       $build['institutions'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t($heading),
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+        '#type' => 'container',
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#attributes' => ['class' => ['govuk-heading-m']],
+          '#value' => $this->t($heading),
+        ],
       ];
     }
 
@@ -257,12 +263,14 @@ class ParDashboardComponents implements TrustedCallbackInterface {
   }
 
   public function manageUsersComponent() {
-    $build['people'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('People'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+    $build['institutions'] = [
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => t('People'),
+      ],
     ];
 
     // User management link.
@@ -278,11 +286,13 @@ class ParDashboardComponents implements TrustedCallbackInterface {
 
   public function manageProfileComponent() {
     $build['user'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Your account'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => t('Your account'),
+      ],
     ];
 
     // Profile management link.
@@ -307,11 +317,13 @@ class ParDashboardComponents implements TrustedCallbackInterface {
     }
 
     $build['messages'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Messages'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => t('Messages'),
+      ],
     ];
 
     if ($this->getCurrentUser()->hasPermission('approve enforcement notice') ||
