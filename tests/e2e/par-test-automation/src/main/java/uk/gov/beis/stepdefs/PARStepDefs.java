@@ -647,38 +647,46 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.AUTHORITY_NAME, RandomStringGenerator.getAuthorityName(3));
 			DataStore.saveValue(UsableValues.AUTHORITY_TYPE, data.get("Authority Type"));
 			DataStore.saveValue(UsableValues.AUTHORITY_ADDRESSLINE1, data.get("addressline1"));
+			DataStore.saveValue(UsableValues.AUTHORITY_ADDRESSLINE2, data.get("addressline2"));
 			DataStore.saveValue(UsableValues.AUTHORITY_TOWN, data.get("town"));
+			DataStore.saveValue(UsableValues.AUTHORITY_COUNTY, data.get("county"));
 			DataStore.saveValue(UsableValues.AUTHORITY_POSTCODE, data.get("postcode"));
 			DataStore.saveValue(UsableValues.ONS_CODE, data.get("ONS Code"));
 			DataStore.saveValue(UsableValues.AUTHORITY_REGFUNCTION, data.get("Regulatory Function"));
 		}
 		
-		LOG.info("Select manage authorities");
+		LOG.info("Select manage authorities.");
 		parDashboardPage.selectManageAuthorities();
 		
-		LOG.info("Select add authority");
+		LOG.info("Select add authority.");
 		authoritiesDashboardPage.selectAddAuthority();
 		
-		LOG.info("Provide authority name");
+		LOG.info("Provide authority name.");
 		authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
 		
-		LOG.info("Provide authority type");
+		LOG.info("Provide authority type.");
 		authorityTypePage.selectAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
 		
-		LOG.info("Enter authority contact details");
-		authorityAddressDetailsPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.AUTHORITY_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.AUTHORITY_TOWN),
-				DataStore.getSavedValue(UsableValues.AUTHORITY_POSTCODE));
+		LOG.info("Enter authority contact details.");
+		authorityAddressDetailsPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.AUTHORITY_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.AUTHORITY_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.AUTHORITY_TOWN), DataStore.getSavedValue(UsableValues.AUTHORITY_COUNTY), DataStore.getSavedValue(UsableValues.AUTHORITY_POSTCODE));
 		
-		LOG.info("Provide ONS code");
+		LOG.info("Provide ONS code.");
 		onsCodePage.enterONSCode(DataStore.getSavedValue(UsableValues.ONS_CODE));
 		
-		LOG.info("Select regulatory function");
+		LOG.info("Select regulatory function.");
 		regulatoryFunctionPage.selectRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
+		
+		LOG.info("Clicking the Save button on the Review page.");
+		//authorityConfirmationPage.saveChanges();
 	}
 
 	@Then("^the authority is created sucessfully$")
 	public void the_authority_is_created_sucessfully() throws Throwable {
-		LOG.info("Confirm all details entered check out and save changes");
+		LOG.info("On the Authorities Dashboard.");
+		
+		// Search for the new Authority and Assert it is in the Table.
+		
 		Assert.assertTrue("Details don't check out", authorityConfirmationPage.checkAuthorityDetails());
 		authorityConfirmationPage.saveChanges();
 	}

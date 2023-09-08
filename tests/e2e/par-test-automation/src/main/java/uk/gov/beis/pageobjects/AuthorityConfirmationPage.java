@@ -27,6 +27,9 @@ public class AuthorityConfirmationPage extends BasePageObject {
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 	
+	@FindBy(id = "edit-cancel")
+	private WebElement cancelBtn;
+	
 	public AuthorityConfirmationPage() throws ClassNotFoundException, IOException {
 		super();
 	}
@@ -70,13 +73,7 @@ public class AuthorityConfirmationPage extends BasePageObject {
 	}
 	
 	public AuthorityDashboardPage saveChanges() {
-		
-		if(saveBtn.isEnabled()) {
-			LOG.info("Save Button Enabled!");
-			
-			saveBtn.click(); // This button is not being clicked properly.
-		}
-		
+		saveBtn.click();
 		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
 	}
 }

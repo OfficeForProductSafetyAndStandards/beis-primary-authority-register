@@ -2,7 +2,6 @@ package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -13,25 +12,37 @@ public class AuthorityAddressDetailsPage extends BasePageObject {
 		super();
 	}
 
-	@FindBy(xpath = "//input[@name='address_line1']")
-	WebElement addressLine1;
+	@FindBy(id = "edit-address-line1")
+	private WebElement addressLine1;
+	
+	@FindBy(id = "edit-address-line2")
+	private WebElement addressLine2;
 
-	@FindBy(xpath = "//input[@name='town_city']")
-	WebElement town;
+	@FindBy(id = "edit-town-city")
+	private WebElement townOrCity;
+	
+	@FindBy(id = "edit-county")
+	private WebElement county;
 
-	@FindBy(xpath = "//input[@name='postcode']")
-	WebElement postcode;
+	@FindBy(id = "edit-postcode")
+	private WebElement postcode;
 
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
 
-	public ONSCodePage enterAddressDetails(String address1, String town1, String postcode1) {
-		driver.findElement(By.xpath("//input[@name='address_line1']")).clear();
-		driver.findElement(By.xpath("//input[@name='address_line1']")).sendKeys(address1);
-		town.clear();
-		town.sendKeys(town1);
+	public ONSCodePage enterAddressDetails(String address1, String address2, String townCity, String countyName, String postalcode) {
+		addressLine1.clear();
+		addressLine2.clear();
+		townOrCity.clear();
+		county.clear();
 		postcode.clear();
-		postcode.sendKeys(postcode1);
+		
+		addressLine1.sendKeys(address1);
+		addressLine2.sendKeys(address2);
+		townOrCity.sendKeys(townCity);
+		county.sendKeys(countyName);
+		postcode.sendKeys(postalcode);
+		
 		continueBtn.click();
 
 		return PageFactory.initElements(driver, ONSCodePage.class);

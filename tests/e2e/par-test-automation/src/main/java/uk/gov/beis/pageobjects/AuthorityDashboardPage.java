@@ -26,7 +26,7 @@ public class AuthorityDashboardPage extends BasePageObject {
 	@FindBy(id = "edit-name-search")
 	private WebElement searchInput;
 
-	@FindBy(xpath = "//input[contains(@value,'Search')]")
+	@FindBy(id = "edit-submit-helpdesk-authorities")
 	private WebElement searchBtn;
 	
 	@FindBy(linkText = "Manage authority")

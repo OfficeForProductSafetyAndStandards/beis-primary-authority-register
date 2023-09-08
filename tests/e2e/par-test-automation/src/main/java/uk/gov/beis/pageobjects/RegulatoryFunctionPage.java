@@ -27,8 +27,8 @@ public class RegulatoryFunctionPage extends BasePageObject {
 	
 	@FindBy(id = "edit-regulatory-functions-4")	// Note: May have more check boxes in the future.
 	private WebElement bespokeCheckbox;
-	
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
+
+	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 	
 	@FindBy(id = "edit-save")
@@ -36,25 +36,22 @@ public class RegulatoryFunctionPage extends BasePageObject {
 	
 	public AuthorityConfirmationPage selectRegFunction(String reg) {
 		List<WebElement> boxes = driver.findElements(By.xpath("//div/label/preceding-sibling::input"));
+		
 		// clear up boxes first
 		for (WebElement bx : boxes) {
-			if (bx.isSelected())
+			if (bx.isSelected()){
 				bx.click();
+			}
 		}
 		
 		driver.findElement(By.xpath(regFunction.replace("?", reg))).click();
 		
-		try {
-			driver.findElement(By.id("edit-next")).click();
-			return PageFactory.initElements(driver, AuthorityConfirmationPage.class);
-		} catch (Exception e) {
-			driver.findElement(By.id("edit-save")).click();
-			return PageFactory.initElements(driver, AuthorityConfirmationPage.class);
-		}
+		continueBtn.click();
+		return PageFactory.initElements(driver, AuthorityConfirmationPage.class);
 	}
 
 	public PartnershipApprovalPage proceed() {
-		driver.findElement(By.xpath("//input[contains(@value,'Continue')]")).click();
+		continueBtn.click();
 		return PageFactory.initElements(driver, PartnershipApprovalPage.class);
 	}
 	
