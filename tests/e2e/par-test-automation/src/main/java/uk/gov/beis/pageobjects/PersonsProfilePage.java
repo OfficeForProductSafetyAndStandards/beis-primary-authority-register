@@ -17,8 +17,8 @@ public class PersonsProfilePage extends BasePageObject {
 	@FindBy(tagName = "h1")
 	private WebElement profileHeader;
 
-	@FindBy(linkText = "Re-send the invitation")
-	private WebElement reSendAccountInvitationLink;
+	@FindBy(xpath = "//div[@class='component-user-detail']//fieldset[@class='form-group js-form-item form-item js-form-wrapper form-wrapper govuk-fieldset']//p")
+	private WebElement invitationSentText;
 
 	@FindBy(xpath = "//div[@class='component-user-detail']//p[3]")
 	private WebElement userAccountType;
@@ -49,7 +49,7 @@ public class PersonsProfilePage extends BasePageObject {
 	}
 
 	public Boolean checkForUserAccountInvitationLink() {
-		return reSendAccountInvitationLink.isDisplayed();
+		return invitationSentText.isDisplayed();
 	}
 
 	public Boolean checkUserAccountEmail() {

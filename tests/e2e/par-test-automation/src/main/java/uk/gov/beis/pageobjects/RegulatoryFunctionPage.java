@@ -49,6 +49,22 @@ public class RegulatoryFunctionPage extends BasePageObject {
 		continueBtn.click();
 		return PageFactory.initElements(driver, AuthorityConfirmationPage.class);
 	}
+	
+	public AuthorityConfirmationPage editRegFunction(String reg) {
+		List<WebElement> boxes = driver.findElements(By.xpath("//div/label/preceding-sibling::input"));
+		
+		// clear up boxes first
+		for (WebElement bx : boxes) {
+			if (bx.isSelected()){
+				bx.click();
+			}
+		}
+		
+		driver.findElement(By.xpath(regFunction.replace("?", reg))).click();
+		
+		saveBtn.click();
+		return PageFactory.initElements(driver, AuthorityConfirmationPage.class);
+	}
 
 	public PartnershipApprovalPage proceed() {
 		continueBtn.click();

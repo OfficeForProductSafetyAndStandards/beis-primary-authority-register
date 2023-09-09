@@ -12,20 +12,19 @@ public class RequestDeviationPage extends BasePageObject{
 		super();
 	}
 
+	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
+	private WebElement descriptionBox;
+	
+	@FindBy(xpath = "//input[@id='edit-files-upload']")
+	private WebElement chooseFile1;
+	
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	private WebElement continueBtn;
 
-	@FindBy(xpath = "//input[@id='edit-files-upload']")
-	private WebElement chooseFile1;
-
-
 	public RequestDeviationPage chooseFile(String filename) {
-		chooseFile1.sendKeys(System.getProperty("user.dir") + "/" + filename);
+		uploadDocument(chooseFile1, filename);
 		return PageFactory.initElements(driver, RequestDeviationPage.class);
 	}
-
-	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
-	WebElement descriptionBox;
 
 	public RequestDeviationPage enterDescription(String description) throws Throwable {
 		descriptionBox.clear();

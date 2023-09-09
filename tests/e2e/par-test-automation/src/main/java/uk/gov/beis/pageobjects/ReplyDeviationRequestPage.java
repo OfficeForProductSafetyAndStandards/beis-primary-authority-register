@@ -13,10 +13,13 @@ public class ReplyDeviationRequestPage extends BasePageObject {
 	}
 
 	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
-	WebElement descriptionBox;
+	private WebElement descriptionBox;
 
+	@FindBy(id = "edit-files-upload")
+	private WebElement chooseFile1;
+	
 	@FindBy(xpath = "//input[contains(@value,'Save')]")
-	WebElement saveBtn;
+	private WebElement saveBtn;
 
 	public ReplyDeviationRequestPage enterFeedbackDescription(String description) throws Throwable {
 		descriptionBox.clear();
@@ -24,11 +27,8 @@ public class ReplyDeviationRequestPage extends BasePageObject {
 		return PageFactory.initElements(driver, ReplyDeviationRequestPage.class);
 	}
 
-	@FindBy(id = "edit-files-upload")
-	WebElement chooseFile1;
-
 	public ReplyDeviationRequestPage chooseFile(String filename) {
-		chooseFile1.sendKeys(System.getProperty("user.dir") + "/" + filename);
+		uploadDocument(chooseFile1, filename);
 		return PageFactory.initElements(driver, ReplyDeviationRequestPage.class);
 	}
 

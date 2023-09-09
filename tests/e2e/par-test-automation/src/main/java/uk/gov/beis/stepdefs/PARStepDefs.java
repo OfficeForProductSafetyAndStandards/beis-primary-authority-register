@@ -704,19 +704,19 @@ public class PARStepDefs {
 		LOG.info("Updating all editble fields against selected authority");
 		authorityConfirmationPage.editAuthorityName();
 		DataStore.saveValue(UsableValues.AUTHORITY_NAME, DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + " Updated");
-		authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		authorityNamePage.editAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
 		
 		authorityConfirmationPage.editAuthorityType();
 		DataStore.saveValue(UsableValues.AUTHORITY_TYPE, "District");
-		authorityTypePage.selectAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
+		authorityTypePage.editAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
 		
 		authorityConfirmationPage.editONSCode();
 		DataStore.saveValue(UsableValues.ONS_CODE, DataStore.getSavedValue(UsableValues.ONS_CODE) + " Updated");
-		onsCodePage.enterONSCode(DataStore.getSavedValue(UsableValues.ONS_CODE));
+		onsCodePage.editONSCode(DataStore.getSavedValue(UsableValues.ONS_CODE));
 		
 		authorityConfirmationPage.editRegFunction();
 		DataStore.saveValue(UsableValues.AUTHORITY_REGFUNCTION, "Alphabet learning");
-		regulatoryFunctionPage.selectRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
+		regulatoryFunctionPage.editRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
 	}
 
 	@Then("^the update for the authority is successful$")

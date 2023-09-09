@@ -13,14 +13,17 @@ public class EnforcementActionPage extends BasePageObject {
 		super();
 	}
 
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
+	@FindBy(id = "edit-par-component-enforcement-action-0-title")
+	private WebElement title;
+	
+	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
+	private WebElement descriptionBox;
 
 	@FindBy(xpath = "//input[@id='edit-par-component-enforcement-action-0-files-upload']")
-	WebElement chooseFile1;
-
-	@FindBy(id = "edit-par-component-enforcement-action-0-title")
-	WebElement title;
+	private WebElement chooseFile1;
+	
+	@FindBy(xpath = "//input[contains(@value,'Continue')]")
+	private WebElement continueBtn;
 
 	private String locator = "//label[contains(text(),'?')]";
 
@@ -35,12 +38,9 @@ public class EnforcementActionPage extends BasePageObject {
 	}
 
 	public EnforcementActionPage chooseFile(String filename) {
-		chooseFile1.sendKeys(System.getProperty("user.dir") + "/" + filename);
+		uploadDocument(chooseFile1, filename);
 		return PageFactory.initElements(driver, EnforcementActionPage.class);
 	}
-
-	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
-	WebElement descriptionBox;
 
 	public EnforcementActionPage enterEnforcementDescription(String description) throws Throwable {
 		descriptionBox.clear();

@@ -17,12 +17,23 @@ public class ONSCodePage extends BasePageObject {
 
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
+	
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
 
 	public RegulatoryFunctionPage enterONSCode(String name) {
 		onsCode.clear();
 		onsCode.sendKeys(name);
 		
 		continueBtn.click();
+		return PageFactory.initElements(driver, RegulatoryFunctionPage.class);
+	}
+	
+	public RegulatoryFunctionPage editONSCode(String name) {
+		onsCode.clear();
+		onsCode.sendKeys(name);
+		
+		saveBtn.click();
 		return PageFactory.initElements(driver, RegulatoryFunctionPage.class);
 	}
 }

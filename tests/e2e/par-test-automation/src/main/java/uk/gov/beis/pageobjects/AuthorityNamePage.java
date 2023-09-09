@@ -17,12 +17,23 @@ public class AuthorityNamePage extends BasePageObject {
 
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
+	
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
 
 	public AuthorityTypePage enterAuthorityName(String name) {
 		authorityName.clear();
 		authorityName.sendKeys(name);
 		
 		continueBtn.click();
+		return PageFactory.initElements(driver, AuthorityTypePage.class);
+	}
+	
+	public AuthorityTypePage editAuthorityName(String name) {
+		authorityName.clear();
+		authorityName.sendKeys(name);
+		
+		saveBtn.click();
 		return PageFactory.initElements(driver, AuthorityTypePage.class);
 	}
 }

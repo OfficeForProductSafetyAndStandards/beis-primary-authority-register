@@ -16,6 +16,9 @@ public class AuthorityTypePage extends BasePageObject {
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
+	
 	private String locator = "//label[contains(text(),'?')]";
 
 	public AuthorityAddressDetailsPage selectAuthorityType(String type) {
@@ -23,6 +26,14 @@ public class AuthorityTypePage extends BasePageObject {
 		link.click();
 		
 		continueBtn.click();
+		return PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
+	}
+	
+	public AuthorityAddressDetailsPage editAuthorityType(String type) {
+		WebElement link = driver.findElement(By.xpath(locator.replace("?", type)));
+		link.click();
+		
+		saveBtn.click();
 		return PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
 	}
 }
