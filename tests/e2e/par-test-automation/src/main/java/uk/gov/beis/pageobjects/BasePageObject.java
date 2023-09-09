@@ -33,8 +33,7 @@ public class BasePageObject {
 	// create a web driver instance when BasePageObject instantiated using the shared driver
 	public BasePageObject() {
 		driver = ScenarioContext.lastDriver;
-		wait = new WebDriverWait(driver, DRIVER_WAIT_TIME).pollingEvery(1, TimeUnit.SECONDS)
-				.ignoring(StaleElementReferenceException.class);
+		//wait = new WebDriverWait(driver, DRIVER_WAIT_TIME).pollingEvery(1, TimeUnit.SECONDS).ignoring(StaleElementReferenceException.class);
 		js = (JavascriptExecutor) driver;
 	}
 	

@@ -27,11 +27,11 @@ public class BrowserFactory {
 	// ReadSharedPropertyFile.loadSharedDriverProperties();
 	public static String LINUX_CHROME_EXECUTABLE = PropertiesUtil.getSharedPropertyValue("linux.chrome.executable");
 	public static Browser browser = Browser.valueOf(System.getProperty("browser", PropertiesUtil.getConfigPropertyValue("browser")));
-	static String desiredBrowserVersion = "browserVersion";
-	private static String CHROMEDRIVER_LINUX = PropertiesUtil.getSharedPropertyValue("linux.chrome.driver.path");
-
-	private static String CHROMEDRIVER_WINDOWS = PropertiesUtil.getSharedPropertyValue("windows.chrome.driver.path");
 	
+	static String desiredBrowserVersion = "browserVersion";
+	
+	private static String CHROMEDRIVER_LINUX = PropertiesUtil.getSharedPropertyValue("linux.chrome.driver.path");
+	private static String CHROMEDRIVER_WINDOWS = PropertiesUtil.getSharedPropertyValue("windows.chrome.driver.path");
 	private static String IEDRIVER_WINDOWS = PropertiesUtil.getSharedPropertyValue("windows.internetexplorer.driver.path");
 
 	public static DesiredCapabilities selectBrowser(DesiredCapabilities caps) {
@@ -53,16 +53,22 @@ public class BrowserFactory {
 
 	public static WebDriver selectLocalBrowser(DesiredCapabilities caps) {
 		switch (browser) {
+		
 		case Chrome:
 			System.setProperty("webdriver.chrome.driver", CHROMEDRIVER_WINDOWS);
-			return new ChromeDriver(caps);
+			return new ChromeDriver();
 		case Chromeheadless:
 			ChromeOptions options = new ChromeOptions();
+			
 			if(PlatformFactory.platform.equals("Windows")) {
+				
 				LOG.info("... Chrome headless: Windows ...");
 				System.setProperty("webdriver.chrome.driver", CHROMEDRIVER_WINDOWS);
+				
 				options.addArguments(getChromeOptions());
+				
 				return new ChromeDriver(options);
+				
 			}else {
 				LOG.info("... Disabling download prompt and setting download path to project workspace ...");
 				HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
@@ -75,9 +81,11 @@ public class BrowserFactory {
 				caps.setCapability(ChromeOptions.CAPABILITY, options);
 				System.setProperty("webdriver.chrome.driver", CHROMEDRIVER_LINUX);
 			}
-			return new ChromeDriver(caps);
+			
+			return new ChromeDriver();
+			
 		case Firefox:
-//			return new FirefaoxDriver();
+//			return new FirefoxDriver();
 		case IE:
 			InternetExplorerOptions ieOptions = new InternetExplorerOptions();
 			System.setProperty("webdriver.ie.driver", IEDRIVER_WINDOWS);

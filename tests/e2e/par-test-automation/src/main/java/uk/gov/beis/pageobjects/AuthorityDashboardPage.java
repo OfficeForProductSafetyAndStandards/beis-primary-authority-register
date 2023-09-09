@@ -33,8 +33,8 @@ public class AuthorityDashboardPage extends BasePageObject {
 	private WebElement authorityLink;
 
 	public AuthorityDashboardPage searchAuthority() {
-		WebDriverWait wait = new WebDriverWait(driver, 60);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-name-search")));
+		//WebDriverWait wait = new WebDriverWait(driver, 60);
+		//wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("edit-name-search")));
 		
 		if(searchInput.isDisplayed()) {
 			searchInput.sendKeys(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
