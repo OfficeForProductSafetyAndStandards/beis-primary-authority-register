@@ -30,6 +30,11 @@ use Drupal\registered_organisations\TemporaryException;
 class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
 
   /**
+   * The number of legal entity items to display at any one time.
+   */
+  const NUMBER_ITEMS = 5;
+
+  /**
    * {@inheritdoc}
    */
   public function loadData(int $index = 1): void {
@@ -49,11 +54,20 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements(array $form = [], int $index = 1) {
-
     /* @var ParDataPartnership $partnership */
     $partnership = $this->getDefaultValuesByKey('partnership', $index, []);
     /* @var ParDataPartnershipLegalEntity[] $partnership_legal_entities */
     $partnership_legal_entities = $this->getDefaultValuesByKey('partnership_legal_entities', $index, []);
+
+    // Get the unique pager for this component.
+    $pager = $this->getUniquePager()->getPager('partnership_legal_entities');
+    $count = count($partnership_legal_entities);
+    $current_pager = $this->getUniquePager()->getPagerManager()->createPager($count, self::NUMBER_ITEMS, $pager);
+
+    // Split the members up into chunks.
+    $chunks = array_chunk($partnership_legal_entities, self::NUMBER_ITEMS);
+    // The current chunk to display.
+    $chunk = $chunks[$current_pager->getCurrentPage()] ?? [];
 
     $route_params = ['par_data_partnership' => $partnership];
     $actions = [];
@@ -118,6 +132,16 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         '#attributes' => ['class' => ['heading-medium']],
         '#value' => $this->t('Legal Entities'),
       ],
+      'pager' => [
+        '#type' => 'pager',
+        '#theme' => 'pagerer',
+        '#element' => $pager,
+        '#weight' => 98,
+        '#config' => [
+          'preset' => $this->config('pagerer.settings')
+            ->get('core_override_preset'),
+        ],
+      ],
       'actions' => [
         '#theme' => 'item_list',
         '#attributes' => ['class' => ['list']],
@@ -125,7 +149,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       ],
     ];
 
-    // Render all the links as a list.
+    // Render all the component action links as a list.
     foreach ($actions as $key => $action) {
       /** @var Link $action */
       $form['partnership_legal_entities']['actions']['#items'][$key] = [
@@ -160,7 +184,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     $legal_entity_actions = [];
 
     // Add a row for each partnership legal entity.
-    foreach ($partnership_legal_entities as $delta => $partnership_legal_entity) {
+    foreach ($chunk as $delta => $partnership_legal_entity) {
       // Get the actual legal entity instance.
       $legal_entity = $partnership_legal_entity->getLegalEntity();
 
@@ -276,9 +300,10 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       $headers[3] = 'Actions';
     }
 
-    // Add all the actions.
+    // Add all the actions, this ensures that the action column will only be displayed
+    // if there is an action to display on at least one of the legal entities.
     if (!empty($legal_entity_actions)) {
-      foreach ($partnership_legal_entities as $delta => $legal_entity) {
+      foreach ($chunk as $delta => $legal_entity) {
         $actions = $legal_entity_actions[$delta] ?? [];
         // Operation links will go in the last column.
         if (array_search('Actions', $headers) !== FALSE) {

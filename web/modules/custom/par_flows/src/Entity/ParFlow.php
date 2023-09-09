@@ -327,9 +327,9 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * Start the journey.
    *
-   * @return \Drupal\Core\Url
+   * @return Url
    */
-  public function start($step = 1, $params = []) {
+  public function start($step = 1, $params = []): Url {
     $route = $this->getRouteByStep($step);
 
     if (!isset($route)) {
@@ -337,7 +337,10 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     }
 
     $route_params = $this->getRequiredParams($route, $params);
-    return Url::fromRoute($route, $route_params);
+    $url = Url::fromRoute($route, $route_params);
+
+    $this->mergeOptions($url);
+    return $url;
   }
 
   /**
@@ -348,11 +351,11 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    * @param array $params
    *   Additional params to be used for determining the route.
    *
-   * @throws \Drupal\par_flows\ParFlowException
+   * @throws ParFlowException
    *
-   * @return \Drupal\Core\Url|NULL
+   * @return ?Url
    */
-  public function goto($operation, $params = []) {
+  public function goto($operation, $params = []): ?Url {
     // Don't process if no operation has been set.
     if (NULL === $operation) {
       throw new ParFlowException('No operation was provided to redirect to.');
@@ -370,14 +373,17 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     }
 
     $route_params = $this->getRequiredParams($route, $params);
-    return Url::fromRoute($route, $route_params);
+    $url = Url::fromRoute($route, $route_params);
+
+    $this->mergeOptions($url);
+    return $url;
   }
 
 
   /**
    * {@inheritdoc}
    */
-  public function progress($operation = NULL, $params = []) {
+  public function progress($operation = NULL, $params = []): Url {
     // Run the event dispatcher to determine the order of precedence to determine the next route.
     $event = new ParFlowEvent($this, $this->getCurrentRouteMatch(), $operation, $params);
     $this->getEventDispatcher()->dispatch(ParFlowEvents::getEventByAction($operation), $event);
@@ -386,7 +392,10 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       throw new ParFlowException('Could not find an appropriate page to progress to.');
     }
 
-    return $event->getUrl();
+    $url = $event->getUrl();
+
+    $this->mergeOptions($url);
+    return $url;
   }
 
   /**
