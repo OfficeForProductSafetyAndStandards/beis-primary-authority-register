@@ -1,8 +1,10 @@
 package uk.gov.beis.stepdefs;
 
+import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,8 +29,15 @@ public class Hooks {
 		tag = (List<String>) scenario.getSourceTagNames();
 		WebdriverFactory.checkBrowserRequired(isDifferentDriverRequired());
 		LOG.info("... Doing BeforeMethod createdriver routine...");
+		
 		driver = WebdriverFactory.createWebdriver();
+		
+		//driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+		
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(5));
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 		driver.manage().window().maximize();
+		
 		ScenarioContext.lastDriver = driver;
 	}
 

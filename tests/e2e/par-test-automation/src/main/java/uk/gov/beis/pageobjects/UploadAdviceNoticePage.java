@@ -14,7 +14,7 @@ public class UploadAdviceNoticePage extends BasePageObject{
 	}
 
 	@FindBy(xpath = "//input[@id='edit-files-upload']")
-	WebElement chooseFile1;
+	private WebElement chooseFile1;
 
 	public AdviceNoticeDetailsPage uploadFile() {
 		driver.findElement(By.id("edit-upload")).click();
@@ -22,7 +22,7 @@ public class UploadAdviceNoticePage extends BasePageObject{
 	}
 
 	public UploadInspectionPlanPage chooseFile(String filename) {
-		chooseFile1.sendKeys(System.getProperty("user.dir") + "/" + filename);
+		uploadDocument(chooseFile1, filename);
 		return PageFactory.initElements(driver, UploadInspectionPlanPage.class);
 	}
 

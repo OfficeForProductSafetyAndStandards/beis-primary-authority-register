@@ -17,7 +17,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.gov.beis.enums.Browser;
 import uk.gov.beis.helper.ScenarioContext;
+import uk.gov.beis.supportfactory.BrowserFactory;
 
 public class BasePageObject {
 
@@ -33,11 +35,18 @@ public class BasePageObject {
 	// create a web driver instance when BasePageObject instantiated using the shared driver
 	public BasePageObject() {
 		driver = ScenarioContext.lastDriver;
-		wait = new WebDriverWait(driver, DRIVER_WAIT_TIME).pollingEvery(1, TimeUnit.SECONDS)
-				.ignoring(StaleElementReferenceException.class);
+		//wait = new WebDriverWait(driver, DRIVER_WAIT_TIME).pollingEvery(1, TimeUnit.SECONDS).ignoring(StaleElementReferenceException.class);
 		js = (JavascriptExecutor) driver;
 	}
 	
+	public void uploadDocument(WebElement filebrowser, String filename) {
+		if(BrowserFactory.browser == Browser.Chrome) {
+			filebrowser.sendKeys(System.getProperty("user.dir") + "/" + filename);
+		}
+		else if (BrowserFactory.browser == Browser.Firefox) {
+			filebrowser.sendKeys(System.getProperty("user.dir") + "\\" + filename);
+		}
+	}
 
 	public WebElement waitUntilCickable(WebElement element) {
 		return wait.until(ExpectedConditions.elementToBeClickable(element));
@@ -109,6 +118,4 @@ public class BasePageObject {
 	public void refresh() {
 		driver.navigate().refresh();
 	}
-
-
 }

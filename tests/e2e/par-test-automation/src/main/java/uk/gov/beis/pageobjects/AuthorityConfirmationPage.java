@@ -24,8 +24,11 @@ public class AuthorityConfirmationPage extends BasePageObject {
 	@FindBy(linkText = "Change the regulatory functions")
 	private WebElement regFunctions;
 	
-	@FindBy(xpath = "//input[contains(@value,'Save')]")
+	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
+	
+	@FindBy(id = "edit-cancel")
+	private WebElement cancelBtn;
 	
 	public AuthorityConfirmationPage() throws ClassNotFoundException, IOException {
 		super();

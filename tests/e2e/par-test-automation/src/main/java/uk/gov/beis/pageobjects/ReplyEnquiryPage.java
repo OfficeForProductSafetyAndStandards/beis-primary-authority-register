@@ -12,19 +12,19 @@ public class ReplyEnquiryPage extends BasePageObject {
 		super();
 	}
 
-	@FindBy(xpath = "//input[contains(@value,'Save')]")
-	WebElement continueBtn;
-
+	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
+	private WebElement descriptionBox;
+	
 	@FindBy(xpath = "//input[@id='edit-files-upload']")
-	WebElement chooseFile1;
+	private WebElement chooseFile1;
+	
+	@FindBy(xpath = "//input[contains(@value,'Save')]")
+	private WebElement continueBtn;
 
 	public ReplyEnquiryPage chooseFile(String filename) {
-		chooseFile1.sendKeys(System.getProperty("user.dir") + "/" + filename);
+		uploadDocument(chooseFile1, filename);
 		return PageFactory.initElements(driver, ReplyEnquiryPage.class);
 	}
-
-	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
-	WebElement descriptionBox;
 
 	public ReplyEnquiryPage enterDescription(String description) throws Throwable {
 		descriptionBox.clear();
