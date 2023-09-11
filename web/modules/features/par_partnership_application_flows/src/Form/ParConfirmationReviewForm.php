@@ -61,7 +61,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       ];
 
       $form['partnership'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#attributes' => ['class' => ['govuk-grid-row', 'form-group']],
       ];
 

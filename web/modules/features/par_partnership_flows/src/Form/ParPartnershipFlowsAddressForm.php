@@ -185,6 +185,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
       '#type' => 'textfield',
       '#title' => $this->t('Enter Postcode'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("postcode"),
+      '#attributes' => ['class' => ['govuk-!-width-two-thirds']],
     ];
 
     // Make sure to add the person cacheability data to this form.
