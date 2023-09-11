@@ -198,7 +198,7 @@ class ParDashboardsDashboardController extends ControllerBase {
       ];
     }
 
-    $build['back_buton'] = [
+    $build['back_button'] = [
       '#type' => 'markup',
       '#markup' => '<a href="javascript: history.go(-1)" class="govuk-back-link">Back</a>',
     ];
