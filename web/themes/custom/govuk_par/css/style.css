@@ -6087,10 +6087,12 @@ details {
     .govuk-error-summary__list .item-list__comma-list li:after {
       content: ""; }
 
-.govuk-grid-column-one-half .form-group {
+.govuk-grid-column-one-half .form-group,
+.govuk-grid-column-full .form-group {
   margin-bottom: 20px; }
   @media (min-width: 40.0625em) {
-    .govuk-grid-column-one-half .form-group {
+    .govuk-grid-column-one-half .form-group,
+    .govuk-grid-column-full .form-group {
       margin-bottom: 30px; } }
 
 /*# sourceMappingURL=../map/style.css.map */
