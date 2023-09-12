@@ -105,6 +105,6 @@ Feature: Other
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for an existing person successfully
     And the user updates an existing person:
-      | Title | WorkNumber  | MobileNumber |
+      | Title | WorkNumber | MobileNumber |
       | Dr    | 01204996501 |  07405882265 |
     Then the user can verify the person was updated successfully and can see resend an account invite

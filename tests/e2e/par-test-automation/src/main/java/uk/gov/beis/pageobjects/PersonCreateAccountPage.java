@@ -7,15 +7,16 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class PersonCreateAccountPage extends BasePageObject {
-	public PersonCreateAccountPage() throws ClassNotFoundException, IOException {
-		super();
-	}
 	
 	@FindBy(id = "edit-next")
 	private WebElement inviteBtn;
 	
 	@FindBy(id = "edit-cancel")
 	private WebElement cancelBtn;
+	
+	public PersonCreateAccountPage() throws ClassNotFoundException, IOException {
+		super();
+	}
 	
 	public UserProfileConfirmationPage clickInviteButton() {
 		inviteBtn.click();

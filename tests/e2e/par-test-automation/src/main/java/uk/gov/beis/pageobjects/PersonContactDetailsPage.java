@@ -1,7 +1,9 @@
 package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebElement;
@@ -13,10 +15,7 @@ import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.utility.DataStore;
 
 public class PersonContactDetailsPage extends BasePageObject {
-	public PersonContactDetailsPage() throws ClassNotFoundException, IOException {
-		super();
-	}
-
+	
 	@FindBy(id = "edit-salutation")
 	private WebElement titleField;
 	
@@ -35,34 +34,135 @@ public class PersonContactDetailsPage extends BasePageObject {
 	@FindBy(id = "edit-email")
 	private WebElement emailAddressField;
 	
+	@FindBy(id = "edit-preferred-contact-communication-email")
+	private WebElement preferredEmailCheckbox;
+	
+	@FindBy(id = "edit-preferred-contact-communication-phone")
+	private WebElement preferredWorkphoneCheckbox;
+	
+	@FindBy(id = "edit-preferred-contact-communication-mobile")
+	private WebElement preferredMobilephoneCheckbox;
+	
+	@FindBy(id = "edit-notes")
+	private WebElement contactNotesTextfield;
+	
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 	
 	@FindBy(id = "edit-cancel")
 	private WebElement cancelBtn;
 	
+	public PersonContactDetailsPage() throws ClassNotFoundException, IOException {
+		super();
+	}
+	
 	public void enterContactDetails(DataTable person) {
-		clearTextfields();
+		clearAllFields();
 		
 		String firstName = RandomStringUtils.randomAlphabetic(8);
 		String lastName = RandomStringUtils.randomAlphabetic(8);
 		String emailAddress = firstName + "@" + lastName + ".com";
 
+		DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, firstName); 
+		DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, lastName);
+		DataStore.saveValue(UsableValues.BUSINESS_EMAIL, emailAddress);
+		
 		for (Map<String, String> data : person.asMaps(String.class, String.class)) {
-			titleField.sendKeys(data.get("Title"));
-			firstnameField.sendKeys(firstName);
-			lastnameField.sendKeys(lastName);
-			workPhoneField.sendKeys(data.get("WorkNumber"));
-			mobilePhoneField.sendKeys(data.get("MobileNumber"));
-			emailAddressField.sendKeys(emailAddress);
 			
 			DataStore.saveValue(UsableValues.PERSON_TITLE, data.get("Title"));
-			DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, firstName); 
-			DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, lastName);
 			DataStore.saveValue(UsableValues.PERSON_WORK_NUMBER, data.get("WorkNumber"));
 			DataStore.saveValue(UsableValues.PERSON_MOBILE_NUMBER, data.get("MobileNumber"));
-			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, emailAddress);
 		}
+		
+		titleField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
+		firstnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME));
+		lastnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME));
+		workPhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
+		mobilePhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
+		emailAddressField.sendKeys(emailAddress);
+	}
+	
+	public void addContactDetails(DataTable person) {
+		clearAllFields();
+		clearPreferredCommunicationMethods();
+		contactNotesTextfield.clear();
+		
+		for (Map<String, String> data : person.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.PERSON_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, data.get("Firstname"));
+			DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, data.get("Lastname"));
+			DataStore.saveValue(UsableValues.PERSON_WORK_NUMBER, data.get("WorkNumber"));
+			DataStore.saveValue(UsableValues.PERSON_MOBILE_NUMBER, data.get("MobileNumber"));
+			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, data.get("Email"));
+			DataStore.saveValue(UsableValues.CONTACT_NOTES, data.get("ContactNotes"));
+		}
+		
+		titleField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
+		firstnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME));
+		lastnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME));
+		workPhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
+		mobilePhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
+		emailAddressField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
+		
+		selectRandomPreferredCommunication();
+		
+		contactNotesTextfield.sendKeys(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
+	}
+	
+	public void addContactDetailsWithRandomName(DataTable person) {
+		clearAllFields();
+		clearPreferredCommunicationMethods();
+		contactNotesTextfield.clear();
+		
+		String firstName = RandomStringUtils.randomAlphabetic(8);
+		String lastName = RandomStringUtils.randomAlphabetic(8);
+		String emailAddress = firstName + "@" + lastName + ".com";
+
+		DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, firstName); 
+		DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, lastName);
+		DataStore.saveValue(UsableValues.BUSINESS_EMAIL, emailAddress);
+		
+		setContactDetails(person);
+		
+		emailAddressField.sendKeys(emailAddress);
+	}
+	
+	public void editContactDetails(DataTable person) {
+		clearEditJourneyFields();
+		clearPreferredCommunicationMethods();
+		contactNotesTextfield.clear();
+		
+		for (Map<String, String> data : person.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.PERSON_WORK_NUMBER, data.get("WorkNumber"));
+			DataStore.saveValue(UsableValues.PERSON_MOBILE_NUMBER, data.get("MobileNumber"));
+			DataStore.saveValue(UsableValues.CONTACT_NOTES, data.get("ContactNotes"));
+		}
+		
+		titleField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
+		firstnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME));
+		lastnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME));
+		workPhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
+		mobilePhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
+		
+		selectRandomPreferredCommunication();
+		
+		contactNotesTextfield.sendKeys(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
+	}
+	
+	public void editContactDetailsWithRandomName(DataTable person) {
+		clearEditJourneyFields();
+		clearPreferredCommunicationMethods();
+		contactNotesTextfield.clear();
+		
+		String firstName = RandomStringUtils.randomAlphabetic(8);
+		String lastName = RandomStringUtils.randomAlphabetic(8);
+
+		DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, firstName); 
+		DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, lastName);
+		
+		setContactDetails(person);
 	}
 	
 	public PersonAccountPage clickContinueButton() {
@@ -70,17 +170,83 @@ public class PersonContactDetailsPage extends BasePageObject {
 		return PageFactory.initElements(driver, PersonAccountPage.class);
 	}
 	
+	public PersonUserRoleTypePage selectContinueButton() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, PersonUserRoleTypePage.class);
+	}
+	
 	public DashboardPage clickCancelButton() {
 		cancelBtn.click();
 		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 	
-	private void clearTextfields() {
+	private void setContactDetails(DataTable person) {
+		for (Map<String, String> data : person.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.PERSON_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.PERSON_WORK_NUMBER, data.get("WorkNumber"));
+			DataStore.saveValue(UsableValues.PERSON_MOBILE_NUMBER, data.get("MobileNumber"));
+			DataStore.saveValue(UsableValues.CONTACT_NOTES, data.get("ContactNotes"));
+		}
+		
+		titleField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
+		firstnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME));
+		lastnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME));
+		workPhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
+		mobilePhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
+		
+		selectRandomPreferredCommunication();
+		
+		contactNotesTextfield.sendKeys(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
+	}
+	
+	private void selectRandomPreferredCommunication() {
+		ArrayList<WebElement> communicationMethods = new ArrayList<WebElement>();
+		communicationMethods.add(preferredEmailCheckbox);
+		communicationMethods.add(preferredWorkphoneCheckbox);
+		communicationMethods.add(preferredMobilephoneCheckbox);
+		
+		Random rand = new Random();
+		
+		WebElement chosenMethod = communicationMethods.get(rand.nextInt(communicationMethods.size()));
+		chosenMethod.click();
+		
+		if(chosenMethod == preferredEmailCheckbox) {
+			DataStore.saveValue(UsableValues.PREFERRED_CONTACT_METHOD, "Email");
+		}
+		else if(chosenMethod == preferredWorkphoneCheckbox) {
+			DataStore.saveValue(UsableValues.PREFERRED_CONTACT_METHOD, "Workphone");
+		}
+		else if(chosenMethod == preferredMobilephoneCheckbox) {
+			DataStore.saveValue(UsableValues.PREFERRED_CONTACT_METHOD, "Mobilephone");
+		}
+	}
+	
+	private void clearAllFields() {
+		clearEditJourneyFields();
+		
+		emailAddressField.clear();
+	}
+	
+	private void clearEditJourneyFields() {
 		titleField.clear();
 		firstnameField.clear();
 		lastnameField.clear();
 		workPhoneField.clear();
 		mobilePhoneField.clear();
-		emailAddressField.clear();
+	}
+	
+	private void clearPreferredCommunicationMethods() {
+		if(preferredEmailCheckbox.isSelected()) {
+			preferredEmailCheckbox.click();
+		}
+		
+		if(preferredWorkphoneCheckbox.isSelected()) {
+			preferredWorkphoneCheckbox.click();
+		}
+		
+		if(preferredMobilephoneCheckbox.isSelected()) {
+			preferredMobilephoneCheckbox.click();
+		}
 	}
 }
