@@ -217,8 +217,6 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
           'name' => [
             '#type' => 'markup',
             '#markup' => $enforcing_officer_name,
-            '#prefix' => '<p>',
-            '#suffix' => '</p>',
           ],
         ];
         if ($work_phone = $this->getDefaultValuesByKey('enforcing_officer_work_phone', $cardinality, NULL)) {
@@ -248,8 +246,6 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
           'enforcing_authority' => [
             '#type' => 'markup',
             '#markup' => $enforcing_authority,
-            '#prefix' => '<p>',
-            '#suffix' => '</p>',
           ]
         ];
       }
@@ -279,8 +275,6 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
           'organisation_name' => [
             '#type' => 'markup',
             '#markup' => $enforced_organisation,
-            '#prefix' => '<p>',
-            '#suffix' => '</p>',
           ],
         ];
         try {
@@ -312,8 +306,6 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
           'primary_authority_name' => [
             '#type' => 'markup',
             '#markup' => $primary_authority,
-            '#prefix' => '<p>',
-            '#suffix' => '</p>',
           ],
         ];
       }
@@ -323,8 +315,6 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
           'name' => [
             '#type' => 'markup',
             '#markup' => $pa_officer_name,
-            '#prefix' => '<p>',
-            '#suffix' => '</p>',
           ],
         ];
         if ($pa_officer_work_phone = $this->getDefaultValuesByKey('pa_officer_work_phone', $cardinality, NULL)) {
@@ -354,8 +344,6 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
           'referring_authority_name' => [
             '#type' => 'markup',
             '#markup' => $referring_authority,
-            '#prefix' => '<p>',
-            '#suffix' => '</p>',
           ],
         ];
       }
@@ -373,8 +361,6 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
           'enforcing_authority' => [
             '#type' => 'markup',
             '#markup' => $enforcing_authority,
-            '#prefix' => '<p>',
-            '#suffix' => '</p>',
           ]
         ];
       }
