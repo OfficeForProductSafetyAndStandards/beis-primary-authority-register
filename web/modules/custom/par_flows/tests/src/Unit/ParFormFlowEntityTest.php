@@ -235,6 +235,6 @@ class ParFormFlowEntityTest extends UnitTestCase {
       'par_test_third',
       'par_test_fourth',
     ];
-    $this->assertArrayEquals($expected, $form_ids, "The loaded forms are correct.");
+    $this->assertEquals($expected, $form_ids, "The loaded forms are correct.");
   }
 }

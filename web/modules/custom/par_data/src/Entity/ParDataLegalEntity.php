@@ -157,18 +157,30 @@ class ParDataLegalEntity extends ParDataEntity {
     }
 
     // Ensure all required fields are up-to-date with the organisation profile.
-    if ($this->isRegisteredOrganisation() && $profile = $this->getOrganisationProfile()) {
+    $this->lookup();
+  }
+
+  /**
+   * @return ParDataEntityInterface
+   *   The legal entity.
+   */
+  public function lookup() {
+    // Lookup any registered organisations and update the information based on
+    // the returned organisation profile.
+    if ($this->isRegisteredOrganisation() && $profile = $this->lookupOrganisationProfile()) {
       // Save the true values from the registry.
       $this->set('registered_name', $profile->getName());
       $this->set('registered_number', $profile->getId());
       $this->set('legal_entity_type', $profile->getType());
     }
+
+    return $this;
   }
 
   /**
    * Tries to de-duplicate the current legal entity.
    *
-   * @return \Drupal\par_data\Entity\ParDataEntityInterface
+   * @return ParDataEntityInterface
    *   The original legal entity OR
    *   the duplicate legal entity if found.
    */
@@ -211,12 +223,42 @@ class ParDataLegalEntity extends ParDataEntity {
       $this->getEntityTypeManager()->getStorage('par_data_legal_entity')
         ->loadByProperties($properties) : [];
 
+    $id = $this->id();
+    // Remove this legal entity from the list.
+    $legal_entities = array_filter($legal_entities, function($legal_entity) use ($id) {
+      return $legal_entity->id() !== $id;
+    });
+
+    // If there are any duplicates return these instead.
     if (!empty($legal_entities)) {
+      // Sort so it always returns the same result.
+      sort($legal_entities);
       return current($legal_entities);
     }
 
     return $this;
+  }
 
+  /**
+   * Whether this legal entity is editable.
+   *
+   *  - If it isn't yet saved
+   *  - If it is a legacy entity
+   *
+   * @return bool
+   */
+  public function isEditable(): bool {
+    // If the legal entity is new and not yet saved.
+    if ($this->isNew()) {
+      return TRUE;
+    }
+
+    // All legacy entities can be edited.
+    if ($this->isLegacyEntity()) {
+      return TRUE;
+    }
+
+    return FALSE;
   }
 
   /**

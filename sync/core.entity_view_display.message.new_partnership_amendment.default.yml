@@ -1,0 +1,32 @@
+uuid: 4d09668f-41a2-451a-a0dd-f31501306666
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.new_partnership_amendment.field_message_subject
+    - field.field.message.new_partnership_amendment.field_partnership
+    - field.field.message.new_partnership_amendment.field_to
+    - message.template.new_partnership_amendment
+id: message.new_partnership_amendment.default
+targetEntityType: message
+bundle: new_partnership_amendment
+mode: default
+content:
+  field_partnership:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_message_subject: true
+  field_to: true
+  partial_1: true
+  search_api_excerpt: true

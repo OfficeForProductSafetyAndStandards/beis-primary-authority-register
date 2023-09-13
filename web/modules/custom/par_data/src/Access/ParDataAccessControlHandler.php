@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Access;
 
+use Drupal\user\Entity\User;
 use Drupal\Core\Entity\EntityAccessControlHandler;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
@@ -54,7 +55,7 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
     // All access checks are done using the relationship between a user account
     // and a par person entity, so we need all the user's par people.
     $par_data_manager = \Drupal::service('par_data.manager');
-    $user_account = \Drupal\user\Entity\User::load($account->id());
+    $user_account = User::load($account->id());
     $is_member = $par_data_manager->isMember($entity, $user_account);
 
     switch ($operation) {

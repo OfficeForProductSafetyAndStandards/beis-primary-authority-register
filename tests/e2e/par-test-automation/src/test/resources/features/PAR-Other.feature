@@ -1,15 +1,15 @@
-Feature: 
+Feature: Other
   As a user of the PAR service
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
 
-  @regression @authority
+  @regression @authority @authorityManagement
   Scenario: Verify Addition/Update of Authority (Happy Path - PAR-1849, PAR-1850)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user creates a new authority with the following details:
-      | Authority Type | ONS Code | Regulatory Function | addressline1  | town    | postcode |
-      | Council Area   | 43453465 | Cookie control      | 32 Bramtom Rd | Windsor | SL4 5PN  |
+      | Authority Type | ONS Code | Regulatory Function | addressline1  | addressline2 | town    | county         | postcode |
+      | Council Area   | 43453465 | Cookie control      | 32 Bramtom Rd | new build    | Windsor | Greater London | SL4 5PN  |
     Then the authority is created sucessfully
     #Update All Fields for newly created Authority
     When the user searches for the last created authority

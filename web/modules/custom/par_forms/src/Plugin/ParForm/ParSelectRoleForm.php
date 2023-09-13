@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_forms\ParFormBuilder;
@@ -23,14 +24,14 @@ class ParSelectRoleForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
+  public function defaultConfiguration(): array {
     return ['roles' => ['par_enforcement', 'par_authority', 'par_authority_manager', 'par_organisation', 'par_helpdesk', 'senior_administration_officer']] + parent::defaultConfiguration();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     if ($this->getFlowDataHandler()->getCurrentUser()->isAuthenticated()) {
       $current_user = User::Load($this->getFlowDataHandler()->getCurrentUser()->id());
     }
@@ -89,24 +90,22 @@ class ParSelectRoleForm extends ParFormPluginBase {
       $role_options = $this->getParDataManager()->getEntitiesAsOptions($roles, []);
 
       $this->getFlowDataHandler()->setFormPermValue("user_required", FALSE);
-
-
     }
 
     $this->getFlowDataHandler()->setFormPermValue("roles_options", !empty($role_options) ? $role_options : []);
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $role_options = $this->getFlowDataHandler()->getFormPermValue('roles_options');
 
     // Get the default role selection.
-    $default_option = $this->getDefaultValuesByKey("default_role", $cardinality, key($role_options));
+    $default_option = $this->getDefaultValuesByKey("default_role", $index, key($role_options));
 
     // If there is only one choice select it and go to the next page.
     if (count($role_options) === 1) {
@@ -129,7 +128,7 @@ class ParSelectRoleForm extends ParFormPluginBase {
       '#type' => 'radios',
       '#title' => t('Choose what type of user this person is'),
       '#options' => $role_options,
-      '#default_value' => $this->getDefaultValuesByKey("role", $cardinality, $default_option),
+      '#default_value' => $this->getDefaultValuesByKey("role", $index, $default_option),
       '#attributes' => ['class' => ['form-group']],
     ];
 

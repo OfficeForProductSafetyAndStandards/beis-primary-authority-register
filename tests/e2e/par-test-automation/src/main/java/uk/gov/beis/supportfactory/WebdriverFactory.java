@@ -24,7 +24,9 @@ public class WebdriverFactory {
 		// if selenium run locally, set the appropriate capabilities
 		if (seleniumEnv.equals("local")) {
 			LOG.info(" Calling select_local_browser routine");
+			
 			caps = PlatformFactory.selectPlatform(caps);
+			
 			return BrowserFactory.selectLocalBrowser(caps);
 
 			// if selenium run on remote server, set the appropriate capabilities
@@ -35,7 +37,9 @@ public class WebdriverFactory {
 			PlatformFactory.selectPlatform(caps);
 			BrowserFactory.selectBrowser(caps);
 			WebdriverFactory.caps.merge(additionalCapabilities);
+			
 			String seleniumHub = "seleniumhub";
+			
 			try {
 				return new RemoteWebDriver(new URL(seleniumHub), caps);
 			} catch (WebDriverException e) {

@@ -13,13 +13,13 @@ public class RequestEnquiryPage extends BasePageObject {
 	}
 	
 	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
-	WebElement descriptionBox;
+	private WebElement descriptionBox;
 
 	@FindBy(xpath = "//input[@id='edit-files-upload']")
-	WebElement chooseFile1;
+	private WebElement chooseFile1;
 	
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
+	private WebElement continueBtn;
 	
 	public RequestEnquiryPage enterDescription(String description) throws Throwable {
 		descriptionBox.clear();
@@ -28,7 +28,8 @@ public class RequestEnquiryPage extends BasePageObject {
 	}
 	
 	public RequestEnquiryPage chooseFile(String filename) {
-		chooseFile1.sendKeys(System.getProperty("user.dir") + "/" + filename);
+		uploadDocument(chooseFile1, filename);
+		
 		return PageFactory.initElements(driver, RequestEnquiryPage.class);
 	}
 	

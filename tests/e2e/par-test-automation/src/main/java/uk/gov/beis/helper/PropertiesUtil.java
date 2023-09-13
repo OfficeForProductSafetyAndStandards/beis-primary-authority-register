@@ -1,9 +1,7 @@
 package uk.gov.beis.helper;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.NoSuchElementException;
 import java.util.Properties;
 
 /**

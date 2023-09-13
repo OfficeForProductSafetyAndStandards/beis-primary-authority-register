@@ -2,6 +2,8 @@
 
 namespace Drupal\par_data;
 
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Entity\Sql\DefaultTableMapping;
 use Drupal\Component\Utility\Tags;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
@@ -370,7 +372,7 @@ class ParDataManager implements ParDataManagerInterface {
 
     // Output debugging.
     if ($iteration === 1 && $this->debug) {
-      $tree = \Drupal\Core\Render\Markup::create(nl2br("<br>" . $debug_tree));
+      $tree = Markup::create(nl2br("<br>" . $debug_tree));
       $this->getMessenger()->addMessage(t('New relationship tree: @tree', ['@tree' => $tree]));
     }
 
@@ -1094,7 +1096,7 @@ EOT;
 
             $target_type = $par_data_manager->getParEntityType($target_type_id);
 
-            $table_mapping = new \Drupal\Core\Entity\Sql\DefaultTableMapping($entity_type, [$storage]);
+            $table_mapping = new DefaultTableMapping($entity_type, [$storage]);
             $target = $table_mapping->getFieldColumnName($storage, 'target_id');
             $table_name = $table_mapping->getDedicatedDataTableName($storage);
 
@@ -1165,7 +1167,7 @@ EOT;
 
     // Output debugging.
     if ($this->debug) {
-      $tree = \Drupal\Core\Render\Markup::create(nl2br("<br>" . $debug_tree));
+      $tree = Markup::create(nl2br("<br>" . $debug_tree));
       $this->getMessenger()->addMessage(t('New relationship tree: @tree', ['@tree' => $tree]));
     }
 

@@ -1,11 +1,8 @@
 package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -33,9 +30,9 @@ public class MailLogPage extends BasePageObject {
 
 	public MailLogPage selectEamilAndGetINviteLink(String emailid) {
 		driver.findElement(By.xpath(email.replace("?", emailid))).click();
-		String invite = driver.findElement(By.xpath("//div/label[contains(text(),'Body')]/following-sibling::pre"))
-				.getText();
+		String invite = driver.findElement(By.xpath("//div/label[contains(text(),'Body')]/following-sibling::pre")).getText();
 		String[] parts = invite.split("\\s+");
+		
 		for (String item : parts) {
 			if (item.contains("https://")) {
 				DataStore.saveValue(UsableValues.INVITE_LINK, item);

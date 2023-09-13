@@ -191,7 +191,7 @@ class ParReviewForm extends ParBaseForm {
   public function createEntities() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
-    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    // Get the cache IDs for the various forms that needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_person_update');
     $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
     $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
@@ -209,7 +209,14 @@ class ParReviewForm extends ParBaseForm {
       $par_data_person->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_details_cid));
       $par_data_person->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid));
       $par_data_person->set('mobile_phone', $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid));
-      $par_data_person->updateEmail($this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid), $account);
+
+      // Update the email address.
+      $email = $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid);
+      if (!empty($email)) {
+        $account instanceof User ?
+          $par_data_person->updateEmail($email, $account) :
+          $par_data_person->updateEmail($email);
+      }
 
       // Make sure to save the related user account.
       if ($account) {

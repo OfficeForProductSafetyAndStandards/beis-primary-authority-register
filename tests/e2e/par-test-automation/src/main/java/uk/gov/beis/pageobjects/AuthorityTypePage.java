@@ -13,20 +13,27 @@ public class AuthorityTypePage extends BasePageObject {
 		super();
 	}
 
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
 
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
+	
 	private String locator = "//label[contains(text(),'?')]";
 
-	public BasePageObject selectAuthorityType(String type) {
+	public AuthorityAddressDetailsPage selectAuthorityType(String type) {
 		WebElement link = driver.findElement(By.xpath(locator.replace("?", type)));
 		link.click();
-		try {
-			driver.findElement(By.id("edit-next")).click();
-			return PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
-		} catch (Exception e) {
-			driver.findElement(By.id("edit-save")).click();
-			return PageFactory.initElements(driver, AuthorityConfirmationPage.class);
-		}
+		
+		continueBtn.click();
+		return PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
+	}
+	
+	public AuthorityAddressDetailsPage editAuthorityType(String type) {
+		WebElement link = driver.findElement(By.xpath(locator.replace("?", type)));
+		link.click();
+		
+		saveBtn.click();
+		return PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
 	}
 }

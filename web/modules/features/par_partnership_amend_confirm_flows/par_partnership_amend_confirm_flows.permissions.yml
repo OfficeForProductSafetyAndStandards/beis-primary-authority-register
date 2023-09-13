@@ -1,0 +1,4 @@
+confirm partnership amendments:
+  title: 'Confirm partnership amendments'
+  description: "Confirm amendments to own partnerships."
+  restrict access: TRUE

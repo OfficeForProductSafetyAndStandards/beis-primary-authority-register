@@ -1,0 +1,9 @@
+name: 'PAR Partnership Amend Nomination Flows'
+type: module
+description: 'Allows amendments to the partnerships to be nominated.'
+core_version_requirement: ^9 || ^10
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

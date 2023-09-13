@@ -455,7 +455,7 @@ class ParDataPartnership extends ParDataEntity {
 
         if ($coordinated_businesses) {
           $member_storage = $this->entityTypeManager()->getStorage('par_data_coordinated_business');
-          $member_query = $member_storage->getQuery()
+          $member_query = $member_storage->getQuery()->accessCheck()
             ->condition('id', $coordinated_businesses, 'IN')
             ->sort('changed', 'DESC')
             ->range(0, 1);
@@ -472,7 +472,7 @@ class ParDataPartnership extends ParDataEntity {
       case self::MEMBER_DISPLAY_REQUEST:
         $partnership_storage = $this->entityTypeManager()->getStorage($this->getEntityTypeId());
 
-        $revision_query = $partnership_storage->getQuery()->allRevisions()
+        $revision_query = $partnership_storage->getQuery()->accessCheck()->allRevisions()
           ->condition('id', $this->id())
           ->condition($this->getEntityType()->getRevisionMetadataKey('revision_log_message'), self::MEMBER_LIST_REVISION_PREFIX, 'STARTS_WITH')
           ->sort($this->getEntityType()->getRevisionMetadataKey('revision_created'), 'DESC')
@@ -872,16 +872,18 @@ class ParDataPartnership extends ParDataEntity {
    *   Return a new or existing partnership legal entity.
    */
   private function createPartnershipLegalEntity(ParDataLegalEntity $legal_entity): ParDataPartnershipLegalEntity {
+    $legal_entity = $legal_entity->deduplicate();
+
     // Loop through all existing partnership legal entities and check
     // whether an active legal entity is already existing on the partnership.
-    foreach ($this->getPartnershipLegalEntities(TRUE) as $field_delta => $partnership_legal_entity) {
+    $existing_legal_entities = $this->getPartnershipLegalEntities($this->isActive());
+    foreach ($existing_legal_entities as $field_delta => $partnership_legal_entity) {
       if ($partnership_legal_entity->getLegalEntity()?->id() === $legal_entity->id()) {
         // Return the existing legal entity if found.
         return $partnership_legal_entity;
       }
     }
-
-    // Create a new partnership legal entity wrapper.]
+    // Create a new partnership legal entity wrapper.
     $partnership_legal_entity = ParDataPartnershipLegalEntity::create([]);
     // Set the legal entity.
     $partnership_legal_entity->setLegalEntity($legal_entity);
@@ -1003,7 +1005,7 @@ class ParDataPartnership extends ParDataEntity {
     $main_property_path = $previous_names_field->getFieldDefinition()->getFieldStorageDefinition()->getMainPropertyName();
     $previous_names = $previous_names_field->getValue();
 
-    return end($previous_names)[$main_property_path];
+    return $previous_names ? end($previous_names)[$main_property_path] : NULL;
   }
 
   /**

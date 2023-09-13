@@ -33,7 +33,7 @@ Then('I should see advice view page has the title {string}', function (string) {
 
 Then('I should not see the link {string}', function (string) {
   return client
-      .expect.element('a.flow-link').to.be.not.present
+      .expect.element('a.flow-link').text.to.not.contain(string)
 
 });
 

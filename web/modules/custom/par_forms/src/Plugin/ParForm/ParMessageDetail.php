@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -22,19 +23,15 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParMessageDetail extends ParFormPluginBase {
 
   /**
-   * @return DateFormatterInterface
-   */
-  protected function getDateFormatter() {
-    return \Drupal::service('date.formatter');
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $messages = $this->getFlowDataHandler()->getParameter('comments');
+
+    $delta = $index - 1;
+
     // Cardinality is not a zero-based index like the stored fields deltas.
-    $message = isset($messages[$cardinality-1]) ? $messages[$cardinality-1] : NULL;
+    $message = $messages[$delta] ?? NULL;
 
     if ($message instanceof CommentInterface) {
       $comment_entity = $message->getCommentedEntity();
@@ -44,39 +41,39 @@ class ParMessageDetail extends ParFormPluginBase {
         $enforcing_authority = $comment_entity->getEnforcingAuthority(TRUE);
 
         if ($primary_authority_person = $this->getParDataManager()->getUserPerson($message->getOwner(), $primary_authority)) {
-          $this->setDefaultValuesByKey("author", $cardinality, "{$primary_authority_person->getFullName()} (Primary Authority Officer)");
+          $this->setDefaultValuesByKey("author", $index, "{$primary_authority_person->getFullName()} (Primary Authority Officer)");
         }
         elseif ($enforcing_authority_person = $this->getParDataManager()->getUserPerson($message->getOwner(), $enforcing_authority)) {
-          $this->setDefaultValuesByKey("author", $cardinality, "{$enforcing_authority_person->getFullName()} (Enforcing Officer)");
+          $this->setDefaultValuesByKey("author", $index, "{$enforcing_authority_person->getFullName()} (Enforcing Officer)");
         }
         else {
-          $this->setDefaultValuesByKey("author", $cardinality, $message->getOwner()->label());
+          $this->setDefaultValuesByKey("author", $index, $message->getOwner()->label());
         }
       }
 
       $date = $this->getDateFormatter()->format($message->getCreatedTime(), 'gds_date_format');
-      $this->setDefaultValuesByKey("date", $cardinality, $date);
+      $this->setDefaultValuesByKey("date", $index, $date);
 
       if ($message->hasField('comment_body')) {
-        $this->setDefaultValuesByKey("message", $cardinality, $message->comment_body->view('full'));
+        $this->setDefaultValuesByKey("message", $index, $message->comment_body->view('full'));
       }
       if ($message->hasField('field_supporting_document')) {
-        $this->setDefaultValuesByKey("files", $cardinality, $message->field_supporting_document->view('full'));
+        $this->setDefaultValuesByKey("files", $index, $message->field_supporting_document->view('full'));
       }
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
     $params = $this->getRouteParams() + ['destination' => $return_path];
 
-    if ($cardinality === 1) {
+    if ($index === 1) {
       $form['message_intro'] = [
         '#type' => 'container',
         'title' => [
@@ -105,17 +102,17 @@ class ParMessageDetail extends ParFormPluginBase {
       }
     }
 
-    if ($this->getDefaultValuesByKey('message', $cardinality, NULL)) {
+    if ($this->getDefaultValuesByKey('message', $index, NULL)) {
       $form['message'] = [
         '#type' => 'container',
         '#attributes' => ['class' => ['form-group', 'panel panel-border-wide']],
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => "Submitted by {$this->getDefaultValuesByKey('author', $cardinality, NULL)} on {$this->getDefaultValuesByKey('date', $cardinality, NULL)}",
+          '#value' => "Submitted by {$this->getDefaultValuesByKey('author', $index, NULL)} on {$this->getDefaultValuesByKey('date', $index, NULL)}",
         ],
-        'message' => $this->getDefaultValuesByKey('message', $cardinality, NULL),
-        'document' => $this->getDefaultValuesByKey('files', $cardinality, NULL),
+        'message' => $this->getDefaultValuesByKey('message', $index, NULL),
+        'document' => $this->getDefaultValuesByKey('files', $index, NULL),
       ];
     }
     else {
@@ -136,7 +133,7 @@ class ParMessageDetail extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -32,16 +33,9 @@ class ParPartnershipMembers extends ParFormPluginBase {
   const MEMBER_FORMAT_VIEW = 'member_link_view'; # for internal displays
 
   /**
-   * Get the date formatter.
-   */
-  public function getDateFormatter() {
-    return \Drupal::service('date.formatter');
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     if ($par_data_partnership instanceof ParDataEntityInterface && $par_data_partnership->isCoordinated()) {
@@ -75,13 +69,13 @@ class ParPartnershipMembers extends ParFormPluginBase {
       $this->getFlowDataHandler()->setFormPermValue("number_of_members", $par_data_partnership->numberOfMembers());
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // This form should only be displayed for coordinated partnerships.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if (!$par_data_partnership instanceof ParDataEntityInterface || !$par_data_partnership->isCoordinated()) {
@@ -104,7 +98,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
       $form['members']['last_updated'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t("The member list was last updated: <strong>@date</strong>.", ['@date' => $this->getDefaultValuesByKey('members_last_updated', $cardinality, 'a long time ago')]),
+        '#value' => $this->t("The member list was last updated: <strong>@date</strong>.", ['@date' => $this->getDefaultValuesByKey('members_last_updated', $index, 'a long time ago')]),
         '#attributes' => ['class' => ['form-group', 'number-of-members']],
         '#weight' => -6,
       ];
@@ -114,12 +108,12 @@ class ParPartnershipMembers extends ParFormPluginBase {
     $form['members']['count'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => $this->t("There are <strong>@count</strong> active members covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('number_of_members', $cardinality, '0')]),
+      '#value' => $this->t("There are <strong>@count</strong> active members covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('number_of_members', $index, '0')]),
       '#attributes' => ['class' => ['form-group', 'number-of-members']],
       '#weight' => -5,
     ];
 
-    $members = $this->getDefaultValuesByKey('members', $cardinality, NULL);
+    $members = $this->getDefaultValuesByKey('members', $index, NULL);
 
     // Show the link to view the full membership list.
     if ($this->getFlowDataHandler()->getFormPermValue("member_display_format") === self::MEMBER_FORMAT_VIEW) {
@@ -287,7 +281,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

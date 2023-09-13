@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 public class ViewEnquiryPage extends BasePageObject {
 	public ViewEnquiryPage() throws ClassNotFoundException, IOException {
@@ -41,9 +40,4 @@ public class ViewEnquiryPage extends BasePageObject {
 	public String getSummaryOfEnquiryText() {
 		return summaryOfEnquiryText.getText();
 	}
-	
-//	public GeneralEnquiriesPage clickDoneButton() {
-//		doneBtn.click();
-//		return PageFactory.initElements(driver, GeneralEnquiriesPage.class);
-//	}
 }

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -26,7 +27,7 @@ class ParSicCodeDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
     if (!$par_data_organisation && $par_data_partnership instanceof ParDataEntityInterface) {
@@ -35,18 +36,18 @@ class ParSicCodeDisplay extends ParFormPluginBase {
     if ($par_data_organisation) {
       // Get the SIC Codes.
       $sic_codes = $par_data_organisation->get('field_sic_code')->referencedEntities();
-      $this->setDefaultValuesByKey("sic_codes", $cardinality, $sic_codes);
+      $this->setDefaultValuesByKey("sic_codes", $index, $sic_codes);
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Get the SIC codes.
-    $sic_codes = $this->getDefaultValuesByKey('sic_codes', $cardinality, []);
+    $sic_codes = $this->getDefaultValuesByKey('sic_codes', $index, []);
 
     //  Generate the add new SIC code link.
     try {
@@ -162,7 +163,7 @@ class ParSicCodeDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

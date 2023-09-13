@@ -1,7 +1,6 @@
 package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -18,10 +17,10 @@ public class PartnershipSearchPage extends BasePageObject {
 	}
 
 	@FindBy(id = "edit-keywords")
-	WebElement searchInput;
+	private WebElement searchInput;
 
 	@FindBy(xpath = "//input[contains(@value,'Search')]")
-	WebElement searchBtn;
+	private WebElement searchBtn;
 	
 	@FindBy(xpath = "//td[@class='views-field views-field-organisation-name']")
 	private WebElement partnershipTableFirstElement;

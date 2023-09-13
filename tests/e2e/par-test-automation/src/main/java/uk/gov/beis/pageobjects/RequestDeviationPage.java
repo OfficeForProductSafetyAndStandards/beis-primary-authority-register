@@ -2,7 +2,6 @@ package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -13,20 +12,19 @@ public class RequestDeviationPage extends BasePageObject{
 		super();
 	}
 
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
-
+	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
+	private WebElement descriptionBox;
+	
 	@FindBy(xpath = "//input[@id='edit-files-upload']")
-	WebElement chooseFile1;
-
+	private WebElement chooseFile1;
+	
+	@FindBy(xpath = "//input[contains(@value,'Continue')]")
+	private WebElement continueBtn;
 
 	public RequestDeviationPage chooseFile(String filename) {
-		chooseFile1.sendKeys(System.getProperty("user.dir") + "/" + filename);
+		uploadDocument(chooseFile1, filename);
 		return PageFactory.initElements(driver, RequestDeviationPage.class);
 	}
-
-	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
-	WebElement descriptionBox;
 
 	public RequestDeviationPage enterDescription(String description) throws Throwable {
 		descriptionBox.clear();

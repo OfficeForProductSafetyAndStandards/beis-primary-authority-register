@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataLegalEntity;
@@ -23,7 +24,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
     $par_data_deviation_request = $this->getFlowDataHandler()->getParameter('par_data_deviation_request');
     $par_data_inspection_feedback = $this->getFlowDataHandler()->getParameter('par_data_inspection_feedback');
@@ -132,13 +133,13 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
     }
     // Otherwise assume we're on the raise flow and use this data.
     else {
-      $enforcing_officer_cid = $this->getFormCid('enforcing_officer');
-      $enforcing_authority_cid = $this->getFormCid('authority_selection');
-      $enforced_organisation_cid = $this->getFormCid('organisation_selection');
-      $enforced_legal_entity_cid = $this->getFormCid('select_legal');
+      $enforcing_officer_cid = $this->getFlowNegotiator()->getFormKey('enforcing_officer');
+      $enforcing_authority_cid = $this->getFlowNegotiator()->getFormKey('authority_selection');
+      $enforced_organisation_cid = $this->getFlowNegotiator()->getFormKey('organisation_selection');
+      $enforced_legal_entity_cid = $this->getFlowNegotiator()->getFormKey('select_legal');
 
       // Set the enforcement officer details.
-      if ($enforcing_officer_id = $this->getDefaultValuesByKey('enforcement_officer_id', $cardinality, NULL, $enforcing_officer_cid)) {
+      if ($enforcing_officer_id = $this->getDefaultValuesByKey('enforcement_officer_id', $index, NULL, $enforcing_officer_cid)) {
         if ($enforcing_officer = ParDataPerson::load($enforcing_officer_id)) {
           $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_name", $enforcing_officer->label());
           $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_work_phone", $enforcing_officer->get('work_phone')->getString());
@@ -147,7 +148,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
       }
 
       // Set the enforcing authority details.
-      if ($enforcing_authority_id = $this->getDefaultValuesByKey('par_data_authority_id', $cardinality, NULL, $enforcing_authority_cid)) {
+      if ($enforcing_authority_id = $this->getDefaultValuesByKey('par_data_authority_id', $index, NULL, $enforcing_authority_cid)) {
         if ($enforcing_authority = ParDataAuthority::load($enforcing_authority_id)) {
           $this->getFlowDataHandler()->setFormPermValue("enforcing_authority", $enforcing_authority->label());
         }
@@ -183,15 +184,15 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
       }
     }
 
-    parent::loadData($cardinality);
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
-    $enforcing_officer_name = $this->getDefaultValuesByKey('enforcing_officer_name', $cardinality, NULL);
-    $enforcing_authority = $this->getDefaultValuesByKey('enforcing_authority', $cardinality, NULL);
+  public function getElements(array $form = [], int $index = 1) {
+    $enforcing_officer_name = $this->getDefaultValuesByKey('enforcing_officer_name', $index, NULL);
+    $enforcing_authority = $this->getDefaultValuesByKey('enforcing_authority', $index, NULL);
 
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
@@ -219,13 +220,13 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
             '#markup' => $enforcing_officer_name,
           ],
         ];
-        if ($work_phone = $this->getDefaultValuesByKey('enforcing_officer_work_phone', $cardinality, NULL)) {
+        if ($work_phone = $this->getDefaultValuesByKey('enforcing_officer_work_phone', $index, NULL)) {
           $form['enforcer']['enforcement_officer']['work_phone'] = [
             '#type' => 'markup',
             '#markup' => ', ' . $work_phone,
           ];
         }
-        if ($email = $this->getDefaultValuesByKey('enforcing_officer_email', $cardinality, NULL)) {
+        if ($email = $this->getDefaultValuesByKey('enforcing_officer_email', $index, NULL)) {
           $form['enforcer']['enforcement_officer']['email'] = [
             '#type' => 'markup',
             '#markup' => ', ' . $email,
@@ -251,9 +252,9 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
       }
     }
 
-    $primary_authority = $this->getDefaultValuesByKey('primary_authority', $cardinality, NULL);
-    $enforced_organisation = $this->getDefaultValuesByKey('enforced_organisation', $cardinality, NULL);
-    $referring_authority = $this->getDefaultValuesByKey('referred_authority', $cardinality, NULL);
+    $primary_authority = $this->getDefaultValuesByKey('primary_authority', $index, NULL);
+    $enforced_organisation = $this->getDefaultValuesByKey('enforced_organisation', $index, NULL);
+    $referring_authority = $this->getDefaultValuesByKey('referred_authority', $index, NULL);
 
     // Add the details about the partnership.
     if ($primary_authority || $enforced_organisation) {
@@ -309,7 +310,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
           ],
         ];
       }
-      if ($pa_officer_name = $this->getDefaultValuesByKey('pa_officer_name', $cardinality, NULL)) {
+      if ($pa_officer_name = $this->getDefaultValuesByKey('pa_officer_name', $index, NULL)) {
         $form['partnership']['primary_authority']['pa_officer'] = [
           '#type' => 'container',
           'name' => [
@@ -317,13 +318,13 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
             '#markup' => $pa_officer_name,
           ],
         ];
-        if ($pa_officer_work_phone = $this->getDefaultValuesByKey('pa_officer_work_phone', $cardinality, NULL)) {
+        if ($pa_officer_work_phone = $this->getDefaultValuesByKey('pa_officer_work_phone', $index, NULL)) {
           $form['partnership']['primary_authority']['pa_officer']['work_phone'] = [
             '#type' => 'markup',
             '#markup' => ', ' . $pa_officer_work_phone,
           ];
         }
-        if ($pa_officer_email = $this->getDefaultValuesByKey('pa_officer_email', $cardinality, NULL)) {
+        if ($pa_officer_email = $this->getDefaultValuesByKey('pa_officer_email', $index, NULL)) {
           $form['partnership']['primary_authority']['pa_officer']['email'] = [
             '#type' => 'markup',
             '#markup' => ', ' . $pa_officer_email,
