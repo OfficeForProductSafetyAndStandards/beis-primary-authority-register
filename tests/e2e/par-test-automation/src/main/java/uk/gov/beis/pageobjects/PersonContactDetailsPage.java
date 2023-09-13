@@ -82,38 +82,9 @@ public class PersonContactDetailsPage extends BasePageObject {
 		emailAddressField.sendKeys(emailAddress);
 	}
 	
-	public void addContactDetails(DataTable person) {
-		clearAllFields();
-		clearPreferredCommunicationMethods();
-		contactNotesTextfield.clear();
-		
-		for (Map<String, String> data : person.asMaps(String.class, String.class)) {
-			
-			DataStore.saveValue(UsableValues.PERSON_TITLE, data.get("Title"));
-			DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, data.get("Firstname"));
-			DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, data.get("Lastname"));
-			DataStore.saveValue(UsableValues.PERSON_WORK_NUMBER, data.get("WorkNumber"));
-			DataStore.saveValue(UsableValues.PERSON_MOBILE_NUMBER, data.get("MobileNumber"));
-			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, data.get("Email"));
-			DataStore.saveValue(UsableValues.CONTACT_NOTES, data.get("ContactNotes"));
-		}
-		
-		titleField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
-		firstnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME));
-		lastnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME));
-		workPhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
-		mobilePhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
-		emailAddressField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
-		
-		selectRandomPreferredCommunication();
-		
-		contactNotesTextfield.sendKeys(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
-	}
-	
 	public void addContactDetailsWithRandomName(DataTable person) {
 		clearAllFields();
 		clearPreferredCommunicationMethods();
-		contactNotesTextfield.clear();
 		
 		String firstName = RandomStringUtils.randomAlphabetic(8);
 		String lastName = RandomStringUtils.randomAlphabetic(8);
@@ -128,33 +99,9 @@ public class PersonContactDetailsPage extends BasePageObject {
 		emailAddressField.sendKeys(emailAddress);
 	}
 	
-	public void editContactDetails(DataTable person) {
-		clearEditJourneyFields();
-		clearPreferredCommunicationMethods();
-		contactNotesTextfield.clear();
-		
-		for (Map<String, String> data : person.asMaps(String.class, String.class)) {
-			
-			DataStore.saveValue(UsableValues.PERSON_WORK_NUMBER, data.get("WorkNumber"));
-			DataStore.saveValue(UsableValues.PERSON_MOBILE_NUMBER, data.get("MobileNumber"));
-			DataStore.saveValue(UsableValues.CONTACT_NOTES, data.get("ContactNotes"));
-		}
-		
-		titleField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
-		firstnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME));
-		lastnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME));
-		workPhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
-		mobilePhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
-		
-		selectRandomPreferredCommunication();
-		
-		contactNotesTextfield.sendKeys(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
-	}
-	
 	public void editContactDetailsWithRandomName(DataTable person) {
 		clearEditJourneyFields();
 		clearPreferredCommunicationMethods();
-		contactNotesTextfield.clear();
 		
 		String firstName = RandomStringUtils.randomAlphabetic(8);
 		String lastName = RandomStringUtils.randomAlphabetic(8);
@@ -248,5 +195,7 @@ public class PersonContactDetailsPage extends BasePageObject {
 		if(preferredMobilephoneCheckbox.isSelected()) {
 			preferredMobilephoneCheckbox.click();
 		}
+		
+		contactNotesTextfield.clear();
 	}
 }

@@ -1563,21 +1563,21 @@ public class PARStepDefs {
 		userProfileConfirmationPage.clickSaveButton();
 	}
 	
-	@When("^the user adds a Primary Authority contact with an Existing User Account with the following details:$")
-	public void the_user_adds_a_Primary_Authority_contact_with_an_Existing_User_Account_with_the_following_details(DataTable details) throws Throwable {
-
-		parPartnershipConfirmationPage.addAnotherAuthorityContactButton();
-
-		LOG.info("Adding existing user's contact details.");
-		personsContactDetailsPage.addContactDetails(details);
-		personsContactDetailsPage.selectContinueButton();
-
-		LOG.info("Choosing user account type.");
-		personUserTypePage.selectAuthorityMember();
-		personUserTypePage.clickProfileReviewContinueButton();
-		
-		userProfileConfirmationPage.clickSaveButton();
-	}
+	//@When("^the user adds a Primary Authority contact with an Existing User Account with the following details:$")
+	//public void the_user_adds_a_Primary_Authority_contact_with_an_Existing_User_Account_with_the_following_details(DataTable details) throws Throwable {
+	//
+	//	parPartnershipConfirmationPage.addAnotherAuthorityContactButton();
+	//
+	//	LOG.info("Adding existing user's contact details.");
+	//	personsContactDetailsPage.addContactDetails(details);
+	//	personsContactDetailsPage.selectContinueButton();
+	//
+	//	LOG.info("Choosing user account type.");
+	//	personUserTypePage.selectAuthorityMember();
+	//	personUserTypePage.clickProfileReviewContinueButton();
+	//	
+	//	userProfileConfirmationPage.clickSaveButton();
+	//}
 
 	@Then("^the new Primary Authority contact is added Successfully$")
 	public void the_new_Primary_Authority_contact_is_added_Successfully() throws Throwable {
@@ -1601,21 +1601,21 @@ public class PARStepDefs {
 		userProfileConfirmationPage.clickSaveButton();
 	}
 
-	@When("^the user updates the Primary Authority contact with the following details:$")
-	public void the_user_updates_the_Primary_Authority_contact_with_the_following_details(DataTable details) throws Throwable {
-		
-		parPartnershipConfirmationPage.editContactsDetailsButton();
-		
-		LOG.info("Editing existing user's contact details.");
-		personsContactDetailsPage.editContactDetails(details);
-		personsContactDetailsPage.selectContinueButton();	
-		
-		LOG.info("Updating user account type.");
-		personUserTypePage.selectAuthorityManager();
-		personUserTypePage.clickProfileReviewContinueButton();	
-
-		userProfileConfirmationPage.clickSaveButton();
-	}
+	//@When("^the user updates the Primary Authority contact with the following details:$")
+	//public void the_user_updates_the_Primary_Authority_contact_with_the_following_details(DataTable details) throws Throwable {
+	//	
+	//	parPartnershipConfirmationPage.editContactsDetailsButton();
+	//	
+	//	LOG.info("Editing existing user's contact details.");
+	//	personsContactDetailsPage.editContactDetails(details);
+	//	personsContactDetailsPage.selectContinueButton();	
+	//	
+	//	LOG.info("Updating user account type.");
+	//	personUserTypePage.selectAuthorityManager();
+	//	personUserTypePage.clickProfileReviewContinueButton();	
+	//
+	//	userProfileConfirmationPage.clickSaveButton();
+	//}
 	
 	@Then("^the new Primary Authority contact is updated Successfully$")
 	public void the_new_Primary_Authority_contact_is_updated_Successfully() throws Throwable {

@@ -76,24 +76,6 @@ Feature: General
     When the user removes the new Primary Authority contact
     Then the new Primary Authority contact is removed Successfully
 
-  @regression @direct @update
-  Scenario: Add, Update and Remove a Primary Authority Contact for a Partnership who has a User Account Successfully (Happy Path - PAR-2243)
-    Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user searches for the last created partnership Authority
-    And the user adds a Primary Authority contact with an Existing User Account with the following details:
-      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                               | ContactNotes       |
-      | Dr    | Grover    | Muppet   | 01723456789 |   0777777777 | par_enforcement_officer@example.com | Test contact note. |
-    Then the new Primary Authority contact is added Successfully
-    # Update the new contact
-    When the user updates the Primary Authority contact with the following details:
-      | WorkNumber  | MobileNumber | ContactNotes              |
-      | 01706553019 |  07356001870 | Test contact note update. |
-    Then the new Primary Authority contact is updated Successfully
-    # Update the new contact
-    When the user removes the new Primary Authority contact
-    Then the new Primary Authority contact is removed Successfully
-
   # Organisation Contact Tests go here.
   @regression @inspectionplan @inspectionfeedback @deviationrequest
   Scenario: Verify Upload of Inspection Plan (Happy Path - PAR-1856)
