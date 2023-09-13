@@ -26,6 +26,11 @@ use Drupal\registered_organisations\TemporaryException;
 class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInterface {
 
   /**
+   * How many items should be displayed in a summary list.
+   */
+  const NUMBER_ITEMS = 10;
+
+  /**
    * {@inheritdoc}
    */
   protected array $entityMapping = [
@@ -140,11 +145,32 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     $form['list'] = [
       '#type' => 'html_tag',
       '#tag' => 'dl',
-      '#attributes' => ['class' => ['govuk-summary-list', 'asdfasdfdsf']],
+      '#attributes' => ['class' => ['govuk-summary-list']],
     ];
 
+    // Get the data.
     $data = $this->getData();
-    foreach ($data as $delta => $row) {
+
+    // Get the pager.
+    $pager = $this->getUniquePager()->getPager($this->getPluginId());
+    $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($data), self::NUMBER_ITEMS, $pager);
+    $form['list']['pager'] = [
+      '#type' => 'pager',
+      '#theme' => 'pagerer',
+      '#element' => $pager,
+      '#weight' => 99,
+      '#config' => [
+        'preset' => $this->config('pagerer.settings')
+          ->get('core_override_preset'),
+      ],
+    ];
+
+    // Split the items up into chunks.
+    $chunks = array_chunk($data, self::NUMBER_ITEMS, TRUE);
+    $chunk = $chunks[$current_pager->getCurrentPage()] ?? [];
+
+    // Display the legal entities.
+    foreach ($chunk as $delta => $row) {
       $index = $delta + 1;
 
       // Turn the data into a legal entity.
