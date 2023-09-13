@@ -87,50 +87,78 @@ class ParReviewForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $form['personal'] = [
-      '#type' => 'fieldset',
-      'name' => [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-        '#title' => 'Name',
-        [
-          '#markup' => $this->getFlowDataHandler()->getDefaultValues('full_name', ''),
-        ]
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => 'Name',
+      ],
+      'value' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->getFlowDataHandler()->getDefaultValues('full_name', '')
       ],
     ];
 
-    $form['contact_details'] = [
-      '#type' => 'fieldset',
-      'email' => [
-        '#type' => 'fieldset',
-        '#title' => 'Email',
-        '#attributes' => ['class' => 'form-group'],
-        [
-          '#markup' => $this->getFlowDataHandler()->getDefaultValues('email', ''),
-        ]
+    $form['email'] = [
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => 'Email',
       ],
-      'work_phone' => [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-        '#title' => 'Work phone',
-        [
-          '#markup' => $this->getFlowDataHandler()->getDefaultValues('work_phone', ''),
-        ]
+      'value' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->getFlowDataHandler()->getDefaultValues('email', ''),
       ],
-      'mobile_phone' => [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-        '#title' => 'Mobile phone',
-        [
-          '#markup' => $this->getFlowDataHandler()->getDefaultValues('mobile_phone', ''),
-        ]
+    ];
+
+    $form['work_phone'] = [
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => 'Work phone',
       ],
-      'communication_noes' => [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-        '#title' => 'Communication notes',
+      'value' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->getFlowDataHandler()->getDefaultValues('work_phone', ''),
+      ],
+    ];
+
+    $form['mobile_phone'] = [
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => 'Mobile phone',
+      ],
+      'value' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->getFlowDataHandler()->getDefaultValues('mobile_phone', ''),
+      ],
+    ];
+
+    $form['communication_notes'] = [
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => 'Communication notes',
+      ],
+      'value' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
         0 => $this->getFlowDataHandler()->getDefaultValues('communication_notes', ['#markup' => '(none)']),
       ],
-
     ];
 
     $form['memberships'] = [

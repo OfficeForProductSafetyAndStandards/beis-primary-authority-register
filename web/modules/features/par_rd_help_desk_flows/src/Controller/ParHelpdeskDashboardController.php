@@ -81,11 +81,8 @@ class ParHelpdeskDashboardController extends ControllerBase {
 
     // Manage partnerships.
     $build['statistics'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#attributes' => ['class' => ['grid-row', 'form-group']],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#cache' => ['contexts' => ['user.par_memberships:authority']],
     ];
     $build['statistics']['active_partnerships'] = [
       '#lazy_builder' => ['par_reporting.manager:render', ['total_active_partnerships']],
@@ -112,27 +109,25 @@ class ParHelpdeskDashboardController extends ControllerBase {
     $log = $this->getLinkByRoute('view.par_log.log_page');
     $log_link = $log->setText('View log of notable actions')->toString();
     $build['log'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#attributes' => ['class' => ['grid-row', 'form-group']],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
     ];
     $build['log']['view'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
       '#attributes' => ['class' => 'column-full'],
       '#value' => $log_link,
-
     ];
 
     // Manage partnerships.
-    $build['partnerships'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Partnerships'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#cache' => ['contexts' => ['user.par_memberships:authority']]
+    $build['address'] = [
+      '#type' => 'partnerships',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => 'Partnerships',
+      ],
     ];
 
     $manage_partnerships = $this->getLinkByRoute('view.advanced_partnership_search.advanced_search');
@@ -144,11 +139,13 @@ class ParHelpdeskDashboardController extends ControllerBase {
 
     // Manage authorities and organisations.
     $build['institutions'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Authorities & Organisations'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => 'Authorities & Organisations',
+      ],
     ];
     $manage_authorities_link = $this->getLinkByRoute('view.helpdesk_authorities.authority_page');
     if ($manage_authorities_link) {
@@ -165,16 +162,15 @@ class ParHelpdeskDashboardController extends ControllerBase {
       ];
     }
 
-
-
     // Manage users.
     $build['people'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('People'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#cache' => ['contexts' => ['user.par_memberships:authority']]
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => 'People',
+      ],
     ];
 
     $manage_users = $this->getLinkByRoute('view.par_people.people');
@@ -195,12 +191,13 @@ class ParHelpdeskDashboardController extends ControllerBase {
 
     // Manage enforcements.
     $build['enforcements'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Enforcements'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#cache' => ['contexts' => ['user.par_memberships:authority']]
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => 'Enforcements',
+      ],
     ];
     $link = $this->getLinkByRoute('view.par_user_enforcements.enforcement_notices_page')
       ->setText('Manage enforcement notices')
@@ -228,12 +225,13 @@ class ParHelpdeskDashboardController extends ControllerBase {
 
     // Manage enquiries.
     $build['enquiries'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Enquiries'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-      '#cache' => ['contexts' => ['user.par_memberships:authority']]
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => 'Enquiries',
+      ],
     ];
 
     $general_enquiries_link = $this->getLinkByRoute('view.par_user_general_enquiries.general_enquiries_page')
