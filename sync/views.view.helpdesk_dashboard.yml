@@ -4044,7 +4044,7 @@ display:
           distinct: true
           replica: false
           query_tags: null
-          contextual_filters_or: 0
+          contextual_filters_or: false
       defaults:
         query: false
         fields: false

@@ -1638,7 +1638,7 @@ display:
           distinct: false
           replica: false
           query_tags: {  }
-          contextual_filters_or: 1
+          contextual_filters_or: true
       relationships:
         field_partnership:
           id: field_partnership
