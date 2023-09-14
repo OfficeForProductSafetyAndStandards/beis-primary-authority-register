@@ -26,8 +26,7 @@ public class BusinessContactDetailsPage extends BasePageObject {
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 
-	public BusinessAddressDetailsPage enterContactDetails(String firstname, String lastname, String phone1,
-			String email1) {
+	public BusinessAddressDetailsPage enterContactDetails(String firstname, String lastname, String phone1, String email1) {
 		firstName.clear();
 		firstName.sendKeys(firstname);
 		lastName.clear();

@@ -18,108 +18,9 @@ import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
+import uk.gov.beis.pageobjects.*;
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
-
-import uk.gov.beis.pageobjects.PersonContactDetailsPage;
-import uk.gov.beis.pageobjects.AdviceNoticeDetailsPage;
-import uk.gov.beis.pageobjects.AdviceNoticeSearchPage;
-import uk.gov.beis.pageobjects.AuthorityAddressDetailsPage;
-import uk.gov.beis.pageobjects.PersonMembershipPage;
-import uk.gov.beis.pageobjects.AuthorityConfirmationPage;
-import uk.gov.beis.pageobjects.AuthorityDashboardPage;
-import uk.gov.beis.pageobjects.PersonAccountPage;
-import uk.gov.beis.pageobjects.AuthorityNamePage;
-import uk.gov.beis.pageobjects.AuthorityPage;
-import uk.gov.beis.pageobjects.AuthorityTypePage;
-import uk.gov.beis.pageobjects.PersonUserRoleTypePage;
-import uk.gov.beis.pageobjects.BusinessAddressDetailsPage;
-import uk.gov.beis.pageobjects.BusinessConfirmationPage;
-import uk.gov.beis.pageobjects.BusinessContactDetailsPage;
-import uk.gov.beis.pageobjects.BusinessDetailsPage;
-import uk.gov.beis.pageobjects.BusinessInvitePage;
-import uk.gov.beis.pageobjects.BusinessPage;
-import uk.gov.beis.pageobjects.DashboardPage;
-import uk.gov.beis.pageobjects.DeclarationPage;
-import uk.gov.beis.pageobjects.DeviationApprovalPage;
-import uk.gov.beis.pageobjects.DeviationCompletionPage;
-import uk.gov.beis.pageobjects.DeviationReviewPage;
-import uk.gov.beis.pageobjects.DeviationSearchPage;
-import uk.gov.beis.pageobjects.EditRegisteredAddressPage;
-import uk.gov.beis.pageobjects.EmployeesPage;
-import uk.gov.beis.pageobjects.EnforcementActionPage;
-import uk.gov.beis.pageobjects.EnforcementCompletionPage;
-import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
-import uk.gov.beis.pageobjects.EnforcementDetailsPage;
-import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
-import uk.gov.beis.pageobjects.EnforcementNotificationPage;
-import uk.gov.beis.pageobjects.EnforcementReviewPage;
-import uk.gov.beis.pageobjects.EnforcementSearchPage;
-import uk.gov.beis.pageobjects.EnquiriesSearchPage;
-import uk.gov.beis.pageobjects.EnquiryCompletionPage;
-import uk.gov.beis.pageobjects.EnquiryContactDetailsPage;
-import uk.gov.beis.pageobjects.EnquiryReviewPage;
-import uk.gov.beis.pageobjects.HomePage;
-import uk.gov.beis.pageobjects.InspectionContactDetailsPage;
-import uk.gov.beis.pageobjects.InspectionFeedbackCompletionPage;
-import uk.gov.beis.pageobjects.InspectionFeedbackConfirmationPage;
-import uk.gov.beis.pageobjects.InspectionFeedbackDetailsPage;
-import uk.gov.beis.pageobjects.InspectionFeedbackSearchPage;
-import uk.gov.beis.pageobjects.InspectionPlanDetailsPage;
-import uk.gov.beis.pageobjects.InspectionPlanExpirationPage;
-import uk.gov.beis.pageobjects.InspectionPlanReviewPage;
-import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
-import uk.gov.beis.pageobjects.LegalEntityReviewPage;
-import uk.gov.beis.pageobjects.LegalEntityTypePage;
-import uk.gov.beis.pageobjects.LoginPage;
-import uk.gov.beis.pageobjects.MailLogPage;
-import uk.gov.beis.pageobjects.ManagePeoplePage;
-import uk.gov.beis.pageobjects.MemberListPage;
-import uk.gov.beis.pageobjects.PersonsProfilePage;
-import uk.gov.beis.pageobjects.NewsLetterManageSubscriptionListPage;
-import uk.gov.beis.pageobjects.NewsLetterSubscriptionPage;
-import uk.gov.beis.pageobjects.NewsLetterSubscriptionReviewPage;
-import uk.gov.beis.pageobjects.ONSCodePage;
-import uk.gov.beis.pageobjects.OrganisationDashboardPage;
-import uk.gov.beis.pageobjects.PartnershipAdvancedSearchPage;
-import uk.gov.beis.pageobjects.PartnershipApprovalPage;
-import uk.gov.beis.pageobjects.PartnershipCompletionPage;
-import uk.gov.beis.pageobjects.PartnershipConfirmationPage;
-import uk.gov.beis.pageobjects.PartnershipDescriptionPage;
-import uk.gov.beis.pageobjects.PartnershipRestoredPage;
-import uk.gov.beis.pageobjects.PartnershipRevokedPage;
-import uk.gov.beis.pageobjects.PartnershipSearchPage;
-import uk.gov.beis.pageobjects.PartnershipTermsPage;
-import uk.gov.beis.pageobjects.PartnershipTypePage;
-import uk.gov.beis.pageobjects.PasswordPage;
-import uk.gov.beis.pageobjects.ProposedEnforcementPage;
-import uk.gov.beis.pageobjects.RegulatoryFunctionPage;
-import uk.gov.beis.pageobjects.RemoveEnforcementConfirmationPage;
-import uk.gov.beis.pageobjects.RemoveEnforcementPage;
-import uk.gov.beis.pageobjects.RemoveReasonInspectionPlanPage;
-import uk.gov.beis.pageobjects.ReplyDeviationRequestPage;
-import uk.gov.beis.pageobjects.ReplyEnquiryPage;
-import uk.gov.beis.pageobjects.ReplyInspectionFeedbackPage;
-import uk.gov.beis.pageobjects.RequestDeviationPage;
-import uk.gov.beis.pageobjects.RequestEnquiryPage;
-import uk.gov.beis.pageobjects.RestorePartnershipConfirmationPage;
-import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
-import uk.gov.beis.pageobjects.RevokeReasonInspectionPlanPage;
-import uk.gov.beis.pageobjects.SICCodePage;
-import uk.gov.beis.pageobjects.TradingPage;
-import uk.gov.beis.pageobjects.UpdateUserCommunicationPreferencesPage;
-import uk.gov.beis.pageobjects.UpdateUserContactDetailsPage;
-import uk.gov.beis.pageobjects.UpdateUserSubscriptionsPage;
-import uk.gov.beis.pageobjects.UploadAdviceNoticePage;
-import uk.gov.beis.pageobjects.UploadInspectionPlanPage;
-import uk.gov.beis.pageobjects.UserCommsPreferencesPage;
-import uk.gov.beis.pageobjects.PersonCreateAccountPage;
-import uk.gov.beis.pageobjects.UserProfileCompletionPage;
-import uk.gov.beis.pageobjects.UserProfileConfirmationPage;
-import uk.gov.beis.pageobjects.UserProfilePage;
-import uk.gov.beis.pageobjects.UserSubscriptionPage;
-import uk.gov.beis.pageobjects.UserTermsPage;
-import uk.gov.beis.pageobjects.ViewEnquiryPage;
 
 public class PARStepDefs {
 
@@ -222,7 +123,7 @@ public class PARStepDefs {
 	private PersonUserRoleTypePage personUserTypePage;
 	private PersonCreateAccountPage personCreateAccountPage;
 	private PersonsProfilePage personsProfilePage;
-
+	private RemoveContactPage removeContactPage;
 	private DeviationReviewPage deviationReviewPage;
 	private DeviationApprovalPage deviationApprovalPage;
 	private EnquiriesSearchPage enquiriesSearchPage;
@@ -337,6 +238,7 @@ public class PARStepDefs {
 		personUserTypePage = PageFactory.initElements(driver, PersonUserRoleTypePage.class);
 		personCreateAccountPage = PageFactory.initElements(driver, PersonCreateAccountPage.class);
 		personsProfilePage = PageFactory.initElements(driver, PersonsProfilePage.class);
+		removeContactPage = PageFactory.initElements(driver, RemoveContactPage.class);
 	}
 
 	@Given("^the user is on the PAR home page$")
@@ -1640,5 +1542,98 @@ public class PARStepDefs {
 		assertTrue(parPartnershipConfirmationPage.checkTradingName());
 		
 		parPartnershipConfirmationPage.clickSave();
+	}
+	
+	@When("^the user adds a Primary Authority contact to be Invited with the following details:$")
+	public void the_user_adds_a_Primary_Authority_contact_to_be_Invited_with_the_following_details(DataTable details) throws Throwable {
+		
+		parPartnershipConfirmationPage.addAnotherAuthorityContactButton();
+
+		LOG.info("Adding new contact details.");
+		personsContactDetailsPage.addContactDetailsWithRandomName(details);
+		personsContactDetailsPage.selectContinueButton();
+
+		LOG.info("Choosing user account type.");
+		personUserTypePage.selectAuthorityMember();
+		personUserTypePage.clickContinueButton();
+		
+		LOG.info("Sending new user an account invite.");
+		personCreateAccountPage.clickInviteButton();
+		
+		userProfileConfirmationPage.clickSaveButton();
+	}
+	
+	//@When("^the user adds a Primary Authority contact with an Existing User Account with the following details:$")
+	//public void the_user_adds_a_Primary_Authority_contact_with_an_Existing_User_Account_with_the_following_details(DataTable details) throws Throwable {
+	//
+	//	parPartnershipConfirmationPage.addAnotherAuthorityContactButton();
+	//
+	//	LOG.info("Adding existing user's contact details.");
+	//	personsContactDetailsPage.addContactDetails(details);
+	//	personsContactDetailsPage.selectContinueButton();
+	//
+	//	LOG.info("Choosing user account type.");
+	//	personUserTypePage.selectAuthorityMember();
+	//	personUserTypePage.clickProfileReviewContinueButton();
+	//	
+	//	userProfileConfirmationPage.clickSaveButton();
+	//}
+
+	@Then("^the new Primary Authority contact is added Successfully$")
+	public void the_new_Primary_Authority_contact_is_added_Successfully() throws Throwable {
+		LOG.info("Verifying the new Authority contact is added successfully.");
+		assertTrue("Contact Details are not Displayed Correctly.", parPartnershipConfirmationPage.checkContactDetails());
+	}
+
+	@When("^the user updates the new Primary Authority contact with the following details:$")
+	public void the_user_updates_the_new_Primary_Authority_contact_with_the_following_details(DataTable details) throws Throwable {
+		
+		parPartnershipConfirmationPage.editContactsDetailsButton();
+		
+		LOG.info("Editing contact details.");
+		personsContactDetailsPage.editContactDetailsWithRandomName(details);
+		personsContactDetailsPage.selectContinueButton();	
+		
+		LOG.info("Updating user account type.");
+		personUserTypePage.selectAuthorityManager();
+		personUserTypePage.clickContinueButton();	
+
+		userProfileConfirmationPage.clickSaveButton();
+	}
+
+	//@When("^the user updates the Primary Authority contact with the following details:$")
+	//public void the_user_updates_the_Primary_Authority_contact_with_the_following_details(DataTable details) throws Throwable {
+	//	
+	//	parPartnershipConfirmationPage.editContactsDetailsButton();
+	//	
+	//	LOG.info("Editing existing user's contact details.");
+	//	personsContactDetailsPage.editContactDetails(details);
+	//	personsContactDetailsPage.selectContinueButton();	
+	//	
+	//	LOG.info("Updating user account type.");
+	//	personUserTypePage.selectAuthorityManager();
+	//	personUserTypePage.clickProfileReviewContinueButton();	
+	//
+	//	userProfileConfirmationPage.clickSaveButton();
+	//}
+	
+	@Then("^the new Primary Authority contact is updated Successfully$")
+	public void the_new_Primary_Authority_contact_is_updated_Successfully() throws Throwable {
+		LOG.info("Verifying the Authority contact was updated successfully.");
+		assertTrue("Contact Details are not Displayed Correctly.", parPartnershipConfirmationPage.checkContactDetails());
+	}
+
+	@When("^the user removes the new Primary Authority contact$")
+	public void the_user_removes_the_new_Primary_Authority_contact() throws Throwable {
+		parPartnershipConfirmationPage.removeContactsDetailsButton();
+		
+		LOG.info("Removing the contact.");
+		removeContactPage.clickRemoveButton();
+	}
+
+	@Then("^the new Primary Authority contact is removed Successfully$")
+	public void the_new_Primary_Authority_contact_is_removed_Successfully() throws Throwable {
+		LOG.info("Verifying the new Authority contact was removed successfully.");
+		assertTrue("Contact was not Removed.", parPartnershipConfirmationPage.checkContactExists());
 	}
 }

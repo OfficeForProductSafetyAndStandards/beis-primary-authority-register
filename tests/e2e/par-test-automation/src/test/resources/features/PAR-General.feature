@@ -41,7 +41,7 @@ Feature: General
     And the user searches again for the last created partnership
     Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
 
-  @regression @direct @partnershipapplication @update
+  @regression @direct @partnershipapplication
   Scenario: Update all Partnership details successfully (Happy Path - PAR-2214)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -57,7 +57,26 @@ Feature: General
       | 01 new road | Market   | Bury | Greater Manchester | GB      | GB-SCT       | BL2 4BD   | Updated Info           | you sell cookies. | Name Update  |
     Then all of the Partnership details have been updated successfully
 
-  # Update Legal Entities, Primary Authority Contact and Organisation Contact Tests go here.
+  # Update Legal Entities.
+  @regression @direct @update
+  Scenario: Add, Update and Remove a Primary Authority Contact for a Partnership with a User Account Invite Successfully (Happy Path - PAR-2242)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership Authority
+    And the user adds a Primary Authority contact to be Invited with the following details:
+      | Title | WorkNumber  | MobileNumber | ContactNotes       |
+      | Mr    | 01706553019 |  07651044910 | Test contact note. |
+    Then the new Primary Authority contact is added Successfully
+    # Update the new contact
+    When the user updates the new Primary Authority contact with the following details:
+      | Title | WorkNumber  | MobileNumber | ContactNotes              |
+      | Dr    | 01706553019 |  07356001870 | Test contact note update. |
+    Then the new Primary Authority contact is updated Successfully
+    # Update the new contact
+    When the user removes the new Primary Authority contact
+    Then the new Primary Authority contact is removed Successfully
+
+  # Organisation Contact Tests go here.
   @regression @inspectionplan @inspectionfeedback @deviationrequest
   Scenario: Verify Upload of Inspection Plan (Happy Path - PAR-1856)
     Given the user is on the PAR login page
@@ -244,7 +263,7 @@ Feature: General
     And the user approves the partnership
     And the user searches again for the last created partnership
     Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
-    
+
   # Add, Update and Cease a Member Test goes here.
   # Upload a Members list Test goes here.
   # Change the Members list type Test goes here.
