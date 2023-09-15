@@ -26,7 +26,7 @@ Feature: General
     And the user updates the partnership information with the following info: "Updated Partnership info"
     Then the partnership is updated correctly
 
-  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct
+  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct @update
   Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -41,7 +41,7 @@ Feature: General
     And the user searches again for the last created partnership
     Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
 
-  @regression @direct @partnershipapplication
+  @regression @direct @partnershipapplication @update
   Scenario: Update all Partnership details successfully (Happy Path - PAR-2214)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -76,7 +76,24 @@ Feature: General
     When the user removes the new Primary Authority contact
     Then the new Primary Authority contact is removed Successfully
 
-  # Organisation Contact Tests go here.
+  @regression @direct @update @update
+  Scenario: Add, Update and Remove an Organisation Contact for a Partnership with a User Account Invite Successfully (Happy Path - PAR-2244)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership Authority
+    And the user adds a new Organisation contact to be Invited with the following details:
+      | Title | WorkNumber  | MobileNumber | ContactNotes       |
+      | Mrs   | 01755892240 |  07651044912 | Test contact note. |
+    Then the new Organisation contact is added Successfully
+    # Update the new contact
+    When the user updates the new Organisation contact with the following details:
+      | Title | WorkNumber  | MobileNumber | ContactNotes              |
+      | Dr    | 01706553019 |  07356001143 | Test contact note update. |
+    Then the new Organisation contact is updated Successfully
+    # Update the new contact
+    When the user removes the new Organisation contact
+    Then the new Organisation contact is removed Successfully
+
   @regression @inspectionplan @inspectionfeedback @deviationrequest
   Scenario: Verify Upload of Inspection Plan (Happy Path - PAR-1856)
     Given the user is on the PAR login page

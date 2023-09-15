@@ -227,7 +227,7 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
 	}
 	
-	public PersonContactDetailsPage removeContactsDetailsButton() { // Need to create the Remove Journey
+	public PersonContactDetailsPage removeContactsDetailsButton() {
 		WebElement removeLink = driver.findElement(By.xpath(editContactLink.replace("?", "remove " + getContactsName().toLowerCase())));
 		removeLink.click();
 		

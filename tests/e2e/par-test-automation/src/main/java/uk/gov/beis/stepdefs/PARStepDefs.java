@@ -1563,22 +1563,6 @@ public class PARStepDefs {
 		userProfileConfirmationPage.clickSaveButton();
 	}
 	
-	//@When("^the user adds a Primary Authority contact with an Existing User Account with the following details:$")
-	//public void the_user_adds_a_Primary_Authority_contact_with_an_Existing_User_Account_with_the_following_details(DataTable details) throws Throwable {
-	//
-	//	parPartnershipConfirmationPage.addAnotherAuthorityContactButton();
-	//
-	//	LOG.info("Adding existing user's contact details.");
-	//	personsContactDetailsPage.addContactDetails(details);
-	//	personsContactDetailsPage.selectContinueButton();
-	//
-	//	LOG.info("Choosing user account type.");
-	//	personUserTypePage.selectAuthorityMember();
-	//	personUserTypePage.clickProfileReviewContinueButton();
-	//	
-	//	userProfileConfirmationPage.clickSaveButton();
-	//}
-
 	@Then("^the new Primary Authority contact is added Successfully$")
 	public void the_new_Primary_Authority_contact_is_added_Successfully() throws Throwable {
 		LOG.info("Verifying the new Authority contact is added successfully.");
@@ -1600,22 +1584,6 @@ public class PARStepDefs {
 
 		userProfileConfirmationPage.clickSaveButton();
 	}
-
-	//@When("^the user updates the Primary Authority contact with the following details:$")
-	//public void the_user_updates_the_Primary_Authority_contact_with_the_following_details(DataTable details) throws Throwable {
-	//	
-	//	parPartnershipConfirmationPage.editContactsDetailsButton();
-	//	
-	//	LOG.info("Editing existing user's contact details.");
-	//	personsContactDetailsPage.editContactDetails(details);
-	//	personsContactDetailsPage.selectContinueButton();	
-	//	
-	//	LOG.info("Updating user account type.");
-	//	personUserTypePage.selectAuthorityManager();
-	//	personUserTypePage.clickProfileReviewContinueButton();	
-	//
-	//	userProfileConfirmationPage.clickSaveButton();
-	//}
 	
 	@Then("^the new Primary Authority contact is updated Successfully$")
 	public void the_new_Primary_Authority_contact_is_updated_Successfully() throws Throwable {
@@ -1633,6 +1601,57 @@ public class PARStepDefs {
 
 	@Then("^the new Primary Authority contact is removed Successfully$")
 	public void the_new_Primary_Authority_contact_is_removed_Successfully() throws Throwable {
+		LOG.info("Verifying the new Authority contact was removed successfully.");
+		assertTrue("Contact was not Removed.", parPartnershipConfirmationPage.checkContactExists());
+	}
+	
+	@When("^the user adds a new Organisation contact to be Invited with the following details:$")
+	public void the_user_adds_a_new_Organisation_contact_to_be_Invited_with_the_following_details(DataTable details) throws Throwable {
+		parPartnershipConfirmationPage.addAnotherOrganisationContactButton();
+
+		LOG.info("Adding new contact details.");
+		personsContactDetailsPage.addContactDetailsWithRandomName(details);
+		personsContactDetailsPage.selectContinueButton();
+		
+		LOG.info("Sending new user an account invite.");
+		personCreateAccountPage.clickInviteButton();
+		
+		userProfileConfirmationPage.clickSaveButton();
+	}
+
+	@Then("^the new Organisation contact is added Successfully$")
+	public void the_new_Organisation_contact_is_added_Successfully() throws Throwable {
+		LOG.info("Verifying the new Authority contact is added successfully.");
+		assertTrue("Contact Details are not Displayed Correctly.", parPartnershipConfirmationPage.checkContactDetails());
+	}
+
+	@When("^the user updates the new Organisation contact with the following details:$")
+	public void the_user_updates_the_new_Organisation_contact_with_the_following_details(DataTable details) throws Throwable {
+		parPartnershipConfirmationPage.editContactsDetailsButton();
+		
+		LOG.info("Editing contact details.");
+		personsContactDetailsPage.editContactDetailsWithRandomName(details);
+		personsContactDetailsPage.selectContinueButton();	
+		
+		userProfileConfirmationPage.clickSaveButton();
+	}
+
+	@Then("^the new Organisation contact is updated Successfully$")
+	public void the_new_Organisation_contact_is_updated_Successfully() throws Throwable {
+		LOG.info("Verifying the Authority contact was updated successfully.");
+		assertTrue("Contact Details are not Displayed Correctly.", parPartnershipConfirmationPage.checkContactDetails());
+	}
+
+	@When("^the user removes the new Organisation contact$")
+	public void the_user_removes_the_new_Organisation_contact() throws Throwable {
+		parPartnershipConfirmationPage.removeContactsDetailsButton();
+		
+		LOG.info("Removing the contact.");
+		removeContactPage.clickRemoveButton();
+	}
+
+	@Then("^the new Organisation contact is removed Successfully$")
+	public void the_new_Organisation_contact_is_removed_Successfully() throws Throwable {
 		LOG.info("Verifying the new Authority contact was removed successfully.");
 		assertTrue("Contact was not Removed.", parPartnershipConfirmationPage.checkContactExists());
 	}
