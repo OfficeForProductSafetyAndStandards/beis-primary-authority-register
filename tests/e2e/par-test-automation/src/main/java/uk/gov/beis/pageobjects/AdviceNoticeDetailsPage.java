@@ -9,42 +9,46 @@ import org.openqa.selenium.support.PageFactory;
 
 public class AdviceNoticeDetailsPage extends BasePageObject {
 
+	@FindBy(id = "edit-advice-title")
+	private WebElement title;
+	
+	@FindBy(id = "edit-notes")
+	private WebElement descriptionBox;
+	
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
+
+	private String advicetype = "//label[contains(text(),'?')]";
+	private String regfunc = "//label[contains(text(),'?')]";
+	
 	public AdviceNoticeDetailsPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
-	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
-	WebElement descriptionBox;
-
-	@FindBy(xpath = "//input[contains(@value,'Save')]")
-	WebElement saveBtn;
-
-	@FindBy(id = "edit-advice-title")
-	WebElement title;
-
-	private String advicetype = "//label[contains(text(),'?')]";
-	private String regfunc = "//label[contains(text(),'?')]";
-
-	public AdviceNoticeDetailsPage selectAdviceType(String type) {
-		driver.findElement(By.xpath(advicetype.replace("?", type))).click();
-		return PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
-	}
-
-	public AdviceNoticeDetailsPage selectRegFunc(String func) {
-		driver.findElement(By.xpath(regfunc.replace("?", func))).click();
-		return PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
-	}
-
-	public AdviceNoticeDetailsPage enterTitle(String value) {
+	public void enterTitle(String value) {
 		title.clear();
 		title.sendKeys(value);
-		return PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
+	}
+	
+	public void selectAdviceType(String type) {
+		WebElement adviceType = driver.findElement(By.xpath(advicetype.replace("?", type)));
+		
+		if(!adviceType.isSelected()) {
+			adviceType.click();
+		}
 	}
 
-	public AdviceNoticeDetailsPage enterDescription(String description) throws Throwable {
+	public void selectRegFunc(String func) {
+		WebElement regulatoryFunctions = driver.findElement(By.xpath(regfunc.replace("?", func)));
+		
+		if(!regulatoryFunctions.isSelected()) {
+			regulatoryFunctions.click();
+		}
+	}
+
+	public void enterDescription(String description) throws Throwable {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
-		return PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
 	}
 
 	public InspectionPlanExpirationPage save() {
@@ -52,4 +56,8 @@ public class AdviceNoticeDetailsPage extends BasePageObject {
 		return PageFactory.initElements(driver, InspectionPlanExpirationPage.class);
 	}
 
+	public AdviceNoticeSearchPage clickSave() {
+		saveBtn.click();
+		return PageFactory.initElements(driver, AdviceNoticeSearchPage.class);
+	}
 }

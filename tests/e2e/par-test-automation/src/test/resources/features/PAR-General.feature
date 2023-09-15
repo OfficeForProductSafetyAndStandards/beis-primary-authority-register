@@ -72,7 +72,7 @@ Feature: General
       | Title | WorkNumber  | MobileNumber | ContactNotes              |
       | Dr    | 01706553019 |  07356001870 | Test contact note update. |
     Then the new Primary Authority contact is updated Successfully
-    # Update the new contact
+    # Remove the new contact
     When the user removes the new Primary Authority contact
     Then the new Primary Authority contact is removed Successfully
 
@@ -90,7 +90,7 @@ Feature: General
       | Title | WorkNumber  | MobileNumber | ContactNotes              |
       | Dr    | 01706553019 |  07356001143 | Test contact note update. |
     Then the new Organisation contact is updated Successfully
-    # Update the new contact
+    # Remove the new contact
     When the user removes the new Organisation contact
     Then the new Organisation contact is removed Successfully
 
@@ -114,6 +114,24 @@ Feature: General
     Then the inspection plan is updated correctly
 
   @regression @advicenotice
+  Scenario: Verify Upload, Update and Archive of an Advice Notice (Happy Path - PAR-1874, PAR-1875)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user uploads an advice notice against the partnership with the following details:
+      | Title              | Type of Advice         | Reg Function   | Description         |
+      | Partnership Advice | Background information | Cookie control | Advice description. |
+    Then the advice notice it uploaded successfully and set to active
+    When the user selects the edit advice action link
+    And the user edits the advice notice with the following details:
+      | Title                     | Type of Advice                                | Description                |
+      | Partnership Advice Update | Primary Authority advice for the organisation | Advice description update. |
+    Then the advice notice it updated successfully
+    When the user archives the advice notice with the following reason "Advice Complete"
+    Then the advice notice is archived successfully
+
+  # Upload and Remove Advice Test goes here.
+  @regression @advicenotice
   Scenario: Verify Upload of Advice Notice (Happy Path - PAR-1873)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -121,9 +139,8 @@ Feature: General
     And the user uploads an advice notice against the partnership with the following details:
       | Title          | Type of Advice         | Reg Function   | Description |
       | Advice Title 1 | Background information | Cookie control | Test Advice |
+    Then the advice notice it uploaded successfully and set to active
 
-  # Update and Archive Advice Test goes here.
-  # Upload and Remove Advice Test goes here.
   @regression @enforcement
   Scenario: Verify Send Notification of Proposed Enforcement, Approval and Removal (Happy Path - PAR-1852, PAR-1853, PAR-1854)
     Given the user is on the PAR login page
@@ -271,7 +288,6 @@ Feature: General
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created partnership
 
-  # Nominate the Co-ordinated Partnership Test goes here. (This step is imprtant for other tests such as searching the Puplic registry, PAR-2079)
   @regression @partnershipapplication @coordinated
   Scenario: Successfully Nominate a Coordinated Partnership (Happy Path - PAR-2261)
     Given the user is on the PAR login page
