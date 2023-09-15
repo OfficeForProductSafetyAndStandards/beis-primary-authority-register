@@ -6,6 +6,7 @@ namespace Drupal\par_reporting;
 use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Messenger\Messenger;
@@ -30,6 +31,11 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
   const PAR_LOGGER_CHANNEL = 'par';
 
   /**
+   * The length of time before statistic caches should be expired.
+   */
+  const CACHE_EXPIRY = "+1 day";
+
+  /**
    * Loaded plugin Cache.
    */
   protected $stats = [];
@@ -49,6 +55,34 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
    */
   public static function trustedCallbacks() {
     return ['render'];
+  }
+
+  /**
+   * Get the cache bin.
+   *
+   * @return CacheBackendInterface
+   *  A cache bin instance.
+   */
+  public function getCacheBin(): CacheBackendInterface {
+    return \Drupal::cache();
+  }
+
+  /**
+   * Dynamic getter for the messenger service.
+   *
+   * @return MessengerInterface
+   */
+  public function getMessenger(): MessengerInterface {
+    return \Drupal::service('messenger');
+  }
+
+  /**
+   * Helper function to retrieve the current DateTime.
+   *
+   * Allows tests to modify the current time.
+   */
+  protected function getCurrentTime(): DrupalDateTime {
+    return new DrupalDateTime('now');
   }
 
   /**
@@ -91,7 +125,7 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
   /**
    * {@inheritdoc}
    *
-   * @return \Drupal\par_reporting\ParStatisticBaseInterface
+   * @return \Drupal\par_reporting\ParStatisticInterface
    */
   public function createInstance($plugin_id, array $configuration = []) {
     if (!isset($this->stats[$plugin_id])) {
@@ -116,15 +150,9 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
   }
 
   /**
-   * A helper method to run any plugin instance.
-   *
-   * @param string $id
-   *   The ParStatistic plugin ID.
-   *
-   * @return array|void
-   *   A rendered Statistic plugin.
+   * {@inheritDoc}
    */
-  public function render($id) {
+  public function render(string $id): ?array {
     try {
       $definition = $this->getDefinition($id);
       $plugin = $definition ? $this->createInstance($definition['id'], $definition) : NULL;
@@ -134,38 +162,38 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
     catch (PluginException $e) {
       $this->getLogger(self::PAR_LOGGER_CHANNEL)->error($e);
     }
+
+    return [];
   }
 
   /**
-   * A helper method to import the value of any given stat.
-   *
-   * @param string $id
-   *   The ParStatistic plugin ID.
-   *
-   * @return int
-   *   The value for a Statistic plugin.
+   * {@inheritDoc}
    */
-  public function import($id) {
-//    try {
+  public function get(string $id): int {
+    $cid = "par_reporting:stat:$id";
+    $cache = $this->getCacheBin()->get($cid);
+    // Return cached statistics if found.
+    if ($cache) {
+      return $cache->data;
+    }
+
+    try {
       $definition = $this->getDefinition($id);
       $plugin = $definition ? $this->createInstance($definition['id'], $definition) : NULL;
+    }
+    catch (PluginException $e) {
+      $this->getLogger(self::PAR_LOGGER_CHANNEL)->error($e);
+      $plugin = NULL;
+    }
 
+    // Get the statistic.
+    $stat = $plugin instanceof ParStatisticInterface ? (int) $plugin->getStat() : 0;
 
-//    }
-//    catch (PluginException $e) {
-//      $this->getLogger(self::PAR_LOGGER_CHANNEL)->error($e);
-//    }
+    // Cache the statistic.
+    $expiry = $this->getCurrentTime();
+    $expiry->modify(self::CACHE_EXPIRY);
+    $this->getCacheBin()->set($cid, $stat, $expiry->getTimestamp());
 
-    return $plugin ? $plugin->getStat() : 0;
+    return $stat;
   }
-
-  /**
-   * Dynamic getter for the messenger service.
-   *
-   * @return \Drupal\Core\Messenger\MessengerInterface
-   */
-  public function getMessenger() {
-    return \Drupal::service('messenger');
-  }
-
 }
