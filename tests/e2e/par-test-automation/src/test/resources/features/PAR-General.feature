@@ -127,10 +127,21 @@ Feature: General
       | Title                     | Type of Advice                                | Description                |
       | Partnership Advice Update | Primary Authority advice for the organisation | Advice description update. |
     Then the advice notice it updated successfully
-    When the user archives the advice notice with the following reason "Advice Complete"
+    When the user archives the advice notice with the following reason "Advice Complete."
     Then the advice notice is archived successfully
 
-  # Upload and Remove Advice Test goes here.
+  @regression @advicenotice
+  Scenario: Verify Upload and Removal of an Advice Notice (Happy Path - PAR-1876)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user uploads an advice notice against the partnership with the following details:
+      | Title              | Type of Advice         | Reg Function   | Description         |
+      | Notice for Removal | Background information | Cookie control | Advice description. |
+    Then the advice notice it uploaded successfully and set to active
+    When the user removes the advice notice with the following reason "Advice no long needed."
+    Then the advice notice is removed successfully
+    
   @regression @advicenotice
   Scenario: Verify Upload of Advice Notice (Happy Path - PAR-1873)
     Given the user is on the PAR login page
