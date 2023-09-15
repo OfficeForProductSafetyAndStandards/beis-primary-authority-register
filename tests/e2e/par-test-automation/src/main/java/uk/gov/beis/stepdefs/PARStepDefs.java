@@ -105,7 +105,8 @@ public class PARStepDefs {
 	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
 	private ViewEnquiryPage viewEnquiryPage;
 	private EditRegisteredAddressPage editRegisteredAddressPage;
-
+	private ArchivePage archivePage;
+	
 	// PAR News Letter
 	private UserProfilePage userProfilePage;
 	private UpdateUserCommunicationPreferencesPage updateUserCommunicationPreferencesPage;
@@ -218,7 +219,8 @@ public class PARStepDefs {
 		viewEnquiryPage = PageFactory.initElements(driver, ViewEnquiryPage.class);
 		editRegisteredAddressPage = PageFactory.initElements(driver, EditRegisteredAddressPage.class);
 		legalEntityTypePage = PageFactory.initElements(driver, LegalEntityTypePage.class);
-
+		archivePage = PageFactory.initElements(driver, ArchivePage.class);
+		
 		// PAR News Letter
 		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
 		updateUserCommunicationPreferencesPage = PageFactory.initElements(driver,
@@ -818,9 +820,6 @@ public class PARStepDefs {
 		adviceNoticeDetailsPage.selectRegFunc(DataStore.getSavedValue(UsableValues.ADVICENOTICE_REGFUNCTION));
 		adviceNoticeDetailsPage.enterDescription(DataStore.getSavedValue(UsableValues.ADVICENOTICE_DESCRIPTION));
 		adviceNoticeDetailsPage.save();
-		
-		LOG.info("Check advice notice status is set to \"Active\"");
-		Assert.assertTrue("Failed: Status not set to \"Active\"", adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Active"));
 	}
 
 	@When("^the user uploads an advice plan against the partnership with the following details:$")
@@ -1654,5 +1653,58 @@ public class PARStepDefs {
 	public void the_new_Organisation_contact_is_removed_Successfully() throws Throwable {
 		LOG.info("Verifying the new Authority contact was removed successfully.");
 		assertTrue("Contact was not Removed.", parPartnershipConfirmationPage.checkContactExists());
+	}
+	
+	@Then("^the advice notice it uploaded successfully and set to active$")
+	public void the_advice_notice_it_uploaded_successfully_and_set_to_active() throws Throwable {
+		LOG.info("Checking Advice notice status is set to \"Active\"");
+		Assert.assertTrue("Failed: Status not set to \"Active\"", adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Active"));
+	}
+
+	@When("^the user selects the edit advice action link$")
+	public void the_user_selects_the_edit_advice_action_link() throws Throwable {
+		LOG.info("Searching for the newly added Advice notice.");
+		
+		adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		adviceNoticeSearchPage.selectEditAdviceButton();
+	}
+
+	@When("^the user edits the advice notice with the following details:$")
+	public void the_user_edits_the_advice_notice_with_the_following_details(DataTable details) throws Throwable {
+		LOG.info("Editing Advice notice details.");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.ADVICENOTICE_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.ADVICENOTICE_TYPE, data.get("Type of Advice"));
+			DataStore.saveValue(UsableValues.ADVICENOTICE_DESCRIPTION, data.get("Description"));
+		}
+		
+		adviceNoticeDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		adviceNoticeDetailsPage.selectAdviceType(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TYPE));
+		adviceNoticeDetailsPage.enterDescription(DataStore.getSavedValue(UsableValues.ADVICENOTICE_DESCRIPTION));
+		adviceNoticeDetailsPage.clickSave();
+	}
+
+	@Then("^the advice notice it updated successfully$")
+	public void the_advice_notice_it_updated_successfully() throws Throwable {
+		LOG.info("Checking Advice notice status is set to \"Active\"");
+		Assert.assertTrue("Failed: Status not set to \"Active\"", adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Active"));
+	}
+
+	@When("^the user archives the advice notice with the following reason \"([^\"]*)\"$")
+	public void the_user_archives_the_advice_notice_with_the_following_reason(String reason) throws Throwable {
+		LOG.info("Archiving Advice Notice.");
+		
+		adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		adviceNoticeSearchPage.selectArchiveAdviceButton();
+		
+		archivePage.enterReasonForArchiving(reason);
+	}
+
+	@Then("^the advice notice is archived successfully$")
+	public void the_advice_notice_is_archived_successfully() throws Throwable {
+		LOG.info("Check Advice notice status is set to \"Archived\"");
+		Assert.assertTrue("Failed: Status not set to \"Archived\"", adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Archived"));
 	}
 }
