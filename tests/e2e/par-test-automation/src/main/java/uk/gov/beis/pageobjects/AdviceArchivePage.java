@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class ArchivePage extends BasePageObject {
+public class AdviceArchivePage extends BasePageObject {
 	
 	@FindBy(id = "edit-archive-reason")
 	private WebElement archiveReasonBox;
@@ -14,7 +14,7 @@ public class ArchivePage extends BasePageObject {
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 	
-	public ArchivePage() throws ClassNotFoundException, IOException {
+	public AdviceArchivePage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	

@@ -105,7 +105,8 @@ public class PARStepDefs {
 	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
 	private ViewEnquiryPage viewEnquiryPage;
 	private EditRegisteredAddressPage editRegisteredAddressPage;
-	private ArchivePage archivePage;
+	private AdviceArchivePage adviceArchivePage;
+	private AdviceRemovalPage adviceRemovalPage;
 	
 	// PAR News Letter
 	private UserProfilePage userProfilePage;
@@ -219,7 +220,8 @@ public class PARStepDefs {
 		viewEnquiryPage = PageFactory.initElements(driver, ViewEnquiryPage.class);
 		editRegisteredAddressPage = PageFactory.initElements(driver, EditRegisteredAddressPage.class);
 		legalEntityTypePage = PageFactory.initElements(driver, LegalEntityTypePage.class);
-		archivePage = PageFactory.initElements(driver, ArchivePage.class);
+		adviceArchivePage = PageFactory.initElements(driver, AdviceArchivePage.class);
+		adviceRemovalPage = PageFactory.initElements(driver, AdviceRemovalPage.class);
 		
 		// PAR News Letter
 		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
@@ -1699,12 +1701,30 @@ public class PARStepDefs {
 		adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
 		adviceNoticeSearchPage.selectArchiveAdviceButton();
 		
-		archivePage.enterReasonForArchiving(reason);
+		adviceArchivePage.enterReasonForArchiving(reason);
 	}
 
 	@Then("^the advice notice is archived successfully$")
 	public void the_advice_notice_is_archived_successfully() throws Throwable {
 		LOG.info("Check Advice notice status is set to \"Archived\"");
 		Assert.assertTrue("Failed: Status not set to \"Archived\"", adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Archived"));
+	}
+	
+	@When("^the user removes the advice notice with the following reason \"([^\"]*)\"$")
+	public void the_user_removes_the_advice_notice_with_the_following_reason(String reason) throws Throwable {
+		LOG.info("Removing Advice Notice.");
+		
+		adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		adviceNoticeSearchPage.selectRemoveAdviceButton();
+		
+		adviceRemovalPage.enterReasonForRemoval(reason);
+	}
+
+	@Then("^the advice notice is removed successfully$")
+	public void the_advice_notice_is_removed_successfully() throws Throwable {
+		LOG.info("Check Advice notice was Removed.");
+		adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		
+		Assert.assertTrue("Failed: Advice Notice was not Removed.", adviceNoticeSearchPage.checkNoResultsReturned());
 	}
 }
