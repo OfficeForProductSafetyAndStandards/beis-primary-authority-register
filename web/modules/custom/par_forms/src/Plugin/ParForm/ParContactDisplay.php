@@ -99,7 +99,7 @@ class ParContactDisplay extends ParFormPluginBase {
           '#type' => 'html_tag',
           '#tag' => 'h2',
           '#value' => $this->t('Contacts'),
-          '#attributes' => ['class' => ['z']],
+          '#attributes' => ['class' => ['gov-heading-l']],
         ],
         'info' => [
           '#type' => 'html_tag',
@@ -141,35 +141,35 @@ class ParContactDisplay extends ParFormPluginBase {
       $form['contact'] = [
         '#type' => 'container',
         '#weight' => 1,
-        '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
+        '#attributes' => ['class' => ['govuk-grid-row', 'form-group', 'contact-details']],
         'name' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => $this->getDefaultValuesByKey('name', $index, NULL),
-          '#attributes' => ['class' => ['column-two-thirds']],
+          '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
         ],
         'actions' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => isset($actions) ? $actions : 'Update contact details',
-          '#attributes' => ['class' => ['column-one-third']],
+          '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         ],
         'email' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => $this->getDefaultValuesByKey('email_preferences', $index, NULL),
-          '#attributes' => ['class' => ['column-two-thirds']],
+          '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
         ],
         'phone' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#attributes' => ['class' => ['column-one-third']],
+          '#attributes' => ['class' => ['govuk-grid-column-one-third']],
           '#value' => $this->getDefaultValuesByKey('work_phone', $index, NULL) . '<br>' . $this->getDefaultValuesByKey('mobile_phone', $index, NULL),
         ],
         'locations' => [
           '#type' => 'html_tag',
           '#tag' => 'details',
-          '#attributes' => ['class' => ['column-full', 'contact-locations'], 'role' => 'group'],
+          '#attributes' => ['class' => ['govuk-grid-column-full', 'contact-locations'], 'role' => 'group'],
           '#value' => \Drupal::service('renderer')->render($locations),
         ],
       ];
