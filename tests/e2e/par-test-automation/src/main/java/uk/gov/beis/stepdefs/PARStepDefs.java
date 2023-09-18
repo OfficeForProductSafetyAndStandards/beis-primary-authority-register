@@ -1100,9 +1100,33 @@ public class PARStepDefs {
 		requestEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION));
 		requestEnquiryPage.chooseFile("link.txt");
 		requestEnquiryPage.proceed();
+	}
+	
+	@When("^the user sends a general enquiry for an enforcement notice with the following details:$")
+	public void the_user_sends_a_general_enquiry_for_an_enforcement_notice_with_the_following_details(DataTable details) throws Throwable {
+		LOG.info("Send general query");
 		
-		LOG.info("Verify the enquiry is created");
-		Assert.assertTrue("Failed: Enquiry details don't check out ", enquiryReviewPage.checkEnquiryCreation());
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.ENQUIRY_DESCRIPTION, data.get("Description"));
+		}
+		
+		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		parPartnershipConfirmationPage.createEnforcement();
+		
+		enforcementNotificationPage.selectDiscussEnforcement();
+		enquiryContactDetailsPage.proceed();
+		
+		requestEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION));
+		requestEnquiryPage.chooseFile("link.txt");
+		requestEnquiryPage.proceed();
+	}
+
+	@Then("^the Enquiry is created Successfully$")
+	public void the_Enquiry_is_created_Successfully() throws Throwable {
+		LOG.info("Verify the enquiry is created.");
+		
+		Assert.assertTrue("Failed: Enquiry details are not correct.", enquiryReviewPage.checkEnquiryCreation());
 		
 		enquiryReviewPage.saveChanges();
 		enquiryCompletionPage.complete();

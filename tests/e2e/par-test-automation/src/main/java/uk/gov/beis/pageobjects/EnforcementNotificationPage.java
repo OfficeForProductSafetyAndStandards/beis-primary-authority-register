@@ -8,16 +8,23 @@ import org.openqa.selenium.support.PageFactory;
 
 public class EnforcementNotificationPage extends BasePageObject {
 	
+	@FindBy(id = "edit-enquire")
+	private WebElement discussEnforcementBtn;
+	
+	@FindBy(xpath = "//input[contains(@value,'Continue')]")
+	private WebElement continueBtn;
+	
 	public EnforcementNotificationPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
+	public EnquiryContactDetailsPage selectDiscussEnforcement() {
+		discussEnforcementBtn.click();
+		return PageFactory.initElements(driver, EnquiryContactDetailsPage.class);
+	}
 	
 	public EnforcementContactDetailsPage proceed() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, EnforcementContactDetailsPage.class);
 	}
-
 }

@@ -12,15 +12,19 @@ import uk.gov.beis.utility.DataStore;
 
 public class EnquiryReviewPage extends BasePageObject {
 
+	@FindBy(linkText = "Submit a response")
+	private WebElement submitResponse;
+	
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
+	
+	String desc = "//div/p[contains(text(),'?')]";
+	String reply = "//div/p[contains(text(),'?')]";
+	String status; // This variable is seems to be missing.
+	
 	public EnquiryReviewPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//input[contains(@value,'Save')]")
-	WebElement saveBtn;
-
-	@FindBy(linkText = "Submit a response")
-	WebElement submitResponse;
 
 	public EnquiryCompletionPage saveChanges() {
 		saveBtn.click();
@@ -32,29 +36,21 @@ public class EnquiryReviewPage extends BasePageObject {
 		return PageFactory.initElements(driver, ReplyEnquiryPage.class);
 	}
 
-	String desc = "//div/p[contains(text(),'?')]";
-	String reply = "//div/p[contains(text(),'?')]";
-	String status; // This variable is seems to be missing.
-
 	public boolean checkEnquiryCreation() {
-		WebElement desc1 = driver
-				.findElement(By.xpath(desc.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION))));
+		WebElement enquiryDescription = driver.findElement(By.xpath(desc.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION))));
 
-		return (desc1.isDisplayed());
+		return (enquiryDescription.isDisplayed());
 	}
 
 	public boolean checkEnquiryReply() {
-		WebElement reply1 = driver
-				.findElement(By.xpath(reply.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY))));
+		WebElement reply1 = driver.findElement(By.xpath(reply.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY))));
 
 		return (reply1.isDisplayed());
 	}
 	
 	public boolean checkEnquiryReply1() {
-		WebElement reply11 = driver
-				.findElement(By.xpath(reply.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY1))));
+		WebElement reply11 = driver.findElement(By.xpath(reply.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY1))));
 
 		return (reply11.isDisplayed());
 	}
-
 }
