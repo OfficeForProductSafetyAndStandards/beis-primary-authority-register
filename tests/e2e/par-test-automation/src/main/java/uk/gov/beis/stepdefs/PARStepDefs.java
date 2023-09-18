@@ -712,14 +712,14 @@ public class PARStepDefs {
 		case ("par_enforcement_officer@example.com"):
 			LOG.info("Select last created enforcement");
 			parDashboardPage.selectSeeEnforcementNotices();
-			enforcementSearchPage.searchPartnerships();
+			enforcementSearchPage.searchEnforcements();
 			enforcementSearchPage.selectEnforcement();
 			break;
 
 		case ("par_authority@example.com"):
 			LOG.info("Select last created enforcement");
 			parDashboardPage.selectSeeEnforcementNotices();
-			enforcementSearchPage.searchPartnerships();
+			enforcementSearchPage.searchEnforcements();
 			enforcementSearchPage.selectEnforcement();
 			break;
 
@@ -747,15 +747,33 @@ public class PARStepDefs {
 	@Then("^the enforcement notice is set to approved status$")
 	public void the_enforcement_notice_is_set_to_approved_status() throws Throwable {
 		LOG.info("Check the enformcement is approved");
-		enforcementSearchPage.searchPartnerships();
+		enforcementSearchPage.searchEnforcements();
 		Assert.assertTrue("Enforcement Status doesn't check out", enforcementSearchPage.getStatus().equalsIgnoreCase("Approved"));
 	}
-
+	
+	@When("^the user blocks the enforcement notice with the following reason: \"([^\"]*)\"$")
+	public void the_user_blocks_the_enforcement_notice_with_the_following_reason(String reason) throws Throwable {
+		LOG.info("Block the Enforcement Notice.");
+		proposedEnforcementPage.selectBlock();
+		proposedEnforcementPage.enterReasonForBlockingEnforcement(reason);
+		proposedEnforcementPage.proceed();
+		
+		enforcementReviewPage.saveChanges();
+		enforcementCompletionPage.complete();
+	}
+	
+	@Then("^the enforcement notice is set to blocked status$")
+	public void the_enforcement_notice_is_set_to_blocked_status() throws Throwable {
+		LOG.info("Check the Enformcement Notice is Blocked.");
+		enforcementSearchPage.searchEnforcements();
+		Assert.assertTrue("Enforcement Status doesn't check out", enforcementSearchPage.getStatus().equalsIgnoreCase("Blocked"));
+	}
+	
 	@When("^the user searches for the last created enforcement notice$")
 	public void the_user_searches_for_the_last_created_enforcement_notice() throws Throwable {
 		LOG.info("Select last created enforcement");
 		parDashboardPage.selectManageEnforcementNotices();
-		enforcementSearchPage.searchPartnerships();
+		enforcementSearchPage.searchEnforcements();
 		enforcementSearchPage.removeEnforcement();
 	}
 
@@ -765,7 +783,7 @@ public class PARStepDefs {
 		removeEnforcementPage.selectRevokeReason("This is a duplicate enforcement");
 		removeEnforcementPage.enterRevokeDescription("Revoking");
 		removeEnforcementConfirmationPage.acceptTerms();
-		enforcementSearchPage.searchPartnerships();
+		enforcementSearchPage.searchEnforcements();
 		Assert.assertTrue("Some results are returned indeed", enforcementSearchPage.confirmNoReturnedResults());
 	}
 
