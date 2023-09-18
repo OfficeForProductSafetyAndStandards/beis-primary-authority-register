@@ -76,7 +76,7 @@ Feature: General
     When the user removes the new Primary Authority contact
     Then the new Primary Authority contact is removed Successfully
 
-  @regression @direct @update @update
+  @regression @direct @update
   Scenario: Add, Update and Remove an Organisation Contact for a Partnership with a User Account Invite Successfully (Happy Path - PAR-2244)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -141,7 +141,7 @@ Feature: General
     Then the advice notice it uploaded successfully and set to active
     When the user removes the advice notice with the following reason "Advice no long needed."
     Then the advice notice is removed successfully
-    
+
   @regression @advicenotice
   Scenario: Verify Upload of Advice Notice (Happy Path - PAR-1873)
     Given the user is on the PAR login page
@@ -168,7 +168,6 @@ Feature: General
     And the user approves the enforcement notice
     Then the enforcement notice is set to approved status
 
-  # Create an Enforcement Notice and Block Enforcement Notice Test goes here.
   @regression @enforcement
   Scenario: Verify a Help Desk user can remove an Enforcement Notice Successfully (Happy Path - PAR-1855)
     Given the user is on the PAR login page
@@ -176,6 +175,23 @@ Feature: General
     When the user searches for the last created enforcement notice
     Then the user removes the enforcement notice successfully
 
+  @regression @enforcement
+  Scenario: Verify an Enforcement Notice can be Blocked (Happy Path - PAR-1970)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user creates an enforcement notice against the partnership with the following details:
+      | Enforcement Action | Title                            | Regulatory Function | Description       | Attachment |
+      | Proposed           | Enforcement Notice to be Blocked | Cookie control      | Test Enforcement. | link.txt   |
+    Then all the fields for the enforcement notice are updated correctly
+		#Block the Enforcement Notice
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    When the user selects the last created enforcement notice
+    And the user blocks the enforcement notice with the following reason: "Test Block"
+    Then the enforcement notice is set to blocked status
+    
+    
   # Discuss an Enforcement Notice Test goes here.
   # Create a Deviation Request and Block the Deviation Request Test goes here.
   @regression @deviationrequest

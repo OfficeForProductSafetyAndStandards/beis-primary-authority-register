@@ -8,25 +8,37 @@ import org.openqa.selenium.support.PageFactory;
 
 public class ProposedEnforcementPage extends BasePageObject{
 	
+	@FindBy(xpath = "//label[contains(text(),'Allow')]")
+	private WebElement allowRadial;
+	
+	@FindBy(xpath = "//label[contains(text(),'Block')]")
+	private WebElement blockRadial;
+	
+	@FindBy(id = "edit-par-component-enforcement-action-review-0-primary-authority-notes")
+	private WebElement blockReasonTextArea;
+	
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
+	
 	public ProposedEnforcementPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	private WebElement continueBtn;
-
-	@FindBy(xpath = "//label[contains(text(),'Allow')]")
-	private WebElement allowBtn;
-
-
-	public ProposedEnforcementPage selectAllow() {
-		allowBtn.click();
-		return PageFactory.initElements(driver, ProposedEnforcementPage.class);
+	public void selectAllow() {
+		allowRadial.click();
+	}
+	
+	public void selectBlock() {
+		blockRadial.click();
+	}
+	
+	public void enterReasonForBlockingEnforcement(String reason) {
+		blockReasonTextArea.clear();
+		blockReasonTextArea.sendKeys(reason);
 	}
 
 	public EnforcementReviewPage proceed() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, EnforcementReviewPage.class);
 	}
-	
 }

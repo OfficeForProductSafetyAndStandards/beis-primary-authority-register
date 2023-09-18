@@ -8,15 +8,15 @@ import org.openqa.selenium.support.PageFactory;
 
 public class EnforcementCompletionPage extends BasePageObject{
 
+	@FindBy(xpath = "//a[contains(@class,'button')]")
+	private WebElement doneBtn;
+	
 	public EnforcementCompletionPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
-	@FindBy(xpath = "//a[contains(@class,'button')]")
-	WebElement doneBtn;
-
 	public EnforcementSearchPage complete() {
-			doneBtn.click();
+		doneBtn.click();
 		return PageFactory.initElements(driver, EnforcementSearchPage.class);
 	}
 }
