@@ -190,9 +190,22 @@ Feature: General
     When the user selects the last created enforcement notice
     And the user blocks the enforcement notice with the following reason: "Test Block"
     Then the enforcement notice is set to blocked status
-    
-    
-  # Discuss an Enforcement Notice Test goes here.
+	
+  @regression @enforcement @enquiry
+  Scenario: Verify the Discussion of an Enforcement Notice (Happy Path - PAR-2272)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user sends a general enquiry for an enforcement notice with the following details:
+      | Description  |
+      | Enforcement Discussion |
+    Then the Enquiry is created Successfully
+    #Re-login as primary authority and check the enquiry
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    When the user searches for the last created general enquiry
+    Then the user successfully views the enquiry
+  
   # Create a Deviation Request and Block the Deviation Request Test goes here.
   @regression @deviationrequest
   Scenario: Verify Submission of Deviation request following an Inspection plan (Happy Path - PAR-1857, PAR-1859)
@@ -262,6 +275,7 @@ Feature: General
     And the user submits a general enquiry with the following details:
       | Description  |
       | Test Enquiry |
+    Then the Enquiry is created Successfully
     #Re-login as primary authority and check the enquiry
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials

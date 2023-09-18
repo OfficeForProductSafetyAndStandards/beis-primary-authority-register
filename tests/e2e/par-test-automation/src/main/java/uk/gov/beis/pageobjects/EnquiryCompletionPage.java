@@ -8,12 +8,12 @@ import org.openqa.selenium.support.PageFactory;
 
 public class EnquiryCompletionPage extends BasePageObject {
 
+	@FindBy(xpath = "//a[contains(@class,'button')]")
+	private WebElement doneBtn;
+	
 	public EnquiryCompletionPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//a[contains(@class,'button')]")
-	WebElement doneBtn;
 
 	public PartnershipConfirmationPage complete() {
 		doneBtn.click();
