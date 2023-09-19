@@ -1000,7 +1000,7 @@ public class PARStepDefs {
 
 	@When("^the user submits a deviation request against an inspection plan with the following details:$")
 	public void the_user_submits_a_deviation_request_against_an_inspection_plan_with_the_following_details(DataTable dets) throws Throwable {
-		LOG.info("Submit deviation request");
+		LOG.info("Submit Deviation Request");
 		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
 			
@@ -1014,19 +1014,41 @@ public class PARStepDefs {
 		requestDeviationPage.enterDescription(DataStore.getSavedValue(UsableValues.DEVIATION_DESCRIPTION));
 		requestDeviationPage.chooseFile("link.txt");
 		requestDeviationPage.proceed();
+	}
+
+	@Then("^the Deviation Request is created Successfully$")
+	public void the_Deviation_Request_is_created_Successfully() throws Throwable {
+		LOG.info("Verify the Deviation Request is created Successfully.");
 		
-		LOG.info("Verify the deviation request is created");
-		Assert.assertTrue("Failed: Deviation request details don't check out ", deviationReviewPage.checkDeviationCreation());
-		
+		Assert.assertTrue("Failed: Deviation Request details are not displayed.", deviationReviewPage.checkDeviationCreation());
 		deviationReviewPage.saveChanges();
 		deviationCompletionPage.complete();
 	}
-
+	
 	@When("^the user searches for the last created deviation request$")
 	public void the_user_searches_for_the_last_created_deviation_request() throws Throwable {
 		LOG.info("Search for last created deviation request");
+		
 		parDashboardPage.selectSeeDeviationRequests();
 		deviationSearchPage.selectDeviationRequest();
+	}
+	
+	@When("^the user blocks the deviation request with the following reason: \"([^\"]*)\"$")
+	public void the_user_blocks_the_deviation_request_with_the_following_reason(String reason) throws Throwable {
+		LOG.info("Block the deviation request.");
+		
+		deviationApprovalPage.selectBlock();
+		deviationApprovalPage.enterReasonForBlocking(reason);
+		deviationApprovalPage.proceed();
+	}
+
+	@Then("^the deviation request is set to blocked status$")
+	public void the_deviation_request_is_set_to_blocked_status() throws Throwable {
+		LOG.info("Check the Deviation Request is Blocked on the Review Page.");
+		
+		Assert.assertTrue("Failed: Deviation request status is not Set to Blocked", deviationReviewPage.checkDeviationStatusBlocked());
+		deviationReviewPage.saveChanges();
+		deviationCompletionPage.complete();
 	}
 
 	@Then("^the user successfully approves the deviation request$")
@@ -1034,7 +1056,8 @@ public class PARStepDefs {
 		LOG.info("Approve the deviation request");
 		deviationApprovalPage.selectAllow();
 		deviationApprovalPage.proceed();
-		Assert.assertTrue("Failed: Deviation request status not correct", deviationReviewPage.checkDeviationStatus());
+		
+		Assert.assertTrue("Failed: Deviation request status not correct", deviationReviewPage.checkDeviationStatusApproved());
 		deviationReviewPage.saveChanges();
 		deviationCompletionPage.complete();
 	}

@@ -57,7 +57,8 @@ Feature: General
       | 01 new road | Market   | Bury | Greater Manchester | GB      | GB-SCT       | BL2 4BD   | Updated Info           | you sell cookies. | Name Update  |
     Then all of the Partnership details have been updated successfully
 
-  # Update Legal Entities.
+  # Update Legal Entities test here.
+  
   @regression @direct @update
   Scenario: Add, Update and Remove a Primary Authority Contact for a Partnership with a User Account Invite Successfully (Happy Path - PAR-2242)
     Given the user is on the PAR login page
@@ -206,7 +207,22 @@ Feature: General
     When the user searches for the last created general enquiry
     Then the user successfully views the enquiry
   
-  # Create a Deviation Request and Block the Deviation Request Test goes here.
+  @regression @deviationrequest
+  Scenario: Verify a Deviation Request can be Blocked (Happy Path - PAR-2275)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user submits a deviation request against an inspection plan with the following details:
+      | Description |
+      | Deviation Request to be Blocked      |
+   	Then the Deviation Request is created Successfully
+    #Re-login as primary authority and check thedeviation request
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    When the user searches for the last created deviation request
+    And the user blocks the deviation request with the following reason: "Test Block"
+    Then the deviation request is set to blocked status
+      
   @regression @deviationrequest
   Scenario: Verify Submission of Deviation request following an Inspection plan (Happy Path - PAR-1857, PAR-1859)
     Given the user is on the PAR login page
@@ -215,6 +231,7 @@ Feature: General
     And the user submits a deviation request against an inspection plan with the following details:
       | Description |
       | Test 1      |
+    Then the Deviation Request is created Successfully
     #re-login as primary authority and check and approve deviation request
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
