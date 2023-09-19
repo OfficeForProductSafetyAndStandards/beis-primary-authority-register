@@ -1,6 +1,6 @@
 #!/bin/bash
 # This script will push local assets to an environment.
-# Usage: ./build.sh -t v1.0.0
+# Usage: ./push.sh -t v1.0.0
 
 echo $BASH_VERSION
 
@@ -53,7 +53,7 @@ WORKING_DIR=${BASH_SOURCE%/*}
 printf "Working directory: $WORKING_DIR\n"
 
 # Require a tag.
-re='^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)';
+re='^(v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)|latest)';
 if [[ -z "${TAG}" ]] || [[ ! $TAG =~ $re ]]; then
     printf "Error: please specify a valid semver tag (starting with a v) using the '-t' flag...\n"
     exit 2
