@@ -25,10 +25,10 @@ When('I apply for a direct partnership', function () {
         .click('#edit-cancel')
         .clickLinkByPureText('Apply for a new partnership')
         .chooseAuthorityIfOptionPresent('input[name="par_data_authority_id"]', '//label[text()="Lower East Side Borough Council"]')
-        .assert.containsText('h1.heading-xlarge', 'What kind of partnership are you applying for?')
+        .assert.containsText('h1', 'What kind of partnership are you applying for?')
         .click('#edit-application-type-direct')
         .click('#edit-next')
-        .assert.containsText('h1.heading-xlarge', 'Declaration for a direct partnership application')
+        .assert.containsText('h1', 'Declaration for a direct partnership application')
         .click('#edit-confirm')
         .click('#edit-next')
 })
@@ -38,16 +38,16 @@ When('I apply for a coordinated partnership', function () {
         .click('#edit-cancel')
         .clickLinkByPureText('Apply for a new partnership')
         .chooseAuthorityIfOptionPresent('input[name="par_data_authority_id"]', '//label[text()="Lower East Side Borough Council"]')
-        .assert.containsText('h1.heading-xlarge', 'What kind of partnership are you applying for?')
+        .assert.containsText('h1', 'What kind of partnership are you applying for?')
         .click('#edit-application-type-coordinated')
         .click('#edit-next')
-        .assert.containsText('h1.heading-xlarge', 'Declaration for a coordinated partnership application')
+        .assert.containsText('h1', 'Declaration for a coordinated partnership application')
         .click('#edit-confirm')
         .click('#edit-next')
 })
 When('I enter information about the partnership', function () {
     return shared
-        .assert.containsText('h1.heading-xlarge','Information about the new partnership')
+        .assert.containsText('h1','Information about the new partnership')
         .click('#edit-next')
         .waitForElementVisible('.error-summary', 1000)
         .assert.containsText('.error-summary', 'You must enter some information about this partnership')
@@ -57,7 +57,7 @@ When('I enter information about the partnership', function () {
 })
 When('I enter the business name {string}', function (organisation) {
     return shared
-        .assert.containsText('h1.heading-xlarge', 'Who are you in partnership with?')
+        .assert.containsText('h1', 'Who are you in partnership with?')
         .click('#edit-next')
         .waitForElementVisible('.error-summary', 1000)
         .assert.containsText('.error-summary', 'You must enter the organisation\'s name')
@@ -67,13 +67,13 @@ When('I enter the business name {string}', function (organisation) {
 })
 When('I choose an existing business', function () {
     return shared
-        .assert.containsText('h1.heading-xlarge', 'Are you looking for one of these businesses?')
+        .assert.containsText('h1', 'Are you looking for one of these businesses?')
         .click('input[name="par_data_organisation_id"]:nth-child(1)')
         .click('#edit-next')
 })
 When('I enter the business address', function () {
     return shared
-        .assert.containsText('h1.heading-xlarge', 'Add member organisation address')
+        .assert.containsText('h1', 'Add member organisation address')
         .clearValue('#edit-postcode')
         .clearValue('#edit-address-line1')
         .clearValue('#edit-address-line2')
@@ -94,7 +94,7 @@ When('I enter the business address', function () {
 });
 When('I enter the contact details for the business', function () {
     return shared
-        .assert.containsText('h1.heading-xlarge', 'Add a contact for the organisation')
+        .assert.containsText('h1', 'Add a contact for the organisation')
         .clearValue('#edit-salutation')
         .clearValue('#edit-first-name')
         .clearValue('#edit-last-name')
@@ -117,7 +117,7 @@ When('I enter the contact details for the business', function () {
 });
 When('I invite the business contact', function () {
     return shared
-        .assert.containsText('h1.heading-xlarge', 'Invite the business')
+        .assert.containsText('h1', 'Invite the business')
         .assert.containsText('#edit-recipient', email)
         .assert.containsText('#edit-body', 'Dear '+firstname)
         .assert.containsText('#edit-body', '[invite:invite-accept-link]')
@@ -125,7 +125,7 @@ When('I invite the business contact', function () {
 })
 When('I review the partnership application between {string} and {string}', function (authority, organisation) {
     return shared
-        .assert.containsText('h1.heading-xlarge', 'Check partnership information')
+        .assert.containsText('h1', 'Check partnership information')
         .click('#edit-save')
         .waitForElementVisible('.error-summary', 1000)
         .assert.containsText('.error-summary', 'Please confirm you have read the terms & conditions')

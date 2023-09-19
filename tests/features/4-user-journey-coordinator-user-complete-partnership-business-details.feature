@@ -26,7 +26,7 @@ Feature: Coordinator User - Complete organisation details
 
         # COMPLETE ORGANISATION SIZE
 
-        Then the element "h1.heading-xlarge" contains the text "Confirm the size of the membership list"
+        Then the element "h1" contains the text "Confirm the size of the membership list"
         And I select the option with the value "small" for element "#edit-business-size"
         And I click on the button "#edit-next"
 
@@ -42,7 +42,7 @@ Feature: Coordinator User - Complete organisation details
 
         And I submit final confirmation of completion by organisation "Organisation For Coordinated Partnership"
 
-        # Then the element "h1.heading-xlarge" contains the text "Check partnership information"
+        # Then the element "h1" contains the text "Check partnership information"
         # Then the element "#edit-organisation-registered-address" contains the text "1 High St"
         # And the element "#edit-organisation-registered-address" contains the text "Southwark"
         # And the element "#edit-organisation-registered-address" contains the text "London"
@@ -54,7 +54,7 @@ Feature: Coordinator User - Complete organisation details
         # Then the element "#edit-legal-entities" contains the text "1234567890"
         # And I click on the checkbox "#edit-terms-organisation-agreed"
         # And I click on the button "#edit-save"
-        # Then the element "h1.heading-xlarge" contains the text "Thank you for completing the application"
+        # Then the element "h1" contains the text "Thank you for completing the application"
         # And I click on the button ".button"
 
 
@@ -84,7 +84,7 @@ Feature: Coordinator User - Complete organisation details
 
         # COMPLETE ORGANISATION SIZE
 
-        Then the element "h1.heading-xlarge" contains the text "Confirm the size of the membership list"
+        Then the element "h1" contains the text "Confirm the size of the membership list"
         And I select the option with the value "small" for element "#edit-business-size"
         And I click on the button "#edit-next"
 
@@ -100,7 +100,7 @@ Feature: Coordinator User - Complete organisation details
 
         And I submit final confirmation of completion by organisation "Organisation For No Members Coordinated Partnership"
 
-        # Then the element "h1.heading-xlarge" contains the text "Check partnership information"
+        # Then the element "h1" contains the text "Check partnership information"
         # Then the element "#edit-organisation-registered-address" contains the text "1 High St"
         # And the element "#edit-organisation-registered-address" contains the text "Southwark"
         # And the element "#edit-organisation-registered-address" contains the text "London"
@@ -112,5 +112,5 @@ Feature: Coordinator User - Complete organisation details
         # Then the element "#edit-legal-entities" contains the text "1234567890"
         # And I click on the checkbox "#edit-terms-organisation-agreed"
         # And I click on the button "#edit-save"
-        # Then the element "h1.heading-xlarge" contains the text "Thank you for completing the application"
+        # Then the element "h1" contains the text "Thank you for completing the application"
         # And I click on the button ".button"

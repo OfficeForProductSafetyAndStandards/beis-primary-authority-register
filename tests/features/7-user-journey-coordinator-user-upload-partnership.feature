@@ -7,13 +7,13 @@ Feature: Coordinator User - Upload Members
         Given I am logged in as "par_coordinator@example.com"
         And I click the link with text "See your partnerships"
         When I click the link text "Organisation For Coordinated Partnership"
-        Then the element "h1.heading-xlarge" contains the text "Organisation For Coordinated Partnership"
+        Then the element "h1" contains the text "Organisation For Coordinated Partnership"
 
         # UPLOAD MEMBERS
         When I click the link text "show members list"
-        Then the element "h1.heading-xlarge" contains the text "Members list"
+        Then the element "h1" contains the text "Members list"
         When I click the link text "Upload a Member List (CSV)"
-        Then the element "h1.heading-xlarge" contains the text "Upload a list of members"
+        Then the element "h1" contains the text "Upload a list of members"
 
         # SUPPORT LINKS
         And the element "#edit-info--description em a" contains the text "Member Guidance Page"
@@ -22,7 +22,7 @@ Feature: Coordinator User - Upload Members
         # VALIDATION
         When I upload the file "files/csv_test_errors.csv" to field "#edit-csv-upload"
         And I click on the button "#edit-upload"
-        Then the element "h1.heading-xlarge" contains the text "CSV validation errors"
+        Then the element "h1" contains the text "CSV validation errors"
         And the element "#edit-info--description em a" contains the text "Member Guidance Page"
         Then the element "#edit-error-list thead" contains the text "Line"
         And the element "#edit-error-list thead" contains the text "Column"
@@ -38,12 +38,12 @@ Feature: Coordinator User - Upload Members
         When I click on the button "#edit-done"
 
         # CSV PROCESSING
-        Then the element "h1.heading-xlarge" contains the text "Upload a list of members"
+        Then the element "h1" contains the text "Upload a list of members"
         When I upload the file "files/csv_test_valid.csv" to field "#edit-csv-upload"
         And I click on the button "#edit-upload"
-        Then the element "h1.heading-xlarge" contains the text "Confirm member upload"
+        Then the element "h1" contains the text "Confirm member upload"
         When I click on the button "#edit-save"
-        Then the element "h1.heading-xlarge" contains the text "Member list uploaded"
+        Then the element "h1" contains the text "Member list uploaded"
         When I click on the button "#edit-done"
         And I open the path "/user/logout"
 
@@ -62,7 +62,7 @@ Feature: Coordinator User - Upload Members
         And I click on the button "#edit-next"
         And I click on the radio "#edit-partnership-cover-default"
         And I click on the button "#edit-next"
-        Then the element "h1.heading-xlarge" contains the text "Partnership is approved"
+        Then the element "h1" contains the text "Partnership is approved"
         And the element "#edit-partnership-info" contains the text "Organisation For Coordinated Partnership"
         And I click on the button "#edit-done"
 
@@ -75,7 +75,7 @@ Feature: Coordinator User - Upload Members
         And I click the link text "Organisation For Coordinated Partnership"
         Then the element "h1" is not empty
         When I click the link text "show members list"
-        Then the element "h1.heading-xlarge" contains the text "Members list"
+        Then the element "h1" contains the text "Members list"
 
         And the element ".table-scroll-wrapper" contains the text "Coordinated Member 1"
         And the element ".table-scroll-wrapper" contains the text "Coordinated Member 2"
@@ -84,12 +84,12 @@ Feature: Coordinator User - Upload Members
 
         # REUPLOAD MEMBERS
         When I click the link text "Upload a Member List (CSV)"
-        Then the element "h1.heading-xlarge" contains the text "Upload a list of members"
+        Then the element "h1" contains the text "Upload a list of members"
         When I upload the file "files/csv_test_second.csv" to field "#edit-csv-upload"
         And I click on the button "#edit-upload"
-        Then the element "h1.heading-xlarge" contains the text "Confirm member upload"
+        Then the element "h1" contains the text "Confirm member upload"
         When I click on the button "#edit-save"
-        Then the element "h1.heading-xlarge" contains the text "Member list uploaded"
+        Then the element "h1" contains the text "Member list uploaded"
         When I click on the button "#edit-done"
 
         # RE-CHECK MEMBERS (COORDINATOR)
@@ -98,7 +98,7 @@ Feature: Coordinator User - Upload Members
         And I click the link text "Organisation For Coordinated Partnership"
         Then the element "h1" is not empty
         When I click the link text "show members list"
-        Then the element "h1.heading-xlarge" contains the text "Members list"
+        Then the element "h1" contains the text "Members list"
 
         When I add "Coordinated Member 2" to the inputfield "#edit-organisation-name"
         And I click on the button "#edit-submit-members-list"
@@ -147,32 +147,32 @@ Feature: Coordinator User - Upload Members
         Given I am logged in as "par_coordinator@example.com"
         And I click the link with text "See your partnerships"
         When I click the link text "Member Upload Test Business"
-        Then the element "h1.heading-xlarge" contains the text "Member Upload Test Business"
+        Then the element "h1" contains the text "Member Upload Test Business"
         When I click the link text "change the list type"
 
         # LIST TYPE
-        Then the element "h1.heading-xlarge" contains the text "How would you like to display the member list?"
+        Then the element "h1" contains the text "How would you like to display the member list?"
         When I click on the radio "#edit-type-external"
         And I click on the button "#edit-next"
 
         # LIST DETAILS
-        Then the element "h1.heading-xlarge" contains the text "Where is the list?"
+        Then the element "h1" contains the text "Where is the list?"
         When I add "example.com" to the inputfield "#edit-member-link"
         And I click on the button "#edit-next"
         Then the element ".error-summary" contains the text "Please enter a fully qualified URL for the member list."
         When I add "http://example.com" to the inputfield "#edit-member-link"
         And I click on the button "#edit-next"
-        Then the element "h1.heading-xlarge" contains the text "How many members are in this list?"
+        Then the element "h1" contains the text "How many members are in this list?"
         When I add "1583" to the inputfield "#edit-number-members"
         And I click on the button "#edit-next"
 
         # REVIEW
-        Then the element "h1.heading-xlarge" contains the text "Is the list up-to-date?"
+        Then the element "h1" contains the text "Is the list up-to-date?"
         Then the element ".member-count" contains the text "There are 1583 active members in the member list."
         Then the element ".member-link" contains the text "This member list is publicly accessible on the following link:"
         When I click on the radio "#edit-confirm-yes"
         And I click on the button "#edit-save"
 
         # CHECK
-        Then the element "h1.heading-xlarge" contains the text "Member Upload Test Business"
+        Then the element "h1" contains the text "Member Upload Test Business"
         And the element ".number-of-members" contains the text "There are 1583 active members covered by this partnership"

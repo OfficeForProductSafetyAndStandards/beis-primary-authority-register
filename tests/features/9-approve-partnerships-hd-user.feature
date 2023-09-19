@@ -35,7 +35,7 @@ Feature: Helpdesk approve partnership
 
         # APPROVAL CONFIRMATION SCREEN
 
-        Then the element "h1.heading-xlarge" contains the text "Partnership is approved"
+        Then the element "h1" contains the text "Partnership is approved"
         And the element "#edit-partnership-info" contains the text "Organisation For Direct Partnership"
         And I click on the button "#edit-done"
 
@@ -53,12 +53,12 @@ Feature: Helpdesk approve partnership
         Then the element ".par-advanced-partnership-search-list .views-row-1 .partnership-name" contains the text "Organisation For Direct Partnership"
         And I click the link "Revoke partnership" in row "1"
 
-        Then the element "h1.heading-xlarge" contains the text "Revoke a partnership"
+        Then the element "h1" contains the text "Revoke a partnership"
         And the element "#edit-revocation-reason" is visible
         And I add "A reason for revoking" to the inputfield "#edit-revocation-reason"
         And I click on the button "#edit-next"
 
-        Then the element "h1.heading-xlarge" contains the text "Partnership revoked"
+        Then the element "h1" contains the text "Partnership revoked"
         And the element "#edit-partnership-info" contains the text "The following partnership has been revoked"
         And the element "#edit-partnership-info" contains the text "Organisation For Direct Partnership"
         And I click on the button "#edit-done"

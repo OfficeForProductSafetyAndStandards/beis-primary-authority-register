@@ -22,4 +22,4 @@ Feature: PA User - Update a partnership
         # COMPLETE CHANGES
 
         And I click on the button "#edit-done"
-        Then the element "h1.heading-xlarge" contains the text "Your partnerships"
+        Then the element "h1" contains the text "Your partnerships"

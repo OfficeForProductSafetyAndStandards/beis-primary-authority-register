@@ -5,12 +5,12 @@ const shared = client.page.shared()
 
 Then('I should see inspection plans list page', function () {
     return shared
-        .assert.containsText('h1.heading-xlarge', 'Inspection Plans')
+        .assert.containsText('h1', 'Inspection Plans')
 });
 
 Then('I should see inspection plans search list page', function () {
     return shared
-        .assert.containsText('h1.heading-xlarge', 'Inspection plans')
+        .assert.containsText('h1', 'Inspection plans')
 });
 
 Then('I see the inspection plan link {string}', function (string) {
@@ -49,7 +49,7 @@ When('I edit the inspection plan {string}', function (title) {
         .setValue('#edit-keywords', title)
         .click('#edit-submit-inspection-plan-lists')
         .clickLinkByPureText('Edit inspection plan')
-        .assert.containsText('h1.heading-xlarge', 'Edit inspection plan details')
+        .assert.containsText('h1', 'Edit inspection plan details')
 
 });
 
@@ -70,7 +70,7 @@ Then('I enter new summary for an inspection plan', function () {
 Then('I see the inspection plan has updated successfully', function () {
     return shared
         .clickLinkByPureText('Auto-test-NewInspectionPlan-retest')
-        .assert.containsText('h1.heading-xlarge', 'Auto-test-NewInspectionPlan-retest')
+        .assert.containsText('h1', 'Auto-test-NewInspectionPlan-retest')
         .assert.containsText('#content', 'Auto-inspection-plan-Summary-retest')
 });
 
@@ -79,7 +79,7 @@ When('I revoke the inspection plan {string}', function (title) {
         .setValue('#edit-keywords', title)
         .click('#edit-submit-inspection-plan-lists')
         .clickLinkByPureText('Revoke inspection plan')
-        .assert.containsText('h1.heading-xlarge', 'Are you sure you want to revoke this inspection plan?')
+        .assert.containsText('h1', 'Are you sure you want to revoke this inspection plan?')
 });
 
 When('I remove the inspection plan {string} with the reason {string}', function (inspection_plan, reason) {
@@ -87,7 +87,7 @@ When('I remove the inspection plan {string} with the reason {string}', function 
         .setValue('#edit-keywords', inspection_plan)
         .click('#edit-submit-inspection-plan-lists')
         .clickLinkByPureText('Remove inspection plan')
-        .assert.containsText('h1.heading-xlarge', 'Are you sure you want to remove this inspection plan?')
+        .assert.containsText('h1', 'Are you sure you want to remove this inspection plan?')
         .click('#edit-next')
         .waitForElementVisible('.error-summary', 1000)
         .assert.containsText('.error-summary', 'Please enter the reason you are removing this inspection plan.')
@@ -97,7 +97,7 @@ When('I remove the inspection plan {string} with the reason {string}', function 
 
 Then('I should not see the removed inspection plan {string}', function (inspection_plan) {
     return client
-        .assert.containsText('h1.heading-xlarge', 'Inspection Plans')
+        .assert.containsText('h1', 'Inspection Plans')
         .expect.element('.par-inspection-plan-listing').text.to.not.contain(inspection_plan)
 });
 
@@ -114,7 +114,7 @@ When('I enter the deletion reason {string}', function (string) {
 Then('I should revoke successfully', function () {
     return shared
         .clickLinkByPureText('Auto-test-NewInspectionPlan-retest')
-        .assert.containsText('h1.heading-xlarge', 'Auto-test-NewInspectionPlan-retest')
+        .assert.containsText('h1', 'Auto-test-NewInspectionPlan-retest')
         .assert.containsText('#block-par-theme-content','This inspection plan has been revoked and is for reference only, please do not use it for an inspection.')
 });
 

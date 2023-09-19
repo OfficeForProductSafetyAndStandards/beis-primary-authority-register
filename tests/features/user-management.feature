@@ -20,11 +20,11 @@ Feature: User management
         Given I am logged in as "par_authority_user_management@example.com"
         When I click the link text "Manage your colleagues"
 
-        Then the element "h1.heading-xlarge" contains the text "People"
+        Then the element "h1" contains the text "People"
         When I click the link text "Add a person"
 
         # Enter the contact details
-        Then the element "h1.heading-xlarge" contains the text "Add contact details"
+        Then the element "h1" contains the text "Add contact details"
         When I add "<title>" to the inputfield "#edit-salutation"
         And I add "<first_name>" to the inputfield "#edit-first-name"
         And I add "<last_name>" to the inputfield "#edit-last-name"
@@ -34,27 +34,27 @@ Feature: User management
         And I click on the button "#edit-next"
 
         # Choose to create an account
-        Then the element "h1.heading-xlarge" contains the text "Give this person a user account?"
+        Then the element "h1" contains the text "Give this person a user account?"
         When I click on the radio "#edit-account-new"
         And I click on the button "#edit-next"
 
         # Choose authorities for the person
-        Then the element "h1.heading-xlarge" contains the text "Choose their memberships"
+        Then the element "h1" contains the text "Choose their memberships"
         When I click on the checkbox "#edit-par-component-memberships-select input"
         And I click on the button "#edit-next"
 
         # Choose role for the person
-        Then the element "h1.heading-xlarge" contains the text "What type of user would you like to create?"
+        Then the element "h1" contains the text "What type of user would you like to create?"
         When I click on the radio "#edit-role-par-<role>"
         And I click on the button "#edit-next"
 
         # Send invitation
-        Then the element "h1.heading-xlarge" contains the text "Invite the person to create an account"
+        Then the element "h1" contains the text "Invite the person to create an account"
         And the element "#edit-recipient" contains the text "<email>"
         And I click on the button "#edit-next"
 
         # Check review page
-        Then the element "h1.heading-xlarge" contains the text "Profile review"
+        Then the element "h1" contains the text "Profile review"
         And the element "#edit-name" contains the text "<title> <first_name> <last_name>"
         And the element "#edit-email" contains the text "<email>"
         And the element "#edit-work-phone" contains the text "<work_phone>"
@@ -63,9 +63,9 @@ Feature: User management
         And I click on the button "#edit-save"
 
         # Choose authorities for the person
-        Then the element "h1.heading-xlarge" contains the text "Your new person has been created"
+        Then the element "h1" contains the text "Your new person has been created"
         And I click the link text "Done"
-        Then the element "h1.heading-xlarge" contains the text "<title> <first_name> <last_name>"
+        Then the element "h1" contains the text "<title> <first_name> <last_name>"
 
         Examples:
             | email                                             | title | first_name    | last_name | work_phone    | mobile_phone  | role          |
@@ -77,11 +77,11 @@ Feature: User management
         Given I am logged in as "par_authority_user_management@example.com"
         When I click the link text "Manage your colleagues"
 
-        Then the element "h1.heading-xlarge" contains the text "People"
+        Then the element "h1" contains the text "People"
         When I click the link text "Add a person"
 
         # Enter the contact details
-        Then the element "h1.heading-xlarge" contains the text "Add contact details"
+        Then the element "h1" contains the text "Add contact details"
         When I add "<title>" to the inputfield "#edit-salutation"
         And I add "<first_name>" to the inputfield "#edit-first-name"
         And I add "<last_name>" to the inputfield "#edit-last-name"
@@ -91,17 +91,17 @@ Feature: User management
         And I click on the button "#edit-next"
 
         # Choose to create an account
-        Then the element "h1.heading-xlarge" contains the text "Give this person a user account?"
+        Then the element "h1" contains the text "Give this person a user account?"
         When I click on the radio "#edit-account-none"
         And I click on the button "#edit-next"
 
         # Choose authorities for the person
-        Then the element "h1.heading-xlarge" contains the text "Choose their memberships"
+        Then the element "h1" contains the text "Choose their memberships"
         When I click on the checkbox "#edit-par-component-memberships-select input"
         And I click on the button "#edit-next"
 
         # Check review page
-        Then the element "h1.heading-xlarge" contains the text "Profile review"
+        Then the element "h1" contains the text "Profile review"
         And the element "#edit-name" contains the text "<title> <first_name> <last_name>"
         And the element "#edit-email" contains the text "<email>"
         And the element "#edit-work-phone" contains the text "<work_phone>"
@@ -110,7 +110,7 @@ Feature: User management
         And I click on the button "#edit-save"
 
         # Choose authorities for the person
-        Then the element "h1.heading-xlarge" contains the text "Your new person has been created"
+        Then the element "h1" contains the text "Your new person has been created"
         And I click the link text "Done"
 
         Examples:
@@ -123,12 +123,12 @@ Feature: User management
         Given I am logged in as "par_authority_user_management@example.com"
 
         # Check the dashboard links.
-        Then the element "h1.heading-xlarge" contains the text "Primary Authority Register"
+        Then the element "h1" contains the text "Primary Authority Register"
         And the element "#content" contains the text "People"
         When I click the link text "Manage your colleagues"
 
         # Confirm table and headings are correct.
-        Then the element "h1.heading-xlarge" contains the text "People"
+        Then the element "h1" contains the text "People"
         And the element ".user-management-list .table-scroll-wrapper" is visible
         Then the element ".user-management-list .table-scroll-wrapper thead .views-field-last-name" contains the text "Name"
         And the element ".user-management-list .table-scroll-wrapper thead .views-field-par-person-email" contains the text "E-mail"
@@ -147,13 +147,13 @@ Feature: User management
 
         When I click the link text "Manage your colleagues"
 
-        Then the element "h1.heading-xlarge" contains the text "People"
+        Then the element "h1" contains the text "People"
         When I add "par_user_management_multiple@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
         # Check the profile view page.
-        Then the element "h1.heading-xlarge" contains the text "Sally"
+        Then the element "h1" contains the text "Sally"
         And the element ".component-user-detail .heading-large" contains the text "User account"
         And the element ".component-user-detail" contains the text "par_user_management_multiple@example.com"
         And there is "2" occurences of element ".component-contact-locations-detail .component-item"
@@ -161,33 +161,33 @@ Feature: User management
         # Update the user.
         When I click the link text "Update Dr Sally Michaels"
 
-        Then the element "h1.heading-xlarge" contains the text "Update contact details"
+        Then the element "h1" contains the text "Update contact details"
         Then I add "Dr" to the inputfield "#edit-salutation"
         Then I add "Sally" to the inputfield "#edit-first-name"
         Then I add "McHaels" to the inputfield "#edit-last-name"
         And I add "01999 888 777" to the inputfield "#edit-work-phone"
         And I click on the button "#edit-next"
 
-        Then the element "h1.heading-xlarge" contains the text "Update which authorities or organisations this person belongs to"
+        Then the element "h1" contains the text "Update which authorities or organisations this person belongs to"
         When I click on the button "#edit-next"
 
-        Then the element "h1.heading-xlarge" contains the text "Change the type of user"
+        Then the element "h1" contains the text "Change the type of user"
         When I click on the button "#edit-next"
 
-        Then the element "h1.heading-xlarge" contains the text "Profile review"
+        Then the element "h1" contains the text "Profile review"
         And the element "#edit-personal" contains the text "Dr Sally McHaels"
         And the element "#edit-contact-details" contains the text "01999 888 777"
         When I click on the button "#edit-save"
 
-        Then the element "h1.heading-xlarge" contains the text "Thank you for updating this person"
+        Then the element "h1" contains the text "Thank you for updating this person"
         And I click the link text "Done"
 
         # Check the user details have been updated and the contact records merged.
-        Then the element "h1.heading-xlarge" contains the text "Profile"
-        Then the element "h1.heading-xlarge" contains the text "Dr Sally McHaels"
+        Then the element "h1" contains the text "Profile"
+        Then the element "h1" contains the text "Dr Sally McHaels"
         When I click the link text "Done"
 
-        Then the element "h1.heading-xlarge" contains the text "People"
+        Then the element "h1" contains the text "People"
         When I add "par_user_management_multiple@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
@@ -200,16 +200,16 @@ Feature: User management
 
         When I click the link text "Manage your colleagues"
 
-        Then the element "h1.heading-xlarge" contains the text "People"
+        Then the element "h1" contains the text "People"
         When I add "par_user_management_officer@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
         # Check the profile view page.
-        Then the element "h1.heading-xlarge" contains the text "Emily Davidson"
+        Then the element "h1" contains the text "Emily Davidson"
         When I click the link text "Update Ms Emily Davidson"
 
-        Then the element "h1.heading-xlarge" contains the text "Update contact details"
+        Then the element "h1" contains the text "Update contact details"
         Then I add "Mrs" to the inputfield "#edit-salutation"
         Then I add "Emilia" to the inputfield "#edit-first-name"
         Then I add "Daviddson" to the inputfield "#edit-last-name"
@@ -218,23 +218,23 @@ Feature: User management
         And I add "par_user_management_officer_2@example.com" to the inputfield "#edit-email"
         And I click on the button "#edit-next"
 
-        Then the element "h1.heading-xlarge" contains the text "Give this person a user account?"
+        Then the element "h1" contains the text "Give this person a user account?"
         Then the element "#edit-par-component-choose-account" contains the text "Keep the existing account: par_user_management_officer@example.com"
         Then the element "#edit-par-component-choose-account" contains the text "Invite par_user_management_officer_2@example.com to create a new account"
         When I click on the button "#edit-next"
 
-        Then the element "h1.heading-xlarge" contains the text "Update which authorities or organisations this person belongs to"
+        Then the element "h1" contains the text "Update which authorities or organisations this person belongs to"
         When I click on the button "#edit-next"
 
-        Then the element "h1.heading-xlarge" contains the text "Change the type of user"
+        Then the element "h1" contains the text "Change the type of user"
         When I click on the button "#edit-next"
 
-        Then the element "h1.heading-xlarge" contains the text "Profile review"
+        Then the element "h1" contains the text "Profile review"
         And the element "#edit-personal" contains the text "Mrs Emilia Daviddson"
         And the element "#edit-contact-details" contains the text "01870446558"
         When I click on the button "#edit-save"
 
-        Then the element "h1.heading-xlarge" contains the text "Thank you for updating this person"
+        Then the element "h1" contains the text "Thank you for updating this person"
         And I click the link text "Done"
 
 
@@ -244,7 +244,7 @@ Feature: User management
 
         When I click the link text "Manage your colleagues"
 
-        Then the element "h1.heading-xlarge" contains the text "People"
+        Then the element "h1" contains the text "People"
         When I add "par_user_management_contact@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
@@ -252,22 +252,22 @@ Feature: User management
         # Update the user.
         When I click the link text "Invite the user to create an account"
 
-        Then the element "h1.heading-xlarge" contains the text "What type of user would you like to create?"
+        Then the element "h1" contains the text "What type of user would you like to create?"
         And I click on the radio "#edit-role-par-enforcement"
         When I click on the button "#edit-next"
 
-        Then the element "h1.heading-xlarge" contains the text "Update which authorities or organisations this person belongs to"
+        Then the element "h1" contains the text "Update which authorities or organisations this person belongs to"
         Then the element ".component-authority-select" contains the text "Choose an Authority"
         Then the element ".component-organisation-select" contains the text "There are no organisations to choose from."
         When I click on the button "#edit-next"
 
-        Then the element "h1.heading-xlarge" contains the text "Invite the person to create an account"
+        Then the element "h1" contains the text "Invite the person to create an account"
         When I click on the button "#edit-next"
 
-        Then the element "h1.heading-xlarge" contains the text "Invitation review"
+        Then the element "h1" contains the text "Invitation review"
         Then the element ".par-invite-review" contains the text "An invitation will be sent to this person to invite them to join the Primary Authority Register."
         When I click on the button "#edit-save"
-        Then the element "h1.heading-xlarge" contains the text "The invitation has been sent"
+        Then the element "h1" contains the text "The invitation has been sent"
 
 
     @user-management @ci @smoke
@@ -276,7 +276,7 @@ Feature: User management
 
         When I click the link text "Manage people"
 
-        Then the element "h1.heading-xlarge" contains the text "People"
+        Then the element "h1" contains the text "People"
         When I add "par_authority_profile@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
@@ -290,14 +290,14 @@ Feature: User management
 
         When I click the link text "Manage people"
 
-        Then the element "h1.heading-xlarge" contains the text "People"
+        Then the element "h1" contains the text "People"
         When I add "par_user_management_officer@example.com" to the inputfield "#edit-name-email-search"
         And I click on the button "#edit-submit-par-people"
         And I click the link text "Manage contact"
 
         # Confirm that this user can be cancelled.
         And I click the link text "Block user account"
-        Then the element "h1.heading-xlarge" contains the text "Disable this user account"
+        Then the element "h1" contains the text "Disable this user account"
         When I click on the button "#edit-next"
         Then the element ".component-user-detail" contains the text "The account is no longer active"
 
@@ -317,7 +317,7 @@ Feature: User management
 
         # Confirm that this user can be reactivated.
         And I click the link text "Re-activate user account"
-        Then the element "h1.heading-xlarge" contains the text "Re-activate this user account"
+        Then the element "h1" contains the text "Re-activate this user account"
         When I click on the button "#edit-next"
         Then the element ".component-user-detail" contains the text "Last sign in"
 

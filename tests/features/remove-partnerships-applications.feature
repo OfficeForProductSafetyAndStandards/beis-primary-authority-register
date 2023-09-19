@@ -15,7 +15,7 @@ Feature: Remove partnership appliations
 
         # DELETION REASON SCREEN
 
-        And the element "h1.heading-xlarge" contains the text "Delete a partnership"
+        And the element "h1" contains the text "Delete a partnership"
         When I click on the button "#edit-next"
         Then the element ".error-summary" contains the text "Please supply the reason for cancelling this partnership."
         When I enter the deletion reason "Testing the deletion of a partnership application."
@@ -23,6 +23,6 @@ Feature: Remove partnership appliations
 
         # DELETION CONFIRMATION SCREEN
 
-        Then the element "h1.heading-xlarge" contains the text "Partnership deleted"
+        Then the element "h1" contains the text "Partnership deleted"
         Then the element "#edit-partnership-info" contains the text "The partnership application has been deleted"
         And I click on the button "#edit-done"

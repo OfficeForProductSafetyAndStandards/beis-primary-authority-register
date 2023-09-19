@@ -48,7 +48,7 @@ Feature: User Management
           And I click on the button "#edit-submit-par-people"
           And I click the link text "Manage contact"
           When I click the link text "Update Mr Autotest-firstname Autotest-lastname"
-          And the element "h1.heading-xlarge" contains the text "Update contact details"
+          And the element "h1" contains the text "Update contact details"
           And I add "Upated-AutoTest" to the inputfield "#edit-first-name"
           And I add "Khan" to the inputfield "#edit-last-name"
           And I click on the button "#edit-next"

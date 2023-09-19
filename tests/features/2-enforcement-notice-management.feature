@@ -27,18 +27,18 @@ Feature: Enforcement notice review
         Given I am logged in as "par_authority@example.com"
         When I click the link with text "See your enforcement notices"
         And I click the link text "Enforcement notice 5"
-        Then the element "h1.heading-xlarge" contains the text "Respond to notice of enforcement action"
+        Then the element "h1" contains the text "Respond to notice of enforcement action"
         And the element "#edit-par-component-enforcement-action-review-0-primary-authority-status-referred" does not exist
 
     @ci @smoke
     Scenario: Check that enforcement notices have been reviewed
         Given I am logged in as "par_authority@example.com"
         When I search for an enforcement notice "Enforcement notice 3" against "Charlie's"
-        Then the element "h1.heading-xlarge" contains the text "View notification of enforcement action received from"
+        Then the element "h1" contains the text "View notification of enforcement action received from"
         And the element ".component-enforcement-send-warning" does not contain the text "Please note that this enforcement notice has been approved. The business has been notified of this through the register."
         And the element ".component-enforcement-send-warning" contains the text "Please contact the Primary Authority if you have any questions around this decision"
         When I search for an enforcement notice "Enforcement notice 4" against "Charlie's"
-        Then the element "h1.heading-xlarge" contains the text "View notification of enforcement action received from"
+        Then the element "h1" contains the text "View notification of enforcement action received from"
         And the element ".component-enforcement-send-warning" contains the text "Please note that this enforcement notice has been approved. The business has been notified of this through the register."
         And the element ".component-enforcement-send-warning" contains the text "Please contact the Primary Authority if you have any questions around this decision"
 
@@ -46,7 +46,7 @@ Feature: Enforcement notice review
     Scenario: Check un-reviewed enforcement notices
         Given I am logged in as "par_authority@example.com"
         When I search for an enforcement notice "Enforcement notice 2" against "Charlie's"
-        Then the element "h1.heading-xlarge" contains the text "Respond to notice of enforcement action"
+        Then the element "h1" contains the text "Respond to notice of enforcement action"
 
     @ci
     Scenario: Check the enforcement officer is recorded for the enforcement

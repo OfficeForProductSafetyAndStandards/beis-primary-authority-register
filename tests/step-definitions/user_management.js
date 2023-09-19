@@ -50,21 +50,21 @@ Then('I should not see {string}', function (string) {
   When('I click save', function () {
           return client
            .click('#edit-save')
-            .waitForElementPresent('h1.heading-xlarge',3000)
+            .waitForElementPresent('h1',3000)
 
          });
   When('I click continue', function () {
           return client
             .click('#edit-next')
-            .waitForElementPresent('h1.heading-xlarge',3000)
+            .waitForElementPresent('h1',3000)
 
          });
 
    Then('I should see confirmation message {string}', function (string) {
            return client
-   	     .waitForElementPresent('h1.heading-xlarge',6000)
+   	     .waitForElementPresent('h1',6000)
    	    browser.expect.element('#main').text.to.not.equal(string);
-   	     //.assert.containsText('h1.heading-xlarge',"You're new person has been created")
+   	     //.assert.containsText('h1',"You're new person has been created")
 
          });
 

@@ -18,7 +18,7 @@ module.exports = {
                 console.log(response.value);
             });
             return this
-                .click('#global-header a[href="/dashboard"]')
+                .click('.govuk-header a[href="/dashboard"]')
         },
         clickLinkByXpath: function (xpathValue) {
             return client
@@ -28,7 +28,7 @@ module.exports = {
         },
         clickUploadAdvice: function () {
             return client
-                .click('a.flow-link')
+                .click('a.gov-link')
         },
         clickLinkByPureText: function (linkText) {
             return this.click('link text', linkText);
@@ -142,7 +142,7 @@ module.exports = {
                 .setValue('#edit-name', string)
                 .setValue('#edit-pass', 'TestPassword')
                 .click('#edit-submit')
-                .waitForElementVisible('footer', 15000)
+                .waitForElementVisible('govuk-footer', 15000)
                 .assert.containsText('body', 'Sign out')
         },
         viewMailLog: function() {
@@ -185,7 +185,7 @@ module.exports = {
             return this
                 .clickLinkByPureText('Dashboard')
                 .clickLinkByPartialText('See your partnerships')
-                .assert.containsText('h1.heading-xlarge', 'Your partnerships')
+                .assert.containsText('h1', 'Your partnerships')
                 .setValue('#edit-keywords', search)
                 .click('#edit-partnership-status-1 option[value="' + status + '"]')
                 .click('#edit-submit-par-user-partnerships')
@@ -195,7 +195,7 @@ module.exports = {
             return this
                 .clickLinkByPureText('Helpdesk')
                 .clickLinkByPartialText('Search partnerships')
-                .assert.containsText('h1.heading-xlarge', 'Advanced partnership search')
+                .assert.containsText('h1', 'Advanced partnership search')
                 .setValue('#edit-keywords', search)
                 .click('#edit-partnership-status option[value="' + status + '"]')
                 .click('#edit-submit-advanced-partnership-search')

@@ -22,11 +22,11 @@ When('I complete valid coordinated partnership application details', function ()
   .assert.containsText('.error-summary', 'Please confirm that all conditions for a new partnership have been met')
   .click('#edit-edit-confirm')
   .click('#edit-next')
-  .assert.containsText('h1.heading-xlarge','Information about the new partnership')
+  .assert.containsText('h1','Information about the new partnership')
   .setValue('#edit-about-partnership', 'About the partnership detail')
   .click('#edit-next')
 });
-  
+
 Given('I complete valid organisation details for coordinated partnership {string}', function (partnershipname) {
   return client
   .setValue('#edit-organisation-name',partnershipname)
@@ -70,11 +70,11 @@ Given('I complete valid organisation details for coordinated partnership {string
 
 When('I complete review and submit valid coordinated partnership application', function () {
   return client
-    .assert.containsText('h1.heading-xlarge .heading-secondary','New partnership application')
-    .assert.containsText('h1.heading-xlarge','Check partnership information')
+    .assert.containsText('h1 .heading-secondary','New partnership application')
+    .assert.containsText('h1','Check partnership information')
     .click('#edit-partnership-info-agreed-authority')
     .click('#edit-save')
-}); 
+});
 
 When('I complete the business contact details', function () {
   return client
@@ -97,19 +97,19 @@ When('I complete the business contact details', function () {
   .click('#edit-preferred-contact-communication-mobile')
   .setValue( '#edit-notes','Some additional notes')
   .click('#edit-next')
-}); 
+});
 
 When('the coordinated partnership creation email template is correct', function () {
  return shared
-  .assert.containsText('h1.heading-xlarge .heading-secondary','New partnership application')
-  .assert.containsText('h1.heading-xlarge','Notify user of partnership invitation')
+  .assert.containsText('h1 .heading-secondary','New partnership application')
+  .assert.containsText('h1','Notify user of partnership invitation')
   .waitForElementVisible('input[value=\"Invitation to join the Primary Authority Register\"]', 1000)
   .click('#edit-next')
-  .assert.containsText('h1.heading-xlarge .heading-secondary','New partnership application')
-  .assert.containsText('h1.heading-xlarge','Notification sent')
+  .assert.containsText('h1 .heading-secondary','New partnership application')
+  .assert.containsText('h1','Notification sent')
   .assert.containsText('#block-par-theme-content', title + ' ' + firstname + ' ' + lastname + ' will receive an email with a link to register/login to the PAR website')
   .clickLinkByPureText('Done')
-  .assert.containsText('h1.heading-xlarge','Primary Authority Register')
+  .assert.containsText('h1','Primary Authority Register')
 });
 
 When('I complete the organisation registered address for coordinated partnership', function () {
@@ -126,7 +126,7 @@ When('I complete the organisation registered address for coordinated partnership
   .clearValue('#edit-county')
   .click('#edit-next')
   .waitForElementVisible('.error-summary', 2000)
-  .assert.containsText('h1.heading-xlarge','Confirm the primary address details')
+  .assert.containsText('h1','Confirm the primary address details')
   .setValue('#edit-postcode','SE16 4NX')
   .setValue('#edit-address-line1','1 High St')
   .setValue('#edit-address-line2','Southwark')

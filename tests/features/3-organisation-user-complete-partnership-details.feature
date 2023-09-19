@@ -52,10 +52,10 @@ Feature: Business User - Complete organisation details
     Scenario: Business User - Cannot modify legal entities
         Given I am logged in as "par_business@example.com"
         And I go to partnership detail page for my partnership "Partnership nominated by Secretary of State" with status "confirmed_rd"
-        Then the element "h1.heading-xlarge" contains the text "Partnership nominated by Secretary of State"
+        Then the element "h1" contains the text "Partnership nominated by Secretary of State"
         And the element "p.add-partnership-legal-entity" does not exist
         And I go to partnership detail page for my partnership "Partnership confirmed by organisation" with status "confirmed_business"
-        Then the element "h1.heading-xlarge" contains the text "Partnership confirmed by organisation"
+        Then the element "h1" contains the text "Partnership confirmed by organisation"
         And the element "#p.add-partnership-legal-entity" does not exist
 
 
@@ -63,8 +63,8 @@ Feature: Business User - Complete organisation details
     Scenario: Helpdesk User - Cannot modify legal entities on active partnerships
         Given I am logged in as "par_helpdesk@example.com"
         And I go to manage the partnership "Partnership nominated by Secretary of State" with status "confirmed_rd"
-        Then the element "h1.heading-xlarge" contains the text "Partnership nominated by Secretary of State"
+        Then the element "h1" contains the text "Partnership nominated by Secretary of State"
         And the element ".component-partnership-legal-entity-display .add-action" does not exist
         And I go to manage the partnership "Partnership confirmed by organisation" with status "confirmed_business"
-        Then the element "h1.heading-xlarge" contains the text "Partnership confirmed by organisation"
+        Then the element "h1" contains the text "Partnership confirmed by organisation"
         And the element ".component-partnership-legal-entity-display .add-action" contains the text "Add another legal entity"

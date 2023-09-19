@@ -41,7 +41,7 @@ var county = faker.fake("{{address.county}}")
 // Starting point: at beginning of this application step
 When('I complete about the business', function () {
   return shared
-  .assert.containsText('h1.heading-xlarge','Confirm the details about the organisation')
+  .assert.containsText('h1','Confirm the details about the organisation')
   .setValue('#edit-about-business','Some information about organisation details')
   .click('#edit-next')
 });
@@ -61,7 +61,7 @@ When('I complete the organisation registered address for direct partnership', fu
   .clearValue('#edit-county')
   .click('#edit-next')
   .waitForElementVisible('.error-summary', 2000)
-  .assert.containsText('h1.heading-xlarge','Confirm the primary address details')
+  .assert.containsText('h1','Confirm the primary address details')
   .setValue('#edit-postcode','SE16 4NX')
   .setValue('#edit-address-line1','1 High St')
   .setValue('#edit-address-line2','Southwark')
@@ -70,7 +70,7 @@ When('I complete the organisation registered address for direct partnership', fu
   .click('#edit-country-code option[value="GB"]')
   .click('#edit-nation option[value="GB-ENG"]')
   .click('#edit-next')
-  .assert.containsText('h1.heading-xlarge','Confirm the primary contact details')
+  .assert.containsText('h1','Confirm the primary contact details')
   .click('#edit-next')
 });
 
@@ -91,7 +91,7 @@ When('I complete the employees', function () {
 // Starting point: at beginning of this application step
 When('I complete the trading names', function () {
   return shared
-  .assert.containsText('h1.heading-xlarge','Confirm the trading name')
+  .assert.containsText('h1','Confirm the trading name')
   .setValue('#edit-trading-name','Different Trading Name')
   .click('#edit-next')
 });
@@ -99,7 +99,7 @@ When('I complete the trading names', function () {
 // Starting point: at beginning of this application step
 When('I complete the legal entities', function () {
   return shared
-  .assert.containsText('h1.heading-xlarge','Confirm the legal entity')
+  .assert.containsText('h1','Confirm the legal entity')
       // Add a registered legal entity.
   .click('#edit-par-component-legal-entity-0-registry-companies-house')
   .setValue('#edit-par-component-legal-entity-0-registered-legal-entity-number', '09537751')
@@ -145,7 +145,7 @@ When('I complete the legal entities', function () {
 // Starting point: at beginning of this application step
 When('I review the completions for direct partnership {string}', function (partnershipname) {
   return shared
-  .assert.containsText('h1.heading-xlarge','Check partnership information')
+  .assert.containsText('h1','Check partnership information')
    .assert.containsText('#edit-organisation-name',partnershipname)
    .assert.containsText('#edit-organisation-registered-address','1 High St')
    .assert.containsText('#edit-organisation-registered-address','Southwark')
@@ -163,7 +163,7 @@ When('I review the completions for direct partnership {string}', function (partn
 When('I change the completed legal entities', function () {
   return shared
     .clickLinkByPureText('Change the legal entities')
-    .assert.containsText('h1.heading-xlarge','Confirm the legal entity')
+    .assert.containsText('h1','Confirm the legal entity')
     .click('#edit-par-component-legal-entity-list-1-actions-0-remove')
 
     .click('#edit-par-component-legal-entity-list-0-actions-0-change')
@@ -175,7 +175,7 @@ When('I change the completed legal entities', function () {
     .assert.containsText('.govuk-summary-list .govuk-summary-list__row:nth-child(1) .registered_name','Change to other unregistered name')
     .click('#edit-next')
 
-    .assert.containsText('h1.heading-xlarge','Check partnership information')
+    .assert.containsText('h1','Check partnership information')
     .assert.containsText('#edit-legal-entities','Change to other unregistered name')
 });
 
@@ -186,7 +186,7 @@ When('I change the completed about the organisation', function () {
   .clearValue('#edit-about-business')
   .setValue('#edit-about-business', 'Change to the information about organisation details')
   .click('#edit-next')
-  .assert.containsText('h1.heading-xlarge','Check partnership information')
+  .assert.containsText('h1','Check partnership information')
   .assert.containsText('#edit-about-organisation','Change to the information about organisation details')
 });
 
@@ -197,7 +197,7 @@ When('I submit final confirmation of completion by organisation {string}', funct
    .waitForElementVisible('.error-summary', 2000)
    .click('#edit-terms-organisation-agreed')
    .click('#edit-save')
-   .assert.containsText('h1.heading-xlarge','Thank you for completing the application')
+   .assert.containsText('h1','Thank you for completing the application')
    .click('.button')
    .setValue('#edit-keywords',partnershipname)
    .click('#edit-submit-par-user-partnerships')

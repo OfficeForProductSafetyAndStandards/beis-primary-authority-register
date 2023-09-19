@@ -47,7 +47,7 @@ Feature: Enforcement Officer - Enforcement Notice Process
         Given I am logged in as "par_enforcement_officer@example.com"
         When I search for a partnership between "Upper West Side Borough Council" and "Member Upload Test Business"
         And I raise a new enforcement against a partnership
-        And the element "h1.heading-xlarge" contains the text "Enforce member"
+        And the element "h1" contains the text "Enforce member"
         And I see "10" occurences of element "#edit-par-data-organisation-id .govuk-radios__item"
         And the element ".pagerer-pager-basic" does exist
         And I see "3" occurences of element ".pagerer-right-pane .pager__items > .pager__item"

@@ -72,8 +72,8 @@ When('I select coordinated partnership', function () {
 
    Then('I should be able to complete partnership', function () {
    	     return client
-   	     .waitForElementPresent('h1.heading-xlarge',6000)
-   	     .assert.containsText('h1.heading-xlarge','Check partnership information')
+   	     .waitForElementPresent('h1',6000)
+   	     .assert.containsText('h1','Check partnership information')
 
          });
 

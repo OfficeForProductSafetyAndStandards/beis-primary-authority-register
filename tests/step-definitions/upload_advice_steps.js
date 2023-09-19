@@ -24,11 +24,11 @@ Given('I navigate to a partially completed partnership {string}', function (stri
 
 Then('I should see advice list page', function () {
   return shared
-      .assert.containsText('h1.heading-xlarge', 'Advice')
+      .assert.containsText('h1', 'Advice')
 });
 Then('I should see advice view page has the title {string}', function (string) {
   return shared
-      .assert.containsText('h1.heading-xlarge', string)
+      .assert.containsText('h1', string)
 });
 
 Then('I should not see the link {string}', function (string) {
@@ -126,7 +126,7 @@ Then('I see that the advice {string} uploaded successfully', function (advice) {
 Then('I see advice updated successfully', function () {
   return shared
       .clickLinkByPureText('Auto-test-NewAdvice-retest')
-      .assert.containsText('h1.heading-xlarge', 'Auto-test-NewAdvice-retest')
+      .assert.containsText('h1', 'Auto-test-NewAdvice-retest')
       .assert.containsText('#content', 'Auto-advice-Summary-retest')
 });
 
@@ -134,7 +134,7 @@ Then('I see advice updated successfully', function () {
 When('I click on edit against an advice', function () {
   return shared
       .clickLinkByPureText('Edit')
-      .assert.containsText('h1.heading-xlarge', 'Edit advice details')
+      .assert.containsText('h1', 'Edit advice details')
 
 });
 
@@ -143,7 +143,7 @@ When('I archive the advice {string} with the reason {string}', function (advice,
       .setValue('#edit-keywords', advice)
       .click('#edit-submit-advice-lists')
       .clickLinkByPureText('Archive')
-      .assert.containsText('h1.heading-xlarge', 'Are you sure you want to archive this advice?')
+      .assert.containsText('h1', 'Are you sure you want to archive this advice?')
       .setValue('#edit-archive-reason', reason)
       .click('#edit-save')
 
@@ -154,7 +154,7 @@ When('I remove the advice {string} with the reason {string}', function (advice, 
       .setValue('#edit-keywords', advice)
       .click('#edit-submit-advice-lists')
       .clickLinkByPureText('Remove')
-      .assert.containsText('h1.heading-xlarge', 'Are you sure you want to remove this advice?')
+      .assert.containsText('h1', 'Are you sure you want to remove this advice?')
       .click('#edit-next')
       .waitForElementVisible('.error-summary', 1000)
       .assert.containsText('.error-summary', 'Please enter the reason you are removing this advice.')
@@ -190,7 +190,7 @@ When('I enter reason {string}', function (string) {
 
 Then('I should see the archived advice {string}', function (advice) {
     return client
-        .assert.containsText('h1.heading-xlarge', 'Advice')
+        .assert.containsText('h1', 'Advice')
         .clearValue('#edit-keywords')
         .setValue('#edit-keywords', advice)
         .click('#edit-submit-advice-lists')
@@ -200,7 +200,7 @@ Then('I should see the archived advice {string}', function (advice) {
 
 Then('I should not see the removed advice {string}', function (advice) {
   return client
-      .assert.containsText('h1.heading-xlarge', 'Advice')
+      .assert.containsText('h1', 'Advice')
       .expect.element('.par-advice-listing').text.to.not.contain(advice)
 });
 

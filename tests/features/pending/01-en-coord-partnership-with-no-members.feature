@@ -14,11 +14,11 @@ Feature: Enforcement Officer - Issue enforcement notice
        # ENFORCEMENT ACTION FORM
 
        When I click the link text "Send a notification of a proposed enforcement action"
-       And the element "h1.heading-xlarge" contains the text "Have you discussed this issue with the Primary Authority?"
+       And the element "h1" contains the text "Have you discussed this issue with the Primary Authority?"
        And I click on the button "#edit-next"
        And I click on authority selection if available
        When I click on the button "#edit-next"
-       Then the element "h1.heading-xlarge" contains the text "Primary Authority Register"
+       Then the element "h1" contains the text "Primary Authority Register"
 
         # ENTER EO DETAILS
 
@@ -43,5 +43,5 @@ Feature: Enforcement Officer - Issue enforcement notice
         And the element "#par-enforcement-notice-raise-review" contains the text "Once the primary authority receives this notification, they have 5 working days to respond to you if they intend to block the action"
         And the element "#par-enforcement-notice-raise-review" contains the text "You will be notified by email of the outcome of this notification"
         When I click on the button "#edit-save"
-        Then the element "h1.heading-xlarge" contains the text "Primary Authority Register"
+        Then the element "h1" contains the text "Primary Authority Register"
 #       When I click the link text "See your enforcement notices"

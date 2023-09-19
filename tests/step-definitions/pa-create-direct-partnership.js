@@ -79,22 +79,22 @@ Given('I complete valid organisation details for direct partnership {string}', f
 // Starting point: After comopleting and submitting the organisation details
 When('I complete review and submit valid direct partnership application', function () {
   return client
-    .assert.containsText('h1.heading-xlarge .heading-secondary','New partnership application')
-    .assert.containsText('h1.heading-xlarge','Check partnership information')
+    .assert.containsText('h1 .heading-secondary','New partnership application')
+    .assert.containsText('h1','Check partnership information')
     .click('#edit-partnership-info-agreed-authority')
     .click('#edit-save')
-}); 
+});
 
 // Starting point: After review and submission complete
 When('the direct partnership creation email template is correct', function () {
  return shared
-  .assert.containsText('h1.heading-xlarge .heading-secondary','New partnership application')
-  .assert.containsText('h1.heading-xlarge','Notify user of partnership invitation')
+  .assert.containsText('h1 .heading-secondary','New partnership application')
+  .assert.containsText('h1','Notify user of partnership invitation')
   .waitForElementVisible('input[value=\"Invitation to join the Primary Authority Register\"]', 1000)
   .click('#edit-next')
-  .assert.containsText('h1.heading-xlarge .heading-secondary','New partnership application')
-  .assert.containsText('h1.heading-xlarge','Notification sent')
+  .assert.containsText('h1 .heading-secondary','New partnership application')
+  .assert.containsText('h1','Notification sent')
   .assert.containsText('#block-par-theme-content', title + ' ' + firstname + ' ' + lastname + ' will receive an email with a link to register/login to the PAR website')
   .clickLinkByPureText('Done')
-  .assert.containsText('h1.heading-xlarge','Primary Authority Register')
-}); 
+  .assert.containsText('h1','Primary Authority Register')
+});
