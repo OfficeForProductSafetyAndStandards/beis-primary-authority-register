@@ -74,7 +74,6 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
     && set -ex \
     && NODE_DEPS="\
       ca-certificates \
-      wget \
       gnupg \
       dirmngr \
       xz-utils \
@@ -140,6 +139,7 @@ ARG BUILD_DEPS="\
     sudo \
     lsb-release \
     curl \
+    git \
     bzip2 \
     xz-utils \
     unzip \
@@ -173,7 +173,7 @@ RUN apt-get update \
 # Install AWS CLI
 ## Using vault installation from https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 RUN cd /tmp \
-    && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && curl -Ls "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
     && unzip awscliv2.zip \
     && ./aws/install
 
@@ -231,7 +231,7 @@ ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
 ENV	JMETER_BIN ${JMETER_HOME}/bin
 ENV	JMETER_DOWNLOAD_URL https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
 RUN mkdir -p /tmp/dependencies \
-  && curl -L --silent ${JMETER_DOWNLOAD_URL} >  /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz \
+  && curl -Ls ${JMETER_DOWNLOAD_URL} >  /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz \
   && mkdir -p /opt \
   && tar -xzf /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz -C /opt \
   && rm -rf /tmp/dependencies
@@ -242,19 +242,19 @@ ENV PATH $PATH:$JMETER_BIN
 ARG FILTER_RESULTS_PLUGIN_VERSION="2.2"
 ENV	FILTER_RESULTS_PLUGIN_URL https://jmeter-plugins.org/files/packages/jpgc-filterresults-${FILTER_RESULTS_PLUGIN_VERSION}.zip
 RUN mkdir -p /tmp/dependencies \
-  && curl -L --silent ${FILTER_RESULTS_PLUGIN_URL} >  \
+  && curl -Ls ${FILTER_RESULTS_PLUGIN_URL} >  \
     /tmp/dependencies/jmeter-cmd-plugin-${FILTER_RESULTS_PLUGIN_VERSION}.zip \
   && unzip -o /tmp/dependencies/jmeter-cmd-plugin-${FILTER_RESULTS_PLUGIN_VERSION}.zip -d ${JMETER_HOME}
 ARG SYNTHESIS_PLUGIN_VERSION="2.2"
 ENV	SYNTHESIS_PLUGIN_URL https://jmeter-plugins.org/files/packages/jpgc-synthesis-${SYNTHESIS_PLUGIN_VERSION}.zip
 RUN mkdir -p /tmp/dependencies \
-  && curl -L --silent ${SYNTHESIS_PLUGIN_URL} >  \
+  && curl -Ls ${SYNTHESIS_PLUGIN_URL} >  \
     /tmp/dependencies/jmeter-cmd-plugin-${SYNTHESIS_PLUGIN_VERSION}.zip \
   && unzip -o /tmp/dependencies/jmeter-cmd-plugin-${SYNTHESIS_PLUGIN_VERSION}.zip -d ${JMETER_HOME}
 ARG CMD_PLUGIN_VERSION="2.2"
 ENV	CMD_PLUGIN_URL https://jmeter-plugins.org/files/packages/jpgc-cmd-${CMD_PLUGIN_VERSION}.zip
 RUN mkdir -p /tmp/dependencies \
-  && curl -L --silent ${CMD_PLUGIN_URL} >  \
+  && curl -Ls ${CMD_PLUGIN_URL} >  \
     /tmp/dependencies/jmeter-cmd-plugin-${CMD_PLUGIN_VERSION}.zip \
   && unzip -o /tmp/dependencies/jmeter-cmd-plugin-${CMD_PLUGIN_VERSION}.zip -d ${JMETER_HOME}
 
@@ -264,8 +264,8 @@ RUN mkdir -p /tmp/dependencies \
 #=====================================
 # Install geckodriver
 ARG GECKODRIVER_VERSION=0.33.0
-RUN echo "Using GeckoDriver version: "$GECKODRIVER_VERSION \
-  && wget --no-verbose -O /tmp/geckodriver.tar.gz https://github.com/mozilla/geckodriver/releases/download/v$GECKODRIVER_VERSION/geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz \
+RUN echo "Using GeckoDriver version: $GECKODRIVER_VERSION" \
+  && curl -Ls https://github.com/mozilla/geckodriver/releases/download/v${GECKODRIVER_VERSION}/geckodriver-v${GECKODRIVER_VERSION}-linux64.tar.gz -o /tmp/geckodriver.tar.gz \
   && rm -rf /opt/geckodriver \
   && tar -C /opt -zxf /tmp/geckodriver.tar.gz \
   && rm /tmp/geckodriver.tar.gz \
@@ -275,7 +275,8 @@ RUN echo "Using GeckoDriver version: "$GECKODRIVER_VERSION \
 
 # Install firefox
 ARG FIREFOX_VERSION=114.0.2
-RUN wget --no-verbose -O /tmp/firefox.tar.bz2 https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2 \
+RUN echo "Using Firefox version: $FIREFOX_VERSION" \
+    && curl -Ls https://download-installer.cdn.mozilla.net/pub/firefox/releases/$FIREFOX_VERSION/linux-x86_64/en-US/firefox-$FIREFOX_VERSION.tar.bz2 -o /tmp/firefox.tar.bz2 \
     && rm -rf /opt/firefox \
     && tar -C /opt -xjf /tmp/firefox.tar.bz2 \
     && rm /tmp/firefox.tar.bz2 \
@@ -293,7 +294,7 @@ RUN curl -sS https://dl.google.com/linux/linux_signing_key.pub | gpg -o /etc/apt
 
 RUN export CHROMEDRIVER_VERSION=$(curl --location --fail --retry 3 http://chromedriver.storage.googleapis.com/LATEST_RELEASE) \
     && export CHROMEDRIVER_DOWNLOAD_URL="https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" \
-    && curl --silent --show-error --location --fail --retry 3 --output /tmp/chromedriver_linux64.zip $CHROMEDRIVER_DOWNLOAD_URL \
+    && curl -Ls --show-error --fail --retry 3 --output /tmp/chromedriver_linux64.zip $CHROMEDRIVER_DOWNLOAD_URL \
     && cd /tmp \
     && unzip chromedriver_linux64.zip \
     && rm -rf chromedriver_linux64.zip \
