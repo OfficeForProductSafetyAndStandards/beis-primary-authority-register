@@ -201,6 +201,16 @@ class ParReviewForm extends ParBaseForm {
       ];
     }
 
+    if ($this->getFlowDataHandler()->getFormPermValue('update_account')) {
+      $form['confirm_account'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Would you like to update the user account?'),
+        '#description' => $this->t('This will change the email address that is used to sign into this service.'),
+        '#return_value' => self::ACCOUNT_UPDATE,
+        '#attributes' => ['class' => ['form-group']],
+      ];
+    }
+
     return parent::buildForm($form, $form_state);
   }
 
