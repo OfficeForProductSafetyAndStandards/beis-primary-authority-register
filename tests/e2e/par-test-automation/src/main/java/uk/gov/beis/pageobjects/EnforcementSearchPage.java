@@ -41,15 +41,16 @@ public class EnforcementSearchPage extends BasePageObject {
 
 	public boolean confirmNoReturnedResults() {
 		boolean value = false;
-		if (driver.findElement(By.xpath("//div/p[contains(text(),'Sorry, there are no sent or received notices')]"))
-				.isDisplayed())
+		if (driver.findElement(By.xpath("//div/p[contains(text(),'Sorry, there are no sent or received notices')]")).isDisplayed())
+		{
 			value = true;
+		}
+		
 		return value;
 	}
 
 	public RemoveEnforcementPage removeEnforcement() {
-		driver.findElement(By.xpath(removeEnfBtn.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME))))
-				.click();
+		driver.findElement(By.xpath(removeEnfBtn.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME)))).click();
 		return PageFactory.initElements(driver, RemoveEnforcementPage.class);
 	}
 

@@ -7,13 +7,13 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class EnforcementContactDetailsPage extends BasePageObject {
-
+	
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
+	
 	public EnforcementContactDetailsPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
 
 	public EnforcementLegalEntityPage proceed() {
 		continueBtn.click();

@@ -10,12 +10,12 @@ import uk.gov.beis.utility.DataStore;
 
 public class DeviationSearchPage extends BasePageObject {
 
+	String devReq = "(//tr/td[contains(text(),'?')]/following-sibling::td[5])[1]";
+	
 	public DeviationSearchPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	String devReq = "(//tr/td[contains(text(),'?')]/following-sibling::td[5])[1]";
-
+	
 	public BasePageObject selectDeviationRequest() {
 		driver.findElement(By.xpath(devReq.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME)))).click();
 		return PageFactory.initElements(driver, BasePageObject.class);
