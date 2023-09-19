@@ -107,6 +107,8 @@ public class PARStepDefs {
 	private EditRegisteredAddressPage editRegisteredAddressPage;
 	private AdviceArchivePage adviceArchivePage;
 	private AdviceRemovalPage adviceRemovalPage;
+	private DeletePage deletePage;
+	private CompletionPage completionPage;
 	
 	// PAR News Letter
 	private UserProfilePage userProfilePage;
@@ -222,6 +224,8 @@ public class PARStepDefs {
 		legalEntityTypePage = PageFactory.initElements(driver, LegalEntityTypePage.class);
 		adviceArchivePage = PageFactory.initElements(driver, AdviceArchivePage.class);
 		adviceRemovalPage = PageFactory.initElements(driver, AdviceRemovalPage.class);
+		deletePage = PageFactory.initElements(driver, DeletePage.class);
+		completionPage = PageFactory.initElements(driver, CompletionPage.class);
 		
 		// PAR News Letter
 		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
@@ -1791,5 +1795,20 @@ public class PARStepDefs {
 		adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
 		
 		Assert.assertTrue("Failed: Advice Notice was not Removed.", adviceNoticeSearchPage.checkNoResultsReturned());
+	}
+	
+	@Then("^the user can Delete the Partnership Successfully with the following reason: \"([^\"]*)\"$")
+	public void the_user_can_Delete_the_Partnership_Successfully_with_the_following_reason(String reason) throws Throwable {
+		LOG.info("Delete the Partnership.");
+		partnershipAdvancedSearchPage.selectDeletePartnershipLink();
+		
+		deletePage.enterReasonForDeletion(reason);
+		deletePage.clickDeleteForPartnership();
+		
+		completionPage.clickDoneForPartnership();
+		
+		LOG.info("Verify the Partnership was Deleted Successfully.");
+		partnershipAdvancedSearchPage.searchPartnerships();
+		Assert.assertTrue(partnershipAdvancedSearchPage.checkPartnershipExists());
 	}
 }

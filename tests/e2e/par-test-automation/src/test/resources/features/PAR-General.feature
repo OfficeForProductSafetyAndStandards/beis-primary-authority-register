@@ -3,7 +3,7 @@ Feature: General
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
 
-  @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice
+  @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @deletePartnership
   Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -26,7 +26,7 @@ Feature: General
     And the user updates the partnership information with the following info: "Updated Partnership info"
     Then the partnership is updated correctly
 
-  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct @update
+  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct @update @deletePartnership
   Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -324,8 +324,14 @@ Feature: General
     #remove the inspection plan
     When the user has revoked the last created inspection plan
     Then the inspection plan is successfully removed
-
-  # Remove a Partnership Test goes here.
+	
+	@regression @deletePartnership
+  Scenario: Verify a Nominated Partnership can be Deleted (Happy Path - PAR-2277)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+		Then the user can Delete the Partnership Successfully with the following reason: "Partnership is Incorrect."
+  
   @regression @partnershipapplication @coordinated
   Scenario: Verify Coordinated Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
     Given the user is on the PAR home page
