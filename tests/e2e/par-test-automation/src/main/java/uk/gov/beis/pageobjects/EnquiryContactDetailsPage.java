@@ -8,16 +8,15 @@ import org.openqa.selenium.support.PageFactory;
 
 public class EnquiryContactDetailsPage extends BasePageObject{
 	
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
+	
 	public EnquiryContactDetailsPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
 
 	public RequestEnquiryPage proceed() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, RequestEnquiryPage.class);
 	}
-
 }

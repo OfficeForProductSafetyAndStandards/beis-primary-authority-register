@@ -47,6 +47,12 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	@FindBy(id = "edit-trading-names")
 	private WebElement tradingNameText;
 
+	@FindBy(linkText = "add another authority contact")
+	private WebElement addAuthorityContactLink;
+	
+	@FindBy(linkText = "add another organisation contact")
+	private WebElement addOrganisationContactLink;
+	
 	@FindBy(xpath = "//input[contains(@value,'Save')]")
 	private WebElement saveBtn;
 
@@ -111,6 +117,14 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	
 	String tradename = "//div[contains(text(),'?')]";
 	String membersize = "//div[contains(text(),'?')]";
+	
+	String contactFullName = "//div[contains(text(),'?')]";
+	String contactWorkNumber = "//div[contains(text(),'?')]";
+	String contactMobileNumber = "//div[contains(text(),'?')]";
+	String contactEmailAddress = "//a[contains(text(),'?')]";
+	String contactCommunicationNotes = "//p[contains(text(),'?')]";
+	String editContactLink = "//a[contains(text(),'?')]";
+	String removeContactLink = "//a[contains(text(),'?')]";
 
 	public EnforcementNotificationPage createEnforcement() {
 		craeteEnforcementBtn.click();
@@ -196,6 +210,30 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		return PageFactory.initElements(driver, TradingPage.class);
 	}
 	
+	public PersonContactDetailsPage addAnotherAuthorityContactButton() {
+		addAuthorityContactLink.click();
+		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
+	}
+	
+	public PersonContactDetailsPage addAnotherOrganisationContactButton() {
+		addOrganisationContactLink.click();
+		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
+	}
+	
+	public PersonContactDetailsPage editContactsDetailsButton() {
+		WebElement editLink = driver.findElement(By.xpath(editContactLink.replace("?", "edit " + getContactsName().toLowerCase())));
+		editLink.click();
+		
+		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
+	}
+	
+	public PersonContactDetailsPage removeContactsDetailsButton() {
+		WebElement removeLink = driver.findElement(By.xpath(editContactLink.replace("?", "remove " + getContactsName().toLowerCase())));
+		removeLink.click();
+		
+		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
+	}
+	
 	// Check Partnership Details
 	public boolean checkPartnershipInfo() {
 		WebElement partnershipDets = driver.findElement(By.xpath(partnershipDetails.replace("?", DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO))));
@@ -232,6 +270,27 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	public boolean checkTradingName() {
 		tradingNameText = driver.findElement(By.xpath(tradename.replace("?", DataStore.getSavedValue(UsableValues.TRADING_NAME))));
 		return tradingNameText.isDisplayed();
+	}
+	
+	public boolean checkContactDetails() {
+		String fullContactName = DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " " + getContactsName();
+		
+		WebElement fullName = driver.findElement(By.xpath(contactFullName.replace("?", fullContactName)));
+		WebElement workphoneNumber = driver.findElement(By.xpath(contactWorkNumber.replace("?", DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER))));
+		WebElement mobilephoneNumber = driver.findElement(By.xpath(contactMobileNumber.replace("?", DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER))));
+		WebElement emailAddress = driver.findElement(By.xpath(contactEmailAddress.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL).toLowerCase())));
+		WebElement contactNotes = driver.findElement(By.xpath(contactCommunicationNotes.replace("?", DataStore.getSavedValue(UsableValues.CONTACT_NOTES))));
+		
+		WebElement editLink = driver.findElement(By.linkText("edit " + getContactsName().toLowerCase()));
+		WebElement removeLink = driver.findElement(By.linkText("remove " + getContactsName().toLowerCase() + " from this partnership"));
+		
+		return fullName.isDisplayed() && workphoneNumber.isDisplayed() && mobilephoneNumber.isDisplayed() && emailAddress.isDisplayed() && contactNotes.isDisplayed() && editLink.isDisplayed() && removeLink.isDisplayed()
+				&& chooseRandomPreferredCommunicationMethod();
+	}
+	
+	public boolean checkContactExists() {
+		String fullContactName = DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " " + getContactsName();
+		return driver.findElements(By.xpath(contactFullName.replace("?", fullContactName))).isEmpty();
 	}
 	
 	// Coordinated Partnership Details
@@ -288,5 +347,26 @@ public class PartnershipConfirmationPage extends BasePageObject {
 				.findElement(By.xpath(tradename.replace("?", DataStore.getSavedValue(UsableValues.TRADING_NAME))));
 
 		return (checkPartnershipApplication() && sicCd.isDisplayed() && tradeNm.isDisplayed());
+	}
+	
+	private String getContactsName() {
+		return DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
+	}
+	
+	private boolean chooseRandomPreferredCommunicationMethod() {
+		WebElement preferredMethod = null;
+		
+		if(DataStore.getSavedValue(UsableValues.PREFERRED_CONTACT_METHOD) == "Email") {
+			WebElement emailLink = driver.findElement(By.xpath(contactEmailAddress.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL).toLowerCase())));
+			preferredMethod = emailLink.findElement(By.xpath("./.."));
+		}
+		else if(DataStore.getSavedValue(UsableValues.PREFERRED_CONTACT_METHOD) == "Workphone") {
+			preferredMethod = driver.findElement(By.xpath(contactWorkNumber.replace("?", DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER))));
+		}
+		else if(DataStore.getSavedValue(UsableValues.PREFERRED_CONTACT_METHOD) == "Mobilephone") {
+			preferredMethod = driver.findElement(By.xpath(contactMobileNumber.replace("?", DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER))));
+		}
+		
+		return preferredMethod.getText().contains(" (preferred)");
 	}
 }

@@ -6,17 +6,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class EnquiryCompletionPage extends BasePageObject {
-
-	@FindBy(xpath = "//a[contains(@class,'button')]")
-	private WebElement doneBtn;
+public class RemoveContactPage extends BasePageObject {
 	
-	public EnquiryCompletionPage() throws ClassNotFoundException, IOException {
+	@FindBy(id = "edit-save")
+	private WebElement removeBtn;
+	
+	public RemoveContactPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	public PartnershipConfirmationPage complete() {
-		doneBtn.click();
+	
+	public PartnershipConfirmationPage clickRemoveButton() {
+		removeBtn.click();
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 }

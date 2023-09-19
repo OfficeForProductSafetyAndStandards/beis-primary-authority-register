@@ -16,10 +16,10 @@ use Drupal\par_reporting\ParStatisticBase;
  */
 class TotalBusinesses extends ParStatisticBase {
 
-  public function getStat() {
+  public function getStat(): int {
     // This is a combination of direct and coordinated statistics.
-    $direct = $this->importStat('total_direct_businesses');
-    $coordinated = $this->importStat('total_coordinated_members');
+    $direct = $this->getReportingManager()->get('total_direct_businesses');
+    $coordinated = $this->getReportingManager()->get('total_coordinated_members');
 
     return $direct + $coordinated;
   }

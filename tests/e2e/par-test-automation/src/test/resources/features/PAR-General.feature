@@ -3,7 +3,7 @@ Feature: General
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
 
-  @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice
+  @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @deletePartnership
   Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -26,7 +26,7 @@ Feature: General
     And the user updates the partnership information with the following info: "Updated Partnership info"
     Then the partnership is updated correctly
 
-  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct
+  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct @update @deletePartnership
   Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -57,7 +57,44 @@ Feature: General
       | 01 new road | Market   | Bury | Greater Manchester | GB      | GB-SCT       | BL2 4BD   | Updated Info           | you sell cookies. | Name Update  |
     Then all of the Partnership details have been updated successfully
 
-  # Update Legal Entities, Primary Authority Contact and Organisation Contact Tests go here.
+  # Update Legal Entities test here.
+  
+  @regression @direct @update
+  Scenario: Add, Update and Remove a Primary Authority Contact for a Partnership with a User Account Invite Successfully (Happy Path - PAR-2242)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership Authority
+    And the user adds a Primary Authority contact to be Invited with the following details:
+      | Title | WorkNumber  | MobileNumber | ContactNotes       |
+      | Mr    | 01706553019 |  07651044910 | Test contact note. |
+    Then the new Primary Authority contact is added Successfully
+    # Update the new contact
+    When the user updates the new Primary Authority contact with the following details:
+      | Title | WorkNumber  | MobileNumber | ContactNotes              |
+      | Dr    | 01706553019 |  07356001870 | Test contact note update. |
+    Then the new Primary Authority contact is updated Successfully
+    # Remove the new contact
+    When the user removes the new Primary Authority contact
+    Then the new Primary Authority contact is removed Successfully
+
+  @regression @direct @update
+  Scenario: Add, Update and Remove an Organisation Contact for a Partnership with a User Account Invite Successfully (Happy Path - PAR-2244)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership Authority
+    And the user adds a new Organisation contact to be Invited with the following details:
+      | Title | WorkNumber  | MobileNumber | ContactNotes       |
+      | Mrs   | 01755892240 |  07651044912 | Test contact note. |
+    Then the new Organisation contact is added Successfully
+    # Update the new contact
+    When the user updates the new Organisation contact with the following details:
+      | Title | WorkNumber  | MobileNumber | ContactNotes              |
+      | Dr    | 01706553019 |  07356001143 | Test contact note update. |
+    Then the new Organisation contact is updated Successfully
+    # Remove the new contact
+    When the user removes the new Organisation contact
+    Then the new Organisation contact is removed Successfully
+
   @regression @inspectionplan @inspectionfeedback @deviationrequest
   Scenario: Verify Upload of Inspection Plan (Happy Path - PAR-1856)
     Given the user is on the PAR login page
@@ -78,6 +115,35 @@ Feature: General
     Then the inspection plan is updated correctly
 
   @regression @advicenotice
+  Scenario: Verify Upload, Update and Archive of an Advice Notice (Happy Path - PAR-1874, PAR-1875)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user uploads an advice notice against the partnership with the following details:
+      | Title              | Type of Advice         | Reg Function   | Description         |
+      | Partnership Advice | Background information | Cookie control | Advice description. |
+    Then the advice notice it uploaded successfully and set to active
+    When the user selects the edit advice action link
+    And the user edits the advice notice with the following details:
+      | Title                     | Type of Advice                                | Description                |
+      | Partnership Advice Update | Primary Authority advice for the organisation | Advice description update. |
+    Then the advice notice it updated successfully
+    When the user archives the advice notice with the following reason "Advice Complete."
+    Then the advice notice is archived successfully
+
+  @regression @advicenotice
+  Scenario: Verify Upload and Removal of an Advice Notice (Happy Path - PAR-1876)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user uploads an advice notice against the partnership with the following details:
+      | Title              | Type of Advice         | Reg Function   | Description         |
+      | Notice for Removal | Background information | Cookie control | Advice description. |
+    Then the advice notice it uploaded successfully and set to active
+    When the user removes the advice notice with the following reason "Advice no long needed."
+    Then the advice notice is removed successfully
+
+  @regression @advicenotice
   Scenario: Verify Upload of Advice Notice (Happy Path - PAR-1873)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -85,9 +151,8 @@ Feature: General
     And the user uploads an advice notice against the partnership with the following details:
       | Title          | Type of Advice         | Reg Function   | Description |
       | Advice Title 1 | Background information | Cookie control | Test Advice |
+    Then the advice notice it uploaded successfully and set to active
 
-  # Update and Archive Advice Test goes here.
-  # Upload and Remove Advice Test goes here.
   @regression @enforcement
   Scenario: Verify Send Notification of Proposed Enforcement, Approval and Removal (Happy Path - PAR-1852, PAR-1853, PAR-1854)
     Given the user is on the PAR login page
@@ -104,7 +169,6 @@ Feature: General
     And the user approves the enforcement notice
     Then the enforcement notice is set to approved status
 
-  # Create an Enforcement Notice and Block Enforcement Notice Test goes here.
   @regression @enforcement
   Scenario: Verify a Help Desk user can remove an Enforcement Notice Successfully (Happy Path - PAR-1855)
     Given the user is on the PAR login page
@@ -112,8 +176,53 @@ Feature: General
     When the user searches for the last created enforcement notice
     Then the user removes the enforcement notice successfully
 
-  # Discuss an Enforcement Notice Test goes here.
-  # Create a Deviation Request and Block the Deviation Request Test goes here.
+  @regression @enforcement
+  Scenario: Verify an Enforcement Notice can be Blocked (Happy Path - PAR-1970)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user creates an enforcement notice against the partnership with the following details:
+      | Enforcement Action | Title                            | Regulatory Function | Description       | Attachment |
+      | Proposed           | Enforcement Notice to be Blocked | Cookie control      | Test Enforcement. | link.txt   |
+    Then all the fields for the enforcement notice are updated correctly
+		#Block the Enforcement Notice
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    When the user selects the last created enforcement notice
+    And the user blocks the enforcement notice with the following reason: "Test Block"
+    Then the enforcement notice is set to blocked status
+	
+  @regression @enforcement @enquiry
+  Scenario: Verify the Discussion of an Enforcement Notice (Happy Path - PAR-2272)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user sends a general enquiry for an enforcement notice with the following details:
+      | Description  |
+      | Enforcement Discussion |
+    Then the Enquiry is created Successfully
+    #Re-login as primary authority and check the enquiry
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    When the user searches for the last created general enquiry
+    Then the user successfully views the enquiry
+  
+  @regression @deviationrequest
+  Scenario: Verify a Deviation Request can be Blocked (Happy Path - PAR-2275)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user submits a deviation request against an inspection plan with the following details:
+      | Description |
+      | Deviation Request to be Blocked      |
+   	Then the Deviation Request is created Successfully
+    #Re-login as primary authority and check thedeviation request
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    When the user searches for the last created deviation request
+    And the user blocks the deviation request with the following reason: "Test Block"
+    Then the deviation request is set to blocked status
+      
   @regression @deviationrequest
   Scenario: Verify Submission of Deviation request following an Inspection plan (Happy Path - PAR-1857, PAR-1859)
     Given the user is on the PAR login page
@@ -122,6 +231,7 @@ Feature: General
     And the user submits a deviation request against an inspection plan with the following details:
       | Description |
       | Test 1      |
+    Then the Deviation Request is created Successfully
     #re-login as primary authority and check and approve deviation request
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
@@ -182,6 +292,7 @@ Feature: General
     And the user submits a general enquiry with the following details:
       | Description  |
       | Test Enquiry |
+    Then the Enquiry is created Successfully
     #Re-login as primary authority and check the enquiry
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
@@ -213,8 +324,14 @@ Feature: General
     #remove the inspection plan
     When the user has revoked the last created inspection plan
     Then the inspection plan is successfully removed
-
-  # Remove a Partnership Test goes here.
+	
+	@regression @deletePartnership
+  Scenario: Verify a Nominated Partnership can be Deleted (Happy Path - PAR-2277)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+		Then the user can Delete the Partnership Successfully with the following reason: "Partnership is Incorrect."
+  
   @regression @partnershipapplication @coordinated
   Scenario: Verify Coordinated Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
     Given the user is on the PAR home page
@@ -235,7 +352,6 @@ Feature: General
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created partnership
 
-  # Nominate the Co-ordinated Partnership Test goes here. (This step is imprtant for other tests such as searching the Puplic registry, PAR-2079)
   @regression @partnershipapplication @coordinated
   Scenario: Successfully Nominate a Coordinated Partnership (Happy Path - PAR-2261)
     Given the user is on the PAR login page
@@ -244,7 +360,7 @@ Feature: General
     And the user approves the partnership
     And the user searches again for the last created partnership
     Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
-    
+
   # Add, Update and Cease a Member Test goes here.
   # Upload a Members list Test goes here.
   # Change the Members list type Test goes here.

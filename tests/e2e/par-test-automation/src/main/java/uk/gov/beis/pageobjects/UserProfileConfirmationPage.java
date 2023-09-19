@@ -12,16 +12,16 @@ import uk.gov.beis.utility.DataStore;
 
 public class UserProfileConfirmationPage extends BasePageObject {
 
-	public UserProfileConfirmationPage() throws ClassNotFoundException, IOException {
-		super();
-	}
-
-	@FindBy(xpath = "//input[contains(@value,'Save')]")
-	WebElement saveBtn;
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
 	
 	String businessFName = "//fieldset[contains(text(),'?')]";
 	String businessLName = "//fieldset[contains(text(),'?')]";
 	String businessEmailid = "//fieldset[contains(text(),'?')]";
+	
+	public UserProfileConfirmationPage() throws ClassNotFoundException, IOException {
+		super();
+	}
 	
 	public boolean checkUserCreation() {
 		WebElement businessFirstName = driver.findElement(
@@ -36,8 +36,12 @@ public class UserProfileConfirmationPage extends BasePageObject {
 	}
 	
 	public UserProfileCompletionPage saveChanges() {
-//		if (saveBtn.isDisplayed())
-			saveBtn.click();
+		saveBtn.click();
 		return PageFactory.initElements(driver, UserProfileCompletionPage.class);
+	}
+	
+	public PartnershipConfirmationPage clickSaveButton() {
+		saveBtn.click();
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 }
