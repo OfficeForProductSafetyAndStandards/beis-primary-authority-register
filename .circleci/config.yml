@@ -43,9 +43,9 @@ references:
 
   aws_setup: &aws_setup
     aws-cli/setup:
-      aws_access_key_id: AWS_ACCESS_KEY_ID_BLUE
+      aws_access_key_id: S3_ACCESS_KEY
       aws_secret_access_key: S3_SECRET_KEY
-      region: AWS_REGION_BLUE
+      region: S3_REGION
 
   clean_working_directory: &clean_working_directory
     run:
