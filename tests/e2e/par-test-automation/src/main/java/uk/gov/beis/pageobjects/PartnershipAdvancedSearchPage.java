@@ -10,18 +10,18 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.utility.DataStore;
 
-public class PartnershipAdvancedSearchPage extends BasePageObject{
+public class PartnershipAdvancedSearchPage extends BasePageObject {
+	
+	@FindBy(id = "edit-keywords")
+	private WebElement searchInput;
+
+	@FindBy(xpath = "//input[contains(@value,'Search')]")
+	private WebElement searchBtn;
 	
 	public PartnershipAdvancedSearchPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(id = "edit-keywords")
-	WebElement searchInput;
-
-	@FindBy(xpath = "//input[contains(@value,'Search')]")
-	WebElement searchBtn;
-
+	
 	public PartnershipAdvancedSearchPage searchPartnerships() {
 		searchInput.clear();
 		searchInput.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
@@ -29,14 +29,19 @@ public class PartnershipAdvancedSearchPage extends BasePageObject{
 		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 	}
 
+	public PartnershipConfirmationPage selectPartnershipLink() {
+		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[1]/a[1]")).click();
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
+	
 	public DeclarationPage selectApproveBusinessNameLink() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td/a[contains(text(),'Approve')]")).click();
 		return PageFactory.initElements(driver, DeclarationPage.class);
 	}
 	
-	public PartnershipConfirmationPage selectPartnershipLink() {
-		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[1]/a[1]")).click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	public DeletePage selectDeletePartnershipLink() {
+		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td/a[contains(text(),'Delete')]")).click();
+		return PageFactory.initElements(driver, DeletePage.class);
 	}
 	
 	public RevokePartnershipConfirmationPage selectRevokeBusinessNameLink() {
@@ -54,6 +59,10 @@ public class PartnershipAdvancedSearchPage extends BasePageObject{
 		WebElement action1 = driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[7]/a[contains(text(),'" + action + "')]"));
 		
 		return (status1.isDisplayed() && action1.isDisplayed());
+	}
+	
+	public boolean checkPartnershipExists() {
+		return driver.findElements(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]")).isEmpty();
 	}
 	
 	public PartnershipAdvancedSearchPage searchPartnershipsPrimaryAuthority() {
