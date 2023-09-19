@@ -17,7 +17,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
  * @see \Drupal\par_reporting\Annotation\ParStatistic
  * @see plugin_api
  */
-abstract class ParStatisticBase extends PluginBase implements ParStatisticBaseInterface {
+abstract class ParStatisticBase extends PluginBase implements ParStatisticInterface {
 
   /**
    * {@inheritdoc}
@@ -82,33 +82,23 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticBaseIn
   }
 
   /**
-   * Important the value of a different statistic.
-   *
-   * {@inheritDoc}
+   * Get the statistic.
    */
-  public function importStat(string $stat): int {
-    $plugin = $this->getReportingManager()->import($stat);
-
-    return $plugin ?? 0;
-  }
-
-  /**
-   * Get the statistic
-   *
-   * {@inheritDoc}
-   */
-  public function getStat() {
+  protected function getStat(): int {
     return 0;
   }
 
   /**
    * {@inheritDoc}
    */
-  public function renderStat() {
+  public function renderStat(): ?array {
+    // Loading the statistic through the statistic manager adds the caching layer.
+    $stat = $this->getReportingManager()->get($this->getPluginId());
+
     return [
       '#theme' => 'gds_data',
       '#attributes' => ['class' => 'govuk-grid-column-one-third'],
-      '#value' => number_format($this->getStat(), 0, '', ','),
+      '#value' => number_format($stat, 0, '', ','),
       '#label' => $this->getTitle(),
       '#description' => $this->getDescription(),
     ];
