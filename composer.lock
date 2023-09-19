@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4abb0d14a0f5e401a69d39b0f0d5ea6c",
+    "content-hash": "af7de13e6834db30b72967dab3e9d2cc",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -2276,30 +2276,30 @@
         },
         {
             "name": "drupal/better_exposed_filters",
-            "version": "6.0.3",
+            "version": "6.0.2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/better_exposed_filters.git",
-                "reference": "6.0.3"
+                "reference": "6.0.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/better_exposed_filters-6.0.3.zip",
-                "reference": "6.0.3",
-                "shasum": "b5c20207d7679542bb81955771956c18083e6e0b"
+                "url": "https://ftp.drupal.org/files/projects/better_exposed_filters-6.0.2.zip",
+                "reference": "6.0.2",
+                "shasum": "e06e8f88fab14942e4d3f71faaa64a30f136792c"
             },
             "require": {
                 "drupal/core": "^9 || ^10",
-                "drupal/jquery_ui": "^1.6",
-                "drupal/jquery_ui_datepicker": "^2.0",
-                "drupal/jquery_ui_slider": "^2.0.0",
+                "drupal/jquery_ui": "^1.4",
+                "drupal/jquery_ui_datepicker": "^1.2",
+                "drupal/jquery_ui_slider": "^1.1",
                 "drupal/jquery_ui_touch_punch": "^1.0"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "6.0.3",
-                    "datestamp": "1671541877",
+                    "version": "6.0.2",
+                    "datestamp": "1666017720",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3624,17 +3624,11 @@
         },
         {
             "name": "drupal/flysystem_s3",
-            "version": "2.0.0-rc5",
+            "version": "dev-2.0.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/flysystem_s3.git",
-                "reference": "2.0.0-rc5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/flysystem_s3-2.0.0-rc5.zip",
-                "reference": "2.0.0-rc5",
-                "shasum": "27da859bb76e140648ed5d38e32428253ee0fa40"
+                "reference": "ddce1392f12353856de2850cbf06dc6a6952303d"
             },
             "require": {
                 "drupal/core": "^9.0",
@@ -3644,12 +3638,15 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-2.0.x": "2.0.x-dev"
+                },
                 "drupal": {
-                    "version": "2.0.0-rc5",
-                    "datestamp": "1648207246",
+                    "version": "2.0.0-rc5+1-dev",
+                    "datestamp": "1692024207",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "RC releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -3684,9 +3681,10 @@
                 }
             ],
             "description": "Provides an Amazon S3 plugin for Flysystem.",
-            "homepage": "https://www.drupal.org/project/flysystem_s3",
+            "homepage": "https://drupal.org/project/flysystem_s3",
             "support": {
-                "source": "https://git.drupalcode.org/project/flysystem_s3"
+                "source": "https://git.drupalcode.org/project/flysystem_s3",
+                "issues": "https://drupal.org/project/issues/flysystem_s3"
             }
         },
         {
@@ -3766,10 +3764,10 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/govuk_cookies.git",
-                "reference": "c468dda4359f5907ad1b43f8288d3cf5815822f9"
+                "reference": "ea7e59d674722eb5d0983debcda75268c11d2c9a"
             },
             "require": {
-                "drupal/core": "^8 || ^9"
+                "drupal/core": "^8 || ^9 || ^10"
             },
             "type": "drupal-module",
             "extra": {
@@ -3778,7 +3776,7 @@
                 },
                 "drupal": {
                     "version": "1.0.x-dev",
-                    "datestamp": "1620550971",
+                    "datestamp": "1695119191",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -3803,17 +3801,17 @@
         },
         {
             "name": "drupal/govuk_notify",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/govuk_notify.git",
-                "reference": "8.x-2.1"
+                "reference": "8.x-2.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/govuk_notify-8.x-2.1.zip",
-                "reference": "8.x-2.1",
-                "shasum": "1fb88a66e0805956880739e8ad89a8804d9956dc"
+                "url": "https://ftp.drupal.org/files/projects/govuk_notify-8.x-2.2.zip",
+                "reference": "8.x-2.2",
+                "shasum": "8b7c4ea7c6ecd13a7f57df09ae850a7f291de81c"
             },
             "require": {
                 "alphagov/notifications-php-client": "*",
@@ -3823,8 +3821,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.1",
-                    "datestamp": "1582551058",
+                    "version": "8.x-2.2",
+                    "datestamp": "1685622451",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4319,29 +4317,29 @@
         },
         {
             "name": "drupal/jquery_ui_button",
-            "version": "2.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/jquery_ui_button.git",
-                "reference": "2.0.0"
+                "reference": "8.x-1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/jquery_ui_button-2.0.0.zip",
-                "reference": "2.0.0",
-                "shasum": "97b870cf66ec47d0d1f52e1e632ea92f409e5256"
+                "url": "https://ftp.drupal.org/files/projects/jquery_ui_button-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "70175a96c9034cc1cb2f28c415b2a9828355cc1a"
             },
             "require": {
-                "drupal/core": "^9.2 || ^10",
-                "drupal/jquery_ui": "^1.6",
-                "drupal/jquery_ui_checkboxradio": "^2",
-                "drupal/jquery_ui_controlgroup": "^2"
+                "drupal/core": "^8 || ^9",
+                "drupal/jquery_ui": "*",
+                "drupal/jquery_ui_checkboxradio": "*",
+                "drupal/jquery_ui_controlgroup": "*"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.0",
-                    "datestamp": "1670871463",
+                    "version": "8.x-1.1",
+                    "datestamp": "1584106807",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4480,27 +4478,27 @@
         },
         {
             "name": "drupal/jquery_ui_datepicker",
-            "version": "2.0.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/jquery_ui_datepicker.git",
-                "reference": "2.0.0"
+                "reference": "8.x-1.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/jquery_ui_datepicker-2.0.0.zip",
-                "reference": "2.0.0",
-                "shasum": "ce40cf8ab400866bffda1ac3f7e4a5ac20bb3ae5"
+                "url": "https://ftp.drupal.org/files/projects/jquery_ui_datepicker-8.x-1.4.zip",
+                "reference": "8.x-1.4",
+                "shasum": "6d0e9463006d94ba21ee7547dc92ade6c9f96c8e"
             },
             "require": {
-                "drupal/core": "^9.2 || ^10",
-                "drupal/jquery_ui": "^1.6"
+                "drupal/core": "^8 || ^9 || ^10",
+                "drupal/jquery_ui": "*"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.0",
-                    "datestamp": "1670871494",
+                    "version": "8.x-1.4",
+                    "datestamp": "1665821291",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4513,8 +4511,9 @@
             ],
             "authors": [
                 {
-                    "name": "bnjmnm",
-                    "homepage": "https://www.drupal.org/user/2369194"
+                    "name": "Andrei Ivnitskii",
+                    "homepage": "https://www.drupal.org/u/ivnish",
+                    "role": "Maintainer"
                 },
                 {
                     "name": "ivnish",
@@ -4544,32 +4543,33 @@
             "description": "Provides jQuery UI Datepicker library.",
             "homepage": "https://www.drupal.org/project/jquery_ui_datepicker",
             "support": {
-                "source": "https://git.drupalcode.org/project/jquery_ui_datepicker"
+                "source": "https://git.drupalcode.org/project/jquery_ui_datepicker",
+                "issues": "https://www.drupal.org/project/issues/jquery_ui_datepicker"
             }
         },
         {
             "name": "drupal/jquery_ui_slider",
-            "version": "2.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/jquery_ui_slider.git",
-                "reference": "2.0.0"
+                "reference": "8.x-1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/jquery_ui_slider-2.0.0.zip",
-                "reference": "2.0.0",
-                "shasum": "86b7d71e91013cffafb8021dbf8047745ebc5fd6"
+                "url": "https://ftp.drupal.org/files/projects/jquery_ui_slider-8.x-1.1.zip",
+                "reference": "8.x-1.1",
+                "shasum": "79b90cf60d45fc33ffdaa84bb2d6563f78a7d3d1"
             },
             "require": {
-                "drupal/core": "^9.2 || ^10",
-                "drupal/jquery_ui": "^1.6"
+                "drupal/core": "^8 || ^9",
+                "drupal/jquery_ui": "*"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.0",
-                    "datestamp": "1670871571",
+                    "version": "8.x-1.1",
+                    "datestamp": "1584107817",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4598,6 +4598,59 @@
             "homepage": "https://www.drupal.org/project/jquery_ui_slider",
             "support": {
                 "source": "https://git.drupalcode.org/project/jquery_ui_slider"
+            }
+        },
+        {
+            "name": "drupal/jquery_ui_tabs",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/jquery_ui_tabs.git",
+                "reference": "2.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/jquery_ui_tabs-2.0.0.zip",
+                "reference": "2.0.0",
+                "shasum": "ec1bf4effc78ca92a6f0a912ee0c4b037f850b98"
+            },
+            "require": {
+                "drupal/core": "^9.2 || ^10",
+                "drupal/jquery_ui": "^1.6"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.0",
+                    "datestamp": "1670948528",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "bnjmnm",
+                    "homepage": "https://www.drupal.org/user/2369194"
+                },
+                {
+                    "name": "lauriii",
+                    "homepage": "https://www.drupal.org/user/1078742"
+                },
+                {
+                    "name": "zrpnr",
+                    "homepage": "https://www.drupal.org/user/1448368"
+                }
+            ],
+            "description": "Provides jQuery UI Tabs library.",
+            "homepage": "https://www.drupal.org/project/jquery_ui_tabs",
+            "support": {
+                "source": "https://git.drupalcode.org/project/jquery_ui_tabs"
             }
         },
         {
@@ -5154,63 +5207,6 @@
             }
         },
         {
-            "name": "drupal/migrate_file_to_media",
-            "version": "2.0.9",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/migrate_file_to_media.git",
-                "reference": "2.0.9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/migrate_file_to_media-2.0.9.zip",
-                "reference": "2.0.9",
-                "shasum": "2c8ab6114e3b8a2a2799482c57864c5352afc24d"
-            },
-            "require": {
-                "drupal/core": "^8.9 || ^9",
-                "drupal/migrate_plus": "*",
-                "drupal/migrate_tools": "*"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "2.0.9",
-                    "datestamp": "1659433729",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                },
-                "drush": {
-                    "services": {
-                        "drush.services.yml": "^9 || ^10 || ^11"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Jon (ayalon)",
-                    "homepage": "https://www.drupal.org/u/ayalon",
-                    "role": "Maintainer"
-                },
-                {
-                    "name": "HitchShock",
-                    "homepage": "https://www.drupal.org/user/3552980"
-                }
-            ],
-            "description": "Migrate file fields to media fields.",
-            "homepage": "https://drupal.org/project/migrate_file_to_media",
-            "support": {
-                "source": "https://git.drupalcode.org/project/migrate_file_to_media",
-                "issues": "https://www.drupal.org/project/issues/migrate_file_to_media"
-            }
-        },
-        {
             "name": "drupal/migrate_plus",
             "version": "6.0.1",
             "source": {
@@ -5306,7 +5302,7 @@
             "extra": {
                 "drupal": {
                     "version": "6.0.2",
-                    "datestamp": "1688670937",
+                    "datestamp": "1694604959",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5347,93 +5343,29 @@
             }
         },
         {
-            "name": "drupal/no_autocomplete",
-            "version": "1.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/no_autocomplete.git",
-                "reference": "8.x-1.6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/no_autocomplete-8.x-1.6.zip",
-                "reference": "8.x-1.6",
-                "shasum": "265909a045cb30e591b3a82415161ce59e4080a7"
-            },
-            "require": {
-                "drupal/core": "^8.7.7 || ^9.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-1.6",
-                    "datestamp": "1622643695",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Adrian Cid Almaguer (adriancid)",
-                    "homepage": "https://www.drupal.org/u/adriancid",
-                    "email": "adriancid@gmail.com",
-                    "role": "Maintainer"
-                },
-                {
-                    "name": "Randy Fay (rfay)",
-                    "homepage": "https://www.drupal.org/u/rfay",
-                    "role": "Maintainer"
-                },
-                {
-                    "name": " * Dhruvesh Tripathi (dhruveshdtripathi)",
-                    "homepage": "https://www.drupal.org/u/dhruveshdtripathi",
-                    "role": "Maintainer"
-                }
-            ],
-            "description": "No browser autocomplete in key user forms.",
-            "homepage": "https://www.drupal.org/project/no_autocomplete",
-            "keywords": [
-                "Autocomplete",
-                "Browser",
-                "Drupal",
-                "Forms"
-            ],
-            "support": {
-                "source": "http://cgit.drupalcode.org/no_autocomplete",
-                "issues": "https://www.drupal.org/project/issues/no_autocomplete"
-            }
-        },
-        {
             "name": "drupal/pagerer",
-            "version": "2.1.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/pagerer.git",
-                "reference": "8.x-2.1"
+                "reference": "8.x-2.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/pagerer-8.x-2.1.zip",
-                "reference": "8.x-2.1",
-                "shasum": "a08539fde32372b66771afbaeba4105de19ddb14"
+                "url": "https://ftp.drupal.org/files/projects/pagerer-8.x-2.3.zip",
+                "reference": "8.x-2.3",
+                "shasum": "acb58870c16bd4eb88a9e13e4fb28020d17b0bb5"
             },
             "require": {
-                "drupal/core": "^8.9 || ^9.1",
-                "drupal/jquery_ui_button": "*",
-                "drupal/jquery_ui_slider": "*",
-                "php": ">=7.1"
+                "drupal/core": "^9.2",
+                "drupal/jquery_ui_button": "^1.1",
+                "drupal/jquery_ui_slider": "^1.1"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.1",
-                    "datestamp": "1621939797",
+                    "version": "8.x-2.3",
+                    "datestamp": "1647175550",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6204,12 +6136,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/UKGovernmentBEIS/drupal-trance.git",
-                "reference": "911b5143d3cbacd7302209683fa11f2a72fac322"
+                "reference": "ef39372fa9c6e94d924bb315b0195267d387823f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UKGovernmentBEIS/drupal-trance/zipball/911b5143d3cbacd7302209683fa11f2a72fac322",
-                "reference": "911b5143d3cbacd7302209683fa11f2a72fac322",
+                "url": "https://api.github.com/repos/UKGovernmentBEIS/drupal-trance/zipball/ef39372fa9c6e94d924bb315b0195267d387823f",
+                "reference": "ef39372fa9c6e94d924bb315b0195267d387823f",
                 "shasum": ""
             },
             "default-branch": true,
@@ -6226,7 +6158,7 @@
                 "issues": "https://www.drupal.org/project/issues/2717989",
                 "source": "https://cgit.drupalcode.org/trance"
             },
-            "time": "2022-10-24T11:34:53+00:00"
+            "time": "2023-09-19T11:27:18+00:00"
         },
         {
             "name": "drupal/twig_field_value",
@@ -8283,30 +8215,30 @@
         },
         {
             "name": "laminas/laminas-stdlib",
-            "version": "3.17.0",
+            "version": "3.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-stdlib.git",
-                "reference": "dd35c868075bad80b6718959740913e178eb4274"
+                "reference": "e85b29076c6216e7fc98e72b42dbe1bbc3b95ecf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/dd35c868075bad80b6718959740913e178eb4274",
-                "reference": "dd35c868075bad80b6718959740913e178eb4274",
+                "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/e85b29076c6216e7fc98e72b42dbe1bbc3b95ecf",
+                "reference": "e85b29076c6216e7fc98e72b42dbe1bbc3b95ecf",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.1.0 || ~8.2.0"
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
             },
             "conflict": {
                 "zendframework/zend-stdlib": "*"
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "^2.5",
-                "phpbench/phpbench": "^1.2.9",
-                "phpunit/phpunit": "^10.0.16",
+                "phpbench/phpbench": "^1.2.14",
+                "phpunit/phpunit": "^10.3.3",
                 "psalm/plugin-phpunit": "^0.18.4",
-                "vimeo/psalm": "^5.8"
+                "vimeo/psalm": "^5.15.0"
             },
             "type": "library",
             "autoload": {
@@ -8338,7 +8270,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2023-03-20T13:51:37+00:00"
+            "time": "2023-09-19T10:15:21+00:00"
         },
         {
             "name": "laminas/laminas-text",
@@ -10395,16 +10327,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.33",
+            "version": "1.10.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "03b1cf9f814ba0863c4e9affea49a4d1ed9a2ed1"
+                "reference": "7f806b6f1403e6914c778140e2ba07c293cb4901"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/03b1cf9f814ba0863c4e9affea49a4d1ed9a2ed1",
-                "reference": "03b1cf9f814ba0863c4e9affea49a4d1ed9a2ed1",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/7f806b6f1403e6914c778140e2ba07c293cb4901",
+                "reference": "7f806b6f1403e6914c778140e2ba07c293cb4901",
                 "shasum": ""
             },
             "require": {
@@ -10453,7 +10385,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-04T12:20:53+00:00"
+            "time": "2023-09-13T09:49:47+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
@@ -18247,16 +18179,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.23.1",
+            "version": "1.24.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "846ae76eef31c6d7790fac9bc399ecee45160b26"
+                "reference": "9f854d275c2dbf84915a5c0ec9a2d17d2cd86b01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/846ae76eef31c6d7790fac9bc399ecee45160b26",
-                "reference": "846ae76eef31c6d7790fac9bc399ecee45160b26",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/9f854d275c2dbf84915a5c0ec9a2d17d2cd86b01",
+                "reference": "9f854d275c2dbf84915a5c0ec9a2d17d2cd86b01",
                 "shasum": ""
             },
             "require": {
@@ -18288,22 +18220,22 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.23.1"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.1"
             },
-            "time": "2023-08-03T16:32:59+00:00"
+            "time": "2023-09-18T12:18:02+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "9.2.27",
+            "version": "9.2.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "b0a88255cb70d52653d80c890bd7f38740ea50d1"
+                "reference": "6a3a87ac2bbe33b25042753df8195ba4aa534c76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/b0a88255cb70d52653d80c890bd7f38740ea50d1",
-                "reference": "b0a88255cb70d52653d80c890bd7f38740ea50d1",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/6a3a87ac2bbe33b25042753df8195ba4aa534c76",
+                "reference": "6a3a87ac2bbe33b25042753df8195ba4aa534c76",
                 "shasum": ""
             },
             "require": {
@@ -18360,7 +18292,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.27"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.29"
             },
             "funding": [
                 {
@@ -18368,7 +18300,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-07-26T13:44:30+00:00"
+            "time": "2023-09-19T04:57:46+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -18613,16 +18545,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.6.11",
+            "version": "9.6.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "810500e92855eba8a7a5319ae913be2da6f957b0"
+                "reference": "f3d767f7f9e191eab4189abe41ab37797e30b1be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/810500e92855eba8a7a5319ae913be2da6f957b0",
-                "reference": "810500e92855eba8a7a5319ae913be2da6f957b0",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/f3d767f7f9e191eab4189abe41ab37797e30b1be",
+                "reference": "f3d767f7f9e191eab4189abe41ab37797e30b1be",
                 "shasum": ""
             },
             "require": {
@@ -18637,7 +18569,7 @@
                 "phar-io/manifest": "^2.0.3",
                 "phar-io/version": "^3.0.2",
                 "php": ">=7.3",
-                "phpunit/php-code-coverage": "^9.2.13",
+                "phpunit/php-code-coverage": "^9.2.28",
                 "phpunit/php-file-iterator": "^3.0.5",
                 "phpunit/php-invoker": "^3.1.1",
                 "phpunit/php-text-template": "^2.0.3",
@@ -18696,7 +18628,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.11"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.13"
             },
             "funding": [
                 {
@@ -18712,7 +18644,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-19T07:10:56+00:00"
+            "time": "2023-09-19T05:39:22+00:00"
         },
         {
             "name": "rector/rector",
@@ -20959,6 +20891,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "deblan/csv-validator": 20,
+        "drupal/flysystem_s3": 20,
         "drupal/govuk_cookies": 20,
         "drupal/registered_organisations": 20,
         "drupal/trance": 20
