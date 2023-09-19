@@ -51,12 +51,12 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v11-repo-{{ .Branch }}-{{ .Revision }}
+        - v12-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v11-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+        - v12-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -161,7 +161,7 @@ jobs:
       - aws-s3/copy:
           arguments: |
             --region eu-west-1 \
-            --cache-control "max-age=3600"
+            --cache-control "max-age=0"
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
           to: backups/${SEED_DATABASE}-latest.tar.gz
       - run:
@@ -170,7 +170,7 @@ jobs:
       - aws-s3/copy:
           arguments: |
             --region eu-west-1 \
-            --cache-control "max-age=3600"
+            --cache-control "max-age=0"
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
           to: backups/${SANITISED_DATABASE}-latest.tar.gz
       - run:
