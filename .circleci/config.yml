@@ -177,7 +177,7 @@ jobs:
           name: "Unpacking sanitised database"
           command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - save_cache:
-          key: v11-repo-{{ .Branch }}-{{ .Revision }}
+          key: v12-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
@@ -204,7 +204,7 @@ jobs:
             cd ./tests && rm -rf node_modules && npm install
       - *restore_scaffold
       - save_cache:
-          key: v11-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+          key: v12-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
           paths:
             - ./node_modules
             - ./vendor
