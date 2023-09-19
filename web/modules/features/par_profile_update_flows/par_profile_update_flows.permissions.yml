@@ -1,2 +1,3 @@
-
-
+manage own profile:
+  title: 'Update own profile'
+  description: 'Allow users to update their own user profile.'

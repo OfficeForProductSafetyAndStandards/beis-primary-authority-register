@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+id: nominate_partnership_amendment
+label: "Nominate Partnership Amendment Flow"
+default_title: null
+default_section_title: 'Nominate partnership amendments'
+description: ''
+save_method: end
+final_routes:
+  - par_partnership_flows.authority_details
+states:
+  - par_data_partnership
+steps:
+  1:
+    route: par_partnership_amend_nominate_flows.review
+    form_id: partnership_amend_nominate_review
+  2:
+    route: par_partnership_amend_nominate_flows.complete

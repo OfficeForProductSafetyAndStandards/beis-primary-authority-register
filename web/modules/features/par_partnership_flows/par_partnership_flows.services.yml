@@ -1,0 +1,11 @@
+services:
+  par_partnership_flows.legal_entity_add_access:
+    class: Drupal\par_partnership_flows\Access\LegalEntityAddCheck
+    arguments: ['@par_data.manager', '@par_flows.negotiator']
+    tags:
+      - { name: access_check, applies_to: _par_partnership_add_legal_entity_access_check }
+  par_partnership_flows.legal_entity_edit_access:
+    class: Drupal\par_partnership_flows\Access\LegalEntityUpdateCheck
+    arguments: ['@par_data.manager', '@par_flows.negotiator']
+    tags:
+      - { name: access_check, applies_to: _par_partnership_edit_legal_entity_access_check }

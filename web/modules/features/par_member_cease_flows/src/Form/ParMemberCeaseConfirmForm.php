@@ -33,7 +33,7 @@ class ParMemberCeaseConfirmForm extends ParBaseForm {
 
     // Enter the revokcation reason.
     $form['next_steps'] = [
-      '#title' => $this->t('What happens next'),
+      '#title' => $this->t('What happens next?'),
       '#type' => 'fieldset',
     ];
     $form['next_steps']['info'] = [

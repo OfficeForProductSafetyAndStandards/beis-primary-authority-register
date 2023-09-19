@@ -68,7 +68,7 @@ class ViewMessages extends FilterPluginBase {
     // Get the message templates the user has permission to view.
     $message_templates = $entity_type_manager
       ->getStorage('message_template')
-      ->getQuery()->execute();
+      ->getQuery()->accessCheck()->execute();
     $message_templates = array_filter($message_templates, function($template) use ($account) {
       return $account->hasPermission("receive {$template} notification");
     });

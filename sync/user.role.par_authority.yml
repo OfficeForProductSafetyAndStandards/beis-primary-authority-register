@@ -22,6 +22,7 @@ dependencies:
     - par_inspection_feedback_view_flows
     - par_invite_user_flows
     - par_notification
+    - par_partnership_amend_flows
     - par_partnership_application_flows
     - par_partnership_confirmation_flows
     - par_partnership_contact_add_flows
@@ -33,13 +34,13 @@ dependencies:
     - par_profile_view_flows
     - par_roles
     - par_search_partnership_flows
+    - role_delegation
 id: par_authority
 label: 'Authority Member'
 weight: -7
 is_admin: null
 permissions:
   - 'access par dashboard'
-  - 'access par journey transition partnership details'
   - 'access par_data_advice entities'
   - 'access par_data_authority entities'
   - 'access par_data_coordinated_business entities'
@@ -58,7 +59,6 @@ permissions:
   - 'access par_data_premises entities'
   - 'access par_data_regulatory_function entities'
   - 'access par_data_sic_code entities'
-  - 'access partnerships dashboard'
   - 'access user partnerships'
   - 'add par_data_advice entities'
   - 'add par_data_authority entities'
@@ -79,28 +79,15 @@ permissions:
   - 'add par_data_regulatory_function entities'
   - 'add par_data_sic_code entities'
   - 'add partnership authority contact'
+  - 'amend own partnerships'
   - 'apply for partnership'
   - 'approve enforcement notice'
   - 'assign par_authority role'
   - 'assign par_enforcement role'
-  - 'authority partnership journey'
   - 'confirm partnership'
   - 'create authority user'
   - 'create enforcement user'
-  - 'create files'
-  - 'create par person'
-  - 'create par profile'
-  - 'delete own document files'
-  - 'delete own image files'
-  - 'download any csv files'
-  - 'download any document files'
-  - 'download any image files'
-  - 'download own csv files'
-  - 'download own document files'
-  - 'download own image files'
-  - 'edit own csv files'
-  - 'edit own document files'
-  - 'edit own image files'
+  - 'create person'
   - 'edit par_data_advice entities'
   - 'edit par_data_authority entities'
   - 'edit par_data_coordinated_business entities'
@@ -119,14 +106,11 @@ permissions:
   - 'edit par_data_premises entities'
   - 'edit par_data_regulatory_function entities'
   - 'edit par_data_sic_code entities'
-  - 'enforce organisation'
   - 'invite authority members'
   - 'invite user'
   - invite_type_invite_organisation_member
-  - 'manage my authorities'
   - 'manage own authority'
-  - 'manage par person'
-  - 'manage par profile'
+  - 'manage people'
   - 'raise enforcement notice'
   - 'receive new_deviation_request notification'
   - 'receive new_deviation_response notification'
@@ -137,6 +121,7 @@ permissions:
   - 'receive new_inspection_feedback_response notification'
   - 'receive new_inspection_plan notification'
   - 'receive new_partnership_notification notification'
+  - 'receive partnership_amendment_nominated notification'
   - 'receive partnership_approved_notificatio notification'
   - 'receive partnership_confirmed_notificati notification'
   - 'receive partnership_deleted_notification notification'
@@ -146,7 +131,6 @@ permissions:
   - 'receive revoke_inspection_plan notification'
   - 'remove partnership authority contact'
   - 'review deviation request'
-  - 'search partnership'
   - 'search partnerships'
   - 'send general enquiry'
   - 'submit deviation request'
@@ -154,15 +138,13 @@ permissions:
   - 'update partnership authority contact'
   - 'update partnership authority details'
   - 'use text format basic_html'
-  - 'view authority enquiries'
   - 'view deviation request'
   - 'view enforcement notice'
   - 'view general enquiry'
   - 'view inspection feedback'
   - 'view own notifications'
-  - 'view own par profile'
-  - 'view own private files'
-  - 'view par profile'
+  - 'view own profile'
+  - 'view own profile'
   - 'view unpublished par_data_advice entities'
   - 'view unpublished par_data_authority entities'
   - 'view unpublished par_data_coordinated_business entities'

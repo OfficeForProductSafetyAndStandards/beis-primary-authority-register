@@ -2,7 +2,6 @@ package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -14,10 +13,13 @@ public class InspectionFeedbackDetailsPage extends BasePageObject{
 	}
 
 	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
-	WebElement descriptionBox;
+	private WebElement descriptionBox;
 
+	@FindBy(xpath = "//input[@id='edit-files-upload']")
+	private WebElement chooseFile1;
+	
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn; 
+	private WebElement continueBtn; 
 
 	public InspectionFeedbackDetailsPage enterFeedbackDescription(String description) throws Throwable {
 		descriptionBox.clear();
@@ -25,11 +27,8 @@ public class InspectionFeedbackDetailsPage extends BasePageObject{
 		return PageFactory.initElements(driver, InspectionFeedbackDetailsPage.class);
 	}
 	
-	@FindBy(xpath = "//input[@id='edit-files-upload']")
-	WebElement chooseFile1;
-
 	public InspectionFeedbackDetailsPage chooseFile(String filename) {
-		chooseFile1.sendKeys(System.getProperty("user.dir") + "/" + filename);
+		uploadDocument(chooseFile1, filename);
 		return PageFactory.initElements(driver, InspectionFeedbackDetailsPage.class);
 	}
 

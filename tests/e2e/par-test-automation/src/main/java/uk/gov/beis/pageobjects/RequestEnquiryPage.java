@@ -8,28 +8,26 @@ import org.openqa.selenium.support.PageFactory;
 
 public class RequestEnquiryPage extends BasePageObject {
 
+	@FindBy(id = "edit-notes")
+	private WebElement descriptionBox;
+
+	@FindBy(id = "edit-files-upload")
+	private WebElement chooseFile;
+	
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
+	
 	public RequestEnquiryPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
-	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
-	WebElement descriptionBox;
-
-	@FindBy(xpath = "//input[@id='edit-files-upload']")
-	WebElement chooseFile1;
-	
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
-	
-	public RequestEnquiryPage enterDescription(String description) throws Throwable {
+	public void enterDescription(String description) throws Throwable {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
-		return PageFactory.initElements(driver, RequestEnquiryPage.class);
 	}
 	
-	public RequestEnquiryPage chooseFile(String filename) {
-		chooseFile1.sendKeys(System.getProperty("user.dir") + "/" + filename);
-		return PageFactory.initElements(driver, RequestEnquiryPage.class);
+	public void chooseFile(String filename) {
+		uploadDocument(chooseFile, filename);
 	}
 	
 	public EnquiryReviewPage proceed() {

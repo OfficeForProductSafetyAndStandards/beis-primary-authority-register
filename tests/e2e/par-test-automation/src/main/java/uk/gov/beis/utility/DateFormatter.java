@@ -1,10 +1,8 @@
 package uk.gov.beis.utility;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import uk.gov.beis.helper.PropertiesUtil;
 

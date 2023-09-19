@@ -50,29 +50,14 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
       $this->accessResult = AccessResult::forbidden('The user is not allowed to access this page.');
     }
 
-    // Partnership must be active.
-    if (!$par_data_partnership->isActive()) {
-      $this->accessResult = AccessResult::forbidden('This partnership is not active so legal entities cannot be revoked.');
-    }
-
     // Restrict access when partnership is active to users with administrator role.
-    if (!$user->hasPermission('amend active partnerships')) {
+    if (!$account->hasPermission('amend active partnerships')) {
       $this->accessResult = AccessResult::forbidden('This partnership is active and user\'s role does not allow changes to be made.');
     }
 
-    // Partnership legal entities that are removable shouldn't provide the option to revoke..
-    if ($par_data_partnership_le->isRemovable()) {
-      $this->accessResult = AccessResult::forbidden('This legal entity can be removed instead of revoked.');
-    }
-
-    // Partnership legal entities that are already revoked cannot be revoked again.
-    if ($par_data_partnership_le->isRevoked()) {
-      $this->accessResult = AccessResult::forbidden('This legal entity has already been revoked.');
-    }
-
-    // Prohibit revoking of the last legal entity.
-    if (count($par_data_partnership->getPartnershipLegalEntities(TRUE)) <= 1) {
-      $this->accessResult = AccessResult::forbidden('The last legal entity can\'t be revoked.');
+    // If the legal entity cannot be revoked.
+    if (!$par_data_partnership_le->isRevocable()) {
+      $this->accessResult = AccessResult::forbidden('This legal entity cannot be revoked.');
     }
 
     return parent::accessCallback($route, $route_match, $account);
@@ -138,17 +123,33 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
   }
 
   /**
+   * Validate the form to make sure the correct values have been entered.
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+
+    /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
+    $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
+
+    // We can't reinstate a PLE if there is already an active PLE for the same LE.
+    if (!$partnership_legal_entity->isRevocable()) {
+      $id = $this->getElementId(['registered_name'], $form);
+      $form_state->setErrorByName($this->getElementName('registered_number'), $this->wrapErrorMessage('This legal entity is not revocable.', $id));
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-
     parent::submitForm($form, $form_state);
 
     /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
     $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
 
-    $revocation_reason = trim($form_state->getValue('revocation_reason'));
-
-    $partnership_legal_entity->revoke(TRUE, $revocation_reason);
+    if ($partnership_legal_entity->isRevocable()) {
+      $revocation_reason = trim($form_state->getValue('revocation_reason'));
+      $partnership_legal_entity->revoke(TRUE, $revocation_reason);
+    }
   }
 }

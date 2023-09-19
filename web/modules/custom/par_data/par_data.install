@@ -3,7 +3,12 @@
  * @file
  * Installation hooks for par_data module.
  */
-
+use Drupal\par_data\Entity\ParDataOrganisation;
+use Drupal\Core\Entity\Sql\DefaultTableMapping;
+use Drupal\user\Entity\User;
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\link\LinkItemInterface;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
@@ -85,11 +90,10 @@ function par_data_update_8007() {
   $db = \Drupal::database();
 
   // Change the bundle type.
-  foreach (\Drupal\par_data\Entity\ParDataOrganisation::loadMultiple() as $entity) {
+  foreach (ParDataOrganisation::loadMultiple() as $entity) {
     if ($entity->hasField('field_coordinator_number')) {
       $entity->set('coordinator_number', $entity->get('field_coordinator_number')->getString());
     }
-    $entity->type = 'organisation';
     $entity->save();
   }
 
@@ -102,7 +106,7 @@ function par_data_update_8007() {
     }
 
     $entity_type = \Drupal::service('par_data.manager')->getParEntityType('par_data_organisation');
-    $table_mapping = new \Drupal\Core\Entity\Sql\DefaultTableMapping($entity_type, [$storage]);
+    $table_mapping = new DefaultTableMapping($entity_type, [$storage]);
     $table_names = $table_mapping->getDedicatedTableNames($storage);
 
     foreach ($table_names as $table) {
@@ -118,7 +122,7 @@ function par_data_update_8007() {
  */
 function par_data_update_8008() {
   // Change the bundle type.
-  foreach (\Drupal\user\Entity\User::loadMultiple() as $entity) {
+  foreach (User::loadMultiple() as $entity) {
     // Remove the old deprecated roles.
     if ($entity->hasRole('par_coordinator')) {
       $entity->removeRole('par_coordinator');
@@ -150,15 +154,14 @@ function par_data_update_8010() {
     $entities = \Drupal::entityTypeManager()
       ->getStorage('par_data_organisation')
       ->loadByProperties(['type' => 'business']);
-  } catch (\Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException $e) {
-  } catch (\Drupal\Component\Plugin\Exception\PluginNotFoundException $e) {
+  } catch (InvalidPluginDefinitionException $e) {
+  } catch (PluginNotFoundException $e) {
   }
 
   foreach ($entities as $entity) {
     if ($entity->hasField('field_coordinator_number')) {
       $entity->set('coordinator_number', $entity->get('field_coordinator_number')->getString());
     }
-    $entity->type = 'organisation';
     $entity->save();
   }
 
@@ -171,7 +174,7 @@ function par_data_update_8010() {
     }
 
     $entity_type = \Drupal::service('par_data.manager')->getParEntityType('par_data_organisation');
-    $table_mapping = new \Drupal\Core\Entity\Sql\DefaultTableMapping($entity_type, [$storage]);
+    $table_mapping = new DefaultTableMapping($entity_type, [$storage]);
     $table_names = $table_mapping->getDedicatedTableNames($storage);
 
     foreach ($table_names as $table) {
@@ -187,7 +190,7 @@ function par_data_update_8010() {
  */
 function par_data_update_8011() {
   // Change the bundle type.
-  foreach (\Drupal\user\Entity\User::loadMultiple() as $entity) {
+  foreach (User::loadMultiple() as $entity) {
     // Re-save the entity.
     $entity->save();
   }
@@ -210,7 +213,7 @@ function par_data_update_8012() {
  */
 function par_data_update_8013() {
   // Change the bundle type.
-  foreach (\Drupal\user\Entity\User::loadMultiple() as $entity) {
+  foreach (User::loadMultiple() as $entity) {
     // Re-save the entity.
     $entity->save();
   }
@@ -538,7 +541,7 @@ function par_data_update_8030() {
  * Update all block entities to be resuable.
  */
 function par_data_update_8031() {
-  $blocks = \Drupal\block_content\Entity\BlockContent::loadMultiple();
+  $blocks = BlockContent::loadMultiple();
   foreach ($blocks as $block) {
     $block->setReusable();
     $block->save();
@@ -1037,7 +1040,7 @@ function par_data_update_8044() {
 
         $field_name = $field->getName();
         // Get all partnerships that have the format issue within the about business field.
-        $query = \Drupal::entityQuery($entity_type_id);
+        $query = \Drupal::entityQuery($entity_type_id)->accessCheck();
         $query->condition($field_name . '__value', ', basic_html', 'CONTAINS');
         $entity_ids = $query->execute();
 
@@ -1354,7 +1357,7 @@ function par_data_update_9005() {
     ->setLabel(t('Label'))
     ->setDescription(t('The label of the PAR entity.'))
     ->setComputed(TRUE)
-    ->setClass(\Drupal\par_data\Plugin\Field\FieldType\ParLabelField::class)
+    ->setClass(ParLabelField::class)
     ->setRevisionable(TRUE)
     ->setSettings([
       'max_length' => 255,
@@ -1483,7 +1486,7 @@ function par_data_update_9008() {
 /**
  * PAR-2038 Set partnership legal entity status on existing entity instances to confirmed_rd (Active).
  */
-function par_data_update_9011(&$sandbox) {
+function par_data_update_9009(&$sandbox) {
   /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
   $par_data_manager = \Drupal::service('par_data.manager');
   $batch_size = 100;
@@ -1535,4 +1538,34 @@ function par_data_update_9011(&$sandbox) {
     ($results_updated / $sandbox['total']);
 
   return t($message);
+}
+
+/**
+ * PAR-2193: Add the new previous names field to par_data_partnership entities
+ * to record transfers of partnerships.
+ */
+function par_data_update_9010() {
+  // Adding new field definitions to an entity.
+  // @see https://www.drupal.org/node/3034742#comment-14054069
+  $module_name = 'par_data';
+  $entity_type = 'par_data_partnership';
+  $fields = [
+    'previous_names',
+  ];
+
+  \Drupal::entityTypeManager()->clearCachedDefinitions();
+
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $field_definitions = \Drupal::service('entity_field.manager')
+    ->getFieldDefinitions($entity_type, $entity_type);
+  foreach ($fields as $field_name) {
+    if (!empty($field_definitions[$field_name]) && $field_definitions[$field_name] instanceof FieldStorageDefinitionInterface) {
+      $entity_definition_update_manager
+        ->installFieldStorageDefinition(
+          $field_name,
+          $entity_type,
+          $module_name,
+          $field_definitions[$field_name]);
+    }
+  }
 }

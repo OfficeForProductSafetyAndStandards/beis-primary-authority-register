@@ -55,5 +55,21 @@ public class PartnershipAdvancedSearchPage extends BasePageObject{
 		
 		return (status1.isDisplayed() && action1.isDisplayed());
 	}
-
+	
+	public PartnershipAdvancedSearchPage searchPartnershipsPrimaryAuthority() {
+		searchInput.clear();
+		searchInput.sendKeys(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		searchBtn.click();
+		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
+	}
+	
+	public PartnershipConfirmationPage selectPrimaryAuthorityLink() {
+		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + "')]/parent::td/parent::tr/td[1]/a[1]")).click();
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
+	
+	public PartnershipConfirmationPage selectOrganisationLink() {
+		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[1]/a[2]")).click();
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
 }

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
@@ -22,7 +23,7 @@ class ParEnforcementDetail extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
 
     // If an enforcement notice parameter is set use this.
@@ -39,13 +40,13 @@ class ParEnforcementDetail extends ParFormPluginBase {
       }
     }
 
-    parent::loadData($cardinality);
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
     $params = $this->getRouteParams() + ['destination' => $return_path];
@@ -61,9 +62,9 @@ class ParEnforcementDetail extends ParFormPluginBase {
       'type' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => 'Type of notice: ' . $this->getDefaultValuesByKey('notice_type', $cardinality, NULL),
+        '#value' => 'Type of notice: ' . $this->getDefaultValuesByKey('notice_type', $index, NULL),
       ],
-      'summary' => $this->getDefaultValuesByKey('notice_summary', $cardinality, NULL),
+      'summary' => $this->getDefaultValuesByKey('notice_summary', $index, NULL),
     ];
 
     // Add operation link for updating notice details.

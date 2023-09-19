@@ -1,7 +1,6 @@
 package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
-import java.util.jar.Attributes.Name;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;

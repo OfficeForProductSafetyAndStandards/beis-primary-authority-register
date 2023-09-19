@@ -11,7 +11,7 @@ use Drupal\par_notification\ParRecipient;
 
 /**
  * This message subscriber should apply to any message that deals
- * with the nomination of a partnership.
+ * with the nomination of a partnership, including partnership amendments.
  *
  * @ParMessageSubscriber(
  *   id = "partnership_nominated",
@@ -19,6 +19,7 @@ use Drupal\par_notification\ParRecipient;
  *   status = TRUE,
  *   message = {
  *     "partnership_approved_notificatio",
+ *     "partnership_amendment_nominated",
  *   },
  * )
  */

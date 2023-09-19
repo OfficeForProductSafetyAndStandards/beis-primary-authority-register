@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -32,19 +33,19 @@ class ParTermsConditions extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $available_formats = [self::AUTHORITY_TERMS, self::ORGANISATION_TERMS];
     $checkbox = isset($this->getConfiguration()['terms']) && array_search($this->getConfiguration()['terms'], $available_formats) !== FALSE
       ? $this->getConfiguration()['terms'] : self::AUTHORITY_TERMS;
-    $this->setDefaultValuesByKey("terms", $cardinality, $checkbox);
+    $this->setDefaultValuesByKey("terms", $index, $checkbox);
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     $url_address = 'https://www.gov.uk/government/publications/primary-authority-terms-and-conditions';
     $url = Url::fromUri($url_address, ['attributes' => ['target' => '_blank']]);
     $terms_link = Link::fromTextAndUrl(t('terms & conditions (opens in a new window)'), $url);
@@ -85,7 +86,7 @@ class ParTermsConditions extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

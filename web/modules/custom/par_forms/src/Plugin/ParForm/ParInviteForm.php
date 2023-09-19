@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataEntityInterface;
@@ -52,7 +53,7 @@ HEREDOC;
   /**
    * Load the data for this form.
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $invitation_type = $this->getFlowDataHandler()->getDefaultValues('invitation_type', FALSE);
     if ($invitation_type && $invite_type_config = $this->config("invite.invite_type.{$invitation_type}")) {
       $data = unserialize($invite_type_config->get('data'));
@@ -133,13 +134,13 @@ HEREDOC;
       }
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // There must be an invitation type specified.
     if (!$this->getFlowDataHandler()->getDefaultValues('invitation_type', FALSE)) {
       throw new ParFormException('There is no invitation type selected for this invitation.');
@@ -152,7 +153,7 @@ HEREDOC;
     }
 
     // There must be a sender and a recipient to continue.
-    if (!$this->getDefaultValuesByKey('from', $cardinality, FALSE) || !$this->getDefaultValuesByKey('to', $cardinality, FALSE)) {
+    if (!$this->getDefaultValuesByKey('from', $index, FALSE) || !$this->getDefaultValuesByKey('to', $index, FALSE)) {
       $form['no_recipient'] = [
         '#type' => 'fieldset',
         '#title' => t('No recipient'),
@@ -250,34 +251,34 @@ HEREDOC;
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $role_key = $this->getElementKey('target_role');
     if (!$form_state->getValue($role_key)) {
-      $id_key = $this->getElementKey('target_role', $cardinality, TRUE);
+      $id_key = $this->getElementKey('target_role', $index, TRUE);
       $message = $this->wrapErrorMessage('No role has been selected for this invitation.', $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($role_key), $message);
     }
 
     $email_subject_key = $this->getElementKey('subject');
     if (empty($form_state->getValue($email_subject_key))) {
-      $id_key = $this->getElementKey(['email', 'subject'], $cardinality, TRUE);
+      $id_key = $this->getElementKey(['email', 'subject'], $index, TRUE);
       $message = $this->wrapErrorMessage("Please enter a subject.", $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($email_subject_key), $message);
     }
 
     $email_body_key = $this->getElementKey('body');
     if (empty($form_state->getValue($email_body_key))) {
-      $id_key = $this->getElementKey(['email', 'body'], $cardinality, TRUE);
+      $id_key = $this->getElementKey(['email', 'body'], $index, TRUE);
       $message = $this->wrapErrorMessage("Please enter a message.", $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($email_body_key), $message);
     }
 
     if (!strpos($form_state->getValue($email_body_key), '[invite:invite-accept-link]')) {
-      $id_key = $this->getElementKey(['email', 'body'], $cardinality, TRUE);
+      $id_key = $this->getElementKey(['email', 'body'], $index, TRUE);
       $message = $this->wrapErrorMessage("Please make sure you have the invite link '[invite:invite-accept-link]' somewhere in your message.", $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($email_body_key), $message);
     }
 
-    return parent::validate($form, $form_state, $cardinality, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

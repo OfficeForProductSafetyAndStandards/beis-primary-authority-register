@@ -12,15 +12,19 @@ import uk.gov.beis.utility.DataStore;
 
 public class DeviationReviewPage extends BasePageObject {
 
+	@FindBy(linkText = "Submit a response")
+	private WebElement submitResponse;
+	
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
+	
+	String descriptionLocator = "//div/p[contains(text(),'?')]";
+	String statusLocator = "//fieldset/p[contains(text(),'?')]";
+	String responseLocator = "//div/p[contains(text(),'?')]";
+	
 	public DeviationReviewPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//input[contains(@value,'Save')]")
-	WebElement saveBtn;
-	
-	@FindBy(linkText = "Submit a response")
-	WebElement submitResponse;
 
 	public DeviationCompletionPage saveChanges() {
 		saveBtn.click();
@@ -32,29 +36,23 @@ public class DeviationReviewPage extends BasePageObject {
 		return PageFactory.initElements(driver, ReplyDeviationRequestPage.class);
 	}
 
-	String desc = "//div/p[contains(text(),'?')]";
-	String status = "//div/p[contains(text(),'?')]";
-	String response = "//div/p[contains(text(),'?')]";
-
-
 	public boolean checkDeviationCreation() {
-		WebElement desc1 = driver.findElement(By
-				.xpath(desc.replace("?", DataStore.getSavedValue(UsableValues.DEVIATION_DESCRIPTION))));
-
-		return (desc1.isDisplayed());
+		WebElement description = driver.findElement(By.xpath(descriptionLocator.replace("?", DataStore.getSavedValue(UsableValues.DEVIATION_DESCRIPTION))));
+		return (description.isDisplayed());
 	}
 	
 	public boolean checkDeviationResponse() {
-		WebElement response1 = driver.findElement(By
-				.xpath(response.replace("?", DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1))));
-
-		return (response1.isDisplayed());
+		WebElement response = driver.findElement(By.xpath(responseLocator.replace("?", DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1))));
+		return (response.isDisplayed());
 	}
 	
-	public boolean checkDeviationStatus() {
-		WebElement status1 = driver.findElement(By
-				.xpath(status.replace("?", "Approved")));
-
-		return (status1.isDisplayed());
+	public boolean checkDeviationStatusApproved() {
+		WebElement status = driver.findElement(By.xpath(statusLocator.replace("?", "Approved")));
+		return (status.isDisplayed());
+	}
+	
+	public boolean checkDeviationStatusBlocked() {
+		WebElement status = driver.findElement(By.xpath(statusLocator.replace("?", "Blocked")));
+		return (status.isDisplayed());
 	}
 }

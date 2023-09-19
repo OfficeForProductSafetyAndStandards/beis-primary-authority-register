@@ -237,7 +237,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
     $entity_type = $this->getEntityTypeManager()->getDefinition('message');
     $bundle_key = $entity_type->getKey('bundle');
 
-    $qry = $this->getEntityTypeManager()->getStorage('message')->getQuery();
+    $qry = $this->getEntityTypeManager()->getStorage('message')->getQuery()->accessCheck();
 
     $or = $qry->orConditionGroup();
     foreach ($templates as $template) {
@@ -286,6 +286,9 @@ class ParMessageHandler implements ParMessageHandlerInterface {
       'partnership_deleted_notification' => 'field_partnership',
       'partnership_revocation_notificat' => 'field_partnership',
       'partnership_nominate' => 'field_partnership',
+      'new_partnership_amendment' => 'field_partnership',
+      'partnership_amendment_confirmed' => 'field_partnership',
+      'partnership_amendment_nominated' => 'field_partnership',
       'reviewed_deviation_request' => 'field_deviation_request',
       'reviewed_enforcement' => 'field_enforcement_notice',
       'member_list_stale_warning' => 'field_partnership',
@@ -350,6 +353,9 @@ class ParMessageHandler implements ParMessageHandlerInterface {
       'partnership_deleted_notification' => 'partnership_removal',
       'partnership_revocation_notificat' => 'partnership_removal',
       'partnership_nominate' => 'partnership_nomination',
+      'new_partnership_amendment' => 'partnership_amendment',
+      'partnership_amendment_confirmed' => 'partnership_amendment',
+      'partnership_amendment_nominated' => 'partnership_amendment',
       'member_list_stale_warning' => 'coordinated_membership',
       'subscription_verify_notification' => 'subscription',
     ];

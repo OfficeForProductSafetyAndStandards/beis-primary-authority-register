@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
@@ -22,7 +23,7 @@ class ParEnquiryDetail extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_general_enquiry = $this->getFlowDataHandler()->getParameter('par_data_general_enquiry');
 
     // If an enforcement notice parameter is set use this.
@@ -38,13 +39,13 @@ class ParEnquiryDetail extends ParFormPluginBase {
       }
     }
 
-    parent::loadData($cardinality);
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
     $params = $this->getRouteParams() + ['destination' => $return_path];
@@ -58,9 +59,9 @@ class ParEnquiryDetail extends ParFormPluginBase {
         '#value' => $this->t('Summary of enquiry'),
         '#attributes' => ['class' => 'heading-large'],
       ],
-      'date' => $this->getDefaultValuesByKey('request_date', $cardinality, NULL),
-      'notes' => $this->getDefaultValuesByKey('notes', $cardinality, NULL),
-      'document' => $this->getDefaultValuesByKey('document', $cardinality, NULL),
+      'date' => $this->getDefaultValuesByKey('request_date', $index, NULL),
+      'notes' => $this->getDefaultValuesByKey('notes', $index, NULL),
+      'document' => $this->getDefaultValuesByKey('document', $index, NULL),
     ];
 
     // Add operation link for updating notice details.

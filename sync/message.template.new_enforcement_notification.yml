@@ -1,13 +1,18 @@
 uuid: 9dd3a596-a4be-4c02-864e-461784b08874
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.basic_html
 template: new_enforcement_notification
 label: 'New Enforcement Notification'
 description: 'This notification is sent to the Primary Authority on the raising of a new enforcement notice.'
 text:
   -
-    value: "<p>You've received a notification of enforcement action against <span>@enforced_organisation</span>.</p>\r\n\r\n<p>If you don't respond to this notification within 5 working days, it will be automatically accepted.</p>\r\n"
+    value: "<p>You've received a notification of enforcement action against <span>@enforced_organisation</span>.</p>\r\n"
+    format: basic_html
+  -
+    value: "<p>If you don't respond to this notification within 5 working days, it will be automatically accepted.</p>\r\n"
     format: basic_html
   -
     value: "<p>^ Respond to notification: [message:primary-action]</p>\r\n"

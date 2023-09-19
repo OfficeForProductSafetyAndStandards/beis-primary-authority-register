@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
@@ -26,16 +27,9 @@ use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
 class ParEnforcementSendWarning extends ParFormPluginBase {
 
   /**
-   * @return DateFormatterInterface
-   */
-  protected function getDateFormatter() {
-    return \Drupal::service('date.formatter');
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
     $this->getFlowDataHandler()
       ->setFormPermValue("enforcement_label", $par_data_enforcement_notice->label());
@@ -58,13 +52,13 @@ class ParEnforcementSendWarning extends ParFormPluginBase {
       $this->getFlowDataHandler()->setFormPermValue('enforcement_sent', $sent);
     }
 
-    parent::loadData($cardinality);
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Only display this warning if the enforcement has been approved.
     if ($this->getFlowDataHandler()->getFormPermValue('enforcement_approved')) {
       $schedule_url = Url::fromUri('http://www.legislation.gov.uk/ukpga/2008/13/schedule/4A', ['attributes' => ['target' => '_blank']]);

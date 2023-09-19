@@ -16,7 +16,7 @@ use Drupal\par_reporting\ParStatisticBase;
  */
 class TotalUsers extends ParStatisticBase {
 
-  public function getStat() {
+  public function getStat(): int {
     $query = $this->getParDataManager()->getEntityQuery('user')
       ->condition('status', 1);
 

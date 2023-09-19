@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -20,7 +21,7 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
 
@@ -37,13 +38,13 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
 
     $this->getFlowDataHandler()->setFormPermValue('select_legal_entities', $select_legal_entities);
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $select_legal_entities = $this->getFlowDataHandler()->getFormPermValue('select_legal_entities');
 
@@ -73,7 +74,7 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
       // Make sure the alternative legal entity field is selectively available.
       $form['alternative_legal_entity']['#states'] = [
         'visible' => [
-          ':input[name="' . $this->getTargetName($this->getElementKey('legal_entities_select', $cardinality)) . '"]' => ['value' => 'add_new'],
+          ':input[name="' . $this->getTargetName($this->getElementKey('legal_entities_select', $index)) . '"]' => ['value' => 'add_new'],
         ],
       ];
     }
@@ -90,16 +91,16 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $legal_entity = $this->getElementKey('legal_entities_select');
     $alternative_legal_entity = $this->getElementKey('alternative_legal_entity');
     if ((empty($form_state->getValue($legal_entity)) || $form_state->getValue($legal_entity) === self::ADD_NEW)
       && empty($form_state->getValue($alternative_legal_entity))) {
 
-      $id_key = $this->getElementKey('alternative_legal_entity', $cardinality, TRUE);
+      $id_key = $this->getElementKey('alternative_legal_entity', $index, TRUE);
       $form_state->setErrorByName($this->getElementName($alternative_legal_entity), $this->wrapErrorMessage('You must choose a legal entity.', $this->getElementId($id_key, $form)));
     }
 
-    return parent::validate($form, $form_state, $cardinality, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

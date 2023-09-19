@@ -180,16 +180,6 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Will return true if the entity is allowed to exist within the system.
-   * Or false if it has been soft-removed.
-   *
-   * @return bool
-   */
-  public function isLiving() {
-    return $this->isTransitioned() && $this->getBoolean('status');
-  }
-
-  /**
    * Whether this entity is deleted.
    *
    * @return bool
@@ -203,35 +193,14 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function isRevoked() {
-    if ($this->getTypeEntity()->isRevokable() && $this->getBoolean(self::REVOKE_FIELD)) {
-      return TRUE;
-    }
-
-    return FALSE;
+    return $this->getTypeEntity()->isRevokable() && $this->getBoolean(self::REVOKE_FIELD);
   }
 
   /**
    * {@inheritdoc}
    */
   public function isArchived() {
-    if ($this->getTypeEntity()->isArchivable() && $this->getBoolean(self::ARCHIVE_FIELD)) {
-      return TRUE;
-    }
-
-    return FALSE;
-  }
-
-  /*
-   * Whether the entity was transitioned from the old
-   * PAR2 system on 1 October 2017.
-   */
-  public function isTransitioned() {
-    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-
-    if (isset($field_name) && $this->hasField($field_name) && !$this->get($field_name)->isEmpty() && $this->get($field_name)->getString() === 'n/a') {
-      return FALSE;
-    }
-    return TRUE;
+    return $this->getTypeEntity()->isArchivable() && $this->getBoolean(self::ARCHIVE_FIELD);
   }
 
   /**
@@ -239,7 +208,34 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function isDeletable() {
     // Only some PAR entities can be deleted.
-    return (bool) $this->getTypeEntity()->isDeletable();
+    return $this->getTypeEntity()->isDeletable() &&
+      !$this->isRevoked() &&
+      !$this->isArchived();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isRevocable() {
+    // Only some PAR entities can be revoked.
+    return $this->getTypeEntity()->isRevokable() &&
+      !$this->isRevoked();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isArchivable() {
+    // Only some PAR entities can be archived.
+    return $this->getTypeEntity()->isArchivable() &&
+      !$this->isArchived();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isRestorable() {
+    return $this->isRevoked() || $this->isArchived();
   }
 
   /**
@@ -329,7 +325,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $save = FALSE;
     }
 
-    if (!$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
+    if ($this->isRevocable()) {
       $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
 
       // Always revision status changes.
@@ -342,6 +338,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
+
     return FALSE;
   }
 
@@ -360,7 +357,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $save = FALSE;
     }
 
-    if (!$this->inProgress() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
+    if ($this->isArchivable()) {
 
       $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
 
@@ -389,12 +386,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     // Updated revoked and archived fields.
     $changed = FALSE;
-    if ($this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
+    if ($this->isRevoked()) {
       $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
       $this->set(ParDataEntity::REVOKE_REASON_FIELD, NULL);
       $changed = TRUE;
     }
-    if ($this->getTypeEntity()->isArchivable() && $this->isArchived()) {
+    if ($this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
       $this->set(ParDataEntity::ARCHIVE_REASON_FIELD, NULL);
       $changed = TRUE;
@@ -421,11 +418,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function isActive() {
-    if ($this->isRevoked() || $this->isArchived() || !$this->isTransitioned()) {
-      return FALSE;
-    }
-
-    return TRUE;
+    return !$this->isRevoked() && !$this->isArchived();
   }
 
   /**
@@ -447,13 +440,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     if ($this->isArchived()) {
       return self::ARCHIVE_FIELD;
     }
-    if (!$this->isTransitioned()) {
-      return 'n/a';
-    }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
-    if ($this->hasStatus()) {
+    if ($this->hasStatus() && !$this->get($field_name)->isEmpty()) {
       $status = $this->get($field_name)->getString();
     }
 
@@ -464,18 +454,16 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function getParStatus() {
-    if ($this->isRevoked()) {
+    $raw_status = $this->getRawStatus();
+
+    if ($raw_status === self::REVOKE_FIELD) {
       return 'Revoked';
     }
-    if ($this->isArchived()) {
+    if ($raw_status === self::ARCHIVE_FIELD) {
       return 'Archived';
-    }
-    if (!$this->isTransitioned()) {
-      return 'Not transitioned from PAR2';
     }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-    $raw_status = $this->getRawStatus();
 
     return $raw_status ? $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status) : '';
   }
@@ -519,7 +507,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
     // Loop through all statuses to find the revision when the status was changed.
-    $check_status_query = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->getQuery();
+    $check_status_query = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->getQuery()->accessCheck();
     $check_status_query->allRevisions()
       ->condition('id', $this->id())
       ->sort('revision_timestamp', 'DESC');

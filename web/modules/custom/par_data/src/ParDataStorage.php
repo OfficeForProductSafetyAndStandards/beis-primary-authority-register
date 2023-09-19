@@ -2,6 +2,10 @@
 
 namespace Drupal\par_data;
 
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Database\Connection;
+use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Cache\MemoryCache\MemoryCacheInterface;
@@ -26,7 +30,7 @@ class ParDataStorage extends TranceStorage {
 
   protected $parDataManager;
 
-  public function __construct(\Drupal\Core\Entity\EntityTypeInterface $entity_type, \Drupal\Core\Database\Connection $database, EntityFieldManagerInterface $entity_field_manager, \Drupal\Core\Cache\CacheBackendInterface $cache, \Drupal\Core\Language\LanguageManagerInterface $language_manager, MemoryCacheInterface $memory_cache, EntityTypeBundleInfoInterface $entity_type_bundle_info, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeInterface $entity_type, Connection $database, EntityFieldManagerInterface $entity_field_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, MemoryCacheInterface $memory_cache, EntityTypeBundleInfoInterface $entity_type_bundle_info, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct(
       $entity_type,
       $database,
