@@ -74,7 +74,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
     $form['authority_name'] = [
       '#type' => 'html_tag',
       '#tag' => 'h2',
-      '#value' => "<span class='heading-secondary'>In partnership with</span>" . $this->getDefaultValuesByKey('name', $index, NULL),
+      '#value' => "<span class='heading-secondary'>In partnership with</span> " . $this->getDefaultValuesByKey('name', $index, NULL),
       '#attributes' => ['class' => ['govuk-heading-l', 'form-group', 'authority-name']],
     ];
     if ($previous_names = $this->getDefaultValuesByKey('previous_names', $index, NULL)) {
@@ -89,7 +89,12 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
     // Display details about the partnership for information.
     $form['about_partnership'] = [
       '#type' => 'container',
-      '#markup' => '<h3 class="govuk-heading-m">About the partnership</h3>',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('About the partnership'),
+      ],
       '#attributes' => ['class' => ['form-group']],
       'details' => $this->getDefaultValuesByKey('about_partnership', $index, NULL),
     ];
@@ -114,15 +119,9 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
     if ($this->getDefaultValuesByKey('approved', $index, FALSE)) {
       $form['details'] = [
         '#type' => 'container',
-        'heading' => [
-          '#type' => 'html_tag',
-          '#tag' => 'h3',
-          '#attributes' => ['class' => ['govuk-heading-m']],
-          '#value' => $this->t('Partnered for'),
-        ],
         '#attributes' => ['class' => ['govuk-grid-row']],
         'regulatory_functions' => [
-          '#type' => 'fieldset',
+          '#type' => 'container',
           '#title' => 'Partnered for',
           '#attributes' => ['class' => 'govuk-grid-column-one-half'],
           'functions' => [
@@ -133,14 +132,9 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
         ],
         'approved_date' => [
           '#type' => 'container',
-          'heading' => [
-            '#type' => 'html_tag',
-            '#tag' => 'h3',
-            '#attributes' => ['class' => ['govuk-heading-m']],
-            '#value' => $this->t('In partnership since'),
-          ],
+          '#title' => 'In partnership since',
           '#attributes' => ['class' => 'govuk-grid-column-one-half'],
-          'value' => $this->getDefaultValuesByKey('date', $cardinality, NULL),
+          'value' => $this->getDefaultValuesByKey('date', $index, NULL),
         ],
       ];
 
