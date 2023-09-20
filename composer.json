@@ -198,8 +198,8 @@
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch",
                 "Take into account CONFIG command may not work": "https://www.drupal.org/files/issues/2021-02-16/redis-allow_disabled_config-3173988-4.patch"
             },
-            "drupal/role_delegation": {
-                "Temporary patch to enable module uninstall": "./patches/tmp-patch-fix-for-d9-upgrade.patch"
+            "drupal/pagerer": {
+                "Pagerer upgrade issue": "https://git.drupalcode.org/project/pagerer/-/merge_requests/18.diff"
             },
             "drupal/search_api": {
                 "Add support for rendering computed fields to the \"field\" views field handler": "https://git.drupalcode.org/project/search_api/-/merge_requests/75.diff"
