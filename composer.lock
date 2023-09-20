@@ -1519,16 +1519,16 @@
         },
         {
             "name": "divineomega/do-file-cache-psr-6",
-            "version": "v2.0.3",
+            "version": "v2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OfficeForProductSafetyAndStandards/do-file-cache-psr-6.git",
-                "reference": "4d141746e2cddc3aa1c88ace6cf2db5a298bc9c0"
+                "reference": "68b0c737a39973abf045a42dad7217364ff9af3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OfficeForProductSafetyAndStandards/do-file-cache-psr-6/zipball/4d141746e2cddc3aa1c88ace6cf2db5a298bc9c0",
-                "reference": "4d141746e2cddc3aa1c88ace6cf2db5a298bc9c0",
+                "url": "https://api.github.com/repos/OfficeForProductSafetyAndStandards/do-file-cache-psr-6/zipball/68b0c737a39973abf045a42dad7217364ff9af3b",
+                "reference": "68b0c737a39973abf045a42dad7217364ff9af3b",
                 "shasum": ""
             },
             "require": {
@@ -1557,10 +1557,10 @@
             ],
             "description": "PSR-6 adapter for DO File Cache",
             "support": {
-                "source": "https://github.com/OfficeForProductSafetyAndStandards/do-file-cache-psr-6/tree/v2.0.3",
+                "source": "https://github.com/OfficeForProductSafetyAndStandards/do-file-cache-psr-6/tree/v2.0.4",
                 "issues": "https://github.com/OfficeForProductSafetyAndStandards/do-file-cache-psr-6/issues"
             },
-            "time": "2023-09-19T21:53:27+00:00"
+            "time": "2023-09-20T15:29:37+00:00"
         },
         {
             "name": "doctrine/annotations",
