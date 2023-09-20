@@ -108,6 +108,7 @@ trait ParRedirectTrait {
     $query = \Drupal::request()->query;
     $query_params = array_filter([
       'page' => $query->get('page'),
+      'pg' => $query->get('pg'),
     ]);
     if (!empty($query_params)) {
       $defaults['query'] = $query_params;
