@@ -1797,8 +1797,8 @@ public class PARStepDefs {
 		Assert.assertTrue("Failed: Advice Notice was not Removed.", adviceNoticeSearchPage.checkNoResultsReturned());
 	}
 	
-	@Then("^the user can Delete the Partnership Successfully with the following reason: \"([^\"]*)\"$")
-	public void the_user_can_Delete_the_Partnership_Successfully_with_the_following_reason(String reason) throws Throwable {
+	@When("^the user Deletes the Partnership with the following reason: \"([^\"]*)\"$")
+	public void the_user_Deletes_the_Partnership_with_the_following_reason(String reason) throws Throwable {
 		LOG.info("Delete the Partnership.");
 		partnershipAdvancedSearchPage.selectDeletePartnershipLink();
 		
@@ -1806,8 +1806,12 @@ public class PARStepDefs {
 		deletePage.clickDeleteForPartnership();
 		
 		completionPage.clickDoneForPartnership();
-		
+	}
+
+	@Then("^the Partnership was Deleted Successfully$")
+	public void the_Partnership_was_Deleted_Successfully() throws Throwable {
 		LOG.info("Verify the Partnership was Deleted Successfully.");
+		
 		partnershipAdvancedSearchPage.searchPartnerships();
 		Assert.assertTrue(partnershipAdvancedSearchPage.checkPartnershipExists());
 	}

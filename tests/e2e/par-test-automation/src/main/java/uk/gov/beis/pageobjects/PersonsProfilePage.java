@@ -10,14 +10,11 @@ import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.utility.DataStore;
 
 public class PersonsProfilePage extends BasePageObject {
-	public PersonsProfilePage() throws ClassNotFoundException, IOException {
-		super();
-	}
-
+	
 	@FindBy(tagName = "h1")
 	private WebElement profileHeader;
-
-	@FindBy(xpath = "//div[@class='component-user-detail']//fieldset[@class='form-group js-form-item form-item js-form-wrapper form-wrapper govuk-fieldset']//p")
+	
+	@FindBy(xpath = "//p[contains(text(), 'An invitation has already been sent')]")
 	private WebElement invitationSentText;
 
 	@FindBy(xpath = "//div[@class='component-user-detail']//p[3]")
@@ -43,7 +40,11 @@ public class PersonsProfilePage extends BasePageObject {
 
 	@FindBy(linkText = "Done")
 	private WebElement doneBtn;
-
+	
+	public PersonsProfilePage() throws ClassNotFoundException, IOException {
+		super();
+	}
+	
 	public Boolean checkHeaderForName() {
 		return profileHeader.getText().contains(getPersonsName());
 	}
