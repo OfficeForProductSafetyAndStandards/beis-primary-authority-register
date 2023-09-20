@@ -3,7 +3,7 @@ applications:
     routes:
       - route: primary-authority.beis.gov.uk
     buildpacks:
-      - https://github.com/cloudfoundry/php-buildpack.git#v4.4.65
+      - https://github.com/cloudfoundry/php-buildpack.git#v4.6.10
     memory: 2G
     disk_quota: 5G
     timeout: 120
