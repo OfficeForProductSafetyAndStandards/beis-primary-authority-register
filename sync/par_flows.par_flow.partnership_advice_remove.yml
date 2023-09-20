@@ -5,7 +5,7 @@ dependencies: {  }
 _core:
   default_config_hash: 2ichEnRJ4LTRpO5ktU6xROoDq7RO5WcJlB1FnWVNu6s
 id: partnership_advice_remove
-label: 'Remove Partnership''s Advice Flow'
+label: "Remove Partnership's Advice Flow"
 default_title: null
 default_section_title: 'Primary Authority partnership information'
 description: ''

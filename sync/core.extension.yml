@@ -142,6 +142,7 @@ module:
   path: 0
   path_alias: 0
   pgsql: 0
+  phpass: 0
   queue_ui: 0
   raven: 0
   redis: 0

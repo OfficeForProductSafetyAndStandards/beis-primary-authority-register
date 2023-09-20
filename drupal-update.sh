@@ -16,10 +16,6 @@ printf "Enabling maintenance mode...\n"
 printf "Clearing cache...\n"
 ../vendor/drush/drush/drush cache:rebuild;
 
-# Test data must be removed before proceeding.
-printf "Uninstalling test data...\n"
-../vendor/drush/drush/drush pm-uninstall par_data_test -y;
-
 # Run db updates.
 printf "Running database updates...\n"
 ../vendor/drush/drush/drush updb -y;

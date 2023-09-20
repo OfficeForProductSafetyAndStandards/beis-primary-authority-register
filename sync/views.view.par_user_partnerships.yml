@@ -387,7 +387,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           title: '{{authority_name}}'
-          assistive_text: 'Edit the authority''s details for the {{ par_label }}'
+          assistive_text: "Edit the authority's details for the {{ par_label }}"
           link: '/partnership/{{id}}/authority-details'
           hidden: 0
         par_flow_link_1:
@@ -441,7 +441,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           title: '{{ organisation_name }}'
-          assistive_text: 'Edit the organisation''s details for the {{ par_label }}'
+          assistive_text: "Edit the organisation's details for the {{ par_label }}"
           link: '/partnership/{{id}}/organisation-details'
           hidden: 0
         par_flow_link_2:
