@@ -60,11 +60,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   }
 
   /**
-   * The access result
+   * The access result.
    *
-   * @var AccessResult $accessResult
+   * @var ?AccessResult $accessResult
    */
-  protected AccessResult $accessResult;
+  protected ?AccessResult $accessResult = NULL;
 
   /**
    * List the mapping between the entity field and the form field.
@@ -176,24 +176,20 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   }
 
   /**
-   * Access callback
-   * Useful for custom business logic for access.
+   *  Default access callback.
    *
-   * @param \Symfony\Component\Routing\Route $route
+   * @param Route $route
    *   The route.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   * @param RouteMatchInterface $route_match
    *   The route match object to be checked.
-   * @param \Drupal\Core\Session\AccountInterface $account
+   * @param AccountInterface $account
    *   The account being checked.
    *
-   * @see \Drupal\Core\Access\AccessResult
-   *   The options for callback.
-   *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return AccessResult
    *   The access result.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
-    return $this->accessResult ? $this->accessResult : AccessResult::allowed();
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account): AccessResult {
+    return $this->accessResult instanceof AccessResult ? $this->accessResult : AccessResult::allowed();
   }
 
   /**

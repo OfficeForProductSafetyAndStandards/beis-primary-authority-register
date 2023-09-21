@@ -4,16 +4,13 @@ namespace Drupal\par_flows;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\Core\TempStore\PrivateTempStore;
 use Drupal\par_data\ParDataManagerInterface;
-use Drupal\par_flows\Entity\ParFlowInterface;
 use Drupal\par_forms\ParFormPluginInterface;
-use Drupal\user\Entity\User;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ParFlowDataHandler implements ParFlowDataHandlerInterface {
 
@@ -26,39 +23,39 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * The PAR Flow Negotiator.
    *
-   * @var \Drupal\par_flows\ParFlowNegotiatorInterface
+   * @var ParFlowNegotiatorInterface $negotiator
    */
-  public $negotiator;
+  public ParFlowNegotiatorInterface $negotiator;
 
   /**
    * The PAR data manager for acting upon PAR Data.
    *
-   * @var \Drupal\par_data\ParDataManagerInterface
+   * @var ParDataManagerInterface $parDataManager
    */
-  protected $parDataManager;
+  protected ParDataManagerInterface $parDataManager;
 
   /**
    * The PAR data manager for acting upon PAR Data.
    *
-   * @var \Drupal\Core\Session\SessionManagerInterface
+   * @var SessionManagerInterface $sessionManager
    */
-  protected $sessionManager;
+  protected SessionManagerInterface $sessionManager;
 
   /**
    * The current user account.
    *
-   * @var \Drupal\Core\Session\AccountInterface
+   * @var AccountInterface $account
    */
-  protected $account;
+  protected AccountInterface $account;
 
   /**
-   * The private temporary storage for persisting multi-step form data.
+   * The private temporary storage for persisting multistep form data.
    *
    * Each key (form) will last 1 week since it was last updated.
    *
-   * @var \Drupal\Core\TempStore\PrivateTempStore
+   * @var PrivateTempStore $store
    */
-  protected $store;
+  protected PrivateTempStore $store;
 
   /**
    * The data parameters loaded from the route.
@@ -66,36 +63,36 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    * Enables route variables to be fetched, but also overridden
    * by the implementing form/controller.
    *
-   * @var \Symfony\Component\HttpFoundation\ParameterBag
+   * @var array|ParameterBag $parameters
    */
-  protected $parameters = [];
+  protected iterable $parameters = [];
 
   /**
    * The raw data parameters.
    *
-   * @var \Symfony\Component\HttpFoundation\ParameterBag
+   * @var array|ParameterBag $parameters
    */
-  protected $rawParameters = [];
+  protected iterable $rawParameters = [];
 
   /**
    * Caches data loaded from the permanent store.
    *
-   * @var array
+   * @var array $data
    */
-  protected $data = [];
+  protected array $data = [];
 
   /**
    * Constructs a ParFlowDataHandler instance.
    *
-   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
+   * @param PrivateTempStoreFactory $temp_store_factory
    *   The private temporary store.
-   * @param \Drupal\par_flows\ParFlowNegotiatorInterface $entity_type_manager
-   *   The entity type manager.
-   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
+   * @param ParFlowNegotiatorInterface $negotiator
+   *   The flow negotiator.
+   * @param ParDataManagerInterface $par_data_manager
    *   The par data manager.
-   * @param \Drupal\Core\Session\SessionManagerInterface $session_manager
+   * @param SessionManagerInterface $session_manager
    *   The session manager.
-   * @param \Drupal\Core\Session\AccountInterface $current_user
+   * @param AccountInterface $current_user
    *   The entity bundle info service.
    */
   public function __construct(PrivateTempStoreFactory $temp_store_factory, ParFlowNegotiatorInterface $negotiator, ParDataManagerInterface $par_data_manager, SessionManagerInterface $session_manager, AccountInterface $current_user) {

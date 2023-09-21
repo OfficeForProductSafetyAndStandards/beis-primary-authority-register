@@ -19,7 +19,7 @@ trait ParFlowAccessTrait {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL): AccessResult {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);

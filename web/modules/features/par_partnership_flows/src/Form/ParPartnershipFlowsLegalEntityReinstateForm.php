@@ -41,7 +41,7 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_le = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_le = NULL): AccessResult {
 
     // Limit access to partnership pages.
     $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
