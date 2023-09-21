@@ -222,7 +222,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
    * @return bool
    */
   public function isCoordinatedMember() {
-    $query = \Drupal::entityQuery('par_data_coordinated_business');
+    $query = \Drupal::entityQuery('par_data_coordinated_business')->accessCheck();
 
     $query->condition('field_organisation', [$this->id()], 'IN');
 

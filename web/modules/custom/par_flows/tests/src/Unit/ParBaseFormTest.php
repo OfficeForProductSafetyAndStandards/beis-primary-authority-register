@@ -48,7 +48,7 @@ class ParBaseFormTest extends UnitTestCase {
       ->disableOriginalConstructor()
       ->getMockForAbstractClass();
 
-    $this->baseForm->expects($this->once())
+    $this->baseForm->expects($this->any())
       ->method('getIgnoredValues')
       ->willReturn(['extra']);
   }

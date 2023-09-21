@@ -383,7 +383,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    *
    * @return ?ParDataPartnership
    */
-  public function getPartnership() {
+  public function getPartnership(): ?ParDataPartnership {
     // Make sure not to request this more than once for a given entity.
     $partnership = &drupal_static(__FUNCTION__ . ':' . $this->uuid());
     if (isset($partnership)) {
