@@ -16,6 +16,7 @@ use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParFlowException;
+use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\par_flows\ParRedirectTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
@@ -32,19 +33,28 @@ class ParDashboardsDashboardController extends ControllerBase {
 
   /**
    * The response cache kill switch.
+   *
+   * @var KillSwitch $killSwitch
    */
-  protected $killSwitch;
+  protected KillSwitch $killSwitch;
 
   /**
-   * Constructs a \Drupal\par_flows\Form\ParBaseForm.
+   * The flow negotiator.
    *
-   * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flow_storage
+   * @var ConfigEntityStorageInterface $flowStorage
+   */
+  protected ConfigEntityStorageInterface $flowStorage;
+
+  /**
+   * Constructs a Par Form.
+   *
+   * @param ConfigEntityStorageInterface $flow_storage
    *   The flow entity storage handler.
-   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
+   * @param ParDataManagerInterface $par_data_manager
    *   The current user object.
-   * @param \Drupal\Core\Session\AccountInterface $current_user
+   * @param AccountInterface $current_user
    *   The current user object.
-   * @param \Drupal\Core\PageCache\ResponsePolicy\KillSwitch $kill_switch
+   * @param KillSwitch $kill_switch
    *   The page cache kill switch.
    */
   public function __construct(ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user, KillSwitch $kill_switch) {

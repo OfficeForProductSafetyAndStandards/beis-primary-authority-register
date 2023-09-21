@@ -59,7 +59,7 @@
         "drupal/ctools": "~4.0.0",
         "drupal/default_content": "~2.0.0",
         "drupal/email_registration": "~1.2.0",
-        "drupal/features": "~5.0.0",
+        "drupal/features": "~3.13.0",
         "drupal/flysystem": "~2.1.0",
         "drupal/flysystem_s3": "2.0.x-dev",
         "drupal/google_analytics": "~4.0.0",

@@ -155,7 +155,7 @@ class ParReviewForm extends ParBaseForm {
       $dispatcher = \Drupal::service('event_dispatcher');
       $event = new ParDataEvent($par_data_partnership);
       $action = ParDataEvent::customAction($par_data_partnership->getEntityTypeId(), 'amendment_nominated');
-      $dispatcher->dispatch($action, $event);
+      $dispatcher->dispatch($event, $action);
     }
     else {
       $message = $this->t('The partnership amendments for the @partnership could not be nominated, there were no legal entities to be updated.');

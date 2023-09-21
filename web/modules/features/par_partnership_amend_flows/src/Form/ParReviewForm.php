@@ -196,7 +196,7 @@ class ParReviewForm extends ParBaseForm {
       $dispatcher = \Drupal::service('event_dispatcher');
       $event = new ParDataEvent($par_data_partnership);
       $action = ParDataEvent::customAction($par_data_partnership->getEntityTypeId(), 'amendment_submitted');
-      $dispatcher->dispatch($action, $event);
+      $dispatcher->dispatch($event, $action);
     }
     // Log an error.
     else {

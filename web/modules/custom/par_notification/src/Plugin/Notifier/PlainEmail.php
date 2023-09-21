@@ -117,7 +117,7 @@ class PlainEmail extends MessageNotifierBase {
 
     // Allow the message to be altered and personalised prior to sending.
     $event = new ParNotificationEvent($this->message, $mail, $output);
-    $this->getEventDispatcher()->dispatch(ParNotificationEvent::SEND, $event);
+    $this->getEventDispatcher()->dispatch($event, ParNotificationEvent::SEND);
     $output = $event->getOutput();
 
     // The subject in an email can't be with HTML, so strip it.

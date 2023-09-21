@@ -12,11 +12,11 @@ class ParSubscriptionPermissions implements ContainerInjectionInterface {
   use StringTranslationTrait;
 
   /**
-   * The entity manager.
+   * The subscription manager.
    *
-   * @var \Drupal\Core\Entity\EntityManagerInterface
+   * @var ParSubscriptionManagerInterface $subscriptionManager
    */
-  protected $parDataManager;
+  protected ParSubscriptionManagerInterface $subscriptionManager;
 
   /**
    * Constructs a subscription permissions.
