@@ -318,9 +318,24 @@ function cf_teardown {
             fi
 
             ## In some instances service keys may also have to be deleted
-            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $PG_BACKING_SERVICE'\n"
+            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $REDIS_BACKING_SERVICE'\n"
 
             cf delete-service -f $REDIS_BACKING_SERVICE
+        fi
+
+        ## Remove any opensearch backing services, unbind services first
+        if cf service $OS_BACKING_SERVICE >/dev/null 2>&1; then
+            if cf app beis-par-$ENV >/dev/null 2>&1; then
+                cf unbind-service beis-par-$ENV $OS_BACKING_SERVICE
+            fi
+            if [[ $ENV_ONLY != y ]] && cf app beis-par-$ENV-green >/dev/null 2>&1; then
+                cf unbind-service beis-par-$ENV-green $OS_BACKING_SERVICE
+            fi
+
+            ## In some instances service keys may also have to be deleted
+            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $OS_BACKING_SERVICE'\n"
+
+            cf delete-service -f $OS_BACKING_SERVICE
         fi
 
         ## Remove the main app if it exists
