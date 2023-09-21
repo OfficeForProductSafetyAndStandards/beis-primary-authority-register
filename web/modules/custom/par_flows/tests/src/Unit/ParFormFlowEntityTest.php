@@ -28,17 +28,17 @@ class ParFormFlowEntityTest extends UnitTestCase {
   /**
    * The current route for any given test.
    */
-  protected $currentRoute = 'par_test_forms.second';
+  protected string $currentRoute = 'par_test_forms.second';
 
   /**
    * The simulated previous step route for any given test.
   */
-  protected $previousRoute = 'par_test_forms.first';
+  protected string $previousRoute = 'par_test_forms.first';
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $values = array(
@@ -76,7 +76,7 @@ class ParFormFlowEntityTest extends UnitTestCase {
       ],
     );
     $this->testFlow = $this->getMockBuilder('Drupal\par_flows\Entity\ParFlow')
-      ->setMethods(['getCurrentRoute'])
+      ->onlyMethods(['getCurrentRoute'])
       ->setConstructorArgs([$values, 'par_flow'])
       ->getMock();
 
@@ -89,7 +89,7 @@ class ParFormFlowEntityTest extends UnitTestCase {
     $this->assertEquals('test', $this->testFlow->id());
   }
 
-  public function getCurrentRoute() {
+  public function getCurrentRoute(): string {
     return $this->currentRoute;
   }
 
@@ -136,7 +136,6 @@ class ParFormFlowEntityTest extends UnitTestCase {
    * @covers ::progress
    */
   public function progress() {
-
     // Check previous step via custom redirect operation.
     $prev_url = $this->testFlow->progress('custom_step');
 

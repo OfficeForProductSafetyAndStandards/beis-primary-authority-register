@@ -112,7 +112,7 @@ class ParNotificationTestBase extends ParDataTestBase
     $container = \Drupal::getContainer();
 
     $this->message_handler = $this->getMockBuilder('Drupal\par_notification\ParMessageHandler')
-      ->setMethods(['getSubscribedEvents', 'onEvent'])
+      ->onlyMethods(['getSubscribedEvents', 'onEvent'])
       ->disableOriginalConstructor()
       ->getMock();
     $container->set('par_notification.new_deviation_reply_subscriber', $this->new_deviation_response_subscriber);
