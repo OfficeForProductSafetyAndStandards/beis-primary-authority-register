@@ -361,7 +361,7 @@ function cf_poll_app {
 function cf_poll_service {
     I=1
     printf "Waiting for $1 backing service...\n"
-    while [[ $(cf service $1 | awk -F '  +' '/status:/ {print $2}' | grep 'in progress') ]]
+    while [[ $(cf service $1 | awk -F '  +' '/status:/ {print $3}' | grep 'in progress') ]]
     do
       printf "%0.s-" $(seq 1 $I)
       sleep 2
@@ -451,7 +451,6 @@ if [[ $ENV = "production" ]] || [[ $ENV = "staging" ]]; then
     OS_PLAN='small-ha-1'
 else
     ## The free plan can be used for any non-critical environments
-#    PG_PLAN='tiny-unencrypted-11' @TODO DB is currently too large for this plan.
     PG_PLAN='small-13'
     REDIS_PLAN='tiny-6.x'
     OS_PLAN='tiny-1'
