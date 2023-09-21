@@ -72,11 +72,11 @@ class ParDataTestBase extends EntityKernelTestBase {
   ];
 
   /**
-   * @var AccountInterface
+   * @var AccountInterface $account
    */
-  protected $account;
+  protected AccountInterface $account;
 
-  protected $permissions = [
+  protected array $permissions = [
     'access content',
     'access par_data_advice entities',
     'access par_data_authority entities',
@@ -302,7 +302,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     $this->installSchema('file', ['file_usage']);
   }
 
-  public function createFile() {
+  public function createFile(): FileInterface {
     // Create a new file entity.
     $filename = "par-test.{$this->randomMachineName()}.txt";
     $file = File::create([
@@ -318,7 +318,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $file;
   }
 
-  public function getBaseValues() {
+  public function getBaseValues(): array {
     return [
       'uid' => $this->account->id(),
       'type' => 'UNKNOWN',
@@ -326,7 +326,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     ];
   }
 
-  public function getAdviceValues($values = []) {
+  public function getAdviceValues(?array $values = []): array {
     // We need to create a Regulatory Function first.
     $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryFunctionValues());
     $regulatory_function->save();
@@ -352,7 +352,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getAuthorityValues($values = []) {
+  public function getAuthorityValues(?array $values = []): array {
     // We need to create a Person first.
     $person = ParDataPerson::create($this->getPersonValues());
     $person->save();
@@ -389,7 +389,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getEnforcementActionValues($values = []) {
+  public function getEnforcementActionValues(?array $values = []): array {
     // We need to create an Advice first.
     $advice = ParDataAdvice::create($this->getAdviceValues());
     $advice->save();
@@ -418,7 +418,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getEnforcementNoticeValues($values = []) {
+  public function getEnforcementNoticeValues(?array $values = []): array {
     // We need to create an Enforcing Authority first.
     $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
     $enforcing_authority->save();
@@ -473,7 +473,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getDeviationRequestValues($values = []) {
+  public function getDeviationRequestValues(?array $values = []): array {
     // We need to create an Enforcing Authority first.
     $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
     $enforcing_authority->save();
@@ -518,7 +518,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getInspectionFeedbackValues($values = []) {
+  public function getInspectionFeedbackValues(?array $values = []): array {
     // We need to create an Enforcing Authority first.
     $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
     $enforcing_authority->save();
@@ -563,7 +563,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getGeneralEnquiryValues($values = []) {
+  public function getGeneralEnquiryValues(?array $values = []): array {
     // We need to create an Enforcing Authority first.
     $enforcing_authority = ParDataAuthority::create($this->getAuthorityValues());
     $enforcing_authority->save();
@@ -606,7 +606,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getInspectionPlanValues($values = []) {
+  public function getInspectionPlanValues(?array $values = []): array {
     $regulatory_function = ParDataRegulatoryFunction::create($this->getRegulatoryFunctionValues());
     $regulatory_function->save();
 
@@ -633,7 +633,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getLegalEntityValues($values = []) {
+  public function getLegalEntityValues(?array $values = []): array {
     $values += [
         'type' => 'legal_entity',
         'registry' => ParDataLegalEntity::DEFAULT_REGISTER,
@@ -645,7 +645,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getPartnershipLegalEntityValues($values = []) {
+  public function getPartnershipLegalEntityValues(?array $values = []): array {
     $legal_entity = ParDataLegalEntity::create($this->getLegalEntityValues());
     $legal_entity->save();
 
@@ -659,7 +659,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getOrganisationValues($values = []) {
+  public function getOrganisationValues(?array $values = []): array {
     // We need to create an SIC Code first.
     $sic_code = ParDataSicCode::create($this->getSicCodeValues());
     $sic_code->save();
@@ -708,7 +708,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getCoordinatedBusinessValues($values = []) {
+  public function getCoordinatedBusinessValues(?array $values = []): array {
     // We need to create an Organisation Member first.
     $organisation_1 = ParDataOrganisation::create(['organisation_name' => 'Member ' . rand(0, 1)] + $this->getOrganisationValues());
     $organisation_1->save();
@@ -727,7 +727,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getDirectPartnershipValues($values = []) {
+  public function getDirectPartnershipValues(?array $values = []): array {
     // We need to create an Organisation first.
     $organisation = ParDataOrganisation::create($this->getOrganisationValues());
     $organisation->save();
@@ -804,7 +804,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getCoordinatedPartnershipValues($values = []) {
+  public function getCoordinatedPartnershipValues(?array $values = []): array {
     // We need to create an Organisation first.
     $organisation = ParDataOrganisation::create($this->getOrganisationValues());
     $organisation->save();
@@ -903,7 +903,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getPersonValues($values = []) {
+  public function getPersonValues(?array $values = []): array {
     $values += [
         'type' => 'person',
         'salutation' => 'Mrs',
@@ -925,7 +925,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getPremisesValues($values = []) {
+  public function getPremisesValues(?array $values = []): array {
     $values += [
         'type' => 'premises',
         'address' => [
@@ -943,7 +943,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getRegulatoryFunctionValues($values = []) {
+  public function getRegulatoryFunctionValues(?array $values = []): array {
     $values += [
         'type' => 'regulatory_function',
         'function_name' => 'Health and Safety',
@@ -952,7 +952,7 @@ class ParDataTestBase extends EntityKernelTestBase {
     return $values;
   }
 
-  public function getSicCodeValues($values = []) {
+  public function getSicCodeValues(?array $values = []): array {
     $values += [
         'type' => 'sic_code',
         'sic_code' => '012345',
