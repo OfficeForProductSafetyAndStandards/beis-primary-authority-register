@@ -32,7 +32,7 @@ RUN PHP_DEPS="\
     && DEBIAN_FRONTEND=noninteractive apt-get install -y $PHP_DEPS \
     && pecl install redis \
     && docker-php-ext-install -j$(nproc) $PHP_EXTENSIONS \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 # Enable the requisite Apache modules.
 RUN a2enmod rewrite \
@@ -80,7 +80,7 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
     " \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends --no-upgrade $NODE_DEPS \
-    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
     && for key in \
       4ED778F539E3634C779C87C6D7062848A1AB005C \
       141F07595B7B3FFE74309A937405533BE57C7D57 \
@@ -164,7 +164,7 @@ RUN apt-get update \
     && sh -c 'echo "deb [signed-by=/etc/apt/keyrings/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends --no-upgrade $BUILD_PACKAGES \
-    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
     && rm -rf /etc/apt/sources.list.d/cloudfoundry-cli.list \
     && rm -rf /etc/apt/sources.list.d/hashicorp.list \
     && rm -rf /etc/apt/sources.list.d/pgdg.list \
@@ -197,7 +197,7 @@ ARG BUILD_DEPS="\
 # Install java dependencies.
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends --no-upgrade $BUILD_DEPS \
-    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
     && java --version
 
 # Install Maven
@@ -284,21 +284,30 @@ RUN echo "Using Firefox version: $FIREFOX_VERSION" \
     && ln -fs /opt/firefox-$FIREFOX_VERSION/firefox /usr/bin/firefox
 
 # Install chrome
+# See https://chromedriver.chromium.org/downloads/version-selection && https://github.com/SeleniumHQ/docker-selenium
+ARG CHROME_CHANNEL="google-chrome-stable"
 RUN curl -sS https://dl.google.com/linux/linux_signing_key.pub | gpg -o /etc/apt/keyrings/google.gpg --dearmor \
     && sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/google.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list' \
     && apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends --no-upgrade google-chrome-stable \
-    && rm -rf /var/lib/apt/lists/* \
+    && echo "Using Google Chrome from: "$CHROME_CHANNEL \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends --no-upgrade \
+      ${CHROME_CHANNEL:-google-chrome-stable} \
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
     && rm -rf /etc/apt/sources.list.d/google-chrome.list \
     && google-chrome --version
 
-RUN export CHROMEDRIVER_VERSION=$(curl --location --fail --retry 3 http://chromedriver.storage.googleapis.com/LATEST_RELEASE) \
-    && export CHROMEDRIVER_DOWNLOAD_URL="https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" \
-    && curl -Ls --show-error --fail --retry 3 --output /tmp/chromedriver_linux64.zip $CHROMEDRIVER_DOWNLOAD_URL \
+# Install Chromedriver
+# Must match the major version of chrome.
+RUN CHROME_MAJOR_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9]+)(\.[0-9]+){3}.*/\1/") \
+    && CHROMEDRIVER_VERSION=$(curl -Ls https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_"$CHROME_MAJOR_VERSION") \
+    && CHROMEDRIVER_DOWNLOAD_URL=https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/"$CHROMEDRIVER_VERSION"/linux64/chromedriver-linux64.zip \
+    && echo "Using ChromeDriver from: $CHROMEDRIVER_DOWNLOAD_URL" \
+    && echo "Using ChromeDriver version: $CHROMEDRIVER_VERSION" \
+    && curl -Ls --show-error --fail --retry 3 --output /tmp/chromedriver_linux64.zip "$CHROMEDRIVER_DOWNLOAD_URL" \
     && cd /tmp \
     && unzip chromedriver_linux64.zip \
     && rm -rf chromedriver_linux64.zip \
-    && mv chromedriver /opt/google/chromedriver-$CHROMEDRIVER_VERSION \
-    && chmod +x /opt/google/chromedriver-$CHROMEDRIVER_VERSION \
-    && ln -fs /opt/google/chromedriver-$CHROMEDRIVER_VERSION /usr/bin/chromedriver \
+    && mv chromedriver-linux64/chromedriver /opt/google/chromedriver-"$CHROMEDRIVER_VERSION" \
+    && chmod +x /opt/google/chromedriver-"$CHROMEDRIVER_VERSION" \
+    && ln -fs /opt/google/chromedriver-"$CHROMEDRIVER_VERSION" /usr/bin/chromedriver \
     && chromedriver --version
