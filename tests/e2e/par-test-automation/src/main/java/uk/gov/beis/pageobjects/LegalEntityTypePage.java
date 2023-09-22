@@ -10,19 +10,31 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.helper.ScenarioContext;
 
 public class LegalEntityTypePage extends BasePageObject {
+	
+	@FindBy(id = "edit-par-component-legal-entity-0-registry-companies-house")
+	private WebElement registeredOrganisationRadial;
+	
+	@FindBy(id = "edit-par-component-legal-entity-0-registry-charity-commission")
+	private WebElement charityRadial;
+	
+	@FindBy(id = "edit-par-component-legal-entity-0-registry-internal")
+	private WebElement unregisteredEntityRadial;
+	
+	@FindBy(id = "edit-par-component-legal-entity-0-registered-legal-entity-number")
+	private WebElement registrationNumberTextbox;
+	
+	@FindBy(id = "edit-par-component-legal-entity-0-unregistered-legal-entity-name")
+	private WebElement legalEnityNameTextbox;
+	
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
 
+	String legalEntType = "//label[contains(text(),'?')]";
+	
 	public LegalEntityTypePage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
-
-	@FindBy(id = "edit-par-component-legal-entity-0-registered-legal-entity-number")
-	WebElement regNo;
-
-	String legalEntType = "//label[contains(text(),'?')]";
-
+	
 	public LegalEntityReviewPage selectEntityType(String name, String type, String reg) {
 		if (!type.equalsIgnoreCase("unregistered")) {
 			ScenarioContext.registered = true;
@@ -34,7 +46,48 @@ public class LegalEntityTypePage extends BasePageObject {
 			driver.findElement(By.xpath("//label[contains(text(),'Other')]")).click();
 			driver.findElement(By.xpath("//input[@class='form-group form-text form-control govuk-input']")).sendKeys(name);
 		}
+		
 		continueBtn.click();
+		
+		return PageFactory.initElements(driver, LegalEntityReviewPage.class);
+	}
+	
+	public LegalEntityReviewPage selectRegisteredOrganisation(String registrationNumber) {
+		
+		registeredOrganisationRadial.click();
+		
+		if(registeredOrganisationRadial.isSelected()) {
+			registrationNumberTextbox.sendKeys(registrationNumber);
+			continueBtn.click();
+		}
+		
+		return PageFactory.initElements(driver, LegalEntityReviewPage.class);
+	}
+	
+	public LegalEntityReviewPage selectCharity(String registrationNumber) {
+		
+		charityRadial.click();
+		
+		if(charityRadial.isSelected()) {
+			registrationNumberTextbox.sendKeys(registrationNumber);
+			continueBtn.click();
+		}
+		
+		return PageFactory.initElements(driver, LegalEntityReviewPage.class);
+	}
+	
+	public LegalEntityReviewPage selectUnregisteredEntity(String entityType, String legalEntityName) {
+		
+		unregisteredEntityRadial.click();
+		
+		if(unregisteredEntityRadial.isSelected()) {
+			
+			driver.findElement(By.xpath(legalEntType.replace("?", entityType))).click();
+			
+			legalEnityNameTextbox.sendKeys(legalEntityName);
+			continueBtn.click();
+		}
+		
 		return PageFactory.initElements(driver, LegalEntityReviewPage.class);
 	}
 }

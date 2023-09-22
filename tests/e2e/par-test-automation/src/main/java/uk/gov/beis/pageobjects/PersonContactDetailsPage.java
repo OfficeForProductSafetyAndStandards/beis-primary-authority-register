@@ -112,6 +112,11 @@ public class PersonContactDetailsPage extends BasePageObject {
 		setContactDetails(person);
 	}
 	
+	public EnterTheDatePage clickContinueButtonForMemberContact() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, EnterTheDatePage.class);
+	}
+	
 	public PersonAccountPage clickContinueButton() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, PersonAccountPage.class);

@@ -58,7 +58,6 @@ Feature: General
     Then all of the Partnership details have been updated successfully
 
   # Update Legal Entities test here.
-  
   @regression @direct @update
   Scenario: Add, Update and Remove a Primary Authority Contact for a Partnership with a User Account Invite Successfully (Happy Path - PAR-2242)
     Given the user is on the PAR login page
@@ -185,20 +184,20 @@ Feature: General
       | Enforcement Action | Title                            | Regulatory Function | Description       | Attachment |
       | Proposed           | Enforcement Notice to be Blocked | Cookie control      | Test Enforcement. | link.txt   |
     Then all the fields for the enforcement notice are updated correctly
-		#Block the Enforcement Notice
+    #Block the Enforcement Notice
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user selects the last created enforcement notice
     And the user blocks the enforcement notice with the following reason: "Test Block"
     Then the enforcement notice is set to blocked status
-	
+
   @regression @enforcement @enquiry
   Scenario: Verify the Discussion of an Enforcement Notice (Happy Path - PAR-2272)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created partnership
     And the user sends a general enquiry for an enforcement notice with the following details:
-      | Description  |
+      | Description            |
       | Enforcement Discussion |
     Then the Enquiry is created Successfully
     #Re-login as primary authority and check the enquiry
@@ -206,23 +205,23 @@ Feature: General
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created general enquiry
     Then the user successfully views the enquiry
-  
+
   @regression @deviationrequest
   Scenario: Verify a Deviation Request can be Blocked (Happy Path - PAR-2275)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created partnership
     And the user submits a deviation request against an inspection plan with the following details:
-      | Description |
-      | Deviation Request to be Blocked      |
-   	Then the Deviation Request is created Successfully
+      | Description                     |
+      | Deviation Request to be Blocked |
+    Then the Deviation Request is created Successfully
     #Re-login as primary authority and check thedeviation request
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created deviation request
     And the user blocks the deviation request with the following reason: "Test Block"
     Then the deviation request is set to blocked status
-      
+
   @regression @deviationrequest
   Scenario: Verify Submission of Deviation request following an Inspection plan (Happy Path - PAR-1857, PAR-1859)
     Given the user is on the PAR login page
@@ -324,15 +323,15 @@ Feature: General
     #remove the inspection plan
     When the user has revoked the last created inspection plan
     Then the inspection plan is successfully removed
-	
-	@regression @deletePartnership
+
+  @regression @deletePartnership
   Scenario: Verify a Nominated Partnership can be Deleted (Happy Path - PAR-2277)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created partnership
-		Then the user can Delete the Partnership Successfully with the following reason: "Partnership is Incorrect."
-  
-  @regression @partnershipapplication @coordinated
+    Then the user can Delete the Partnership Successfully with the following reason: "Partnership is Incorrect."
+
+  @regression @partnershipapplication @coordinated @organisationMember
   Scenario: Verify Coordinated Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -352,7 +351,7 @@ Feature: General
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created partnership
 
-  @regression @partnershipapplication @coordinated
+  @regression @partnershipapplication @coordinated @organisationMember
   Scenario: Successfully Nominate a Coordinated Partnership (Happy Path - PAR-2261)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -362,6 +361,16 @@ Feature: General
     Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
 
   # Add, Update and Cease a Member Test goes here.
+  @regression @coordinated @organisationMember
+  Scenario: Verify Addition of a Single Member Organisation to a Coordinated partnership (Happy Path - PAR-1868)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user adds a single member organisation to the patnership with the following details:
+      | Organisation Name    | Address Line 1 | Address Line 2 | Town City  | County             | Postcode | Title | WorkNumber  | MobileNumber | Legal Entity Type | Legal Entity Name |
+      | Testing Organisation | 02 New Street  | Market Hall    | Manchester | Greater Manchester | BL2 4BL  | Dr    | 02345678901 |  07890123456 | Sole trader       | Testing Co.       |
+    Then the user member organistion has been added to the partnership successfully
+
   # Upload a Members list Test goes here.
   # Change the Members list type Test goes here.
   @regression @usermanagement
