@@ -3,7 +3,7 @@ Feature: General
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
 
-  @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @deletePartnership
+  @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice
   Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -26,7 +26,7 @@ Feature: General
     And the user updates the partnership information with the following info: "Updated Partnership info"
     Then the partnership is updated correctly
 
-  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct @update @deletePartnership
+  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct @update
   Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -331,7 +331,35 @@ Feature: General
     When the user searches for the last created partnership
     Then the user can Delete the Partnership Successfully with the following reason: "Partnership is Incorrect."
 
-  @regression @partnershipapplication @coordinated @organisationMember
+  @regression @partnershipapplication @coordinated @organisationMember	
+	@regression @direct @deletePartnership
+  Scenario: Verify a Nominated Direct Partnership can be Deleted Successfully (Happy Path - PAR-2277)
+    Given the user is on the PAR home page
+    And the user visits the login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user creates a new "Direct" partnership application with the following details:
+      | Authority | Partnership Info      | firstname  | lastname  | phone   | addressline1  | town    | postcode |
+      | Lower     | Test partnership info | Test First | test last | 9797878 | 32 Bramtom Rd | Windsor | SL4 5PN  |
+    Then the first part of the partnership application is successfully completed
+    #second part of partnership application
+    When the user searches for the last created partnership
+    And the user completes the partnership application with the following details:
+      | SIC Code            | No of Employees | Legal Entity Name | Legal entity Type | Company number | Business Description |
+      | allow people to eat | 10 to 49        | LE1               | unregistered      |       12345678 | Test Business        |
+    Then the second part of the partnership application is successfully completed
+		# Nominate the Partnership
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user approves the partnership
+    And the user searches again for the last created partnership
+    Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
+		# Delete the Partnership
+    When the user Deletes the Partnership with the following reason: "Partnership is incorrect."
+    Then the Partnership was Deleted Successfully
+  
+  @regression @partnershipapplication @coordinated
   Scenario: Verify Coordinated Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
     Given the user is on the PAR home page
     And the user visits the login page
