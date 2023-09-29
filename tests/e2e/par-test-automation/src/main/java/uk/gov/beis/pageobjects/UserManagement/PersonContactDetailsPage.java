@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.UserManagement;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,6 +12,8 @@ import org.openqa.selenium.support.PageFactory;
 
 import cucumber.api.DataTable;
 import uk.gov.beis.enums.UsableValues;
+import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.DashboardPage;
 import uk.gov.beis.utility.DataStore;
 
 public class PersonContactDetailsPage extends BasePageObject {
@@ -54,6 +56,27 @@ public class PersonContactDetailsPage extends BasePageObject {
 	
 	public PersonContactDetailsPage() throws ClassNotFoundException, IOException {
 		super();
+	}
+	
+	public void addContactDetails(DataTable details) {
+		clearAllFields();
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.PERSON_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, data.get("Firstname")); 
+			DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, data.get("Lastname"));
+			DataStore.saveValue(UsableValues.PERSON_WORK_NUMBER, data.get("WorkNumber"));
+			DataStore.saveValue(UsableValues.PERSON_MOBILE_NUMBER, data.get("MobileNumber"));
+			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, data.get("Email"));
+		}
+		
+		titleField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
+		firstnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME));
+		lastnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME));
+		workPhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
+		mobilePhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
+		emailAddressField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 	}
 	
 	public void enterContactDetails(DataTable person) {

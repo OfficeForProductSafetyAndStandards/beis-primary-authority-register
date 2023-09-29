@@ -105,52 +105,67 @@ Feature: Other
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for an existing person successfully
     And the user updates an existing person:
-      | Title | WorkNumber | MobileNumber |
+      | Title | WorkNumber  | MobileNumber |
       | Dr    | 01204996501 |  07405882265 |
     Then the user can verify the person was updated successfully and can see resend an account invite
-    
+
+  @regression @helpDesk @managePeople @mergeContact
+  Scenario: Verify the Successful Merge of a Contact Record for a User Profile (Happy Path - PAR-2288)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    When the user creates a new contact with the following details:
+      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                     |
+      | Mr    | Kermit    | the Frog | 01723456789 |   0777777777 | par_authority@example.com |
+    Then the user can verify the contact record was added to the user profile
+    # Merge the Contact Record
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for an existing person successfully
+    And the user merges the contact record
+    Then the user can verify the contact record was merged successfully
+
   @regression @homePageLinks
   Scenario: Verify a User can view Guidance for Local Regulation Primary Authority Successfully (Happy Path - PAR-2289)
     Given the user is on the PAR home page
     When the user selects the Read more about Primary Authority link
     Then the user is taken to the GOV.UK Guidance page for Local regulation Primary Authority Successfully
-    
+
   @regression @homePageLinks
   Scenario: Verify a User can view the Collection of Primary Authority Documents Successfully (Happy Path - PAR-2290)
     Given the user is on the PAR home page
     When the user selects the Access tools and templates for local authorities link
     Then the user is taken to the GOV.UK Collection page for Primary Authority Documents Successfully
-    
+
   @regression @homePageLinks
   Scenario: Verify a User can view the Terms and Conditions Successfully (Happy Path - PAR-2291)
     Given the user is on the PAR home page
     When the user selects the Terms and Conditions link
     Then the user is taken to the GOV.UK Guidance page for Primary Authority terms and conditions Successfully
-    
+
   @regression @homePageLinks
   Scenario: Verify a User can view and Accept Analytics Cookies Successfully (Happy Path - PAR-2292)
     Given the user is on the PAR home page
     When the user selects the Cookies link
     Then the user is taken to the Cookies page and can accept the Analytics Cookies Successfully
-    
+
   @regression @homePageLinks
   Scenario: Verify a User can view the OPSS Privacy Notice Successfully (Happy Path - PAR-2293)
     Given the user is on the PAR home page
     When the user selects the Privacy link
     Then the user is taken to the GOV.UK Corporate report OPSS Privacy notice page Successfully
-    
+
   @regression @homePageLinks
   Scenario: Verify a User can view the Primary Authority Register Accessibility Statement Successfully (Happy Path - PAR-2294)
     Given the user is on the PAR home page
     When the user selects the Accessibility link
     Then the user is taken to the GOV.UK Guidance page for the Primary Authority Register accessibility statement Successfully
-    
+
   @regression @homePageLinks
   Scenario: Verify a User can view the Open Government Licence Successfully (Happy Path - PAR-2295)
     Given the user is on the PAR home page
     When the user selects the Open Government Licence link
     Then the user is taken to the Open Government Licence for public sector information page Successfully
-    
+
   @regression @homePageLinks
   Scenario: Verify a User can view the Crown Copyright Successfully (Happy Path - PAR-2296)
     Given the user is on the PAR home page

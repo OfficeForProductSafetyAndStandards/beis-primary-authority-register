@@ -1,10 +1,13 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.UserManagement;
 
 import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.DashboardPage;
 
 public class PersonCreateAccountPage extends BasePageObject {
 	

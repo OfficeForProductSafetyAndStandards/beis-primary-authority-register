@@ -1,12 +1,15 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.UserManagement;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
+import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.UpdateUserContactDetailsPage;
 import uk.gov.beis.utility.DataStore;
 
 public class PersonsProfilePage extends BasePageObject {
@@ -37,7 +40,10 @@ public class PersonsProfilePage extends BasePageObject {
 
 	@FindBy(id = "contact-detail-locations-1")
 	private WebElement whereToContactDetails;
-
+	
+	@FindBy(linkText = "merge contact records")
+	private WebElement mergeContactRecordsLink;
+	
 	@FindBy(linkText = "Done")
 	private WebElement doneBtn;
 	
@@ -91,12 +97,7 @@ public class PersonsProfilePage extends BasePageObject {
 		
 		return numbersDisplayed;
 	}
-
-	public UpdateUserContactDetailsPage clickUpdateUserButton() {
-		updateUserBtn.click();
-		return PageFactory.initElements(driver, UpdateUserContactDetailsPage.class);
-	}
-
+	
 	public Boolean seeMoreContactInformation() {
 		moreInformationBtn.click();
 		
@@ -113,6 +114,28 @@ public class PersonsProfilePage extends BasePageObject {
 		return locationsDisplayed;
 	}
 
+	public Boolean checkContactRecordAdded() {
+		String contactsNameLocator = "//p[contains(text(), '?')]";
+		
+		return driver.findElements(By.xpath(contactsNameLocator.replace("?", getPersonsName()))).size() > 1;
+	}
+	
+	public Boolean checkContactRecord() {
+		String contactsNameLocator = "//p[contains(text(), '?')]";
+		
+		return driver.findElements(By.xpath(contactsNameLocator.replace("?", getPersonsName()))).size() == 1;
+	}
+	
+	public UpdateUserContactDetailsPage clickUpdateUserButton() {
+		updateUserBtn.click();
+		return PageFactory.initElements(driver, UpdateUserContactDetailsPage.class);
+	}
+
+	public MergeContactRecordsPage clickMergeContactRecords() {
+		mergeContactRecordsLink.click();
+		return PageFactory.initElements(driver, MergeContactRecordsPage.class);
+	}
+	
 	public ManagePeoplePage clickDoneButton() {
 		doneBtn.click();
 		return PageFactory.initElements(driver, ManagePeoplePage.class);
