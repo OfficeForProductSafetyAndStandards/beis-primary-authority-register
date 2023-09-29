@@ -8,13 +8,13 @@ import org.openqa.selenium.support.PageFactory;
 
 public class PartnershipApprovalPage extends BasePageObject {
 
+	@FindBy(id = "edit-done")
+	private WebElement doneBtn;
+	
 	public PartnershipApprovalPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(id = "edit-done")
-	WebElement doneBtn;
-
+	
 	public PartnershipAdvancedSearchPage completeApplication() {
 		doneBtn.click();
 		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
