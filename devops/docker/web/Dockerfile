@@ -1,5 +1,5 @@
 # beispar/app:latest
-FROM php:8.2.3-apache-buster as production
+FROM php:8.2-apache-buster as production
 
 # Configure PHP extensions
 ## Using php upgrade from https://github.com/chialab/docker-php
@@ -193,12 +193,20 @@ FROM dev as test
 
 # Install Java
 ARG BUILD_DEPS="\
-    default-jdk-headless"
-# Install java dependencies.
+    sudo \
+    lsb-release \
+    curl \
+    gnupg"
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends --no-upgrade $BUILD_DEPS \
+    && mkdir -p /etc/apt/keyrings \
+    && curl -sS https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /etc/apt/keyrings/adoptium.asc \
+    && sh -c 'echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/adoptium.list' \
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y temurin-8-jdk \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
-    && java --version
+    && rm -rf /etc/apt/sources.list.d/adoptium.list \
+    && java -version
 
 # Install Maven
 ## Using the maven installation from https://github.com/carlossg/docker-maven
@@ -308,6 +316,6 @@ RUN CHROME_MAJOR_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9]+)(\.[0-
     && unzip chromedriver_linux64.zip \
     && rm -rf chromedriver_linux64.zip \
     && mv chromedriver-linux64/chromedriver /opt/google/chromedriver-"$CHROMEDRIVER_VERSION" \
-    && chmod +x /opt/google/chromedriver-"$CHROMEDRIVER_VERSION" \
-    && ln -fs /opt/google/chromedriver-"$CHROMEDRIVER_VERSION" /usr/bin/chromedriver \
+    && ln -fs /opt/google/chromedriver-"$CHROMEDRIVER_VERSION" /usr/local/bin/chromedriver \
+    && chmod +x /usr/local/bin/chromedriver \
     && chromedriver --version
