@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.UserManagement;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,6 +11,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import uk.gov.beis.enums.UsableValues;
+import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.DashboardPage;
 import uk.gov.beis.utility.DataStore;
 
 public class PersonMembershipPage extends BasePageObject {
@@ -18,6 +20,7 @@ public class PersonMembershipPage extends BasePageObject {
 		super();
 	}
 
+	// Organisations
 	@FindBy(id = "edit-par-data-organisation-id-68")
 	private WebElement testBusinessCheckbox;
 	
@@ -30,6 +33,7 @@ public class PersonMembershipPage extends BasePageObject {
 	@FindBy(id = "edit-par-data-organisation-id-52")
 	private WebElement partnershipConfirmedByAuthorityCheckbox;
 	
+	// Authorities
 	@FindBy(id = "edit-par-data-authority-id-7")
 	private WebElement cityEnforcementSquadCheckbox;
 	
@@ -62,31 +66,45 @@ public class PersonMembershipPage extends BasePageObject {
 	private WebElement cancelBtn;
 	
 	public void selectTestBusiness() {
-		testBusinessCheckbox.click();
+		if(testBusinessCheckbox.isSelected()) {
+			testBusinessCheckbox.click();
+		}
 	}
 	
 	public void selectABCDMart() {
-		abcdMartCheckbox.click();
+		if(!abcdMartCheckbox.isSelected()) {
+			abcdMartCheckbox.click();
+		}
 	}
 	
 	public void selectDemolitionExperts() {
-		demolitionExpertsCheckbox.click();
+		if(!demolitionExpertsCheckbox.isSelected()) {
+			demolitionExpertsCheckbox.click();
+		}
 	}
 	
 	public void selectPartnershipConfirmedByAuthority() {
-		partnershipConfirmedByAuthorityCheckbox.click();
+		if(!partnershipConfirmedByAuthorityCheckbox.isSelected()) {
+			partnershipConfirmedByAuthorityCheckbox.click();
+		}
 	}
 	
 	public void selectCityEnforcementSquad() {
-		cityEnforcementSquadCheckbox.click();
+		if(!cityEnforcementSquadCheckbox.isSelected()) {
+			cityEnforcementSquadCheckbox.click();
+		}
 	}
 	
 	public void selectUpperWestSideBoroughCouncil() {
-		upperWestSideBoroughCouncilCheckbox.click();
+		if(!upperWestSideBoroughCouncilCheckbox.isSelected()) {
+			upperWestSideBoroughCouncilCheckbox.click();
+		}
 	}
 	
 	public void selectLowerEstSideBoroughCouncil() {
-		lowerEastSideBoroughCouncilCheckbox.click();
+		if(!lowerEastSideBoroughCouncilCheckbox.isSelected()) {
+			lowerEastSideBoroughCouncilCheckbox.click();
+		}
 	}
 	
 	// Help Desk Membership Selection Page Methods

@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.ScenarioContext;
+import uk.gov.beis.pageobjects.UserManagement.PersonContactDetailsPage;
 import uk.gov.beis.utility.DataStore;
 
 public class PartnershipConfirmationPage extends BasePageObject {

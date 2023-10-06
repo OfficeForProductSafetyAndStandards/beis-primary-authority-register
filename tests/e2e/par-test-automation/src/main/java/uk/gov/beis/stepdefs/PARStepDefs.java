@@ -20,6 +20,7 @@ import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.*;
 import uk.gov.beis.pageobjects.HomePageLinkPageObjects.*;
+import uk.gov.beis.pageobjects.UserManagement.*;
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
 
@@ -37,6 +38,10 @@ public class PARStepDefs {
 	private AccessibilityStatementPage accessibilityStatementPage;
 	private OpenGovernmentLicencePage openGovernmentLicencePage;
 	private CrownCopyrightPage crownCopyrightPage;
+	
+	// User Management
+	private MergeContactRecordsPage mergeContactRecordsPage;
+	private MergeContactRecordsConfirmationPage mergeContactRecordsConfirmationPage;
 	
 	// Next Section
 	private RevokeReasonInspectionPlanPage revokeReasonInspectionPlanPage;
@@ -164,6 +169,10 @@ public class PARStepDefs {
 		accessibilityStatementPage = PageFactory.initElements(driver, AccessibilityStatementPage.class);
 		openGovernmentLicencePage = PageFactory.initElements(driver, OpenGovernmentLicencePage.class);
 		crownCopyrightPage = PageFactory.initElements(driver, CrownCopyrightPage.class);
+		
+		// User Management
+		mergeContactRecordsPage = PageFactory.initElements(driver, MergeContactRecordsPage.class);
+		mergeContactRecordsConfirmationPage = PageFactory.initElements(driver, MergeContactRecordsConfirmationPage.class);
 		
 		// Next Section
 		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
@@ -1409,12 +1418,11 @@ public class PARStepDefs {
 		LOG.info("Successfully sent account invite.");
 
 		userProfileConfirmationPage.saveChanges();
-		userProfileCompletionPage.completeApplication();
+		userProfileCompletionPage.clickDoneGoToProfile();
 	}
 
 	@Then("^the user can verify the person was created successfully and can see resend an account invite$")
-	public void the_user_can_verify_the_person_was_created_successfully_and_can_see_resend_an_account_invite()
-			throws Throwable {
+	public void the_user_can_verify_the_person_was_created_successfully_and_can_see_resend_an_account_invite() throws Throwable {
 		assertTrue("Failed: Header does not contain the person's fullname and title.", personsProfilePage.checkHeaderForName());
 		assertTrue("Failed: Cannot find the Re-send account creation invite link.", personsProfilePage.checkForUserAccountInvitationLink());
 		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", personsProfilePage.checkContactName());
@@ -1436,14 +1444,13 @@ public class PARStepDefs {
 		managePeoplePage.clickManageContact();
 
 		LOG.info("Found an existing user with the name: " + personsName);
-
-		personsProfilePage.clickUpdateUserButton();
 	}
 
 	@When("^the user updates an existing person:$")
 	public void the_user_updates_an_existing_person_with_the_following_details(DataTable person) throws Throwable {
 		LOG.info("Updating an existing person.");
-
+		personsProfilePage.clickUpdateUserButton();
+		
 		personsContactDetailsPage.enterContactDetails(person);
 		personsContactDetailsPage.clickContinueButton();
 
@@ -1471,7 +1478,7 @@ public class PARStepDefs {
 		LOG.info("Successfully sent account invite.");
 
 		userProfileConfirmationPage.saveChanges();
-		userProfileCompletionPage.completeApplication();
+		userProfileCompletionPage.clickDoneGoToProfile();
 	}
 
 	@Then("^the user can verify the person was updated successfully and can see resend an account invite$")
@@ -1851,6 +1858,63 @@ public class PARStepDefs {
 		Assert.assertTrue(partnershipAdvancedSearchPage.checkPartnershipExists());
 	}
 	
+	@When("^the user creates a new contact with the following details:$")
+	public void the_user_creates_a_new_contact_with_the_following_details(DataTable details) throws Throwable {
+		parDashboardPage.selectManageColleagues();
+		managePeoplePage.selectAddPerson();
+
+		LOG.info("Adding a new person.");
+		personsContactDetailsPage.addContactDetails(details);
+		personsContactDetailsPage.clickContinueButton();
+
+		LOG.info("Successfully entered new contact details.");
+
+		personAccountPage.selectUseExistingAccount();
+		personAccountPage.clickContinueButton();
+
+		LOG.info("Successfully chose to use the existing account.");
+
+		personMembershipPage.selectCityEnforcementSquad();
+		personMembershipPage.selectUpperWestSideBoroughCouncil();
+		personMembershipPage.selectLowerEstSideBoroughCouncil();
+		personMembershipPage.clickContinueButton();
+		
+		LOG.info("Successfully chose the contacts Authority memberships.");
+
+		personUserTypePage.selectAuthorityManager();
+		personUserTypePage.clickProfileReviewContinueButton();
+		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
+
+		userProfileConfirmationPage.saveChanges();
+		userProfileCompletionPage.clickDoneGoToProfile();
+	}
+	
+	@Then("^the user can verify the contact record was added to the user profile$")
+	public void the_user_can_verify_the_contact_record_was_added_to_the_user_profile() throws Throwable {
+		LOG.info("Verifying the Duplicate Contact Record was Added Successfully.");
+		
+		Assert.assertTrue(personsProfilePage.checkContactRecordAdded());
+	}
+
+	@When("^the user merges the contact record$")
+	public void the_user_merges_the_contact_record() throws Throwable {
+		LOG.info("Selecting Contact Records to Merge.");
+		
+		personsProfilePage.clickMergeContactRecords();
+		mergeContactRecordsPage.mergeContacts();
+		mergeContactRecordsPage.clickContinue();
+		
+		LOG.info("Confirming the Contact Records to be Merged.");
+		mergeContactRecordsConfirmationPage.clickMerge();
+	}
+
+	@Then("^the user can verify the contact record was merged successfully$")
+	public void the_user_can_verify_the_contact_record_was_merged_successfully() throws Throwable {
+		LOG.info("Verifying the Contact Records have been Merged Successfully.");
+		
+		Assert.assertTrue(personsProfilePage.checkContactRecord());
+	}
+	
 	@When("^the user adds a single member organisation to the patnership with the following details:$")
 	public void the_user_adds_a_single_member_organisation_to_the_patnership_with_the_following_details(DataTable details) throws Throwable {
 		LOG.info("Add a Single Member Organisation to a Co-ordinated Partnership.");
@@ -1908,6 +1972,7 @@ public class PARStepDefs {
 		
 		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
 		Assert.assertTrue(memberListPage.checkMemberCreated());
+	}
 
 	@When("^the user selects the Read more about Primary Authority link$")
 	public void the_user_selects_the_Read_more_about_Primary_Authority_link() throws Throwable {

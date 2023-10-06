@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.UserManagement;
 
 import java.io.IOException;
 import java.util.List;
@@ -6,6 +6,9 @@ import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.DashboardPage;
 
 public class PersonAccountPage extends BasePageObject {
 	public PersonAccountPage() throws ClassNotFoundException, IOException {
@@ -17,6 +20,9 @@ public class PersonAccountPage extends BasePageObject {
 	
 	@FindBy(xpath = "//input[contains(@id,'edit-account-')]")
 	private List<WebElement> radioButtons;
+	
+	@FindBy(xpath = "//label[contains(text(),'Use the existing account:')]")
+	private WebElement existingAccountRadial;
 	
 	@FindBy(id = "edit-account-none")
 	private WebElement createUserAccountRadioBtn;
@@ -41,6 +47,10 @@ public class PersonAccountPage extends BasePageObject {
 	
 	public void selectCreateAccount() {
 		createUserAccountRadioBtn.click();
+	}
+	
+	public void selectUseExistingAccount() {
+		existingAccountRadial.click();
 	}
 	
 	public PersonMembershipPage clickContinueButton() {
