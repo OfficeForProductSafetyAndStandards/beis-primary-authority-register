@@ -17,7 +17,7 @@
     "cucumber-pretty": "1.4.1",
     "faker": "4.1.0",
     "geckodriver": "1.11.0",
-    "minimist": "1.2.0",
+    "minimist": "1.2.6",
     "nightwatch": "0.9.20",
     "nightwatch-cucumber": "9.1.2",
     "selenium-server": "3.7.1",
