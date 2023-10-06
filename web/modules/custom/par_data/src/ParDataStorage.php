@@ -141,7 +141,7 @@ class ParDataStorage extends TranceStorage {
       $event = new ParDataEvent($entity);
       $event_to_dispatch = ParDataEvent::statusChange($entity->getEntityTypeId(), $entity->getRawStatus());
       $dispatcher = \Drupal::service('event_dispatcher');
-      $dispatcher->dispatch($event_to_dispatch, $event);
+      $dispatcher->dispatch($event, $event_to_dispatch);
     }
 
     return $saved;

@@ -18,9 +18,8 @@ par-vendor:
     - core/drupal.ajax
     - core/drupal
     - core/drupalSettings
-    - core/jquery.once
-    - core/jquery.ui
-    - core/jquery.ui.tabs
+    - core/once
+    - jquery_ui_tabs/tabs
 
 tota11y:
   remote: https://khan.github.io/tota11y

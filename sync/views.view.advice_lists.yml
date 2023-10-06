@@ -1044,7 +1044,7 @@ display:
           field: field_advice
           relationship: none
           group_type: group
-          admin_label: 'Partnership''s Advice'
+          admin_label: "Partnership's Advice"
           plugin_id: standard
           required: true
         field_regulatory_function:

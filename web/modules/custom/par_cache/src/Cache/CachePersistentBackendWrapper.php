@@ -78,7 +78,7 @@ class CachePersistentBackendWrapper implements CacheBackendInterface, CacheTagsI
    * {@inheritdoc}
    */
   public function getMultiple(&$cids, $allow_invalid = FALSE) {
-    return $this->cacheBackend->getMultiple($cid, $allow_invalid);
+    return $this->cacheBackend->getMultiple($cids, $allow_invalid);
   }
 
   /**

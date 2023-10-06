@@ -386,7 +386,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   public function progress($operation = NULL, $params = []): Url {
     // Run the event dispatcher to determine the order of precedence to determine the next route.
     $event = new ParFlowEvent($this, $this->getCurrentRouteMatch(), $operation, $params);
-    $this->getEventDispatcher()->dispatch(ParFlowEvents::getEventByAction($operation), $event);
+    $this->getEventDispatcher()->dispatch($event, ParFlowEvents::getEventByAction($operation));
 
     if (!$event->getUrl() instanceof Url) {
       throw new ParFlowException('Could not find an appropriate page to progress to.');

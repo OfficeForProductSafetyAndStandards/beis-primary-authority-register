@@ -31,8 +31,17 @@ class ParHelpdeskDashboardController extends ControllerBase {
 
   /**
    * The response cache kill switch.
+   *
+   * @var KillSwitch $killSwitch
    */
-  protected $killSwitch;
+  protected KillSwitch $killSwitch;
+
+  /**
+   * The flow negotiator.
+   *
+   * @var ConfigEntityStorageInterface $flowStorage
+   */
+  protected ConfigEntityStorageInterface $flowStorage;
 
   /**
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.

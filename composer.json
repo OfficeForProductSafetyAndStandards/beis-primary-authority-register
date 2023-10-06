@@ -5,19 +5,31 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/UKGovernmentBEIS/csv-validator"
+            "url": "https://github.com/OfficeForProductSafetyAndStandards/do-file-cache-psr-6"
         },
         {
             "type": "vcs",
-            "url": "https://github.com/UKGovernmentBEIS/drupal-trance"
+            "url": "https://github.com/OfficeForProductSafetyAndStandards/drupal-audit-log"
         },
         {
             "type": "vcs",
-            "url": "https://github.com/UKGovernmentBEIS/password-strength"
+            "url": "https://github.com/OfficeForProductSafetyAndStandards/drupal-trance"
         },
         {
             "type": "vcs",
-            "url": "https://github.com/UKGovernmentBEIS/companieshouse-api-php-client"
+            "url": "https://github.com/OfficeForProductSafetyAndStandards/drupal-password-strength"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/OfficeForProductSafetyAndStandards/drupal-flysystem-s3"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/OfficeForProductSafetyAndStandards/drupal-invite"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/OfficeForProductSafetyAndStandards/companieshouse-api-php-client"
         },
         {
             "type": "composer",
@@ -25,15 +37,13 @@
         }
     ],
     "require": {
-        "php": "~8.1.0",
-        "aws/aws-sdk-php": "~3.209.0",
+        "php": "^8.1.0",
         "bjeavons/zxcvbn-php": "~1.3.0",
         "commerceguys/intl": "^1.0",
         "composer/installers": "^1.9",
         "cweagans/composer-patches": "^1.7",
-        "deblan/csv-validator": "dev-master",
         "drupal/address": "~1.11.0",
-        "drupal/audit_log": "~3.0.0",
+        "drupal/audit_log": "3.0.x-dev",
         "drupal/autologout": "~1.4.0",
         "drupal/better_exposed_filters": "~6.0.0",
         "drupal/block_classes": "~1.0.0",
@@ -43,25 +53,28 @@
         "drupal/config_readonly": "~1.0.0",
         "drupal/config_split": "~1.9.0",
         "drupal/config_update": "~2.0.0",
-        "drupal/core": "~9.5.0",
-        "drupal/core-composer-scaffold": "~9.3",
-        "drupal/core-recommended": "~9.3",
-        "drupal/csv_serialization": "~2.1",
+        "drupal/core-composer-scaffold": "~10.1.0",
+        "drupal/core-recommended": "~10.1.0",
+        "drupal/csv_serialization": "~3.0.0",
         "drupal/ctools": "~4.0.0",
         "drupal/default_content": "~2.0.0",
         "drupal/email_registration": "~1.2.0",
-        "drupal/features": "~5.0.0",
+        "drupal/features": "~3.13.0",
         "drupal/flysystem": "~2.1.0",
-        "drupal/flysystem_s3": "~2.0.0",
+        "drupal/flysystem_s3": "2.0.x-dev",
         "drupal/google_analytics": "~4.0.0",
         "drupal/govuk_cookies": "1.0.x-dev",
-        "drupal/govuk_notify": "~2.1.0",
+        "drupal/govuk_notify": "~2.2.0 || ~3.0.0",
         "drupal/govuk_theme": "~1.14.0",
         "drupal/health_check": "3.0.0",
         "drupal/http_response_headers": "~2.0.0",
         "drupal/inline_entity_form": "~1.0.0",
-        "drupal/invite": "~1.0.0",
+        "drupal/invite": "8.x-1.x-dev",
         "drupal/jquery_ui": "~1.6.0",
+        "drupal/jquery_ui_tabs": "~2.0.0",
+        "drupal/jquery_ui_button": "~2.0.0",
+        "drupal/jquery_ui_checkboxradio": "~2.0.0",
+        "drupal/jquery_ui_controlgroup": "~2.0.0",
         "drupal/login_destination": "~2.0.0",
         "drupal/maillog": "~1.0.0",
         "drupal/mailsystem": "~4.4.0",
@@ -70,9 +83,9 @@
         "drupal/message": "~1.4.0",
         "drupal/message_expire": "~1.0.0",
         "drupal/message_notify": "~1.3.0",
-        "drupal/migrate_file_to_media": "2.0.9",
-        "drupal/no_autocomplete": "~1.6.0",
-        "drupal/pagerer": "~2.1.0",
+        "drupal/migrate_tools": "^6",
+        "drupal/migrate_plus": "^6",
+        "drupal/pagerer": "~3.0.0",
         "drupal/password_policy": "~4.0.0",
         "drupal/queue_ui": "~3.1.0",
         "drupal/range": "~1.5.0",
@@ -85,6 +98,7 @@
         "drupal/search_api_opensearch": "~2.0.0",
         "drupal/symfony_mailer": "~1.3.0",
         "drupal/token": "~1.12.0",
+        "drupal/tracer": "~1.0.0",
         "drupal/trance": "8.x-1.x-dev",
         "drupal/twig_field_value": "~2.0.0",
         "drupal/twig_tweak": "~3.2.0",
@@ -96,36 +110,25 @@
         "drupal/views_data_export": "~1.3.0",
         "drupal/views_field_view": "~1.0.0",
         "drupal/xmlsitemap": "~1.5.0",
-        "drush/config-extra": "~1.0.0",
-        "drush/drush": "~10.4",
+        "drush/drush": "~11.6.0",
         "league/flysystem": "1.0.69",
         "league/flysystem-aws-s3-v3": "1.0.25",
         "phpoffice/phpspreadsheet": "^1.6",
         "predis/predis": "~1.1.1",
         "rapidwebltd/php-uk-bank-holidays": "~5.0.0",
-        "vlucas/phpdotenv": "~2.4.0"
+        "vlucas/phpdotenv": "~5.5.0"
     },
     "require-dev": {
-        "behat/mink": "^1.8",
-        "behat/mink-goutte-driver": "^1.2",
-        "behat/mink-selenium2-driver": "^1.4",
+        "behat/mink-goutte-driver": "^2.0",
         "brianium/paratest": "^6.0",
-        "drupal/coder": "^8.3.10",
         "drupal/config_inspector": "^2.1.3",
-        "drupal/console": "^1.0",
-        "drupal/core-dev": "^9.1",
+        "drupal/core-dev": "^10.1",
         "drupal/devel": "~5.1.0",
-        "drupal/webprofiler": "~9.0.0",
-        "jcalderonzumba/gastonjs": "^1.0.2",
-        "jcalderonzumba/mink-phantomjs-driver": "^0.3.1",
-        "mglaman/drupal-check": "^1.0",
-        "mikey179/vfsstream": "^1.2",
+        "drupal/webprofiler": "~10.1.0",
+        "mglaman/drupal-check": "^1.4",
         "palantirnet/drupal-rector": "^0.15.0",
         "phpspec/prophecy": "^1.8",
         "phpspec/prophecy-phpunit": "^2",
-        "phpunit/phpunit": "^9.0",
-        "symfony/css-selector": "^4.0.0",
-        "symfony/debug": "^4.0.0",
         "zaporylie/composer-drupal-optimizations": "^1.2"
     },
     "conflict": {
@@ -134,7 +137,9 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
-        "preferred-install": "dist",
+        "preferred-install": {
+            "*": "dist"
+        },
         "sort-packages": true,
         "allow-plugins": {
             "cweagans/composer-patches": true,
@@ -143,7 +148,8 @@
             "zaporylie/composer-drupal-optimizations": true,
             "drupal/console-extend-plugin": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true
         }
     },
     "extra": {
@@ -174,13 +180,13 @@
         "patches": {
             "drupal/core": {
                 "Ensure the table alias is no longer than 60 characters long": "https://www.drupal.org/files/issues/2022-06-30/571548-165.patch",
-                "Form API #ajax not working on link element": "https://www.drupal.org/files/issues/2023-01-11/core-allow-form-ajax-for-links-2915954-9.5.1.patch",
-                "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2022-12-22/2551893-99.patch",
-                "Non-exposed and exposed default sort order": "https://www.drupal.org/files/issues/2021-02-16/3120847-20.patch",
+                "Form API #ajax not working on link element": "https://www.drupal.org/files/issues/2023-01-12/2915954-29.patch",
+                "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2023-03-20/2551893-109.patch",
                 "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2022-12-19/drupal-case_sensitive_email-2490294-58-d95.patch"
             },
             "drupal/flysystem": {
-                "Add Drush commands for sending and receiving files": "https://www.drupal.org/files/issues/2023-08-31/3192777-4-added_drush_commands.patch"
+                "Add Drush commands for sending and receiving files": "https://www.drupal.org/files/issues/2023-08-31/3192777-4-added_drush_commands.patch",
+                "Support new lazy asset collection optimizers": "https://git.drupalcode.org/project/flysystem/-/merge_requests/26.diff"
             },
             "drupal/govuk_notify": {
                 "Message body formatting array to string": "https://www.drupal.org/files/issues/2021-08-11/3227617-2-govuk-notify-message-body-formatting.diff"
@@ -189,15 +195,12 @@
                 "Remove style sheet": "https://www.drupal.org/files/issues/2023-08-30/3202722-6-remove_generated_css.patch",
                 "Correct version dependencies": "./patches/yargs-version.patch"
             },
-            "drupal/invite": {
-                "Drupal 10 compatibility fixes": "https://www.drupal.org/files/issues/2023-08-31/3288066-6-Drupal_10_fixes.patch"
-            },
             "drupal/redis": {
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch",
                 "Take into account CONFIG command may not work": "https://www.drupal.org/files/issues/2021-02-16/redis-allow_disabled_config-3173988-4.patch"
             },
-            "drupal/role_delegation": {
-                "Temporary patch to enable module uninstall": "./patches/tmp-patch-fix-for-d9-upgrade.patch"
+            "drupal/pagerer": {
+                "Pagerer upgrade issue": "https://git.drupalcode.org/project/pagerer/-/merge_requests/18.diff"
             },
             "drupal/search_api": {
                 "Add support for rendering computed fields to the \"field\" views field handler": "https://git.drupalcode.org/project/search_api/-/merge_requests/75.diff"

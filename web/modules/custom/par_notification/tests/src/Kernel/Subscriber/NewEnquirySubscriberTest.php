@@ -35,7 +35,7 @@ class NewEnquirySubscriberTest extends ParNotificationTestBase {
   public function testNewEnquirySubscribers() {
     // Set up the entity events.
     $this->entityEvent = $this->getMockBuilder('Drupal\Core\Entity\EntityEvent')
-      ->setMethods(['getEntity'])
+      ->onlyMethods(['getEntity'])
       ->disableOriginalConstructor()
       ->getMock();
     $this->entityEvent
@@ -61,7 +61,7 @@ class NewEnquirySubscriberTest extends ParNotificationTestBase {
 //  public function testEnquiryResponseSubscribers() {
 //    // Set up the entity events.
 //    $this->entityEvent = $this->getMockBuilder('Drupal\Core\Entity\EntityEvent')
-//      ->setMethods(['getEntity'])
+//      ->onlyMethods(['getEntity'])
 //      ->disableOriginalConstructor()
 //      ->getMock();
 //    $this->entityEvent

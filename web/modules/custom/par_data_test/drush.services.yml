@@ -1,0 +1,6 @@
+services:
+  par_data_test.commands:
+    class: \Drupal\par_data_test\Commands\ParTestDataDrushCommands
+    arguments: ['@default_content.importer']
+    tags:
+      - { name: drush.command }

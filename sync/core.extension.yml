@@ -54,6 +54,7 @@ module:
   jquery_ui_controlgroup: 0
   jquery_ui_datepicker: 0
   jquery_ui_slider: 0
+  jquery_ui_tabs: 0
   jquery_ui_touch_punch: 0
   language: 0
   link: 0
@@ -142,6 +143,7 @@ module:
   path: 0
   path_alias: 0
   pgsql: 0
+  phpass: 0
   queue_ui: 0
   raven: 0
   redis: 0
