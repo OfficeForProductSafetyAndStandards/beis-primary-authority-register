@@ -12,22 +12,24 @@ import uk.gov.beis.utility.DataStore;
 
 public class InspectionPlanSearchPage extends BasePageObject {
 
+	@FindBy(linkText = "Upload inspection plan")
+	private WebElement uploadBtn;
+	
+	@FindBy(linkText = "Edit inspection plan")
+	private WebElement editBtn;
+
+	@FindBy(linkText = "Revoke inspection plan")
+	private WebElement revokeBtn;
+	
+	@FindBy(linkText = "Remove inspection plan")
+	private WebElement removeBtn;
+	
+	String planstatus = "//td/a[contains(text(),'?')]/parent::td/following-sibling::td[1]";
+	
 	public InspectionPlanSearchPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(linkText = "Upload inspection plan")
-	WebElement uploadBtn;
 	
-	@FindBy(linkText = "Edit inspection plan")
-	WebElement editBtn;
-
-	@FindBy(linkText = "Revoke inspection plan")
-	WebElement revokeBtn;
-	
-	@FindBy(linkText = "Remove inspection plan")
-	WebElement removeBtn;
-
 	public RevokeReasonInspectionPlanPage selectRevokeLink() {
 		revokeBtn.click();
 		return PageFactory.initElements(driver, RevokeReasonInspectionPlanPage.class);
@@ -52,18 +54,12 @@ public class InspectionPlanSearchPage extends BasePageObject {
 		driver.findElement(By.linkText(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE))).click();
 		return PageFactory.initElements(driver, InspectionPlanReviewPage.class);
 	}
-
-	String planstatus = "//td/a[contains(text(),'?')]/parent::td/following-sibling::td[1]";
-
+	
 	public String getPlanStatus() {
 		try {
-			return driver
-					.findElement(By
-							.xpath(planstatus.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE))))
-					.getText();
+			return driver.findElement(By.xpath(planstatus.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE)))).getText();
 		} catch (Exception e) {
 			return ("No results returned");
 		}
 	}
-
 }
