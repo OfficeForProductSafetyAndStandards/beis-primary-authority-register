@@ -34,6 +34,11 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	@FindBy(linkText = "edit sic code")
 	private WebElement editSICCodeLink;
 	
+	@FindBy(linkText = "show members list")
+	private WebElement showMembersListLink;
+	
+	// Legal Entity Amendment Link Here
+	
 	@FindBy(linkText = "edit trading name")
 	private WebElement editTradingNameLink;
 	
@@ -204,6 +209,13 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		editSICCodeLink.click();
 		return PageFactory.initElements(driver, SICCodePage.class);
 	}
+	
+	public MemberListPage selectShowMembersListLink() {
+		showMembersListLink.click();
+		return PageFactory.initElements(driver, MemberListPage.class);
+	}
+	
+	// Legal Entity Amendment Page here
 	
 	public TradingPage editTradingName() {
 		editTradingNameLink.click();

@@ -122,6 +122,11 @@ public class PARStepDefs {
 	private AdviceRemovalPage adviceRemovalPage;
 	private DeletePage deletePage;
 	private CompletionPage completionPage;
+	private AddOrganisationNamePage addOrganisationNamePage;
+	private EnterTheDatePage enterTheDatePage;
+	private InspectionPlanCoveragePage inspectionPlanCoveragePage;
+	private MemberOrganisationSummaryPage memberOrganisationSummaryPage;
+	private MemberOrganisationAddedConfirmationPage memberOrganisationAddedConfirmationPage;
 	
 	// PAR News Letter
 	private UserProfilePage userProfilePage;
@@ -251,6 +256,11 @@ public class PARStepDefs {
 		adviceRemovalPage = PageFactory.initElements(driver, AdviceRemovalPage.class);
 		deletePage = PageFactory.initElements(driver, DeletePage.class);
 		completionPage = PageFactory.initElements(driver, CompletionPage.class);
+		addOrganisationNamePage = PageFactory.initElements(driver, AddOrganisationNamePage.class);
+		enterTheDatePage = PageFactory.initElements(driver, EnterTheDatePage.class);
+		inspectionPlanCoveragePage = PageFactory.initElements(driver, InspectionPlanCoveragePage.class);
+		memberOrganisationSummaryPage = PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
+		memberOrganisationAddedConfirmationPage = PageFactory.initElements(driver, MemberOrganisationAddedConfirmationPage.class);
 		
 		// PAR News Letter
 		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
@@ -1841,6 +1851,64 @@ public class PARStepDefs {
 		Assert.assertTrue(partnershipAdvancedSearchPage.checkPartnershipExists());
 	}
 	
+	@When("^the user adds a single member organisation to the patnership with the following details:$")
+	public void the_user_adds_a_single_member_organisation_to_the_patnership_with_the_following_details(DataTable details) throws Throwable {
+		LOG.info("Add a Single Member Organisation to a Co-ordinated Partnership.");
+		
+		partnershipAdvancedSearchPage.selectOrganisationLink();
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.MEMBER_ORGANISATION_NAME, data.get("Organisation Name"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("Address Line 1"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE2, data.get("Address Line 2"));
+			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("Town City"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTY, data.get("County"));
+			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("Postcode"));
+			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal Entity Type"));
+			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Legal Entity Name"));
+		}
+		
+		parPartnershipConfirmationPage.selectShowMembersListLink();
+		memberListPage.selectAddAMemberLink();
+		
+		LOG.info("Entering the Member Organisation's Name.");
+		addOrganisationNamePage.enterMemberOrganisationName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		
+		LOG.info("Entering the Member Organisation's Address.");
+		authorityAddressDetailsPage.enterMemberOrganisationAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		
+		LOG.info("Entering the Member Organisation's Contact Details.");
+		personsContactDetailsPage.enterContactDetails(details);
+		personsContactDetailsPage.clickContinueButtonForMemberContact();
+		
+		LOG.info("Entering the Member Organisation's Membership Start Date.");
+		enterTheDatePage.clickContinueButtonForMembershipBegan();
+		
+		LOG.info("Entering the Member Organisation's Trading Name.");
+		tradingPage.addTradingNameForMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		
+		LOG.info("Entering the Member Organisation's Legal Entity.");
+		legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		legalEntityReviewPage.clickContinueForMember();
+		
+		LOG.info("Confirming the Member Organisation is covered by the Inspection Plan.");
+		inspectionPlanCoveragePage.selectYesRadial();
+		inspectionPlanCoveragePage.selectContinueForMember();
+		
+		LOG.info("Saving the Member Organisation's Details.");
+		memberOrganisationSummaryPage.selectSave();
+		memberOrganisationAddedConfirmationPage.selectDone();
+	}
+
+	@Then("^the user member organistion has been added to the partnership successfully$")
+	public void the_user_member_organistion_has_been_added_to_the_partnership_successfully() throws Throwable {
+		LOG.info("Verify the Member Organisation was added to the Co-ordinated Partnership Successfully.");
+		
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		Assert.assertTrue(memberListPage.checkMemberCreated());
+
 	@When("^the user selects the Read more about Primary Authority link$")
 	public void the_user_selects_the_Read_more_about_Primary_Authority_link() throws Throwable {
 		LOG.info("Selecting the Read More About Primary Authority Link.");
