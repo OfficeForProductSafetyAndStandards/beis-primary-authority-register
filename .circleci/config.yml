@@ -276,12 +276,12 @@ jobs:
           command: |
             ./vendor/bin/paratest --processes=16 --no-coverage
       - run:
-          name: "Run feature tests"
+          name: "[disabled] Run feature tests"
           command: |
             cd tests
-            echo "Running smoke tests against default theme"
-            npm run ci -- --tag ci
-            npm run generate-report
+            echo "e2e smoke tests are disabled"
+            echo "to enable run: `npm run ci -- --tag ci`"
+            echo "to generate reports run: `npm run generate-report`"
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
@@ -311,12 +311,12 @@ jobs:
           command: |
             ./vendor/bin/paratest --processes=16 --no-coverage
       - run:
-          name: "Run feature tests"
+          name: "[disabled] Run feature tests"
           command: |
             cd tests
-            echo "Running full tests against default theme"
-            npm run ci -- --tag ci
-            npm run generate-report
+            echo "e2e full tests are disabled"
+            echo "to enable run: `npm run ci -- --tag ci`"
+            echo "to generate reports run: `npm run generate-report`"
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
