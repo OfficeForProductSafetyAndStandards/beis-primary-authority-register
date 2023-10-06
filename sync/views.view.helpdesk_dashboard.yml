@@ -289,6 +289,15 @@ display:
             date_format: gds_date_format
             custom_date_format: ''
             timezone: ''
+            tooltip:
+              date_format: ''
+              custom_date_format: ''
+            time_diff:
+              enabled: false
+              future_format: '@interval hence'
+              past_format: '@interval ago'
+              granularity: 2
+              refresh: 60
           group_column: entity_id
           group_columns: {  }
           group_rows: true
@@ -1996,7 +2005,7 @@ display:
           field: field_authority
           relationship: none
           group_type: group
-          admin_label: 'Partnership''s Primary Authority'
+          admin_label: "Partnership's Primary Authority"
           plugin_id: standard
           required: false
         field_organisation:
@@ -2005,7 +2014,7 @@ display:
           field: field_organisation
           relationship: none
           group_type: group
-          admin_label: 'Partnership''s Organisation'
+          admin_label: "Partnership's Organisation"
           plugin_id: standard
           required: false
         reverse__par_data_enforcement_notice__field_partnership:
@@ -2051,7 +2060,7 @@ display:
           field: field_legal_entity
           relationship: field_organisation_1
           group_type: group
-          admin_label: 'Coordinated Member''s Legal Entity'
+          admin_label: "Coordinated Member's Legal Entity"
           plugin_id: standard
           required: false
         field_partnership_legal_entity:
@@ -2069,7 +2078,7 @@ display:
           field: field_legal_entity
           relationship: field_partnership_legal_entity
           group_type: group
-          admin_label: 'Partnership''s Legal Entity'
+          admin_label: "Partnership's Legal Entity"
           plugin_id: standard
           required: false
       css_class: par_helpdesk_partnership_list
@@ -2326,7 +2335,7 @@ display:
                     label: 'Number of Advice Documents'
                   nation:
                     active: true
-                    label: 'Organisation''s Nation'
+                    label: "Organisation's Nation"
                   employees_band:
                     active: false
                     label: ''
@@ -2461,6 +2470,15 @@ display:
             date_format: gds_date_format
             custom_date_format: ''
             timezone: ''
+            tooltip:
+              date_format: ''
+              custom_date_format: ''
+            time_diff:
+              enabled: false
+              future_format: '@interval hence'
+              past_format: '@interval ago'
+              granularity: 2
+              refresh: 60
           group_column: entity_id
           group_columns: {  }
           group_rows: true
@@ -4044,7 +4062,7 @@ display:
           distinct: true
           replica: false
           query_tags: null
-          contextual_filters_or: 0
+          contextual_filters_or: false
       defaults:
         query: false
         fields: false

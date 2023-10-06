@@ -6,7 +6,7 @@ dependencies:
     - filter.format.basic_html
 template: member_list_stale_warning
 label: 'Stale member list notification'
-description: 'This notification is sent to the organisation when a member list hasn''t been updated for a while'
+description: "This notification is sent to the organisation when a member list hasn't been updated for a while"
 text:
   -
     value: "<p>We can see that the member details on your <span>@partnership_label</span> hasn't been updated for a while.</p>\r\n\r\n<p>It is a statutory requirement to keep your member list updated on the Register, please confirm that your member list is up-to-date.</p>\r\n"

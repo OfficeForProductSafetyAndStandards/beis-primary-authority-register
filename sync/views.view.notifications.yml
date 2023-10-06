@@ -147,6 +147,15 @@ display:
             date_format: gds_date_format
             custom_date_format: ''
             timezone: ''
+            tooltip:
+              date_format: ''
+              custom_date_format: ''
+            time_diff:
+              enabled: false
+              future_format: '@interval hence'
+              past_format: '@interval ago'
+              granularity: 2
+              refresh: 60
           group_column: entity_id
           group_columns: {  }
           group_rows: true
@@ -564,7 +573,7 @@ display:
           distinct: false
           replica: false
           query_tags: {  }
-          contextual_filters_or: 0
+          contextual_filters_or: false
       relationships: {  }
       css_class: form-group
       group_by: true

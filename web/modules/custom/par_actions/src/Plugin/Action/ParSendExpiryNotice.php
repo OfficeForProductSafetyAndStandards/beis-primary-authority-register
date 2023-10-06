@@ -33,7 +33,7 @@ class ParSendExpiryNotice extends ActionBase {
       $event = new ParDataEvent($entity);
       $dispatcher = \Drupal::service('event_dispatcher');
 
-      $dispatcher->dispatch(ParDataEvent::customAction($entity->getEntityTypeId(), 'expiry_notification'), $event);
+      $dispatcher->dispatch(ParDataEvent::customAction($event, $entity->getEntityTypeId(), 'expiry_notification'));
     }
   }
 

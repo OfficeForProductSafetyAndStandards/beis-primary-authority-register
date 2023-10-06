@@ -165,7 +165,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    * {@inheritdoc}
    */
   public function query() {
-    $query = \Drupal::entityQuery($this->getEntity());
+    $query = \Drupal::entityQuery($this->getEntity())->accessCheck();
 
     // Only run the default query if specified.
     // The default query condition compares a relative time format to

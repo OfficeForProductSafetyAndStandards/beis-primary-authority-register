@@ -25,16 +25,16 @@ trait ParControllerTrait {
   /**
    * Default page title.
    *
-   * @var string
+   * @var ?string
    */
   protected $defaultTitle = 'Primary Authority Register';
 
   /**
    * Page title.
    *
-   * @var string
+   * @var ?string
    */
-  protected $pageTitle;
+  protected $pageTitle = NULL;
 
   /**
    * The account for the current logged in user.

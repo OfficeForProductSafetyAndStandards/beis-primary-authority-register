@@ -2,8 +2,8 @@
 $root_path = dirname(__DIR__) . '/../../';
 require "{$root_path}/vendor/autoload.php";
 if (file_exists($root_path . '.env')) {
-    $dotenv = new Dotenv\Dotenv($root_path);
-    $dotenv->load();
+  $dotenv = Dotenv\Dotenv::createImmutable($root_path);
+  $dotenv->safeLoad();
 }
 
 // @codingStandardsIgnoreFile
@@ -299,7 +299,7 @@ $settings['hash_salt'] = getenv('PAR_HASH_SALT');
  * custom code that changes the container, changing this identifier will also
  * allow the container to be invalidated as soon as code is deployed.
  */
-# $settings['deployment_identifier'] = \Drupal::VERSION;
+$settings['deployment_identifier'] = \Drupal::VERSION;
 
 /**
  * Access control for update.php script.
@@ -379,15 +379,12 @@ $settings['update_free_access'] = FALSE;
  * Be aware, however, that it is likely that this would allow IP
  * address spoofing unless more advanced precautions are taken.
  */
-# $settings['reverse_proxy'] = TRUE;
 $settings['reverse_proxy'] = TRUE;
 
 /**
  * Specify every reverse proxy IP address in your environment.
  * This setting is required if $settings['reverse_proxy'] is TRUE.
  */
-# $settings['reverse_proxy_addresses'] = ['a.b.c.d', ...];
-
 /** http://d7uri8nf7uskq.cloudfront.net/tools/list-cloudfront-ips */
 $cloudFrontGlobalIps = [
     "13.32.0.0/15",
@@ -506,7 +503,7 @@ $settings['reverse_proxy_addresses'] = ['127.0.0.1'] + $cloudFrontGlobalIps + $c
  *
  * @see \Drupal\Core\Form\FormCache::setCache()
  */
-# $settings['form_cache_expiration'] = 21600;
+$settings['form_cache_expiration'] = 3600;
 
 /**
  * Class Loader.
@@ -516,7 +513,7 @@ $settings['reverse_proxy_addresses'] = ['127.0.0.1'] + $cloudFrontGlobalIps + $c
  *
  * @see https://getcomposer.org/doc/articles/autoloader-optimization.md
  */
-# $settings['class_loader_auto_detect'] = FALSE;
+$settings['class_loader_auto_detect'] = TRUE;
 
 /*
  * If the APC extension is not detected, either because APC is missing or
@@ -570,8 +567,8 @@ if ($settings['hash_salt']) {
  *
  * Value should be in PHP Octal Notation, with leading zero.
  */
-# $settings['file_chmod_directory'] = 0775;
-# $settings['file_chmod_file'] = 0664;
+$settings['file_chmod_directory'] = 0775;
+$settings['file_chmod_file'] = 0664;
 
 /**
  * Public file base URL:
@@ -593,7 +590,6 @@ if ($settings['hash_salt']) {
  * must exist and be writable by Drupal. This directory must be relative to
  * the Drupal installation directory and be accessible over the web.
  */
-# $settings['file_public_path'] = 'sites/default/files';
 $settings['file_public_path'] = 'sites/default/files';
 
 /**
@@ -609,7 +605,6 @@ $settings['file_public_path'] = 'sites/default/files';
  * See https://www.drupal.org/documentation/modules/file for more information
  * about securing private files.
  */
-# $settings['file_private_path'] = '';
 $settings['file_private_path'] = realpath($app_root. '/../private');
 
 /**
@@ -623,7 +618,7 @@ $settings['file_private_path'] = realpath($app_root. '/../private');
  *
  * @see \Drupal\Component\FileSystem\FileSystem::getOsTemporaryDirectory()
  */
-# $settings['file_temp_path'] = '/tmp';
+$settings['file_temp_path'] = '/tmp';
 
 /**
  * Session write interval:
@@ -631,7 +626,7 @@ $settings['file_private_path'] = realpath($app_root. '/../private');
  * Set the minimum interval between each session write to database.
  * For performance reasons it defaults to 180.
  */
-# $settings['session_write_interval'] = 180;
+$settings['session_write_interval'] = 180;
 
 /**
  * String overrides:
@@ -660,7 +655,7 @@ $settings['file_private_path'] = realpath($app_root. '/../private');
  *
  * Note: This setting does not apply to installation and update pages.
  */
-# $settings['maintenance_theme'] = 'bartik';
+# $settings['maintenance_theme'] = 'claro';
 
 /**
  * PHP settings:
@@ -743,6 +738,16 @@ $settings['file_private_path'] = realpath($app_root. '/../private');
 $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
 
 /**
+ * Load the par cache backend.
+ *
+ * To enable the backends at the same time as enabling the module the drupal
+ * boostrap container must be aware of the cache backends. To do so register
+ * the par_cache.services.yml in the Drupal settings file:
+ */
+$settings['container_yamls'][] = 'modules/custom/par_cache/par_cache.services.yml';
+$class_loader->addPsr4('Drupal\\par_cache\\', 'modules/custom/par_cache/src');
+
+/**
  * Override the default service container class.
  *
  * This is useful for example to trace the service container for performance
@@ -796,7 +801,6 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  * will allow the site to run off of all variants of example.com and
  * example.org, with all subdomains included.
  */
-
 $app_env = getenv('APP_ENV');
 
 $settings['trusted_host_patterns'] = [
@@ -877,8 +881,6 @@ if ($env_services = getenv("VCAP_SERVICES")) {
   $redis_credentials = isset($services->redis) ? $services->redis[0]->credentials : NULL;
   $os_credentials = isset($services->opensearch) ? $services->opensearch[0]->credentials : NULL;
 }
-
-
 
 // Set the PaaS database connection credentials.
 if (isset($db_credentials)) {

@@ -60,11 +60,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   }
 
   /**
-   * The access result
+   * The access result.
    *
-   * @var \Drupal\Core\Access\AccessResult
+   * @var ?AccessResult $accessResult
    */
-  protected $accessResult;
+  protected ?AccessResult $accessResult = NULL;
 
   /**
    * List the mapping between the entity field and the form field.
@@ -80,9 +80,16 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *   ],
    * ]
    *
-   * @var array
+   * @var array $formItems
    */
-  protected $formItems = [];
+  protected array $formItems = [];
+
+  /**
+   * The key values to be ignored from form submissions.
+   *
+   * @var ?array $ignoreValues
+   */
+  protected ?array $ignoreValues;
 
   /*
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
@@ -106,7 +113,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $this->setCurrentUser();
 
     // @TODO Move this to middleware to stop it being loaded when this controller
-    // is contructed outside a request for a route this controller resolves.
+    // is constructed outside a request for a route this controller resolves.
     try {
       $this->getFlowNegotiator()->getFlow();
 
@@ -142,7 +149,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @return array
    *   An array representing additional key names to be removed from form data.
    */
-  public function getIgnoredValues() {
+  public function getIgnoredValues(): array {
     return isset($this->ignoreValues) ? (array) $this->ignoreValues : [];
   }
 
@@ -159,34 +166,30 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * Set ignored form values.
    *
-   * @param array $values
+   * @param ?array $values
    *   Configure additional key names to be removed from form data.
    */
-  public function setIgnoredValues(array $values) {
+  public function setIgnoredValues(?array $values = NULL): void {
     if (isset($values)) {
       $this->ignoreValues = $values;
     }
   }
 
   /**
-   * Access callback
-   * Useful for custom business logic for access.
+   *  Default access callback.
    *
-   * @param \Symfony\Component\Routing\Route $route
+   * @param Route $route
    *   The route.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   * @param RouteMatchInterface $route_match
    *   The route match object to be checked.
-   * @param \Drupal\Core\Session\AccountInterface $account
+   * @param AccountInterface $account
    *   The account being checked.
    *
-   * @see \Drupal\Core\Access\AccessResult
-   *   The options for callback.
-   *
-   * @return \Drupal\Core\Access\AccessResult
+   * @return AccessResult
    *   The access result.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
-    return $this->accessResult ? $this->accessResult : AccessResult::allowed();
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account): AccessResult {
+    return $this->accessResult instanceof AccessResult ? $this->accessResult : AccessResult::allowed();
   }
 
   /**

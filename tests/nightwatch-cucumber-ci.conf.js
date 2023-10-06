@@ -40,14 +40,14 @@ module.exports = {
                 resolution: '1280x3000',
                 chromeOptions: {
                     binary: '/usr/bin/google-chrome',
-                    args: ['--headless', '--no-sandbox', '--disable-gpu', '--window-size=1280,3000'],
+                    args: ['--verbose', '--headless', '--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage', '--window-size=1280,3000'],
                 },
                 javascriptEnabled: true,
                 acceptSslCerts: true
             },
             selenium: {
                 cli_args: {
-                    'webdriver.chrome.driver': chromedriver.path
+                    'webdriver.chrome.driver': '/usr/local/bin/chromedriver'
                 }
             }
         }

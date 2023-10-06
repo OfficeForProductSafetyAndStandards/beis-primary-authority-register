@@ -14,6 +14,7 @@ import cucumber.api.DataTable;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.DashboardPage;
+import uk.gov.beis.pageobjects.EnterTheDatePage;
 import uk.gov.beis.utility.DataStore;
 
 public class PersonContactDetailsPage extends BasePageObject {
@@ -133,6 +134,11 @@ public class PersonContactDetailsPage extends BasePageObject {
 		DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, lastName);
 		
 		setContactDetails(person);
+	}
+	
+	public EnterTheDatePage clickContinueButtonForMemberContact() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, EnterTheDatePage.class);
 	}
 	
 	public PersonAccountPage clickContinueButton() {

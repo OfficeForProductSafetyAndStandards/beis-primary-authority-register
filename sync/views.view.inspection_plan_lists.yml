@@ -860,7 +860,7 @@ display:
           field: field_inspection_plan
           relationship: none
           group_type: group
-          admin_label: 'Partnership''s Inspection Plan'
+          admin_label: "Partnership's Inspection Plan"
           plugin_id: standard
           required: true
       css_class: par_inspection_plan_listing

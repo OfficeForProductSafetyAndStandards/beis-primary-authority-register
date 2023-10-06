@@ -8,19 +8,20 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class TradingPage extends BasePageObject {
-	public TradingPage() throws ClassNotFoundException, IOException {
-		super();
-	}
-
+	
 	@FindBy(xpath = "//div/input[@class='form-text form-control govuk-input']")
 	private WebElement tradingName;
 	
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
+	
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
-
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	private WebElement continueBtn;
-
+	
+	public TradingPage() throws ClassNotFoundException, IOException {
+		super();
+	}
+	
 	public BasePageObject enterTradingName(String name) {
 		tradingName.clear();
 		tradingName.sendKeys(name);
@@ -40,5 +41,13 @@ public class TradingPage extends BasePageObject {
 		
 		saveBtn.click();
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
+	
+	public LegalEntityTypePage addTradingNameForMember(String name) {
+		tradingName.clear();
+		tradingName.sendKeys(name);
+		
+		continueBtn.click();
+		return PageFactory.initElements(driver, LegalEntityTypePage.class);
 	}
 }

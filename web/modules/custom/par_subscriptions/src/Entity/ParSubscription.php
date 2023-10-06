@@ -77,7 +77,7 @@ class ParSubscription extends ContentEntityBase implements ContentEntityInterfac
     // Dispatch a subscribe event.
     $name = SubscriptionEvents::subscribe($this->getListId());
     $event = new SubscriptionEvent($this);
-    $this->getEventDispatcher()->dispatch($name, $event);
+    $this->getEventDispatcher()->dispatch($event, $name);
   }
 
   public function verify() {
@@ -91,7 +91,7 @@ class ParSubscription extends ContentEntityBase implements ContentEntityInterfac
     // Dispatch a subscribe event.
     $name = SubscriptionEvents::unsubscribe($this->getListId());
     $event = new SubscriptionEvent($this);
-    $this->getEventDispatcher()->dispatch($name, $event);
+    $this->getEventDispatcher()->dispatch($event, $name);
   }
 
   /**
