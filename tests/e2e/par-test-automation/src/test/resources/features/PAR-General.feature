@@ -323,15 +323,7 @@ Feature: General
     #remove the inspection plan
     When the user has revoked the last created inspection plan
     Then the inspection plan is successfully removed
-
-  @regression @deletePartnership
-  Scenario: Verify a Nominated Partnership can be Deleted (Happy Path - PAR-2277)
-    Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user searches for the last created partnership
-    Then the user can Delete the Partnership Successfully with the following reason: "Partnership is Incorrect."
-
-  @regression @partnershipapplication @coordinated @organisationMember	
+	
 	@regression @direct @deletePartnership
   Scenario: Verify a Nominated Direct Partnership can be Deleted Successfully (Happy Path - PAR-2277)
     Given the user is on the PAR home page

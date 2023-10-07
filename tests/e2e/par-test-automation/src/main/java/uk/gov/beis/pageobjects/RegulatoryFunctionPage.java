@@ -25,7 +25,7 @@ public class RegulatoryFunctionPage extends BasePageObject {
 	@FindBy(id = "edit-partnership-cover-bespoke")
 	private WebElement bespokeRadio;
 	
-	@FindBy(id = "edit-regulatory-functions-4")	// Note: May have more check boxes in the future.
+	@FindBy(xpath = "//input[@class='form-group form-checkbox govuk-checkboxes__input']")
 	private WebElement bespokeCheckbox;
 
 	@FindBy(id = "edit-next")
@@ -76,6 +76,7 @@ public class RegulatoryFunctionPage extends BasePageObject {
 			bespokeRadio.click();
 			
 			if(!bespokeCheckbox.isSelected()) {
+				
 				bespokeCheckbox.click();
 			}
 		}

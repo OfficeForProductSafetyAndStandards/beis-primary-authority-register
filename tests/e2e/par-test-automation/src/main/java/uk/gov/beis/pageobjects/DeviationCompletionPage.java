@@ -9,6 +9,8 @@ import org.openqa.selenium.support.PageFactory;
 public class DeviationCompletionPage extends BasePageObject{
 	
 	@FindBy(xpath = "//a[contains(@class,'button')]")
+	//@FindBy(xpath = "//a[@class='flow-link button']")
+	//@FindBy(partialLinkText = "Done")
 	private WebElement doneBtn;
 	
 	public DeviationCompletionPage() throws ClassNotFoundException, IOException {

@@ -34,13 +34,13 @@ public class PersonMembershipPage extends BasePageObject {
 	private WebElement partnershipConfirmedByAuthorityCheckbox;
 	
 	// Authorities
-	@FindBy(id = "edit-par-data-authority-id-7")
+	@FindBy(xpath = "//label[contains(text(), 'City Enforcement Squad')]/preceding-sibling::input")
 	private WebElement cityEnforcementSquadCheckbox;
 	
-	@FindBy(id = "edit-par-data-authority-id-9")
+	@FindBy(xpath = "//label[contains(text(), 'Upper West Side Borough Council')]/preceding-sibling::input")
 	private WebElement upperWestSideBoroughCouncilCheckbox;
 	
-	@FindBy(id = "edit-par-data-authority-id-8")
+	@FindBy(xpath = "//label[contains(text(), 'Lower East Side Borough Council')]/preceding-sibling::input")
 	private WebElement lowerEastSideBoroughCouncilCheckbox;
 	
 	// Help Desk Membership Selection Page Elements

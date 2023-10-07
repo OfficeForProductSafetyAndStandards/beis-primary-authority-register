@@ -1881,7 +1881,7 @@ public class PARStepDefs {
 		
 		LOG.info("Successfully chose the contacts Authority memberships.");
 
-		personUserTypePage.selectAuthorityManager();
+		personUserTypePage.selectAuthorityMember();
 		personUserTypePage.clickProfileReviewContinueButton();
 		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
 
