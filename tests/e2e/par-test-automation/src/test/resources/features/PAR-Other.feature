@@ -18,7 +18,7 @@ Feature: Other
     When the user is on the search for a partnership page
     Then the user can search for a PA Organisation Trading name Company number
     And the user is shown the information for that partnership
-    
+
   @regression @authority @authorityManagement
   Scenario: Verify Addition/Update of Authority (Happy Path - PAR-1849, PAR-1850)
     Given the user is on the PAR login page
@@ -95,8 +95,8 @@ Feature: Other
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user creates a new person:
-      | Title | WorkNumber | MobileNumber |
-      | Mr    |      01204 |              |
+      | Title | WorkNumber | MobileNumber | Organisation | Authority              |
+      | Mr    |      01204 |              | Cafe         | City Enforcement Squad |
     Then the user can verify the person was created successfully and can see resend an account invite
 
   @regression @helpDesk @managePeople
@@ -105,8 +105,8 @@ Feature: Other
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for an existing person successfully
     And the user updates an existing person:
-      | Title | WorkNumber  | MobileNumber |
-      | Dr    | 01204996501 |  07405882265 |
+      | Title | WorkNumber  | MobileNumber | Organisation  | Authority                       |
+      | Dr    | 01204996501 |  07405882265 | General Store | Upper West Side Borough Council |
     Then the user can verify the person was updated successfully and can see resend an account invite
 
   @regression @helpDesk @managePeople @mergeContact
