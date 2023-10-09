@@ -19,12 +19,12 @@ public class UserProfileCompletionPage extends BasePageObject {
 	}
 	
 	public DashboardPage completeApplication() {
-			doneBtn.click();
+		doneBtn.click();
 		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 	
 	public PersonsProfilePage clickDoneGoToProfile() {
 		doneBtn.click();
-	return PageFactory.initElements(driver, PersonsProfilePage.class);
-}
+		return PageFactory.initElements(driver, PersonsProfilePage.class);
+	}
 }

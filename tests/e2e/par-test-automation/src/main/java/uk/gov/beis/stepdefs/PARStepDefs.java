@@ -518,7 +518,8 @@ public class PARStepDefs {
 	@When("^the user visits the maillog page and extracts the invite link$")
 	public void the_user_visits_the_maillog_page_and_extracts_the_invite_link() throws Throwable {
 		mailLogPage.navigateToUrl();
-		mailLogPage.selectEamilAndGetINviteLink(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
+		mailLogPage.searchForUserAccountInvite(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
+		mailLogPage.selectEamilAndGetInviteLink(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 	}
 
 	@When("^the user follows the invitation link$")
@@ -1402,9 +1403,10 @@ public class PARStepDefs {
 		personAccountPage.clickContinueButton();
 
 		LOG.info("Successfully chose to invite the person to create an account.");
-
-		personMembershipPage.selectAuthority();
 		personMembershipPage.selectOrganisation();
+		
+		personMembershipPage.selectAuthority();
+		
 		personMembershipPage.clickContinueButton();
 		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
 		LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));

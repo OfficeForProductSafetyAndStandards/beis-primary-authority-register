@@ -14,21 +14,32 @@ import uk.gov.beis.utility.DataStore;
 
 public class MailLogPage extends BasePageObject {
 
+	@FindBy(id = "edit-header-to")
+	private WebElement toSearchBox;
+	
+	@FindBy(id = "edit-submit-maillog-overview")
+	private WebElement applyBtn;
+	
+	@FindBy(name = "name")
+	private WebElement username;
+	
+	String email = "//tr/td[contains(text(),'?')]/preceding-sibling::td/a[contains(text(),'Invitation')]";
+	
 	public MailLogPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(name = "name")
-	private WebElement username;
-
-	String email = "//tr/td[contains(text(),'?')]/preceding-sibling::td/a[contains(text(),'Invitation')]";
-
+	
 	public MailLogPage navigateToUrl() throws InterruptedException {
 		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("maillog_url"));
 		return PageFactory.initElements(driver, MailLogPage.class);
 	}
-
-	public MailLogPage selectEamilAndGetINviteLink(String emailid) {
+	
+	public void searchForUserAccountInvite(String userEmail) {
+		toSearchBox.sendKeys(userEmail);
+		applyBtn.click();
+	}
+	
+	public MailLogPage selectEamilAndGetInviteLink(String emailid) {
 		driver.findElement(By.xpath(email.replace("?", emailid))).click();
 		String invite = driver.findElement(By.xpath("//div/label[contains(text(),'Body')]/following-sibling::pre")).getText();
 		String[] parts = invite.split("\\s+");
