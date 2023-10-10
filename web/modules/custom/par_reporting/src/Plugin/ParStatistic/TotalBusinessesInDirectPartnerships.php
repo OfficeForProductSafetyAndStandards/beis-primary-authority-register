@@ -41,18 +41,7 @@ class TotalBusinessesInDirectPartnerships extends ParStatisticBase {
 
     $total = 0;
     foreach ($partnerships as $partnership) {
-      $count = 0;
-      $legal_entities = $partnership->getLegalEntity();
-
-      // Count how many legal entities are covered under this direct partnership.
-      if ($legal_entities && count($legal_entities) >= 1) {
-        $count = count($legal_entities);
-      }
-      else {
-        $count = 1;
-      }
-
-      $total += $count;
+      $total += $partnership->get('field_partnership_legal_entity')?->count();
     }
 
     return $total;
