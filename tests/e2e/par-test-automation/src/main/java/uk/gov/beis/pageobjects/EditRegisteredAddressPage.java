@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import uk.gov.beis.enums.UsableValues;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
 import uk.gov.beis.utility.DataStore;
 
 public class EditRegisteredAddressPage extends BasePageObject {

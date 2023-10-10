@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityAddressDetailsPage;
+
 public class AuthorityTypePage extends BasePageObject {
 
 	public AuthorityTypePage() throws ClassNotFoundException, IOException {

@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.InspectionPlanPageObjects;
 
 import java.io.IOException;
 
@@ -7,20 +7,20 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import uk.gov.beis.pageobjects.InspectionPlanPageObjects.UploadInspectionPlanPage;
+import uk.gov.beis.pageobjects.BasePageObject;
 
-public class UploadAdviceNoticePage extends BasePageObject{
-	
-	public UploadAdviceNoticePage() throws ClassNotFoundException, IOException {
+public class UploadInspectionPlanPage extends BasePageObject {
+
+	public UploadInspectionPlanPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
-	@FindBy(xpath = "//input[@id='edit-files-upload']")
+	@FindBy(xpath = "//input[@id='edit-inspection-plan-files-upload']")
 	private WebElement chooseFile1;
 
-	public AdviceNoticeDetailsPage uploadFile() {
+	public InspectionPlanDetailsPage uploadFile() {
 		driver.findElement(By.id("edit-upload")).click();
-		return PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
+		return PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
 	}
 
 	public UploadInspectionPlanPage chooseFile(String filename) {

@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import uk.gov.beis.pageobjects.PartnershipPageObjects.RegulatoryFunctionPage;
+
 public class ONSCodePage extends BasePageObject {
 
 	public ONSCodePage() throws ClassNotFoundException, IOException {

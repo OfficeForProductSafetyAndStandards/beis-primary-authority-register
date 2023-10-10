@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.HomePageLinkPageObjects.*;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipSearchPage;
 
 public class HomePage extends BasePageObject {
 

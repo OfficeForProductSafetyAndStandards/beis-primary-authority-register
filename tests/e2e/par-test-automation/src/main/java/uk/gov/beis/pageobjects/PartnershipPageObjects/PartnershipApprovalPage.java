@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.PartnershipPageObjects;
 
 import java.io.IOException;
 
@@ -6,18 +6,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipAdvancedSearchPage;
+import uk.gov.beis.pageobjects.BasePageObject;
 
-public class CompletionPage extends BasePageObject {
+public class PartnershipApprovalPage extends BasePageObject {
 
 	@FindBy(id = "edit-done")
 	private WebElement doneBtn;
 	
-	public CompletionPage() throws ClassNotFoundException, IOException {
+	public PartnershipApprovalPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
-	public PartnershipAdvancedSearchPage clickDoneForPartnership() {
+	public PartnershipAdvancedSearchPage completeApplication() {
 		doneBtn.click();
 		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 	}

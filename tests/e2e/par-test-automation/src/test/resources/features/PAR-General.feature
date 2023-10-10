@@ -333,8 +333,7 @@ Feature: General
     And the user follows the invitation link
     And the user completes the user creation journey
     Then the user journey creation is successful
-
-  @regression @partnershipapplication @coordinated @organisationMember	
+		
 	@regression @direct @deletePartnership
   Scenario: Verify a Nominated Direct Partnership can be Deleted Successfully (Happy Path - PAR-2277)
     Given the user is on the PAR home page

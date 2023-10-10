@@ -8,6 +8,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import uk.gov.beis.pageobjects.PartnershipPageObjects.AuthorityPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipAdvancedSearchPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipSearchPage;
 import uk.gov.beis.pageobjects.UserManagement.ManagePeoplePage;
 
 public class DashboardPage extends BasePageObject {
