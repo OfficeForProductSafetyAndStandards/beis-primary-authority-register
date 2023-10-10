@@ -19,13 +19,26 @@ import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.*;
+import uk.gov.beis.pageobjects.HomePageLinkPageObjects.*;
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
 
 public class PARStepDefs {
 
 	public static WebDriver driver;
+	
+	// PAR Home Page
 	private HomePage parHomePage;
+	private LocalRegulationPrimaryAuthorityPage localRegulationPrimaryAuthorityPage;
+	private PrimaryAuthorityDocumentsPage primaryAuthorityDocumentsPage;
+	private TermsAndConditionsPage termsAndConditionsPage;
+	private CookiesPage cookiesPage;
+	private OPSSPrivacyNoticePage opssPrivacyNoticePage;
+	private AccessibilityStatementPage accessibilityStatementPage;
+	private OpenGovernmentLicencePage openGovernmentLicencePage;
+	private CrownCopyrightPage crownCopyrightPage;
+	
+	// Next Section
 	private RevokeReasonInspectionPlanPage revokeReasonInspectionPlanPage;
 	private RequestEnquiryPage requestEnquiryPage;
 	private DeviationSearchPage deviationSearchPage;
@@ -135,7 +148,19 @@ public class PARStepDefs {
 	private ReplyEnquiryPage replyEnquiryPage;
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
-		driver = ScenarioContext.lastDriver;  
+		driver = ScenarioContext.lastDriver;
+		
+		// PAR Home Page
+		localRegulationPrimaryAuthorityPage = PageFactory.initElements(driver, LocalRegulationPrimaryAuthorityPage.class);
+		primaryAuthorityDocumentsPage = PageFactory.initElements(driver, PrimaryAuthorityDocumentsPage.class);
+		termsAndConditionsPage = PageFactory.initElements(driver, TermsAndConditionsPage.class);
+		cookiesPage = PageFactory.initElements(driver, CookiesPage.class);
+		opssPrivacyNoticePage = PageFactory.initElements(driver, OPSSPrivacyNoticePage.class);
+		accessibilityStatementPage = PageFactory.initElements(driver, AccessibilityStatementPage.class);
+		openGovernmentLicencePage = PageFactory.initElements(driver, OpenGovernmentLicencePage.class);
+		crownCopyrightPage = PageFactory.initElements(driver, CrownCopyrightPage.class);
+		
+		// Next Section
 		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
 		uploadAdviceNoticePage = PageFactory.initElements(driver, UploadAdviceNoticePage.class);
 		adviceNoticeSearchPage = PageFactory.initElements(driver, AdviceNoticeSearchPage.class);
@@ -1797,8 +1822,8 @@ public class PARStepDefs {
 		Assert.assertTrue("Failed: Advice Notice was not Removed.", adviceNoticeSearchPage.checkNoResultsReturned());
 	}
 	
-	@Then("^the user can Delete the Partnership Successfully with the following reason: \"([^\"]*)\"$")
-	public void the_user_can_Delete_the_Partnership_Successfully_with_the_following_reason(String reason) throws Throwable {
+	@When("^the user Deletes the Partnership with the following reason: \"([^\"]*)\"$")
+	public void the_user_Deletes_the_Partnership_with_the_following_reason(String reason) throws Throwable {
 		LOG.info("Delete the Partnership.");
 		partnershipAdvancedSearchPage.selectDeletePartnershipLink();
 		
@@ -1806,9 +1831,128 @@ public class PARStepDefs {
 		deletePage.clickDeleteForPartnership();
 		
 		completionPage.clickDoneForPartnership();
-		
+	}
+
+	@Then("^the Partnership was Deleted Successfully$")
+	public void the_Partnership_was_Deleted_Successfully() throws Throwable {
 		LOG.info("Verify the Partnership was Deleted Successfully.");
+		
 		partnershipAdvancedSearchPage.searchPartnerships();
 		Assert.assertTrue(partnershipAdvancedSearchPage.checkPartnershipExists());
+	}
+	
+	@When("^the user selects the Read more about Primary Authority link$")
+	public void the_user_selects_the_Read_more_about_Primary_Authority_link() throws Throwable {
+		LOG.info("Selecting the Read More About Primary Authority Link.");
+		
+		parHomePage.selectReadMoreAboutPrimaryAuthorityLink();
+	}
+
+	@Then("^the user is taken to the GOV\\.UK Guidance page for Local regulation Primary Authority Successfully$")
+	public void the_user_is_taken_to_the_GOV_UK_Guidance_page_for_Local_regulation_Primary_Authority_Successfully() throws Throwable {
+		LOG.info("Verifying the Local regulation: Primary Authority Page is Displayed.");
+		
+		Assert.assertTrue(localRegulationPrimaryAuthorityPage.checkPageHeaderDisplayed());
+	}
+
+	@When("^the user selects the Access tools and templates for local authorities link$")
+	public void the_user_selects_the_Access_tools_and_templates_for_local_authorities_link() throws Throwable {
+		LOG.info("Selecting the Access Tools and Templates Link.");
+		
+		parHomePage.selectAccessToolsAndTemplatesLink();
+	}
+
+	@Then("^the user is taken to the GOV\\.UK Collection page for Primary Authority Documents Successfully$")
+	public void the_user_is_taken_to_the_GOV_UK_Collection_page_for_Primary_Authority_Documents_Successfully() throws Throwable {
+		LOG.info("Verifying the Primary Authority documents page is Displayed.");
+		
+		Assert.assertTrue(primaryAuthorityDocumentsPage.checkPageHeaderDisplayed());
+	}
+
+	@When("^the user selects the Terms and Conditions link$")
+	public void the_user_selects_the_Terms_and_Conditions_link() throws Throwable {
+		LOG.info("Selecting the Terms and Conditions Link.");
+		
+		parHomePage.selectTermsAndConditionsLink();
+	}
+
+	@Then("^the user is taken to the GOV\\.UK Guidance page for Primary Authority terms and conditions Successfully$")
+	public void the_user_is_taken_to_the_GOV_UK_Guidance_page_for_Primary_Authority_terms_and_conditions_Successfully() throws Throwable {
+		LOG.info("Verifying the Primary Authority terms and conditions page is Displayed.");
+		
+		Assert.assertTrue(termsAndConditionsPage.checkPageHeaderDisplayed());
+	}
+
+	@When("^the user selects the Cookies link$")
+	public void the_user_selects_the_Cookies_link() throws Throwable {
+		LOG.info("Selecting the Cookies Link from the Footer.");
+		
+		parHomePage.selectCookiesFooterLink();
+	}
+
+	@Then("^the user is taken to the Cookies page and can accept the Analytics Cookies Successfully$")
+	public void the_user_is_taken_to_the_Cookies_page_and_can_accept_the_Analytics_Cookies_Successfully() throws Throwable {
+		LOG.info("Verifying the Cookies page is Displayed and the User Accepts the Analytics Cookies.");
+		
+		Assert.assertTrue(cookiesPage.checkPageHeaderDisplayed());
+		
+		cookiesPage.acceptCookies();
+		cookiesPage.selectSaveButton();
+	}
+
+	@When("^the user selects the Privacy link$")
+	public void the_user_selects_the_Privacy_link() throws Throwable {
+		LOG.info("Selecting the Privacy Link.");
+		
+		parHomePage.selectPrivacyLink();
+	}
+
+	@Then("^the user is taken to the GOV\\.UK Corporate report OPSS Privacy notice page Successfully$")
+	public void the_user_is_taken_to_the_GOV_UK_Corporate_report_OPSS_Privacy_notice_page_Successfully() throws Throwable {
+		LOG.info("Verifying the OPSS: privacy notice page is Displayed.");
+		
+		Assert.assertTrue(opssPrivacyNoticePage.checkPageHeaderDisplayed());
+	}
+
+	@When("^the user selects the Accessibility link$")
+	public void the_user_selects_the_Accessibility_link() throws Throwable {
+		LOG.info("Selecting the Accessibility Link.");
+		
+		parHomePage.selectAccessibilityLink();
+	}
+
+	@Then("^the user is taken to the GOV\\.UK Guidance page for the Primary Authority Register accessibility statement Successfully$")
+	public void the_user_is_taken_to_the_GOV_UK_Guidance_page_for_the_Primary_Authority_Register_accessibility_statement_Successfully() throws Throwable {
+		LOG.info("Verifying the Primary Authority Register: accessibility statement page is Displayed.");
+		
+		Assert.assertTrue(accessibilityStatementPage.checkPageHeaderDisplayed());
+	}
+
+	@When("^the user selects the Open Government Licence link$")
+	public void the_user_selects_the_Open_Government_Licence_link() throws Throwable {
+		LOG.info("Selecting the Open Government Licence Link.");
+		
+		parHomePage.selectOpenGovernmentLicenceLink();
+	}
+
+	@Then("^the user is taken to the Open Government Licence for public sector information page Successfully$")
+	public void the_user_is_taken_to_the_Open_Government_Licence_for_public_sector_information_page_Successfully() throws Throwable {
+		LOG.info("Verifying the Open Government Licence page is Displayed.");
+		
+		Assert.assertTrue(openGovernmentLicencePage.checkPageHeaderDisplayed());
+	}
+
+	@When("^the user selects the Crown copyright link$")
+	public void the_user_selects_the_Crown_copyright_link() throws Throwable {
+		LOG.info("Selecting the Crown copyright Link.");
+		
+		parHomePage.selectCrownCopyrightLink();
+	}
+
+	@Then("^the user is taken to the Crown copyright page Successfully$")
+	public void the_user_is_taken_to_the_Crown_copyright_page_Successfully() throws Throwable {
+		LOG.info("Verifying the Crown copyright page is Displayed.");
+		
+		Assert.assertTrue(crownCopyrightPage.checkPageHeaderDisplayed());
 	}
 }
