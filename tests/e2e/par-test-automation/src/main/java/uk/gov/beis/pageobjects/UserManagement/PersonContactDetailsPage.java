@@ -15,6 +15,7 @@ import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.DashboardPage;
 import uk.gov.beis.pageobjects.EnterTheDatePage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.utility.DataStore;
 
 public class PersonContactDetailsPage extends BasePageObject {
@@ -51,6 +52,9 @@ public class PersonContactDetailsPage extends BasePageObject {
 	
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
+	
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
 	
 	@FindBy(id = "edit-cancel")
 	private WebElement cancelBtn;
@@ -149,6 +153,11 @@ public class PersonContactDetailsPage extends BasePageObject {
 	public PersonUserRoleTypePage selectContinueButton() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, PersonUserRoleTypePage.class);
+	}
+	
+	public MemberOrganisationSummaryPage goToMemberOrganisationSummaryPage() {
+		saveBtn.click();
+		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
 	}
 	
 	public DashboardPage clickCancelButton() {

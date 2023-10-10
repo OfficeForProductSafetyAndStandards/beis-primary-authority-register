@@ -32,6 +32,7 @@ import uk.gov.beis.pageobjects.InspectionPlanPageObjects.RevokeReasonInspectionP
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.UploadInspectionPlanPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityReviewPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.UpdateLegalEntityPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.AddOrganisationNamePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessAddressDetailsPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessContactDetailsPage;
@@ -82,6 +83,8 @@ public class PARStepDefs {
 	private MergeContactRecordsPage mergeContactRecordsPage;
 	private MergeContactRecordsConfirmationPage mergeContactRecordsConfirmationPage;
 	
+	// Legal Entity
+	private UpdateLegalEntityPage updateLegalEntityPage;
 	// Next Section
 	private RevokeReasonInspectionPlanPage revokeReasonInspectionPlanPage;
 	private RequestEnquiryPage requestEnquiryPage;
@@ -213,6 +216,8 @@ public class PARStepDefs {
 		mergeContactRecordsPage = PageFactory.initElements(driver, MergeContactRecordsPage.class);
 		mergeContactRecordsConfirmationPage = PageFactory.initElements(driver, MergeContactRecordsConfirmationPage.class);
 		
+		// Legal Entity
+		updateLegalEntityPage = PageFactory.initElements(driver, UpdateLegalEntityPage.class);
 		// Next Section
 		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
 		uploadAdviceNoticePage = PageFactory.initElements(driver, UploadAdviceNoticePage.class);
@@ -1994,6 +1999,7 @@ public class PARStepDefs {
 		
 		LOG.info("Entering the Member Organisation's Legal Entity.");
 		legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		legalEntityTypePage.clickContinueButton();
 		legalEntityReviewPage.clickContinueForMember();
 		
 		LOG.info("Confirming the Member Organisation is covered by the Inspection Plan.");
@@ -2009,6 +2015,78 @@ public class PARStepDefs {
 	public void the_user_member_organistion_has_been_added_to_the_partnership_successfully() throws Throwable {
 		LOG.info("Verify the Member Organisation was added to the Co-ordinated Partnership Successfully.");
 		
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		Assert.assertTrue(memberListPage.checkMemberCreated());
+	}
+	
+	@When("^the user updates a single member organisation of the patnership with the following details:$")
+	public void the_user_updates_a_single_member_organisation_of_the_patnership_with_the_following_details(DataTable details) throws Throwable {
+LOG.info("Update a Single Member Organisation to a Co-ordinated Partnership.");
+		
+		partnershipAdvancedSearchPage.selectOrganisationLink();
+		parPartnershipConfirmationPage.selectShowMembersListLink();
+		
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		memberListPage.selectMembersName();
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.MEMBER_ORGANISATION_NAME, data.get("Organisation Name"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("Address Line 1"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE2, data.get("Address Line 2"));
+			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("Town City"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTY, data.get("County"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTRY, data.get("Country"));
+			DataStore.saveValue(UsableValues.BUSINESS_NATION, data.get("Nation"));
+			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("Postcode"));
+			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal Entity Type"));
+			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Legal Entity Name"));
+		}
+		
+		LOG.info("Updating the Member Organisation's Name.");
+		memberOrganisationSummaryPage.selectEditOrganisationName();
+		addOrganisationNamePage.editMemberOrganisationName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		
+		LOG.info("Updating the Member Organisation's Address.");
+		memberOrganisationSummaryPage.selectEditAddress();
+		
+		editRegisteredAddressPage.editAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		
+		editRegisteredAddressPage.goToMemberOrganisationSummaryPage();
+		
+		LOG.info("Updating the Member Organisation's Membership Start Date.");
+		memberOrganisationSummaryPage.selectEditMembershipStartDate();
+		enterTheDatePage.goToMemberOrganisationSummaryPage();
+		
+		LOG.info("Updating the Member Organisation's Contact Details.");
+		memberOrganisationSummaryPage.selectEditPerson();
+		personsContactDetailsPage.enterContactDetails(details);
+		personsContactDetailsPage.goToMemberOrganisationSummaryPage();
+		
+		LOG.info("Updating the Member Organisation's Legal Entity.");
+		memberOrganisationSummaryPage.selectAddAnotherLegalEntity();
+		updateLegalEntityPage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		updateLegalEntityPage.goToMemberOrganisationSummaryPage();
+		
+		LOG.info("Updating the Member Organisation's Trading Name.");
+		memberOrganisationSummaryPage.selectEditTradingName();
+		tradingPage.editMemberTradingName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		tradingPage.goToMemberOrganisationSummaryPage();
+		
+		LOG.info("Confirming the Member Organisation is not covered by the Inspection Plan.");
+		memberOrganisationSummaryPage.selectEditCoveredByInspectionPlan();
+		inspectionPlanCoveragePage.selectNoRadial();
+		inspectionPlanCoveragePage.selectSaveForMember();
+	}
+
+	@Then("^the member organistion has been updated successfully$")
+	public void the_member_organistion_has_been_updated_successfully() throws Throwable {
+		LOG.info("Verifying All Member Details are Correct.");
+		Assert.assertTrue(memberOrganisationSummaryPage.checkMemberDetails());
+		memberOrganisationSummaryPage.selectDone();
+		
+		LOG.info("Verify the Updated Member Organisation Name is Displayed on the Members List.");
 		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
 		Assert.assertTrue(memberListPage.checkMemberCreated());
 	}

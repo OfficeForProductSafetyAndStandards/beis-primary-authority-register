@@ -29,7 +29,7 @@ public class LegalEntityTypePage extends BasePageObject {
 	
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
-
+	
 	String legalEntType = "//label[contains(text(),'?')]";
 	
 	public LegalEntityTypePage() throws ClassNotFoundException, IOException {
@@ -53,32 +53,23 @@ public class LegalEntityTypePage extends BasePageObject {
 		return PageFactory.initElements(driver, LegalEntityReviewPage.class);
 	}
 	
-	public LegalEntityReviewPage selectRegisteredOrganisation(String registrationNumber) {
-		
+	public void selectRegisteredOrganisation(String registrationNumber) {
 		registeredOrganisationRadial.click();
 		
 		if(registeredOrganisationRadial.isSelected()) {
 			registrationNumberTextbox.sendKeys(registrationNumber);
-			continueBtn.click();
 		}
-		
-		return PageFactory.initElements(driver, LegalEntityReviewPage.class);
 	}
 	
-	public LegalEntityReviewPage selectCharity(String registrationNumber) {
-		
+	public void selectCharity(String registrationNumber) {
 		charityRadial.click();
 		
 		if(charityRadial.isSelected()) {
 			registrationNumberTextbox.sendKeys(registrationNumber);
-			continueBtn.click();
 		}
-		
-		return PageFactory.initElements(driver, LegalEntityReviewPage.class);
 	}
 	
-	public LegalEntityReviewPage selectUnregisteredEntity(String entityType, String legalEntityName) {
-		
+	public void selectUnregisteredEntity(String entityType, String legalEntityName) {
 		unregisteredEntityRadial.click();
 		
 		if(unregisteredEntityRadial.isSelected()) {
@@ -86,9 +77,12 @@ public class LegalEntityTypePage extends BasePageObject {
 			driver.findElement(By.xpath(legalEntType.replace("?", entityType))).click();
 			
 			legalEnityNameTextbox.sendKeys(legalEntityName);
-			continueBtn.click();
 		}
-		
+	}
+	
+	public LegalEntityReviewPage clickContinueButton() {
+		continueBtn.click();
 		return PageFactory.initElements(driver, LegalEntityReviewPage.class);
 	}
+	
 }

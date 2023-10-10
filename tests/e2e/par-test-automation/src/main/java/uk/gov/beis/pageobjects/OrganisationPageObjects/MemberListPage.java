@@ -45,6 +45,12 @@ public class MemberListPage extends BasePageObject {
 		applyBtn.click();
 	}
 	
+	public MemberOrganisationSummaryPage selectMembersName() {
+		driver.findElement(By.xpath(memberNameLocator.replace("?", DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME)))).click();
+		
+		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
+	}
+	
 	public boolean checkMemberCreated() {
 		
 		return driver.findElement(By.xpath(memberNameLocator.replace("?", DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME)))).isDisplayed();

@@ -28,6 +28,11 @@ public class TradingPage extends BasePageObject {
 		super();
 	}
 	
+	public void editMemberTradingName(String name) {
+		tradingName.clear();
+		tradingName.sendKeys(name);
+	}
+	
 	public BasePageObject enterTradingName(String name) {
 		tradingName.clear();
 		tradingName.sendKeys(name);
@@ -55,5 +60,10 @@ public class TradingPage extends BasePageObject {
 		
 		continueBtn.click();
 		return PageFactory.initElements(driver, LegalEntityTypePage.class);
+	}
+	
+	public MemberOrganisationSummaryPage goToMemberOrganisationSummaryPage() {
+		saveBtn.click();
+		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
 	}
 }

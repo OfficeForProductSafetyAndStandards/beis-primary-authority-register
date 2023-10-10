@@ -333,8 +333,8 @@ Feature: General
     And the user follows the invitation link
     And the user completes the user creation journey
     Then the user journey creation is successful
-		
-	@regression @direct @deletePartnership
+
+  @regression @direct @deletePartnership
   Scenario: Verify a Nominated Direct Partnership can be Deleted Successfully (Happy Path - PAR-2277)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -350,17 +350,17 @@ Feature: General
       | SIC Code            | No of Employees | Legal Entity Name | Legal entity Type | Company number | Business Description |
       | allow people to eat | 10 to 49        | LE1               | unregistered      |       12345678 | Test Business        |
     Then the second part of the partnership application is successfully completed
-		# Nominate the Partnership
+    # Nominate the Partnership
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created partnership
     And the user approves the partnership
     And the user searches again for the last created partnership
     Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
-		# Delete the Partnership
+    # Delete the Partnership
     When the user Deletes the Partnership with the following reason: "Partnership is incorrect."
     Then the Partnership was Deleted Successfully
-  
+
   @regression @partnershipapplication @coordinated
   Scenario: Verify Coordinated Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
     Given the user is on the PAR home page
@@ -397,9 +397,18 @@ Feature: General
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created partnership
     And the user adds a single member organisation to the patnership with the following details:
-      | Organisation Name    | Address Line 1 | Address Line 2 | Town City  | County             | Postcode | Title | WorkNumber  | MobileNumber | Legal Entity Type | Legal Entity Name |
-      | Testing Organisation | 02 New Street  | Market Hall    | Manchester | Greater Manchester | BL2 4BL  | Dr    | 02345678901 |  07890123456 | Sole trader       | Testing Co.       |
+      | Organisation Name    | Address Line 1 | Address Line 2 | Town City  | County             | Country        | Nation | Postcode | Title | WorkNumber  | MobileNumber | Legal Entity Type | Legal Entity Name |
+      | Testing Organisation | 02 New Street  | Market Hall    | Manchester | Greater Manchester | United Kingdom | Wales  | BL2 4BL  | Dr    | 02345678901 |  07890123456 | Sole trader       | Testing Co.       |
     Then the user member organistion has been added to the partnership successfully
 
+  @regression @coordinated @organisationMember
+  Scenario: Verify the Update of a Single Member Organisation for a Coordinated partnership (Happy Path - PAR-1969)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user updates a single member organisation of the patnership with the following details:
+      | Organisation Name    | Address Line 1 | Address Line 2 | Town City  | County             | Country        | Nation | Postcode | Title | WorkNumber   | MobileNumber | Legal Entity Type | Legal Entity Name |
+      | Testers Organisation | 03 New Street  | Market Hall    | Manchester | Greater Manchester | United Kingdom | Wales  | BL2 4BL  | Mr    | 020455669921 |  07009156780 | Sole trader       | Tester Co.        |
+    Then the member organistion has been updated successfully
   # Upload a Members list Test goes here.
   # Change the Members list type Test goes here.

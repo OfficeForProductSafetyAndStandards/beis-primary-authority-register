@@ -17,6 +17,9 @@ public class AddOrganisationNamePage extends BasePageObject {
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 	
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
+	
 	public AddOrganisationNamePage() throws ClassNotFoundException, IOException {
 		super();
 	}
@@ -27,5 +30,13 @@ public class AddOrganisationNamePage extends BasePageObject {
 		
 		continueBtn.click();
 		return PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
+	}
+	
+	public MemberOrganisationSummaryPage editMemberOrganisationName(String name) {
+		organisationName.clear();
+		organisationName.sendKeys(name);
+		
+		saveBtn.click();
+		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
 	}
 }
