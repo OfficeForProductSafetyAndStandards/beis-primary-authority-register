@@ -518,6 +518,7 @@ public class PARStepDefs {
 	@When("^the user visits the maillog page and extracts the invite link$")
 	public void the_user_visits_the_maillog_page_and_extracts_the_invite_link() throws Throwable {
 		mailLogPage.navigateToUrl();
+		mailLogPage.searchForUserAccountInvite(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 		mailLogPage.selectEamilAndGetINviteLink(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 	}
 
@@ -1388,12 +1389,12 @@ public class PARStepDefs {
 	}
 
 	@When("^the user creates a new person:$")
-	public void the_user_creates_a_new_person(DataTable person) throws Throwable {
+	public void the_user_creates_a_new_person(DataTable details) throws Throwable {
 		parDashboardPage.selectManagePeople();
 		managePeoplePage.selectAddPerson();
 
 		LOG.info("Adding a new person.");
-		personsContactDetailsPage.enterContactDetails(person);
+		personsContactDetailsPage.enterContactDetails(details);
 		personsContactDetailsPage.clickContinueButton();
 
 		LOG.info("Successfully entered new contact details.");
@@ -1402,10 +1403,10 @@ public class PARStepDefs {
 		personAccountPage.clickContinueButton();
 
 		LOG.info("Successfully chose to invite the person to create an account.");
-
-		personMembershipPage.selectAuthority();
-		personMembershipPage.selectOrganisation();
+		personMembershipPage.selectOrganisation(details);
+		personMembershipPage.selectAuthority(details);
 		personMembershipPage.clickContinueButton();
+		
 		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
 		LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
 
@@ -1447,11 +1448,11 @@ public class PARStepDefs {
 	}
 
 	@When("^the user updates an existing person:$")
-	public void the_user_updates_an_existing_person_with_the_following_details(DataTable person) throws Throwable {
+	public void the_user_updates_an_existing_person_with_the_following_details(DataTable details) throws Throwable {
 		LOG.info("Updating an existing person.");
 		personsProfilePage.clickUpdateUserButton();
 		
-		personsContactDetailsPage.enterContactDetails(person);
+		personsContactDetailsPage.enterContactDetails(details);
 		personsContactDetailsPage.clickContinueButton();
 
 		LOG.info("Successfully entered new contact details.");
@@ -1460,9 +1461,8 @@ public class PARStepDefs {
 		personAccountPage.clickContinueButton();
 
 		LOG.info("Successfully chose to invite the person to create an account.");
-
-		personMembershipPage.selectAuthority();
-		personMembershipPage.selectOrganisation();
+		personMembershipPage.selectOrganisation(details);
+		personMembershipPage.selectAuthority(details);
 		personMembershipPage.clickContinueButton();
 
 		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
@@ -1881,7 +1881,7 @@ public class PARStepDefs {
 		
 		LOG.info("Successfully chose the contacts Authority memberships.");
 
-		personUserTypePage.selectAuthorityManager();
+		personUserTypePage.selectAuthorityMember();
 		personUserTypePage.clickProfileReviewContinueButton();
 		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
 

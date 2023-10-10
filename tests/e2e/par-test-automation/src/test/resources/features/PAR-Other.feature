@@ -3,6 +3,22 @@ Feature: Other
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
 
+  @regression @publicRegistrySearch
+  Scenario: Verify a Non-registered User can Search the Public Register (Happy Path - PAR-2079)
+    Given the user is on the PAR home page
+    When the user is on the search for a partnership page
+    Then the user can search for a PA Organisation Trading name Company number
+    And the user is shown the information for that partnership
+
+  @regression @publicRegistrySearch
+  Scenario: Verify a Registered User can Search the Public Register (Happy Path - PAR-2079)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    And the user clicks the PAR Home page link
+    When the user is on the search for a partnership page
+    Then the user can search for a PA Organisation Trading name Company number
+    And the user is shown the information for that partnership
+
   @regression @authority @authorityManagement
   Scenario: Verify Addition/Update of Authority (Happy Path - PAR-1849, PAR-1850)
     Given the user is on the PAR login page
@@ -23,22 +39,6 @@ Feature: Other
     When the user searches for the last created organisation
     And the user updates all the fields for last created organisation
     Then all the fields are updated correctly
-
-  @regression @publicRegistrySearch
-  Scenario: Verify a Non-registered User can Search the Public Register (Happy Path - PAR-2079)
-    Given the user is on the PAR home page
-    When the user is on the search for a partnership page
-    Then the user can search for a PA Organisation Trading name Company number
-    And the user is shown the information for that partnership
-
-  @regression @publicRegistrySearch
-  Scenario: Verify a Registered User can Search the Public Register (Happy Path - PAR-2079)
-    Given the user is on the PAR login page
-    And the user logs in with the "par_authority@example.com" user credentials
-    And the user clicks the PAR Home page link
-    When the user is on the search for a partnership page
-    Then the user can search for a PA Organisation Trading name Company number
-    And the user is shown the information for that partnership
 
   @regression @helpDesk @PARNewsSubscription
   Scenario: Verify an Authority contact is subscribed to PAR News (Happy Path - PAR-2076)
@@ -95,8 +95,8 @@ Feature: Other
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user creates a new person:
-      | Title | WorkNumber | MobileNumber |
-      | Mr    |      01204 |              |
+      | Title | WorkNumber | MobileNumber | Organisation | Authority              |
+      | Mr    |      01204 |              | Cafe         | City Enforcement Squad |
     Then the user can verify the person was created successfully and can see resend an account invite
 
   @regression @helpDesk @managePeople
@@ -105,8 +105,8 @@ Feature: Other
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for an existing person successfully
     And the user updates an existing person:
-      | Title | WorkNumber  | MobileNumber |
-      | Dr    | 01204996501 |  07405882265 |
+      | Title | WorkNumber  | MobileNumber | Organisation  | Authority                       |
+      | Dr    | 01204996501 |  07405882265 | General Store | Upper West Side Borough Council |
     Then the user can verify the person was updated successfully and can see resend an account invite
 
   @regression @helpDesk @managePeople @mergeContact

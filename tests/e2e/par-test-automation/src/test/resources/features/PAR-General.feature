@@ -324,12 +324,15 @@ Feature: General
     When the user has revoked the last created inspection plan
     Then the inspection plan is successfully removed
 
-  @regression @deletePartnership
-  Scenario: Verify a Nominated Partnership can be Deleted (Happy Path - PAR-2277)
+  @regression @usermanagement
+  Scenario: Verify Completion of User Creation journey (Happy Path - PAR-1904)
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user searches for the last created partnership
-    Then the user can Delete the Partnership Successfully with the following reason: "Partnership is Incorrect."
+    And the user logs in with the "par_admin@example.com" user credentials
+    When the user visits the maillog page and extracts the invite link
+    And the user is on the PAR login page
+    And the user follows the invitation link
+    And the user completes the user creation journey
+    Then the user journey creation is successful
 
   @regression @partnershipapplication @coordinated @organisationMember	
 	@regression @direct @deletePartnership
@@ -401,12 +404,3 @@ Feature: General
 
   # Upload a Members list Test goes here.
   # Change the Members list type Test goes here.
-  @regression @usermanagement
-  Scenario: Verify Completion of User Creation journey (Happy Path - PAR-1904)
-    Given the user is on the PAR login page
-    And the user logs in with the "par_admin@example.com" user credentials
-    When the user visits the maillog page and extracts the invite link
-    And the user is on the PAR login page
-    And the user follows the invitation link
-    And the user completes the user creation journey
-    Then the user journey creation is successful

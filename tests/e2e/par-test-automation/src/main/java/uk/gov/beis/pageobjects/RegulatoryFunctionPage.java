@@ -13,19 +13,13 @@ import uk.gov.beis.utility.DataStore;
 
 public class RegulatoryFunctionPage extends BasePageObject {
 
-	public RegulatoryFunctionPage() throws ClassNotFoundException, IOException {
-		super();
-	}
-
-	private String regFunction = "//div/label[contains(text(),'?')]/preceding-sibling::input";
-	
 	@FindBy(id = "edit-partnership-cover-default")
 	private WebElement normalOrSequencedRadio;
 	
 	@FindBy(id = "edit-partnership-cover-bespoke")
 	private WebElement bespokeRadio;
 	
-	@FindBy(id = "edit-regulatory-functions-4")	// Note: May have more check boxes in the future.
+	@FindBy(xpath = "//input[@class='form-group form-checkbox govuk-checkboxes__input']")
 	private WebElement bespokeCheckbox;
 
 	@FindBy(id = "edit-next")
@@ -33,6 +27,12 @@ public class RegulatoryFunctionPage extends BasePageObject {
 	
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
+	
+	private String regFunction = "//div/label[contains(text(),'?')]/preceding-sibling::input";
+	
+	public RegulatoryFunctionPage() throws ClassNotFoundException, IOException {
+		super();
+	}
 	
 	public AuthorityConfirmationPage selectRegFunction(String reg) {
 		List<WebElement> boxes = driver.findElements(By.xpath("//div/label/preceding-sibling::input"));

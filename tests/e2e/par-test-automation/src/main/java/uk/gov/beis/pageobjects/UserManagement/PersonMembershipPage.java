@@ -1,15 +1,14 @@
 package uk.gov.beis.pageobjects.UserManagement;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.Select;
 
+import cucumber.api.DataTable;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.DashboardPage;
@@ -34,30 +33,23 @@ public class PersonMembershipPage extends BasePageObject {
 	private WebElement partnershipConfirmedByAuthorityCheckbox;
 	
 	// Authorities
-	@FindBy(id = "edit-par-data-authority-id-7")
+	@FindBy(xpath = "//label[contains(text(), 'City Enforcement Squad')]/preceding-sibling::input")
 	private WebElement cityEnforcementSquadCheckbox;
 	
-	@FindBy(id = "edit-par-data-authority-id-9")
+	@FindBy(xpath = "//label[contains(text(), 'Upper West Side Borough Council')]/preceding-sibling::input")
 	private WebElement upperWestSideBoroughCouncilCheckbox;
 	
-	@FindBy(id = "edit-par-data-authority-id-8")
+	@FindBy(xpath = "//label[contains(text(), 'Lower East Side Borough Council')]/preceding-sibling::input")
 	private WebElement lowerEastSideBoroughCouncilCheckbox;
 	
 	// Help Desk Membership Selection Page Elements
-	@FindBy(xpath = "//*[@id=\"edit_par_data_organisation_id_chosen\"]/ul/li/input")
+	//@FindBy(xpath = "//*[@id=\"edit_par_data_organisation_id_chosen\"]/ul/li/input")
+	@FindBy(xpath = "//div[@id='edit_par_data_organisation_id_chosen']/ul/li/input")
 	private WebElement organisationChoiceInput;
 	
-	@FindBy(className = "chosen-drop")
-	private WebElement organisationChoiceList;
-	
-	@FindBy(id = "edit_par_data_authority_id_chosen")
-	private WebElement authorityChoiceDiv;
-	
-	@FindBy(id = "edit-par-data-organisation-id")
-	private WebElement organisationDropDown;
-	
-	@FindBy(id = "edit-par-data-authority-id")
-	private WebElement authorityDropDown;
+	//@FindBy(xpath = "//*[@id=\"edit_par_data_authority_id_chosen\"]/ul/li/input")
+	@FindBy(xpath = "//div[@id='edit_par_data_authority_id_chosen']/ul/li/input")
+	private WebElement authorityChoiceInput;
 	
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
@@ -108,24 +100,32 @@ public class PersonMembershipPage extends BasePageObject {
 	}
 	
 	// Help Desk Membership Selection Page Methods
-	public void selectOrganisation() {
+	public void selectOrganisation(DataTable details) {
 		organisationChoiceInput.click();
 		
-		WebElement randomOrganisation = chooseRandomOrganisation();
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+
+			DataStore.saveValue(UsableValues.CHOSEN_ORGANISATION, data.get("Organisation"));
+		}
 		
-		String organisation = randomOrganisation.getText();
-		randomOrganisation.click();
+		organisationChoiceInput.sendKeys(DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
 		
-		DataStore.saveValue(UsableValues.CHOSEN_ORGANISATION, organisation);
+		WebElement organisation = driver.findElement(By.cssSelector("div.chosen-drop ul.chosen-results li.active-result"));
+		organisation.click();
 	}
 	
-	public void selectAuthority() {
-		Select selectObject = new Select(authorityDropDown);
+	public void selectAuthority(DataTable details) {
+		authorityChoiceInput.click();
+
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+
+			DataStore.saveValue(UsableValues.CHOSEN_AUTHORITY, data.get("Authority"));
+		}
 		
-		String randomAuthority = chooseRandomAuthority(selectObject).getText();
-		selectObject.selectByVisibleText(randomAuthority);
+		authorityChoiceInput.sendKeys(DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
 		
-		DataStore.saveValue(UsableValues.CHOSEN_AUTHORITY, randomAuthority);
+		WebElement authority = driver.findElement(By.cssSelector("div.chosen-drop ul.chosen-results li.active-result"));
+		authority.click();
 	}
 	
 	public PersonUserRoleTypePage clickContinueButton() {
@@ -136,19 +136,5 @@ public class PersonMembershipPage extends BasePageObject {
 	public DashboardPage clickCancelButton() {
 		cancelBtn.click();
 		return PageFactory.initElements(driver, DashboardPage.class);
-	}
-	
-	private WebElement chooseRandomOrganisation() {
-		Random random = new Random();
-		List<WebElement> organisations = driver.findElements(By.cssSelector("div.chosen-drop ul.chosen-results li.active-result"));
-		
-		return organisations.get(random.nextInt(organisations.size()));
-	}
-	
-	private WebElement chooseRandomAuthority(Select selectList) {
-		Random random = new Random();
-		List<WebElement> authorities = selectList.getOptions();
-		
-		return authorities.get(random.nextInt(authorities.size()));
 	}
 }
