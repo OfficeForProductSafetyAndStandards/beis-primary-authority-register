@@ -42,6 +42,7 @@ import uk.gov.beis.pageobjects.OrganisationPageObjects.EmployeesPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberListPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationAddedConfirmationPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MembershipCeasedPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.AuthorityPage;
@@ -85,6 +86,10 @@ public class PARStepDefs {
 	
 	// Legal Entity
 	private UpdateLegalEntityPage updateLegalEntityPage;
+	
+	// Partnership
+	private MembershipCeasedPage membershipCeasedPage;
+	
 	// Next Section
 	private RevokeReasonInspectionPlanPage revokeReasonInspectionPlanPage;
 	private RequestEnquiryPage requestEnquiryPage;
@@ -218,6 +223,10 @@ public class PARStepDefs {
 		
 		// Legal Entity
 		updateLegalEntityPage = PageFactory.initElements(driver, UpdateLegalEntityPage.class);
+		
+		// Partnership
+		membershipCeasedPage  = PageFactory.initElements(driver, MembershipCeasedPage.class);
+		
 		// Next Section
 		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
 		uploadAdviceNoticePage = PageFactory.initElements(driver, UploadAdviceNoticePage.class);
@@ -2021,7 +2030,7 @@ public class PARStepDefs {
 	
 	@When("^the user updates a single member organisation of the patnership with the following details:$")
 	public void the_user_updates_a_single_member_organisation_of_the_patnership_with_the_following_details(DataTable details) throws Throwable {
-LOG.info("Update a Single Member Organisation to a Co-ordinated Partnership.");
+		LOG.info("Update a Single Member Organisation to a Co-ordinated Partnership.");
 		
 		partnershipAdvancedSearchPage.selectOrganisationLink();
 		parPartnershipConfirmationPage.selectShowMembersListLink();
@@ -2089,6 +2098,30 @@ LOG.info("Update a Single Member Organisation to a Co-ordinated Partnership.");
 		LOG.info("Verify the Updated Member Organisation Name is Displayed on the Members List.");
 		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
 		Assert.assertTrue(memberListPage.checkMemberCreated());
+	}
+	
+	@When("^the user Ceases a single member organisation of the patnership with the current date$")
+	public void the_user_Ceases_a_single_member_organisation_of_the_patnership_with_the_current_date() throws Throwable {
+		LOG.info("Cease a Single Member Organisation to a Co-ordinated Partnership.");
+		
+		partnershipAdvancedSearchPage.selectOrganisationLink();
+		parPartnershipConfirmationPage.selectShowMembersListLink();
+		
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		memberListPage.selectCeaseMembership();
+		
+		LOG.info("Entering the Current Date for the Cessation to Happen.");
+		enterTheDatePage.enterCurrentDate();
+		enterTheDatePage.goToMembershipCeasedPage();
+		
+		membershipCeasedPage.goToMembersListPage();
+	}
+
+	@Then("^the member organistion has been Ceased successfully$")
+	public void the_member_organistion_has_been_Ceased_successfully() throws Throwable {
+		LOG.info("Verify the Member Organisation has been Ceased Successfully.");
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		Assert.assertTrue("FAILED: Links are still present and/ or the Cease date is incorrect. ", memberListPage.checkMembershipCeased());
 	}
 
 	@When("^the user selects the Read more about Primary Authority link$")

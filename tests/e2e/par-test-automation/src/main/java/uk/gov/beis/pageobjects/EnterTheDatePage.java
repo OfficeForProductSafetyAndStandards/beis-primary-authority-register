@@ -1,6 +1,7 @@
 package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MembershipCeasedPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
 import uk.gov.beis.utility.DataStore;
 
@@ -33,6 +35,15 @@ public class EnterTheDatePage extends BasePageObject {
 	}
 	
 	// date field can be used for Sad path tests or future date tests.
+	public void enterCurrentDate() {
+		dayField.sendKeys(String.valueOf(LocalDate.now().getDayOfMonth()));
+		monthField.sendKeys(String.valueOf(LocalDate.now().getMonthValue()));
+		yearField.sendKeys(String.valueOf(LocalDate.now().getYear()));
+		
+		String fullDate = String.valueOf(LocalDate.now().getDayOfMonth()) + " " + convertMonthDate(String.valueOf(LocalDate.now().getMonthValue())) + " " + String.valueOf(LocalDate.now().getYear());
+		
+		DataStore.saveValue(UsableValues.MEMBERSHIP_CEASE_DATE, fullDate);
+	}
 	
 	public TradingPage clickContinueButtonForMembershipBegan() {
 		continueBtn.click();
@@ -46,16 +57,21 @@ public class EnterTheDatePage extends BasePageObject {
 		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
 	}
 	
+	public MembershipCeasedPage goToMembershipCeasedPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, MembershipCeasedPage.class);
+	}
+	
 	private void getMembershipDate() {
-		String fullDate = dayField.getAttribute("value") + " " + convertMonthDate() + " " + yearField.getAttribute("value");
+		String fullDate = dayField.getAttribute("value") + " " + convertMonthDate(monthField.getAttribute("value")) + " " + yearField.getAttribute("value");
 		
 		DataStore.saveValue(UsableValues.MEMBERSHIP_START_DATE, fullDate);
 	}
 	
-	private String convertMonthDate() {
+	private String convertMonthDate(String value) {
 		String month = "";
 		
-		switch(monthField.getAttribute("value")) {
+		switch(value) {
 		case "1":
 			month = "January";
 			break;

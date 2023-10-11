@@ -410,5 +410,13 @@ Feature: General
       | Organisation Name    | Address Line 1 | Address Line 2 | Town City  | County             | Country        | Nation | Postcode | Title | WorkNumber   | MobileNumber | Legal Entity Type | Legal Entity Name |
       | Testers Organisation | 03 New Street  | Market Hall    | Manchester | Greater Manchester | United Kingdom | Wales  | BL2 4BL  | Mr    | 020455669921 |  07009156780 | Sole trader       | Tester Co.        |
     Then the member organistion has been updated successfully
+    
+  @regression @coordinated @organisationMember
+  Scenario: Verify the Cessation of a Single Member Organisation for a Coordinated partnership (Happy Path - PAR-1869)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user Ceases a single member organisation of the patnership with the current date
+    Then the member organistion has been Ceased successfully
   # Upload a Members list Test goes here.
   # Change the Members list type Test goes here.
