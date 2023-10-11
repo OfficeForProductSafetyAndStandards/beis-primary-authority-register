@@ -389,8 +389,7 @@ Feature: General
     And the user approves the partnership
     And the user searches again for the last created partnership
     Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
-
-  # Add, Update and Cease a Member Test goes here.
+	
   @regression @coordinated @organisationMember
   Scenario: Verify Addition of a Single Member Organisation to a Coordinated partnership (Happy Path - PAR-1868)
     Given the user is on the PAR login page
@@ -418,5 +417,13 @@ Feature: General
     When the user searches for the last created partnership
     And the user Ceases a single member organisation of the patnership with the current date
     Then the member organistion has been Ceased successfully
+  
   # Upload a Members list Test goes here.
+  @regression @coordinated @organisationMember
+  Scenario: Verify the Upload of a Members List to a Coordinated partnership (Happy Path - PAR-1872)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user Uploads a members list to the coordinated partnership with the following file "memberslist.csv"
+    Then the members list is uploaded successfully
   # Change the Members list type Test goes here.

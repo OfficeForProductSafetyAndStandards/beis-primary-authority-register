@@ -37,14 +37,17 @@ import uk.gov.beis.pageobjects.OrganisationPageObjects.AddOrganisationNamePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessAddressDetailsPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessContactDetailsPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessDetailsPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.ConfirmMemberUploadPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.DeclarationPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.EmployeesPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberListPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberListUploadedPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationAddedConfirmationPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MembershipCeasedPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.UploadListOfMembersPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.AuthorityPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.BusinessInvitePage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.BusinessPage;
@@ -89,6 +92,9 @@ public class PARStepDefs {
 	
 	// Partnership
 	private MembershipCeasedPage membershipCeasedPage;
+	private UploadListOfMembersPage uploadListOfMembersPage;
+	private ConfirmMemberUploadPage confirmMemberUploadPage;
+	private MemberListUploadedPage memberListUploadedPage;
 	
 	// Next Section
 	private RevokeReasonInspectionPlanPage revokeReasonInspectionPlanPage;
@@ -225,7 +231,10 @@ public class PARStepDefs {
 		updateLegalEntityPage = PageFactory.initElements(driver, UpdateLegalEntityPage.class);
 		
 		// Partnership
-		membershipCeasedPage  = PageFactory.initElements(driver, MembershipCeasedPage.class);
+		membershipCeasedPage = PageFactory.initElements(driver, MembershipCeasedPage.class);
+		uploadListOfMembersPage = PageFactory.initElements(driver, UploadListOfMembersPage.class);
+		confirmMemberUploadPage = PageFactory.initElements(driver, ConfirmMemberUploadPage.class);
+		memberListUploadedPage = PageFactory.initElements(driver, MemberListUploadedPage.class);
 		
 		// Next Section
 		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
@@ -2121,7 +2130,33 @@ public class PARStepDefs {
 	public void the_member_organistion_has_been_Ceased_successfully() throws Throwable {
 		LOG.info("Verify the Member Organisation has been Ceased Successfully.");
 		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
-		Assert.assertTrue("FAILED: Links are still present and/ or the Cease date is incorrect. ", memberListPage.checkMembershipCeased());
+		Assert.assertTrue("FAILED: Links are still present and/ or the Cease date is incorrect.", memberListPage.checkMembershipCeased());
+	}
+	
+	@When("^the user Uploads a members list to the coordinated partnership with the following file \"([^\"]*)\"$")
+	public void the_user_Uploads_a_members_list_to_the_coordinated_partnership_with_the_following_file(String file) throws Throwable {
+		LOG.info("Uploading a Members List CSV File to a Co-ordinated Partnership.");
+		
+		partnershipAdvancedSearchPage.selectOrganisationLink();
+		parPartnershipConfirmationPage.selectShowMembersListLink();
+		
+		memberListPage.selectUploadMembersListLink();
+		
+		LOG.info("Uploading the Members List CSV File..");
+		uploadListOfMembersPage.chooseCSVFile();
+		uploadListOfMembersPage.selectUpload();
+		
+		confirmMemberUploadPage.selectUpload();
+		
+		memberListUploadedPage.selectDone();
+	}
+
+	@Then("^the members list is uploaded successfully$")
+	public void the_members_list_is_uploaded_successfully() throws Throwable {
+		LOG.info("Verify the Members List was Uploaded Successfully.");
+		
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		Assert.assertTrue("FAILED: Business names are not displayed in the table.", memberListPage.checkMembersListUploaded());
 	}
 
 	@When("^the user selects the Read more about Primary Authority link$")

@@ -17,6 +17,9 @@ public class MemberListPage extends BasePageObject {
 	@FindBy(linkText = "Add a member")
 	private WebElement addAMemberLink;
 	
+	@FindBy(linkText = "Upload a Member List (CSV)")
+	private WebElement uploadMembersListLink;
+	
 	@FindBy(id = "edit-organisation-name")
 	private WebElement memberSearchbar;
 	
@@ -38,6 +41,11 @@ public class MemberListPage extends BasePageObject {
 	public AddOrganisationNamePage selectAddAMemberLink() {
 		addAMemberLink.click();
 		return PageFactory.initElements(driver, AddOrganisationNamePage.class);
+	}
+	
+	public UploadListOfMembersPage selectUploadMembersListLink() {
+		uploadMembersListLink.click();
+		return PageFactory.initElements(driver, UploadListOfMembersPage.class);
 	}
 	
 	public void searchForAMember(String memberName) {
@@ -67,6 +75,11 @@ public class MemberListPage extends BasePageObject {
 	public boolean checkMembershipCeased() {
 		return driver.findElements(By.xpath("//td/a")).isEmpty() && 
 				driver.findElement(By.xpath("//td[@class = 'views-field views-field-date-membership-ceased']/time")).getText().contains(DataStore.getSavedValue(UsableValues.MEMBERSHIP_CEASE_DATE));
+	}
+	
+	public boolean checkMembersListUploaded() {
+		
+		return driver.findElement(By.xpath(memberNameLocator.replace("?", DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME)))).isDisplayed();
 	}
 	
 	public TradingPage selectMemberSize(String size) {
