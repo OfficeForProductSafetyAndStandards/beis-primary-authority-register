@@ -15,13 +15,12 @@ import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipSearchPage;
 import uk.gov.beis.pageobjects.UserManagement.ManagePeoplePage;
 
 public class DashboardPage extends BasePageObject {
-
-	public DashboardPage() throws ClassNotFoundException, IOException {
-		super();
-	}
-
+	
 	@FindBy(xpath = "//div[@id='block-par-theme-page-title']")
 	private WebElement dashBoard;
+	
+	@FindBy(linkText  = "View all statistics")
+	private WebElement viewStatisticsLink;
 
 	@FindBy(linkText = "Apply for a new partnership")
 	WebElement applyPartnershipBtn;
@@ -71,8 +70,14 @@ public class DashboardPage extends BasePageObject {
 	@FindBy(partialLinkText = "general enquiries")
 	WebElement generalEnquiriesBtn;
 	
-//	@FindBy(linkText = "See your general enquiries")
-//	WebElement generalEnquiriesBtn;
+	public DashboardPage() throws ClassNotFoundException, IOException {
+		super();
+	}
+	
+	public PARReportingPage selectViewAllStatistics() {
+		viewStatisticsLink.click();
+		return PageFactory.initElements(driver, PARReportingPage.class);
+	}
 	
 	public OrganisationDashboardPage selectManageOrganisations() {
 		mangeOrganisationsBtn.click();

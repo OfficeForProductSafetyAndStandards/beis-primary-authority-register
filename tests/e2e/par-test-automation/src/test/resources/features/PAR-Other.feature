@@ -132,6 +132,13 @@ Feature: Other
     And the user merges the contact record
     Then the user can verify the contact record was merged successfully
 
+  @regression @helpDesk @statistics
+  Scenario: Verify the Help Desk User can see the Statistics Page (Happy Path - PAR-2315)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user navigates to the statistics page
+    Then the statistics page is dispalyed successfully
+  
   @regression @homePageLinks
   Scenario: Verify a User can view Guidance for Local Regulation Primary Authority Successfully (Happy Path - PAR-2289)
     Given the user is on the PAR home page

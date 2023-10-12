@@ -92,6 +92,9 @@ public class PARStepDefs {
 	private OpenGovernmentLicencePage openGovernmentLicencePage;
 	private CrownCopyrightPage crownCopyrightPage;
 	
+	// Dashboard
+	private PARReportingPage parReportingPage;
+	
 	// User Management
 	private MergeContactRecordsPage mergeContactRecordsPage;
 	private MergeContactRecordsConfirmationPage mergeContactRecordsConfirmationPage;
@@ -237,6 +240,9 @@ public class PARStepDefs {
 		accessibilityStatementPage = PageFactory.initElements(driver, AccessibilityStatementPage.class);
 		openGovernmentLicencePage = PageFactory.initElements(driver, OpenGovernmentLicencePage.class);
 		crownCopyrightPage = PageFactory.initElements(driver, CrownCopyrightPage.class);
+		
+		// Dashboard
+		parReportingPage = PageFactory.initElements(driver, PARReportingPage.class);
 		
 		// User Management
 		mergeContactRecordsPage = PageFactory.initElements(driver, MergeContactRecordsPage.class);
@@ -2215,6 +2221,18 @@ public class PARStepDefs {
 		
 		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
 		Assert.assertTrue("FAILED: Business names are not displayed in the table.", memberListPage.checkMembersListUploaded());
+	}
+	
+	@When("^the user navigates to the statistics page$")
+	public void the_user_navigates_to_the_statistics_page() throws Throwable {
+		LOG.info("Navigating to the Statistics Page.");
+	    parDashboardPage.selectViewAllStatistics();
+	}
+
+	@Then("^the statistics page is dispalyed successfully$")
+	public void the_statistics_page_is_dispalyed_successfully() throws Throwable {
+		LOG.info("Verifying the Statistics Page is Displayed.");
+		Assert.assertTrue("FAILED: Statistics Page is not Displayed!", parReportingPage.checkPageHeaderIsDisplayed());
 	}
 
 	@When("^the user selects the Read more about Primary Authority link$")
