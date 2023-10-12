@@ -414,7 +414,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       'par_data_organisation' => $organisation ?: ParDataOrganisation::create(),
       'par_data_premises' => $premises ?: ParDataPremises::create(),
       'par_data_person' => $person ?: ParDataPerson::create(),
-      'par_data_legal_entities' => $legal_entities ?: [ParDataLegalEntity::create()],
+      'par_data_legal_entity' => $legal_entities ?: [ParDataLegalEntity::create()],
     ];
   }
 
@@ -583,16 +583,16 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
         'par_data_organisation' => ParDataOrganisation::create(),
         'par_data_premises' => ParDataPremises::create(),
         'par_data_person' => ParDataPerson::create(),
-        'par_data_legal_entities' => [
+        'par_data_legal_entity' => [
           ParDataLegalEntity::create(),
         ],
       ];
       // Secondary legal entities are optional.
       if ($this->getValue($data, 'legal_entity_name_second')) {
-        $normalized['par_data_legal_entities'][] = ParDataLegalEntity::create();
+        $normalized[''][] = ParDataLegalEntity::create();
       }
       if ($this->getValue($data, 'legal_entity_name_third')) {
-        $normalized['par_data_legal_entities'][] = ParDataLegalEntity::create();
+        $normalized[''][] = ParDataLegalEntity::create();
       }
     }
 
@@ -635,26 +635,26 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $normalized['par_data_premises']->setNation($this->getValue($data, 'nation'));
 
     // Set the legal entities.
-    $normalized['par_data_legal_entities'][0]->set('registered_name', $this->getValue($data, 'legal_entity_name_first'));
-    $normalized['par_data_legal_entities'][0]->set('registered_number', $this->getValue($data, 'legal_entity_number_first'));
-    $normalized['par_data_legal_entities'][0]->set('legal_entity_type', $this->getValue($data, 'legal_entity_type_first'));
+    $normalized['par_data_legal_entity'][0]->set('registered_name', $this->getValue($data, 'legal_entity_name_first'));
+    $normalized['par_data_legal_entity'][0]->set('registered_number', $this->getValue($data, 'legal_entity_number_first'));
+    $normalized['par_data_legal_entity'][0]->set('legal_entity_type', $this->getValue($data, 'legal_entity_type_first'));
     // Set the second legal entity.
     if ($this->getValue($data, 'legal_entity_name_second')) {
-      if (!isset($normalized['par_data_legal_entities'][1])) {
-        $normalized['par_data_legal_entities'][1] = ParDataLegalEntity::create();
+      if (!isset($normalized['par_data_legal_entity'][1])) {
+        $normalized['par_data_legal_entity'][1] = ParDataLegalEntity::create();
       }
-      $normalized['par_data_legal_entities'][1]->set('registered_name', $this->getValue($data, 'legal_entity_name_second'));
-      $normalized['par_data_legal_entities'][1]->set('registered_number', $this->getValue($data, 'legal_entity_number_second'));
-      $normalized['par_data_legal_entities'][1]->set('legal_entity_type', $this->getValue($data, 'legal_entity_type_second'));
+      $normalized['par_data_legal_entity'][1]->set('registered_name', $this->getValue($data, 'legal_entity_name_second'));
+      $normalized['par_data_legal_entity'][1]->set('registered_number', $this->getValue($data, 'legal_entity_number_second'));
+      $normalized['par_data_legal_entity'][1]->set('legal_entity_type', $this->getValue($data, 'legal_entity_type_second'));
     }
     // Set the third legal entity.
     if ($this->getValue($data, 'legal_entity_name_third')) {
-      if (!isset($normalized['par_data_legal_entities'][21])) {
-        $normalized['par_data_legal_entities'][2] = ParDataLegalEntity::create();
+      if (!isset($normalized['par_data_legal_entity'][21])) {
+        $normalized['par_data_legal_entity'][2] = ParDataLegalEntity::create();
       }
-      $normalized['par_data_legal_entities'][2]->set('registered_name', $this->getValue($data, 'legal_entity_name_third'));
-      $normalized['par_data_legal_entities'][2]->set('registered_number', $this->getValue($data, 'legal_entity_number_third'));
-      $normalized['par_data_legal_entities'][2]->set('legal_entity_type', $this->getValue($data, 'legal_entity_type_third'));
+      $normalized['par_data_legal_entity'][2]->set('registered_name', $this->getValue($data, 'legal_entity_name_third'));
+      $normalized['par_data_legal_entity'][2]->set('registered_number', $this->getValue($data, 'legal_entity_number_third'));
+      $normalized['par_data_legal_entity'][2]->set('legal_entity_type', $this->getValue($data, 'legal_entity_type_third'));
     }
 
     return $normalized;
@@ -684,7 +684,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     /** @var ParDataOrganisation $par_data_organisation */
     /** @var ParDataPremises $par_data_premises */
     /** @var ParDataPerson $par_data_person */
-    /** @var ParDataLegalEntity[] $par_data_legal_entities */
+    /** @var ParDataLegalEntity[] $par_data_legal_entity */
     extract($entities);
 
     $address = $par_data_premises?->get('address')->first();
@@ -705,15 +705,15 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       $this->getMapping('membership_start') => $par_data_coordinated_business ? $par_data_coordinated_business->getStartDate() : '',
       $this->getMapping('membership_end') => $par_data_coordinated_business ? $par_data_coordinated_business->getEndDate() : '',
       $this->getMapping('covered') => $par_data_coordinated_business ? $par_data_coordinated_business->getCovered() : '',
-      $this->getMapping('legal_entity_name_first') => isset($par_data_legal_entities[0]) ? $par_data_legal_entities[0]->getName() : '',
-      $this->getMapping('legal_entity_type_first') => isset($par_data_legal_entities[0]) ? $par_data_legal_entities[0]->getType() : '',
-      $this->getMapping('legal_entity_number_first') => isset($par_data_legal_entities[0]) ? $par_data_legal_entities[0]->getRegisteredNumber() : '',
-      $this->getMapping('legal_entity_name_second') => isset($par_data_legal_entities[1]) ? $par_data_legal_entities[1]->getName() : '',
-      $this->getMapping('legal_entity_type_second') => isset($par_data_legal_entities[1]) ? $par_data_legal_entities[1]->getType() : '',
-      $this->getMapping('legal_entity_number_second') => isset($par_data_legal_entities[1]) ? $par_data_legal_entities[1]->getRegisteredNumber() : '',
-      $this->getMapping('legal_entity_name_third') => isset($par_data_legal_entities[2]) ? $par_data_legal_entities[2]->getName() : '',
-      $this->getMapping('legal_entity_type_third') => isset($par_data_legal_entities[2]) ? $par_data_legal_entities[2]->getType() : '',
-      $this->getMapping('legal_entity_number_third') => isset($par_data_legal_entities[2]) ? $par_data_legal_entities[2]->getRegisteredNumber() : '',
+      $this->getMapping('legal_entity_name_first') => isset($par_data_legal_entity[0]) ? $par_data_legal_entity[0]->getName() : '',
+      $this->getMapping('legal_entity_type_first') => isset($par_data_legal_entity[0]) ? $par_data_legal_entity[0]->getType() : '',
+      $this->getMapping('legal_entity_number_first') => isset($par_data_legal_entity[0]) ? $par_data_legal_entity[0]->getRegisteredNumber() : '',
+      $this->getMapping('legal_entity_name_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[1]->getName() : '',
+      $this->getMapping('legal_entity_type_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[1]->getType() : '',
+      $this->getMapping('legal_entity_number_second') => isset($par_data_legal_entity[1]) ? $par_data_legal_entity[1]->getRegisteredNumber() : '',
+      $this->getMapping('legal_entity_name_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[2]->getName() : '',
+      $this->getMapping('legal_entity_type_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[2]->getType() : '',
+      $this->getMapping('legal_entity_number_third') => isset($par_data_legal_entity[2]) ? $par_data_legal_entity[2]->getRegisteredNumber() : '',
     ];
   }
 
@@ -985,7 +985,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
         /** @var ParDataOrganisation $par_data_organisation */
         /** @var ParDataPremises $par_data_premises */
         /** @var ParDataPerson $par_data_person */
-        /** @var ParDataLegalEntity[] $par_data_legal_entities */
+        /** @var ParDataLegalEntity[] $par_data_legal_entity */
         extract($member);
 
         // Try to save the address.
