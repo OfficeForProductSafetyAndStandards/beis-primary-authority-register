@@ -99,11 +99,15 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
     // Get files from "upload" step.
     $cid = $this->getFlowNegotiator()->getFormKey('upload');
-    $files = $this->getFlowDataHandler()->getDefaultValues("files", '', $cid);
+    $files = $this->getFlowDataHandler()->getDefaultValues("files", NULL, $cid);
     if ($files) {
       // Show files.
-      foreach ($files as $file) {
+      $files = array_filter($files);
+      foreach (array_filter($files) as $file) {
         $file = File::load($file);
+        if (!$file) {
+          continue;
+        }
 
         $form['file'][] = [
           '#type' => 'markup',

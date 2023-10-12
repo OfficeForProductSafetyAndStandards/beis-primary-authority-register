@@ -87,8 +87,8 @@ class ParSubscriptionReviewForm extends ParBaseForm {
 
     // Determine which subscriptions need to be subscribed or unsubscribed.
     $cid = $this->getFlowNegotiator()->getFormKey('manage_subscriptions');
-    $subscribe = $this->getFlowDataHandler()->getTempDataValue('subscribe', $cid);
-    $unsubscribe = $this->getFlowDataHandler()->getTempDataValue('unsubscribe', $cid);
+    $subscribe = $this->getFlowDataHandler()->getTempDataValue('subscribe', $cid) ?? [];
+    $unsubscribe = $this->getFlowDataHandler()->getTempDataValue('unsubscribe', $cid) ?? [];
 
     $list = $this->getFlowDataHandler()->getTempDataValue('list', $cid);
 

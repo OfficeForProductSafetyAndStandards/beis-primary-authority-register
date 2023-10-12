@@ -12,7 +12,7 @@ use Drupal\par_reporting\ParStatisticBase;
  *   id = "total_unique_businesses",
  *   title = @Translation("Total unique businesses in partnership."),
  *   description = @Translation("The total number of unique legal entities covered by a partnership. Each legal entity will only be counted once."),
- *   status = TRUE,
+ *   status = FALSE,
  * )
  */
 class TotalUniqueBusinesses extends ParStatisticBase {
