@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityDashboardPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessDetailsPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;

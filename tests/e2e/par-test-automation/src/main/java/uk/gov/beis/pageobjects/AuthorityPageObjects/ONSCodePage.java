@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.AuthorityPageObjects;
 
 import java.io.IOException;
 
@@ -6,13 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.RegulatoryFunctionPage;
 
 public class ONSCodePage extends BasePageObject {
-
-	public ONSCodePage() throws ClassNotFoundException, IOException {
-		super();
-	}
 
 	@FindBy(id = "edit-ons-code")
 	private WebElement onsCode;
@@ -22,7 +19,11 @@ public class ONSCodePage extends BasePageObject {
 	
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
-
+	
+	public ONSCodePage() throws ClassNotFoundException, IOException {
+		super();
+	}
+	
 	public RegulatoryFunctionPage enterONSCode(String name) {
 		onsCode.clear();
 		onsCode.sendKeys(name);

@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.AuthorityPageObjects;
 
 import java.io.IOException;
 
@@ -6,11 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class AuthorityNamePage extends BasePageObject {
+import uk.gov.beis.pageobjects.BasePageObject;
 
-	public AuthorityNamePage() throws ClassNotFoundException, IOException {
-		super();
-	}
+public class AuthorityNamePage extends BasePageObject {
 
 	@FindBy(id = "edit-name")
 	private WebElement authorityName;
@@ -20,7 +18,11 @@ public class AuthorityNamePage extends BasePageObject {
 	
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
-
+	
+	public AuthorityNamePage() throws ClassNotFoundException, IOException {
+		super();
+	}
+	
 	public AuthorityTypePage enterAuthorityName(String name) {
 		authorityName.clear();
 		authorityName.sendKeys(name);

@@ -373,6 +373,15 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		return (checkPartnershipApplication() && sicCd.isDisplayed() && tradeNm.isDisplayed());
 	}
 	
+	public boolean checkPreviouslyKnownAsText() {
+		
+		String previouslyKownAsLocator = "//div/p[contains(text(), 'Previously known as: Partnership between ? and £')]";
+		
+		String result = previouslyKownAsLocator.replace("?", DataStore.getSavedValue(UsableValues.PREVIOUS_AUTHORITY_NAME)).replace("£", DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		
+		return driver.findElement(By.xpath(result)).isDisplayed();
+	}
+	
 	private String getContactsName() {
 		return DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
 	}

@@ -9,8 +9,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
-import uk.gov.beis.pageobjects.AuthorityConfirmationPage;
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityConfirmationPage;
 import uk.gov.beis.utility.DataStore;
 
 public class RegulatoryFunctionPage extends BasePageObject {

@@ -20,6 +20,11 @@ import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.*;
 import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityAddressDetailsPage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityConfirmationPage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityDashboardPage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityNamePage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityTypePage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.ONSCodePage;
 import uk.gov.beis.pageobjects.HomePageLinkPageObjects.*;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionContactDetailsPage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanCoveragePage;
@@ -64,6 +69,10 @@ import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipTypePage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.RegulatoryFunctionPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.RestorePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.RevokePartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.TransferPartnerships.AuthorityTransferSelectionPage;
+import uk.gov.beis.pageobjects.TransferPartnerships.ConfirmThisTranferPage;
+import uk.gov.beis.pageobjects.TransferPartnerships.PartnershipMigrationSelectionPage;
+import uk.gov.beis.pageobjects.TransferPartnerships.TransferCompletedPage;
 import uk.gov.beis.pageobjects.UserManagement.*;
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
@@ -95,6 +104,12 @@ public class PARStepDefs {
 	private UploadListOfMembersPage uploadListOfMembersPage;
 	private ConfirmMemberUploadPage confirmMemberUploadPage;
 	private MemberListUploadedPage memberListUploadedPage;
+	
+	// Partnerships Transfer
+	private AuthorityTransferSelectionPage authorityTransferSelectionPage;
+	private PartnershipMigrationSelectionPage partnershipMigrationSelectionPage;
+	private ConfirmThisTranferPage confirmThisTranferPage;
+	private TransferCompletedPage transferCompletedPage;
 	
 	// Next Section
 	private RevokeReasonInspectionPlanPage revokeReasonInspectionPlanPage;
@@ -235,6 +250,12 @@ public class PARStepDefs {
 		uploadListOfMembersPage = PageFactory.initElements(driver, UploadListOfMembersPage.class);
 		confirmMemberUploadPage = PageFactory.initElements(driver, ConfirmMemberUploadPage.class);
 		memberListUploadedPage = PageFactory.initElements(driver, MemberListUploadedPage.class);
+		
+		// Partnerships Transfer
+		authorityTransferSelectionPage = PageFactory.initElements(driver, AuthorityTransferSelectionPage.class);
+		partnershipMigrationSelectionPage = PageFactory.initElements(driver, PartnershipMigrationSelectionPage.class);
+		confirmThisTranferPage = PageFactory.initElements(driver, ConfirmThisTranferPage.class);
+		transferCompletedPage = PageFactory.initElements(driver, TransferCompletedPage.class);
 		
 		// Next Section
 		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
@@ -712,8 +733,8 @@ public class PARStepDefs {
 	public void the_user_searches_for_the_last_created_authority() throws Throwable {
 		
 		LOG.info("Search for last created authority");
-		authoritiesDashboardPage.searchAuthority();
-		authoritiesDashboardPage.selectAuthority();
+		authoritiesDashboardPage.searchAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		authoritiesDashboardPage.selectManageAuthority();
 	}
 
 	@When("^the user updates all the fields for newly created authority$")
@@ -742,7 +763,44 @@ public class PARStepDefs {
 		Assert.assertTrue("Details don't check out", authorityConfirmationPage.checkAuthorityDetails());
 		authorityConfirmationPage.saveChanges();
 	}
+	
+	@When("^the user searches for an Authority with the same Regulatory Functions \"([^\"]*)\"$")
+	public void the_user_searches_for_an_Authority_with_the_same_Regulatory_Functions(String authority) throws Throwable {
+		LOG.info("Search for the Authority.");
+		parDashboardPage.selectManageAuthorities();
+		authoritiesDashboardPage.searchAuthority(authority);
+		DataStore.saveValue(UsableValues.PREVIOUS_AUTHORITY_NAME, authority);
+		
+		authoritiesDashboardPage.selectTransferPartnerships();
+	}
 
+	@When("^the user completes the partnership transfer process$")
+	public void the_user_completes_the_partnership_transfer_process() throws Throwable {
+		LOG.info("Transferring a Partnership to the new Authority.");
+		
+		authorityTransferSelectionPage.searchAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		partnershipMigrationSelectionPage.selectPartnership(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		
+		LOG.info("Confirm the Partnership Transfer.");
+		enterTheDatePage.goToConfirmThisTranferPage();
+		confirmThisTranferPage.confirmPartnershipTransfer();
+		transferCompletedPage.selectDoneButton();
+	}
+
+	@Then("^the partnership is transferred to the new authority successfully$")
+	public void the_partnership_is_transferred_to_the_new_authority_successfully() throws Throwable {
+		LOG.info("Search for the Partnership with the New Authority.");
+		
+		authoritiesDashboardPage.goToHelpDeskDashboard();
+		
+		parDashboardPage.selectSearchPartnerships();
+		partnershipAdvancedSearchPage.searchPartnershipsPrimaryAuthority();
+		partnershipAdvancedSearchPage.selectPrimaryAuthorityLink();
+		
+		LOG.info("Verify the Partnership Displays the Previously Known as Text.");
+		Assert.assertTrue("FAILED: Previously Known as text is not Displayed", parPartnershipConfirmationPage.checkPreviouslyKnownAsText());
+	}
+	
 	@Given("^the user updates all the fields for last created organisation$")
 	public void the_user_updates_all_the_fields_for_last_created_organisation() throws Throwable {
 		LOG.info("Update all fields");

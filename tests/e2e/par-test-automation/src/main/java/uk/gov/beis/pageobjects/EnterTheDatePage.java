@@ -11,6 +11,7 @@ import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MembershipCeasedPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
+import uk.gov.beis.pageobjects.TransferPartnerships.ConfirmThisTranferPage;
 import uk.gov.beis.utility.DataStore;
 
 public class EnterTheDatePage extends BasePageObject {
@@ -60,6 +61,11 @@ public class EnterTheDatePage extends BasePageObject {
 	public MembershipCeasedPage goToMembershipCeasedPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, MembershipCeasedPage.class);
+	}
+	
+	public ConfirmThisTranferPage goToConfirmThisTranferPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, ConfirmThisTranferPage.class);
 	}
 	
 	private void getMembershipDate() {

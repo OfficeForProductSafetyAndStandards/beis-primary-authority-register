@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -27,16 +26,13 @@ public class BasePageObject {
 	public static WebDriver driver;
 	public String pageName;
 
-	private static final long DRIVER_WAIT_TIME = 15;
 	protected Logger LOG = LoggerFactory.getLogger(BasePageObject.class);
 	protected static FluentWait<WebDriver> wait;
 	private static JavascriptExecutor js;
-	private static By currentIframe;
 
 	// create a web driver instance when BasePageObject instantiated using the shared driver
 	public BasePageObject() {
 		driver = ScenarioContext.lastDriver;
-		//wait = new WebDriverWait(driver, DRIVER_WAIT_TIME).pollingEvery(1, TimeUnit.SECONDS).ignoring(StaleElementReferenceException.class);
 		js = (JavascriptExecutor) driver;
 	}
 	
