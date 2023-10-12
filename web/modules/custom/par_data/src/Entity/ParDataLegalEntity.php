@@ -389,7 +389,7 @@ class ParDataLegalEntity extends ParDataEntity {
    *   The name of the legal entity.
    */
   public function getName(): string {
-    return $this->isRegisteredOrganisation() ?
+    return (string) $this->isRegisteredOrganisation() ?
       $this->lookupOrganisationProfile()?->getName() :
       $this->get('registered_name')->getString();
   }
