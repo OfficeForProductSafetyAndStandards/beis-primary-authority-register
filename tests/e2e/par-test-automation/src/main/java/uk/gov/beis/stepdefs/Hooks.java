@@ -32,8 +32,8 @@ public class Hooks {
 		
 		driver = WebdriverFactory.createWebdriver();
 		
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(6));
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(4));
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(8));
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(6));
 		driver.manage().window().maximize();
 		
 		ScenarioContext.lastDriver = driver;

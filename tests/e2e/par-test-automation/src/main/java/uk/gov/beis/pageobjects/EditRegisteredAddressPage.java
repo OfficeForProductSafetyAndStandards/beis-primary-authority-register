@@ -8,6 +8,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import uk.gov.beis.enums.UsableValues;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
 import uk.gov.beis.utility.DataStore;
 
 public class EditRegisteredAddressPage extends BasePageObject {
@@ -70,9 +72,32 @@ public class EditRegisteredAddressPage extends BasePageObject {
 		postcodeTextBox.sendKeys(postcode);
 	}
 	
+	public void editAddressDetails(String address1, String address2, String townCity, String county, String postcode) {
+		addressLine1TextBox.clear();
+		addressLine1TextBox.sendKeys(address1);
+		
+		addressLine2TextBox.clear();
+		addressLine2TextBox.sendKeys(address2);
+		
+		townOrCityTextBox.clear();
+		townOrCityTextBox.sendKeys(townCity);
+		
+		countyTextBox.clear();
+		countyTextBox.sendKeys(county);
+		
+		postcodeTextBox.clear();
+		postcodeTextBox.sendKeys(postcode);
+	}
+	
 	public PartnershipConfirmationPage clickSaveButton() {
 		saveBtn.click();
 		
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
+	
+	public MemberOrganisationSummaryPage goToMemberOrganisationSummaryPage() {
+		saveBtn.click();
+		
+		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
 	}
 }

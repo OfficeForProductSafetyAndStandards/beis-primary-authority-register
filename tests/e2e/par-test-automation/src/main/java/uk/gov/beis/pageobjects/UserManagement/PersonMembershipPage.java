@@ -2,6 +2,7 @@ package uk.gov.beis.pageobjects.UserManagement;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.openqa.selenium.By;
@@ -10,6 +11,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
+import cucumber.api.DataTable;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.DashboardPage;
@@ -34,30 +36,24 @@ public class PersonMembershipPage extends BasePageObject {
 	private WebElement partnershipConfirmedByAuthorityCheckbox;
 	
 	// Authorities
-	@FindBy(id = "edit-par-data-authority-id-7")
+	@FindBy(xpath = "//label[contains(text(), 'City Enforcement Squad')]/preceding-sibling::input")
 	private WebElement cityEnforcementSquadCheckbox;
 	
-	@FindBy(id = "edit-par-data-authority-id-9")
+	@FindBy(xpath = "//label[contains(text(), 'Upper West Side Borough Council')]/preceding-sibling::input")
 	private WebElement upperWestSideBoroughCouncilCheckbox;
 	
-	@FindBy(id = "edit-par-data-authority-id-8")
+	@FindBy(xpath = "//label[contains(text(), 'Lower East Side Borough Council')]/preceding-sibling::input")
 	private WebElement lowerEastSideBoroughCouncilCheckbox;
 	
 	// Help Desk Membership Selection Page Elements
-	@FindBy(xpath = "//*[@id=\"edit_par_data_organisation_id_chosen\"]/ul/li/input")
+	@FindBy(xpath = "//div[@id='edit_par_data_organisation_id_chosen']/ul/li/input")
 	private WebElement organisationChoiceInput;
 	
-	@FindBy(className = "chosen-drop")
-	private WebElement organisationChoiceList;
-	
-	@FindBy(id = "edit_par_data_authority_id_chosen")
-	private WebElement authorityChoiceDiv;
-	
-	@FindBy(id = "edit-par-data-organisation-id")
-	private WebElement organisationDropDown;
+	@FindBy(xpath = "//div[@id='edit_par_data_authority_id_chosen']/ul/li/input")
+	private WebElement authorityChoiceInput;
 	
 	@FindBy(id = "edit-par-data-authority-id")
-	private WebElement authorityDropDown;
+	private WebElement authorityDropDown;		// Temp Web Element
 	
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
@@ -108,24 +104,16 @@ public class PersonMembershipPage extends BasePageObject {
 	}
 	
 	// Help Desk Membership Selection Page Methods
-	public void selectOrganisation() {
-		organisationChoiceInput.click();
+	public void selectOrganisation(DataTable details) {
+		mainOrganisationSelectionMethod(details);
 		
-		WebElement randomOrganisation = chooseRandomOrganisation();
-		
-		String organisation = randomOrganisation.getText();
-		randomOrganisation.click();
-		
-		DataStore.saveValue(UsableValues.CHOSEN_ORGANISATION, organisation);
+		//tempOrganisationSelectionMethod();
 	}
 	
-	public void selectAuthority() {
-		Select selectObject = new Select(authorityDropDown);
+	public void selectAuthority(DataTable details) {
+		//mainAuthoritySelectionMethod(details);
 		
-		String randomAuthority = chooseRandomAuthority(selectObject).getText();
-		selectObject.selectByVisibleText(randomAuthority);
-		
-		DataStore.saveValue(UsableValues.CHOSEN_AUTHORITY, randomAuthority);
+		tempAuthoritySelectionMethod();
 	}
 	
 	public PersonUserRoleTypePage clickContinueButton() {
@@ -136,6 +124,57 @@ public class PersonMembershipPage extends BasePageObject {
 	public DashboardPage clickCancelButton() {
 		cancelBtn.click();
 		return PageFactory.initElements(driver, DashboardPage.class);
+	}
+	
+	// These methods are what the Web Elements should be doing which the Accessibility branch should have.
+	private void mainOrganisationSelectionMethod(DataTable details) {
+		organisationChoiceInput.click();
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+
+			DataStore.saveValue(UsableValues.CHOSEN_ORGANISATION, data.get("Organisation"));
+		}
+		
+		organisationChoiceInput.sendKeys(DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
+		
+		WebElement organisation = driver.findElement(By.cssSelector("div.chosen-drop ul.chosen-results li.active-result"));
+		organisation.click();
+	}
+	
+	private void mainAuthoritySelectionMethod(DataTable details) {
+		authorityChoiceInput.click();
+
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+
+			DataStore.saveValue(UsableValues.CHOSEN_AUTHORITY, data.get("Authority"));
+		}
+		
+		authorityChoiceInput.sendKeys(DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
+		
+		WebElement authority = driver.findElement(By.cssSelector("div.chosen-drop ul.chosen-results li.active-result"));
+		authority.click();
+	}
+	
+	
+	// These are here due to the on going issue with Input fields and Select Drop-down menu Web Elements changing with each new build.
+	private void tempOrganisationSelectionMethod() {
+		organisationChoiceInput.click();
+		
+		WebElement randomOrganisation = chooseRandomOrganisation();
+		
+		String organisation = randomOrganisation.getText();
+		randomOrganisation.click();
+		
+		DataStore.saveValue(UsableValues.CHOSEN_ORGANISATION, organisation);
+	}
+	
+	private void tempAuthoritySelectionMethod() {
+		Select selectObject = new Select(authorityDropDown);
+		
+		String randomAuthority = chooseRandomAuthority(selectObject).getText();
+		selectObject.selectByVisibleText(randomAuthority);
+		
+		DataStore.saveValue(UsableValues.CHOSEN_AUTHORITY, randomAuthority);
 	}
 	
 	private WebElement chooseRandomOrganisation() {

@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import uk.gov.beis.pageobjects.UserManagement.UpdateUserContactDetailsPage;
+
 public class UserProfilePage extends BasePageObject {
 	public UserProfilePage() throws ClassNotFoundException, IOException {
 		super();

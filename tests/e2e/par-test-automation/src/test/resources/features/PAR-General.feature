@@ -3,7 +3,7 @@ Feature: General
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
 
-  @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice
+  @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @legalEntities
   Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -26,7 +26,7 @@ Feature: General
     And the user updates the partnership information with the following info: "Updated Partnership info"
     Then the partnership is updated correctly
 
-  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct @update
+  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct @update @legalEntities
   Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -57,7 +57,47 @@ Feature: General
       | 01 new road | Market   | Bury | Greater Manchester | GB      | GB-SCT       | BL2 4BD   | Updated Info           | you sell cookies. | Name Update  |
     Then all of the Partnership details have been updated successfully
 
-  # Update Legal Entities test here.
+  @regression @direct @update @legalEntities
+  Scenario: Verify the Nomination of Legal Entity Amendments for an Active Partnership (Happy Path - PAR-2311)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user Amends the legal entities with the following details:
+      | Entity Type | Entity Name    |
+      | Partnership | Amendment Test |
+    Then the user verifies the amendments are created successfully with status "Confirmed by the Authority"
+    # Confirm Amendments as the Business User
+    Given the user is on the PAR login page
+    And the user logs in with the "par_business@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user confirms the legal entity amendments
+    Then the user verifies the amendments are confirmed successfully with status "Confirmed by the Organisation"
+    # Nominate the Amendments as the Help Desk User
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership Authority
+    And the user nominates the legal entity amendments
+    Then the user verifies the amendments are nominated successfully with status "Active"
+	
+	@regression @direct @update @legalEntities
+  Scenario: Verify the Revocation and reinstatement of a Legal Entity for an Active Partnership (Happy Path - PAR-2312, PAR-2313)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership Authority
+    And the user revokes the legal entity with the reason "Test Revoke"
+    Then the user verifies the legal entity was revoked successfully with status "Revoked"
+    # Reinstate the Legal Entity
+    When the user reinstates the legal entity
+    Then the user verifies the legal entity was reinstated successfully with status "Active"
+    
+	@regression @direct @update @legalEntities
+  Scenario: Verify the Removal of a Legal Entity from an Active Partnership (Happy Path - PAR-2314)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership Authority
+    And the user removes the legal entity
+    Then the user verifies the legal entity was removed successfully
+    
   @regression @direct @update
   Scenario: Add, Update and Remove a Primary Authority Contact for a Partnership with a User Account Invite Successfully (Happy Path - PAR-2242)
     Given the user is on the PAR login page
@@ -324,15 +364,17 @@ Feature: General
     When the user has revoked the last created inspection plan
     Then the inspection plan is successfully removed
 
-  @regression @deletePartnership
-  Scenario: Verify a Nominated Partnership can be Deleted (Happy Path - PAR-2277)
+  @regression @usermanagement
+  Scenario: Verify Completion of User Creation journey (Happy Path - PAR-1904)
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user searches for the last created partnership
-    Then the user can Delete the Partnership Successfully with the following reason: "Partnership is Incorrect."
+    And the user logs in with the "par_admin@example.com" user credentials
+    When the user visits the maillog page and extracts the invite link
+    And the user is on the PAR login page
+    And the user follows the invitation link
+    And the user completes the user creation journey
+    Then the user journey creation is successful
 
-  @regression @partnershipapplication @coordinated @organisationMember	
-	@regression @direct @deletePartnership
+  @regression @direct @deletePartnership
   Scenario: Verify a Nominated Direct Partnership can be Deleted Successfully (Happy Path - PAR-2277)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -348,18 +390,18 @@ Feature: General
       | SIC Code            | No of Employees | Legal Entity Name | Legal entity Type | Company number | Business Description |
       | allow people to eat | 10 to 49        | LE1               | unregistered      |       12345678 | Test Business        |
     Then the second part of the partnership application is successfully completed
-		# Nominate the Partnership
+    # Nominate the Partnership
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created partnership
     And the user approves the partnership
     And the user searches again for the last created partnership
     Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
-		# Delete the Partnership
+    # Delete the Partnership
     When the user Deletes the Partnership with the following reason: "Partnership is incorrect."
     Then the Partnership was Deleted Successfully
-  
-  @regression @partnershipapplication @coordinated
+
+  @regression @partnershipapplication @coordinated @authorityManagement
   Scenario: Verify Coordinated Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -379,7 +421,7 @@ Feature: General
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created partnership
 
-  @regression @partnershipapplication @coordinated @organisationMember
+  @regression @partnershipapplication @coordinated @organisationMember @authorityManagement
   Scenario: Successfully Nominate a Coordinated Partnership (Happy Path - PAR-2261)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -388,25 +430,40 @@ Feature: General
     And the user searches again for the last created partnership
     Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
 
-  # Add, Update and Cease a Member Test goes here.
   @regression @coordinated @organisationMember
   Scenario: Verify Addition of a Single Member Organisation to a Coordinated partnership (Happy Path - PAR-1868)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created partnership
     And the user adds a single member organisation to the patnership with the following details:
-      | Organisation Name    | Address Line 1 | Address Line 2 | Town City  | County             | Postcode | Title | WorkNumber  | MobileNumber | Legal Entity Type | Legal Entity Name |
-      | Testing Organisation | 02 New Street  | Market Hall    | Manchester | Greater Manchester | BL2 4BL  | Dr    | 02345678901 |  07890123456 | Sole trader       | Testing Co.       |
+      | Organisation Name    | Address Line 1 | Address Line 2 | Town City  | County             | Country        | Nation | Postcode | Title | WorkNumber  | MobileNumber | Legal Entity Type | Legal Entity Name |
+      | Testing Organisation | 02 New Street  | Market Hall    | Manchester | Greater Manchester | United Kingdom | Wales  | BL2 4BL  | Dr    | 02345678901 |  07890123456 | Sole trader       | Testing Co.       |
     Then the user member organistion has been added to the partnership successfully
 
-  # Upload a Members list Test goes here.
-  # Change the Members list type Test goes here.
-  @regression @usermanagement
-  Scenario: Verify Completion of User Creation journey (Happy Path - PAR-1904)
+  @regression @coordinated @organisationMember
+  Scenario: Verify the Update of a Single Member Organisation for a Coordinated partnership (Happy Path - PAR-1969)
     Given the user is on the PAR login page
-    And the user logs in with the "par_admin@example.com" user credentials
-    When the user visits the maillog page and extracts the invite link
-    And the user is on the PAR login page
-    And the user follows the invitation link
-    And the user completes the user creation journey
-    Then the user journey creation is successful
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user updates a single member organisation of the patnership with the following details:
+      | Organisation Name    | Address Line 1 | Address Line 2 | Town City  | County             | Country        | Nation | Postcode | Title | WorkNumber   | MobileNumber | Legal Entity Type | Legal Entity Name |
+      | Testers Organisation | 03 New Street  | Market Hall    | Manchester | Greater Manchester | United Kingdom | Wales  | BL2 4BL  | Mr    | 020455669921 |  07009156780 | Sole trader       | Tester Co.        |
+    Then the member organistion has been updated successfully
+
+  @regression @coordinated @organisationMember
+  Scenario: Verify the Cessation of a Single Member Organisation for a Coordinated partnership (Happy Path - PAR-1869)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user Ceases a single member organisation of the patnership with the current date
+    Then the member organistion has been Ceased successfully
+
+  # Upload a Members list Test goes here.
+  @regression @coordinated @organisationMember
+  Scenario: Verify the Upload of a Members List to a Coordinated partnership (Happy Path - PAR-1872)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user Uploads a members list to the coordinated partnership with the following file "memberslist.csv"
+    Then the members list is uploaded successfully
+  # Change the Members list type Test goes here.

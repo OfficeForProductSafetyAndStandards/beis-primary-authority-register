@@ -19,7 +19,99 @@ import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.*;
+import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceArchivePage;
+import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceNoticeDetailsPage;
+import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceNoticeSearchPage;
+import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceRemovalPage;
+import uk.gov.beis.pageobjects.AdvicePageObjects.UploadAdviceNoticePage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityAddressDetailsPage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityConfirmationPage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityDashboardPage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityNamePage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityTypePage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.ONSCodePage;
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationApprovalPage;
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationCompletionPage;
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationReviewPage;
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationSearchPage;
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.ReplyDeviationRequestPage;
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.RequestDeviationPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementActionPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementCompletionPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementContactDetailsPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementDetailsPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementLegalEntityPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementNotificationPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementReviewPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementSearchPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.ProposedEnforcementPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.RemoveEnforcementConfirmationPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.RemoveEnforcementPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiriesSearchPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiryCompletionPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiryContactDetailsPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiryReviewPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.ReplyEnquiryPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.RequestEnquiryPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.ViewEnquiryPage;
 import uk.gov.beis.pageobjects.HomePageLinkPageObjects.*;
+import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackCompletionPage;
+import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackConfirmationPage;
+import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackDetailsPage;
+import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackSearchPage;
+import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.ReplyInspectionFeedbackPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionContactDetailsPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanCoveragePage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanDetailsPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanExpirationPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanReviewPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.RemoveReasonInspectionPlanPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.RevokeReasonInspectionPlanPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.UploadInspectionPlanPage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.AmendmentCompletedPage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.ConfirmThisAmendmentPage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityReviewPage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.UpdateLegalEntityPage;
+import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterManageSubscriptionListPage;
+import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterSubscriptionPage;
+import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterSubscriptionReviewPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.AddOrganisationNamePage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessAddressDetailsPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessContactDetailsPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessDetailsPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.ConfirmMemberUploadPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.DeclarationPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.EmployeesPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberListPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberListUploadedPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationAddedConfirmationPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MembershipCeasedPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.UploadListOfMembersPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.AuthorityPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.BusinessInvitePage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.BusinessPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipAdvancedSearchPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipApprovalPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipCompletionPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipDescriptionPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipRestoredPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipRevokedPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipSearchPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipTermsPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipTypePage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.RegulatoryFunctionPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.RestorePartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.RevokePartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.TransferPartnerships.AuthorityTransferSelectionPage;
+import uk.gov.beis.pageobjects.TransferPartnerships.ConfirmThisTranferPage;
+import uk.gov.beis.pageobjects.TransferPartnerships.PartnershipMigrationSelectionPage;
+import uk.gov.beis.pageobjects.TransferPartnerships.TransferCompletedPage;
 import uk.gov.beis.pageobjects.UserManagement.*;
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
@@ -39,9 +131,34 @@ public class PARStepDefs {
 	private OpenGovernmentLicencePage openGovernmentLicencePage;
 	private CrownCopyrightPage crownCopyrightPage;
 	
+	// Dashboard
+	private PARReportingPage parReportingPage;
+	
 	// User Management
 	private MergeContactRecordsPage mergeContactRecordsPage;
 	private MergeContactRecordsConfirmationPage mergeContactRecordsConfirmationPage;
+	
+	// Legal Entity
+	private UpdateLegalEntityPage updateLegalEntityPage;
+	private ConfirmThisAmendmentPage confirmThisAmendmentPage;
+	private AmendmentCompletedPage amendmentCompletedPage;
+	
+	// Partnership
+	private MembershipCeasedPage membershipCeasedPage;
+	private UploadListOfMembersPage uploadListOfMembersPage;
+	private ConfirmMemberUploadPage confirmMemberUploadPage;
+	private MemberListUploadedPage memberListUploadedPage;
+	
+	// Partnerships Transfer
+	private AuthorityTransferSelectionPage authorityTransferSelectionPage;
+	private PartnershipMigrationSelectionPage partnershipMigrationSelectionPage;
+	private ConfirmThisTranferPage confirmThisTranferPage;
+	private TransferCompletedPage transferCompletedPage;
+	
+	// Shared Pages
+	private RevokePage revokePage;
+	private ReinstatePage reinstatePage;
+	private RemovePage removePage;
 	
 	// Next Section
 	private RevokeReasonInspectionPlanPage revokeReasonInspectionPlanPage;
@@ -150,7 +267,6 @@ public class PARStepDefs {
 	private PersonUserRoleTypePage personUserTypePage;
 	private PersonCreateAccountPage personCreateAccountPage;
 	private PersonsProfilePage personsProfilePage;
-	private RemoveContactPage removeContactPage;
 	private DeviationReviewPage deviationReviewPage;
 	private DeviationApprovalPage deviationApprovalPage;
 	private EnquiriesSearchPage enquiriesSearchPage;
@@ -170,9 +286,33 @@ public class PARStepDefs {
 		openGovernmentLicencePage = PageFactory.initElements(driver, OpenGovernmentLicencePage.class);
 		crownCopyrightPage = PageFactory.initElements(driver, CrownCopyrightPage.class);
 		
+		// Dashboard
+		parReportingPage = PageFactory.initElements(driver, PARReportingPage.class);
+		
 		// User Management
 		mergeContactRecordsPage = PageFactory.initElements(driver, MergeContactRecordsPage.class);
 		mergeContactRecordsConfirmationPage = PageFactory.initElements(driver, MergeContactRecordsConfirmationPage.class);
+		
+		// Legal Entity
+		updateLegalEntityPage = PageFactory.initElements(driver, UpdateLegalEntityPage.class);
+		confirmThisAmendmentPage = PageFactory.initElements(driver, ConfirmThisAmendmentPage.class);
+		amendmentCompletedPage = PageFactory.initElements(driver, AmendmentCompletedPage.class);
+		
+		// Partnership
+		membershipCeasedPage = PageFactory.initElements(driver, MembershipCeasedPage.class);
+		uploadListOfMembersPage = PageFactory.initElements(driver, UploadListOfMembersPage.class);
+		confirmMemberUploadPage = PageFactory.initElements(driver, ConfirmMemberUploadPage.class);
+		memberListUploadedPage = PageFactory.initElements(driver, MemberListUploadedPage.class);
+		
+		// Partnerships Transfer
+		authorityTransferSelectionPage = PageFactory.initElements(driver, AuthorityTransferSelectionPage.class);
+		partnershipMigrationSelectionPage = PageFactory.initElements(driver, PartnershipMigrationSelectionPage.class);
+		confirmThisTranferPage = PageFactory.initElements(driver, ConfirmThisTranferPage.class);
+		transferCompletedPage = PageFactory.initElements(driver, TransferCompletedPage.class);
+		
+		// Shared Pages
+		revokePage = PageFactory.initElements(driver, RevokePage.class);
+		reinstatePage = PageFactory.initElements(driver, ReinstatePage.class);
 		
 		// Next Section
 		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
@@ -290,7 +430,7 @@ public class PARStepDefs {
 		personUserTypePage = PageFactory.initElements(driver, PersonUserRoleTypePage.class);
 		personCreateAccountPage = PageFactory.initElements(driver, PersonCreateAccountPage.class);
 		personsProfilePage = PageFactory.initElements(driver, PersonsProfilePage.class);
-		removeContactPage = PageFactory.initElements(driver, RemoveContactPage.class);
+		removePage = PageFactory.initElements(driver, RemovePage.class);
 	}
 
 	@Given("^the user is on the PAR home page$")
@@ -341,7 +481,7 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, data.get("firstname"));
 			DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, data.get("lastname"));
 			DataStore.saveValue(UsableValues.BUSINESS_PHONE, data.get("phone"));
-			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, RandomStringGenerator.getEmail(4));
+			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, "par_business@example.com");
 		}
 		
 		ScenarioContext.secondJourneyPart = false;
@@ -395,17 +535,22 @@ public class PARStepDefs {
 
 		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
 		case ("par_helpdesk@example.com"):
-			LOG.info("Selecting view partnerships");
+			LOG.info("Selecting Search partnerships");
 			parDashboardPage.selectSearchPartnerships();
 			partnershipAdvancedSearchPage.searchPartnerships();
 			break;
 
 		case ("par_enforcement_officer@example.com"):
-			LOG.info("Selecting search for partnership");
+			LOG.info("Selecting Search for partnerships");
 			parDashboardPage.selectSearchforPartnership();
 			partnershipSearchPage.searchPartnerships();
 			break;
-
+		case ("par_business@example.com"):
+			LOG.info("Selecting See your partnerships");
+			parDashboardPage.selectSeePartnerships();
+			partnershipSearchPage.searchPartnerships();
+			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+			break;
 		default:
 			LOG.info("Search partnerships");
 			parDashboardPage.selectSeePartnerships();
@@ -518,6 +663,7 @@ public class PARStepDefs {
 	@When("^the user visits the maillog page and extracts the invite link$")
 	public void the_user_visits_the_maillog_page_and_extracts_the_invite_link() throws Throwable {
 		mailLogPage.navigateToUrl();
+		mailLogPage.searchForUserAccountInvite(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 		mailLogPage.selectEamilAndGetINviteLink(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 	}
 
@@ -649,8 +795,8 @@ public class PARStepDefs {
 	public void the_user_searches_for_the_last_created_authority() throws Throwable {
 		
 		LOG.info("Search for last created authority");
-		authoritiesDashboardPage.searchAuthority();
-		authoritiesDashboardPage.selectAuthority();
+		authoritiesDashboardPage.searchAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		authoritiesDashboardPage.selectManageAuthority();
 	}
 
 	@When("^the user updates all the fields for newly created authority$")
@@ -679,7 +825,44 @@ public class PARStepDefs {
 		Assert.assertTrue("Details don't check out", authorityConfirmationPage.checkAuthorityDetails());
 		authorityConfirmationPage.saveChanges();
 	}
+	
+	@When("^the user searches for an Authority with the same Regulatory Functions \"([^\"]*)\"$")
+	public void the_user_searches_for_an_Authority_with_the_same_Regulatory_Functions(String authority) throws Throwable {
+		LOG.info("Search for the Authority.");
+		parDashboardPage.selectManageAuthorities();
+		authoritiesDashboardPage.searchAuthority(authority);
+		DataStore.saveValue(UsableValues.PREVIOUS_AUTHORITY_NAME, authority);
+		
+		authoritiesDashboardPage.selectTransferPartnerships();
+	}
 
+	@When("^the user completes the partnership transfer process$")
+	public void the_user_completes_the_partnership_transfer_process() throws Throwable {
+		LOG.info("Transferring a Partnership to the new Authority.");
+		
+		authorityTransferSelectionPage.searchAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		partnershipMigrationSelectionPage.selectPartnership(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		
+		LOG.info("Confirm the Partnership Transfer.");
+		enterTheDatePage.goToConfirmThisTranferPage();
+		confirmThisTranferPage.confirmPartnershipTransfer();
+		transferCompletedPage.selectDoneButton();
+	}
+
+	@Then("^the partnership is transferred to the new authority successfully$")
+	public void the_partnership_is_transferred_to_the_new_authority_successfully() throws Throwable {
+		LOG.info("Search for the Partnership with the New Authority.");
+		
+		authoritiesDashboardPage.goToHelpDeskDashboard();
+		
+		parDashboardPage.selectSearchPartnerships();
+		partnershipAdvancedSearchPage.searchPartnershipsPrimaryAuthority();
+		partnershipAdvancedSearchPage.selectPrimaryAuthorityLink();
+		
+		LOG.info("Verify the Partnership Displays the Previously Known as Text.");
+		Assert.assertTrue("FAILED: Previously Known as text is not Displayed", parPartnershipConfirmationPage.checkPreviouslyKnownAsText());
+	}
+	
 	@Given("^the user updates all the fields for last created organisation$")
 	public void the_user_updates_all_the_fields_for_last_created_organisation() throws Throwable {
 		LOG.info("Update all fields");
@@ -1388,12 +1571,12 @@ public class PARStepDefs {
 	}
 
 	@When("^the user creates a new person:$")
-	public void the_user_creates_a_new_person(DataTable person) throws Throwable {
+	public void the_user_creates_a_new_person(DataTable details) throws Throwable {
 		parDashboardPage.selectManagePeople();
 		managePeoplePage.selectAddPerson();
 
 		LOG.info("Adding a new person.");
-		personsContactDetailsPage.enterContactDetails(person);
+		personsContactDetailsPage.enterContactDetails(details);
 		personsContactDetailsPage.clickContinueButton();
 
 		LOG.info("Successfully entered new contact details.");
@@ -1402,10 +1585,10 @@ public class PARStepDefs {
 		personAccountPage.clickContinueButton();
 
 		LOG.info("Successfully chose to invite the person to create an account.");
-
-		personMembershipPage.selectAuthority();
-		personMembershipPage.selectOrganisation();
+		personMembershipPage.selectOrganisation(details);
+		personMembershipPage.selectAuthority(details);
 		personMembershipPage.clickContinueButton();
+		
 		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
 		LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
 
@@ -1447,11 +1630,11 @@ public class PARStepDefs {
 	}
 
 	@When("^the user updates an existing person:$")
-	public void the_user_updates_an_existing_person_with_the_following_details(DataTable person) throws Throwable {
+	public void the_user_updates_an_existing_person_with_the_following_details(DataTable details) throws Throwable {
 		LOG.info("Updating an existing person.");
 		personsProfilePage.clickUpdateUserButton();
 		
-		personsContactDetailsPage.enterContactDetails(person);
+		personsContactDetailsPage.enterContactDetails(details);
 		personsContactDetailsPage.clickContinueButton();
 
 		LOG.info("Successfully entered new contact details.");
@@ -1460,9 +1643,8 @@ public class PARStepDefs {
 		personAccountPage.clickContinueButton();
 
 		LOG.info("Successfully chose to invite the person to create an account.");
-
-		personMembershipPage.selectAuthority();
-		personMembershipPage.selectOrganisation();
+		personMembershipPage.selectOrganisation(details);
+		personMembershipPage.selectAuthority(details);
 		personMembershipPage.clickContinueButton();
 
 		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
@@ -1656,6 +1838,111 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.clickSave();
 	}
 	
+	@When("^the user Amends the legal entities with the following details:$")
+	public void the_user_Amends_the_legal_entities_with_the_following_details(DataTable details) throws Throwable {
+		LOG.info("Creating the Legal Entity Amendment as the Authority User.");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Entity Type"));
+			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Entity Name"));
+		}
+		
+		parPartnershipConfirmationPage.selectAmendLegalEntitiesLink();
+		
+		legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		legalEntityTypePage.clickContinueButton();
+		legalEntityReviewPage.goToConfirmThisAmendmentPage();
+		
+		confirmThisAmendmentPage.confirmLegalEntityAmendments();
+		
+		amendmentCompletedPage.goToPartnershipDetailsPage();
+	}
+	
+	@Then("^the user verifies the amendments are created successfully with status \"([^\"]*)\"$")
+	public void the_user_verifies_the_amendments_are_created_successfully_with_status(String status) throws Throwable {
+		LOG.info("Verify the Legal Entity was Created Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+	}
+
+	@When("^the user confirms the legal entity amendments$")
+	public void the_user_confirms_the_legal_entity_amendments() throws Throwable {
+		LOG.info("Confirm the Legal Entity as the Business User.");
+		
+		parPartnershipConfirmationPage.selectConfirmLegalEntitiesLink();
+		confirmThisAmendmentPage.confirmLegalEntityAmendments();
+		amendmentCompletedPage.goToDashBoardPage();
+	}
+	
+	@Then("^the user verifies the amendments are confirmed successfully with status \"([^\"]*)\"$")
+	public void the_user_verifies_the_amendments_are_confirmed_successfully_with_status(String status) throws Throwable {
+		LOG.info("Search for the Partnership to Verify the Amendment.");
+		parDashboardPage.selectSeePartnerships();
+		partnershipSearchPage.searchPartnerships();
+		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		
+		LOG.info("Verify the Legal Entity was Confirmed Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+	}
+
+	@When("^the user nominates the legal entity amendments$")
+	public void the_user_nominates_the_legal_entity_amendments() throws Throwable {
+		LOG.info("Nominate the Legal Entity as the Help Desk User.");
+		
+		parPartnershipConfirmationPage.selectNominateLegalEntitiesLink();
+		confirmThisAmendmentPage.confirmLegalEntityAmendments();
+		amendmentCompletedPage.goToPartnershipDetailsPage();
+	}
+	
+	@Then("^the user verifies the amendments are nominated successfully with status \"([^\"]*)\"$")
+	public void the_user_verifies_the_amendments_are_nominated_successfully_with_status(String status) throws Throwable {
+		LOG.info("Verify the Legal Entity was Nominated Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+	}
+	
+	@When("^the user revokes the legal entity with the reason \"([^\"]*)\"$")
+	public void the_user_revokes_the_legal_entity_with_the_reason(String reason) throws Throwable {
+		LOG.info("Revoke the Legal Entity as the Help Desk User.");
+		
+		parPartnershipConfirmationPage.selectRevokeLegalEntitiesLink();
+		
+		revokePage.enterReasonForRevocation(reason);
+		revokePage.goToPartnershipDetailsPage();
+	}
+
+	@Then("^the user verifies the legal entity was revoked successfully with status \"([^\"]*)\"$")
+	public void the_user_verifies_the_legal_entity_was_revoked_successfully_with_status(String status) throws Throwable {
+		LOG.info("Verify the Legal Entity was Revoked Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+	}
+	
+	@When("^the user reinstates the legal entity$")
+	public void the_user_reinstates_the_legal_entity() throws Throwable {
+		LOG.info("Reinstate the Legal Entity as the Help Desk User.");
+		
+		parPartnershipConfirmationPage.selectReinstateLegalEntitiesLink();
+		reinstatePage.goToPartnershipDetailsPage();
+	}
+
+	@Then("^the user verifies the legal entity was reinstated successfully with status \"([^\"]*)\"$")
+	public void the_user_verifies_the_legal_entity_was_reinstated_successfully_with_status(String status) throws Throwable {
+		LOG.info("Verify the Legal Entity was Reinstated Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+	}
+	
+	@When("^the user removes the legal entity$")
+	public void the_user_removes_the_legal_entity() throws Throwable {
+		LOG.info("Remove the Legal Entity as the Help Desk User.");
+		
+		parPartnershipConfirmationPage.selectRemoveLegalEntitiesLink();
+		removePage.goToPartnershipDetailsPage();
+	}
+
+	@Then("^the user verifies the legal entity was removed successfully$")
+	public void the_user_verifies_the_legal_entity_was_removed_successfully() throws Throwable {
+		LOG.info("Verify the Legal Entity was Removed Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEnityExists());
+	}
+	
 	@When("^the user adds a Primary Authority contact to be Invited with the following details:$")
 	public void the_user_adds_a_Primary_Authority_contact_to_be_Invited_with_the_following_details(DataTable details) throws Throwable {
 		
@@ -1708,7 +1995,7 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.removeContactsDetailsButton();
 		
 		LOG.info("Removing the contact.");
-		removeContactPage.clickRemoveButton();
+		removePage.goToPartnershipDetailsPage();
 	}
 
 	@Then("^the new Primary Authority contact is removed Successfully$")
@@ -1759,7 +2046,7 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.removeContactsDetailsButton();
 		
 		LOG.info("Removing the contact.");
-		removeContactPage.clickRemoveButton();
+		removePage.goToPartnershipDetailsPage();
 	}
 
 	@Then("^the new Organisation contact is removed Successfully$")
@@ -1881,7 +2168,7 @@ public class PARStepDefs {
 		
 		LOG.info("Successfully chose the contacts Authority memberships.");
 
-		personUserTypePage.selectAuthorityManager();
+		personUserTypePage.selectAuthorityMember();
 		personUserTypePage.clickProfileReviewContinueButton();
 		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
 
@@ -1955,6 +2242,7 @@ public class PARStepDefs {
 		
 		LOG.info("Entering the Member Organisation's Legal Entity.");
 		legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		legalEntityTypePage.clickContinueButton();
 		legalEntityReviewPage.clickContinueForMember();
 		
 		LOG.info("Confirming the Member Organisation is covered by the Inspection Plan.");
@@ -1972,6 +2260,140 @@ public class PARStepDefs {
 		
 		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
 		Assert.assertTrue(memberListPage.checkMemberCreated());
+	}
+	
+	@When("^the user updates a single member organisation of the patnership with the following details:$")
+	public void the_user_updates_a_single_member_organisation_of_the_patnership_with_the_following_details(DataTable details) throws Throwable {
+		LOG.info("Update a Single Member Organisation to a Co-ordinated Partnership.");
+		
+		partnershipAdvancedSearchPage.selectOrganisationLink();
+		parPartnershipConfirmationPage.selectShowMembersListLink();
+		
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		memberListPage.selectMembersName();
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.MEMBER_ORGANISATION_NAME, data.get("Organisation Name"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("Address Line 1"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE2, data.get("Address Line 2"));
+			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("Town City"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTY, data.get("County"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTRY, data.get("Country"));
+			DataStore.saveValue(UsableValues.BUSINESS_NATION, data.get("Nation"));
+			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("Postcode"));
+			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal Entity Type"));
+			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Legal Entity Name"));
+		}
+		
+		LOG.info("Updating the Member Organisation's Name.");
+		memberOrganisationSummaryPage.selectEditOrganisationName();
+		addOrganisationNamePage.editMemberOrganisationName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		
+		LOG.info("Updating the Member Organisation's Address.");
+		memberOrganisationSummaryPage.selectEditAddress();
+		
+		editRegisteredAddressPage.editAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		
+		editRegisteredAddressPage.goToMemberOrganisationSummaryPage();
+		
+		LOG.info("Updating the Member Organisation's Membership Start Date.");
+		memberOrganisationSummaryPage.selectEditMembershipStartDate();
+		enterTheDatePage.goToMemberOrganisationSummaryPage();
+		
+		LOG.info("Updating the Member Organisation's Contact Details.");
+		memberOrganisationSummaryPage.selectEditPerson();
+		personsContactDetailsPage.enterContactDetails(details);
+		personsContactDetailsPage.goToMemberOrganisationSummaryPage();
+		
+		LOG.info("Updating the Member Organisation's Legal Entity.");
+		memberOrganisationSummaryPage.selectAddAnotherLegalEntity();
+		updateLegalEntityPage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		updateLegalEntityPage.goToMemberOrganisationSummaryPage();
+		
+		LOG.info("Updating the Member Organisation's Trading Name.");
+		memberOrganisationSummaryPage.selectEditTradingName();
+		tradingPage.editMemberTradingName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		tradingPage.goToMemberOrganisationSummaryPage();
+		
+		LOG.info("Confirming the Member Organisation is not covered by the Inspection Plan.");
+		memberOrganisationSummaryPage.selectEditCoveredByInspectionPlan();
+		inspectionPlanCoveragePage.selectNoRadial();
+		inspectionPlanCoveragePage.selectSaveForMember();
+	}
+
+	@Then("^the member organistion has been updated successfully$")
+	public void the_member_organistion_has_been_updated_successfully() throws Throwable {
+		LOG.info("Verifying All Member Details are Correct.");
+		Assert.assertTrue(memberOrganisationSummaryPage.checkMemberDetails());
+		memberOrganisationSummaryPage.selectDone();
+		
+		LOG.info("Verify the Updated Member Organisation Name is Displayed on the Members List.");
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		Assert.assertTrue(memberListPage.checkMemberCreated());
+	}
+	
+	@When("^the user Ceases a single member organisation of the patnership with the current date$")
+	public void the_user_Ceases_a_single_member_organisation_of_the_patnership_with_the_current_date() throws Throwable {
+		LOG.info("Cease a Single Member Organisation to a Co-ordinated Partnership.");
+		
+		partnershipAdvancedSearchPage.selectOrganisationLink();
+		parPartnershipConfirmationPage.selectShowMembersListLink();
+		
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		memberListPage.selectCeaseMembership();
+		
+		LOG.info("Entering the Current Date for the Cessation to Happen.");
+		enterTheDatePage.enterCurrentDate();
+		enterTheDatePage.goToMembershipCeasedPage();
+		
+		membershipCeasedPage.goToMembersListPage();
+	}
+
+	@Then("^the member organistion has been Ceased successfully$")
+	public void the_member_organistion_has_been_Ceased_successfully() throws Throwable {
+		LOG.info("Verify the Member Organisation has been Ceased Successfully.");
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		Assert.assertTrue("FAILED: Links are still present and/ or the Cease date is incorrect.", memberListPage.checkMembershipCeased());
+	}
+	
+	@When("^the user Uploads a members list to the coordinated partnership with the following file \"([^\"]*)\"$")
+	public void the_user_Uploads_a_members_list_to_the_coordinated_partnership_with_the_following_file(String file) throws Throwable {
+		LOG.info("Uploading a Members List CSV File to a Co-ordinated Partnership.");
+		
+		partnershipAdvancedSearchPage.selectOrganisationLink();
+		parPartnershipConfirmationPage.selectShowMembersListLink();
+		
+		memberListPage.selectUploadMembersListLink();
+		
+		LOG.info("Uploading the Members List CSV File..");
+		uploadListOfMembersPage.chooseCSVFile();
+		uploadListOfMembersPage.selectUpload();
+		
+		confirmMemberUploadPage.selectUpload();
+		
+		memberListUploadedPage.selectDone();
+	}
+
+	@Then("^the members list is uploaded successfully$")
+	public void the_members_list_is_uploaded_successfully() throws Throwable {
+		LOG.info("Verify the Members List was Uploaded Successfully.");
+		
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		Assert.assertTrue("FAILED: Business names are not displayed in the table.", memberListPage.checkMembersListUploaded());
+	}
+	
+	@When("^the user navigates to the statistics page$")
+	public void the_user_navigates_to_the_statistics_page() throws Throwable {
+		LOG.info("Navigating to the Statistics Page.");
+	    parDashboardPage.selectViewAllStatistics();
+	}
+
+	@Then("^the statistics page is dispalyed successfully$")
+	public void the_statistics_page_is_dispalyed_successfully() throws Throwable {
+		LOG.info("Verifying the Statistics Page is Displayed.");
+		Assert.assertTrue("FAILED: Statistics Page is not Displayed!", parReportingPage.checkPageHeaderIsDisplayed());
 	}
 
 	@When("^the user selects the Read more about Primary Authority link$")

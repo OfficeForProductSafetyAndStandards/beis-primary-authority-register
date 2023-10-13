@@ -1,19 +1,19 @@
 package uk.gov.beis.pageobjects;
 
-import java.util.InputMismatchException;
-import java.util.concurrent.TimeUnit;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
-import org.openqa.selenium.By;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,16 +26,13 @@ public class BasePageObject {
 	public static WebDriver driver;
 	public String pageName;
 
-	private static final long DRIVER_WAIT_TIME = 15;
 	protected Logger LOG = LoggerFactory.getLogger(BasePageObject.class);
 	protected static FluentWait<WebDriver> wait;
 	private static JavascriptExecutor js;
-	private static By currentIframe;
 
 	// create a web driver instance when BasePageObject instantiated using the shared driver
 	public BasePageObject() {
 		driver = ScenarioContext.lastDriver;
-		//wait = new WebDriverWait(driver, DRIVER_WAIT_TIME).pollingEvery(1, TimeUnit.SECONDS).ignoring(StaleElementReferenceException.class);
 		js = (JavascriptExecutor) driver;
 	}
 	
@@ -46,6 +43,39 @@ public class BasePageObject {
 		else if (BrowserFactory.browser == Browser.Firefox) {
 			filebrowser.sendKeys(System.getProperty("user.dir") + "\\" + filename);
 		}
+	}
+	
+	public String[] getColumnFromCSV(String filename, int column, String delimiter) {
+		String path = "";
+		
+		if(BrowserFactory.browser == Browser.Chrome) {
+			path = System.getProperty("user.dir") + "/" + filename;
+		}
+		else if (BrowserFactory.browser == Browser.Firefox) {
+			path = System.getProperty("user.dir") + "\\" + filename;
+		}
+		
+		String data[];
+		String currentLine;
+		ArrayList<String> columnData = new ArrayList<String>();
+		
+		try {
+			FileReader fr = new FileReader(path);
+			BufferedReader br = new BufferedReader(fr);
+			
+			while((currentLine = br.readLine()) != null) {
+				data = currentLine.split(delimiter);
+				columnData.add(data[column]);
+			}
+			
+			br.close();
+		}
+		catch(Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		
+		return columnData.toArray(new String[0]);
 	}
 
 	public WebElement waitUntilCickable(WebElement element) {
