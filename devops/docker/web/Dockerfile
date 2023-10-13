@@ -241,7 +241,10 @@ RUN mkdir -p /tmp/dependencies \
   && curl -Ls ${JMETER_DOWNLOAD_URL} >  /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz \
   && mkdir -p /opt \
   && tar -xzf /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz -C /opt \
-  && rm -rf /tmp/dependencies
+  && rm -rf /tmp/dependencies \
+  && ln -fs "$JMETER_BIN"/jmeter /usr/local/bin/jmeter \
+  && chmod +x /usr/local/bin/jmeter \
+  && jmeter --version
 # Set global PATH such that "jmeter" command is found
 ENV PATH $PATH:$JMETER_BIN
 

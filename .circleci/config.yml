@@ -363,7 +363,7 @@ jobs:
             jmeter -n -t ./tests/nfr/jmeter/search_partnerships.jmx \
                 -Jurl=beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital \
                 -l ./tests/reports/jmeter/jmeter-log.jtl
-            /opt/apache-jmeter-5.4.3/bin/JMeterPluginsCMD.sh --generate-csv ./tests/reports/jmeter/aggregate-report.csv \
+            /opt/apache-jmeter-5.5/bin/JMeterPluginsCMD.sh --generate-csv ./tests/reports/jmeter/aggregate-report.csv \
                 --input-jtl ./tests/reports/jmeter/jmeter-log.jtl  \
                 --plugin-type AggregateReport
       - run:
