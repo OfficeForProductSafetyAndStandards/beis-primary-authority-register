@@ -90,6 +90,14 @@ Feature: General
     When the user reinstates the legal entity
     Then the user verifies the legal entity was reinstated successfully with status "Active"
     
+	@regression @direct @update @legalEntities
+  Scenario: Verify the Removal of a Legal Entity from an Active Partnership (Happy Path - PAR-2314)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership Authority
+    And the user removes the legal entity
+    Then the user verifies the legal entity was removed successfully
+    
   @regression @direct @update
   Scenario: Add, Update and Remove a Primary Authority Contact for a Partnership with a User Account Invite Successfully (Happy Path - PAR-2242)
     Given the user is on the PAR login page

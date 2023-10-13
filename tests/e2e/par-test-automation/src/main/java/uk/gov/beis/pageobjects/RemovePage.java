@@ -8,16 +8,16 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
 
-public class RemoveContactPage extends BasePageObject {
+public class RemovePage extends BasePageObject {
 	
 	@FindBy(id = "edit-save")
 	private WebElement removeBtn;
 	
-	public RemoveContactPage() throws ClassNotFoundException, IOException {
+	public RemovePage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
-	public PartnershipConfirmationPage clickRemoveButton() {
+	public PartnershipConfirmationPage goToPartnershipDetailsPage() {
 		removeBtn.click();
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}

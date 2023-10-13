@@ -121,6 +121,7 @@ public class PARStepDefs {
 	// Shared Pages
 	private RevokePage revokePage;
 	private ReinstatePage reinstatePage;
+	private RemovePage removePage;
 	
 	// Next Section
 	private RevokeReasonInspectionPlanPage revokeReasonInspectionPlanPage;
@@ -229,7 +230,6 @@ public class PARStepDefs {
 	private PersonUserRoleTypePage personUserTypePage;
 	private PersonCreateAccountPage personCreateAccountPage;
 	private PersonsProfilePage personsProfilePage;
-	private RemoveContactPage removeContactPage;
 	private DeviationReviewPage deviationReviewPage;
 	private DeviationApprovalPage deviationApprovalPage;
 	private EnquiriesSearchPage enquiriesSearchPage;
@@ -393,7 +393,7 @@ public class PARStepDefs {
 		personUserTypePage = PageFactory.initElements(driver, PersonUserRoleTypePage.class);
 		personCreateAccountPage = PageFactory.initElements(driver, PersonCreateAccountPage.class);
 		personsProfilePage = PageFactory.initElements(driver, PersonsProfilePage.class);
-		removeContactPage = PageFactory.initElements(driver, RemoveContactPage.class);
+		removePage = PageFactory.initElements(driver, RemovePage.class);
 	}
 
 	@Given("^the user is on the PAR home page$")
@@ -1839,8 +1839,8 @@ public class PARStepDefs {
 	@Then("^the user verifies the amendments are confirmed successfully with status \"([^\"]*)\"$")
 	public void the_user_verifies_the_amendments_are_confirmed_successfully_with_status(String status) throws Throwable {
 		LOG.info("Search for the Partnership to Verify the Amendment.");
-		
 		parDashboardPage.selectSeePartnerships();
+		partnershipSearchPage.searchPartnerships();
 		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
 		
 		LOG.info("Verify the Legal Entity was Confirmed Successfully.");
@@ -1883,7 +1883,6 @@ public class PARStepDefs {
 		LOG.info("Reinstate the Legal Entity as the Help Desk User.");
 		
 		parPartnershipConfirmationPage.selectReinstateLegalEntitiesLink();
-		
 		reinstatePage.goToPartnershipDetailsPage();
 	}
 
@@ -1891,6 +1890,20 @@ public class PARStepDefs {
 	public void the_user_verifies_the_legal_entity_was_reinstated_successfully_with_status(String status) throws Throwable {
 		LOG.info("Verify the Legal Entity was Reinstated Successfully.");
 		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+	}
+	
+	@When("^the user removes the legal entity$")
+	public void the_user_removes_the_legal_entity() throws Throwable {
+		LOG.info("Remove the Legal Entity as the Help Desk User.");
+		
+		parPartnershipConfirmationPage.selectRemoveLegalEntitiesLink();
+		removePage.goToPartnershipDetailsPage();
+	}
+
+	@Then("^the user verifies the legal entity was removed successfully$")
+	public void the_user_verifies_the_legal_entity_was_removed_successfully() throws Throwable {
+		LOG.info("Verify the Legal Entity was Removed Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEnityExists());
 	}
 	
 	@When("^the user adds a Primary Authority contact to be Invited with the following details:$")
@@ -1945,7 +1958,7 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.removeContactsDetailsButton();
 		
 		LOG.info("Removing the contact.");
-		removeContactPage.clickRemoveButton();
+		removePage.goToPartnershipDetailsPage();
 	}
 
 	@Then("^the new Primary Authority contact is removed Successfully$")
@@ -1996,7 +2009,7 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.removeContactsDetailsButton();
 		
 		LOG.info("Removing the contact.");
-		removeContactPage.clickRemoveButton();
+		removePage.goToPartnershipDetailsPage();
 	}
 
 	@Then("^the new Organisation contact is removed Successfully$")

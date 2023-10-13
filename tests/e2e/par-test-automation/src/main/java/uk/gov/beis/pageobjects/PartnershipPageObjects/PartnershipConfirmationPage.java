@@ -16,6 +16,7 @@ import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.EnquiryContactDetailsPage;
 import uk.gov.beis.pageobjects.ReinstatePage;
+import uk.gov.beis.pageobjects.RemovePage;
 import uk.gov.beis.pageobjects.RevokePage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionContactDetailsPage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
@@ -268,6 +269,15 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		return PageFactory.initElements(driver, ReinstatePage.class);
 	}
 	
+	public RemovePage selectRemoveLegalEntitiesLink() {
+		WebElement legalEntityName = driver.findElement(By.xpath(legalEntityNameLocator.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
+		
+		WebElement revokeLink = legalEntityName.findElement(By.xpath(legalEntityActionLinksLocator.replace("?", "Remove")));
+		revokeLink.click();
+		
+		return PageFactory.initElements(driver, RemovePage.class);
+	}
+	
 	public TradingPage editTradingName() {
 		editTradingNameLink.click();
 		return PageFactory.initElements(driver, TradingPage.class);
@@ -334,6 +344,10 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		WebElement legalEntityName = driver.findElement(By.xpath(legalEntityNameLocator.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
 		WebElement legalEntityStatus = legalEntityName.findElement(By.xpath(legalEntityStatusLocator.replace("?", status)));
 		return legalEntityName.isDisplayed() && legalEntityStatus.isDisplayed();
+	}
+	
+	public boolean checkLegalEnityExists() {
+		return driver.findElements(By.xpath(legalEntityNameLocator.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME)))).isEmpty();
 	}
 	
 	public boolean checkTradingName() {
