@@ -78,7 +78,15 @@ Feature: General
     When the user searches for the last created partnership Authority
     And the user nominates the legal entity amendments
     Then the user verifies the amendments are nominated successfully with status "Active"
-
+	
+	@regression @direct @update @legalEntities @test
+  Scenario: Verify the Revocation of a Legal Entity from an Active Partnership (Happy Path - PAR-2312)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership Authority
+    And the user revokes the legal entity with the reason "Test Revoke"
+    Then the user verifies the legal entity was revoked successfully with status "Revoked"
+    
   @regression @direct @update
   Scenario: Add, Update and Remove a Primary Authority Contact for a Partnership with a User Account Invite Successfully (Happy Path - PAR-2242)
     Given the user is on the PAR login page

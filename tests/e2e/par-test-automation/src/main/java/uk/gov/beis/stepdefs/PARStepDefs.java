@@ -39,6 +39,7 @@ import uk.gov.beis.pageobjects.LegalEntityPageObjects.AmendmentCompletedPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.ConfirmThisAmendmentPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityReviewPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.RevokePage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.UpdateLegalEntityPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.AddOrganisationNamePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessAddressDetailsPage;
@@ -117,6 +118,9 @@ public class PARStepDefs {
 	private PartnershipMigrationSelectionPage partnershipMigrationSelectionPage;
 	private ConfirmThisTranferPage confirmThisTranferPage;
 	private TransferCompletedPage transferCompletedPage;
+	
+	// Shared Pages
+	private RevokePage revokePage;
 	
 	// Next Section
 	private RevokeReasonInspectionPlanPage revokeReasonInspectionPlanPage;
@@ -268,6 +272,9 @@ public class PARStepDefs {
 		partnershipMigrationSelectionPage = PageFactory.initElements(driver, PartnershipMigrationSelectionPage.class);
 		confirmThisTranferPage = PageFactory.initElements(driver, ConfirmThisTranferPage.class);
 		transferCompletedPage = PageFactory.initElements(driver, TransferCompletedPage.class);
+		
+		// Shared Pages
+		revokePage = PageFactory.initElements(driver, RevokePage.class);
 		
 		// Next Section
 		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
@@ -1850,6 +1857,22 @@ public class PARStepDefs {
 	@Then("^the user verifies the amendments are nominated successfully with status \"([^\"]*)\"$")
 	public void the_user_verifies_the_amendments_are_nominated_successfully_with_status(String status) throws Throwable {
 		LOG.info("Verify the Legal Entity was Nominated Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+	}
+	
+	@When("^the user revokes the legal entity with the reason \"([^\"]*)\"$")
+	public void the_user_revokes_the_legal_entity_with_the_reason(String reason) throws Throwable {
+		LOG.info("Revoke the Legal Entity as the Help Desk User.");
+		
+		parPartnershipConfirmationPage.selectRevokeLegalEntitiesLink();
+		
+		revokePage.enterReasonForRevocation(reason);
+		revokePage.goToPartnershipDetailsPage();
+	}
+
+	@Then("^the user verifies the legal entity was revoked successfully with status \"([^\"]*)\"$")
+	public void the_user_verifies_the_legal_entity_was_revoked_successfully_with_status(String status) throws Throwable {
+		LOG.info("Verify the Legal Entity was Revoked Successfully.");
 		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
 	}
 	
