@@ -9,6 +9,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityDashboardPage;
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationSearchPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementSearchPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiriesSearchPage;
+import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackSearchPage;
+import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterSubscriptionPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.AuthorityPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipAdvancedSearchPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipSearchPage;
