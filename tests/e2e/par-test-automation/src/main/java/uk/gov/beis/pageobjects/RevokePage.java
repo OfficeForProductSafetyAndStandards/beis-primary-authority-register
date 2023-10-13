@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects.LegalEntityPageObjects;
+package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
 
@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
 
 public class RevokePage extends BasePageObject {

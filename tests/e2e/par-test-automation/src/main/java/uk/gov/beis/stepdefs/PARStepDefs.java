@@ -39,7 +39,6 @@ import uk.gov.beis.pageobjects.LegalEntityPageObjects.AmendmentCompletedPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.ConfirmThisAmendmentPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityReviewPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
-import uk.gov.beis.pageobjects.LegalEntityPageObjects.RevokePage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.UpdateLegalEntityPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.AddOrganisationNamePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessAddressDetailsPage;
@@ -121,6 +120,7 @@ public class PARStepDefs {
 	
 	// Shared Pages
 	private RevokePage revokePage;
+	private ReinstatePage reinstatePage;
 	
 	// Next Section
 	private RevokeReasonInspectionPlanPage revokeReasonInspectionPlanPage;
@@ -275,6 +275,7 @@ public class PARStepDefs {
 		
 		// Shared Pages
 		revokePage = PageFactory.initElements(driver, RevokePage.class);
+		reinstatePage = PageFactory.initElements(driver, ReinstatePage.class);
 		
 		// Next Section
 		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
@@ -510,6 +511,7 @@ public class PARStepDefs {
 		case ("par_business@example.com"):
 			LOG.info("Selecting See your partnerships");
 			parDashboardPage.selectSeePartnerships();
+			partnershipSearchPage.searchPartnerships();
 			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
 			break;
 		default:
@@ -1873,6 +1875,21 @@ public class PARStepDefs {
 	@Then("^the user verifies the legal entity was revoked successfully with status \"([^\"]*)\"$")
 	public void the_user_verifies_the_legal_entity_was_revoked_successfully_with_status(String status) throws Throwable {
 		LOG.info("Verify the Legal Entity was Revoked Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+	}
+	
+	@When("^the user reinstates the legal entity$")
+	public void the_user_reinstates_the_legal_entity() throws Throwable {
+		LOG.info("Reinstate the Legal Entity as the Help Desk User.");
+		
+		parPartnershipConfirmationPage.selectReinstateLegalEntitiesLink();
+		
+		reinstatePage.goToPartnershipDetailsPage();
+	}
+
+	@Then("^the user verifies the legal entity was reinstated successfully with status \"([^\"]*)\"$")
+	public void the_user_verifies_the_legal_entity_was_reinstated_successfully_with_status(String status) throws Throwable {
+		LOG.info("Verify the Legal Entity was Reinstated Successfully.");
 		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
 	}
 	

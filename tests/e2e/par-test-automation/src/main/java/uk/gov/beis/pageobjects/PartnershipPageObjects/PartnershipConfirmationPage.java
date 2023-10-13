@@ -15,11 +15,12 @@ import uk.gov.beis.pageobjects.EditRegisteredAddressPage;
 import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.EnquiryContactDetailsPage;
+import uk.gov.beis.pageobjects.ReinstatePage;
+import uk.gov.beis.pageobjects.RevokePage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionContactDetailsPage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.ConfirmThisAmendmentPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
-import uk.gov.beis.pageobjects.LegalEntityPageObjects.RevokePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberListPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
@@ -231,7 +232,6 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		return PageFactory.initElements(driver, MemberListPage.class);
 	}
 	
-	// Legal Entity Amendment Page here
 	public LegalEntityTypePage selectAmendLegalEntitiesLink() {
 		amendLegalEntitiesLink.click();
 		
@@ -257,6 +257,15 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		revokeLink.click();
 		
 		return PageFactory.initElements(driver, RevokePage.class);
+	}
+	
+	public ReinstatePage selectReinstateLegalEntitiesLink() {
+		WebElement legalEntityName = driver.findElement(By.xpath(legalEntityNameLocator.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
+		
+		WebElement revokeLink = legalEntityName.findElement(By.xpath(legalEntityActionLinksLocator.replace("?", "Reinstate")));
+		revokeLink.click();
+		
+		return PageFactory.initElements(driver, ReinstatePage.class);
 	}
 	
 	public TradingPage editTradingName() {
