@@ -12,7 +12,7 @@ use Drupal\par_reporting\ParStatisticBase;
  *   id = "total_unique_coordinated_members",
  *   title = @Translation("Unique businesses in a coordinated partnerships."),
  *   description = @Translation("The total number of unique legal entities covered by a coordinated partnerships. Each legal entity will only be counted once."),
- *   status = TRUE,
+ *   status = FALSE,
  * )
  */
 class TotalUniqueCoordinatedMembers extends ParStatisticBase {

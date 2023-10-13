@@ -48,15 +48,7 @@ class TotalCoordinatedMembers extends ParStatisticBase {
         // If counting an internal member list count all the legal entities for each members as unique.
         case ParDataPartnership::MEMBER_DISPLAY_INTERNAL:
           foreach ($partnership->getCoordinatedMember() as $member) {
-            $legal_entities = $member->getLegalEntity();
-
-            // Count how many legal entities are covered under this direct partnership.
-            if ($legal_entities && count($legal_entities) >= 1) {
-              $count += count($legal_entities);
-            }
-            else {
-              $count += 1;
-            }
+            $count += $member->get('field_legal_entity')?->count() ?? 1;
           }
 
           break;

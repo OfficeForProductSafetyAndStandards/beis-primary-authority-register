@@ -157,7 +157,7 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
       $definition = $this->getDefinition($id);
       $plugin = $definition ? $this->createInstance($definition['id'], $definition) : NULL;
 
-      return $plugin->renderStat();
+      return $plugin instanceof ParStatisticInterface && $plugin->getStatus() ? $plugin->renderStat() : [];
     }
     catch (PluginException $e) {
       $this->getLogger(self::PAR_LOGGER_CHANNEL)->error($e);
@@ -173,9 +173,9 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
     $cid = "par_reporting:stat:$id";
     $cache = $this->getCacheBin()->get($cid);
     // Return cached statistics if found.
-    if ($cache) {
-      return $cache->data;
-    }
+//    if ($cache) {
+//      return $cache->data;
+//    }
 
     try {
       $definition = $this->getDefinition($id);
@@ -187,7 +187,7 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
     }
 
     // Get the statistic.
-    $stat = $plugin instanceof ParStatisticInterface ? (int) $plugin->getStat() : 0;
+    $stat = $plugin instanceof ParStatisticInterface && $plugin->getStatus() ? (int) $plugin->getStat() : 0;
 
     // Cache the statistic.
     $expiry = $this->getCurrentTime();
