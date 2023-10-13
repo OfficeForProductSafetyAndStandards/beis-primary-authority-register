@@ -17,6 +17,8 @@ import uk.gov.beis.pageobjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.EnquiryContactDetailsPage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionContactDetailsPage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.ConfirmThisAmendmentPage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberListPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
@@ -24,10 +26,6 @@ import uk.gov.beis.pageobjects.UserManagement.PersonContactDetailsPage;
 import uk.gov.beis.utility.DataStore;
 
 public class PartnershipConfirmationPage extends BasePageObject {
-
-	public PartnershipConfirmationPage() throws ClassNotFoundException, IOException {
-		super();
-	}
 
 	//private boolean twopartjourney = false;
 
@@ -49,7 +47,14 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	@FindBy(linkText = "show members list")
 	private WebElement showMembersListLink;
 	
-	// Legal Entity Amendment Link Here
+	@FindBy(linkText = "Amend the legal entities")
+	private WebElement amendLegalEntitiesLink;
+	
+	@FindBy(linkText = "Confirm the amendments")
+	private WebElement confirmLegalEntitiesLink;
+	
+	@FindBy(linkText = "Nominate the amendments")
+	private WebElement nominateLegalEntitiesLink;
 	
 	@FindBy(linkText = "edit trading name")
 	private WebElement editTradingNameLink;
@@ -96,17 +101,11 @@ public class PartnershipConfirmationPage extends BasePageObject {
 
 	@FindBy(id = "edit-done")
 	private WebElement saveButton;
-
-	public PartnershipSearchPage clickDone() {
-		doneBtn.click();
-		return PageFactory.initElements(driver, PartnershipSearchPage.class);
+	
+	public PartnershipConfirmationPage() throws ClassNotFoundException, IOException {
+		super();
 	}
-
-	public PartnershipAdvancedSearchPage clickSave() {
-		saveButton.click();
-		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
-	}
-
+	
 	String partnershipDetails = "//div/p[contains(text(),'?')]";
 	String partnershipRegFunc = "//ul/li[contains(text(),'?')]";
 	String aboutTheOrganisation = "//div/p[contains(text(),'?')]";
@@ -131,6 +130,9 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	String entName = "//div[contains(text(),'?')]";
 	String entType = "//div[contains(text(),'?')]";
 	String regNo = "//div[contains(text(),'?')]";
+	
+	String legalEntityNameLocator = "//tr/td/div/div/div[contains(text(), '?')]";
+	String legalEntityStatusLocator = "./../../../../td/span[contains(text(), '?')]";
 	
 	String tradename = "//div[contains(text(),'?')]";
 	String membersize = "//div[contains(text(),'?')]";
@@ -214,7 +216,7 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	
 	public PartnershipDescriptionPage editAboutTheOrganisation() {
 		editAboutOrganisationLink.click();
-		return PageFactory.initElements(driver, PartnershipDescriptionPage.class); //Test
+		return PageFactory.initElements(driver, PartnershipDescriptionPage.class);
 	}
 	
 	public SICCodePage editSICCode() {
@@ -228,6 +230,23 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	}
 	
 	// Legal Entity Amendment Page here
+	public LegalEntityTypePage selectAmendLegalEntitiesLink() {
+		amendLegalEntitiesLink.click();
+		
+		return PageFactory.initElements(driver, LegalEntityTypePage.class);
+	}
+	
+	public ConfirmThisAmendmentPage selectConfirmLegalEntitiesLink() {
+		confirmLegalEntitiesLink.click();
+		
+		return PageFactory.initElements(driver, ConfirmThisAmendmentPage.class);
+	}
+	
+	public ConfirmThisAmendmentPage selectNominateLegalEntitiesLink() {
+		nominateLegalEntitiesLink.click();
+		
+		return PageFactory.initElements(driver, ConfirmThisAmendmentPage.class);
+	}
 	
 	public TradingPage editTradingName() {
 		editTradingNameLink.click();
@@ -291,6 +310,12 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		return sicCd.isDisplayed();
 	}
 	
+	public boolean checkLegalEntity(String status) {
+		WebElement legalEntityName = driver.findElement(By.xpath(legalEntityNameLocator.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
+		WebElement legalEntityStatus = legalEntityName.findElement(By.xpath(legalEntityStatusLocator.replace("?", status)));
+		return legalEntityName.isDisplayed() && legalEntityStatus.isDisplayed();
+	}
+	
 	public boolean checkTradingName() {
 		tradingNameText = driver.findElement(By.xpath(tradename.replace("?", DataStore.getSavedValue(UsableValues.TRADING_NAME))));
 		return tradingNameText.isDisplayed();
@@ -352,8 +377,7 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	}
 
 	public boolean checkEntityName() {
-		WebElement entityNm = driver
-				.findElement(By.xpath(entName.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
+		WebElement entityNm = driver.findElement(By.xpath(entName.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
 		return (entityNm.isDisplayed());
 	}
 
@@ -380,6 +404,16 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		String result = previouslyKownAsLocator.replace("?", DataStore.getSavedValue(UsableValues.PREVIOUS_AUTHORITY_NAME)).replace("£", DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 		
 		return driver.findElement(By.xpath(result)).isDisplayed();
+	}
+	
+	public PartnershipSearchPage clickDone() {
+		doneBtn.click();
+		return PageFactory.initElements(driver, PartnershipSearchPage.class);
+	}
+
+	public PartnershipAdvancedSearchPage clickSave() {
+		saveButton.click();
+		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 	}
 	
 	private String getContactsName() {

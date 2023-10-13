@@ -28,4 +28,11 @@ public class LegalEntityReviewPage extends BasePageObject {
 		continueBtn.click();
 		return PageFactory.initElements(driver, InspectionPlanCoveragePage.class);
 	}
+	
+	public ConfirmThisAmendmentPage goToConfirmThisAmendmentPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, ConfirmThisAmendmentPage.class);
+	}
+	
+	
 }

@@ -1,12 +1,15 @@
 package uk.gov.beis.pageobjects.UserManagement;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 
 import cucumber.api.DataTable;
 import uk.gov.beis.enums.UsableValues;
@@ -43,13 +46,14 @@ public class PersonMembershipPage extends BasePageObject {
 	private WebElement lowerEastSideBoroughCouncilCheckbox;
 	
 	// Help Desk Membership Selection Page Elements
-	//@FindBy(xpath = "//*[@id=\"edit_par_data_organisation_id_chosen\"]/ul/li/input")
 	@FindBy(xpath = "//div[@id='edit_par_data_organisation_id_chosen']/ul/li/input")
 	private WebElement organisationChoiceInput;
 	
-	//@FindBy(xpath = "//*[@id=\"edit_par_data_authority_id_chosen\"]/ul/li/input")
 	@FindBy(xpath = "//div[@id='edit_par_data_authority_id_chosen']/ul/li/input")
 	private WebElement authorityChoiceInput;
+	
+	@FindBy(id = "edit-par-data-authority-id")
+	private WebElement authorityDropDown;		// Temp Web Element
 	
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
@@ -101,6 +105,29 @@ public class PersonMembershipPage extends BasePageObject {
 	
 	// Help Desk Membership Selection Page Methods
 	public void selectOrganisation(DataTable details) {
+		mainOrganisationSelectionMethod(details);
+		
+		//tempOrganisationSelectionMethod();
+	}
+	
+	public void selectAuthority(DataTable details) {
+		//mainAuthoritySelectionMethod(details);
+		
+		tempAuthoritySelectionMethod();
+	}
+	
+	public PersonUserRoleTypePage clickContinueButton() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, PersonUserRoleTypePage.class);
+	}
+	
+	public DashboardPage clickCancelButton() {
+		cancelBtn.click();
+		return PageFactory.initElements(driver, DashboardPage.class);
+	}
+	
+	// These methods are what the Web Elements should be doing which the Accessibility branch should have.
+	private void mainOrganisationSelectionMethod(DataTable details) {
 		organisationChoiceInput.click();
 		
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
@@ -114,7 +141,7 @@ public class PersonMembershipPage extends BasePageObject {
 		organisation.click();
 	}
 	
-	public void selectAuthority(DataTable details) {
+	private void mainAuthoritySelectionMethod(DataTable details) {
 		authorityChoiceInput.click();
 
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
@@ -128,13 +155,39 @@ public class PersonMembershipPage extends BasePageObject {
 		authority.click();
 	}
 	
-	public PersonUserRoleTypePage clickContinueButton() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, PersonUserRoleTypePage.class);
+	
+	// These are here due to the on going issue with Input fields and Select Drop-down menu Web Elements changing with each new build.
+	private void tempOrganisationSelectionMethod() {
+		organisationChoiceInput.click();
+		
+		WebElement randomOrganisation = chooseRandomOrganisation();
+		
+		String organisation = randomOrganisation.getText();
+		randomOrganisation.click();
+		
+		DataStore.saveValue(UsableValues.CHOSEN_ORGANISATION, organisation);
 	}
 	
-	public DashboardPage clickCancelButton() {
-		cancelBtn.click();
-		return PageFactory.initElements(driver, DashboardPage.class);
+	private void tempAuthoritySelectionMethod() {
+		Select selectObject = new Select(authorityDropDown);
+		
+		String randomAuthority = chooseRandomAuthority(selectObject).getText();
+		selectObject.selectByVisibleText(randomAuthority);
+		
+		DataStore.saveValue(UsableValues.CHOSEN_AUTHORITY, randomAuthority);
+	}
+	
+	private WebElement chooseRandomOrganisation() {
+		Random random = new Random();
+		List<WebElement> organisations = driver.findElements(By.cssSelector("div.chosen-drop ul.chosen-results li.active-result"));
+		
+		return organisations.get(random.nextInt(organisations.size()));
+	}
+	
+	private WebElement chooseRandomAuthority(Select selectList) {
+		Random random = new Random();
+		List<WebElement> authorities = selectList.getOptions();
+		
+		return authorities.get(random.nextInt(authorities.size()));
 	}
 }

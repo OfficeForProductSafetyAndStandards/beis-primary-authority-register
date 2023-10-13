@@ -35,6 +35,8 @@ import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPag
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.RemoveReasonInspectionPlanPage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.RevokeReasonInspectionPlanPage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.UploadInspectionPlanPage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.AmendmentCompletedPage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.ConfirmThisAmendmentPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityReviewPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.UpdateLegalEntityPage;
@@ -101,6 +103,8 @@ public class PARStepDefs {
 	
 	// Legal Entity
 	private UpdateLegalEntityPage updateLegalEntityPage;
+	private ConfirmThisAmendmentPage confirmThisAmendmentPage;
+	private AmendmentCompletedPage amendmentCompletedPage;
 	
 	// Partnership
 	private MembershipCeasedPage membershipCeasedPage;
@@ -250,6 +254,8 @@ public class PARStepDefs {
 		
 		// Legal Entity
 		updateLegalEntityPage = PageFactory.initElements(driver, UpdateLegalEntityPage.class);
+		confirmThisAmendmentPage = PageFactory.initElements(driver, ConfirmThisAmendmentPage.class);
+		amendmentCompletedPage = PageFactory.initElements(driver, AmendmentCompletedPage.class);
 		
 		// Partnership
 		membershipCeasedPage = PageFactory.initElements(driver, MembershipCeasedPage.class);
@@ -430,7 +436,7 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, data.get("firstname"));
 			DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, data.get("lastname"));
 			DataStore.saveValue(UsableValues.BUSINESS_PHONE, data.get("phone"));
-			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, RandomStringGenerator.getEmail(4));
+			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, "par_business@example.com");
 		}
 		
 		ScenarioContext.secondJourneyPart = false;
@@ -484,17 +490,21 @@ public class PARStepDefs {
 
 		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
 		case ("par_helpdesk@example.com"):
-			LOG.info("Selecting view partnerships");
+			LOG.info("Selecting Search partnerships");
 			parDashboardPage.selectSearchPartnerships();
 			partnershipAdvancedSearchPage.searchPartnerships();
 			break;
 
 		case ("par_enforcement_officer@example.com"):
-			LOG.info("Selecting search for partnership");
+			LOG.info("Selecting Search for partnerships");
 			parDashboardPage.selectSearchforPartnership();
 			partnershipSearchPage.searchPartnerships();
 			break;
-
+		case ("par_business@example.com"):
+			LOG.info("Selecting See your partnerships");
+			parDashboardPage.selectSeePartnerships();
+			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+			break;
 		default:
 			LOG.info("Search partnerships");
 			parDashboardPage.selectSeePartnerships();
@@ -1780,6 +1790,67 @@ public class PARStepDefs {
 		assertTrue(parPartnershipConfirmationPage.checkTradingName());
 		
 		parPartnershipConfirmationPage.clickSave();
+	}
+	
+	@When("^the user Amends the legal entities with the following details:$")
+	public void the_user_Amends_the_legal_entities_with_the_following_details(DataTable details) throws Throwable {
+		LOG.info("Creating the Legal Entity Amendment as the Authority User.");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Entity Type"));
+			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Entity Name"));
+		}
+		
+		parPartnershipConfirmationPage.selectAmendLegalEntitiesLink();
+		
+		legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		legalEntityTypePage.clickContinueButton();
+		legalEntityReviewPage.goToConfirmThisAmendmentPage();
+		
+		confirmThisAmendmentPage.confirmLegalEntityAmendments();
+		
+		amendmentCompletedPage.goToPartnershipDetailsPage();
+	}
+	
+	@Then("^the user verifies the amendments are created successfully with status \"([^\"]*)\"$")
+	public void the_user_verifies_the_amendments_are_created_successfully_with_status(String status) throws Throwable {
+		LOG.info("Verify the Legal Entity was Created Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+	}
+
+	@When("^the user confirms the legal entity amendments$")
+	public void the_user_confirms_the_legal_entity_amendments() throws Throwable {
+		LOG.info("Confirm the Legal Entity as the Business User.");
+		
+		parPartnershipConfirmationPage.selectConfirmLegalEntitiesLink();
+		confirmThisAmendmentPage.confirmLegalEntityAmendments();
+		amendmentCompletedPage.goToDashBoardPage();
+	}
+	
+	@Then("^the user verifies the amendments are confirmed successfully with status \"([^\"]*)\"$")
+	public void the_user_verifies_the_amendments_are_confirmed_successfully_with_status(String status) throws Throwable {
+		LOG.info("Search for the Partnership to Verify the Amendment.");
+		
+		parDashboardPage.selectSeePartnerships();
+		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		
+		LOG.info("Verify the Legal Entity was Confirmed Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+	}
+
+	@When("^the user nominates the legal entity amendments$")
+	public void the_user_nominates_the_legal_entity_amendments() throws Throwable {
+		LOG.info("Nominate the Legal Entity as the Help Desk User.");
+		
+		parPartnershipConfirmationPage.selectNominateLegalEntitiesLink();
+		confirmThisAmendmentPage.confirmLegalEntityAmendments();
+		amendmentCompletedPage.goToPartnershipDetailsPage();
+	}
+	
+	@Then("^the user verifies the amendments are nominated successfully with status \"([^\"]*)\"$")
+	public void the_user_verifies_the_amendments_are_nominated_successfully_with_status(String status) throws Throwable {
+		LOG.info("Verify the Legal Entity was Nominated Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
 	}
 	
 	@When("^the user adds a Primary Authority contact to be Invited with the following details:$")
