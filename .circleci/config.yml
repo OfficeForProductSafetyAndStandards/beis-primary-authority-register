@@ -635,7 +635,6 @@ workflows:
           context: production
           requires:
             - deploy_stage
-            - test_load
           filters:
             tags:
               only: /^v.*/

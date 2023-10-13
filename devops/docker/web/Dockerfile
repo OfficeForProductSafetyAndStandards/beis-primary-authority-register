@@ -235,7 +235,6 @@ RUN mkdir -p ${MAVEN_HOME} ${MAVEN_HOME}/ref \
 ## Using instalation from https://github.com/justb4/docker-jmeter/blob/master/Dockerfile
 ARG JMETER_VERSION="5.5"
 ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
-ENV JMETER_HOME /opt/apache-jmeter-${JMETER_VERSION}
 ENV	JMETER_BIN ${JMETER_HOME}/bin
 ENV	JMETER_DOWNLOAD_URL https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz
 RUN mkdir -p /tmp/dependencies \
