@@ -363,7 +363,7 @@ jobs:
             jmeter -n -t ./tests/nfr/jmeter/search_partnerships.jmx \
                 -Jurl=beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital \
                 -l ./tests/reports/jmeter/jmeter-log.jtl
-            /opt/apache-jmeter-5.4.3/bin/JMeterPluginsCMD.sh --generate-csv ./tests/reports/jmeter/aggregate-report.csv \
+            /opt/apache-jmeter-5.5/bin/JMeterPluginsCMD.sh --generate-csv ./tests/reports/jmeter/aggregate-report.csv \
                 --input-jtl ./tests/reports/jmeter/jmeter-log.jtl  \
                 --plugin-type AggregateReport
       - run:
@@ -433,7 +433,7 @@ jobs:
           command: |
             DEPLOY_ENV="production"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $GOVUK_CF_USER -p $GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $PROD_GOVUK_CF_USER -p $GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
 
   deploy_test:
     <<: *defaults
