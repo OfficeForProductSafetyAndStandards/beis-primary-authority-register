@@ -16,6 +16,7 @@ import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.DashboardPage;
 import uk.gov.beis.pageobjects.EnterTheDatePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
 import uk.gov.beis.utility.DataStore;
 
 public class PersonContactDetailsPage extends BasePageObject {
@@ -138,6 +139,45 @@ public class PersonContactDetailsPage extends BasePageObject {
 		DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, lastName);
 		
 		setContactDetails(person);
+	}
+	
+	public void selectPreferredEmail() {
+		if(!preferredEmailCheckbox.isSelected()) {
+			preferredEmailCheckbox.click();
+			
+			DataStore.saveValue(UsableValues.PREFERRED_CONTACT_METHOD, "Email");
+		}
+	}
+	
+	public void selectPreferredWorkphone() {
+		if(!preferredWorkphoneCheckbox.isSelected()) {
+			preferredWorkphoneCheckbox.click();
+			
+			DataStore.saveValue(UsableValues.PREFERRED_CONTACT_METHOD, "Workphone");
+		}
+	}
+	
+	public void selectPreferredMobilephone() {
+		if(!preferredMobilephoneCheckbox.isSelected()) {
+			preferredMobilephoneCheckbox.click();
+			
+			DataStore.saveValue(UsableValues.PREFERRED_CONTACT_METHOD, "Mobilephone");
+		}
+	}
+	
+	public void enterContactNote(String note) {
+		contactNotesTextfield.clear();
+		contactNotesTextfield.sendKeys(note);
+	}
+	
+	public BusinessInvitePage goToInviteUserAccountPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, BusinessInvitePage.class);
+	}
+	
+	public SICCodePage goToSICCodePage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, SICCodePage.class);
 	}
 	
 	public EnterTheDatePage clickContinueButtonForMemberContact() {

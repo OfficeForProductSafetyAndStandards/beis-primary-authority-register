@@ -12,12 +12,8 @@ import uk.gov.beis.pageobjects.BusinessConfirmationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
 
 public class SICCodePage extends BasePageObject {
-
-	public SICCodePage() throws ClassNotFoundException, IOException {
-		super();
-	}
-
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
+	
+	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 
 	@FindBy(id = "edit-save")
@@ -25,16 +21,15 @@ public class SICCodePage extends BasePageObject {
 	
 	private String sic = "//select/option[contains(text(),'?')]";
 
-	public BasePageObject selectSICCode(String code) {
+	public SICCodePage() throws ClassNotFoundException, IOException {
+		super();
+	}
+	
+	public EmployeesPage selectSICCode(String code) {
 		driver.findElement(By.xpath(sic.replace("?", code))).click();
 		
-		try {
-			driver.findElement(By.id("edit-next")).click();
-			return PageFactory.initElements(driver, EmployeesPage.class);
-		} catch (Exception e) {
-			driver.findElement(By.id("edit-save")).click();
-			return PageFactory.initElements(driver, BusinessConfirmationPage.class);
-		}
+		continueBtn.click();
+		return PageFactory.initElements(driver, EmployeesPage.class);
 	}
 	
 	public PartnershipConfirmationPage editSICCode(String code) {
@@ -42,5 +37,12 @@ public class SICCodePage extends BasePageObject {
 		
 		saveBtn.click();
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
+	
+	public BusinessConfirmationPage changeSICCode(String code) {
+		driver.findElement(By.xpath(sic.replace("?", code))).click();
+		
+		saveBtn.click();
+		return PageFactory.initElements(driver, BusinessConfirmationPage.class);
 	}
 }

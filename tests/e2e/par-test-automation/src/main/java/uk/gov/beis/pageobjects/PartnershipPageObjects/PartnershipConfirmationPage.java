@@ -10,7 +10,7 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.EditRegisteredAddressPage;
+import uk.gov.beis.pageobjects.AddAddressPage;
 import uk.gov.beis.pageobjects.ReinstatePage;
 import uk.gov.beis.pageobjects.RemovePage;
 import uk.gov.beis.pageobjects.RevokePage;
@@ -105,50 +105,36 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	@FindBy(id = "edit-done")
 	private WebElement saveButton;
 	
+	private String partnershipDetails = "//div/p[contains(text(),'?')]";
+	private String partnershipRegFunc = "//ul/li[contains(text(),'?')]";
+	private String aboutTheOrganisation = "//div/p[contains(text(),'?')]";
+	
+	private String businessAddress1 = "//div/p[contains(text(),'?')]";
+	private String businessAddress2 = "//div/p[contains(text(),'?')]";
+	private String businessTown1 = "//div/p[contains(text(),'?')]";
+	private String businessPCode = "//div/p[contains(text(),'?')]";
+	private String businessCountry = "//div/p[contains(text(),'?')]";
+	
+	private String sic = "//div[contains(text(),'?')]";
+	
+	private String legalEntityNameLocator = "//tr/td/div/div/div[contains(text(), '?')]";
+	private String legalEntityStatusLocator = "./../../../../td/span[contains(text(), '?')]";
+	private String legalEntityActionLinksLocator = "./../../../../td/div/p/a[contains(text(), '?')]";
+	
+	private String tradename = "//div[contains(text(),'?')]";
+	
+	private String contactFullName = "//div[contains(text(),'?')]";
+	private String contactWorkNumber = "//div[contains(text(),'?')]";
+	private String contactMobileNumber = "//div[contains(text(),'?')]";
+	private String contactEmailAddress = "//a[contains(text(),'?')]";
+	private String contactCommunicationNotes = "//p[contains(text(),'?')]";
+	private String editContactLink = "//a[contains(text(),'?')]";
+	private String removeContactLink = "//a[contains(text(),'?')]";
+	
 	public PartnershipConfirmationPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
-	String partnershipDetails = "//div/p[contains(text(),'?')]";
-	String partnershipRegFunc = "//ul/li[contains(text(),'?')]";
-	String aboutTheOrganisation = "//div/p[contains(text(),'?')]";
-	
-	String businessname = "//div[contains(text(),'?')]";
-	
-	String businessAddress1 = "//div/p[contains(text(),'?')]";
-	String businessAddress2 = "//div/p[contains(text(),'?')]";
-	String businessTown1 = "//div/p[contains(text(),'?')]";
-	String businessPCode = "//div/p[contains(text(),'?')]";
-	String businessCountry = "//div/p[contains(text(),'?')]";
-	
-	String businessFName = "//div[contains(text(),'?')]";
-	String businessLName = "//div[contains(text(),'?')]";
-	
-	String businessEmailid = "//a[contains(text(),'?')]";
-	String authorityName = "//div[contains(text(),'?')]";
-	
-	String sic = "//div[contains(text(),'?')]";
-	
-	String noEmplyees = "//div[contains(text(),'?')]";
-	String entName = "//div[contains(text(),'?')]";
-	String entType = "//div[contains(text(),'?')]";
-	String regNo = "//div[contains(text(),'?')]";
-	
-	String legalEntityNameLocator = "//tr/td/div/div/div[contains(text(), '?')]";
-	String legalEntityStatusLocator = "./../../../../td/span[contains(text(), '?')]";
-	String legalEntityActionLinksLocator = "./../../../../td/div/p/a[contains(text(), '?')]";
-	
-	String tradename = "//div[contains(text(),'?')]";
-	String membersize = "//div[contains(text(),'?')]";
-	
-	String contactFullName = "//div[contains(text(),'?')]";
-	String contactWorkNumber = "//div[contains(text(),'?')]";
-	String contactMobileNumber = "//div[contains(text(),'?')]";
-	String contactEmailAddress = "//a[contains(text(),'?')]";
-	String contactCommunicationNotes = "//p[contains(text(),'?')]";
-	String editContactLink = "//a[contains(text(),'?')]";
-	String removeContactLink = "//a[contains(text(),'?')]";
-
 	public EnforcementNotificationPage createEnforcement() {
 		craeteEnforcementBtn.click();
 		return PageFactory.initElements(driver, EnforcementNotificationPage.class);
@@ -213,9 +199,9 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		return PageFactory.initElements(driver, RegulatoryFunctionPage.class);
 	}
 	
-	public EditRegisteredAddressPage editOrganisationAddress() {
+	public AddAddressPage editOrganisationAddress() {
 		editOrganisationAddressLink.click();
-		return PageFactory.initElements(driver, EditRegisteredAddressPage.class);
+		return PageFactory.initElements(driver, AddAddressPage.class);
 	}
 	
 	public PartnershipDescriptionPage editAboutTheOrganisation() {
@@ -301,7 +287,7 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	}
 	
 	public PersonContactDetailsPage removeContactsDetailsButton() {
-		WebElement removeLink = driver.findElement(By.xpath(editContactLink.replace("?", "remove " + getContactsName().toLowerCase())));
+		WebElement removeLink = driver.findElement(By.xpath(removeContactLink.replace("?", "remove " + getContactsName().toLowerCase())));
 		removeLink.click();
 		
 		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
@@ -374,61 +360,6 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	public boolean checkContactExists() {
 		String fullContactName = DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " " + getContactsName();
 		return driver.findElements(By.xpath(contactFullName.replace("?", fullContactName))).isEmpty();
-	}
-	
-	// Coordinated Partnership Details
-	public boolean checkNoEmployees() {
-		WebElement nEmplyees = driver
-				.findElement(By.xpath(noEmplyees.replace("?", DataStore.getSavedValue(UsableValues.NO_EMPLOYEES))));
-		return nEmplyees.isDisplayed();
-	}
-
-	public boolean checkMemberSize() {
-		WebElement memsize = driver.findElement(
-				By.xpath(membersize.replace("?", DataStore.getSavedValue(UsableValues.MEMBERLIST_SIZE)).toLowerCase()));
-		return memsize.isDisplayed();
-	}
-
-	public boolean checkPartnershipApplication() {
-		WebElement businessNm = driver
-				.findElement(By.xpath(businessname.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME))));
-		WebElement addLine1 = driver.findElement(
-				By.xpath(businessAddress1.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1))));
-		WebElement businessTown = driver
-				.findElement(By.xpath(businessTown1.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_TOWN))));
-		WebElement businessPostcode = driver.findElement(
-				By.xpath(businessPCode.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE))));
-		WebElement businessFirstName = driver.findElement(
-				By.xpath(businessFName.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME))));
-		WebElement businessLastName = driver.findElement(
-				By.xpath(businessLName.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME))));
-		WebElement businessEmail = driver.findElement(
-				By.xpath(businessEmailid.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL))));
-
-		return (businessNm.isDisplayed() && addLine1.isDisplayed() && businessTown.isDisplayed()
-				&& businessPostcode.isDisplayed() && businessFirstName.isDisplayed() && businessLastName.isDisplayed()
-				&& businessEmail.isDisplayed());
-	}
-
-	public boolean checkEntityName() {
-		WebElement entityNm = driver.findElement(By.xpath(entName.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
-		return (entityNm.isDisplayed());
-	}
-
-	public boolean checkRegNo() {
-		WebElement regNo1 = driver
-				.findElement(By.xpath(regNo.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NUMBER))));
-		return (regNo1.isDisplayed());
-	}
-
-	public boolean checkPartnershipApplicationSecondPart() {
-		WebElement sicCd = driver
-				.findElement(By.xpath(sic.replace("?", DataStore.getSavedValue(UsableValues.SIC_CODE))));
-
-		WebElement tradeNm = driver
-				.findElement(By.xpath(tradename.replace("?", DataStore.getSavedValue(UsableValues.TRADING_NAME))));
-
-		return (checkPartnershipApplication() && sicCd.isDisplayed() && tradeNm.isDisplayed());
 	}
 	
 	public boolean checkPreviouslyKnownAsText() {

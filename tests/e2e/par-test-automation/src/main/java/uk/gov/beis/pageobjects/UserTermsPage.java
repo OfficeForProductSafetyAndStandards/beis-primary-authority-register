@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessContactDetailsPage;
+import uk.gov.beis.pageobjects.DuplicateClasses.BusinessContactDetailsPage;
 
 public class UserTermsPage extends BasePageObject {
 

@@ -36,6 +36,9 @@ import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationReviewPage;
 import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationSearchPage;
 import uk.gov.beis.pageobjects.DeviationRequestPageObjects.ReplyDeviationRequestPage;
 import uk.gov.beis.pageobjects.DeviationRequestPageObjects.RequestDeviationPage;
+import uk.gov.beis.pageobjects.DuplicateClasses.BusinessContactDetailsPage;
+import uk.gov.beis.pageobjects.DuplicateClasses.RestorePartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.DuplicateClasses.RevokePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementActionPage;
 import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementCompletionPage;
 import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementContactDetailsPage;
@@ -78,8 +81,6 @@ import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterManag
 import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterSubscriptionPage;
 import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterSubscriptionReviewPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.AddOrganisationNamePage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessAddressDetailsPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessContactDetailsPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessDetailsPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.ConfirmMemberUploadPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.DeclarationPage;
@@ -93,8 +94,8 @@ import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.UploadListOfMembersPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.AuthorityPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.BusinessInvitePage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.BusinessPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipAdvancedSearchPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipApprovalPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipCompletionPage;
@@ -106,8 +107,6 @@ import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipSearchPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipTermsPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipTypePage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.RegulatoryFunctionPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.RestorePartnershipConfirmationPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.RevokePartnershipConfirmationPage;
 import uk.gov.beis.pageobjects.TransferPartnerships.AuthorityTransferSelectionPage;
 import uk.gov.beis.pageobjects.TransferPartnerships.ConfirmThisTranferPage;
 import uk.gov.beis.pageobjects.TransferPartnerships.PartnershipMigrationSelectionPage;
@@ -137,6 +136,8 @@ public class PARStepDefs {
 	// User Management
 	private MergeContactRecordsPage mergeContactRecordsPage;
 	private MergeContactRecordsConfirmationPage mergeContactRecordsConfirmationPage;
+	private AddAddressPage addAddressPage;
+	private BusinessInvitePage parBusinessInvitePage;
 	
 	// Legal Entity
 	private UpdateLegalEntityPage updateLegalEntityPage;
@@ -148,6 +149,7 @@ public class PARStepDefs {
 	private UploadListOfMembersPage uploadListOfMembersPage;
 	private ConfirmMemberUploadPage confirmMemberUploadPage;
 	private MemberListUploadedPage memberListUploadedPage;
+	private CheckPartnershipInformationPage checkPartnershipInformationPage;
 	
 	// Partnerships Transfer
 	private AuthorityTransferSelectionPage authorityTransferSelectionPage;
@@ -227,9 +229,8 @@ public class PARStepDefs {
 	private DeclarationPage parDeclarationPage;
 	private BusinessContactDetailsPage parBusinessContactDetailsPage;
 	private PartnershipConfirmationPage parPartnershipConfirmationPage;
-	private BusinessInvitePage parBusinessInvitePage;
+
 	private PartnershipCompletionPage parPartnershipCompletionPage;
-	private BusinessAddressDetailsPage parBusinessAddressDetailsPage;
 	private TradingPage tradingPage;
 	private EnquiryCompletionPage enquiryCompletionPage;
 	private EnquiryContactDetailsPage enquiryContactDetailsPage;
@@ -239,7 +240,7 @@ public class PARStepDefs {
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
 	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
 	private ViewEnquiryPage viewEnquiryPage;
-	private EditRegisteredAddressPage editRegisteredAddressPage;
+	
 	private AdviceArchivePage adviceArchivePage;
 	private AdviceRemovalPage adviceRemovalPage;
 	private DeletePage deletePage;
@@ -292,6 +293,8 @@ public class PARStepDefs {
 		// User Management
 		mergeContactRecordsPage = PageFactory.initElements(driver, MergeContactRecordsPage.class);
 		mergeContactRecordsConfirmationPage = PageFactory.initElements(driver, MergeContactRecordsConfirmationPage.class);
+		addAddressPage = PageFactory.initElements(driver, AddAddressPage.class);
+		parBusinessInvitePage = PageFactory.initElements(driver, BusinessInvitePage.class);
 		
 		// Legal Entity
 		updateLegalEntityPage = PageFactory.initElements(driver, UpdateLegalEntityPage.class);
@@ -303,6 +306,7 @@ public class PARStepDefs {
 		uploadListOfMembersPage = PageFactory.initElements(driver, UploadListOfMembersPage.class);
 		confirmMemberUploadPage = PageFactory.initElements(driver, ConfirmMemberUploadPage.class);
 		memberListUploadedPage = PageFactory.initElements(driver, MemberListUploadedPage.class);
+		checkPartnershipInformationPage = PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 		
 		// Partnerships Transfer
 		authorityTransferSelectionPage = PageFactory.initElements(driver, AuthorityTransferSelectionPage.class);
@@ -393,13 +397,12 @@ public class PARStepDefs {
 		parBusinessPage = PageFactory.initElements(driver, BusinessPage.class);
 		parBusinessContactDetailsPage = PageFactory.initElements(driver, BusinessContactDetailsPage.class);
 		parPartnershipConfirmationPage = PageFactory.initElements(driver, PartnershipConfirmationPage.class);
-		parBusinessInvitePage = PageFactory.initElements(driver, BusinessInvitePage.class);
+
 		parPartnershipCompletionPage = PageFactory.initElements(driver, PartnershipCompletionPage.class);
-		parBusinessAddressDetailsPage = PageFactory.initElements(driver, BusinessAddressDetailsPage.class);
 		parPartnershipTermsPage = PageFactory.initElements(driver, PartnershipTermsPage.class);
 		partnershipSearchPage = PageFactory.initElements(driver, PartnershipSearchPage.class);
 		viewEnquiryPage = PageFactory.initElements(driver, ViewEnquiryPage.class);
-		editRegisteredAddressPage = PageFactory.initElements(driver, EditRegisteredAddressPage.class);
+		
 		legalEntityTypePage = PageFactory.initElements(driver, LegalEntityTypePage.class);
 		adviceArchivePage = PageFactory.initElements(driver, AdviceArchivePage.class);
 		adviceRemovalPage = PageFactory.initElements(driver, AdviceRemovalPage.class);
@@ -469,19 +472,23 @@ public class PARStepDefs {
 
 	@When("^the user creates a new \"([^\"]*)\" partnership application with the following details:$")
 	public void the_user_creates_a_new_partnership_application_with_the_following_details(String type, DataTable details) throws Throwable {
+		String authority = "";
+		
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
 			
-			DataStore.saveValue(UsableValues.AUTHORITY_NAME, data.get("Authority"));
+			authority = data.get("Authority");
 			DataStore.saveValue(UsableValues.PARTNERSHIP_TYPE, type);
 			DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, data.get("Partnership Info"));
 			DataStore.saveValue(UsableValues.BUSINESS_NAME, RandomStringGenerator.getBusinessName(4));
-			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("addressline1"));
-			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("town"));
-			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("postcode"));
-			DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, data.get("firstname"));
-			DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, data.get("lastname"));
-			DataStore.saveValue(UsableValues.BUSINESS_PHONE, data.get("phone"));
-			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, "par_business@example.com");
+			
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("AddressLine1"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE2, data.get("AddressLine2"));
+			
+			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("Town"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTY, data.get("County"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTRY, data.get("Country"));
+			DataStore.saveValue(UsableValues.BUSINESS_NATION, data.get("Nation"));
+			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("Postcode"));
 		}
 		
 		ScenarioContext.secondJourneyPart = false;
@@ -490,7 +497,7 @@ public class PARStepDefs {
 		parDashboardPage.selectApplyForNewPartnership();
 		
 		LOG.info("Choose authority");
-		parAuthorityPage.selectAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		parAuthorityPage.selectAuthority(authority);
 		
 		LOG.info("Select partnership type");
 		parPartnershipTypePage.selectPartnershipType(type);
@@ -499,18 +506,22 @@ public class PARStepDefs {
 		parPartnershipTermsPage.acceptTerms();
 		
 		LOG.info("Entering partnership description");
-		parPartnershipDescriptionPage.enterPartnershipDescription(DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO));
+		parPartnershipDescriptionPage.enterDescription(DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO));
+		parPartnershipDescriptionPage.gotToBusinessNamePage();
 		
 		LOG.info("Entering business/organisation name");
 		parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		parBusinessPage.goToAddressPage();
 		
 		LOG.info("Enter address details");
-		parBusinessAddressDetailsPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_TOWN),
-				DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		addAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY),
+				DataStore.getSavedValue(UsableValues.BUSINESS_NATION), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		addAddressPage.goToAddContactDetailsPage();
 		
 		LOG.info("Enter contact details");
-		parBusinessContactDetailsPage.enterContactDetails(DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME), DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME),
-				DataStore.getSavedValue(UsableValues.BUSINESS_PHONE), DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
+		personsContactDetailsPage.addContactDetails(details);
+		personsContactDetailsPage.goToInviteUserAccountPage();
 		
 		LOG.info("Send invitation to user");
 		parBusinessInvitePage.sendInvite();
@@ -518,15 +529,18 @@ public class PARStepDefs {
 
 	@Then("^the first part of the partnership application is successfully completed$")
 	public void the_first_part_of_the_partnership_application_is_successfully_completed() throws Throwable {
-		LOG.info("Confirm/check partnership details");
-		parPartnershipConfirmationPage.confirmDetailsAsAuthority();
+		LOG.info("Verifying Partnership Details on the Review Page.");
 		
-		Assert.assertTrue("Partnership info missing", parPartnershipConfirmationPage.checkPartnershipInfo());
-		Assert.assertTrue("Partnership appliction information not correct", parPartnershipConfirmationPage.checkPartnershipApplication());
+		Assert.assertTrue("About the Partnership is not Displayed.", checkPartnershipInformationPage.verifyAboutThePartnership());
+		Assert.assertTrue("Organisation Name is not Displayed.", checkPartnershipInformationPage.verifyOrganisationName());
+		Assert.assertTrue("Organisation Address is not Displayed.", checkPartnershipInformationPage.verifyOrganisationAddress());
+		Assert.assertTrue("Organisation Contact is not Displayed.", checkPartnershipInformationPage.verifyContactAtTheOrganisation());
+		Assert.assertTrue("Primary Authority name is not Displayed.", checkPartnershipInformationPage.verifyPrimaryAuthorityName());
 		
-		LOG.info("Saving changes");
-		parPartnershipConfirmationPage.saveChanges();
-		parPartnershipCompletionPage.completeApplication();
+		LOG.info("Saving Application.");
+		checkPartnershipInformationPage.completeApplication();
+		
+		parPartnershipCompletionPage.clickDoneButton();
 	}
 
 	@When("^the user searches for the last created partnership$")
@@ -572,10 +586,10 @@ public class PARStepDefs {
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
 			
 			DataStore.saveValue(UsableValues.BUSINESS_DESC, data.get("Business Description"));
+			DataStore.saveValue(UsableValues.CONTACT_NOTES, data.get("ContactNotes"));
 			DataStore.saveValue(UsableValues.SIC_CODE, data.get("SIC Code"));
 			
 			switch (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase()) {
-
 			case ("direct"):
 				DataStore.saveValue(UsableValues.NO_EMPLOYEES, data.get("No of Employees"));
 				break;
@@ -585,23 +599,29 @@ public class PARStepDefs {
 				break;
 			}
 			
-			DataStore.saveValue(UsableValues.TRADING_NAME, DataStore.getSavedValue(UsableValues.BUSINESS_NAME).replace("Business", "trading name"));
+			DataStore.saveValue(UsableValues.TRADING_NAME, data.get("Trading Name"));
 			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Legal Entity Name"));
 			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal entity Type"));
 			DataStore.saveValue(UsableValues.ENTITY_NUMBER, data.get("Company number"));
 		}
 		
 		LOG.info("Accepting terms");
-		parDeclarationPage.acceptTerms();
+		parDeclarationPage.selectConfirmCheckbox();
+		parDeclarationPage.goToBusinessDetailsPage();
 		
 		LOG.info("Add business description");
-		parBusinessDetailsPage.enterBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
+		parBusinessDetailsPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
+		parBusinessDetailsPage.clickContinueButton();
 		
 		LOG.info("Confirming address details");
-		parBusinessAddressDetailsPage.proceed();
+		addAddressPage.goToAddContactDetailsPage();
 		
 		LOG.info("Confirming contact details");
-		parBusinessContactDetailsPage.proceed();
+		personsContactDetailsPage.selectPreferredEmail();
+		personsContactDetailsPage.selectPreferredWorkphone();
+		personsContactDetailsPage.selectPreferredMobilephone();
+		personsContactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
+		personsContactDetailsPage.goToSICCodePage();
 		
 		LOG.info("Selecting SIC Code");
 		sicCodePage.selectSICCode(DataStore.getSavedValue(UsableValues.SIC_CODE));
@@ -621,9 +641,12 @@ public class PARStepDefs {
 
 		LOG.info("Entering business trading name");
 		tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+		tradingPage.goToLegalEntityPage();
 		
-		legalEntityTypePage.selectEntityType(DataStore.getSavedValue(UsableValues.ENTITY_NAME),DataStore.getSavedValue(UsableValues.ENTITY_TYPE),DataStore.getSavedValue(UsableValues.ENTITY_NUMBER));
-		legalEntityReviewPage.proceed();
+		legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		legalEntityTypePage.clickContinueButton();
+		
+		legalEntityReviewPage.goToCheckPartnershipInformationPage();
 		
 		LOG.info("Set second part of journey part to true");
 		ScenarioContext.secondJourneyPart = true;
@@ -632,32 +655,30 @@ public class PARStepDefs {
 	@Then("^the second part of the partnership application is successfully completed$")
 	public void the_second_part_of_the_partnership_application_is_successfully_completed() throws Throwable {
 		LOG.info("Check and confirm changes");
-
-		switch (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase()) {
-
-		case ("direct"):
-			LOG.info("Check employee size");
-			parPartnershipConfirmationPage.checkNoEmployees();
-			break;
-
-		case ("co-ordinated"):
-			LOG.info("Check membership size");
-			parPartnershipConfirmationPage.checkMemberSize();
-			break;
-		}
-
-		Assert.assertTrue("Appliction not complete", parPartnershipConfirmationPage.checkPartnershipApplicationSecondPart());
 		
-		if (ScenarioContext.registered == true) {
-			parPartnershipConfirmationPage.checkRegNo();
+		Assert.assertTrue("About the Organisation is not Displayed.", checkPartnershipInformationPage.verifyAboutTheOrganisation());
+		Assert.assertTrue("Organisation Name is not Displayed.", checkPartnershipInformationPage.verifyOrganisationName());
+		Assert.assertTrue("Organisation Address is not Displayed.", checkPartnershipInformationPage.verifyOrganisationAddress());
+		Assert.assertTrue("Organisation Contact is not Displayed.", checkPartnershipInformationPage.verifyContactAtTheOrganisation());
+		
+		Assert.assertTrue("Primary SIC Code is not Displayed.", checkPartnershipInformationPage.verifyPrimarySICCode());
+		
+		switch (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase()) {
+			case ("direct"):
+				LOG.info("Checking Employee Size.");
+				Assert.assertTrue("Number of Employees is not Displayed.", checkPartnershipInformationPage.verifyNumberOfEmployees());
+				break;
+			case ("co-ordinated"):
+				LOG.info("Checking Members Size.");
+				Assert.assertTrue("Members Size is not Displayed.", checkPartnershipInformationPage.verifyMemberSize());
+				break;
 		}
-		if (ScenarioContext.registered == false) {
-			parPartnershipConfirmationPage.checkEntityName();
-		}
-
-		parPartnershipConfirmationPage.confirmDetails();
-		parPartnershipConfirmationPage.saveChanges();
-		parPartnershipCompletionPage.completeApplication();
+		
+		Assert.assertTrue("Legal Entity is not Displayed.", checkPartnershipInformationPage.verifyLegalEntity());
+		Assert.assertTrue("Trading Name is not Displayed.", checkPartnershipInformationPage.verifyTradingName());
+		
+		checkPartnershipInformationPage.confirmApplication();
+		parPartnershipCompletionPage.clickDoneButton();
 	}
 
 	@When("^the user visits the maillog page and extracts the invite link$")
@@ -694,9 +715,14 @@ public class PARStepDefs {
 	public void the_user_approves_the_partnership() throws Throwable {
 		LOG.info("Approving last created partnership");
 		partnershipAdvancedSearchPage.selectApproveBusinessNameLink();
-		parDeclarationPage.setAdvancedSearch(true);
-		parDeclarationPage.acceptTerms();
-		regulatoryFunctionPage.proceed();
+		//parDeclarationPage.setAdvancedSearch(true);
+		
+		parDeclarationPage.selectAuthorisedCheckbox();
+		parDeclarationPage.goToRegulatoryFunctionsPage();
+		
+		regulatoryFunctionPage.selectNormalOrSequencedFunctions();
+		regulatoryFunctionPage.goToPartnershipApprovedPage();
+		
 		partnershipApprovalPage.completeApplication();
 	}
 
@@ -705,29 +731,33 @@ public class PARStepDefs {
 		LOG.info("Searching for last created partnership");
 		partnershipAdvancedSearchPage.searchPartnerships();
 	}
-
-	@Then("^the partnership is displayed with Status \"([^\"]*)\" and Actions \"([^\"]*)\"$")
-	public void the_partnership_is_displayed_with_Status_and_Actions(String status, String action) throws Throwable {
-		LOG.info("Check status of partnership is: " + status + " and action is: " + action);
-		partnershipAdvancedSearchPage.checkPartnershipDetails(status, action);
-	}
-
+	
 	@When("^the user revokes the partnership$")
 	public void the_user_revokes_the_partnership() throws Throwable {
 		LOG.info("Revoking last created partnership");
 		partnershipAdvancedSearchPage.selectRevokeBusinessNameLink();
-		revokePartnershipConfirmationPage.enterRevokeReason("Revoking...");
-		partnershipRevokedPage.completeApplication();
+		
+		revokePage.enterReasonForRevocation("Test Revoke.");
+		revokePage.goToPartnershipRevokedPage();
+		
+		partnershipRevokedPage.goToAdvancedPartnershipSearchPage();
 	}
 
 	@When("^the user restores the partnership$")
 	public void the_user_restores_the_partnership() throws Throwable {
 		LOG.info("Restoring last revoked partnership");
 		partnershipAdvancedSearchPage.selectRestoreBusinessNameLink();
-		restorePartnershipConfirmationPage.proceed();
-		partnershipRestoredPage.completeApplication();
+		
+		reinstatePage.goToPartnershipRestoredPage();
+		partnershipRestoredPage.goToAdvancedPartnershipSearchPage();
 	}
 
+	@Then("^the partnership is displayed with Status \"([^\"]*)\" and Actions \"([^\"]*)\"$")
+	public void the_partnership_is_displayed_with_Status_and_Actions(String status, String action) throws Throwable {
+		LOG.info("Check status of partnership is: " + status + " and action is: " + action);
+		partnershipAdvancedSearchPage.checkPartnershipDetails(status, action);
+	}
+	
 	@When("^the user updates the partnership information with the following info: \"([^\"]*)\"$")
 	public void the_user_updates_the_partnership_information_with_the_following_info(String desc) throws Throwable {
 		parPartnershipConfirmationPage.editAboutPartnership();
@@ -866,21 +896,25 @@ public class PARStepDefs {
 	@Given("^the user updates all the fields for last created organisation$")
 	public void the_user_updates_all_the_fields_for_last_created_organisation() throws Throwable {
 		LOG.info("Update all fields");
-		businessConfirmationPage.editOrganisationName();
 		
 		DataStore.saveValue(UsableValues.BUSINESS_NAME, DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + " Updated");
-		parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
-		businessConfirmationPage.editOrganisationDesc();
-		
 		DataStore.saveValue(UsableValues.BUSINESS_DESC, DataStore.getSavedValue(UsableValues.BUSINESS_DESC) + " Updated");
-		parBusinessDetailsPage.enterBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
-		businessConfirmationPage.editTradingName();
-		
 		DataStore.saveValue(UsableValues.TRADING_NAME, DataStore.getSavedValue(UsableValues.TRADING_NAME) + " Updated");
+		
+		businessConfirmationPage.editOrganisationName();
+		parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		parBusinessPage.goToBusinessConfirmationPage();
+		
+		businessConfirmationPage.editOrganisationDesc();
+		parBusinessDetailsPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
+		parBusinessDetailsPage.goToBusinessReviewPage();
+		
+		businessConfirmationPage.editTradingName();
 		tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+		tradingPage.goToBusinessReviewPage();
 		
 		businessConfirmationPage.editSICCode();
-		sicCodePage.selectSICCode("allow people to eat");
+		sicCodePage.changeSICCode("allow people to eat");
 	}
 
 	@When("^the user searches for the last created organisation$")
@@ -1803,20 +1837,16 @@ public class PARStepDefs {
 		}
 		
 		parPartnershipConfirmationPage.editOrganisationAddress();
-		editRegisteredAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1),
-				DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
-				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN),
-				DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY),
-				DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY),
-				DataStore.getSavedValue(UsableValues.BUSINESS_NATION),
-				DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
-		editRegisteredAddressPage.clickSaveButton();
+		addAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY), 
+				DataStore.getSavedValue(UsableValues.BUSINESS_NATION), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		addAddressPage.clickSaveButton();
 		
 		LOG.info("Selected Country: " + DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY));
 		LOG.info("Selected Nation: " + DataStore.getSavedValue(UsableValues.BUSINESS_NATION));
 		
 		parPartnershipConfirmationPage.editAboutTheOrganisation();
-		parPartnershipDescriptionPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
+		parPartnershipDescriptionPage.updateBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
 		parPartnershipDescriptionPage.clickSave();
 		
 		parPartnershipConfirmationPage.editSICCode();
@@ -2293,10 +2323,10 @@ public class PARStepDefs {
 		LOG.info("Updating the Member Organisation's Address.");
 		memberOrganisationSummaryPage.selectEditAddress();
 		
-		editRegisteredAddressPage.editAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
+		addAddressPage.editAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
 				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
 		
-		editRegisteredAddressPage.goToMemberOrganisationSummaryPage();
+		addAddressPage.goToMemberOrganisationSummaryPage();
 		
 		LOG.info("Updating the Member Organisation's Membership Start Date.");
 		memberOrganisationSummaryPage.selectEditMembershipStartDate();

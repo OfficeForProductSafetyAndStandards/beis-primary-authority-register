@@ -11,15 +11,15 @@ import uk.gov.beis.pageobjects.DashboardPage;
 
 public class PartnershipCompletionPage extends BasePageObject {
 
+	@FindBy(xpath = "//a[contains(@class,'button')]")
+	private WebElement doneBtn;
+	
 	public PartnershipCompletionPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//a[contains(@class,'button')]")
-	WebElement doneBtn;
-
-	public DashboardPage completeApplication() {
-			doneBtn.click();
+	
+	public DashboardPage clickDoneButton() {
+		doneBtn.click();
 		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 }

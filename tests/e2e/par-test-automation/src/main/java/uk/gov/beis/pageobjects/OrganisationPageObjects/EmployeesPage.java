@@ -10,18 +10,19 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.pageobjects.BasePageObject;
 
 public class EmployeesPage extends BasePageObject {
+	
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
 
+	String noEmployees = "//select/option[contains(text(),'?')]";
+	
 	public EmployeesPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
-
-	String noEmployees = "//select/option[contains(text(),'?')]";
-
-	public TradingPage selectNoEmployees(String code) {
-		driver.findElement(By.xpath(noEmployees.replace("?", code))).click();
+	
+	public TradingPage selectNoEmployees(String number) {
+		driver.findElement(By.xpath(noEmployees.replace("?", number))).click();
+		
 		continueBtn.click();
 		return PageFactory.initElements(driver, TradingPage.class);
 	}

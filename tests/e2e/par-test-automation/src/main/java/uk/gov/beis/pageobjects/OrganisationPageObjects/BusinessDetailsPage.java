@@ -2,40 +2,41 @@ package uk.gov.beis.pageobjects.OrganisationPageObjects;
 
 import java.io.IOException;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import uk.gov.beis.pageobjects.AddAddressPage;
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.BusinessConfirmationPage;
 
 public class BusinessDetailsPage extends BasePageObject {
-
+	
+	@FindBy(id = "edit-about-business")
+	private WebElement descriptionBox;
+	
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
+	
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
+	
 	public BusinessDetailsPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
-	WebElement descriptionBox;
-
-	public BasePageObject enterBusinessDescription(String desc) throws Throwable {
+	
+	public void enterDescription(String description) {
 		descriptionBox.clear();
-		descriptionBox.sendKeys(desc);
-		try {
-			driver.findElement(By.id("edit-next")).click();
-			return PageFactory.initElements(driver, BusinessAddressDetailsPage.class);
-		} catch (Exception e) {
-			driver.findElement(By.id("edit-save")).click();
-			return PageFactory.initElements(driver, BusinessConfirmationPage.class);
-		}
+		descriptionBox.sendKeys(description);
 	}
-
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
-
-	public BusinessDetailsPage proceed() {
+	
+	public AddAddressPage clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, BusinessDetailsPage.class);
+		return PageFactory.initElements(driver, AddAddressPage.class);
+	}
+	
+	public BusinessConfirmationPage goToBusinessReviewPage() {
+		saveBtn.click();
+		return PageFactory.initElements(driver, BusinessConfirmationPage.class);
 	}
 }

@@ -7,16 +7,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
-import uk.gov.beis.utility.DataStore;
+import uk.gov.beis.pageobjects.UserManagement.PersonContactDetailsPage;
 
-public class EditRegisteredAddressPage extends BasePageObject {
-	public EditRegisteredAddressPage() throws ClassNotFoundException, IOException {
-		super();
-	}
-
+public class AddAddressPage extends BasePageObject {
+	
 	@FindBy(id = "edit-address-line1")
 	private WebElement addressLine1TextBox;
 	
@@ -28,7 +24,7 @@ public class EditRegisteredAddressPage extends BasePageObject {
 	
 	@FindBy(id = "edit-county")
 	private WebElement countyTextBox;
-
+	
 	@FindBy(id = "edit-country-code")
 	private WebElement countrySelectBox;
 	
@@ -38,9 +34,16 @@ public class EditRegisteredAddressPage extends BasePageObject {
 	@FindBy(id = "edit-postcode")
 	private WebElement postcodeTextBox;
 
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
+	
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
-
+	
+	public AddAddressPage() throws ClassNotFoundException, IOException {
+		super();
+	}
+	
 	public void enterAddressDetails(String address1, String address2, String townCity, String county, String country, String nation, String postcode) {
 		addressLine1TextBox.clear();
 		addressLine1TextBox.sendKeys(address1);
@@ -55,17 +58,11 @@ public class EditRegisteredAddressPage extends BasePageObject {
 		countyTextBox.sendKeys(county);
 		
 		Select countrySelect = new Select(countrySelectBox);
-		countrySelect.selectByValue(country);
-		
-		WebElement countryValue = countrySelect.getFirstSelectedOption();
-		DataStore.saveValue(UsableValues.BUSINESS_COUNTRY, countryValue.getText());
+		countrySelect.selectByVisibleText(country);
 		
 		if(nationSelectBox != null && nationSelectBox.isDisplayed()) {
 			Select nationSelect = new Select(nationSelectBox);
-			nationSelect.selectByValue(nation);
-			
-			WebElement nationValue = nationSelect.getFirstSelectedOption();
-			DataStore.saveValue(UsableValues.BUSINESS_NATION, nationValue.getText());
+			nationSelect.selectByVisibleText(nation);
 		}
 		
 		postcodeTextBox.clear();
@@ -87,6 +84,18 @@ public class EditRegisteredAddressPage extends BasePageObject {
 		
 		postcodeTextBox.clear();
 		postcodeTextBox.sendKeys(postcode);
+	}
+	
+	public PersonContactDetailsPage goToAddContactDetailsPage() {
+		continueBtn.click();
+		
+		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
+	}
+	
+	public PartnershipConfirmationPage clickContinueButton() {
+		continueBtn.click();
+		
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 	
 	public PartnershipConfirmationPage clickSaveButton() {

@@ -3,21 +3,21 @@ Feature: General
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
 
-  @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @legalEntities
+  @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @legalEntities @testUpdates
   Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
     Given the user is on the PAR home page
     And the user visits the login page
-    And the user logs in with the "par_authority@example.com" user credentials
+    When the user logs in with the "par_authority@example.com" user credentials
     Then the user is on the dashboard page
     When the user creates a new "Direct" partnership application with the following details:
-      | Authority | Partnership Info      | firstname  | lastname  | phone   | addressline1  | town    | postcode |
-      | Lower     | Test partnership info | Test First | test last | 9797878 | 32 Bramtom Rd | Windsor | SL4 5PN  |
+      | Authority | Partnership Info | AddressLine1  | AddressLine2 | Town    | County     | Country        | Nation  | Postcode | Title | Firstname | Lastname | WorkNumber   | MobileNumber | Email                    |
+      | Lower     | Direct           | 32 Bramtom Rd | New Build    | Windsor | Lancashire | United Kingdom | England | SL4 5PN  | Dr    | David     | Smith    | 020569987021 | 074567899221 | par_business@example.com |
     Then the first part of the partnership application is successfully completed
     #second part of partnership application
     When the user searches for the last created partnership
     And the user completes the partnership application with the following details:
-      | SIC Code            | No of Employees | Legal Entity Name | Legal entity Type | Company number | Business Description |
-      | allow people to eat | 10 to 49        | LE1               | unregistered      |       12345678 | Test Business        |
+      | Business Description | ContactNotes | SIC Code            | No of Employees | Trading Name | Legal Entity Name | Legal entity Type | Company number |
+      | Test Business        | Test Note.   | allow people to eat | 10 to 49        | Testing LTD  | Testing LTD       | Partnership       |       12345678 |
     Then the second part of the partnership application is successfully completed
     #verify update of newly created partnership
     Given the user is on the PAR login page
@@ -41,7 +41,7 @@ Feature: General
     And the user searches again for the last created partnership
     Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
 
-  @regression @direct @partnershipapplication @update
+  @regression @direct @update
   Scenario: Update all Partnership details successfully (Happy Path - PAR-2214)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -53,8 +53,8 @@ Feature: General
     # Change Partnership details page to updated the rest of the Partnership
     When the user searches for the last created partnership Organisation
     And the user updates the Partnerships details with the following:
-      | Address1    | Address2 | Town | County             | Country | Nation Value | Post Code | About the Organisation | SIC Code          | Trading Name |
-      | 01 new road | Market   | Bury | Greater Manchester | GB      | GB-SCT       | BL2 4BD   | Updated Info           | you sell cookies. | Name Update  |
+      | Address1    | Address2 | Town | County             | Country        | Nation Value | Post Code | About the Organisation | SIC Code          | Trading Name |
+      | 01 new road | Market   | Bury | Greater Manchester | United Kingdom | Scotland     | BL2 4BD   | Updated Info           | you sell cookies. | Name Update  |
     Then all of the Partnership details have been updated successfully
 
   @regression @direct @update @legalEntities
@@ -78,8 +78,8 @@ Feature: General
     When the user searches for the last created partnership Authority
     And the user nominates the legal entity amendments
     Then the user verifies the amendments are nominated successfully with status "Active"
-	
-	@regression @direct @update @legalEntities
+
+  @regression @direct @update @legalEntities
   Scenario: Verify the Revocation and reinstatement of a Legal Entity for an Active Partnership (Happy Path - PAR-2312, PAR-2313)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -89,15 +89,15 @@ Feature: General
     # Reinstate the Legal Entity
     When the user reinstates the legal entity
     Then the user verifies the legal entity was reinstated successfully with status "Active"
-    
-	@regression @direct @update @legalEntities
+
+  @regression @direct @update @legalEntities
   Scenario: Verify the Removal of a Legal Entity from an Active Partnership (Happy Path - PAR-2314)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created partnership Authority
     And the user removes the legal entity
     Then the user verifies the legal entity was removed successfully
-    
+
   @regression @direct @update
   Scenario: Add, Update and Remove a Primary Authority Contact for a Partnership with a User Account Invite Successfully (Happy Path - PAR-2242)
     Given the user is on the PAR login page
@@ -381,14 +381,14 @@ Feature: General
     And the user logs in with the "par_authority@example.com" user credentials
     Then the user is on the dashboard page
     When the user creates a new "Direct" partnership application with the following details:
-      | Authority | Partnership Info      | firstname  | lastname  | phone   | addressline1  | town    | postcode |
-      | Lower     | Test partnership info | Test First | test last | 9797878 | 32 Bramtom Rd | Windsor | SL4 5PN  |
+      | Authority | Partnership Info | AddressLine1  | AddressLine2 | Town | County     | Country        | Nation  | Postcode | Title | Firstname | Lastname | WorkNumber   | MobileNumber | Email                    |
+      | Lower     | For Deletion     | 04 New Street | New Build    | Bury | Lancashire | United Kingdom | England | BL4 0BG  | Dr    | Steph     | Smith    | 017043356901 |  07704502913 | par_business@example.com |
     Then the first part of the partnership application is successfully completed
     #second part of partnership application
     When the user searches for the last created partnership
     And the user completes the partnership application with the following details:
-      | SIC Code            | No of Employees | Legal Entity Name | Legal entity Type | Company number | Business Description |
-      | allow people to eat | 10 to 49        | LE1               | unregistered      |       12345678 | Test Business        |
+      | Business Description | ContactNotes | SIC Code            | No of Employees | Trading Name | Legal Entity Name | Legal entity Type | Company number |
+      | Test Business        | Test Note.   | allow people to eat | 10 to 49        | Testing Co.  | Testing Co.       | Partnership       |       12345678 |
     Then the second part of the partnership application is successfully completed
     # Nominate the Partnership
     Given the user is on the PAR login page
@@ -408,20 +408,20 @@ Feature: General
     And the user logs in with the "par_authority@example.com" user credentials
     Then the user is on the dashboard page
     When the user creates a new "Co-ordinated" partnership application with the following details:
-      | Authority | Partnership Info      | firstname  | lastname  | phone   | addressline1  | town    | postcode |
-      | Upper     | Test partnership info | Test First | test last | 9797878 | 32 Bramtom Rd | Windsor | SL4 5PN  |
+      | Authority | Partnership Info | AddressLine1  | AddressLine2 | Town    | County     | Country        | Nation  | Postcode | Title | Firstname | Lastname | WorkNumber   | MobileNumber | Email                    |
+      | Upper     | Coordinated      | 32 Bramtom Rd | New Build    | Windsor | Lancashire | United Kingdom | England | SL4 5PN  | Dr    | David     | Smith    | 020569987021 | 074567899221 | par_business@example.com |
     Then the first part of the partnership application is successfully completed
     #second part of partnership application
     When the user searches for the last created partnership
     And the user completes the partnership application with the following details:
-      | SIC Code            | Member List Size | Business Description | Legal Entity Name | Legal entity Type | Company number |
-      | allow people to eat | Medium           | Test Business        | LE1               | unregistered      |       12345678 |
+      | Business Description | ContactNotes | SIC Code            | Member List Size | Trading Name | Legal Entity Name | Legal entity Type | Company number |
+      | Testing Business     | Test Note.   | allow people to eat | Medium           | Test HQ      | Test HQ           | Partnership       |       12345678 |
     Then the second part of the partnership application is successfully completed
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created partnership
 
-  @regression @partnershipapplication @coordinated @organisationMember @authorityManagement
+  @regression @coordinated @organisationMember @authorityManagement
   Scenario: Successfully Nominate a Coordinated Partnership (Happy Path - PAR-2261)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials

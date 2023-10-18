@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects.PartnershipPageObjects;
+package uk.gov.beis.pageobjects.UserManagement;
 
 import java.io.IOException;
 
@@ -7,16 +7,17 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
 
 public class BusinessInvitePage extends BasePageObject {
-
+	
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
+	
 	public BusinessInvitePage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
-
+	
 	public PartnershipConfirmationPage sendInvite() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);

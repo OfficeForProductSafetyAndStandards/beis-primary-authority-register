@@ -2,7 +2,6 @@ package uk.gov.beis.pageobjects.OrganisationPageObjects;
 
 import java.io.IOException;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -28,22 +27,14 @@ public class TradingPage extends BasePageObject {
 		super();
 	}
 	
-	public void editMemberTradingName(String name) {
+	public void enterTradingName(String name) {
 		tradingName.clear();
 		tradingName.sendKeys(name);
 	}
 	
-	public BasePageObject enterTradingName(String name) {
+	public void editMemberTradingName(String name) {
 		tradingName.clear();
 		tradingName.sendKeys(name);
-		
-		try {
-			driver.findElement(By.id("edit-next")).click();
-			return PageFactory.initElements(driver, LegalEntityPage.class);
-		} catch (Exception e) {
-			driver.findElement(By.id("edit-save")).click();
-			return PageFactory.initElements(driver, BusinessConfirmationPage.class);
-		}
 	}
 	
 	public PartnershipConfirmationPage editTradingName(String name) {
@@ -52,6 +43,17 @@ public class TradingPage extends BasePageObject {
 		
 		saveBtn.click();
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
+	
+	public BusinessConfirmationPage goToBusinessReviewPage() {
+		
+		saveBtn.click();
+		return PageFactory.initElements(driver, BusinessConfirmationPage.class);
+	}
+	
+	public LegalEntityPage goToLegalEntityPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, LegalEntityPage.class);
 	}
 	
 	public LegalEntityTypePage addTradingNameForMember(String name) {
