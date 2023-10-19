@@ -75,7 +75,7 @@ par_member_add_flows.add_legal_entities:
     _title_callback: '\Drupal\par_member_add_flows\Form\ParLegalEntityForm::titleCallback'
   requirements:
     _permission: 'add coordinated member'
-    _custom_access: '\Drupal\par_member_add_flows\Form\ParLegalEntityForm::accessCallback'
+    _par_member_add_legal_entity_access_check: 'TRUE'
     par_data_partnership: \d+
   options:
     parameters:

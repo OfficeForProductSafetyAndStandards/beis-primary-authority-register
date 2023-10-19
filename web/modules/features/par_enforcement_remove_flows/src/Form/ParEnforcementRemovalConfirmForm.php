@@ -48,7 +48,7 @@ class ParEnforcementRemovalConfirmForm extends ParBaseForm {
       '#title' => $this->t('Do you want to remove this?'),
       '#type' => 'fieldset',
       '#weight' => -99,
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       'message' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
@@ -60,7 +60,7 @@ class ParEnforcementRemovalConfirmForm extends ParBaseForm {
         '#theme' => 'item_list',
         '#list_type' => 'ul',
         '#items' => $action_labels,
-        '#attributes' => ['class' => ['list', 'list-bullet']],
+        '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
       ]
     ];
 

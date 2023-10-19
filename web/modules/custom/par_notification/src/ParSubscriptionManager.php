@@ -214,12 +214,6 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
         $current_user->getEmail() != $recipient->getEmail();
     });
 
-    // Only allow users (including anonymous) who have the permission to see this message.
-    $permission = "receive {$message->getTemplate()->id()} notification";
-    $recipients = array_filter($recipients, function ($recipient) use ($permission) {
-      return $recipient->getAccount()->hasPermission($permission);
-    });
-
     // Compare the ParRecipient instances using string representation.
     return array_unique($recipients, SORT_STRING);
   }

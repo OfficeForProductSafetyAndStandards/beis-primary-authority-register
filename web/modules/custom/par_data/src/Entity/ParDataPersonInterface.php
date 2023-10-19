@@ -14,36 +14,36 @@ interface ParDataPersonInterface extends ParDataEntityInterface {
   /**
    * Get the User account.
    *
-   * @return UserInterface
+   * @return ?UserInterface
    */
-  public function getUserAccount();
+  public function getUserAccount(): ?UserInterface;
 
   /**
    * Set the user account.
    *
    * @param mixed $account
-   *   Drupal user account.
+   *   The Drupal user account.
    */
-  public function setUserAccount($account);
+  public function setUserAccount(mixed $account);
 
   /**
    * Get the User account.
    *
-   * @param boolean $link_up
-   *   Whether or not to link up the accounts if any are found that aren't already linked.
+   * @param bool $link_up
+   *   Whether to link up the accounts if any are found that aren't already linked.
    *
-   * @return array
+   * @return ParDataPersonInterface[]
    *   Returns any other PAR Person records if found.
    */
-  public function getSimilarPeople($link_up);
+  public function getSimilarPeople(bool $link_up): array;
 
   /**
    * Get the User accounts that have the same email as this PAR Person.
    *
-   * @return mixed|null
+   * @return ?UserInterface
    *   Returns a Drupal User account if found.
    */
-  public function lookupUserAccount();
+  public function lookupUserAccount(): ?UserInterface;
 
   /**
    * Link up the PAR Person to a Drupal User account.
@@ -51,17 +51,25 @@ interface ParDataPersonInterface extends ParDataEntityInterface {
    * @param UserInterface $account
    *   An optional user account to lookup.
    *
-   * @return bool|int
+   * @return ?UserInterface
    *   If there was an account to link to, that wasn't already linked to.
    */
-  public function linkAccounts(UserInterface $account);
+  public function linkAccounts(UserInterface $account): ?UserInterface;
 
   /**
-   * Get's the e-mail address for this person.
+   * Gets the e-mail address for this person.
    *
-   * @return string|NULL
+   * @return ?string
    *   An email address.
    */
-  public function getEmail();
+  public function getEmail(): ?string;
+
+  /**
+   * Get PAR Person's full name.
+   *
+   * @return string
+   *   Their full name including title/salutation field.
+   */
+  public function getFullName(): string;
 
 }

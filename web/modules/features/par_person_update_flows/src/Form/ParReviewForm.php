@@ -90,7 +90,7 @@ class ParReviewForm extends ParBaseForm {
       '#type' => 'fieldset',
       'name' => [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         '#title' => 'Name',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('full_name', ''),
@@ -103,14 +103,14 @@ class ParReviewForm extends ParBaseForm {
       'email' => [
         '#type' => 'fieldset',
         '#title' => 'Email',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('email', ''),
         ]
       ],
       'work_phone' => [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         '#title' => 'Work phone',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('work_phone', ''),
@@ -118,7 +118,7 @@ class ParReviewForm extends ParBaseForm {
       ],
       'mobile_phone' => [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         '#title' => 'Mobile phone',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('mobile_phone', ''),
@@ -126,7 +126,7 @@ class ParReviewForm extends ParBaseForm {
       ],
       'communication_noes' => [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         '#title' => 'Communication notes',
         0 => $this->getFlowDataHandler()->getDefaultValues('communication_notes', ['#markup' => '(none)']),
       ],
@@ -140,7 +140,7 @@ class ParReviewForm extends ParBaseForm {
       $form['memberships']['authorities'] = [
         '#type' => 'fieldset',
         '#title' => 'Belongs to the following authorities',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $authorities,
         ]
@@ -150,7 +150,7 @@ class ParReviewForm extends ParBaseForm {
       $form['memberships']['organisations'] = [
         '#type' => 'fieldset',
         '#title' => 'Belongs to the following organisations',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $organisations,
         ]
@@ -163,7 +163,7 @@ class ParReviewForm extends ParBaseForm {
   public function createEntities() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
-    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    // Get the cache IDs for the various forms that needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_person_update');
     $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
     $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
@@ -181,7 +181,12 @@ class ParReviewForm extends ParBaseForm {
       $par_data_person->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_details_cid));
       $par_data_person->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid));
       $par_data_person->set('mobile_phone', $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid));
-      $par_data_person->updateEmail($this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid), $account);
+
+      // Update the email address.
+      $email = $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid);
+      if (!empty($email)) {
+        $par_data_person->updateEmail($email);
+      }
 
       // Make sure to save the related user account.
       if ($account) {

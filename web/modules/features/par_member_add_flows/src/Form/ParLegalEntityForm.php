@@ -16,6 +16,6 @@ class ParLegalEntityForm extends ParBaseForm {
   /**
    * Set the page title.
    */
-  protected $pageTitle = 'Add legal entities';
+  protected $pageTitle = 'Add a legal entity';
 
 }

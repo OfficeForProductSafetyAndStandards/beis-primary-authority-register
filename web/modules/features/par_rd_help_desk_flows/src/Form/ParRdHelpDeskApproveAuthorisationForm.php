@@ -32,7 +32,7 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL): AccessResult {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
@@ -83,10 +83,10 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Partnership between'),
       ],
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['partnership_info']['partnership_text'] = [
@@ -100,7 +100,7 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
     $form['partnership_approve'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Please confirm you are authorised to approve this partnership'),
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['partnership_approve']['confirm_authorisation_select'] = [

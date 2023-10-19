@@ -62,7 +62,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
       $form['partnership'] = [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => ['govuk-grid-row', 'form-group']],
+        '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
       ];
 
       // Show the organisation name.
@@ -75,12 +75,12 @@ class ParConfirmationReviewForm extends ParBaseForm {
         // Display organisation name and organisation primary address.
         $form['partnership']['organisation']['organisation_name'] = [
           '#type' => 'container',
-          '#attributes' => ['class' => 'form-group'],
+          '#attributes' => ['class' => 'govuk-form-group'],
           'title' => [
             '#type' => 'html_tag',
             '#tag' => 'h2',
             '#value' => $this->t('Organisation name'),
-            '#attributes' => ['class' => 'heading-medium'],
+            '#attributes' => ['class' => 'govuk-heading-m'],
           ],
           'name' => [
             '#type' => 'markup',
@@ -116,12 +116,12 @@ class ParConfirmationReviewForm extends ParBaseForm {
         ];
         $form['partnership']['authority']['authority_name'] = [
           '#type' => 'container',
-          '#attributes' => ['class' => 'form-group'],
+          '#attributes' => ['class' => 'govuk-form-group'],
           'title' => [
             '#type' => 'html_tag',
             '#tag' => 'h2',
             '#value' => $this->t('Primary authority name'),
-            '#attributes' => ['class' => 'heading-medium'],
+            '#attributes' => ['class' => 'govuk-heading-m'],
           ],
           'name' => [
             '#type' => 'markup',

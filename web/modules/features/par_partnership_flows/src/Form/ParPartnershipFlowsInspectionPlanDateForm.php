@@ -118,7 +118,7 @@ class ParPartnershipFlowsInspectionPlanDateForm extends ParBaseForm {
         // Dispatch a PAR custom event.
         $event = new ParDataEvent($par_data_inspection_plan);
         $dispatcher = \Drupal::service('event_dispatcher');
-        $dispatcher->dispatch(ParDataEvent::customAction($par_data_inspection_plan->getEntityTypeId(), 'post_create'), $event);
+        $dispatcher->dispatch($event, ParDataEvent::customAction($par_data_inspection_plan->getEntityTypeId(), 'post_create'));
       }
 
       $this->getFlowDataHandler()->deleteStore();

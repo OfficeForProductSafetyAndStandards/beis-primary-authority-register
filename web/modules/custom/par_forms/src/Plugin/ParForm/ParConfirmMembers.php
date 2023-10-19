@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -28,7 +29,7 @@ class ParConfirmMembers extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     if ($par_data_partnership instanceof ParDataEntityInterface && $par_data_partnership->isCoordinated()) {
@@ -36,16 +37,16 @@ class ParConfirmMembers extends ParFormPluginBase {
       $this->getFlowDataHandler()->setFormPermValue("needs_updating", $par_data_partnership->memberListNeedsUpdating());
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // This form should only be displayed for coordinated partnerships that need updating.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $update = $this->getDefaultValuesByKey('needs_updating', $cardinality, TRUE);
+    $update = $this->getDefaultValuesByKey('needs_updating', $index, TRUE);
 
     if ($par_data_partnership instanceof ParDataEntityInterface
       && $par_data_partnership->isCoordinated()
@@ -60,7 +61,7 @@ class ParConfirmMembers extends ParFormPluginBase {
       if (isset($member_url) && $member_url instanceof Url) {
         $form['confirm'] = [
           '#type' => 'container',
-          '#attributes' => ['class' => 'form-group'],
+          '#attributes' => ['class' => 'govuk-form-group'],
         ];
         $form['confirm']['info'] = [
           '#type' => 'html_tag',
@@ -83,7 +84,7 @@ class ParConfirmMembers extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

@@ -27,10 +27,10 @@ class ParRdHelpDeskUnrevokeForm extends ParBaseForm {
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('The following partnership has been restored to an active partnership'),
       ],
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['partnership_info']['partnership_between'] = [

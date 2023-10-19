@@ -63,7 +63,7 @@ class ParAccessDeniedController extends ControllerBase {
       && !user_load_by_mail($message->get('field_to')->getString()));
 
     // Column size is determined by whether invitations should be shown.
-    $column_size = $allow_invitations ? 'column-one-half' : 'govuk-grid-column-full';
+    $column_size = $allow_invitations ? 'govuk-grid-column-one-half' : 'govuk-grid-column-full';
 
     $build['account'] = [
       '#type'   => 'container',

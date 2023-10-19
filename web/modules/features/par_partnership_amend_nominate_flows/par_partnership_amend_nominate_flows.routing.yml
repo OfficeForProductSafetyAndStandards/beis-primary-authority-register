@@ -1,0 +1,26 @@
+par_partnership_amend_nominate_flows.review:
+  path: '/partnership/{par_data_partnership}/amendment/nominate'
+  defaults:
+    _form: '\Drupal\par_partnership_amend_nominate_flows\Form\ParReviewForm'
+    _title_callback: '\Drupal\par_partnership_amend_nominate_flows\Form\ParReviewForm::titleCallback'
+  requirements:
+    _permission: 'nominate partnership amendments'
+    _par_partnership_amendment_nominate_access_check: 'TRUE'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership
+
+par_partnership_amend_nominate_flows.complete:
+  path: '/partnership/{par_data_partnership}/amendment/nominated'
+  defaults:
+    _controller: '\Drupal\par_partnership_amend_nominate_flows\Controller\ParCompleteController::content'
+    _title_callback: '\Drupal\par_partnership_amend_nominate_flows\Controller\ParCompleteController::titleCallback'
+  requirements:
+    _permission: 'nominate partnership amendments'
+    par_data_partnership: \d+
+  options:
+    parameters:
+      par_data_partnership:
+        type: entity:par_data_partnership

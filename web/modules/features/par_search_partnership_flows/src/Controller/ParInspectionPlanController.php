@@ -26,7 +26,7 @@ class ParInspectionPlanController extends ParBaseController {
 
     $build['partnership'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
     $build['partnership']['title'] = [
       '#type' => 'markup',

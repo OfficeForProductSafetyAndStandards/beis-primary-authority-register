@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
@@ -20,12 +21,12 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected $entityMapping = [];
+  protected array $entityMapping = [];
 
   /**
    * Load the data for this form.
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     // Decide which entity to use.
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
       $existing_selection = $par_data_partnership->getRegulatoryFunction();
@@ -67,21 +68,21 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
       }
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     $renderer = \Drupal::service('renderer');
 
     // If there are no available regulatory functions then this form should not be displayed.
     $regulatory_function_options = $this->getFlowDataHandler()->getFormPermValue('regulatory_function_options');
     if (empty($regulatory_function_options)) {
       try {
-        $params = ['par_data_authority' => $this->getDefaultValuesByKey('partnership_authority_id', $cardinality, NULL)];
-        $link_options = ['attributes' => ['class' => ['govuk-link'], 'target' => '_blank']];
+        $params = ['par_data_authority' => $this->getDefaultValuesByKey('partnership_authority_id', $index, NULL)];
+        $link_options = ['attributes' => ['class' => ['flow-link', 'govuk-link'], 'target' => '_blank']];
         $authority_update_link = $this->getLinkByRoute('par_authority_update_flows.authority_update_review', $params, $link_options)
             ->setText('Update the authority\'s regulatory functions')
             ->toString();
@@ -90,7 +91,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
       }
       $form['no_regulatory_functions'] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['form-group', 'notice']],
+        '#attributes' => ['class' => ['govuk-form-group', 'notice']],
         'warning' => [
           '#type' => 'html_tag',
           '#tag' => 'strong',
@@ -109,7 +110,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
     if ($covered_by_other_partnerships) {
       $form['covered_by_other_patnerships'] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['form-group', 'notice']],
+        '#attributes' => ['class' => ['govuk-form-group', 'notice']],
         'warning' => [
           '#type' => 'html_tag',
           '#tag' => 'strong',
@@ -138,8 +139,8 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
         '#list_header_tag' => 'h2',
         '#title' => 'The following regulatory functions will be added',
         '#items' => $regulatory_function_options,
-        '#attributes' => ['class' => ['list', 'list-bullet']],
-        '#wrapper_attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
+        '#wrapper_attributes' => ['class' => 'govuk-form-group'],
       ]
     ];
     $bespoke_label = [
@@ -187,8 +188,8 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
       '#type' => 'checkboxes',
       '#title' => 'Regulatory Functions',
       '#options' => $regulatory_function_options,
-      '#default_value' => $this->getDefaultValuesByKey('regulatory_functions', $cardinality, []),
-      '#attributes' => ['class' => ['form-group']],
+      '#default_value' => $this->getDefaultValuesByKey('regulatory_functions', $index, []),
+      '#attributes' => ['class' => ['govuk-form-group']],
       '#states' => [
         'visible' => [
           'input[name="partnership_cover"]' => ['value' => 'bespoke'],
@@ -205,7 +206,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $partnership_cover_key = $this->getElementKey('partnership_cover');
     $regulatory_functions_key = $this->getElementKey('regulatory_functions');
     $default_regulatory_functions_key = $this->getElementKey('default_regulatory_functions');
@@ -217,18 +218,18 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
     elseif ($form_state->getValue($partnership_cover_key) === 'bespoke') {
       $regulatory_functions = array_filter($form_state->getValue($regulatory_functions_key));
       if (empty($regulatory_functions)) {
-        $id_key = $this->getElementKey('regulatory_functions', $cardinality, TRUE);
+        $id_key = $this->getElementKey('regulatory_functions', $index, TRUE);
         $message = $this->wrapErrorMessage('You must choose at least one regulatory function.', $this->getElementId($id_key, $form));
         $form_state->setErrorByName($this->getElementName($regulatory_functions_key), $message);
       }
     }
     else {
       // In case no partnership type was selected.
-      $id_key = $this->getElementKey('partnership_cover', $cardinality, TRUE);
+      $id_key = $this->getElementKey('partnership_cover', $index, TRUE);
       $message = $this->wrapErrorMessage('Please choose whether this is a normal, sequenced or bespoke partnership.', $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($partnership_cover_key), $message);
     }
 
-    return parent::validate($form, $form_state, $cardinality, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

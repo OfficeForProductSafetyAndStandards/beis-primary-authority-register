@@ -31,7 +31,7 @@ class ParRdHelpDeskDeleteForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account): AccessResult {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
@@ -51,10 +51,10 @@ class ParRdHelpDeskDeleteForm extends ParBaseForm {
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('The partnership application has been deleted'),
       ],
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     // Change the action to save.

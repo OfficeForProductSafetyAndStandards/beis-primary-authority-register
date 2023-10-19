@@ -2,7 +2,9 @@
 
 namespace Drupal\par_flows;
 
+use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Http\RequestStack;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\ParDataManagerInterface;
@@ -17,58 +19,58 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
   /**
    * The PAR data manager for acting upon PAR Data.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var EntityTypeManagerInterface $entityTypeManager
    */
-  protected $entityTypeManager;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The PAR data manager for acting upon PAR Data.
    *
-   * @var \Drupal\par_data\ParDataManagerInterface
+   * @var ParDataManagerInterface $parDataManager
    */
-  protected $parDataManager;
+  protected ParDataManagerInterface $parDataManager;
 
   /**
    * The current route matcher.
    *
-   * @var \Drupal\Core\Routing\RouteMatchInterface
+   * @var RouteMatchInterface $route
    */
-  protected $route;
+  protected RouteMatchInterface $route;
 
   /**
    * The current user account.
    *
-   * @var \Drupal\Core\Session\AccountInterface
+   * @var AccountInterface $account
    */
-  protected $account;
+  protected AccountInterface $account;
 
   /**
    * The flow storage.
    *
-   * @var \Drupal\par_flows\ParFlowStorage
+   * @var ConfigEntityStorageInterface $flow_storage
    */
-  protected $flow_storage;
+  protected ConfigEntityStorageInterface $flow_storage;
 
   /**
    * The current flow entity.
    *
-   * @var \Drupal\par_flows\Entity\ParFlowInterface
+   * @var ParFlowInterface $flow
    */
-  protected $flow;
+  protected ParFlowInterface $flow;
 
   /**
    * The flow name.
    *
-   * @var string
+   * @var ?string
    */
-  protected $flow_name;
+  protected ?string $flow_name = NULL;
 
   /**
-   * The flow name.
+   * The flow state.
    *
-   * @var string
+   * @var ?string $flow_state
    */
-  protected $flow_state;
+  protected ?string $flow_state = NULL;
 
   /**
    * Constructs a ParFlowNegotiator instance.
@@ -165,17 +167,12 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
 
   public function getFormKey($form_id, $state = NULL, $flow_name = NULL) {
     $flow_name = !empty($flow_name) ? $flow_name : $this->getFlowName();
-
     $flow = $this->getFlow($flow_name);
 
-    // If the form_id represents a form_data key get the step based on that key.
-    // This is useful for situations where the form_id is ambiguous (used more than once) in the flow.
-    $step = $flow->getStepByCurrentFormDataKey($form_id);
-    // Otherwise look for the form_id in the flow.
-    if (!$step) {
-      $step = $flow->getStepByFormId($form_id);
-    }
+    // Get the step based on a form data key or form id.
+    $step = $flow->getStepByFormId($form_id);
 
+    // Get the route for the given step.
     $route_name = $flow->getRouteByStep($step);
 
     return $this->getFlowKey($route_name, $state, $flow_name);
@@ -196,7 +193,7 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
   /**
    * {@inheritdoc}
    */
-  public function getFlowStateKey($step_id = NULL, $state = NULL, $flow_name = NULL) {
+  public function getFlowStateKey($state = NULL, $flow_name = NULL) {
     $state = !empty($state) ? $state : $this->getState();
     $flow_name = !empty($flow_name) ? $flow_name : $this->getFlowName();
 

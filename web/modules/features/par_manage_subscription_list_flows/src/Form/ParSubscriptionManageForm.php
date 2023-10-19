@@ -46,7 +46,7 @@ class ParSubscriptionManageForm extends ParBaseForm {
     $form['method'] = [
       '#type' => 'radios',
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ],
       '#title' => $this->t('Update method'),
       '#options' => $methods,

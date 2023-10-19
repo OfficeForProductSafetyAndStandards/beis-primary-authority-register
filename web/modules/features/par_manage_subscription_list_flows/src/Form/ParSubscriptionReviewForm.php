@@ -41,7 +41,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
       $form['subscribe'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Subscriptions to be added (@count)', ['@count' => count($subscribe)]),
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         'new' => [
           '#type' => 'markup',
           '#markup' => "$subscribe_list",
@@ -55,7 +55,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
       $form['unsubscribe'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Subscriptions to be removed (@count)', ['@count' => count($unsubscribe)]),
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         'new' => [
           '#type' => 'markup',
           '#markup' => "$unsubscribe_list",
@@ -87,8 +87,8 @@ class ParSubscriptionReviewForm extends ParBaseForm {
 
     // Determine which subscriptions need to be subscribed or unsubscribed.
     $cid = $this->getFlowNegotiator()->getFormKey('manage_subscriptions');
-    $subscribe = $this->getFlowDataHandler()->getTempDataValue('subscribe', $cid);
-    $unsubscribe = $this->getFlowDataHandler()->getTempDataValue('unsubscribe', $cid);
+    $subscribe = $this->getFlowDataHandler()->getTempDataValue('subscribe', $cid) ?? [];
+    $unsubscribe = $this->getFlowDataHandler()->getTempDataValue('unsubscribe', $cid) ?? [];
 
     $list = $this->getFlowDataHandler()->getTempDataValue('list', $cid);
 

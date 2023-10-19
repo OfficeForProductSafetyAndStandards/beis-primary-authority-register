@@ -1,0 +1,29 @@
+uuid: 20969832-1ca1-48cb-a82a-a91df162b267
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - govuk
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: govuk_local_tasks
+theme: govuk
+region: content
+weight: -5
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  label_display: '0'
+  provider: core
+  primary: true
+  secondary: true
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: '/user/*'

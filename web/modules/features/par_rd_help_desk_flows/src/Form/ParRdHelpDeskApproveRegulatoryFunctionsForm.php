@@ -33,7 +33,7 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL): AccessResult {
     try {
       // Get a new flow negotiator that points the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
@@ -70,9 +70,9 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
     $selected_regulatory_functions = array_filter($this->getFlowDataHandler()->getTempDataValue('regulatory_functions'));
 
     // We only want to update the status of none active partnerships.
-    if ($partnership->getRawStatus() !== 'confirmed_rd') {
+    if (!$partnership->isActive()) {
       try {
-        $partnership->setParStatus('confirmed_rd');
+        $partnership->nominate();
       }
       catch (ParDataException $e) {
         // If the partnership could not be saved the application can't be progressed.

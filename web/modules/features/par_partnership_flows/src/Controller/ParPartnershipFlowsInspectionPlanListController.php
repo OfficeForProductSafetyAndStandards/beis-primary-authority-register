@@ -27,7 +27,7 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
 
     $build['partnership'] = [
       '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
@@ -71,7 +71,7 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
       if ($this->getCurrentUser()->hasPermission('upload partnership inspection plan')) {
       $build['actions'] = [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
 
       try {

@@ -73,7 +73,7 @@ function par_data_theme() {
  * The present use case requires all bundle fields, currently
  * only entity reference fields, to be required if validated.
  */
-function par_data_entity_bundle_field_info_alter(&$fields, \Drupal\Core\Entity\EntityTypeInterface $entity_type, $bundle) {
+function par_data_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
   $par_data_manager = \Drupal::service('par_data.manager');
   if ($par_data_manager->getParEntityType($entity_type->id())) {
     foreach ($fields as $name => $field) {

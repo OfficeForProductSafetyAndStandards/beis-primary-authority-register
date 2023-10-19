@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
@@ -20,7 +21,7 @@ class ParSelectMemberForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $organisations = [];
 
     // Set the organisation id for direct partnerships with only one organisation.
@@ -39,13 +40,13 @@ class ParSelectMemberForm extends ParFormPluginBase {
 
     $this->getFlowDataHandler()->setFormPermValue('partnership_organisations', $organisations);
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $partnership_organisations = $this->getFlowDataHandler()->getFormPermValue('partnership_organisations');
 
@@ -61,7 +62,7 @@ class ParSelectMemberForm extends ParFormPluginBase {
 
     // Initialize pager and get current page.
     $number_of_items = 10;
-    $pager = $this->getUniquePager()->getPager('par_plugin_member_select_'.$cardinality);
+    $pager = $this->getUniquePager()->getPager('par_plugin_member_select_'.$index);
     $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($partnership_organisations), $number_of_items, $pager);
 
     // Split the items up into chunks:
@@ -72,8 +73,8 @@ class ParSelectMemberForm extends ParFormPluginBase {
       '#type' => 'radios',
       '#title' => t('Choose the member to enforce'),
       '#options' => $chunk,
-      '#default_value' => $this->getDefaultValuesByKey('par_data_organisation_id', $cardinality, []),
-      '#attributes' => ['class' => ['form-group']],
+      '#default_value' => $this->getDefaultValuesByKey('par_data_organisation_id', $index, []),
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
     $form['pager'] = [
@@ -91,13 +92,13 @@ class ParSelectMemberForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $organisation_id_key = $this->getElementKey('par_data_organisation_id');
     if (empty($form_state->getValue($organisation_id_key))) {
-      $id_key = $this->getElementKey('par_data_organisation_id', $cardinality, TRUE);
+      $id_key = $this->getElementKey('par_data_organisation_id', $index, TRUE);
       $form_state->setErrorByName($this->getElementName($organisation_id_key), $this->wrapErrorMessage('You must select an organisation.', $this->getElementId($id_key, $form)));
     }
 
-    return parent::validate($form, $form_state, $cardinality, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

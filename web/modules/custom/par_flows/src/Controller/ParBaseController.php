@@ -42,15 +42,17 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
 
   /**
    * The response cache kill switch.
+   *
+   * @var KillSwitch $killSwitch
    */
-  protected $killSwitch;
+  protected KillSwitch $killSwitch;
 
   /**
-   * The access result
+   * The access result.
    *
-   * @var \Drupal\Core\Access\AccessResult
+   * @var ?AccessResult $accessResult
    */
-  protected $accessResult;
+  protected ?AccessResult $accessResult = NULL;
 
   /*
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
@@ -116,15 +118,14 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
 
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
-      // If there's is a cardinality parameter present display only this item.
-      $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
-      $index = isset($cardinality) ? (int) $cardinality : NULL;
+      // If there is a cardinality parameter present display only this item.
+      $index = $this->getFlowDataHandler()->getParameter('cardinality');
 
-      // Handle instances where FormBuilderInterface should return a redirect response.
-      $plugin = $this->getFormBuilder()->getPluginElements($component, $build, $index);
-      if ($plugin instanceof RedirectResponse) {
-        return $plugin;
-      }
+      // Build the plugin.
+      $plugin = $this->getFormBuilder()->build($component, $index);
+
+      // Merge the component elements into the build array.
+      $build = array_merge($build, $plugin);
     }
 
     // Add all the action links.
@@ -201,8 +202,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   }
 
   /**
-   * Access callback
-   * Useful for custom business logic for access.
+   * Default access callback.
    *
    * @param \Symfony\Component\Routing\Route $route
    *   The route.
@@ -211,14 +211,11 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    *
-   * @see \Drupal\Core\Access\AccessResult
-   *   The options for callback.
-   *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
-    return $this->accessResult ? $this->accessResult : AccessResult::allowed();
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account): AccessResult {
+    return $this->accessResult instanceof AccessResult ? $this->accessResult : AccessResult::allowed();
   }
 
 }

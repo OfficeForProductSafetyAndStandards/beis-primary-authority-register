@@ -29,7 +29,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
     $build['partnership'] = [
       '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
@@ -71,7 +71,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     if ($par_data_partnership->isActive() && $this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
       $build['actions'] = [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => ['form-group', 'btn-link-upload']],
+        '#attributes' => ['class' => ['govuk-form-group', 'btn-link-upload']],
       ];
 
       try {

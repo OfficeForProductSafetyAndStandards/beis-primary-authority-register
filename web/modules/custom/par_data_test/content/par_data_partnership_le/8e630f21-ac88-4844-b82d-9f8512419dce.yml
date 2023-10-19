@@ -34,6 +34,9 @@ default:
   archived:
     -
       value: false
+  legal_entity_status:
+    -
+      value: confirmed_rd
   field_legal_entity:
     -
       entity: 4a46ac19-ecb4-4e1b-ae20-07180dba261e

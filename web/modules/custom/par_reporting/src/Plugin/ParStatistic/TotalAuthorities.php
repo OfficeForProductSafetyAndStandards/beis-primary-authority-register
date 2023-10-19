@@ -16,7 +16,7 @@ use Drupal\par_reporting\ParStatisticBase;
  */
 class TotalAuthorities extends ParStatisticBase {
 
-  public function getStat() {
+  public function getStat(): int {
     $query = $this->getParDataManager()->getEntityQuery('par_data_authority');
 
     $revoked = $query

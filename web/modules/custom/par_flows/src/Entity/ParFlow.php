@@ -197,7 +197,8 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getCurrentRouteMatch() {
     // Submit the route with all the same parameters.
-    return isset($this->currentRoute) ? $this->currentRoute : \Drupal::service('par_flows.negotiator')->getRoute();
+    return $this->currentRoute ?? \Drupal::service('par_flows.negotiator')
+      ->getRoute();
   }
 
   /**
@@ -298,7 +299,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    * {@inheritdoc}
    */
   public function getStep($index) {
-    return isset($this->steps[$index]) ? $this->steps[$index] : NULL;
+    return $this->steps[$index] ?? NULL;
   }
 
   /**
@@ -320,15 +321,15 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   public function getCurrentStep() {
     // Lookup the current step to more accurately determine the next step.
     $current_step = $this->getStepByRoute($this->getCurrentRoute());
-    return isset($current_step) ? $current_step : NULL;
+    return $current_step ?? NULL;
   }
 
   /**
    * Start the journey.
    *
-   * @return \Drupal\Core\Url
+   * @return Url
    */
-  public function start($step = 1, $params = []) {
+  public function start($step = 1, $params = []): Url {
     $route = $this->getRouteByStep($step);
 
     if (!isset($route)) {
@@ -336,7 +337,10 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     }
 
     $route_params = $this->getRequiredParams($route, $params);
-    return Url::fromRoute($route, $route_params);
+    $url = Url::fromRoute($route, $route_params);
+
+    $this->mergeOptions($url);
+    return $url;
   }
 
   /**
@@ -347,11 +351,11 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    * @param array $params
    *   Additional params to be used for determining the route.
    *
-   * @throws \Drupal\par_flows\ParFlowException
+   * @throws ParFlowException
    *
-   * @return \Drupal\Core\Url|NULL
+   * @return ?Url
    */
-  public function goto($operation, $params = []) {
+  public function goto($operation, $params = []): ?Url {
     // Don't process if no operation has been set.
     if (NULL === $operation) {
       throw new ParFlowException('No operation was provided to redirect to.');
@@ -369,23 +373,29 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     }
 
     $route_params = $this->getRequiredParams($route, $params);
-    return Url::fromRoute($route, $route_params);
+    $url = Url::fromRoute($route, $route_params);
+
+    $this->mergeOptions($url);
+    return $url;
   }
 
 
   /**
    * {@inheritdoc}
    */
-  public function progress($operation = NULL, $params = []) {
+  public function progress($operation = NULL, $params = []): Url {
     // Run the event dispatcher to determine the order of precedence to determine the next route.
     $event = new ParFlowEvent($this, $this->getCurrentRouteMatch(), $operation, $params);
-    $this->getEventDispatcher()->dispatch(ParFlowEvents::getEventByAction($operation), $event);
+    $this->getEventDispatcher()->dispatch($event, ParFlowEvents::getEventByAction($operation));
 
     if (!$event->getUrl() instanceof Url) {
       throw new ParFlowException('Could not find an appropriate page to progress to.');
     }
 
-    return $event->getUrl();
+    $url = $event->getUrl();
+
+    $this->mergeOptions($url);
+    return $url;
   }
 
   /**
@@ -414,7 +424,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getStepComponents($index) {
     $step = $this->getStep($index);
-    return isset($step['components']) ? $step['components'] : [];
+    return $step['components'] ?? [];
   }
 
   /**
@@ -422,7 +432,14 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getStepFormDataKeys($index) {
     $step = $this->getStep($index);
-    return isset($step['form_data']) ? $step['form_data'] : [];
+    return $step['form_data'] ?? [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStepFormDataKey($index, $key) {
+    return $this->getStepFormDataKeys($index)[$key] ?? NULL;
   }
 
   /**
@@ -430,7 +447,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getStepOperations($index) {
     $step = $this->getStep($index);
-    $redirects = isset($step['redirect']) ? $step['redirect'] : [];
+    $redirects = $step['redirect'] ?? [];
 
     // Get the default actions, these can be disabled
     // if required on a form by form basis.
@@ -454,17 +471,24 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
-  public function getStepByFormId($form_id) {
+  public function getStepByFormId($form_key) {
+    // Look up the form id from the form data config, the form data keys map to form IDs
+    // and provide a consistent way for components to refer to similar forms across different journeys.
+    $form_data_step = $this->getStepFormDataKey($this->getCurrentStep(), $form_key);
+
+    // If the form data keys contained a reference to a form id then use this, otherwise
+    // use the form key directly to look up the step.
+    $form_id = $form_data_step ?? $form_key;
+
+    // Look through all steps in the journey to find a form id that matches.
     foreach ($this->getSteps() as $key => $step) {
       if (isset($step['form_id']) && $form_id === $step['form_id']) {
-        $match = [
-          'step' => $key,
-        ] + $step;
+        return $key;
       }
     }
 
-    // If there is no step we'll go back to the beginning.
-    return isset($match['step']) ? $match['step'] : NULL;
+    // If no step can be found that represents this form id.
+    return NULL;
   }
 
   /**
@@ -479,7 +503,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
       }
     }
 
-    return isset($match['step']) ? $match['step'] : NULL;
+    return $match['step'] ?? NULL;
   }
 
   /**
@@ -496,9 +520,9 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getStepByOperation($index, $operation) {
     $step = $this->getStep($index);
-    $redirects = isset($step['redirect']) ? $step['redirect'] : [];
+    $redirects = $step['redirect'] ?? [];
 
-    return isset($redirects[$operation]) ? $redirects[$operation] : NULL;
+    return $redirects[$operation] ?? NULL;
   }
 
   /**
@@ -506,7 +530,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getRouteByStep($index) {
     $step = $this->getStep($index);
-    return isset($step['route']) ? $step['route'] : NULL;
+    return $step['route'] ?? NULL;
   }
 
   /**
@@ -514,7 +538,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    */
   public function getFormIdByStep($index) {
     $step = $this->getStep($index);
-    return isset($step['form_id']) ? $step['form_id'] : NULL;
+    return $step['form_id'] ?? NULL;
   }
 
   /**

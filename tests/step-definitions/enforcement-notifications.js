@@ -76,7 +76,7 @@ When('I add multiple enforcement actions {string}, {string}', function (title_1,
         .clearValue('#edit-par-component-enforcement-action-0-details')
         .setValue('#edit-par-component-enforcement-action-0-details', 'Enforcement action details of infringement for the primary enforcement action.')
         .assert.containsText('h1.heading-xlarge','Add an action to the enforcement notice')
-        .click('#edit-add-another')
+        .click('.add-action')
         .clearValue('#edit-par-component-enforcement-action-1-title')
         .setValue('#edit-par-component-enforcement-action-1-title', title_2)
         .click('input[name="par_component_enforcement_action[1][regulatory_function]"]')

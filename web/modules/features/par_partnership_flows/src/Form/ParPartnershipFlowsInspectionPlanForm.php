@@ -97,7 +97,7 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
     $form['title'] = [
       '#type' => 'textfield',
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ],
       '#title' => '<h3 class="heading-medium">' . $this->t('Inspection plan title')  . '</h3>',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('title'),
@@ -107,7 +107,7 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
     $form['summary'] = [
       '#type' => 'textarea',
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ],
       '#title' => '<h3 class="heading-medium">' . $this->t('Provide summarised details of this inspection plan') . '</h3>',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('summary'),

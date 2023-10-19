@@ -11,7 +11,7 @@ dependencies:
 id: essentialcookies
 theme: par_theme
 region: content
-weight: 1
+weight: -1
 provider: null
 plugin: essential_cookies
 settings:

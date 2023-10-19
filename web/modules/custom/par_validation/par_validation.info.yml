@@ -1,5 +1,5 @@
 name: PAR Validation
 type: module
 description: Adds validation and the rules surrounding validation to forms, flows and entities.
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9 || ^10
 package: PAR

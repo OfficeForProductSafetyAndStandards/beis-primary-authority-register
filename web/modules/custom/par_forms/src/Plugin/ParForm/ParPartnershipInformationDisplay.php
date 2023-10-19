@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -22,44 +23,43 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParPartnershipInformationDisplay extends ParFormPluginBase {
 
   /**
-   * @return DateFormatterInterface
-   */
-  protected function getDateFormatter() {
-    return \Drupal::service('date.formatter');
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     if ($par_data_partnership instanceof ParDataEntityInterface) {
       // Is the partnership approved?
-      $this->setDefaultValuesByKey("approved", $cardinality, $par_data_partnership->isActive());
+      $this->setDefaultValuesByKey("approved", $index, $par_data_partnership->isActive());
 
       // Format the date.
       if ($par_data_partnership->hasField('approved_date')) {
         $date = $par_data_partnership->approved_date->view('full');
-        $this->setDefaultValuesByKey("date", $cardinality, $date);
+        $this->setDefaultValuesByKey("date", $index, $date);
       }
 
       // Get the authority name.
       if ($par_data_authority = $par_data_partnership->getAuthority(TRUE)) {
-        $this->setDefaultValuesByKey("name", $cardinality, $par_data_authority->getName());
+        $this->setDefaultValuesByKey("name", $index, $par_data_authority->getName());
       }
 
       // Get the partnership information.
       if ($par_data_partnership->hasField('about_partnership')) {
         $information_display = $par_data_partnership->about_partnership->view('full');
-        $this->setDefaultValuesByKey("about_partnership", $cardinality, $information_display);
+        $this->setDefaultValuesByKey("about_partnership", $index, $information_display);
       }
 
       // Get the regulatory functions.
       if ($par_data_partnership->hasField('field_regulatory_function')) {
         $regulatory_functions = $par_data_partnership->get('field_regulatory_function')->referencedEntities();
         $regulatory_function_labels = $this->getParDataManager()->getEntitiesAsOptions($regulatory_functions);
-        $this->setDefaultValuesByKey("regulatory_functions", $cardinality, $regulatory_function_labels);
+        $this->setDefaultValuesByKey("regulatory_functions", $index, $regulatory_function_labels);
+      }
+
+      // Display the previous name, only display the last one if more than one.
+      if ($par_data_partnership->hasField('previous_names')) {
+        $previous_name = $par_data_partnership->getPreviousName();
+        $this->setDefaultValuesByKey("previous_names", $index, $previous_name);
       }
     }
 
@@ -69,21 +69,29 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Partnership Authority Name - component.
     $form['authority_name'] = [
       '#type' => 'html_tag',
       '#tag' => 'h2',
-      '#value' => "<span class='heading-secondary'>In partnership with</span>" . $this->getDefaultValuesByKey('name', $cardinality, NULL),
-      '#attributes' => ['class' => ['govuk-heading-l', 'form-group', 'authority-name']],
+      '#value' => "<span class='heading-secondary'>In partnership with</span>" . $this->getDefaultValuesByKey('name', $index, NULL),
+      '#attributes' => ['class' => ['govuk-heading-l', 'govuk-form-group', 'authority-name']],
     ];
+    if ($previous_names = $this->getDefaultValuesByKey('previous_names', $index, NULL)) {
+      $form['previous_names'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => "Previously known as: " . $previous_names,
+        '#attributes' => ['class' => ['govuk-body-s']],
+      ];
+    }
 
     // Display details about the partnership for information.
     $form['about_partnership'] = [
       '#type' => 'container',
       '#markup' => '<h3 class="govuk-heading-m">About the partnership</h3>',
-      '#attributes' => ['class' => ['form-group']],
-      'details' => $this->getDefaultValuesByKey('about_partnership', $cardinality, NULL),
+      '#attributes' => ['class' => ['govuk-form-group']],
+      'details' => $this->getDefaultValuesByKey('about_partnership', $index, NULL),
     ];
     try {
       $about_edit_link = $this->getFlowNegotiator()->getFlow()
@@ -103,7 +111,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
     }
 
     // Display the regulatory functions and partnership approved date.
-    if ($this->getDefaultValuesByKey('approved', $cardinality, FALSE)) {
+    if ($this->getDefaultValuesByKey('approved', $index, FALSE)) {
       $form['details'] = [
         '#type' => 'container',
         '#attributes' => ['class' => ['govuk-grid-row']],
@@ -120,7 +128,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
             '#theme' => 'item_list',
             '#list_header_tag' => 'h2',
             '#list_type' => 'ul',
-            '#items' => $this->getDefaultValuesByKey('regulatory_functions', $cardinality, NULL),
+            '#items' => $this->getDefaultValuesByKey('regulatory_functions', $index, NULL),
           ]
         ],
         'approved_date' => [
@@ -132,7 +140,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
             '#value' => $this->t('In partnership since'),
           ],
           '#attributes' => ['class' => 'govuk-grid-column-one-half'],
-          'value' => $this->getDefaultValuesByKey('date', $cardinality, NULL),
+          'value' => $this->getDefaultValuesByKey('date', $index, NULL),
         ],
       ];
 
@@ -160,7 +168,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

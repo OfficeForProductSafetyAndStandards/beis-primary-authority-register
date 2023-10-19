@@ -55,7 +55,7 @@ class ParMergeConfirmForm extends ParBaseForm {
       '#type' => 'html_tag',
       '#tag' => 'p',
       '#value' => "You are about to merge {$this->getFlowDataHandler()->getDefaultValues('number_contacts', '0')} contacts, do you want to proceed?",
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {

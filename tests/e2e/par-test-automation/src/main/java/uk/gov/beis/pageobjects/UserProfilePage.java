@@ -3,10 +3,11 @@ package uk.gov.beis.pageobjects;
 import java.io.IOException;
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import uk.gov.beis.pageobjects.UserManagement.UpdateUserContactDetailsPage;
 
 public class UserProfilePage extends BasePageObject {
 	public UserProfilePage() throws ClassNotFoundException, IOException {

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_forms\ParFormPluginBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,7 +20,7 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $cid = $this->getFlowNegotiator()->getFormKey('organisation_select');
     $search_query = $this->getFlowDataHandler()->getDefaultValues('name', '', $cid);
     $this->getFlowDataHandler()->setFormPermValue('organisation_select_search_query', $search_query);
@@ -54,13 +55,13 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
       }
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Go back to the previous page if there's no search term.
     if (!$this->getFlowDataHandler()->getFormPermValue('organisation_select_search_query')) {
       $url = $this->getFlowNegotiator()->getFlow()->progress(ParFlow::BACK_STEP);
@@ -73,7 +74,7 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
         '#title' => t('Choose an existing organisation or create a new organisation'),
         '#options' => $radio_options + ['new' => "no, the organisation is not currently in a partnership with any other primary authority"],
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', 'new'),
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
     }
     else {

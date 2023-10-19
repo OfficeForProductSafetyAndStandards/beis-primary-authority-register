@@ -1,0 +1,43 @@
+uuid: beee7181-b8a1-4f0d-b250-4dc41fc50c15
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.new_partnership_amendment.field_message_subject
+    - field.field.message.new_partnership_amendment.field_partnership
+    - field.field.message.new_partnership_amendment.field_to
+    - message.template.new_partnership_amendment
+  module:
+    - link
+id: message.new_partnership_amendment.default
+targetEntityType: message
+bundle: new_partnership_amendment
+mode: default
+content:
+  field_message_subject:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_partnership:
+    type: entity_reference_autocomplete
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_to:
+    type: email_default
+    weight: -1
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+hidden: {  }

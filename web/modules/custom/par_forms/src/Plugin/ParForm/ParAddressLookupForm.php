@@ -19,7 +19,7 @@ class ParAddressLookupForm extends ParAddressForm {
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     $plugin_class = (new \ReflectionClass($this))->getName();
 
     $form['lookup'] = [
@@ -41,7 +41,7 @@ class ParAddressLookupForm extends ParAddressForm {
         '#value' => 'Enter the address',
       ],
     ];
-    $form = array_merge($form, parent::getElements($form, $cardinality));
+    $form = array_merge($form, parent::getElements($form, $index));
 
     return $form;
   }

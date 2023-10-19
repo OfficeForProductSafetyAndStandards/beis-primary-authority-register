@@ -11,12 +11,12 @@ use Drupal\par_reporting\ParStatisticBase;
  *   id = "total_unique_direct_businesses",
  *   title = @Translation("Businesses in direct partnerships."),
  *   description = @Translation("The total number of unique legal entities covered by a direct partnership. Each legal entity will only be counted once."),
- *   status = TRUE,
+ *   status = FALSE,
  * )
  */
 class TotalUniqueBusinessesInDirectPartnerships extends ParStatisticBase {
 
-  public function getStat() {
+  public function getStat(): int {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
       ->condition('partnership_status', 'confirmed_rd');
 

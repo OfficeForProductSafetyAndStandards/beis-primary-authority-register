@@ -17,10 +17,11 @@ use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_data\ParDataManager;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\user\Entity\User;
-use Drupal\message\MessageInterface;
+use Drupal\Core\Link;
 
 /**
 * Manages all functionality universal to Par Data.
@@ -138,7 +139,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
     $build['partnerships'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Your partnerships'),
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
       '#cache' => ['contexts' => ['user.par_memberships:authority']],
@@ -186,7 +187,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
     $build['partnerships_find'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Find a partnership'),
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
@@ -233,7 +234,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
       $build['institutions'] = [
         '#type' => 'fieldset',
         '#title' => $this->t($heading),
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         '#collapsible' => FALSE,
         '#collapsed' => FALSE,
       ];
@@ -260,7 +261,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
     $build['people'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('People'),
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
@@ -280,18 +281,28 @@ class ParDashboardComponents implements TrustedCallbackInterface {
     $build['user'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Your account'),
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
 
     // Profile management link.
-    $manage_profile = $this->getLinkByRoute('par_profile_update_flows.gdpr', ['user' => $this->getCurrentUser()->id()]);
-    $profile_link = $manage_profile->setText('Manage your profile details')->toString();
-    $build['user']['profile'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>{$profile_link}</p>",
-    ];
+    try {
+      $params = ['user' => $this->getCurrentUser()->id()];
+      $manage_profile_flow = ParFlow::load('profile_update');
+      $manage_profile_link = $manage_profile_flow?->getStartLink(1, 'Manage your profile details', $params);
+    } catch (ParFlowException $e) {
+
+    }
+
+    if ($manage_profile_link instanceof Link) {
+      $build['user']['profile'] = [
+        '#type' => 'link',
+        '#title' => $manage_profile_link->getText(),
+        '#url' => $manage_profile_link->getUrl(),
+        '#options' => $manage_profile_link->getUrl()->getOptions(),
+      ];
+    }
 
     return $build;
   }
@@ -309,7 +320,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
     $build['messages'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Messages'),
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];

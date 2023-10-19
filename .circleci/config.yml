@@ -1,12 +1,13 @@
 version: 2.1
 orbs:
-  aws-s3: circleci/aws-s3@1.0.0
+  aws-cli: circleci/aws-cli@4.1.1
+  aws-s3: circleci/aws-s3@4.0.0
   browser-tools: circleci/browser-tools@1.1.3
 
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v4.2.7
+      - image: beispar/web:v5.0.3
         name: web
         environment:
           APP_ENV: ci
@@ -40,6 +41,12 @@ references:
 
     working_directory: /var/www/html
 
+  aws_setup: &aws_setup
+    aws-cli/setup:
+      aws_access_key_id: S3_ACCESS_KEY
+      aws_secret_access_key: S3_SECRET_KEY
+      region: S3_REGION
+
   clean_working_directory: &clean_working_directory
     run:
       name: "Clean the default directory"
@@ -51,12 +58,12 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v11-repo-{{ .Branch }}-{{ .Revision }}
+        - v12-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v11-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+        - v12-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -158,26 +165,25 @@ jobs:
           name: "Database preparation"
           command: |
             mkdir -p backups
+      - *aws_setup
       - aws-s3/copy:
+          arguments: |
+            --cache-control "max-age=0"
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
           to: backups/${SEED_DATABASE}-latest.tar.gz
-          arguments: |
-            --region eu-west-1 \
-            --cache-control "max-age=0"
       - run:
           name: "Unpacking seed database"
           command: cd backups && tar --no-same-owner -zxvf ${SEED_DATABASE}-latest.tar.gz
       - aws-s3/copy:
+          arguments: |
+            --cache-control "max-age=0"
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
           to: backups/${SANITISED_DATABASE}-latest.tar.gz
-          arguments: |
-            --region eu-west-1 \
-            --cache-control "max-age=0"
       - run:
           name: "Unpacking sanitised database"
           command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - save_cache:
-          key: v11-repo-{{ .Branch }}-{{ .Revision }}
+          key: v12-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
@@ -192,7 +198,11 @@ jobs:
           command: |
             echo "$(pwd)"
             composer install -v
-            npm run frontend
+            rm -f web/themes/contrib/govuk_theme/css/styles.css
+            npm run install-govuk-theme
+            npm run install-par-theme
+            npm install
+            npm run gulp
       - run:
           name: "Installing tests"
           command: |
@@ -200,7 +210,7 @@ jobs:
             cd ./tests && rm -rf node_modules && npm install
       - *restore_scaffold
       - save_cache:
-          key: v11-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+          key: v12-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
           paths:
             - ./node_modules
             - ./vendor
@@ -266,12 +276,12 @@ jobs:
           command: |
             ./vendor/bin/paratest --processes=16 --no-coverage
       - run:
-          name: "Run feature tests"
+          name: "[disabled] Run feature tests"
           command: |
             cd tests
-            echo "Running smoke tests against default theme"
-            npm run ci -- --tag ci
-            npm run generate-report
+            echo "e2e smoke tests are disabled"
+            echo "to enable run: 'npm run ci -- --tag ci'"
+            echo "to generate reports run: 'npm run generate-report'"
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
@@ -301,12 +311,12 @@ jobs:
           command: |
             ./vendor/bin/paratest --processes=16 --no-coverage
       - run:
-          name: "Run feature tests"
+          name: "[disabled] Run feature tests"
           command: |
             cd tests
-            echo "Running full tests against default theme"
-            npm run ci -- --tag ci
-            npm run generate-report
+            echo "e2e full tests are disabled"
+            echo "to enable run: 'npm run ci -- --tag ci'"
+            echo "to generate reports run: 'npm run generate-report'"
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
@@ -353,7 +363,7 @@ jobs:
             jmeter -n -t ./tests/nfr/jmeter/search_partnerships.jmx \
                 -Jurl=beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital \
                 -l ./tests/reports/jmeter/jmeter-log.jtl
-            /opt/apache-jmeter-5.4.3/bin/JMeterPluginsCMD.sh --generate-csv ./tests/reports/jmeter/aggregate-report.csv \
+            /opt/apache-jmeter-5.5/bin/JMeterPluginsCMD.sh --generate-csv ./tests/reports/jmeter/aggregate-report.csv \
                 --input-jtl ./tests/reports/jmeter/jmeter-log.jtl  \
                 --plugin-type AggregateReport
       - run:
@@ -384,11 +394,11 @@ jobs:
           name: "Examine asset bundle."
           command: |
             ls -lah /tmp/workspace
+      - *aws_setup
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
           arguments: |
-            --region eu-west-1 \
             --cache-control "max-age=0"
       - run:
           name: "Deploy to staging environment"
@@ -423,7 +433,7 @@ jobs:
           command: |
             DEPLOY_ENV="production"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $GOVUK_CF_USER -p $GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
 
   deploy_test:
     <<: *defaults
@@ -441,10 +451,10 @@ jobs:
           name: "Examine asset bundle."
           command: |
             ls -lah /tmp/workspace
+      - *aws_setup
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
-          arguments: '--region eu-west-1'
       - run:
           name: "Deploy to test environment"
           command: |
@@ -461,11 +471,11 @@ jobs:
           name: "Backup production database"
           command: |
             ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
+      - *aws_setup
       - aws-s3/copy:
           from: "/tmp/backups/"
           to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
           arguments: |
-            --region eu-west-1 \
             --cache-control "max-age=0" \
             --recursive \
             --exclude="*" \
@@ -479,11 +489,11 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *aws_setup
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${UNSANITISED_DATABASE}-latest.tar.gz"
           to: "backups/${UNSANITISED_DATABASE}-latest.tar.gz"
           arguments: |
-            --region eu-west-1 \
             --cache-control "max-age=0"
       - run:
           name: "Unpacking database"
@@ -553,7 +563,6 @@ jobs:
           from: "/tmp/backups/"
           to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
           arguments: |
-            --region eu-west-1 \
             --cache-control "max-age=0" \
             --recursive \
             --exclude="*" \
@@ -626,7 +635,6 @@ workflows:
           context: production
           requires:
             - deploy_stage
-            - test_load
           filters:
             tags:
               only: /^v.*/

@@ -318,9 +318,24 @@ function cf_teardown {
             fi
 
             ## In some instances service keys may also have to be deleted
-            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $PG_BACKING_SERVICE'\n"
+            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $REDIS_BACKING_SERVICE'\n"
 
             cf delete-service -f $REDIS_BACKING_SERVICE
+        fi
+
+        ## Remove any opensearch backing services, unbind services first
+        if cf service $OS_BACKING_SERVICE >/dev/null 2>&1; then
+            if cf app beis-par-$ENV >/dev/null 2>&1; then
+                cf unbind-service beis-par-$ENV $OS_BACKING_SERVICE
+            fi
+            if [[ $ENV_ONLY != y ]] && cf app beis-par-$ENV-green >/dev/null 2>&1; then
+                cf unbind-service beis-par-$ENV-green $OS_BACKING_SERVICE
+            fi
+
+            ## In some instances service keys may also have to be deleted
+            printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $OS_BACKING_SERVICE'\n"
+
+            cf delete-service -f $OS_BACKING_SERVICE
         fi
 
         ## Remove the main app if it exists
@@ -361,7 +376,7 @@ function cf_poll_app {
 function cf_poll_service {
     I=1
     printf "Waiting for $1 backing service...\n"
-    while [[ $(cf service $1 | awk -F '  +' '/status:/ {print $2}' | grep 'in progress') ]]
+    while [[ $(cf service $1 | awk -F '  +' '/status:/ {print $3}' | grep 'in progress') ]]
     do
       printf "%0.s-" $(seq 1 $I)
       sleep 2
@@ -451,7 +466,6 @@ if [[ $ENV = "production" ]] || [[ $ENV = "staging" ]]; then
     OS_PLAN='small-ha-1'
 else
     ## The free plan can be used for any non-critical environments
-#    PG_PLAN='tiny-unencrypted-11' @TODO DB is currently too large for this plan.
     PG_PLAN='small-13'
     REDIS_PLAN='tiny-6.x'
     OS_PLAN='tiny-1'
@@ -608,10 +622,10 @@ printf "Running the post deployment scripts...\n"
 cf ssh $TARGET_ENV -c "cd app/devops/tools && python cron_runner.py"
 
 ## Run the cache warmer asynchronously with lots of memory
-cf run-task $TARGET_ENV "./scripts/cache-warmer.sh" -m 4G -k 4G --name CACHE_WARMER
+cf run-task $TARGET_ENV -c "./scripts/cache-warmer.sh" -m 4G -k 4G --name CACHE_WARMER
 
 ## Index the search engine
-cf run-task $TARGET_ENV "./scripts/re-index.sh partnership_index --rebuild" -m 4G -k 4G --name SEARCH_REINDEX
+cf run-task $TARGET_ENV -c "./scripts/re-index.sh partnership_index --rebuild" -m 4G -k 4G --name SEARCH_REINDEX
 
 # Poll running tasks so that the job reports the completion status of each task
 cf_poll_task $TARGET_ENV CACHE_WARMER

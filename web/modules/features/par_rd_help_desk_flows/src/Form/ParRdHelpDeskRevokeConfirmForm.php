@@ -34,26 +34,16 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL): AccessResult {
     try {
-      // Get a new flow negotiator that points the the route being checked for access.
+      // Get a new flow negotiator that points the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException $ignore) {
 
     }
 
-    // If partnership has been revoked, we should not be able to re-revoke it.
-    if ($par_data_partnership->isRevoked()) {
-      $this->accessResult = AccessResult::forbidden('The partnership is already revoked.');
-    }
-
-    // If partnership has been deleted, we should not be able to revoke it.
-    if ($par_data_partnership->isDeleted()) {
-       $this->accessResult = AccessResult::forbidden('The partnership is already deleted.');
-    }
-
-    // 403 if the partnership is in progress it can't be revoked.
-    if ($par_data_partnership->inProgress()) {
+    // If the partnership can't be revoked.
+    if (!$par_data_partnership->isRevocable()) {
       $this->accessResult = AccessResult::forbidden('The partnership is not active.');
     }
 
@@ -89,10 +79,10 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Revoke the partnership'),
       ],
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['partnership_info']['partnership_text'] = [
@@ -120,8 +110,14 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // No validation yet.
     parent::validateForm($form, $form_state);
+
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+
+    if (!$par_data_partnership->isRevocable()) {
+      $id = $this->getElementId('revocation_reason', $form);
+      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('This partnership cannot be revoked.', $id));
+    }
   }
 
   /**
@@ -132,8 +128,8 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
 
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
-    // We only want to update the status of active partnerships.
-    if (!$par_data_partnership->isRevoked()) {
+    // Check the partnership can be revoked before progressing.
+    if ($par_data_partnership->isRevocable()) {
       $revoked = $par_data_partnership->revoke(TRUE, $this->getFlowDataHandler()->getTempDataValue('revocation_reason'));
 
       if ($revoked) {

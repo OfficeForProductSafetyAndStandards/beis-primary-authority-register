@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -26,16 +27,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ParLinkContact extends ParFormPluginBase {
 
   /**
-   * @return DateFormatterInterface
-   */
-  protected function getDateFormatter() {
-    return \Drupal::service('date.formatter');
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $cid_contact_details = $this->getFlowNegotiator()->getFormKey('contact_details');
     $contact_email = $this->getFlowDataHandler()->getDefaultValues('email', NULL, $cid_contact_details);
 
@@ -74,13 +68,13 @@ class ParLinkContact extends ParFormPluginBase {
 
     $this->getFlowDataHandler()->setFormPermValue("user_accounts", $account_options);
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     $user_accounts = $this->getFlowDataHandler()->getDefaultValues('user_accounts', []);
 
     // If there is only one choice select it and go to the next page.
@@ -100,8 +94,8 @@ class ParLinkContact extends ParFormPluginBase {
       '#type' => 'radios',
       '#title' => t('Choose a user account'),
       '#options' => $user_accounts,
-      '#default_value' => $this->getDefaultValuesByKey("user_id", $cardinality, key($user_accounts)),
-      '#attributes' => ['class' => ['form-group']],
+      '#default_value' => $this->getDefaultValuesByKey("user_id", $index, key($user_accounts)),
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
     return $form;
@@ -110,7 +104,7 @@ class ParLinkContact extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

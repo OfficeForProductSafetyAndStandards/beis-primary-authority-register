@@ -50,7 +50,7 @@ class ParApplicationTypeForm extends ParBaseForm {
       '#type' => 'radios',
       '#options' => $this->getFlowDataHandler()->getDefaultValues('application_types', []),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('application_type'),
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
     return parent::buildForm($form, $form_state);

@@ -73,7 +73,7 @@ trait ParDisplayTrait {
    * @param array $operations
    *   The array of operations to add for each field item.
    * @param bool $single
-   *   Whether or not to only return the first item.
+   *   Whether to only return the first item.
    *
    * @return null
    */
@@ -82,7 +82,7 @@ trait ParDisplayTrait {
     foreach ($field as $delta => $value) {
       $elements[$delta] = [
         '#type' => 'container',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
       ];
 
       $field_settings = $this->getParDataManager()->getFieldDisplay($entity, $field, 'default');
@@ -92,7 +92,7 @@ trait ParDisplayTrait {
       $elements[$delta]['value']['#prefix'] = '<div>';
       $elements[$delta]['value']['#suffix'] = '</div>';
 
-      // Get all of the available entity entity operation links.
+      // Get all of the available entity operation links.
       $elements[$delta] += $this->displayEntityOperationLinks($section, $entity, $field, $delta, $operations, $single);
       if ($single) {
         break;
@@ -131,7 +131,7 @@ trait ParDisplayTrait {
       $rendered_entity = $entity_view_builder->view($entity, $view_mode);
       $elements[$delta] = [
         '#type' => 'container',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
       ];
       $elements[$delta]['entity'] = $this->renderMarkupField($rendered_entity);
 
@@ -179,7 +179,7 @@ trait ParDisplayTrait {
       $rendered_entity = $entity_view_builder->view($entity, $view_mode);
       $elements[$delta] = [
         '#type' => 'container',
-        '#attributes' => ['class' => 'form-group']
+        '#attributes' => ['class' => 'govuk-form-group']
       ];
       $elements[$delta]['entity'] = $this->renderMarkupField($rendered_entity);
 
@@ -285,7 +285,7 @@ trait ParDisplayTrait {
 
     $element = [
       '#type' => 'container',
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
     if ($title) {
       $element['#title'] = t("$section");
@@ -336,7 +336,7 @@ trait ParDisplayTrait {
         ];
         // If displaying the add action don't display the edit as well.
         if (!in_array('add', $operations)) {
-          $element[$field_name]['items'] += $this->displayEntityOperationLinks($section, $entity, $field, 0, $operations);
+          $element[$field_name]['items'] = $this->displayEntityOperationLinks($section, $entity, $field, 0, $operations);
         }
       }
 

@@ -74,7 +74,7 @@ class EnforcementNoticeStatusChange implements EventSubscriberInterface {
     $event = new ParDataEvent($par_data_enforcement_notice);
     $event_to_dispatch = $event->statusChange($par_data_enforcement_notice->getEntityTypeId(), 'reviewed');
     $dispatcher = \Drupal::service('event_dispatcher');
-    $dispatcher->dispatch($event_to_dispatch, $event);
+    $dispatcher->dispatch($event, $event_to_dispatch);
   }
 
 }

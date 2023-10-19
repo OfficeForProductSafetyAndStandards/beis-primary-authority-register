@@ -18,108 +18,155 @@ import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
-import uk.gov.beis.pageobjects.PersonContactDetailsPage;
-import uk.gov.beis.pageobjects.AuthorityAddressDetailsPage;
-import uk.gov.beis.pageobjects.PersonMembershipPage;
-import uk.gov.beis.pageobjects.AuthorityConfirmationPage;
-import uk.gov.beis.pageobjects.AuthorityDashboardPage;
-import uk.gov.beis.pageobjects.PersonAccountPage;
-import uk.gov.beis.pageobjects.AuthorityNamePage;
-import uk.gov.beis.pageobjects.AuthorityPage;
-import uk.gov.beis.pageobjects.AuthorityTypePage;
-import uk.gov.beis.pageobjects.PersonUserRoleTypePage;
-import uk.gov.beis.pageobjects.BusinessAddressDetailsPage;
-import uk.gov.beis.pageobjects.BusinessConfirmationPage;
-import uk.gov.beis.pageobjects.BusinessContactDetailsPage;
-import uk.gov.beis.pageobjects.BusinessDetailsPage;
-import uk.gov.beis.pageobjects.BusinessInvitePage;
-import uk.gov.beis.pageobjects.BusinessPage;
-import uk.gov.beis.pageobjects.DashboardPage;
-import uk.gov.beis.pageobjects.DeclarationPage;
-import uk.gov.beis.pageobjects.DeviationApprovalPage;
-import uk.gov.beis.pageobjects.DeviationCompletionPage;
-import uk.gov.beis.pageobjects.DeviationReviewPage;
-import uk.gov.beis.pageobjects.DeviationSearchPage;
-import uk.gov.beis.pageobjects.EmployeesPage;
-import uk.gov.beis.pageobjects.EnforcementActionPage;
-import uk.gov.beis.pageobjects.EnforcementCompletionPage;
-import uk.gov.beis.pageobjects.EnforcementContactDetailsPage;
-import uk.gov.beis.pageobjects.EnforcementDetailsPage;
-import uk.gov.beis.pageobjects.EnforcementLegalEntityPage;
-import uk.gov.beis.pageobjects.EnforcementNotificationPage;
-import uk.gov.beis.pageobjects.EnforcementReviewPage;
-import uk.gov.beis.pageobjects.EnforcementSearchPage;
-import uk.gov.beis.pageobjects.EnquiriesSearchPage;
-import uk.gov.beis.pageobjects.EnquiryCompletionPage;
-import uk.gov.beis.pageobjects.EnquiryContactDetailsPage;
-import uk.gov.beis.pageobjects.EnquiryReviewPage;
-import uk.gov.beis.pageobjects.HomePage;
-import uk.gov.beis.pageobjects.InspectionContactDetailsPage;
-import uk.gov.beis.pageobjects.InspectionFeedbackCompletionPage;
-import uk.gov.beis.pageobjects.InspectionFeedbackConfirmationPage;
-import uk.gov.beis.pageobjects.InspectionFeedbackDetailsPage;
-import uk.gov.beis.pageobjects.InspectionFeedbackSearchPage;
-import uk.gov.beis.pageobjects.InspectionPlanDetailsPage;
-import uk.gov.beis.pageobjects.InspectionPlanExpirationPage;
-import uk.gov.beis.pageobjects.InspectionPlanSearchPage;
-import uk.gov.beis.pageobjects.LegalEntityPage;
-import uk.gov.beis.pageobjects.LoginPage;
-import uk.gov.beis.pageobjects.MailLogPage;
-import uk.gov.beis.pageobjects.ManagePeoplePage;
-import uk.gov.beis.pageobjects.MemberListPage;
-import uk.gov.beis.pageobjects.PersonsProfilePage;
-import uk.gov.beis.pageobjects.NewsLetterManageSubscriptionListPage;
-import uk.gov.beis.pageobjects.NewsLetterSubscriptionPage;
-import uk.gov.beis.pageobjects.NewsLetterSubscriptionReviewPage;
-import uk.gov.beis.pageobjects.ONSCodePage;
-import uk.gov.beis.pageobjects.OrganisationDashboardPage;
-import uk.gov.beis.pageobjects.PartnershipAdvancedSearchPage;
-import uk.gov.beis.pageobjects.PartnershipApprovalPage;
-import uk.gov.beis.pageobjects.PartnershipCompletionPage;
-import uk.gov.beis.pageobjects.PartnershipConfirmationPage;
-import uk.gov.beis.pageobjects.PartnershipDescriptionPage;
-import uk.gov.beis.pageobjects.PartnershipRestoredPage;
-import uk.gov.beis.pageobjects.PartnershipRevokedPage;
-import uk.gov.beis.pageobjects.PartnershipSearchPage;
-import uk.gov.beis.pageobjects.PartnershipTermsPage;
-import uk.gov.beis.pageobjects.PartnershipTypePage;
-import uk.gov.beis.pageobjects.PasswordPage;
-import uk.gov.beis.pageobjects.ProposedEnforcementPage;
-import uk.gov.beis.pageobjects.RegulatoryFunctionPage;
-import uk.gov.beis.pageobjects.RemoveEnforcementConfirmationPage;
-import uk.gov.beis.pageobjects.RemoveEnforcementPage;
-import uk.gov.beis.pageobjects.ReplyDeviationRequestPage;
-import uk.gov.beis.pageobjects.ReplyEnquiryPage;
-import uk.gov.beis.pageobjects.ReplyInspectionFeedbackPage;
-import uk.gov.beis.pageobjects.RequestDeviationPage;
-import uk.gov.beis.pageobjects.RequestEnquiryPage;
-import uk.gov.beis.pageobjects.RestorePartnershipConfirmationPage;
-import uk.gov.beis.pageobjects.RevokePartnershipConfirmationPage;
-import uk.gov.beis.pageobjects.SICCodePage;
-import uk.gov.beis.pageobjects.TradingPage;
-import uk.gov.beis.pageobjects.UpdateUserCommunicationPreferencesPage;
-import uk.gov.beis.pageobjects.UpdateUserContactDetailsPage;
-import uk.gov.beis.pageobjects.UpdateUserSubscriptionsPage;
-import uk.gov.beis.pageobjects.UploadInspectionPlanPage;
-import uk.gov.beis.pageobjects.UserCommsPreferencesPage;
-import uk.gov.beis.pageobjects.PersonCreateAccountPage;
-import uk.gov.beis.pageobjects.UserNotificationPreferencesPage;
-import uk.gov.beis.pageobjects.UserProfileCompletionPage;
-import uk.gov.beis.pageobjects.UserProfileConfirmationPage;
-import uk.gov.beis.pageobjects.UserProfilePage;
-import uk.gov.beis.pageobjects.UserSubscriptionPage;
-import uk.gov.beis.pageobjects.UserTermsPage;
-import uk.gov.beis.pageobjects.ViewEnquiryPage;
+import uk.gov.beis.pageobjects.*;
+import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceArchivePage;
+import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceNoticeDetailsPage;
+import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceNoticeSearchPage;
+import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceRemovalPage;
+import uk.gov.beis.pageobjects.AdvicePageObjects.UploadAdviceNoticePage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityAddressDetailsPage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityConfirmationPage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityDashboardPage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityNamePage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityTypePage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.ONSCodePage;
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationApprovalPage;
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationCompletionPage;
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationReviewPage;
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationSearchPage;
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.ReplyDeviationRequestPage;
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.RequestDeviationPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementActionPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementCompletionPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementContactDetailsPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementDetailsPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementLegalEntityPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementNotificationPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementReviewPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementSearchPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.ProposedEnforcementPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.RemoveEnforcementConfirmationPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.RemoveEnforcementPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiriesSearchPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiryCompletionPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiryContactDetailsPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiryReviewPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.ReplyEnquiryPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.RequestEnquiryPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.ViewEnquiryPage;
+import uk.gov.beis.pageobjects.HomePageLinkPageObjects.*;
+import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackCompletionPage;
+import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackConfirmationPage;
+import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackDetailsPage;
+import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackSearchPage;
+import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.ReplyInspectionFeedbackPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionContactDetailsPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanCoveragePage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanDetailsPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanExpirationPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanReviewPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.RemoveReasonInspectionPlanPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.RevokeReasonInspectionPlanPage;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.UploadInspectionPlanPage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.AmendmentCompletedPage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.ConfirmThisAmendmentPage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityReviewPage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.UpdateLegalEntityPage;
+import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterManageSubscriptionListPage;
+import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterSubscriptionPage;
+import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterSubscriptionReviewPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.AddOrganisationNamePage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessAddressDetailsPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessContactDetailsPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessDetailsPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.ConfirmMemberUploadPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.DeclarationPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.EmployeesPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberListPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberListUploadedPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationAddedConfirmationPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MembershipCeasedPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.UploadListOfMembersPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.AuthorityPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.BusinessInvitePage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.BusinessPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipAdvancedSearchPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipApprovalPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipCompletionPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipDescriptionPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipRestoredPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipRevokedPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipSearchPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipTermsPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipTypePage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.RegulatoryFunctionPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.RestorePartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.RevokePartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.TransferPartnerships.AuthorityTransferSelectionPage;
+import uk.gov.beis.pageobjects.TransferPartnerships.ConfirmThisTranferPage;
+import uk.gov.beis.pageobjects.TransferPartnerships.PartnershipMigrationSelectionPage;
+import uk.gov.beis.pageobjects.TransferPartnerships.TransferCompletedPage;
+import uk.gov.beis.pageobjects.UserManagement.*;
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
 
 public class PARStepDefs {
 
 	public static WebDriver driver;
+	
+	// PAR Home Page
 	private HomePage parHomePage;
+	private LocalRegulationPrimaryAuthorityPage localRegulationPrimaryAuthorityPage;
+	private PrimaryAuthorityDocumentsPage primaryAuthorityDocumentsPage;
+	private TermsAndConditionsPage termsAndConditionsPage;
+	private CookiesPage cookiesPage;
+	private OPSSPrivacyNoticePage opssPrivacyNoticePage;
+	private AccessibilityStatementPage accessibilityStatementPage;
+	private OpenGovernmentLicencePage openGovernmentLicencePage;
+	private CrownCopyrightPage crownCopyrightPage;
+	
+	// Dashboard
+	private PARReportingPage parReportingPage;
+	
+	// User Management
+	private MergeContactRecordsPage mergeContactRecordsPage;
+	private MergeContactRecordsConfirmationPage mergeContactRecordsConfirmationPage;
+	
+	// Legal Entity
+	private UpdateLegalEntityPage updateLegalEntityPage;
+	private ConfirmThisAmendmentPage confirmThisAmendmentPage;
+	private AmendmentCompletedPage amendmentCompletedPage;
+	
+	// Partnership
+	private MembershipCeasedPage membershipCeasedPage;
+	private UploadListOfMembersPage uploadListOfMembersPage;
+	private ConfirmMemberUploadPage confirmMemberUploadPage;
+	private MemberListUploadedPage memberListUploadedPage;
+	
+	// Partnerships Transfer
+	private AuthorityTransferSelectionPage authorityTransferSelectionPage;
+	private PartnershipMigrationSelectionPage partnershipMigrationSelectionPage;
+	private ConfirmThisTranferPage confirmThisTranferPage;
+	private TransferCompletedPage transferCompletedPage;
+	
+	// Shared Pages
+	private RevokePage revokePage;
+	private ReinstatePage reinstatePage;
+	private RemovePage removePage;
+	
+	// Next Section
+	private RevokeReasonInspectionPlanPage revokeReasonInspectionPlanPage;
 	private RequestEnquiryPage requestEnquiryPage;
 	private DeviationSearchPage deviationSearchPage;
+	private InspectionPlanReviewPage inspectionPlanReviewPage;
 	private EnquiryReviewPage enquiryReviewPage;
+	private AdviceNoticeDetailsPage adviceNoticeDetailsPage;
 	private InspectionFeedbackConfirmationPage inspectionFeedbackConfirmationPage;
 	private InspectionFeedbackDetailsPage inspectionFeedbackDetailsPage;
 	private InspectionPlanSearchPage inspectionPlanSearchPage;
@@ -135,6 +182,7 @@ public class PARStepDefs {
 	private EnforcementNotificationPage enforcementNotificationPage;
 	private EnforcementSearchPage enforcementSearchPage;
 	private ONSCodePage onsCodePage;
+	private UploadAdviceNoticePage uploadAdviceNoticePage;
 	private InspectionFeedbackSearchPage inspectionFeedbackSearchPage;
 	private ProposedEnforcementPage proposedEnforcementPage;
 	private EnforcementReviewPage enforcementReviewPage;
@@ -142,11 +190,12 @@ public class PARStepDefs {
 	private AuthorityConfirmationPage authorityConfirmationPage;
 	private AuthorityAddressDetailsPage authorityAddressDetailsPage;
 	private AuthorityTypePage authorityTypePage;
+	private AdviceNoticeSearchPage adviceNoticeSearchPage;
 	private AuthorityNamePage authorityNamePage;
+	private LegalEntityReviewPage legalEntityReviewPage;
 	private ReplyInspectionFeedbackPage replyInspectionFeedbackPage;
 	private PartnershipAdvancedSearchPage partnershipAdvancedSearchPage;
 	private UserProfileConfirmationPage userProfileConfirmationPage;
-	private UserNotificationPreferencesPage userNotificationPreferencesPage; // Note for Leo: This is not being used, does it need removing?
 	private MailLogPage mailLogPage;
 	private RequestDeviationPage requestDeviationPage;
 	private InspectionPlanExpirationPage inspectionPlanExpirationPage;
@@ -168,10 +217,11 @@ public class PARStepDefs {
 	private PartnershipTermsPage parPartnershipTermsPage;
 	private PartnershipDescriptionPage parPartnershipDescriptionPage;
 	private BusinessPage parBusinessPage;
+	private RemoveReasonInspectionPlanPage removeReasonInspectionPlanPage;
 	private RevokePartnershipConfirmationPage revokePartnershipConfirmationPage;
 	private PartnershipRevokedPage partnershipRevokedPage;
 	private UserTermsPage userTermsPage;
-	private LegalEntityPage legalEntityPage;
+	private LegalEntityTypePage legalEntityTypePage;
 	private EmployeesPage employeesPage;
 	private BusinessDetailsPage parBusinessDetailsPage;
 	private DeclarationPage parDeclarationPage;
@@ -189,7 +239,17 @@ public class PARStepDefs {
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
 	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
 	private ViewEnquiryPage viewEnquiryPage;
-
+	private EditRegisteredAddressPage editRegisteredAddressPage;
+	private AdviceArchivePage adviceArchivePage;
+	private AdviceRemovalPage adviceRemovalPage;
+	private DeletePage deletePage;
+	private CompletionPage completionPage;
+	private AddOrganisationNamePage addOrganisationNamePage;
+	private EnterTheDatePage enterTheDatePage;
+	private InspectionPlanCoveragePage inspectionPlanCoveragePage;
+	private MemberOrganisationSummaryPage memberOrganisationSummaryPage;
+	private MemberOrganisationAddedConfirmationPage memberOrganisationAddedConfirmationPage;
+	
 	// PAR News Letter
 	private UserProfilePage userProfilePage;
 	private UpdateUserCommunicationPreferencesPage updateUserCommunicationPreferencesPage;
@@ -207,7 +267,6 @@ public class PARStepDefs {
 	private PersonUserRoleTypePage personUserTypePage;
 	private PersonCreateAccountPage personCreateAccountPage;
 	private PersonsProfilePage personsProfilePage;
-
 	private DeviationReviewPage deviationReviewPage;
 	private DeviationApprovalPage deviationApprovalPage;
 	private EnquiriesSearchPage enquiriesSearchPage;
@@ -216,6 +275,53 @@ public class PARStepDefs {
 
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
+		
+		// PAR Home Page
+		localRegulationPrimaryAuthorityPage = PageFactory.initElements(driver, LocalRegulationPrimaryAuthorityPage.class);
+		primaryAuthorityDocumentsPage = PageFactory.initElements(driver, PrimaryAuthorityDocumentsPage.class);
+		termsAndConditionsPage = PageFactory.initElements(driver, TermsAndConditionsPage.class);
+		cookiesPage = PageFactory.initElements(driver, CookiesPage.class);
+		opssPrivacyNoticePage = PageFactory.initElements(driver, OPSSPrivacyNoticePage.class);
+		accessibilityStatementPage = PageFactory.initElements(driver, AccessibilityStatementPage.class);
+		openGovernmentLicencePage = PageFactory.initElements(driver, OpenGovernmentLicencePage.class);
+		crownCopyrightPage = PageFactory.initElements(driver, CrownCopyrightPage.class);
+		
+		// Dashboard
+		parReportingPage = PageFactory.initElements(driver, PARReportingPage.class);
+		
+		// User Management
+		mergeContactRecordsPage = PageFactory.initElements(driver, MergeContactRecordsPage.class);
+		mergeContactRecordsConfirmationPage = PageFactory.initElements(driver, MergeContactRecordsConfirmationPage.class);
+		
+		// Legal Entity
+		updateLegalEntityPage = PageFactory.initElements(driver, UpdateLegalEntityPage.class);
+		confirmThisAmendmentPage = PageFactory.initElements(driver, ConfirmThisAmendmentPage.class);
+		amendmentCompletedPage = PageFactory.initElements(driver, AmendmentCompletedPage.class);
+		
+		// Partnership
+		membershipCeasedPage = PageFactory.initElements(driver, MembershipCeasedPage.class);
+		uploadListOfMembersPage = PageFactory.initElements(driver, UploadListOfMembersPage.class);
+		confirmMemberUploadPage = PageFactory.initElements(driver, ConfirmMemberUploadPage.class);
+		memberListUploadedPage = PageFactory.initElements(driver, MemberListUploadedPage.class);
+		
+		// Partnerships Transfer
+		authorityTransferSelectionPage = PageFactory.initElements(driver, AuthorityTransferSelectionPage.class);
+		partnershipMigrationSelectionPage = PageFactory.initElements(driver, PartnershipMigrationSelectionPage.class);
+		confirmThisTranferPage = PageFactory.initElements(driver, ConfirmThisTranferPage.class);
+		transferCompletedPage = PageFactory.initElements(driver, TransferCompletedPage.class);
+		
+		// Shared Pages
+		revokePage = PageFactory.initElements(driver, RevokePage.class);
+		reinstatePage = PageFactory.initElements(driver, ReinstatePage.class);
+		
+		// Next Section
+		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
+		uploadAdviceNoticePage = PageFactory.initElements(driver, UploadAdviceNoticePage.class);
+		adviceNoticeSearchPage = PageFactory.initElements(driver, AdviceNoticeSearchPage.class);
+		legalEntityReviewPage = PageFactory.initElements(driver, LegalEntityReviewPage.class);
+		removeReasonInspectionPlanPage = PageFactory.initElements(driver, RemoveReasonInspectionPlanPage.class);
+		revokeReasonInspectionPlanPage = PageFactory.initElements(driver, RevokeReasonInspectionPlanPage.class);
+		inspectionPlanReviewPage = PageFactory.initElements(driver, InspectionPlanReviewPage.class);
 		replyEnquiryPage = PageFactory.initElements(driver, ReplyEnquiryPage.class);
 		enquiriesSearchPage = PageFactory.initElements(driver, EnquiriesSearchPage.class);
 		enquiryReviewPage = PageFactory.initElements(driver, EnquiryReviewPage.class);
@@ -269,13 +375,11 @@ public class PARStepDefs {
 		userProfileConfirmationPage = PageFactory.initElements(driver, UserProfileConfirmationPage.class);
 		userSubscriptionPage = PageFactory.initElements(driver, UserSubscriptionPage.class);
 		employeesPage = PageFactory.initElements(driver, EmployeesPage.class);
-		userNotificationPreferencesPage = PageFactory.initElements(driver, UserNotificationPreferencesPage.class);
 		userTermsPage = PageFactory.initElements(driver, UserTermsPage.class);
 		userProfileCompletionPage = PageFactory.initElements(driver, UserProfileCompletionPage.class);
 		passwordPage = PageFactory.initElements(driver, PasswordPage.class);
 		mailLogPage = PageFactory.initElements(driver, MailLogPage.class);
 		memberListPage = PageFactory.initElements(driver, MemberListPage.class);
-		legalEntityPage = PageFactory.initElements(driver, LegalEntityPage.class);
 		tradingPage = PageFactory.initElements(driver, TradingPage.class);
 		sicCodePage = PageFactory.initElements(driver, SICCodePage.class);
 		parHomePage = PageFactory.initElements(driver, HomePage.class);
@@ -295,17 +399,28 @@ public class PARStepDefs {
 		parPartnershipTermsPage = PageFactory.initElements(driver, PartnershipTermsPage.class);
 		partnershipSearchPage = PageFactory.initElements(driver, PartnershipSearchPage.class);
 		viewEnquiryPage = PageFactory.initElements(driver, ViewEnquiryPage.class);
-
+		editRegisteredAddressPage = PageFactory.initElements(driver, EditRegisteredAddressPage.class);
+		legalEntityTypePage = PageFactory.initElements(driver, LegalEntityTypePage.class);
+		adviceArchivePage = PageFactory.initElements(driver, AdviceArchivePage.class);
+		adviceRemovalPage = PageFactory.initElements(driver, AdviceRemovalPage.class);
+		deletePage = PageFactory.initElements(driver, DeletePage.class);
+		completionPage = PageFactory.initElements(driver, CompletionPage.class);
+		addOrganisationNamePage = PageFactory.initElements(driver, AddOrganisationNamePage.class);
+		enterTheDatePage = PageFactory.initElements(driver, EnterTheDatePage.class);
+		inspectionPlanCoveragePage = PageFactory.initElements(driver, InspectionPlanCoveragePage.class);
+		memberOrganisationSummaryPage = PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
+		memberOrganisationAddedConfirmationPage = PageFactory.initElements(driver, MemberOrganisationAddedConfirmationPage.class);
+		
 		// PAR News Letter
 		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
-		updateUserCommunicationPreferencesPage = PageFactory.initElements(driver, UpdateUserCommunicationPreferencesPage.class);
+		updateUserCommunicationPreferencesPage = PageFactory.initElements(driver,
+				UpdateUserCommunicationPreferencesPage.class);
 		updateUserContactDetailsPage = PageFactory.initElements(driver, UpdateUserContactDetailsPage.class);
 		updateUserSubscriptionsPage = PageFactory.initElements(driver, UpdateUserSubscriptionsPage.class);
 		newsLetterSubscriptionPage = PageFactory.initElements(driver, NewsLetterSubscriptionPage.class);
 		newsLetterManageSubscriptionListPage = PageFactory.initElements(driver,
 				NewsLetterManageSubscriptionListPage.class);
-		newsLetterSubscriptionReviewPage = PageFactory.initElements(driver,
-				NewsLetterSubscriptionReviewPage.class);
+		newsLetterSubscriptionReviewPage = PageFactory.initElements(driver, NewsLetterSubscriptionReviewPage.class);
 
 		// Person Creation and Update
 		managePeoplePage = PageFactory.initElements(driver, ManagePeoplePage.class);
@@ -315,6 +430,7 @@ public class PARStepDefs {
 		personUserTypePage = PageFactory.initElements(driver, PersonUserRoleTypePage.class);
 		personCreateAccountPage = PageFactory.initElements(driver, PersonCreateAccountPage.class);
 		personsProfilePage = PageFactory.initElements(driver, PersonsProfilePage.class);
+		removePage = PageFactory.initElements(driver, RemovePage.class);
 	}
 
 	@Given("^the user is on the PAR home page$")
@@ -352,53 +468,62 @@ public class PARStepDefs {
 	}
 
 	@When("^the user creates a new \"([^\"]*)\" partnership application with the following details:$")
-	public void the_user_creates_a_new_partnership_application_with_the_following_details(String type,
-			DataTable details) throws Throwable {
+	public void the_user_creates_a_new_partnership_application_with_the_following_details(String type, DataTable details) throws Throwable {
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
-			LOG.info("Select apply new partnership");
-
-			parDashboardPage.selectApplyForNewPartnership();
-			LOG.info("Choose authority");
+			
 			DataStore.saveValue(UsableValues.AUTHORITY_NAME, data.get("Authority"));
-			parAuthorityPage.selectAuthority(data.get("Authority"));
-			LOG.info("Select partnership type");
 			DataStore.saveValue(UsableValues.PARTNERSHIP_TYPE, type);
-			parPartnershipTypePage.selectPartnershipType(type);
-			LOG.info("Accepting terms");
-			parPartnershipTermsPage.acceptTerms();
 			DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, data.get("Partnership Info"));
-			LOG.info("Entering partnership description");
-			parPartnershipDescriptionPage.enterPartnershipDescription(data.get("Partnership Info"),
-					ScenarioContext.secondJourneyPart);
-			LOG.info("Entering business/organisation name");
 			DataStore.saveValue(UsableValues.BUSINESS_NAME, RandomStringGenerator.getBusinessName(4));
-			parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
-			LOG.info("Enter address details");
-			parBusinessAddressDetailsPage.enterAddressDetails(data.get("addressline1"), data.get("town"),
-					data.get("postcode"));
 			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("addressline1"));
 			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("town"));
 			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("postcode"));
-
-			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, RandomStringGenerator.getEmail(4));
-			LOG.info("Enter contact details");
-			parBusinessContactDetailsPage.enterContactDetails(data.get("firstname"), data.get("lastname"),
-					data.get("phone"), DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 			DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, data.get("firstname"));
 			DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, data.get("lastname"));
 			DataStore.saveValue(UsableValues.BUSINESS_PHONE, data.get("phone"));
-			LOG.info("Send invitation to user");
-			parBusinessInvitePage.sendInvite();
+			DataStore.saveValue(UsableValues.BUSINESS_EMAIL, "par_business@example.com");
 		}
+		
+		ScenarioContext.secondJourneyPart = false;
+		
+		LOG.info("Select apply new partnership");
+		parDashboardPage.selectApplyForNewPartnership();
+		
+		LOG.info("Choose authority");
+		parAuthorityPage.selectAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		
+		LOG.info("Select partnership type");
+		parPartnershipTypePage.selectPartnershipType(type);
+		
+		LOG.info("Accepting terms");
+		parPartnershipTermsPage.acceptTerms();
+		
+		LOG.info("Entering partnership description");
+		parPartnershipDescriptionPage.enterPartnershipDescription(DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO));
+		
+		LOG.info("Entering business/organisation name");
+		parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		
+		LOG.info("Enter address details");
+		parBusinessAddressDetailsPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_TOWN),
+				DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		
+		LOG.info("Enter contact details");
+		parBusinessContactDetailsPage.enterContactDetails(DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME), DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME),
+				DataStore.getSavedValue(UsableValues.BUSINESS_PHONE), DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
+		
+		LOG.info("Send invitation to user");
+		parBusinessInvitePage.sendInvite();
 	}
 
 	@Then("^the first part of the partnership application is successfully completed$")
 	public void the_first_part_of_the_partnership_application_is_successfully_completed() throws Throwable {
 		LOG.info("Confirm/check partnership details");
-		parPartnershipConfirmationPage.confirmDetails();
+		parPartnershipConfirmationPage.confirmDetailsAsAuthority();
+		
 		Assert.assertTrue("Partnership info missing", parPartnershipConfirmationPage.checkPartnershipInfo());
-		Assert.assertTrue("Partnership appliction information not correct",
-				parPartnershipConfirmationPage.checkPartnershipApplication());
+		Assert.assertTrue("Partnership appliction information not correct", parPartnershipConfirmationPage.checkPartnershipApplication());
+		
 		LOG.info("Saving changes");
 		parPartnershipConfirmationPage.saveChanges();
 		parPartnershipCompletionPage.completeApplication();
@@ -408,20 +533,24 @@ public class PARStepDefs {
 	public void the_user_searches_for_the_last_created_partnership() throws Throwable {
 		parDashboardPage.checkAndAcceptCookies();
 
-		String user = DataStore.getSavedValue(UsableValues.LOGIN_USER);
-		switch (user) {
+		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
 		case ("par_helpdesk@example.com"):
-			LOG.info("Selecting view partnerships");
+			LOG.info("Selecting Search partnerships");
 			parDashboardPage.selectSearchPartnerships();
 			partnershipAdvancedSearchPage.searchPartnerships();
 			break;
 
 		case ("par_enforcement_officer@example.com"):
-			LOG.info("Selecting search for partnership");
+			LOG.info("Selecting Search for partnerships");
 			parDashboardPage.selectSearchforPartnership();
 			partnershipSearchPage.searchPartnerships();
 			break;
-
+		case ("par_business@example.com"):
+			LOG.info("Selecting See your partnerships");
+			parDashboardPage.selectSeePartnerships();
+			partnershipSearchPage.searchPartnerships();
+			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+			break;
 		default:
 			LOG.info("Search partnerships");
 			parDashboardPage.selectSeePartnerships();
@@ -439,55 +568,72 @@ public class PARStepDefs {
 	}
 
 	@When("^the user completes the partnership application with the following details:$")
-	public void the_user_completes_the_partnership_application_with_the_following_details(DataTable details)
-			throws Throwable {
+	public void the_user_completes_the_partnership_application_with_the_following_details(DataTable details) throws Throwable {
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
-			LOG.info("Accepting terms");
-			parDeclarationPage.acceptTerms();
-			LOG.info("Add business description");
+			
 			DataStore.saveValue(UsableValues.BUSINESS_DESC, data.get("Business Description"));
-			parBusinessDetailsPage.enterBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
-			LOG.info("Confirming address details");
-			parBusinessAddressDetailsPage.proceed();
-			LOG.info("Confirming contact details");
-			parBusinessContactDetailsPage.proceed();
-			LOG.info("Selecting SIC Code");
 			DataStore.saveValue(UsableValues.SIC_CODE, data.get("SIC Code"));
-			sicCodePage.selectSICCode(data.get("SIC Code"));
-
-			String partnershiptype = DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase();
-			switch (partnershiptype) {
+			
+			switch (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase()) {
 
 			case ("direct"):
-				LOG.info("Selecting No of Employees");
 				DataStore.saveValue(UsableValues.NO_EMPLOYEES, data.get("No of Employees"));
-				employeesPage.selectNoEmployees(data.get("No of Employees"));
 				break;
 
 			case ("co-ordinated"):
-				LOG.info("Selecting Membership List size");
 				DataStore.saveValue(UsableValues.MEMBERLIST_SIZE, data.get("Member List Size"));
-				memberListPage.selectMemberSize(data.get("Member List Size"));
 				break;
 			}
-
-			LOG.info("Entering business trading name");
-			DataStore.saveValue(UsableValues.TRADING_NAME,
-					DataStore.getSavedValue(UsableValues.BUSINESS_NAME).replace("Business", "trading name"));
-			tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+			
+			DataStore.saveValue(UsableValues.TRADING_NAME, DataStore.getSavedValue(UsableValues.BUSINESS_NAME).replace("Business", "trading name"));
+			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Legal Entity Name"));
 			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal entity Type"));
-			legalEntityPage.createLegalEntity(data.get("Legal entity Type"));
-			LOG.info("Set second part of journey part to true");
-			ScenarioContext.secondJourneyPart = true;
+			DataStore.saveValue(UsableValues.ENTITY_NUMBER, data.get("Company number"));
 		}
+		
+		LOG.info("Accepting terms");
+		parDeclarationPage.acceptTerms();
+		
+		LOG.info("Add business description");
+		parBusinessDetailsPage.enterBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
+		
+		LOG.info("Confirming address details");
+		parBusinessAddressDetailsPage.proceed();
+		
+		LOG.info("Confirming contact details");
+		parBusinessContactDetailsPage.proceed();
+		
+		LOG.info("Selecting SIC Code");
+		sicCodePage.selectSICCode(DataStore.getSavedValue(UsableValues.SIC_CODE));
+		
+		switch (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase()) {
+
+		case ("direct"):
+			LOG.info("Selecting No of Employees");
+			employeesPage.selectNoEmployees(DataStore.getSavedValue(UsableValues.NO_EMPLOYEES));
+			break;
+
+		case ("co-ordinated"):
+			LOG.info("Selecting Membership List size");
+			memberListPage.selectMemberSize(DataStore.getSavedValue(UsableValues.MEMBERLIST_SIZE));
+			break;
+		}
+
+		LOG.info("Entering business trading name");
+		tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+		
+		legalEntityTypePage.selectEntityType(DataStore.getSavedValue(UsableValues.ENTITY_NAME),DataStore.getSavedValue(UsableValues.ENTITY_TYPE),DataStore.getSavedValue(UsableValues.ENTITY_NUMBER));
+		legalEntityReviewPage.proceed();
+		
+		LOG.info("Set second part of journey part to true");
+		ScenarioContext.secondJourneyPart = true;
 	}
 
 	@Then("^the second part of the partnership application is successfully completed$")
 	public void the_second_part_of_the_partnership_application_is_successfully_completed() throws Throwable {
 		LOG.info("Check and confirm changes");
 
-		String partnershiptype = DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase();
-		switch (partnershiptype) {
+		switch (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase()) {
 
 		case ("direct"):
 			LOG.info("Check employee size");
@@ -500,8 +646,15 @@ public class PARStepDefs {
 			break;
 		}
 
-		Assert.assertTrue("Appliction not complete",
-				parPartnershipConfirmationPage.checkPartnershipApplicationSecondPart());
+		Assert.assertTrue("Appliction not complete", parPartnershipConfirmationPage.checkPartnershipApplicationSecondPart());
+		
+		if (ScenarioContext.registered == true) {
+			parPartnershipConfirmationPage.checkRegNo();
+		}
+		if (ScenarioContext.registered == false) {
+			parPartnershipConfirmationPage.checkEntityName();
+		}
+
 		parPartnershipConfirmationPage.confirmDetails();
 		parPartnershipConfirmationPage.saveChanges();
 		parPartnershipCompletionPage.completeApplication();
@@ -510,6 +663,7 @@ public class PARStepDefs {
 	@When("^the user visits the maillog page and extracts the invite link$")
 	public void the_user_visits_the_maillog_page_and_extracts_the_invite_link() throws Throwable {
 		mailLogPage.navigateToUrl();
+		mailLogPage.searchForUserAccountInvite(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 		mailLogPage.selectEamilAndGetINviteLink(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 	}
 
@@ -527,13 +681,11 @@ public class PARStepDefs {
 		parBusinessContactDetailsPage.proceed();
 		userCommsPreferencesPage.proceed();
 		userSubscriptionPage.selectContinue();
-//		userNotificationPreferencesPage.selectContinue();
 	}
 
 	@Then("^the user journey creation is successful$")
 	public void the_user_journey_creation_is_successful() throws Throwable {
 		LOG.info("Checking user creation is sucessful");
-		//userProfileConfirmationPage.checkUserCreation();
 		userProfileConfirmationPage.saveChanges();
 		userProfileCompletionPage.completeApplication();
 	}
@@ -580,7 +732,7 @@ public class PARStepDefs {
 	public void the_user_updates_the_partnership_information_with_the_following_info(String desc) throws Throwable {
 		parPartnershipConfirmationPage.editAboutPartnership();
 		DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, desc);
-		parPartnershipDescriptionPage.enterPartnershipDescription(desc, ScenarioContext.secondJourneyPart);
+		parPartnershipDescriptionPage.enterPartnershipDescription(desc);
 	}
 
 	@Then("^the partnership is updated correctly$")
@@ -591,62 +743,80 @@ public class PARStepDefs {
 	@When("^the user creates a new authority with the following details:$")
 	public void the_user_creates_a_new_authority_with_the_following_details(DataTable dets) throws Throwable {
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
-			LOG.info("Select manage authorities");
-			parDashboardPage.selectManageAuthorities();
-			LOG.info("Select add authority");
-			authoritiesDashboardPage.selectAddAuthority();
+			
 			DataStore.saveValue(UsableValues.AUTHORITY_NAME, RandomStringGenerator.getAuthorityName(3));
-			LOG.info("Provide authority name");
-			authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
-			LOG.info("Provide authority type");
 			DataStore.saveValue(UsableValues.AUTHORITY_TYPE, data.get("Authority Type"));
-			authorityTypePage.selectAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
-			LOG.info("Enter authority contact details");
-			authorityAddressDetailsPage.enterAddressDetails(data.get("addressline1"), data.get("town"),
-					data.get("postcode"));
 			DataStore.saveValue(UsableValues.AUTHORITY_ADDRESSLINE1, data.get("addressline1"));
+			DataStore.saveValue(UsableValues.AUTHORITY_ADDRESSLINE2, data.get("addressline2"));
 			DataStore.saveValue(UsableValues.AUTHORITY_TOWN, data.get("town"));
+			DataStore.saveValue(UsableValues.AUTHORITY_COUNTY, data.get("county"));
 			DataStore.saveValue(UsableValues.AUTHORITY_POSTCODE, data.get("postcode"));
-			LOG.info("Provide ONS code");
 			DataStore.saveValue(UsableValues.ONS_CODE, data.get("ONS Code"));
-			onsCodePage.enterONSCode(DataStore.getSavedValue(UsableValues.ONS_CODE));
-			LOG.info("Select regulatory function");
 			DataStore.saveValue(UsableValues.AUTHORITY_REGFUNCTION, data.get("Regulatory Function"));
-			regulatoryFunctionPage.selectRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
 		}
+		
+		LOG.info("Select manage authorities.");
+		parDashboardPage.selectManageAuthorities();
+		
+		LOG.info("Select add authority.");
+		authoritiesDashboardPage.selectAddAuthority();
+		
+		LOG.info("Provide authority name.");
+		authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		
+		LOG.info("Provide authority type.");
+		authorityTypePage.selectAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
+		
+		LOG.info("Enter authority contact details.");
+		authorityAddressDetailsPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.AUTHORITY_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.AUTHORITY_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.AUTHORITY_TOWN), DataStore.getSavedValue(UsableValues.AUTHORITY_COUNTY), DataStore.getSavedValue(UsableValues.AUTHORITY_POSTCODE));
+		
+		LOG.info("Provide ONS code.");
+		onsCodePage.enterONSCode(DataStore.getSavedValue(UsableValues.ONS_CODE));
+		
+		LOG.info("Select regulatory function.");
+		regulatoryFunctionPage.selectRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
+		
+		LOG.info("Clicking the Save button on the Review page.");
+		//authorityConfirmationPage.saveChanges();
 	}
 
 	@Then("^the authority is created sucessfully$")
 	public void the_authority_is_created_sucessfully() throws Throwable {
-		LOG.info("Confirm all details entered check out and save changes");
+		LOG.info("On the Authorities Dashboard.");
+		
+		// Search for the new Authority and Assert it is in the Table.
+		
 		Assert.assertTrue("Details don't check out", authorityConfirmationPage.checkAuthorityDetails());
 		authorityConfirmationPage.saveChanges();
 	}
 
 	@When("^the user searches for the last created authority$")
 	public void the_user_searches_for_the_last_created_authority() throws Throwable {
+		
 		LOG.info("Search for last created authority");
-		authoritiesDashboardPage.searchAuthority();
-		authoritiesDashboardPage.selectAuthority();
+		authoritiesDashboardPage.searchAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		authoritiesDashboardPage.selectManageAuthority();
 	}
 
 	@When("^the user updates all the fields for newly created authority$")
 	public void the_user_updates_all_the_fields_for_newly_created_authority() throws Throwable {
 		LOG.info("Updating all editble fields against selected authority");
 		authorityConfirmationPage.editAuthorityName();
-		DataStore.saveValue(UsableValues.AUTHORITY_NAME,
-				DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + " Updated");
-		authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		DataStore.saveValue(UsableValues.AUTHORITY_NAME, DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + " Updated");
+		authorityNamePage.editAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		
 		authorityConfirmationPage.editAuthorityType();
 		DataStore.saveValue(UsableValues.AUTHORITY_TYPE, "District");
-		authorityTypePage.selectAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
+		authorityTypePage.editAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
+		
 		authorityConfirmationPage.editONSCode();
 		DataStore.saveValue(UsableValues.ONS_CODE, DataStore.getSavedValue(UsableValues.ONS_CODE) + " Updated");
-		onsCodePage.enterONSCode(DataStore.getSavedValue(UsableValues.ONS_CODE));
+		onsCodePage.editONSCode(DataStore.getSavedValue(UsableValues.ONS_CODE));
+		
 		authorityConfirmationPage.editRegFunction();
 		DataStore.saveValue(UsableValues.AUTHORITY_REGFUNCTION, "Alphabet learning");
-		regulatoryFunctionPage.selectRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
-
+		regulatoryFunctionPage.editRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
 	}
 
 	@Then("^the update for the authority is successful$")
@@ -655,21 +825,60 @@ public class PARStepDefs {
 		Assert.assertTrue("Details don't check out", authorityConfirmationPage.checkAuthorityDetails());
 		authorityConfirmationPage.saveChanges();
 	}
+	
+	@When("^the user searches for an Authority with the same Regulatory Functions \"([^\"]*)\"$")
+	public void the_user_searches_for_an_Authority_with_the_same_Regulatory_Functions(String authority) throws Throwable {
+		LOG.info("Search for the Authority.");
+		parDashboardPage.selectManageAuthorities();
+		authoritiesDashboardPage.searchAuthority(authority);
+		DataStore.saveValue(UsableValues.PREVIOUS_AUTHORITY_NAME, authority);
+		
+		authoritiesDashboardPage.selectTransferPartnerships();
+	}
 
+	@When("^the user completes the partnership transfer process$")
+	public void the_user_completes_the_partnership_transfer_process() throws Throwable {
+		LOG.info("Transferring a Partnership to the new Authority.");
+		
+		authorityTransferSelectionPage.searchAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		partnershipMigrationSelectionPage.selectPartnership(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		
+		LOG.info("Confirm the Partnership Transfer.");
+		enterTheDatePage.goToConfirmThisTranferPage();
+		confirmThisTranferPage.confirmPartnershipTransfer();
+		transferCompletedPage.selectDoneButton();
+	}
+
+	@Then("^the partnership is transferred to the new authority successfully$")
+	public void the_partnership_is_transferred_to_the_new_authority_successfully() throws Throwable {
+		LOG.info("Search for the Partnership with the New Authority.");
+		
+		authoritiesDashboardPage.goToHelpDeskDashboard();
+		
+		parDashboardPage.selectSearchPartnerships();
+		partnershipAdvancedSearchPage.searchPartnershipsPrimaryAuthority();
+		partnershipAdvancedSearchPage.selectPrimaryAuthorityLink();
+		
+		LOG.info("Verify the Partnership Displays the Previously Known as Text.");
+		Assert.assertTrue("FAILED: Previously Known as text is not Displayed", parPartnershipConfirmationPage.checkPreviouslyKnownAsText());
+	}
+	
 	@Given("^the user updates all the fields for last created organisation$")
 	public void the_user_updates_all_the_fields_for_last_created_organisation() throws Throwable {
 		LOG.info("Update all fields");
 		businessConfirmationPage.editOrganisationName();
-		DataStore.saveValue(UsableValues.BUSINESS_NAME,
-				DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + " Updated");
+		
+		DataStore.saveValue(UsableValues.BUSINESS_NAME, DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + " Updated");
 		parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 		businessConfirmationPage.editOrganisationDesc();
-		DataStore.saveValue(UsableValues.BUSINESS_DESC,
-				DataStore.getSavedValue(UsableValues.BUSINESS_DESC) + " Updated");
+		
+		DataStore.saveValue(UsableValues.BUSINESS_DESC, DataStore.getSavedValue(UsableValues.BUSINESS_DESC) + " Updated");
 		parBusinessDetailsPage.enterBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
 		businessConfirmationPage.editTradingName();
+		
 		DataStore.saveValue(UsableValues.TRADING_NAME, DataStore.getSavedValue(UsableValues.TRADING_NAME) + " Updated");
 		tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+		
 		businessConfirmationPage.editSICCode();
 		sicCodePage.selectSICCode("allow people to eat");
 	}
@@ -690,32 +899,34 @@ public class PARStepDefs {
 	}
 
 	@When("^the user creates an enforcement notice against the partnership with the following details:$")
-	public void the_user_creates_an_enforcement_notice_against_the_partnership_with_the_following_details(
-			DataTable dets) throws Throwable {
+	public void the_user_creates_an_enforcement_notice_against_the_partnership_with_the_following_details(DataTable dets) throws Throwable {
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
-			LOG.info("Create enformcement notification against partnership");
-			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
-			parPartnershipConfirmationPage.createEnforcement();
-			enforcementNotificationPage.proceed();
-			enforcementContactDetailsPage.proceed();
-			enforcementLegalEntityPage.selectLegalEntity(DataStore.getSavedValue(UsableValues.ENTITY_NAME));
-			enforcementLegalEntityPage.proceed();
+			
 			DataStore.saveValue(UsableValues.ENFORCEMENT_TYPE, data.get("Enforcement Action"));
-			enforcementDetailsPage.selectEnforcementType(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TYPE));
-			enforcementDetailsPage.enterEnforcementDescription("Enformcement description");
-			enforcementDetailsPage.proceed();
 			DataStore.saveValue(UsableValues.ENFORCEMENT_REGFUNC, data.get("Regulatory Function"));
-			enforcementActionPage.selectRegFunc(DataStore.getSavedValue(UsableValues.ENFORCEMENT_REGFUNC));
 			DataStore.saveValue(UsableValues.ENFORCEMENT_FILENAME, data.get("Attachment"));
-			enforcementActionPage.chooseFile(DataStore.getSavedValue(UsableValues.ENFORCEMENT_FILENAME));
 			DataStore.saveValue(UsableValues.ENFORCEMENT_DESCRIPTION, data.get("Description"));
-			enforcementActionPage.enterEnforcementDescription(
-					DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION).toLowerCase());
 			DataStore.saveValue(UsableValues.ENFORCEMENT_TITLE, data.get("Title"));
-			enforcementActionPage.enterTitle(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TITLE));
-			enforcementActionPage.proceed();
-
 		}
+		
+		LOG.info("Create enformcement notification against partnership");
+		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		parPartnershipConfirmationPage.createEnforcement();
+		enforcementNotificationPage.proceed();
+		enforcementContactDetailsPage.proceed();
+		
+		enforcementLegalEntityPage.enterEntity(DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		enforcementLegalEntityPage.proceed();
+		
+		enforcementDetailsPage.selectEnforcementType(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TYPE));
+		enforcementDetailsPage.enterEnforcementDescription("Enformcement description");
+		enforcementDetailsPage.proceed();
+		
+		enforcementActionPage.selectRegFunc(DataStore.getSavedValue(UsableValues.ENFORCEMENT_REGFUNC));
+		enforcementActionPage.chooseFile(DataStore.getSavedValue(UsableValues.ENFORCEMENT_FILENAME));
+		enforcementActionPage.enterEnforcementDescription(DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION).toLowerCase());
+		enforcementActionPage.enterTitle(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TITLE));
+		enforcementActionPage.proceed();
 	}
 
 	@Then("^all the fields for the enforcement notice are updated correctly$")
@@ -727,19 +938,19 @@ public class PARStepDefs {
 
 	@When("^the user selects the last created enforcement notice$")
 	public void the_user_selects_the_last_created_enforcement() throws Throwable {
-		String user = DataStore.getSavedValue(UsableValues.LOGIN_USER);
-		switch (user) {
+		
+		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
 		case ("par_enforcement_officer@example.com"):
 			LOG.info("Select last created enforcement");
 			parDashboardPage.selectSeeEnforcementNotices();
-			enforcementSearchPage.searchPartnerships();
+			enforcementSearchPage.searchEnforcements();
 			enforcementSearchPage.selectEnforcement();
 			break;
 
 		case ("par_authority@example.com"):
 			LOG.info("Select last created enforcement");
 			parDashboardPage.selectSeeEnforcementNotices();
-			enforcementSearchPage.searchPartnerships();
+			enforcementSearchPage.searchEnforcements();
 			enforcementSearchPage.selectEnforcement();
 			break;
 
@@ -767,16 +978,33 @@ public class PARStepDefs {
 	@Then("^the enforcement notice is set to approved status$")
 	public void the_enforcement_notice_is_set_to_approved_status() throws Throwable {
 		LOG.info("Check the enformcement is approved");
-		enforcementSearchPage.searchPartnerships();
-		Assert.assertTrue("Enforcement Status doesn't check out",
-				enforcementSearchPage.getStatus().equalsIgnoreCase("Approved"));
+		enforcementSearchPage.searchEnforcements();
+		Assert.assertTrue("Enforcement Status doesn't check out", enforcementSearchPage.getStatus().equalsIgnoreCase("Approved"));
 	}
-
+	
+	@When("^the user blocks the enforcement notice with the following reason: \"([^\"]*)\"$")
+	public void the_user_blocks_the_enforcement_notice_with_the_following_reason(String reason) throws Throwable {
+		LOG.info("Block the Enforcement Notice.");
+		proposedEnforcementPage.selectBlock();
+		proposedEnforcementPage.enterReasonForBlockingEnforcement(reason);
+		proposedEnforcementPage.proceed();
+		
+		enforcementReviewPage.saveChanges();
+		enforcementCompletionPage.complete();
+	}
+	
+	@Then("^the enforcement notice is set to blocked status$")
+	public void the_enforcement_notice_is_set_to_blocked_status() throws Throwable {
+		LOG.info("Check the Enformcement Notice is Blocked.");
+		enforcementSearchPage.searchEnforcements();
+		Assert.assertTrue("Enforcement Status doesn't check out", enforcementSearchPage.getStatus().equalsIgnoreCase("Blocked"));
+	}
+	
 	@When("^the user searches for the last created enforcement notice$")
 	public void the_user_searches_for_the_last_created_enforcement_notice() throws Throwable {
 		LOG.info("Select last created enforcement");
 		parDashboardPage.selectManageEnforcementNotices();
-		enforcementSearchPage.searchPartnerships();
+		enforcementSearchPage.searchEnforcements();
 		enforcementSearchPage.removeEnforcement();
 	}
 
@@ -786,50 +1014,140 @@ public class PARStepDefs {
 		removeEnforcementPage.selectRevokeReason("This is a duplicate enforcement");
 		removeEnforcementPage.enterRevokeDescription("Revoking");
 		removeEnforcementConfirmationPage.acceptTerms();
-		enforcementSearchPage.searchPartnerships();
+		enforcementSearchPage.searchEnforcements();
 		Assert.assertTrue("Some results are returned indeed", enforcementSearchPage.confirmNoReturnedResults());
 	}
 
 	@When("^the user uploads an inspection plan against the partnership with the following details:$")
-	public void the_user_uploads_an_inspection_plan_against_the_partnership_with_the_following_details(DataTable dets)
-			throws Throwable {
+	public void the_user_uploads_an_inspection_plan_against_the_partnership_with_the_following_details(DataTable dets) throws Throwable {
 		LOG.info("Upload inspection plan and save details");
+		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
-			partnershipAdvancedSearchPage.selectPartnershipLink();
-			parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
-			inspectionPlanSearchPage.selectUploadLink();
-			uploadInspectionPlanPage.chooseFile("link.txt");
-			uploadInspectionPlanPage.uploadFile();
+			
 			DataStore.saveValue(UsableValues.INSPECTIONPLAN_TITLE, data.get("Title"));
-			inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
 			DataStore.saveValue(UsableValues.INSPECTIONPLAN_DESCRIPTION, data.get("Description"));
-			inspectionPlanDetailsPage
-					.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
-			inspectionPlanDetailsPage.save();
-			inspectionPlanExpirationPage.enterDate("ddMMYYYY");
-			inspectionPlanExpirationPage.save();
-			LOG.info("Check inspection plan status is set to \"Current\"");
-			Assert.assertTrue("Failed: Status not set to \"Current\"",
-					inspectionPlanSearchPage.getPlanStatus().equalsIgnoreCase("Current"));
 		}
+		
+		partnershipAdvancedSearchPage.selectPartnershipLink();
+		parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
+		
+		inspectionPlanSearchPage.selectUploadLink();
+		
+		uploadInspectionPlanPage.chooseFile("link.txt");
+		uploadInspectionPlanPage.uploadFile();
+		
+		inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
+		inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
+		inspectionPlanDetailsPage.save();
+		
+		inspectionPlanExpirationPage.enterDate("ddMMYYYY");
+		inspectionPlanExpirationPage.save();
+		
+		LOG.info("Check inspection plan status is set to \"Current\"");
+		Assert.assertTrue("Failed: Status not set to \"Current\"", inspectionPlanSearchPage.getPlanStatus().equalsIgnoreCase("Current"));
+	}
+
+	@When("^the user uploads an advice notice against the partnership with the following details:$")
+	public void the_user_uploads_an_advice_notice_against_the_partnership_with_the_following_details(DataTable dets) throws Throwable {
+		LOG.info("Upload advice notice and save details");
+		
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.ADVICENOTICE_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.ADVICENOTICE_TYPE, data.get("Type of Advice"));
+			DataStore.saveValue(UsableValues.ADVICENOTICE_REGFUNCTION, data.get("Reg Function"));
+			DataStore.saveValue(UsableValues.ADVICENOTICE_DESCRIPTION, data.get("Description"));
+		}
+		
+		partnershipAdvancedSearchPage.selectPartnershipLink();
+		parPartnershipConfirmationPage.selectSeeAllAdviceNotices();
+		
+		adviceNoticeSearchPage.selectUploadLink();
+		uploadAdviceNoticePage.chooseFile("link.txt");
+		uploadAdviceNoticePage.uploadFile();
+		
+		adviceNoticeDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		adviceNoticeDetailsPage.selectAdviceType(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TYPE));
+		adviceNoticeDetailsPage.selectRegFunc(DataStore.getSavedValue(UsableValues.ADVICENOTICE_REGFUNCTION));
+		adviceNoticeDetailsPage.enterDescription(DataStore.getSavedValue(UsableValues.ADVICENOTICE_DESCRIPTION));
+		adviceNoticeDetailsPage.save();
+	}
+
+	@When("^the user uploads an advice plan against the partnership with the following details:$")
+	public void the_user_uploads_an_insection_plan_against_the_partnership_with_the_following_details(DataTable dets) throws Throwable {
+		LOG.info("Upload inspection plan and save details");
+		
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.INSPECTIONPLAN_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.INSPECTIONPLAN_DESCRIPTION, data.get("Description"));
+		}
+		
+		partnershipAdvancedSearchPage.selectPartnershipLink();
+		parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
+		
+		inspectionPlanSearchPage.selectUploadLink();
+		uploadInspectionPlanPage.chooseFile("link.txt");
+		uploadInspectionPlanPage.uploadFile();
+		
+		inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
+		inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
+		inspectionPlanDetailsPage.save();
+		
+		inspectionPlanExpirationPage.enterDate("ddMMYYYY");
+		inspectionPlanExpirationPage.save();
+		
+		LOG.info("Check inspection plan status is set to \"Current\"");
+		Assert.assertTrue("Failed: Status not set to \"Current\"", inspectionPlanSearchPage.getPlanStatus().equalsIgnoreCase("Current"));
+	}
+
+	@When("^the user updates the last created inspection plan against the partnership with the following details:$")
+	public void the_user_updates_the_last_created_inspection_plan_against_the_partnership_with_the_following_details(DataTable dets) throws Throwable {
+		LOG.info("Edit inspection plan and save details");
+		
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.INSPECTIONPLAN_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.INSPECTIONPLAN_DESCRIPTION, data.get("Description"));
+		}
+		
+		partnershipAdvancedSearchPage.selectPartnershipLink();
+		parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
+		
+		inspectionPlanSearchPage.selectEditLink();
+		inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
+		inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
+		inspectionPlanDetailsPage.save();
+		
+		inspectionPlanExpirationPage.save();
+		inspectionPlanSearchPage.selectInspectionPlan();
+	}
+
+	@Then("^the inspection plan is updated correctly$")
+	public void the_inspection_plan_is_updated_correctly() throws Throwable {
+		LOG.info("Check the inspection plan details are correct");
+		Assert.assertTrue("Failed: inspection plan details not correct", inspectionPlanReviewPage.checkInspectionPlan());
 	}
 
 	@When("^the user submits an inspection feedback against the inspection plan with the following details:$")
-	public void the_user_submits_an_inspection_feedback_against_the_inspection_plan_with_the_following_details(
-			DataTable dets) throws Throwable {
+	public void the_user_submits_an_inspection_feedback_against_the_inspection_plan_with_the_following_details(DataTable dets) throws Throwable {
+		LOG.info("Submit inspection feedback against partnership");
+		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
-			LOG.info("Submit inspection feedback against partnership");
-			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
-			parPartnershipConfirmationPage.selectSendInspectionFeedbk();
-			inspectionContactDetailsPage.proceed();
+			
 			DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION, data.get("Description"));
-			inspectionFeedbackDetailsPage
-					.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION));
-			inspectionFeedbackDetailsPage.chooseFile("link.txt");
-			inspectionFeedbackDetailsPage.proceed();
-			inspectionFeedbackConfirmationPage.saveChanges();
-			inspectionFeedbackCompletionPage.complete();
 		}
+		
+		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		parPartnershipConfirmationPage.selectSendInspectionFeedbk();
+		
+		inspectionContactDetailsPage.proceed();
+		
+		inspectionFeedbackDetailsPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION));
+		inspectionFeedbackDetailsPage.chooseFile("link.txt");
+		inspectionFeedbackDetailsPage.proceed();
+		inspectionFeedbackConfirmationPage.saveChanges();
+		inspectionFeedbackCompletionPage.complete();
 	}
 
 	@When("^the user searches for the last created inspection feedback$")
@@ -842,8 +1160,7 @@ public class PARStepDefs {
 	@Then("^the user successfully approves the inspection feedback$")
 	public void the_user_successfully_approves_the_inspection_feedback() throws Throwable {
 		LOG.info("Verify the inspection feedback description");
-		Assert.assertTrue("Failed: Inspection feedback description doesn't check out ",
-				inspectionFeedbackConfirmationPage.checkInspectionFeedback());
+		Assert.assertTrue("Failed: Inspection feedback description doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionFeedback());
 	}
 
 	@Given("^the user clicks the PAR Home page link$")
@@ -872,68 +1189,97 @@ public class PARStepDefs {
 	}
 
 	@Given("^the user submits a response to the inspection feedback with the following details:$")
-	public void the_user_submits_a_response_to_the_inspection_feedback_with_the_following_details(DataTable dets)
-			throws Throwable {
+	public void the_user_submits_a_response_to_the_inspection_feedback_with_the_following_details(DataTable dets) throws Throwable {
 		LOG.info("Submit response to inspection feedback request");
+		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			
 			DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1, data.get("Description"));
-			inspectionFeedbackConfirmationPage.submitResponse();
-			replyInspectionFeedbackPage
-					.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1));
-			replyInspectionFeedbackPage.chooseFile("link.txt");
-			replyInspectionFeedbackPage.proceed();
-			LOG.info("Verify the inspection feedback response");
-			Assert.assertTrue("Failed: Inspection feedback response doesn't check out ",
-					inspectionFeedbackConfirmationPage.checkInspectionResponse());
 		}
+
+		inspectionFeedbackConfirmationPage.submitResponse();
+		
+		replyInspectionFeedbackPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1));
+		replyInspectionFeedbackPage.chooseFile("link.txt");
+		replyInspectionFeedbackPage.proceed();
+		
+		LOG.info("Verify the inspection feedback response");
+		Assert.assertTrue("Failed: Inspection feedback response doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionResponse());
 	}
 
 	@When("^the user sends a reply to the inspection feedback message with the following details:$")
-	public void the_user_sends_a_reply_to_the_inspection_feedback_message_with_the_following_details(DataTable dets)
-			throws Throwable {
+	public void the_user_sends_a_reply_to_the_inspection_feedback_message_with_the_following_details(DataTable dets) throws Throwable {
 		LOG.info("Submit reply to inspection feedback response");
+		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			
 			DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE2, data.get("Description"));
-			inspectionFeedbackConfirmationPage.submitResponse();
-			replyInspectionFeedbackPage
-					.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE2));
-			replyInspectionFeedbackPage.chooseFile("link.txt");
-			replyInspectionFeedbackPage.proceed();
 		}
+		
+		inspectionFeedbackConfirmationPage.submitResponse();
+		
+		replyInspectionFeedbackPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE2));
+		replyInspectionFeedbackPage.chooseFile("link.txt");
+		replyInspectionFeedbackPage.proceed();
 	}
 
 	@Then("^the inspection feedback reply is received successfully$")
 	public void the_inspection_feedback_reply_is_received_successfully() throws Throwable {
 		LOG.info("Verify the inspection feedback reply");
-		Assert.assertTrue("Failed: Inspection feedback reply doesn't check out ",
-				inspectionFeedbackConfirmationPage.checkInspectionReply());
+		Assert.assertTrue("Failed: Inspection feedback reply doesn't check out ", 	inspectionFeedbackConfirmationPage.checkInspectionReply());
 	}
 
 	@When("^the user submits a deviation request against an inspection plan with the following details:$")
-	public void the_user_submits_a_deviation_request_against_an_inspection_plan_with_the_following_details(
-			DataTable dets) throws Throwable {
+	public void the_user_submits_a_deviation_request_against_an_inspection_plan_with_the_following_details(DataTable dets) throws Throwable {
+		LOG.info("Submit Deviation Request");
+		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
-			LOG.info("Submit deviation request");
-			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
-			parPartnershipConfirmationPage.selectDeviateInspectionPlan();
-			enforcementContactDetailsPage.save();
+			
 			DataStore.saveValue(UsableValues.DEVIATION_DESCRIPTION, data.get("Description"));
-			requestDeviationPage.enterDescription(DataStore.getSavedValue(UsableValues.DEVIATION_DESCRIPTION));
-			requestDeviationPage.chooseFile("link.txt");
-			requestDeviationPage.proceed();
-			LOG.info("Verify the deviation request is created");
-			Assert.assertTrue("Failed: Deviation request details don't check out ",
-					deviationReviewPage.checkDeviationCreation());
-			deviationReviewPage.saveChanges();
-			deviationCompletionPage.complete();
 		}
+		
+		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		parPartnershipConfirmationPage.selectDeviateInspectionPlan();
+		enforcementContactDetailsPage.save();
+		
+		requestDeviationPage.enterDescription(DataStore.getSavedValue(UsableValues.DEVIATION_DESCRIPTION));
+		requestDeviationPage.chooseFile("link.txt");
+		requestDeviationPage.proceed();
 	}
 
+	@Then("^the Deviation Request is created Successfully$")
+	public void the_Deviation_Request_is_created_Successfully() throws Throwable {
+		LOG.info("Verify the Deviation Request is created Successfully.");
+		
+		Assert.assertTrue("Failed: Deviation Request details are not displayed.", deviationReviewPage.checkDeviationCreation());
+		deviationReviewPage.saveChanges();
+		deviationCompletionPage.complete();
+	}
+	
 	@When("^the user searches for the last created deviation request$")
 	public void the_user_searches_for_the_last_created_deviation_request() throws Throwable {
 		LOG.info("Search for last created deviation request");
+		
 		parDashboardPage.selectSeeDeviationRequests();
 		deviationSearchPage.selectDeviationRequest();
+	}
+	
+	@When("^the user blocks the deviation request with the following reason: \"([^\"]*)\"$")
+	public void the_user_blocks_the_deviation_request_with_the_following_reason(String reason) throws Throwable {
+		LOG.info("Block the deviation request.");
+		
+		deviationApprovalPage.selectBlock();
+		deviationApprovalPage.enterReasonForBlocking(reason);
+		deviationApprovalPage.proceed();
+	}
+
+	@Then("^the deviation request is set to blocked status$")
+	public void the_deviation_request_is_set_to_blocked_status() throws Throwable {
+		LOG.info("Check the Deviation Request is Blocked on the Review Page.");
+		
+		Assert.assertTrue("Failed: Deviation request status is not Set to Blocked", deviationReviewPage.checkDeviationStatusBlocked());
+		deviationReviewPage.saveChanges();
+		deviationCompletionPage.complete();
 	}
 
 	@Then("^the user successfully approves the deviation request$")
@@ -941,44 +1287,49 @@ public class PARStepDefs {
 		LOG.info("Approve the deviation request");
 		deviationApprovalPage.selectAllow();
 		deviationApprovalPage.proceed();
-		Assert.assertTrue("Failed: Deviation request status not correct", deviationReviewPage.checkDeviationStatus());
+		
+		Assert.assertTrue("Failed: Deviation request status not correct", deviationReviewPage.checkDeviationStatusApproved());
 		deviationReviewPage.saveChanges();
 		deviationCompletionPage.complete();
 	}
 
 	@Given("^the user submits a response to the deviation request with the following details:$")
-	public void the_user_submits_a_response_to_the_deviation_request_with_the_following_details(DataTable dets)
-			throws Throwable {
+	public void the_user_submits_a_response_to_the_deviation_request_with_the_following_details(DataTable dets) throws Throwable {
 		LOG.info("Submit response to the deviation request");
 		deviationSearchPage.selectDeviationRequest();
+		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			
 			DataStore.saveValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1, data.get("Description"));
-			deviationReviewPage.submitResponse();
-			replyDeviationRequestPage
-					.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1));
-			replyDeviationRequestPage.chooseFile("link.txt");
-			replyDeviationRequestPage.proceed();
-			LOG.info("Verify the deviation response");
-			Assert.assertTrue("Failed: Deviation response doesn't check out ",
-					deviationReviewPage.checkDeviationResponse());
 		}
+		
+		deviationReviewPage.submitResponse();
+		
+		replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1));
+		replyDeviationRequestPage.chooseFile("link.txt");
+		replyDeviationRequestPage.proceed();
+		
+		LOG.info("Verify the deviation response");
+		Assert.assertTrue("Failed: Deviation response doesn't check out ", deviationReviewPage.checkDeviationResponse());
 	}
 
 	@When("^the user sends a reply to the deviation request message with the following details:$")
-	public void the_user_sends_a_reply_to_the_deviation_request_message_with_the_following_details(DataTable dets)
-			throws Throwable {
+	public void the_user_sends_a_reply_to_the_deviation_request_message_with_the_following_details(DataTable dets) throws Throwable {
 		LOG.info("Submit reply to the deviation request");
+		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			
 			DataStore.saveValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE2, data.get("Description"));
-			deviationReviewPage.submitResponse();
-			replyDeviationRequestPage
-					.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE2));
-			replyDeviationRequestPage.chooseFile("link.txt");
-			replyDeviationRequestPage.proceed();
-			LOG.info("Verify the deviation response");
-			Assert.assertTrue("Failed: Deviation reply doesn't check out ",
-					deviationReviewPage.checkDeviationResponse());
 		}
+		
+		deviationReviewPage.submitResponse();
+		
+		replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE2));
+		replyDeviationRequestPage.chooseFile("link.txt");
+		replyDeviationRequestPage.proceed();
+		
+		LOG.info("Verify the deviation response");
+		Assert.assertTrue("Failed: Deviation reply doesn't check out ", deviationReviewPage.checkDeviationResponse());
 	}
 
 	@Then("^the deviation reply received successfully$")
@@ -989,20 +1340,50 @@ public class PARStepDefs {
 
 	@When("^the user submits a general enquiry with the following details:$")
 	public void the_user_submits_a_general_enquiry_with_the_following_details(DataTable dets) throws Throwable {
+		LOG.info("Send general query");
+		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
-			LOG.info("Send general query");
-			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
-			parPartnershipConfirmationPage.sendGeneralEnquiry();
-			enquiryContactDetailsPage.proceed();
+			
 			DataStore.saveValue(UsableValues.ENQUIRY_DESCRIPTION, data.get("Description"));
-			requestEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION));
-			requestEnquiryPage.chooseFile("link.txt");
-			requestEnquiryPage.proceed();
-			LOG.info("Verify the enquiry is created");
-			Assert.assertTrue("Failed: Enquiry details don't check out ", enquiryReviewPage.checkEnquiryCreation());
-			enquiryReviewPage.saveChanges();
-			enquiryCompletionPage.complete();
 		}
+		
+		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		parPartnershipConfirmationPage.sendGeneralEnquiry();
+		enquiryContactDetailsPage.proceed();
+		
+		requestEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION));
+		requestEnquiryPage.chooseFile("link.txt");
+		requestEnquiryPage.proceed();
+	}
+	
+	@When("^the user sends a general enquiry for an enforcement notice with the following details:$")
+	public void the_user_sends_a_general_enquiry_for_an_enforcement_notice_with_the_following_details(DataTable details) throws Throwable {
+		LOG.info("Send general query");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.ENQUIRY_DESCRIPTION, data.get("Description"));
+		}
+		
+		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		parPartnershipConfirmationPage.createEnforcement();
+		
+		enforcementNotificationPage.selectDiscussEnforcement();
+		enquiryContactDetailsPage.proceed();
+		
+		requestEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION));
+		requestEnquiryPage.chooseFile("link.txt");
+		requestEnquiryPage.proceed();
+	}
+
+	@Then("^the Enquiry is created Successfully$")
+	public void the_Enquiry_is_created_Successfully() throws Throwable {
+		LOG.info("Verify the enquiry is created.");
+		
+		Assert.assertTrue("Failed: Enquiry details are not correct.", enquiryReviewPage.checkEnquiryCreation());
+		
+		enquiryReviewPage.saveChanges();
+		enquiryCompletionPage.complete();
 	}
 
 	@When("^the user searches for the last created general enquiry$")
@@ -1018,76 +1399,82 @@ public class PARStepDefs {
 	}
 
 	@Given("^the user submits a response to the general enquiry with the following details:$")
-	public void the_user_submits_a_response_to_the_general_enquiry_with_the_following_details(DataTable dets)
-			throws Throwable {
+	public void the_user_submits_a_response_to_the_general_enquiry_with_the_following_details(DataTable dets) throws Throwable {
 		LOG.info("Submit reply to the enquiry");
+		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			
 			DataStore.saveValue(UsableValues.ENQUIRY_REPLY, data.get("Description"));
-			enquiryReviewPage.submitResponse();
-			replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY));
-			replyEnquiryPage.chooseFile("link.txt");
-			replyEnquiryPage.proceed();
-			LOG.info("Verify the reply message");
-			Assert.assertTrue("Failed: Enquiry reply doesn't check out ", enquiryReviewPage.checkEnquiryReply());
-
 		}
+		
+		enquiryReviewPage.submitResponse();
+		
+		replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY));
+		replyEnquiryPage.chooseFile("link.txt");
+		replyEnquiryPage.proceed();
+		
+		LOG.info("Verify the reply message");
+		Assert.assertTrue("Failed: Enquiry reply doesn't check out ", enquiryReviewPage.checkEnquiryReply());
 	}
 
 	@When("^the user sends a reply to the general enquiry with the following details:$")
-	public void the_user_sends_a_reply_to_the_general_enquiry_with_the_following_details(DataTable dets)
-			throws Throwable {
+	public void the_user_sends_a_reply_to_the_general_enquiry_with_the_following_details(DataTable dets) throws Throwable {
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			
 			DataStore.saveValue(UsableValues.ENQUIRY_REPLY1, data.get("Description"));
-			enquiryReviewPage.submitResponse();
-			replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY1));
-			replyEnquiryPage.chooseFile("link.txt");
-			replyEnquiryPage.proceed();
-			LOG.info("Verify the reply message");
-			Assert.assertTrue("Failed: Enquiry reply doesn't check out ", enquiryReviewPage.checkEnquiryReply1());
-
 		}
+		
+		enquiryReviewPage.submitResponse();
+		
+		replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY1));
+		replyEnquiryPage.chooseFile("link.txt");
+		replyEnquiryPage.proceed();
+		
+		LOG.info("Verify the reply message");
+		Assert.assertTrue("Failed: Enquiry reply doesn't check out ", enquiryReviewPage.checkEnquiryReply1());
 	}
 
 	@When("^the user selects a contact to update$")
 	public void the_user_selects_a_contact_to_update() throws Throwable {
 		DataStore.saveValue(UsableValues.BUSINESS_EMAIL, DataStore.getSavedValue(UsableValues.LOGIN_USER));
 		parDashboardPage.selectManageProfileDetails();
-	    
-	    DataStore.saveValue(UsableValues.ACCOUNT_ID, userProfilePage.getAccountID()); // This can be used in a manage colleagues update person test.
-	    
-	    userProfilePage.selectContactToUpdate();
-	    userProfilePage.selectContinueButton();
-	    LOG.info("Selected user contact to update.");
+
+		// This can be used in a manage colleagues update person test.
+		DataStore.saveValue(UsableValues.ACCOUNT_ID, userProfilePage.getAccountID()); 
+
+		userProfilePage.selectContactToUpdate();
+		userProfilePage.selectContinueButton();
+		LOG.info("Selected user contact to update.");
 	}
 
 	@Then("^the user can successfully subscribe to PAR News$")
 	public void the_user_can_successfully_subscribe_to_PAR_News() throws Throwable {
 		updateUserContactDetailsPage.selectContinueButton();
-	    updateUserCommunicationPreferencesPage.selectContinueButton();
-	    
-	    updateUserSubscriptionsPage.selectPARNewsSubscription();
-	    updateUserSubscriptionsPage.selectContinueButton();
-	    LOG.info("Successfully subscribed from PAR news letter.");
-	    
-	    userProfileConfirmationPage.saveChanges();
-	    userProfileCompletionPage.completeApplication();
-	    
+		updateUserCommunicationPreferencesPage.selectContinueButton();
+
+		updateUserSubscriptionsPage.selectPARNewsSubscription();
+		updateUserSubscriptionsPage.selectContinueButton();
+		LOG.info("Successfully subscribed from PAR news letter.");
+
+		userProfileConfirmationPage.saveChanges();
+		userProfileCompletionPage.completeApplication();
+
 	}
 
 	@Then("^the user can successfully unsubscribe from PAR News$")
 	public void the_user_can_successfully_unsubscribe_from_PAR_News() throws Throwable {
-	    updateUserContactDetailsPage.selectContinueButton();
-	    updateUserCommunicationPreferencesPage.selectContinueButton();
-	    
-	    updateUserSubscriptionsPage.selectPARNewsUnsubscription();
-	    updateUserSubscriptionsPage.selectContinueButton();
-	    LOG.info("Successfully unsubscribed from PAR news letter.");
-	    
-	    userProfileConfirmationPage.saveChanges();
-	    userProfileCompletionPage.completeApplication();
-	    
+		updateUserContactDetailsPage.selectContinueButton();
+		updateUserCommunicationPreferencesPage.selectContinueButton();
+
+		updateUserSubscriptionsPage.selectPARNewsUnsubscription();
+		updateUserSubscriptionsPage.selectContinueButton();
+		LOG.info("Successfully unsubscribed from PAR news letter.");
+
+		userProfileConfirmationPage.saveChanges();
+		userProfileCompletionPage.completeApplication();
+
 	}
-	
+
 	@When("^the user searches for the par_authority email$")
 	public void the_user_searches_for_the_par_authority_email() throws Throwable {
 		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
@@ -1100,19 +1487,21 @@ public class PARStepDefs {
 		parDashboardPage.selectManageSubscriptions();
 		LOG.info("Navigated to Manage Subscriptions Page.");
 	}
-	
+
 	@Then("^the user can verify the email is successfully in the Subscriptions List$")
 	public void the_user_can_verify_the_email_is_successfully_in_the_Subscriptions_List() throws Throwable {
 		LOG.info("Assert the Email is successfully added to the Subscription List.");
-		assertTrue("Failed: Email address was not added to the PAR News Subscription List.", newsLetterSubscriptionPage.verifyTableElementExists());
+		assertTrue("Failed: Email address was not added to the PAR News Subscription List.",
+				newsLetterSubscriptionPage.verifyTableElementExists());
 	}
 
 	@Then("^the user can verify the email is successfully removed from the Subscriptions List$")
 	public void the_user_can_verify_the_email_is_successfully_removed_from_the_Subscriptions_List() throws Throwable {
 		LOG.info("Assert the Email is removed successfully from the Subscription List.");
-		assertTrue("Failed: Email address was not removed from the PAR News Subscription List.", newsLetterSubscriptionPage.verifyTableElementIsNull());
+		assertTrue("Failed: Email address was not removed from the PAR News Subscription List.",
+				newsLetterSubscriptionPage.verifyTableElementIsNull());
 	}
-	
+
 	@When("^the user is on the Manage a subscription list page$")
 	public void the_user_is_on_the_Manage_a_subscription_list_page() throws Throwable {
 		parDashboardPage.selectManageSubscriptions();
@@ -1130,7 +1519,6 @@ public class PARStepDefs {
 		LOG.info("Adding a new email to the subscription list.");
 		newsLetterSubscriptionReviewPage.clickUpdateListButton();
 	}
-	
 
 	@Then("^the user can verify the new email was added successfully$")
 	public void the_user_can_verify_the_new_email_was_added_successfully() throws Throwable {
@@ -1140,18 +1528,18 @@ public class PARStepDefs {
 		assertTrue(newsLetterSubscriptionPage.verifyTableElementExists());
 		LOG.info("Successfully added a new email to the Subscription list.");
 	}
-	
 
 	@When("^the user enters an email to be removed from the list \"([^\"]*)\"$")
 	public void the_user_enters_an_email_to_be_removed_from_the_list(String email) throws Throwable {
 		newsLetterManageSubscriptionListPage.selectRemoveEmailRadioButton();
 		newsLetterManageSubscriptionListPage.RemoveEmail(email);
 		DataStore.saveValue(UsableValues.PAR_NEWS_EMAIL, email);
+		
 		newsLetterManageSubscriptionListPage.clickContinueButton();
+		
 		LOG.info("Removing an email from the subscription list.");
 		newsLetterSubscriptionReviewPage.clickUpdateListButton();
 	}
-	
 
 	@Then("^the user can verify the email was removed successfully$")
 	public void the_user_can_verify_the_email_was_removed_successfully() throws Throwable {
@@ -1161,21 +1549,20 @@ public class PARStepDefs {
 		assertTrue(newsLetterSubscriptionPage.verifyTableElementIsNull());
 		LOG.info("Successfully removed an email from the Subscription list.");
 	}
-	
 
 	@When("^the user enters a list of new emails to replace the subscription list$")
 	public void the_user_enters_a_list_of_new_emails_to_replace_the_subscription_list() throws Throwable {
-		
+
 		newsLetterManageSubscriptionListPage.selectReplaceSubscriptionListRadioButton();
 		newsLetterManageSubscriptionListPage.clickContinueButton();
 		LOG.info("Adding new emails to replace the original Subscription List.");
-		
+
 		newsLetterSubscriptionReviewPage.clickUpdateListButton();
 	}
 
 	@Then("^the user can verify an email from the original list was removed successfully$")
 	public void the_user_can_verify_an_email_from_the_original_list_was_removed_successfully() throws Throwable {
-		
+
 		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.LAST_PAR_NEWS_EMAIL));
 		newsLetterSubscriptionPage.ClickSearchButton();
 
@@ -1184,37 +1571,37 @@ public class PARStepDefs {
 	}
 
 	@When("^the user creates a new person:$")
-	public void the_user_creates_a_new_person(DataTable person) throws Throwable { 
+	public void the_user_creates_a_new_person(DataTable details) throws Throwable {
 		parDashboardPage.selectManagePeople();
 		managePeoplePage.selectAddPerson();
 
 		LOG.info("Adding a new person.");
-		personsContactDetailsPage.enterContactDetails(person);
+		personsContactDetailsPage.enterContactDetails(details);
 		personsContactDetailsPage.clickContinueButton();
-		
+
 		LOG.info("Successfully entered new contact details.");
-		
+
 		personAccountPage.selectInviteUserToCreateAccount();
 		personAccountPage.clickContinueButton();
 
 		LOG.info("Successfully chose to invite the person to create an account.");
-		
-		personMembershipPage.selectAuthority();
-		personMembershipPage.selectOrganisation();
+		personMembershipPage.selectOrganisation(details);
+		personMembershipPage.selectAuthority(details);
 		personMembershipPage.clickContinueButton();
+		
 		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
 		LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
-		
+
 		personUserTypePage.selectEnforcementOfficer();
 		personUserTypePage.clickContinueButton();
 		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
-		
+
 		personCreateAccountPage.clickInviteButton();
 
 		LOG.info("Successfully sent account invite.");
-		
+
 		userProfileConfirmationPage.saveChanges();
-		userProfileCompletionPage.completeApplication();
+		userProfileCompletionPage.clickDoneGoToProfile();
 	}
 
 	@Then("^the user can verify the person was created successfully and can see resend an account invite$")
@@ -1224,30 +1611,30 @@ public class PARStepDefs {
 		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", personsProfilePage.checkContactName());
 		assertTrue("Failed: Contact email field does not contain the correct email address.", personsProfilePage.checkContactEmail());
 		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", personsProfilePage.checkContactPhoneNumbers());
-		assertTrue("Failed: Contact Locations are not displayed.", personsProfilePage.seeMoreContactInformation());
+		assertTrue("Failed: Both Contact Locations are not displayed.", personsProfilePage.seeMoreContactInformation());
 	}
 
 	@When("^the user searches for an existing person successfully$")
 	public void the_user_searches_for_an_existing_person_successfully() throws Throwable {
 		parDashboardPage.selectManagePeople();
 
-		String personsName = DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
-		
+		String personsName = DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " "
+				+ DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
+
 		managePeoplePage.enterNameOrEmail(personsName);
 		managePeoplePage.clickSubmit();
 
 		managePeoplePage.clickManageContact();
 
 		LOG.info("Found an existing user with the name: " + personsName);
-
-		personsProfilePage.clickUpdateUserButton();
 	}
 
 	@When("^the user updates an existing person:$")
-	public void the_user_updates_an_existing_person_with_the_following_details(DataTable person) throws Throwable {
+	public void the_user_updates_an_existing_person_with_the_following_details(DataTable details) throws Throwable {
 		LOG.info("Updating an existing person.");
+		personsProfilePage.clickUpdateUserButton();
 		
-		personsContactDetailsPage.enterContactDetails(person);
+		personsContactDetailsPage.enterContactDetails(details);
 		personsContactDetailsPage.clickContinueButton();
 
 		LOG.info("Successfully entered new contact details.");
@@ -1256,9 +1643,8 @@ public class PARStepDefs {
 		personAccountPage.clickContinueButton();
 
 		LOG.info("Successfully chose to invite the person to create an account.");
-
-		personMembershipPage.selectAuthority();
-		personMembershipPage.selectOrganisation();
+		personMembershipPage.selectOrganisation(details);
+		personMembershipPage.selectAuthority(details);
 		personMembershipPage.clickContinueButton();
 
 		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
@@ -1272,24 +1658,25 @@ public class PARStepDefs {
 		personCreateAccountPage.clickInviteButton();
 
 		LOG.info("Successfully sent account invite.");
-		
+
 		userProfileConfirmationPage.saveChanges();
-		userProfileCompletionPage.completeApplication();
+		userProfileCompletionPage.clickDoneGoToProfile();
 	}
 
 	@Then("^the user can verify the person was updated successfully and can see resend an account invite$")
-	public void the_user_can_verify_the_person_was_updated_successfully_and_can_see_resend_an_account_invite() throws Throwable {
+	public void the_user_can_verify_the_person_was_updated_successfully_and_can_see_resend_an_account_invite()
+			throws Throwable {
 		assertTrue("Failed: Header does not contain the person's fullname and title.", personsProfilePage.checkHeaderForName());
 		assertTrue("Failed: Cannot find the Re-send account creation invite link.", personsProfilePage.checkForUserAccountInvitationLink());
 		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", personsProfilePage.checkContactName());
 		assertTrue("Failed: Contact email field does not contain the correct email address.", personsProfilePage.checkContactEmail());
 		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", personsProfilePage.checkContactPhoneNumbers());
-		assertTrue("Failed: Contact Locations are not displayed.", personsProfilePage.seeMoreContactInformation());
+		assertTrue("Failed: Both Contact Locations are not displayed.", personsProfilePage.seeMoreContactInformation());
 	}
-	
+
 	@Then("^the user can verify the enforcement officers details are displayed$")
 	public void the_user_can_verify_the_enforcement_officers_details_are_displayed() throws Throwable {
-	    assertTrue("Failed: Officer details not displayed", enforcementReviewPage.checkOfficerDetails());
+		assertTrue("Failed: Officer details not displayed", enforcementReviewPage.checkOfficerDetails());
 	}
 
 	@When("^the user searches for a partnership with the Test Business \"([^\"]*)\" name$")
@@ -1326,7 +1713,801 @@ public class PARStepDefs {
 			assertEquals(data.get("Primary"), viewEnquiryPage.getPrimaryAuthorityName());
 			assertEquals(data.get("Summary"), viewEnquiryPage.getSummaryOfEnquiryText());
 		}
-
+		
 		LOG.info("Asserting the Equiry Notice Details.");
+	}
+
+	@Then("^the user successfully revokes the last created inspection plan$")
+	public void the_user_successfully_removes_the_last_created_inspection_plan() throws Throwable {
+		LOG.info("Revoking inspection plan and confirming it is revoked");
+		partnershipAdvancedSearchPage.selectPartnershipLink();
+		parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
+		inspectionPlanSearchPage.selectRevokeLink();
+		revokeReasonInspectionPlanPage.enterRevokeDescription();
+		assertEquals(inspectionPlanSearchPage.getPlanStatus(), "Revoked");
+	}
+
+	@When("^the user has revoked the last created inspection plan$")
+	public void the_user_has_revoked_the_last_created_inspection_plan() throws Throwable {
+		LOG.info("Removing inspection plan");
+		inspectionPlanSearchPage.selectRemoveLink();
+		removeReasonInspectionPlanPage.enterRemoveDescription();
+	}
+
+	@Then("^the inspection plan is successfully removed$")
+	public void the_inspection_plan_is_successfully_removed() throws Throwable {
+		LOG.info("Confirm inspection plan is removed");
+		assertEquals(inspectionPlanSearchPage.getPlanStatus(), "No results returned");
+	}
+	
+	@When("^the user searches for the last created partnership Authority$")
+	public void the_user_searches_for_the_last_created_partnership_Authority() throws Throwable {
+		LOG.info("Searching for and selecting the latest Partnerships Primary Authority.");
+		
+		parDashboardPage.selectSearchPartnerships();
+		
+		partnershipAdvancedSearchPage.searchPartnerships();
+		partnershipAdvancedSearchPage.selectPrimaryAuthorityLink();
+	}
+	
+	@When("^the user updates the About the Partnership and Regulatory Functions:$")
+	public void the_user_updates_the_About_the_Partnership_and_Regulatory_Functions(DataTable details) throws Throwable {
+		LOG.info("Updating about the Partnership and Regulatory Functions.");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, data.get("About the Partnership"));
+		}
+		
+		parPartnershipConfirmationPage.editAboutPartnership();
+		parPartnershipDescriptionPage.enterDescription(DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO));
+		parPartnershipDescriptionPage.clickSave();
+		
+		parPartnershipConfirmationPage.editRegulatoryFunctions();
+		regulatoryFunctionPage.updateRegFunction();
+	}
+
+	@Then("^the About the Partnership and Regulatory Functions are updated Successfully$")
+	public void the_About_the_Partnership_and_Regulatory_Functions_are_updated_Successfully() throws Throwable {
+		LOG.info("Verifying About the Partnership and Regulatory Functions have been updated Successfully.");
+		
+		// Verifying the updated values are visible on the Partnerships Details Page.
+		assertTrue(parPartnershipConfirmationPage.checkPartnershipInfo());
+		assertTrue(parPartnershipConfirmationPage.checkRegulatoryFunctions());
+		
+		parPartnershipConfirmationPage.clickSave();
+	}
+	
+	@When("^the user searches for the last created partnership Organisation$")
+	public void the_user_searches_for_the_last_created_partnership_Organisation() throws Throwable {
+		LOG.info("Searching for and selecting the latest Partnerships Organisation.");
+		
+		partnershipAdvancedSearchPage.searchPartnerships();
+		partnershipAdvancedSearchPage.selectOrganisationLink();
+	}
+	
+	@When("^the user updates the Partnerships details with the following:$")
+	public void the_user_updates_the_Partnerships_details_with_the_following(DataTable details) throws Throwable {
+		LOG.info("Updating all the remaining Partnership details.");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("Address1"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE2, data.get("Address2"));
+			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("Town"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTY, data.get("County"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTRY, data.get("Country"));
+			DataStore.saveValue(UsableValues.BUSINESS_NATION, data.get("Nation Value"));
+			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("Post Code"));
+			DataStore.saveValue(UsableValues.BUSINESS_DESC, data.get("About the Organisation"));
+			DataStore.saveValue(UsableValues.SIC_CODE, data.get("SIC Code"));
+			DataStore.saveValue(UsableValues.TRADING_NAME, data.get("Trading Name"));
+		}
+		
+		parPartnershipConfirmationPage.editOrganisationAddress();
+		editRegisteredAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1),
+				DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN),
+				DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY),
+				DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY),
+				DataStore.getSavedValue(UsableValues.BUSINESS_NATION),
+				DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		editRegisteredAddressPage.clickSaveButton();
+		
+		LOG.info("Selected Country: " + DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY));
+		LOG.info("Selected Nation: " + DataStore.getSavedValue(UsableValues.BUSINESS_NATION));
+		
+		parPartnershipConfirmationPage.editAboutTheOrganisation();
+		parPartnershipDescriptionPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
+		parPartnershipDescriptionPage.clickSave();
+		
+		parPartnershipConfirmationPage.editSICCode();
+		sicCodePage.editSICCode(DataStore.getSavedValue(UsableValues.SIC_CODE));
+		
+		parPartnershipConfirmationPage.editTradingName();
+		tradingPage.editTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+	}
+
+	@Then("^all of the Partnership details have been updated successfully$")
+	public void all_of_the_Partnership_details_have_been_updated_successfully() throws Throwable {
+		LOG.info("Verifying all the remaining Partnership details have been updated Successfully.");
+
+		assertTrue(parPartnershipConfirmationPage.checkOrganisationAddress());
+		assertTrue(parPartnershipConfirmationPage.checkAboutTheOrganisation());
+		assertTrue(parPartnershipConfirmationPage.checkSICCode());
+		assertTrue(parPartnershipConfirmationPage.checkTradingName());
+		
+		parPartnershipConfirmationPage.clickSave();
+	}
+	
+	@When("^the user Amends the legal entities with the following details:$")
+	public void the_user_Amends_the_legal_entities_with_the_following_details(DataTable details) throws Throwable {
+		LOG.info("Creating the Legal Entity Amendment as the Authority User.");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Entity Type"));
+			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Entity Name"));
+		}
+		
+		parPartnershipConfirmationPage.selectAmendLegalEntitiesLink();
+		
+		legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		legalEntityTypePage.clickContinueButton();
+		legalEntityReviewPage.goToConfirmThisAmendmentPage();
+		
+		confirmThisAmendmentPage.confirmLegalEntityAmendments();
+		
+		amendmentCompletedPage.goToPartnershipDetailsPage();
+	}
+	
+	@Then("^the user verifies the amendments are created successfully with status \"([^\"]*)\"$")
+	public void the_user_verifies_the_amendments_are_created_successfully_with_status(String status) throws Throwable {
+		LOG.info("Verify the Legal Entity was Created Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+	}
+
+	@When("^the user confirms the legal entity amendments$")
+	public void the_user_confirms_the_legal_entity_amendments() throws Throwable {
+		LOG.info("Confirm the Legal Entity as the Business User.");
+		
+		parPartnershipConfirmationPage.selectConfirmLegalEntitiesLink();
+		confirmThisAmendmentPage.confirmLegalEntityAmendments();
+		amendmentCompletedPage.goToDashBoardPage();
+	}
+	
+	@Then("^the user verifies the amendments are confirmed successfully with status \"([^\"]*)\"$")
+	public void the_user_verifies_the_amendments_are_confirmed_successfully_with_status(String status) throws Throwable {
+		LOG.info("Search for the Partnership to Verify the Amendment.");
+		parDashboardPage.selectSeePartnerships();
+		partnershipSearchPage.searchPartnerships();
+		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		
+		LOG.info("Verify the Legal Entity was Confirmed Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+	}
+
+	@When("^the user nominates the legal entity amendments$")
+	public void the_user_nominates_the_legal_entity_amendments() throws Throwable {
+		LOG.info("Nominate the Legal Entity as the Help Desk User.");
+		
+		parPartnershipConfirmationPage.selectNominateLegalEntitiesLink();
+		confirmThisAmendmentPage.confirmLegalEntityAmendments();
+		amendmentCompletedPage.goToPartnershipDetailsPage();
+	}
+	
+	@Then("^the user verifies the amendments are nominated successfully with status \"([^\"]*)\"$")
+	public void the_user_verifies_the_amendments_are_nominated_successfully_with_status(String status) throws Throwable {
+		LOG.info("Verify the Legal Entity was Nominated Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+	}
+	
+	@When("^the user revokes the legal entity with the reason \"([^\"]*)\"$")
+	public void the_user_revokes_the_legal_entity_with_the_reason(String reason) throws Throwable {
+		LOG.info("Revoke the Legal Entity as the Help Desk User.");
+		
+		parPartnershipConfirmationPage.selectRevokeLegalEntitiesLink();
+		
+		revokePage.enterReasonForRevocation(reason);
+		revokePage.goToPartnershipDetailsPage();
+	}
+
+	@Then("^the user verifies the legal entity was revoked successfully with status \"([^\"]*)\"$")
+	public void the_user_verifies_the_legal_entity_was_revoked_successfully_with_status(String status) throws Throwable {
+		LOG.info("Verify the Legal Entity was Revoked Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+	}
+	
+	@When("^the user reinstates the legal entity$")
+	public void the_user_reinstates_the_legal_entity() throws Throwable {
+		LOG.info("Reinstate the Legal Entity as the Help Desk User.");
+		
+		parPartnershipConfirmationPage.selectReinstateLegalEntitiesLink();
+		reinstatePage.goToPartnershipDetailsPage();
+	}
+
+	@Then("^the user verifies the legal entity was reinstated successfully with status \"([^\"]*)\"$")
+	public void the_user_verifies_the_legal_entity_was_reinstated_successfully_with_status(String status) throws Throwable {
+		LOG.info("Verify the Legal Entity was Reinstated Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+	}
+	
+	@When("^the user removes the legal entity$")
+	public void the_user_removes_the_legal_entity() throws Throwable {
+		LOG.info("Remove the Legal Entity as the Help Desk User.");
+		
+		parPartnershipConfirmationPage.selectRemoveLegalEntitiesLink();
+		removePage.goToPartnershipDetailsPage();
+	}
+
+	@Then("^the user verifies the legal entity was removed successfully$")
+	public void the_user_verifies_the_legal_entity_was_removed_successfully() throws Throwable {
+		LOG.info("Verify the Legal Entity was Removed Successfully.");
+		assertTrue(parPartnershipConfirmationPage.checkLegalEnityExists());
+	}
+	
+	@When("^the user adds a Primary Authority contact to be Invited with the following details:$")
+	public void the_user_adds_a_Primary_Authority_contact_to_be_Invited_with_the_following_details(DataTable details) throws Throwable {
+		
+		parPartnershipConfirmationPage.addAnotherAuthorityContactButton();
+
+		LOG.info("Adding new contact details.");
+		personsContactDetailsPage.addContactDetailsWithRandomName(details);
+		personsContactDetailsPage.selectContinueButton();
+
+		LOG.info("Choosing user account type.");
+		personUserTypePage.selectAuthorityMember();
+		personUserTypePage.clickContinueButton();
+		
+		LOG.info("Sending new user an account invite.");
+		personCreateAccountPage.clickInviteButton();
+		
+		userProfileConfirmationPage.clickSaveButton();
+	}
+	
+	@Then("^the new Primary Authority contact is added Successfully$")
+	public void the_new_Primary_Authority_contact_is_added_Successfully() throws Throwable {
+		LOG.info("Verifying the new Authority contact is added successfully.");
+		assertTrue("Contact Details are not Displayed Correctly.", parPartnershipConfirmationPage.checkContactDetails());
+	}
+
+	@When("^the user updates the new Primary Authority contact with the following details:$")
+	public void the_user_updates_the_new_Primary_Authority_contact_with_the_following_details(DataTable details) throws Throwable {
+		
+		parPartnershipConfirmationPage.editContactsDetailsButton();
+		
+		LOG.info("Editing contact details.");
+		personsContactDetailsPage.editContactDetailsWithRandomName(details);
+		personsContactDetailsPage.selectContinueButton();	
+		
+		LOG.info("Updating user account type.");
+		personUserTypePage.selectAuthorityManager();
+		personUserTypePage.clickContinueButton();	
+
+		userProfileConfirmationPage.clickSaveButton();
+	}
+	
+	@Then("^the new Primary Authority contact is updated Successfully$")
+	public void the_new_Primary_Authority_contact_is_updated_Successfully() throws Throwable {
+		LOG.info("Verifying the Authority contact was updated successfully.");
+		assertTrue("Contact Details are not Displayed Correctly.", parPartnershipConfirmationPage.checkContactDetails());
+	}
+
+	@When("^the user removes the new Primary Authority contact$")
+	public void the_user_removes_the_new_Primary_Authority_contact() throws Throwable {
+		parPartnershipConfirmationPage.removeContactsDetailsButton();
+		
+		LOG.info("Removing the contact.");
+		removePage.goToPartnershipDetailsPage();
+	}
+
+	@Then("^the new Primary Authority contact is removed Successfully$")
+	public void the_new_Primary_Authority_contact_is_removed_Successfully() throws Throwable {
+		LOG.info("Verifying the new Authority contact was removed successfully.");
+		assertTrue("Contact was not Removed.", parPartnershipConfirmationPage.checkContactExists());
+	}
+	
+	@When("^the user adds a new Organisation contact to be Invited with the following details:$")
+	public void the_user_adds_a_new_Organisation_contact_to_be_Invited_with_the_following_details(DataTable details) throws Throwable {
+		parPartnershipConfirmationPage.addAnotherOrganisationContactButton();
+
+		LOG.info("Adding new contact details.");
+		personsContactDetailsPage.addContactDetailsWithRandomName(details);
+		personsContactDetailsPage.selectContinueButton();
+		
+		LOG.info("Sending new user an account invite.");
+		personCreateAccountPage.clickInviteButton();
+		
+		userProfileConfirmationPage.clickSaveButton();
+	}
+
+	@Then("^the new Organisation contact is added Successfully$")
+	public void the_new_Organisation_contact_is_added_Successfully() throws Throwable {
+		LOG.info("Verifying the new Authority contact is added successfully.");
+		assertTrue("Contact Details are not Displayed Correctly.", parPartnershipConfirmationPage.checkContactDetails());
+	}
+
+	@When("^the user updates the new Organisation contact with the following details:$")
+	public void the_user_updates_the_new_Organisation_contact_with_the_following_details(DataTable details) throws Throwable {
+		parPartnershipConfirmationPage.editContactsDetailsButton();
+		
+		LOG.info("Editing contact details.");
+		personsContactDetailsPage.editContactDetailsWithRandomName(details);
+		personsContactDetailsPage.selectContinueButton();	
+		
+		userProfileConfirmationPage.clickSaveButton();
+	}
+
+	@Then("^the new Organisation contact is updated Successfully$")
+	public void the_new_Organisation_contact_is_updated_Successfully() throws Throwable {
+		LOG.info("Verifying the Authority contact was updated successfully.");
+		assertTrue("Contact Details are not Displayed Correctly.", parPartnershipConfirmationPage.checkContactDetails());
+	}
+
+	@When("^the user removes the new Organisation contact$")
+	public void the_user_removes_the_new_Organisation_contact() throws Throwable {
+		parPartnershipConfirmationPage.removeContactsDetailsButton();
+		
+		LOG.info("Removing the contact.");
+		removePage.goToPartnershipDetailsPage();
+	}
+
+	@Then("^the new Organisation contact is removed Successfully$")
+	public void the_new_Organisation_contact_is_removed_Successfully() throws Throwable {
+		LOG.info("Verifying the new Authority contact was removed successfully.");
+		assertTrue("Contact was not Removed.", parPartnershipConfirmationPage.checkContactExists());
+	}
+	
+	@Then("^the advice notice it uploaded successfully and set to active$")
+	public void the_advice_notice_it_uploaded_successfully_and_set_to_active() throws Throwable {
+		LOG.info("Checking Advice notice status is set to \"Active\"");
+		Assert.assertTrue("Failed: Status not set to \"Active\"", adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Active"));
+	}
+
+	@When("^the user selects the edit advice action link$")
+	public void the_user_selects_the_edit_advice_action_link() throws Throwable {
+		LOG.info("Searching for the newly added Advice notice.");
+		
+		adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		adviceNoticeSearchPage.selectEditAdviceButton();
+	}
+
+	@When("^the user edits the advice notice with the following details:$")
+	public void the_user_edits_the_advice_notice_with_the_following_details(DataTable details) throws Throwable {
+		LOG.info("Editing Advice notice details.");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.ADVICENOTICE_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.ADVICENOTICE_TYPE, data.get("Type of Advice"));
+			DataStore.saveValue(UsableValues.ADVICENOTICE_DESCRIPTION, data.get("Description"));
+		}
+		
+		adviceNoticeDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		adviceNoticeDetailsPage.selectAdviceType(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TYPE));
+		adviceNoticeDetailsPage.enterDescription(DataStore.getSavedValue(UsableValues.ADVICENOTICE_DESCRIPTION));
+		adviceNoticeDetailsPage.clickSave();
+	}
+
+	@Then("^the advice notice it updated successfully$")
+	public void the_advice_notice_it_updated_successfully() throws Throwable {
+		LOG.info("Checking Advice notice status is set to \"Active\"");
+		Assert.assertTrue("Failed: Status not set to \"Active\"", adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Active"));
+	}
+
+	@When("^the user archives the advice notice with the following reason \"([^\"]*)\"$")
+	public void the_user_archives_the_advice_notice_with_the_following_reason(String reason) throws Throwable {
+		LOG.info("Archiving Advice Notice.");
+		
+		adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		adviceNoticeSearchPage.selectArchiveAdviceButton();
+		
+		adviceArchivePage.enterReasonForArchiving(reason);
+	}
+
+	@Then("^the advice notice is archived successfully$")
+	public void the_advice_notice_is_archived_successfully() throws Throwable {
+		LOG.info("Check Advice notice status is set to \"Archived\"");
+		Assert.assertTrue("Failed: Status not set to \"Archived\"", adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Archived"));
+	}
+	
+	@When("^the user removes the advice notice with the following reason \"([^\"]*)\"$")
+	public void the_user_removes_the_advice_notice_with_the_following_reason(String reason) throws Throwable {
+		LOG.info("Removing Advice Notice.");
+		
+		adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		adviceNoticeSearchPage.selectRemoveAdviceButton();
+		
+		adviceRemovalPage.enterReasonForRemoval(reason);
+	}
+
+	@Then("^the advice notice is removed successfully$")
+	public void the_advice_notice_is_removed_successfully() throws Throwable {
+		LOG.info("Check Advice notice was Removed.");
+		adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		
+		Assert.assertTrue("Failed: Advice Notice was not Removed.", adviceNoticeSearchPage.checkNoResultsReturned());
+	}
+	
+	@When("^the user Deletes the Partnership with the following reason: \"([^\"]*)\"$")
+	public void the_user_Deletes_the_Partnership_with_the_following_reason(String reason) throws Throwable {
+		LOG.info("Delete the Partnership.");
+		partnershipAdvancedSearchPage.selectDeletePartnershipLink();
+		
+		deletePage.enterReasonForDeletion(reason);
+		deletePage.clickDeleteForPartnership();
+		
+		completionPage.clickDoneForPartnership();
+	}
+
+	@Then("^the Partnership was Deleted Successfully$")
+	public void the_Partnership_was_Deleted_Successfully() throws Throwable {
+		LOG.info("Verify the Partnership was Deleted Successfully.");
+		
+		partnershipAdvancedSearchPage.searchPartnerships();
+		Assert.assertTrue(partnershipAdvancedSearchPage.checkPartnershipExists());
+	}
+	
+	@When("^the user creates a new contact with the following details:$")
+	public void the_user_creates_a_new_contact_with_the_following_details(DataTable details) throws Throwable {
+		parDashboardPage.selectManageColleagues();
+		managePeoplePage.selectAddPerson();
+
+		LOG.info("Adding a new person.");
+		personsContactDetailsPage.addContactDetails(details);
+		personsContactDetailsPage.clickContinueButton();
+
+		LOG.info("Successfully entered new contact details.");
+
+		personAccountPage.selectUseExistingAccount();
+		personAccountPage.clickContinueButton();
+
+		LOG.info("Successfully chose to use the existing account.");
+
+		personMembershipPage.selectCityEnforcementSquad();
+		personMembershipPage.selectUpperWestSideBoroughCouncil();
+		personMembershipPage.selectLowerEstSideBoroughCouncil();
+		personMembershipPage.clickContinueButton();
+		
+		LOG.info("Successfully chose the contacts Authority memberships.");
+
+		personUserTypePage.selectAuthorityMember();
+		personUserTypePage.clickProfileReviewContinueButton();
+		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
+
+		userProfileConfirmationPage.saveChanges();
+		userProfileCompletionPage.clickDoneGoToProfile();
+	}
+	
+	@Then("^the user can verify the contact record was added to the user profile$")
+	public void the_user_can_verify_the_contact_record_was_added_to_the_user_profile() throws Throwable {
+		LOG.info("Verifying the Duplicate Contact Record was Added Successfully.");
+		
+		Assert.assertTrue(personsProfilePage.checkContactRecordAdded());
+	}
+
+	@When("^the user merges the contact record$")
+	public void the_user_merges_the_contact_record() throws Throwable {
+		LOG.info("Selecting Contact Records to Merge.");
+		
+		personsProfilePage.clickMergeContactRecords();
+		mergeContactRecordsPage.mergeContacts();
+		mergeContactRecordsPage.clickContinue();
+		
+		LOG.info("Confirming the Contact Records to be Merged.");
+		mergeContactRecordsConfirmationPage.clickMerge();
+	}
+
+	@Then("^the user can verify the contact record was merged successfully$")
+	public void the_user_can_verify_the_contact_record_was_merged_successfully() throws Throwable {
+		LOG.info("Verifying the Contact Records have been Merged Successfully.");
+		
+		Assert.assertTrue(personsProfilePage.checkContactRecord());
+	}
+	
+	@When("^the user adds a single member organisation to the patnership with the following details:$")
+	public void the_user_adds_a_single_member_organisation_to_the_patnership_with_the_following_details(DataTable details) throws Throwable {
+		LOG.info("Add a Single Member Organisation to a Co-ordinated Partnership.");
+		
+		partnershipAdvancedSearchPage.selectOrganisationLink();
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.MEMBER_ORGANISATION_NAME, data.get("Organisation Name"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("Address Line 1"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE2, data.get("Address Line 2"));
+			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("Town City"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTY, data.get("County"));
+			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("Postcode"));
+			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal Entity Type"));
+			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Legal Entity Name"));
+		}
+		
+		parPartnershipConfirmationPage.selectShowMembersListLink();
+		memberListPage.selectAddAMemberLink();
+		
+		LOG.info("Entering the Member Organisation's Name.");
+		addOrganisationNamePage.enterMemberOrganisationName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		
+		LOG.info("Entering the Member Organisation's Address.");
+		authorityAddressDetailsPage.enterMemberOrganisationAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		
+		LOG.info("Entering the Member Organisation's Contact Details.");
+		personsContactDetailsPage.enterContactDetails(details);
+		personsContactDetailsPage.clickContinueButtonForMemberContact();
+		
+		LOG.info("Entering the Member Organisation's Membership Start Date.");
+		enterTheDatePage.clickContinueButtonForMembershipBegan();
+		
+		LOG.info("Entering the Member Organisation's Trading Name.");
+		tradingPage.addTradingNameForMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		
+		LOG.info("Entering the Member Organisation's Legal Entity.");
+		legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		legalEntityTypePage.clickContinueButton();
+		legalEntityReviewPage.clickContinueForMember();
+		
+		LOG.info("Confirming the Member Organisation is covered by the Inspection Plan.");
+		inspectionPlanCoveragePage.selectYesRadial();
+		inspectionPlanCoveragePage.selectContinueForMember();
+		
+		LOG.info("Saving the Member Organisation's Details.");
+		memberOrganisationSummaryPage.selectSave();
+		memberOrganisationAddedConfirmationPage.selectDone();
+	}
+
+	@Then("^the user member organistion has been added to the partnership successfully$")
+	public void the_user_member_organistion_has_been_added_to_the_partnership_successfully() throws Throwable {
+		LOG.info("Verify the Member Organisation was added to the Co-ordinated Partnership Successfully.");
+		
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		Assert.assertTrue(memberListPage.checkMemberCreated());
+	}
+	
+	@When("^the user updates a single member organisation of the patnership with the following details:$")
+	public void the_user_updates_a_single_member_organisation_of_the_patnership_with_the_following_details(DataTable details) throws Throwable {
+		LOG.info("Update a Single Member Organisation to a Co-ordinated Partnership.");
+		
+		partnershipAdvancedSearchPage.selectOrganisationLink();
+		parPartnershipConfirmationPage.selectShowMembersListLink();
+		
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		memberListPage.selectMembersName();
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.MEMBER_ORGANISATION_NAME, data.get("Organisation Name"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("Address Line 1"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE2, data.get("Address Line 2"));
+			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("Town City"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTY, data.get("County"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTRY, data.get("Country"));
+			DataStore.saveValue(UsableValues.BUSINESS_NATION, data.get("Nation"));
+			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("Postcode"));
+			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal Entity Type"));
+			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Legal Entity Name"));
+		}
+		
+		LOG.info("Updating the Member Organisation's Name.");
+		memberOrganisationSummaryPage.selectEditOrganisationName();
+		addOrganisationNamePage.editMemberOrganisationName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		
+		LOG.info("Updating the Member Organisation's Address.");
+		memberOrganisationSummaryPage.selectEditAddress();
+		
+		editRegisteredAddressPage.editAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		
+		editRegisteredAddressPage.goToMemberOrganisationSummaryPage();
+		
+		LOG.info("Updating the Member Organisation's Membership Start Date.");
+		memberOrganisationSummaryPage.selectEditMembershipStartDate();
+		enterTheDatePage.goToMemberOrganisationSummaryPage();
+		
+		LOG.info("Updating the Member Organisation's Contact Details.");
+		memberOrganisationSummaryPage.selectEditPerson();
+		personsContactDetailsPage.enterContactDetails(details);
+		personsContactDetailsPage.goToMemberOrganisationSummaryPage();
+		
+		LOG.info("Updating the Member Organisation's Legal Entity.");
+		memberOrganisationSummaryPage.selectAddAnotherLegalEntity();
+		updateLegalEntityPage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		updateLegalEntityPage.goToMemberOrganisationSummaryPage();
+		
+		LOG.info("Updating the Member Organisation's Trading Name.");
+		memberOrganisationSummaryPage.selectEditTradingName();
+		tradingPage.editMemberTradingName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		tradingPage.goToMemberOrganisationSummaryPage();
+		
+		LOG.info("Confirming the Member Organisation is not covered by the Inspection Plan.");
+		memberOrganisationSummaryPage.selectEditCoveredByInspectionPlan();
+		inspectionPlanCoveragePage.selectNoRadial();
+		inspectionPlanCoveragePage.selectSaveForMember();
+	}
+
+	@Then("^the member organistion has been updated successfully$")
+	public void the_member_organistion_has_been_updated_successfully() throws Throwable {
+		LOG.info("Verifying All Member Details are Correct.");
+		Assert.assertTrue(memberOrganisationSummaryPage.checkMemberDetails());
+		memberOrganisationSummaryPage.selectDone();
+		
+		LOG.info("Verify the Updated Member Organisation Name is Displayed on the Members List.");
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		Assert.assertTrue(memberListPage.checkMemberCreated());
+	}
+	
+	@When("^the user Ceases a single member organisation of the patnership with the current date$")
+	public void the_user_Ceases_a_single_member_organisation_of_the_patnership_with_the_current_date() throws Throwable {
+		LOG.info("Cease a Single Member Organisation to a Co-ordinated Partnership.");
+		
+		partnershipAdvancedSearchPage.selectOrganisationLink();
+		parPartnershipConfirmationPage.selectShowMembersListLink();
+		
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		memberListPage.selectCeaseMembership();
+		
+		LOG.info("Entering the Current Date for the Cessation to Happen.");
+		enterTheDatePage.enterCurrentDate();
+		enterTheDatePage.goToMembershipCeasedPage();
+		
+		membershipCeasedPage.goToMembersListPage();
+	}
+
+	@Then("^the member organistion has been Ceased successfully$")
+	public void the_member_organistion_has_been_Ceased_successfully() throws Throwable {
+		LOG.info("Verify the Member Organisation has been Ceased Successfully.");
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		Assert.assertTrue("FAILED: Links are still present and/ or the Cease date is incorrect.", memberListPage.checkMembershipCeased());
+	}
+	
+	@When("^the user Uploads a members list to the coordinated partnership with the following file \"([^\"]*)\"$")
+	public void the_user_Uploads_a_members_list_to_the_coordinated_partnership_with_the_following_file(String file) throws Throwable {
+		LOG.info("Uploading a Members List CSV File to a Co-ordinated Partnership.");
+		
+		partnershipAdvancedSearchPage.selectOrganisationLink();
+		parPartnershipConfirmationPage.selectShowMembersListLink();
+		
+		memberListPage.selectUploadMembersListLink();
+		
+		LOG.info("Uploading the Members List CSV File..");
+		uploadListOfMembersPage.chooseCSVFile();
+		uploadListOfMembersPage.selectUpload();
+		
+		confirmMemberUploadPage.selectUpload();
+		
+		memberListUploadedPage.selectDone();
+	}
+
+	@Then("^the members list is uploaded successfully$")
+	public void the_members_list_is_uploaded_successfully() throws Throwable {
+		LOG.info("Verify the Members List was Uploaded Successfully.");
+		
+		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		Assert.assertTrue("FAILED: Business names are not displayed in the table.", memberListPage.checkMembersListUploaded());
+	}
+	
+	@When("^the user navigates to the statistics page$")
+	public void the_user_navigates_to_the_statistics_page() throws Throwable {
+		LOG.info("Navigating to the Statistics Page.");
+	    parDashboardPage.selectViewAllStatistics();
+	}
+
+	@Then("^the statistics page is dispalyed successfully$")
+	public void the_statistics_page_is_dispalyed_successfully() throws Throwable {
+		LOG.info("Verifying the Statistics Page is Displayed.");
+		Assert.assertTrue("FAILED: Statistics Page is not Displayed!", parReportingPage.checkPageHeaderIsDisplayed());
+	}
+
+	@When("^the user selects the Read more about Primary Authority link$")
+	public void the_user_selects_the_Read_more_about_Primary_Authority_link() throws Throwable {
+		LOG.info("Selecting the Read More About Primary Authority Link.");
+		
+		parHomePage.selectReadMoreAboutPrimaryAuthorityLink();
+	}
+
+	@Then("^the user is taken to the GOV\\.UK Guidance page for Local regulation Primary Authority Successfully$")
+	public void the_user_is_taken_to_the_GOV_UK_Guidance_page_for_Local_regulation_Primary_Authority_Successfully() throws Throwable {
+		LOG.info("Verifying the Local regulation: Primary Authority Page is Displayed.");
+		
+		Assert.assertTrue(localRegulationPrimaryAuthorityPage.checkPageHeaderDisplayed());
+	}
+
+	@When("^the user selects the Access tools and templates for local authorities link$")
+	public void the_user_selects_the_Access_tools_and_templates_for_local_authorities_link() throws Throwable {
+		LOG.info("Selecting the Access Tools and Templates Link.");
+		
+		parHomePage.selectAccessToolsAndTemplatesLink();
+	}
+
+	@Then("^the user is taken to the GOV\\.UK Collection page for Primary Authority Documents Successfully$")
+	public void the_user_is_taken_to_the_GOV_UK_Collection_page_for_Primary_Authority_Documents_Successfully() throws Throwable {
+		LOG.info("Verifying the Primary Authority documents page is Displayed.");
+		
+		Assert.assertTrue(primaryAuthorityDocumentsPage.checkPageHeaderDisplayed());
+	}
+
+	@When("^the user selects the Terms and Conditions link$")
+	public void the_user_selects_the_Terms_and_Conditions_link() throws Throwable {
+		LOG.info("Selecting the Terms and Conditions Link.");
+		
+		parHomePage.selectTermsAndConditionsLink();
+	}
+
+	@Then("^the user is taken to the GOV\\.UK Guidance page for Primary Authority terms and conditions Successfully$")
+	public void the_user_is_taken_to_the_GOV_UK_Guidance_page_for_Primary_Authority_terms_and_conditions_Successfully() throws Throwable {
+		LOG.info("Verifying the Primary Authority terms and conditions page is Displayed.");
+		
+		Assert.assertTrue(termsAndConditionsPage.checkPageHeaderDisplayed());
+	}
+
+	@When("^the user selects the Cookies link$")
+	public void the_user_selects_the_Cookies_link() throws Throwable {
+		LOG.info("Selecting the Cookies Link from the Footer.");
+		
+		parHomePage.selectCookiesFooterLink();
+	}
+
+	@Then("^the user is taken to the Cookies page and can accept the Analytics Cookies Successfully$")
+	public void the_user_is_taken_to_the_Cookies_page_and_can_accept_the_Analytics_Cookies_Successfully() throws Throwable {
+		LOG.info("Verifying the Cookies page is Displayed and the User Accepts the Analytics Cookies.");
+		
+		Assert.assertTrue(cookiesPage.checkPageHeaderDisplayed());
+		
+		cookiesPage.acceptCookies();
+		cookiesPage.selectSaveButton();
+	}
+
+	@When("^the user selects the Privacy link$")
+	public void the_user_selects_the_Privacy_link() throws Throwable {
+		LOG.info("Selecting the Privacy Link.");
+		
+		parHomePage.selectPrivacyLink();
+	}
+
+	@Then("^the user is taken to the GOV\\.UK Corporate report OPSS Privacy notice page Successfully$")
+	public void the_user_is_taken_to_the_GOV_UK_Corporate_report_OPSS_Privacy_notice_page_Successfully() throws Throwable {
+		LOG.info("Verifying the OPSS: privacy notice page is Displayed.");
+		
+		Assert.assertTrue(opssPrivacyNoticePage.checkPageHeaderDisplayed());
+	}
+
+	@When("^the user selects the Accessibility link$")
+	public void the_user_selects_the_Accessibility_link() throws Throwable {
+		LOG.info("Selecting the Accessibility Link.");
+		
+		parHomePage.selectAccessibilityLink();
+	}
+
+	@Then("^the user is taken to the GOV\\.UK Guidance page for the Primary Authority Register accessibility statement Successfully$")
+	public void the_user_is_taken_to_the_GOV_UK_Guidance_page_for_the_Primary_Authority_Register_accessibility_statement_Successfully() throws Throwable {
+		LOG.info("Verifying the Primary Authority Register: accessibility statement page is Displayed.");
+		
+		Assert.assertTrue(accessibilityStatementPage.checkPageHeaderDisplayed());
+	}
+
+	@When("^the user selects the Open Government Licence link$")
+	public void the_user_selects_the_Open_Government_Licence_link() throws Throwable {
+		LOG.info("Selecting the Open Government Licence Link.");
+		
+		parHomePage.selectOpenGovernmentLicenceLink();
+	}
+
+	@Then("^the user is taken to the Open Government Licence for public sector information page Successfully$")
+	public void the_user_is_taken_to_the_Open_Government_Licence_for_public_sector_information_page_Successfully() throws Throwable {
+		LOG.info("Verifying the Open Government Licence page is Displayed.");
+		
+		Assert.assertTrue(openGovernmentLicencePage.checkPageHeaderDisplayed());
+	}
+
+	@When("^the user selects the Crown copyright link$")
+	public void the_user_selects_the_Crown_copyright_link() throws Throwable {
+		LOG.info("Selecting the Crown copyright Link.");
+		
+		parHomePage.selectCrownCopyrightLink();
+	}
+
+	@Then("^the user is taken to the Crown copyright page Successfully$")
+	public void the_user_is_taken_to_the_Crown_copyright_page_Successfully() throws Throwable {
+		LOG.info("Verifying the Crown copyright page is Displayed.");
+		
+		Assert.assertTrue(crownCopyrightPage.checkPageHeaderDisplayed());
 	}
 }

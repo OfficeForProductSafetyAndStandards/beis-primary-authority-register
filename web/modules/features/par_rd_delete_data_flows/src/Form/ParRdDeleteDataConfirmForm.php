@@ -38,7 +38,7 @@ class ParRdDeleteDataConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, $entity_type = '', $entity_id = '') {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, $entity_type = '', $entity_id = ''): AccessResult {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
@@ -78,7 +78,7 @@ class ParRdDeleteDataConfirmForm extends ParBaseForm {
     $form['detail'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Full details about this data'),
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['detail']['text'] = [

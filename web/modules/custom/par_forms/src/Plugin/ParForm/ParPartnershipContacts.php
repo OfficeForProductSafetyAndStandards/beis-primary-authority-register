@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -32,7 +33,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // Set display configuration options.
@@ -42,23 +43,23 @@ class ParPartnershipContacts extends ParFormPluginBase {
     $this->getFlowDataHandler()->setFormPermValue("contact_format", $format, $this);
 
     if ($format === self::AUTHORITY_CONTACTS && $authority_contacts = $par_data_partnership->getAuthorityPeople()) {
-      $this->setDefaultValuesByKey("authority_people", $cardinality, $authority_contacts);
+      $this->setDefaultValuesByKey("authority_people", $index, $authority_contacts);
     }
     elseif ($format === self::ORGANISATION_CONTACTS && $organisation_contacts = $par_data_partnership->getOrganisationPeople()) {
-      $this->setDefaultValuesByKey("organisation_people", $cardinality, $organisation_contacts);
+      $this->setDefaultValuesByKey("organisation_people", $index, $organisation_contacts);
     }
 
     // Set title display options.
     $show_title = isset($this->getConfiguration()['show_title']) ? (bool) $this->getConfiguration()['show_title'] : TRUE;
     $this->getFlowDataHandler()->setFormPermValue("show_title", $show_title, $this);
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     if ($this->getFlowDataHandler()->getFormPermValue("show_title", $this)) {
       $form['title'] = [
         '#type' => 'html_tag',
@@ -71,12 +72,12 @@ class ParPartnershipContacts extends ParFormPluginBase {
     $contact_format = $this->getFlowDataHandler()->getFormPermValue("contact_format", $this);
     switch ($contact_format) {
       case self::AUTHORITY_CONTACTS:
-        $contacts = $this->getDefaultValuesByKey('authority_people', $cardinality, []);
+        $contacts = $this->getDefaultValuesByKey('authority_people', $index, []);
         $section_title = 'Primary Authority';
         break;
 
       case self::ORGANISATION_CONTACTS:
-        $contacts = $this->getDefaultValuesByKey('organisation_people', $cardinality, []);
+        $contacts = $this->getDefaultValuesByKey('organisation_people', $index, []);
         $section_title = 'Organisation';
         break;
 
@@ -94,8 +95,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
     try {
       $params = ['type' => $contact_format];
       $contact_add_flow = ParFlow::load('partnership_contact_add');
-      $add_contact_link = $contact_add_flow ?
-        $contact_add_flow->getStartLink(1, "add another {$contact_format} contact", $params) : NULL;
+      $add_contact_link = $contact_add_flow?->getStartLink(1, "add another {$contact_format} contact", $params);
     } catch (ParFlowException $e) {
 
     }
@@ -108,7 +108,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
         '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $section_title,
       ],
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       'person' => [
         '#type' => 'container',
         'items' => [
@@ -140,44 +140,44 @@ class ParPartnershipContacts extends ParFormPluginBase {
     foreach ($chunk as $delta => $entity) {
       $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
       $entity_view = $entity_view_builder->view($entity, 'detailed');
-      $rendered_field = $this->getRenderer()->render($entity_view);
 
       // Get update and remove links.
       try {
         $params = ['type' => $contact_format, 'par_data_person' => $entity->id()];
         $contact_update_flow = ParFlow::load('partnership_contact_update');
-        $update_contact_link = $contact_update_flow ?
-          $contact_update_flow->getStartLink(1, 'edit ' . strtolower($entity->label()), $params) : NULL;
+        $update_contact_link = $contact_update_flow?->getStartLink(1, 'edit ' . strtolower($entity->label()), $params);
       } catch (ParFlowException $e) {
 
       }
       try {
         $params = ['type' => $contact_format, 'par_data_person' => $entity->id()];
         $contact_remove_flow = ParFlow::load('partnership_contact_remove');
-        $remove_contact_link = $contact_remove_flow ?
-          $contact_remove_flow->getStartLink(1, 'remove ' . strtolower($entity->label()) . ' from this partnership', $params) : NULL;
+        $remove_contact_link = $contact_remove_flow?->getStartLink(1, 'remove ' . strtolower($entity->label()) . ' from this partnership', $params);
       } catch (ParFlowException $e) {
 
       }
 
       $form["{$contact_format}_contacts"]['person']['items'][$delta] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['form-group', 'contact-details']],
+        '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group', 'contact-details']],
         'entity' => [
           '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => $rendered_field ? $rendered_field : '<p>(none)</p>',
+          '#tag' => 'div',
+          '#attributes' => ['class' => ['govuk-grid-column-full']],
+          [...$entity_view],
         ],
         'operations' => [
           'update' => [
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $update_contact_link ? $update_contact_link->toString() : '',
+            '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
           ],
           'remove' => [
             '#type' => 'html_tag',
             '#tag' => 'p',
-            '#value' => $remove_contact_link ? $remove_contact_link->toString() : '',
+            '#value' => $remove_contact_link ? $remove_contact_link?->toString() : '',
+            '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
           ],
         ],
       ];
@@ -189,7 +189,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

@@ -1,28 +1,7 @@
-Feature: 
+Feature: Other
   As a user of the PAR service
   I  want to be able to view/manage partnerships
   So I can comply with the BEIS standards for goods and services
-
-  @regression @authority
-  Scenario: Verify Addition/Update of Authority (Happy Path - PAR-1849, PAR-1850)
-    Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user creates a new authority with the following details:
-      | Authority Type | ONS Code | Regulatory Function | addressline1  | town    | postcode |
-      | Council Area   | 43453465 | Cookie control      | 32 Bramtom Rd | Windsor | SL4 5PN  |
-    Then the authority is created sucessfully
-    #Update All Fields for newly created Authority
-    When the user searches for the last created authority
-    And the user updates all the fields for newly created authority
-    Then the update for the authority is successful
-
-  @regression @organisation
-  Scenario: Verify Update of Organisation (Happy Path - PAR-1851)
-    Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user searches for the last created organisation
-    And the user updates all the fields for last created organisation
-    Then all the fields are updated correctly
 
   @regression @publicRegistrySearch
   Scenario: Verify a Non-registered User can Search the Public Register (Happy Path - PAR-2079)
@@ -39,6 +18,35 @@ Feature:
     When the user is on the search for a partnership page
     Then the user can search for a PA Organisation Trading name Company number
     And the user is shown the information for that partnership
+
+  @regression @authority @authorityManagement
+  Scenario: Verify Addition/Update of Authority (Happy Path - PAR-1849, PAR-1850)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user creates a new authority with the following details:
+      | Authority Type | ONS Code | Regulatory Function | addressline1  | addressline2 | town    | county         | postcode |
+      | Council Area   | 43453465 | Cookie control      | 32 Bramtom Rd | new build    | Windsor | Greater London | SL4 5PN  |
+    Then the authority is created sucessfully
+    #Update All Fields for newly created Authority
+    When the user searches for the last created authority
+    And the user updates all the fields for newly created authority
+    Then the update for the authority is successful
+
+  @regression @authority @authorityManagement
+  Scenario: Verify The Transfer of a Partnership from an Existing Authority to a New Authority (Happy Path - PAR-2287)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for an Authority with the same Regulatory Functions "Upper West Side Borough Council"
+    And the user completes the partnership transfer process
+    Then the partnership is transferred to the new authority successfully
+
+  @regression @organisation
+  Scenario: Verify Update of Organisation (Happy Path - PAR-1851)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created organisation
+    And the user updates all the fields for last created organisation
+    Then all the fields are updated correctly
 
   @regression @helpDesk @PARNewsSubscription
   Scenario: Verify an Authority contact is subscribed to PAR News (Happy Path - PAR-2076)
@@ -95,8 +103,8 @@ Feature:
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user creates a new person:
-      | Title | WorkNumber | MobileNumber |
-      | Mr    |      01204 |              |
+      | Title | WorkNumber | MobileNumber | Organisation | Authority              |
+      | Mr    |      01204 |              | Cafe         | City Enforcement Squad |
     Then the user can verify the person was created successfully and can see resend an account invite
 
   @regression @helpDesk @managePeople
@@ -105,6 +113,76 @@ Feature:
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for an existing person successfully
     And the user updates an existing person:
-      | Title | WorkNumber  | MobileNumber |
-      | Dr    | 01204996501 |  07405882265 |
+      | Title | WorkNumber  | MobileNumber | Organisation  | Authority                       |
+      | Dr    | 01204996501 |  07405882265 | General Store | Upper West Side Borough Council |
     Then the user can verify the person was updated successfully and can see resend an account invite
+
+  @regression @helpDesk @managePeople @mergeContact
+  Scenario: Verify the Successful Merge of a Contact Record for a User Profile (Happy Path - PAR-2288)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    When the user creates a new contact with the following details:
+      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                     |
+      | Mr    | Kermit    | the Frog | 01723456789 |   0777777777 | par_authority@example.com |
+    Then the user can verify the contact record was added to the user profile
+    # Merge the Contact Record
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for an existing person successfully
+    And the user merges the contact record
+    Then the user can verify the contact record was merged successfully
+
+  @regression @helpDesk @statistics
+  Scenario: Verify the Help Desk User can see the Statistics Page (Happy Path - PAR-2315)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user navigates to the statistics page
+    Then the statistics page is dispalyed successfully
+  
+  @regression @homePageLinks
+  Scenario: Verify a User can view Guidance for Local Regulation Primary Authority Successfully (Happy Path - PAR-2289)
+    Given the user is on the PAR home page
+    When the user selects the Read more about Primary Authority link
+    Then the user is taken to the GOV.UK Guidance page for Local regulation Primary Authority Successfully
+
+  @regression @homePageLinks
+  Scenario: Verify a User can view the Collection of Primary Authority Documents Successfully (Happy Path - PAR-2290)
+    Given the user is on the PAR home page
+    When the user selects the Access tools and templates for local authorities link
+    Then the user is taken to the GOV.UK Collection page for Primary Authority Documents Successfully
+
+  @regression @homePageLinks
+  Scenario: Verify a User can view the Terms and Conditions Successfully (Happy Path - PAR-2291)
+    Given the user is on the PAR home page
+    When the user selects the Terms and Conditions link
+    Then the user is taken to the GOV.UK Guidance page for Primary Authority terms and conditions Successfully
+
+  @regression @homePageLinks
+  Scenario: Verify a User can view and Accept Analytics Cookies Successfully (Happy Path - PAR-2292)
+    Given the user is on the PAR home page
+    When the user selects the Cookies link
+    Then the user is taken to the Cookies page and can accept the Analytics Cookies Successfully
+
+  @regression @homePageLinks
+  Scenario: Verify a User can view the OPSS Privacy Notice Successfully (Happy Path - PAR-2293)
+    Given the user is on the PAR home page
+    When the user selects the Privacy link
+    Then the user is taken to the GOV.UK Corporate report OPSS Privacy notice page Successfully
+
+  @regression @homePageLinks
+  Scenario: Verify a User can view the Primary Authority Register Accessibility Statement Successfully (Happy Path - PAR-2294)
+    Given the user is on the PAR home page
+    When the user selects the Accessibility link
+    Then the user is taken to the GOV.UK Guidance page for the Primary Authority Register accessibility statement Successfully
+
+  @regression @homePageLinks
+  Scenario: Verify a User can view the Open Government Licence Successfully (Happy Path - PAR-2295)
+    Given the user is on the PAR home page
+    When the user selects the Open Government Licence link
+    Then the user is taken to the Open Government Licence for public sector information page Successfully
+
+  @regression @homePageLinks
+  Scenario: Verify a User can view the Crown Copyright Successfully (Happy Path - PAR-2296)
+    Given the user is on the PAR home page
+    When the user selects the Crown copyright link
+    Then the user is taken to the Crown copyright page Successfully

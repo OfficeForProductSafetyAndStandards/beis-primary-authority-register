@@ -144,7 +144,7 @@ class ParFlowLink extends AreaPluginBase {
 
     // Only display if there is a link.
     if (!empty($link) && $url->access() && $url->isRouted()) {
-      $options = NestedArray::mergeDeep(['attributes' => ['class' => ['form-group']]], $options);
+      $options = NestedArray::mergeDeep(['attributes' => ['class' => ['govuk-form-group']]], $options);
       return [
         '#type' => 'link',
         '#title' => $title,

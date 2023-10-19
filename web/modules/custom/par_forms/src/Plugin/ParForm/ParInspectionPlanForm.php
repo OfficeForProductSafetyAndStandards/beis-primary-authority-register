@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\par_forms\ParEntityMapping;
@@ -20,7 +21,7 @@ class ParInspectionPlanForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected $entityMapping = [
+  protected array $entityMapping = [
     ['notes', 'par_data_inspection_feedback', 'notes', NULL, NULL, 0, [
       'You must fill in the missing information.' => 'You must enter the details of this enquiry.'
     ]],
@@ -29,18 +30,18 @@ class ParInspectionPlanForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     if ($par_data_inspection_feedback = $this->getFlowDataHandler()->getParameter('par_data_inspection_feedback')) {
       $this->getFlowDataHandler()->setFormPermValue('notes', $par_data_inspection_feedback->getPlain('notes'));
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     $par_data_inspection_plan_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_inspection_plan', 'document');
     $field_definition = $par_data_inspection_plan_fields['document'];
     $file_extensions = $field_definition->getSetting('file_extensions');
@@ -58,7 +59,7 @@ class ParInspectionPlanForm extends ParFormPluginBase {
     $form['inspection_plan_type_help_text'] = [
       '#type' => 'container',
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ],
       '#title' => $this->t('How to upload Primary Authority Inspection plans to Local Authorities'),
       '#description' => $this->t('To upload Primary Authority Inspection plans to a Local Authority, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the organisation it applies to and we’ll get back to you shortly.'),
@@ -67,7 +68,7 @@ class ParInspectionPlanForm extends ParFormPluginBase {
     $form['notes'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide feedback'),
-      '#default_value' => $this->getDefaultValuesByKey('notes', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('notes', $index),
       '#description' => '<p>Use this section to give feedback on this inspection plan, this will be submitted to the primary authority.</p>',
     ];
 
@@ -78,7 +79,7 @@ class ParInspectionPlanForm extends ParFormPluginBase {
       '#description' => t('Use Ctrl or cmd to select multiple files'),
       '#upload_location' => 's3private://documents/inspection_plan/',
       '#multiple' => TRUE,
-      '#default_value' => $this->getDefaultValuesByKey("files", $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey("files", $index),
       '#upload_validators' => [
         'file_validate_extensions' => [
           0 => $file_extensions

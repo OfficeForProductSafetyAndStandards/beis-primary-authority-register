@@ -13,7 +13,7 @@ dependencies:
 id: govuk_par_userloginlinkfromhomepage
 theme: govuk_par
 region: content
-weight: -1
+weight: 0
 provider: null
 plugin: 'block_content:b5bd652e-c3ba-421e-894f-3b302c11f19e'
 settings:

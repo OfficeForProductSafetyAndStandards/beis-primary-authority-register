@@ -40,7 +40,7 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
 
     $form['application_type_fieldset'] = [
       '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];

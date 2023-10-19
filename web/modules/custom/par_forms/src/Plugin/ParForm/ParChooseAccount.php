@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -31,16 +32,9 @@ class ParChooseAccount extends ParFormPluginBase {
   const DELETE = 'remove'; // Only for existing users
 
   /**
-   * @return DateFormatterInterface
-   */
-  protected function getDateFormatter() {
-    return \Drupal::service('date.formatter');
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
+  public function defaultConfiguration(): array {
     return ['require_user' => FALSE] + parent::defaultConfiguration();
   }
 
@@ -68,7 +62,7 @@ class ParChooseAccount extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
     $cid_contact_details = $this->getFlowNegotiator()->getFormKey('contact_details');
@@ -92,7 +86,7 @@ class ParChooseAccount extends ParFormPluginBase {
         if ($total_people <= 1) {
           $this->getFlowDataHandler()->setFormPermValue("account_options", $account_options);
 
-          parent::loadData();
+          parent::loadData($index);
         }
       }
     }
@@ -131,13 +125,13 @@ class ParChooseAccount extends ParFormPluginBase {
 
     $this->getFlowDataHandler()->setFormPermValue("account_options", $account_options);
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     $account_options = $this->getFlowDataHandler()->getFormPermValue('account_options');
 
     // If there is only one choice select it and go to the next page.
@@ -158,7 +152,7 @@ class ParChooseAccount extends ParFormPluginBase {
       '#title' => t('Would you like this person to have a user account?'),
       '#options' => $account_options,
       '#default_value' => key($account_options),
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
     return $form;
@@ -167,21 +161,21 @@ class ParChooseAccount extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $account_key = $this->getElementKey('account');
     if (!$form_state->getValue($account_key)) {
-      $id_key = $this->getElementKey('account', $cardinality, TRUE);
+      $id_key = $this->getElementKey('account', $index, TRUE);
       $message = $this->wrapErrorMessage('You must choose an account option.', $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($account_key), $message);
     }
 
-    return parent::validate($form, $form_state, $cardinality, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

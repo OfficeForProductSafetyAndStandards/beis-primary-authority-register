@@ -12,12 +12,12 @@ dependencies:
 id: govuk_par_donthaveanaccount
 theme: govuk_par
 region: content
-weight: 0
+weight: 1
 provider: null
 plugin: 'block_content:63f4e86b-35dd-460c-a40a-21d578c4e592'
 settings:
   id: 'block_content:63f4e86b-35dd-460c-a40a-21d578c4e592'
-  label: 'Don''t have an account?'
+  label: "Don't have an account?"
   label_display: '0'
   provider: block_content
   status: true

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -22,33 +23,26 @@ use Drupal\par_forms\ParFormPluginBase;
 class ParContactLocations extends ParFormPluginBase {
 
   /**
-   * @return DateFormatterInterface
-   */
-  protected function getDateFormatter() {
-    return \Drupal::service('date.formatter');
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
     if ($par_data_person instanceof ParDataEntityInterface) {
       $locations = $par_data_person->getReferencedLocations();
-      $this->setDefaultValuesByKey("locations", $cardinality, implode('<br>', $locations));
+      $this->setDefaultValuesByKey("locations", $index, implode('<br>', $locations));
 
-      $this->setDefaultValuesByKey("person_id", $cardinality, $par_data_person->id());
+      $this->setDefaultValuesByKey("person_id", $index, $par_data_person->id());
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
-    if ($cardinality === 1) {
+  public function getElements(array $form = [], int $index = 1) {
+    if ($index === 1) {
       $form['message_intro'] = [
         '#type' => 'container',
         'heading' => [
@@ -62,34 +56,34 @@ class ParContactLocations extends ParFormPluginBase {
           '#tag' => 'p',
           '#value' => 'This person may appear on other partnerships and in other places within the Primary Authority Register. Updating their information here will also update their details in all the places listed below.',
         ],
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
     }
 
-    if ($this->getDefaultValuesByKey('email', $cardinality, NULL)) {
+    if ($this->getDefaultValuesByKey('email', $index, NULL)) {
       $locations = [
         'summary' => [
           '#type' => 'html_tag',
           '#tag' => 'summary',
-          '#attributes' => ['class' => ['form-group'], 'role' => 'button', 'aria-controls' => "contact-detail-locations-$cardinality"],
+          '#attributes' => ['class' => ['govuk-form-group'], 'role' => 'button', 'aria-controls' => "contact-detail-locations-$index"],
           '#value' => '<span class="summary">More information on where this contact is used</span>',
         ],
         'details' => [
           '#type' => 'html_tag',
           '#tag' => 'div',
-          '#attributes' => ['class' => ['form-group'], 'id' => "contact-detail-locations-$cardinality"],
-          '#value' => $this->getDefaultValuesByKey('locations', $cardinality, ''),
+          '#attributes' => ['class' => ['govuk-form-group'], 'id' => "contact-detail-locations-$index"],
+          '#value' => $this->getDefaultValuesByKey('locations', $index, ''),
         ],
       ];
 
       $form['contact'] = [
         '#type' => 'container',
         '#weight' => 1,
-        '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
+        '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group', 'contact-details']],
         'locations' => [
           '#type' => 'html_tag',
           '#tag' => 'details',
-          '#attributes' => ['class' => ['column-full', 'contact-locations'], 'role' => 'group'],
+          '#attributes' => ['class' => ['govuk-grid-column-full', 'contact-locations'], 'role' => 'group'],
           '#value' => \Drupal::service('renderer')->render($locations),
         ],
       ];
@@ -97,7 +91,7 @@ class ParContactLocations extends ParFormPluginBase {
     else {
       $form['contact'] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
         'heading' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
@@ -112,7 +106,7 @@ class ParContactLocations extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

@@ -1,0 +1,4 @@
+nominate partnership amendments:
+  title: 'Nominate partnership amendments'
+  description: "Nominate amendments to partnership legal entities."
+  restrict access: TRUE

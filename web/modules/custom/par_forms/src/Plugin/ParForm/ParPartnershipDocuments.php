@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -25,7 +26,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     $advice_document_count = $par_data_partnership->countReferencedEntity('field_advice', FALSE);
@@ -43,13 +44,13 @@ class ParPartnershipDocuments extends ParFormPluginBase {
     $show_advice_documents = isset($this->getConfiguration()['advice_documents']) ? (bool) $this->getConfiguration()['advice_documents'] : TRUE;
     $this->getFlowDataHandler()->setFormPermValue("show_advice_documents", $show_advice_documents);
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     // Partnership Documents - component.
     if ($this->getFlowDataHandler()->getFormPermValue("show_title")) {
       $form['documents'] = [
@@ -62,7 +63,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
     $form['details'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['govuk-grid-row', 'form-group']],
+      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
     ];
 
     // Inspection plan link.
@@ -85,7 +86,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
       }
       if (isset($add_inspection_list_link) && $add_inspection_list_link instanceof Link) {
-        $isp_count = $this->getDefaultValuesByKey('isp_count', $cardinality, '0');
+        $isp_count = $this->getDefaultValuesByKey('isp_count', $index, '0');
 
         $form['details']['inspection_plans']['document_count'] = [
           '#type' => 'html_tag',
@@ -123,7 +124,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
       }
       if (isset($add_advice_list_link) && $add_advice_list_link instanceof Link) {
-        $count = $this->getDefaultValuesByKey('advice_count', $cardinality, '0');
+        $count = $this->getDefaultValuesByKey('advice_count', $index, '0');
 
         $form['details']['advice']['document_count'] = [
           '#type' => 'html_tag',
@@ -148,7 +149,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

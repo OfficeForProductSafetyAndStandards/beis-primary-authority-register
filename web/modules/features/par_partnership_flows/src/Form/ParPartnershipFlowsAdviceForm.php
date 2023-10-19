@@ -99,11 +99,15 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
     // Get files from "upload" step.
     $cid = $this->getFlowNegotiator()->getFormKey('upload');
-    $files = $this->getFlowDataHandler()->getDefaultValues("files", '', $cid);
+    $files = $this->getFlowDataHandler()->getDefaultValues("files", NULL, $cid);
     if ($files) {
       // Show files.
-      foreach ($files as $file) {
+      $files = array_filter($files);
+      foreach (array_filter($files) as $file) {
         $file = File::load($file);
+        if (!$file) {
+          continue;
+        }
 
         $form['file'][] = [
           '#type' => 'markup',
@@ -123,7 +127,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     $form['advice_title'] = [
       '#type' => 'textfield',
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ],
       '#title' => '<h3 class="heading-medium">' . $this->t('Advice title')  . '</h3>',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_title'),
@@ -133,7 +137,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     $form['advice_type'] = [
       '#type' => 'radios',
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ],
       '#title' => $this->t('Type of advice'),
       '#options' => $allowed_types,
@@ -147,7 +151,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ],
       '#title' => $this->t('Regulatory functions this advice covers'),
       '#options' => $regulatory_function_options,
@@ -158,7 +162,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     $form['notes'] = [
       '#type' => 'textarea',
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ],
       '#title' => '<h3 class="heading-medium">' . $this->t('Provide summarised details of this advice') . '</h3>',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('notes'),

@@ -2,11 +2,6 @@ uuid: 8c30036f-ffd7-4da5-a67a-2f971ebbdfb1
 langcode: en
 status: true
 dependencies:
-  config:
-    - message.template.new_deviation_request
-    - message.template.new_enforcement_notification
-    - message.template.new_partnership_notification
-    - message.template.partnership_nominate
   module:
     - better_exposed_filters
     - message
@@ -152,6 +147,15 @@ display:
             date_format: gds_date_format
             custom_date_format: ''
             timezone: ''
+            tooltip:
+              date_format: ''
+              custom_date_format: ''
+            time_diff:
+              enabled: false
+              future_format: '@interval hence'
+              past_format: '@interval ago'
+              granularity: 2
+              refresh: 60
           group_column: entity_id
           group_columns: {  }
           group_rows: true
@@ -221,7 +225,7 @@ display:
           admin_label: ''
           entity_type: message
           plugin_id: par_notification_link
-          label: Action
+          label: ''
           exclude: false
           alter:
             alter_text: false
@@ -425,62 +429,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        template:
-          id: template
-          table: message_field_data
-          field: template
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: message
-          entity_field: template
-          plugin_id: bundle
-          operator: in
-          value:
-            new_enforcement_notification: new_enforcement_notification
-            new_deviation_request: new_deviation_request
-            new_partnership_notification: new_partnership_notification
-            partnership_nominate: partnership_nominate
-          group: 1
-          exposed: true
-          expose:
-            operator_id: template_op
-            label: 'Task type'
-            description: ''
-            use_operator: false
-            operator: template_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: template
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              par_enforcement: '0'
-              par_authority: '0'
-              par_authority_manager: '0'
-              par_organisation: '0'
-              par_helpdesk: '0'
-              senior_administration_officer: '0'
-              administrator: '0'
-            reduce: true
-          is_grouped: false
-          group_info:
-            label: Template
-            description: null
-            identifier: template
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items:
-              1: {  }
-              2: {  }
-              3: {  }
         tasks:
           id: tasks
           table: message
@@ -492,6 +440,46 @@ display:
           plugin_id: task_messages
           operator: '='
           value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        expire:
+          id: expire
+          table: message_field_data
+          field: expire
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: message
+          entity_field: expire
+          plugin_id: boolean
+          operator: '!='
+          value: '1'
           group: 1
           exposed: false
           expose:
@@ -529,7 +517,7 @@ display:
           columns:
             mid: mid
             created: created
-            notification_summary: notification_summary
+            notification_for: notification_for
             notification_link: notification_link
             tasks: tasks
           default: '-1'
@@ -548,11 +536,11 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            notification_summary:
+            notification_for:
               sortable: false
               default_sort_order: asc
               align: ''
-              separator: ''
+              separator: '<br><br>'
               empty_column: false
               responsive: ''
             notification_link:
@@ -585,7 +573,7 @@ display:
           distinct: false
           replica: false
           query_tags: {  }
-          contextual_filters_or: 0
+          contextual_filters_or: false
       relationships: {  }
       css_class: form-group
       group_by: true
@@ -602,7 +590,6 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url
         - url.query_args
         - user.permissions
       tags: {  }
@@ -617,93 +604,10 @@ display:
         options:
           offset: 0
           items_per_page: 5
-      filters:
-        access:
-          id: access
-          table: message
-          field: access
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: message
-          plugin_id: view_messages
-          operator: '='
-          value: ''
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        tasks:
-          id: tasks
-          table: message
-          field: tasks
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: message
-          plugin_id: task_messages
-          operator: '='
-          value: ''
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
       defaults:
         pager: false
-        filters: false
-        filter_groups: false
+        filters: true
+        filter_groups: true
       display_description: ''
       display_extenders: {  }
       block_description: Tasks
@@ -742,7 +646,6 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url
         - url.query_args
         - user.permissions
       tags: {  }

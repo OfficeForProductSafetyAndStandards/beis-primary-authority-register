@@ -56,7 +56,7 @@ class ParChecklistForm extends ParBaseForm {
     // the issues outside of the enforcement process to ensure a swift resolution.
     $form['contact'] = [
       '#type' => 'fieldset',
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       'title' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',

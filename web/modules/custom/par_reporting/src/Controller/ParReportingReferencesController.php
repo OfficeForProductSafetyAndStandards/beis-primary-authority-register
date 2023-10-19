@@ -78,7 +78,7 @@ class ParReportingReferencesController extends ControllerBase {
           '#attributes' => ['class' => ['govuk-heading-m']],
           '#value' => $entity_type
         ],
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
 
       foreach ($fields as $field_name => $reference) {

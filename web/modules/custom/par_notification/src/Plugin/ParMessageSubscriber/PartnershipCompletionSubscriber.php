@@ -11,7 +11,7 @@ use Drupal\par_notification\ParRecipient;
 
 /**
  * This message subscriber should apply to any message that deals
- * with the completion of a partnership.
+ * with the completion of a partnership, including partnership amendments.
  *
  * @ParMessageSubscriber(
  *   id = "partnership_completion",
@@ -19,6 +19,7 @@ use Drupal\par_notification\ParRecipient;
  *   status = TRUE,
  *   message = {
  *     "partnership_confirmed_notificati",
+ *     "partnership_amendment_confirmed",
  *   },
  * )
  */

@@ -8,14 +8,24 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityDashboardPage;
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationSearchPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementSearchPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiriesSearchPage;
+import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackSearchPage;
+import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterSubscriptionPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.AuthorityPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipAdvancedSearchPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipSearchPage;
+import uk.gov.beis.pageobjects.UserManagement.ManagePeoplePage;
+
 public class DashboardPage extends BasePageObject {
-
-	public DashboardPage() throws ClassNotFoundException, IOException {
-		super();
-	}
-
+	
 	@FindBy(xpath = "//div[@id='block-par-theme-page-title']")
 	private WebElement dashBoard;
+	
+	@FindBy(linkText  = "View all statistics")
+	private WebElement viewStatisticsLink;
 
 	@FindBy(linkText = "Apply for a new partnership")
 	WebElement applyPartnershipBtn;
@@ -65,8 +75,14 @@ public class DashboardPage extends BasePageObject {
 	@FindBy(partialLinkText = "general enquiries")
 	WebElement generalEnquiriesBtn;
 	
-//	@FindBy(linkText = "See your general enquiries")
-//	WebElement generalEnquiriesBtn;
+	public DashboardPage() throws ClassNotFoundException, IOException {
+		super();
+	}
+	
+	public PARReportingPage selectViewAllStatistics() {
+		viewStatisticsLink.click();
+		return PageFactory.initElements(driver, PARReportingPage.class);
+	}
 	
 	public OrganisationDashboardPage selectManageOrganisations() {
 		mangeOrganisationsBtn.click();

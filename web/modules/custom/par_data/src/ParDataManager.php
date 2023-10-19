@@ -2,6 +2,9 @@
 
 namespace Drupal\par_data;
 
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Entity\Sql\DefaultTableMapping;
+use Drupal\Component\Utility\Tags;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
@@ -27,6 +30,7 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataTypeInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
+use function PHPUnit\Framework\isNull;
 
 /**
 * Manages all functionality universal to Par Data.
@@ -369,7 +373,7 @@ class ParDataManager implements ParDataManagerInterface {
 
     // Output debugging.
     if ($iteration === 1 && $this->debug) {
-      $tree = \Drupal\Core\Render\Markup::create(nl2br("<br>" . $debug_tree));
+      $tree = Markup::create(nl2br("<br>" . $debug_tree));
       $this->getMessenger()->addMessage(t('New relationship tree: @tree', ['@tree' => $tree]));
     }
 
@@ -794,7 +798,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Helper function to get all entities as options.
    *
-   * @param EntityInterface $entities
+   * @param EntityInterface[] $entities
    *   An array of entities to turn into options.
    * @param array $options
    *   An optional array of options to append to.
@@ -806,11 +810,11 @@ class ParDataManager implements ParDataManagerInterface {
    * @return []
    *   An array of options keyed by entity id.
    */
-  public function getEntitiesAsOptions($entities, $options = [], $view_mode = NULL, $access_check = FALSE) {
+  public function getEntitiesAsOptions(array $entities, $options = [], $view_mode = NULL, $access_check = FALSE) {
     foreach ($entities as $entity) {
       if ($entity instanceof EntityInterface) {
-        if ($entity instanceof ParDataEntityInterface && $entity->isDeleted()
-          && (!$access_check || !$entity->access('view', $this->getCurrentUser()))) {
+        if ($entity instanceof ParDataEntityInterface &&
+          ($access_check && !$entity->access('view', $this->getCurrentUser()))) {
           continue;
         }
 
@@ -822,6 +826,35 @@ class ParDataManager implements ParDataManagerInterface {
         else {
           $options[$entity->id()] = $entity->label();
         }
+      }
+    }
+
+    return $options;
+  }
+
+  /**
+   * Helper function to get all entities as autocomplete options.
+   *
+   * @param EntityInterface $entities
+   *   An array of entities to turn into options.
+   * @param array $options
+   *   An optional array of options to append to.
+   * @param bool $access_check
+   *   Whether to check all entities for access, this is an expensive operation so not enabled by default.
+   *
+   * @return []
+   *   An array of options keyed by entity id.
+   */
+  public function getEntitiesAsAutocomplete($entities, $options = [], $access_check = FALSE) {
+    foreach ($entities as $entity) {
+      if ($entity instanceof EntityInterface) {
+        if ($entity instanceof ParDataEntityInterface &&
+          ($access_check && !$entity->access('view', $this->getCurrentUser()))) {
+          continue;
+        }
+
+        $label = "{$entity->label()} ({$entity->id()})";
+        $options[] = Tags::encode($label);
       }
     }
 
@@ -1064,7 +1097,7 @@ EOT;
 
             $target_type = $par_data_manager->getParEntityType($target_type_id);
 
-            $table_mapping = new \Drupal\Core\Entity\Sql\DefaultTableMapping($entity_type, [$storage]);
+            $table_mapping = new DefaultTableMapping($entity_type, [$storage]);
             $target = $table_mapping->getFieldColumnName($storage, 'target_id');
             $table_name = $table_mapping->getDedicatedDataTableName($storage);
 
@@ -1135,7 +1168,7 @@ EOT;
 
     // Output debugging.
     if ($this->debug) {
-      $tree = \Drupal\Core\Render\Markup::create(nl2br("<br>" . $debug_tree));
+      $tree = Markup::create(nl2br("<br>" . $debug_tree));
       $this->getMessenger()->addMessage(t('New relationship tree: @tree', ['@tree' => $tree]));
     }
 

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -18,7 +19,7 @@ class ParContactDetailsForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected $entityMapping = [
+  protected array $entityMapping = [
     ['first_name', 'par_data_person', 'first_name', NULL, NULL, 0, [
       'You must fill in the missing information.' => 'You must enter the first name for this contact.'
     ]],
@@ -39,62 +40,62 @@ class ParContactDetailsForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
-      $this->setDefaultValuesByKey("salutation", $cardinality, $par_data_person->get('salutation')->getString());
-      $this->setDefaultValuesByKey("first_name", $cardinality, $par_data_person->get('first_name')->getString());
-      $this->setDefaultValuesByKey("last_name", $cardinality, $par_data_person->get('last_name')->getString());
-      $this->setDefaultValuesByKey("work_phone", $cardinality, $par_data_person->get('work_phone')->getString());
-      $this->setDefaultValuesByKey("mobile_phone", $cardinality, $par_data_person->get('mobile_phone')->getString());
-      $this->setDefaultValuesByKey("email", $cardinality, $par_data_person->get('email')->getString());
+      $this->setDefaultValuesByKey("salutation", $index, $par_data_person->get('salutation')->getString());
+      $this->setDefaultValuesByKey("first_name", $index, $par_data_person->get('first_name')->getString());
+      $this->setDefaultValuesByKey("last_name", $index, $par_data_person->get('last_name')->getString());
+      $this->setDefaultValuesByKey("work_phone", $index, $par_data_person->get('work_phone')->getString());
+      $this->setDefaultValuesByKey("mobile_phone", $index, $par_data_person->get('mobile_phone')->getString());
+      $this->setDefaultValuesByKey("email", $index, $par_data_person->get('email')->getString());
 
       // Provide an option to limit whether the email address can be entered.
       $limit_all_users = isset($this->getConfiguration()['limit_all_users']) ? (bool) $this->getConfiguration()['limit_all_users'] : FALSE;
       if ($limit_all_users) {
-        $this->setDefaultValuesByKey("email_readonly", $cardinality, TRUE);
+        $this->setDefaultValuesByKey("email_readonly", $index, TRUE);
       }
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     $form['salutation'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the title (optional)'),
       '#description' => $this->t('For example, Ms Mr Mrs Dr'),
-      '#default_value' => $this->getDefaultValuesByKey('salutation', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('salutation', $index),
     ];
 
     $form['first_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the first name'),
-      '#default_value' => $this->getDefaultValuesByKey('first_name', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('first_name', $index),
     ];
 
     $form['last_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the last name'),
-      '#default_value' => $this->getDefaultValuesByKey('last_name', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('last_name', $index),
     ];
 
     $form['work_phone'] = [
       '#type' => 'tel',
       '#title' => $this->t('Enter the work phone number'),
-      '#default_value' => $this->getDefaultValuesByKey('work_phone', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('work_phone', $index),
     ];
 
     $form['mobile_phone'] = [
       '#type' => 'tel',
       '#title' => $this->t('Enter the mobile phone number (optional)'),
-      '#default_value' => $this->getDefaultValuesByKey('mobile_phone', $cardinality),
+      '#default_value' => $this->getDefaultValuesByKey('mobile_phone', $index),
     ];
 
     // Prevent modifying of email address when un-editable.
-    if ($this->getDefaultValuesByKey('email_readonly', $cardinality, FALSE)) {
+    if ($this->getDefaultValuesByKey('email_readonly', $index, FALSE)) {
       $form['email_readonly'] = [
         '#type' => 'container',
         'heading' => [
@@ -104,24 +105,24 @@ class ParContactDetailsForm extends ParFormPluginBase {
           '#value' => $this->t('Email address'),
         ],
         '#description' => $this->t('You cannot update this person\'s email address because they already have an account.'),
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
         'email_address' => [
           '#type' => 'markup',
-          '#markup' => $this->getDefaultValuesByKey('email', $cardinality),
+          '#markup' => $this->getDefaultValuesByKey('email', $index),
           '#prefix' => '<p>',
           '#suffix' => '</p>',
         ],
       ];
       $form['email'] = [
         '#type' => 'hidden',
-        '#value' => $this->getDefaultValuesByKey('email', $cardinality),
+        '#value' => $this->getDefaultValuesByKey('email', $index),
       ];
     }
     else {
       $form['email'] = [
         '#type' => 'email',
         '#title' => $this->t('Enter the email address'),
-        '#default_value' => $this->getDefaultValuesByKey('email', $cardinality),
+        '#default_value' => $this->getDefaultValuesByKey('email', $index),
       ];
     }
 

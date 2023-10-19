@@ -37,7 +37,7 @@ class ParSendMemberListNotice extends ActionBase {
       $event = new ParDataEvent($entity);
       $dispatcher = \Drupal::service('event_dispatcher');
 
-      $dispatcher->dispatch(ParDataEvent::customAction($entity->getEntityTypeId(), 'stale_list_notification'), $event);
+      $dispatcher->dispatch(ParDataEvent::customAction($event, $entity->getEntityTypeId(), 'stale_list_notification'));
     }
   }
 

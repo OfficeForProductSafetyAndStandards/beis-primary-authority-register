@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -25,7 +26,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
 
@@ -35,18 +36,18 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
     else if ($par_data_organisation instanceof ParDataEntityInterface) {
       $legal_entities = $par_data_organisation->getLegalEntity();
     }
-    if (isset($legal_entities) && !empty ($legal_entities)) {
-      $this->setDefaultValuesByKey("legal_entities", $cardinality, $legal_entities);
+    if (isset($legal_entities) && !empty($legal_entities)) {
+      $this->setDefaultValuesByKey("legal_entities", $index, $legal_entities);
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
-    $legal_entities = $this->getDefaultValuesByKey('legal_entities', $cardinality, []);
+  public function getElements(array $form = [], int $index = 1) {
+    $legal_entities = $this->getDefaultValuesByKey('legal_entities', $index, []);
 
     // Generate the link to add a legal entity.
     try {
@@ -72,7 +73,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
         '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Legal entities'),
       ],
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       'legal_entity' => [
         '#type' => 'container',
         '#attributes' => ['class' => ['govuk-grid-row']],
@@ -161,7 +162,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 

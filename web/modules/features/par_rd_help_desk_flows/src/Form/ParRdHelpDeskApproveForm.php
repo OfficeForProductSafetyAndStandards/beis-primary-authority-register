@@ -40,7 +40,7 @@ class ParRdHelpDeskApproveForm extends ParBaseForm {
     $form['partnership_info'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('The following partnership has been approved'),
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];

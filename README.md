@@ -40,20 +40,28 @@ PRs should be tested against the Definition of Done.
 * No regressions found from local testing.
 
 ### Deployment
+Deployments are handled through CircleCI. All started jobs can be found on [CircleCI](https://app.circleci.com/pipelines/github/UKGovernmentBEIS/beis-primary-authority-register).
 
-Tagging the **master branch** with a **semver tag** starting with a lowercase `v` will start a production deployment build.
+Locate the tag you've just created under the "Branch / Commit" column:![image](https://user-images.githubusercontent.com/334114/230381309-a5b8a11e-5b27-4499-9db2-ae76757472b6.png)
+
+And all tagged deployments will have to be manually released through CI once they have passed manual regression testing. They will then be released to staging and production, or to the relevant test environment.
+
+#### Production
+
+Tagging the **master branch** with a **semver tag** starting with a lowercase `v` e.g. `v1.0.0` will start a production deployment build.
 
 ```
 git tag v0.0.31
 git push --tags
 ```
+The build will be deployed first to [Staging](https://beis-par-staging.cloudapps.digital), and then to [Production](https://primary-authority.beis.gov.uk/).
 
+#### Non-Production / Test
 Tagging **any branch** with **any other tag** will start a test deployment and allow the feature to be deployed to a test environment.
 
-All started jobs can be found on [CircleCI](https://app.circleci.com/pipelines/github/UKGovernmentBEIS/beis-primary-authority-register), locate the tag you've just created under the "Branch / Commit" column:
-![image](https://user-images.githubusercontent.com/334114/230381309-a5b8a11e-5b27-4499-9db2-ae76757472b6.png)
+The tag name will be split on the `-` character, and the first part will be used as the name of the environment. e.g. `test-some_feature-01` will deploy to the `test` environment.
 
-And all tagged deployments will have to be manually released through CI once they have passed manual regression testing. They will then be released to staging and production, or to the relevant test environment.
+The build will be deployed to a non-production environment - https://beis-par-{ENVIRONMENT}.cloudapps.digital - e.g. https://beis-par-test.cloudapps.digital
 
 ## Development environment
 
@@ -112,7 +120,10 @@ This is best run from outside the primary docker container (very slow within the
 The theme and the tests dependencies are both managed with NPM, any changes to `package.json` or `tests/package.json`, run:
 
 ```
-npm run frontend
+npm install
+npm run install-govuk-theme
+npm run install-par-theme
+npm run gulp
 ```
 
 #### Database (optional)

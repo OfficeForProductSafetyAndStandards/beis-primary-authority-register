@@ -65,7 +65,7 @@ class ParMemberCsvValidationForm extends ParBaseForm {
       '#title' => $this->t('There were some errors with the CSV file.'),
       '#description' => $this->t('You can read more about preparing a CSV file on the %guidance. If you need assistance please contact pa@beis.gov.uk', ['%guidance' => $guidance_link->toString()]),
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ]
     ];
 
@@ -100,7 +100,7 @@ class ParMemberCsvValidationForm extends ParBaseForm {
       '#collapsed' => FALSE,
       'table' => [
         '#theme' => 'table',
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
         '#title' => 'CSV Errors',
         '#weight' => 0,
         '#header' => [

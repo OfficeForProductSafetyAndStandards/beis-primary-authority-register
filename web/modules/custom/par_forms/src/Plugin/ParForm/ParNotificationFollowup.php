@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -30,11 +31,11 @@ class ParNotificationFollowup extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     $form['notifications'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       '#value' => $this->t('No notifications will be sent, please follow up this matter with the affected parties.'),
     ];
 

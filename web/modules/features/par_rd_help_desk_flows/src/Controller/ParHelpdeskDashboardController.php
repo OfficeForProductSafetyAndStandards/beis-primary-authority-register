@@ -5,11 +5,13 @@ namespace Drupal\par_rd_help_desk_flows\Controller;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Link;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParFlowException;
@@ -29,8 +31,17 @@ class ParHelpdeskDashboardController extends ControllerBase {
 
   /**
    * The response cache kill switch.
+   *
+   * @var KillSwitch $killSwitch
    */
-  protected $killSwitch;
+  protected KillSwitch $killSwitch;
+
+  /**
+   * The flow negotiator.
+   *
+   * @var ConfigEntityStorageInterface $flowStorage
+   */
+  protected ConfigEntityStorageInterface $flowStorage;
 
   /**
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
@@ -82,7 +93,7 @@ class ParHelpdeskDashboardController extends ControllerBase {
     // Manage partnerships.
     $build['statistics'] = [
       '#type' => 'fieldset',
-      '#attributes' => ['class' => ['grid-row', 'form-group']],
+      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
       '#cache' => ['contexts' => ['user.par_memberships:authority']],
@@ -104,7 +115,7 @@ class ParHelpdeskDashboardController extends ControllerBase {
       $build['statistics']['view_all'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => 'column-full'],
+        '#attributes' => ['class' => 'govuk-grid-column-full'],
         '#value' => !empty($statistics_link) ? $statistics_link->setText('View all statistics')->toString() : '',
       ];
     }
@@ -113,14 +124,14 @@ class ParHelpdeskDashboardController extends ControllerBase {
     $log_link = $log->setText('View log of notable actions')->toString();
     $build['log'] = [
       '#type' => 'fieldset',
-      '#attributes' => ['class' => ['grid-row', 'form-group']],
+      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
     $build['log']['view'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#attributes' => ['class' => 'column-full'],
+      '#attributes' => ['class' => 'govuk-grid-column-full'],
       '#value' => $log_link,
 
     ];
@@ -129,7 +140,7 @@ class ParHelpdeskDashboardController extends ControllerBase {
     $build['partnerships'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Partnerships'),
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
       '#cache' => ['contexts' => ['user.par_memberships:authority']]
@@ -146,11 +157,11 @@ class ParHelpdeskDashboardController extends ControllerBase {
     $build['institutions'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Authorities & Organisations'),
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
-    $manage_authorities_link = $this->getLinkByRoute('view.helpdesk_authorities.par_helpdesk_authority_page');
+    $manage_authorities_link = $this->getLinkByRoute('view.helpdesk_authorities.authority_page');
     if ($manage_authorities_link) {
       $build['institutions']['authorities'] = [
         '#type' => 'markup',
@@ -171,7 +182,7 @@ class ParHelpdeskDashboardController extends ControllerBase {
     $build['people'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('People'),
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
       '#cache' => ['contexts' => ['user.par_memberships:authority']]
@@ -197,7 +208,7 @@ class ParHelpdeskDashboardController extends ControllerBase {
     $build['enforcements'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Enforcements'),
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
       '#cache' => ['contexts' => ['user.par_memberships:authority']]
@@ -230,7 +241,7 @@ class ParHelpdeskDashboardController extends ControllerBase {
     $build['enquiries'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Enquiries'),
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
       '#cache' => ['contexts' => ['user.par_memberships:authority']]
@@ -243,6 +254,33 @@ class ParHelpdeskDashboardController extends ControllerBase {
       '#type' => 'markup',
       '#markup' => "<p>{$general_enquiries_link}</p>",
     ];
+
+    $build['user'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Your account'),
+      '#attributes' => ['class' => 'govuk-form-group'],
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    ];
+
+    // Profile management link.
+    try {
+      $params = ['user' => $this->getCurrentUser()->id()];
+      $manage_profile_flow = ParFlow::load('profile_update');
+      $manage_profile_link = $manage_profile_flow?->getStartLink(1, 'Manage your profile details', $params);
+    } catch (ParFlowException $e) {
+
+    }
+
+    if ($manage_profile_link instanceof Link) {
+      $build['user']['profile'] = [
+        '#type' => 'link',
+        '#title' => $manage_profile_link->getText(),
+        '#url' => $manage_profile_link->getUrl(),
+        '#options' => $manage_profile_link->getUrl()->getOptions(),
+      ];
+    }
+
 
     return $build;
   }

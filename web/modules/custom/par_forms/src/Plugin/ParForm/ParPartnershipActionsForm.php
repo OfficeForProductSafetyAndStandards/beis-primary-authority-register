@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
@@ -19,7 +20,7 @@ class ParPartnershipActionsForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  public function getElements(array $form = [], int $index = 1) {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // Create a list of links for the actions that can be performed on this partnership.
@@ -29,7 +30,7 @@ class ParPartnershipActionsForm extends ParFormPluginBase {
       '#list_type' => 'ul',
       '#title' => t('Send a message about this organisation'),
       '#items' => [],
-      '#attributes' => ['class' => ['list', 'form-group']],
+      '#attributes' => ['class' => ['govuk-list', 'govuk-form-group']],
     ];
 
     // Enforcement notification link.

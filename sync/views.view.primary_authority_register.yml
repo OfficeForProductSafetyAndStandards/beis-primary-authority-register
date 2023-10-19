@@ -1239,7 +1239,7 @@ display:
           field: field_authority
           relationship: none
           group_type: group
-          admin_label: 'Partnership''s Primary Authority'
+          admin_label: "Partnership's Primary Authority"
           plugin_id: standard
           required: false
         field_organisation:
@@ -1248,7 +1248,7 @@ display:
           field: field_organisation
           relationship: none
           group_type: group
-          admin_label: 'Partnership''s Organisation'
+          admin_label: "Partnership's Organisation"
           plugin_id: standard
           required: false
         field_coordinated_business:
@@ -1275,7 +1275,7 @@ display:
           field: field_legal_entity
           relationship: field_organisation_1
           group_type: group
-          admin_label: 'Coordinated Member''s Legal Entities'
+          admin_label: "Coordinated Member's Legal Entities"
           plugin_id: standard
           required: false
         field_partnership_legal_entity:
@@ -1284,7 +1284,7 @@ display:
           field: field_partnership_legal_entity
           relationship: none
           group_type: group
-          admin_label: 'Partnership''s Partnership Legal Entities'
+          admin_label: "Partnership's Partnership Legal Entities"
           plugin_id: standard
           required: false
         field_legal_entity:
@@ -1293,7 +1293,7 @@ display:
           field: field_legal_entity
           relationship: field_partnership_legal_entity
           group_type: group
-          admin_label: 'Partnership Legal Entity''s Legal Entity'
+          admin_label: "Partnership Legal Entity's Legal Entity"
           plugin_id: standard
           required: false
       css_class: par_partnership_search

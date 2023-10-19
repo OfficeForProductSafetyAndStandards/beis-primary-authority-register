@@ -10,8 +10,8 @@ _core:
   default_config_hash: 8I8iACSa0sKO3k3jlvUG1ge52rfcKX7USJAQYnzuBgg
 id: govuk_par_help
 theme: govuk_par
-region: help
-weight: -6
+region: content
+weight: -4
 provider: null
 plugin: help_block
 settings:

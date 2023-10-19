@@ -77,7 +77,7 @@ class ParPartnershipFlowsInspectionPlanUploadForm extends ParBaseForm {
     $form['inspection_plan_type_help_text'] = [
       '#type' => 'fieldset',
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ],
       '#title' => $this->t('How to upload Primary Authority Inspection plans to Local Authorities'),
       '#description' => $this->t('To upload Primary Authority Inspection plans to a Local Authority, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the organisation it applies to and we’ll get back to you shortly.'),

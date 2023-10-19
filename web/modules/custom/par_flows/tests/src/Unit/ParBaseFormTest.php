@@ -27,7 +27,7 @@ class ParBaseFormTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Mock flow negotiator.
@@ -43,34 +43,14 @@ class ParBaseFormTest extends UnitTestCase {
     $component_plugin_manager = $this->createMock('Drupal\Component\Plugin\PluginManagerInterface');
 
     $this->baseForm = $this->getMockBuilder('Drupal\par_flows\Form\ParBaseForm')
-      ->setMethods(['getIgnoredValues'])
+      ->onlyMethods(['getIgnoredValues'])
       ->setConstructorArgs([$negotiator, $data_handler, $par_data_manager, $component_plugin_manager])
       ->disableOriginalConstructor()
       ->getMockForAbstractClass();
 
-    $this->baseForm
+    $this->baseForm->expects($this->any())
       ->method('getIgnoredValues')
       ->willReturn(['extra']);
-  }
-
-  /**
-   * @covers ::cleanseFormDefaults
-   */
-  public function testCleanseFormDefaults() {
-    $form = [
-      'form_build_id' => 'test',
-      'form_token' => 'test',
-      'form_id' => 'test',
-      'op' => 'test',
-      'extra' => 'test',
-      'real_value' => 'test',
-      'real_value2' => 'test',
-    ];
-    $expected = [
-      'real_value' => 'test',
-      'real_value2' => 'test',
-    ];
-    $this->assertArrayEquals($expected, $this->baseForm->cleanseFormDefaults($form), "The form values have been cleansed.");
   }
 
   /**

@@ -93,7 +93,7 @@ class ParReviewForm extends ParBaseForm {
       '#type' => 'fieldset',
       'name' => [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         '#title' => 'Name',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('full_name', '(none)'),
@@ -106,14 +106,14 @@ class ParReviewForm extends ParBaseForm {
       'email' => [
         '#type' => 'fieldset',
         '#title' => 'Email',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('email', '(none)'),
         ]
       ],
       'work_phone' => [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         '#title' => 'Work phone',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('work_phone', '(none)'),
@@ -121,7 +121,7 @@ class ParReviewForm extends ParBaseForm {
       ],
       'mobile_phone' => [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         '#title' => 'Mobile phone',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('mobile_phone', '(none)'),
@@ -134,7 +134,7 @@ class ParReviewForm extends ParBaseForm {
 
         $form['intro'] = [
           '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
+          '#attributes' => ['class' => 'govuk-form-group'],
           '#title' => 'User account',
           [
             '#markup' => "A user account already exists for this person.",
@@ -147,7 +147,7 @@ class ParReviewForm extends ParBaseForm {
 
         $form['intro'] = [
           '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
+          '#attributes' => ['class' => 'govuk-form-group'],
           '#title' => 'User account',
           [
             '#markup' => "An invitation will be sent to this person to invite them to join the Primary Authority Register.",
@@ -161,7 +161,7 @@ class ParReviewForm extends ParBaseForm {
 
         $form['intro'] = [
           '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
+          '#attributes' => ['class' => 'govuk-form-group'],
           '#title' => 'User account',
           [
             '#markup' => "An invitation has already been sent to this person to join the Primary Authority Register.",
@@ -178,7 +178,7 @@ class ParReviewForm extends ParBaseForm {
   public function createEntities() {
     $current_user = $this->getCurrentUser();
 
-    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    // Get the cache IDs for the various forms that needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_update_contact');
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $cid_invitation = $this->getFlowNegotiator()->getFormKey('invite');
@@ -200,7 +200,17 @@ class ParReviewForm extends ParBaseForm {
       $par_data_person->set('last_name', $this->getFlowDataHandler()->getTempDataValue('last_name', $contact_details_cid));
       $par_data_person->set('work_phone', $this->getFlowDataHandler()->getTempDataValue('work_phone', $contact_details_cid));
       $par_data_person->set('mobile_phone', $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $contact_details_cid));
-      $par_data_person->updateEmail($this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid), $current_user);
+
+      // Update the email address.
+      $email = $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid);
+      if (!empty($email)) {
+        $par_data_person->updateEmail($email);
+      }
+
+      // Make sure to save the related user account.
+      if ($account) {
+        $par_data_person->setUserAccount($account);
+      }
 
       if ($communication_notes = $this->getFlowDataHandler()->getTempDataValue('notes', $contact_details_cid)) {
         $par_data_person->set('communication_notes', $communication_notes);

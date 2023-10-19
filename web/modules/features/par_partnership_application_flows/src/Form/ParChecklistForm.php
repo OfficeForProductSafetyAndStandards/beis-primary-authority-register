@@ -70,8 +70,8 @@ class ParChecklistForm extends ParBaseForm {
         '#list_type' => 'ul',
         '#title' => 'Please confirm that',
         '#items' => $checklist,
-        '#attributes' => ['class' => ['list', 'list-bullet']],
-        '#wrapper_attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
+        '#wrapper_attributes' => ['class' => ['govuk-form-group']],
       ];
 
       $form['confirm'] = [

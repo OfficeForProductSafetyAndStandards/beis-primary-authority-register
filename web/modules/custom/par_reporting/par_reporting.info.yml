@@ -1,7 +1,7 @@
 name: PAR Reporting
 type: module
 description: The reporting tools and pages for PAR data.
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9 || ^10
 package: PAR
 dependencies:
   - par_data

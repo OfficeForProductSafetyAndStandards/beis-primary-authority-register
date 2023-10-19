@@ -59,7 +59,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
     }
 
     $form['sic_code'] = [
-      '#type' => 'a11y_autocomplete',
+      '#type' => 'select',
       '#title' => $this->t($intro_text),
       '#options' => $options,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("sic_code"),
