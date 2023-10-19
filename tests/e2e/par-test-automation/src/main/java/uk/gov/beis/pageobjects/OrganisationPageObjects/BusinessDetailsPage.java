@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.pageobjects.AddAddressPage;
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.BusinessConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
 
 public class BusinessDetailsPage extends BasePageObject {
 	
@@ -33,6 +34,11 @@ public class BusinessDetailsPage extends BasePageObject {
 	public AddAddressPage clickContinueButton() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, AddAddressPage.class);
+	}
+	
+	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 	}
 	
 	public BusinessConfirmationPage goToBusinessReviewPage() {

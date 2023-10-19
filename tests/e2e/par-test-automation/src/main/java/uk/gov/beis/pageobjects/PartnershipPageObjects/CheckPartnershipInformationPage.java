@@ -13,8 +13,6 @@ import uk.gov.beis.utility.DataStore;
 
 public class CheckPartnershipInformationPage extends BasePageObject {
 	
-	// Change details links here
-	
 	@FindBy(id = "edit-terms-authority-agreed")
 	private WebElement authorityConfirmCheckbox;
 	

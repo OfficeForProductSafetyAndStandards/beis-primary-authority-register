@@ -8,8 +8,8 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.BusinessConfirmationPage;
-import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
 
 public class TradingPage extends BasePageObject {
@@ -37,6 +37,11 @@ public class TradingPage extends BasePageObject {
 		tradingName.sendKeys(name);
 	}
 	
+	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
+	}
+	
 	public PartnershipConfirmationPage editTradingName(String name) {
 		tradingName.clear();
 		tradingName.sendKeys(name);
@@ -46,14 +51,13 @@ public class TradingPage extends BasePageObject {
 	}
 	
 	public BusinessConfirmationPage goToBusinessReviewPage() {
-		
 		saveBtn.click();
 		return PageFactory.initElements(driver, BusinessConfirmationPage.class);
 	}
 	
-	public LegalEntityPage goToLegalEntityPage() {
+	public LegalEntityTypePage goToLegalEntityTypePage() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, LegalEntityPage.class);
+		return PageFactory.initElements(driver, LegalEntityTypePage.class);
 	}
 	
 	public LegalEntityTypePage addTradingNameForMember(String name) {

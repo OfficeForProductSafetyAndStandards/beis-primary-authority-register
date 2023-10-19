@@ -13,11 +13,19 @@ import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPag
 
 public class LegalEntityReviewPage extends BasePageObject {
 	
+	@FindBy(id = "edit-par-component-legal-entity-actions-add-another")
+	private WebElement addAnotherLink;
+	
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 	
 	public LegalEntityReviewPage() throws ClassNotFoundException, IOException {
 		super();
+	}
+	
+	public LegalEntityTypePage selectAddAnotherLink() {
+		addAnotherLink.click();
+		return PageFactory.initElements(driver, LegalEntityTypePage.class);
 	}
 	
 	public PartnershipConfirmationPage proceed() {

@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
 
 public class BusinessInvitePage extends BasePageObject {
@@ -16,6 +17,11 @@ public class BusinessInvitePage extends BasePageObject {
 	
 	public BusinessInvitePage() throws ClassNotFoundException, IOException {
 		super();
+	}
+	
+	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 	}
 	
 	public PartnershipConfirmationPage sendInvite() {

@@ -375,9 +375,9 @@ Feature: General
     Then the user journey creation is successful
 
   @regression @direct @deletePartnership
-  Scenario: Verify a Nominated Direct Partnership can be Deleted Successfully (Happy Path - PAR-2277)
+  Scenario: Verify Partnership Information can be changed During Application Process, Nominated and then Deleted Successfully (Happy Path - PAR-2277)
     Given the user is on the PAR home page
-    And the user visits the login page
+    When the user visits the login page
     And the user logs in with the "par_authority@example.com" user credentials
     Then the user is on the dashboard page
     When the user creates a new "Direct" partnership application with the following details:
@@ -408,8 +408,8 @@ Feature: General
     And the user logs in with the "par_authority@example.com" user credentials
     Then the user is on the dashboard page
     When the user creates a new "Co-ordinated" partnership application with the following details:
-      | Authority | Partnership Info | AddressLine1  | AddressLine2 | Town    | County     | Country        | Nation  | Postcode | Title | Firstname | Lastname | WorkNumber   | MobileNumber | Email                    |
-      | Upper     | Coordinated      | 32 Bramtom Rd | New Build    | Windsor | Lancashire | United Kingdom | England | SL4 5PN  | Dr    | David     | Smith    | 020569987021 | 074567899221 | par_business@example.com |
+      | Authority | Partnership Info | AddressLine1 | AddressLine2 | Town | County     | Country        | Nation  | Postcode | Title | Firstname | Lastname | WorkNumber   | MobileNumber | Email                    |
+      | Upper     | Coordinated      | 02 New Road  | New Build    | Bury | Lancashire | United Kingdom | England | SL4 5PN  | Mr    | Derrick   | Fletcher | 020569987021 | 074567899221 | par_business@example.com |
     Then the first part of the partnership application is successfully completed
     #second part of partnership application
     When the user searches for the last created partnership

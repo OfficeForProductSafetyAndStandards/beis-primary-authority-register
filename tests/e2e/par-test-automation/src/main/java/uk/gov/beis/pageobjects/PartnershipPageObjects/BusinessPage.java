@@ -31,13 +31,16 @@ public class BusinessPage extends BasePageObject {
 	}
 	
 	public AddAddressPage goToAddressPage() {
-
 		continueBtn.click();
 		return PageFactory.initElements(driver, AddAddressPage.class);
 	}
 	
+	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
+	}
+	
 	public BusinessConfirmationPage goToBusinessConfirmationPage() {
-
 		saveBtn.click();
 		return PageFactory.initElements(driver, BusinessConfirmationPage.class);
 	}

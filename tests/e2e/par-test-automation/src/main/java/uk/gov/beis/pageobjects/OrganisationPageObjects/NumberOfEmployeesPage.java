@@ -8,16 +8,26 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
 
-public class EmployeesPage extends BasePageObject {
+public class NumberOfEmployeesPage extends BasePageObject {
 	
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 
 	String noEmployees = "//select/option[contains(text(),'?')]";
 	
-	public EmployeesPage() throws ClassNotFoundException, IOException {
+	public NumberOfEmployeesPage() throws ClassNotFoundException, IOException {
 		super();
+	}
+	
+	public void selectNumberOfEmployees(String number) {
+		driver.findElement(By.xpath(noEmployees.replace("?", number))).click();
+	}
+	
+	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 	}
 	
 	public TradingPage selectNoEmployees(String number) {

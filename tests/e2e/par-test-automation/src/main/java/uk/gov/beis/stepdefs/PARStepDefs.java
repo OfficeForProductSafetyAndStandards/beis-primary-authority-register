@@ -18,100 +18,25 @@ import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.LOG;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
+
 import uk.gov.beis.pageobjects.*;
-import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceArchivePage;
-import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceNoticeDetailsPage;
-import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceNoticeSearchPage;
-import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceRemovalPage;
-import uk.gov.beis.pageobjects.AdvicePageObjects.UploadAdviceNoticePage;
-import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityAddressDetailsPage;
-import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityConfirmationPage;
-import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityDashboardPage;
-import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityNamePage;
-import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityTypePage;
-import uk.gov.beis.pageobjects.AuthorityPageObjects.ONSCodePage;
-import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationApprovalPage;
-import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationCompletionPage;
-import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationReviewPage;
-import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationSearchPage;
-import uk.gov.beis.pageobjects.DeviationRequestPageObjects.ReplyDeviationRequestPage;
-import uk.gov.beis.pageobjects.DeviationRequestPageObjects.RequestDeviationPage;
-import uk.gov.beis.pageobjects.DuplicateClasses.BusinessContactDetailsPage;
-import uk.gov.beis.pageobjects.DuplicateClasses.RestorePartnershipConfirmationPage;
-import uk.gov.beis.pageobjects.DuplicateClasses.RevokePartnershipConfirmationPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementActionPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementCompletionPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementContactDetailsPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementDetailsPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementLegalEntityPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementNotificationPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementReviewPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementSearchPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.ProposedEnforcementPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.RemoveEnforcementConfirmationPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.RemoveEnforcementPage;
-import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiriesSearchPage;
-import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiryCompletionPage;
-import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiryContactDetailsPage;
-import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiryReviewPage;
-import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.ReplyEnquiryPage;
-import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.RequestEnquiryPage;
-import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.ViewEnquiryPage;
 import uk.gov.beis.pageobjects.HomePageLinkPageObjects.*;
-import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackCompletionPage;
-import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackConfirmationPage;
-import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackDetailsPage;
-import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackSearchPage;
-import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.ReplyInspectionFeedbackPage;
-import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionContactDetailsPage;
-import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanCoveragePage;
-import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanDetailsPage;
-import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanExpirationPage;
-import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanReviewPage;
-import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
-import uk.gov.beis.pageobjects.InspectionPlanPageObjects.RemoveReasonInspectionPlanPage;
-import uk.gov.beis.pageobjects.InspectionPlanPageObjects.RevokeReasonInspectionPlanPage;
-import uk.gov.beis.pageobjects.InspectionPlanPageObjects.UploadInspectionPlanPage;
-import uk.gov.beis.pageobjects.LegalEntityPageObjects.AmendmentCompletedPage;
-import uk.gov.beis.pageobjects.LegalEntityPageObjects.ConfirmThisAmendmentPage;
-import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityReviewPage;
-import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
-import uk.gov.beis.pageobjects.LegalEntityPageObjects.UpdateLegalEntityPage;
-import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterManageSubscriptionListPage;
-import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterSubscriptionPage;
-import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterSubscriptionReviewPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.AddOrganisationNamePage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessDetailsPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.ConfirmMemberUploadPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.DeclarationPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.EmployeesPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberListPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberListUploadedPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationAddedConfirmationPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.MembershipCeasedPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.UploadListOfMembersPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.AuthorityPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.BusinessPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipAdvancedSearchPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipApprovalPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipCompletionPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipDescriptionPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipRestoredPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipRevokedPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipSearchPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipTermsPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipTypePage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.RegulatoryFunctionPage;
-import uk.gov.beis.pageobjects.TransferPartnerships.AuthorityTransferSelectionPage;
-import uk.gov.beis.pageobjects.TransferPartnerships.ConfirmThisTranferPage;
-import uk.gov.beis.pageobjects.TransferPartnerships.PartnershipMigrationSelectionPage;
-import uk.gov.beis.pageobjects.TransferPartnerships.TransferCompletedPage;
 import uk.gov.beis.pageobjects.UserManagement.*;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.*;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.*;
+import uk.gov.beis.pageobjects.LegalEntityPageObjects.*;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.*;
+import uk.gov.beis.pageobjects.TransferPartnerships.*;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.*;
+import uk.gov.beis.pageobjects.AdvicePageObjects.*;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.*;
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.*;
+import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.*;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.*;
+import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.*;
+
+import uk.gov.beis.pageobjects.DuplicateClasses.BusinessContactDetailsPage; // Will be removed once the test is updated.
+
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
 
@@ -130,26 +55,76 @@ public class PARStepDefs {
 	private OpenGovernmentLicencePage openGovernmentLicencePage;
 	private CrownCopyrightPage crownCopyrightPage;
 	
-	// Dashboard
+	// Login
+	private LoginPage parLoginPage;
+	private PasswordPage passwordPage;
+	private MailLogPage mailLogPage;
+	private UserTermsPage userTermsPage;
+	
+	// Dash-board
+	private DashboardPage parDashboardPage;
+	private AuthorityDashboardPage authoritiesDashboardPage;
+	private OrganisationDashboardPage organisationDashboardPage;
+	
+	// Statistics
 	private PARReportingPage parReportingPage;
 	
 	// User Management
+	private ManagePeoplePage managePeoplePage;
+	
+	private UserProfilePage userProfilePage;
+	private PersonsProfilePage personsProfilePage;	// Duplicates
+	private PersonAccountPage personAccountPage;
+	
+	private PersonMembershipPage personMembershipPage;
+	private PersonUserRoleTypePage personUserTypePage;
+	private PersonCreateAccountPage personCreateAccountPage;
+	private UserProfileConfirmationPage userProfileConfirmationPage;
+	private UserProfileCompletionPage userProfileCompletionPage;
+	
+	// Contact Record
+	private PersonContactDetailsPage personsContactDetailsPage;
+	private UpdateUserContactDetailsPage updateUserContactDetailsPage;
+	
+	private UpdateUserCommunicationPreferencesPage updateUserCommunicationPreferencesPage;
+	private UserCommsPreferencesPage userCommsPreferencesPage;			// Duplicate
+	
+	private UpdateUserSubscriptionsPage updateUserSubscriptionsPage;
+	
+	// Merge Contact Records
 	private MergeContactRecordsPage mergeContactRecordsPage;
 	private MergeContactRecordsConfirmationPage mergeContactRecordsConfirmationPage;
-	private AddAddressPage addAddressPage;
-	private BusinessInvitePage parBusinessInvitePage;
 	
 	// Legal Entity
+	private LegalEntityTypePage legalEntityTypePage;
+	private LegalEntityReviewPage legalEntityReviewPage;
 	private UpdateLegalEntityPage updateLegalEntityPage;
 	private ConfirmThisAmendmentPage confirmThisAmendmentPage;
 	private AmendmentCompletedPage amendmentCompletedPage;
 	
 	// Partnership
-	private MembershipCeasedPage membershipCeasedPage;
+	private DeclarationPage parDeclarationPage;
+	private PartnershipTermsPage parPartnershipTermsPage;
+	private PartnershipTypePage parPartnershipTypePage;
+	private PartnershipDescriptionPage parPartnershipDescriptionPage;
+	private RegulatoryFunctionPage regulatoryFunctionPage;
+	private NumberOfEmployeesPage employeesPage;
+	private CheckPartnershipInformationPage checkPartnershipInformationPage;
+	private PartnershipConfirmationPage parPartnershipConfirmationPage;
+	private PartnershipCompletionPage parPartnershipCompletionPage;
+	private PartnershipApprovalPage partnershipApprovalPage;
+	private PartnershipRevokedPage partnershipRevokedPage;
+	private PartnershipRestoredPage partnershipRestoredPage;
+	
+	// Coordinated Partnership
+	private MemberListPage memberListPage;
 	private UploadListOfMembersPage uploadListOfMembersPage;
 	private ConfirmMemberUploadPage confirmMemberUploadPage;
 	private MemberListUploadedPage memberListUploadedPage;
-	private CheckPartnershipInformationPage checkPartnershipInformationPage;
+	private InspectionPlanCoveragePage inspectionPlanCoveragePage;
+	private MemberOrganisationSummaryPage memberOrganisationSummaryPage;
+	private MemberOrganisationAddedConfirmationPage memberOrganisationAddedConfirmationPage;
+	private MembershipCeasedPage membershipCeasedPage;
 	
 	// Partnerships Transfer
 	private AuthorityTransferSelectionPage authorityTransferSelectionPage;
@@ -157,127 +132,102 @@ public class PARStepDefs {
 	private ConfirmThisTranferPage confirmThisTranferPage;
 	private TransferCompletedPage transferCompletedPage;
 	
-	// Shared Pages
-	private RevokePage revokePage;
-	private ReinstatePage reinstatePage;
-	private RemovePage removePage;
+	// Authority
+	private AuthorityPage parAuthorityPage;
+	private AuthorityNamePage authorityNamePage;
+	private ONSCodePage onsCodePage;
+	private AuthorityConfirmationPage authorityConfirmationPage;
+	private AuthorityAddressDetailsPage authorityAddressDetailsPage;
+	private AuthorityTypePage authorityTypePage;
 	
-	// Next Section
-	private RevokeReasonInspectionPlanPage revokeReasonInspectionPlanPage;
-	private RequestEnquiryPage requestEnquiryPage;
-	private DeviationSearchPage deviationSearchPage;
-	private InspectionPlanReviewPage inspectionPlanReviewPage;
-	private EnquiryReviewPage enquiryReviewPage;
-	private AdviceNoticeDetailsPage adviceNoticeDetailsPage;
-	private InspectionFeedbackConfirmationPage inspectionFeedbackConfirmationPage;
-	private InspectionFeedbackDetailsPage inspectionFeedbackDetailsPage;
+	// Business
+	private BusinessPage parBusinessPage;
+	private AddOrganisationNamePage addOrganisationNamePage;
+	private BusinessDetailsPage parBusinessDetailsPage;
+	private BusinessContactDetailsPage parBusinessContactDetailsPage;
+	private SICCodePage sicCodePage;
+	private TradingPage tradingPage;
+	private BusinessConfirmationPage businessConfirmationPage;
+	
+	// Search Pages
+	private PartnershipSearchPage partnershipSearchPage;
+	private PartnershipAdvancedSearchPage partnershipAdvancedSearchPage;
 	private InspectionPlanSearchPage inspectionPlanSearchPage;
+	private AdviceNoticeSearchPage adviceNoticeSearchPage;
+	private EnforcementSearchPage enforcementSearchPage;
+	private DeviationSearchPage deviationSearchPage;
+	private InspectionFeedbackSearchPage inspectionFeedbackSearchPage;
+	private EnquiriesSearchPage enquiriesSearchPage;
+	
+	// Inspection Plan
+	private UploadInspectionPlanPage uploadInspectionPlanPage;
 	private InspectionContactDetailsPage inspectionContactDetailsPage;
-	private RemoveEnforcementPage removeEnforcementPage;
+	private InspectionPlanExpirationPage inspectionPlanExpirationPage;
+	private InspectionPlanReviewPage inspectionPlanReviewPage;
+	private InspectionPlanDetailsPage inspectionPlanDetailsPage;
+	private RevokeReasonInspectionPlanPage revokeReasonInspectionPlanPage;
+	private RemoveReasonInspectionPlanPage removeReasonInspectionPlanPage;
+	
+	// Advice
+	private UploadAdviceNoticePage uploadAdviceNoticePage;
+	private AdviceNoticeDetailsPage adviceNoticeDetailsPage;
+	private AdviceArchivePage adviceArchivePage;
+	private AdviceRemovalPage adviceRemovalPage;
+	
+	// Enforcement Notice
+	private ProposedEnforcementPage proposedEnforcementPage;
+	private EnforcementReviewPage enforcementReviewPage;
+	private EnforcementNotificationPage enforcementNotificationPage;
 	private EnforcementCompletionPage enforcementCompletionPage;
 	private EnforcementActionPage enforcementActionPage;
 	private EnforcementDetailsPage enforcementDetailsPage;
 	private EnforcementLegalEntityPage enforcementLegalEntityPage;
-	private BusinessConfirmationPage businessConfirmationPage;
 	private EnforcementContactDetailsPage enforcementContactDetailsPage;
-	private OrganisationDashboardPage organisationDashboardPage;
-	private EnforcementNotificationPage enforcementNotificationPage;
-	private EnforcementSearchPage enforcementSearchPage;
-	private ONSCodePage onsCodePage;
-	private UploadAdviceNoticePage uploadAdviceNoticePage;
-	private InspectionFeedbackSearchPage inspectionFeedbackSearchPage;
-	private ProposedEnforcementPage proposedEnforcementPage;
-	private EnforcementReviewPage enforcementReviewPage;
-	private RegulatoryFunctionPage regulatoryFunctionPage;
-	private AuthorityConfirmationPage authorityConfirmationPage;
-	private AuthorityAddressDetailsPage authorityAddressDetailsPage;
-	private AuthorityTypePage authorityTypePage;
-	private AdviceNoticeSearchPage adviceNoticeSearchPage;
-	private AuthorityNamePage authorityNamePage;
-	private LegalEntityReviewPage legalEntityReviewPage;
-	private ReplyInspectionFeedbackPage replyInspectionFeedbackPage;
-	private PartnershipAdvancedSearchPage partnershipAdvancedSearchPage;
-	private UserProfileConfirmationPage userProfileConfirmationPage;
-	private MailLogPage mailLogPage;
-	private RequestDeviationPage requestDeviationPage;
-	private InspectionPlanExpirationPage inspectionPlanExpirationPage;
-	private AuthorityDashboardPage authoritiesDashboardPage;
-	private PartnershipApprovalPage partnershipApprovalPage;
-	private UserProfileCompletionPage userProfileCompletionPage;
-	private UserCommsPreferencesPage userCommsPreferencesPage;
-	private PasswordPage passwordPage;
-	private UserSubscriptionPage userSubscriptionPage;
-	private MemberListPage memberListPage;
-	private LoginPage parLoginPage;
-	private UploadInspectionPlanPage uploadInspectionPlanPage;
-	private SICCodePage sicCodePage;
-	private DeviationCompletionPage deviationCompletionPage;
-	private DashboardPage parDashboardPage;
-	private AuthorityPage parAuthorityPage;
-	private PartnershipSearchPage partnershipSearchPage;
-	private PartnershipTypePage parPartnershipTypePage;
-	private PartnershipTermsPage parPartnershipTermsPage;
-	private PartnershipDescriptionPage parPartnershipDescriptionPage;
-	private BusinessPage parBusinessPage;
-	private RemoveReasonInspectionPlanPage removeReasonInspectionPlanPage;
-	private RevokePartnershipConfirmationPage revokePartnershipConfirmationPage;
-	private PartnershipRevokedPage partnershipRevokedPage;
-	private UserTermsPage userTermsPage;
-	private LegalEntityTypePage legalEntityTypePage;
-	private EmployeesPage employeesPage;
-	private BusinessDetailsPage parBusinessDetailsPage;
-	private DeclarationPage parDeclarationPage;
-	private BusinessContactDetailsPage parBusinessContactDetailsPage;
-	private PartnershipConfirmationPage parPartnershipConfirmationPage;
-
-	private PartnershipCompletionPage parPartnershipCompletionPage;
-	private TradingPage tradingPage;
-	private EnquiryCompletionPage enquiryCompletionPage;
-	private EnquiryContactDetailsPage enquiryContactDetailsPage;
-	private InspectionPlanDetailsPage inspectionPlanDetailsPage;
-	private RestorePartnershipConfirmationPage restorePartnershipConfirmationPage;
-	private PartnershipRestoredPage partnershipRestoredPage;
+	private RemoveEnforcementPage removeEnforcementPage;
 	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
-	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
-	private ViewEnquiryPage viewEnquiryPage;
 	
-	private AdviceArchivePage adviceArchivePage;
-	private AdviceRemovalPage adviceRemovalPage;
-	private DeletePage deletePage;
-	private CompletionPage completionPage;
-	private AddOrganisationNamePage addOrganisationNamePage;
-	private EnterTheDatePage enterTheDatePage;
-	private InspectionPlanCoveragePage inspectionPlanCoveragePage;
-	private MemberOrganisationSummaryPage memberOrganisationSummaryPage;
-	private MemberOrganisationAddedConfirmationPage memberOrganisationAddedConfirmationPage;
+	// Deviation Request
+	private RequestDeviationPage requestDeviationPage;
+	private DeviationCompletionPage deviationCompletionPage;
+	private DeviationReviewPage deviationReviewPage;
+	private DeviationApprovalPage deviationApprovalPage;
+	private ReplyDeviationRequestPage replyDeviationRequestPage;
+	
+	// Inspection Plan Feedback
+	private InspectionFeedbackDetailsPage inspectionFeedbackDetailsPage;
+	private InspectionFeedbackConfirmationPage inspectionFeedbackConfirmationPage;
+	private InspectionFeedbackCompletionPage inspectionFeedbackCompletionPage;
+	private ReplyInspectionFeedbackPage replyInspectionFeedbackPage;
+	
+	// General Enquiry
+	private RequestEnquiryPage requestEnquiryPage;
+	private EnquiryContactDetailsPage enquiryContactDetailsPage;
+	private EnquiryCompletionPage enquiryCompletionPage;
+	private EnquiryReviewPage enquiryReviewPage;
+	private ViewEnquiryPage viewEnquiryPage;
+	private ReplyEnquiryPage replyEnquiryPage;
 	
 	// PAR News Letter
-	private UserProfilePage userProfilePage;
-	private UpdateUserCommunicationPreferencesPage updateUserCommunicationPreferencesPage;
-	private UpdateUserContactDetailsPage updateUserContactDetailsPage;
-	private UpdateUserSubscriptionsPage updateUserSubscriptionsPage;
+	private UserSubscriptionPage userSubscriptionPage;
 	private NewsLetterSubscriptionPage newsLetterSubscriptionPage;
 	private NewsLetterManageSubscriptionListPage newsLetterManageSubscriptionListPage;
 	private NewsLetterSubscriptionReviewPage newsLetterSubscriptionReviewPage;
-
-	// Person Creation and Update
-	private ManagePeoplePage managePeoplePage;
-	private PersonContactDetailsPage personsContactDetailsPage;
-	private PersonAccountPage personAccountPage;
-	private PersonMembershipPage personMembershipPage;
-	private PersonUserRoleTypePage personUserTypePage;
-	private PersonCreateAccountPage personCreateAccountPage;
-	private PersonsProfilePage personsProfilePage;
-	private DeviationReviewPage deviationReviewPage;
-	private DeviationApprovalPage deviationApprovalPage;
-	private EnquiriesSearchPage enquiriesSearchPage;
-	private ReplyDeviationRequestPage replyDeviationRequestPage;
-	private ReplyEnquiryPage replyEnquiryPage;
-
+	
+	// Shared Pages
+	private AddAddressPage addAddressPage;
+	private BusinessInvitePage parBusinessInvitePage;
+	private EnterTheDatePage enterTheDatePage;
+	private CompletionPage completionPage;
+	private RevokePage revokePage;
+	private ReinstatePage reinstatePage;
+	private RemovePage removePage;
+	private DeletePage deletePage;
+	
 	public PARStepDefs() throws ClassNotFoundException, IOException {
 		driver = ScenarioContext.lastDriver;
 		
 		// PAR Home Page
+		parHomePage = PageFactory.initElements(driver, HomePage.class);
 		localRegulationPrimaryAuthorityPage = PageFactory.initElements(driver, LocalRegulationPrimaryAuthorityPage.class);
 		primaryAuthorityDocumentsPage = PageFactory.initElements(driver, PrimaryAuthorityDocumentsPage.class);
 		termsAndConditionsPage = PageFactory.initElements(driver, TermsAndConditionsPage.class);
@@ -287,26 +237,72 @@ public class PARStepDefs {
 		openGovernmentLicencePage = PageFactory.initElements(driver, OpenGovernmentLicencePage.class);
 		crownCopyrightPage = PageFactory.initElements(driver, CrownCopyrightPage.class);
 		
-		// Dashboard
+		// Login
+		parLoginPage = PageFactory.initElements(driver, LoginPage.class);
+		passwordPage = PageFactory.initElements(driver, PasswordPage.class);
+		userTermsPage = PageFactory.initElements(driver, UserTermsPage.class);
+		mailLogPage = PageFactory.initElements(driver, MailLogPage.class);
+		
+		// Dash-board
+		parDashboardPage = PageFactory.initElements(driver, DashboardPage.class);
+		organisationDashboardPage = PageFactory.initElements(driver, OrganisationDashboardPage.class);
+		authoritiesDashboardPage = PageFactory.initElements(driver, AuthorityDashboardPage.class);
+		
+		// Statistics
 		parReportingPage = PageFactory.initElements(driver, PARReportingPage.class);
 		
 		// User Management
+		userProfileConfirmationPage = PageFactory.initElements(driver, UserProfileConfirmationPage.class);
+		userProfileCompletionPage = PageFactory.initElements(driver, UserProfileCompletionPage.class);
+		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
+		managePeoplePage = PageFactory.initElements(driver, ManagePeoplePage.class);
+		personMembershipPage = PageFactory.initElements(driver, PersonMembershipPage.class);
+		personAccountPage = PageFactory.initElements(driver, PersonAccountPage.class);
+		personUserTypePage = PageFactory.initElements(driver, PersonUserRoleTypePage.class);
+		personCreateAccountPage = PageFactory.initElements(driver, PersonCreateAccountPage.class);
+		personsProfilePage = PageFactory.initElements(driver, PersonsProfilePage.class);
+		
+		// Contact Record
+		updateUserContactDetailsPage = PageFactory.initElements(driver, UpdateUserContactDetailsPage.class);
+		updateUserSubscriptionsPage = PageFactory.initElements(driver, UpdateUserSubscriptionsPage.class);
+		personsContactDetailsPage = PageFactory.initElements(driver, PersonContactDetailsPage.class);
+		userCommsPreferencesPage = PageFactory.initElements(driver, UserCommsPreferencesPage.class);
+		updateUserCommunicationPreferencesPage = PageFactory.initElements(driver,UpdateUserCommunicationPreferencesPage.class);
+		
+		// Merge Contact Record
 		mergeContactRecordsPage = PageFactory.initElements(driver, MergeContactRecordsPage.class);
 		mergeContactRecordsConfirmationPage = PageFactory.initElements(driver, MergeContactRecordsConfirmationPage.class);
-		addAddressPage = PageFactory.initElements(driver, AddAddressPage.class);
-		parBusinessInvitePage = PageFactory.initElements(driver, BusinessInvitePage.class);
 		
 		// Legal Entity
+		legalEntityTypePage = PageFactory.initElements(driver, LegalEntityTypePage.class);
+		legalEntityReviewPage = PageFactory.initElements(driver, LegalEntityReviewPage.class);
 		updateLegalEntityPage = PageFactory.initElements(driver, UpdateLegalEntityPage.class);
 		confirmThisAmendmentPage = PageFactory.initElements(driver, ConfirmThisAmendmentPage.class);
 		amendmentCompletedPage = PageFactory.initElements(driver, AmendmentCompletedPage.class);
 		
 		// Partnership
+		parPartnershipConfirmationPage = PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		parPartnershipTypePage = PageFactory.initElements(driver, PartnershipTypePage.class);
+		parPartnershipDescriptionPage = PageFactory.initElements(driver, PartnershipDescriptionPage.class);
+		parDeclarationPage = PageFactory.initElements(driver, DeclarationPage.class);
+		employeesPage = PageFactory.initElements(driver, NumberOfEmployeesPage.class);
+		partnershipRestoredPage = PageFactory.initElements(driver, PartnershipRestoredPage.class);
+		partnershipRevokedPage = PageFactory.initElements(driver, PartnershipRevokedPage.class);
+		partnershipApprovalPage = PageFactory.initElements(driver, PartnershipApprovalPage.class);
+		regulatoryFunctionPage = PageFactory.initElements(driver, RegulatoryFunctionPage.class);
+		parPartnershipCompletionPage = PageFactory.initElements(driver, PartnershipCompletionPage.class);
+		parPartnershipTermsPage = PageFactory.initElements(driver, PartnershipTermsPage.class);
+		checkPartnershipInformationPage = PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
+		
+		// Coordinated Partnership
+		memberListPage = PageFactory.initElements(driver, MemberListPage.class);
 		membershipCeasedPage = PageFactory.initElements(driver, MembershipCeasedPage.class);
 		uploadListOfMembersPage = PageFactory.initElements(driver, UploadListOfMembersPage.class);
 		confirmMemberUploadPage = PageFactory.initElements(driver, ConfirmMemberUploadPage.class);
 		memberListUploadedPage = PageFactory.initElements(driver, MemberListUploadedPage.class);
-		checkPartnershipInformationPage = PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
+		inspectionPlanCoveragePage = PageFactory.initElements(driver, InspectionPlanCoveragePage.class);
+		memberOrganisationSummaryPage = PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
+		memberOrganisationAddedConfirmationPage = PageFactory.initElements(driver, MemberOrganisationAddedConfirmationPage.class);
 		
 		// Partnerships Transfer
 		authorityTransferSelectionPage = PageFactory.initElements(driver, AuthorityTransferSelectionPage.class);
@@ -314,125 +310,95 @@ public class PARStepDefs {
 		confirmThisTranferPage = PageFactory.initElements(driver, ConfirmThisTranferPage.class);
 		transferCompletedPage = PageFactory.initElements(driver, TransferCompletedPage.class);
 		
-		// Shared Pages
-		revokePage = PageFactory.initElements(driver, RevokePage.class);
-		reinstatePage = PageFactory.initElements(driver, ReinstatePage.class);
+		// Authority
+		parAuthorityPage = PageFactory.initElements(driver, AuthorityPage.class);
+		authorityTypePage = PageFactory.initElements(driver, AuthorityTypePage.class);
+		authorityAddressDetailsPage = PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
+		authorityNamePage = PageFactory.initElements(driver, AuthorityNamePage.class);
+		onsCodePage = PageFactory.initElements(driver, ONSCodePage.class);
+		authorityConfirmationPage = PageFactory.initElements(driver, AuthorityConfirmationPage.class);
 		
-		// Next Section
-		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
-		uploadAdviceNoticePage = PageFactory.initElements(driver, UploadAdviceNoticePage.class);
+		// Business
+		addOrganisationNamePage = PageFactory.initElements(driver, AddOrganisationNamePage.class);
+		tradingPage = PageFactory.initElements(driver, TradingPage.class);
+		sicCodePage = PageFactory.initElements(driver, SICCodePage.class);
+		parBusinessDetailsPage = PageFactory.initElements(driver, BusinessDetailsPage.class);
+		parBusinessPage = PageFactory.initElements(driver, BusinessPage.class);
+		parBusinessContactDetailsPage = PageFactory.initElements(driver, BusinessContactDetailsPage.class);
+		businessConfirmationPage = PageFactory.initElements(driver, BusinessConfirmationPage.class);
+		
+		// Search Pages
+		partnershipSearchPage = PageFactory.initElements(driver, PartnershipSearchPage.class);
+		partnershipAdvancedSearchPage = PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
+		inspectionPlanSearchPage = PageFactory.initElements(driver, InspectionPlanSearchPage.class);
 		adviceNoticeSearchPage = PageFactory.initElements(driver, AdviceNoticeSearchPage.class);
-		legalEntityReviewPage = PageFactory.initElements(driver, LegalEntityReviewPage.class);
-		removeReasonInspectionPlanPage = PageFactory.initElements(driver, RemoveReasonInspectionPlanPage.class);
-		revokeReasonInspectionPlanPage = PageFactory.initElements(driver, RevokeReasonInspectionPlanPage.class);
-		inspectionPlanReviewPage = PageFactory.initElements(driver, InspectionPlanReviewPage.class);
-		replyEnquiryPage = PageFactory.initElements(driver, ReplyEnquiryPage.class);
-		enquiriesSearchPage = PageFactory.initElements(driver, EnquiriesSearchPage.class);
-		enquiryReviewPage = PageFactory.initElements(driver, EnquiryReviewPage.class);
-		requestEnquiryPage = PageFactory.initElements(driver, RequestEnquiryPage.class);
-		enquiryContactDetailsPage = PageFactory.initElements(driver, EnquiryContactDetailsPage.class);
-		replyDeviationRequestPage = PageFactory.initElements(driver, ReplyDeviationRequestPage.class);
-		deviationApprovalPage = PageFactory.initElements(driver, DeviationApprovalPage.class);
+		enforcementSearchPage = PageFactory.initElements(driver, EnforcementSearchPage.class);
 		deviationSearchPage = PageFactory.initElements(driver, DeviationSearchPage.class);
-		deviationCompletionPage = PageFactory.initElements(driver, DeviationCompletionPage.class);
-		deviationReviewPage = PageFactory.initElements(driver, DeviationReviewPage.class);
-		requestDeviationPage = PageFactory.initElements(driver, RequestDeviationPage.class);
-		replyInspectionFeedbackPage = PageFactory.initElements(driver, ReplyInspectionFeedbackPage.class);
 		inspectionFeedbackSearchPage = PageFactory.initElements(driver, InspectionFeedbackSearchPage.class);
-		inspectionFeedbackCompletionPage = PageFactory.initElements(driver, InspectionFeedbackCompletionPage.class);
-		inspectionFeedbackConfirmationPage = PageFactory.initElements(driver, InspectionFeedbackConfirmationPage.class);
-		inspectionFeedbackDetailsPage = PageFactory.initElements(driver, InspectionFeedbackDetailsPage.class);
+		enquiriesSearchPage = PageFactory.initElements(driver, EnquiriesSearchPage.class);
+		
+		// Inspection Plan
+		uploadInspectionPlanPage = PageFactory.initElements(driver, UploadInspectionPlanPage.class);
 		inspectionContactDetailsPage = PageFactory.initElements(driver, InspectionContactDetailsPage.class);
 		inspectionPlanExpirationPage = PageFactory.initElements(driver, InspectionPlanExpirationPage.class);
 		inspectionPlanDetailsPage = PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
-		uploadInspectionPlanPage = PageFactory.initElements(driver, UploadInspectionPlanPage.class);
-		inspectionPlanSearchPage = PageFactory.initElements(driver, InspectionPlanSearchPage.class);
-		removeEnforcementConfirmationPage = PageFactory.initElements(driver, RemoveEnforcementConfirmationPage.class);
-		removeEnforcementPage = PageFactory.initElements(driver, RemoveEnforcementPage.class);
-		enforcementCompletionPage = PageFactory.initElements(driver, EnforcementCompletionPage.class);
+		inspectionPlanReviewPage = PageFactory.initElements(driver, InspectionPlanReviewPage.class);
+		removeReasonInspectionPlanPage = PageFactory.initElements(driver, RemoveReasonInspectionPlanPage.class);
+		revokeReasonInspectionPlanPage = PageFactory.initElements(driver, RevokeReasonInspectionPlanPage.class);
+		
+		// Advice
+		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
+		uploadAdviceNoticePage = PageFactory.initElements(driver, UploadAdviceNoticePage.class);
+		adviceArchivePage = PageFactory.initElements(driver, AdviceArchivePage.class);
+		adviceRemovalPage = PageFactory.initElements(driver, AdviceRemovalPage.class);
+		
+		// Enforcement Notice
 		proposedEnforcementPage = PageFactory.initElements(driver, ProposedEnforcementPage.class);
-		enforcementReviewPage = PageFactory.initElements(driver, EnforcementReviewPage.class);
-		enforcementSearchPage = PageFactory.initElements(driver, EnforcementSearchPage.class);
 		enforcementActionPage = PageFactory.initElements(driver, EnforcementActionPage.class);
 		enforcementDetailsPage = PageFactory.initElements(driver, EnforcementDetailsPage.class);
 		enforcementLegalEntityPage = PageFactory.initElements(driver, EnforcementLegalEntityPage.class);
 		enforcementContactDetailsPage = PageFactory.initElements(driver, EnforcementContactDetailsPage.class);
 		enforcementNotificationPage = PageFactory.initElements(driver, EnforcementNotificationPage.class);
-		businessConfirmationPage = PageFactory.initElements(driver, BusinessConfirmationPage.class);
-		organisationDashboardPage = PageFactory.initElements(driver, OrganisationDashboardPage.class);
-		onsCodePage = PageFactory.initElements(driver, ONSCodePage.class);
-		enquiryCompletionPage = PageFactory.initElements(driver, EnquiryCompletionPage.class);
-		authorityConfirmationPage = PageFactory.initElements(driver, AuthorityConfirmationPage.class);
-		authorityTypePage = PageFactory.initElements(driver, AuthorityTypePage.class);
-		regulatoryFunctionPage = PageFactory.initElements(driver, RegulatoryFunctionPage.class);
-		authorityAddressDetailsPage = PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
-		authorityNamePage = PageFactory.initElements(driver, AuthorityNamePage.class);
-		authoritiesDashboardPage = PageFactory.initElements(driver, AuthorityDashboardPage.class);
-		partnershipRestoredPage = PageFactory.initElements(driver, PartnershipRestoredPage.class);
-		revokePartnershipConfirmationPage = PageFactory.initElements(driver, RevokePartnershipConfirmationPage.class);
-		partnershipRevokedPage = PageFactory.initElements(driver, PartnershipRevokedPage.class);
-		partnershipApprovalPage = PageFactory.initElements(driver, PartnershipApprovalPage.class);
-		regulatoryFunctionPage = PageFactory.initElements(driver, RegulatoryFunctionPage.class);
-		restorePartnershipConfirmationPage = PageFactory.initElements(driver, RestorePartnershipConfirmationPage.class);
-		partnershipAdvancedSearchPage = PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
-		userCommsPreferencesPage = PageFactory.initElements(driver, UserCommsPreferencesPage.class);
-		userProfileConfirmationPage = PageFactory.initElements(driver, UserProfileConfirmationPage.class);
-		userSubscriptionPage = PageFactory.initElements(driver, UserSubscriptionPage.class);
-		employeesPage = PageFactory.initElements(driver, EmployeesPage.class);
-		userTermsPage = PageFactory.initElements(driver, UserTermsPage.class);
-		userProfileCompletionPage = PageFactory.initElements(driver, UserProfileCompletionPage.class);
-		passwordPage = PageFactory.initElements(driver, PasswordPage.class);
-		mailLogPage = PageFactory.initElements(driver, MailLogPage.class);
-		memberListPage = PageFactory.initElements(driver, MemberListPage.class);
-		tradingPage = PageFactory.initElements(driver, TradingPage.class);
-		sicCodePage = PageFactory.initElements(driver, SICCodePage.class);
-		parHomePage = PageFactory.initElements(driver, HomePage.class);
-		parBusinessDetailsPage = PageFactory.initElements(driver, BusinessDetailsPage.class);
-		parDeclarationPage = PageFactory.initElements(driver, DeclarationPage.class);
-		parLoginPage = PageFactory.initElements(driver, LoginPage.class);
-		parDashboardPage = PageFactory.initElements(driver, DashboardPage.class);
-		parAuthorityPage = PageFactory.initElements(driver, AuthorityPage.class);
-		parPartnershipTypePage = PageFactory.initElements(driver, PartnershipTypePage.class);
-		parPartnershipDescriptionPage = PageFactory.initElements(driver, PartnershipDescriptionPage.class);
-		parBusinessPage = PageFactory.initElements(driver, BusinessPage.class);
-		parBusinessContactDetailsPage = PageFactory.initElements(driver, BusinessContactDetailsPage.class);
-		parPartnershipConfirmationPage = PageFactory.initElements(driver, PartnershipConfirmationPage.class);
-
-		parPartnershipCompletionPage = PageFactory.initElements(driver, PartnershipCompletionPage.class);
-		parPartnershipTermsPage = PageFactory.initElements(driver, PartnershipTermsPage.class);
-		partnershipSearchPage = PageFactory.initElements(driver, PartnershipSearchPage.class);
-		viewEnquiryPage = PageFactory.initElements(driver, ViewEnquiryPage.class);
+		enforcementReviewPage = PageFactory.initElements(driver, EnforcementReviewPage.class);
+		enforcementCompletionPage = PageFactory.initElements(driver, EnforcementCompletionPage.class);
+		removeEnforcementPage = PageFactory.initElements(driver, RemoveEnforcementPage.class);
+		removeEnforcementConfirmationPage = PageFactory.initElements(driver, RemoveEnforcementConfirmationPage.class);
 		
-		legalEntityTypePage = PageFactory.initElements(driver, LegalEntityTypePage.class);
-		adviceArchivePage = PageFactory.initElements(driver, AdviceArchivePage.class);
-		adviceRemovalPage = PageFactory.initElements(driver, AdviceRemovalPage.class);
-		deletePage = PageFactory.initElements(driver, DeletePage.class);
-		completionPage = PageFactory.initElements(driver, CompletionPage.class);
-		addOrganisationNamePage = PageFactory.initElements(driver, AddOrganisationNamePage.class);
-		enterTheDatePage = PageFactory.initElements(driver, EnterTheDatePage.class);
-		inspectionPlanCoveragePage = PageFactory.initElements(driver, InspectionPlanCoveragePage.class);
-		memberOrganisationSummaryPage = PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
-		memberOrganisationAddedConfirmationPage = PageFactory.initElements(driver, MemberOrganisationAddedConfirmationPage.class);
+		// Deviation Request
+		requestDeviationPage = PageFactory.initElements(driver, RequestDeviationPage.class);
+		deviationReviewPage = PageFactory.initElements(driver, DeviationReviewPage.class);
+		deviationCompletionPage = PageFactory.initElements(driver, DeviationCompletionPage.class);
+		deviationApprovalPage = PageFactory.initElements(driver, DeviationApprovalPage.class);
+		replyDeviationRequestPage = PageFactory.initElements(driver, ReplyDeviationRequestPage.class);
+		
+		// Inspection Plan Feedback
+		inspectionFeedbackDetailsPage = PageFactory.initElements(driver, InspectionFeedbackDetailsPage.class);
+		inspectionFeedbackCompletionPage = PageFactory.initElements(driver, InspectionFeedbackCompletionPage.class);
+		inspectionFeedbackConfirmationPage = PageFactory.initElements(driver, InspectionFeedbackConfirmationPage.class);
+		replyInspectionFeedbackPage = PageFactory.initElements(driver, ReplyInspectionFeedbackPage.class);
+		
+		// General Enquiry
+		requestEnquiryPage = PageFactory.initElements(driver, RequestEnquiryPage.class);
+		enquiryContactDetailsPage = PageFactory.initElements(driver, EnquiryContactDetailsPage.class);
+		enquiryReviewPage = PageFactory.initElements(driver, EnquiryReviewPage.class);
+		viewEnquiryPage = PageFactory.initElements(driver, ViewEnquiryPage.class);
+		enquiryCompletionPage = PageFactory.initElements(driver, EnquiryCompletionPage.class);
+		replyEnquiryPage = PageFactory.initElements(driver, ReplyEnquiryPage.class);
 		
 		// PAR News Letter
-		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
-		updateUserCommunicationPreferencesPage = PageFactory.initElements(driver,
-				UpdateUserCommunicationPreferencesPage.class);
-		updateUserContactDetailsPage = PageFactory.initElements(driver, UpdateUserContactDetailsPage.class);
-		updateUserSubscriptionsPage = PageFactory.initElements(driver, UpdateUserSubscriptionsPage.class);
+		userSubscriptionPage = PageFactory.initElements(driver, UserSubscriptionPage.class);
 		newsLetterSubscriptionPage = PageFactory.initElements(driver, NewsLetterSubscriptionPage.class);
-		newsLetterManageSubscriptionListPage = PageFactory.initElements(driver,
-				NewsLetterManageSubscriptionListPage.class);
+		newsLetterManageSubscriptionListPage = PageFactory.initElements(driver,NewsLetterManageSubscriptionListPage.class);
 		newsLetterSubscriptionReviewPage = PageFactory.initElements(driver, NewsLetterSubscriptionReviewPage.class);
-
-		// Person Creation and Update
-		managePeoplePage = PageFactory.initElements(driver, ManagePeoplePage.class);
-		personsContactDetailsPage = PageFactory.initElements(driver, PersonContactDetailsPage.class);
-		personMembershipPage = PageFactory.initElements(driver, PersonMembershipPage.class);
-		personAccountPage = PageFactory.initElements(driver, PersonAccountPage.class);
-		personUserTypePage = PageFactory.initElements(driver, PersonUserRoleTypePage.class);
-		personCreateAccountPage = PageFactory.initElements(driver, PersonCreateAccountPage.class);
-		personsProfilePage = PageFactory.initElements(driver, PersonsProfilePage.class);
+		
+		// Shared Pages
+		addAddressPage = PageFactory.initElements(driver, AddAddressPage.class);
+		parBusinessInvitePage = PageFactory.initElements(driver, BusinessInvitePage.class);
+		enterTheDatePage = PageFactory.initElements(driver, EnterTheDatePage.class);
+		completionPage = PageFactory.initElements(driver, CompletionPage.class);
+		revokePage = PageFactory.initElements(driver, RevokePage.class);
+		reinstatePage = PageFactory.initElements(driver, ReinstatePage.class);
+		deletePage = PageFactory.initElements(driver, DeletePage.class);
 		removePage = PageFactory.initElements(driver, RemovePage.class);
 	}
 
@@ -537,12 +503,11 @@ public class PARStepDefs {
 		Assert.assertTrue("Organisation Contact is not Displayed.", checkPartnershipInformationPage.verifyContactAtTheOrganisation());
 		Assert.assertTrue("Primary Authority name is not Displayed.", checkPartnershipInformationPage.verifyPrimaryAuthorityName());
 		
-		LOG.info("Saving Application.");
+		LOG.info("Complete Partnership Application.");
 		checkPartnershipInformationPage.completeApplication();
-		
 		parPartnershipCompletionPage.clickDoneButton();
 	}
-
+	
 	@When("^the user searches for the last created partnership$")
 	public void the_user_searches_for_the_last_created_partnership() throws Throwable {
 		parDashboardPage.checkAndAcceptCookies();
@@ -641,7 +606,7 @@ public class PARStepDefs {
 
 		LOG.info("Entering business trading name");
 		tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
-		tradingPage.goToLegalEntityPage();
+		tradingPage.goToLegalEntityTypePage();
 		
 		legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
 		legalEntityTypePage.clickContinueButton();
@@ -651,7 +616,7 @@ public class PARStepDefs {
 		LOG.info("Set second part of journey part to true");
 		ScenarioContext.secondJourneyPart = true;
 	}
-
+	
 	@Then("^the second part of the partnership application is successfully completed$")
 	public void the_second_part_of_the_partnership_application_is_successfully_completed() throws Throwable {
 		LOG.info("Check and confirm changes");
@@ -677,10 +642,11 @@ public class PARStepDefs {
 		Assert.assertTrue("Legal Entity is not Displayed.", checkPartnershipInformationPage.verifyLegalEntity());
 		Assert.assertTrue("Trading Name is not Displayed.", checkPartnershipInformationPage.verifyTradingName());
 		
+		LOG.info("Complete Partnership Application.");
 		checkPartnershipInformationPage.confirmApplication();
 		parPartnershipCompletionPage.clickDoneButton();
 	}
-
+	
 	@When("^the user visits the maillog page and extracts the invite link$")
 	public void the_user_visits_the_maillog_page_and_extracts_the_invite_link() throws Throwable {
 		mailLogPage.navigateToUrl();

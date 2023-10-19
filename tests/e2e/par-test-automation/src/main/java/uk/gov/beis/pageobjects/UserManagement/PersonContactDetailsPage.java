@@ -17,6 +17,7 @@ import uk.gov.beis.pageobjects.DashboardPage;
 import uk.gov.beis.pageobjects.EnterTheDatePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
 import uk.gov.beis.utility.DataStore;
 
 public class PersonContactDetailsPage extends BasePageObject {
@@ -193,6 +194,11 @@ public class PersonContactDetailsPage extends BasePageObject {
 	public PersonUserRoleTypePage selectContinueButton() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, PersonUserRoleTypePage.class);
+	}
+	
+	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 	}
 	
 	public MemberOrganisationSummaryPage goToMemberOrganisationSummaryPage() {
