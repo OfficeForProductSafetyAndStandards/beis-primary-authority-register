@@ -179,10 +179,9 @@ public class PARStepDefs {
 	private EnforcementCompletionPage enforcementCompletionPage;
 	private EnforcementActionPage enforcementActionPage;
 	private EnforcementDetailsPage enforcementDetailsPage;
-	private EnforcementLegalEntityPage enforcementLegalEntityPage;
-	private EnforcementContactDetailsPage enforcementContactDetailsPage;
+	private EnforceLegalEntityPage enforceLegalEntityPage;
+	private EnforcementOfficerContactDetailsPage enforcementOfficerContactDetailsPage;
 	private RemoveEnforcementPage removeEnforcementPage;
-	private RemoveEnforcementConfirmationPage removeEnforcementConfirmationPage;
 	
 	// Deviation Request
 	private RequestDeviationPage requestDeviationPage;
@@ -352,13 +351,11 @@ public class PARStepDefs {
 		proposedEnforcementPage = PageFactory.initElements(driver, ProposedEnforcementPage.class);
 		enforcementActionPage = PageFactory.initElements(driver, EnforcementActionPage.class);
 		enforcementDetailsPage = PageFactory.initElements(driver, EnforcementDetailsPage.class);
-		enforcementLegalEntityPage = PageFactory.initElements(driver, EnforcementLegalEntityPage.class);
-		enforcementContactDetailsPage = PageFactory.initElements(driver, EnforcementContactDetailsPage.class);
+		enforceLegalEntityPage = PageFactory.initElements(driver, EnforceLegalEntityPage.class);
 		enforcementNotificationPage = PageFactory.initElements(driver, EnforcementNotificationPage.class);
 		enforcementReviewPage = PageFactory.initElements(driver, EnforcementReviewPage.class);
 		enforcementCompletionPage = PageFactory.initElements(driver, EnforcementCompletionPage.class);
 		removeEnforcementPage = PageFactory.initElements(driver, RemoveEnforcementPage.class);
-		removeEnforcementConfirmationPage = PageFactory.initElements(driver, RemoveEnforcementConfirmationPage.class);
 		
 		// Deviation Request
 		requestDeviationPage = PageFactory.initElements(driver, RequestDeviationPage.class);
@@ -388,6 +385,7 @@ public class PARStepDefs {
 		newsLetterSubscriptionReviewPage = PageFactory.initElements(driver, NewsLetterSubscriptionReviewPage.class);
 		
 		// Shared Pages
+		enforcementOfficerContactDetailsPage = PageFactory.initElements(driver, EnforcementOfficerContactDetailsPage.class);
 		addAddressPage = PageFactory.initElements(driver, AddAddressPage.class);
 		parBusinessInvitePage = PageFactory.initElements(driver, BusinessInvitePage.class);
 		enterTheDatePage = PageFactory.initElements(driver, EnterTheDatePage.class);
@@ -898,38 +896,42 @@ public class PARStepDefs {
 	public void the_user_creates_an_enforcement_notice_against_the_partnership_with_the_following_details(DataTable dets) throws Throwable {
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
 			
+			DataStore.saveValue(UsableValues.ENFORCEMENT_TITLE, data.get("Title"));
 			DataStore.saveValue(UsableValues.ENFORCEMENT_TYPE, data.get("Enforcement Action"));
+			DataStore.saveValue(UsableValues.ENFORCEMENT_DESCRIPTION, data.get("Description"));
 			DataStore.saveValue(UsableValues.ENFORCEMENT_REGFUNC, data.get("Regulatory Function"));
 			DataStore.saveValue(UsableValues.ENFORCEMENT_FILENAME, data.get("Attachment"));
-			DataStore.saveValue(UsableValues.ENFORCEMENT_DESCRIPTION, data.get("Description"));
-			DataStore.saveValue(UsableValues.ENFORCEMENT_TITLE, data.get("Title"));
 		}
 		
-		LOG.info("Create enformcement notification against partnership");
 		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
-		parPartnershipConfirmationPage.createEnforcement();
-		enforcementNotificationPage.proceed();
-		enforcementContactDetailsPage.proceed();
 		
-		enforcementLegalEntityPage.enterEntity(DataStore.getSavedValue(UsableValues.ENTITY_NAME));
-		enforcementLegalEntityPage.proceed();
+		LOG.info("Create enformcement notification against partnership");
+		parPartnershipConfirmationPage.createEnforcement();
+		enforcementNotificationPage.clickContinue();
+		
+		enforcementOfficerContactDetailsPage.goToEnforceLegalEntityPage();
+		
+		enforceLegalEntityPage.enterLegalEntityName(DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		enforceLegalEntityPage.clickContinue();
 		
 		enforcementDetailsPage.selectEnforcementType(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TYPE));
-		enforcementDetailsPage.enterEnforcementDescription("Enformcement description");
-		enforcementDetailsPage.proceed();
+		enforcementDetailsPage.enterEnforcementDescription(DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION));
+		enforcementDetailsPage.clickContinue();
 		
-		enforcementActionPage.selectRegFunc(DataStore.getSavedValue(UsableValues.ENFORCEMENT_REGFUNC));
+		enforcementActionPage.selectRegulatoryFunctions(DataStore.getSavedValue(UsableValues.ENFORCEMENT_REGFUNC));
 		enforcementActionPage.chooseFile(DataStore.getSavedValue(UsableValues.ENFORCEMENT_FILENAME));
 		enforcementActionPage.enterEnforcementDescription(DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION).toLowerCase());
 		enforcementActionPage.enterTitle(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TITLE));
-		enforcementActionPage.proceed();
+		enforcementActionPage.clickContinue();
 	}
 
 	@Then("^all the fields for the enforcement notice are updated correctly$")
 	public void all_the_fields_for_the_enforcement_are_updated_correctly() throws Throwable {
-		LOG.info("Check all updated changes check out");
-		Assert.assertTrue("Details don't check out", enforcementReviewPage.checkEnforcementCreation());
+		LOG.info("Verify Enforcement Details are Correct.");
+		Assert.assertTrue("Failed: Enforcement Details are not Correct.", enforcementReviewPage.checkEnforcementCreation());
+		
 		enforcementReviewPage.saveChanges();
+		enforcementCompletionPage.goToPartnershipConfirmationPage();
 	}
 
 	@When("^the user selects the last created enforcement notice$")
@@ -939,14 +941,14 @@ public class PARStepDefs {
 		case ("par_enforcement_officer@example.com"):
 			LOG.info("Select last created enforcement");
 			parDashboardPage.selectSeeEnforcementNotices();
-			enforcementSearchPage.searchEnforcements();
+			enforcementSearchPage.searchForEnforcementNotice(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 			enforcementSearchPage.selectEnforcement();
 			break;
 
 		case ("par_authority@example.com"):
 			LOG.info("Select last created enforcement");
 			parDashboardPage.selectSeeEnforcementNotices();
-			enforcementSearchPage.searchEnforcements();
+			enforcementSearchPage.searchForEnforcementNotice(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 			enforcementSearchPage.selectEnforcement();
 			break;
 
@@ -964,17 +966,19 @@ public class PARStepDefs {
 
 	@When("^the user approves the enforcement notice$")
 	public void the_user_approves_the_enforcement_notice() throws Throwable {
-		LOG.info("Approve the enforcement");
+		LOG.info("Approve the EnforcementNotice.");
 		proposedEnforcementPage.selectAllow();
-		proposedEnforcementPage.proceed();
+		proposedEnforcementPage.clickContinue();
+		
 		enforcementReviewPage.saveChanges();
-		enforcementCompletionPage.complete();
+		enforcementCompletionPage.clickDone();
 	}
 
 	@Then("^the enforcement notice is set to approved status$")
 	public void the_enforcement_notice_is_set_to_approved_status() throws Throwable {
-		LOG.info("Check the enformcement is approved");
-		enforcementSearchPage.searchEnforcements();
+		LOG.info("Verify the Enforcement Notice was Approved.");
+		enforcementSearchPage.searchForEnforcementNotice(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		
 		Assert.assertTrue("Enforcement Status doesn't check out", enforcementSearchPage.getStatus().equalsIgnoreCase("Approved"));
 	}
 	
@@ -983,16 +987,17 @@ public class PARStepDefs {
 		LOG.info("Block the Enforcement Notice.");
 		proposedEnforcementPage.selectBlock();
 		proposedEnforcementPage.enterReasonForBlockingEnforcement(reason);
-		proposedEnforcementPage.proceed();
+		proposedEnforcementPage.clickContinue();
 		
 		enforcementReviewPage.saveChanges();
-		enforcementCompletionPage.complete();
+		enforcementCompletionPage.clickDone();
 	}
 	
 	@Then("^the enforcement notice is set to blocked status$")
 	public void the_enforcement_notice_is_set_to_blocked_status() throws Throwable {
-		LOG.info("Check the Enformcement Notice is Blocked.");
-		enforcementSearchPage.searchEnforcements();
+		LOG.info("Verify the Enformcement Notice is Blocked.");
+		enforcementSearchPage.searchForEnforcementNotice(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		
 		Assert.assertTrue("Enforcement Status doesn't check out", enforcementSearchPage.getStatus().equalsIgnoreCase("Blocked"));
 	}
 	
@@ -1000,20 +1005,31 @@ public class PARStepDefs {
 	public void the_user_searches_for_the_last_created_enforcement_notice() throws Throwable {
 		LOG.info("Select last created enforcement");
 		parDashboardPage.selectManageEnforcementNotices();
-		enforcementSearchPage.searchEnforcements();
+		enforcementSearchPage.searchForEnforcementNotice(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 		enforcementSearchPage.removeEnforcement();
 	}
-
-	@Then("^the user removes the enforcement notice successfully$")
-	public void the_user_removes_the_enforcement_notice_successfully() throws Throwable {
-		LOG.info("Check enforcement notice is removed");
-		removeEnforcementPage.selectRevokeReason("This is a duplicate enforcement");
-		removeEnforcementPage.enterRevokeDescription("Revoking");
-		removeEnforcementConfirmationPage.acceptTerms();
-		enforcementSearchPage.searchEnforcements();
-		Assert.assertTrue("Some results are returned indeed", enforcementSearchPage.confirmNoReturnedResults());
+	
+	@When("^the user removes the enforcement notice$")
+	public void the_user_removes_the_enforcement_notice() throws Throwable {
+		LOG.info("Remove the Enforcement Notice.");
+		removeEnforcementPage.selectReasonForRemoval("This is a duplicate enforcement");
+		removeEnforcementPage.enterReasonForRemoval("Test Remove.");
+		removeEnforcementPage.clickContinue();
+		
+		parDeclarationPage.selectConfirmCheckbox();
+		parDeclarationPage.goToEnforcementSearchPage();
+		
+		//removeEnforcementConfirmationPage.acceptTerms();
 	}
 
+	@Then("^the enforcement notice is removed successfully$")
+	public void the_enforcement_notice_is_removed_successfully() throws Throwable {
+		LOG.info("Verify the Enforcement Notice was Removed Successfully.");
+		enforcementSearchPage.searchForEnforcementNotice(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		
+		Assert.assertTrue("Failed: Enforcement Notice was not Removed.", enforcementSearchPage.confirmNoReturnedResults());
+	}
+	
 	@When("^the user uploads an inspection plan against the partnership with the following details:$")
 	public void the_user_uploads_an_inspection_plan_against_the_partnership_with_the_following_details(DataTable dets) throws Throwable {
 		LOG.info("Upload inspection plan and save details");
@@ -1239,7 +1255,7 @@ public class PARStepDefs {
 		
 		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
 		parPartnershipConfirmationPage.selectDeviateInspectionPlan();
-		enforcementContactDetailsPage.save();
+		enforcementOfficerContactDetailsPage.goToDeviationRequestPage();
 		
 		requestDeviationPage.enterDescription(DataStore.getSavedValue(UsableValues.DEVIATION_DESCRIPTION));
 		requestDeviationPage.chooseFile("link.txt");
@@ -1672,12 +1688,7 @@ public class PARStepDefs {
 		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", personsProfilePage.checkContactPhoneNumbers());
 		assertTrue("Failed: Both Contact Locations are not displayed.", personsProfilePage.seeMoreContactInformation());
 	}
-
-	@Then("^the user can verify the enforcement officers details are displayed$")
-	public void the_user_can_verify_the_enforcement_officers_details_are_displayed() throws Throwable {
-		assertTrue("Failed: Officer details not displayed", enforcementReviewPage.checkOfficerDetails());
-	}
-
+	
 	@When("^the user searches for a partnership with the Test Business \"([^\"]*)\" name$")
 	public void the_user_searches_for_a_partnership_with_the_Test_Business_name(String search) throws Throwable {
 		parDashboardPage.selectSearchforPartnership();

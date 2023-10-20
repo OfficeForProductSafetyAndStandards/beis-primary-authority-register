@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
 
 public class EnforcementCompletionPage extends BasePageObject{
 
@@ -16,8 +17,13 @@ public class EnforcementCompletionPage extends BasePageObject{
 	public EnforcementCompletionPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	public EnforcementSearchPage complete() {
+	
+	public PartnershipConfirmationPage goToPartnershipConfirmationPage() {
+		doneBtn.click();
+		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+	}
+	
+	public EnforcementSearchPage clickDone() {
 		doneBtn.click();
 		return PageFactory.initElements(driver, EnforcementSearchPage.class);
 	}

@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects.OrganisationPageObjects;
+package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
 
@@ -6,7 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementSearchPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessDetailsPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.RegulatoryFunctionPage;
 
 public class DeclarationPage extends BasePageObject {
@@ -54,5 +55,10 @@ public class DeclarationPage extends BasePageObject {
 	public BusinessDetailsPage goToBusinessDetailsPage() {	
 		continueBtn.click();
 		return PageFactory.initElements(driver, BusinessDetailsPage.class);
+	}
+	
+	public EnforcementSearchPage goToEnforcementSearchPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, EnforcementSearchPage.class);
 	}
 }

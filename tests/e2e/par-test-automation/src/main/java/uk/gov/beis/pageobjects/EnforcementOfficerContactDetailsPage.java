@@ -1,0 +1,30 @@
+package uk.gov.beis.pageobjects;
+
+import java.io.IOException;
+
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+import uk.gov.beis.pageobjects.DeviationRequestPageObjects.RequestDeviationPage;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforceLegalEntityPage;
+
+public class EnforcementOfficerContactDetailsPage extends BasePageObject {
+	
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
+	
+	public EnforcementOfficerContactDetailsPage() throws ClassNotFoundException, IOException {
+		super();
+	}
+
+	public EnforceLegalEntityPage goToEnforceLegalEntityPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, EnforceLegalEntityPage.class);
+	}
+	
+	public RequestDeviationPage goToDeviationRequestPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, RequestDeviationPage.class);
+	}
+}

@@ -10,12 +10,12 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.EnforcementOfficerContactDetailsPage;
 import uk.gov.beis.pageobjects.AddAddressPage;
 import uk.gov.beis.pageobjects.ReinstatePage;
 import uk.gov.beis.pageobjects.RemovePage;
 import uk.gov.beis.pageobjects.RevokePage;
 import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceNoticeSearchPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementContactDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiryContactDetailsPage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionContactDetailsPage;
@@ -183,9 +183,9 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		return PageFactory.initElements(driver, InspectionContactDetailsPage.class);
 	}
 
-	public EnforcementContactDetailsPage selectDeviateInspectionPlan() {
+	public EnforcementOfficerContactDetailsPage selectDeviateInspectionPlan() {
 		reqToDeviateFromInspectionPlan.click();
-		return PageFactory.initElements(driver, EnforcementContactDetailsPage.class);
+		return PageFactory.initElements(driver, EnforcementOfficerContactDetailsPage.class);
 	}
 
 	// Update Partnership Details

@@ -10,10 +10,12 @@ import uk.gov.beis.pageobjects.BasePageObject;
 
 public class ProposedEnforcementPage extends BasePageObject{
 	
-	@FindBy(xpath = "//label[contains(text(),'Allow')]")
+	//@FindBy(xpath = "//label[contains(text(),'Allow')]")
+	@FindBy(id = "edit-par-component-enforcement-action-review-0-primary-authority-status-approved")
 	private WebElement allowRadial;
 	
-	@FindBy(xpath = "//label[contains(text(),'Block')]")
+	//@FindBy(xpath = "//label[contains(text(),'Block')]")
+	@FindBy(id = "edit-par-component-enforcement-action-review-0-primary-authority-status-blocked")
 	private WebElement blockRadial;
 	
 	@FindBy(id = "edit-par-component-enforcement-action-review-0-primary-authority-notes")
@@ -39,7 +41,7 @@ public class ProposedEnforcementPage extends BasePageObject{
 		blockReasonTextArea.sendKeys(reason);
 	}
 
-	public EnforcementReviewPage proceed() {
+	public EnforcementReviewPage clickContinue() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, EnforcementReviewPage.class);
 	}

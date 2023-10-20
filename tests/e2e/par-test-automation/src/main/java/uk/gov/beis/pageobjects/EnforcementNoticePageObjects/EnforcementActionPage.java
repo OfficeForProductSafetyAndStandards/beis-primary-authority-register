@@ -7,50 +7,51 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.utility.DataStore;
 
 public class EnforcementActionPage extends BasePageObject {
-
-	public EnforcementActionPage() throws ClassNotFoundException, IOException {
-		super();
-	}
-
+	
 	@FindBy(id = "edit-par-component-enforcement-action-0-title")
 	private WebElement title;
 	
-	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
+	@FindBy(id = "edit-par-component-enforcement-action-0-details")
 	private WebElement descriptionBox;
 
-	@FindBy(xpath = "//input[@id='edit-par-component-enforcement-action-0-files-upload']")
-	private WebElement chooseFile1;
+	@FindBy(id = "edit-par-component-enforcement-action-0-files-upload")
+	private WebElement chooseFile;
 	
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
+	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 
-	private String locator = "//label[contains(text(),'?')]";
-
-	public EnforcementDetailsPage selectRegFunc(String func) {
-		driver.findElement(By.xpath(locator.replace("?", func))).click();
-		return PageFactory.initElements(driver, EnforcementDetailsPage.class);
+	private String regulatoryFunctionsLocator = "//label[contains(text(),'?')]";
+	
+	public EnforcementActionPage() throws ClassNotFoundException, IOException {
+		super();
 	}
-
-	public EnforcementActionPage enterTitle(String val) {
-		title.sendKeys(val);
-		return PageFactory.initElements(driver, EnforcementActionPage.class);
+	
+	public void enterTitle(String value) {
+		title.clear();
+		title.sendKeys(value);
 	}
-
-	public EnforcementActionPage chooseFile(String filename) {
-		uploadDocument(chooseFile1, filename);
-		return PageFactory.initElements(driver, EnforcementActionPage.class);
+	
+	public void selectRegulatoryFunctions(String func) {
+		driver.findElement(By.xpath(regulatoryFunctionsLocator.replace("?", func))).click();
 	}
-
-	public EnforcementActionPage enterEnforcementDescription(String description) throws Throwable {
+	
+	public void enterEnforcementDescription(String description) {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
-		return PageFactory.initElements(driver, EnforcementActionPage.class);
 	}
-
-	public EnforcementReviewPage proceed() {
+	
+	public void chooseFile(String filename) {
+		uploadDocument(chooseFile, filename);
+		
+		DataStore.saveValue(UsableValues.ENFORCEMENT_FILENAME, filename.replace(".txt", ""));
+	}
+	
+	public EnforcementReviewPage clickContinue() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, EnforcementReviewPage.class);
 	}

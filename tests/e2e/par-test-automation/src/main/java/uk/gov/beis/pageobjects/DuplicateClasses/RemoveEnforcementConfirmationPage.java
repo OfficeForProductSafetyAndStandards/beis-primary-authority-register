@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects.EnforcementNoticePageObjects;
+package uk.gov.beis.pageobjects.DuplicateClasses;
 
 import java.io.IOException;
 
@@ -8,16 +8,17 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementSearchPage;
 
 public class RemoveEnforcementConfirmationPage extends BasePageObject{
-
+	
+	@FindBy(xpath = "//input[contains(@value,'Remove')]")
+	private WebElement removeBtn;
+	
 	public RemoveEnforcementConfirmationPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//input[contains(@value,'Remove')]")
-	WebElement removeBtn;
-
+	
 	public EnforcementSearchPage acceptTerms() {
 		WebElement checkbox = driver.findElement(By.id("edit-confirm"));
 		// Tick checkbox only if unchecked

@@ -12,47 +12,32 @@ import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.utility.DataStore;
 
 public class EnforcementReviewPage extends BasePageObject {
-
-	@FindBy(xpath = "//legend/span[contains(text(),'Enforcement officer')]")
-	private WebElement officer;
-	
-	@FindBy(xpath = "//legend/span[contains(text(),'Enforcing authority')]")
-	private WebElement enforceingAuthority;
-	
-	@FindBy(xpath = "//legend/span[contains(text(),'Enforced organisation')]")
-	private WebElement enforcedOrganisation;
-	
-	@FindBy(xpath = "//legend/span[contains(text(),'Primary authority')]")
-	private WebElement primaryAuthority;
 	
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 	
-	String legEnt = "//fieldset/p[contains(text(),'?')]";
-	String enfType = "//fieldset/p[contains(text(),'?')]";
-	String enfTitle = "//div/h3[contains(text(),'?')]";
-	String desc = "//div/p[contains(text(),'?')]";
-	String enfFile = "//span/a[contains(text(),'?')]";
+	private String legalEntityNameLocator = "//fieldset/p[contains(text(),'?')]";
+	private String enforcementTitleLocator = "//div/h3[contains(text(),'?')]";
+	private String enforcementTypeLocator = "//fieldset/p[contains(text(),'?')]";
+	private String enforcementDescriptionLocator = "//div/p[contains(text(),'?')]";
+	private String enforcementFileLocator = "//span/a[contains(text(),'?')]";
 	
 	public EnforcementReviewPage() throws ClassNotFoundException, IOException {
 		super();
+	}
+	
+	public boolean checkEnforcementCreation() {
+		WebElement legalEntity = driver.findElement(By.xpath(legalEntityNameLocator.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
+		WebElement enforcementTitle = driver.findElement(By.xpath(enforcementTitleLocator.replace("?", DataStore.getSavedValue(UsableValues.ENFORCEMENT_TITLE))));
+		WebElement enforcementType = driver.findElement(By.xpath(enforcementTypeLocator.replace("?", DataStore.getSavedValue(UsableValues.ENFORCEMENT_TYPE).toLowerCase())));
+		WebElement enforcementDescription = driver.findElement(By.xpath(enforcementDescriptionLocator.replace("?", DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION).toLowerCase())));
+		WebElement enforcementFile = driver.findElement(By.xpath(enforcementFileLocator.replace("?", DataStore.getSavedValue(UsableValues.ENFORCEMENT_FILENAME))));
+		
+		return legalEntity.isDisplayed() && enforcementType.isDisplayed() && enforcementTitle.isDisplayed() && enforcementDescription.isDisplayed() && enforcementFile.isDisplayed();
 	}
 
 	public EnforcementCompletionPage saveChanges() {
 		saveBtn.click();
 		return PageFactory.initElements(driver, EnforcementCompletionPage.class);
-	}
-
-	public boolean checkEnforcementCreation() {
-		WebElement legEnt1 = driver.findElement(By.xpath(legEnt.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
-		WebElement enfType1 = driver.findElement(By.xpath(enfType.replace("?", DataStore.getSavedValue(UsableValues.ENFORCEMENT_TYPE).toLowerCase())));
-		WebElement enfTitle1 = driver.findElement(By.xpath(enfTitle.replace("?", DataStore.getSavedValue(UsableValues.ENFORCEMENT_TITLE))));
-		WebElement desc1 = driver.findElement(By.xpath(desc.replace("?", DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION).toLowerCase())));
-
-		return (legEnt1.isDisplayed() && enfType1.isDisplayed() && enfTitle1.isDisplayed() && desc1.isDisplayed());
-	}
-	
-	public boolean checkOfficerDetails() {
-		return (officer.isDisplayed() && enforceingAuthority.isDisplayed() && enforcedOrganisation.isDisplayed() && primaryAuthority.isDisplayed());
 	}
 }

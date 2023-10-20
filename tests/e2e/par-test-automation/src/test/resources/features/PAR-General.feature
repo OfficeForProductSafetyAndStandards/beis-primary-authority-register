@@ -144,7 +144,7 @@ Feature: General
       | Inspection Title 1 | Test 1      |
     Then the inspection plan is uploaded successfully
 
-  @regression @inspectionplan @inspectionfeedback
+  @regression @inspectionplan
   Scenario: Verify Update of Inspection Plan (Happy Path - PAR-1865)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -194,13 +194,13 @@ Feature: General
     Then the advice notice it uploaded successfully and set to active
 
   @regression @enforcement
-  Scenario: Verify Send Notification of Proposed Enforcement, Approval and Removal (Happy Path - PAR-1852, PAR-1853, PAR-1854)
+  Scenario: Verify the Sending and Approval of a Notification of Proposed Enforcement (Happy Path - PAR-1852, PAR-1853, PAR-1854)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created partnership
     And the user creates an enforcement notice against the partnership with the following details:
       | Enforcement Action | Title               | Regulatory Function | Description      | Attachment |
-      | Proposed           | Enforcement Title 1 | Cookie control      | Enforcement desc | link.txt   |
+      | Proposed           | Enforcement Title 1 | Cookie control      | Test Enforcement Description | link.txt   |
     Then all the fields for the enforcement notice are updated correctly
     #Approve the Enforcement Notice
     Given the user is on the PAR login page
@@ -214,7 +214,8 @@ Feature: General
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created enforcement notice
-    Then the user removes the enforcement notice successfully
+    And the user removes the enforcement notice
+    Then the enforcement notice is removed successfully
 
   @regression @enforcement
   Scenario: Verify an Enforcement Notice can be Blocked (Happy Path - PAR-1970)
