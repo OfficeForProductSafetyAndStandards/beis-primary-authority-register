@@ -8,7 +8,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DuplicateClasses.InspectionPlanExpirationPage;
 
 public class AdviceNoticeDetailsPage extends BasePageObject {
 
@@ -41,7 +40,7 @@ public class AdviceNoticeDetailsPage extends BasePageObject {
 		}
 	}
 
-	public void selectRegFunc(String func) {
+	public void selectRegulatoryFunction(String func) {
 		WebElement regulatoryFunctions = driver.findElement(By.xpath(regfunc.replace("?", func)));
 		
 		if(!regulatoryFunctions.isSelected()) {
@@ -49,16 +48,11 @@ public class AdviceNoticeDetailsPage extends BasePageObject {
 		}
 	}
 
-	public void enterDescription(String description) throws Throwable {
+	public void enterDescription(String description) {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
 	}
-
-	public InspectionPlanExpirationPage save() {
-		saveBtn.click();
-		return PageFactory.initElements(driver, InspectionPlanExpirationPage.class);
-	}
-
+	
 	public AdviceNoticeSearchPage clickSave() {
 		saveBtn.click();
 		return PageFactory.initElements(driver, AdviceNoticeSearchPage.class);

@@ -72,6 +72,9 @@ public class DashboardPage extends BasePageObject {
 	@FindBy(linkText = "See your deviation requests")
 	WebElement deviationReqBtn;
 	
+	@FindBy(linkText = "Manage deviation requests")
+	WebElement manageDeviationRequestLink;
+	
 	@FindBy(partialLinkText = "general enquiries")
 	WebElement generalEnquiriesBtn;
 	
@@ -116,6 +119,11 @@ public class DashboardPage extends BasePageObject {
 	
 	public DeviationSearchPage selectSeeDeviationRequests() {
 		deviationReqBtn.click();
+		return PageFactory.initElements(driver, DeviationSearchPage.class);
+	}
+	
+	public DeviationSearchPage selectManageDeviationRequests() {
+		manageDeviationRequestLink.click();
 		return PageFactory.initElements(driver, DeviationSearchPage.class);
 	}
 

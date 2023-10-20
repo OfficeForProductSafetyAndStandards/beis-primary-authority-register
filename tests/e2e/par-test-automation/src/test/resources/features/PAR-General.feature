@@ -163,11 +163,13 @@ Feature: General
       | Title              | Type of Advice         | Reg Function   | Description         |
       | Partnership Advice | Background information | Cookie control | Advice description. |
     Then the advice notice it uploaded successfully and set to active
+    # Edit Advice Notice
     When the user selects the edit advice action link
     And the user edits the advice notice with the following details:
       | Title                     | Type of Advice                                | Description                |
       | Partnership Advice Update | Primary Authority advice for the organisation | Advice description update. |
     Then the advice notice it updated successfully
+    # Archive Advice Notice
     When the user archives the advice notice with the following reason "Advice Complete."
     Then the advice notice is archived successfully
 
@@ -180,6 +182,7 @@ Feature: General
       | Title              | Type of Advice         | Reg Function   | Description         |
       | Notice for Removal | Background information | Cookie control | Advice description. |
     Then the advice notice it uploaded successfully and set to active
+    # Remove Advice Notice
     When the user removes the advice notice with the following reason "Advice no long needed."
     Then the advice notice is removed successfully
 
@@ -199,7 +202,7 @@ Feature: General
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created partnership
     And the user creates an enforcement notice against the partnership with the following details:
-      | Enforcement Action | Title               | Regulatory Function | Description      | Attachment |
+      | Enforcement Action | Title               | Regulatory Function | Description                  | Attachment |
       | Proposed           | Enforcement Title 1 | Cookie control      | Test Enforcement Description | link.txt   |
     Then all the fields for the enforcement notice are updated correctly
     #Approve the Enforcement Notice
@@ -273,28 +276,38 @@ Feature: General
       | Description |
       | Test 1      |
     Then the Deviation Request is created Successfully
-    #re-login as primary authority and check and approve deviation request
+    # Re-login as primary authority and check and approve deviation request
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created deviation request
     Then the user successfully approves the deviation request
-    #submit response to deviation request
+    # Submit a Response as the Authority
     Given the user submits a response to the deviation request with the following details:
       | Description   |
-      | Test Response |
+      | Authority Response. |
+    Then the response is displayed successfully
+    # Submit a Response as the Enforcement Officer
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created deviation request
     And the user sends a reply to the deviation request message with the following details:
       | Description |
-      | Test Reply  |
+      | Enforcement Officer Reply.  |
+    Then the response is displayed successfully
+    # Submit a Response as the Help Desk
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created deviation request
+    And the user sends a reply to the deviation request message with the following details:
+      | Description |
+      | Help Desk Response.  |
+    Then the response is displayed successfully
     #login as authority and check message received correctly
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created deviation request
     Then the deviation reply received successfully
 
-  # Add the Help Desk Response to the Deviation Request.
   @regression @inspectionfeedback
   Scenario: Verify User can Submit feedback following an Inspection plan (Happy Path - PAR-1858, PAR-1860)
     Given the user is on the PAR login page

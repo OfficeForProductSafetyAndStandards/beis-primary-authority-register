@@ -36,7 +36,7 @@ import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.*;
 import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.*;
 
 import uk.gov.beis.pageobjects.DuplicateClasses.BusinessContactDetailsPage; // Will be removed once the test is updated.
-import uk.gov.beis.pageobjects.DuplicateClasses.InspectionPlanExpirationPage;
+
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
 
@@ -162,7 +162,6 @@ public class PARStepDefs {
 	// Inspection Plan
 	private UploadInspectionPlanPage uploadInspectionPlanPage;
 	private InspectionContactDetailsPage inspectionContactDetailsPage;
-	private InspectionPlanExpirationPage inspectionPlanExpirationPage;
 	private InspectionPlanReviewPage inspectionPlanReviewPage;
 	private InspectionPlanDetailsPage inspectionPlanDetailsPage;
 	
@@ -170,7 +169,6 @@ public class PARStepDefs {
 	private UploadAdviceNoticePage uploadAdviceNoticePage;
 	private AdviceNoticeDetailsPage adviceNoticeDetailsPage;
 	private AdviceArchivePage adviceArchivePage;
-	private AdviceRemovalPage adviceRemovalPage;
 	
 	// Enforcement Notice
 	private ProposedEnforcementPage proposedEnforcementPage;
@@ -337,7 +335,6 @@ public class PARStepDefs {
 		// Inspection Plan
 		uploadInspectionPlanPage = PageFactory.initElements(driver, UploadInspectionPlanPage.class);
 		inspectionContactDetailsPage = PageFactory.initElements(driver, InspectionContactDetailsPage.class);
-		inspectionPlanExpirationPage = PageFactory.initElements(driver, InspectionPlanExpirationPage.class);
 		inspectionPlanDetailsPage = PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
 		inspectionPlanReviewPage = PageFactory.initElements(driver, InspectionPlanReviewPage.class);
 		
@@ -345,7 +342,6 @@ public class PARStepDefs {
 		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
 		uploadAdviceNoticePage = PageFactory.initElements(driver, UploadAdviceNoticePage.class);
 		adviceArchivePage = PageFactory.initElements(driver, AdviceArchivePage.class);
-		adviceRemovalPage = PageFactory.initElements(driver, AdviceRemovalPage.class);
 		
 		// Enforcement Notice
 		proposedEnforcementPage = PageFactory.initElements(driver, ProposedEnforcementPage.class);
@@ -512,7 +508,6 @@ public class PARStepDefs {
 			parDashboardPage.selectSearchPartnerships();
 			partnershipAdvancedSearchPage.searchPartnerships();
 			break;
-
 		case ("par_enforcement_officer@example.com"):
 			LOG.info("Selecting Search for partnerships");
 			parDashboardPage.selectSearchforPartnership();
@@ -1078,44 +1073,17 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.selectSeeAllAdviceNotices();
 		
 		adviceNoticeSearchPage.selectUploadLink();
+		
 		uploadAdviceNoticePage.chooseFile("link.txt");
 		uploadAdviceNoticePage.uploadFile();
 		
 		adviceNoticeDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
 		adviceNoticeDetailsPage.selectAdviceType(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TYPE));
-		adviceNoticeDetailsPage.selectRegFunc(DataStore.getSavedValue(UsableValues.ADVICENOTICE_REGFUNCTION));
+		adviceNoticeDetailsPage.selectRegulatoryFunction(DataStore.getSavedValue(UsableValues.ADVICENOTICE_REGFUNCTION));
 		adviceNoticeDetailsPage.enterDescription(DataStore.getSavedValue(UsableValues.ADVICENOTICE_DESCRIPTION));
-		adviceNoticeDetailsPage.save();
+		adviceNoticeDetailsPage.clickSave();
 	}
-
-	@When("^the user uploads an advice plan against the partnership with the following details:$")
-	public void the_user_uploads_an_insection_plan_against_the_partnership_with_the_following_details(DataTable dets) throws Throwable {
-		LOG.info("Upload inspection plan and save details");
-		
-		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
-			
-			DataStore.saveValue(UsableValues.INSPECTIONPLAN_TITLE, data.get("Title"));
-			DataStore.saveValue(UsableValues.INSPECTIONPLAN_DESCRIPTION, data.get("Description"));
-		}
-		
-		partnershipAdvancedSearchPage.selectPartnershipLink();
-		parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
-		
-		inspectionPlanSearchPage.selectUploadLink();
-		uploadInspectionPlanPage.chooseFile("link.txt");
-		uploadInspectionPlanPage.uploadFile();
-		
-		inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
-		inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
-		inspectionPlanDetailsPage.clickSave();
-		
-		inspectionPlanExpirationPage.enterDate("ddMMYYYY");
-		inspectionPlanExpirationPage.save();
-		
-		LOG.info("Check inspection plan status is set to \"Current\"");
-		Assert.assertTrue("Failed: Status not set to \"Current\"", inspectionPlanSearchPage.getPlanStatus().equalsIgnoreCase("Current"));
-	}
-
+	
 	@When("^the user updates the last created inspection plan against the partnership with the following details:$")
 	public void the_user_updates_the_last_created_inspection_plan_against_the_partnership_with_the_following_details(DataTable dets) throws Throwable {
 		LOG.info("Edit inspection plan and save details.");
@@ -1259,7 +1227,7 @@ public class PARStepDefs {
 		
 		requestDeviationPage.enterDescription(DataStore.getSavedValue(UsableValues.DEVIATION_DESCRIPTION));
 		requestDeviationPage.chooseFile("link.txt");
-		requestDeviationPage.proceed();
+		requestDeviationPage.clickContinue();
 	}
 
 	@Then("^the Deviation Request is created Successfully$")
@@ -1275,8 +1243,15 @@ public class PARStepDefs {
 	public void the_user_searches_for_the_last_created_deviation_request() throws Throwable {
 		LOG.info("Search for last created deviation request");
 		
-		parDashboardPage.selectSeeDeviationRequests();
-		deviationSearchPage.selectDeviationRequest();
+		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
+		case ("par_helpdesk@example.com"):
+			parDashboardPage.selectManageDeviationRequests();
+			deviationSearchPage.selectDeviationRequest();
+			break;
+		default:
+			parDashboardPage.selectSeeDeviationRequests();
+			deviationSearchPage.selectDeviationRequest();
+		}
 	}
 	
 	@When("^the user blocks the deviation request with the following reason: \"([^\"]*)\"$")
@@ -1285,7 +1260,7 @@ public class PARStepDefs {
 		
 		deviationApprovalPage.selectBlock();
 		deviationApprovalPage.enterReasonForBlocking(reason);
-		deviationApprovalPage.proceed();
+		deviationApprovalPage.clickContinue();
 	}
 
 	@Then("^the deviation request is set to blocked status$")
@@ -1301,7 +1276,7 @@ public class PARStepDefs {
 	public void the_user_successfully_approves_the_deviation_request() throws Throwable {
 		LOG.info("Approve the deviation request");
 		deviationApprovalPage.selectAllow();
-		deviationApprovalPage.proceed();
+		deviationApprovalPage.clickContinue();
 		
 		Assert.assertTrue("Failed: Deviation request status not correct", deviationReviewPage.checkDeviationStatusApproved());
 		deviationReviewPage.saveChanges();
@@ -1322,10 +1297,13 @@ public class PARStepDefs {
 		
 		replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1));
 		replyDeviationRequestPage.chooseFile("link.txt");
-		replyDeviationRequestPage.proceed();
-		
-		LOG.info("Verify the deviation response");
-		Assert.assertTrue("Failed: Deviation response doesn't check out ", deviationReviewPage.checkDeviationResponse());
+		replyDeviationRequestPage.clickSave();
+	}
+	
+	@Then("^the response is displayed successfully$")
+	public void the_response_is_displayed_successfully() throws Throwable {
+		LOG.info("Verify the Deviation Request Response was Successful.");
+		Assert.assertTrue("Failed: Deviation response is not displayed.", deviationReviewPage.checkDeviationResponse());
 	}
 
 	@When("^the user sends a reply to the deviation request message with the following details:$")
@@ -1333,18 +1311,14 @@ public class PARStepDefs {
 		LOG.info("Submit reply to the deviation request");
 		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
-			
-			DataStore.saveValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE2, data.get("Description"));
+			DataStore.saveValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1, data.get("Description"));
 		}
 		
 		deviationReviewPage.submitResponse();
 		
-		replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE2));
+		replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1));
 		replyDeviationRequestPage.chooseFile("link.txt");
-		replyDeviationRequestPage.proceed();
-		
-		LOG.info("Verify the deviation response");
-		Assert.assertTrue("Failed: Deviation reply doesn't check out ", deviationReviewPage.checkDeviationResponse());
+		replyDeviationRequestPage.clickSave();
 	}
 
 	@Then("^the deviation reply received successfully$")
@@ -2105,7 +2079,7 @@ public class PARStepDefs {
 
 	@Then("^the advice notice it updated successfully$")
 	public void the_advice_notice_it_updated_successfully() throws Throwable {
-		LOG.info("Checking Advice notice status is set to \"Active\"");
+		LOG.info("Verifying Advice Notice status is set to Active.");
 		Assert.assertTrue("Failed: Status not set to \"Active\"", adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Active"));
 	}
 
@@ -2132,7 +2106,8 @@ public class PARStepDefs {
 		adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
 		adviceNoticeSearchPage.selectRemoveAdviceButton();
 		
-		adviceRemovalPage.enterReasonForRemoval(reason);
+		removePage.enterRemoveReason(reason);
+		removePage.goToAdviceNoticeSearchPage();
 	}
 
 	@Then("^the advice notice is removed successfully$")

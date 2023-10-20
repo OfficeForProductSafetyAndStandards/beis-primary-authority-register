@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.DuplicateClasses.AdviceRemovalPage;
 import uk.gov.beis.utility.DataStore;
 
 public class AdviceNoticeSearchPage extends BasePageObject {
@@ -22,8 +23,8 @@ public class AdviceNoticeSearchPage extends BasePageObject {
 	@FindBy(linkText = "Upload advice")
 	private WebElement uploadBtn;
 	
-	String planstatus = "//td/a[contains(text(),'?')]/parent::td/following-sibling::td[2]";
-	String noResultsReturned = "//p[contains(text(), 'Sorry, there are no results for your search.')]";
+	private String planstatus = "//td/a[contains(text(),'?')]/parent::td/following-sibling::td[2]";
+	private String noResultsReturned = "//p[contains(text(), 'Sorry, there are no results for your search.')]";
 	
 	public AdviceNoticeSearchPage() throws ClassNotFoundException, IOException {
 		super();

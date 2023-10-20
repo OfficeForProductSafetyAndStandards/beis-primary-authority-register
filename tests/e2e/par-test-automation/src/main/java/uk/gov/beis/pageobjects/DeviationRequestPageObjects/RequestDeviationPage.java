@@ -32,7 +32,7 @@ public class RequestDeviationPage extends BasePageObject{
 		uploadDocument(chooseFile, filename);
 	}
 
-	public DeviationReviewPage proceed() {
+	public DeviationReviewPage clickContinue() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, DeviationReviewPage.class);
 	}
