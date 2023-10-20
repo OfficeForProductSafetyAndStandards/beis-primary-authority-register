@@ -134,7 +134,7 @@ Feature: General
     When the user removes the new Organisation contact
     Then the new Organisation contact is removed Successfully
 
-  @regression @inspectionplan @inspectionfeedback @deviationrequest
+  @regression @inspectionplan @enforcement @deviationrequest @inspectionfeedback
   Scenario: Verify Upload of Inspection Plan (Happy Path - PAR-1856)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -142,6 +142,7 @@ Feature: General
     And the user uploads an inspection plan against the partnership with the following details:
       | Title              | Description |
       | Inspection Title 1 | Test 1      |
+    Then the inspection plan is uploaded successfully
 
   @regression @inspectionplan @inspectionfeedback
   Scenario: Verify Update of Inspection Plan (Happy Path - PAR-1865)
@@ -359,7 +360,9 @@ Feature: General
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created partnership
-    Then the user successfully revokes the last created inspection plan
+    And the user revokes the last created inspection plan
+    Then the inspection plan is revoked successfully
+    #Then the user successfully revokes the last created inspection plan
     #remove the inspection plan
     When the user has revoked the last created inspection plan
     Then the inspection plan is successfully removed

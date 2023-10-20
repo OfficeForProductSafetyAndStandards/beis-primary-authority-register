@@ -36,7 +36,7 @@ import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.*;
 import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.*;
 
 import uk.gov.beis.pageobjects.DuplicateClasses.BusinessContactDetailsPage; // Will be removed once the test is updated.
-
+import uk.gov.beis.pageobjects.DuplicateClasses.InspectionPlanExpirationPage;
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
 
@@ -165,8 +165,6 @@ public class PARStepDefs {
 	private InspectionPlanExpirationPage inspectionPlanExpirationPage;
 	private InspectionPlanReviewPage inspectionPlanReviewPage;
 	private InspectionPlanDetailsPage inspectionPlanDetailsPage;
-	private RevokeReasonInspectionPlanPage revokeReasonInspectionPlanPage;
-	private RemoveReasonInspectionPlanPage removeReasonInspectionPlanPage;
 	
 	// Advice
 	private UploadAdviceNoticePage uploadAdviceNoticePage;
@@ -343,8 +341,6 @@ public class PARStepDefs {
 		inspectionPlanExpirationPage = PageFactory.initElements(driver, InspectionPlanExpirationPage.class);
 		inspectionPlanDetailsPage = PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
 		inspectionPlanReviewPage = PageFactory.initElements(driver, InspectionPlanReviewPage.class);
-		removeReasonInspectionPlanPage = PageFactory.initElements(driver, RemoveReasonInspectionPlanPage.class);
-		revokeReasonInspectionPlanPage = PageFactory.initElements(driver, RevokeReasonInspectionPlanPage.class);
 		
 		// Advice
 		adviceNoticeDetailsPage = PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
@@ -1038,13 +1034,16 @@ public class PARStepDefs {
 		
 		inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
 		inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
-		inspectionPlanDetailsPage.save();
+		inspectionPlanDetailsPage.clickSave();
 		
-		inspectionPlanExpirationPage.enterDate("ddMMYYYY");
-		inspectionPlanExpirationPage.save();
-		
-		LOG.info("Check inspection plan status is set to \"Current\"");
-		Assert.assertTrue("Failed: Status not set to \"Current\"", inspectionPlanSearchPage.getPlanStatus().equalsIgnoreCase("Current"));
+		enterTheDatePage.enterDate("ddMMYYYY");
+		enterTheDatePage.goToInspectionPlanSearchPage();
+	}
+	
+	@Then("^the inspection plan is uploaded successfully$")
+	public void the_inspection_plan_is_uploaded_successfully() throws Throwable {
+		LOG.info("Verifying the Inpsection Plan Status is set to Current.");
+		Assert.assertTrue("Failed: Inspection Plan Status is not set to Current.", inspectionPlanSearchPage.getPlanStatus().equalsIgnoreCase("Current"));
 	}
 
 	@When("^the user uploads an advice notice against the partnership with the following details:$")
@@ -1092,7 +1091,7 @@ public class PARStepDefs {
 		
 		inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
 		inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
-		inspectionPlanDetailsPage.save();
+		inspectionPlanDetailsPage.clickSave();
 		
 		inspectionPlanExpirationPage.enterDate("ddMMYYYY");
 		inspectionPlanExpirationPage.save();
@@ -1103,10 +1102,9 @@ public class PARStepDefs {
 
 	@When("^the user updates the last created inspection plan against the partnership with the following details:$")
 	public void the_user_updates_the_last_created_inspection_plan_against_the_partnership_with_the_following_details(DataTable dets) throws Throwable {
-		LOG.info("Edit inspection plan and save details");
+		LOG.info("Edit inspection plan and save details.");
 		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
-			
 			DataStore.saveValue(UsableValues.INSPECTIONPLAN_TITLE, data.get("Title"));
 			DataStore.saveValue(UsableValues.INSPECTIONPLAN_DESCRIPTION, data.get("Description"));
 		}
@@ -1115,18 +1113,19 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
 		
 		inspectionPlanSearchPage.selectEditLink();
+		
 		inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
 		inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
-		inspectionPlanDetailsPage.save();
+		inspectionPlanDetailsPage.clickSave();
 		
-		inspectionPlanExpirationPage.save();
+		enterTheDatePage.goToInspectionPlanSearchPage();
 		inspectionPlanSearchPage.selectInspectionPlan();
 	}
 
 	@Then("^the inspection plan is updated correctly$")
 	public void the_inspection_plan_is_updated_correctly() throws Throwable {
-		LOG.info("Check the inspection plan details are correct");
-		Assert.assertTrue("Failed: inspection plan details not correct", inspectionPlanReviewPage.checkInspectionPlan());
+		LOG.info("Verify the Inspection Plan details are correct.");
+		Assert.assertTrue("Failed: The Inspection Plan details not correct.", inspectionPlanReviewPage.checkInspectionPlan());
 	}
 
 	@When("^the user submits an inspection feedback against the inspection plan with the following details:$")
@@ -1716,27 +1715,38 @@ public class PARStepDefs {
 		
 		LOG.info("Asserting the Equiry Notice Details.");
 	}
-
-	@Then("^the user successfully revokes the last created inspection plan$")
-	public void the_user_successfully_removes_the_last_created_inspection_plan() throws Throwable {
-		LOG.info("Revoking inspection plan and confirming it is revoked");
+	
+	@When("^the user revokes the last created inspection plan$")
+	public void the_user_revokes_the_last_created_inspection_plan() throws Throwable {
+		LOG.info("Revoking the last created Inspection Plan.");
+		
 		partnershipAdvancedSearchPage.selectPartnershipLink();
 		parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
+		
 		inspectionPlanSearchPage.selectRevokeLink();
-		revokeReasonInspectionPlanPage.enterRevokeDescription();
-		assertEquals(inspectionPlanSearchPage.getPlanStatus(), "Revoked");
+		
+		revokePage.enterReasonForRevocation("Test Revoke.");
+		revokePage.goToInspectionPlanSearchPage();
 	}
 
+	@Then("^the inspection plan is revoked successfully$")
+	public void the_inspection_plan_is_revoked_successfully() throws Throwable {
+		LOG.info("Verifying the Inspection Plan was Revoked Successfully.");
+		assertEquals(inspectionPlanSearchPage.getPlanStatus(), "Revoked");
+	}
+	
 	@When("^the user has revoked the last created inspection plan$")
 	public void the_user_has_revoked_the_last_created_inspection_plan() throws Throwable {
-		LOG.info("Removing inspection plan");
+		LOG.info("Removing the Inspection Plan.");
 		inspectionPlanSearchPage.selectRemoveLink();
-		removeReasonInspectionPlanPage.enterRemoveDescription();
+		
+		removePage.enterRemoveReason("Test Remove.");
+		removePage.goToInspectionPlanSearchPage();
 	}
 
 	@Then("^the inspection plan is successfully removed$")
 	public void the_inspection_plan_is_successfully_removed() throws Throwable {
-		LOG.info("Confirm inspection plan is removed");
+		LOG.info("Verifying the Inspection Plan was Removed Successfully.");
 		assertEquals(inspectionPlanSearchPage.getPlanStatus(), "No results returned");
 	}
 	

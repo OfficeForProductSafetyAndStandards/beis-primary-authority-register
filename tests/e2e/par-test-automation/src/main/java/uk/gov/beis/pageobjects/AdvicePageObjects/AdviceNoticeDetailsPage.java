@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanExpirationPage;
+import uk.gov.beis.pageobjects.DuplicateClasses.InspectionPlanExpirationPage;
 
 public class AdviceNoticeDetailsPage extends BasePageObject {
 

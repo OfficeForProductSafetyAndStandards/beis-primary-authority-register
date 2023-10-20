@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects.InspectionPlanPageObjects;
+package uk.gov.beis.pageobjects.DuplicateClasses;
 
 import java.io.IOException;
 
@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
 
 public class RemoveReasonInspectionPlanPage extends BasePageObject{
 	
