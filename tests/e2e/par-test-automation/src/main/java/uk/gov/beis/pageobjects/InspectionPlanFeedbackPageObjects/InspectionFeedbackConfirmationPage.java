@@ -12,17 +12,43 @@ import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.utility.DataStore;
 
 public class InspectionFeedbackConfirmationPage extends BasePageObject {
-
+	
+	@FindBy(linkText = "Submit a response")
+	private WebElement submitResponse;
+	
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
+	
+	private String descriptionLocator = "//div/p[contains(text(),'?')]";
+	private String responseLocator = "//div/p[contains(text(),'?')]";
+	private String fileLocator = "//span/a[contains(text(),'?')]";
+	
 	public InspectionFeedbackConfirmationPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//input[contains(@value,'Save')]")
-	WebElement saveBtn;
 	
-	@FindBy(linkText = "Submit a response")
-	WebElement submitResponse;
+	public boolean checkInspectionFeedback() {
+		WebElement description = driver.findElement(By.xpath(descriptionLocator.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION))));
 
+		return (description.isDisplayed());
+	}
+	
+	public boolean checkInspectionResponse() {
+		WebElement response = driver.findElement(By.xpath(responseLocator.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1))));
+		WebElement fileUpload = driver.findElement(By.xpath(fileLocator.replace("?", "link")));
+		return response.isDisplayed() && fileUpload.isDisplayed();
+	}
+	
+	public ReplyInspectionFeedbackPage submitResponse() {
+		submitResponse.click();
+		return PageFactory.initElements(driver, ReplyInspectionFeedbackPage.class);
+	}
+	
+	public InspectionFeedbackCompletionPage goToInspectionFeedbackCompletionPage() {
+		saveBtn.click();
+		return PageFactory.initElements(driver, InspectionFeedbackCompletionPage.class);
+	}
+	
 	public BasePageObject saveChanges() {
 		try {
 			driver.findElement(By.xpath("//input[contains(@value,'Save')]")).click();
@@ -32,36 +58,4 @@ public class InspectionFeedbackConfirmationPage extends BasePageObject {
 			return PageFactory.initElements(driver, InspectionFeedbackSearchPage.class);
 		}
 	}
-	
-	public ReplyInspectionFeedbackPage submitResponse() {
-		submitResponse.click();
-		return PageFactory.initElements(driver, ReplyInspectionFeedbackPage.class);
-	}
-
-	String desc = "//div/p[contains(text(),'?')]";
-	String resp = "//div/p[contains(text(),'?')]";
-	String reply = "//div/p[contains(text(),'?')]";
-	String enfFile = "//span/a[contains(text(),'?')]";
-
-	public boolean checkInspectionFeedback() {
-		WebElement desc1 = driver.findElement(By
-				.xpath(desc.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION))));
-
-		return (desc1.isDisplayed());
-	}
-	
-	public boolean checkInspectionResponse() {
-		WebElement resp1 = driver.findElement(By
-				.xpath(resp.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1))));
-
-		return (resp1.isDisplayed());
-	}
-	
-	public boolean checkInspectionReply() {
-		WebElement reply1 = driver.findElement(By
-				.xpath(reply.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE2))));
-
-		return (reply1.isDisplayed());
-	}
-
 }

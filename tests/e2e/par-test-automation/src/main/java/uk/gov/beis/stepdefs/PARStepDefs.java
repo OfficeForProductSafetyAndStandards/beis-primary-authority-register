@@ -36,7 +36,7 @@ import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.*;
 import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.*;
 
 import uk.gov.beis.pageobjects.DuplicateClasses.BusinessContactDetailsPage; // Will be removed once the test is updated.
-
+import uk.gov.beis.pageobjects.DuplicateClasses.InspectionContactDetailsPage;
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
 
@@ -1111,41 +1111,7 @@ public class PARStepDefs {
 		LOG.info("Verify the Inspection Plan details are correct.");
 		Assert.assertTrue("Failed: The Inspection Plan details not correct.", inspectionPlanReviewPage.checkInspectionPlan());
 	}
-
-	@When("^the user submits an inspection feedback against the inspection plan with the following details:$")
-	public void the_user_submits_an_inspection_feedback_against_the_inspection_plan_with_the_following_details(DataTable dets) throws Throwable {
-		LOG.info("Submit inspection feedback against partnership");
-		
-		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
-			
-			DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION, data.get("Description"));
-		}
-		
-		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
-		parPartnershipConfirmationPage.selectSendInspectionFeedbk();
-		
-		inspectionContactDetailsPage.proceed();
-		
-		inspectionFeedbackDetailsPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION));
-		inspectionFeedbackDetailsPage.chooseFile("link.txt");
-		inspectionFeedbackDetailsPage.proceed();
-		inspectionFeedbackConfirmationPage.saveChanges();
-		inspectionFeedbackCompletionPage.complete();
-	}
-
-	@When("^the user searches for the last created inspection feedback$")
-	public void the_user_searches_for_the_last_created_inspection_feedback() throws Throwable {
-		LOG.info("Search for last created inspection feedback");
-		parDashboardPage.selectSeeInspectionFeedbackNotices();
-		inspectionFeedbackSearchPage.selectInspectionFeedbackNotice();
-	}
-
-	@Then("^the user successfully approves the inspection feedback$")
-	public void the_user_successfully_approves_the_inspection_feedback() throws Throwable {
-		LOG.info("Verify the inspection feedback description");
-		Assert.assertTrue("Failed: Inspection feedback description doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionFeedback());
-	}
-
+	
 	@Given("^the user clicks the PAR Home page link$")
 	public void the_user_clicks_the_PAR_Home_page_link() throws Throwable {
 		LOG.info("Click PAR header to navigate to the PAR Home Page");
@@ -1171,7 +1137,57 @@ public class PARStepDefs {
 		assertTrue(partnershipSearchPage.partnershipContains(DataStore.getSavedValue(UsableValues.BUSINESS_NAME)));
 	}
 
-	@Given("^the user submits a response to the inspection feedback with the following details:$")
+	@When("^the user submits an inspection feedback against the inspection plan with the following details:$")
+	public void the_user_submits_an_inspection_feedback_against_the_inspection_plan_with_the_following_details(DataTable dets) throws Throwable {
+		LOG.info("Submit inspection feedback against partnership");
+		
+		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION, data.get("Description"));
+		}
+		
+		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		parPartnershipConfirmationPage.selectSendInspectionFeedbk();
+		
+		enforcementOfficerContactDetailsPage.goToInspectionFeedbackDetailsPage();
+		//inspectionContactDetailsPage.proceed();
+		
+		inspectionFeedbackDetailsPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION));
+		inspectionFeedbackDetailsPage.chooseFile("link.txt");
+		inspectionFeedbackDetailsPage.clickContinue();
+	}
+	
+	@Then("^the inspection feedback is created successfully$")
+	public void the_inspection_feedback_is_created_successfully() throws Throwable {
+		LOG.info("Verifying the Inspection Feedback Details.");
+		Assert.assertTrue("Failed: Inspection Feedback Details are Incorrect.", inspectionFeedbackConfirmationPage.checkInspectionFeedback());
+		
+		inspectionFeedbackConfirmationPage.goToInspectionFeedbackCompletionPage();
+		inspectionFeedbackCompletionPage.complete();
+	}
+
+	@When("^the user searches for the last created inspection feedback$")
+	public void the_user_searches_for_the_last_created_inspection_feedback() throws Throwable {
+		LOG.info("Search for the last created Inspection Feedback.");
+		
+		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
+		case ("par_helpdesk@example.com"):
+			parDashboardPage.selectManageInspectionFeedback();
+			inspectionFeedbackSearchPage.selectInspectionFeedbackNotice();
+			break;
+		default:
+			parDashboardPage.selectSeeInspectionFeedbackNotices();
+			inspectionFeedbackSearchPage.selectInspectionFeedbackNotice();
+		}
+	}
+
+	@Then("^the user successfully approves the inspection feedback$")
+	public void the_user_successfully_approves_the_inspection_feedback() throws Throwable {
+		LOG.info("Verify the inspection feedback description");
+		Assert.assertTrue("Failed: Inspection feedback description doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionFeedback());
+	}
+	
+	@When("^the user submits a response to the inspection feedback with the following details:$")
 	public void the_user_submits_a_response_to_the_inspection_feedback_with_the_following_details(DataTable dets) throws Throwable {
 		LOG.info("Submit response to inspection feedback request");
 		
@@ -1184,34 +1200,31 @@ public class PARStepDefs {
 		
 		replyInspectionFeedbackPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1));
 		replyInspectionFeedbackPage.chooseFile("link.txt");
-		replyInspectionFeedbackPage.proceed();
-		
-		LOG.info("Verify the inspection feedback response");
-		Assert.assertTrue("Failed: Inspection feedback response doesn't check out ", inspectionFeedbackConfirmationPage.checkInspectionResponse());
+		replyInspectionFeedbackPage.clickSave();
 	}
-
+	
 	@When("^the user sends a reply to the inspection feedback message with the following details:$")
 	public void the_user_sends_a_reply_to_the_inspection_feedback_message_with_the_following_details(DataTable dets) throws Throwable {
 		LOG.info("Submit reply to inspection feedback response");
 		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
 			
-			DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE2, data.get("Description"));
+			DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1, data.get("Description"));
 		}
 		
 		inspectionFeedbackConfirmationPage.submitResponse();
 		
-		replyInspectionFeedbackPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE2));
+		replyInspectionFeedbackPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1));
 		replyInspectionFeedbackPage.chooseFile("link.txt");
-		replyInspectionFeedbackPage.proceed();
+		replyInspectionFeedbackPage.clickSave();
 	}
-
-	@Then("^the inspection feedback reply is received successfully$")
-	public void the_inspection_feedback_reply_is_received_successfully() throws Throwable {
-		LOG.info("Verify the inspection feedback reply");
-		Assert.assertTrue("Failed: Inspection feedback reply doesn't check out ", 	inspectionFeedbackConfirmationPage.checkInspectionReply());
+	
+	@Then("^the inspection feedback response is displayed successfully$")
+	public void the_inspection_feedback_response_is_displayed_successfully() throws Throwable {
+		LOG.info("Verifying the Inspection Plan Feedback Response.");
+		Assert.assertTrue("Failed: Inspection Feeback Response is not Displayed.", inspectionFeedbackConfirmationPage.checkInspectionResponse());
 	}
-
+	
 	@When("^the user submits a deviation request against an inspection plan with the following details:$")
 	public void the_user_submits_a_deviation_request_against_an_inspection_plan_with_the_following_details(DataTable dets) throws Throwable {
 		LOG.info("Submit Deviation Request");

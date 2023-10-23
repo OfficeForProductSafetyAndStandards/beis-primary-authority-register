@@ -283,7 +283,7 @@ Feature: General
     Then the user successfully approves the deviation request
     # Submit a Response as the Authority
     Given the user submits a response to the deviation request with the following details:
-      | Description   |
+      | Description         |
       | Authority Response. |
     Then the response is displayed successfully
     # Submit a Response as the Enforcement Officer
@@ -291,16 +291,16 @@ Feature: General
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created deviation request
     And the user sends a reply to the deviation request message with the following details:
-      | Description |
-      | Enforcement Officer Reply.  |
+      | Description                |
+      | Enforcement Officer Reply. |
     Then the response is displayed successfully
     # Submit a Response as the Help Desk
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created deviation request
     And the user sends a reply to the deviation request message with the following details:
-      | Description |
-      | Help Desk Response.  |
+      | Description         |
+      | Help Desk Response. |
     Then the response is displayed successfully
     #login as authority and check message received correctly
     Given the user is on the PAR login page
@@ -314,30 +314,41 @@ Feature: General
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created partnership
     And the user submits an inspection feedback against the inspection plan with the following details:
-      | Description |
-      | Test 1      |
+      | Description              |
+      | Test Inspection Feedback |
+    Then the inspection feedback is created successfully
     #Re-login as primary authority and check and approve inspection feedback
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created inspection feedback
     Then the user successfully approves the inspection feedback
-    #submit response to inspection feedback
-    Given the user submits a response to the inspection feedback with the following details:
-      | Description   |
-      | Test Response |
+    # Submit a Response to the Inspection Feedback
+    When the user submits a response to the inspection feedback with the following details:
+      | Description              |
+      | Test Authority Response. |
+    Then the inspection feedback response is displayed successfully
+    # Submit a Reply to the Insepction Feedback
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created inspection feedback
     And the user sends a reply to the inspection feedback message with the following details:
-      | Description |
-      | Test Reply  |
-    #login as authority and check message received correctly
+      | Description             |
+      | Test Enforcement Reply. |
+    Then the inspection feedback response is displayed successfully
+    # Submit a Reply to the Insepction Feedback
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created inspection feedback
+    And the user sends a reply to the inspection feedback message with the following details:
+      | Description              |
+      | Test Help Desk Response. |
+    Then the inspection feedback response is displayed successfully
+    # Login as the Authority and check Message Recieved Successfully.
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created inspection feedback
-    Then the inspection feedback reply is received successfully
+    Then the inspection feedback response is displayed successfully
 
-  # Add the Help Desk Response to Inspection Feedback.
   @regression @enquiry
   Scenario: Verify User can Submit a general enquiry (Happy Path - PAR-1861)
     Given the user is on the PAR login page

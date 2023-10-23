@@ -75,6 +75,9 @@ public class DashboardPage extends BasePageObject {
 	@FindBy(linkText = "Manage deviation requests")
 	WebElement manageDeviationRequestLink;
 	
+	@FindBy(linkText = "Manage inspection feedback")
+	WebElement manageInspectionFeedbackLink;
+	
 	@FindBy(partialLinkText = "general enquiries")
 	WebElement generalEnquiriesBtn;
 	
@@ -109,6 +112,11 @@ public class DashboardPage extends BasePageObject {
 	
 	public InspectionFeedbackSearchPage selectSeeInspectionFeedbackNotices() {
 		inspectionFeedbackNoticeBtn.click();
+		return PageFactory.initElements(driver, InspectionFeedbackSearchPage.class);
+	}
+	
+	public InspectionFeedbackSearchPage selectManageInspectionFeedback() {
+		manageInspectionFeedbackLink.click();
 		return PageFactory.initElements(driver, InspectionFeedbackSearchPage.class);
 	}
 	

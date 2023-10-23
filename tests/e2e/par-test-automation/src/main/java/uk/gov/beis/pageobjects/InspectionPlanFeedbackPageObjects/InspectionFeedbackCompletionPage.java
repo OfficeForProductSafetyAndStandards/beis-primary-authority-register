@@ -10,14 +10,14 @@ import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
 
 public class InspectionFeedbackCompletionPage extends BasePageObject{
-
+	
+	@FindBy(xpath = "//a[contains(@class,'button')]")
+	private WebElement doneBtn;
+	
 	public InspectionFeedbackCompletionPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//a[contains(@class,'button')]")
-	WebElement doneBtn;
-
+	
 	public PartnershipConfirmationPage complete() {
 			doneBtn.click();
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
