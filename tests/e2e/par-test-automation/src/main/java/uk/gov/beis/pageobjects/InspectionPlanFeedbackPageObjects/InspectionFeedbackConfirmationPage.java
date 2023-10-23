@@ -48,14 +48,4 @@ public class InspectionFeedbackConfirmationPage extends BasePageObject {
 		saveBtn.click();
 		return PageFactory.initElements(driver, InspectionFeedbackCompletionPage.class);
 	}
-	
-	public BasePageObject saveChanges() {
-		try {
-			driver.findElement(By.xpath("//input[contains(@value,'Save')]")).click();
-			return PageFactory.initElements(driver, InspectionFeedbackCompletionPage.class);
-		} catch (Exception e) {
-			driver.findElement(By.linkText("Done")).click();
-			return PageFactory.initElements(driver, InspectionFeedbackSearchPage.class);
-		}
-	}
 }

@@ -36,7 +36,7 @@ import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.*;
 import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.*;
 
 import uk.gov.beis.pageobjects.DuplicateClasses.BusinessContactDetailsPage; // Will be removed once the test is updated.
-import uk.gov.beis.pageobjects.DuplicateClasses.InspectionContactDetailsPage;
+
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
 
@@ -161,7 +161,6 @@ public class PARStepDefs {
 	
 	// Inspection Plan
 	private UploadInspectionPlanPage uploadInspectionPlanPage;
-	private InspectionContactDetailsPage inspectionContactDetailsPage;
 	private InspectionPlanReviewPage inspectionPlanReviewPage;
 	private InspectionPlanDetailsPage inspectionPlanDetailsPage;
 	
@@ -196,7 +195,6 @@ public class PARStepDefs {
 	
 	// General Enquiry
 	private RequestEnquiryPage requestEnquiryPage;
-	private EnquiryContactDetailsPage enquiryContactDetailsPage;
 	private EnquiryCompletionPage enquiryCompletionPage;
 	private EnquiryReviewPage enquiryReviewPage;
 	private ViewEnquiryPage viewEnquiryPage;
@@ -334,7 +332,6 @@ public class PARStepDefs {
 		
 		// Inspection Plan
 		uploadInspectionPlanPage = PageFactory.initElements(driver, UploadInspectionPlanPage.class);
-		inspectionContactDetailsPage = PageFactory.initElements(driver, InspectionContactDetailsPage.class);
 		inspectionPlanDetailsPage = PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
 		inspectionPlanReviewPage = PageFactory.initElements(driver, InspectionPlanReviewPage.class);
 		
@@ -368,7 +365,6 @@ public class PARStepDefs {
 		
 		// General Enquiry
 		requestEnquiryPage = PageFactory.initElements(driver, RequestEnquiryPage.class);
-		enquiryContactDetailsPage = PageFactory.initElements(driver, EnquiryContactDetailsPage.class);
 		enquiryReviewPage = PageFactory.initElements(driver, EnquiryReviewPage.class);
 		viewEnquiryPage = PageFactory.initElements(driver, ViewEnquiryPage.class);
 		enquiryCompletionPage = PageFactory.initElements(driver, EnquiryCompletionPage.class);
@@ -1351,11 +1347,12 @@ public class PARStepDefs {
 		
 		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
 		parPartnershipConfirmationPage.sendGeneralEnquiry();
-		enquiryContactDetailsPage.proceed();
+		
+		enforcementOfficerContactDetailsPage.goToRequestEnquiryPage();
 		
 		requestEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION));
 		requestEnquiryPage.chooseFile("link.txt");
-		requestEnquiryPage.proceed();
+		requestEnquiryPage.clickContinue();
 	}
 	
 	@When("^the user sends a general enquiry for an enforcement notice with the following details:$")
@@ -1371,18 +1368,18 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.createEnforcement();
 		
 		enforcementNotificationPage.selectDiscussEnforcement();
-		enquiryContactDetailsPage.proceed();
+		
+		enforcementOfficerContactDetailsPage.goToRequestEnquiryPage();
 		
 		requestEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION));
 		requestEnquiryPage.chooseFile("link.txt");
-		requestEnquiryPage.proceed();
+		requestEnquiryPage.clickContinue();
 	}
 
 	@Then("^the Enquiry is created Successfully$")
 	public void the_Enquiry_is_created_Successfully() throws Throwable {
 		LOG.info("Verify the enquiry is created.");
-		
-		Assert.assertTrue("Failed: Enquiry details are not correct.", enquiryReviewPage.checkEnquiryCreation());
+		Assert.assertTrue("Failed: Enquiry details are not correct.", enquiryReviewPage.checkEnquiryDescription());
 		
 		enquiryReviewPage.saveChanges();
 		enquiryCompletionPage.complete();
@@ -1391,16 +1388,25 @@ public class PARStepDefs {
 	@When("^the user searches for the last created general enquiry$")
 	public void the_user_searches_for_the_last_created_general_enquiry() throws Throwable {
 		LOG.info("Search for last created enquiry");
-		parDashboardPage.selectGeneralEnquiries();
-		enquiriesSearchPage.selectEnquiry();
+		
+		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
+		case ("par_helpdesk@example.com"):
+			parDashboardPage.selectManageGeneralEnquiry();
+			enquiriesSearchPage.selectEnquiry();
+			break;
+		default:
+			parDashboardPage.selectGeneralEnquiries();
+			enquiriesSearchPage.selectEnquiry();
+		}
 	}
-
-	@Then("^the user successfully views the enquiry$")
-	public void the_user_successfully_views_the_enquiry() throws Throwable {
-		enquiryReviewPage.checkEnquiryCreation();
+	
+	@Then("^the general enquiry is recieved successfully$")
+	public void the_general_enquiry_is_recieved_successfully() throws Throwable {
+		LOG.info("Verifying the General Enquiry is Recieved.");
+		Assert.assertTrue("Failed: Enquiry details are not correct.", enquiryReviewPage.checkEnquiryDetails());
 	}
-
-	@Given("^the user submits a response to the general enquiry with the following details:$")
+	
+	@When("^the user submits a response to the general enquiry with the following details:$")
 	public void the_user_submits_a_response_to_the_general_enquiry_with_the_following_details(DataTable dets) throws Throwable {
 		LOG.info("Submit reply to the enquiry");
 		
@@ -1413,29 +1419,29 @@ public class PARStepDefs {
 		
 		replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY));
 		replyEnquiryPage.chooseFile("link.txt");
-		replyEnquiryPage.proceed();
-		
-		LOG.info("Verify the reply message");
-		Assert.assertTrue("Failed: Enquiry reply doesn't check out ", enquiryReviewPage.checkEnquiryReply());
+		replyEnquiryPage.clickSave();
 	}
 
 	@When("^the user sends a reply to the general enquiry with the following details:$")
 	public void the_user_sends_a_reply_to_the_general_enquiry_with_the_following_details(DataTable dets) throws Throwable {
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
 			
-			DataStore.saveValue(UsableValues.ENQUIRY_REPLY1, data.get("Description"));
+			DataStore.saveValue(UsableValues.ENQUIRY_REPLY, data.get("Description"));
 		}
 		
 		enquiryReviewPage.submitResponse();
 		
-		replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY1));
+		replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY));
 		replyEnquiryPage.chooseFile("link.txt");
-		replyEnquiryPage.proceed();
-		
-		LOG.info("Verify the reply message");
-		Assert.assertTrue("Failed: Enquiry reply doesn't check out ", enquiryReviewPage.checkEnquiryReply1());
+		replyEnquiryPage.clickSave();
 	}
-
+	
+	@Then("^the general enquiry response is displayed successfully$")
+	public void the_general_enquiry_response_is_displayed_successfully() throws Throwable {
+		LOG.info("Verifying General Enquiry Response.");
+		Assert.assertTrue("Failed: General Enquiry Response is not Displayed Correctly.", enquiryReviewPage.checkEnquiryResponse());
+	}
+	
 	@When("^the user selects a contact to update$")
 	public void the_user_selects_a_contact_to_update() throws Throwable {
 		DataStore.saveValue(UsableValues.BUSINESS_EMAIL, DataStore.getSavedValue(UsableValues.LOGIN_USER));
@@ -1683,25 +1689,7 @@ public class PARStepDefs {
 		partnershipSearchPage.selectPartnershipLink(search);
 		parPartnershipConfirmationPage.sendGeneralEnquiry();
 	}
-
-	@Then("^the user can submit a general enquiry with description:$")
-	public void the_user_can_submit_a_general_enquiry_with_description(DataTable description) throws Throwable {
-		LOG.info("Creating Enquiry Notice.");
-
-		enquiryContactDetailsPage.proceed();
-
-		for (Map<String, String> data : description.asMaps(String.class, String.class)) {
-			requestEnquiryPage.enterDescription(data.get("Description"));
-		}
-
-		requestEnquiryPage.proceed();
-		enquiryReviewPage.saveChanges();
-		enquiryCompletionPage.complete();
-		parPartnershipConfirmationPage.clickDone();
-
-		LOG.info("Successfully created Enquiry Notice.");
-	}
-
+	
 	@Then("^the user can verify the Enforcement details:$")
 	public void the_user_can_verify_the_Enforcement_details(DataTable details) throws Throwable {
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {

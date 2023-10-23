@@ -229,7 +229,7 @@ Feature: General
       | Enforcement Action | Title                            | Regulatory Function | Description       | Attachment |
       | Proposed           | Enforcement Notice to be Blocked | Cookie control      | Test Enforcement. | link.txt   |
     Then all the fields for the enforcement notice are updated correctly
-    #Block the Enforcement Notice
+    # Block the Enforcement Notice
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user selects the last created enforcement notice
@@ -242,14 +242,14 @@ Feature: General
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created partnership
     And the user sends a general enquiry for an enforcement notice with the following details:
-      | Description            |
-      | Enforcement Discussion |
+      | Description             |
+      | Enforcement Discussion. |
     Then the Enquiry is created Successfully
-    #Re-login as primary authority and check the enquiry
+    # Login as the Authority and Verify the General Enquiry
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created general enquiry
-    Then the user successfully views the enquiry
+    Then the general enquiry is recieved successfully
 
   @regression @deviationrequest
   Scenario: Verify a Deviation Request can be Blocked (Happy Path - PAR-2275)
@@ -260,7 +260,7 @@ Feature: General
       | Description                     |
       | Deviation Request to be Blocked |
     Then the Deviation Request is created Successfully
-    #Re-login as primary authority and check thedeviation request
+    # Login as the Authority and Verify the Deviation Request
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created deviation request
@@ -355,29 +355,38 @@ Feature: General
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created partnership
     And the user submits a general enquiry with the following details:
-      | Description  |
-      | Test Enquiry |
+      | Description          |
+      | Test General Enquiry |
     Then the Enquiry is created Successfully
-    #Re-login as primary authority and check the enquiry
+    # Submit a Response to the General Enquiry
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created general enquiry
-    Then the user successfully views the enquiry
-    #submit response to the general enquiry
-    Given the user submits a response to the general enquiry with the following details:
-      | Description   |
-      | Test Response |
+    And the user submits a response to the general enquiry with the following details:
+      | Description              |
+      | Test Authority Response. |
+    Then the general enquiry response is displayed successfully
+    # Submit a Reply to the General Enquiry
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created general enquiry
     And the user sends a reply to the general enquiry with the following details:
-      | Description |
-      | Test Reply  |
-    #login as authority and check message received correctly
+      | Description             |
+      | Test Enforcement Reply. |
+    Then the general enquiry response is displayed successfully
+    # Submit a Reply to the General Enquiry
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created general enquiry
+    And the user sends a reply to the general enquiry with the following details:
+      | Description           |
+      | Test Help Desk Reply. |
+    Then the general enquiry response is displayed successfully
+    # Login as authority and check message received correctly
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created general enquiry
-    Then the user successfully views the enquiry
+    Then the general enquiry response is displayed successfully
 
   # Add the Help Desk Response to General Enquiry.
   @regression @inspectionplan
@@ -387,7 +396,6 @@ Feature: General
     When the user searches for the last created partnership
     And the user revokes the last created inspection plan
     Then the inspection plan is revoked successfully
-    #Then the user successfully revokes the last created inspection plan
     #remove the inspection plan
     When the user has revoked the last created inspection plan
     Then the inspection plan is successfully removed

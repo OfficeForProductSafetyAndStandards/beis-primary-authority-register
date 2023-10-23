@@ -78,6 +78,9 @@ public class DashboardPage extends BasePageObject {
 	@FindBy(linkText = "Manage inspection feedback")
 	WebElement manageInspectionFeedbackLink;
 	
+	@FindBy(linkText = "Manage general enquiries")
+	WebElement manageGeneralEnquiryLink;
+	
 	@FindBy(partialLinkText = "general enquiries")
 	WebElement generalEnquiriesBtn;
 	
@@ -122,6 +125,11 @@ public class DashboardPage extends BasePageObject {
 	
 	public EnquiriesSearchPage selectGeneralEnquiries() {
 		generalEnquiriesBtn.click();
+		return PageFactory.initElements(driver, EnquiriesSearchPage.class);
+	}
+	
+	public EnquiriesSearchPage selectManageGeneralEnquiry() {
+		manageGeneralEnquiryLink.click();
 		return PageFactory.initElements(driver, EnquiriesSearchPage.class);
 	}
 	

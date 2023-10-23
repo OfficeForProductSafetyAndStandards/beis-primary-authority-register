@@ -19,39 +19,39 @@ public class EnquiryReviewPage extends BasePageObject {
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 	
-	String desc = "//div/p[contains(text(),'?')]";
-	String reply = "//div/p[contains(text(),'?')]";
-	String status; // This variable is seems to be missing.
+	private String descriptionLocator = "//div/p[contains(text(),'?')]";
+	private String responseLocator = "//div/p[contains(text(),'?')]";
+	private String fileLocator = "//span/a[contains(text(),'?')]";
 	
 	public EnquiryReviewPage() throws ClassNotFoundException, IOException {
 		super();
 	}
+	
+	public boolean checkEnquiryDescription() {
+		WebElement enquiryDescription = driver.findElement(By.xpath(descriptionLocator.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION))));
 
-	public EnquiryCompletionPage saveChanges() {
-		saveBtn.click();
-		return PageFactory.initElements(driver, EnquiryCompletionPage.class);
+		return enquiryDescription.isDisplayed();
+	}
+	
+	public boolean checkEnquiryDetails() {
+		WebElement enquiryDescription = driver.findElement(By.xpath(descriptionLocator.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION))));
+		WebElement file = driver.findElement(By.xpath(fileLocator.replace("?", "link")));
+		return enquiryDescription.isDisplayed() && file.isDisplayed();
 	}
 
+	public boolean checkEnquiryResponse() {
+		WebElement reply = driver.findElement(By.xpath(responseLocator.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY))));
+		WebElement file = driver.findElement(By.xpath(fileLocator.replace("?", "link")));
+		return reply.isDisplayed() && file.isDisplayed();
+	}
+	
 	public ReplyEnquiryPage submitResponse() {
 		submitResponse.click();
 		return PageFactory.initElements(driver, ReplyEnquiryPage.class);
 	}
-
-	public boolean checkEnquiryCreation() {
-		WebElement enquiryDescription = driver.findElement(By.xpath(desc.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION))));
-
-		return (enquiryDescription.isDisplayed());
-	}
-
-	public boolean checkEnquiryReply() {
-		WebElement reply1 = driver.findElement(By.xpath(reply.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY))));
-
-		return (reply1.isDisplayed());
-	}
 	
-	public boolean checkEnquiryReply1() {
-		WebElement reply11 = driver.findElement(By.xpath(reply.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY1))));
-
-		return (reply11.isDisplayed());
+	public EnquiryCompletionPage saveChanges() {
+		saveBtn.click();
+		return PageFactory.initElements(driver, EnquiryCompletionPage.class);
 	}
 }

@@ -8,7 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.EnforcementOfficerContactDetailsPage;
-import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiryContactDetailsPage;
+import uk.gov.beis.pageobjects.DuplicateClasses.EnquiryContactDetailsPage;
 
 public class EnforcementNotificationPage extends BasePageObject {
 	

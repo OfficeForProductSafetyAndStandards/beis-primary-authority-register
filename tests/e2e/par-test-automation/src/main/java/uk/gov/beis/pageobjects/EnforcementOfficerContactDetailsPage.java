@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.DeviationRequestPageObjects.RequestDeviationPage;
 import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforceLegalEntityPage;
+import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.RequestEnquiryPage;
 import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackDetailsPage;
 
 public class EnforcementOfficerContactDetailsPage extends BasePageObject {
@@ -32,5 +33,10 @@ public class EnforcementOfficerContactDetailsPage extends BasePageObject {
 	public InspectionFeedbackDetailsPage goToInspectionFeedbackDetailsPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, InspectionFeedbackDetailsPage.class);
+	}
+	
+	public RequestEnquiryPage goToRequestEnquiryPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, RequestEnquiryPage.class);
 	}
 }
