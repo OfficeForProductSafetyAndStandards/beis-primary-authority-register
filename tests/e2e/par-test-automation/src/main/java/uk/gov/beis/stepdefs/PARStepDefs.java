@@ -141,13 +141,13 @@ public class PARStepDefs {
 	private AuthorityTypePage authorityTypePage;
 	
 	// Business
-	private BusinessPage parBusinessPage;
+	private BusinessNamePage businessNamePage;
 	private AddOrganisationNamePage addOrganisationNamePage;
-	private BusinessDetailsPage parBusinessDetailsPage;
+	private AboutTheOrganisationPage aboutTheOrganisationPage;
 	private BusinessContactDetailsPage parBusinessContactDetailsPage;
 	private SICCodePage sicCodePage;
 	private TradingPage tradingPage;
-	private BusinessConfirmationPage businessConfirmationPage;
+	private BusinessDetailsPage businessDetailsPage;
 	
 	// Search Pages
 	public PublicRegistrySearchPage publicRegistrySearchPage;
@@ -316,10 +316,10 @@ public class PARStepDefs {
 		addOrganisationNamePage = PageFactory.initElements(driver, AddOrganisationNamePage.class);
 		tradingPage = PageFactory.initElements(driver, TradingPage.class);
 		sicCodePage = PageFactory.initElements(driver, SICCodePage.class);
-		parBusinessDetailsPage = PageFactory.initElements(driver, BusinessDetailsPage.class);
-		parBusinessPage = PageFactory.initElements(driver, BusinessPage.class);
+		aboutTheOrganisationPage = PageFactory.initElements(driver, AboutTheOrganisationPage.class);
+		businessNamePage = PageFactory.initElements(driver, BusinessNamePage.class);
 		parBusinessContactDetailsPage = PageFactory.initElements(driver, BusinessContactDetailsPage.class);
-		businessConfirmationPage = PageFactory.initElements(driver, BusinessConfirmationPage.class);
+		businessDetailsPage = PageFactory.initElements(driver, BusinessDetailsPage.class);
 		
 		// Search Pages
 		publicRegistrySearchPage = PageFactory.initElements(driver, PublicRegistrySearchPage.class);
@@ -465,8 +465,8 @@ public class PARStepDefs {
 		parPartnershipDescriptionPage.gotToBusinessNamePage();
 		
 		LOG.info("Entering business/organisation name");
-		parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
-		parBusinessPage.goToAddressPage();
+		businessNamePage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		businessNamePage.goToAddressPage();
 		
 		LOG.info("Enter address details");
 		addAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
@@ -563,8 +563,8 @@ public class PARStepDefs {
 		parDeclarationPage.goToBusinessDetailsPage();
 		
 		LOG.info("Add business description");
-		parBusinessDetailsPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
-		parBusinessDetailsPage.clickContinueButton();
+		aboutTheOrganisationPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
+		aboutTheOrganisationPage.clickContinueButton();
 		
 		LOG.info("Confirming address details");
 		addAddressPage.goToAddContactDetailsPage();
@@ -859,30 +859,6 @@ public class PARStepDefs {
 		Assert.assertTrue("FAILED: Previously Known as text is not Displayed", parPartnershipConfirmationPage.checkPreviouslyKnownAsText());
 	}
 	
-	@Given("^the user updates all the fields for last created organisation$")
-	public void the_user_updates_all_the_fields_for_last_created_organisation() throws Throwable {
-		LOG.info("Update all fields");
-		
-		DataStore.saveValue(UsableValues.BUSINESS_NAME, DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + " Updated");
-		DataStore.saveValue(UsableValues.BUSINESS_DESC, DataStore.getSavedValue(UsableValues.BUSINESS_DESC) + " Updated");
-		DataStore.saveValue(UsableValues.TRADING_NAME, DataStore.getSavedValue(UsableValues.TRADING_NAME) + " Updated");
-		
-		businessConfirmationPage.editOrganisationName();
-		parBusinessPage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
-		parBusinessPage.goToBusinessConfirmationPage();
-		
-		businessConfirmationPage.editOrganisationDesc();
-		parBusinessDetailsPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
-		parBusinessDetailsPage.goToBusinessReviewPage();
-		
-		businessConfirmationPage.editTradingName();
-		tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
-		tradingPage.goToBusinessReviewPage();
-		
-		businessConfirmationPage.editSICCode();
-		sicCodePage.changeSICCode("allow people to eat");
-	}
-
 	@When("^the user searches for the last created organisation$")
 	public void the_user_searches_for_the_last_created_organisation() throws Throwable {
 		LOG.info("Search and select last created organisation");
@@ -890,12 +866,37 @@ public class PARStepDefs {
 		organisationDashboardPage.searchOrganisation();
 		organisationDashboardPage.selectOrganisation();
 	}
-
+	
+	@When("^the user updates all the fields for last created organisation$")
+	public void the_user_updates_all_the_fields_for_last_created_organisation() throws Throwable {
+		LOG.info("Update all fields");
+		
+		DataStore.saveValue(UsableValues.BUSINESS_NAME, DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + " Updated");
+		DataStore.saveValue(UsableValues.BUSINESS_DESC, DataStore.getSavedValue(UsableValues.BUSINESS_DESC) + " Updated");
+		DataStore.saveValue(UsableValues.TRADING_NAME, DataStore.getSavedValue(UsableValues.TRADING_NAME) + " Updated");
+		
+		businessDetailsPage.editOrganisationName();
+		businessNamePage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		businessNamePage.goToBusinessConfirmationPage();
+		
+		businessDetailsPage.editOrganisationDesc();
+		aboutTheOrganisationPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
+		aboutTheOrganisationPage.goToBusinessDetailsPage();
+		
+		businessDetailsPage.editTradingName();
+		tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+		tradingPage.goToBusinessDetailsPage();
+		
+		businessDetailsPage.editSICCode();
+		sicCodePage.selectPrimarySICCode("allow people to eat");
+		sicCodePage.goToBusinessDetailsPage();
+	}
+	
 	@Then("^all the fields are updated correctly$")
 	public void all_the_fields_are_updated_correctly() throws Throwable {
 		LOG.info("Check all updated changes check out");
-		Assert.assertTrue("Details don't check out", businessConfirmationPage.checkAuthorityDetails());
-		businessConfirmationPage.saveChanges();
+		Assert.assertTrue("Details don't check out", businessDetailsPage.checkAuthorityDetails());
+		businessDetailsPage.saveChanges();
 	}
 
 	@When("^the user creates an enforcement notice against the partnership with the following details:$")

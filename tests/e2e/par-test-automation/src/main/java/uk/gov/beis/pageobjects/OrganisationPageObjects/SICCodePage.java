@@ -8,7 +8,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.BusinessConfirmationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
 
@@ -20,18 +19,18 @@ public class SICCodePage extends BasePageObject {
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 	
-	private String sic = "//select/option[contains(text(),'?')]";
+	private String sicCodeLocator = "//select/option[contains(text(),'?')]";
 
 	public SICCodePage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
 	public void selectPrimarySICCode(String code) {
-		driver.findElement(By.xpath(sic.replace("?", code))).click();
+		driver.findElement(By.xpath(sicCodeLocator.replace("?", code))).click();
 	}
 	
 	public NumberOfEmployeesPage selectSICCode(String code) {
-		driver.findElement(By.xpath(sic.replace("?", code))).click();
+		driver.findElement(By.xpath(sicCodeLocator.replace("?", code))).click();
 		
 		continueBtn.click();
 		return PageFactory.initElements(driver, NumberOfEmployeesPage.class);
@@ -43,16 +42,14 @@ public class SICCodePage extends BasePageObject {
 	}
 	
 	public PartnershipConfirmationPage editSICCode(String code) {
-		driver.findElement(By.xpath(sic.replace("?", code))).click();
+		driver.findElement(By.xpath(sicCodeLocator.replace("?", code))).click();
 		
 		saveBtn.click();
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 	
-	public BusinessConfirmationPage changeSICCode(String code) {
-		driver.findElement(By.xpath(sic.replace("?", code))).click();
-		
+	public BusinessDetailsPage goToBusinessDetailsPage() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, BusinessConfirmationPage.class);
+		return PageFactory.initElements(driver, BusinessDetailsPage.class);
 	}
 }

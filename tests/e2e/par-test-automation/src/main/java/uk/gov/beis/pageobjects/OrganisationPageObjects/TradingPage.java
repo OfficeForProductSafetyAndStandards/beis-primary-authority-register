@@ -7,7 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.BusinessConfirmationPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
@@ -50,9 +49,9 @@ public class TradingPage extends BasePageObject {
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
 	}
 	
-	public BusinessConfirmationPage goToBusinessReviewPage() {
+	public BusinessDetailsPage goToBusinessDetailsPage() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, BusinessConfirmationPage.class);
+		return PageFactory.initElements(driver, BusinessDetailsPage.class);
 	}
 	
 	public LegalEntityTypePage goToLegalEntityTypePage() {

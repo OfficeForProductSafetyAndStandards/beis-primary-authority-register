@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects.PartnershipPageObjects;
+package uk.gov.beis.pageobjects.OrganisationPageObjects;
 
 import java.io.IOException;
 
@@ -8,12 +8,12 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.AddAddressPage;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.BusinessConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
 
-public class BusinessPage extends BasePageObject {
+public class AboutTheOrganisationPage extends BasePageObject {
 	
-	@FindBy(id = "edit-name")
-	private WebElement businessName;
+	@FindBy(id = "edit-about-business")
+	private WebElement descriptionBox;
 	
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
@@ -21,16 +21,16 @@ public class BusinessPage extends BasePageObject {
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 	
-	public BusinessPage() throws ClassNotFoundException, IOException {
+	public AboutTheOrganisationPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
-	public void enterBusinessName(String name) {
-		businessName.clear();
-		businessName.sendKeys(name);
+	public void enterDescription(String description) {
+		descriptionBox.clear();
+		descriptionBox.sendKeys(description);
 	}
 	
-	public AddAddressPage goToAddressPage() {
+	public AddAddressPage clickContinueButton() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, AddAddressPage.class);
 	}
@@ -40,8 +40,8 @@ public class BusinessPage extends BasePageObject {
 		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 	}
 	
-	public BusinessConfirmationPage goToBusinessConfirmationPage() {
+	public BusinessDetailsPage goToBusinessDetailsPage() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, BusinessConfirmationPage.class);
+		return PageFactory.initElements(driver, BusinessDetailsPage.class);
 	}
 }

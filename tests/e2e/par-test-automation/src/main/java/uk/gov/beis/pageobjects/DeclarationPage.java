@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementSearchPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessDetailsPage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.AboutTheOrganisationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.RegulatoryFunctionPage;
 
 public class DeclarationPage extends BasePageObject {
@@ -52,9 +52,9 @@ public class DeclarationPage extends BasePageObject {
 		return PageFactory.initElements(driver, RegulatoryFunctionPage.class);
 	}
 	
-	public BusinessDetailsPage goToBusinessDetailsPage() {	
+	public AboutTheOrganisationPage goToBusinessDetailsPage() {	
 		continueBtn.click();
-		return PageFactory.initElements(driver, BusinessDetailsPage.class);
+		return PageFactory.initElements(driver, AboutTheOrganisationPage.class);
 	}
 	
 	public EnforcementSearchPage goToEnforcementSearchPage() {

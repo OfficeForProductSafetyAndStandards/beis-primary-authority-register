@@ -37,7 +37,7 @@ public class PartnershipDescriptionPage extends BasePageObject {
 		businessDescriptionBox.sendKeys(description);
 	}
 	
-	public BusinessPage enterPartnershipDescription(String description) throws Throwable {
+	public BusinessNamePage enterPartnershipDescription(String description) throws Throwable {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
 		
@@ -49,13 +49,13 @@ public class PartnershipDescriptionPage extends BasePageObject {
 			driver.findElement(By.id("edit-save")).click();
 		}
 
-		return PageFactory.initElements(driver, BusinessPage.class);
+		return PageFactory.initElements(driver, BusinessNamePage.class);
 	}
 	
-	public BusinessPage gotToBusinessNamePage() throws Throwable {
+	public BusinessNamePage gotToBusinessNamePage() throws Throwable {
 		continueBtn.click();
 
-		return PageFactory.initElements(driver, BusinessPage.class);
+		return PageFactory.initElements(driver, BusinessNamePage.class);
 	}
 	
 	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
