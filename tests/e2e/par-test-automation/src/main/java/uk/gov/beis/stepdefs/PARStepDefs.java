@@ -71,25 +71,23 @@ public class PARStepDefs {
 	
 	// User Management
 	private ManagePeoplePage managePeoplePage;
+	private ContactDetailsPage contactDetailsPage;
 	
-	private UserProfilePage userProfilePage;
 	private PersonsProfilePage personsProfilePage;	// Duplicates
-	private PersonAccountPage personAccountPage;
+	private GiveUserAccountPage giveUserAccountPage;
 	
 	private PersonMembershipPage personMembershipPage;
 	private PersonUserRoleTypePage personUserTypePage;
 	private PersonCreateAccountPage personCreateAccountPage;
-	private UserProfileConfirmationPage userProfileConfirmationPage;
-	private UserProfileCompletionPage userProfileCompletionPage;
+	private ProfileReviewPage profileReviewPage;
+	private ProfileCompletionPage profileCompletionPage;
 	
 	// Contact Record
-	private PersonContactDetailsPage personsContactDetailsPage;
-	private UpdateUserContactDetailsPage updateUserContactDetailsPage;
-	
-	private UpdateUserCommunicationPreferencesPage updateUserCommunicationPreferencesPage;
+	private ContactRecordsPage contactRecordsPage;
+	private ContactCommunicationPreferencesPage contactCommunicationPreferencesPage;
 	private UserCommsPreferencesPage userCommsPreferencesPage;			// Duplicate
 	
-	private UpdateUserSubscriptionsPage updateUserSubscriptionsPage;
+	private ContactUpdateSubscriptionPage contactUpdateSubscriptionPage;
 	
 	// Merge Contact Records
 	private MergeContactRecordsPage mergeContactRecordsPage;
@@ -246,22 +244,22 @@ public class PARStepDefs {
 		parReportingPage = PageFactory.initElements(driver, PARReportingPage.class);
 		
 		// User Management
-		userProfileConfirmationPage = PageFactory.initElements(driver, UserProfileConfirmationPage.class);
-		userProfileCompletionPage = PageFactory.initElements(driver, UserProfileCompletionPage.class);
-		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
+		profileReviewPage = PageFactory.initElements(driver, ProfileReviewPage.class);
+		profileCompletionPage = PageFactory.initElements(driver, ProfileCompletionPage.class);
+		
+		contactDetailsPage = PageFactory.initElements(driver, ContactDetailsPage.class);
 		managePeoplePage = PageFactory.initElements(driver, ManagePeoplePage.class);
 		personMembershipPage = PageFactory.initElements(driver, PersonMembershipPage.class);
-		personAccountPage = PageFactory.initElements(driver, PersonAccountPage.class);
+		giveUserAccountPage = PageFactory.initElements(driver, GiveUserAccountPage.class);
 		personUserTypePage = PageFactory.initElements(driver, PersonUserRoleTypePage.class);
 		personCreateAccountPage = PageFactory.initElements(driver, PersonCreateAccountPage.class);
 		personsProfilePage = PageFactory.initElements(driver, PersonsProfilePage.class);
 		
 		// Contact Record
-		updateUserContactDetailsPage = PageFactory.initElements(driver, UpdateUserContactDetailsPage.class);
-		updateUserSubscriptionsPage = PageFactory.initElements(driver, UpdateUserSubscriptionsPage.class);
-		personsContactDetailsPage = PageFactory.initElements(driver, PersonContactDetailsPage.class);
+		contactUpdateSubscriptionPage = PageFactory.initElements(driver, ContactUpdateSubscriptionPage.class);
+		contactRecordsPage = PageFactory.initElements(driver, ContactRecordsPage.class);
 		userCommsPreferencesPage = PageFactory.initElements(driver, UserCommsPreferencesPage.class);
-		updateUserCommunicationPreferencesPage = PageFactory.initElements(driver,UpdateUserCommunicationPreferencesPage.class);
+		contactCommunicationPreferencesPage = PageFactory.initElements(driver,ContactCommunicationPreferencesPage.class);
 		
 		// Merge Contact Record
 		mergeContactRecordsPage = PageFactory.initElements(driver, MergeContactRecordsPage.class);
@@ -475,8 +473,8 @@ public class PARStepDefs {
 		addAddressPage.goToAddContactDetailsPage();
 		
 		LOG.info("Enter contact details");
-		personsContactDetailsPage.addContactDetails(details);
-		personsContactDetailsPage.goToInviteUserAccountPage();
+		contactDetailsPage.addContactDetails(details);
+		contactDetailsPage.goToInviteUserAccountPage();
 		
 		LOG.info("Send invitation to user");
 		parBusinessInvitePage.sendInvite();
@@ -570,11 +568,11 @@ public class PARStepDefs {
 		addAddressPage.goToAddContactDetailsPage();
 		
 		LOG.info("Confirming contact details");
-		personsContactDetailsPage.selectPreferredEmail();
-		personsContactDetailsPage.selectPreferredWorkphone();
-		personsContactDetailsPage.selectPreferredMobilephone();
-		personsContactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
-		personsContactDetailsPage.goToSICCodePage();
+		contactDetailsPage.selectPreferredEmail();
+		contactDetailsPage.selectPreferredWorkphone();
+		contactDetailsPage.selectPreferredMobilephone();
+		contactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
+		contactDetailsPage.goToSICCodePage();
 		
 		LOG.info("Selecting SIC Code");
 		sicCodePage.selectSICCode(DataStore.getSavedValue(UsableValues.SIC_CODE));
@@ -661,8 +659,8 @@ public class PARStepDefs {
 	@Then("^the user journey creation is successful$")
 	public void the_user_journey_creation_is_successful() throws Throwable {
 		LOG.info("Checking user creation is sucessful");
-		userProfileConfirmationPage.saveChanges();
-		userProfileCompletionPage.completeApplication();
+		profileReviewPage.goToProfileCompletionPage();
+		profileCompletionPage.goToDashboardPage();
 	}
 
 	@When("^the user approves the partnership$")
@@ -1461,136 +1459,130 @@ public class PARStepDefs {
 	public void the_user_selects_a_contact_to_update() throws Throwable {
 		DataStore.saveValue(UsableValues.BUSINESS_EMAIL, DataStore.getSavedValue(UsableValues.LOGIN_USER));
 		parDashboardPage.selectManageProfileDetails();
-
-		// This can be used in a manage colleagues update person test.
-		DataStore.saveValue(UsableValues.ACCOUNT_ID, userProfilePage.getAccountID()); 
-
-		userProfilePage.selectContactToUpdate();
-		userProfilePage.selectContinueButton();
-		LOG.info("Selected user contact to update.");
+		
+		LOG.info("Selecting a Contact to Update.");
+		contactRecordsPage.selectContactToUpdate();
+		contactRecordsPage.selectContinueButton();
+		
+		LOG.info("Click Continue to Accept the Contact Details.");
+		contactDetailsPage.goToContactCommunicationPreferencesPage();
+		contactCommunicationPreferencesPage.selectContinueButton();
 	}
 
 	@Then("^the user can successfully subscribe to PAR News$")
 	public void the_user_can_successfully_subscribe_to_PAR_News() throws Throwable {
-		updateUserContactDetailsPage.selectContinueButton();
-		updateUserCommunicationPreferencesPage.selectContinueButton();
-
-		updateUserSubscriptionsPage.selectPARNewsSubscription();
-		updateUserSubscriptionsPage.selectContinueButton();
+		LOG.info("Click the Checkbox to Subscribe to the PAR News Letter.");
+		contactUpdateSubscriptionPage.subscribeToPARNews();
+		contactUpdateSubscriptionPage.selectContinueButton();
+		
 		LOG.info("Successfully subscribed from PAR news letter.");
-
-		userProfileConfirmationPage.saveChanges();
-		userProfileCompletionPage.completeApplication();
-
+		profileReviewPage.goToProfileCompletionPage();
+		profileCompletionPage.goToDashboardPage();
 	}
 
 	@Then("^the user can successfully unsubscribe from PAR News$")
 	public void the_user_can_successfully_unsubscribe_from_PAR_News() throws Throwable {
-		updateUserContactDetailsPage.selectContinueButton();
-		updateUserCommunicationPreferencesPage.selectContinueButton();
-
-		updateUserSubscriptionsPage.selectPARNewsUnsubscription();
-		updateUserSubscriptionsPage.selectContinueButton();
+		LOG.info("Click the Checkbox to Unsubscribe from the PAR News Letter.");
+		contactUpdateSubscriptionPage.unsubscribeFromPARNews();
+		contactUpdateSubscriptionPage.selectContinueButton();
+		
 		LOG.info("Successfully unsubscribed from PAR news letter.");
-
-		userProfileConfirmationPage.saveChanges();
-		userProfileCompletionPage.completeApplication();
-
+		profileReviewPage.goToProfileCompletionPage();
+		profileCompletionPage.goToDashboardPage();
 	}
 
 	@When("^the user searches for the par_authority email$")
 	public void the_user_searches_for_the_par_authority_email() throws Throwable {
 		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 		newsLetterSubscriptionPage.ClickSearchButton();
-		LOG.info("Searching for the Authority Email:" + DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL) + ".");
+		LOG.info("Searching for the Authority Email: " + DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 	}
 
 	@When("^the user is on the Subscriptions page$")
 	public void the_user_is_on_the_Subscriptions_page() throws Throwable {
+		LOG.info("Navigate to the Manage Subscriptions Page.");
 		parDashboardPage.selectManageSubscriptions();
-		LOG.info("Navigated to Manage Subscriptions Page.");
 	}
 
 	@Then("^the user can verify the email is successfully in the Subscriptions List$")
 	public void the_user_can_verify_the_email_is_successfully_in_the_Subscriptions_List() throws Throwable {
 		LOG.info("Assert the Email is successfully added to the Subscription List.");
-		assertTrue("Failed: Email address was not added to the PAR News Subscription List.",
-				newsLetterSubscriptionPage.verifyTableElementExists());
+		assertTrue("Failed: Email address was not added to the PAR News Subscription List.", newsLetterSubscriptionPage.verifyTableElementExists());
 	}
 
 	@Then("^the user can verify the email is successfully removed from the Subscriptions List$")
 	public void the_user_can_verify_the_email_is_successfully_removed_from_the_Subscriptions_List() throws Throwable {
 		LOG.info("Assert the Email is removed successfully from the Subscription List.");
-		assertTrue("Failed: Email address was not removed from the PAR News Subscription List.",
-				newsLetterSubscriptionPage.verifyTableElementIsNull());
+		assertTrue("Failed: Email address was not removed from the PAR News Subscription List.", newsLetterSubscriptionPage.verifyTableElementIsNull());
 	}
 
 	@When("^the user is on the Manage a subscription list page$")
 	public void the_user_is_on_the_Manage_a_subscription_list_page() throws Throwable {
+		LOG.info("Navigate to Manage Subscriptions Page.");
 		parDashboardPage.selectManageSubscriptions();
 		newsLetterSubscriptionPage.selectManageSubsciptions();
-		LOG.info("Navigated to Manage Subscriptions Page.");
+		
 		LOG.info("Email with the largest number: " + DataStore.getSavedValue(UsableValues.LAST_PAR_NEWS_EMAIL));
 	}
 
 	@When("^the user enters a new email to add to the list \"([^\"]*)\"$")
 	public void the_user_enters_a_new_email_to_add_to_the_list(String email) throws Throwable {
+		LOG.info("Adding a new email to the subscription list.");
+		DataStore.saveValue(UsableValues.PAR_NEWS_EMAIL, email);
+		
 		newsLetterManageSubscriptionListPage.selectInsertNewEmailRadioButton();
 		newsLetterManageSubscriptionListPage.AddNewEmail(email);
-		DataStore.saveValue(UsableValues.PAR_NEWS_EMAIL, email);
 		newsLetterManageSubscriptionListPage.clickContinueButton();
-		LOG.info("Adding a new email to the subscription list.");
+		
 		newsLetterSubscriptionReviewPage.clickUpdateListButton();
 	}
 
 	@Then("^the user can verify the new email was added successfully$")
 	public void the_user_can_verify_the_new_email_was_added_successfully() throws Throwable {
+		LOG.info("Verify the new email was added to the Subscription list.");
 		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.PAR_NEWS_EMAIL));
 		newsLetterSubscriptionPage.ClickSearchButton();
 
 		assertTrue(newsLetterSubscriptionPage.verifyTableElementExists());
-		LOG.info("Successfully added a new email to the Subscription list.");
 	}
 
 	@When("^the user enters an email to be removed from the list \"([^\"]*)\"$")
 	public void the_user_enters_an_email_to_be_removed_from_the_list(String email) throws Throwable {
-		newsLetterManageSubscriptionListPage.selectRemoveEmailRadioButton();
-		newsLetterManageSubscriptionListPage.RemoveEmail(email);
+		LOG.info("Removing an email from the subscription list.");
 		DataStore.saveValue(UsableValues.PAR_NEWS_EMAIL, email);
 		
+		newsLetterManageSubscriptionListPage.selectRemoveEmailRadioButton();
+		newsLetterManageSubscriptionListPage.RemoveEmail(email);
 		newsLetterManageSubscriptionListPage.clickContinueButton();
 		
-		LOG.info("Removing an email from the subscription list.");
 		newsLetterSubscriptionReviewPage.clickUpdateListButton();
 	}
 
 	@Then("^the user can verify the email was removed successfully$")
 	public void the_user_can_verify_the_email_was_removed_successfully() throws Throwable {
+		LOG.info("Verify the email was removed from the Subscription list.");
 		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.PAR_NEWS_EMAIL));
 		newsLetterSubscriptionPage.ClickSearchButton();
 
 		assertTrue(newsLetterSubscriptionPage.verifyTableElementIsNull());
-		LOG.info("Successfully removed an email from the Subscription list.");
 	}
 
 	@When("^the user enters a list of new emails to replace the subscription list$")
 	public void the_user_enters_a_list_of_new_emails_to_replace_the_subscription_list() throws Throwable {
-
+		LOG.info("Adding a new list of emails to replace the original Subscription List.");
 		newsLetterManageSubscriptionListPage.selectReplaceSubscriptionListRadioButton();
 		newsLetterManageSubscriptionListPage.clickContinueButton();
-		LOG.info("Adding new emails to replace the original Subscription List.");
-
+		
 		newsLetterSubscriptionReviewPage.clickUpdateListButton();
 	}
 
 	@Then("^the user can verify an email from the original list was removed successfully$")
 	public void the_user_can_verify_an_email_from_the_original_list_was_removed_successfully() throws Throwable {
-
+		LOG.info("Verify the Subscription list was replaced with the new list.");
 		newsLetterSubscriptionPage.EnterEmail(DataStore.getSavedValue(UsableValues.LAST_PAR_NEWS_EMAIL));
 		newsLetterSubscriptionPage.ClickSearchButton();
 
 		assertTrue(newsLetterSubscriptionPage.verifyTableElementIsNull());
-		LOG.info("Successfully replaced the original subscription list with a new list.");
 	}
 
 	@When("^the user creates a new person:$")
@@ -1599,13 +1591,13 @@ public class PARStepDefs {
 		managePeoplePage.selectAddPerson();
 
 		LOG.info("Adding a new person.");
-		personsContactDetailsPage.enterContactDetails(details);
-		personsContactDetailsPage.clickContinueButton();
+		contactDetailsPage.enterContactWithRandomName(details);
+		contactDetailsPage.clickContinueButton();
 
 		LOG.info("Successfully entered new contact details.");
 
-		personAccountPage.selectInviteUserToCreateAccount();
-		personAccountPage.clickContinueButton();
+		giveUserAccountPage.selectInviteUserToCreateAccount();
+		giveUserAccountPage.clickContinueButton();
 
 		LOG.info("Successfully chose to invite the person to create an account.");
 		personMembershipPage.selectOrganisation(details);
@@ -1623,8 +1615,8 @@ public class PARStepDefs {
 
 		LOG.info("Successfully sent account invite.");
 
-		userProfileConfirmationPage.saveChanges();
-		userProfileCompletionPage.clickDoneGoToProfile();
+		profileReviewPage.goToProfileCompletionPage();
+		profileCompletionPage.goToUserProfilePage();
 	}
 
 	@Then("^the user can verify the person was created successfully and can see resend an account invite$")
@@ -1657,13 +1649,13 @@ public class PARStepDefs {
 		LOG.info("Updating an existing person.");
 		personsProfilePage.clickUpdateUserButton();
 		
-		personsContactDetailsPage.enterContactDetails(details);
-		personsContactDetailsPage.clickContinueButton();
+		contactDetailsPage.enterContactWithRandomName(details);
+		contactDetailsPage.clickContinueButton();
 
 		LOG.info("Successfully entered new contact details.");
 
-		personAccountPage.selectInviteUserToCreateAccount();
-		personAccountPage.clickContinueButton();
+		giveUserAccountPage.selectInviteUserToCreateAccount();
+		giveUserAccountPage.clickContinueButton();
 
 		LOG.info("Successfully chose to invite the person to create an account.");
 		personMembershipPage.selectOrganisation(details);
@@ -1682,8 +1674,8 @@ public class PARStepDefs {
 
 		LOG.info("Successfully sent account invite.");
 
-		userProfileConfirmationPage.saveChanges();
-		userProfileCompletionPage.clickDoneGoToProfile();
+		profileReviewPage.goToProfileCompletionPage();
+		profileCompletionPage.goToUserProfilePage();
 	}
 
 	@Then("^the user can verify the person was updated successfully and can see resend an account invite$")
@@ -1956,8 +1948,8 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.addAnotherAuthorityContactButton();
 
 		LOG.info("Adding new contact details.");
-		personsContactDetailsPage.addContactDetailsWithRandomName(details);
-		personsContactDetailsPage.selectContinueButton();
+		contactDetailsPage.addContactDetailsWithRandomName(details);
+		contactDetailsPage.selectContinueButton();
 
 		LOG.info("Choosing user account type.");
 		personUserTypePage.selectAuthorityMember();
@@ -1966,7 +1958,7 @@ public class PARStepDefs {
 		LOG.info("Sending new user an account invite.");
 		personCreateAccountPage.clickInviteButton();
 		
-		userProfileConfirmationPage.clickSaveButton();
+		profileReviewPage.clickSaveButton();
 	}
 	
 	@Then("^the new Primary Authority contact is added Successfully$")
@@ -1981,14 +1973,14 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.editContactsDetailsButton();
 		
 		LOG.info("Editing contact details.");
-		personsContactDetailsPage.editContactDetailsWithRandomName(details);
-		personsContactDetailsPage.selectContinueButton();	
+		contactDetailsPage.editContactDetailsWithRandomName(details);
+		contactDetailsPage.selectContinueButton();	
 		
 		LOG.info("Updating user account type.");
 		personUserTypePage.selectAuthorityManager();
 		personUserTypePage.clickContinueButton();	
 
-		userProfileConfirmationPage.clickSaveButton();
+		profileReviewPage.clickSaveButton();
 	}
 	
 	@Then("^the new Primary Authority contact is updated Successfully$")
@@ -2016,13 +2008,13 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.addAnotherOrganisationContactButton();
 
 		LOG.info("Adding new contact details.");
-		personsContactDetailsPage.addContactDetailsWithRandomName(details);
-		personsContactDetailsPage.selectContinueButton();
+		contactDetailsPage.addContactDetailsWithRandomName(details);
+		contactDetailsPage.selectContinueButton();
 		
 		LOG.info("Sending new user an account invite.");
 		personCreateAccountPage.clickInviteButton();
 		
-		userProfileConfirmationPage.clickSaveButton();
+		profileReviewPage.clickSaveButton();
 	}
 
 	@Then("^the new Organisation contact is added Successfully$")
@@ -2036,10 +2028,10 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.editContactsDetailsButton();
 		
 		LOG.info("Editing contact details.");
-		personsContactDetailsPage.editContactDetailsWithRandomName(details);
-		personsContactDetailsPage.selectContinueButton();	
+		contactDetailsPage.editContactDetailsWithRandomName(details);
+		contactDetailsPage.selectContinueButton();	
 		
-		userProfileConfirmationPage.clickSaveButton();
+		profileReviewPage.clickSaveButton();
 	}
 
 	@Then("^the new Organisation contact is updated Successfully$")
@@ -2159,13 +2151,13 @@ public class PARStepDefs {
 		managePeoplePage.selectAddPerson();
 
 		LOG.info("Adding a new person.");
-		personsContactDetailsPage.addContactDetails(details);
-		personsContactDetailsPage.clickContinueButton();
+		contactDetailsPage.addContactDetails(details);
+		contactDetailsPage.clickContinueButton();
 
 		LOG.info("Successfully entered new contact details.");
 
-		personAccountPage.selectUseExistingAccount();
-		personAccountPage.clickContinueButton();
+		giveUserAccountPage.selectUseExistingAccount();
+		giveUserAccountPage.clickContinueButton();
 
 		LOG.info("Successfully chose to use the existing account.");
 
@@ -2180,8 +2172,8 @@ public class PARStepDefs {
 		personUserTypePage.clickProfileReviewContinueButton();
 		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
 
-		userProfileConfirmationPage.saveChanges();
-		userProfileCompletionPage.clickDoneGoToProfile();
+		profileReviewPage.goToProfileCompletionPage();
+		profileCompletionPage.goToUserProfilePage();
 	}
 	
 	@Then("^the user can verify the contact record was added to the user profile$")
@@ -2239,8 +2231,8 @@ public class PARStepDefs {
 				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
 		
 		LOG.info("Entering the Member Organisation's Contact Details.");
-		personsContactDetailsPage.enterContactDetails(details);
-		personsContactDetailsPage.clickContinueButtonForMemberContact();
+		contactDetailsPage.enterContactWithRandomName(details);
+		contactDetailsPage.clickContinueButtonForMemberContact();
 		
 		LOG.info("Entering the Member Organisation's Membership Start Date.");
 		enterTheDatePage.clickContinueButtonForMembershipBegan();
@@ -2312,8 +2304,8 @@ public class PARStepDefs {
 		
 		LOG.info("Updating the Member Organisation's Contact Details.");
 		memberOrganisationSummaryPage.selectEditPerson();
-		personsContactDetailsPage.enterContactDetails(details);
-		personsContactDetailsPage.goToMemberOrganisationSummaryPage();
+		contactDetailsPage.enterContactWithRandomName(details);
+		contactDetailsPage.goToMemberOrganisationSummaryPage();
 		
 		LOG.info("Updating the Member Organisation's Legal Entity.");
 		memberOrganisationSummaryPage.selectAddAnotherLegalEntity();

@@ -7,12 +7,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DashboardPage;
 
-public class UpdateUserCommunicationPreferencesPage extends BasePageObject {
-	public UpdateUserCommunicationPreferencesPage() throws ClassNotFoundException, IOException {
-		super();
-	}
+public class ContactCommunicationPreferencesPage extends BasePageObject {
 	
 	@FindBy(id = "edit-preferred-contact-communication-email")
 	private WebElement emailCommunicationCheckbox;
@@ -29,8 +25,9 @@ public class UpdateUserCommunicationPreferencesPage extends BasePageObject {
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 	
-	@FindBy(id = "edit-cancel")
-	private WebElement cancelBtn;
+	public ContactCommunicationPreferencesPage() throws ClassNotFoundException, IOException {
+		super();
+	}
 	
 	public void selectEmailCommunicationPreference() {
 		emailCommunicationCheckbox.click();
@@ -48,13 +45,8 @@ public class UpdateUserCommunicationPreferencesPage extends BasePageObject {
 		contactNoteTextArea.sendKeys(note);
 	}
 	
-	public UpdateUserSubscriptionsPage selectContinueButton() {
+	public ContactUpdateSubscriptionPage selectContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, UpdateUserSubscriptionsPage.class);
-	}
-	
-	public DashboardPage selectCancelButton() {
-		cancelBtn.click();
-		return PageFactory.initElements(driver, DashboardPage.class);
+		return PageFactory.initElements(driver, ContactUpdateSubscriptionPage.class);
 	}
 }

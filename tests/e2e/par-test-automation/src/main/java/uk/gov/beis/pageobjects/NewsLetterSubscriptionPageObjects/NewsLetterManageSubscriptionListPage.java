@@ -11,9 +11,6 @@ import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.utility.DataStore;
 
 public class NewsLetterManageSubscriptionListPage extends BasePageObject {
-	public NewsLetterManageSubscriptionListPage() throws ClassNotFoundException, IOException {
-		super();
-	}
 	
 	@FindBy(id = "edit-method-insert")
 	private WebElement addEmailRadioBtn;
@@ -30,8 +27,9 @@ public class NewsLetterManageSubscriptionListPage extends BasePageObject {
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 	
-	@FindBy(id = "edit-cancel")
-	private WebElement cancelBtn;
+	public NewsLetterManageSubscriptionListPage() throws ClassNotFoundException, IOException {
+		super();
+	}
 	
 	public void selectInsertNewEmailRadioButton() {
 		addEmailRadioBtn.click();
@@ -44,6 +42,20 @@ public class NewsLetterManageSubscriptionListPage extends BasePageObject {
 	public void selectReplaceSubscriptionListRadioButton() {
 		replaceSubscriptionListRadioBtn.click();
 		generateNewEmailList();
+	}
+	
+	public void AddNewEmail(String email) {
+		emailsTextArea.clear();
+		emailsTextArea.sendKeys(email);
+	}
+	
+	public void RemoveEmail(String email) {
+		emailsTextArea.sendKeys(email);
+	}
+	
+	public NewsLetterSubscriptionReviewPage clickContinueButton() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, NewsLetterSubscriptionReviewPage.class);
 	}
 	
 	private void generateNewEmailList() {
@@ -68,24 +80,5 @@ public class NewsLetterManageSubscriptionListPage extends BasePageObject {
 			emailsTextArea.sendKeys("user@newsletter" + (id + 1) + ".com" + "\n");
 			id++;
 		}
-	}
-	
-	public void AddNewEmail(String email) {
-		emailsTextArea.clear();
-		emailsTextArea.sendKeys(email);
-	}
-	
-	public void RemoveEmail(String email) {
-		emailsTextArea.sendKeys(email);
-	}
-	
-	public NewsLetterSubscriptionReviewPage clickContinueButton() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, NewsLetterSubscriptionReviewPage.class);
-	}
-	
-	public NewsLetterSubscriptionPage clickCancelButton() {
-		cancelBtn.click();
-		return PageFactory.initElements(driver, NewsLetterSubscriptionPage.class);
 	}
 }

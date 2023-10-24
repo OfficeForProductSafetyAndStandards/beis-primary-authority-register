@@ -13,14 +13,13 @@ import org.openqa.selenium.support.PageFactory;
 import cucumber.api.DataTable;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DashboardPage;
 import uk.gov.beis.pageobjects.EnterTheDatePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
 import uk.gov.beis.utility.DataStore;
 
-public class PersonContactDetailsPage extends BasePageObject {
+public class ContactDetailsPage extends BasePageObject {
 	
 	@FindBy(id = "edit-salutation")
 	private WebElement titleField;
@@ -58,10 +57,7 @@ public class PersonContactDetailsPage extends BasePageObject {
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 	
-	@FindBy(id = "edit-cancel")
-	private WebElement cancelBtn;
-	
-	public PersonContactDetailsPage() throws ClassNotFoundException, IOException {
+	public ContactDetailsPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
@@ -86,7 +82,7 @@ public class PersonContactDetailsPage extends BasePageObject {
 		emailAddressField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 	}
 	
-	public void enterContactDetails(DataTable person) {
+	public void enterContactWithRandomName(DataTable person) {
 		clearAllFields();
 		
 		String firstName = RandomStringUtils.randomAlphabetic(8);
@@ -186,9 +182,9 @@ public class PersonContactDetailsPage extends BasePageObject {
 		return PageFactory.initElements(driver, EnterTheDatePage.class);
 	}
 	
-	public PersonAccountPage clickContinueButton() {
+	public GiveUserAccountPage clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, PersonAccountPage.class);
+		return PageFactory.initElements(driver, GiveUserAccountPage.class);
 	}
 	
 	public PersonUserRoleTypePage selectContinueButton() {
@@ -206,9 +202,9 @@ public class PersonContactDetailsPage extends BasePageObject {
 		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
 	}
 	
-	public DashboardPage clickCancelButton() {
-		cancelBtn.click();
-		return PageFactory.initElements(driver, DashboardPage.class);
+	public ContactCommunicationPreferencesPage goToContactCommunicationPreferencesPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, ContactCommunicationPreferencesPage.class);
 	}
 	
 	private void setContactDetails(DataTable person) {

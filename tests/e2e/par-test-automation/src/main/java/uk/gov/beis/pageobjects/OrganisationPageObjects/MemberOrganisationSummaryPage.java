@@ -13,7 +13,7 @@ import uk.gov.beis.pageobjects.AddAddressPage;
 import uk.gov.beis.pageobjects.EnterTheDatePage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanCoveragePage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
-import uk.gov.beis.pageobjects.UserManagement.PersonContactDetailsPage;
+import uk.gov.beis.pageobjects.UserManagement.ContactDetailsPage;
 import uk.gov.beis.utility.DataStore;
 
 public class MemberOrganisationSummaryPage extends BasePageObject {
@@ -75,9 +75,9 @@ public class MemberOrganisationSummaryPage extends BasePageObject {
 		return PageFactory.initElements(driver, EnterTheDatePage.class);
 	}
 	
-	public PersonContactDetailsPage selectEditPerson() {
+	public ContactDetailsPage selectEditPerson() {
 		editPersonLink.click();
-		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
+		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
 	public LegalEntityTypePage selectAddAnotherLegalEntity() {

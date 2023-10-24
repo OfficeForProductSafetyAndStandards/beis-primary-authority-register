@@ -77,9 +77,9 @@ public class PersonUserRoleTypePage extends BasePageObject {
 		return PageFactory.initElements(driver, PersonCreateAccountPage.class);
 	}
 	
-	public UserProfileConfirmationPage clickProfileReviewContinueButton() {
+	public ProfileReviewPage clickProfileReviewContinueButton() {
 		  continueBtn.click(); 
-		  return PageFactory.initElements(driver,UserProfileConfirmationPage.class); 
+		  return PageFactory.initElements(driver,ProfileReviewPage.class); 
 	}
 	
 	public DashboardPage clickCancelButton() {

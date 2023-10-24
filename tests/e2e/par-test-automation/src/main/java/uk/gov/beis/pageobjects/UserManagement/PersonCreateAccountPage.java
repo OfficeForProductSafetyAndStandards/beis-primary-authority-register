@@ -21,9 +21,9 @@ public class PersonCreateAccountPage extends BasePageObject {
 		super();
 	}
 	
-	public UserProfileConfirmationPage clickInviteButton() {
+	public ProfileReviewPage clickInviteButton() {
 		inviteBtn.click();
-		return PageFactory.initElements(driver, UserProfileConfirmationPage.class);
+		return PageFactory.initElements(driver, ProfileReviewPage.class);
 	}
 	
 	public DashboardPage clickCancelButton() {

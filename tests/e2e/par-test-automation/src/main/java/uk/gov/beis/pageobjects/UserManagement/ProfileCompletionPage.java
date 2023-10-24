@@ -9,21 +9,21 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.DashboardPage;
 
-public class UserProfileCompletionPage extends BasePageObject {
+public class ProfileCompletionPage extends BasePageObject {
 
 	@FindBy(xpath = "//a[contains(@class,'button')]")
 	private WebElement doneBtn;
 	
-	public UserProfileCompletionPage() throws ClassNotFoundException, IOException {
+	public ProfileCompletionPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
-	public DashboardPage completeApplication() {
+	public DashboardPage goToDashboardPage() {
 		doneBtn.click();
 		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 	
-	public PersonsProfilePage clickDoneGoToProfile() {
+	public PersonsProfilePage goToUserProfilePage() {
 		doneBtn.click();
 		return PageFactory.initElements(driver, PersonsProfilePage.class);
 	}

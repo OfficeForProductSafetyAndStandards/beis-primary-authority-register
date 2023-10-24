@@ -7,12 +7,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DashboardPage;
 
 public class ManagePeoplePage extends BasePageObject {
-	public ManagePeoplePage() throws ClassNotFoundException, IOException {
-		super();
-	}
 	
 	@FindBy(linkText = "Add a person")
 	private WebElement addPersonBtn;
@@ -32,12 +28,13 @@ public class ManagePeoplePage extends BasePageObject {
 	@FindBy(linkText = "Manage contact")
 	private WebElement manageContactBtn;
 	
-	@FindBy(linkText = "back to dashboard")
-	private WebElement dashboardBtn;
+	public ManagePeoplePage() throws ClassNotFoundException, IOException {
+		super();
+	}
 	
-	public PersonContactDetailsPage selectAddPerson() {
+	public ContactDetailsPage selectAddPerson() {
 		addPersonBtn.click();
-		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
+		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
 	public void enterNameOrEmail(String searchText) {
@@ -59,15 +56,5 @@ public class ManagePeoplePage extends BasePageObject {
 	public PersonsProfilePage clickManageContact() {
 		manageContactBtn.click();
 		return PageFactory.initElements(driver, PersonsProfilePage.class);
-	}
-	
-	public DashboardPage clickDashboadButton() {
-		dashboardBtn.click();
-		return PageFactory.initElements(driver, DashboardPage.class);
-	}
-	
-	public DashboardPage clickCancelButton() {
-		dashboardBtn.click();
-		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 }

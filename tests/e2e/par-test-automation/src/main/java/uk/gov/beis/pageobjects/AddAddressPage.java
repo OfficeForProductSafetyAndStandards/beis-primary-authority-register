@@ -11,7 +11,7 @@ import uk.gov.beis.pageobjects.AuthorityPageObjects.ONSCodePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
-import uk.gov.beis.pageobjects.UserManagement.PersonContactDetailsPage;
+import uk.gov.beis.pageobjects.UserManagement.ContactDetailsPage;
 
 public class AddAddressPage extends BasePageObject {
 	
@@ -88,9 +88,9 @@ public class AddAddressPage extends BasePageObject {
 		postcodeTextBox.sendKeys(postcode);
 	}
 	
-	public PersonContactDetailsPage goToAddContactDetailsPage() {
+	public ContactDetailsPage goToAddContactDetailsPage() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
+		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
 	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {

@@ -25,7 +25,7 @@ import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberListPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
-import uk.gov.beis.pageobjects.UserManagement.PersonContactDetailsPage;
+import uk.gov.beis.pageobjects.UserManagement.ContactDetailsPage;
 import uk.gov.beis.utility.DataStore;
 
 public class PartnershipConfirmationPage extends BasePageObject {
@@ -269,28 +269,28 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		return PageFactory.initElements(driver, TradingPage.class);
 	}
 	
-	public PersonContactDetailsPage addAnotherAuthorityContactButton() {
+	public ContactDetailsPage addAnotherAuthorityContactButton() {
 		addAuthorityContactLink.click();
-		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
+		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
-	public PersonContactDetailsPage addAnotherOrganisationContactButton() {
+	public ContactDetailsPage addAnotherOrganisationContactButton() {
 		addOrganisationContactLink.click();
-		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
+		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
-	public PersonContactDetailsPage editContactsDetailsButton() {
+	public ContactDetailsPage editContactsDetailsButton() {
 		WebElement editLink = driver.findElement(By.xpath(editContactLink.replace("?", "edit " + getContactsName().toLowerCase())));
 		editLink.click();
 		
-		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
+		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
-	public PersonContactDetailsPage removeContactsDetailsButton() {
+	public ContactDetailsPage removeContactsDetailsButton() {
 		WebElement removeLink = driver.findElement(By.xpath(removeContactLink.replace("?", "remove " + getContactsName().toLowerCase())));
 		removeLink.click();
 		
-		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
+		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
 	// Check Partnership Details

@@ -17,6 +17,7 @@ import uk.gov.beis.pageobjects.PartnershipPageObjects.AuthorityPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipAdvancedSearchPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipSearchPage;
 import uk.gov.beis.pageobjects.UserManagement.ManagePeoplePage;
+import uk.gov.beis.pageobjects.UserManagement.ContactRecordsPage;
 
 public class DashboardPage extends BasePageObject {
 	
@@ -172,9 +173,9 @@ public class DashboardPage extends BasePageObject {
 		return PageFactory.initElements(driver, ManagePeoplePage.class);
 	}
 	
-	public UserProfilePage selectManageProfileDetails() {
+	public ContactRecordsPage selectManageProfileDetails() {
 		manageYourProfileDetailsBtn.click();
-		return PageFactory.initElements(driver, UserProfilePage.class);
+		return PageFactory.initElements(driver, ContactRecordsPage.class);
 	}
 	
 	public NewsLetterSubscriptionPage selectManageSubscriptions() {

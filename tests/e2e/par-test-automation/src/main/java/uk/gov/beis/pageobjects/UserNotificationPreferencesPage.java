@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import uk.gov.beis.pageobjects.UserManagement.UserProfileConfirmationPage;
+import uk.gov.beis.pageobjects.UserManagement.ProfileReviewPage;
 
 public class UserNotificationPreferencesPage extends BasePageObject{
 
@@ -17,9 +17,9 @@ public class UserNotificationPreferencesPage extends BasePageObject{
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	WebElement continueBtn;
 
-	public UserProfileConfirmationPage selectContinue() {
+	public ProfileReviewPage selectContinue() {
 			continueBtn.click();
-		return PageFactory.initElements(driver, UserProfileConfirmationPage.class);
+		return PageFactory.initElements(driver, ProfileReviewPage.class);
 	}
 
 }

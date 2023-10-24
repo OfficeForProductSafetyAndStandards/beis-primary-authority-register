@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects.UserManagement;
+package uk.gov.beis.pageobjects.DuplicateClasses;
 
 import java.io.IOException;
 
@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.DashboardPage;
+import uk.gov.beis.pageobjects.UserManagement.ContactCommunicationPreferencesPage;
 
 public class UpdateUserContactDetailsPage extends BasePageObject {
 	public UpdateUserContactDetailsPage() throws ClassNotFoundException, IOException {
@@ -62,9 +63,9 @@ public class UpdateUserContactDetailsPage extends BasePageObject {
 		emailAddressField.sendKeys(email);
 	}
 	
-	public UpdateUserCommunicationPreferencesPage selectContinueButton() {
+	public ContactCommunicationPreferencesPage selectContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, UpdateUserCommunicationPreferencesPage.class);
+		return PageFactory.initElements(driver, ContactCommunicationPreferencesPage.class);
 	}
 	
 	public DashboardPage selectCancelButton() {
