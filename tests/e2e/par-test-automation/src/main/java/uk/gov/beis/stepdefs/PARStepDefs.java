@@ -730,13 +730,17 @@ public class PARStepDefs {
 			
 			DataStore.saveValue(UsableValues.AUTHORITY_NAME, RandomStringGenerator.getAuthorityName(3));
 			DataStore.saveValue(UsableValues.AUTHORITY_TYPE, data.get("Authority Type"));
-			DataStore.saveValue(UsableValues.AUTHORITY_ADDRESSLINE1, data.get("addressline1"));
-			DataStore.saveValue(UsableValues.AUTHORITY_ADDRESSLINE2, data.get("addressline2"));
-			DataStore.saveValue(UsableValues.AUTHORITY_TOWN, data.get("town"));
-			DataStore.saveValue(UsableValues.AUTHORITY_COUNTY, data.get("county"));
-			DataStore.saveValue(UsableValues.AUTHORITY_POSTCODE, data.get("postcode"));
+			
 			DataStore.saveValue(UsableValues.ONS_CODE, data.get("ONS Code"));
 			DataStore.saveValue(UsableValues.AUTHORITY_REGFUNCTION, data.get("Regulatory Function"));
+			
+			DataStore.saveValue(UsableValues.AUTHORITY_ADDRESSLINE1, data.get("AddressLine1"));
+			DataStore.saveValue(UsableValues.AUTHORITY_ADDRESSLINE2, data.get("AddressLine2"));
+			DataStore.saveValue(UsableValues.AUTHORITY_TOWN, data.get("Town"));
+			DataStore.saveValue(UsableValues.AUTHORITY_COUNTY, data.get("County"));
+			DataStore.saveValue(UsableValues.AUTHORITY_COUNTRY, data.get("Country"));
+			DataStore.saveValue(UsableValues.AUTHORITY_NATION, data.get("Nation"));
+			DataStore.saveValue(UsableValues.AUTHORITY_POSTCODE, data.get("Postcode"));
 		}
 		
 		LOG.info("Select manage authorities.");
@@ -747,30 +751,30 @@ public class PARStepDefs {
 		
 		LOG.info("Provide authority name.");
 		authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		authorityNamePage.clickContinue();
 		
 		LOG.info("Provide authority type.");
 		authorityTypePage.selectAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
+		authorityTypePage.clickContinue();
 		
 		LOG.info("Enter authority contact details.");
-		authorityAddressDetailsPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.AUTHORITY_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.AUTHORITY_ADDRESSLINE2),
-				DataStore.getSavedValue(UsableValues.AUTHORITY_TOWN), DataStore.getSavedValue(UsableValues.AUTHORITY_COUNTY), DataStore.getSavedValue(UsableValues.AUTHORITY_POSTCODE));
+		
+		addAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.AUTHORITY_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.AUTHORITY_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.AUTHORITY_TOWN), DataStore.getSavedValue(UsableValues.AUTHORITY_COUNTY), DataStore.getSavedValue(UsableValues.AUTHORITY_COUNTRY), 
+				DataStore.getSavedValue(UsableValues.AUTHORITY_NATION), DataStore.getSavedValue(UsableValues.AUTHORITY_POSTCODE));
+		addAddressPage.goToONSCodePage();
 		
 		LOG.info("Provide ONS code.");
 		onsCodePage.enterONSCode(DataStore.getSavedValue(UsableValues.ONS_CODE));
+		onsCodePage.clickContinue();
 		
 		LOG.info("Select regulatory function.");
 		regulatoryFunctionPage.selectRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
-		
-		LOG.info("Clicking the Save button on the Review page.");
-		//authorityConfirmationPage.saveChanges();
 	}
 
 	@Then("^the authority is created sucessfully$")
 	public void the_authority_is_created_sucessfully() throws Throwable {
 		LOG.info("On the Authorities Dashboard.");
-		
-		// Search for the new Authority and Assert it is in the Table.
-		
 		Assert.assertTrue("Details don't check out", authorityConfirmationPage.checkAuthorityDetails());
 		authorityConfirmationPage.saveChanges();
 	}
@@ -786,20 +790,28 @@ public class PARStepDefs {
 	@When("^the user updates all the fields for newly created authority$")
 	public void the_user_updates_all_the_fields_for_newly_created_authority() throws Throwable {
 		LOG.info("Updating all editble fields against selected authority");
-		authorityConfirmationPage.editAuthorityName();
 		DataStore.saveValue(UsableValues.AUTHORITY_NAME, DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + " Updated");
-		authorityNamePage.editAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		DataStore.saveValue(UsableValues.AUTHORITY_TYPE, "District");
+		DataStore.saveValue(UsableValues.ONS_CODE, DataStore.getSavedValue(UsableValues.ONS_CODE) + " Updated");
+		DataStore.saveValue(UsableValues.AUTHORITY_REGFUNCTION, "Alphabet learning");
+		
+		authorityConfirmationPage.editAuthorityName();
+		
+		authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		authorityNamePage.clickSave();
 		
 		authorityConfirmationPage.editAuthorityType();
-		DataStore.saveValue(UsableValues.AUTHORITY_TYPE, "District");
-		authorityTypePage.editAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
+		
+		authorityTypePage.selectAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
+		authorityTypePage.clickSave();
 		
 		authorityConfirmationPage.editONSCode();
-		DataStore.saveValue(UsableValues.ONS_CODE, DataStore.getSavedValue(UsableValues.ONS_CODE) + " Updated");
-		onsCodePage.editONSCode(DataStore.getSavedValue(UsableValues.ONS_CODE));
+		
+		onsCodePage.enterONSCode(DataStore.getSavedValue(UsableValues.ONS_CODE));
+		onsCodePage.clickSave();
 		
 		authorityConfirmationPage.editRegFunction();
-		DataStore.saveValue(UsableValues.AUTHORITY_REGFUNCTION, "Alphabet learning");
+		
 		regulatoryFunctionPage.editRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
 	}
 

@@ -41,14 +41,12 @@ public class AuthorityDashboardPage extends BasePageObject {
 		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 	
-	public AuthorityDashboardPage searchAuthority(String authorityName) {
+	public void searchAuthority(String authorityName) {
 		
 		if(searchInput.isDisplayed()) {
 			searchInput.sendKeys(authorityName);
 			searchBtn.click();
 		}
-		
-		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
 	}
 	
 	public AuthorityNamePage selectAddAuthority() {

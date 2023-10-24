@@ -22,8 +22,8 @@ Feature: Other
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user creates a new authority with the following details:
-      | Authority Type | ONS Code | Regulatory Function | addressline1  | addressline2 | town    | county         | postcode |
-      | Council Area   | 43453465 | Cookie control      | 32 Bramtom Rd | new build    | Windsor | Greater London | SL4 5PN  |
+      | Authority Type | ONS Code | Regulatory Function | AddressLine1  | AddressLine2 | Town    | County         | Country        | Nation  | Postcode |
+      | Council Area   | 43453465 | Cookie control      | 32 Bramtom Rd | new build    | Windsor | Greater London | United Kingdom | England | SL4 5PN  |
     Then the authority is created sucessfully
     #Update All Fields for newly created Authority
     When the user searches for the last created authority
@@ -136,7 +136,7 @@ Feature: Other
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user navigates to the statistics page
     Then the statistics page is dispalyed successfully
-  
+
   @regression @homePageLinks
   Scenario: Verify a User can view Guidance for Local Regulation Primary Authority Successfully (Happy Path - PAR-2289)
     Given the user is on the PAR home page

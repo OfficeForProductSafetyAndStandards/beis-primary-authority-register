@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
+import uk.gov.beis.pageobjects.AuthorityPageObjects.ONSCodePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
@@ -110,5 +111,10 @@ public class AddAddressPage extends BasePageObject {
 	public MemberOrganisationSummaryPage goToMemberOrganisationSummaryPage() {
 		saveBtn.click();
 		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
+	}
+	
+	public ONSCodePage goToONSCodePage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, ONSCodePage.class);
 	}
 }
