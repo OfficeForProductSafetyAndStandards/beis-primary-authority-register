@@ -1,7 +1,5 @@
 Feature: Other
-  As a user of the PAR service
-  I  want to be able to view/manage partnerships
-  So I can comply with the BEIS standards for goods and services
+  As a user of the PAR service, I  want to be able to view/manage partnerships, So I can comply with the BEIS standards for goods and services
 
   @regression @publicRegistrySearch
   Scenario: Verify a Non-registered User can Search the Public Register (Happy Path - PAR-2079)

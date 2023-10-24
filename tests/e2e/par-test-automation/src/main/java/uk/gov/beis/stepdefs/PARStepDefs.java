@@ -150,6 +150,7 @@ public class PARStepDefs {
 	private BusinessConfirmationPage businessConfirmationPage;
 	
 	// Search Pages
+	public PublicRegistrySearchPage publicRegistrySearchPage;
 	private PartnershipSearchPage partnershipSearchPage;
 	private PartnershipAdvancedSearchPage partnershipAdvancedSearchPage;
 	private InspectionPlanSearchPage inspectionPlanSearchPage;
@@ -321,6 +322,7 @@ public class PARStepDefs {
 		businessConfirmationPage = PageFactory.initElements(driver, BusinessConfirmationPage.class);
 		
 		// Search Pages
+		publicRegistrySearchPage = PageFactory.initElements(driver, PublicRegistrySearchPage.class);
 		partnershipSearchPage = PageFactory.initElements(driver, PartnershipSearchPage.class);
 		partnershipAdvancedSearchPage = PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 		inspectionPlanSearchPage = PageFactory.initElements(driver, InspectionPlanSearchPage.class);
@@ -411,9 +413,10 @@ public class PARStepDefs {
 	public void the_user_logs_in_with_the_user_credentials(String user) throws Throwable {
 		DataStore.saveValue(UsableValues.LOGIN_USER, user);
 		String pass = PropertiesUtil.getConfigPropertyValue(user);
+		
 		LOG.info("Logging in user with credentials; username: " + user + " and password " + pass);
 		parLoginPage.enterLoginDetails(user, pass);
-		parLoginPage.selectLogin();
+		parLoginPage.clickSignIn();
 	}
 
 	@Then("^the user is on the dashboard page$")
@@ -496,7 +499,7 @@ public class PARStepDefs {
 	
 	@When("^the user searches for the last created partnership$")
 	public void the_user_searches_for_the_last_created_partnership() throws Throwable {
-		parDashboardPage.checkAndAcceptCookies();
+		//parDashboardPage.checkAndAcceptCookies();
 
 		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
 		case ("par_helpdesk@example.com"):
@@ -1123,14 +1126,14 @@ public class PARStepDefs {
 	@Then("^the user can search for a PA Organisation Trading name Company number$")
 	public void the_user_can_search_for_a_PA_Organisation_Trading_name_Company_number() throws Throwable {
 		LOG.info("Enter business name and click the search button");
-		partnershipSearchPage.searchForPartnership(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
-		partnershipSearchPage.clickSearchButton();
+		publicRegistrySearchPage.searchForPartnership(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		publicRegistrySearchPage.clickSearchButton();
 	}
 
 	@Then("^the user is shown the information for that partnership$")
 	public void the_user_is_shown_the_information_for_that_partnership() throws Throwable {
 		LOG.info("Verify the Partnership contains the business name");
-		assertTrue(partnershipSearchPage.partnershipContains(DataStore.getSavedValue(UsableValues.BUSINESS_NAME)));
+		assertTrue(publicRegistrySearchPage.partnershipContains(DataStore.getSavedValue(UsableValues.BUSINESS_NAME)));
 	}
 
 	@When("^the user submits an inspection feedback against the inspection plan with the following details:$")
@@ -1146,7 +1149,6 @@ public class PARStepDefs {
 		parPartnershipConfirmationPage.selectSendInspectionFeedbk();
 		
 		enforcementOfficerContactDetailsPage.goToInspectionFeedbackDetailsPage();
-		//inspectionContactDetailsPage.proceed();
 		
 		inspectionFeedbackDetailsPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION));
 		inspectionFeedbackDetailsPage.chooseFile("link.txt");

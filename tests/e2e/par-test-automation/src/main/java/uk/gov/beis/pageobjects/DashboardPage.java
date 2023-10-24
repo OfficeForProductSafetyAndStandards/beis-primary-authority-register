@@ -3,7 +3,6 @@ package uk.gov.beis.pageobjects;
 import java.io.IOException;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -188,11 +187,17 @@ public class DashboardPage extends BasePageObject {
 	}
 
 	public DashboardPage checkAndAcceptCookies() {
-		try {
+		driver.manage().deleteAllCookies();
+		
+		if(!driver.findElements(By.id("block-cookiebanner")).isEmpty()) {
 			driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
-		} catch (NoSuchElementException e) {
-			// do nothing
 		}
+		
+		//try {
+		//	driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
+		//} catch (NoSuchElementException e) {
+			// do nothing
+		//}
 		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 

@@ -14,20 +14,28 @@ import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.utility.DataStore;
 
 public class LoginPage extends BasePageObject {
+	
+	@FindBy(xpath = "//button[contains(text(),'Accept')]")
+	private WebElement cookies;
+	
+	//@FindBy(name = "name")
+	@FindBy(id = "edit-name")
+	private WebElement username;
 
+	//@FindBy(name = "pass")
+	@FindBy(id = "edit-pass")
+	private WebElement password;
+
+	//@FindBy(name = "op")
+	@FindBy(id = "edit-submit")
+	private WebElement loginBtn;
+	
+	private String login = "//a[contains(text(),'?')]";
+	
 	public LoginPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(name = "name")
-	private WebElement username;
-
-	@FindBy(name = "pass")
-	private WebElement password;
-
-	@FindBy(name = "op")
-	private WebElement loginBtn;
-
+	
 	public LoginPage navigateToUrl() throws InterruptedException {
 		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url") + "/user/login%3Fcurrent");
 		checkLoginPage();
@@ -39,13 +47,12 @@ public class LoginPage extends BasePageObject {
 		return PageFactory.initElements(driver, PasswordPage.class);
 	}
 	
-	public LoginPage enterLoginDetails(String user, String pass) {
+	public void enterLoginDetails(String user, String pass) {
 		username.sendKeys(user);
 		password.sendKeys(pass);
-		return PageFactory.initElements(driver, LoginPage.class);
 	}
 
-	public DashboardPage selectLogin() {
+	public DashboardPage clickSignIn() {
 		loginBtn.click();
 		return PageFactory.initElements(driver, DashboardPage.class);
 	}
@@ -54,9 +61,7 @@ public class LoginPage extends BasePageObject {
 		driver.findElement(By.linkText("Sign out")).click();
 		return PageFactory.initElements(driver, HomePage.class);
 	}
-
-	private String login = "//a[contains(text(),'?')]";
-
+	
 	public LoginPage checkLoginPage() {
 		try {
 			driver.findElement(By.xpath(login.replace("?", "Sign in")));
@@ -67,17 +72,14 @@ public class LoginPage extends BasePageObject {
 		}
 		return PageFactory.initElements(driver, LoginPage.class);
 	}
-
-	@FindBy(xpath = "//button[contains(text(),'Accept')]")
-	private WebElement cookies;
-
+	
 	public LoginPage checkAndAcceptCookies() {
 		driver.manage().deleteAllCookies();
-		try {
+		
+		if(!driver.findElements(By.id("block-cookiebanner")).isEmpty()) {
 			driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
-		} catch (NoSuchElementException e) {
-			// do nothing
 		}
+		
 		return PageFactory.initElements(driver, LoginPage.class);
 	}
 

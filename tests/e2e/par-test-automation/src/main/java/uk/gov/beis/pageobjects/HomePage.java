@@ -2,6 +2,7 @@ package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -43,7 +44,6 @@ public class HomePage extends BasePageObject {
 	@FindBy(xpath = "//a[contains(text(),'Open Government Licence')]")
 	private WebElement openGovernmentLicenceLink;
 	
-	//@FindBy(xpath = "//a[contains(text(),'Crown copyright')]")
 	@FindBy(linkText = "© Crown copyright")
 	private WebElement crownCopyrightLink;
 	
@@ -58,13 +58,18 @@ public class HomePage extends BasePageObject {
 
 	public HomePage checkAndAcceptCookies() {
 		driver.manage().deleteAllCookies();
-		try {
-			if (cookies.isDisplayed()) {
-				cookies.click();
-			}
-		} catch (Exception e) {
-			// do nothing
+		
+		if(!driver.findElements(By.id("block-cookiebanner")).isEmpty()) {
+			driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
 		}
+		
+		//try {
+		//	if (cookies.isDisplayed()) {
+		//		cookies.click();
+		//	}
+		//} catch (Exception e) {
+			// do nothing
+		//}
 		return PageFactory.initElements(driver, HomePage.class);
 	}
 

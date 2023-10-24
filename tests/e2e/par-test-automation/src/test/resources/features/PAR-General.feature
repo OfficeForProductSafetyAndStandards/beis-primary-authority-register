@@ -1,7 +1,5 @@
 Feature: General
-  As a user of the PAR service
-  I  want to be able to view/manage partnerships
-  So I can comply with the BEIS standards for goods and services
+  As a user of the PAR service, I  want to be able to view/manage partnerships, So I can comply with the BEIS standards for goods and services
 
   @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @legalEntities @testUpdates
   Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
@@ -205,7 +203,7 @@ Feature: General
       | Enforcement Action | Title               | Regulatory Function | Description                  | Attachment |
       | Proposed           | Enforcement Title 1 | Cookie control      | Test Enforcement Description | link.txt   |
     Then all the fields for the enforcement notice are updated correctly
-    #Approve the Enforcement Notice
+    #	Approve the Enforcement Notice
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user selects the last created enforcement notice
@@ -276,7 +274,7 @@ Feature: General
       | Description |
       | Test 1      |
     Then the Deviation Request is created Successfully
-    # Re-login as primary authority and check and approve deviation request
+    # Login as primary authority and check and approve deviation request
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created deviation request
@@ -302,7 +300,7 @@ Feature: General
       | Description         |
       | Help Desk Response. |
     Then the response is displayed successfully
-    #login as authority and check message received correctly
+    # Login as authority and check message received correctly
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created deviation request
@@ -317,7 +315,7 @@ Feature: General
       | Description              |
       | Test Inspection Feedback |
     Then the inspection feedback is created successfully
-    #Re-login as primary authority and check and approve inspection feedback
+    #	Login as primary authority and check and approve inspection feedback
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created inspection feedback
@@ -387,8 +385,7 @@ Feature: General
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created general enquiry
     Then the general enquiry response is displayed successfully
-
-  # Add the Help Desk Response to General Enquiry.
+	
   @regression @inspectionplan
   Scenario: Verify Revocation and then Removal of an Inspection Plan (Happy Path - PAR-1866, PAR-1867)
     Given the user is on the PAR login page
@@ -493,8 +490,7 @@ Feature: General
     When the user searches for the last created partnership
     And the user Ceases a single member organisation of the patnership with the current date
     Then the member organistion has been Ceased successfully
-
-  # Upload a Members list Test goes here.
+	
   @regression @coordinated @organisationMember
   Scenario: Verify the Upload of a Members List to a Coordinated partnership (Happy Path - PAR-1872)
     Given the user is on the PAR login page
