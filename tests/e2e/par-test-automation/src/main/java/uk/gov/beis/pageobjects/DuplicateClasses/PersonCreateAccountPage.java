@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects.UserManagement;
+package uk.gov.beis.pageobjects.DuplicateClasses;
 
 import java.io.IOException;
 
@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.DashboardPage;
+import uk.gov.beis.pageobjects.UserManagement.ProfileReviewPage;
 
 public class PersonCreateAccountPage extends BasePageObject {
 	

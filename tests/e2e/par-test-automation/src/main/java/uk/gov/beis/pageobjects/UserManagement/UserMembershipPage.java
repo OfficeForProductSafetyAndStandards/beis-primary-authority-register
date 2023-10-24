@@ -14,14 +14,10 @@ import org.openqa.selenium.support.ui.Select;
 import cucumber.api.DataTable;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DashboardPage;
 import uk.gov.beis.utility.DataStore;
 
-public class PersonMembershipPage extends BasePageObject {
-	public PersonMembershipPage() throws ClassNotFoundException, IOException {
-		super();
-	}
-
+public class UserMembershipPage extends BasePageObject {
+	
 	// Organisations
 	@FindBy(id = "edit-par-data-organisation-id-68")
 	private WebElement testBusinessCheckbox;
@@ -58,8 +54,9 @@ public class PersonMembershipPage extends BasePageObject {
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 	
-	@FindBy(id = "edit-cancel")
-	private WebElement cancelBtn;
+	public UserMembershipPage() throws ClassNotFoundException, IOException {
+		super();
+	}
 	
 	public void selectTestBusiness() {
 		if(testBusinessCheckbox.isSelected()) {
@@ -116,14 +113,9 @@ public class PersonMembershipPage extends BasePageObject {
 		tempAuthoritySelectionMethod();
 	}
 	
-	public PersonUserRoleTypePage clickContinueButton() {
+	public UserRoleTypePage clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, PersonUserRoleTypePage.class);
-	}
-	
-	public DashboardPage clickCancelButton() {
-		cancelBtn.click();
-		return PageFactory.initElements(driver, DashboardPage.class);
+		return PageFactory.initElements(driver, UserRoleTypePage.class);
 	}
 	
 	// These methods are what the Web Elements should be doing which the Accessibility branch should have.

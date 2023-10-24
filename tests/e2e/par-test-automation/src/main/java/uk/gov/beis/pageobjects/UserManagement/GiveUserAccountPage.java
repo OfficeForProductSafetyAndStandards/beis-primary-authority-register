@@ -31,8 +31,8 @@ public class GiveUserAccountPage extends BasePageObject {
 		existingAccountRadial.click();
 	}
 	
-	public PersonMembershipPage clickContinueButton() {
+	public UserMembershipPage clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, PersonMembershipPage.class);
+		return PageFactory.initElements(driver, UserMembershipPage.class);
 	}
 }

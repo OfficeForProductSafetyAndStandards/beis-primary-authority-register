@@ -9,10 +9,9 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DuplicateClasses.UpdateUserContactDetailsPage;
 import uk.gov.beis.utility.DataStore;
 
-public class PersonsProfilePage extends BasePageObject {
+public class UserProfilePage extends BasePageObject {
 	
 	@FindBy(tagName = "h1")
 	private WebElement profileHeader;
@@ -47,7 +46,7 @@ public class PersonsProfilePage extends BasePageObject {
 	@FindBy(linkText = "Done")
 	private WebElement doneBtn;
 	
-	public PersonsProfilePage() throws ClassNotFoundException, IOException {
+	public UserProfilePage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
@@ -126,9 +125,9 @@ public class PersonsProfilePage extends BasePageObject {
 		return driver.findElements(By.xpath(contactsNameLocator.replace("?", getPersonsName()))).size() == 1;
 	}
 	
-	public UpdateUserContactDetailsPage clickUpdateUserButton() {
+	public ContactDetailsPage clickUpdateUserButton() {
 		updateUserBtn.click();
-		return PageFactory.initElements(driver, UpdateUserContactDetailsPage.class);
+		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 
 	public MergeContactRecordsPage clickMergeContactRecords() {

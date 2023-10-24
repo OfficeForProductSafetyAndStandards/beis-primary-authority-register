@@ -36,7 +36,7 @@ import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.*;
 import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.*;
 
 import uk.gov.beis.pageobjects.DuplicateClasses.BusinessContactDetailsPage; // Will be removed once the test is updated.
-
+import uk.gov.beis.pageobjects.DuplicateClasses.PersonCreateAccountPage;
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
 
@@ -72,12 +72,10 @@ public class PARStepDefs {
 	// User Management
 	private ManagePeoplePage managePeoplePage;
 	private ContactDetailsPage contactDetailsPage;
-	
-	private PersonsProfilePage personsProfilePage;	// Duplicates
+	private UserProfilePage userProfilePage;
 	private GiveUserAccountPage giveUserAccountPage;
-	
-	private PersonMembershipPage personMembershipPage;
-	private PersonUserRoleTypePage personUserTypePage;
+	private UserMembershipPage userMembershipPage;
+	private UserRoleTypePage userTypePage;
 	private PersonCreateAccountPage personCreateAccountPage;
 	private ProfileReviewPage profileReviewPage;
 	private ProfileCompletionPage profileCompletionPage;
@@ -85,6 +83,7 @@ public class PARStepDefs {
 	// Contact Record
 	private ContactRecordsPage contactRecordsPage;
 	private ContactCommunicationPreferencesPage contactCommunicationPreferencesPage;
+	
 	private UserCommsPreferencesPage userCommsPreferencesPage;			// Duplicate
 	
 	private ContactUpdateSubscriptionPage contactUpdateSubscriptionPage;
@@ -207,7 +206,7 @@ public class PARStepDefs {
 	
 	// Shared Pages
 	private AddAddressPage addAddressPage;
-	private BusinessInvitePage parBusinessInvitePage;
+	private AccountInvitePage accountInvitePage;
 	private EnterTheDatePage enterTheDatePage;
 	private CompletionPage completionPage;
 	private RevokePage revokePage;
@@ -249,11 +248,11 @@ public class PARStepDefs {
 		
 		contactDetailsPage = PageFactory.initElements(driver, ContactDetailsPage.class);
 		managePeoplePage = PageFactory.initElements(driver, ManagePeoplePage.class);
-		personMembershipPage = PageFactory.initElements(driver, PersonMembershipPage.class);
+		userMembershipPage = PageFactory.initElements(driver, UserMembershipPage.class);
 		giveUserAccountPage = PageFactory.initElements(driver, GiveUserAccountPage.class);
-		personUserTypePage = PageFactory.initElements(driver, PersonUserRoleTypePage.class);
+		userTypePage = PageFactory.initElements(driver, UserRoleTypePage.class);
 		personCreateAccountPage = PageFactory.initElements(driver, PersonCreateAccountPage.class);
-		personsProfilePage = PageFactory.initElements(driver, PersonsProfilePage.class);
+		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
 		
 		// Contact Record
 		contactUpdateSubscriptionPage = PageFactory.initElements(driver, ContactUpdateSubscriptionPage.class);
@@ -379,7 +378,7 @@ public class PARStepDefs {
 		// Shared Pages
 		enforcementOfficerContactDetailsPage = PageFactory.initElements(driver, EnforcementOfficerContactDetailsPage.class);
 		addAddressPage = PageFactory.initElements(driver, AddAddressPage.class);
-		parBusinessInvitePage = PageFactory.initElements(driver, BusinessInvitePage.class);
+		accountInvitePage = PageFactory.initElements(driver, AccountInvitePage.class);
 		enterTheDatePage = PageFactory.initElements(driver, EnterTheDatePage.class);
 		completionPage = PageFactory.initElements(driver, CompletionPage.class);
 		revokePage = PageFactory.initElements(driver, RevokePage.class);
@@ -477,7 +476,7 @@ public class PARStepDefs {
 		contactDetailsPage.goToInviteUserAccountPage();
 		
 		LOG.info("Send invitation to user");
-		parBusinessInvitePage.sendInvite();
+		accountInvitePage.sendInvite();
 	}
 
 	@Then("^the first part of the partnership application is successfully completed$")
@@ -1600,18 +1599,18 @@ public class PARStepDefs {
 		giveUserAccountPage.clickContinueButton();
 
 		LOG.info("Successfully chose to invite the person to create an account.");
-		personMembershipPage.selectOrganisation(details);
-		personMembershipPage.selectAuthority(details);
-		personMembershipPage.clickContinueButton();
+		userMembershipPage.selectOrganisation(details);
+		userMembershipPage.selectAuthority(details);
+		userMembershipPage.clickContinueButton();
 		
 		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
 		LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
 
-		personUserTypePage.selectEnforcementOfficer();
-		personUserTypePage.clickContinueButton();
+		userTypePage.selectEnforcementOfficer();
+		userTypePage.goToAccountInvitePage();
 		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
 
-		personCreateAccountPage.clickInviteButton();
+		accountInvitePage.clickInviteButton();
 
 		LOG.info("Successfully sent account invite.");
 
@@ -1621,12 +1620,12 @@ public class PARStepDefs {
 
 	@Then("^the user can verify the person was created successfully and can see resend an account invite$")
 	public void the_user_can_verify_the_person_was_created_successfully_and_can_see_resend_an_account_invite() throws Throwable {
-		assertTrue("Failed: Header does not contain the person's fullname and title.", personsProfilePage.checkHeaderForName());
-		assertTrue("Failed: Cannot find the Re-send account creation invite link.", personsProfilePage.checkForUserAccountInvitationLink());
-		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", personsProfilePage.checkContactName());
-		assertTrue("Failed: Contact email field does not contain the correct email address.", personsProfilePage.checkContactEmail());
-		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", personsProfilePage.checkContactPhoneNumbers());
-		assertTrue("Failed: Both Contact Locations are not displayed.", personsProfilePage.seeMoreContactInformation());
+		assertTrue("Failed: Header does not contain the person's fullname and title.", userProfilePage.checkHeaderForName());
+		assertTrue("Failed: Cannot find the Re-send account creation invite link.", userProfilePage.checkForUserAccountInvitationLink());
+		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", userProfilePage.checkContactName());
+		assertTrue("Failed: Contact email field does not contain the correct email address.", userProfilePage.checkContactEmail());
+		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", userProfilePage.checkContactPhoneNumbers());
+		assertTrue("Failed: Both Contact Locations are not displayed.", userProfilePage.seeMoreContactInformation());
 	}
 
 	@When("^the user searches for an existing person successfully$")
@@ -1647,7 +1646,7 @@ public class PARStepDefs {
 	@When("^the user updates an existing person:$")
 	public void the_user_updates_an_existing_person_with_the_following_details(DataTable details) throws Throwable {
 		LOG.info("Updating an existing person.");
-		personsProfilePage.clickUpdateUserButton();
+		userProfilePage.clickUpdateUserButton();
 		
 		contactDetailsPage.enterContactWithRandomName(details);
 		contactDetailsPage.clickContinueButton();
@@ -1658,19 +1657,19 @@ public class PARStepDefs {
 		giveUserAccountPage.clickContinueButton();
 
 		LOG.info("Successfully chose to invite the person to create an account.");
-		personMembershipPage.selectOrganisation(details);
-		personMembershipPage.selectAuthority(details);
-		personMembershipPage.clickContinueButton();
+		userMembershipPage.selectOrganisation(details);
+		userMembershipPage.selectAuthority(details);
+		userMembershipPage.clickContinueButton();
 
 		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
 		LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
 
-		personUserTypePage.selectAuthorityMember();
-		personUserTypePage.clickContinueButton();
+		userTypePage.selectAuthorityMember();
+		userTypePage.goToAccountInvitePage();
 
 		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
 
-		personCreateAccountPage.clickInviteButton();
+		accountInvitePage.clickInviteButton();
 
 		LOG.info("Successfully sent account invite.");
 
@@ -1681,12 +1680,12 @@ public class PARStepDefs {
 	@Then("^the user can verify the person was updated successfully and can see resend an account invite$")
 	public void the_user_can_verify_the_person_was_updated_successfully_and_can_see_resend_an_account_invite()
 			throws Throwable {
-		assertTrue("Failed: Header does not contain the person's fullname and title.", personsProfilePage.checkHeaderForName());
-		assertTrue("Failed: Cannot find the Re-send account creation invite link.", personsProfilePage.checkForUserAccountInvitationLink());
-		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", personsProfilePage.checkContactName());
-		assertTrue("Failed: Contact email field does not contain the correct email address.", personsProfilePage.checkContactEmail());
-		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", personsProfilePage.checkContactPhoneNumbers());
-		assertTrue("Failed: Both Contact Locations are not displayed.", personsProfilePage.seeMoreContactInformation());
+		assertTrue("Failed: Header does not contain the person's fullname and title.", userProfilePage.checkHeaderForName());
+		assertTrue("Failed: Cannot find the Re-send account creation invite link.", userProfilePage.checkForUserAccountInvitationLink());
+		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", userProfilePage.checkContactName());
+		assertTrue("Failed: Contact email field does not contain the correct email address.", userProfilePage.checkContactEmail());
+		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", userProfilePage.checkContactPhoneNumbers());
+		assertTrue("Failed: Both Contact Locations are not displayed.", userProfilePage.seeMoreContactInformation());
 	}
 	
 	@When("^the user searches for a partnership with the Test Business \"([^\"]*)\" name$")
@@ -1952,8 +1951,8 @@ public class PARStepDefs {
 		contactDetailsPage.selectContinueButton();
 
 		LOG.info("Choosing user account type.");
-		personUserTypePage.selectAuthorityMember();
-		personUserTypePage.clickContinueButton();
+		userTypePage.selectAuthorityMember();
+		userTypePage.goToAccountInvitePage();
 		
 		LOG.info("Sending new user an account invite.");
 		personCreateAccountPage.clickInviteButton();
@@ -1977,8 +1976,8 @@ public class PARStepDefs {
 		contactDetailsPage.selectContinueButton();	
 		
 		LOG.info("Updating user account type.");
-		personUserTypePage.selectAuthorityManager();
-		personUserTypePage.clickContinueButton();	
+		userTypePage.selectAuthorityManager();
+		userTypePage.goToAccountInvitePage();	
 
 		profileReviewPage.clickSaveButton();
 	}
@@ -2161,15 +2160,15 @@ public class PARStepDefs {
 
 		LOG.info("Successfully chose to use the existing account.");
 
-		personMembershipPage.selectCityEnforcementSquad();
-		personMembershipPage.selectUpperWestSideBoroughCouncil();
-		personMembershipPage.selectLowerEstSideBoroughCouncil();
-		personMembershipPage.clickContinueButton();
+		userMembershipPage.selectCityEnforcementSquad();
+		userMembershipPage.selectUpperWestSideBoroughCouncil();
+		userMembershipPage.selectLowerEstSideBoroughCouncil();
+		userMembershipPage.clickContinueButton();
 		
 		LOG.info("Successfully chose the contacts Authority memberships.");
 
-		personUserTypePage.selectAuthorityMember();
-		personUserTypePage.clickProfileReviewContinueButton();
+		userTypePage.selectAuthorityMember();
+		userTypePage.goToProfileReviewPage();
 		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
 
 		profileReviewPage.goToProfileCompletionPage();
@@ -2180,14 +2179,14 @@ public class PARStepDefs {
 	public void the_user_can_verify_the_contact_record_was_added_to_the_user_profile() throws Throwable {
 		LOG.info("Verifying the Duplicate Contact Record was Added Successfully.");
 		
-		Assert.assertTrue(personsProfilePage.checkContactRecordAdded());
+		Assert.assertTrue(userProfilePage.checkContactRecordAdded());
 	}
 
 	@When("^the user merges the contact record$")
 	public void the_user_merges_the_contact_record() throws Throwable {
 		LOG.info("Selecting Contact Records to Merge.");
 		
-		personsProfilePage.clickMergeContactRecords();
+		userProfilePage.clickMergeContactRecords();
 		mergeContactRecordsPage.mergeContacts();
 		mergeContactRecordsPage.clickContinue();
 		
@@ -2199,7 +2198,7 @@ public class PARStepDefs {
 	public void the_user_can_verify_the_contact_record_was_merged_successfully() throws Throwable {
 		LOG.info("Verifying the Contact Records have been Merged Successfully.");
 		
-		Assert.assertTrue(personsProfilePage.checkContactRecord());
+		Assert.assertTrue(userProfilePage.checkContactRecord());
 	}
 	
 	@When("^the user adds a single member organisation to the patnership with the following details:$")

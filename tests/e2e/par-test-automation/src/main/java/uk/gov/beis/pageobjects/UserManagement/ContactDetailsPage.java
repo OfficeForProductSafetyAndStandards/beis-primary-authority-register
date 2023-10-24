@@ -13,6 +13,7 @@ import org.openqa.selenium.support.PageFactory;
 import cucumber.api.DataTable;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.AccountInvitePage;
 import uk.gov.beis.pageobjects.EnterTheDatePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
@@ -167,9 +168,9 @@ public class ContactDetailsPage extends BasePageObject {
 		contactNotesTextfield.sendKeys(note);
 	}
 	
-	public BusinessInvitePage goToInviteUserAccountPage() {
+	public AccountInvitePage goToInviteUserAccountPage() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, BusinessInvitePage.class);
+		return PageFactory.initElements(driver, AccountInvitePage.class);
 	}
 	
 	public SICCodePage goToSICCodePage() {
@@ -187,9 +188,9 @@ public class ContactDetailsPage extends BasePageObject {
 		return PageFactory.initElements(driver, GiveUserAccountPage.class);
 	}
 	
-	public PersonUserRoleTypePage selectContinueButton() {
+	public UserRoleTypePage selectContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, PersonUserRoleTypePage.class);
+		return PageFactory.initElements(driver, UserRoleTypePage.class);
 	}
 	
 	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {

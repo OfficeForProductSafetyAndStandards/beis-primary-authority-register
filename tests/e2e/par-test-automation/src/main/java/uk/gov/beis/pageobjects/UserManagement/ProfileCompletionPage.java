@@ -23,8 +23,8 @@ public class ProfileCompletionPage extends BasePageObject {
 		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 	
-	public PersonsProfilePage goToUserProfilePage() {
+	public UserProfilePage goToUserProfilePage() {
 		doneBtn.click();
-		return PageFactory.initElements(driver, PersonsProfilePage.class);
+		return PageFactory.initElements(driver, UserProfilePage.class);
 	}
 }

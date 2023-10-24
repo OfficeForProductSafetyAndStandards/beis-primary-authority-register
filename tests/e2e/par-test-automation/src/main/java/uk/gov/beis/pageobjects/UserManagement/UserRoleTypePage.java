@@ -9,14 +9,11 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DashboardPage;
+import uk.gov.beis.pageobjects.AccountInvitePage;
 import uk.gov.beis.utility.DataStore;
 
-public class PersonUserRoleTypePage extends BasePageObject {
-	public PersonUserRoleTypePage() throws ClassNotFoundException, IOException {
-		super();
-	}
-
+public class UserRoleTypePage extends BasePageObject {
+	
 	@FindBy(id = "edit-role-par-authority")
 	private WebElement authorityMemberRadioBtn;
 	
@@ -39,10 +36,11 @@ public class PersonUserRoleTypePage extends BasePageObject {
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 	
-	@FindBy(id = "edit-cancel")
-	private WebElement cancelBtn;
+	public UserRoleTypePage() throws ClassNotFoundException, IOException {
+		super();
+	}
 	
-	public void selectOrganisationMember() { // Disappeared from the page but was there when I first created this Class??
+	public void selectOrganisationMember() {
 		organisationMemberRadioBtn.click();
 		getRoleName();
 	}
@@ -72,19 +70,14 @@ public class PersonUserRoleTypePage extends BasePageObject {
 		getRoleName();
 	}
 	
-	public PersonCreateAccountPage clickContinueButton() {
+	public AccountInvitePage goToAccountInvitePage() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, PersonCreateAccountPage.class);
+		return PageFactory.initElements(driver, AccountInvitePage.class);
 	}
 	
-	public ProfileReviewPage clickProfileReviewContinueButton() {
+	public ProfileReviewPage goToProfileReviewPage() {
 		  continueBtn.click(); 
 		  return PageFactory.initElements(driver,ProfileReviewPage.class); 
-	}
-	
-	public DashboardPage clickCancelButton() {
-		cancelBtn.click();
-		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 	
 	private void getRoleName() {

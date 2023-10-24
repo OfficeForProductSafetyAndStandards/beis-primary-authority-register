@@ -53,8 +53,8 @@ public class ManagePeoplePage extends BasePageObject {
 		return personNameTableElement.getText();
 	}
 	
-	public PersonsProfilePage clickManageContact() {
+	public UserProfilePage clickManageContact() {
 		manageContactBtn.click();
-		return PageFactory.initElements(driver, PersonsProfilePage.class);
+		return PageFactory.initElements(driver, UserProfilePage.class);
 	}
 }
