@@ -508,4 +508,11 @@ Feature: General
     When the user searches for the last created partnership
     And the user Uploads a members list to the coordinated partnership with the following file "memberslist.csv"
     Then the members list is uploaded successfully
-  # Change the Members list type Test goes here.
+  
+  @regression @coordinated @organisationMember @test
+  Scenario: Verify a Coordinated Partnerships Members List Type can be Changed Successfully (Happy Path - PAR-2325)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user changes the members list type to "externalRequest"
+    Then the members list type is changed successfully

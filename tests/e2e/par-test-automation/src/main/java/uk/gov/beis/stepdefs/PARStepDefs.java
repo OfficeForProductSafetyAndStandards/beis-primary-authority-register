@@ -115,6 +115,9 @@ public class PARStepDefs {
 	
 	// Coordinated Partnership
 	private MemberListPage memberListPage;
+	private MembersListTypePage membersListTypePage;
+	private MemberListCountPage memberListCountPage;
+	private MembersListUpToDatePage membersListUpToDatePage;
 	private UploadListOfMembersPage uploadListOfMembersPage;
 	private ConfirmMemberUploadPage confirmMemberUploadPage;
 	private MemberListUploadedPage memberListUploadedPage;
@@ -289,6 +292,9 @@ public class PARStepDefs {
 		
 		// Coordinated Partnership
 		memberListPage = PageFactory.initElements(driver, MemberListPage.class);
+		membersListTypePage = PageFactory.initElements(driver, MembersListTypePage.class);
+		memberListCountPage = PageFactory.initElements(driver, MemberListCountPage.class);
+		membersListUpToDatePage = PageFactory.initElements(driver, MembersListUpToDatePage.class);
 		membershipCeasedPage = PageFactory.initElements(driver, MembershipCeasedPage.class);
 		uploadListOfMembersPage = PageFactory.initElements(driver, UploadListOfMembersPage.class);
 		confirmMemberUploadPage = PageFactory.initElements(driver, ConfirmMemberUploadPage.class);
@@ -2423,6 +2429,34 @@ public class PARStepDefs {
 		
 		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
 		Assert.assertTrue("FAILED: Business names are not displayed in the table.", memberListPage.checkMembersListUploaded());
+	}
+	
+	@When("^the user changes the members list type to \"([^\"]*)\"$")
+	public void the_user_changes_the_members_list_type_to(String listType) throws Throwable {
+		LOG.info("Uploading a Members List CSV File to a Co-ordinated Partnership.");
+		
+		partnershipAdvancedSearchPage.selectOrganisationLink();
+		parPartnershipConfirmationPage.selectChangeMembersListTypeLink();
+		
+		membersListTypePage.selectMemberListType(listType);
+		membersListTypePage.clickContinue();
+		
+		memberListCountPage.clickContinue();
+		
+		membersListUpToDatePage.selectYesRadial();
+		membersListUpToDatePage.clicksave();
+	}
+
+	@Then("^the members list type is changed successfully$")
+	public void the_members_list_type_is_changed_successfully() throws Throwable {
+		LOG.info("Verifying the Members List Type has been Changed Successfully.");
+		
+		String requestText = "Please request a copy of the Primary Authority Membership List from the co-ordinator.";
+		
+		String copyAvailableText = " The co-ordinator must make the copy available as soon as reasonably practicable and, in any event, not later "
+				+ "than the third working day after the date of receiving the request at no charge.";
+		
+		Assert.assertTrue("FAILED: Memebers List Type was not Changed.", parPartnershipConfirmationPage.checkMembersListType(requestText + copyAvailableText));
 	}
 	
 	@When("^the user navigates to the statistics page$")

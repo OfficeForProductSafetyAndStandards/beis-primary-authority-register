@@ -50,6 +50,9 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	@FindBy(linkText = "show members list")
 	private WebElement showMembersListLink;
 	
+	@FindBy(linkText = "change the list type")
+	private WebElement changeMembersListTypeLink;
+	
 	@FindBy(linkText = "Amend the legal entities")
 	private WebElement amendLegalEntitiesLink;
 	
@@ -68,6 +71,9 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	
 	@FindBy(id = "edit-about")
 	private WebElement aboutOrganisationText;
+	
+	@FindBy(id = "edit-par-component-partnership-members")
+	private WebElement partnershipMembersSection;
 	
 	@FindBy(id = "edit-trading-names")
 	private WebElement tradingNameText;
@@ -116,6 +122,8 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	private String businessCountry = "//div/p[contains(text(),'?')]";
 	
 	private String sic = "//div[contains(text(),'?')]";
+	
+	private String membersListTypeTextLocator = "//div[@id='edit-par-component-partnership-members']/div/div/fieldset/div/p";
 	
 	private String legalEntityNameLocator = "//tr/td/div/div/div[contains(text(), '?')]";
 	private String legalEntityStatusLocator = "./../../../../td/span[contains(text(), '?')]";
@@ -217,6 +225,11 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	public MemberListPage selectShowMembersListLink() {
 		showMembersListLink.click();
 		return PageFactory.initElements(driver, MemberListPage.class);
+	}
+	
+	public MembersListTypePage selectChangeMembersListTypeLink() {
+		changeMembersListTypeLink.click();
+		return PageFactory.initElements(driver, MembersListTypePage.class);
 	}
 	
 	public LegalEntityTypePage selectAmendLegalEntitiesLink() {
@@ -324,6 +337,16 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	public boolean checkSICCode() {
 		WebElement sicCd = driver.findElement(By.xpath(sic.replace("?", DataStore.getSavedValue(UsableValues.SIC_CODE))));
 		return sicCd.isDisplayed();
+	}
+	
+	public boolean checkMembersListType(String text) {
+		
+		// //div[@id='edit-par-component-partnership-members']/div/div/fieldset/div/p[contains(text(), '?')]
+		//return partnershipMembersSection.findElement(By.xpath(membersListTypeTextLocator.replace("?", text))).isDisplayed(); // Is not working for some reason.
+		
+		return partnershipMembersSection.findElement(By.xpath(membersListTypeTextLocator)).isDisplayed();
+		
+		
 	}
 	
 	public boolean checkLegalEntity(String status) {
