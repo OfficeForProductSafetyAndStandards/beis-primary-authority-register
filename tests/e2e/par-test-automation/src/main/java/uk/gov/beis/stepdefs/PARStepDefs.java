@@ -27,6 +27,7 @@ import uk.gov.beis.pageobjects.OrganisationPageObjects.*;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.*;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.*;
 import uk.gov.beis.pageobjects.TransferPartnerships.*;
+import uk.gov.beis.pageobjects.UserDashboardPageObjects.*;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.*;
 import uk.gov.beis.pageobjects.AdvicePageObjects.*;
 import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.*;
@@ -45,7 +46,7 @@ public class PARStepDefs {
 	public static WebDriver driver;
 	
 	// PAR Home Page
-	private HomePage parHomePage;
+	private HomePage homePage;
 	private LocalRegulationPrimaryAuthorityPage localRegulationPrimaryAuthorityPage;
 	private PrimaryAuthorityDocumentsPage primaryAuthorityDocumentsPage;
 	private TermsAndConditionsPage termsAndConditionsPage;
@@ -56,15 +57,14 @@ public class PARStepDefs {
 	private CrownCopyrightPage crownCopyrightPage;
 	
 	// Login
-	private LoginPage parLoginPage;
+	private LoginPage loginPage;
 	private PasswordPage passwordPage;
 	private MailLogPage mailLogPage;
 	private UserTermsPage userTermsPage;
 	
 	// Dash-board
 	private DashboardPage parDashboardPage;
-	private AuthorityDashboardPage authoritiesDashboardPage;
-	private OrganisationDashboardPage organisationDashboardPage;
+	private HelpDeskDashboardPage helpDeskDashboardPage;
 	
 	// Statistics
 	private PARReportingPage parReportingPage;
@@ -130,6 +130,7 @@ public class PARStepDefs {
 	private TransferCompletedPage transferCompletedPage;
 	
 	// Authority
+	private AuthoritiesSearchPage authoritiesSearchPage;
 	private AuthorityPage parAuthorityPage;
 	private AuthorityNamePage authorityNamePage;
 	private ONSCodePage onsCodePage;
@@ -138,6 +139,7 @@ public class PARStepDefs {
 	private AuthorityTypePage authorityTypePage;
 	
 	// Business
+	private OrganisationsSearchPage organisationsSearchPage;
 	private BusinessNamePage businessNamePage;
 	private AddOrganisationNamePage addOrganisationNamePage;
 	private AboutTheOrganisationPage aboutTheOrganisationPage;
@@ -218,7 +220,7 @@ public class PARStepDefs {
 		driver = ScenarioContext.lastDriver;
 		
 		// PAR Home Page
-		parHomePage = PageFactory.initElements(driver, HomePage.class);
+		homePage = PageFactory.initElements(driver, HomePage.class);
 		localRegulationPrimaryAuthorityPage = PageFactory.initElements(driver, LocalRegulationPrimaryAuthorityPage.class);
 		primaryAuthorityDocumentsPage = PageFactory.initElements(driver, PrimaryAuthorityDocumentsPage.class);
 		termsAndConditionsPage = PageFactory.initElements(driver, TermsAndConditionsPage.class);
@@ -229,15 +231,15 @@ public class PARStepDefs {
 		crownCopyrightPage = PageFactory.initElements(driver, CrownCopyrightPage.class);
 		
 		// Login
-		parLoginPage = PageFactory.initElements(driver, LoginPage.class);
+		loginPage = PageFactory.initElements(driver, LoginPage.class);
 		passwordPage = PageFactory.initElements(driver, PasswordPage.class);
 		userTermsPage = PageFactory.initElements(driver, UserTermsPage.class);
 		mailLogPage = PageFactory.initElements(driver, MailLogPage.class);
 		
 		// Dash-board
 		parDashboardPage = PageFactory.initElements(driver, DashboardPage.class);
-		organisationDashboardPage = PageFactory.initElements(driver, OrganisationDashboardPage.class);
-		authoritiesDashboardPage = PageFactory.initElements(driver, AuthorityDashboardPage.class);
+		helpDeskDashboardPage = PageFactory.initElements(driver, HelpDeskDashboardPage.class);
+		
 		
 		// Statistics
 		parReportingPage = PageFactory.initElements(driver, PARReportingPage.class);
@@ -302,6 +304,7 @@ public class PARStepDefs {
 		transferCompletedPage = PageFactory.initElements(driver, TransferCompletedPage.class);
 		
 		// Authority
+		authoritiesSearchPage = PageFactory.initElements(driver, AuthoritiesSearchPage.class);
 		parAuthorityPage = PageFactory.initElements(driver, AuthorityPage.class);
 		authorityTypePage = PageFactory.initElements(driver, AuthorityTypePage.class);
 		authorityAddressDetailsPage = PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
@@ -310,6 +313,7 @@ public class PARStepDefs {
 		authorityConfirmationPage = PageFactory.initElements(driver, AuthorityConfirmationPage.class);
 		
 		// Business
+		organisationsSearchPage = PageFactory.initElements(driver, OrganisationsSearchPage.class);
 		addOrganisationNamePage = PageFactory.initElements(driver, AddOrganisationNamePage.class);
 		tradingPage = PageFactory.initElements(driver, TradingPage.class);
 		sicCodePage = PageFactory.initElements(driver, SICCodePage.class);
@@ -390,36 +394,40 @@ public class PARStepDefs {
 	@Given("^the user is on the PAR home page$")
 	public void the_user_is_on_the_PAR_home_page() throws Throwable {
 		LOG.info("Navigating to PAR Home page but first accepting cookies if present");
-		parHomePage.navigateToUrl();
-		parHomePage.checkAndAcceptCookies();
+		homePage.navigateToUrl();
 	}
 
 	@Given("^the user is on the PAR login page$")
 	public void the_user_is_on_the_PAR_login_page() throws Throwable {
 		LOG.info("Navigating to PAR login page - logging out user first if already logged in");
-		parLoginPage.navigateToUrl();
-		parLoginPage.checkAndAcceptCookies();
+		loginPage.navigateToUrl();
 	}
 
 	@Given("^the user visits the login page$")
 	public void the_user_wants_to_login() throws Throwable {
-		parHomePage.selectLogin();
+		homePage.selectLogin();
 	}
 
-	@Given("^the user logs in with the \"([^\"]*)\" user credentials$")
+	@When("^the user logs in with the \"([^\"]*)\" user credentials$")
 	public void the_user_logs_in_with_the_user_credentials(String user) throws Throwable {
 		DataStore.saveValue(UsableValues.LOGIN_USER, user);
 		String pass = PropertiesUtil.getConfigPropertyValue(user);
 		
 		LOG.info("Logging in user with credentials; username: " + user + " and password " + pass);
-		parLoginPage.enterLoginDetails(user, pass);
-		parLoginPage.clickSignIn();
+		loginPage.enterLoginDetails(user, pass);
+		loginPage.clickSignIn();
 	}
 
 	@Then("^the user is on the dashboard page$")
 	public void the_user_is_on_the_dashboard_page() throws Throwable {
 		LOG.info("Check user is on the PAR Dashboard Page");
 		Assert.assertTrue("Text not found", parDashboardPage.checkPage().contains("Dashboard"));
+	}
+	
+	@Then("^the user can accept the analytical cookies successfully$")
+	public void the_user_can_accept_the_analytical_cookies_successfully() throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+	    //throw new PendingException();
 	}
 
 	@When("^the user creates a new \"([^\"]*)\" partnership application with the following details:$")
@@ -496,12 +504,11 @@ public class PARStepDefs {
 	
 	@When("^the user searches for the last created partnership$")
 	public void the_user_searches_for_the_last_created_partnership() throws Throwable {
-		//parDashboardPage.checkAndAcceptCookies();
 
 		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
 		case ("par_helpdesk@example.com"):
 			LOG.info("Selecting Search partnerships");
-			parDashboardPage.selectSearchPartnerships();
+			helpDeskDashboardPage.selectSearchPartnerships();
 			partnershipAdvancedSearchPage.searchPartnerships();
 			break;
 		case ("par_enforcement_officer@example.com"):
@@ -641,7 +648,7 @@ public class PARStepDefs {
 
 	@When("^the user follows the invitation link$")
 	public void the_user_follows_the_invitation_link() throws Throwable {
-		parLoginPage.navigateToInviteLink();
+		loginPage.navigateToInviteLink();
 	}
 
 	@When("^the user completes the user creation journey$")
@@ -741,10 +748,10 @@ public class PARStepDefs {
 		}
 		
 		LOG.info("Select manage authorities.");
-		parDashboardPage.selectManageAuthorities();
+		helpDeskDashboardPage.selectManageAuthorities();
 		
 		LOG.info("Select add authority.");
-		authoritiesDashboardPage.selectAddAuthority();
+		authoritiesSearchPage.selectAddAuthority();
 		
 		LOG.info("Provide authority name.");
 		authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
@@ -780,8 +787,8 @@ public class PARStepDefs {
 	public void the_user_searches_for_the_last_created_authority() throws Throwable {
 		
 		LOG.info("Search for last created authority");
-		authoritiesDashboardPage.searchAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
-		authoritiesDashboardPage.selectManageAuthority();
+		authoritiesSearchPage.searchAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		authoritiesSearchPage.selectManageAuthority();
 	}
 
 	@When("^the user updates all the fields for newly created authority$")
@@ -822,11 +829,11 @@ public class PARStepDefs {
 	@When("^the user searches for an Authority with the same Regulatory Functions \"([^\"]*)\"$")
 	public void the_user_searches_for_an_Authority_with_the_same_Regulatory_Functions(String authority) throws Throwable {
 		LOG.info("Search for the Authority.");
-		parDashboardPage.selectManageAuthorities();
-		authoritiesDashboardPage.searchAuthority(authority);
+		helpDeskDashboardPage.selectManageAuthorities();
+		authoritiesSearchPage.searchAuthority(authority);
 		DataStore.saveValue(UsableValues.PREVIOUS_AUTHORITY_NAME, authority);
 		
-		authoritiesDashboardPage.selectTransferPartnerships();
+		authoritiesSearchPage.selectTransferPartnerships();
 	}
 
 	@When("^the user completes the partnership transfer process$")
@@ -846,9 +853,9 @@ public class PARStepDefs {
 	public void the_partnership_is_transferred_to_the_new_authority_successfully() throws Throwable {
 		LOG.info("Search for the Partnership with the New Authority.");
 		
-		authoritiesDashboardPage.goToHelpDeskDashboard();
+		authoritiesSearchPage.goToHelpDeskDashboard();
 		
-		parDashboardPage.selectSearchPartnerships();
+		helpDeskDashboardPage.selectSearchPartnerships();
 		partnershipAdvancedSearchPage.searchPartnershipsPrimaryAuthority();
 		partnershipAdvancedSearchPage.selectPrimaryAuthorityLink();
 		
@@ -859,9 +866,9 @@ public class PARStepDefs {
 	@When("^the user searches for the last created organisation$")
 	public void the_user_searches_for_the_last_created_organisation() throws Throwable {
 		LOG.info("Search and select last created organisation");
-		parDashboardPage.selectManageOrganisations();
-		organisationDashboardPage.searchOrganisation();
-		organisationDashboardPage.selectOrganisation();
+		helpDeskDashboardPage.selectManageOrganisations();
+		organisationsSearchPage.searchOrganisation();
+		organisationsSearchPage.selectOrganisation();
 	}
 	
 	@When("^the user updates all the fields for last created organisation$")
@@ -958,7 +965,7 @@ public class PARStepDefs {
 
 		case ("par_helpdesk@example.com"):
 			LOG.info("Searching for an Enforcement Notice.");
-			parDashboardPage.selectManageEnforcementNotices();
+			helpDeskDashboardPage.selectManageEnforcementNotices();
 			enforcementSearchPage.searchForEnforcementNotice(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 			enforcementSearchPage.selectEnforcement();
 			break;
@@ -1008,7 +1015,7 @@ public class PARStepDefs {
 	@When("^the user searches for the last created enforcement notice$")
 	public void the_user_searches_for_the_last_created_enforcement_notice() throws Throwable {
 		LOG.info("Select last created enforcement");
-		parDashboardPage.selectManageEnforcementNotices();
+		helpDeskDashboardPage.selectManageEnforcementNotices();
 		enforcementSearchPage.searchForEnforcementNotice(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 		enforcementSearchPage.removeEnforcement();
 	}
@@ -1022,8 +1029,6 @@ public class PARStepDefs {
 		
 		parDeclarationPage.selectConfirmCheckbox();
 		parDeclarationPage.goToEnforcementSearchPage();
-		
-		//removeEnforcementConfirmationPage.acceptTerms();
 	}
 
 	@Then("^the enforcement notice is removed successfully$")
@@ -1130,7 +1135,7 @@ public class PARStepDefs {
 	@When("^the user is on the search for a partnership page$")
 	public void the_user_is_on_the_search_for_a_partnership_page() throws Throwable {
 		LOG.info("Click Search Public List of Partnerships to navigate to PAR Search for Partnership Page");
-		parHomePage.selectPartnershipSearchLink();
+		homePage.selectPartnershipSearchLink();
 	}
 
 	@Then("^the user can search for a PA Organisation Trading name Company number$")
@@ -1180,7 +1185,7 @@ public class PARStepDefs {
 		
 		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
 		case ("par_helpdesk@example.com"):
-			parDashboardPage.selectManageInspectionFeedback();
+			helpDeskDashboardPage.selectManageInspectionFeedback();
 			inspectionFeedbackSearchPage.selectInspectionFeedbackNotice();
 			break;
 		default:
@@ -1266,7 +1271,7 @@ public class PARStepDefs {
 		
 		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
 		case ("par_helpdesk@example.com"):
-			parDashboardPage.selectManageDeviationRequests();
+			helpDeskDashboardPage.selectManageDeviationRequests();
 			deviationSearchPage.selectDeviationRequest();
 			break;
 		default:
@@ -1403,7 +1408,7 @@ public class PARStepDefs {
 		
 		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
 		case ("par_helpdesk@example.com"):
-			parDashboardPage.selectManageGeneralEnquiry();
+			helpDeskDashboardPage.selectManageGeneralEnquiry();
 			enquiriesSearchPage.selectEnquiry();
 			break;
 		default:
@@ -1457,7 +1462,7 @@ public class PARStepDefs {
 	@When("^the user selects a contact to update$")
 	public void the_user_selects_a_contact_to_update() throws Throwable {
 		DataStore.saveValue(UsableValues.BUSINESS_EMAIL, DataStore.getSavedValue(UsableValues.LOGIN_USER));
-		parDashboardPage.selectManageProfileDetails();
+		helpDeskDashboardPage.selectManageProfileDetails();
 		
 		LOG.info("Selecting a Contact to Update.");
 		contactRecordsPage.selectContactToUpdate();
@@ -1500,7 +1505,7 @@ public class PARStepDefs {
 	@When("^the user is on the Subscriptions page$")
 	public void the_user_is_on_the_Subscriptions_page() throws Throwable {
 		LOG.info("Navigate to the Manage Subscriptions Page.");
-		parDashboardPage.selectManageSubscriptions();
+		helpDeskDashboardPage.selectManageSubscriptions();
 	}
 
 	@Then("^the user can verify the email is successfully in the Subscriptions List$")
@@ -1518,7 +1523,7 @@ public class PARStepDefs {
 	@When("^the user is on the Manage a subscription list page$")
 	public void the_user_is_on_the_Manage_a_subscription_list_page() throws Throwable {
 		LOG.info("Navigate to Manage Subscriptions Page.");
-		parDashboardPage.selectManageSubscriptions();
+		helpDeskDashboardPage.selectManageSubscriptions();
 		newsLetterSubscriptionPage.selectManageSubsciptions();
 		
 		LOG.info("Email with the largest number: " + DataStore.getSavedValue(UsableValues.LAST_PAR_NEWS_EMAIL));
@@ -1586,7 +1591,7 @@ public class PARStepDefs {
 
 	@When("^the user creates a new person:$")
 	public void the_user_creates_a_new_person(DataTable details) throws Throwable {
-		parDashboardPage.selectManagePeople();
+		helpDeskDashboardPage.selectManagePeople();
 		managePeoplePage.selectAddPerson();
 
 		LOG.info("Adding a new person.");
@@ -1630,7 +1635,7 @@ public class PARStepDefs {
 
 	@When("^the user searches for an existing person successfully$")
 	public void the_user_searches_for_an_existing_person_successfully() throws Throwable {
-		parDashboardPage.selectManagePeople();
+		helpDeskDashboardPage.selectManagePeople();
 
 		String personsName = DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " "
 				+ DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
@@ -1746,7 +1751,7 @@ public class PARStepDefs {
 	public void the_user_searches_for_the_last_created_partnership_Authority() throws Throwable {
 		LOG.info("Searching for and selecting the latest Partnerships Primary Authority.");
 		
-		parDashboardPage.selectSearchPartnerships();
+		helpDeskDashboardPage.selectSearchPartnerships();
 		
 		partnershipAdvancedSearchPage.searchPartnerships();
 		partnershipAdvancedSearchPage.selectPrimaryAuthorityLink();
@@ -2386,7 +2391,7 @@ public class PARStepDefs {
 	@When("^the user navigates to the statistics page$")
 	public void the_user_navigates_to_the_statistics_page() throws Throwable {
 		LOG.info("Navigating to the Statistics Page.");
-	    parDashboardPage.selectViewAllStatistics();
+		helpDeskDashboardPage.selectViewAllStatistics();
 	}
 
 	@Then("^the statistics page is dispalyed successfully$")
@@ -2399,7 +2404,7 @@ public class PARStepDefs {
 	public void the_user_selects_the_Read_more_about_Primary_Authority_link() throws Throwable {
 		LOG.info("Selecting the Read More About Primary Authority Link.");
 		
-		parHomePage.selectReadMoreAboutPrimaryAuthorityLink();
+		homePage.selectReadMoreAboutPrimaryAuthorityLink();
 	}
 
 	@Then("^the user is taken to the GOV\\.UK Guidance page for Local regulation Primary Authority Successfully$")
@@ -2413,7 +2418,7 @@ public class PARStepDefs {
 	public void the_user_selects_the_Access_tools_and_templates_for_local_authorities_link() throws Throwable {
 		LOG.info("Selecting the Access Tools and Templates Link.");
 		
-		parHomePage.selectAccessToolsAndTemplatesLink();
+		homePage.selectAccessToolsAndTemplatesLink();
 	}
 
 	@Then("^the user is taken to the GOV\\.UK Collection page for Primary Authority Documents Successfully$")
@@ -2427,7 +2432,7 @@ public class PARStepDefs {
 	public void the_user_selects_the_Terms_and_Conditions_link() throws Throwable {
 		LOG.info("Selecting the Terms and Conditions Link.");
 		
-		parHomePage.selectTermsAndConditionsLink();
+		homePage.selectTermsAndConditionsLink();
 	}
 
 	@Then("^the user is taken to the GOV\\.UK Guidance page for Primary Authority terms and conditions Successfully$")
@@ -2441,7 +2446,7 @@ public class PARStepDefs {
 	public void the_user_selects_the_Cookies_link() throws Throwable {
 		LOG.info("Selecting the Cookies Link from the Footer.");
 		
-		parHomePage.selectCookiesFooterLink();
+		homePage.selectCookiesFooterLink();
 	}
 
 	@Then("^the user is taken to the Cookies page and can accept the Analytics Cookies Successfully$")
@@ -2458,7 +2463,7 @@ public class PARStepDefs {
 	public void the_user_selects_the_Privacy_link() throws Throwable {
 		LOG.info("Selecting the Privacy Link.");
 		
-		parHomePage.selectPrivacyLink();
+		homePage.selectPrivacyLink();
 	}
 
 	@Then("^the user is taken to the GOV\\.UK Corporate report OPSS Privacy notice page Successfully$")
@@ -2472,7 +2477,7 @@ public class PARStepDefs {
 	public void the_user_selects_the_Accessibility_link() throws Throwable {
 		LOG.info("Selecting the Accessibility Link.");
 		
-		parHomePage.selectAccessibilityLink();
+		homePage.selectAccessibilityLink();
 	}
 
 	@Then("^the user is taken to the GOV\\.UK Guidance page for the Primary Authority Register accessibility statement Successfully$")
@@ -2486,7 +2491,7 @@ public class PARStepDefs {
 	public void the_user_selects_the_Open_Government_Licence_link() throws Throwable {
 		LOG.info("Selecting the Open Government Licence Link.");
 		
-		parHomePage.selectOpenGovernmentLicenceLink();
+		homePage.selectOpenGovernmentLicenceLink();
 	}
 
 	@Then("^the user is taken to the Open Government Licence for public sector information page Successfully$")
@@ -2500,7 +2505,7 @@ public class PARStepDefs {
 	public void the_user_selects_the_Crown_copyright_link() throws Throwable {
 		LOG.info("Selecting the Crown copyright Link.");
 		
-		parHomePage.selectCrownCopyrightLink();
+		homePage.selectCrownCopyrightLink();
 	}
 
 	@Then("^the user is taken to the Crown copyright page Successfully$")

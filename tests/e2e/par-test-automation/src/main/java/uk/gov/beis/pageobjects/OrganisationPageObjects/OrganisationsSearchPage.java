@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.OrganisationPageObjects;
 
 import java.io.IOException;
 
@@ -7,10 +7,10 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessDetailsPage;
+import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.utility.DataStore;
 
-public class OrganisationDashboardPage extends BasePageObject {
+public class OrganisationsSearchPage extends BasePageObject {
 	
 	@FindBy(id = "edit-name-search")
 	private WebElement searchInput;
@@ -21,7 +21,7 @@ public class OrganisationDashboardPage extends BasePageObject {
 	@FindBy(linkText = "Manage organisation")
 	private WebElement organisationLink;
 	
-	public OrganisationDashboardPage() throws ClassNotFoundException, IOException {
+	public OrganisationsSearchPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	

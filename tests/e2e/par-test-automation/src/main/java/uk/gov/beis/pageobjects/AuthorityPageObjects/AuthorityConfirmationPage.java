@@ -57,23 +57,23 @@ public class AuthorityConfirmationPage extends BasePageObject {
 		return PageFactory.initElements(driver, AuthorityNamePage.class);
 	}
 	
-	public AuthorityDashboardPage editAuthorityType() {
+	public AuthoritiesSearchPage editAuthorityType() {
 		authorityTypeLink.click();
-		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
+		return PageFactory.initElements(driver, AuthoritiesSearchPage.class);
 	}
 	
-	public AuthorityDashboardPage editONSCode() {
+	public AuthoritiesSearchPage editONSCode() {
 		ONSCode.click();
-		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
+		return PageFactory.initElements(driver, AuthoritiesSearchPage.class);
 	}
 	
-	public AuthorityDashboardPage editRegFunction() {
+	public AuthoritiesSearchPage editRegFunction() {
 		regFunctions.click();
-		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
+		return PageFactory.initElements(driver, AuthoritiesSearchPage.class);
 	}
 	
-	public AuthorityDashboardPage saveChanges() {
+	public AuthoritiesSearchPage saveChanges() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
+		return PageFactory.initElements(driver, AuthoritiesSearchPage.class);
 	}
 }

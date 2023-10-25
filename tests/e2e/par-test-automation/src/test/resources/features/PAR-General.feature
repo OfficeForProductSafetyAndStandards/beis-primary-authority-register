@@ -1,6 +1,14 @@
 Feature: General
   As a user of the PAR service, I  want to be able to view/manage partnerships, So I can comply with the BEIS standards for goods and services
 
+	@regression @dashboard @cookies
+  Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-2331)
+    Given the user is on the PAR home page
+    And the user visits the login page
+    When the user logs in with the "par_authority@example.com" user credentials
+    Then the user is on the dashboard page
+    And the user can accept the analytical cookies successfully
+    
   @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @legalEntities @testUpdates
   Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
     Given the user is on the PAR home page

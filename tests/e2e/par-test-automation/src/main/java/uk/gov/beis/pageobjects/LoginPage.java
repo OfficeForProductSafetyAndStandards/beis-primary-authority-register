@@ -11,6 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
+import uk.gov.beis.pageobjects.UserDashboardPageObjects.*;
 import uk.gov.beis.utility.DataStore;
 
 public class LoginPage extends BasePageObject {
@@ -18,15 +19,12 @@ public class LoginPage extends BasePageObject {
 	@FindBy(xpath = "//button[contains(text(),'Accept')]")
 	private WebElement cookies;
 	
-	//@FindBy(name = "name")
 	@FindBy(id = "edit-name")
 	private WebElement username;
-
-	//@FindBy(name = "pass")
+	
 	@FindBy(id = "edit-pass")
 	private WebElement password;
-
-	//@FindBy(name = "op")
+	
 	@FindBy(id = "edit-submit")
 	private WebElement loginBtn;
 	
@@ -41,20 +39,27 @@ public class LoginPage extends BasePageObject {
 		checkLoginPage();
 		return PageFactory.initElements(driver, LoginPage.class);
 	}
-
-	public PasswordPage navigateToInviteLink() throws InterruptedException {
-		ScenarioContext.lastDriver.get(DataStore.getSavedValue(UsableValues.INVITE_LINK));
-		return PageFactory.initElements(driver, PasswordPage.class);
-	}
 	
 	public void enterLoginDetails(String user, String pass) {
 		username.sendKeys(user);
 		password.sendKeys(pass);
 	}
 
-	public DashboardPage clickSignIn() {
+	public BaseDashboardPage clickSignIn() {
 		loginBtn.click();
-		return PageFactory.initElements(driver, DashboardPage.class);
+		
+		switch(DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
+			case ("par_helpdesk@example.com"):
+				LOG.info("Help Desk Dashboard.");
+				return PageFactory.initElements(driver, HelpDeskDashboardPage.class);
+			default:
+				return PageFactory.initElements(driver, DashboardPage.class);
+		}
+	}
+
+	public PasswordPage navigateToInviteLink() throws InterruptedException {
+		ScenarioContext.lastDriver.get(DataStore.getSavedValue(UsableValues.INVITE_LINK));
+		return PageFactory.initElements(driver, PasswordPage.class);
 	}
 	
 	public HomePage selectLogout() {

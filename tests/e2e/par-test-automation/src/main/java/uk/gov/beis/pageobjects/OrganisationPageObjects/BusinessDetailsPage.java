@@ -9,7 +9,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.OrganisationDashboardPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.BusinessNamePage;
 import uk.gov.beis.utility.DataStore;
 
@@ -68,8 +67,8 @@ public class BusinessDetailsPage extends BasePageObject{
 		return PageFactory.initElements(driver, SICCodePage.class);
 	}
 	
-	public OrganisationDashboardPage saveChanges() {
+	public OrganisationsSearchPage saveChanges() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, OrganisationDashboardPage.class);
+		return PageFactory.initElements(driver, OrganisationsSearchPage.class);
 	}
 }

@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DashboardPage;
+import uk.gov.beis.pageobjects.UserDashboardPageObjects.DashboardPage;
 
 public class ProfileCompletionPage extends BasePageObject {
 
