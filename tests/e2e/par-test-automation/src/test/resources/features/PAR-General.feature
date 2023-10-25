@@ -7,7 +7,9 @@ Feature: General
     And the user visits the login page
     When the user logs in with the "par_authority@example.com" user credentials
     Then the user is on the dashboard page
-    And the user can accept the analytical cookies successfully
+    # Accecpt the Analytic Cookies
+    When the user accepts the analytics cookies
+    Then analytical cookies have been accepted successfully
     
   @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @legalEntities @testUpdates
   Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)

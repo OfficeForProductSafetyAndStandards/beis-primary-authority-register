@@ -2,7 +2,6 @@ package uk.gov.beis.pageobjects.UserDashboardPageObjects;
 
 import java.io.IOException;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -16,9 +15,6 @@ import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipSearchPage;
 import uk.gov.beis.pageobjects.UserManagement.ManagePeoplePage;
 
 public class DashboardPage extends BaseDashboardPage {
-	
-	@FindBy(xpath = "//div[@id='block-par-theme-page-title']")
-	private WebElement dashBoard;
 	
 	@FindBy(linkText = "See your partnerships")
 	private WebElement viewPartnershipBtn;
@@ -87,24 +83,4 @@ public class DashboardPage extends BaseDashboardPage {
 		manageYourColleaguesBtn.click();
 		return PageFactory.initElements(driver, ManagePeoplePage.class);
 	}
-	
-	public String checkPage() {
-		return dashBoard.getText();
-	}
-
-	public DashboardPage checkAndAcceptCookies() {
-		driver.manage().deleteAllCookies();
-		
-		if(!driver.findElements(By.id("block-cookiebanner")).isEmpty()) {
-			driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
-		}
-		
-		//try {
-		//	driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
-		//} catch (NoSuchElementException e) {
-			// do nothing
-		//}
-		return PageFactory.initElements(driver, DashboardPage.class);
-	}
-
 }

@@ -2,7 +2,6 @@ package uk.gov.beis.pageobjects;
 
 import java.io.IOException;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -16,9 +15,6 @@ public class HomePage extends BasePageObject {
 
 	@FindBy(linkText = "Sign in")
 	private WebElement signinButton;
-
-	@FindBy(xpath = "//button[contains(text(),'Accept')]")
-	private WebElement cookies;
 	
 	@FindBy(linkText = "Read more about Primary Authority")
 	private WebElement readMorePrimaryAuthorityLink;
@@ -55,24 +51,7 @@ public class HomePage extends BasePageObject {
 		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url"));
 		return PageFactory.initElements(driver, HomePage.class);
 	}
-
-	public HomePage checkAndAcceptCookies() {
-		driver.manage().deleteAllCookies();
-		
-		if(!driver.findElements(By.id("block-cookiebanner")).isEmpty()) {
-			driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
-		}
-		
-		//try {
-		//	if (cookies.isDisplayed()) {
-		//		cookies.click();
-		//	}
-		//} catch (Exception e) {
-			// do nothing
-		//}
-		return PageFactory.initElements(driver, HomePage.class);
-	}
-
+	
 	public LoginPage selectLogin() {
 		signinButton.click();
 		return PageFactory.initElements(driver, LoginPage.class);

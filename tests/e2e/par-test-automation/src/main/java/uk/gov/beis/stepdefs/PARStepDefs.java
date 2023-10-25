@@ -63,7 +63,7 @@ public class PARStepDefs {
 	private UserTermsPage userTermsPage;
 	
 	// Dash-board
-	private DashboardPage parDashboardPage;
+	private DashboardPage dashboardPage;
 	private HelpDeskDashboardPage helpDeskDashboardPage;
 	
 	// Statistics
@@ -237,7 +237,7 @@ public class PARStepDefs {
 		mailLogPage = PageFactory.initElements(driver, MailLogPage.class);
 		
 		// Dash-board
-		parDashboardPage = PageFactory.initElements(driver, DashboardPage.class);
+		dashboardPage = PageFactory.initElements(driver, DashboardPage.class);
 		helpDeskDashboardPage = PageFactory.initElements(driver, HelpDeskDashboardPage.class);
 		
 		
@@ -420,14 +420,24 @@ public class PARStepDefs {
 
 	@Then("^the user is on the dashboard page$")
 	public void the_user_is_on_the_dashboard_page() throws Throwable {
-		LOG.info("Check user is on the PAR Dashboard Page");
-		Assert.assertTrue("Text not found", parDashboardPage.checkPage().contains("Dashboard"));
+		LOG.info("Verify the user is on the Dashboard Page.");
+		Assert.assertTrue("Failed: Dashboard Header was not found.", dashboardPage.checkPage());
 	}
 	
-	@Then("^the user can accept the analytical cookies successfully$")
-	public void the_user_can_accept_the_analytical_cookies_successfully() throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
-	    //throw new PendingException();
+	@When("^the user accepts the analytics cookies$")
+	public void the_user_accepts_the_analytics_cookies() throws Throwable {
+	    dashboardPage.acceptCookies();
+	}
+
+	@Then("^analytical cookies have been accepted successfully$")
+	public void analytical_cookies_have_been_accepted_successfully() throws Throwable {
+		LOG.info("Verifying the Analytical Cookies have been Accepted.");
+		Assert.assertTrue("Failed: Analytics Cookies have not been Accepted.", dashboardPage.checkCookiesAccepted());
+		
+		dashboardPage.hideCookieBanner();
+		
+		LOG.info("Verifying the Cookie Banner is not Displayed.");
+		Assert.assertTrue("Failed: The Cookie Banner is still Displayed.", dashboardPage.checkCookieBannerExists());
 	}
 
 	@When("^the user creates a new \"([^\"]*)\" partnership application with the following details:$")
@@ -454,7 +464,7 @@ public class PARStepDefs {
 		ScenarioContext.secondJourneyPart = false;
 		
 		LOG.info("Select apply new partnership");
-		parDashboardPage.selectApplyForNewPartnership();
+		dashboardPage.selectApplyForNewPartnership();
 		
 		LOG.info("Choose authority");
 		parAuthorityPage.selectAuthority(authority);
@@ -504,27 +514,31 @@ public class PARStepDefs {
 	
 	@When("^the user searches for the last created partnership$")
 	public void the_user_searches_for_the_last_created_partnership() throws Throwable {
-
+		
 		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
 		case ("par_helpdesk@example.com"):
 			LOG.info("Selecting Search partnerships");
+			helpDeskDashboardPage.acceptCookies();
 			helpDeskDashboardPage.selectSearchPartnerships();
 			partnershipAdvancedSearchPage.searchPartnerships();
 			break;
 		case ("par_enforcement_officer@example.com"):
 			LOG.info("Selecting Search for partnerships");
-			parDashboardPage.selectSearchforPartnership();
+			dashboardPage.acceptCookies();
+			dashboardPage.selectSearchforPartnership();
 			partnershipSearchPage.searchPartnerships();
 			break;
 		case ("par_business@example.com"):
 			LOG.info("Selecting See your partnerships");
-			parDashboardPage.selectSeePartnerships();
+			dashboardPage.acceptCookies();
+			dashboardPage.selectSeePartnerships();
 			partnershipSearchPage.searchPartnerships();
 			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
 			break;
 		default:
 			LOG.info("Search partnerships");
-			parDashboardPage.selectSeePartnerships();
+			dashboardPage.acceptCookies();
+			dashboardPage.selectSeePartnerships();
 			LOG.info("Select organisation link details");
 			partnershipSearchPage.searchPartnerships();
 
@@ -951,14 +965,14 @@ public class PARStepDefs {
 		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
 		case ("par_enforcement_officer@example.com"):
 			LOG.info("Select last created enforcement");
-			parDashboardPage.selectSeeEnforcementNotices();
+			dashboardPage.selectSeeEnforcementNotices();
 			enforcementSearchPage.searchForEnforcementNotice(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 			enforcementSearchPage.selectEnforcement();
 			break;
 
 		case ("par_authority@example.com"):
 			LOG.info("Select last created enforcement");
-			parDashboardPage.selectSeeEnforcementNotices();
+			dashboardPage.selectSeeEnforcementNotices();
 			enforcementSearchPage.searchForEnforcementNotice(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 			enforcementSearchPage.selectEnforcement();
 			break;
@@ -1189,7 +1203,7 @@ public class PARStepDefs {
 			inspectionFeedbackSearchPage.selectInspectionFeedbackNotice();
 			break;
 		default:
-			parDashboardPage.selectSeeInspectionFeedbackNotices();
+			dashboardPage.selectSeeInspectionFeedbackNotices();
 			inspectionFeedbackSearchPage.selectInspectionFeedbackNotice();
 		}
 	}
@@ -1275,7 +1289,7 @@ public class PARStepDefs {
 			deviationSearchPage.selectDeviationRequest();
 			break;
 		default:
-			parDashboardPage.selectSeeDeviationRequests();
+			dashboardPage.selectSeeDeviationRequests();
 			deviationSearchPage.selectDeviationRequest();
 		}
 	}
@@ -1412,7 +1426,7 @@ public class PARStepDefs {
 			enquiriesSearchPage.selectEnquiry();
 			break;
 		default:
-			parDashboardPage.selectGeneralEnquiries();
+			dashboardPage.selectGeneralEnquiries();
 			enquiriesSearchPage.selectEnquiry();
 		}
 	}
@@ -1695,7 +1709,7 @@ public class PARStepDefs {
 	
 	@When("^the user searches for a partnership with the Test Business \"([^\"]*)\" name$")
 	public void the_user_searches_for_a_partnership_with_the_Test_Business_name(String search) throws Throwable {
-		parDashboardPage.selectSearchforPartnership();
+		dashboardPage.selectSearchforPartnership();
 
 		partnershipSearchPage.selectPartnershipLink(search);
 		parPartnershipConfirmationPage.sendGeneralEnquiry();
@@ -1879,7 +1893,7 @@ public class PARStepDefs {
 	@Then("^the user verifies the amendments are confirmed successfully with status \"([^\"]*)\"$")
 	public void the_user_verifies_the_amendments_are_confirmed_successfully_with_status(String status) throws Throwable {
 		LOG.info("Search for the Partnership to Verify the Amendment.");
-		parDashboardPage.selectSeePartnerships();
+		dashboardPage.selectSeePartnerships();
 		partnershipSearchPage.searchPartnerships();
 		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
 		
@@ -2151,7 +2165,7 @@ public class PARStepDefs {
 	
 	@When("^the user creates a new contact with the following details:$")
 	public void the_user_creates_a_new_contact_with_the_following_details(DataTable details) throws Throwable {
-		parDashboardPage.selectManageColleagues();
+		dashboardPage.selectManageColleagues();
 		managePeoplePage.selectAddPerson();
 
 		LOG.info("Adding a new person.");

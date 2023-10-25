@@ -16,9 +16,6 @@ import uk.gov.beis.utility.DataStore;
 
 public class LoginPage extends BasePageObject {
 	
-	@FindBy(xpath = "//button[contains(text(),'Accept')]")
-	private WebElement cookies;
-	
 	@FindBy(id = "edit-name")
 	private WebElement username;
 	
@@ -77,15 +74,4 @@ public class LoginPage extends BasePageObject {
 		}
 		return PageFactory.initElements(driver, LoginPage.class);
 	}
-	
-	public LoginPage checkAndAcceptCookies() {
-		driver.manage().deleteAllCookies();
-		
-		if(!driver.findElements(By.id("block-cookiebanner")).isEmpty()) {
-			driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
-		}
-		
-		return PageFactory.initElements(driver, LoginPage.class);
-	}
-
 }
