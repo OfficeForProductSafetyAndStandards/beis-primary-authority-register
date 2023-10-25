@@ -11,9 +11,6 @@ import uk.gov.beis.pageobjects.UserDashboardPageObjects.DashboardPage;
 import uk.gov.beis.pageobjects.UserManagement.ContactCommunicationPreferencesPage;
 
 public class UpdateUserContactDetailsPage extends BasePageObject {
-	public UpdateUserContactDetailsPage() throws ClassNotFoundException, IOException {
-		super();
-	}
 	
 	@FindBy(id = "edit-salutation")
 	private WebElement titleField;
@@ -36,8 +33,9 @@ public class UpdateUserContactDetailsPage extends BasePageObject {
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 	
-	@FindBy(id = "edit-cancel")
-	private WebElement cancelBtn;
+	public UpdateUserContactDetailsPage() throws ClassNotFoundException, IOException {
+		super();
+	}
 	
 	public void enterTitle(String title) {
 		titleField.sendKeys(title);
@@ -66,10 +64,5 @@ public class UpdateUserContactDetailsPage extends BasePageObject {
 	public ContactCommunicationPreferencesPage selectContinueButton() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, ContactCommunicationPreferencesPage.class);
-	}
-	
-	public DashboardPage selectCancelButton() {
-		cancelBtn.click();
-		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 }

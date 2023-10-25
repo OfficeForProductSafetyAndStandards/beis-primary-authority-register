@@ -15,7 +15,6 @@ import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedb
 import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterSubscriptionPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.OrganisationsSearchPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipAdvancedSearchPage;
-import uk.gov.beis.pageobjects.UserManagement.ContactRecordsPage;
 import uk.gov.beis.pageobjects.UserManagement.ManagePeoplePage;
 
 public class HelpDeskDashboardPage extends BaseDashboardPage {
@@ -52,9 +51,6 @@ public class HelpDeskDashboardPage extends BaseDashboardPage {
 	
 	@FindBy(linkText = "Manage general enquiries")
 	private WebElement manageGeneralEnquiryLink;
-	
-	@FindBy(linkText = "Manage your profile details")
-	private WebElement manageYourProfileDetailsBtn;
 	
 	public HelpDeskDashboardPage() throws ClassNotFoundException, IOException {
 		super();
@@ -108,10 +104,5 @@ public class HelpDeskDashboardPage extends BaseDashboardPage {
 	public EnquiriesSearchPage selectManageGeneralEnquiry() {
 		manageGeneralEnquiryLink.click();
 		return PageFactory.initElements(driver, EnquiriesSearchPage.class);
-	}
-	
-	public ContactRecordsPage selectManageProfileDetails() {
-		manageYourProfileDetailsBtn.click();
-		return PageFactory.initElements(driver, ContactRecordsPage.class);
 	}
 }

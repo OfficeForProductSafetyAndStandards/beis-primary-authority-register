@@ -518,26 +518,22 @@ public class PARStepDefs {
 		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
 		case ("par_helpdesk@example.com"):
 			LOG.info("Selecting Search partnerships");
-			helpDeskDashboardPage.acceptCookies();
 			helpDeskDashboardPage.selectSearchPartnerships();
 			partnershipAdvancedSearchPage.searchPartnerships();
 			break;
 		case ("par_enforcement_officer@example.com"):
 			LOG.info("Selecting Search for partnerships");
-			dashboardPage.acceptCookies();
 			dashboardPage.selectSearchforPartnership();
 			partnershipSearchPage.searchPartnerships();
 			break;
 		case ("par_business@example.com"):
 			LOG.info("Selecting See your partnerships");
-			dashboardPage.acceptCookies();
 			dashboardPage.selectSeePartnerships();
 			partnershipSearchPage.searchPartnerships();
 			partnershipSearchPage.selectBusinessNameLinkFromPartnership();
 			break;
 		default:
 			LOG.info("Search partnerships");
-			dashboardPage.acceptCookies();
 			dashboardPage.selectSeePartnerships();
 			LOG.info("Select organisation link details");
 			partnershipSearchPage.searchPartnerships();
@@ -2218,6 +2214,33 @@ public class PARStepDefs {
 		LOG.info("Verifying the Contact Records have been Merged Successfully.");
 		
 		Assert.assertTrue(userProfilePage.checkContactRecord());
+	}
+	
+	@When("^the user updates their user account email address to \"([^\"]*)\"$")
+	public void the_user_updates_their_user_account_email_address_to(String newEmail) throws Throwable {
+		LOG.info("Update the User Account Email Address.");
+		dashboardPage.selectManageProfileDetails();
+		
+		contactRecordsPage.selectContactToUpdate();
+		contactRecordsPage.selectContinueButton();
+		
+		contactDetailsPage.enterEmailAddress(newEmail);
+		contactDetailsPage.goToContactCommunicationPreferencesPage();
+		
+		contactCommunicationPreferencesPage.selectContinueButton();
+		contactUpdateSubscriptionPage.selectContinueButton();
+		
+		profileReviewPage.confirmUserAccountEmail();
+		profileReviewPage.goToProfileCompletionPage();
+		
+		profileCompletionPage.goToDashboardPage();
+	}
+
+	@Then("^the user can verify the new email address is displayed on the header$")
+	public void the_user_can_verify_the_new_email_address_is_displayed_on_the_header() throws Throwable {
+		LOG.info("Verifying the User Account Email was Updated Successfully.");
+		
+		Assert.assertTrue(dashboardPage.checkUserAccountEmailAddress());
 	}
 	
 	@When("^the user adds a single member organisation to the patnership with the following details:$")

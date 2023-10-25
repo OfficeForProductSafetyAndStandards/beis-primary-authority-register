@@ -62,6 +62,13 @@ public class ContactDetailsPage extends BasePageObject {
 		super();
 	}
 	
+	public void enterEmailAddress(String email) {
+		emailAddressField.clear();
+		emailAddressField.sendKeys(email);
+		
+		DataStore.saveValue(UsableValues.BUSINESS_EMAIL, email);
+	}
+	
 	public void addContactDetails(DataTable details) {
 		clearAllFields();
 		

@@ -129,7 +129,23 @@ Feature: Other
     When the user searches for an existing person successfully
     And the user merges the contact record
     Then the user can verify the contact record was merged successfully
-
+	
+	@regression @managePeople @userAccount
+  Scenario: Verify a User can Change their User Account Email Address (Happy Path - PAR-2323)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    When the user updates their user account email address to "par_authority_2@example.com"
+    Then the user can verify the new email address is displayed on the header
+    # Log in with the new Email Address and revertback to the original Email Address
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority_2@example.com" user credentials
+    When the user updates their user account email address to "par_authority@example.com"
+    Then the user can verify the new email address is displayed on the header
+    # Log in with the reverted Email Address
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    Then the user can verify the new email address is displayed on the header
+	
   @regression @helpDesk @statistics
   Scenario: Verify the Help Desk User can see the Statistics Page (Happy Path - PAR-2315)
     Given the user is on the PAR login page

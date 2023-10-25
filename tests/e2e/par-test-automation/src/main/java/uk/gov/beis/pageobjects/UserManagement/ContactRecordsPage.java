@@ -8,7 +8,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DuplicateClasses.UpdateUserContactDetailsPage;
 
 public class ContactRecordsPage extends BasePageObject {
 	
@@ -28,8 +27,8 @@ public class ContactRecordsPage extends BasePageObject {
 		}
 	}
 	
-	public UpdateUserContactDetailsPage selectContinueButton() {
+	public ContactDetailsPage selectContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, UpdateUserContactDetailsPage.class);
+		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 }
