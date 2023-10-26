@@ -1,12 +1,12 @@
-Feature: Other
+Feature: Other Happy Paths
   As a user of the PAR service, I  want to be able to view/manage partnerships, So I can comply with the BEIS standards for goods and services
 
   @regression @publicRegistrySearch
   Scenario: Verify a Non-registered User can Search the Public Register (Happy Path - PAR-2079)
     Given the user is on the PAR home page
     When the user is on the search for a partnership page
-    Then the user can search for a PA Organisation Trading name Company number
-    And the user is shown the information for that partnership
+    And the user can search for a PA Organisation Trading name Company number
+    Then the user is shown the information for that partnership
 
   @regression @publicRegistrySearch
   Scenario: Verify a Registered User can Search the Public Register (Happy Path - PAR-2079)
@@ -14,8 +14,8 @@ Feature: Other
     And the user logs in with the "par_authority@example.com" user credentials
     And the user clicks the PAR Home page link
     When the user is on the search for a partnership page
-    Then the user can search for a PA Organisation Trading name Company number
-    And the user is shown the information for that partnership
+    And the user can search for a PA Organisation Trading name Company number
+    Then the user is shown the information for that partnership
 
   @regression @authority @authorityManagement
   Scenario: Verify Addition/Update of Authority (Happy Path - PAR-1849, PAR-1850)

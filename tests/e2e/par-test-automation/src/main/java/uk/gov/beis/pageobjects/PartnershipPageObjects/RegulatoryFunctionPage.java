@@ -99,7 +99,8 @@ public class RegulatoryFunctionPage extends BasePageObject {
 			normalOrSequencedRadial.click();
 		}
 		
-		DataStore.saveValue(UsableValues.PARTNERSHIP_REGFUNC, "Cookie control"); // Would be better to use Bespoke and Normal or Sequenced as the value.
+		//DataStore.saveValue(UsableValues.PARTNERSHIP_REGFUNC, "Cookie control"); // Would be better to use Bespoke and Normal or Sequenced as the value.
+		DataStore.saveValue(UsableValues.PARTNERSHIP_REGFUNC, "Alphabet learning");
 		
 		saveBtn.click();
 		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);

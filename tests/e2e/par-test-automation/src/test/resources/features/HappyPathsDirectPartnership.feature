@@ -1,7 +1,7 @@
-Feature: General
+Feature: Direct Partnership Happy Paths
   As a user of the PAR service, I  want to be able to view/manage partnerships, So I can comply with the BEIS standards for goods and services
 
-	@regression @dashboard @cookies
+  @regression @dashboard @cookies
   Scenario: Verify a User can Log in and Accept Analytical Cookies Successfully (Happy Path - PAR-2331)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -10,16 +10,44 @@ Feature: General
     # Accecpt the Analytic Cookies
     When the user accepts the analytics cookies
     Then analytical cookies have been accepted successfully
-    
+
+  @regression @direct @deletePartnership
+  Scenario: Verify Partnership Information can be changed During Application Process, Nominated and then Deleted Successfully (Happy Path - PAR-2277)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user creates a new "Direct" partnership application with the following details:
+      | Authority | Partnership Info | AddressLine1  | AddressLine2 | Town | County     | Country        | Nation  | Postcode | Title | Firstname | Lastname | WorkNumber   | MobileNumber | Email                    |
+      | Lower     | For Deletion     | 04 New Street | New Build    | Bury | Lancashire | United Kingdom | England | BL4 0BG  | Dr    | Steph     | Smith    | 017043356901 |  07704502913 | par_business@example.com |
+    Then the first part of the partnership application is successfully completed
+    #second part of partnership application
+    When the user searches for the last created partnership
+    And the user completes the partnership application with the following details:
+      | Business Description | ContactNotes | SIC Code            | No of Employees | Trading Name | Legal Entity Name | Legal entity Type | Company number |
+      | Test Business        | Test Note.   | allow people to eat | 10 to 49        | Testing Co.  | Testing Co.       | Partnership       |       12345678 |
+    Then the second part of the partnership application is successfully completed
+    # Nominate the Partnership
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user approves the partnership
+    And the user searches again for the last created partnership
+    Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
+    # Delete the Partnership
+    When the user Deletes the Partnership with the following reason: "Partnership is incorrect."
+    Then the Partnership was Deleted Successfully
+
   @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @legalEntities @testUpdates
   Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
     Given the user is on the PAR home page
     And the user visits the login page
     When the user logs in with the "par_authority@example.com" user credentials
     Then the user is on the dashboard page
+    # Apply for a new Partnership
     When the user creates a new "Direct" partnership application with the following details:
       | Authority | Partnership Info | AddressLine1  | AddressLine2 | Town    | County     | Country        | Nation  | Postcode | Title | Firstname | Lastname | WorkNumber   | MobileNumber | Email                    |
-      | Lower     | Direct           | 32 Bramtom Rd | New Build    | Windsor | Lancashire | United Kingdom | England | SL4 5PN  | Dr    | David     | Smith    | 020569987021 | 074567899221 | par_business@example.com |
+      | Upper     | Direct           | 32 Bramtom Rd | New Build    | Windsor | Lancashire | United Kingdom | England | SL4 5PN  | Dr    | David     | Smith    | 020569987021 | 074567899221 | par_business@example.com |
     Then the first part of the partnership application is successfully completed
     #second part of partnership application
     When the user searches for the last created partnership
@@ -168,8 +196,8 @@ Feature: General
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created partnership
     And the user uploads an advice notice against the partnership with the following details:
-      | Title              | Type of Advice         | Reg Function   | Description         |
-      | Partnership Advice | Background information | Cookie control | Advice description. |
+      | Title              | Type of Advice         | Reg Function      | Description         |
+      | Partnership Advice | Background information | Alphabet learning | Advice description. |
     Then the advice notice it uploaded successfully and set to active
     # Edit Advice Notice
     When the user selects the edit advice action link
@@ -187,8 +215,8 @@ Feature: General
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created partnership
     And the user uploads an advice notice against the partnership with the following details:
-      | Title              | Type of Advice         | Reg Function   | Description         |
-      | Notice for Removal | Background information | Cookie control | Advice description. |
+      | Title              | Type of Advice         | Reg Function      | Description         |
+      | Notice for Removal | Background information | Alphabet learning | Advice description. |
     Then the advice notice it uploaded successfully and set to active
     # Remove Advice Notice
     When the user removes the advice notice with the following reason "Advice no long needed."
@@ -200,8 +228,8 @@ Feature: General
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created partnership
     And the user uploads an advice notice against the partnership with the following details:
-      | Title          | Type of Advice         | Reg Function   | Description |
-      | Advice Title 1 | Background information | Cookie control | Test Advice |
+      | Title          | Type of Advice         | Reg Function      | Description  |
+      | Advice Title 1 | Background information | Alphabet learning | Test Advice. |
     Then the advice notice it uploaded successfully and set to active
 
   @regression @enforcement
@@ -211,7 +239,7 @@ Feature: General
     When the user searches for the last created partnership
     And the user creates an enforcement notice against the partnership with the following details:
       | Enforcement Action | Title               | Regulatory Function | Description                  | Attachment |
-      | Proposed           | Enforcement Title 1 | Cookie control      | Test Enforcement Description | link.txt   |
+      | Proposed           | Enforcement Title 1 | Alphabet learning   | Test Enforcement Description | link.txt   |
     Then all the fields for the enforcement notice are updated correctly
     #	Approve the Enforcement Notice
     Given the user is on the PAR login page
@@ -235,7 +263,7 @@ Feature: General
     When the user searches for the last created partnership
     And the user creates an enforcement notice against the partnership with the following details:
       | Enforcement Action | Title                            | Regulatory Function | Description       | Attachment |
-      | Proposed           | Enforcement Notice to be Blocked | Cookie control      | Test Enforcement. | link.txt   |
+      | Proposed           | Enforcement Notice to be Blocked | Alphabet learning   | Test Enforcement. | link.txt   |
     Then all the fields for the enforcement notice are updated correctly
     # Block the Enforcement Notice
     Given the user is on the PAR login page
@@ -250,8 +278,8 @@ Feature: General
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created partnership
     And the user sends a general enquiry for an enforcement notice with the following details:
-      | Description             |
-      | Enforcement Discussion. |
+      | Description                         |
+      | Test Enforcement Notice Discussion. |
     Then the Enquiry is created Successfully
     # Login as the Authority and Verify the General Enquiry
     Given the user is on the PAR login page
@@ -265,8 +293,8 @@ Feature: General
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created partnership
     And the user submits a deviation request against an inspection plan with the following details:
-      | Description                     |
-      | Deviation Request to be Blocked |
+      | Description                           |
+      | Test Deviation Request to be Blocked. |
     Then the Deviation Request is created Successfully
     # Login as the Authority and Verify the Deviation Request
     Given the user is on the PAR login page
@@ -281,8 +309,8 @@ Feature: General
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created partnership
     And the user submits a deviation request against an inspection plan with the following details:
-      | Description |
-      | Test 1      |
+      | Description             |
+      | Test Deviation Request. |
     Then the Deviation Request is created Successfully
     # Login as primary authority and check and approve deviation request
     Given the user is on the PAR login page
@@ -290,7 +318,7 @@ Feature: General
     When the user searches for the last created deviation request
     Then the user successfully approves the deviation request
     # Submit a Response as the Authority
-    Given the user submits a response to the deviation request with the following details:
+    When the user submits a response to the deviation request with the following details:
       | Description         |
       | Authority Response. |
     Then the response is displayed successfully
@@ -322,8 +350,8 @@ Feature: General
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created partnership
     And the user submits an inspection feedback against the inspection plan with the following details:
-      | Description              |
-      | Test Inspection Feedback |
+      | Description               |
+      | Test Inspection Feedback. |
     Then the inspection feedback is created successfully
     #	Login as primary authority and check and approve inspection feedback
     Given the user is on the PAR login page
@@ -363,8 +391,8 @@ Feature: General
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
     When the user searches for the last created partnership
     And the user submits a general enquiry with the following details:
-      | Description          |
-      | Test General Enquiry |
+      | Description           |
+      | Test General Enquiry. |
     Then the Enquiry is created Successfully
     # Submit a Response to the General Enquiry
     Given the user is on the PAR login page
@@ -395,7 +423,7 @@ Feature: General
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created general enquiry
     Then the general enquiry response is displayed successfully
-	
+
   @regression @inspectionplan
   Scenario: Verify Revocation and then Removal of an Inspection Plan (Happy Path - PAR-1866, PAR-1867)
     Given the user is on the PAR login page
@@ -416,103 +444,4 @@ Feature: General
     And the user follows the invitation link
     And the user completes the user creation journey
     Then the user journey creation is successful
-
-  @regression @direct @deletePartnership
-  Scenario: Verify Partnership Information can be changed During Application Process, Nominated and then Deleted Successfully (Happy Path - PAR-2277)
-    Given the user is on the PAR home page
-    When the user visits the login page
-    And the user logs in with the "par_authority@example.com" user credentials
-    Then the user is on the dashboard page
-    When the user creates a new "Direct" partnership application with the following details:
-      | Authority | Partnership Info | AddressLine1  | AddressLine2 | Town | County     | Country        | Nation  | Postcode | Title | Firstname | Lastname | WorkNumber   | MobileNumber | Email                    |
-      | Lower     | For Deletion     | 04 New Street | New Build    | Bury | Lancashire | United Kingdom | England | BL4 0BG  | Dr    | Steph     | Smith    | 017043356901 |  07704502913 | par_business@example.com |
-    Then the first part of the partnership application is successfully completed
-    #second part of partnership application
-    When the user searches for the last created partnership
-    And the user completes the partnership application with the following details:
-      | Business Description | ContactNotes | SIC Code            | No of Employees | Trading Name | Legal Entity Name | Legal entity Type | Company number |
-      | Test Business        | Test Note.   | allow people to eat | 10 to 49        | Testing Co.  | Testing Co.       | Partnership       |       12345678 |
-    Then the second part of the partnership application is successfully completed
-    # Nominate the Partnership
-    Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user searches for the last created partnership
-    And the user approves the partnership
-    And the user searches again for the last created partnership
-    Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
-    # Delete the Partnership
-    When the user Deletes the Partnership with the following reason: "Partnership is incorrect."
-    Then the Partnership was Deleted Successfully
-
-  @regression @partnershipapplication @coordinated @authorityManagement
-  Scenario: Verify Coordinated Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
-    Given the user is on the PAR home page
-    And the user visits the login page
-    And the user logs in with the "par_authority@example.com" user credentials
-    Then the user is on the dashboard page
-    When the user creates a new "Co-ordinated" partnership application with the following details:
-      | Authority | Partnership Info | AddressLine1 | AddressLine2 | Town | County     | Country        | Nation  | Postcode | Title | Firstname | Lastname | WorkNumber   | MobileNumber | Email                    |
-      | Upper     | Coordinated      | 02 New Road  | New Build    | Bury | Lancashire | United Kingdom | England | SL4 5PN  | Mr    | Derrick   | Fletcher | 020569987021 | 074567899221 | par_business@example.com |
-    Then the first part of the partnership application is successfully completed
-    #second part of partnership application
-    When the user searches for the last created partnership
-    And the user completes the partnership application with the following details:
-      | Business Description | ContactNotes | SIC Code            | Member List Size | Trading Name | Legal Entity Name | Legal entity Type | Company number |
-      | Testing Business     | Test Note.   | allow people to eat | Medium           | Test HQ      | Test HQ           | Partnership       |       12345678 |
-    Then the second part of the partnership application is successfully completed
-    Given the user is on the PAR login page
-    And the user logs in with the "par_authority@example.com" user credentials
-    When the user searches for the last created partnership
-
-  @regression @coordinated @organisationMember @authorityManagement
-  Scenario: Successfully Nominate a Coordinated Partnership (Happy Path - PAR-2261)
-    Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user searches for the last created partnership
-    And the user approves the partnership
-    And the user searches again for the last created partnership
-    Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
-
-  @regression @coordinated @organisationMember
-  Scenario: Verify Addition of a Single Member Organisation to a Coordinated partnership (Happy Path - PAR-1868)
-    Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user searches for the last created partnership
-    And the user adds a single member organisation to the patnership with the following details:
-      | Organisation Name    | Address Line 1 | Address Line 2 | Town City  | County             | Country        | Nation | Postcode | Title | WorkNumber  | MobileNumber | Legal Entity Type | Legal Entity Name |
-      | Testing Organisation | 02 New Street  | Market Hall    | Manchester | Greater Manchester | United Kingdom | Wales  | BL2 4BL  | Dr    | 02345678901 |  07890123456 | Sole trader       | Testing Co.       |
-    Then the user member organistion has been added to the partnership successfully
-
-  @regression @coordinated @organisationMember
-  Scenario: Verify the Update of a Single Member Organisation for a Coordinated partnership (Happy Path - PAR-1969)
-    Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user searches for the last created partnership
-    And the user updates a single member organisation of the patnership with the following details:
-      | Organisation Name    | Address Line 1 | Address Line 2 | Town City  | County             | Country        | Nation | Postcode | Title | WorkNumber   | MobileNumber | Legal Entity Type | Legal Entity Name |
-      | Testers Organisation | 03 New Street  | Market Hall    | Manchester | Greater Manchester | United Kingdom | Wales  | BL2 4BL  | Mr    | 020455669921 |  07009156780 | Sole trader       | Tester Co.        |
-    Then the member organistion has been updated successfully
-
-  @regression @coordinated @organisationMember
-  Scenario: Verify the Cessation of a Single Member Organisation for a Coordinated partnership (Happy Path - PAR-1869)
-    Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user searches for the last created partnership
-    And the user Ceases a single member organisation of the patnership with the current date
-    Then the member organistion has been Ceased successfully
-	
-  @regression @coordinated @organisationMember
-  Scenario: Verify the Upload of a Members List to a Coordinated partnership (Happy Path - PAR-1872)
-    Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user searches for the last created partnership
-    And the user Uploads a members list to the coordinated partnership with the following file "memberslist.csv"
-    Then the members list is uploaded successfully
-  
-  @regression @coordinated @organisationMember @test
-  Scenario: Verify a Coordinated Partnerships Members List Type can be Changed Successfully (Happy Path - PAR-2325)
-    Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user searches for the last created partnership
-    And the user changes the members list type to "externalRequest"
-    Then the members list type is changed successfully
+		# Needs an Assertion statement and to update the Journey.

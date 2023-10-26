@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects.GeneralEnquiryPageObjects;
+package uk.gov.beis.pageobjects.DuplicateClasses;
 
 import java.io.IOException;
 
