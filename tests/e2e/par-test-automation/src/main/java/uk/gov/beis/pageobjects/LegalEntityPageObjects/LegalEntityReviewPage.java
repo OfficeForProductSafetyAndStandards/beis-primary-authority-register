@@ -9,7 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanCoveragePage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
 
 public class LegalEntityReviewPage extends BasePageObject {
 	
@@ -28,9 +28,9 @@ public class LegalEntityReviewPage extends BasePageObject {
 		return PageFactory.initElements(driver, LegalEntityTypePage.class);
 	}
 	
-	public PartnershipConfirmationPage proceed() {
+	public PartnershipInformationPage proceed() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
 	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {

@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipRestoredPage;
 
 public class ReinstatePage extends BasePageObject {
@@ -27,9 +27,9 @@ public class ReinstatePage extends BasePageObject {
 		return PageFactory.initElements(driver, PartnershipRestoredPage.class);
 	}
 	
-	public PartnershipConfirmationPage goToPartnershipDetailsPage() {
+	public PartnershipInformationPage goToPartnershipDetailsPage() {
 		reinstateBtn.click();
 		
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

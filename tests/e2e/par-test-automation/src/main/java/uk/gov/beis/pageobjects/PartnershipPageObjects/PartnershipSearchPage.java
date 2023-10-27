@@ -36,19 +36,19 @@ public class PartnershipSearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, DeclarationPage.class);
 	}
 	
-	public PartnershipConfirmationPage selectBusinessNameLinkFromPartnership() {
+	public PartnershipInformationPage selectBusinessNameLinkFromPartnership() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]")).click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
-	public PartnershipConfirmationPage selectAuthority(String auth) {
+	public PartnershipInformationPage selectAuthority(String auth) {
 		WebElement link = driver.findElement(By.xpath(authority.replace("?", auth)));
 		link.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
-	public PartnershipConfirmationPage selectPartnershipLink(String businessName) {
+	public PartnershipInformationPage selectPartnershipLink(String businessName) {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + businessName + "')]")).click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

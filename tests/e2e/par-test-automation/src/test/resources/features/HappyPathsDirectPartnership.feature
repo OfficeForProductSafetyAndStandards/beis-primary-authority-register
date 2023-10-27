@@ -55,12 +55,11 @@ Feature: Direct Partnership Happy Paths
       | Business Description | ContactNotes | SIC Code            | No of Employees | Trading Name | Legal Entity Name | Legal entity Type | Company number |
       | Test Business        | Test Note.   | allow people to eat | 10 to 49        | Testing LTD  | Testing LTD       | Partnership       |       12345678 |
     Then the second part of the partnership application is successfully completed
-    #verify update of newly created partnership
+    # Verify all the Partnership Details are Displayed
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     When the user searches for the last created partnership
-    And the user updates the partnership information with the following info: "Updated Partnership info"
-    Then the partnership is updated correctly
+    Then the partnership application is completed successfully
 
   @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct @update @legalEntities
   Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
@@ -435,13 +434,3 @@ Feature: Direct Partnership Happy Paths
     When the user has revoked the last created inspection plan
     Then the inspection plan is successfully removed
 
-  @regression @usermanagement
-  Scenario: Verify Completion of User Creation journey (Happy Path - PAR-1904)
-    Given the user is on the PAR login page
-    And the user logs in with the "par_admin@example.com" user credentials
-    When the user visits the maillog page and extracts the invite link
-    And the user is on the PAR login page
-    And the user follows the invitation link
-    And the user completes the user creation journey
-    Then the user journey creation is successful
-		# Needs an Assertion statement and to update the Journey.

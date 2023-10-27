@@ -9,7 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
 
 public class TradingPage extends BasePageObject {
 	
@@ -41,12 +41,12 @@ public class TradingPage extends BasePageObject {
 		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 	}
 	
-	public PartnershipConfirmationPage editTradingName(String name) {
+	public PartnershipInformationPage editTradingName(String name) {
 		tradingName.clear();
 		tradingName.sendKeys(name);
 		
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
 	public BusinessDetailsPage goToBusinessDetailsPage() {

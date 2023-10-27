@@ -87,7 +87,7 @@ public class RegulatoryFunctionPage extends BasePageObject {
 		return PageFactory.initElements(driver, AuthorityConfirmationPage.class);
 	}
 	
-	public PartnershipConfirmationPage updateRegFunction() {
+	public PartnershipInformationPage updateRegFunction() {
 		if(normalOrSequencedRadial.isSelected()) {
 			bespokeRadial.click();
 			
@@ -103,11 +103,11 @@ public class RegulatoryFunctionPage extends BasePageObject {
 		DataStore.saveValue(UsableValues.PARTNERSHIP_REGFUNC, "Alphabet learning");
 		
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
-	public PartnershipConfirmationPage clickSave() {
+	public PartnershipInformationPage clickSave() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

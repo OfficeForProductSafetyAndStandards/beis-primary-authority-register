@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
 import uk.gov.beis.pageobjects.UserManagement.ProfileReviewPage;
 
 public class AccountInvitePage extends BasePageObject {
@@ -27,9 +27,9 @@ public class AccountInvitePage extends BasePageObject {
 		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 	}
 	
-	public PartnershipConfirmationPage sendInvite() {
+	public PartnershipInformationPage sendInvite() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
 	public ProfileReviewPage clickInviteButton() {

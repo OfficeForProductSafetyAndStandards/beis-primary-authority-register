@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
 
 public class EnforcementCompletionPage extends BasePageObject{
 
@@ -18,9 +18,9 @@ public class EnforcementCompletionPage extends BasePageObject{
 		super();
 	}
 	
-	public PartnershipConfirmationPage goToPartnershipConfirmationPage() {
+	public PartnershipInformationPage goToPartnershipConfirmationPage() {
 		doneBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
 	public EnforcementSearchPage clickDone() {

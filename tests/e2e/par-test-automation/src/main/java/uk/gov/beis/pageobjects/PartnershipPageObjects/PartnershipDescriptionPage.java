@@ -63,8 +63,8 @@ public class PartnershipDescriptionPage extends BasePageObject {
 		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 	}
 	
-	public PartnershipConfirmationPage clickSave() {
+	public PartnershipInformationPage clickSave() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

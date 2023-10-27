@@ -31,8 +31,8 @@ public class MembersListUpToDatePage extends BasePageObject {
 		noRadial.click();
 	}
 	
-	public PartnershipConfirmationPage clicksave() {
+	public PartnershipInformationPage clicksave() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

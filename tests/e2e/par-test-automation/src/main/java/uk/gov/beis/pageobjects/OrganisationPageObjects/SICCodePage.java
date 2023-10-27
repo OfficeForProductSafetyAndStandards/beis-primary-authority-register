@@ -9,7 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
 
 public class SICCodePage extends BasePageObject {
 	
@@ -41,11 +41,11 @@ public class SICCodePage extends BasePageObject {
 		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 	}
 	
-	public PartnershipConfirmationPage editSICCode(String code) {
+	public PartnershipInformationPage editSICCode(String code) {
 		driver.findElement(By.xpath(sicCodeLocator.replace("?", code))).click();
 		
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
 	public BusinessDetailsPage goToBusinessDetailsPage() {

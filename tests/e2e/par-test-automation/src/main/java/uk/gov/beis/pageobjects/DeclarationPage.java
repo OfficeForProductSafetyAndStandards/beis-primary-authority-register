@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementSearchPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.AboutTheOrganisationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.RegulatoryFunctionPage;
+import uk.gov.beis.pageobjects.UserManagement.ContactDetailsPage;
 
 public class DeclarationPage extends BasePageObject {
 
@@ -17,6 +18,9 @@ public class DeclarationPage extends BasePageObject {
 	
 	@FindBy(id = "edit-confirm")
 	private WebElement confirmationCheckbox;
+	
+	@FindBy(id = "edit-data-policy")
+	private WebElement dataPolcyCheckbox;
 	
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
@@ -46,7 +50,18 @@ public class DeclarationPage extends BasePageObject {
 			confirmationCheckbox.click();
 		}
 	}
-
+	
+	public void selectDataPolicyCheckbox() {
+		if(!dataPolcyCheckbox.isSelected()) {
+			dataPolcyCheckbox.click();
+		}
+	}
+	
+	public ContactDetailsPage goToContactDetailsPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, ContactDetailsPage.class);
+	}
+	
 	public RegulatoryFunctionPage goToRegulatoryFunctionsPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, RegulatoryFunctionPage.class);

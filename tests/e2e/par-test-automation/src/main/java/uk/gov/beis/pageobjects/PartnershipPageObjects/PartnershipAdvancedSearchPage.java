@@ -34,9 +34,9 @@ public class PartnershipAdvancedSearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 	}
 
-	public PartnershipConfirmationPage selectPartnershipLink() {
+	public PartnershipInformationPage selectPartnershipLink() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[1]/a[1]")).click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
 	public DeclarationPage selectApproveBusinessNameLink() {
@@ -77,13 +77,13 @@ public class PartnershipAdvancedSearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 	}
 	
-	public PartnershipConfirmationPage selectPrimaryAuthorityLink() {
+	public PartnershipInformationPage selectPrimaryAuthorityLink() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + "')]/parent::td/parent::tr/td[1]/a[1]")).click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
-	public PartnershipConfirmationPage selectOrganisationLink() {
+	public PartnershipInformationPage selectOrganisationLink() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[1]/a[2]")).click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

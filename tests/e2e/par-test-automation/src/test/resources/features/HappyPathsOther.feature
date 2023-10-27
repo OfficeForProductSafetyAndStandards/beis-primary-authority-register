@@ -96,7 +96,7 @@ Feature: Other Happy Paths
     And the user enters a list of new emails to replace the subscription list
     Then the user can verify an email from the original list was removed successfully
 
-  @regression @helpDesk @managePeople
+  @regression @helpDesk @usermanagement
   Scenario: Verify the Addition of a new person as a Help Desk User (Happy Path - PAR-2097)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -105,7 +105,7 @@ Feature: Other Happy Paths
       | Mr    |      01204 |              | Cafe         | City Enforcement Squad |
     Then the user can verify the person was created successfully and can see resend an account invite
 
-  @regression @helpDesk @managePeople
+  @regression @helpDesk @usermanagement
   Scenario: Verify the Update of an existing person that has not created an account as a Help Desk User (Happy Path - PAR-2097)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -114,8 +114,18 @@ Feature: Other Happy Paths
       | Title | WorkNumber  | MobileNumber | Organisation  | Authority                       |
       | Dr    | 01204996501 |  07405882265 | General Store | Upper West Side Borough Council |
     Then the user can verify the person was updated successfully and can see resend an account invite
-
-  @regression @helpDesk @managePeople @mergeContact
+	
+	@regression @usermanagement
+  Scenario: Verify Completion of User Creation journey (Happy Path - PAR-1904)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_admin@example.com" user credentials
+    When the user visits the maillog page and extracts the invite link
+    #And the user is on the PAR login page
+    And the user follows the invitation link
+    And the user completes the user creation journey
+    Then the user journey creation is successful
+    
+  @regression @helpDesk @usermanagement @mergeContact
   Scenario: Verify the Successful Merge of a Contact Record for a User Profile (Happy Path - PAR-2288)
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
@@ -130,7 +140,7 @@ Feature: Other Happy Paths
     And the user merges the contact record
     Then the user can verify the contact record was merged successfully
 	
-	@regression @managePeople @userAccount
+	@regression @usermanagement @userAccount
   Scenario: Verify a User can Change their User Account Email Address (Happy Path - PAR-2323)
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials

@@ -17,10 +17,11 @@ Feature: Coordinated Partnership Happy Paths
       | Business Description | ContactNotes | SIC Code            | Member List Size | Trading Name | Legal Entity Name | Legal entity Type | Company number |
       | Testing Business     | Test Note.   | allow people to eat | Medium           | Test HQ      | Test HQ           | Partnership       |       12345678 |
     Then the second part of the partnership application is successfully completed
-    # Verify the Partnership can be Viewd?
-    #Given the user is on the PAR login page
-    #And the user logs in with the "par_authority@example.com" user credentials
-    #When the user searches for the last created partnership
+    # Verify all the Partnership Details are Displayed
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    When the user searches for the last created partnership
+    Then the partnership application is completed successfully
 
   @regression @coordinated @organisationMember @authorityManagement
   Scenario: Successfully Nominate a Coordinated Partnership (Happy Path - PAR-2261)

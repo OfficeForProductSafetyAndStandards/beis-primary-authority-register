@@ -9,7 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
 
@@ -26,7 +26,7 @@ public class LegalEntityPage extends BasePageObject {
 	String legalEntType = "//select/option[contains(text(),'?')]";
 	String regNo = "//label[contains(text(),'Provide the registration number')]/following-sibling::input";
 
-	public PartnershipConfirmationPage createLegalEntity(String type) {
+	public PartnershipInformationPage createLegalEntity(String type) {
 		DataStore.saveValue(UsableValues.ENTITY_NAME, RandomStringGenerator.getLegalEntityName(3));
 		DataStore.saveValue(UsableValues.REGISTRATION_NO, RandomStringGenerator.getRandomNumericString(7));
 
@@ -35,6 +35,6 @@ public class LegalEntityPage extends BasePageObject {
 		driver.findElement(By.xpath(regNo)).sendKeys(DataStore.getSavedValue(UsableValues.REGISTRATION_NO));
 
 		continueBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

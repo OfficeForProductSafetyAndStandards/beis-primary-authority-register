@@ -28,7 +28,7 @@ import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
 import uk.gov.beis.pageobjects.UserManagement.ContactDetailsPage;
 import uk.gov.beis.utility.DataStore;
 
-public class PartnershipConfirmationPage extends BasePageObject {
+public class PartnershipInformationPage extends BasePageObject {
 
 	//private boolean twopartjourney = false;
 
@@ -111,6 +111,8 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	@FindBy(id = "edit-done")
 	private WebElement saveButton;
 	
+	private String authorityNameLocator = "//div/h2[contains(text(),'?')]";
+	
 	private String partnershipDetails = "//div/p[contains(text(),'?')]";
 	private String partnershipRegFunc = "//ul/li[contains(text(),'?')]";
 	private String aboutTheOrganisation = "//div/p[contains(text(),'?')]";
@@ -139,7 +141,7 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	private String editContactLink = "//a[contains(text(),'?')]";
 	private String removeContactLink = "//a[contains(text(),'?')]";
 	
-	public PartnershipConfirmationPage() throws ClassNotFoundException, IOException {
+	public PartnershipInformationPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
@@ -148,22 +150,22 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		return PageFactory.initElements(driver, EnforcementNotificationPage.class);
 	}
 
-	public PartnershipConfirmationPage confirmDetailsAsAuthority() {
+	public PartnershipInformationPage confirmDetailsAsAuthority() {
 		WebElement checkbox = driver.findElement(By.id("edit-terms-authority-agreed"));
 		
 		if (!checkbox.isSelected())
 			checkbox.click();
 		
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
-	public PartnershipConfirmationPage confirmDetails() {
+	public PartnershipInformationPage confirmDetails() {
 		WebElement checkbox = ScenarioContext.secondJourneyPart ? driver.findElement(By.id("edit-terms-organisation-agreed")) : driver.findElement(By.id("edit-terms-authority-agreed"));
 		
 		if (!checkbox.isSelected())
 			checkbox.click();
 		
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 
 	public PartnershipCompletionPage saveChanges() {
@@ -307,7 +309,17 @@ public class PartnershipConfirmationPage extends BasePageObject {
 	}
 	
 	// Check Partnership Details
-	public boolean checkPartnershipInfo() {
+	public boolean verifyOrganisationName() {
+		
+		return driver.findElement(By.id("block-par-theme-page-title")).isDisplayed();
+	}
+	
+	public boolean verifyPrimaryAuthorityName() {
+		WebElement authority = driver.findElement(By.xpath(authorityNameLocator.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_NAME))));
+		return authority.isDisplayed();
+	}
+	
+	public boolean verifyAboutThePartnership() {
 		WebElement partnershipDets = driver.findElement(By.xpath(partnershipDetails.replace("?", DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO))));
 		return partnershipDets.isDisplayed();
 	}
@@ -349,19 +361,27 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		
 	}
 	
-	public boolean checkLegalEntity(String status) {
+	public boolean verifyLegalEntity(String status) {
 		WebElement legalEntityName = driver.findElement(By.xpath(legalEntityNameLocator.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
 		WebElement legalEntityStatus = legalEntityName.findElement(By.xpath(legalEntityStatusLocator.replace("?", status)));
 		return legalEntityName.isDisplayed() && legalEntityStatus.isDisplayed();
 	}
 	
-	public boolean checkLegalEnityExists() {
+	public boolean verifyLegalEnityExists() {
 		return driver.findElements(By.xpath(legalEntityNameLocator.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME)))).isEmpty();
 	}
 	
-	public boolean checkTradingName() {
+	public boolean verifyTradingName() {
 		tradingNameText = driver.findElement(By.xpath(tradename.replace("?", DataStore.getSavedValue(UsableValues.TRADING_NAME))));
 		return tradingNameText.isDisplayed();
+	}
+	
+	public boolean verifyContactAtTheOrganisation() {
+		WebElement fullname = driver.findElement(By.xpath(contactFullName.replace("?", getFullname())));
+		WebElement workPhone = driver.findElement(By.xpath(contactWorkNumber.replace("?", DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER))));
+		WebElement mobilePhone = driver.findElement(By.xpath(contactMobileNumber.replace("?", DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER))));
+		WebElement email = driver.findElement(By.xpath(contactEmailAddress.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL))));
+		return fullname.isDisplayed() && workPhone.isDisplayed() && mobilePhone.isDisplayed() && email.isDisplayed();
 	}
 	
 	public boolean checkContactDetails() {
@@ -423,5 +443,9 @@ public class PartnershipConfirmationPage extends BasePageObject {
 		}
 		
 		return preferredMethod.getText().contains(" (preferred)");
+	}
+	
+	private String getFullname() {
+		return DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " " + DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
 	}
 }

@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.Select;
 import uk.gov.beis.pageobjects.AuthorityPageObjects.ONSCodePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
 import uk.gov.beis.pageobjects.UserManagement.ContactDetailsPage;
 
 public class AddAddressPage extends BasePageObject {
@@ -98,14 +98,14 @@ public class AddAddressPage extends BasePageObject {
 		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 	}
 	
-	public PartnershipConfirmationPage clickContinueButton() {
+	public PartnershipInformationPage clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
-	public PartnershipConfirmationPage clickSaveButton() {
+	public PartnershipInformationPage clickSaveButton() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
 	public MemberOrganisationSummaryPage goToMemberOrganisationSummaryPage() {

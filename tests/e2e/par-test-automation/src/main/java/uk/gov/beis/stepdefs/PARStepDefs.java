@@ -36,8 +36,6 @@ import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.*;
 import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.*;
 import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.*;
 
-import uk.gov.beis.pageobjects.DuplicateClasses.BusinessContactDetailsPage; // Will be removed once the test is updated.
-
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
 
@@ -60,7 +58,6 @@ public class PARStepDefs {
 	private LoginPage loginPage;
 	private PasswordPage passwordPage;
 	private MailLogPage mailLogPage;
-	private UserTermsPage userTermsPage;
 	
 	// Dash-board
 	private DashboardPage dashboardPage;
@@ -82,9 +79,6 @@ public class PARStepDefs {
 	// Contact Record
 	private ContactRecordsPage contactRecordsPage;
 	private ContactCommunicationPreferencesPage contactCommunicationPreferencesPage;
-	
-	private UserCommsPreferencesPage userCommsPreferencesPage;			// Duplicate
-	
 	private ContactUpdateSubscriptionPage contactUpdateSubscriptionPage;
 	
 	// Merge Contact Records
@@ -99,14 +93,13 @@ public class PARStepDefs {
 	private AmendmentCompletedPage amendmentCompletedPage;
 	
 	// Partnership
-	private DeclarationPage parDeclarationPage;
 	private PartnershipTermsPage parPartnershipTermsPage;
 	private PartnershipTypePage parPartnershipTypePage;
 	private PartnershipDescriptionPage parPartnershipDescriptionPage;
 	private RegulatoryFunctionPage regulatoryFunctionPage;
 	private NumberOfEmployeesPage employeesPage;
 	private CheckPartnershipInformationPage checkPartnershipInformationPage;
-	private PartnershipConfirmationPage parPartnershipConfirmationPage;
+	private PartnershipInformationPage partnershipInformationPage;
 	private PartnershipCompletionPage parPartnershipCompletionPage;
 	private PartnershipApprovalPage partnershipApprovalPage;
 	private PartnershipRevokedPage partnershipRevokedPage;
@@ -145,7 +138,6 @@ public class PARStepDefs {
 	private BusinessNamePage businessNamePage;
 	private AddOrganisationNamePage addOrganisationNamePage;
 	private AboutTheOrganisationPage aboutTheOrganisationPage;
-	private BusinessContactDetailsPage parBusinessContactDetailsPage;
 	private SICCodePage sicCodePage;
 	private TradingPage tradingPage;
 	private BusinessDetailsPage businessDetailsPage;
@@ -202,12 +194,12 @@ public class PARStepDefs {
 	private ReplyEnquiryPage replyEnquiryPage;
 	
 	// PAR News Letter
-	private UserSubscriptionPage userSubscriptionPage;
 	private NewsLetterSubscriptionPage newsLetterSubscriptionPage;
 	private NewsLetterManageSubscriptionListPage newsLetterManageSubscriptionListPage;
 	private NewsLetterSubscriptionReviewPage newsLetterSubscriptionReviewPage;
 	
 	// Shared Pages
+	private DeclarationPage declarationPage;
 	private AddAddressPage addAddressPage;
 	private AccountInvitePage accountInvitePage;
 	private EnterTheDatePage enterTheDatePage;
@@ -234,7 +226,6 @@ public class PARStepDefs {
 		// Login
 		loginPage = PageFactory.initElements(driver, LoginPage.class);
 		passwordPage = PageFactory.initElements(driver, PasswordPage.class);
-		userTermsPage = PageFactory.initElements(driver, UserTermsPage.class);
 		mailLogPage = PageFactory.initElements(driver, MailLogPage.class);
 		
 		// Dash-board
@@ -258,7 +249,6 @@ public class PARStepDefs {
 		// Contact Record
 		contactUpdateSubscriptionPage = PageFactory.initElements(driver, ContactUpdateSubscriptionPage.class);
 		contactRecordsPage = PageFactory.initElements(driver, ContactRecordsPage.class);
-		userCommsPreferencesPage = PageFactory.initElements(driver, UserCommsPreferencesPage.class);
 		contactCommunicationPreferencesPage = PageFactory.initElements(driver,ContactCommunicationPreferencesPage.class);
 		
 		// Merge Contact Record
@@ -273,10 +263,10 @@ public class PARStepDefs {
 		amendmentCompletedPage = PageFactory.initElements(driver, AmendmentCompletedPage.class);
 		
 		// Partnership
-		parPartnershipConfirmationPage = PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		partnershipInformationPage = PageFactory.initElements(driver, PartnershipInformationPage.class);
 		parPartnershipTypePage = PageFactory.initElements(driver, PartnershipTypePage.class);
 		parPartnershipDescriptionPage = PageFactory.initElements(driver, PartnershipDescriptionPage.class);
-		parDeclarationPage = PageFactory.initElements(driver, DeclarationPage.class);
+		declarationPage = PageFactory.initElements(driver, DeclarationPage.class);
 		employeesPage = PageFactory.initElements(driver, NumberOfEmployeesPage.class);
 		partnershipRestoredPage = PageFactory.initElements(driver, PartnershipRestoredPage.class);
 		partnershipRevokedPage = PageFactory.initElements(driver, PartnershipRevokedPage.class);
@@ -321,7 +311,6 @@ public class PARStepDefs {
 		sicCodePage = PageFactory.initElements(driver, SICCodePage.class);
 		aboutTheOrganisationPage = PageFactory.initElements(driver, AboutTheOrganisationPage.class);
 		businessNamePage = PageFactory.initElements(driver, BusinessNamePage.class);
-		parBusinessContactDetailsPage = PageFactory.initElements(driver, BusinessContactDetailsPage.class);
 		businessDetailsPage = PageFactory.initElements(driver, BusinessDetailsPage.class);
 		
 		// Search Pages
@@ -375,7 +364,6 @@ public class PARStepDefs {
 		replyEnquiryPage = PageFactory.initElements(driver, ReplyEnquiryPage.class);
 		
 		// PAR News Letter
-		userSubscriptionPage = PageFactory.initElements(driver, UserSubscriptionPage.class);
 		newsLetterSubscriptionPage = PageFactory.initElements(driver, NewsLetterSubscriptionPage.class);
 		newsLetterManageSubscriptionListPage = PageFactory.initElements(driver,NewsLetterManageSubscriptionListPage.class);
 		newsLetterSubscriptionReviewPage = PageFactory.initElements(driver, NewsLetterSubscriptionReviewPage.class);
@@ -574,8 +562,8 @@ public class PARStepDefs {
 		}
 		
 		LOG.info("Accepting terms");
-		parDeclarationPage.selectConfirmCheckbox();
-		parDeclarationPage.goToBusinessDetailsPage();
+		declarationPage.selectConfirmCheckbox();
+		declarationPage.goToBusinessDetailsPage();
 		
 		LOG.info("Add business description");
 		aboutTheOrganisationPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
@@ -650,16 +638,20 @@ public class PARStepDefs {
 		parPartnershipCompletionPage.clickDoneButton();
 	}
 	
-	@When("^the user updates the partnership information with the following info: \"([^\"]*)\"$")
-	public void the_user_updates_the_partnership_information_with_the_following_info(String desc) throws Throwable {
-		parPartnershipConfirmationPage.editAboutPartnership();
-		DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, desc);
-		parPartnershipDescriptionPage.enterPartnershipDescription(desc);
-	}
-
-	@Then("^the partnership is updated correctly$")
-	public void the_partnership_is_updated_correctly() throws Throwable {
-		Assert.assertTrue("Partnership info doesn't check out", parPartnershipConfirmationPage.checkPartnershipInfo());
+	@Then("^the partnership application is completed successfully$")
+	public void the_partnership_application_is_completed_successfully() throws Throwable {
+		LOG.info("Verifying Partnership Information is Displayed.");
+		
+		assertTrue("Failed: The Organisation Name is not Correct.", partnershipInformationPage.verifyOrganisationName());
+		assertTrue("Failed: The Primary Authority name is not Correct.", partnershipInformationPage.verifyPrimaryAuthorityName());
+		assertTrue("Failed: About the Partnership is not Correct.", partnershipInformationPage.verifyAboutThePartnership());
+		
+		assertTrue("Failed: Organisation Address is not Correct.", partnershipInformationPage.checkOrganisationAddress());
+		assertTrue("Failed: About the Organisation is not Correct.", partnershipInformationPage.checkAboutTheOrganisation());
+		assertTrue("Failed The SIC Code is not Correct.", partnershipInformationPage.checkSICCode());
+		assertTrue("Failed: The Legal Entity is not Correct.", partnershipInformationPage.verifyLegalEntity("Confirmed by the Organisation"));
+		assertTrue("Failed: The Trading Name is not Correct.", partnershipInformationPage.verifyTradingName());
+		assertTrue("Failed: The Organisation Contact is not Correct.", partnershipInformationPage.verifyContactAtTheOrganisation());
 	}
 	
 	@When("^the user approves the partnership$")
@@ -667,8 +659,8 @@ public class PARStepDefs {
 		LOG.info("Approving last created partnership");
 		partnershipAdvancedSearchPage.selectApproveBusinessNameLink();
 		
-		parDeclarationPage.selectAuthorisedCheckbox();
-		parDeclarationPage.goToRegulatoryFunctionsPage();
+		declarationPage.selectAuthorisedCheckbox();
+		declarationPage.goToRegulatoryFunctionsPage();
 		
 		regulatoryFunctionPage.selectNormalOrSequencedFunctions();
 		regulatoryFunctionPage.goToPartnershipApprovedPage();
@@ -726,11 +718,11 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, data.get("About the Partnership"));
 		}
 		
-		parPartnershipConfirmationPage.editAboutPartnership();
+		partnershipInformationPage.editAboutPartnership();
 		parPartnershipDescriptionPage.enterDescription(DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO));
 		parPartnershipDescriptionPage.clickSave();
 		
-		parPartnershipConfirmationPage.editRegulatoryFunctions();
+		partnershipInformationPage.editRegulatoryFunctions();
 		regulatoryFunctionPage.updateRegFunction();
 	}
 
@@ -738,10 +730,10 @@ public class PARStepDefs {
 	public void the_About_the_Partnership_and_Regulatory_Functions_are_updated_Successfully() throws Throwable {
 		LOG.info("Verifying About the Partnership and Regulatory Functions have been updated Successfully.");
 		
-		assertTrue(parPartnershipConfirmationPage.checkPartnershipInfo());
-		assertTrue(parPartnershipConfirmationPage.checkRegulatoryFunctions());
+		assertTrue(partnershipInformationPage.verifyAboutThePartnership());
+		assertTrue(partnershipInformationPage.checkRegulatoryFunctions());
 		
-		parPartnershipConfirmationPage.clickSave();
+		partnershipInformationPage.clickSave();
 	}
 	
 	@When("^the user searches for the last created partnership Organisation$")
@@ -769,7 +761,7 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.TRADING_NAME, data.get("Trading Name"));
 		}
 		
-		parPartnershipConfirmationPage.editOrganisationAddress();
+		partnershipInformationPage.editOrganisationAddress();
 		addAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
 				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY), 
 				DataStore.getSavedValue(UsableValues.BUSINESS_NATION), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
@@ -778,14 +770,14 @@ public class PARStepDefs {
 		LOG.info("Selected Country: " + DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY));
 		LOG.info("Selected Nation: " + DataStore.getSavedValue(UsableValues.BUSINESS_NATION));
 		
-		parPartnershipConfirmationPage.editAboutTheOrganisation();
+		partnershipInformationPage.editAboutTheOrganisation();
 		parPartnershipDescriptionPage.updateBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
 		parPartnershipDescriptionPage.clickSave();
 		
-		parPartnershipConfirmationPage.editSICCode();
+		partnershipInformationPage.editSICCode();
 		sicCodePage.editSICCode(DataStore.getSavedValue(UsableValues.SIC_CODE));
 		
-		parPartnershipConfirmationPage.editTradingName();
+		partnershipInformationPage.editTradingName();
 		tradingPage.editTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
 	}
 
@@ -793,12 +785,12 @@ public class PARStepDefs {
 	public void all_of_the_Partnership_details_have_been_updated_successfully() throws Throwable {
 		LOG.info("Verifying all the remaining Partnership details have been updated Successfully.");
 
-		assertTrue(parPartnershipConfirmationPage.checkOrganisationAddress());
-		assertTrue(parPartnershipConfirmationPage.checkAboutTheOrganisation());
-		assertTrue(parPartnershipConfirmationPage.checkSICCode());
-		assertTrue(parPartnershipConfirmationPage.checkTradingName());
+		assertTrue(partnershipInformationPage.checkOrganisationAddress());
+		assertTrue(partnershipInformationPage.checkAboutTheOrganisation());
+		assertTrue(partnershipInformationPage.checkSICCode());
+		assertTrue(partnershipInformationPage.verifyTradingName());
 		
-		parPartnershipConfirmationPage.clickSave();
+		partnershipInformationPage.clickSave();
 	}
 	
 	@When("^the user Amends the legal entities with the following details:$")
@@ -810,7 +802,7 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Entity Name"));
 		}
 		
-		parPartnershipConfirmationPage.selectAmendLegalEntitiesLink();
+		partnershipInformationPage.selectAmendLegalEntitiesLink();
 		
 		legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
 		legalEntityTypePage.clickContinueButton();
@@ -824,14 +816,14 @@ public class PARStepDefs {
 	@Then("^the user verifies the amendments are created successfully with status \"([^\"]*)\"$")
 	public void the_user_verifies_the_amendments_are_created_successfully_with_status(String status) throws Throwable {
 		LOG.info("Verify the Legal Entity was Created Successfully.");
-		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+		assertTrue(partnershipInformationPage.verifyLegalEntity(status));
 	}
 
 	@When("^the user confirms the legal entity amendments$")
 	public void the_user_confirms_the_legal_entity_amendments() throws Throwable {
 		LOG.info("Confirm the Legal Entity as the Business User.");
 		
-		parPartnershipConfirmationPage.selectConfirmLegalEntitiesLink();
+		partnershipInformationPage.selectConfirmLegalEntitiesLink();
 		confirmThisAmendmentPage.confirmLegalEntityAmendments();
 		amendmentCompletedPage.goToDashBoardPage();
 	}
@@ -844,14 +836,14 @@ public class PARStepDefs {
 		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
 		
 		LOG.info("Verify the Legal Entity was Confirmed Successfully.");
-		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+		assertTrue(partnershipInformationPage.verifyLegalEntity(status));
 	}
 
 	@When("^the user nominates the legal entity amendments$")
 	public void the_user_nominates_the_legal_entity_amendments() throws Throwable {
 		LOG.info("Nominate the Legal Entity as the Help Desk User.");
 		
-		parPartnershipConfirmationPage.selectNominateLegalEntitiesLink();
+		partnershipInformationPage.selectNominateLegalEntitiesLink();
 		confirmThisAmendmentPage.confirmLegalEntityAmendments();
 		amendmentCompletedPage.goToPartnershipDetailsPage();
 	}
@@ -859,14 +851,14 @@ public class PARStepDefs {
 	@Then("^the user verifies the amendments are nominated successfully with status \"([^\"]*)\"$")
 	public void the_user_verifies_the_amendments_are_nominated_successfully_with_status(String status) throws Throwable {
 		LOG.info("Verify the Legal Entity was Nominated Successfully.");
-		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+		assertTrue(partnershipInformationPage.verifyLegalEntity(status));
 	}
 	
 	@When("^the user revokes the legal entity with the reason \"([^\"]*)\"$")
 	public void the_user_revokes_the_legal_entity_with_the_reason(String reason) throws Throwable {
 		LOG.info("Revoke the Legal Entity as the Help Desk User.");
 		
-		parPartnershipConfirmationPage.selectRevokeLegalEntitiesLink();
+		partnershipInformationPage.selectRevokeLegalEntitiesLink();
 		
 		revokePage.enterReasonForRevocation(reason);
 		revokePage.goToPartnershipDetailsPage();
@@ -875,41 +867,41 @@ public class PARStepDefs {
 	@Then("^the user verifies the legal entity was revoked successfully with status \"([^\"]*)\"$")
 	public void the_user_verifies_the_legal_entity_was_revoked_successfully_with_status(String status) throws Throwable {
 		LOG.info("Verify the Legal Entity was Revoked Successfully.");
-		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+		assertTrue(partnershipInformationPage.verifyLegalEntity(status));
 	}
 	
 	@When("^the user reinstates the legal entity$")
 	public void the_user_reinstates_the_legal_entity() throws Throwable {
 		LOG.info("Reinstate the Legal Entity as the Help Desk User.");
 		
-		parPartnershipConfirmationPage.selectReinstateLegalEntitiesLink();
+		partnershipInformationPage.selectReinstateLegalEntitiesLink();
 		reinstatePage.goToPartnershipDetailsPage();
 	}
 
 	@Then("^the user verifies the legal entity was reinstated successfully with status \"([^\"]*)\"$")
 	public void the_user_verifies_the_legal_entity_was_reinstated_successfully_with_status(String status) throws Throwable {
 		LOG.info("Verify the Legal Entity was Reinstated Successfully.");
-		assertTrue(parPartnershipConfirmationPage.checkLegalEntity(status));
+		assertTrue(partnershipInformationPage.verifyLegalEntity(status));
 	}
 	
 	@When("^the user removes the legal entity$")
 	public void the_user_removes_the_legal_entity() throws Throwable {
 		LOG.info("Remove the Legal Entity as the Help Desk User.");
 		
-		parPartnershipConfirmationPage.selectRemoveLegalEntitiesLink();
+		partnershipInformationPage.selectRemoveLegalEntitiesLink();
 		removePage.goToPartnershipDetailsPage();
 	}
 
 	@Then("^the user verifies the legal entity was removed successfully$")
 	public void the_user_verifies_the_legal_entity_was_removed_successfully() throws Throwable {
 		LOG.info("Verify the Legal Entity was Removed Successfully.");
-		assertTrue(parPartnershipConfirmationPage.checkLegalEnityExists());
+		assertTrue(partnershipInformationPage.verifyLegalEnityExists());
 	}
 	
 	@When("^the user adds a Primary Authority contact to be Invited with the following details:$")
 	public void the_user_adds_a_Primary_Authority_contact_to_be_Invited_with_the_following_details(DataTable details) throws Throwable {
 		
-		parPartnershipConfirmationPage.addAnotherAuthorityContactButton();
+		partnershipInformationPage.addAnotherAuthorityContactButton();
 
 		LOG.info("Adding new contact details.");
 		contactDetailsPage.addContactDetailsWithRandomName(details);
@@ -928,13 +920,13 @@ public class PARStepDefs {
 	@Then("^the new Primary Authority contact is added Successfully$")
 	public void the_new_Primary_Authority_contact_is_added_Successfully() throws Throwable {
 		LOG.info("Verifying the new Authority contact is added successfully.");
-		assertTrue("Failed: Contact Details are not Displayed Correctly.", parPartnershipConfirmationPage.checkContactDetails());
+		assertTrue("Failed: Contact Details are not Displayed Correctly.", partnershipInformationPage.checkContactDetails());
 	}
 
 	@When("^the user updates the new Primary Authority contact with the following details:$")
 	public void the_user_updates_the_new_Primary_Authority_contact_with_the_following_details(DataTable details) throws Throwable {
 		
-		parPartnershipConfirmationPage.editContactsDetailsButton();
+		partnershipInformationPage.editContactsDetailsButton();
 		
 		LOG.info("Editing contact details.");
 		contactDetailsPage.editContactDetailsWithRandomName(details);
@@ -950,12 +942,12 @@ public class PARStepDefs {
 	@Then("^the new Primary Authority contact is updated Successfully$")
 	public void the_new_Primary_Authority_contact_is_updated_Successfully() throws Throwable {
 		LOG.info("Verifying the Authority contact was updated successfully.");
-		assertTrue("Contact Details are not Displayed Correctly.", parPartnershipConfirmationPage.checkContactDetails());
+		assertTrue("Contact Details are not Displayed Correctly.", partnershipInformationPage.checkContactDetails());
 	}
 
 	@When("^the user removes the new Primary Authority contact$")
 	public void the_user_removes_the_new_Primary_Authority_contact() throws Throwable {
-		parPartnershipConfirmationPage.removeContactsDetailsButton();
+		partnershipInformationPage.removeContactsDetailsButton();
 		
 		LOG.info("Removing the contact.");
 		removePage.goToPartnershipDetailsPage();
@@ -964,12 +956,12 @@ public class PARStepDefs {
 	@Then("^the new Primary Authority contact is removed Successfully$")
 	public void the_new_Primary_Authority_contact_is_removed_Successfully() throws Throwable {
 		LOG.info("Verifying the new Authority contact was removed successfully.");
-		assertTrue("Failed: Contact was not Removed.", parPartnershipConfirmationPage.checkContactExists());
+		assertTrue("Failed: Contact was not Removed.", partnershipInformationPage.checkContactExists());
 	}
 	
 	@When("^the user adds a new Organisation contact to be Invited with the following details:$")
 	public void the_user_adds_a_new_Organisation_contact_to_be_Invited_with_the_following_details(DataTable details) throws Throwable {
-		parPartnershipConfirmationPage.addAnotherOrganisationContactButton();
+		partnershipInformationPage.addAnotherOrganisationContactButton();
 
 		LOG.info("Adding new contact details.");
 		contactDetailsPage.addContactDetailsWithRandomName(details);
@@ -984,12 +976,12 @@ public class PARStepDefs {
 	@Then("^the new Organisation contact is added Successfully$")
 	public void the_new_Organisation_contact_is_added_Successfully() throws Throwable {
 		LOG.info("Verifying the new Authority contact is added successfully.");
-		assertTrue("Failed: Contact Details are not Displayed Correctly.", parPartnershipConfirmationPage.checkContactDetails());
+		assertTrue("Failed: Contact Details are not Displayed Correctly.", partnershipInformationPage.checkContactDetails());
 	}
 
 	@When("^the user updates the new Organisation contact with the following details:$")
 	public void the_user_updates_the_new_Organisation_contact_with_the_following_details(DataTable details) throws Throwable {
-		parPartnershipConfirmationPage.editContactsDetailsButton();
+		partnershipInformationPage.editContactsDetailsButton();
 		
 		LOG.info("Editing contact details.");
 		contactDetailsPage.editContactDetailsWithRandomName(details);
@@ -1001,12 +993,12 @@ public class PARStepDefs {
 	@Then("^the new Organisation contact is updated Successfully$")
 	public void the_new_Organisation_contact_is_updated_Successfully() throws Throwable {
 		LOG.info("Verifying the Authority contact was updated successfully.");
-		assertTrue("Failed: Contact Details are not Displayed Correctly.", parPartnershipConfirmationPage.checkContactDetails());
+		assertTrue("Failed: Contact Details are not Displayed Correctly.", partnershipInformationPage.checkContactDetails());
 	}
 
 	@When("^the user removes the new Organisation contact$")
 	public void the_user_removes_the_new_Organisation_contact() throws Throwable {
-		parPartnershipConfirmationPage.removeContactsDetailsButton();
+		partnershipInformationPage.removeContactsDetailsButton();
 		
 		LOG.info("Removing the contact.");
 		removePage.goToPartnershipDetailsPage();
@@ -1015,7 +1007,7 @@ public class PARStepDefs {
 	@Then("^the new Organisation contact is removed Successfully$")
 	public void the_new_Organisation_contact_is_removed_Successfully() throws Throwable {
 		LOG.info("Verifying the new Authority contact was removed successfully.");
-		assertTrue("Failed: Contact was not Removed.", parPartnershipConfirmationPage.checkContactExists());
+		assertTrue("Failed: Contact was not Removed.", partnershipInformationPage.checkContactExists());
 	}
 	
 	@When("^the user uploads an inspection plan against the partnership with the following details:$")
@@ -1029,7 +1021,7 @@ public class PARStepDefs {
 		}
 		
 		partnershipAdvancedSearchPage.selectPartnershipLink();
-		parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
+		partnershipInformationPage.selectSeeAllInspectionPlans();
 		
 		inspectionPlanSearchPage.selectUploadLink();
 		
@@ -1060,7 +1052,7 @@ public class PARStepDefs {
 		}
 		
 		partnershipAdvancedSearchPage.selectPartnershipLink();
-		parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
+		partnershipInformationPage.selectSeeAllInspectionPlans();
 		
 		inspectionPlanSearchPage.selectEditLink();
 		
@@ -1091,7 +1083,7 @@ public class PARStepDefs {
 		}
 		
 		partnershipAdvancedSearchPage.selectPartnershipLink();
-		parPartnershipConfirmationPage.selectSeeAllAdviceNotices();
+		partnershipInformationPage.selectSeeAllAdviceNotices();
 		
 		adviceNoticeSearchPage.selectUploadLink();
 		
@@ -1191,7 +1183,7 @@ public class PARStepDefs {
 		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
 		
 		LOG.info("Create enformcement notification against partnership");
-		parPartnershipConfirmationPage.createEnforcement();
+		partnershipInformationPage.createEnforcement();
 		enforcementNotificationPage.clickContinue();
 		
 		enforcementOfficerContactDetailsPage.goToEnforceLegalEntityPage();
@@ -1282,8 +1274,8 @@ public class PARStepDefs {
 		removeEnforcementPage.enterReasonForRemoval("Test Remove.");
 		removeEnforcementPage.clickContinue();
 		
-		parDeclarationPage.selectConfirmCheckbox();
-		parDeclarationPage.goToEnforcementSearchPage();
+		declarationPage.selectConfirmCheckbox();
+		declarationPage.goToEnforcementSearchPage();
 	}
 
 	@Then("^the enforcement notice is removed successfully$")
@@ -1323,7 +1315,7 @@ public class PARStepDefs {
 		}
 		
 		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
-		parPartnershipConfirmationPage.selectDeviateInspectionPlan();
+		partnershipInformationPage.selectDeviateInspectionPlan();
 		enforcementOfficerContactDetailsPage.goToDeviationRequestPage();
 		
 		requestDeviationPage.enterDescription(DataStore.getSavedValue(UsableValues.DEVIATION_DESCRIPTION));
@@ -1438,7 +1430,7 @@ public class PARStepDefs {
 		}
 		
 		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
-		parPartnershipConfirmationPage.selectSendInspectionFeedbk();
+		partnershipInformationPage.selectSendInspectionFeedbk();
 		
 		enforcementOfficerContactDetailsPage.goToInspectionFeedbackDetailsPage();
 		
@@ -1525,7 +1517,7 @@ public class PARStepDefs {
 		}
 		
 		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
-		parPartnershipConfirmationPage.sendGeneralEnquiry();
+		partnershipInformationPage.sendGeneralEnquiry();
 		
 		enforcementOfficerContactDetailsPage.goToRequestEnquiryPage();
 		
@@ -1544,7 +1536,7 @@ public class PARStepDefs {
 		}
 		
 		partnershipSearchPage.selectBusinessNameLinkFromPartnership();
-		parPartnershipConfirmationPage.createEnforcement();
+		partnershipInformationPage.createEnforcement();
 		
 		enforcementNotificationPage.selectDiscussEnforcement();
 		
@@ -1626,7 +1618,7 @@ public class PARStepDefs {
 		LOG.info("Revoking the last created Inspection Plan.");
 		
 		partnershipAdvancedSearchPage.selectPartnershipLink();
-		parPartnershipConfirmationPage.selectSeeAllInspectionPlans();
+		partnershipInformationPage.selectSeeAllInspectionPlans();
 		
 		inspectionPlanSearchPage.selectRevokeLink();
 		
@@ -1669,22 +1661,33 @@ public class PARStepDefs {
 
 	@When("^the user completes the user creation journey$")
 	public void the_user_completes_the_user_creation_journey() throws Throwable {
-		LOG.info("Completing user creation journey");
+		LOG.info("Completing the User Creation Journey.");
+		
 		passwordPage.enterPassword("TestPassword", "TestPassword");
 		passwordPage.selectRegister();
-		userTermsPage.acceptTerms();
-		parBusinessContactDetailsPage.proceed();
-		userCommsPreferencesPage.proceed();
-		userSubscriptionPage.selectContinue();
+		
+		declarationPage.selectDataPolicyCheckbox();
+		declarationPage.goToContactDetailsPage();
+		
+		contactDetailsPage.goToContactCommunicationPreferencesPage();
+		
+		DataStore.saveValue(UsableValues.CONTACT_NOTES, "Test User Creation Note.");
+		
+		contactCommunicationPreferencesPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
+		contactCommunicationPreferencesPage.selectContinueButton();
+		
+		contactUpdateSubscriptionPage.subscribeToPARNews();
+		contactUpdateSubscriptionPage.selectContinueButton();
 	}
 
 	@Then("^the user journey creation is successful$")
 	public void the_user_journey_creation_is_successful() throws Throwable {
-		LOG.info("Checking user creation is sucessful");
+		LOG.info("Verify User Details are Correct.");
+		
+		assertTrue("Failed: Contact Details are not Displayed Correctly.", profileReviewPage.checkContactDetails());
+		
 		profileReviewPage.goToProfileCompletionPage();
 		profileCompletionPage.goToDashboardPage();
-		
-		// Needs an Assertion.
 	}
 	
 	@When("^the user Deletes the Partnership with the following reason: \"([^\"]*)\"$")
@@ -1724,7 +1727,7 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Legal Entity Name"));
 		}
 		
-		parPartnershipConfirmationPage.selectShowMembersListLink();
+		partnershipInformationPage.selectShowMembersListLink();
 		memberListPage.selectAddAMemberLink();
 		
 		LOG.info("Entering the Member Organisation's Name.");
@@ -1771,7 +1774,7 @@ public class PARStepDefs {
 		LOG.info("Update a Single Member Organisation to a Co-ordinated Partnership.");
 		
 		partnershipAdvancedSearchPage.selectOrganisationLink();
-		parPartnershipConfirmationPage.selectShowMembersListLink();
+		partnershipInformationPage.selectShowMembersListLink();
 		
 		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
 		memberListPage.selectMembersName();
@@ -1843,7 +1846,7 @@ public class PARStepDefs {
 		LOG.info("Cease a Single Member Organisation to a Co-ordinated Partnership.");
 		
 		partnershipAdvancedSearchPage.selectOrganisationLink();
-		parPartnershipConfirmationPage.selectShowMembersListLink();
+		partnershipInformationPage.selectShowMembersListLink();
 		
 		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
 		memberListPage.selectCeaseMembership();
@@ -1867,7 +1870,7 @@ public class PARStepDefs {
 		LOG.info("Uploading a Members List CSV File to a Co-ordinated Partnership.");
 		
 		partnershipAdvancedSearchPage.selectOrganisationLink();
-		parPartnershipConfirmationPage.selectShowMembersListLink();
+		partnershipInformationPage.selectShowMembersListLink();
 		
 		memberListPage.selectUploadMembersListLink();
 		
@@ -1893,7 +1896,7 @@ public class PARStepDefs {
 		LOG.info("Uploading a Members List CSV File to a Co-ordinated Partnership.");
 		
 		partnershipAdvancedSearchPage.selectOrganisationLink();
-		parPartnershipConfirmationPage.selectChangeMembersListTypeLink();
+		partnershipInformationPage.selectChangeMembersListTypeLink();
 		
 		membersListTypePage.selectMemberListType(listType);
 		membersListTypePage.clickContinue();
@@ -1913,7 +1916,7 @@ public class PARStepDefs {
 		String copyAvailableText = " The co-ordinator must make the copy available as soon as reasonably practicable and, in any event, not later "
 				+ "than the third working day after the date of receiving the request at no charge.";
 		
-		Assert.assertTrue("FAILED: Memebers List Type was not Changed.", parPartnershipConfirmationPage.checkMembersListType(requestText + copyAvailableText));
+		Assert.assertTrue("FAILED: Memebers List Type was not Changed.", partnershipInformationPage.checkMembersListType(requestText + copyAvailableText));
 	}
 	
 	@Given("^the user clicks the PAR Home page link$")
@@ -2073,7 +2076,7 @@ public class PARStepDefs {
 		partnershipAdvancedSearchPage.selectPrimaryAuthorityLink();
 		
 		LOG.info("Verify the Partnership Displays the Previously Known as Text.");
-		Assert.assertTrue("FAILED: Previously Known as text is not Displayed", parPartnershipConfirmationPage.checkPreviouslyKnownAsText());
+		Assert.assertTrue("FAILED: Previously Known as text is not Displayed", partnershipInformationPage.checkPreviouslyKnownAsText());
 	}
 	
 	@When("^the user searches for the last created organisation$")
@@ -2343,8 +2346,7 @@ public class PARStepDefs {
 	}
 
 	@Then("^the user can verify the person was updated successfully and can see resend an account invite$")
-	public void the_user_can_verify_the_person_was_updated_successfully_and_can_see_resend_an_account_invite()
-			throws Throwable {
+	public void the_user_can_verify_the_person_was_updated_successfully_and_can_see_resend_an_account_invite() throws Throwable {
 		assertTrue("Failed: Header does not contain the person's fullname and title.", userProfilePage.checkHeaderForName());
 		assertTrue("Failed: Cannot find the Re-send account creation invite link.", userProfilePage.checkForUserAccountInvitationLink());
 		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", userProfilePage.checkContactName());
