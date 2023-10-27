@@ -9,7 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DuplicateClasses.AdviceRemovalPage;
+import uk.gov.beis.pageobjects.RemovePage;
 import uk.gov.beis.utility.DataStore;
 
 public class AdviceNoticeSearchPage extends BasePageObject {
@@ -57,11 +57,11 @@ public class AdviceNoticeSearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, AdviceArchivePage.class);
 	}
 	
-	public AdviceRemovalPage selectRemoveAdviceButton() {
+	public RemovePage selectRemoveAdviceButton() {
 		WebElement removeLink = driver.findElement(By.partialLinkText("Remove"));
 		removeLink.click();
 		
-		return PageFactory.initElements(driver, AdviceRemovalPage.class);
+		return PageFactory.initElements(driver, RemovePage.class);
 	}
 	
 	public String getAdviceStatus() {

@@ -8,7 +8,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.EnforcementOfficerContactDetailsPage;
-import uk.gov.beis.pageobjects.DuplicateClasses.EnquiryContactDetailsPage;
 
 public class EnforcementNotificationPage extends BasePageObject {
 	
@@ -22,9 +21,9 @@ public class EnforcementNotificationPage extends BasePageObject {
 		super();
 	}
 
-	public EnquiryContactDetailsPage selectDiscussEnforcement() {
+	public EnforcementOfficerContactDetailsPage selectDiscussEnforcement() {
 		discussEnforcementBtn.click();
-		return PageFactory.initElements(driver, EnquiryContactDetailsPage.class);
+		return PageFactory.initElements(driver, EnforcementOfficerContactDetailsPage.class);
 	}
 	
 	public EnforcementOfficerContactDetailsPage clickContinue() {

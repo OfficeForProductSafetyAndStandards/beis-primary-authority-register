@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DuplicateClasses.RemoveEnforcementConfirmationPage;
+import uk.gov.beis.pageobjects.DeclarationPage;
 
 public class RemoveEnforcementPage extends BasePageObject {
 	
@@ -33,8 +33,8 @@ public class RemoveEnforcementPage extends BasePageObject {
 		descriptionBox.sendKeys(reason);
 	}
 	
-	public RemoveEnforcementConfirmationPage clickContinue() {
+	public DeclarationPage clickContinue() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, RemoveEnforcementConfirmationPage.class);
+		return PageFactory.initElements(driver, DeclarationPage.class);
 	}
 }

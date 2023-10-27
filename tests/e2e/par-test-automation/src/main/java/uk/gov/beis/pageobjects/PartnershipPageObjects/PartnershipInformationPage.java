@@ -16,8 +16,6 @@ import uk.gov.beis.pageobjects.ReinstatePage;
 import uk.gov.beis.pageobjects.RemovePage;
 import uk.gov.beis.pageobjects.RevokePage;
 import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceNoticeSearchPage;
-import uk.gov.beis.pageobjects.DuplicateClasses.EnquiryContactDetailsPage;
-import uk.gov.beis.pageobjects.DuplicateClasses.InspectionContactDetailsPage;
 import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.ConfirmThisAmendmentPage;
@@ -183,14 +181,14 @@ public class PartnershipInformationPage extends BasePageObject {
 		return PageFactory.initElements(driver, AdviceNoticeSearchPage.class);
 	}
   
-	public EnquiryContactDetailsPage sendGeneralEnquiry() {
+	public EnforcementOfficerContactDetailsPage sendGeneralEnquiry() {
 		generalEnquiryLink.click();
-		return PageFactory.initElements(driver, EnquiryContactDetailsPage.class);
+		return PageFactory.initElements(driver, EnforcementOfficerContactDetailsPage.class);
 	}
 
-	public InspectionContactDetailsPage selectSendInspectionFeedbk() {
+	public EnforcementOfficerContactDetailsPage selectSendInspectionFeedbk() {
 		sendInspectionFeedbackBtn.click();
-		return PageFactory.initElements(driver, InspectionContactDetailsPage.class);
+		return PageFactory.initElements(driver, EnforcementOfficerContactDetailsPage.class);
 	}
 
 	public EnforcementOfficerContactDetailsPage selectDeviateInspectionPlan() {
