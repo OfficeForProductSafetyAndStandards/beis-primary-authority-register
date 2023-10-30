@@ -378,7 +378,7 @@ class ParDataLegalEntity extends ParDataEntity {
    */
   public function getRegisteredNumber(): string {
     return $this->isRegisteredOrganisation() ?
-      $this->lookupOrganisationProfile()?->getId() :
+      (string) $this->lookupOrganisationProfile()?->getId() :
       $this->get('registered_number')->getString();
   }
 
@@ -389,8 +389,8 @@ class ParDataLegalEntity extends ParDataEntity {
    *   The name of the legal entity.
    */
   public function getName(): string {
-    return (string) $this->isRegisteredOrganisation() ?
-      $this->lookupOrganisationProfile()?->getName() :
+    return $this->isRegisteredOrganisation() ?
+      (string) $this->lookupOrganisationProfile()?->getName() :
       $this->get('registered_name')->getString();
   }
 
@@ -402,7 +402,7 @@ class ParDataLegalEntity extends ParDataEntity {
    */
   public function getType(bool $processed = TRUE): string {
     if ($this->isRegisteredOrganisation()) {
-      return $this->lookupOrganisationProfile()?->getType($processed);
+      return (string) $this->lookupOrganisationProfile()?->getType($processed);
     }
     else {
       $bundle_entity = $this->type?->entity;
@@ -421,7 +421,7 @@ class ParDataLegalEntity extends ParDataEntity {
    */
   public function getStatus(): string {
     return $this->isRegisteredOrganisation() ?
-      $this->lookupOrganisationProfile()?->getStatus() :
+      (string) $this->lookupOrganisationProfile()?->getStatus() :
       self::DEFAULT_STATUS;
   }
 
@@ -433,7 +433,7 @@ class ParDataLegalEntity extends ParDataEntity {
    */
   public function processStatus(): string {
     if ($this->isRegisteredOrganisation()) {
-      return $this->lookupOrganisationProfile()?->getType(TRUE);
+      return (string) $this->lookupOrganisationProfile()?->getType(TRUE);
     }
     else {
       $bundle_entity = $this->type?->entity;
@@ -450,7 +450,7 @@ class ParDataLegalEntity extends ParDataEntity {
    */
   public function getClassification(): array {
     return $this->isRegisteredOrganisation() ?
-      $this->lookupOrganisationProfile()?->getClassification() :
+      (array) $this->lookupOrganisationProfile()?->getClassification() :
       [];
   }
 
