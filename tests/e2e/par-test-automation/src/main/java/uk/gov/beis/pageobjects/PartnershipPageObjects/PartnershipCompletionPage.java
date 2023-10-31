@@ -7,19 +7,19 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DashboardPage;
+import uk.gov.beis.pageobjects.UserDashboardPageObjects.DashboardPage;
 
 public class PartnershipCompletionPage extends BasePageObject {
 
+	@FindBy(xpath = "//a[contains(@class,'button')]")
+	private WebElement doneBtn;
+	
 	public PartnershipCompletionPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//a[contains(@class,'button')]")
-	WebElement doneBtn;
-
-	public DashboardPage completeApplication() {
-			doneBtn.click();
+	
+	public DashboardPage clickDoneButton() {
+		doneBtn.click();
 		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 }

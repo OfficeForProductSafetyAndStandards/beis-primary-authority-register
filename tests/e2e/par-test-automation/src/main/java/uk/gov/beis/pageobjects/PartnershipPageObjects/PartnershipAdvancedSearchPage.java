@@ -9,8 +9,10 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.DeclarationPage;
 import uk.gov.beis.pageobjects.DeletePage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.DeclarationPage;
+import uk.gov.beis.pageobjects.ReinstatePage;
+import uk.gov.beis.pageobjects.RevokePage;
 import uk.gov.beis.utility.DataStore;
 
 public class PartnershipAdvancedSearchPage extends BasePageObject {
@@ -32,9 +34,9 @@ public class PartnershipAdvancedSearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 	}
 
-	public PartnershipConfirmationPage selectPartnershipLink() {
+	public PartnershipInformationPage selectPartnershipLink() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[1]/a[1]")).click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
 	public DeclarationPage selectApproveBusinessNameLink() {
@@ -47,14 +49,14 @@ public class PartnershipAdvancedSearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, DeletePage.class);
 	}
 	
-	public RevokePartnershipConfirmationPage selectRevokeBusinessNameLink() {
+	public RevokePage selectRevokeBusinessNameLink() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td/a[contains(text(),'Revoke')]")).click();
-		return PageFactory.initElements(driver, RevokePartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, RevokePage.class);
 	}
 	
-	public RestorePartnershipConfirmationPage selectRestoreBusinessNameLink() {
+	public ReinstatePage selectRestoreBusinessNameLink() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td/a[contains(text(),'Restore')]")).click();
-		return PageFactory.initElements(driver, RestorePartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, ReinstatePage.class);
 	}
 	
 	public boolean checkPartnershipDetails(String status, String action) {
@@ -75,13 +77,13 @@ public class PartnershipAdvancedSearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 	}
 	
-	public PartnershipConfirmationPage selectPrimaryAuthorityLink() {
+	public PartnershipInformationPage selectPrimaryAuthorityLink() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + "')]/parent::td/parent::tr/td[1]/a[1]")).click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
-	public PartnershipConfirmationPage selectOrganisationLink() {
+	public PartnershipInformationPage selectOrganisationLink() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[1]/a[2]")).click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

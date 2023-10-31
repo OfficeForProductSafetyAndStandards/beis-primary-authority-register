@@ -8,39 +8,48 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.BusinessConfirmationPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
 
 public class SICCodePage extends BasePageObject {
-
-	public SICCodePage() throws ClassNotFoundException, IOException {
-		super();
-	}
-
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
+	
+	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 	
-	private String sic = "//select/option[contains(text(),'?')]";
+	private String sicCodeLocator = "//select/option[contains(text(),'?')]";
 
-	public BasePageObject selectSICCode(String code) {
-		driver.findElement(By.xpath(sic.replace("?", code))).click();
-		
-		try {
-			driver.findElement(By.id("edit-next")).click();
-			return PageFactory.initElements(driver, EmployeesPage.class);
-		} catch (Exception e) {
-			driver.findElement(By.id("edit-save")).click();
-			return PageFactory.initElements(driver, BusinessConfirmationPage.class);
-		}
+	public SICCodePage() throws ClassNotFoundException, IOException {
+		super();
 	}
 	
-	public PartnershipConfirmationPage editSICCode(String code) {
-		driver.findElement(By.xpath(sic.replace("?", code))).click();
+	public void selectPrimarySICCode(String code) {
+		driver.findElement(By.xpath(sicCodeLocator.replace("?", code))).click();
+	}
+	
+	public NumberOfEmployeesPage selectSICCode(String code) {
+		driver.findElement(By.xpath(sicCodeLocator.replace("?", code))).click();
+		
+		continueBtn.click();
+		return PageFactory.initElements(driver, NumberOfEmployeesPage.class);
+	}
+	
+	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
+	}
+	
+	public PartnershipInformationPage editSICCode(String code) {
+		driver.findElement(By.xpath(sicCodeLocator.replace("?", code))).click();
 		
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
+	}
+	
+	public BusinessDetailsPage goToBusinessDetailsPage() {
+		saveBtn.click();
+		return PageFactory.initElements(driver, BusinessDetailsPage.class);
 	}
 }

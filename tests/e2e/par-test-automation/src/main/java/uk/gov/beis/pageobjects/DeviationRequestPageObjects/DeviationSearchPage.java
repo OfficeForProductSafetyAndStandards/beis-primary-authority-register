@@ -11,14 +11,14 @@ import uk.gov.beis.utility.DataStore;
 
 public class DeviationSearchPage extends BasePageObject {
 
-	String devReq = "(//tr/td[contains(text(),'?')]/following-sibling::td[5])[1]";
+	private String devReq = "(//tr/td[contains(text(),'?')]/following-sibling::td[5])[1]";
 	
 	public DeviationSearchPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
-	public BasePageObject selectDeviationRequest() {
+	public DeviationApprovalPage selectDeviationRequest() {
 		driver.findElement(By.xpath(devReq.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME)))).click();
-		return PageFactory.initElements(driver, BasePageObject.class);
+		return PageFactory.initElements(driver, DeviationApprovalPage.class);
 	}
 }

@@ -7,8 +7,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DashboardPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
+import uk.gov.beis.pageobjects.UserDashboardPageObjects.DashboardPage;
 
 public class AmendmentCompletedPage extends BasePageObject {
 	
@@ -19,10 +19,10 @@ public class AmendmentCompletedPage extends BasePageObject {
 		super();
 	}
 	
-	public PartnershipConfirmationPage goToPartnershipDetailsPage() {
+	public PartnershipInformationPage goToPartnershipDetailsPage() {
 		doneBtn.click();
 		
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
 	public DashboardPage goToDashBoardPage() {

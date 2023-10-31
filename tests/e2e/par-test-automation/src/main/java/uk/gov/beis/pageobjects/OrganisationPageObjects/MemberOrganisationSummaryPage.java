@@ -9,11 +9,11 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.EditRegisteredAddressPage;
+import uk.gov.beis.pageobjects.AddAddressPage;
 import uk.gov.beis.pageobjects.EnterTheDatePage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanCoveragePage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
-import uk.gov.beis.pageobjects.UserManagement.PersonContactDetailsPage;
+import uk.gov.beis.pageobjects.UserManagement.ContactDetailsPage;
 import uk.gov.beis.utility.DataStore;
 
 public class MemberOrganisationSummaryPage extends BasePageObject {
@@ -65,9 +65,9 @@ public class MemberOrganisationSummaryPage extends BasePageObject {
 		return PageFactory.initElements(driver, AddOrganisationNamePage.class);
 	}
 	
-	public EditRegisteredAddressPage selectEditAddress() {
+	public AddAddressPage selectEditAddress() {
 		editAddressLink.click();
-		return PageFactory.initElements(driver, EditRegisteredAddressPage.class);
+		return PageFactory.initElements(driver, AddAddressPage.class);
 	}
 	
 	public EnterTheDatePage selectEditMembershipStartDate() {
@@ -75,9 +75,9 @@ public class MemberOrganisationSummaryPage extends BasePageObject {
 		return PageFactory.initElements(driver, EnterTheDatePage.class);
 	}
 	
-	public PersonContactDetailsPage selectEditPerson() {
+	public ContactDetailsPage selectEditPerson() {
 		editPersonLink.click();
-		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
+		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
 	public LegalEntityTypePage selectAddAnotherLegalEntity() {

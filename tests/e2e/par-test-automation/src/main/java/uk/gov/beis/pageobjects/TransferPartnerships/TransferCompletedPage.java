@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityDashboardPage;
+import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthoritiesSearchPage;
 
 public class TransferCompletedPage extends BasePageObject {
 	
@@ -18,8 +18,8 @@ public class TransferCompletedPage extends BasePageObject {
 		super();
 	}
 	
-	public AuthorityDashboardPage selectDoneButton() {
+	public AuthoritiesSearchPage selectDoneButton() {
 		doneBtn.click();
-		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
+		return PageFactory.initElements(driver, AuthoritiesSearchPage.class);
 	}
 }

@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.UserManagement.PersonContactDetailsPage;
+import uk.gov.beis.pageobjects.UserManagement.ContactDetailsPage;
 
 public class AuthorityAddressDetailsPage extends BasePageObject {
 
@@ -51,7 +51,7 @@ public class AuthorityAddressDetailsPage extends BasePageObject {
 		return PageFactory.initElements(driver, ONSCodePage.class);
 	}
 	
-	public PersonContactDetailsPage enterMemberOrganisationAddressDetails(String address1, String address2, String townCity, String countyName, String postalcode) {
+	public ContactDetailsPage enterMemberOrganisationAddressDetails(String address1, String address2, String townCity, String countyName, String postalcode) {
 		addressLine1.clear();
 		addressLine2.clear();
 		townOrCity.clear();
@@ -66,6 +66,6 @@ public class AuthorityAddressDetailsPage extends BasePageObject {
 		
 		continueBtn.click();
 
-		return PageFactory.initElements(driver, PersonContactDetailsPage.class);
+		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 }
