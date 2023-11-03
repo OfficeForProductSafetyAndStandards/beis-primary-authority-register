@@ -1,9 +1,0 @@
-govuk_par_breadcrumb: 1
-search_box: 1
-govuk_par_cookie: 1
-govuk_par_phase_banner: alpha
-govuk_par_team: ''
-govuk_par_team_link: ''
-phase_banner_message:
-  format: full_html
-  value: 'This is a new service – your <a class="govuk-link" href="/contact/feedback">feedback</a> will help us to improve it.'
