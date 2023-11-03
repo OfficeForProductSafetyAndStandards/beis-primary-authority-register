@@ -52,6 +52,22 @@
     margin-bottom: 0;
   }
 }
+
+// PAR green branded header/footer.
+.par-branding {
+  .govuk-header {
+    .header-wrapper,
+    & {
+      background: #006633;
+    }
+  }
+
+  .govuk-footer__copyright-logo {
+    background-image: url("../assets/images/govuk-par.png?v2");
+    background-size: 100px 100px;
+  }
+}
+
 .govuk-grid-column-one-third {
   .views-element-container {
     @include govuk-media-query($from: desktop) {

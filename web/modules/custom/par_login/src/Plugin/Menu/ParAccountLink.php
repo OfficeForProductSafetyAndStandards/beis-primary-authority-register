@@ -56,11 +56,7 @@ class ParAccountLink extends MenuLinkDefault {
    * {@inheritdoc}
    */
   public function getTitle() {
-    if ($this->currentUser->isAuthenticated()) {
-      return $this->currentUser->getEmail();
-    }
-
-    return '';
+    return 'Dashboard';
   }
 
   /**

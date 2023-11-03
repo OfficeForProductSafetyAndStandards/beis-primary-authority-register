@@ -31,17 +31,18 @@
   <head>
     <head-placeholder token="{{ placeholder_token }}">
     <meta charset="utf-8" />
+
+    <link rel="shortcut icon" href="{{ govuk_directory }}/assets/images/favicon.ico" type="image/x-icon" />
     <link rel="mask-icon" href="{{ govuk_directory }}/assets/images/govuk-mask-icon.svg" color="#0b0c0c">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ govuk_directory }}/assets/images/govuk-apple-touch-icon-180x180.png">
     <link rel="apple-touch-icon" sizes="167x167" href="{{ govuk_directory }}/assets/images/govuk-apple-touch-icon-167x167.png">
     <link rel="apple-touch-icon" sizes="152x152" href="{{ govuk_directory }}/assets/images/govuk-apple-touch-icon-152x152.png">
     <link rel="apple-touch-icon" href="{{ govuk_directory }}/assets/images/govuk-apple-touch-icon.png">
+
     <title>{{ head_title|safe_join(' | ') }}</title>
 
     <css-placeholder token="{{ placeholder_token }}">
     <js-placeholder token="{{ placeholder_token }}">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta property="og:image" content="{{ govuk_directory }}/assets/images/govuk-opengraph-image.png">
   </head>

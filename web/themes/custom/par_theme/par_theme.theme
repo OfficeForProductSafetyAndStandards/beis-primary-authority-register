@@ -4,6 +4,14 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
 
 /**
+ * Implements hook_preprocess().
+ */
+function par_theme_preprocess(&$variables) {
+  $handler = \Drupal::service('theme_handler');
+  $variables['govuk_directory'] = base_path() . $handler->getTheme('par_theme')->getPath();
+}
+
+/**
  * Implements hook_preprocess_page().
  *
  * @param array $variables
@@ -33,7 +41,7 @@ function par_theme_preprocess_html(array &$variables) {
 
   // Add override class to page to display PAR green branded app.
   if (Settings::get('par_branded_header_footer', FALSE)) {
-    $variables['attributes']['class'][] = 'par-header-footer';
+    $variables['attributes']['class'][] = 'par-branding';
   }
 
 }
@@ -46,14 +54,14 @@ function par_theme_preprocess_html(array &$variables) {
 function par_theme_preprocess_fieldset(array &$variables) {
 
   $variables['child_count'] = isset($variables['element']['#options']) ?
-                              count($variables['element']['#options']) : 0;
+    count($variables['element']['#options']) : 0;
 
   // Get the form element.
   $element = &$variables['element'];
 
   // Pass elements disabled status to template.
   $variables['disabled'] = !empty($element['#attributes']['disabled']) ?
-                            $element['#attributes']['disabled'] : NULL;
+    $element['#attributes']['disabled'] : NULL;
 
   // Initiate errors.
   $variables['errors'] = NULL;
@@ -92,7 +100,7 @@ function par_theme_preprocess_form_element(array &$variables) {
 
   // Pass elements disabled status to template.
   $variables['disabled'] = !empty($element['#attributes']['disabled']) ?
-                            $element['#attributes']['disabled'] : NULL;
+    $element['#attributes']['disabled'] : NULL;
 
   // Initiate errors.
   $variables['errors'] = NULL;

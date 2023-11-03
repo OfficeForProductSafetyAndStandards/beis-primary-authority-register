@@ -872,6 +872,12 @@ $settings['config_readonly_whitelist_patterns'] = [
 ];
 
 /**
+ * By default, the site is configured with PAR branding instead of GovUK branding
+ * because the service is still in BETA.
+ */
+$settings['par_branded_header_footer'] = TRUE;
+
+/**
  * Extract the connection credentials from the VCAP_SERVICES environment variable
  * which is configured by the PaaS service manager
  */
