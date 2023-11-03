@@ -92,10 +92,8 @@ class ParHelpdeskDashboardController extends ControllerBase {
 
     // Manage partnerships.
     $build['statistics'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
       '#cache' => ['contexts' => ['user.par_memberships:authority']],
     ];
     $build['statistics']['active_partnerships'] = [
@@ -123,10 +121,8 @@ class ParHelpdeskDashboardController extends ControllerBase {
     $log = $this->getLinkByRoute('view.par_log.log_page');
     $log_link = $log->setText('View log of notable actions')->toString();
     $build['log'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
     ];
     $build['log']['view'] = [
       '#type' => 'html_tag',
@@ -138,11 +134,14 @@ class ParHelpdeskDashboardController extends ControllerBase {
 
     // Manage partnerships.
     $build['partnerships'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Partnerships'),
+      '#type' => 'container',
       '#attributes' => ['class' => 'govuk-form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Partnerships'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
       '#cache' => ['contexts' => ['user.par_memberships:authority']]
     ];
 
@@ -155,11 +154,14 @@ class ParHelpdeskDashboardController extends ControllerBase {
 
     // Manage authorities and organisations.
     $build['institutions'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Authorities & Organisations'),
+      '#type' => 'container',
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Authorities & Organisations'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
       '#attributes' => ['class' => 'govuk-form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
     ];
     $manage_authorities_link = $this->getLinkByRoute('view.helpdesk_authorities.authority_page');
     if ($manage_authorities_link) {
@@ -180,11 +182,14 @@ class ParHelpdeskDashboardController extends ControllerBase {
 
     // Manage users.
     $build['people'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('People'),
+      '#type' => 'container',
       '#attributes' => ['class' => 'govuk-form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('People'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
       '#cache' => ['contexts' => ['user.par_memberships:authority']]
     ];
 
@@ -206,11 +211,14 @@ class ParHelpdeskDashboardController extends ControllerBase {
 
     // Manage enforcements.
     $build['enforcements'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Enforcements'),
+      '#type' => 'container',
       '#attributes' => ['class' => 'govuk-form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Enforcements'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
       '#cache' => ['contexts' => ['user.par_memberships:authority']]
     ];
     $link = $this->getLinkByRoute('view.par_user_enforcements.enforcement_notices_page')
@@ -239,11 +247,14 @@ class ParHelpdeskDashboardController extends ControllerBase {
 
     // Manage enquiries.
     $build['enquiries'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Enquiries'),
+      '#type' => 'container',
       '#attributes' => ['class' => 'govuk-form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Enquiries'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
       '#cache' => ['contexts' => ['user.par_memberships:authority']]
     ];
 
@@ -256,11 +267,14 @@ class ParHelpdeskDashboardController extends ControllerBase {
     ];
 
     $build['user'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Your account'),
+      '#type' => 'container',
       '#attributes' => ['class' => 'govuk-form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Your account'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
     ];
 
     // Profile management link.

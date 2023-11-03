@@ -1,0 +1,11 @@
+//
+// SCSS for the tabs component
+//
+// Drupal tabs do not use Javascript, to avoid the default javascript behavior
+// we have replaced one of the classes.
+//
+// @See https://design-system.service.gov.uk/components/tabs/
+// @See templates/navigation/menu-local-tasks.html.twig
+.drupal-tabs__list {
+  @extend .govuk-tabs__list;
+}

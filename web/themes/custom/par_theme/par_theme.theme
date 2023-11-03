@@ -13,10 +13,12 @@ function par_theme_preprocess_html(array &$variables) {
   $title_fragments = isset($variables['head_title']['title']) ? explode('|', $variables['head_title']['title']) : NULL;
   $title_fragments = array_map('trim', $title_fragments);
   $name = (string) $variables['head_title']['name'] ?? '';
+
   // Remove the duplicate site name from the title.
   $title_fragments = array_filter($title_fragments, function($value) use ($name) {
     return $value !== $name;
   });
+
   // The second part of the title is the most important.
   if (count($title_fragments) > 1) {
     $secondary_title = array_shift($title_fragments);

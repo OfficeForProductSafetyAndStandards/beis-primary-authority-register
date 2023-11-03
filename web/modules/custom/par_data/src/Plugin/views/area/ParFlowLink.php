@@ -83,7 +83,7 @@ class ParFlowLink extends AreaPluginBase {
 
     $form['class'] = [
       '#title' => 'Link classes',
-      '#description' => 'Enter any additional classes to be added to the link, separated by a comma. By default `btn-link` will be added to all links.',
+      '#description' => 'Enter any additional classes to be added to the link, separated by a comma.',
       '#type' => 'textfield',
       '#default_value' => $this->options['class']  ?: '',
     ];
@@ -108,7 +108,7 @@ class ParFlowLink extends AreaPluginBase {
    */
   public function render($empty = FALSE) {
     $path = $this->options['link'] ?: '';
-    $classes = explode(',', $this->options['class'] ?: 'btn-link');
+    $classes = explode(',', $this->options['class'] ?: 'flow-link');
     $title = trim(strip_tags(Html::decodeEntities($this->options['title'] ?: '')));
     $assistive_text = strip_tags(Html::decodeEntities($this->options['assistive_text'] ?: ''));
 

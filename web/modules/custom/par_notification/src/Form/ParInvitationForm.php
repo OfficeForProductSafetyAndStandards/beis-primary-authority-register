@@ -89,7 +89,7 @@ class ParInvitationForm extends FormBase {
       '#submit' => ['::refreshPage'],
       '#limit_validation_errors' => [],
       '#attributes' => [
-        'class' => ['btn-link'],
+        'class' => ['flow-link', 'govuk-button', 'govuk-button--secondary'],
         'onclick' =>  "location.reload();",
       ],
     ];

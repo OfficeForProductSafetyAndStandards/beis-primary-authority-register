@@ -131,38 +131,40 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
     // Add all the action links.
     if ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
       $done_url = $this->getProceedingUrl('done');
-      $done_link = $done_url ? Link::fromTextAndUrl('Done', $done_url) : NULL;
       $build['done'] = [
-        '#type' => 'markup',
-        '#markup' => t('@link', [
-          '@link' => $done_link->toString(),
-        ]),
+        '#type' => 'link',
+        '#title' => 'Done',
+        '#url' => $done_url,
+        '#attributes' => [
+          'class' => ['govuk-button', 'govuk-form-group'],
+          'role' => 'button'
+        ],
       ];
     }
     else {
       if ($this->getFlowNegotiator()->getFlow()->hasAction('next')) {
         $next_url = $this->getProceedingUrl('next');
-        $next_link = $next_url ? Link::fromTextAndUrl('Continue', $next_url) : NULL;
         $build['next'] = [
-          '#type' => 'markup',
-          '#prefix' => '<div class="form-group">',
-          '#suffix' => '</div>',
-          '#markup' => t('@link', [
-            '@link' => $next_link->toString(),
-          ]),
+          '#type' => 'link',
+          '#title' => 'Continue',
+          '#url' => $next_url,
+          '#attributes' => [
+            'class' => ['govuk-button', 'govuk-form-group'],
+            'role' => 'button'
+          ],
         ];
       }
 
       if ($this->getFlowNegotiator()->getFlow()->hasAction('cancel')) {
         $cancel_url = $this->getProceedingUrl('cancel');
-        $cancel_link = $cancel_url ? Link::fromTextAndUrl('Cancel', $cancel_url) : NULL;
         $build['cancel'] = [
-          '#type' => 'markup',
-          '#prefix' => '<div>',
-          '#suffix' => '</div>',
-          '#markup' => t('@link', [
-            '@link' => $cancel_link->toString(),
-          ]),
+          '#type' => 'link',
+          '#title' => 'Cancel',
+          '#url' => $cancel_url,
+          '#attributes' => [
+            'class' => ['cta-cancel', 'govuk-button', 'govuk-button--secondary'],
+            'role' => 'button'
+          ],
         ];
       }
     }

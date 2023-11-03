@@ -68,30 +68,35 @@ class ParContactDetailsForm extends ParFormPluginBase {
       '#title' => $this->t('Enter the title (optional)'),
       '#description' => $this->t('For example, Ms Mr Mrs Dr'),
       '#default_value' => $this->getDefaultValuesByKey('salutation', $index),
+      '#attributes' => ['autocomplete' => 'honorific-prefix']
     ];
 
     $form['first_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the first name'),
       '#default_value' => $this->getDefaultValuesByKey('first_name', $index),
+      '#attributes' => ['autocomplete' => 'given-name']
     ];
 
     $form['last_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the last name'),
       '#default_value' => $this->getDefaultValuesByKey('last_name', $index),
+      '#attributes' => ['autocomplete' => 'family-name']
     ];
 
     $form['work_phone'] = [
       '#type' => 'tel',
       '#title' => $this->t('Enter the work phone number'),
       '#default_value' => $this->getDefaultValuesByKey('work_phone', $index),
+      '#attributes' => ['autocomplete' => 'tel']
     ];
 
     $form['mobile_phone'] = [
       '#type' => 'tel',
       '#title' => $this->t('Enter the mobile phone number (optional)'),
       '#default_value' => $this->getDefaultValuesByKey('mobile_phone', $index),
+      '#attributes' => ['autocomplete' => 'tel']
     ];
 
     // Prevent modifying of email address when un-editable.
@@ -116,6 +121,7 @@ class ParContactDetailsForm extends ParFormPluginBase {
       $form['email'] = [
         '#type' => 'hidden',
         '#value' => $this->getDefaultValuesByKey('email', $index),
+        '#attributes' => ['autocomplete' => 'email']
       ];
     }
     else {
@@ -123,6 +129,7 @@ class ParContactDetailsForm extends ParFormPluginBase {
         '#type' => 'email',
         '#title' => $this->t('Enter the email address'),
         '#default_value' => $this->getDefaultValuesByKey('email', $index),
+        '#attributes' => ['autocomplete' => 'email']
       ];
     }
 

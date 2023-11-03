@@ -1,0 +1,11 @@
+<div{{ attributes.addClass('govuk-checkboxes__item') }}>
+  {{ children }}
+  {% set label = label|merge({'#attributes': {'class': 'govuk-checkboxes__label' }}) %}
+  {{ label }}
+  {% if description.content %}
+    <span class="govuk-hint govuk-checkboxes__hint">
+      {{ description.content }}
+    </span>
+  {% endif %}
+</div>
+

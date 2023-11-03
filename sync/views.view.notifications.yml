@@ -575,10 +575,10 @@ display:
           query_tags: {  }
           contextual_filters_or: false
       relationships: {  }
-      css_class: form-group
+      css_class: govuk-form-group
       group_by: true
       use_more: true
-      use_more_always: false
+      use_more_always: true
       use_more_text: 'View all tasks'
       link_display: user_notifications
       link_url: ''
@@ -603,7 +603,7 @@ display:
         type: some
         options:
           offset: 0
-          items_per_page: 5
+          items_per_page: 10
       defaults:
         pager: false
         filters: true

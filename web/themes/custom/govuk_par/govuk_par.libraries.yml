@@ -8,16 +8,11 @@ framework:
     js/govuk.js: {}
   dependencies:
     - core/jquery
-<<<<<<< HEAD
-    - core/jquery.once
-    - core/drupal
-=======
     - core/drupal.ajax
     - core/drupal
     - core/drupalSettings
     - core/once
     - jquery_ui_tabs/tabs
->>>>>>> eddbdd4d6153c9c7a5441faaa51e41448a1bceed
 
 webform:
   version: 1.x

@@ -1,19 +1,11 @@
 name: PAR (GOVUK)
 type: theme
-<<<<<<< HEAD
 version: v2.0.0
 package: PAR
 core_version_requirement: ^8 || ^9 || ^10
 base theme: false
 description: A fully responsive theme utilising the GOV.UK Design System Frontend.
 
-=======
-version: v1.0.0
-package: Custom
-description: A Drupal 8 theme based on the GDS GOV.UK Frontend inherrited from govuk_theme.
-core_version_requirement: ^9 || ^10
-base theme: govuk
->>>>>>> eddbdd4d6153c9c7a5441faaa51e41448a1bceed
 libraries:
   - govuk_par/framework
 

@@ -108,31 +108,6 @@ class ParReportingController extends ControllerBase {
       '#create_placeholder' => TRUE,
     ];
 
-<<<<<<< HEAD
-    // Statistics related to organisations and legal entities.
-    $build['businesses_in_partnership'] = [
-      '#type' => 'container',
-      'heading' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h2',
-        '#attributes' => ['class' => ['govuk-heading-m']],
-        '#value' => t('Organisations in a partnership'),
-      ],
-      '#attributes' => ['class' => ['govuk-grid--row', 'govuk-form-group']],
-    ];
-    $build['businesses_in_partnership']['total'] = [
-      '#lazy_builder' => ['par_reporting.manager:render', ['total_unique_businesses']],
-      '#create_placeholder' => TRUE,
-    ];
-    $build['businesses_in_partnership']['direct'] = [
-      '#lazy_builder' => ['par_reporting.manager:render', ['total_unique_direct_businesses']],
-      '#create_placeholder' => TRUE,
-    ];
-    $build['businesses_in_partnership']['coordinated'] = [
-      '#lazy_builder' => ['par_reporting.manager:render', ['total_unique_coordinated_members']],
-      '#create_placeholder' => TRUE,
-    ];
-=======
 //    // Statistics related to organisations and legal entities.
 //    $build['businesses_in_partnership'] = [
 //      '#type' => 'fieldset',
@@ -151,7 +126,6 @@ class ParReportingController extends ControllerBase {
 //      '#lazy_builder' => ['par_reporting.manager:render', ['total_unique_coordinated_members']],
 //      '#create_placeholder' => TRUE,
 //    ];
->>>>>>> eddbdd4d6153c9c7a5441faaa51e41448a1bceed
 
     // Statistics related to partnership documents.
     $build['documents'] = [

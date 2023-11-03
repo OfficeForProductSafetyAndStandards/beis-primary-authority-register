@@ -74,7 +74,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
     $form['authority_name'] = [
       '#type' => 'html_tag',
       '#tag' => 'h2',
-      '#value' => "<span class='heading-secondary'>In partnership with</span>" . $this->getDefaultValuesByKey('name', $index, NULL),
+      '#value' => "<span class='govuk-caption-l'>In partnership with</span>" . $this->getDefaultValuesByKey('name', $index, NULL),
       '#attributes' => ['class' => ['govuk-heading-l', 'govuk-form-group', 'authority-name']],
     ];
     if ($previous_names = $this->getDefaultValuesByKey('previous_names', $index, NULL)) {

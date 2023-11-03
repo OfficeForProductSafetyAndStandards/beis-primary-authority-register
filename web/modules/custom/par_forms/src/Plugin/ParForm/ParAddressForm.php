@@ -122,6 +122,10 @@ class ParAddressForm extends ParFormPluginBase {
       '#type' => 'textfield',
       '#title' => $this->t('Enter Postcode'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("postcode"),
+      '#attributes' => [
+        'class' => ['govuk-input--width-10'],
+        'autocomplete' => 'postal-code',
+      ]
     ];
 
     return $form;

@@ -184,10 +184,10 @@ class ParConfirmationReviewForm extends ParBaseForm {
     ];
 
     $form['help_text'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
     return parent::buildForm($form, $form_state);

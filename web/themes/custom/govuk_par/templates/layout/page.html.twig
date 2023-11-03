@@ -79,12 +79,19 @@
   {% if govuk_par_phase_banner %}
     {{  govuk_par_phase_banner }}
   {% endif %}
+
+  {% if page.pre_content %}
+    {{ page.pre_content }}
+  {% endif %}
+
   {% if page.breadcrumb and show_breadcrumb %}
     {{ page.breadcrumb }}
   {% endif %}
+
   {%
     set main_classes = [
       'govuk-main-wrapper',
+      'govuk-body-m',
       show_breadcrumb ? 'has-breadcrumb',
       page.content.govuk_local_tasks|render|striptags|trim is not empty ? 'has-local-tasks'
     ]

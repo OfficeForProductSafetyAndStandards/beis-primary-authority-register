@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
@@ -41,11 +42,26 @@ class ParAboutBusinessForm extends ParFormPluginBase {
    */
   public function getElements(array $form = [], int $index = 1) {
 
-    $form['about_business'] = [
+    $form['business'] = [
+      '#type' => 'container'
+    ];
+    $title_id = Html::cleanCssIdentifier("{$this->getPluginId()}-$index-about-title");
+    $form['business']['title'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => $this->t('Provide information about the organisation'),
+      '#attributes' => [
+        'id' => $title_id,
+        'class' => ['govuk-heading-m']
+      ],
+    ];
+    $form['business']['about_business'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Provide information about the organisation'),
       '#default_value' => $this->getDefaultValuesByKey('about_business', $index),
-      '#description' => '<p>Use this section to give a brief overview of the organisation.</p><p>Include any information you feel may be useful to enforcing authorities.</p>',
+      '#description' => 'Use this section to give a brief overview of the organisation. Include any information you feel may be useful to enforcing authorities.',
+      '#attributes' => [
+        'aria-labelledby' => $title_id,
+      ],
     ];
 
     return $form;

@@ -288,7 +288,13 @@ trait ParDisplayTrait {
       '#attributes' => ['class' => 'govuk-form-group'],
     ];
     if ($title) {
-      $element['#title'] = t("$section");
+      $element['title'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => t("$section"),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+
+      ];
     }
 
     // If we are only we only want a section title return the form elements.

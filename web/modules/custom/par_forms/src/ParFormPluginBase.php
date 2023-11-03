@@ -678,7 +678,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
                 $message = $mapping->getErrorMessage($violation->getMessage());
                 $this->setError($form, $form_state, $element, $message);
               }
-              catch (ParFlowException $ignore) {
+              catch (ParFlowException|\TypeError $ignore) {
                 // The element could not be found.
               }
 
@@ -767,7 +767,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
           '#validate' => ['::validateCancelForm'],
           '#limit_validation_errors' => [],
           '#attributes' => [
-            'class' => ['btn-link', 'change-action'],
+            'class' => ['govuk-button', 'govuk-button--secondary', 'change-action'],
             'aria-label' => "Change {$this->getWrapperName()} $index",
             'data-prevent-double-click' => 'true',
             'data-module' => 'govuk-button',
@@ -784,7 +784,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
         '#validate' => ['::validateCancelForm'],
         '#limit_validation_errors' => [],
         '#attributes' => [
-          'class' => ['btn-link', 'remove-action'],
+          'class' => ['govuk-button', 'govuk-button--secondary', 'remove-action'],
           'aria-label' => "Remove {$this->getWrapperName()} $index",
           'data-prevent-double-click' => 'true',
           'data-module' => 'govuk-button',
@@ -812,7 +812,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
         '#submit' => ['::addAnother'],
         '#value' => $this->t('Add another'),
         '#attributes' => [
-          'class' => ['btn-link', 'add-action'],
+          'class' => ['govuk-button', 'govuk-button--secondary', 'add-action'],
           'data-prevent-double-click' => 'true',
           'data-module' => 'govuk-button',
         ],

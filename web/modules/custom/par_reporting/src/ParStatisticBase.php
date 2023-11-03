@@ -95,10 +95,24 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticInterf
     // Loading the statistic through the statistic manager adds the caching layer.
     $stat = $this->getReportingManager()->get($this->getPluginId());
 
+    // Format a human-readable version of the statistic.
+    $precision_intervals = [
+      'b' => 1000000000,
+      'm' => 1000000,
+      'k' => 1000,
+    ];
+    foreach ($precision_intervals as $letter => $interval) {
+      if ((int) $stat > $interval) {
+        $whole = floor((10*$stat) / $interval) / 10;
+        $stat = sprintf('%.1f%s', $whole, "$letter");
+        break;
+      }
+    }
+
     return [
       '#theme' => 'gds_data',
       '#attributes' => ['class' => 'govuk-grid-column-one-third'],
-      '#value' => number_format($stat, 0, '', ','),
+      '#value' => $stat,
       '#label' => $this->getTitle(),
       '#description' => $this->getDescription(),
     ];

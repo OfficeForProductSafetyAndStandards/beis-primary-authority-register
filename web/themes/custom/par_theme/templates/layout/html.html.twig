@@ -1,0 +1,56 @@
+{#
+/**
+ * @file
+ * Default theme implementation for the basic structure of a single Drupal page.
+ *
+ * Variables:
+ * - logged_in: A flag indicating if user is logged in.
+ * - root_path: The root path of the current page (e.g., node, admin, user).
+ * - node_type: The content type for the current node, if the page is a node.
+ * - head_title: List of text elements that make up the head_title variable.
+ *   May contain one or more of the following:
+ *   - title: The title of the page.
+ *   - name: The name of the site.
+ *   - slogan: The slogan of the site.
+ * - page_top: Initial rendered markup. This should be printed before 'page'.
+ * - page: The rendered page markup.
+ * - page_bottom: Closing rendered markup. This variable should be printed after
+ *   'page'.
+ * - db_offline: A flag indicating if the database is offline.
+ * - placeholder_token: The token for generating head, css, js and js-bottom
+ *   placeholders.
+ *
+ * @see template_preprocess_html()
+ *
+ * @ingroup themeable
+ */
+#}
+<!DOCTYPE html>
+<!--[if lt IE 9]><html class="lte-ie8" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--><html lang="en" {{ html_attributes.addClass('govuk-template') }}><!--<![endif]-->
+  <head>
+    <head-placeholder token="{{ placeholder_token }}">
+    <meta charset="utf-8" />
+    <link rel="mask-icon" href="{{ govuk_directory }}/assets/images/govuk-mask-icon.svg" color="#0b0c0c">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ govuk_directory }}/assets/images/govuk-apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="{{ govuk_directory }}/assets/images/govuk-apple-touch-icon-167x167.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ govuk_directory }}/assets/images/govuk-apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" href="{{ govuk_directory }}/assets/images/govuk-apple-touch-icon.png">
+    <title>{{ head_title|safe_join(' | ') }}</title>
+
+    <css-placeholder token="{{ placeholder_token }}">
+    <js-placeholder token="{{ placeholder_token }}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:image" content="{{ govuk_directory }}/assets/images/govuk-opengraph-image.png">
+  </head>
+<body {{ attributes.addClass('govuk-template__body') }}>
+    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+    {{ page_top }}
+    {{ page }}
+    {{ page_bottom }}
+    <js-bottom-placeholder token="{{ placeholder_token }}">
+</body>
+<script>window.GOVUKFrontend.initAll()</script>
+</html>

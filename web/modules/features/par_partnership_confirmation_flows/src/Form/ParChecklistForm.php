@@ -62,8 +62,10 @@ class ParChecklistForm extends ParBaseForm {
     // There is a legal requirement to mention that the PA is the processor (under GDPR) and as such they must
     // adhere to the Office for Safety and Standards procedures concerning anything that could constitute personal data.
     $form['help'] = [
-      '#type' => 'markup',
-      '#markup' => '<p>You are required to have obtained written permission from the organisation to fill in the details on their behalf and submit the partnership for nomination.</p>',
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#attributes' => ['class' => ['govuk-form-group']],
+      '#value' => $this->t('You are required to have obtained written permission from the organisation to fill in the details on their behalf and submit the partnership for nomination.'),
     ];
 
     return parent::buildForm($form, $form_state);

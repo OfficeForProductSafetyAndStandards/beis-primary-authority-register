@@ -10,5 +10,8 @@
  * @see template_preprocess_input()
  */
 #}
-<span class="form-hint govuk-hint">{{ attributes.placeholder }}</span>
-<input{{ attributes.removeAttribute('placeholder').addClass('govuk-button') }} />{{ children }}
+
+<div class="form-group">
+  <span class="form-hint govuk-hint">{{ attributes.placeholder }}</span>
+  <input{{ attributes.removeAttribute('placeholder').addClass('govuk-button') }} />{{ children }}
+</div>
