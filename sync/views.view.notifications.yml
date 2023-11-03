@@ -6,6 +6,7 @@ dependencies:
     - better_exposed_filters
     - message
     - pagerer
+    - par_data
     - par_notification
     - user
 id: notifications
@@ -638,7 +639,33 @@ display:
       use_more: false
       use_more_always: false
       use_more_text: 'View all tasks'
-      footer: {  }
+      footer:
+        par_flow_link:
+          id: par_flow_link
+          table: views
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: par_flow_link
+          empty: true
+          title: 'back to dashboard'
+          assistive_text: ''
+          link: /dashboard
+          class: govuk-back-link
+        par_flow_link_1:
+          id: par_flow_link_1
+          table: views
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: par_flow_link
+          empty: true
+          title: 'back to dashboard'
+          assistive_text: ''
+          link: /helpdesk
+          class: govuk-back-link
       display_extenders: {  }
       path: tasks
     cache_metadata:

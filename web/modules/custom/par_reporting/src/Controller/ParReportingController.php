@@ -211,6 +211,18 @@ class ParReportingController extends ControllerBase {
       '#create_placeholder' => TRUE,
     ];
 
+
+    $build['back'] = [
+      '#type' => 'link',
+      '#title' => 'back to dashboard',
+      '#url' => Url::fromRoute('par_help_desks_flows.helpdesk_dashboard'),
+      '#options' => [
+        'attributes' => [
+          'class' => ['govuk-back-link', 'govuk-form-group'],
+        ],
+      ]
+    ];
+
     return $build;
   }
 

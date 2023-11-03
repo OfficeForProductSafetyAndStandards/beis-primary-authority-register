@@ -9,5 +9,5 @@ _core:
 id: comment_save_action
 label: 'Save comment'
 type: comment
-plugin: entity:save_action:comment
+plugin: 'entity:save_action:comment'
 configuration: {  }

@@ -9,5 +9,5 @@ _core:
 id: node_save_action
 label: 'Save content'
 type: node
-plugin: entity:save_action:node
+plugin: 'entity:save_action:node'
 configuration: {  }

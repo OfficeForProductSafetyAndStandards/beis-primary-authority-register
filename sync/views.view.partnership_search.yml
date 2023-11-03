@@ -1205,7 +1205,33 @@ display:
           contextual_filters_or: false
       relationships: {  }
       header: {  }
-      footer: {  }
+      footer:
+        par_flow_link:
+          id: par_flow_link
+          table: views
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: par_flow_link
+          empty: true
+          title: 'back to dashboard'
+          assistive_text: ''
+          link: /dashboard
+          class: govuk-back-link
+        par_flow_link_1:
+          id: par_flow_link_1
+          table: views
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: par_flow_link
+          empty: true
+          title: 'back to dashboard'
+          assistive_text: ''
+          link: /helpdesk
+          class: govuk-back-link
       display_extenders: {  }
     cache_metadata:
       max-age: -1
@@ -1217,6 +1243,7 @@ display:
         - user.permissions
       tags:
         - 'config:search_api.index.partnership_index'
+        - 'search_api_list:partnership_index'
   search_partnerships:
     id: search_partnerships
     display_title: 'Search Partnerships'
@@ -1236,3 +1263,4 @@ display:
         - user.permissions
       tags:
         - 'config:search_api.index.partnership_index'
+        - 'search_api_list:partnership_index'

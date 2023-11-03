@@ -9,5 +9,5 @@ _core:
 id: node_unpublish_action
 label: 'Unpublish content'
 type: node
-plugin: entity:unpublish_action:node
+plugin: 'entity:unpublish_action:node'
 configuration: {  }
