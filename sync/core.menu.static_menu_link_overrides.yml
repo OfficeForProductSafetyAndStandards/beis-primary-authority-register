@@ -14,11 +14,11 @@ definitions:
     expanded: false
     enabled: false
   par_dashboards__user_dashboard:
-    enabled: false
     menu_name: account
     parent: ''
-    expanded: false
     weight: -48
+    expanded: false
+    enabled: false
   par_login__user_account:
     menu_name: account
     parent: ''
