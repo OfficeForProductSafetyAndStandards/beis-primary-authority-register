@@ -45,12 +45,13 @@ class ParSubscriptionManageForm extends ParBaseForm {
     ];
     $form['method'] = [
       '#type' => 'radios',
+      '#title' => $this->t('Update method'),
+      '#title_tag' => 'h2',
+      '#options' => $methods,
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('method', self::METHOD_INSERT),
       '#attributes' => [
         'class' => ['govuk-form-group'],
       ],
-      '#title' => $this->t('Update method'),
-      '#options' => $methods,
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('method', self::METHOD_INSERT),
     ];
 
     $form['list'] = [

@@ -62,6 +62,7 @@ class ParMemberListType extends ParFormPluginBase {
     $form['type'] = [
       '#type' => 'radios',
       '#title' => t('Choose which format to display the member list in'),
+      '#title_tag' => 'h2',
       '#options' => $list_options,
       '#default_value' => $this->getDefaultValuesByKey('member_list_type', $index, NULL),
       '#attributes' => ['class' => ['govuk-form-group']],

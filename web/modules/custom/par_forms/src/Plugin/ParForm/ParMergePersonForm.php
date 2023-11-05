@@ -51,6 +51,7 @@ class ParMergePersonForm extends ParFormPluginBase {
     $form['contacts'] = [
       '#type' => 'checkboxes',
       '#title' => t('Choose which contact records you would like to combine'),
+      '#title_tag' => 'h2',
       '#options' => $this->getDefaultValuesByKey("contact_options", $index, []),
       '#default_value' => $this->getDefaultValuesByKey("contacts", $index, []),
       '#attributes' => ['class' => ['govuk-form-group']],

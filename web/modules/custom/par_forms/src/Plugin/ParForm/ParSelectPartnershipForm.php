@@ -81,6 +81,7 @@ class ParSelectPartnershipForm extends ParFormPluginBase {
       $form['par_data_partnership_id'] = [
         '#type' => $multiple ? 'checkboxes' : 'radios',
         '#title' => $multiple ? $this->t('Choose a partnerships') : $this->t('Choose partnerships'),
+        '#title_tag' => 'h2',
         '#options' => $partnership_options,
         '#default_value' => $multiple ? (array) $default_value : $default_value,
         '#attributes' => ['class' => ['govuk-form-group']],

@@ -93,6 +93,7 @@ class ParLinkContact extends ParFormPluginBase {
     $form['user_id'] = [
       '#type' => 'radios',
       '#title' => t('Choose a user account'),
+      '#title_tag' => 'h2',
       '#options' => $user_accounts,
       '#default_value' => $this->getDefaultValuesByKey("user_id", $index, key($user_accounts)),
       '#attributes' => ['class' => ['govuk-form-group']],

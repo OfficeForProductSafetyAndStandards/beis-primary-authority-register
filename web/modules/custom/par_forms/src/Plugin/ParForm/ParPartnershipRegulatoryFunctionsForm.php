@@ -128,12 +128,6 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
         '#value' => $this->t('Normal or Sequenced'),
       ],
       [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $this->t('Either for normal partnerships, where the organisation only has one partnership, or for sequenced partnerships, where a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities do not overlap.'),
-        '#attributes' => ['class' => 'form-hint'],
-      ],
-      [
         '#theme' => 'item_list',
         '#list_type' => 'ul',
         '#list_header_tag' => 'h2',
@@ -149,12 +143,6 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
         '#tag' => 'p',
         '#value' => $this->t('Bespoke'),
       ],
-      [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $this->t('Bespoke partnerships should only be selected when a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities overlap.'),
-        '#attributes' => ['class' => 'form-hint'],
-      ],
     ];
 
     // Default partnerships are those that cover all the regulatory functions
@@ -163,14 +151,18 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
     $form['partnership_cover'] = [
       '#type' => 'radios',
       '#title' => 'Is this a sequenced or bespoke partnership?',
+      '#title_tag' => 'h2',
       '#options' => [
-        'default' => $renderer->render($default_label),
-        'bespoke' => $renderer->render($bespoke_label),
+        'default' => $this->t('Normal or Sequenced'),
+        'bespoke' => $this->t('Bespoke'),
       ],
       '#options_descriptions' => array(
         'default' => 'Either for normal partnerships, where the organisation only has one partnership, or for sequenced partnerships, where a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities do not overlap.',
         'bespoke' => 'Bespoke partnerships should only be selected when a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities overlap.',
       ),
+      '#after_build' => [
+        [get_class($this), 'optionsDescriptions'],
+      ],
       '#default_value' => $default ? 'default' : 'bespoke',
     ];
 
@@ -184,9 +176,32 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
       '#value' => $values,
     ];
 
+    $form['sequenced_regulatory_functions'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['govuk-form-group']],
+      '#states' => [
+        'visible' => [
+          'input[name="partnership_cover"]' => ['value' => 'default'],
+        ],
+      ],
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('The following regulatory functions will be added'),
+        '#attributes' => ['class' => 'govuk-heading-m'],
+      ],
+      [
+        '#theme' => 'item_list',
+        '#list_type' => 'ul',
+        '#items' => $regulatory_function_options,
+        '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
+      ],
+    ];
+
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
       '#title' => 'Regulatory Functions',
+      '#title_tag' => 'h2',
       '#options' => $regulatory_function_options,
       '#default_value' => $this->getDefaultValuesByKey('regulatory_functions', $index, []),
       '#attributes' => ['class' => ['govuk-form-group']],

@@ -146,8 +146,9 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
 
       $form['members'] = [
         '#type' => 'fieldset',
-        '#tree' => TRUE,
         '#title' => 'Below is a list of members that require your attention.',
+        '#title_tag' => 'h2',
+        '#tree' => TRUE,
       ];
 
       // Process each row so that we can de-dupe and validate each.

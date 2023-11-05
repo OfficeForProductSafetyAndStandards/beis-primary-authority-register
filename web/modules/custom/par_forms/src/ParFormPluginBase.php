@@ -630,7 +630,11 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
 
     foreach (Element::children($element) as $key) {
       if (isset($element['#options_descriptions'][$key])) {
+        // Set the description.
         $element[$key]['#description'] = $element['#options_descriptions'][$key];
+
+        // Set the aria-describedby attribute on the element.
+        $element[$key]['#attributes']['aria-describedby'] = "{$element[$key]['#id']}--description";
       }
     }
 

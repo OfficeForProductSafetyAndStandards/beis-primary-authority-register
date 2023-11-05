@@ -114,7 +114,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
     if ($this->getDefaultValuesByKey('approved', $index, FALSE)) {
       $form['details'] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['govuk-grid-row']],
+        '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
         'regulatory_functions' => [
           '#type' => 'container',
           'heading' => [

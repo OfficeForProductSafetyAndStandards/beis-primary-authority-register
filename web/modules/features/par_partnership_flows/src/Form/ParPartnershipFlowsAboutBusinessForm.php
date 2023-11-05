@@ -49,6 +49,7 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
     $form['about_business_fieldset'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Provide information about the organisation'),
+      '#title_tag' => 'h2',
     ];
 
     // Business details.

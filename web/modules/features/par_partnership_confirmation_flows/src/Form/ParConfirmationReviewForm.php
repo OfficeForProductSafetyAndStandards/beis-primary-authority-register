@@ -181,6 +181,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       '#title' => $this->t('I have read and agree to the @terms.', ['@terms' => $terms_link->toString()]),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_organisation_agreed"),
       '#return_value' => 'on',
+      '#suffix' => '<br>',
     ];
 
     $form['help_text'] = [

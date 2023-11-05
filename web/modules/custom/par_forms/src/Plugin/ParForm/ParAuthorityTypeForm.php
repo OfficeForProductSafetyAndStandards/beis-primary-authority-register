@@ -48,6 +48,7 @@ class ParAuthorityTypeForm extends ParFormPluginBase {
     $form['authority_type'] = [
       '#type' => 'radios',
       '#title' => 'Choose an authority type',
+      '#title_tag' => 'h2',
       '#attributes' => ['class' => ['govuk-form-group']],
       '#options' => $this->getFlowDataHandler()->getFormPermValue('authority_type_options'),
       '#default_value' => $this->getDefaultValuesByKey('authority_type', $index, NULL),

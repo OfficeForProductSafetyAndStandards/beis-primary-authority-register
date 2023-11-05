@@ -63,6 +63,13 @@ class ParContactDetailsForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements(array $form = [], int $index = 1) {
+    $form['title'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => $this->t('Enter the contact details'),
+      '#attributes' => ['class' => ['govuk-heading-m']]
+    ];
+
     $form['salutation'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the title (optional)'),

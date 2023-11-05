@@ -181,6 +181,7 @@
             "drupal/core": {
                 "Ensure the table alias is no longer than 60 characters long": "https://www.drupal.org/files/issues/2022-06-30/571548-165.patch",
                 "Form API #ajax not working on link element": "https://www.drupal.org/files/issues/2023-01-12/2915954-29.patch",
+                "Broken aria-describedby in radios and checkboxes": "https://www.drupal.org/files/issues/2020-09-08/2839344_0.patch",
                 "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2023-03-20/2551893-109.patch",
                 "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2022-12-19/drupal-case_sensitive_email-2490294-58-d95.patch"
             },

@@ -46,6 +46,7 @@ class ParCoveredByPlanForm extends ParFormPluginBase {
     $form['covered_by_inspection'] = [
       '#type' => 'radios',
       '#title' => $this->t('Is this member covered by an inspection plan?'),
+      '#title_tag' => 'h2',
       '#default_value' => $this->getDefaultValuesByKey('covered_by_inspection', $index, 1),
       '#options' => [
         1 => $coordinated_member_bundle->getBooleanFieldLabel('covered_by_inspection', TRUE),

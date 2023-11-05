@@ -250,6 +250,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     $form['registry'] = [
       '#type' => 'radios',
       '#title' => 'What type of legal entity is this?',
+      '#title_tag' => 'h2',
       '#description' => $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities."),
       '#options' => $registry_options,
       '#options_descriptions' => $registry_options_descriptions,
@@ -311,6 +312,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     $form['unregistered']['legal_entity_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('How is this entity structured?'),
+      '#title_tag' => 'h3',
       '#default_value' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_type'], $index),
       '#options' => $unregistered_type_options,
       '#options_descriptions' => $unregistered_type_options_descriptions,

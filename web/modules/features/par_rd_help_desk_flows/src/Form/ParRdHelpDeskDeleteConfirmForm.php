@@ -67,6 +67,7 @@ class ParRdHelpDeskDeleteConfirmForm extends ParBaseForm {
     $form['partnership_info'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Delete the partnership'),
+      '#title_tag' => 'h2',
       '#attributes' => ['class' => 'govuk-form-group'],
     ];
 

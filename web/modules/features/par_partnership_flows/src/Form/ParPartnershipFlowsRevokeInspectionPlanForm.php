@@ -70,6 +70,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
     $form['inspection_plan_info'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Revoke the inspection plan'),
+      '#title_tag' => 'h2',
       '#attributes' => ['class' => 'govuk-form-group'],
     ];
 

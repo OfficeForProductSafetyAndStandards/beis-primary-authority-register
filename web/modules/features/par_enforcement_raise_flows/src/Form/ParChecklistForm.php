@@ -53,17 +53,13 @@ class ParChecklistForm extends ParBaseForm {
     ];
 
     // Where possible enforcement officers should be given the chance to discuss
-    // the issues outside of the enforcement process to ensure a swift resolution.
+    // the issues outside the enforcement process to ensure a swift resolution.
     $form['contact'] = [
       '#type' => 'fieldset',
-      '#attributes' => ['class' => ['govuk-form-group']],
-      'title' => [
-        '#type' => 'html_tag',
-        '#tag' => 'h2',
-        '#value' => $this->t('Primary authority contact'),
-        '#attributes' => ['class' => 'govuk-heading-l'],
-      ],
+      '#title' => $this->t('Primary authority contact'),
+      '#title_tag' => 'h2',
       'details' => $this->getFlowDataHandler()->getDefaultValues('notice_summary', NULL),
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
     if ($name = $this->getFlowDataHandler()->getDefaultValues('primary_contact_name', NULL)) {
       $form['contact']['name'] = [

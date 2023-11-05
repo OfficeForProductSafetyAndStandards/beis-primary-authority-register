@@ -45,8 +45,8 @@ class ParEnforcementRemovalConfirmForm extends ParBaseForm {
 
 
     $form['summary'] = [
-      '#title' => $this->t('Do you want to remove this?'),
       '#type' => 'fieldset',
+      '#title' => $this->t('Do you want to remove this?'),
       '#weight' => -99,
       '#attributes' => ['class' => ['govuk-form-group']],
       'message' => [

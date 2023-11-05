@@ -27,8 +27,9 @@ class ParConfirmedController extends ParBaseController {
 
     // Information about the next steps.
     $build['next_steps'] = [
-      '#title' => $this->t('What happens next?'),
       '#type' => 'fieldset',
+      '#title' => $this->t('What happens next?'),
+      '#title_tag' => 'h2',
     ];
     $build['next_steps']['info'] = [
       '#type' => 'markup',

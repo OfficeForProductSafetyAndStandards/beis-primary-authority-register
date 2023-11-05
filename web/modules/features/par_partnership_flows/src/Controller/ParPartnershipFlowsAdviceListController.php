@@ -29,15 +29,9 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
 
     $build['partnership'] = [
       '#type' => 'fieldset',
-      '#attributes' => ['class' => 'govuk-form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-    $build['partnership']['title'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_partnership->label(),
-      '#prefix' => '<h2>',
-      '#suffix' => '</h2>',
+      '#title' => $par_data_partnership->label(),
+      '#title_tag' => 'h2',
+      '#attributes' => ['class' => 'govuk-form-group']
     ];
 
     switch ($this->getFlowNegotiator()->getFlowName()) {

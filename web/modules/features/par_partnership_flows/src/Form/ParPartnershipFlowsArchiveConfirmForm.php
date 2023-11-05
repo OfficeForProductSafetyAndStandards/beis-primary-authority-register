@@ -68,6 +68,7 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
     $form['advice_info'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Archive the advice'),
+      '#title_tag' => 'h2',
       '#attributes' => ['class' => 'govuk-form-group'],
     ];
 

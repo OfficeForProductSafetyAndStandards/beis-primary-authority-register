@@ -41,6 +41,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
       $form['subscribe'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Subscriptions to be added (@count)', ['@count' => count($subscribe)]),
+        '#title_tag' => 'h2',
         '#attributes' => ['class' => 'govuk-form-group'],
         'new' => [
           '#type' => 'markup',

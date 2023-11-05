@@ -57,6 +57,7 @@ class ParChecklistForm extends ParBaseForm {
       '#title' => $this->t('I confirm I have been given written permission by the organisation.'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('confirm', FALSE),
       '#return_value' => 'on',
+      '#suffix' => '<br>',
     ];
 
     // There is a legal requirement to mention that the PA is the processor (under GDPR) and as such they must

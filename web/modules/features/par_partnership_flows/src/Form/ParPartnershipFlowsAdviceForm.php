@@ -126,22 +126,22 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     // The advice title.
     $form['advice_title'] = [
       '#type' => 'textfield',
+      '#title' => '<h3 class="heading-medium">' . $this->t('Advice title')  . '</h3>',
+      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_title'),
       '#attributes' => [
         'class' => ['govuk-form-group'],
       ],
-      '#title' => '<h3 class="heading-medium">' . $this->t('Advice title')  . '</h3>',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_title'),
     ];
 
     // The advice type.
     $form['advice_type'] = [
       '#type' => 'radios',
-      '#attributes' => [
-        'class' => ['govuk-form-group'],
-      ],
       '#title' => $this->t('Type of advice'),
       '#options' => $allowed_types,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_type'),
+      '#attributes' => [
+        'class' => ['govuk-form-group'],
+      ],
     ];
 
     // The regulatory functions of the advice entity.
@@ -150,12 +150,12 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
 
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
-      '#attributes' => [
-        'class' => ['govuk-form-group'],
-      ],
       '#title' => $this->t('Regulatory functions this advice covers'),
       '#options' => $regulatory_function_options,
       '#default_value' => array_keys($default_reg_function),
+      '#attributes' => [
+        'class' => ['govuk-form-group'],
+      ],
     ];
 
     // The advice summary.

@@ -114,8 +114,8 @@ class ParReviewForm extends ParBaseForm {
       ],
       'work_phone' => [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'govuk-form-group'],
         '#title' => 'Work phone',
+        '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('work_phone', '(none)'),
         ]

@@ -86,10 +86,12 @@ class ParChecklistForm extends ParBaseForm {
       ];
 
       $form['declaration']['confirm'] = [
+        '#type' => 'container',
         '#type' => 'checkbox',
         '#title' => $this->t('I confirm these conditions have been met'),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues('confirm', FALSE),
         '#return_value' => 'on',
+        '#suffix' => '<br>',
       ];
 
       $form['declaration']['help'] = [

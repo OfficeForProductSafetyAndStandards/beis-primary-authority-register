@@ -73,6 +73,7 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
       $form['par_data_authority_id'] = [
         '#type' => $multiple ? 'checkboxes' : 'radios',
         '#title' => t('Choose an Authority'),
+        '#title_tag' => 'h2',
         '#options' => $authorities,
         '#default_value' => $multiple ? (array) $default_value : $default_value,
         '#attributes' => ['class' => ['govuk-form-group']],

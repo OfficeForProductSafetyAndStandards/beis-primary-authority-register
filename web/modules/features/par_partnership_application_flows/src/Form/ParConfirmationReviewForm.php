@@ -61,7 +61,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       ];
 
       $form['partnership'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
       ];
 
@@ -116,12 +116,12 @@ class ParConfirmationReviewForm extends ParBaseForm {
         ];
         $form['partnership']['authority']['authority_name'] = [
           '#type' => 'container',
-          '#attributes' => ['class' => 'govuk-form-group'],
+          '#attributes' => ['class' => ['govuk-form-group']],
           'title' => [
             '#type' => 'html_tag',
             '#tag' => 'h2',
             '#value' => $this->t('Primary authority name'),
-            '#attributes' => ['class' => 'govuk-heading-m'],
+            '#attributes' => ['class' => ['govuk-heading-m']],
           ],
           'name' => [
             '#type' => 'markup',
@@ -137,6 +137,11 @@ class ParConfirmationReviewForm extends ParBaseForm {
         }
       }
 
+      $form['confirm'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['govuk-form-group']],
+      ];
+
       $url_address = 'https://www.gov.uk/government/publications/primary-authority-terms-and-conditions';
       $url = Url::fromUri($url_address, ['attributes' => ['target' => '_blank']]);
       $terms_link = Link::fromTextAndUrl(t('terms & conditions (opens in a new window)'), $url);
@@ -145,21 +150,22 @@ class ParConfirmationReviewForm extends ParBaseForm {
         '#title' => $this->t('I have read and agree to the @terms.', ['@terms' => $terms_link->toString()]),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_authority_agreed"),
         '#return_value' => 'on',
+        '#suffix' => '<br>',
       ];
 
       $form['help_text'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
     }
     else {
       $form['help_text'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('The partnership could not be created, please contact the Helpdesk if this problem persists.'),
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t('The partnership could not be created, please contact the Helpdesk if this problem persists.'),
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
     }
 

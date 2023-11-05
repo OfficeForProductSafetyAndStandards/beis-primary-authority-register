@@ -67,11 +67,12 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
     // Checkboxes for inspection plans.
     $form['inspection_plan_id'] = [
       '#type' => 'checkboxes',
-      '#attributes' => ['class' => ['govuk-form-group']],
       '#title' => t('Choose which inspection plan you\'re request is related to'),
+      '#title_tag' => 'h2',
       '#options' => $inspection_plans,
       // Automatically check all legal entities if no form data is found.
       '#default_value' => $this->getDefaultValuesByKey('inspection_plan', $index, []),
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
     return $form;

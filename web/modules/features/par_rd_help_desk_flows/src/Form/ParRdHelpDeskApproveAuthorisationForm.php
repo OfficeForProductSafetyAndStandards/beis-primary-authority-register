@@ -100,6 +100,7 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
     $form['partnership_approve'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Please confirm you are authorised to approve this partnership'),
+      '#title_tag' => 'h2',
       '#attributes' => ['class' => 'govuk-form-group'],
     ];
 

@@ -81,6 +81,7 @@ class ParSelectPersonForm extends ParFormPluginBase {
     $form['user_person'] = [
       '#type' => 'radios',
       '#title' => t('Choose which contact record you would like to update'),
+      '#title_tag' => 'h2',
       '#options' => $user_people,
       '#default_value' => $this->getDefaultValuesByKey("user_person", $index, NULL),
       '#attributes' => ['class' => ['govuk-form-group']],

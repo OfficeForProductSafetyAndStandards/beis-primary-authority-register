@@ -150,6 +150,7 @@ class ParChooseAccount extends ParFormPluginBase {
     $form['account'] = [
       '#type' => 'radios',
       '#title' => t('Would you like this person to have a user account?'),
+      '#title_tag' => 'h2',
       '#options' => $account_options,
       '#default_value' => key($account_options),
       '#attributes' => ['class' => ['govuk-form-group']],

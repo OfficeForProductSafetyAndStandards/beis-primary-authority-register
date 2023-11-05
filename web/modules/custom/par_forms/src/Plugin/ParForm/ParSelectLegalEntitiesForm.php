@@ -87,6 +87,7 @@ limited company or partnership, as well as other types of organisations such as 
       '#type' => 'checkboxes',
       '#attributes' => ['class' => ['govuk-form-group']],
       '#title' => t('Choose which legal entities this partnership relates to'),
+      '#title_tag' => 'h2',
       '#options' => $radio_options,
       // Automatically check all legal entities if no form data is found.
       '#default_value' => $this->getDefaultValuesByKey('field_legal_entity', $index, $partnership_legal_entities),

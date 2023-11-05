@@ -21,6 +21,8 @@ steps:
   2:
     route: par_partnership_application_flows.partnership_application_type
     form_id: par_partnership_application_type
+    components:
+      partnership_type: {}
   3:
     route: par_partnership_application_flows.partnership_application_authority_checklist
     form_id: par_partnership_application_authority_checklist

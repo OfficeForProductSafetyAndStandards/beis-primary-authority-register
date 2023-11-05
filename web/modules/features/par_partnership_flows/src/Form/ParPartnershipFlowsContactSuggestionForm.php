@@ -90,6 +90,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     $form['par_data_person_id'] = [
       '#type' => 'radios',
       '#title' => t('Did you mean any of these users?'),
+      '#title_tag' => 'h2',
       '#options' => $people_options + ['new' => 'No, it is not one of the above, create a new contact.'],
     ];
 

@@ -60,6 +60,7 @@ class ParEnforcementActionForm extends ParFormPluginBase {
     $form['regulatory_function'] = [
       '#type' => 'radios',
       '#title' => $this->t('Choose a regulatory function to which this action relates'),
+      '#title_tag' => 'h2',
       '#options' => $reg_function_names,
       '#attributes' => ['class' => ['govuk-form-group']],
       '#default_value' => $this->getDefaultValuesByKey('regulatory_function', $index),

@@ -23,8 +23,9 @@ class ParPartnershipCompletedController extends ParBaseController {
     $recipient_email = $this->getFlowDataHandler()->getDefaultValues('email', '', $cid_contact);
 
     $build['next_steps'] = [
-      '#title' => $this->t('What happens next?'),
       '#type' => 'fieldset',
+      '#title' => $this->t('What happens next?'),
+      '#title_tag' => 'h2',
     ];
     $build['next_steps']['notified'] = [
       '#type' => 'markup',

@@ -147,6 +147,7 @@ class ParConfirmListDetailsForm extends ParBaseForm {
     $form['confirm'] = [
       '#type' => 'radios',
       '#title' => $this->t('Do these details accurately reflect the member list?'),
+      '#title_tag' => 'h2',
       '#options' => [
         self::CONFIRM => 'Yes, these details are correct',
         self::UPDATE => 'No, these details need to be updated'

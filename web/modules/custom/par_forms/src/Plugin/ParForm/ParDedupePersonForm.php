@@ -122,6 +122,7 @@ class ParDedupePersonForm extends ParFormPluginBase {
     $form['contact_record'] = [
       '#type' => 'radios',
       '#title' => t('Choose which contact record you would like to use'),
+      '#title_tag' => 'h2',
       '#options' => $contact_records,
       '#default_value' => $this->getDefaultValuesByKey("contact_record", $index, NULL),
       '#attributes' => ['class' => ['govuk-form-group']],

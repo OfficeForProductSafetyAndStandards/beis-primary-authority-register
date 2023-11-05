@@ -52,21 +52,27 @@ class ParContactDetailsBasicForm extends ParFormPluginBase {
       '#type' => 'textfield',
       '#title' => $this->t('Enter the first name'),
       '#default_value' => $this->getDefaultValuesByKey('first_name', $index),
-      '#attributes' => ['autocomplete' => 'given-name']
+      '#attributes' => [
+        'autocomplete' => 'given-name'
+      ]
     ];
 
     $form['last_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the last name'),
       '#default_value' => $this->getDefaultValuesByKey('work_phone', $index),
-      '#attributes' => ['autocomplete' => 'family-name']
+      '#attributes' => [
+        'autocomplete' => 'family-name'
+      ]
     ];
 
     $form['work_phone'] = [
       '#type' => 'tel',
       '#title' => $this->t('Enter the work phone number'),
       '#default_value' => $this->getDefaultValuesByKey('work_phone', $index),
-      '#attributes' => ['autocomplete' => 'tel']
+      '#attributes' => [
+        'autocomplete' => 'tel'
+      ]
     ];
 
     return $form;

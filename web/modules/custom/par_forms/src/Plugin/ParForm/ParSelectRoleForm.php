@@ -127,6 +127,7 @@ class ParSelectRoleForm extends ParFormPluginBase {
     $form['role'] = [
       '#type' => 'radios',
       '#title' => t('Choose what type of user this person is'),
+      '#title_tag' => 'h2',
       '#options' => $role_options,
       '#default_value' => $this->getDefaultValuesByKey("role", $index, $default_option),
       '#attributes' => ['class' => ['govuk-form-group']],

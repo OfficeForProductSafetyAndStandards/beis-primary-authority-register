@@ -206,7 +206,12 @@ HEREDOC;
         '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Enter your message'),
       ],
-      '#description' => 'Your partner business will be emailed this invitation to sign in to the Primary Authority Register and provide the information required to complete this application. You can amend the message if you wish but please do not change or delete the acceptance link.<br><br>'
+      'description' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#attributes' => ['class' => ['govuk-hint']],
+        '#value' => $this->t('Your partner business will be emailed this invitation to sign in to the Primary Authority Register and provide the information required to complete this application. You can amend the message if you wish but please do not change or delete the acceptance link.'),
+      ],
     ];
 
     // Allow the message subject to be changed.

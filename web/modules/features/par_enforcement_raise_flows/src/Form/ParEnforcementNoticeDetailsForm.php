@@ -62,6 +62,7 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
     $form['notice_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('This enforcement action is'),
+      '#title_tag' => 'h2',
       '#options' => $notice_type,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('notice_type', key($notice_type)),
       '#attributes' => ['class' => ['govuk-form-group']],

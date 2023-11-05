@@ -73,6 +73,7 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
       $form['par_data_organisation_id'] = [
         '#type' => $multiple ? 'checkboxes' : 'radios',
         '#title' => t('Choose an Organisation'),
+        '#title_tag' => 'h2',
         '#options' => $organisations,
         '#default_value' => $multiple ? (array) $default_value : $default_value,
         '#attributes' => ['class' => ['govuk-form-group']],

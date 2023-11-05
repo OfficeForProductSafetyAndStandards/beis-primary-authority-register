@@ -70,6 +70,7 @@ class ParAddressForm extends ParFormPluginBase {
 
     $form['premises_id'] = [
       '#type' => 'hidden',
+      '#title' => $this->t('The id for the premises'),
       '#value' => $this->getFlowDataHandler()->getDefaultValues('premises_id', 'new'),
     ];
 
@@ -99,8 +100,8 @@ class ParAddressForm extends ParFormPluginBase {
 
     $form['country_code'] = [
       '#type' => 'select',
-      '#options' => $this->getCountryRepository()->getList(NULL),
       '#title' => $this->t('Country'),
+      '#options' => $this->getCountryRepository()->getList(NULL),
       '#default_value' => $this->getDefaultValuesByKey('country_code', $index, 'GB'),
     ];
 

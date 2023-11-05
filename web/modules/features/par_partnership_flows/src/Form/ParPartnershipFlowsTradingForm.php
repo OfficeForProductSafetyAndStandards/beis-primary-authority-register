@@ -69,8 +69,9 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
 
     $form['trading_name_fieldset'] = [
       '#type' => 'fieldset',
-      '#attributes' => ['class' => 'govuk-form-group'],
       '#title' => $this->t('Enter a trading name'),
+      '#title_tag' => 'h2',
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['trading_name_fieldset']['trading_name'] = [
