@@ -729,7 +729,12 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
       '#type' => 'container',
       '#weight' => $this->getWeight(),
       '#tree' => $this->isMultiple(),
-      '#attributes' => ['class' => [Html::cleanCssIdentifier('component-' . $this->getPluginId())]]
+      '#attributes' => [
+        'class' => [
+          Html::cleanCssIdentifier('component-' . $this->getPluginId()),
+          'govuk-form-group'
+        ]
+      ]
     ];
   }
 
