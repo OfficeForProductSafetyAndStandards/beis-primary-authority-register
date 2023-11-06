@@ -43,6 +43,7 @@ class ParDateForm extends ParFormPluginBase {
     $form['date'] = [
       '#type' => 'gds_date',
       '#title' => $this->t('Enter the date'),
+      '#title_tag' => 'h2',
       '#description' => $this->t('For example: 01/01/2010'),
       '#default_value' => $this->getDefaultValuesByKey('date', $index, $this->getFormDefaultByKey('date')),
     ];
