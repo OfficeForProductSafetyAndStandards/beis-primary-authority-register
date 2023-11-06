@@ -88,6 +88,10 @@
     {{ page.breadcrumb }}
   {% endif %}
 
+  {% if page.highlighted %}
+    {{ page.highlighted }}
+  {% endif %}
+
   {%
     set main_classes = [
     'govuk-main-wrapper',

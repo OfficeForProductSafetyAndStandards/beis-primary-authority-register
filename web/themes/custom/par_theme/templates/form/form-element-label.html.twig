@@ -22,6 +22,7 @@
     'govuk-label'
   ]
 %}
+
 {% if title is not empty or required -%}
   <label{{ attributes.addClass(classes) }}>{{ title }}</label>
 {%- endif %}

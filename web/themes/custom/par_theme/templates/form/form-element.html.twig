@@ -60,7 +60,7 @@
     'js-form-item-' ~ name|clean_class,
     title_display not in ['after', 'before'] ? 'form-no-label',
     disabled == 'disabled' ? 'form-disabled',
-    errors and type not in ['radio'] ? 'form-group-error'
+    errors and type not in ['radio'] ? 'govuk-form-group--error'
   ]
 %}
 {%
@@ -97,7 +97,7 @@
   {% if type in ['checkbox'] %}
     <div class="multiple-choice govuk-checkboxes__item">
   {% endif %}
-  
+
   {% if type in ['radio'] %}
     <div class="govuk-radios__item">
   {% endif %}

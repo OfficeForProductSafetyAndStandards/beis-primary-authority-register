@@ -10,4 +10,14 @@
  * @see template_preprocess_input()
  */
 #}
-<input type="checkbox"{{ attributes.addClass(classes).removeAttribute('placeholder').addClass('govuk-checkboxes__input') }} />
+
+{%
+  set classes = [
+    'form-control',
+    'govuk-input',
+    'govuk-checkboxes__input',
+    errors ? 'govuk-input--error'
+  ]
+%}
+
+<input type="checkbox"{{ attributes.addClass(classes).removeAttribute('placeholder') }} />

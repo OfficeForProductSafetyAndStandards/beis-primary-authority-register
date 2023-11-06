@@ -18,7 +18,11 @@ class ParAuthorityTypeForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected array $entityMapping = [];
+  protected array $entityMapping = [
+    ['authority_type', 'par_data_authority', 'authority_type', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter a description for the business.'
+    ]],
+  ];
 
   /**
    * Load the data for this form.

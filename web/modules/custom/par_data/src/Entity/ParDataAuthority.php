@@ -199,6 +199,7 @@ class ParDataAuthority extends ParDataEntity implements ParDataMembershipInterfa
     $fields['authority_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Authority Type'))
       ->setDescription(t('The type of authority.'))
+      ->setRequired(TRUE)
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([

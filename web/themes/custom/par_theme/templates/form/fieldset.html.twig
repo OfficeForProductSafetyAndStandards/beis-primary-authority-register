@@ -54,8 +54,8 @@
         <div{{ description.attributes.addClass('govuk-hint') }}>{{ description.content }}</div>
       {% endif %}
       {% if errors %}
-        <span class="govuk-error-message">
-          {{ errors }}
+        <span class="error-message govuk-error-message">
+          {{ errors | striptags('<p>') }}
         </span>
       {% endif %}
       {% if prefix %}

@@ -11,4 +11,12 @@
  */
 #}
 
-<input type="radio"{{ attributes.addClass('govuk-radios__input') }} />
+{%
+  set classes = [
+    'govuk-input',
+    'govuk-radios__input',
+    errors ? 'govuk-input--error'
+  ]
+%}
+
+<input type="radio"{{ attributes.addClass(classes) }} />
