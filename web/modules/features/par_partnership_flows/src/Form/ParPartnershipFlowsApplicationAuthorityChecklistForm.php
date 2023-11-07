@@ -170,6 +170,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
         '#title' => t("My local authority agrees to the Primary Authority <a href='{$terms_page}' target='_blank'>Terms and Conditions (opens in a new window)</a>."),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_local_authority_agreed", FALSE),
         '#return_value' => 'on',
+        '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
       ];
     }
 

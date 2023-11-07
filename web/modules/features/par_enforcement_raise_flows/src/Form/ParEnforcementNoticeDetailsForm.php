@@ -73,6 +73,7 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
     $form['summary'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide a summary of the enforcement notification'),
+      '#title_tag' => 'h2',
       '#description' => [
         '#theme' => 'item_list',
         '#items' => [

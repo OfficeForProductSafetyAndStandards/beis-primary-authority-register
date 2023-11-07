@@ -99,7 +99,6 @@ function par_theme_element_info_alter(array &$info) {
  * @param array $variables
  */
 function par_theme_preprocess_form_element(array &$variables) {
-
   // Get the form element.
   $element = &$variables['element'];
 
@@ -113,6 +112,28 @@ function par_theme_preprocess_form_element(array &$variables) {
   // Make {{ errors }} available in template file.
   if (!empty($element['#errors']) && empty($element['#error_use_parent'])) {
     $variables['errors'] = $element['#errors'];
+  }
+
+  // Allow the title tag to be selected for all form elements, by default
+  // this is not set and the title contents is rendered inside the label.
+  if (!empty($element['#title_tag'])) {
+    $variables['title_tag'] = $element['#title_tag'];
+  }
+}
+
+/**
+ * Implements hook_preprocess_form_element_label().
+ *
+ * @param array $variables
+ */
+function par_theme_preprocess_form_element_label(array &$variables) {
+  // Get the form element.
+  $element = &$variables['element'];
+
+  // Allow the title tag to be selected for all form elements, by default
+  // this is not set and the title contents is rendered inside the label.
+  if (!empty($element['#title_tag'])) {
+    $variables['title_tag'] = $element['#title_tag'];
   }
 }
 

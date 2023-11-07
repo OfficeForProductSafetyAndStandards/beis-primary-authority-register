@@ -67,15 +67,10 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $trading_name_delta = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $trading_name_delta);
 
-    $form['trading_name_fieldset'] = [
-      '#type' => 'fieldset',
+    $form['trading_name'] = [
+      '#type' => 'textfield',
       '#title' => $this->t('Enter a trading name'),
       '#title_tag' => 'h2',
-      '#attributes' => ['class' => 'govuk-form-group'],
-    ];
-
-    $form['trading_name_fieldset']['trading_name'] = [
-      '#type' => 'textfield',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("trading_name"),
       '#description' => $this->t("<p>Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State any trading names used by the organisation.</p>"),
     ];

@@ -57,6 +57,7 @@ class ParTermsConditions extends ParFormPluginBase {
           '#title' => $this->t('I have read and agree to the @terms.', ['@terms' => $terms_link->toString()]),
           '#default_value' => $this->getFlowDataHandler()->getDefaultValues(self::AUTHORITY_TERMS),
           '#return_value' => 'on',
+          '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
         ];
 
         break;
@@ -67,6 +68,7 @@ class ParTermsConditions extends ParFormPluginBase {
           '#title' => $this->t('I have read and agree to the @terms.', ['@terms' => $terms_link->toString()]),
           '#default_value' => $this->getFlowDataHandler()->getDefaultValues(self::ORGANISATION_TERMS),
           '#return_value' => 'on',
+          '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
         ];
 
         break;

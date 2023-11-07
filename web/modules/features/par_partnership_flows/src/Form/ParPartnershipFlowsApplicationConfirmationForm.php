@@ -72,6 +72,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
         '#title' => $this->t('I confirm I have reviewed the information above'),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues("partnership_info_agreed_authority"),
         '#return_value' => 'on',
+        '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
       ];
     }
     else {

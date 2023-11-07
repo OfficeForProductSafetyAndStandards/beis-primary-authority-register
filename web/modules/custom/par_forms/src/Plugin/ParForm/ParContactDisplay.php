@@ -111,20 +111,6 @@ class ParContactDisplay extends ParFormPluginBase {
     }
 
     if ($this->getDefaultValuesByKey('email', $index, NULL)) {
-      $locations = [
-        'summary' => [
-          '#type' => 'html_tag',
-          '#tag' => 'summary',
-          '#attributes' => ['class' => ['govuk-form-group'], 'role' => 'button', 'aria-controls' => "contact-detail-locations-$index"],
-          '#value' => '<span class="summary">More information on where this contact is used</span>',
-        ],
-        'details' => [
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-          '#attributes' => ['class' => ['govuk-form-group'], 'id' => "contact-detail-locations-$index"],
-          '#value' => $this->getDefaultValuesByKey('locations', $index, ''),
-        ],
-      ];
       try {
         $params = ['par_data_person' => $this->getDefaultValuesByKey('person_id', $index, NULL)];
         $title = 'Update ' . $this->getDefaultValuesByKey('name', $index, 'person');
@@ -169,8 +155,23 @@ class ParContactDisplay extends ParFormPluginBase {
         'locations' => [
           '#type' => 'html_tag',
           '#tag' => 'details',
-          '#attributes' => ['class' => ['govuk-grid-column-full', 'contact-locations'], 'role' => 'group'],
-          '#value' => \Drupal::service('renderer')->render($locations),
+          '#attributes' => ['class' => ['govuk-grid-column-full', 'govuk-details', 'contact-locations'], 'role' => 'group'],
+          'summary' => [
+            '#type' => 'html_tag',
+            '#tag' => 'summary',
+            '#attributes' => ['class' => ['govuk-details__summary'], 'role' => 'button', 'aria-controls' => "contact-detail-locations-$index"],
+            '#value' => '<span class="govuk-details__summary-text">More information on where this contact is used</span>',
+          ],
+          'details' => [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#attributes' => ['class' => ['govuk-details__text'], 'id' => "contact-detail-locations-$index"],
+            'summary' => [
+              '#theme' => 'item_list',
+              '#items' => $this->getDefaultValuesByKey('locations', $index, []),
+              '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
+            ],
+          ],
         ],
       ];
     }

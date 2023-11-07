@@ -29,10 +29,10 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       '#attributes' => ['class' => 'govuk-form-group'],
     ];
     $build['partnership']['title'] = [
-      '#type' => 'markup',
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
       '#markup' => $par_data_partnership->label(),
-      '#prefix' => '<h2>',
-      '#suffix' => '</h2>',
+      '#attributes' => ['class' => 'govuk-heading-m'],
     ];
 
     $advice_search_block_exposed  = views_embed_view('advice_lists', 'advice_search_block_exposed', $par_data_partnership_id);

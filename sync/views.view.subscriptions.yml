@@ -6,9 +6,9 @@ dependencies:
     - par_subscriptions.par_subscription_list.par_news
   module:
     - better_exposed_filters
-    - csv_serialization
     - pagerer
     - par_data
+    - par_member_upload_flows
     - par_subscriptions
     - rest
     - serialization
@@ -584,7 +584,7 @@ display:
           title: 'back to dashboard'
           assistive_text: ''
           link: /helpdesk
-          class: link-back
+          class: govuk-back-link
       display_extenders: {  }
     cache_metadata:
       max-age: -1

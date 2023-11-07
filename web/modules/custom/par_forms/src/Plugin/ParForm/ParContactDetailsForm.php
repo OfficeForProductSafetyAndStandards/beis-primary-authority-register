@@ -110,19 +110,23 @@ class ParContactDetailsForm extends ParFormPluginBase {
     if ($this->getDefaultValuesByKey('email_readonly', $index, FALSE)) {
       $form['email_readonly'] = [
         '#type' => 'container',
+        '#attributes' => ['class' => ['govuk-form-group']],
         'heading' => [
           '#type' => 'html_tag',
           '#tag' => 'h2',
           '#attributes' => ['class' => ['govuk-heading-m']],
           '#value' => $this->t('Email address'),
         ],
-        '#description' => $this->t('You cannot update this person\'s email address because they already have an account.'),
-        '#attributes' => ['class' => ['govuk-form-group']],
+        'description' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->t('You cannot update this person\'s email address because they already have an account.'),
+        ],
         'email_address' => [
-          '#type' => 'markup',
-          '#markup' => $this->getDefaultValuesByKey('email', $index),
-          '#prefix' => '<p>',
-          '#suffix' => '</p>',
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#attributes' => ['class' => ['govuk-inset-text']],
+          '#value' => $this->getDefaultValuesByKey('email', $index),
         ],
       ];
       $form['email'] = [

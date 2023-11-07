@@ -42,10 +42,10 @@ class ParPartnershipFlowsAdvicePageController extends ParBaseController {
         '#attributes' => ['class' => 'govuk-form-group'],
       ];
       $build['advice_details']['archived'] = [
-        '#type' => 'markup',
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
         '#markup' => 'Archived advice',
-        '#prefix' => '<h2>',
-        '#suffix' => '</h2>',
+        '#attributes' => ['class' => 'govuk-heading-m'],
       ];
     }
 

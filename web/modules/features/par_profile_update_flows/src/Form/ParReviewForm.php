@@ -177,7 +177,7 @@ class ParReviewForm extends ParBaseForm {
         '#title' => $this->t('Would you like to update the user account?'),
         '#description' => $this->t('This will change the email address that is used to sign into this service.'),
         '#return_value' => self::ACCOUNT_UPDATE,
-        '#attributes' => ['class' => ['govuk-form-group']],
+        '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
       ];
     }
 

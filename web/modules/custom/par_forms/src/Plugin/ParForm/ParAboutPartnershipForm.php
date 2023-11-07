@@ -43,26 +43,12 @@ class ParAboutPartnershipForm extends ParFormPluginBase {
    */
   public function getElements(array $form = [], int $index = 1) {
 
-    $form['partnership'] = [
-      '#type' => 'container'
-    ];
-    $title_id = Html::cleanCssIdentifier("{$this->getPluginId()}-$index-about-title");
-    $form['partnership']['title'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'h2',
-      '#value' => $this->t('Provide information about the partnership'),
-      '#attributes' => [
-        'id' => $title_id,
-        'class' => ['govuk-heading-m']
-      ],
-    ];
-    $form['partnership']['about_partnership'] = [
+    $form['about_partnership'] = [
       '#type' => 'textarea',
+      '#title' => $this->t('Provide information about the partnership'),
+      '#title_tag' => 'h2',
       '#default_value' => $this->getDefaultValuesByKey('about_partnership', $index),
       '#description' => 'Use this section to give a brief overview of the partnership. Include any information you feel may be useful to enforcing authorities.',
-      '#attributes' => [
-        'aria-labelledby' => $title_id,
-      ],
     ];
 
     return $form;

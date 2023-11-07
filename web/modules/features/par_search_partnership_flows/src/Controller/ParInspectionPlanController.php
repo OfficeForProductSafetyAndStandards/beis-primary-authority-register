@@ -29,10 +29,10 @@ class ParInspectionPlanController extends ParBaseController {
       '#attributes' => ['class' => 'govuk-form-group'],
     ];
     $build['partnership']['title'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_partnership->label(),
-      '#prefix' => '<h2>',
-      '#suffix' => '</h2>',
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => $par_data_partnership->label(),
+      '#attributes' => ['class' => 'govuk-heading-m'],
     ];
 
     $inspection_plan_search_block_exposed  = views_embed_view('inspection_plan_lists', 'inspection_plan_search_block', $par_data_partnership_id);

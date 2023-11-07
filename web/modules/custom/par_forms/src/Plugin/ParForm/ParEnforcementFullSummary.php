@@ -193,7 +193,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
   public function getElements(array $form = [], int $index = 1) {
     $enforcing_officer_name = $this->getDefaultValuesByKey('enforcing_officer_name', $index, NULL);
     $enforcing_authority = $this->getDefaultValuesByKey('enforcing_authority', $index, NULL);
-var_dump($enforcing_officer_name);
+
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
     $params = $this->getRouteParams() + ['destination' => $return_path];

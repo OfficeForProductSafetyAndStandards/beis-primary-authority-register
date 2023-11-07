@@ -100,7 +100,7 @@ class ParReviewForm extends ParBaseForm {
     $form['confirmation'] = [
       '#type' => 'checkbox',
       '#title' => 'Please confirm this partnership amendment, once you submit this confirmation the changes will be presented to the helpdesk for nomination.',
-      '#wrapper_attributes' => ['class' => 'govuk-!-margin-top-8'],
+      '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
     ];
 
     // Change the main button title to 'remove'.

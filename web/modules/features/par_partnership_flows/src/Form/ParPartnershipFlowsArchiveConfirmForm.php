@@ -73,10 +73,9 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
     ];
 
     $form['advice_info']['partnership_text'] = [
-      '#type' => 'markup',
+      '#type' => 'html_tag',
+      '#tag' => 'p',
       '#markup' => !empty($par_data_advice_title) ? $par_data_advice_title : $par_data_advice->label(),
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
     ];
 
     // Enter the archive reason.

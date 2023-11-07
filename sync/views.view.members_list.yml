@@ -1157,7 +1157,7 @@ display:
           title: 'back to partnership'
           assistive_text: ''
           link: /partnership/%/organisation-details
-          class: link-back
+          class: govuk-back-link
       display_extenders: {  }
     cache_metadata:
       max-age: -1

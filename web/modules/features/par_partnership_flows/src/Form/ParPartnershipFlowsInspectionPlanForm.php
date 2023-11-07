@@ -85,10 +85,10 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
         $file = File::load($file);
 
         $form['file'][] = [
-          '#type' => 'markup',
-          '#prefix' => '<p class="file">',
-          '#suffix' => '</p>',
-          '#markup' => $file->getFileName()
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $file->getFileName(),
+          '#attributes' => ['class' => ['file']],
         ];
       }
     }
@@ -96,22 +96,20 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
     // The inspection plan title.
     $form['title'] = [
       '#type' => 'textfield',
-      '#attributes' => [
-        'class' => ['govuk-form-group'],
-      ],
-      '#title' => '<h3 class="heading-medium">' . $this->t('Inspection plan title')  . '</h3>',
+      '#title' => $this->t('Inspection plan title'),
+      '#title_tag' => 'h2',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('title'),
+      '#attributes' => ['class' => ['govuk-heading-m']],
     ];
 
     // The inspection plan summary.
     $form['summary'] = [
       '#type' => 'textarea',
-      '#attributes' => [
-        'class' => ['govuk-form-group'],
-      ],
-      '#title' => '<h3 class="heading-medium">' . $this->t('Provide summarised details of this inspection plan') . '</h3>',
+      '#title' => $this->t('Provide summarised details of this inspection plan'),
+      '#title_tag' => 'h2',
+      '#description' => 'Use this section to give a brief overview of the inspection plan document, include any information you feel may be useful to someone to search for this inspection plan.',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('summary'),
-      '#description' => '<p>Use this section to give a brief overview of the inspection plan document, include any information you feel may be useful to someone to search for this inspection plan.</p>',
+      '#attributes' => ['class' => ['govuk-heading-m']],
     ];
 
     // Make sure to add the document cacheability data to this form.

@@ -63,7 +63,7 @@ class ParSelectPartnershipForm extends ParFormPluginBase {
           '#type' => 'checkbox',
           '#title' => $this->t("Select all @count partnerships ", ['@count' => $partnership_count]),
           '#return_value' => self::SELECT_ALL,
-          '#attributes' => ['class' => ['govuk-form-group']],
+          '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
         ];
       }
 

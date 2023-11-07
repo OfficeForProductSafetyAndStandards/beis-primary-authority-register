@@ -32,6 +32,9 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
       // Is the partnership approved?
       $this->setDefaultValuesByKey("approved", $index, $par_data_partnership->isActive());
 
+      // Set the partnership type.
+      $this->setDefaultValuesByKey("partnership_type", $index, $par_data_partnership->isCoordinated() ? 'Coordinated' : 'Direct');
+
       // Format the date.
       if ($par_data_partnership->hasField('approved_date')) {
         $date = $par_data_partnership->approved_date->view('full');
@@ -71,14 +74,18 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
    */
   public function getElements(array $form = [], int $index = 1) {
     // Partnership Authority Name - component.
-    $form['authority_name'] = [
+    $form['names'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['govuk-form-group']],
+    ];
+    $form['names']['authority_name'] = [
       '#type' => 'html_tag',
       '#tag' => 'h2',
       '#value' => "<span class='govuk-caption-l'>In partnership with</span>" . $this->getDefaultValuesByKey('name', $index, NULL),
-      '#attributes' => ['class' => ['govuk-heading-l', 'govuk-form-group', 'authority-name']],
+      '#attributes' => ['class' => ['govuk-heading-l', 'authority-name']],
     ];
     if ($previous_names = $this->getDefaultValuesByKey('previous_names', $index, NULL)) {
-      $form['previous_names'] = [
+      $form['names']['previous_names'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#value' => "Previously known as: " . $previous_names,
@@ -128,19 +135,34 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
             '#theme' => 'item_list',
             '#list_header_tag' => 'h2',
             '#list_type' => 'ul',
-            '#items' => $this->getDefaultValuesByKey('regulatory_functions', $index, NULL),
+            '#items' => $this->getDefaultValuesByKey('regulatory_functions', $index, []),
           ]
+        ],
+        'partnership_type' => [
+          '#type' => 'container',
+          '#attributes' => ['class' => 'govuk-grid-column-one-half'],
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h3',
+            '#attributes' => ['class' => ['govuk-heading-m']],
+            '#value' => $this->t('Partnership type'),
+          ],
+          'type' => [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $this->getDefaultValuesByKey('partnership_type', $index, ''),
+          ],
         ],
         'approved_date' => [
           '#type' => 'container',
+          '#attributes' => ['class' => 'govuk-grid-column-one-half'],
           'heading' => [
             '#type' => 'html_tag',
             '#tag' => 'h3',
             '#attributes' => ['class' => ['govuk-heading-m']],
             '#value' => $this->t('In partnership since'),
           ],
-          '#attributes' => ['class' => 'govuk-grid-column-one-half'],
-          'value' => $this->getDefaultValuesByKey('date', $index, NULL),
+          'value' => $this->getDefaultValuesByKey('date', $index, ''),
         ],
       ];
 

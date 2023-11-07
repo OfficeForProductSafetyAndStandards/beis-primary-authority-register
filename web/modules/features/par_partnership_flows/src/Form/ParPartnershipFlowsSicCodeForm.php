@@ -17,6 +17,20 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
   use ParPartnershipFlowAccessTrait;
 
   /**
+   * {@inheritdoc}
+   */
+  public function titleCallback() {
+    $trading_name_delta = $this->getFlowDataHandler()->getParameter('field_sic_code_delta');
+
+    // Check from the route if we are editing an existing trading name.
+    $action = isset($trading_name_delta) ? 'Edit' : 'Add a';
+
+    $this->pageTitle = "Update partnership information | {$action} SIC code for your organisation";
+
+    return $this->pageTitle;
+  }
+
+  /**
    * Helper to get all the editable values.
    *
    * Used for when editing or revisiting a previously edited page.

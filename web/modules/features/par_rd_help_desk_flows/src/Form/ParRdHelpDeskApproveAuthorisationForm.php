@@ -107,6 +107,7 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
     $form['partnership_approve']['confirm_authorisation_select'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Yes, I am authorised to approve this partnership'),
+      '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-4']],
     ];
 
     return parent::buildForm($form, $form_state);

@@ -49,7 +49,7 @@ class ParConfirmRemoval extends ParFormPluginBase {
       '#title' => $this->t('Are you sure you want to remove this @item?', ['@item' => strtolower($item)]),
       '#description' => $this->t('This will be permanently removed, you will not be able to retrieve it afterwards.'),
       '#return_value' => self::REMOVAL_CONFIRM,
-      '#attributes' => ['class' => ['govuk-form-group']],
+      '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
     ];
 
     return $form;

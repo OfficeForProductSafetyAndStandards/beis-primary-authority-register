@@ -51,20 +51,18 @@ class ParRdHelpDeskUnrevokeConfirmForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $form['partnership_info'] = [
       '#type' => 'container',
+      '#attributes' => ['class' => 'govuk-form-group'],
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
         '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Restore the partnership'),
       ],
-      '#attributes' => ['class' => 'govuk-form-group'],
-    ];
-
-    $form['partnership_info']['partnership_text'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_partnership->label(),
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
+      'text' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $par_data_partnership->label(),
+      ],
     ];
 
     return parent::buildForm($form, $form_state);

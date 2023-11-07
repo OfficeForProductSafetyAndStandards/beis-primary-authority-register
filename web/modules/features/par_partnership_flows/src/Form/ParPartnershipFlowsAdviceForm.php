@@ -101,6 +101,13 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     $cid = $this->getFlowNegotiator()->getFormKey('upload');
     $files = $this->getFlowDataHandler()->getDefaultValues("files", NULL, $cid);
     if ($files) {
+      $form['file'][] = [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Advice documents'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ];
+
       // Show files.
       $files = array_filter($files);
       foreach (array_filter($files) as $file) {
@@ -110,10 +117,10 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
         }
 
         $form['file'][] = [
-          '#type' => 'markup',
-          '#prefix' => '<p class="file">',
-          '#suffix' => '</p>',
-          '#markup' => $file->getFileName()
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#attributes' => ['class' => ['file']],
+          '#value' => $file->getFileName()
         ];
       }
     }
@@ -126,7 +133,8 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     // The advice title.
     $form['advice_title'] = [
       '#type' => 'textfield',
-      '#title' => '<h3 class="heading-medium">' . $this->t('Advice title')  . '</h3>',
+      '#title' => $this->t('Advice title'),
+      '#title_tag' => 'h2',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_title'),
       '#attributes' => [
         'class' => ['govuk-form-group'],
@@ -137,6 +145,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     $form['advice_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('Type of advice'),
+      '#title_tag' => 'h2',
       '#options' => $allowed_types,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('advice_type'),
       '#attributes' => [
@@ -151,6 +160,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Regulatory functions this advice covers'),
+      '#title_tag' => 'h2',
       '#options' => $regulatory_function_options,
       '#default_value' => array_keys($default_reg_function),
       '#attributes' => [
@@ -164,9 +174,10 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       '#attributes' => [
         'class' => ['govuk-form-group'],
       ],
-      '#title' => '<h3 class="heading-medium">' . $this->t('Provide summarised details of this advice') . '</h3>',
+      '#title' => $this->t('Provide summarised details of this advice'),
+      '#title_tag' => 'h3',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('notes'),
-      '#description' => '<p>Use this section to give a brief overview of the advice document, include any information you feel may be useful to someone to search for this advice.</p>',
+      '#description' => $this->t('Use this section to give a brief overview of the advice document, include any information you feel may be useful to someone to search for this advice.'),
     ];
 
     // Make sure to add the document cacheability data to this form.

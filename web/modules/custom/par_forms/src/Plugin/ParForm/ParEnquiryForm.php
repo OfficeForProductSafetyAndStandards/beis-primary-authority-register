@@ -48,6 +48,7 @@ class ParEnquiryForm extends ParFormPluginBase {
     $form['notes'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Enter enquiry'),
+      '#title_tag' => 'h2',
       '#default_value' => $this->getDefaultValuesByKey('notes', $index),
       '#description' => '<p>Use this section to enter your enquiry, this will be submitted to the primary authority.</p>',
     ];
@@ -56,6 +57,7 @@ class ParEnquiryForm extends ParFormPluginBase {
     $form['files'] = [
       '#type' => 'managed_file',
       '#title' => t('Upload supporting documents (optional)'),
+      '#title_tag' => 'h2',
       '#description' => t('Use Ctrl or cmd to select multiple files'),
       '#upload_location' => 's3private://documents/general_enquiry/',
       '#multiple' => TRUE,

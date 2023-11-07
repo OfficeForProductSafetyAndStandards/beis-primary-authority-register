@@ -69,6 +69,7 @@ class ParEnforcementActionForm extends ParFormPluginBase {
     $form['details'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide details about this action'),
+      '#title_tag' => 'h2',
       '#default_value' => $this->getDefaultValuesByKey('details', $index),
     ];
 
@@ -80,6 +81,7 @@ class ParEnforcementActionForm extends ParFormPluginBase {
     $form['files'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('Add an attachment'),
+      '#title_tag' => 'h2',
       '#upload_location' => 's3private://documents/enforcement_action/',
       '#multiple' => TRUE,
       '#default_value' => $this->getDefaultValuesByKey("files", $index),

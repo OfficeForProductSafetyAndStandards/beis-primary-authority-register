@@ -177,7 +177,8 @@ class ParReviewForm extends ParBaseForm {
     ];
 
     // Display the date of change.
-    $transfer_date = $this->getDateFormatter()->format($transfer_date->getTimestamp(), 'gds_date_format');
+    $timestamp = $transfer_date?->getTimestamp();
+    $transfer_date = $timestamp ? $this->getDateFormatter()->format($transfer_date?->getTimestamp(), 'gds_date_format') : '[no date entered]';
     $form['date'] = [
       '#type' => 'container',
       'heading' => [
@@ -196,7 +197,7 @@ class ParReviewForm extends ParBaseForm {
     $form['confirmation'] = [
       '#type' => 'checkbox',
       '#title' => 'Please check everything is correct, once you confirm these details the partnerships will be transferred.',
-      '#wrapper_attributes' => ['class' => 'govuk-!-margin-top-8'],
+      '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
     ];
 
     // Change the main button title to 'remove'.

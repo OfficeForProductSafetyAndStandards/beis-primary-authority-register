@@ -28,10 +28,10 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     $par_data_partnership_id = !empty($par_data_partnership) ? $par_data_partnership->id() : NULL;
 
     $build['partnership'] = [
-      '#type' => 'fieldset',
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
       '#title' => $par_data_partnership->label(),
-      '#title_tag' => 'h2',
-      '#attributes' => ['class' => 'govuk-form-group']
+      '#attributes' => ['class' => 'govuk-heading-m']
     ];
 
     switch ($this->getFlowNegotiator()->getFlowName()) {
@@ -53,10 +53,9 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     }
     else {
       $build['advice_search_block'] = [
-        '#type' => 'markup',
-        '#markup' => "Advice can't be listed here. Please contact the helpdesk.",
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => "Advice can't be listed here. Please contact the helpdesk.",
       ];
     }
 

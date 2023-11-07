@@ -226,7 +226,7 @@ display:
           admin_label: ''
           entity_type: message
           plugin_id: par_notification_link
-          label: ''
+          label: Action
           exclude: false
           alter:
             alter_text: false
@@ -584,7 +584,33 @@ display:
       link_display: user_notifications
       link_url: ''
       header: {  }
-      footer: {  }
+      footer:
+        par_flow_link:
+          id: par_flow_link
+          table: views
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: par_flow_link
+          empty: true
+          title: 'back to dashboard'
+          assistive_text: ''
+          link: /helpdesk
+          class: govuk-back-link
+        par_flow_link_1:
+          id: par_flow_link_1
+          table: views
+          field: par_flow_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: par_flow_link
+          empty: true
+          title: 'back to dashboard'
+          assistive_text: ''
+          link: /dashboard
+          class: govuk-back-link
       display_extenders: {  }
     cache_metadata:
       max-age: 0
@@ -609,7 +635,9 @@ display:
         pager: false
         filters: true
         filter_groups: true
+        footer: false
       display_description: ''
+      footer: {  }
       display_extenders: {  }
       block_description: Tasks
       allow:

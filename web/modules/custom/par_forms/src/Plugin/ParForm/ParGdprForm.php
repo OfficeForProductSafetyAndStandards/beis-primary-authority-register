@@ -80,6 +80,7 @@ class ParGdprForm extends ParFormPluginBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Please confirm you have read the Privacy Notice and understand how the Office intends to use your personal data'),
       '#return_value' => 'on',
+      '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
     ];
 
     return $form;

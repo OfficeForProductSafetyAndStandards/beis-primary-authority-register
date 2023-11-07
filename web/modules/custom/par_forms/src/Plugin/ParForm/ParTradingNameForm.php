@@ -81,10 +81,9 @@ class ParTradingNameForm extends ParFormPluginBase {
           '#value' => $this->t('What is a trading name?'),
         ],
         'intro' => [
-          '#type' => 'markup',
-          '#markup' => $message,
-          '#prefix' => "<p>",
-          '#suffix' => "</p>",
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $message,
         ]
       ];
     }
