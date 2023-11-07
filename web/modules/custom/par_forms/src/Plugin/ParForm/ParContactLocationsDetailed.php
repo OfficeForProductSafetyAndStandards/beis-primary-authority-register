@@ -172,23 +172,25 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
       $contact->getReferencedLocations() : NULL;
 
     return [
-      '#type' => 'html_tag',
-      '#tag' => 'details',
-      '#attributes' => ['class' => ['govuk-grid-column-full', 'govuk-details', 'contact-locations'], 'role' => 'group'],
-      'summary' => [
-        '#type' => 'html_tag',
-        '#tag' => 'summary',
-        '#attributes' => ['class' => ['govuk-details__summary'], 'role' => 'button', 'aria-controls' => "contact-detail-locations-$index"],
-        '#value' => '<span class="govuk-details__summary-text">More information on where this contact is used</span>',
-      ],
       'details' => [
         '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#attributes' => ['class' => ['govuk-details__text'], 'id' => "contact-detail-locations-$index"],
+        '#tag' => 'details',
+        '#attributes' => ['class' => ['govuk-grid-column-full', 'govuk-details', 'contact-locations'], 'role' => 'group'],
         'summary' => [
-          '#theme' => 'item_list',
-          '#items' => $locations,
-          '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
+          '#type' => 'html_tag',
+          '#tag' => 'summary',
+          '#attributes' => ['class' => ['govuk-details__summary'], 'role' => 'button', 'aria-controls' => "contact-detail-locations-$index"],
+          '#value' => '<span class="govuk-details__summary-text">More information on where this contact is used</span>',
+        ],
+        'details' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => ['class' => ['govuk-details__text'], 'id' => "contact-detail-locations-$index"],
+          'list' => [
+            '#theme' => 'item_list',
+            '#items' => $locations,
+            '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
+          ],
         ],
       ],
     ];
