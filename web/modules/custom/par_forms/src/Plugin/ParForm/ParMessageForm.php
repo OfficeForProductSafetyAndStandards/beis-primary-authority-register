@@ -37,6 +37,7 @@ class ParMessageForm extends ParFormPluginBase {
     $form['message'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Submit a response'),
+      '#title_tag' => 'h2',
       '#default_value' => $this->getDefaultValuesByKey('message', $index),
       '#description' => '<p>Use this section to respond to the original query.</p>',
     ];
@@ -44,6 +45,7 @@ class ParMessageForm extends ParFormPluginBase {
     $form['files'] = [
       '#type' => 'managed_file',
       '#title' => t('Upload supporting documents (optional)'),
+      '#title_tag' => 'h2',
       '#description' => t('Use Ctrl or cmd to select multiple files'),
       '#upload_location' => 's3private://documents/messages/',
       '#multiple' => TRUE,

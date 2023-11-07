@@ -51,6 +51,7 @@ class ParDeviationRequestForm extends ParFormPluginBase {
     $form['notes'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide a reason for deviation'),
+      '#title_tag' => 'h2',
       '#default_value' => $this->getDefaultValuesByKey('notes', $index),
       '#description' => '<p>Use this section to give a reason for wanting to deviate from the inspection plan, this will be reviewed by the primary authority.</p>',
     ];
@@ -59,6 +60,7 @@ class ParDeviationRequestForm extends ParFormPluginBase {
     $form['files'] = [
       '#type' => 'managed_file',
       '#title' => t('Upload the proposed inspection plan'),
+      '#title_tag' => 'h2',
       '#description' => t('Submit your proposed inspection plan to the primary auithority'),
       '#upload_location' => 's3private://documents/deviation_request/',
       '#multiple' => FALSE,
