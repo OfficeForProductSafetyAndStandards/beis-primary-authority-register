@@ -11,4 +11,11 @@
  */
 #}
 
-<div{{ attributes.addClass('govuk-radios') }}>{{ children }}</div>
+{%
+  set classes = [
+  'form-control',
+  'govuk-radios',
+]
+%}
+
+<div{{ attributes.addClass(classes) }}>{{ children }}</div>

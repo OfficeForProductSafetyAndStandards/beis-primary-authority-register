@@ -47,9 +47,35 @@ class ParConfirmRemoval extends ParFormPluginBase {
     $form['confirm'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Are you sure you want to remove this @item?', ['@item' => strtolower($item)]),
-      '#description' => $this->t('This will be permanently removed, you will not be able to retrieve it afterwards.'),
       '#return_value' => self::REMOVAL_CONFIRM,
-      '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
+      '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-4']],
+    ];
+
+    $form['warning'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#attributes' => ['class' => ['govuk-warning-text']],
+      'icon' => [
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#value' => '!',
+        '#attributes' => [
+          'class' => ['govuk-warning-text__icon'],
+          'aria-hidden' => 'true',
+        ],
+      ],
+      'strong' => [
+        '#type' => 'html_tag',
+        '#tag' => 'strong',
+        '#value' => $this->t('This will be permanently removed, you will not be able to retrieve it afterwards.'),
+        '#attributes' => ['class' => ['govuk-warning-text__text']],
+        'message' => [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => $this->t('Warning'),
+          '#attributes' => ['class' => ['govuk-warning-text__assistive']],
+        ],
+      ]
     ];
 
     return $form;

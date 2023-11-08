@@ -1149,6 +1149,15 @@ if (file_exists("{$app_root}/{$site_path}/settings.local.php")) {
   include "{$app_root}/{$site_path}/settings.local.php";
 }
 
+/**
+ * Environment services override.
+ *
+ * Load specific service file for each app environment.
+ */
+if ($config['config_split.config_split.dev_config']['status'] || $config['config_split.config_split.test_config']['status']) {
+  $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.non-production.yml';
+}
+
 # Allow php to run with increased memory from the CLI.
 if (PHP_SAPI === 'cli') {
   ini_set('memory_limit', '4G');

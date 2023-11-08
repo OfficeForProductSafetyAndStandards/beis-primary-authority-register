@@ -155,6 +155,23 @@ function par_theme_preprocess_input(&$variables) {
 }
 
 /**
+ * Implements hook_template_preprocess_textarea().
+ *
+ * @param array $variables
+ */
+function par_theme_preprocess_textarea(&$variables) {
+  $element = $variables['element'];
+
+  // Initiate errors.
+  $variables['errors'] = NULL;
+
+  // Make {{ errors }} available in template file.
+  if (!empty($element['#errors']) && empty($element['#error_use_parent'])) {
+    $variables['errors'] = $element['#errors'];
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function par_theme_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
