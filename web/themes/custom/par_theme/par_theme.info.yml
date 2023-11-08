@@ -1,6 +1,6 @@
 name: PAR Theme
 type: theme
-version: v2.0.1
+version: v2.0.3
 package: Custom
 description: A Drupal theme based on the GDS GOV.UK Frontend Toolkit.
 core_version_requirement: ^9 || ^10
