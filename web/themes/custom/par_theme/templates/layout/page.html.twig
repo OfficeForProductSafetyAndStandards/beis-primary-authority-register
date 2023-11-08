@@ -64,16 +64,12 @@
   <div class="govuk-header__container govuk-width-container">
     {{ govuk_header }}
     {% if page.navigation %}
-      <div class="hamburger icon" onclick="toggleMobileMenu();">
-        <i class="fa fa-bars"></i>
-      </div>
       {{ page.navigation }}
     {% endif %}
     {% if search_box %}
       {{ search_box }}
     {% endif %}
   </div>
-  <div id="mobile-menu"></div>
 </header>
 <div class="govuk-width-container">
   {% if govuk_phase_banner %}
