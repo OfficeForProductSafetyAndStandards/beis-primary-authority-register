@@ -82,7 +82,7 @@ class ParAddressForm extends ParFormPluginBase {
 
     $form['address_line2'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Enter Address Line 2'),
+      '#title' => $this->t('Enter Address Line 2 (optional)'),
       '#default_value' => $this->getDefaultValuesByKey('address_line2', $index),
     ];
 
@@ -94,7 +94,7 @@ class ParAddressForm extends ParFormPluginBase {
 
     $form['county'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Enter County'),
+      '#title' => $this->t('Enter County (optional)'),
       '#default_value' => $this->getDefaultValuesByKey('county', $index),
     ];
 
