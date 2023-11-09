@@ -46,18 +46,15 @@ class ParTermsConditions extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements(array $form = [], int $index = 1) {
-    $url_address = 'https://www.gov.uk/government/publications/primary-authority-terms-and-conditions';
-    $url = Url::fromUri($url_address, ['attributes' => ['target' => '_blank']]);
-    $terms_link = Link::fromTextAndUrl(t('terms & conditions (opens in a new window)'), $url);
 
     switch ($this->getFlowDataHandler()->getDefaultValues("terms")) {
       case self::AUTHORITY_TERMS:
         $form[self::AUTHORITY_TERMS] = [
           '#type' => 'checkbox',
-          '#title' => $this->t('I have read and agree to the @terms.', ['@terms' => $terms_link->toString()]),
+          '#title' => $this->t('I have read and agree to the terms and conditions.'),
           '#default_value' => $this->getFlowDataHandler()->getDefaultValues(self::AUTHORITY_TERMS),
           '#return_value' => 'on',
-          '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
+          '#wrapper_attributes' => ['class' => ['govuk-!-margin-top-4']],
         ];
 
         break;
@@ -65,21 +62,36 @@ class ParTermsConditions extends ParFormPluginBase {
       case self::ORGANISATION_TERMS:
         $form[self::ORGANISATION_TERMS] = [
           '#type' => 'checkbox',
-          '#title' => $this->t('I have read and agree to the @terms.', ['@terms' => $terms_link->toString()]),
+          '#title' => $this->t('I have read and agree to the terms and conditions.'),
           '#default_value' => $this->getFlowDataHandler()->getDefaultValues(self::ORGANISATION_TERMS),
           '#return_value' => 'on',
-          '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
+          '#wrapper_attributes' => ['class' => ['govuk-!-margin-top-4']],
         ];
 
         break;
     }
 
+    // Terms & conditions.
+    $url_address = 'https://www.gov.uk/government/publications/primary-authority-terms-and-conditions';
+    $url = Url::fromUri($url_address, ['attributes' => ['target' => '_blank']]);
+    $terms_link = Link::fromTextAndUrl(t('Terms & conditions (opens in a new window)'), $url);
+    $form['terms_link'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      [
+        '#type' => 'link',
+        '#title' => $terms_link->getText(),
+        '#url' => $terms_link->getUrl(),
+        '#options' => $terms_link->getUrl()->getOptions(),
+      ],
+      '#attributes' => ['class' => ['govuk-!-margin-bottom-4']],
+    ];
+
     // Helptext.
     $form['help_text'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
     ];
 
     return $form;
