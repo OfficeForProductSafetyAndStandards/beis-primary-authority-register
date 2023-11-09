@@ -35,7 +35,7 @@ class ParNotificationFollowup extends ParFormPluginBase {
     $form['notifications'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       '#value' => $this->t('No notifications will be sent, please follow up this matter with the affected parties.'),
     ];
 

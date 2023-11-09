@@ -61,26 +61,26 @@ class ParConfirmationReviewForm extends ParBaseForm {
       ];
 
       $form['partnership'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => ['grid-row', 'form-group']],
+        '#type' => 'container',
+        '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
       ];
 
       // Show the organisation name.
       if ($par_data_organisation) {
         $form['partnership']['organisation'] = [
-          '#type' => 'fieldset',
-          '#attributes' => ['class' => 'column-one-half'],
+          '#type' => 'container',
+          '#attributes' => ['class' => 'govuk-grid-column-one-half'],
         ];
 
         // Display organisation name and organisation primary address.
         $form['partnership']['organisation']['organisation_name'] = [
-          '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
+          '#type' => 'container',
+          '#attributes' => ['class' => 'govuk-form-group'],
           'title' => [
             '#type' => 'html_tag',
-            '#tag' => 'h3',
-            '#value' => 'Organisation name',
-            '#attributes' => ['class' => 'heading-medium'],
+            '#tag' => 'h2',
+            '#value' => $this->t('Organisation name'),
+            '#attributes' => ['class' => 'govuk-heading-m'],
           ],
           'name' => [
             '#type' => 'markup',
@@ -96,7 +96,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
             '#type' => 'markup',
             '#markup' => t('@link', [
               '@link' => $this->getFlowNegotiator()->getFlow()
-                ->getLinkByCurrentOperation('organisation_name', [], [])
+                ->getLinkByCurrentOperation('organisation_name', [], ['query' => ['destination' => $return_path]])
                 ->setText('Change this organisation')
                 ->toString(),
             ]),
@@ -111,17 +111,17 @@ class ParConfirmationReviewForm extends ParBaseForm {
       // Show the primary authority name.
       if ($par_data_authority) {
         $form['partnership']['authority'] = [
-          '#type' => 'fieldset',
-          '#attributes' => ['class' => 'column-one-half'],
+          '#type' => 'container',
+          '#attributes' => ['class' => 'govuk-grid-column-one-half'],
         ];
         $form['partnership']['authority']['authority_name'] = [
-          '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
+          '#type' => 'container',
+          '#attributes' => ['class' => ['govuk-form-group']],
           'title' => [
             '#type' => 'html_tag',
-            '#tag' => 'h3',
-            '#value' => 'Primary authority name',
-            '#attributes' => ['class' => 'heading-medium'],
+            '#tag' => 'h2',
+            '#value' => $this->t('Primary authority name'),
+            '#attributes' => ['class' => ['govuk-heading-m']],
           ],
           'name' => [
             '#type' => 'markup',
@@ -137,6 +137,11 @@ class ParConfirmationReviewForm extends ParBaseForm {
         }
       }
 
+      $form['confirm'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['govuk-form-group']],
+      ];
+
       $url_address = 'https://www.gov.uk/government/publications/primary-authority-terms-and-conditions';
       $url = Url::fromUri($url_address, ['attributes' => ['target' => '_blank']]);
       $terms_link = Link::fromTextAndUrl(t('terms & conditions (opens in a new window)'), $url);
@@ -145,21 +150,22 @@ class ParConfirmationReviewForm extends ParBaseForm {
         '#title' => $this->t('I have read and agree to the @terms.', ['@terms' => $terms_link->toString()]),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_authority_agreed"),
         '#return_value' => 'on',
+        '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
       ];
 
       $form['help_text'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
     }
     else {
       $form['help_text'] = [
-        '#type' => 'markup',
-        '#markup' => $this->t('The partnership could not be created, please contact the Helpdesk if this problem persists.'),
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t('The partnership could not be created, please contact the Helpdesk if this problem persists.'),
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
     }
 
@@ -174,7 +180,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Make sure the confirm box and terms box is ticked.
     if (!$form_state->getValue('terms_authority_agreed')) {
-      $message = $this->wrapErrorMessage('Please confirm you have read the terms & conditions.', $this->getElementId('terms_authority_agreed', $form));
+      $message = $this->wrapErrorMessage('Please confirm you have read the terms and conditions.', $this->getElementId('terms_authority_agreed', $form));
       $form_state->setErrorByName($this->getElementName('terms_authority_agreed'), $message);
     }
   }

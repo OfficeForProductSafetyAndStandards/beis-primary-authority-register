@@ -87,14 +87,14 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
     // Display the details for each Enforcement Action.
     if ($par_data_enforcement_actions = $this->getFlowDataHandler()->getParameter('par_data_enforcement_actions')) {
       $form = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => ['form-group', 'panel panel-border-wide']],
+        '#type' => 'container',
+        '#attributes' => ['class' => ['govuk-form-group', 'panel panel-border-wide']],
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'h3',
           '#weight' => -2,
           '#value' => $this->getDefaultValuesByKey('action_title', $index),
-          '#attributes' => ['class' => 'heading-medium'],
+          '#attributes' => ['class' => 'govuk-heading-m'],
         ],
         'status' => [
           '#type' => 'html_tag',
@@ -105,7 +105,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
         'regulatory_functions' => $this->getDefaultValuesByKey('action_regulatory_functions', $index, []),
         'details' => $this->getDefaultValuesByKey('action_details', $index, []),
         'attachments' => $this->getDefaultValuesByKey('action_attachments', $index, []) + [
-          '#attributes' => ['class' => ['form-group']]
+          '#attributes' => ['class' => ['govuk-form-group']]
         ],
       ];
 
@@ -157,7 +157,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
   }
 
   /**
-   * Get the fieldset wrapper for this component.
+   * Get the container wrapper for this component.
    */
   public function getWrapper() {
     $fieldset = parent::getWrapper();
@@ -166,7 +166,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
       '#type' => 'html_tag',
       '#tag' => 'h2',
       '#value' => $this->t('Enforcement Actions'),
-      '#attributes' => ['class' => 'heading-large'],
+      '#attributes' => ['class' => 'govuk-heading-l'],
     ];
 
     return $fieldset;

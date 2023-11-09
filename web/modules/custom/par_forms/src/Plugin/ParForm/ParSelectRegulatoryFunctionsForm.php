@@ -53,6 +53,7 @@ class ParSelectRegulatoryFunctionsForm extends ParFormPluginBase {
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
       '#title' => 'Choose regulatory functions',
+      '#title_tag' => 'h2',
       '#options' => $this->getFlowDataHandler()->getFormPermValue('regulatory_function_options'),
       '#default_value' => $this->getDefaultValuesByKey('regulatory_functions', $index, []),
     ];

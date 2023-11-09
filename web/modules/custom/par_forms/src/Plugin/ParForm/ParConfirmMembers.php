@@ -61,7 +61,7 @@ class ParConfirmMembers extends ParFormPluginBase {
       if (isset($member_url) && $member_url instanceof Url) {
         $form['confirm'] = [
           '#type' => 'container',
-          '#attributes' => ['class' => 'form-group'],
+          '#attributes' => ['class' => 'govuk-form-group'],
         ];
         $form['confirm']['info'] = [
           '#type' => 'html_tag',

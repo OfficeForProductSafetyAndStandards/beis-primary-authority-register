@@ -18,7 +18,11 @@ class ParAuthorityTypeForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected array $entityMapping = [];
+  protected array $entityMapping = [
+    ['authority_type', 'par_data_authority', 'authority_type', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter a description for the business.'
+    ]],
+  ];
 
   /**
    * Load the data for this form.
@@ -48,7 +52,8 @@ class ParAuthorityTypeForm extends ParFormPluginBase {
     $form['authority_type'] = [
       '#type' => 'radios',
       '#title' => 'Choose an authority type',
-      '#attributes' => ['class' => ['form-group']],
+      '#title_tag' => 'h2',
+      '#attributes' => ['class' => ['govuk-form-group']],
       '#options' => $this->getFlowDataHandler()->getFormPermValue('authority_type_options'),
       '#default_value' => $this->getDefaultValuesByKey('authority_type', $index, NULL),
     ];

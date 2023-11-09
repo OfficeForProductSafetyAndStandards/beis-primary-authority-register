@@ -58,11 +58,13 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
     // If the partnership is direct or there is only one member go to the next step.
     if (count($select_legal_entities) >= 1) {
       // Add the ability to add a non-associated legal entity name.
-      $select_legal_entities[self::ADD_NEW] = 'Add a legal entity';
+      $select_legal_entities[self::ADD_NEW] = 'Enforce a legal entity not listed on the partnership';
 
       $form['legal_entities_select'] = [
         '#type' => 'radios',
         '#title' => $this->t('Select a legal entity'),
+        '#title_tag' => 'h2',
+        '#description' => $this->t("Each notice of enforcement action must be raised against a specific legal entity rather than the partnership as a whole. Please choose from the list of legal entities associated with this partnership, and speak to the Primary Authority before enforcing a legal entity that is not listed on the partnership."),
         '#options' => $select_legal_entities,
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues('legal_entities_select', key($select_legal_entities)),
         '#weight' => 100,

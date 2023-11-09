@@ -51,13 +51,13 @@ class ParInspectionFeedbackDetail extends ParFormPluginBase {
     $params = $this->getRouteParams() + ['destination' => $return_path];
 
     $form['inspection_feedback'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => ['form-group']],
+      '#type' => 'container',
+      '#attributes' => ['class' => ['govuk-form-group']],
       'title' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
         '#value' => $this->t('Summary of feedback'),
-        '#attributes' => ['class' => 'heading-large'],
+        '#attributes' => ['class' => 'govuk-heading-l'],
       ],
       'date' => $this->getDefaultValuesByKey('request_date', $index, NULL),
       'notes' => $this->getDefaultValuesByKey('notes', $index, NULL),

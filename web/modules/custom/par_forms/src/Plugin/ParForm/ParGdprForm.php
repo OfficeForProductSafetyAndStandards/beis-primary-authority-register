@@ -65,6 +65,7 @@ class ParGdprForm extends ParFormPluginBase {
 
     $form['summary'] = [
       '#theme' => 'item_list',
+      '#list_header_tag' => 'h2',
       '#title' => $this->t('Your personal information is used to'),
       '#items' => [
         'notify you of any updates to partnerships you have control of',
@@ -72,13 +73,14 @@ class ParGdprForm extends ParFormPluginBase {
         'record ownership of any enforcements you raise against another partnership',
         'notify you about any changes to these enforcements'
       ],
-      '#attributes' => ['class' => ['list', 'form-group', 'list-bullet']],
+      '#attributes' => ['class' => ['govuk-list', 'govuk-form-group', 'govuk-list--bullet']],
     ];
 
     $form['data_policy'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Please confirm you have read the Privacy Notice and understand how the Office intends to use your personal data'),
       '#return_value' => 'on',
+      '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
     ];
 
     return $form;

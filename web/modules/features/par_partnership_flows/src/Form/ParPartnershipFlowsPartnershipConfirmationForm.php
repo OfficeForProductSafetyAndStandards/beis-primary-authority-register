@@ -74,6 +74,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
         '#disabled' => $par_data_partnership->get('partnership_info_agreed_business')->getString(),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues("partnership_info_agreed_business"),
         '#return_value' => 'on',
+        '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
       ];
     }
     else {

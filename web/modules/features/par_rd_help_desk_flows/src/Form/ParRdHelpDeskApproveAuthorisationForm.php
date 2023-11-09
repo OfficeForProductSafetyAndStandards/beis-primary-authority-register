@@ -79,9 +79,14 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
 
     // Present partnership info.
     $form['partnership_info'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Partnership between'),
-      '#attributes' => ['class' => 'form-group'],
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('Partnership between'),
+      ],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['partnership_info']['partnership_text'] = [
@@ -95,12 +100,14 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
     $form['partnership_approve'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Please confirm you are authorised to approve this partnership'),
-      '#attributes' => ['class' => 'form-group'],
+      '#title_tag' => 'h2',
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['partnership_approve']['confirm_authorisation_select'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Yes, I am authorised to approve this partnership'),
+      '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-4']],
     ];
 
     return parent::buildForm($form, $form_state);

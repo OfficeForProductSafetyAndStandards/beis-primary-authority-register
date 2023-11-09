@@ -52,12 +52,12 @@ class ParEnforcementDetail extends ParFormPluginBase {
     $params = $this->getRouteParams() + ['destination' => $return_path];
 
     $form['enforcement_notice'] = [
-      '#type' => 'fieldset',
-      'title' => [
+      '#type' => 'container',
+      'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
         '#value' => $this->t('Summary of notice'),
-        '#attributes' => ['class' => 'heading-large'],
+        '#attributes' => ['class' => 'govuk-heading-l'],
       ],
       'type' => [
         '#type' => 'html_tag',

@@ -75,22 +75,26 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
     }
 
     $form['partnership_info'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Revoke the partnership'),
-      '#attributes' => ['class' => 'form-group'],
-    ];
-
-    $form['partnership_info']['partnership_text'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_partnership->label(),
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
+      '#type' => 'container',
+      '#attributes' => ['class' => 'govuk-form-group'],
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Revoke the partnership'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
+      'text' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $par_data_partnership->label(),
+      ],
     ];
 
     // Enter the revokcation reason.
     $form['revocation_reason'] = [
-      '#title' => $this->t('Enter the reason you are revoking this partnership'),
       '#type' => 'textarea',
+      '#title' => $this->t('Enter the reason you are revoking this partnership'),
+      '#title_tag' => 'h2',
       '#rows' => 5,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('revocation_reason', FALSE),
     ];

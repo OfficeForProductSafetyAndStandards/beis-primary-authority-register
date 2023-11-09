@@ -101,7 +101,7 @@ trait ParRedirectTrait {
     // Set the defaults.
     $defaults = [
       'absolute' => TRUE,
-      'attributes' => ['class' => ['flow-link']]
+      'attributes' => ['class' => ['flow-link', 'govuk-link']]
     ];
 
     // Preserve selected known query parameters to ensure paging remains constant.

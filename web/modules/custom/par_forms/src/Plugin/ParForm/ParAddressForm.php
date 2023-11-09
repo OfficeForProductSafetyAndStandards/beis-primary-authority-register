@@ -70,6 +70,7 @@ class ParAddressForm extends ParFormPluginBase {
 
     $form['premises_id'] = [
       '#type' => 'hidden',
+      '#title' => $this->t('The id for the premises'),
       '#value' => $this->getFlowDataHandler()->getDefaultValues('premises_id', 'new'),
     ];
 
@@ -81,7 +82,7 @@ class ParAddressForm extends ParFormPluginBase {
 
     $form['address_line2'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Enter Address Line 2'),
+      '#title' => $this->t('Enter Address Line 2 (optional)'),
       '#default_value' => $this->getDefaultValuesByKey('address_line2', $index),
     ];
 
@@ -93,14 +94,14 @@ class ParAddressForm extends ParFormPluginBase {
 
     $form['county'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Enter County'),
+      '#title' => $this->t('Enter County (optional)'),
       '#default_value' => $this->getDefaultValuesByKey('county', $index),
     ];
 
     $form['country_code'] = [
       '#type' => 'select',
-      '#options' => $this->getCountryRepository()->getList(NULL),
       '#title' => $this->t('Country'),
+      '#options' => $this->getCountryRepository()->getList(NULL),
       '#default_value' => $this->getDefaultValuesByKey('country_code', $index, 'GB'),
     ];
 
@@ -122,6 +123,10 @@ class ParAddressForm extends ParFormPluginBase {
       '#type' => 'textfield',
       '#title' => $this->t('Enter Postcode'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("postcode"),
+      '#attributes' => [
+        'class' => ['govuk-input--width-10'],
+        'autocomplete' => 'postal-code',
+      ]
     ];
 
     return $form;

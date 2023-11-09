@@ -41,7 +41,7 @@ class ParAdviceList extends ParFormPluginBase {
 
     $form['documentation_list'] = [
       '#theme' => 'table',
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       '#title' => 'Advice documentation',
       '#header' => [
         'Advice document download link(s)',

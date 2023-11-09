@@ -122,14 +122,14 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
 
     }
 
-    // Fieldset encompassing the partnership legal entities plugin display.
+    // Container encompassing the partnership legal entities plugin display.
     $form['partnership_legal_entities'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Legal Entities'),
       ],
       'pager' => [
@@ -144,7 +144,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       ],
       'actions' => [
         '#theme' => 'item_list',
-        '#attributes' => ['class' => ['list']],
+        '#attributes' => ['class' => ['govuk-list']],
         '#weight' => 99
       ],
     ];
@@ -239,6 +239,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
 
       $form['partnership_legal_entities']['table'][$delta]['legal_entity'] = [
         '#type' => 'container',
+        '#attributes' => ['class' => 'govuk-grid-column-full'],
         'name' => [
           '#type' => 'html_tag',
           '#tag' => 'div',

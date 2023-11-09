@@ -28,6 +28,7 @@ class ParMemberUploadSuccessForm extends ParBaseForm {
     $form['csv_upload_success_message_fieldset'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('What happens next?'),
+      '#title_tag' => 'h2',
       'intro' => [
         '#type' => 'markup',
         '#markup' => '<p>' . $this->t('Your member list has been uploaded.<br><br>Please check that all the new members are correct. Please try to re-upload the member list if you find any errors or contact the help desk for further assistance.') . '</p>',

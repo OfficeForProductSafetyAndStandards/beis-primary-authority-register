@@ -57,7 +57,7 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
       '#type' => 'html_tag',
       '#tag' => 'h2',
       '#value' => "Information about the organisation",
-      '#attributes' => ['class' => 'heading-large'],
+      '#attributes' => ['class' => 'govuk-heading-l'],
     ];
 
     // Display the address.
@@ -67,11 +67,14 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
     $rendered_address = $entity_view_builder instanceof EntityViewBuilderInterface ?
       $entity_view_builder->view($address, 'summary') : NULL;
     $form['registered_address'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Address',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('Address'),
+      ],
+      '#attributes' => ['class' => 'govuk-form-group']
     ];
     if ($rendered_address) {
       $form['registered_address']['field_premises'] = [
@@ -114,11 +117,14 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
 
     // Display details about the partnership for information.
     $form['about'] = [
-      '#type' => 'fieldset',
-      '#title' => 'About the organisation',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('About the organisation'),
+      ],
+      '#attributes' => ['class' => 'govuk-form-group'],
       'details' => $this->getDefaultValuesByKey('information', $index, NULL),
     ];
     try {

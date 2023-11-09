@@ -32,7 +32,6 @@ class ParSelectPersonForm extends ParFormPluginBase {
     $account = $this->getFlowDataHandler()->getParameter('user');
     if ($account && $account->isAuthenticated() && $people = $this->getParDataManager()->getUserPeople($account)) {
 
-//      var_dump(array_keys($people));
       // Ignore deleted person accounts.
       $people = array_filter($people, function ($person) {
         return !$person->isDeleted();
@@ -81,9 +80,10 @@ class ParSelectPersonForm extends ParFormPluginBase {
     $form['user_person'] = [
       '#type' => 'radios',
       '#title' => t('Choose which contact record you would like to update'),
+      '#title_tag' => 'h2',
       '#options' => $user_people,
       '#default_value' => $this->getDefaultValuesByKey("user_person", $index, NULL),
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
     return $form;

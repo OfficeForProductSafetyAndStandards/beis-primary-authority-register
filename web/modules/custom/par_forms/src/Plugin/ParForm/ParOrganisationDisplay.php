@@ -82,22 +82,22 @@ class ParOrganisationDisplay extends ParFormPluginBase {
     $params = $this->getRouteParams() + ['destination' => $return_path];
 
     $form['organisation'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
     ];
 
     $form['organisation']['name'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['grid-row']],
+      '#attributes' => ['class' => ['govuk-grid-row']],
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium', 'column-full']],
+        '#attributes' => ['class' => ['govuk-heading-m', 'govuk-grid-column-full']],
         '#value' => $this->t('Organisation Name'),
       ],
       'value' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-two-thirds']],
+        '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
         '#value' => $this->getDefaultValuesByKey('organisation_name', $index, NULL),
       ],
     ];
@@ -109,7 +109,7 @@ class ParOrganisationDisplay extends ParFormPluginBase {
       $form['organisation']['name']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-one-third']],
+        '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
           '@link' => $link ? $link->toString() : '',
@@ -122,17 +122,17 @@ class ParOrganisationDisplay extends ParFormPluginBase {
 
     $form['organisation']['about'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['grid-row']],
+      '#attributes' => ['class' => ['govuk-grid-row']],
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium', 'column-full']],
+        '#attributes' => ['class' => ['govuk-heading-m', 'govuk-grid-column-full']],
         '#value' => $this->t('About the organisation'),
       ],
       'value' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-two-thirds']],
+        '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
         '#value' => $this->getDefaultValuesByKey('about_business', $index, NULL),
       ],
     ];
@@ -144,7 +144,7 @@ class ParOrganisationDisplay extends ParFormPluginBase {
       $form['organisation']['about']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-one-third']],
+        '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
           '@link' => $link ? $link->toString() : '',
@@ -157,17 +157,17 @@ class ParOrganisationDisplay extends ParFormPluginBase {
 
     $form['organisation']['trading_name'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['grid-row']],
+      '#attributes' => ['class' => ['govuk-grid-row']],
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium', 'column-full']],
+        '#attributes' => ['class' => ['govuk-heading-m', 'govuk-grid-column-full']],
         '#value' => $this->t('Trading names'),
       ],
       'value' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-two-thirds']],
+        '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
         '#value' => $this->getDefaultValuesByKey('trading_names', $index, NULL),
       ],
     ];
@@ -179,7 +179,7 @@ class ParOrganisationDisplay extends ParFormPluginBase {
       $form['organisation']['trading_name']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-one-third']],
+        '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
           '@link' => $link ? $link->toString() : '',
@@ -192,17 +192,17 @@ class ParOrganisationDisplay extends ParFormPluginBase {
 
     $form['organisation']['sic_codes'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['grid-row']],
+      '#attributes' => ['class' => ['govuk-grid-row']],
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium', 'column-full']],
+        '#attributes' => ['class' => ['govuk-heading-m', 'govuk-grid-column-full']],
         '#value' => $this->t('SIC codes'),
       ],
       'value' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-two-thirds']],
+        '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
         '#value' => $this->getDefaultValuesByKey('sic_codes', $index, NULL),
       ],
     ];
@@ -214,7 +214,7 @@ class ParOrganisationDisplay extends ParFormPluginBase {
       $form['organisation']['sic_codes']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-one-third']],
+        '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
           '@link' => $link ? $link->toString() : '',
@@ -227,23 +227,23 @@ class ParOrganisationDisplay extends ParFormPluginBase {
 
     $form['organisation']['legal_entities'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['grid-row', 'form-group']],
+      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium', 'column-full']],
+        '#attributes' => ['class' => ['govuk-heading-m', 'govuk-grid-column-full']],
         '#value' => $this->t('Legal entities'),
       ],
       'description' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-two-thirds', 'form-hint']],
+        '#attributes' => ['class' => ['govuk-grid-column-two-thirds', 'form-hint']],
         '#value' => 'Legal entities cannot be updated for existing organisations.',
       ],
       'value' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-two-thirds']],
+        '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
         '#value' => $this->getDefaultValuesByKey('legal_entities', $index, NULL),
       ],
     ];

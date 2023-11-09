@@ -64,7 +64,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
       '#type' => 'html_tag',
       '#tag' => 'p',
       '#value' => $this->t('Are you sure you want to remove the advice @advice from the @partnership?', ['@advice' => $par_data_advice->getAdviceTitle(), '@partnership' => $par_data_partnership->label()]),
-      '#attributes' => ['class' => ['remove-advice', 'form-group']],
+      '#attributes' => ['class' => ['remove-advice', 'govuk-form-group']],
     ];
 
     if (!empty($documents)) {
@@ -78,7 +78,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
         '#type' => 'html_tag',
         '#tag' => 'div',
         '#value' => $this->getRenderer()->render($documents),
-        '#attributes' => ['class' => ['document-summary', 'form-group']],
+        '#attributes' => ['class' => ['document-summary', 'govuk-form-group']],
       ];
     }
 

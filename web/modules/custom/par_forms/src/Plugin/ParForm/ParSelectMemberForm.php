@@ -72,9 +72,10 @@ class ParSelectMemberForm extends ParFormPluginBase {
     $form['par_data_organisation_id'] = [
       '#type' => 'radios',
       '#title' => t('Choose the member to enforce'),
+      '#title_tag' => 'h2',
       '#options' => $chunk,
       '#default_value' => $this->getDefaultValuesByKey('par_data_organisation_id', $index, []),
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
     $form['pager'] = [

@@ -21,10 +21,6 @@ settings:
   provider: masquerade
   show_unmasquerade_link: true
 visibility:
-  govuk_cookie:
-    id: govuk_cookie
-    enable: 0
-    negate: false
   request_path:
     id: request_path
     negate: false

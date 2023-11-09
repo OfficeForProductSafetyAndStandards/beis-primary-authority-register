@@ -76,7 +76,7 @@ class ParReviewForm extends ParBaseForm {
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Authorities'),
       ],
       'intro' => [
@@ -96,7 +96,7 @@ class ParReviewForm extends ParBaseForm {
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Partnerships'),
       ],
       'description' => [
@@ -110,7 +110,7 @@ class ParReviewForm extends ParBaseForm {
       'list' => [
         '#theme' => 'item_list',
         '#items' => $partnership_labels,
-        '#attributes' => ['class' => ['list', 'list-bullet']],
+        '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
       ],
     ];
 
@@ -122,7 +122,7 @@ class ParReviewForm extends ParBaseForm {
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Primary Authority Contacts'),
       ],
       'description' => [
@@ -136,7 +136,7 @@ class ParReviewForm extends ParBaseForm {
       'list' => [
         '#theme' => 'item_list',
         '#items' => $contact_records,
-        '#attributes' => ['class' => ['list', 'list-bullet']],
+        '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
       ],
       'intro' => [
         '#type' => 'html_tag',
@@ -154,7 +154,7 @@ class ParReviewForm extends ParBaseForm {
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Enforcements & Enquiries'),
       ],
     ];
@@ -177,13 +177,14 @@ class ParReviewForm extends ParBaseForm {
     ];
 
     // Display the date of change.
-    $transfer_date = $this->getDateFormatter()->format($transfer_date->getTimestamp(), 'gds_date_format');
+    $timestamp = $transfer_date?->getTimestamp();
+    $transfer_date = $timestamp ? $this->getDateFormatter()->format($transfer_date?->getTimestamp(), 'gds_date_format') : '[no date entered]';
     $form['date'] = [
       '#type' => 'container',
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Date'),
       ],
       'intro' => [
@@ -196,7 +197,7 @@ class ParReviewForm extends ParBaseForm {
     $form['confirmation'] = [
       '#type' => 'checkbox',
       '#title' => 'Please check everything is correct, once you confirm these details the partnerships will be transferred.',
-      '#wrapper_attributes' => ['class' => 'govuk-!-margin-top-8'],
+      '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
     ];
 
     // Change the main button title to 'remove'.

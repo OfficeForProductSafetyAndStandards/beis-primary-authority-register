@@ -238,11 +238,11 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
 
     // Ensure that the correct legal entities are entered for coordinated partnerships.
     if ($this->getFlowDataHandler()->getFormPermValue('coordinated_partnership')) {
-      $form['legal_entity_intro_fieldset']['note'] = [
+      $form['legal_entity_intro_fieldset'] = [
         '#type' => 'markup',
-        '#markup' => '<div class="form-group notice">
+        '#markup' => '<div class="govuk-form-group notice">
             <i class="icon icon-important"><span class="visually-hidden">Warning</span></i>
-            <strong class="bold-small">Please enter the legal entities for the members covered by this partnership not the co-ordinator.</strong>
+            <strong class="govuk-!-font-size-19 govuk-!-font-weight-bold">Please enter the legal entities for the members covered by this partnership not the co-ordinator.</strong>
           </div>',
       ];
     }
@@ -250,6 +250,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     $form['registry'] = [
       '#type' => 'radios',
       '#title' => 'What type of legal entity is this?',
+      '#title_tag' => 'h2',
       '#description' => $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities."),
       '#options' => $registry_options,
       '#options_descriptions' => $registry_options_descriptions,
@@ -258,7 +259,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
         [get_class($this), 'optionsDescriptions'],
       ],
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ],
     ];
 
@@ -274,7 +275,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
         ],
       ],
       '#attributes' => [
-        'class' => ['form-group', 'govuk-radios__conditional'],
+        'class' => ['govuk-form-group', 'govuk-radios__conditional'],
       ],
     ];
     $form['registered']['legal_entity_number'] = [
@@ -294,7 +295,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
         ],
       ],
       '#attributes' => [
-        'class' => ['form-group', 'govuk-radios__conditional'],
+        'class' => ['govuk-form-group', 'govuk-radios__conditional'],
       ],
     ];
     $unregistered_type_options = [
@@ -311,6 +312,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     $form['unregistered']['legal_entity_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('How is this entity structured?'),
+      '#title_tag' => 'h3',
       '#default_value' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_type'], $index),
       '#options' => $unregistered_type_options,
       '#options_descriptions' => $unregistered_type_options_descriptions,
@@ -318,7 +320,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
         [get_class($this), 'optionsDescriptions'],
       ],
       '#attributes' => [
-        'class' => ['govuk-radios--small', 'form-group'],
+        'class' => ['govuk-radios--small', 'govuk-form-group'],
       ],
     ];
 
@@ -327,7 +329,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       '#title' => $this->t('Enter name of the legal entity'),
       '#default_value' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_name'], $index),
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ],
     ];
 

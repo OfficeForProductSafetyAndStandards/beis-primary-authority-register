@@ -68,14 +68,14 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
     $form['advice_info'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Archive the advice'),
-      '#attributes' => ['class' => 'form-group'],
+      '#title_tag' => 'h2',
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['advice_info']['partnership_text'] = [
-      '#type' => 'markup',
+      '#type' => 'html_tag',
+      '#tag' => 'p',
       '#markup' => !empty($par_data_advice_title) ? $par_data_advice_title : $par_data_advice->label(),
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
     ];
 
     // Enter the archive reason.

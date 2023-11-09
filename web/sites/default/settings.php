@@ -872,6 +872,12 @@ $settings['config_readonly_whitelist_patterns'] = [
 ];
 
 /**
+ * By default, the site is configured with PAR branding instead of GovUK branding
+ * because the service is still in BETA.
+ */
+$settings['par_branded_header_footer'] = TRUE;
+
+/**
  * Extract the connection credentials from the VCAP_SERVICES environment variable
  * which is configured by the PaaS service manager
  */
@@ -1141,6 +1147,15 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
  */
 if (file_exists("{$app_root}/{$site_path}/settings.local.php")) {
   include "{$app_root}/{$site_path}/settings.local.php";
+}
+
+/**
+ * Environment services override.
+ *
+ * Load specific service file for each app environment.
+ */
+if ($config['config_split.config_split.dev_config']['status'] || $config['config_split.config_split.test_config']['status']) {
+  $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.non-production.yml';
 }
 
 # Allow php to run with increased memory from the CLI.

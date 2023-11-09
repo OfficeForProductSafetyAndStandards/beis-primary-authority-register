@@ -44,7 +44,7 @@ class ParSelectPartnershipForm extends ParFormPluginBase {
       $form['intro'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
         '#value' => $this->t('There are no partnerships to choose from.'),
       ];
     }
@@ -63,7 +63,7 @@ class ParSelectPartnershipForm extends ParFormPluginBase {
           '#type' => 'checkbox',
           '#title' => $this->t("Select all @count partnerships ", ['@count' => $partnership_count]),
           '#return_value' => self::SELECT_ALL,
-          '#attributes' => ['class' => ['form-group']],
+          '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
         ];
       }
 
@@ -81,9 +81,10 @@ class ParSelectPartnershipForm extends ParFormPluginBase {
       $form['par_data_partnership_id'] = [
         '#type' => $multiple ? 'checkboxes' : 'radios',
         '#title' => $multiple ? $this->t('Choose a partnerships') : $this->t('Choose partnerships'),
+        '#title_tag' => 'h2',
         '#options' => $partnership_options,
         '#default_value' => $multiple ? (array) $default_value : $default_value,
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
 
       // If multiple selections are supported.

@@ -59,11 +59,12 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
 
     $form['primary_authority_status'] = [
       '#type' => 'radios',
-      '#weight' => 10,
       '#title' => $this->t('Decide to allow or block this action, or refer this action to another Primary Authority '),
+      '#title_tag' => 'h2',
       '#options' => $statuses,
       '#default_value' => $this->getDefaultValuesByKey('primary_authority_status', $index, ParDataEnforcementAction::APPROVED),
       '#required' => TRUE,
+      '#weight' => 10,
     ];
 
 

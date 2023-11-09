@@ -62,9 +62,10 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
     $form['notice_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('This enforcement action is'),
+      '#title_tag' => 'h2',
       '#options' => $notice_type,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('notice_type', key($notice_type)),
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       '#required' => TRUE,
       '#weight' => 100,
     ];
@@ -72,6 +73,7 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
     $form['summary'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide a summary of the enforcement notification'),
+      '#title_tag' => 'h2',
       '#description' => [
         '#theme' => 'item_list',
         '#items' => [
@@ -80,7 +82,7 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
           'your proposed text for any statutory notice or draft changes etc',
           'your reasons for proposing the enforcement action',
         ],
-        '#attributes' => ['class' => ['list', 'list-bullet']],
+        '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
         '#weight' => 100,
       ],
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('summary'),

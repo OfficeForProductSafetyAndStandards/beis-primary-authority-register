@@ -13,7 +13,9 @@
  */
 #}
 
-<div{{ attributes.addClass('data') }}>
-  <span class="data-item bold-xxlarge">{{ value }}</span>
-  <span class="data-item bold-xsmall" title="{{ description }}">{{ label }}</span>
+{% set id = label|clean_unique_id %}
+
+<div{{ attributes.addClass('data-item') }}>
+  <span class="data-number" aria-labelledby="{{ id }}-caption">{{ value }}</span>
+  <p class="data-caption" title="{{ description }}" id="{{ id }}-caption">{{ label }}</p>
 </div>

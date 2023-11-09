@@ -181,13 +181,14 @@ class ParConfirmationReviewForm extends ParBaseForm {
       '#title' => $this->t('I have read and agree to the @terms.', ['@terms' => $terms_link->toString()]),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_organisation_agreed"),
       '#return_value' => 'on',
+      '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
     ];
 
     $form['help_text'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
     return parent::buildForm($form, $form_state);
@@ -201,7 +202,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Make sure the terms and conditions have been agreed.
     if (!$form_state->getValue('terms_organisation_agreed')) {
-      $message = $this->wrapErrorMessage('Please confirm you have read the terms & conditions.', $this->getElementId('terms_organisation_agreed', $form));
+      $message = $this->wrapErrorMessage('Please confirm you have read the terms and conditions.', $this->getElementId('terms_organisation_agreed', $form));
       $form_state->setErrorByName($this->getElementName('terms_organisation_agreed'), $message);
     }
 

@@ -258,9 +258,9 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritdoc}
    */
-  public function isFull(): bool {
+  public function isFull(array $data = NULL): bool {
     return $this->getCardinality() !== FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED &&
-      $this->countItems() >= $this->getCardinality();
+      $this->countItems($data) >= $this->getCardinality();
   }
 
   /**
@@ -279,6 +279,28 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
 
     // Allow plugins to filter
     $data = $this->filter($data);
+
+    // Always get the data in the correct order.
+    return $this->reindex($data);
+  }
+
+  /**
+   * Get the data from the FormState.
+   *
+   * @return array
+   *   An array of data.
+   */
+  public function getDataFromFormState(FormStateInterface $form_state): array {
+    if (!$this->isFlattened()) {
+      $prefix = [$this->getPrefix()];
+      $values = $form_state->cleanValues()->getValue($prefix);
+    }
+    else {
+      $values = $form_state->cleanValues()->getValues();
+    }
+
+    // Allow plugins to filter
+    $data = $this->filter($values);
 
     // Always get the data in the correct order.
     return $this->reindex($data);
@@ -430,29 +452,58 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get the next available cardinality for adding a new item.
+   * Get the next available index for adding a new item.
+   *
+   * The delta is the zero-based key for the data, the index is the 1-based
+   * value for this that is presented to users.
    *
    * @param mixed $data
    *   If required the data to be counted can be switched to the form_state values.
    *
    * @return integer
    */
-  public function getNewCardinality(array $data = NULL): int {
+  public function getCurrentIndex(array $data = NULL): int {
     if (!$data) {
       $data = $this->getData();
     }
 
     $data = $this->reindex($data);
 
+    // Count the number of existing items.
     $count = $this->countItems($data);
 
-    // If there is no add another button don't display an empty item.
-    $actions = $this->getComponentActions([], $count);
-    if ($actions && isset($actions['add_another'])) {
-      $count++;
+    // The current index always starts at 1, even if there are no items yet.
+    return max($count, 1);
+  }
+
+  /**
+   * Get the next available index for adding a new item.
+   *
+   * The delta is the zero-based key for the data, the index is the 1-based
+   * value for this that is presented to users.
+   *
+   * @param mixed $data
+   *   If required the data to be counted can be switched to the form_state values.
+   *
+   * @return integer
+   */
+  public function getNextAvailableIndex(array $data = NULL): int {
+    if (!$data) {
+      $data = $this->getData();
+    }
+    // Get the current index.
+    $current_index = $this->getCurrentIndex($data);
+
+    // Check whether more items can be added.
+    $add_more = $this->isMultiple() && !$this->isFull();
+
+    // If there is no data then the next index is 1.
+    if ($this->countItems($data) < 1) {
+      return 1;
     }
 
-    return $count ?: 1;
+    // If more items can be added the next index will be incremented.
+    return $add_more ? $current_index + 1 : $current_index;
   }
 
   /**
@@ -630,7 +681,11 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
 
     foreach (Element::children($element) as $key) {
       if (isset($element['#options_descriptions'][$key])) {
+        // Set the description.
         $element[$key]['#description'] = $element['#options_descriptions'][$key];
+
+        // Set the aria-describedby attribute on the element.
+        $element[$key]['#attributes']['aria-describedby'] = "{$element[$key]['#id']}--description";
       }
     }
 
@@ -651,11 +706,10 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
         $values = $form_state->cleanValues()->getValues();
       }
 
-      // If there are no values don't validate this cardinality.
-      // This can happen for newly added cardinality blocks.
-      if (empty($values)) {
-        continue;
-      }
+      // Filter the values.
+      $values = $this->filterItem($values);
+
+      // Create an
       $this->buildEntity($entity, $values);
 
       // Validate the built entities by field only.
@@ -678,7 +732,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
                 $message = $mapping->getErrorMessage($violation->getMessage());
                 $this->setError($form, $form_state, $element, $message);
               }
-              catch (ParFlowException $ignore) {
+              catch (ParFlowException|\TypeError $ignore) {
                 // The element could not be found.
               }
 
@@ -716,7 +770,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get the fieldset wrapper for this component.
+   * Get the container wrapper for this component.
    */
   public function getWrapper() {
     // If this form component supports multiple items then #tree will be set
@@ -725,7 +779,12 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
       '#type' => 'container',
       '#weight' => $this->getWeight(),
       '#tree' => $this->isMultiple(),
-      '#attributes' => ['class' => [Html::cleanCssIdentifier('component-' . $this->getPluginId())]]
+      '#attributes' => [
+        'class' => [
+          Html::cleanCssIdentifier('component-' . $this->getPluginId()),
+          'govuk-form-group'
+        ]
+      ]
     ];
   }
 
@@ -737,7 +796,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get the fieldset wrapper for this component.
+   * Get the container wrapper for this component.
    */
   public function getElementWrapper($cardinality = 1) {
     return [
@@ -747,7 +806,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get the fieldset wrapper for this component.
+   * Get the container wrapper for this component.
    */
   public function getElementActions($index = 1, $actions = []) {
     // The delta value for the data is a zero-based index.
@@ -767,7 +826,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
           '#validate' => ['::validateCancelForm'],
           '#limit_validation_errors' => [],
           '#attributes' => [
-            'class' => ['btn-link', 'change-action'],
+            'class' => ['govuk-button', 'govuk-button--secondary', 'change-action'],
             'aria-label' => "Change {$this->getWrapperName()} $index",
             'data-prevent-double-click' => 'true',
             'data-module' => 'govuk-button',
@@ -784,7 +843,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
         '#validate' => ['::validateCancelForm'],
         '#limit_validation_errors' => [],
         '#attributes' => [
-          'class' => ['btn-link', 'remove-action'],
+          'class' => ['govuk-button', 'govuk-button--secondary', 'remove-action'],
           'aria-label' => "Remove {$this->getWrapperName()} $index",
           'data-prevent-double-click' => 'true',
           'data-module' => 'govuk-button',
@@ -802,7 +861,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get the fieldset wrapper for this component.
+   * Get the container wrapper for this component.
    */
   public function getComponentActions($actions = [], $count = NULL) {
     if ($this->isMultiple() && !$this->isFull()) {
@@ -812,7 +871,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
         '#submit' => ['::addAnother'],
         '#value' => $this->t('Add another'),
         '#attributes' => [
-          'class' => ['btn-link', 'add-action'],
+          'class' => ['govuk-button', 'govuk-button--secondary', 'add-action'],
           'data-prevent-double-click' => 'true',
           'data-module' => 'govuk-button',
         ],

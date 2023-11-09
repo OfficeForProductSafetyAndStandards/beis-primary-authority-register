@@ -94,9 +94,9 @@ class ParUserDetail extends ParFormPluginBase {
     $cache_tags = $this->getFlowDataHandler()->getDefaultValues('cache_tags', []);
 
     $form['user_account'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#weight' => -1,
-      '#attributes' => ['class' => ['grid-row', 'form-group']],
+      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
       '#cache' => ['tags' => $cache_tags]
     ];
     if ($index === 1) {
@@ -105,13 +105,13 @@ class ParUserDetail extends ParFormPluginBase {
           '#type' => 'html_tag',
           '#tag' => 'h2',
           '#value' => $this->t('User account'),
-          '#attributes' => ['class' => ['heading-large', 'column-full']],
+          '#attributes' => ['class' => ['govuk-heading-l', 'govuk-grid-column-full']],
         ],
         'info' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => "A user account allows a person to log into the primary authority register.",
-          '#attributes' => ['class' => ['column-full']],
+          '#attributes' => ['class' => ['govuk-grid-column-full']],
         ],
       ];
     }
@@ -121,13 +121,13 @@ class ParUserDetail extends ParFormPluginBase {
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#value' => '<strong>E-mail</strong><br>' . $this->getDefaultValuesByKey('user_account', $index, ''),
-        '#attributes' => ['class' => ['column-full']],
+        '#attributes' => ['class' => ['govuk-grid-column-full']],
       ];
       $form['user_account']['roles'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#value' => '<strong>Type of account</strong><br>' . $this->getDefaultValuesByKey('user_roles', $index, ''),
-        '#attributes' => ['class' => ['column-two-thirds']],
+        '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
       ];
 
       // Check whether the user is active.
@@ -138,7 +138,7 @@ class ParUserDetail extends ParFormPluginBase {
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => '<strong>Last sign in</strong><br>' . $this->getDefaultValuesByKey('user_login', $index, 'Never signed in'),
-          '#attributes' => ['class' => ['column-one-third']],
+          '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         ];
       }
       else {
@@ -146,7 +146,7 @@ class ParUserDetail extends ParFormPluginBase {
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => '<strong>The account is no longer active</strong><br>',
-          '#attributes' => ['class' => ['column-one-third']],
+          '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         ];
       }
 
@@ -155,7 +155,7 @@ class ParUserDetail extends ParFormPluginBase {
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => 'This user can not be removed because they are the only member of one of their authorities or organisations.<br>',
-          '#attributes' => ['class' => ['column-full']],
+          '#attributes' => ['class' => ['govuk-grid-column-full']],
         ];
       }
 
@@ -170,7 +170,7 @@ class ParUserDetail extends ParFormPluginBase {
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $block_link->toString(),
-            '#attributes' => ['class' => ['column-full']],
+            '#attributes' => ['class' => ['govuk-grid-column-full']],
           ];
         }
       } catch (ParFlowException $e) {
@@ -186,7 +186,7 @@ class ParUserDetail extends ParFormPluginBase {
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $unblock_link->toString(),
-            '#attributes' => ['class' => ['column-full']],
+            '#attributes' => ['class' => ['govuk-grid-column-full']],
           ];
         }
       } catch (ParFlowException $e) {
@@ -196,8 +196,8 @@ class ParUserDetail extends ParFormPluginBase {
     }
     elseif ($person_id = $this->getFlowDataHandler()->getFormPermValue('person_id')) {
       $form['contact'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => ['form-group']],
+        '#type' => 'container',
+        '#attributes' => ['class' => ['govuk-form-group']],
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
@@ -210,7 +210,7 @@ class ParUserDetail extends ParFormPluginBase {
       // Try to add an invitation link.
       try {
         $params = ['par_data_person' => $person_id];
-        $link_options = ['attributes' => ['class' => ['column-full']]];
+        $link_options = ['attributes' => ['class' => ['govuk-grid-column-full']]];
         $invite_flow = ParFlow::load('user_invite');
         $link_text = $invitation_expiry ? 'Re-send the invitation' : 'Invite the user to create an account';
         $invite_link = $invite_flow?->getStartLink(1, $link_text, $params, $link_options);

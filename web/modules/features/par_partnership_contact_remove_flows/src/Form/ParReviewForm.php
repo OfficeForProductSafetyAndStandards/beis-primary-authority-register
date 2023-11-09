@@ -72,7 +72,8 @@ class ParReviewForm extends ParBaseForm {
     $form['partnership_info'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Contact to be removed'),
-      '#attributes' => ['class' => 'form-group'],
+      '#title_tag' => 'h2',
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];

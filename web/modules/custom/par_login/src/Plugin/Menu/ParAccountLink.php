@@ -57,10 +57,10 @@ class ParAccountLink extends MenuLinkDefault {
    */
   public function getTitle() {
     if ($this->currentUser->isAuthenticated()) {
-      return $this->currentUser->getEmail();
+      return "Dashboard ({$this->currentUser->getEmail()})";
     }
 
-    return '';
+    return 'Dashboard';
   }
 
   /**

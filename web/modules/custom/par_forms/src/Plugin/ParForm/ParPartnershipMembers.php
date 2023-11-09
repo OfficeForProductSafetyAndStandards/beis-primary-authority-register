@@ -83,9 +83,15 @@ class ParPartnershipMembers extends ParFormPluginBase {
     }
 
     $form['members'] = [
-      '#type' => 'fieldset',
-      '#title' => t('Number of members'),
-      '#attributes' => ['class' => 'form-group'],
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#weight' => '-10',
+        '#value' => t('Number of members'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     // Show the date the member list was last updated.
@@ -94,7 +100,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#value' => $this->t("The member list was last updated: <strong>@date</strong>.", ['@date' => $this->getDefaultValuesByKey('members_last_updated', $index, 'a long time ago')]),
-        '#attributes' => ['class' => ['form-group', 'number-of-members']],
+        '#attributes' => ['class' => ['govuk-form-group', 'number-of-members']],
         '#weight' => -6,
       ];
     }
@@ -104,7 +110,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
       '#type' => 'html_tag',
       '#tag' => 'p',
       '#value' => $this->t("There are <strong>@count</strong> active members covered by this partnership.", ['@count' => $this->getDefaultValuesByKey('number_of_members', $index, '0')]),
-      '#attributes' => ['class' => ['form-group', 'number-of-members']],
+      '#attributes' => ['class' => ['govuk-form-group', 'number-of-members']],
       '#weight' => -5,
     ];
 
@@ -163,14 +169,14 @@ class ParPartnershipMembers extends ParFormPluginBase {
         // Display the member.
         $form['members']['list']['items'][$delta] = [
           '#type' => 'container',
-          '#attributes' => ['class' => ['grid-row', 'form-group', 'coordinated-member']],
+          '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group', 'coordinated-member']],
           '#collapsible' => FALSE,
           '#collapsed' => FALSE,
           'entity' => [
             '#type' => 'html_tag',
             '#tag' => 'div',
             '#value' => $entity->label(),
-            '#attributes' => ['class' => ['column-full']],
+            '#attributes' => ['class' => ['govuk-grid-column-full']],
           ],
         ];
       }
@@ -215,7 +221,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
       $form['members']['list'] = [
         '#type' => 'container',
         '#title' => t('Members'),
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         'link' => [
           '#type' => 'link',
           '#title' => $this->t('show external members list'),
@@ -235,7 +241,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
       $form['members']['list'] = [
         '#type' => 'container',
         '#title' => t('Members'),
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         'request' => [
           '#type' => 'html_tag',
           '#tag' => 'p',

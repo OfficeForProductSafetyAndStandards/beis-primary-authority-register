@@ -22,20 +22,17 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
    * {@inheritdoc}
    */
   public function content(ParDataPartnership $par_data_partnership = NULL) {
-
     $par_data_partnership_id = !empty($par_data_partnership) ? $par_data_partnership->id() : NULL;
 
     $build['partnership'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
     $build['partnership']['title'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_partnership->label(),
-      '#prefix' => '<h2>',
-      '#suffix' => '</h2>',
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => $par_data_partnership->label(),
+      '#attributes' => ['class' => 'govuk-heading-m'],
     ];
 
     switch ($this->getFlowNegotiator()->getFlowName()) {
@@ -58,10 +55,9 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
     }
     else {
       $build['inspection_plan_list'] = [
-        '#type' => 'markup',
-        '#markup' => "Inspection plans can't be listed here. Please contact the helpdesk.",
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => "Inspection plans can't be listed here. Please contact the helpdesk.",
       ];
     }
 
@@ -71,7 +67,7 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
       if ($this->getCurrentUser()->hasPermission('upload partnership inspection plan')) {
       $build['actions'] = [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
 
       try {
@@ -91,8 +87,9 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
     } else {
         // for none help desk users contact the help-desk text.
         $build['actions'] = [
-          '#type' => 'markup',
-          '#markup' => '<p><b>' . $this->t('To upload an inspection plan please contact the Help Desk.') . '</b></p>',
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->t('To upload an inspection plan please contact the Help Desk.'),
         ];
       }
     }

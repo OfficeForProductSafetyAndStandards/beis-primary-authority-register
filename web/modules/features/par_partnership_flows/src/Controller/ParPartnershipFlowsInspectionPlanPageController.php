@@ -38,11 +38,11 @@ class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController 
     if ($par_data_inspection_plan->isRevoked()) {
       $build['inspection_plan_details'] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['form-group', 'notice']],
+        '#attributes' => ['class' => ['govuk-form-group', 'notice']],
       ];
       $build['inspection_plan_details']['revoked'] = [
         '#type' => 'markup',
-        '#markup' => '<i class="icon icon-important"><span class="visually-hidden">Revoked</span></i>',
+        '#markup' => '<i class="icon icon-important"><span class="govuk-visually-hidden">Revoked</span></i>',
       ];
       $build['inspection_plan_details']['warning'] = [
         '#type' => 'markup',

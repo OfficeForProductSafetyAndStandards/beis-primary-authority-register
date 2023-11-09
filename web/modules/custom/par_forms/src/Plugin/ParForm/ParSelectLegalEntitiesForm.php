@@ -57,8 +57,13 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
 
     // Intro text.
     $form['legal_entity_intro'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('What is a legal entity?'),
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('What is a legal entity?'),
+      ],
       'text' => [
         '#type' => 'markup',
         '#markup' => $this->t('A legal entity is any kind of individual or organisation that has legal standing. This can include a
@@ -80,8 +85,9 @@ limited company or partnership, as well as other types of organisations such as 
     // Checkboxes for legal entities.
     $form['field_legal_entity'] = [
       '#type' => 'checkboxes',
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       '#title' => t('Choose which legal entities this partnership relates to'),
+      '#title_tag' => 'h2',
       '#options' => $radio_options,
       // Automatically check all legal entities if no form data is found.
       '#default_value' => $this->getDefaultValuesByKey('field_legal_entity', $index, $partnership_legal_entities),
@@ -89,7 +95,7 @@ limited company or partnership, as well as other types of organisations such as 
 
     // A note to the user that they can add a new legal entity on the next step.
     $form['legal_entity_add_more_info'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#title' => $this->t('Additional legal entities'),
       'text' => [
         '#type' => 'markup',

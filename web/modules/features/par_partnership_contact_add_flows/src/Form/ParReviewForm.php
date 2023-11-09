@@ -83,7 +83,7 @@ class ParReviewForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $form['partnership'] = [
       '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
       [
         '#markup' => $this->t('The following person will be added to the @partnership.',
           ['@partnership' => $this->getFlowDataHandler()->getFormPermValue("partnership")]),
@@ -94,7 +94,7 @@ class ParReviewForm extends ParBaseForm {
       '#type' => 'fieldset',
       'name' => [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         '#title' => 'Name',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('full_name', '(none)'),
@@ -107,22 +107,22 @@ class ParReviewForm extends ParBaseForm {
       'email' => [
         '#type' => 'fieldset',
         '#title' => 'Email',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('email', '(none)'),
         ]
       ],
       'work_phone' => [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
         '#title' => 'Work phone',
+        '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('work_phone', '(none)'),
         ]
       ],
       'mobile_phone' => [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         '#title' => 'Mobile phone',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('mobile_phone', '(none)'),
@@ -135,7 +135,7 @@ class ParReviewForm extends ParBaseForm {
 
         $form['intro'] = [
           '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
+          '#attributes' => ['class' => 'govuk-form-group'],
           '#title' => 'User account',
           [
             '#markup' => "A user account already exists for this person.",
@@ -148,7 +148,7 @@ class ParReviewForm extends ParBaseForm {
 
         $form['intro'] = [
           '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
+          '#attributes' => ['class' => 'govuk-form-group'],
           '#title' => 'User account',
           [
             '#markup' => "An invitation will be sent to this person to invite them to join the Primary Authority Register.",
@@ -162,7 +162,7 @@ class ParReviewForm extends ParBaseForm {
 
         $form['intro'] = [
           '#type' => 'fieldset',
-          '#attributes' => ['class' => 'form-group'],
+          '#attributes' => ['class' => 'govuk-form-group'],
           '#title' => 'User account',
           [
             '#markup' => "A user account will not be created for this person.",

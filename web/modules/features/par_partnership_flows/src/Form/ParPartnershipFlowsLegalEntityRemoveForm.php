@@ -78,12 +78,14 @@ class ParPartnershipFlowsLegalEntityRemoveForm extends ParBaseForm {
     $form['registered_name'] = [
       '#type' => 'item',
       '#title' => $this->t('Name of the legal entity'),
+      '#title_tag' => 'h2',
       '#markup' => $par_data_legal_entity->getName(),
     ];
 
     $form['legal_entity_type'] = [
       '#type' => 'item',
       '#title' => $this->t('Type of the legal entity'),
+      '#title_tag' => 'h2',
       '#markup' => $par_data_legal_entity->getType(),
     ];
 
@@ -94,6 +96,7 @@ class ParPartnershipFlowsLegalEntityRemoveForm extends ParBaseForm {
       $form['registered_number'] = [
         '#type' => 'item',
         '#title' => $this->t('Registration number of the legal entity'),
+        '#title_tag' => 'h2',
         '#markup' => $par_data_legal_entity->getRegisteredNumber(),
       ];
     }
@@ -103,6 +106,7 @@ class ParPartnershipFlowsLegalEntityRemoveForm extends ParBaseForm {
       $form['start_date'] = [
         '#type' => 'item',
         '#title' => $this->t('Start date'),
+        '#title_tag' => 'h2',
         '#markup' => $this->getDateFormatter()->format($start_date->getTimestamp(), 'gds_date_format'),
       ];
     }
@@ -111,6 +115,7 @@ class ParPartnershipFlowsLegalEntityRemoveForm extends ParBaseForm {
       $form['end_date'] = [
         '#type' => 'item',
         '#title' => $this->t('End date'),
+        '#title_tag' => 'h2',
         '#markup' => $this->getDateFormatter()->format($par_data_partnership_le->getEndDate()->getTimestamp(), 'gds_date_format'),
       ];
     }

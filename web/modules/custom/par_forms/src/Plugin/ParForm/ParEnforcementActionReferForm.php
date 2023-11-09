@@ -72,6 +72,7 @@ class ParEnforcementActionReferForm extends ParFormPluginBase {
       $form['referred_to'] = [
         '#type' => 'radios',
         '#title' => $this->t('Choose an authority to refer to'),
+        '#title_tag' => 'h2',
         '#options' => $options,
         '#default_value' => $this->getDefaultValuesByKey("referred_to", $index),
         '#required' => TRUE,

@@ -48,10 +48,11 @@ class ParDeviationRequestReviewForm extends ParDeviationRequestDetail {
       '#type' => 'radios',
       '#weight' => 10,
       '#title' => $this->t('Decide to allow or block this request to deviate from an inspection plan'),
+      '#title_tag' => 'h2',
       '#options' => $statuses,
       '#default_value' => $this->getDefaultValuesByKey('primary_authority_status', $index, ParDataDeviationRequest::APPROVED),
       '#required' => TRUE,
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
     $form['primary_authority_notes'] = [

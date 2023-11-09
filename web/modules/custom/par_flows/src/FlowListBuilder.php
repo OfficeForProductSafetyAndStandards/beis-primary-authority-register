@@ -52,7 +52,7 @@ class FlowListBuilder extends ConfigEntityListBuilder {
       '#theme' => 'item_list',
       '#list_type' => 'ol',
       '#items' => array_filter($routes),
-      '#attributes' => ['class' => ['list', 'form-group']],
+      '#attributes' => ['class' => ['govuk-list', 'govuk-form-group']],
     ];
     $row['routes'] = $this->getRenderer()->render($route_list);
 

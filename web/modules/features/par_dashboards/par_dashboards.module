@@ -25,8 +25,9 @@ function par_dashboards_form_alter(&$form, FormStateInterface $form_state, $form
   if ($form['#id'] == 'views-exposed-form-par-data-transition-journey-1-step-1-dv-journey-1-step-1' ||
     $form['#id'] == 'views-exposed-form-rd-helpdesk-dashboard-par-rd-helpdesk-dashboard-page') {
 
-    // Use class 'btn-link' to make a button look/act like a link.
-    $form['actions']['submit']['#attributes']['class'][] = 'btn-link';
+    // Use class secondary button class.
+    $form['actions']['submit']['#attributes']['class'][] = 'govuk-button';
+    $form['actions']['submit']['#attributes']['class'][] = 'govuk-button--secondary';
     $form['actions']['submit']['#value'] = 'Update results';
 
   }

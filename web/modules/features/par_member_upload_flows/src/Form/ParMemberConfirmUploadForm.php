@@ -37,6 +37,7 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
     $form['csv_upload_confirmation_message_fieldset'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Are you sure you want to upload a new list of members?'),
+      '#title_tag' => 'h2',
       'intro' => [
         '#type' => 'markup',
         '#markup' => '<p><b>' . $this->t('This operation will erase any existing list of members. If you are unsure, please click the Cancel link (below) and contact the Help Desk.') . '</b></p>',

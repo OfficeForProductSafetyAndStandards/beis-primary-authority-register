@@ -105,7 +105,7 @@ class ParReviewForm extends ParBaseForm {
       '#type' => 'fieldset',
       'name' => [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         '#title' => 'Name',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('full_name', ''),
@@ -118,14 +118,14 @@ class ParReviewForm extends ParBaseForm {
       'email' => [
         '#type' => 'fieldset',
         '#title' => 'Email',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('email', ''),
         ],
       ],
       'work_phone' => [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         '#title' => 'Work phone',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('work_phone', ''),
@@ -133,7 +133,7 @@ class ParReviewForm extends ParBaseForm {
       ],
       'mobile_phone' => [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         '#title' => 'Mobile phone',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('mobile_phone', ''),
@@ -141,7 +141,7 @@ class ParReviewForm extends ParBaseForm {
       ],
       'communication_noes' => [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         '#title' => 'Communication notes',
         0 => $this->getFlowDataHandler()->getDefaultValues('communication_notes', ['#markup' => '(none)']),
       ],
@@ -154,7 +154,7 @@ class ParReviewForm extends ParBaseForm {
       $form['memberships']['authorities'] = [
         '#type' => 'fieldset',
         '#title' => 'Belongs to the following authorities',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $authorities,
         ]
@@ -164,7 +164,7 @@ class ParReviewForm extends ParBaseForm {
       $form['memberships']['organisations'] = [
         '#type' => 'fieldset',
         '#title' => 'Belongs to the following organisations',
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $organisations,
         ]
@@ -177,7 +177,7 @@ class ParReviewForm extends ParBaseForm {
         '#title' => $this->t('Would you like to update the user account?'),
         '#description' => $this->t('This will change the email address that is used to sign into this service.'),
         '#return_value' => self::ACCOUNT_UPDATE,
-        '#attributes' => ['class' => ['form-group']],
+        '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
       ];
     }
 

@@ -64,22 +64,27 @@ class ParTradingNameDisplay extends ParFormPluginBase {
 
     // Display the trading_names.
     $form['trading_names'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Trading names',
-      '#attributes' => ['class' => ['form-group']],
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('Trading names'),
+      ],
+      '#attributes' => ['class' => ['govuk-form-group']],
       'trading_name' => [
         '#type' => 'container',
-        '#attributes' => ['class' => ['grid-row']],
+        '#attributes' => ['class' => ['govuk-grid-row']],
       ],
     ];
 
     foreach ($trading_names as $delta => $trading_name) {
       $form['trading_names']['trading_name'][$delta] = [
         '#type' => 'container',
-        '#attributes' => ['class' => 'column-full'],
+        '#attributes' => ['class' => 'govuk-grid-column-full'],
         'name' => [
           '#type' => 'html_tag',
-          '#tag' => 'div',
+          '#tag' => 'p',
           '#value' => $trading_name,
           '#attributes' => ['class' => 'trading-name'],
         ],
@@ -113,14 +118,14 @@ class ParTradingNameDisplay extends ParFormPluginBase {
       if (!empty(array_filter($operations))) {
         $form['trading_names']['trading_name'][$delta]['operations'] = [
           '#type' => 'container',
-          '#attributes' => ['class' => ['grid-row']],
+          '#attributes' => ['class' => ['govuk-grid-row']],
         ];
         if (isset($operations['edit']) && $operations['edit'] instanceof Link) {
           $form['trading_names']['trading_name'][$delta]['operations']['edit'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $operations['edit']->toString(),
-            '#attributes' => ['class' => ['edit-trading-name', 'column-one-third']],
+            '#attributes' => ['class' => ['edit-trading-name', 'govuk-grid-column-one-third']],
           ];
         }
         if (isset($operations['remove']) && $operations['remove'] instanceof Link) {
@@ -128,7 +133,7 @@ class ParTradingNameDisplay extends ParFormPluginBase {
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $operations['remove']->toString(),
-            '#attributes' => ['class' => ['remove-trading-name', 'column-one-third']],
+            '#attributes' => ['class' => ['remove-trading-name', 'govuk-grid-column-one-third']],
           ];
         }
       }

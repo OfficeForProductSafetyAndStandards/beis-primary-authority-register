@@ -114,11 +114,14 @@ class ParDashboardsDashboardController extends ControllerBase {
     $build = [];
 
     $build['welcome'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Welcome'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      '#attributes' => ['class' => 'govuk-form-group'],
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Welcome'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
       [
         '#type' => 'markup',
         '#markup' => "<p>Hello! Welcome to the Primary Authority Register.</p>",

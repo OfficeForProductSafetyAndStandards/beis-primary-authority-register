@@ -57,11 +57,11 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Display contacts at the organisation.
     $form['member_contact'] = $this->renderEntities('Member contact details', [$par_data_person], 'detailed');
-    $form['member_contact']['#attributes']['class'][] = 'form-group';
+    $form['member_contact']['#attributes']['class'][] = 'govuk-form-group';
 
     // Display legal entities.
     $form['legal_entities'] = $this->renderEntities('Legal entities', $par_data_legal_entities);
-    $form['legal_entities']['#attributes']['class'][] = 'form-group';
+    $form['legal_entities']['#attributes']['class'][] = 'govuk-form-group';
 
     // Display the trading names.
     $form['trading_names'] = $this->renderSection('Trading names', $par_data_organisation, ['trading_name' => 'title']);

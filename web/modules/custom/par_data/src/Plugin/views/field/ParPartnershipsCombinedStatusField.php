@@ -57,9 +57,9 @@ class ParPartnershipsCombinedStatusField extends FieldPluginBase {
 
     // @todo figure out how to get the label from the entity configuration.
     $form['status_fields'] = [
+      '#type' => 'checkboxes',
       '#title' => 'Status fields to include',
       '#description' => 'Select multiple PAR Partnership status fields',
-      '#type' => 'checkboxes',
       '#options' => [
         'partnership_info_agreed_authority' => 'PA Partnership Info Agreed',
         'partnership_info_agreed_business' => 'Business Partnership Details Confirmed',

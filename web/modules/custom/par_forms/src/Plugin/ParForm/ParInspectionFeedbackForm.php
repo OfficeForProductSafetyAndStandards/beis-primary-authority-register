@@ -48,14 +48,16 @@ class ParInspectionFeedbackForm extends ParFormPluginBase {
     $form['notes'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide feedback'),
+      '#title_tag' => 'h2',
       '#default_value' => $this->getDefaultValuesByKey('notes', $index),
-      '#description' => '<p>Use this section to give feedback on this inspection plan, this will be submitted to the primary authority.</p>',
+      '#description' => 'Use this section to give feedback on this inspection plan, this will be submitted to the primary authority.',
     ];
 
     // Multiple file field.
     $form['files'] = [
       '#type' => 'managed_file',
       '#title' => t('Upload supporting documents (optional)'),
+      '#title_tag' => 'h2',
       '#description' => t('Use Ctrl or cmd to select multiple files'),
       '#upload_location' => 's3private://documents/inspection_feedback/',
       '#multiple' => TRUE,

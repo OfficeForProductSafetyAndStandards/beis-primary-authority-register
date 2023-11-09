@@ -63,11 +63,11 @@ class ParAccessDeniedController extends ControllerBase {
       && !user_load_by_mail($message->get('field_to')->getString()));
 
     // Column size is determined by whether invitations should be shown.
-    $column_size = $allow_invitations ? 'column-one-half' : 'column-full';
+    $column_size = $allow_invitations ? 'govuk-grid-column-one-half' : 'govuk-grid-column-full';
 
     $build['account'] = [
       '#type'   => 'container',
-      '#attributes' => ['class' => ['grid-row']],
+      '#attributes' => ['class' => ['govuk-grid-row']],
     ];
 
     // Show sign in form.
@@ -79,7 +79,7 @@ class ParAccessDeniedController extends ControllerBase {
     $build['account']['signin']['title'] = [
       '#type' => 'html_tag',
       '#tag' => 'h2',
-      '#attributes' => ['class' => ['heading-medium']],
+      '#attributes' => ['class' => ['govuk-heading-m']],
       '#value' => $this->t('Please sign in'),
     ];
     $build['account']['signin']['form'] = $this->getFormBuilder()->getForm(UserLoginForm::class);
@@ -94,7 +94,7 @@ class ParAccessDeniedController extends ControllerBase {
       $build['account']['invitation']['title'] = [
         '#type' => 'html_tag',
         '#tag' => 'h2',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Or request an invitation'),
       ];
       $build['account']['invitation']['form'] = $this->getFormBuilder()->getForm(ParInvitationForm::class);

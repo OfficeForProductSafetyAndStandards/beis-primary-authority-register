@@ -5,6 +5,7 @@ namespace Drupal\par_forms\Plugin\ParForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\TypedData\Exception\MissingDataException;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -73,13 +74,17 @@ class ParTradingNameForm extends ParFormPluginBase {
         "Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State any trading names used by the organisation.");
 
       $form['trading_name_intro_fieldset'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('What is a trading name?'),
+        '#type' => 'container',
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#attributes' => ['class' => ['govuk-heading-m']],
+          '#value' => $this->t('What is a trading name?'),
+        ],
         'intro' => [
-          '#type' => 'markup',
-          '#markup' => $message,
-          '#prefix' => "<p>",
-          '#suffix' => "</p>",
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $message,
         ]
       ];
     }

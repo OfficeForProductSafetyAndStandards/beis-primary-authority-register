@@ -73,12 +73,12 @@ class ParConfirmListDetailsForm extends ParBaseForm {
     // Confirm the number of members.
     $form['number'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['member-count', 'form-group']],
+      '#attributes' => ['class' => ['member-count', 'govuk-form-group']],
       'title' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
         '#value' => $this->t('Number of members'),
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
       ],
       'value' => [
         '#type' => 'html_tag',
@@ -122,12 +122,12 @@ class ParConfirmListDetailsForm extends ParBaseForm {
       && $member_link = $this->getFlowDataHandler()->getDefaultValues('member_link', NULL)) {
       $form['link'] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['member-link', 'form-group']],
+        '#attributes' => ['class' => ['member-link', 'govuk-form-group']],
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'h3',
           '#value' => $this->t('Member link'),
-          '#attributes' => ['class' => ['heading-medium']],
+          '#attributes' => ['class' => ['govuk-heading-m']],
         ],
         'value' => [
           '#type' => 'html_tag',
@@ -147,12 +147,13 @@ class ParConfirmListDetailsForm extends ParBaseForm {
     $form['confirm'] = [
       '#type' => 'radios',
       '#title' => $this->t('Do these details accurately reflect the member list?'),
+      '#title_tag' => 'h2',
       '#options' => [
         self::CONFIRM => 'Yes, these details are correct',
         self::UPDATE => 'No, these details need to be updated'
       ],
       '#default_value' => self::CONFIRM,
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
     // Change the action to save.

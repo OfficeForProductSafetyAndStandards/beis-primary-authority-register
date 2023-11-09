@@ -335,7 +335,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#validate' => ['::validateCancelForm'],
           '#limit_validation_errors' => [],
           '#attributes' => [
-            'class' => ['btn-link']
+            'class' => ['cta-cancel', 'govuk-button', 'govuk-button--secondary']
           ],
         ];
       }
@@ -350,7 +350,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#validate' => ['::validateCancelForm'],
           '#limit_validation_errors' => [],
           '#attributes' => [
-            'class' => ['btn-link']
+            'class' => ['cta-back', 'govuk-button', 'govuk-button--secondary']
           ],
         ];
       }

@@ -42,8 +42,13 @@ class ParEnforcementActionForm extends ParFormPluginBase {
       $this->t('Details of Enforcement Action');
 
     $form['action'] = [
-      '#type' => 'fieldset',
-      '#title' => $action_label,
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $action_label,
+      ],
     ];
 
     $form['title'] = [
@@ -55,14 +60,16 @@ class ParEnforcementActionForm extends ParFormPluginBase {
     $form['regulatory_function'] = [
       '#type' => 'radios',
       '#title' => $this->t('Choose a regulatory function to which this action relates'),
+      '#title_tag' => 'h2',
       '#options' => $reg_function_names,
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       '#default_value' => $this->getDefaultValuesByKey('regulatory_function', $index),
     ];
 
     $form['details'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide details about this action'),
+      '#title_tag' => 'h2',
       '#default_value' => $this->getDefaultValuesByKey('details', $index),
     ];
 
@@ -74,6 +81,7 @@ class ParEnforcementActionForm extends ParFormPluginBase {
     $form['files'] = [
       '#type' => 'managed_file',
       '#title' => $this->t('Add an attachment'),
+      '#title_tag' => 'h2',
       '#upload_location' => 's3private://documents/enforcement_action/',
       '#multiple' => TRUE,
       '#default_value' => $this->getDefaultValuesByKey("files", $index),

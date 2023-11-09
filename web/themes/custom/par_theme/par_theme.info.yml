@@ -1,22 +1,24 @@
 name: PAR Theme
 type: theme
-version: v1.2.0
+version: v2.0.5
 package: Custom
-description: A Drupal 8 theme based on the GDS GOV.UK Frontend Toolkit.
+description: A Drupal theme based on the GDS GOV.UK Frontend Toolkit.
 core_version_requirement: ^9 || ^10
 base theme: govuk
 libraries:
-  - par_theme/par-kour
+  - par_theme/framework
 regions:
-  cookies: Cookies
-  header: Header
-  navigation: Navigation
+  cookies: 'Cookies'
+  header: 'Header'
+  navigation: 'Navigation'
   pre_content: 'Pre-content'
   breadcrumb: Breadcrumb
   highlighted: Highlighted
   help: Help
-  page_top: 'Page top'
   content: Content
+  page_top: 'Page top'
   sidebar_first: 'First sidebar'
-  footer: Footer
+  footer: 'Footer'
+  footer_left: 'Footer Left'
+  footer_right: 'Footer Right'
 screenshot: par-theme-thumb.png

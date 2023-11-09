@@ -56,13 +56,13 @@ class ParDeviationRequestDetail extends ParFormPluginBase {
     $params = $this->getRouteParams() + ['destination' => $return_path];
 
     $form['deviation_request'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => ['form-group']],
+      '#type' => 'container',
+      '#attributes' => ['class' => ['govuk-form-group']],
       'title' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
         '#value' => $this->t('Summary of deviation request'),
-        '#attributes' => ['class' => 'heading-large'],
+        '#attributes' => ['class' => 'govuk-heading-l'],
       ],
       'status' => [
         '#type' => 'html_tag',

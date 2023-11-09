@@ -57,9 +57,9 @@ class ParInspectionPlanForm extends ParFormPluginBase {
     ];
 
     $form['inspection_plan_type_help_text'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ],
       '#title' => $this->t('How to upload Primary Authority Inspection plans to Local Authorities'),
       '#description' => $this->t('To upload Primary Authority Inspection plans to a Local Authority, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the organisation it applies to and we’ll get back to you shortly.'),
@@ -68,14 +68,16 @@ class ParInspectionPlanForm extends ParFormPluginBase {
     $form['notes'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide feedback'),
+      '#title_tag' => 'h2',
       '#default_value' => $this->getDefaultValuesByKey('notes', $index),
-      '#description' => '<p>Use this section to give feedback on this inspection plan, this will be submitted to the primary authority.</p>',
+      '#description' => 'Use this section to give feedback on this inspection plan, this will be submitted to the primary authority.',
     ];
 
     // Multiple file field.
     $form['files'] = [
       '#type' => 'managed_file',
       '#title' => t('Upload supporting documents (optional)'),
+      '#title_tag' => 'h2',
       '#description' => t('Use Ctrl or cmd to select multiple files'),
       '#upload_location' => 's3private://documents/inspection_plan/',
       '#multiple' => TRUE,

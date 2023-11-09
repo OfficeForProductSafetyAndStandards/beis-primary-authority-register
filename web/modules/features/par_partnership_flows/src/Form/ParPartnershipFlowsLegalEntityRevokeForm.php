@@ -74,13 +74,15 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
     $form['registered_name'] = [
       '#type' => 'item',
       '#title' => $this->t('Name of the legal entity'),
+      '#title_tag' => 'h2',
       '#markup' => $par_data_legal_entity->getName(),
     ];
 
     $form['legal_entity_type'] = [
       '#type' => 'item',
       '#title' => $this->t('Type of the legal entity'),
-      '#markup' => $par_data_legal_entity->getType(),
+      '#title_tag' => 'h2',
+      '#markup' => $par_data_legal_entity->getType() ?? 'This legal entity needs to be updated.',
     ];
 
     // Only show registered number for types that allow it.
@@ -90,6 +92,7 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
       $form['registered_number'] = [
         '#type' => 'item',
         '#title' => $this->t('Registration number of the legal entity'),
+        '#title_tag' => 'h2',
         '#markup' => $par_data_legal_entity->getRegisteredNumber(),
       ];
     }
@@ -99,6 +102,7 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
       $form['start_date'] = [
         '#type' => 'item',
         '#title' => $this->t('Start date'),
+        '#title_tag' => 'h2',
         '#markup' => $this->getDateFormatter()->format($start_date->getTimestamp(), 'gds_date_format'),
       ];
     }
@@ -107,6 +111,7 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
     $form['revocation_reason'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Revocation reason'),
+      '#title_tag' => 'h2',
       '#rows' => 4,
       '#cols' => 40,
       '#description' => $this->t('Enter reason for revocation (optional).'),

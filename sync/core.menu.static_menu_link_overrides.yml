@@ -18,7 +18,7 @@ definitions:
     parent: ''
     weight: -48
     expanded: false
-    enabled: true
+    enabled: false
   par_login__user_account:
     menu_name: account
     parent: ''

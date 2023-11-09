@@ -47,11 +47,14 @@ class ParRdHelpDeskDeleteForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['partnership_info'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('The partnership application has been deleted'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('The partnership application has been deleted'),
+      ],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     // Change the action to save.

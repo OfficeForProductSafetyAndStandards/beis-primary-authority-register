@@ -76,10 +76,11 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
 
     $form['advice_type_help_text'] = [
       '#type' => 'fieldset',
-      '#attributes' => [
-        'class' => ['form-group'],
-      ],
       '#title' => $this->t('How to upload Primary Authority Advice to Local Authorities'),
+      '#title_tag' => 'h2',
+      '#attributes' => [
+        'class' => ['govuk-form-group'],
+      ],
       '#description' => $this->t('To upload Primary Authority Advice to a Local Authority, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the organisation it applies to and we’ll get back to you shortly.'),
     ];
 

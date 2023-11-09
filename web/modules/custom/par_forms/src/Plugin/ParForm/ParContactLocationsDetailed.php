@@ -79,19 +79,19 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
   public function getElements(array $form = [], int $index = 1) {
     if ($index === 1) {
       $form['message_intro'] = [
-        '#type' => 'fieldset',
-        'title' => [
+        '#type' => 'container',
+        'heading' => [
           '#type' => 'html_tag',
           '#tag' => 'h2',
           '#value' => $this->t('Contacts'),
-          '#attributes' => ['class' => ['heading-large']],
+          '#attributes' => ['class' => ['govuk-heading-l']],
         ],
         'info' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => 'It is possible for a person to have different contact details depending on the position they hold within an authority or organisation.',
         ],
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
     }
 
@@ -110,31 +110,31 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
       }
 
       $form['contact'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#weight' => 1,
-        '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
+        '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group', 'contact-details']],
         'name' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => $this->getDefaultValuesByKey('name', $index, NULL),
-          '#attributes' => ['class' => ['column-two-thirds']],
+          '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
         ],
         'actions' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => isset($actions) ? $actions : 'Update contact details',
-          '#attributes' => ['class' => ['column-one-third']],
+          '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         ],
         'email' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => $this->getDefaultValuesByKey('email_preferences', $index, NULL),
-          '#attributes' => ['class' => ['column-two-thirds']],
+          '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
         ],
         'phone' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#attributes' => ['class' => ['column-one-third']],
+          '#attributes' => ['class' => ['govuk-grid-column-one-third']],
           '#value' => $this->getDefaultValuesByKey('work_phone', $index, NULL) . '<br>' . $this->getDefaultValuesByKey('mobile_phone', $index, NULL),
         ],
         'locations' => [
@@ -148,8 +148,8 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
     }
     else {
       $form['contact'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => ['form-group']],
+        '#type' => 'container',
+        '#attributes' => ['class' => ['govuk-form-group']],
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
@@ -171,28 +171,28 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
     $locations = $contact instanceof ParDataEntityInterface ?
       $contact->getReferencedLocations() : NULL;
 
-    $details = [
-      '#type' => 'html_tag',
-      '#tag' => 'details',
-      '#attributes' => ['class' => ['column-full', 'contact-locations'], 'role' => 'group'],
-      'summary' => [
-        '#type' => 'html_tag',
-        '#tag' => 'summary',
-        '#attributes' => ['class' => ['form-group'], 'role' => 'button', 'aria-controls' => "contact-detail-locations-$index"],
-        '#value' => '<span class="summary">More information on where this contact is used</span>',
-      ],
+    return [
       'details' => [
         '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#attributes' => ['class' => ['form-group'], 'id' => "contact-detail-locations-$index"],
-        '#value' => !empty($locations) ? implode('<br>', $locations) : '',
+        '#tag' => 'details',
+        '#attributes' => ['class' => ['govuk-grid-column-full', 'govuk-details', 'contact-locations'], 'role' => 'group'],
+        'summary' => [
+          '#type' => 'html_tag',
+          '#tag' => 'summary',
+          '#attributes' => ['class' => ['govuk-details__summary'], 'role' => 'button', 'aria-controls' => "contact-detail-locations-$index"],
+          '#value' => '<span class="govuk-details__summary-text">More information on where this contact is used</span>',
+        ],
+        'details' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => ['class' => ['govuk-details__text'], 'id' => "contact-detail-locations-$index"],
+          'list' => [
+            '#theme' => 'item_list',
+            '#items' => $locations,
+            '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
+          ],
+        ],
       ],
-    ];
-
-
-    return $build = [
-      '#type' => 'markup',
-      '#markup' => \Drupal::service('renderer')->render($details),
     ];
   }
 

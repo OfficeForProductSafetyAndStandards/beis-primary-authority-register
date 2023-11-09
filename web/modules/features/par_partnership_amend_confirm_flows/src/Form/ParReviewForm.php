@@ -55,7 +55,7 @@ class ParReviewForm extends ParBaseForm {
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Partnership'),
       ],
       'intro' => [
@@ -82,7 +82,7 @@ class ParReviewForm extends ParBaseForm {
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t('Legal Entities'),
       ],
       'intro' => [
@@ -93,14 +93,14 @@ class ParReviewForm extends ParBaseForm {
       'list' => [
         '#theme' => 'item_list',
         '#items' => $legal_entity_render_arrays,
-        '#attributes' => ['class' => ['list', 'list-bullet']],
+        '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
       ],
     ];
 
     $form['confirmation'] = [
       '#type' => 'checkbox',
       '#title' => 'Please confirm this partnership amendment, once you submit this confirmation the changes will be presented to the helpdesk for nomination.',
-      '#wrapper_attributes' => ['class' => 'govuk-!-margin-top-8'],
+      '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
     ];
 
     // Change the main button title to 'remove'.

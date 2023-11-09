@@ -57,23 +57,26 @@ class ParPartnershipDocuments extends ParFormPluginBase {
         '#type' => 'html_tag',
         '#tag' => 'h2',
         '#value' => "Documents",
-        '#attributes' => ['class' => 'heading-large'],
+        '#attributes' => ['class' => 'govuk-heading-l'],
       ];
     }
 
     $form['details'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['grid-row', 'form-group']],
+      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
     ];
 
     // Inspection plan link.
     if ($this->getFlowDataHandler()->getFormPermValue("show_inspection_plans")) {
       $form['details']['inspection_plans'] = [
-        '#type' => 'fieldset',
-        '#title' => t('Inspection plans'),
-        '#attributes' => ['class' => ['column-one-half']],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+        '#type' => 'container',
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h3',
+          '#attributes' => ['class' => ['govuk-heading-m']],
+          '#value' => $this->t('Inspection plans'),
+        ],
+        '#attributes' => ['class' => ['govuk-grid-column-one-half']]
       ];
 
       // Add the inspection plan link safely with access checks.
@@ -105,11 +108,14 @@ class ParPartnershipDocuments extends ParFormPluginBase {
     // Add the advice link safely with access checks.
     if ($this->getFlowDataHandler()->getFormPermValue("show_advice_documents")) {
       $form['details']['advice'] = [
-        '#type' => 'fieldset',
-        '#title' => t('Advice and Documents'),
-        '#attributes' => ['class' => ['column-one-half']],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+        '#type' => 'container',
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h3',
+          '#attributes' => ['class' => ['govuk-heading-m']],
+          '#value' => $this->t('Advice and Documents'),
+        ],
+        '#attributes' => ['class' => ['govuk-grid-column-one-half']]
       ];
 
       try {

@@ -78,7 +78,8 @@ class ParRdDeleteDataConfirmForm extends ParBaseForm {
     $form['detail'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Full details about this data'),
-      '#attributes' => ['class' => 'form-group'],
+      '#title_tag' => 'h2',
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['detail']['text'] = [

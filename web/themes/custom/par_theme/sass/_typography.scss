@@ -1,0 +1,49 @@
+h1 {
+  @include govuk-font(24);
+}
+h2 {
+  @include govuk-font(19);
+}
+h3 {
+  @include govuk-font(16);
+}
+h4 {
+  @include govuk-font(14);
+}
+h5 {
+  @include govuk-font(14);
+}
+@include govuk-media-query($from: tablet) {
+  h1 {
+    @include govuk-font(48);
+  }
+  h2 {
+    @include govuk-font(36);
+  }
+  h3 {
+    @include govuk-font(24);
+  }
+  h4 {
+    @include govuk-font(19);
+  }
+  h5 {
+    @include govuk-font(14);
+  }
+}
+ul {
+  @extend .govuk-list;
+}
+ol {
+  @extend .govuk-list;
+  @extend .govuk-list--number;
+}
+p {
+  @extend .govuk-body;
+}
+
+div,
+time,
+details {
+  @include govuk-typography-common;
+  font-size: 19px;
+}

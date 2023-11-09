@@ -47,9 +47,10 @@ class ParMemberUploadForm extends ParBaseForm {
     $form['info'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('How to upload a list of members'),
+      '#title_tag' => 'h2',
       '#description' => $this->t('To upload a list of members you must provide the information in comma sepparated value (CSV) format. You can read more about preparing a CSV file on the %guidance. If you need assistance please contact pa@beis.gov.uk', ['%guidance' => $guidance_link->toString()]),
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ]
     ];
 
@@ -86,12 +87,12 @@ class ParMemberUploadForm extends ParBaseForm {
     $form['download'] = [
       '#type' => 'container',
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ],
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium']],
+        '#attributes' => ['class' => ['govuk-heading-m']],
         '#value' => $this->t($download_heading),
       ],
       'description' => [

@@ -125,7 +125,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
         '#title' => t('Which organisations are they a member of?'),
         '#options' => $organisation_options,
         '#default_value' => $multiple ? (array) $default_value : $default_value,
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
     }
 
@@ -137,7 +137,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
         '#title' => t('Which authorities are they a member of?'),
         '#options' => $authority_options,
         '#default_value' => $multiple ? (array) $default_value : $default_value,
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
     }
 
@@ -145,7 +145,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
       $form['intro'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
         '#value' => $this->t('There are no memberships to select from.'),
       ];
     }

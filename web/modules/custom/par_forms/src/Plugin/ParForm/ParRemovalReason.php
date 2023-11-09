@@ -46,16 +46,17 @@ class ParRemovalReason extends ParFormPluginBase {
     $form['reason_selection'] =  [
       '#type' => 'radios',
       '#title' => $this->t('Why are you deleting this @item', ['@item' => strtolower($item)]),
+      '#title_tag' => 'h2',
       '#description' => $this->t('There are only a select number of circumstances in which this @item can be removed.', ['@item' => strtolower($item)]),
       '#default_value' => $this->getDefaultValuesByKey('reason_selection', $index),
       '#options' => $options,
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
     $form['reason_description'] =  [
       '#type' => 'textarea',
       '#title' => $this->t('Please describe why this @item is being removed.', ['@item' => strtolower($item)]),
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       '#default_value' => $this->getDefaultValuesByKey('reason_description', $index),
     ];
 

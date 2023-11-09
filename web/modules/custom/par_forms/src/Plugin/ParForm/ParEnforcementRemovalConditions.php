@@ -29,7 +29,7 @@ class ParEnforcementRemovalConditions extends ParFormPluginBase {
     $form['notifications'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       '#value' => "Enforcement notices can only be removed under specific circumstances and where their removal is agreed with the Secretary of State.",
     ];
 

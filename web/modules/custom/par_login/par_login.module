@@ -23,8 +23,8 @@ function par_login_form_user_login_form_alter(&$form, FormStateInterface $form_s
 
   // Adding secondary links according to GOV.UK design patterns.
   $form['secondary_links'] = [
-    '#type' => 'fieldset',
-    '#attributes' => ['class' => ['form-group']],
+    '#type' => 'container',
+    '#attributes' => ['class' => ['govuk-form-group']],
     '#weight' => 100,
   ];
   $form['secondary_links']['password_reset'] = [
@@ -48,7 +48,7 @@ function par_login_form_user_form_alter(&$form, &$form_state) {
   // Load form if relevant.
   if (\Drupal::moduleHandler()->moduleExists('password_policy') &&
       \Drupal::service('password_policy.validation_manager')->tableShouldBeVisible()) {
-    $form['account']['password_policy_status']['#attributes'] = ['class' => ['form-group']];
+    $form['account']['password_policy_status']['#attributes'] = ['class' => ['govuk-form-group']];
   }
 }
 

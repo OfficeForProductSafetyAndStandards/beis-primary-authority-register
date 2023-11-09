@@ -1,0 +1,218 @@
+diff --git a/core/lib/Drupal/Core/Form/FormElementHelper.php b/core/lib/Drupal/Core/Form/FormElementHelper.php
+index a121127b14..6e74ec57bf 100644
+--- a/core/lib/Drupal/Core/Form/FormElementHelper.php
++++ b/core/lib/Drupal/Core/Form/FormElementHelper.php
+@@ -60,4 +60,28 @@ public static function getElementTitle(array $element) {
+     return $title;
+   }
+
++  /**
++  * Returns the error for the element.
++  *
++  * @param array $element
++  *   An associative array containing the properties of the form element.
++  *
++  * @return string
++  *   The error of the element, or an empty string if none is found.
++  */
++  public static function getElementError(array $element) {
++    $error = '';
++    if (isset($element['#error'])) {
++      $error = $element['#error'];
++    }
++    else {
++      foreach (Element::children($element) as $key) {
++        if ($error = static::getElementError($element[$key])) {
++          break;
++        }
++      }
++    }
++    return $error;
++  }
++
+ }
+diff --git a/core/lib/Drupal/Core/Form/FormErrorHandler.php b/core/lib/Drupal/Core/Form/FormErrorHandler.php
+index dfb52c072e..f6b7a4ca96 100644
+--- a/core/lib/Drupal/Core/Form/FormErrorHandler.php
++++ b/core/lib/Drupal/Core/Form/FormErrorHandler.php
+@@ -5,6 +5,7 @@
+ use Drupal\Component\Utility\NestedArray;
+ use Drupal\Core\Messenger\MessengerTrait;
+ use Drupal\Core\Render\Element;
++use Symfony\Component\DependencyInjection\ContainerInterface;
+
+ /**
+  * Handles form errors.
+@@ -13,6 +14,22 @@ class FormErrorHandler implements FormErrorHandlerInterface {
+
+   use MessengerTrait;
+
++  /**
++   * The renderer service.
++   *
++   * @var \Drupal\Core\Render\RendererInterface
++   */
++  protected $renderer;
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container) {
++    return new static(
++      $container->get('renderer')
++    );
++  }
++
+   /**
+    * {@inheritdoc}
+    */
+@@ -40,9 +57,37 @@ public function handleFormErrors(array &$form, FormStateInterface $form_state) {
+   protected function displayErrorMessages(array $form, FormStateInterface $form_state) {
+     $errors = $form_state->getErrors();
+
+-    // Loop through all form errors and set an error message.
+-    foreach ($errors as $error) {
+-      $this->messenger()->addMessage($error, 'error');
++    $items = [
++      '#theme' => 'item_list',
++      '#items' => [],
++      '#list_type' => 'ul',
++    ];
++
++    // Loop through all form errors and sets an ID & error messages.
++    foreach ($errors as $name => $error) {
++      $form_element = FormElementHelper::getElementByName($name, $form);
++      $has_id = !empty($form_element['#id']);
++      if ($has_id) {
++        $items['#wrapper_attributes'] = [
++          'id' => $form_element['#id'] . '--error-message',
++        ];
++      }
++
++      $message = [
++        'message' => [
++          '#markup' => $error,
++        ],
++        'items' => $items,
++      ];
++
++      // Render the error messages as HTML.
++      if ($has_id) {
++        $message = $this->renderer->renderPlain($message);
++        $this->messenger()->addMessage($message, 'error');
++      }
++      else {
++        $this->messenger()->addMessage($error, 'error');
++      }
+     }
+   }
+
+@@ -163,6 +208,11 @@ protected function setElementErrorsFromFormState(array &$form, FormStateInterfac
+
+     // Store the errors for this element on the element directly.
+     $elements['#errors'] = $form_state->getError($elements);
++
++    // Add aria-describedby attribute to the form element.
++    if ((($elements['#errors']) !== NULL) && (($elements['#type']) !== 'radio') && (($elements['#type']) !== 'checkbox')) {
++      $elements['#attributes']['aria-describedby'] = $elements['#id'] . '--status-message';
++    }
+   }
+
+ }
+diff --git a/core/modules/inline_form_errors/inline_form_errors.module b/core/modules/inline_form_errors/inline_form_errors.module
+index 3bacd37b93..65d4a8e362 100644
+--- a/core/modules/inline_form_errors/inline_form_errors.module
++++ b/core/modules/inline_form_errors/inline_form_errors.module
+@@ -7,6 +7,7 @@
+
+ use Drupal\Core\Routing\RouteMatchInterface;
+ use Drupal\inline_form_errors\RenderElementHelper;
++use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+
+ /**
+  * Implements hook_help().
+@@ -71,3 +72,17 @@ function _inline_form_errors_set_errors(&$variables) {
+     $variables['errors'] = $element['#errors'];
+   }
+ }
++
++/**
+++ * Implements hook_preprocess_html().
+++ */
++function inline_form_errors_preprocess_html(&$variables) {
++  $messenger = \Drupal::messenger();
++  $all_messages = $messenger->all();
++
++  if (!empty($all_messages['error'])) {
++    $variables['head_title']['title'] = t('Error: @current_title', [
++      '@current_title' => $variables['head_title']['title']
++    ]);
++  }
++}
+diff --git a/core/modules/inline_form_errors/src/FormErrorHandler.php b/core/modules/inline_form_errors/src/FormErrorHandler.php
+index da286108b9..a9ae85626f 100644
+--- a/core/modules/inline_form_errors/src/FormErrorHandler.php
++++ b/core/modules/inline_form_errors/src/FormErrorHandler.php
+@@ -79,13 +79,13 @@ protected function displayErrorMessages(array $form, FormStateInterface $form_st
+     // Loop through all form errors and check if we need to display a link.
+     foreach ($errors as $name => $error) {
+       $form_element = FormElementHelper::getElementByName($name, $form);
+-      $title = FormElementHelper::getElementTitle($form_element);
++      $title = strip_tags(FormElementHelper::getElementError($form_element));
+
+       // Only show links to erroneous elements that are visible.
+       $is_visible_element = Element::isVisibleElement($form_element);
+       // Only show links for elements that have a title themselves or have
+       // children with a title.
+-      $has_title = !empty($title);
++      $has_error = !empty($error);
+       // Only show links for elements with an ID.
+       $has_id = !empty($form_element['#id']);
+
+@@ -94,10 +94,11 @@ protected function displayErrorMessages(array $form, FormStateInterface $form_st
+       if (!empty($form_element['#error_no_message'])) {
+         unset($errors[$name]);
+       }
+-      elseif ($is_visible_element && $has_title && $has_id) {
+-        $error_links[] = Link::fromTextAndUrl($title, Url::fromRoute('<none>', [], ['fragment' => $form_element['#id'], 'external' => TRUE]))->toRenderable();
++      elseif ($is_visible_element && $has_error && $has_id) {
++        $error_links[] = Link::fromTextAndUrl($title . strip_tags($error), Url::fromRoute('<none>', [], ['fragment' => $form_element['#id'], 'external' => TRUE]))->toRenderable();
+         unset($errors[$name]);
+       }
++
+     }
+
+     // Set normal error messages for all remaining errors.
+@@ -107,13 +108,10 @@ protected function displayErrorMessages(array $form, FormStateInterface $form_st
+
+     if (!empty($error_links)) {
+       $render_array = [
+-        [
+-          '#markup' => $this->formatPlural(count($error_links), '1 error has been found: ', '@count errors have been found: '),
+-        ],
+         [
+           '#theme' => 'item_list',
+           '#items' => $error_links,
+-          '#context' => ['list_style' => 'comma-list'],
++          '#context' => ['list_style' => 'govuk-error-summary__list'],
+         ],
+       ];
+       $message = $this->renderer->renderPlain($render_array);
+diff --git a/core/modules/inline_form_errors/tests/src/Unit/FormErrorHandlerTest.php b/core/modules/inline_form_errors/tests/src/Unit/FormErrorHandlerTest.php
+index 962f107955..79353a139c 100644
+--- a/core/modules/inline_form_errors/tests/src/Unit/FormErrorHandlerTest.php
++++ b/core/modules/inline_form_errors/tests/src/Unit/FormErrorHandlerTest.php
+@@ -174,8 +174,11 @@ public function testErrorMessagesNotInline() {
+         ['this missing element is invalid', 'error', FALSE],
+       );
+
+-    $this->renderer->expects($this->never())
+-      ->method('renderPlain');
++    $this->renderer->expects($this->any())
++      ->method('renderPlain')
++      ->will($this->returnCallback(function ($message) {
++        return $message['message']['#markup'];
++      }));
+
+     $this->testForm['#disable_inline_form_errors'] = TRUE;
+

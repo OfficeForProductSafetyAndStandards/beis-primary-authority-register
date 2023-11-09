@@ -62,7 +62,7 @@ class ParRemoveInspectionPlanForm extends ParBaseForm {
       '#type' => 'html_tag',
       '#tag' => 'p',
       '#value' => $this->t('Are you sure you want to remove the inspection plan @inspection_plan from the @partnership?', ['@inspection_plan' => $par_data_inspection_plan->getTitle(), '@partnership' => $par_data_partnership->label()]),
-      '#attributes' => ['class' => ['remove-inspection-plan', 'form-group']],
+      '#attributes' => ['class' => ['remove-inspection-plan', 'govuk-form-group']],
     ];
 
     if (!empty($documents)) {
@@ -76,7 +76,7 @@ class ParRemoveInspectionPlanForm extends ParBaseForm {
         '#type' => 'html_tag',
         '#tag' => 'div',
         '#value' => $this->getRenderer()->render($documents),
-        '#attributes' => ['class' => ['document-summary', 'form-group']],
+        '#attributes' => ['class' => ['document-summary', 'govuk-form-group']],
       ];
     }
 

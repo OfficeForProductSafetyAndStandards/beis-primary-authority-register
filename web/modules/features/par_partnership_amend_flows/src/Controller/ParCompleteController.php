@@ -30,8 +30,9 @@ class ParCompleteController extends ParBaseController {
     ];
 
     $build['next'] = [
-      '#title' => $this->t('What happens next?'),
       '#type' => 'fieldset',
+      '#title' => $this->t('What happens next?'),
+      '#title_tag' => 'h2',
     ];
     $build['next']['notification_organisation'] = [
       '#type' => 'html_tag',

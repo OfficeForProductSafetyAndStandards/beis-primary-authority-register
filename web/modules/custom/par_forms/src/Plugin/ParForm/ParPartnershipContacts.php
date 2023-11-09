@@ -65,7 +65,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
         '#type' => 'html_tag',
         '#tag' => 'h2',
         '#value' => "Contact information",
-        '#attributes' => ['class' => 'heading-large'],
+        '#attributes' => ['class' => 'govuk-heading-l'],
       ];
     }
 
@@ -101,19 +101,18 @@ class ParPartnershipContacts extends ParFormPluginBase {
     }
 
     $form["{$contact_format}_contacts"] = [
-      '#type' => 'fieldset',
-      '#title' => $section_title,
-      '#attributes' => ['class' => ['form-group']],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $section_title,
+      ],
+      '#attributes' => ['class' => ['govuk-form-group']],
       'person' => [
-        '#type' => 'fieldset',
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+        '#type' => 'container',
         'items' => [
-          '#type' => 'fieldset',
-          '#collapsible' => FALSE,
-          '#collapsed' => FALSE,
+          '#type' => 'container'
         ],
         'pager' => [
           '#type' => 'pager',
@@ -125,9 +124,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
           ],
         ],
         'operations' => [
-          '#type' => 'fieldset',
-          '#collapsible' => FALSE,
-          '#collapsed' => FALSE,
+          '#type' => 'container',
           'add' => [
             '#type' => 'html_tag',
             '#tag' => 'p',
@@ -162,13 +159,11 @@ class ParPartnershipContacts extends ParFormPluginBase {
 
       $form["{$contact_format}_contacts"]['person']['items'][$delta] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+        '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group', 'contact-details']],
         'entity' => [
           '#type' => 'html_tag',
           '#tag' => 'div',
-          '#attributes' => ['class' => ['column-full']],
+          '#attributes' => ['class' => ['govuk-grid-column-full']],
           [...$entity_view],
         ],
         'operations' => [
@@ -176,13 +171,13 @@ class ParPartnershipContacts extends ParFormPluginBase {
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $update_contact_link ? $update_contact_link->toString() : '',
-            '#attributes' => ['class' => ['column-one-third']],
+            '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
           ],
           'remove' => [
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $remove_contact_link ? $remove_contact_link?->toString() : '',
-            '#attributes' => ['class' => ['column-two-thirds']],
+            '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
           ],
         ],
       ];

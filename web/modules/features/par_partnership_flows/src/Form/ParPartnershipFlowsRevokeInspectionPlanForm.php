@@ -59,18 +59,26 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
 
     if ($par_data_partnership && $par_data_partnership->inProgress()) {
       $form['inspection_plan_info'] = [
-        '#type' => 'markup',
-        '#title' => $this->t('Revoke denied'),
-        '#markup' => $this->t('This inspection plan document cannot be revoked because the partnership it is awaiting approval or there are enforcement notices currently awaiting review. Please try again later.'),
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#value' => $this->t('Revoke denied'),
+        ],
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->t('This inspection plan document cannot be revoked because the partnership it is awaiting approval or there are enforcement notices currently awaiting review. Please try again later.'),
+        ],
       ];
 
       return parent::buildForm($form, $form_state);
     }
 
     $form['inspection_plan_info'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#title' => $this->t('Revoke the inspection plan'),
-      '#attributes' => ['class' => 'form-group'],
+      '#title_tag' => 'h2',
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['inspection_plan_info']['inspection_plan_text'] = [

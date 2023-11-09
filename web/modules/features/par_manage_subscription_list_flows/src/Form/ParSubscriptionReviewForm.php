@@ -41,7 +41,8 @@ class ParSubscriptionReviewForm extends ParBaseForm {
       $form['subscribe'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Subscriptions to be added (@count)', ['@count' => count($subscribe)]),
-        '#attributes' => ['class' => 'form-group'],
+        '#title_tag' => 'h2',
+        '#attributes' => ['class' => 'govuk-form-group'],
         'new' => [
           '#type' => 'markup',
           '#markup' => "$subscribe_list",
@@ -55,7 +56,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
       $form['unsubscribe'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Subscriptions to be removed (@count)', ['@count' => count($unsubscribe)]),
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         'new' => [
           '#type' => 'markup',
           '#markup' => "$unsubscribe_list",

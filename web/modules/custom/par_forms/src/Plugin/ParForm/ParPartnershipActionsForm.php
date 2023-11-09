@@ -24,12 +24,17 @@ class ParPartnershipActionsForm extends ParFormPluginBase {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // Create a list of links for the actions that can be performed on this partnership.
+    $form['partnership_actions_title'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => t('Send a message about this organisation'),
+      '#attributes' => ['class' => ['govuk-heading-m']],
+    ];
     $form['partnership_actions'] = [
       '#theme' => 'item_list',
       '#list_type' => 'ul',
-      '#title' => t('Send a message about this organisation'),
       '#items' => [],
-      '#attributes' => ['class' => ['list', 'form-group']],
+      '#attributes' => ['class' => ['govuk-list', 'govuk-form-group']],
     ];
 
     // Enforcement notification link.

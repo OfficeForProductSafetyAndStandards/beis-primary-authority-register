@@ -4,6 +4,14 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
 
 /**
+ * Implements hook_preprocess().
+ */
+function par_theme_preprocess(&$variables) {
+  $handler = \Drupal::service('theme_handler');
+  $variables['govuk_directory'] = base_path() . $handler->getTheme('par_theme')->getPath();
+}
+
+/**
  * Implements hook_preprocess_page().
  *
  * @param array $variables
@@ -13,10 +21,12 @@ function par_theme_preprocess_html(array &$variables) {
   $title_fragments = isset($variables['head_title']['title']) ? explode('|', $variables['head_title']['title']) : NULL;
   $title_fragments = array_map('trim', $title_fragments);
   $name = (string) $variables['head_title']['name'] ?? '';
+
   // Remove the duplicate site name from the title.
   $title_fragments = array_filter($title_fragments, function($value) use ($name) {
     return $value !== $name;
   });
+
   // The second part of the title is the most important.
   if (count($title_fragments) > 1) {
     $secondary_title = array_shift($title_fragments);
@@ -31,7 +41,7 @@ function par_theme_preprocess_html(array &$variables) {
 
   // Add override class to page to display PAR green branded app.
   if (Settings::get('par_branded_header_footer', FALSE)) {
-    $variables['attributes']['class'][] = 'par-header-footer';
+    $variables['attributes']['class'][] = 'par-branding';
   }
 
 }
@@ -42,16 +52,21 @@ function par_theme_preprocess_html(array &$variables) {
  * @param array $variables
  */
 function par_theme_preprocess_fieldset(array &$variables) {
-
-  $variables['child_count'] = isset($variables['element']['#options']) ?
-                              count($variables['element']['#options']) : 0;
-
   // Get the form element.
   $element = &$variables['element'];
 
+  // Count the child elements, some radio and checkbox elements display
+  // inline if there are 2 or fewer options.
+  $variables['child_count'] = isset($element['#options']) ?
+    count($variables['element']['#options']) : 0;
+
+  // Allow the title tag to be selected, by default this is only a <span>
+  if (!empty($element['#title_tag'])) {
+    $variables['legend']['title_tag'] = $element['#title_tag'];
+  }
+
   // Pass elements disabled status to template.
-  $variables['disabled'] = !empty($element['#attributes']['disabled']) ?
-                            $element['#attributes']['disabled'] : NULL;
+  $variables['disabled'] = $element['#attributes']['disabled'] ?? NULL;
 
   // Initiate errors.
   $variables['errors'] = NULL;
@@ -84,13 +99,12 @@ function par_theme_element_info_alter(array &$info) {
  * @param array $variables
  */
 function par_theme_preprocess_form_element(array &$variables) {
-
   // Get the form element.
   $element = &$variables['element'];
 
   // Pass elements disabled status to template.
   $variables['disabled'] = !empty($element['#attributes']['disabled']) ?
-                            $element['#attributes']['disabled'] : NULL;
+    $element['#attributes']['disabled'] : NULL;
 
   // Initiate errors.
   $variables['errors'] = NULL;
@@ -100,6 +114,61 @@ function par_theme_preprocess_form_element(array &$variables) {
     $variables['errors'] = $element['#errors'];
   }
 
+  // Allow the title tag to be selected for all form elements, by default
+  // this is not set and the title contents is rendered inside the label.
+  if (!empty($element['#title_tag'])) {
+    $variables['title_tag'] = $element['#title_tag'];
+  }
+}
+
+/**
+ * Implements hook_preprocess_form_element_label().
+ *
+ * @param array $variables
+ */
+function par_theme_preprocess_form_element_label(array &$variables) {
+  // Get the form element.
+  $element = &$variables['element'];
+
+  // Allow the title tag to be selected for all form elements, by default
+  // this is not set and the title contents is rendered inside the label.
+  if (!empty($element['#title_tag'])) {
+    $variables['title_tag'] = $element['#title_tag'];
+  }
+}
+
+/**
+ * Implements hook_template_preprocess_input().
+ *
+ * @param array $variables
+ */
+function par_theme_preprocess_input(&$variables) {
+  $element = $variables['element'];
+
+  // Initiate errors.
+  $variables['errors'] = NULL;
+
+  // Make {{ errors }} available in template file.
+  if (!empty($element['#errors']) && empty($element['#error_use_parent'])) {
+    $variables['errors'] = $element['#errors'];
+  }
+}
+
+/**
+ * Implements hook_template_preprocess_textarea().
+ *
+ * @param array $variables
+ */
+function par_theme_preprocess_textarea(&$variables) {
+  $element = $variables['element'];
+
+  // Initiate errors.
+  $variables['errors'] = NULL;
+
+  // Make {{ errors }} available in template file.
+  if (!empty($element['#errors']) && empty($element['#error_use_parent'])) {
+    $variables['errors'] = $element['#errors'];
+  }
 }
 
 /**
@@ -128,11 +197,14 @@ function par_theme_form_user_pass_alter(&$form, FormStateInterface $form_state, 
 /**
  * Implements hook_preprocess_block().
  */
-function par_theme_preprocess_block(&$vars) {
-  if ($vars['derivative_plugin_id'] === 'account') {
+function par_theme_preprocess_block(&$variables) {
+  if ($variables['derivative_plugin_id'] === 'account') {
     // This stops the block being cache in drupal 8.
-    $vars['#cache']['max-age'] = 0;
+    $variables['#cache']['max-age'] = 0;
   }
+
+  // Ensure all block titles have the correct heading class.
+  $variables['title_attributes']['class'] = ['govuk-heading-m'];
 }
 
 /**
@@ -143,3 +215,15 @@ function par_theme_page_attachments_alter(array &$attachments) {
     $attachments['#attached']['library'][] = 'par_theme/tota11y';
   }
 }
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ *
+ * Add views template suggestions.
+ *
+ * @inheritdoc
+ */
+function par_theme_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
+  $suggestions[] = 'views_view__' . $variables['view']->id();
+}
+

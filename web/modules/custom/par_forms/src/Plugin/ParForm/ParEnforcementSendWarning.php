@@ -75,7 +75,7 @@ class ParEnforcementSendWarning extends ParFormPluginBase {
 
       $form['approved_message'] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
         'warning' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
@@ -93,7 +93,7 @@ class ParEnforcementSendWarning extends ParFormPluginBase {
 
       $form['determination_message'] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
         'warning-primary' => [
           '#type' => 'html_tag',
           '#tag' => 'p',

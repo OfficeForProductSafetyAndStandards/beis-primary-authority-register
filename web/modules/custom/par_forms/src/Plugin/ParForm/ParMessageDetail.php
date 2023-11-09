@@ -75,14 +75,14 @@ class ParMessageDetail extends ParFormPluginBase {
 
     if ($index === 1) {
       $form['message_intro'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'h2',
           '#value' => $this->t('Responses'),
-          '#attributes' => ['class' => ['heading-large']],
+          '#attributes' => ['class' => ['govuk-heading-l']],
         ],
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
 
       // Add operation link for replying to request.
@@ -104,8 +104,8 @@ class ParMessageDetail extends ParFormPluginBase {
 
     if ($this->getDefaultValuesByKey('message', $index, NULL)) {
       $form['message'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => ['form-group', 'panel panel-border-wide']],
+        '#type' => 'container',
+        '#attributes' => ['class' => ['govuk-form-group', 'panel panel-border-wide']],
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
@@ -117,8 +117,8 @@ class ParMessageDetail extends ParFormPluginBase {
     }
     else {
       $form['message'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => ['form-group']],
+        '#type' => 'container',
+        '#attributes' => ['class' => ['govuk-form-group']],
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'p',

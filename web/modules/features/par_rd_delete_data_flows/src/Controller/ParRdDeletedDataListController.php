@@ -111,7 +111,7 @@ class ParRdDeletedDataListController extends ControllerBase {
           $build['entity_types'][$entity_type->id()] = [
             '#type' => 'fieldset',
             '#title' => t($entity_type->getSingularLabel()),
-            '#attributes' => ['class' => ['form-group']],
+            '#attributes' => ['class' => ['govuk-form-group']],
             'items' => [
               '#type' => 'container',
               '#collapsible' => FALSE,
@@ -160,7 +160,7 @@ class ParRdDeletedDataListController extends ControllerBase {
           $build['entity_types'][$entity_type->id()] = [
             '#type' => 'fieldset',
             '#title' => t($entity_type->getSingularLabel()),
-            '#attributes' => ['class' => ['form-group']],
+            '#attributes' => ['class' => ['govuk-form-group']],
             'items' => [
               '#type' => 'container',
               '#collapsible' => FALSE,
@@ -201,7 +201,7 @@ class ParRdDeletedDataListController extends ControllerBase {
 //    $build['partnerships'] = [
 //      '#type' => 'fieldset',
 //      '#title' => $this->t('Partnerships'),
-//      '#attributes' => ['class' => 'form-group'],
+//      '#attributes' => ['class' => 'govuk-form-group'],
 //      '#collapsible' => FALSE,
 //      '#collapsed' => FALSE,
 //      '#cache' => ['contexts' => ['user.par_memberships:authority']]
@@ -228,7 +228,7 @@ class ParRdDeletedDataListController extends ControllerBase {
 //    $build['institutions'] = [
 //      '#type' => 'fieldset',
 //      '#title' => $this->t('Authorities & Organisations'),
-//      '#attributes' => ['class' => 'form-group'],
+//      '#attributes' => ['class' => 'govuk-form-group'],
 //      '#collapsible' => FALSE,
 //      '#collapsed' => FALSE,
 //    ];
@@ -253,7 +253,7 @@ class ParRdDeletedDataListController extends ControllerBase {
 //    $build['people'] = [
 //      '#type' => 'fieldset',
 //      '#title' => $this->t('People'),
-//      '#attributes' => ['class' => 'form-group'],
+//      '#attributes' => ['class' => 'govuk-form-group'],
 //      '#collapsible' => FALSE,
 //      '#collapsed' => FALSE,
 //      '#cache' => ['contexts' => ['user.par_memberships:authority']]
@@ -277,7 +277,7 @@ class ParRdDeletedDataListController extends ControllerBase {
 //    $build['enforcements'] = [
 //      '#type' => 'fieldset',
 //      '#title' => $this->t('Enforcements'),
-//      '#attributes' => ['class' => 'form-group'],
+//      '#attributes' => ['class' => 'govuk-form-group'],
 //      '#collapsible' => FALSE,
 //      '#collapsed' => FALSE,
 //      '#cache' => ['contexts' => ['user.par_memberships:authority']]
@@ -310,7 +310,7 @@ class ParRdDeletedDataListController extends ControllerBase {
 //    $build['enquiries'] = [
 //      '#type' => 'fieldset',
 //      '#title' => $this->t('Enquiries'),
-//      '#attributes' => ['class' => 'form-group'],
+//      '#attributes' => ['class' => 'govuk-form-group'],
 //      '#collapsible' => FALSE,
 //      '#collapsed' => FALSE,
 //      '#cache' => ['contexts' => ['user.par_memberships:authority']]

@@ -77,54 +77,76 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements(array $form = [], int $index = 1) {
+    $form['title'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => $this->t('Enter the contact details'),
+      '#attributes' => ['class' => ['govuk-heading-m']]
+    ];
+
     $form['salutation'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the title (optional)'),
       '#description' => $this->t('For example, Ms Mr Mrs Dr'),
       '#default_value' => $this->getDefaultValuesByKey('salutation', $index),
+      '#attributes' => ['autocomplete' => 'honorific-prefix']
     ];
 
     $form['first_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the first name'),
       '#default_value' => $this->getDefaultValuesByKey('first_name', $index),
+      '#attributes' => ['autocomplete' => 'given-name']
     ];
 
     $form['last_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the last name'),
       '#default_value' => $this->getDefaultValuesByKey('last_name', $index),
+      '#attributes' => ['autocomplete' => 'family-name']
     ];
 
     $form['work_phone'] = [
       '#type' => 'tel',
       '#title' => $this->t('Enter the work phone number'),
       '#default_value' => $this->getDefaultValuesByKey('work_phone', $index),
+      '#attributes' => ['autocomplete' => 'tel']
     ];
 
     $form['mobile_phone'] = [
       '#type' => 'tel',
       '#title' => $this->t('Enter the mobile phone number (optional)'),
       '#default_value' => $this->getDefaultValuesByKey('mobile_phone', $index),
+      '#attributes' => ['autocomplete' => 'tel']
     ];
 
     // Prevent modifying of email address when un-editable.
     if ($this->getDefaultValuesByKey('email_readonly', $index, FALSE)) {
       $form['email_readonly'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('Email address'),
-        '#description' => $this->t('You cannot update this person\'s email address because they already have an account.'),
-        '#attributes' => ['class' => ['form-group']],
+        '#type' => 'container',
+        '#attributes' => ['class' => ['govuk-form-group']],
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#attributes' => ['class' => ['govuk-heading-m']],
+          '#value' => $this->t('Email address'),
+        ],
+        'description' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->t('You cannot update this person\'s email address because they already have an account.'),
+        ],
         'email_address' => [
-          '#type' => 'markup',
-          '#markup' => $this->getDefaultValuesByKey('email', $index),
-          '#prefix' => '<p>',
-          '#suffix' => '</p>',
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#attributes' => ['class' => ['govuk-inset-text']],
+          '#value' => $this->getDefaultValuesByKey('email', $index),
         ],
       ];
       $form['email'] = [
         '#type' => 'hidden',
         '#value' => $this->getDefaultValuesByKey('email', $index),
+        '#attributes' => ['autocomplete' => 'email']
       ];
     }
     else {
@@ -132,6 +154,7 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
         '#type' => 'email',
         '#title' => $this->t('Enter the email address'),
         '#default_value' => $this->getDefaultValuesByKey('email', $index),
+        '#attributes' => ['autocomplete' => 'email']
       ];
     }
 
@@ -146,6 +169,7 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
     $form['preferred_contact'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Select the preferred methods of contact (optional)'),
+      '#title_tag' => 'h2',
       '#options' => $contact_options,
       '#default_value' => $this->getDefaultValuesByKey('preferred_contact', $index, []),
       '#return_value' => 'on',
