@@ -173,17 +173,31 @@ class ParConfirmationReviewForm extends ParBaseForm {
       ]),
     ];
 
-    $url_address = 'https://www.gov.uk/government/publications/primary-authority-terms-and-conditions';
-    $url = Url::fromUri($url_address, ['attributes' => ['target' => '_blank']]);
-    $terms_link = Link::fromTextAndUrl(t('terms & conditions (opens in a new window)'), $url);
     $form['terms_organisation_agreed'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('I have read and agree to the @terms.', ['@terms' => $terms_link->toString()]),
+      '#title' => $this->t('I have read and agree to the terms and conditions.'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_organisation_agreed"),
       '#return_value' => 'on',
-      '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
+      '#wrapper_attributes' => ['class' => ['govuk-!-margin-top-4']],
     ];
 
+    // Terms & conditions.
+    $url_address = 'https://www.gov.uk/government/publications/primary-authority-terms-and-conditions';
+    $url = Url::fromUri($url_address, ['attributes' => ['target' => '_blank']]);
+    $terms_link = Link::fromTextAndUrl(t('Terms & conditions (opens in a new window)'), $url);
+    $form['terms_link'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      [
+        '#type' => 'link',
+        '#title' => $terms_link->getText(),
+        '#url' => $terms_link->getUrl(),
+        '#options' => $terms_link->getUrl()->getOptions(),
+      ],
+      '#attributes' => ['class' => ['govuk-!-margin-bottom-4']],
+    ];
+
+    // Helptext.
     $form['help_text'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',

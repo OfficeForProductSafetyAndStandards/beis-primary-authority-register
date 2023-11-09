@@ -44,7 +44,7 @@ class ParPartnershipFlowsAdvicePageController extends ParBaseController {
       $build['advice_details']['archived'] = [
         '#type' => 'html_tag',
         '#tag' => 'h2',
-        '#markup' => 'Archived advice',
+        '#value' => 'Archived advice',
         '#attributes' => ['class' => 'govuk-heading-m'],
       ];
     }

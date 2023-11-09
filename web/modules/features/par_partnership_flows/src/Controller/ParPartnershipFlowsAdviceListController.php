@@ -30,7 +30,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     $build['partnership'] = [
       '#type' => 'html_tag',
       '#tag' => 'h2',
-      '#title' => $par_data_partnership->label(),
+      '#value' => $par_data_partnership->label(),
       '#attributes' => ['class' => 'govuk-heading-m']
     ];
 
