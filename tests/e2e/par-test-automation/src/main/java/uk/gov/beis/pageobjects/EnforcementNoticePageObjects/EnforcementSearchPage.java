@@ -22,22 +22,27 @@ public class EnforcementSearchPage extends BasePageObject {
 	@FindBy(xpath = "//div/p[contains(text(),'Sorry, there are no sent or received notices')]")
 	private WebElement noResults;
 	
-	String status = "//td[contains(text(),'?')]/preceding-sibling::td[1]";
-	String removeEnfBtn = "//td[contains(text(),'?')]/following-sibling::td[1]/a[contains(text(),'remove enforcement')]";
+	private String status = "//td[contains(text(),'?')]/preceding-sibling::td[1]";
+	private String removeEnfBtn = "//td[contains(text(),'?')]/following-sibling::td[1]/a[contains(text(),'remove enforcement')]";
 	
 	public EnforcementSearchPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	public EnforcementSearchPage searchEnforcements() {
-		searchInput.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+	
+	public void searchForEnforcementNotice(String search) {
+		searchInput.clear();
+		searchInput.sendKeys(search);
 		searchBtn.click();
-		return PageFactory.initElements(driver, EnforcementSearchPage.class);
 	}
-
+	
 	public ProposedEnforcementPage selectEnforcement() {
 		driver.findElement(By.linkText(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TITLE))).click();
 		return PageFactory.initElements(driver, ProposedEnforcementPage.class);
+	}
+	
+	public RemoveEnforcementPage removeEnforcement() {
+		driver.findElement(By.xpath(removeEnfBtn.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME)))).click();
+		return PageFactory.initElements(driver, RemoveEnforcementPage.class);
 	}
 
 	public boolean confirmNoReturnedResults() {
@@ -49,18 +54,8 @@ public class EnforcementSearchPage extends BasePageObject {
 		
 		return value;
 	}
-
-	public RemoveEnforcementPage removeEnforcement() {
-		driver.findElement(By.xpath(removeEnfBtn.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME)))).click();
-		return PageFactory.initElements(driver, RemoveEnforcementPage.class);
-	}
-
+	
 	public String getStatus() {
 		return driver.findElement(By.xpath(status.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME)))).getText();
-	}
-	
-	public void searchForEnforcementNotice(String search) {
-		searchInput.sendKeys(search);
-		searchBtn.click();
 	}
 }

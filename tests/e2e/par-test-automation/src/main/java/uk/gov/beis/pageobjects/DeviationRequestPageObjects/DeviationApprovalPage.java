@@ -10,10 +10,10 @@ import uk.gov.beis.pageobjects.BasePageObject;
 
 public class DeviationApprovalPage extends BasePageObject{
 
-	@FindBy(xpath = "//label[contains(text(),'Allow')]")
+	@FindBy(id = "edit-primary-authority-status-approved")
 	private WebElement allowRadial;
 	
-	@FindBy(xpath = "//label[contains(text(),'Block')]")
+	@FindBy(id = "edit-primary-authority-status-blocked")
 	private WebElement blockRadial;
 	
 	@FindBy(id = "edit-primary-authority-notes")
@@ -39,7 +39,7 @@ public class DeviationApprovalPage extends BasePageObject{
 		blockReasonTextArea.sendKeys(reason);
 	}
 
-	public DeviationReviewPage proceed() {
+	public DeviationReviewPage clickContinue() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, DeviationReviewPage.class);
 	}

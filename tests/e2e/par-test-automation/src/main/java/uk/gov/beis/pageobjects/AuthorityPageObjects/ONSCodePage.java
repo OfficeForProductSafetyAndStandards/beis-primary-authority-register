@@ -24,18 +24,17 @@ public class ONSCodePage extends BasePageObject {
 		super();
 	}
 	
-	public RegulatoryFunctionPage enterONSCode(String name) {
+	public void enterONSCode(String name) {
 		onsCode.clear();
 		onsCode.sendKeys(name);
-		
+	}
+	
+	public RegulatoryFunctionPage clickContinue() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, RegulatoryFunctionPage.class);
 	}
 	
-	public RegulatoryFunctionPage editONSCode(String name) {
-		onsCode.clear();
-		onsCode.sendKeys(name);
-		
+	public RegulatoryFunctionPage clickSave() {
 		saveBtn.click();
 		return PageFactory.initElements(driver, RegulatoryFunctionPage.class);
 	}

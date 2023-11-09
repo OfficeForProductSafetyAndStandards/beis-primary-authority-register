@@ -23,7 +23,7 @@ public class MailLogPage extends BasePageObject {
 	@FindBy(name = "name")
 	private WebElement username;
 	
-	String email = "//tr/td[contains(text(),'?')]/preceding-sibling::td/a[contains(text(),'Invitation')]";
+	private String email = "//tr/td[contains(text(),'?')]/preceding-sibling::td/a[contains(text(),'Invitation')]";
 	
 	public MailLogPage() throws ClassNotFoundException, IOException {
 		super();

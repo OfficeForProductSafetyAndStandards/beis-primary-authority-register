@@ -8,32 +8,33 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.DeclarationPage;
 
 public class RemoveEnforcementPage extends BasePageObject {
+	
+	@FindBy(id = "edit-reason-description")
+	private WebElement descriptionBox;
+	
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
 
+	private String removalReasonLocator = "//label[contains(text(),'?')]";
+	
 	public RemoveEnforcementPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
-
-	private String locator = "//label[contains(text(),'?')]";
-
-	public RemoveEnforcementPage selectRevokeReason(String reason) {
-		driver.findElement(By.xpath(locator.replace("?", reason))).click();
-		return PageFactory.initElements(driver, RemoveEnforcementPage.class);
+	
+	public void selectReasonForRemoval(String reason) {
+		driver.findElement(By.xpath(removalReasonLocator.replace("?", reason))).click();
 	}
 	
-	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
-	WebElement descriptionBox;
-
-	public RemoveEnforcementConfirmationPage enterRevokeDescription(String description) throws Throwable {
+	public void enterReasonForRemoval(String reason) {
 		descriptionBox.clear();
-		descriptionBox.sendKeys(description);
-		continueBtn.click();
-
-		return PageFactory.initElements(driver, RemoveEnforcementConfirmationPage.class);
+		descriptionBox.sendKeys(reason);
 	}
-
+	
+	public DeclarationPage clickContinue() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, DeclarationPage.class);
+	}
 }

@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.RemovePage;
 import uk.gov.beis.utility.DataStore;
 
 public class AdviceNoticeSearchPage extends BasePageObject {
@@ -22,8 +23,8 @@ public class AdviceNoticeSearchPage extends BasePageObject {
 	@FindBy(linkText = "Upload advice")
 	private WebElement uploadBtn;
 	
-	String planstatus = "//td/a[contains(text(),'?')]/parent::td/following-sibling::td[2]";
-	String noResultsReturned = "//p[contains(text(), 'Sorry, there are no results for your search.')]";
+	private String planstatus = "//td/a[contains(text(),'?')]/parent::td/following-sibling::td[2]";
+	private String noResultsReturned = "//p[contains(text(), 'Sorry, there are no results for your search.')]";
 	
 	public AdviceNoticeSearchPage() throws ClassNotFoundException, IOException {
 		super();
@@ -56,11 +57,11 @@ public class AdviceNoticeSearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, AdviceArchivePage.class);
 	}
 	
-	public AdviceRemovalPage selectRemoveAdviceButton() {
+	public RemovePage selectRemoveAdviceButton() {
 		WebElement removeLink = driver.findElement(By.partialLinkText("Remove"));
 		removeLink.click();
 		
-		return PageFactory.initElements(driver, AdviceRemovalPage.class);
+		return PageFactory.initElements(driver, RemovePage.class);
 	}
 	
 	public String getAdviceStatus() {

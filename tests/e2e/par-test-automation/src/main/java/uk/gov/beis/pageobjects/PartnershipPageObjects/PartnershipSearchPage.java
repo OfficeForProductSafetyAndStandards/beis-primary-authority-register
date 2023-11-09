@@ -9,28 +9,26 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.DeclarationPage;
+import uk.gov.beis.pageobjects.DeclarationPage;
 import uk.gov.beis.utility.DataStore;
 
 public class PartnershipSearchPage extends BasePageObject {
-
+	
+	@FindBy(id = "edit-keywords")
+	private WebElement searchInput;
+	
+	@FindBy(xpath = "//input[@value='Search']")
+	private WebElement searchPartnershipsBtn;
+	
+	private String authority = "//td/a[contains(text(),'?')]";
+	
 	public PartnershipSearchPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(id = "edit-keywords")
-	private WebElement searchInput;
-
-	@FindBy(xpath = "//input[contains(@value,'Search')]")
-	private WebElement searchBtn;
 	
-	@FindBy(xpath = "//td[@class='views-field views-field-organisation-name']")
-	private WebElement partnershipTableFirstElement;
-	
-	public PartnershipSearchPage searchPartnerships() {
+	public void searchPartnerships() {
 		searchInput.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
-		searchBtn.click();
-		return PageFactory.initElements(driver, PartnershipSearchPage.class);
+		searchPartnershipsBtn.click();
 	}
 
 	public DeclarationPage selectBusinessNameLink() {
@@ -38,33 +36,19 @@ public class PartnershipSearchPage extends BasePageObject {
 		return PageFactory.initElements(driver, DeclarationPage.class);
 	}
 	
-	public PartnershipConfirmationPage selectBusinessNameLinkFromPartnership() {
+	public PartnershipInformationPage selectBusinessNameLinkFromPartnership() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]")).click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
-
-	private String authority = "//td/a[contains(text(),'?')]";
-
-	public PartnershipConfirmationPage selectAuthority(String auth) {
+	
+	public PartnershipInformationPage selectAuthority(String auth) {
 		WebElement link = driver.findElement(By.xpath(authority.replace("?", auth)));
 		link.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
-	public PartnershipConfirmationPage selectPartnershipLink(String businessName) {
+	public PartnershipInformationPage selectPartnershipLink(String businessName) {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + businessName + "')]")).click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
-	}
-	
-	public void searchForPartnership(String partnership) {
-		searchInput.sendKeys(partnership);
-	}
-	
-	public void clickSearchButton() {
-		searchBtn.click();
-	}
-	
-	public Boolean partnershipContains(String name) {
-		return partnershipTableFirstElement.getText().contains(name);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.EnterTheDatePage;
 
 public class InspectionPlanDetailsPage extends BasePageObject {
 
@@ -28,13 +29,13 @@ public class InspectionPlanDetailsPage extends BasePageObject {
 		title.sendKeys(value);
 	}
 
-	public void enterInspectionDescription(String description) throws Throwable {
+	public void enterInspectionDescription(String description) {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
 	}
 
-	public InspectionPlanExpirationPage save() {
+	public EnterTheDatePage clickSave() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, InspectionPlanExpirationPage.class);
+		return PageFactory.initElements(driver, EnterTheDatePage.class);
 	}
 }

@@ -23,18 +23,17 @@ public class AuthorityNamePage extends BasePageObject {
 		super();
 	}
 	
-	public AuthorityTypePage enterAuthorityName(String name) {
+	public void enterAuthorityName(String name) {
 		authorityName.clear();
 		authorityName.sendKeys(name);
-		
+	}
+	
+	public AuthorityTypePage clickContinue() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, AuthorityTypePage.class);
 	}
 	
-	public AuthorityTypePage editAuthorityName(String name) {
-		authorityName.clear();
-		authorityName.sendKeys(name);
-		
+	public AuthorityTypePage clickSave() {
 		saveBtn.click();
 		return PageFactory.initElements(driver, AuthorityTypePage.class);
 	}

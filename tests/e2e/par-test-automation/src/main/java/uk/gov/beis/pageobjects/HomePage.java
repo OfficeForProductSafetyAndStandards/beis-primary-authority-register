@@ -15,9 +15,6 @@ public class HomePage extends BasePageObject {
 
 	@FindBy(linkText = "Sign in")
 	private WebElement signinButton;
-
-	@FindBy(xpath = "//button[contains(text(),'Accept')]")
-	private WebElement cookies;
 	
 	@FindBy(linkText = "Read more about Primary Authority")
 	private WebElement readMorePrimaryAuthorityLink;
@@ -43,7 +40,6 @@ public class HomePage extends BasePageObject {
 	@FindBy(xpath = "//a[contains(text(),'Open Government Licence')]")
 	private WebElement openGovernmentLicenceLink;
 	
-	//@FindBy(xpath = "//a[contains(text(),'Crown copyright')]")
 	@FindBy(linkText = "© Crown copyright")
 	private WebElement crownCopyrightLink;
 	
@@ -55,19 +51,7 @@ public class HomePage extends BasePageObject {
 		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url"));
 		return PageFactory.initElements(driver, HomePage.class);
 	}
-
-	public HomePage checkAndAcceptCookies() {
-		driver.manage().deleteAllCookies();
-		try {
-			if (cookies.isDisplayed()) {
-				cookies.click();
-			}
-		} catch (Exception e) {
-			// do nothing
-		}
-		return PageFactory.initElements(driver, HomePage.class);
-	}
-
+	
 	public LoginPage selectLogin() {
 		signinButton.click();
 		return PageFactory.initElements(driver, LoginPage.class);

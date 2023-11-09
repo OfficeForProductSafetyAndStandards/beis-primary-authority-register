@@ -16,10 +16,10 @@ import uk.gov.beis.utility.DataStore;
 public class RegulatoryFunctionPage extends BasePageObject {
 
 	@FindBy(id = "edit-partnership-cover-default")
-	private WebElement normalOrSequencedRadio;
+	private WebElement normalOrSequencedRadial;
 	
 	@FindBy(id = "edit-partnership-cover-bespoke")
-	private WebElement bespokeRadio;
+	private WebElement bespokeRadial;
 	
 	@FindBy(xpath = "//input[@class='form-group form-checkbox govuk-checkboxes__input']")
 	private WebElement bespokeCheckbox;
@@ -34,6 +34,25 @@ public class RegulatoryFunctionPage extends BasePageObject {
 	
 	public RegulatoryFunctionPage() throws ClassNotFoundException, IOException {
 		super();
+	}
+	
+	public void selectNormalOrSequencedFunctions() {
+		normalOrSequencedRadial.click();
+	}
+	
+	public void selectBespokeFunctions() {
+		bespokeRadial.click();
+		
+		if(bespokeRadial.isSelected()) {
+			if(!bespokeCheckbox.isSelected()) {
+				bespokeCheckbox.click();
+			}
+		}
+	}
+	
+	public PartnershipApprovalPage goToPartnershipApprovedPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, PartnershipApprovalPage.class);
 	}
 	
 	public AuthorityConfirmationPage selectRegFunction(String reg) {
@@ -67,32 +86,28 @@ public class RegulatoryFunctionPage extends BasePageObject {
 		saveBtn.click();
 		return PageFactory.initElements(driver, AuthorityConfirmationPage.class);
 	}
-
-	public PartnershipApprovalPage proceed() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, PartnershipApprovalPage.class);
-	}
 	
-	public PartnershipConfirmationPage updateRegFunction() {
-		if(normalOrSequencedRadio.isSelected()) {
-			bespokeRadio.click();
+	public PartnershipInformationPage updateRegFunction() {
+		if(normalOrSequencedRadial.isSelected()) {
+			bespokeRadial.click();
 			
 			if(!bespokeCheckbox.isSelected()) {
 				bespokeCheckbox.click();
 			}
 		}
-		else if(bespokeRadio.isSelected()) {
-			normalOrSequencedRadio.click();
+		else if(bespokeRadial.isSelected()) {
+			normalOrSequencedRadial.click();
 		}
 		
-		DataStore.saveValue(UsableValues.PARTNERSHIP_REGFUNC, "Cookie control"); // Would be better to use Bespoke and Normal or Sequenced as the value.
+		//DataStore.saveValue(UsableValues.PARTNERSHIP_REGFUNC, "Cookie control"); // Would be better to use Bespoke and Normal or Sequenced as the value.
+		DataStore.saveValue(UsableValues.PARTNERSHIP_REGFUNC, "Alphabet learning");
 		
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
-	public PartnershipConfirmationPage clickSave() {
+	public PartnershipInformationPage clickSave() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

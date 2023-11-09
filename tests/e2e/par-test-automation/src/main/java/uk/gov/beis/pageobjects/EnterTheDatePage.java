@@ -8,11 +8,13 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
+import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MembershipCeasedPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
 import uk.gov.beis.pageobjects.TransferPartnerships.ConfirmThisTranferPage;
 import uk.gov.beis.utility.DataStore;
+import uk.gov.beis.utility.DateFormatter;
 
 public class EnterTheDatePage extends BasePageObject {
 	
@@ -44,6 +46,21 @@ public class EnterTheDatePage extends BasePageObject {
 		String fullDate = String.valueOf(LocalDate.now().getDayOfMonth()) + " " + convertMonthDate(String.valueOf(LocalDate.now().getMonthValue())) + " " + String.valueOf(LocalDate.now().getYear());
 		
 		DataStore.saveValue(UsableValues.MEMBERSHIP_CEASE_DATE, fullDate);
+	}
+	
+	public void  enterDate(String value) {
+		String dateToInput = DateFormatter.getDynamicDate(value);
+		
+		LOG.info("Date is: " + dateToInput);
+		
+		dayField.sendKeys(dateToInput.substring(0, 2));
+		monthField.sendKeys(dateToInput.substring(2, 4));
+		yearField.sendKeys(dateToInput.substring(4, 8));
+	}
+
+	public InspectionPlanSearchPage goToInspectionPlanSearchPage() {
+		saveBtn.click();
+		return PageFactory.initElements(driver, InspectionPlanSearchPage.class);
 	}
 	
 	public TradingPage clickContinueButtonForMembershipBegan() {

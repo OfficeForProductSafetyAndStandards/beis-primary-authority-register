@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -88,7 +89,15 @@ public class BrowserFactory {
 			
 		case Firefox:
 			System.setProperty("webdriver.gecko.driver", GECKODRIVER_WINDOWS);
+			
 			return new FirefoxDriver();
+		case Firefoxheadless:
+			System.setProperty("webdriver.gecko.driver", GECKODRIVER_WINDOWS);
+			
+			FirefoxOptions fireOptions = new FirefoxOptions();
+			
+			
+			return new FirefoxDriver(fireOptions);
 		case IE:
 			InternetExplorerOptions ieOptions = new InternetExplorerOptions();
 			System.setProperty("webdriver.ie.driver", IEDRIVER_WINDOWS);

@@ -11,27 +11,48 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
+import uk.gov.beis.pageobjects.UserDashboardPageObjects.*;
+import uk.gov.beis.pageobjects.UserManagement.PasswordPage;
 import uk.gov.beis.utility.DataStore;
 
 public class LoginPage extends BasePageObject {
-
+	
+	@FindBy(id = "edit-name")
+	private WebElement username;
+	
+	@FindBy(id = "edit-pass")
+	private WebElement password;
+	
+	@FindBy(id = "edit-submit")
+	private WebElement loginBtn;
+	
+	private String login = "//a[contains(text(),'?')]";
+	
 	public LoginPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(name = "name")
-	private WebElement username;
-
-	@FindBy(name = "pass")
-	private WebElement password;
-
-	@FindBy(name = "op")
-	private WebElement loginBtn;
-
+	
 	public LoginPage navigateToUrl() throws InterruptedException {
 		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url") + "/user/login%3Fcurrent");
 		checkLoginPage();
 		return PageFactory.initElements(driver, LoginPage.class);
+	}
+	
+	public void enterLoginDetails(String user, String pass) {
+		username.sendKeys(user);
+		password.sendKeys(pass);
+	}
+
+	public BaseDashboardPage clickSignIn() {
+		loginBtn.click();
+		
+		switch(DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
+			case ("par_helpdesk@example.com"):
+				LOG.info("Help Desk Dashboard.");
+				return PageFactory.initElements(driver, HelpDeskDashboardPage.class);
+			default:
+				return PageFactory.initElements(driver, DashboardPage.class);
+		}
 	}
 
 	public PasswordPage navigateToInviteLink() throws InterruptedException {
@@ -39,24 +60,11 @@ public class LoginPage extends BasePageObject {
 		return PageFactory.initElements(driver, PasswordPage.class);
 	}
 	
-	public LoginPage enterLoginDetails(String user, String pass) {
-		username.sendKeys(user);
-		password.sendKeys(pass);
-		return PageFactory.initElements(driver, LoginPage.class);
-	}
-
-	public DashboardPage selectLogin() {
-		loginBtn.click();
-		return PageFactory.initElements(driver, DashboardPage.class);
-	}
-	
 	public HomePage selectLogout() {
 		driver.findElement(By.linkText("Sign out")).click();
 		return PageFactory.initElements(driver, HomePage.class);
 	}
-
-	private String login = "//a[contains(text(),'?')]";
-
+	
 	public LoginPage checkLoginPage() {
 		try {
 			driver.findElement(By.xpath(login.replace("?", "Sign in")));
@@ -67,18 +75,4 @@ public class LoginPage extends BasePageObject {
 		}
 		return PageFactory.initElements(driver, LoginPage.class);
 	}
-
-	@FindBy(xpath = "//button[contains(text(),'Accept')]")
-	private WebElement cookies;
-
-	public LoginPage checkAndAcceptCookies() {
-		driver.manage().deleteAllCookies();
-		try {
-			driver.findElement(By.xpath("//button[contains(text(),'Accept')]")).click();
-		} catch (NoSuchElementException e) {
-			// do nothing
-		}
-		return PageFactory.initElements(driver, LoginPage.class);
-	}
-
 }

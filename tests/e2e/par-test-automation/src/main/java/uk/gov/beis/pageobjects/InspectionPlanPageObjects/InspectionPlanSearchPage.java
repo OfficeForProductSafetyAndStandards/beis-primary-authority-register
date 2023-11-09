@@ -9,6 +9,8 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.RemovePage;
+import uk.gov.beis.pageobjects.RevokePage;
 import uk.gov.beis.utility.DataStore;
 
 public class InspectionPlanSearchPage extends BasePageObject {
@@ -31,16 +33,6 @@ public class InspectionPlanSearchPage extends BasePageObject {
 		super();
 	}
 	
-	public RevokeReasonInspectionPlanPage selectRevokeLink() {
-		revokeBtn.click();
-		return PageFactory.initElements(driver, RevokeReasonInspectionPlanPage.class);
-	}
-	
-	public RemoveReasonInspectionPlanPage selectRemoveLink() {
-		removeBtn.click();
-		return PageFactory.initElements(driver, RemoveReasonInspectionPlanPage.class);
-	}
-
 	public UploadInspectionPlanPage selectUploadLink() {
 		uploadBtn.click();
 		return PageFactory.initElements(driver, UploadInspectionPlanPage.class);
@@ -49,6 +41,16 @@ public class InspectionPlanSearchPage extends BasePageObject {
 	public InspectionPlanDetailsPage selectEditLink() {
 		editBtn.click();
 		return PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
+	}
+	
+	public RevokePage selectRevokeLink() {
+		revokeBtn.click();
+		return PageFactory.initElements(driver, RevokePage.class);
+	}
+	
+	public RemovePage selectRemoveLink() {
+		removeBtn.click();
+		return PageFactory.initElements(driver, RemovePage.class);
 	}
 	
 	public InspectionPlanReviewPage selectInspectionPlan() {

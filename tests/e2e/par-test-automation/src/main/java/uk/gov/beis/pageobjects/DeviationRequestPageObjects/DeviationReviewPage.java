@@ -19,24 +19,14 @@ public class DeviationReviewPage extends BasePageObject {
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 	
-	String descriptionLocator = "//div/p[contains(text(),'?')]";
-	String statusLocator = "//fieldset/p[contains(text(),'?')]";
-	String responseLocator = "//div/p[contains(text(),'?')]";
+	private String descriptionLocator = "//div/p[contains(text(),'?')]";
+	private String statusLocator = "//fieldset/p[contains(text(),'?')]";
+	private String responseLocator = "//div/p[contains(text(),'?')]";
 	
 	public DeviationReviewPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	public DeviationCompletionPage saveChanges() {
-		saveBtn.click();
-		return PageFactory.initElements(driver, DeviationCompletionPage.class);
-	}
 	
-	public ReplyDeviationRequestPage submitResponse() {
-		submitResponse.click();
-		return PageFactory.initElements(driver, ReplyDeviationRequestPage.class);
-	}
-
 	public boolean checkDeviationCreation() {
 		WebElement description = driver.findElement(By.xpath(descriptionLocator.replace("?", DataStore.getSavedValue(UsableValues.DEVIATION_DESCRIPTION))));
 		return (description.isDisplayed());
@@ -55,5 +45,15 @@ public class DeviationReviewPage extends BasePageObject {
 	public boolean checkDeviationStatusBlocked() {
 		WebElement status = driver.findElement(By.xpath(statusLocator.replace("?", "Blocked")));
 		return (status.isDisplayed());
+	}
+	
+	public ReplyDeviationRequestPage submitResponse() {
+		submitResponse.click();
+		return PageFactory.initElements(driver, ReplyDeviationRequestPage.class);
+	}
+	
+	public DeviationCompletionPage saveChanges() {
+		saveBtn.click();
+		return PageFactory.initElements(driver, DeviationCompletionPage.class);
 	}
 }

@@ -10,30 +10,29 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.pageobjects.BasePageObject;
 
 public class EnforcementDetailsPage extends BasePageObject {
+	
+	@FindBy(id = "edit-summary")
+	private WebElement descriptionBox;
 
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
+	
+	private String enforcementTypeLocator = "//label[contains(text(),'?')]";
+	
 	public EnforcementDetailsPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
-	WebElement descriptionBox;
-
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
 	
-	private String locator = "//label[contains(text(),'?')]";
-
-	public EnforcementDetailsPage selectEnforcementType(String type) {
-		driver.findElement(By.xpath(locator.replace("?", type))).click();;
-		return PageFactory.initElements(driver, EnforcementDetailsPage.class);
+	public void selectEnforcementType(String type) {
+		driver.findElement(By.xpath(enforcementTypeLocator.replace("?", type))).click();
 	}
 	
-	public EnforcementDetailsPage enterEnforcementDescription(String description) throws Throwable {
+	public void enterEnforcementDescription(String description) {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
-		return PageFactory.initElements(driver, EnforcementDetailsPage.class);
 	}
-	public EnforcementActionPage proceed() {
+	
+	public EnforcementActionPage clickContinue() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, EnforcementActionPage.class);
 	}

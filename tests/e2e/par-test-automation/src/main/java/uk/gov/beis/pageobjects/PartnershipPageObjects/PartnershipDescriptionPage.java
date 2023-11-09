@@ -10,21 +10,37 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.pageobjects.BasePageObject;
 
 public class PartnershipDescriptionPage extends BasePageObject {
-
-	public PartnershipDescriptionPage() throws ClassNotFoundException, IOException {
-		super();
-	}
-
-	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
-	//@FindBy(id = "edit-about-business")
+	
+	@FindBy(id = "edit-about-partnership")
 	private WebElement descriptionBox;
+	
+	@FindBy(id = "edit-about-business")
+	private WebElement businessDescriptionBox;
+	
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
 	
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
-
-	public BusinessPage enterPartnershipDescription(String description) throws Throwable {
+	
+	public PartnershipDescriptionPage() throws ClassNotFoundException, IOException {
+		super();
+	}
+	
+	public void enterDescription(String description) { // May need a class specifically for updating
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
+	}
+	
+	public void updateBusinessDescription(String description) {
+		businessDescriptionBox.clear();
+		businessDescriptionBox.sendKeys(description);
+	}
+	
+	public BusinessNamePage enterPartnershipDescription(String description) throws Throwable {
+		descriptionBox.clear();
+		descriptionBox.sendKeys(description);
+		
 		try {
 			scrollToElement(driver.findElement(By.id("edit-next")));
 			driver.findElement(By.id("edit-next")).click();
@@ -33,16 +49,22 @@ public class PartnershipDescriptionPage extends BasePageObject {
 			driver.findElement(By.id("edit-save")).click();
 		}
 
-		return PageFactory.initElements(driver, BusinessPage.class);
+		return PageFactory.initElements(driver, BusinessNamePage.class);
 	}
 	
-	public void enterDescription(String description) {
-		descriptionBox.clear();
-		descriptionBox.sendKeys(description);
+	public BusinessNamePage gotToBusinessNamePage() throws Throwable {
+		continueBtn.click();
+
+		return PageFactory.initElements(driver, BusinessNamePage.class);
 	}
 	
-	public PartnershipConfirmationPage clickSave() {
+	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
+	}
+	
+	public PartnershipInformationPage clickSave() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

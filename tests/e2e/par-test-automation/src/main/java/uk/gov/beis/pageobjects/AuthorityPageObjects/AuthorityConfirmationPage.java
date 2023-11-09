@@ -28,29 +28,28 @@ public class AuthorityConfirmationPage extends BasePageObject {
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 	
-	@FindBy(id = "edit-cancel")
-	private WebElement cancelBtn;
+	private String addressLocator = "//div/p[contains(text(),'?')]";
+	private String authPCode = "//div/p[contains(text(),'?')]";
+	
+	private String authorityNameLocator = "//div/p[contains(text(),'?')]";
+	private String authorityTypeLocator = "//div/p[contains(text(),'?')]";
+	private String onsCodeLocator = "//div/p[contains(text(),'?')]";
+	private String regulatoryFunctionLocator = "//div/p[contains(text(),'?')]";
 	
 	public AuthorityConfirmationPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	String authAddress1 = "//div/p[contains(text(),'?')]";
-	String authPCode = "//div/p[contains(text(),'?')]";
-	String authorityName = "//div/p[contains(text(),'?')]";
-	String authorityType = "//div/p[contains(text(),'?')]";
-	String ons = "//div/p[contains(text(),'?')]";
-	String regFunc = "//div/p[contains(text(),'?')]";
-
+	
 	public boolean checkAuthorityDetails() {
-		WebElement authAddressLine1 = driver.findElement(By.xpath(authAddress1.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_ADDRESSLINE1))));
-		WebElement authPCode1 = driver.findElement(By.xpath(authPCode.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_POSTCODE))));
-		WebElement authName = driver.findElement(By.xpath(authorityName.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_NAME))));
-		WebElement authType = driver.findElement(By.xpath(authorityType.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE))));
-		WebElement onscode = driver.findElement(By.xpath(ons.replace("?", DataStore.getSavedValue(UsableValues.ONS_CODE))));
-		WebElement regFunc1 = driver.findElement(By.xpath(regFunc.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION))));
+		WebElement address = driver.findElement(By.xpath(addressLocator.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_ADDRESSLINE1))));
+		WebElement postcode = driver.findElement(By.xpath(authPCode.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_POSTCODE))));
 		
-		return (authAddressLine1.isDisplayed() && authPCode1.isDisplayed() && authName.isDisplayed() && authType.isDisplayed() && onscode.isDisplayed() && regFunc1.isDisplayed());
+		WebElement authName = driver.findElement(By.xpath(authorityNameLocator.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_NAME))));
+		WebElement authType = driver.findElement(By.xpath(authorityTypeLocator.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE))));
+		WebElement onscode = driver.findElement(By.xpath(onsCodeLocator.replace("?", DataStore.getSavedValue(UsableValues.ONS_CODE))));
+		WebElement regFunc = driver.findElement(By.xpath(regulatoryFunctionLocator.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION))));
+		
+		return address.isDisplayed() && postcode.isDisplayed() && authName.isDisplayed() && authType.isDisplayed() && onscode.isDisplayed() && regFunc.isDisplayed();
 	}
 	
 	public AuthorityNamePage editAuthorityName() {
@@ -58,23 +57,23 @@ public class AuthorityConfirmationPage extends BasePageObject {
 		return PageFactory.initElements(driver, AuthorityNamePage.class);
 	}
 	
-	public AuthorityDashboardPage editAuthorityType() {
+	public AuthoritiesSearchPage editAuthorityType() {
 		authorityTypeLink.click();
-		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
+		return PageFactory.initElements(driver, AuthoritiesSearchPage.class);
 	}
 	
-	public AuthorityDashboardPage editONSCode() {
+	public AuthoritiesSearchPage editONSCode() {
 		ONSCode.click();
-		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
+		return PageFactory.initElements(driver, AuthoritiesSearchPage.class);
 	}
 	
-	public AuthorityDashboardPage editRegFunction() {
+	public AuthoritiesSearchPage editRegFunction() {
 		regFunctions.click();
-		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
+		return PageFactory.initElements(driver, AuthoritiesSearchPage.class);
 	}
 	
-	public AuthorityDashboardPage saveChanges() {
+	public AuthoritiesSearchPage saveChanges() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, AuthorityDashboardPage.class);
+		return PageFactory.initElements(driver, AuthoritiesSearchPage.class);
 	}
 }
