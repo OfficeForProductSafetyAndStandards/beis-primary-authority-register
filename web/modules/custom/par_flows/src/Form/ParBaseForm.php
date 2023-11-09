@@ -466,7 +466,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       if ($component->isMultiple()) {
         // Get the index value to alter the display of elements.
         $index_key = ['_index', $component->getPrefix()];
-        $new_index = $component->getNewCardinality();
+        $new_index = $component->getNextAvailableIndex();
         $form_state->setValue($index_key, $new_index);
       }
     }

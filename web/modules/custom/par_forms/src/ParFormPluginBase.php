@@ -495,8 +495,9 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
     // Get the current index.
     $current_index = $this->getCurrentIndex($data);
 
-    // Check whether more items can be added.
-    $add_more = $this->isMultiple() && !$this->isFull();
+    // Use the component actions to identify if a new item can be added.
+    $actions = $this->getComponentActions([], $data);
+    $add_more = $actions && isset($actions['add_another']);
 
     // If there is no data then the next index is 1.
     if ($this->countItems($data) < 1) {
@@ -864,8 +865,8 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * Get the container wrapper for this component.
    */
-  public function getComponentActions($actions = [], $count = NULL) {
-    if ($this->isMultiple() && !$this->isFull()) {
+  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
+    if ($this->isMultiple() && !$this->isFull($data)) {
       $actions['add_another'] = [
         '#type' => 'submit',
         '#name' => 'add_another',
