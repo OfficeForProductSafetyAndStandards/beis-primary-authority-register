@@ -76,9 +76,12 @@
 .govuk-header__navigation {
   clear: both;
 
+  @include govuk-media-query ($from: desktop) {
+    float: right;
+  }
+
   .govuk-header__navigation-item {
     @include govuk-media-query ($from: desktop) {
-      float: right;
       margin-left: 15px;
       margin-right: 0;
     }
