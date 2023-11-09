@@ -300,7 +300,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
     }
 
     // Allow plugins to filter
-    $data = $this->filter($values);
+    $data = $this->filter((array) $values);
 
     // Always get the data in the correct order.
     return $this->reindex($data);
