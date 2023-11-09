@@ -23,18 +23,17 @@ public class AuthorityTypePage extends BasePageObject {
 		super();
 	}
 	
-	public AuthorityAddressDetailsPage selectAuthorityType(String type) {
+	public void selectAuthorityType(String type) {
 		WebElement link = driver.findElement(By.xpath(locator.replace("?", type)));
 		link.click();
-		
+	}
+	
+	public AuthorityAddressDetailsPage clickContinue() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
 	}
 	
-	public AuthorityAddressDetailsPage editAuthorityType(String type) {
-		WebElement link = driver.findElement(By.xpath(locator.replace("?", type)));
-		link.click();
-		
+	public AuthorityAddressDetailsPage clickSave() {
 		saveBtn.click();
 		return PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
 	}

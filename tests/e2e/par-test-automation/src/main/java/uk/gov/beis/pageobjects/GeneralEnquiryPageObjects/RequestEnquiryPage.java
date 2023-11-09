@@ -32,7 +32,7 @@ public class RequestEnquiryPage extends BasePageObject {
 		uploadDocument(chooseFile, filename);
 	}
 	
-	public EnquiryReviewPage proceed() {
+	public EnquiryReviewPage clickContinue() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, EnquiryReviewPage.class);
 	}

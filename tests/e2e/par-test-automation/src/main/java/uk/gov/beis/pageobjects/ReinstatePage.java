@@ -6,9 +6,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipRestoredPage;
 
 public class ReinstatePage extends BasePageObject {
+	
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
 	
 	@FindBy(id = "edit-save")
 	private WebElement reinstateBtn;
@@ -17,9 +21,15 @@ public class ReinstatePage extends BasePageObject {
 		super();
 	}
 	
-	public PartnershipConfirmationPage goToPartnershipDetailsPage() {
+	public PartnershipRestoredPage goToPartnershipRestoredPage() {
+		continueBtn.click();
+		
+		return PageFactory.initElements(driver, PartnershipRestoredPage.class);
+	}
+	
+	public PartnershipInformationPage goToPartnershipDetailsPage() {
 		reinstateBtn.click();
 		
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

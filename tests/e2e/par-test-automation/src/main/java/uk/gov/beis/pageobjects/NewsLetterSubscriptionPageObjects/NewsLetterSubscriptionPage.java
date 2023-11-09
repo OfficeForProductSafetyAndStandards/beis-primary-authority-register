@@ -10,13 +10,10 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DashboardPage;
+import uk.gov.beis.pageobjects.UserDashboardPageObjects.DashboardPage;
 import uk.gov.beis.utility.DataStore;
 
 public class NewsLetterSubscriptionPage extends BasePageObject {
-	public NewsLetterSubscriptionPage() throws ClassNotFoundException, IOException {
-		super();
-	}
 	
 	@FindBy(partialLinkText = "PAR News")
 	private WebElement manageSubscriptionsBtn;
@@ -44,6 +41,10 @@ public class NewsLetterSubscriptionPage extends BasePageObject {
 	
 	@FindBy(linkText = "back to dashboard")
 	private WebElement dashboardBtn;
+	
+	public NewsLetterSubscriptionPage() throws ClassNotFoundException, IOException {
+		super();
+	}
 	
 	public NewsLetterManageSubscriptionListPage selectManageSubsciptions() {
 		getLastEmailFromList();
@@ -76,7 +77,6 @@ public class NewsLetterSubscriptionPage extends BasePageObject {
 	}
 	
 	public Boolean verifyTableElementIsNull() {
-		// Cannot use the .isDisplayed() method as the table element is null and cannot be found.
 		return driver.findElements(By.xpath("//td[@class='views-field views-field-email']")).size() == 0;
 	}
 	

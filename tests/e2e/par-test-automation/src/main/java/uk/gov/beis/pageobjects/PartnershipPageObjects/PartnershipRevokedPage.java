@@ -9,18 +9,16 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.pageobjects.BasePageObject;
 
 public class PartnershipRevokedPage extends BasePageObject {
-
+	
+	@FindBy(id = "edit-done")
+	private WebElement doneBtn;
+	
 	public PartnershipRevokedPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(id = "edit-done")
-	WebElement doneBtn;
-
-	public PartnershipAdvancedSearchPage completeApplication() {
-		if (doneBtn.isDisplayed()) {
-			doneBtn.click();
-		}
+	
+	public PartnershipAdvancedSearchPage goToAdvancedPartnershipSearchPage() {
+		doneBtn.click();
 		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 	}
 }

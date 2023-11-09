@@ -2,16 +2,14 @@ package uk.gov.beis.pageobjects.OrganisationPageObjects;
 
 import java.io.IOException;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.BusinessConfirmationPage;
-import uk.gov.beis.pageobjects.LegalEntityPage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipConfirmationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
+import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
 
 public class TradingPage extends BasePageObject {
 	
@@ -28,30 +26,37 @@ public class TradingPage extends BasePageObject {
 		super();
 	}
 	
+	public void enterTradingName(String name) {
+		tradingName.clear();
+		tradingName.sendKeys(name);
+	}
+	
 	public void editMemberTradingName(String name) {
 		tradingName.clear();
 		tradingName.sendKeys(name);
 	}
 	
-	public BasePageObject enterTradingName(String name) {
-		tradingName.clear();
-		tradingName.sendKeys(name);
-		
-		try {
-			driver.findElement(By.id("edit-next")).click();
-			return PageFactory.initElements(driver, LegalEntityPage.class);
-		} catch (Exception e) {
-			driver.findElement(By.id("edit-save")).click();
-			return PageFactory.initElements(driver, BusinessConfirmationPage.class);
-		}
+	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 	}
 	
-	public PartnershipConfirmationPage editTradingName(String name) {
+	public PartnershipInformationPage editTradingName(String name) {
 		tradingName.clear();
 		tradingName.sendKeys(name);
 		
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipConfirmationPage.class);
+		return PageFactory.initElements(driver, PartnershipInformationPage.class);
+	}
+	
+	public BusinessDetailsPage goToBusinessDetailsPage() {
+		saveBtn.click();
+		return PageFactory.initElements(driver, BusinessDetailsPage.class);
+	}
+	
+	public LegalEntityTypePage goToLegalEntityTypePage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, LegalEntityTypePage.class);
 	}
 	
 	public LegalEntityTypePage addTradingNameForMember(String name) {

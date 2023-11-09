@@ -10,31 +10,29 @@ import uk.gov.beis.pageobjects.BasePageObject;
 
 public class ReplyEnquiryPage extends BasePageObject {
 	
+	@FindBy(id = "edit-message")
+	private WebElement descriptionBox;
+	
+	@FindBy(id = "edit-files-upload")
+	private WebElement chooseFile;
+	
+	@FindBy(id = "edit-save")
+	private WebElement continueBtn;
+	
 	public ReplyEnquiryPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 
-	@FindBy(xpath = "//div[@class='govuk-form-group']/textarea")
-	private WebElement descriptionBox;
-	
-	@FindBy(xpath = "//input[@id='edit-files-upload']")
-	private WebElement chooseFile1;
-	
-	@FindBy(xpath = "//input[contains(@value,'Save')]")
-	private WebElement continueBtn;
-
-	public ReplyEnquiryPage chooseFile(String filename) {
-		uploadDocument(chooseFile1, filename);
-		return PageFactory.initElements(driver, ReplyEnquiryPage.class);
-	}
-
-	public ReplyEnquiryPage enterDescription(String description) throws Throwable {
+	public void enterDescription(String description) {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
-		return PageFactory.initElements(driver, ReplyEnquiryPage.class);
 	}
 
-	public EnquiryReviewPage proceed() {
+	public void chooseFile(String filename) {
+		uploadDocument(chooseFile, filename);
+	}
+	
+	public EnquiryReviewPage clickSave() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, EnquiryReviewPage.class);
 	}

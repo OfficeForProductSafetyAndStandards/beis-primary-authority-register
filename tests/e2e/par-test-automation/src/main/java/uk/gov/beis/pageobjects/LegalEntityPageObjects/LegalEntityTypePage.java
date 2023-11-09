@@ -30,7 +30,7 @@ public class LegalEntityTypePage extends BasePageObject {
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 	
-	String legalEntType = "//label[contains(text(),'?')]";
+	String legalEntType = "//label[contains(text(),'?')]/preceding-sibling::input";
 	
 	public LegalEntityTypePage() throws ClassNotFoundException, IOException {
 		super();

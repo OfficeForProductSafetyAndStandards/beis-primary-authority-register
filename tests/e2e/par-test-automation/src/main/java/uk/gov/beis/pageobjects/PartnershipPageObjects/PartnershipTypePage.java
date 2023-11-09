@@ -11,18 +11,18 @@ import uk.gov.beis.pageobjects.BasePageObject;
 
 public class PartnershipTypePage extends BasePageObject {
 
+	@FindBy(id = "edit-next")
+	private WebElement continueBtn;
+
+	private String locator = "//label[contains(text(),'?')]";
+	
 	public PartnershipTypePage() throws ClassNotFoundException, IOException {
 		super();
 	}
-
-	@FindBy(xpath = "//input[contains(@value,'Continue')]")
-	WebElement continueBtn;
-
-	private String locator = "//label[contains(text(),'?')]";
-
+	
 	public PartnershipTermsPage selectPartnershipType(String type) {
-		WebElement link = driver.findElement(By.xpath(locator.replace("?", type)));
-		link.click();
+		driver.findElement(By.xpath(locator.replace("?", type))).click();
+		
 		continueBtn.click();
 		return PageFactory.initElements(driver, PartnershipTermsPage.class);
 	}

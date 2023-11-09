@@ -17,8 +17,8 @@ public class MergeContactRecordsConfirmationPage extends BasePageObject {
 		super();
 	}
 	
-	public PersonsProfilePage clickMerge() {
+	public UserProfilePage clickMerge() {
 		mergeBtn.click();
-		return PageFactory.initElements(driver, PersonsProfilePage.class);
+		return PageFactory.initElements(driver, UserProfilePage.class);
 	}
 }
