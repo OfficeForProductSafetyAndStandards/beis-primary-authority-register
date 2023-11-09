@@ -58,7 +58,7 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
     $par_data_enforcement_actions = $par_data_enforcement_notice->getEnforcementActions();
 
-    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    // Get the cache IDs for the various forms that needs to be extracted from.
     $enforcement_actions_cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_approve');
     $enforcement_referral_cid = $this->getFlowNegotiator()->getFormKey('referrals');
 

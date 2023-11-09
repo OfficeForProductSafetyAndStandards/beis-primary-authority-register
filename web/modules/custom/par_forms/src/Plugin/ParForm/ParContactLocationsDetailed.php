@@ -206,7 +206,7 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
   /**
    * Return no actions for this plugin.
    */
-  public function getComponentActions($actions = [], $count = NULL) {
+  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     $contacts = $this->getFlowDataHandler()->getParameter('contacts');
 
     try {

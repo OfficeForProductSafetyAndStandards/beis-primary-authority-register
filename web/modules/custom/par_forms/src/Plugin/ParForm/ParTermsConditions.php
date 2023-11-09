@@ -107,7 +107,7 @@ class ParTermsConditions extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getComponentActions($actions = [], $count = NULL) {
+  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }
 }
