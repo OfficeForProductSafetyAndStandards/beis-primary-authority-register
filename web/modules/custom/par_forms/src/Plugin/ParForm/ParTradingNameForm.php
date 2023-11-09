@@ -5,6 +5,7 @@ namespace Drupal\par_forms\Plugin\ParForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\TypedData\Exception\MissingDataException;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**

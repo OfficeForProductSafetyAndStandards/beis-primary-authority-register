@@ -32,7 +32,6 @@ class ParSelectPersonForm extends ParFormPluginBase {
     $account = $this->getFlowDataHandler()->getParameter('user');
     if ($account && $account->isAuthenticated() && $people = $this->getParDataManager()->getUserPeople($account)) {
 
-//      var_dump(array_keys($people));
       // Ignore deleted person accounts.
       $people = array_filter($people, function ($person) {
         return !$person->isDeleted();

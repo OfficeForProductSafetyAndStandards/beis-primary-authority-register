@@ -27,7 +27,7 @@
  */
 #}
 {%
-  set classes = [
+  set fieldset_classes = [
     'js-form-item',
     'form-item',
     'js-form-wrapper',
@@ -35,8 +35,9 @@
     'govuk-fieldset',
   ]
 %}
+
 <div class="govuk-form-group{% if errors %} govuk-form-group--error{% endif %}">
-  <fieldset{{ attributes.addClass(classes) }}>
+  <fieldset{{ attributes.addClass(fieldset_classes) }}>
     {% set title_tag = legend.title_tag ?: 'span' %}
     {% set legend_classes = ['govuk-fieldset__legend', 'govuk-fieldset__legend--m'] %}
     {% set heading_tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] %}
@@ -58,7 +59,7 @@
       {% endif %}
       {% if errors %}
         <span class="error-message govuk-error-message">
-          {{ errors | striptags('<p>') }}
+          {{ errors | striptags('<p>') | t }}
         </span>
       {% endif %}
       {% if prefix %}

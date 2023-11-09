@@ -13,5 +13,5 @@
 
 <div class="form-group">
   <span class="form-hint govuk-hint">{{ attributes.placeholder }}</span>
-  <input{{ attributes.removeAttribute('placeholder').addClass('govuk-button') }} />{{ children }}
+  <input{{ attributes.removeClass('govuk-form-group').removeAttribute('placeholder').addClass('govuk-button') }} />{{ children }}
 </div>

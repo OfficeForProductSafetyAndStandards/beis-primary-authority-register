@@ -10,6 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\par_flows\ParFlowDataHandler;
 use JetBrains\PhpStorm\NoReturn;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -124,30 +125,21 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
    */
   public function validate(ParFormPluginInterface $component, array $form, FormStateInterface &$form_state, $index = NULL): void {
     // Get the data to validate from the form_state.
-    $data = $form_state->cleanValues()->getValues();
+    $data = $component->getDataFromFormState($form_state);
 
-    // Get the maximum index (for a new item).
-    $max = $component->getNewCardinality();
+    // The maximum number of items .
+    $max = $component->getCurrentIndex($data);
     for ($i = 1; $i <= $max; $i++) {
-      if (!$component->isFlattened()) {
-        $delta = $i - 1;
-        $item = $data[$component->getPrefix()][$delta] ?? NULL;
-      }
-      else if ($i === 1) {
-        $item = $data ?? NULL;
-      }
-
-      // If the data item doesn't exist in the form state don't validate this item.
-      if (!$item) {
-        continue;
-      }
-
       // Single cardinality plugins should always be validated.
       if (!$component->isMultiple()) {
         $action = self::PAR_ERROR_DISPLAY;
       }
       // Plugins that support the summary list should always be validated.
       else if ($this->supportsSummaryList($component)) {
+        $action = self::PAR_ERROR_DISPLAY;
+      }
+      // The first item should always be validated.
+      else if ($i === 1) {
         $action = self::PAR_ERROR_DISPLAY;
       }
       // Multi value plugins that aren't the last item should be validated.
@@ -257,7 +249,7 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
     ];
 
     // Get the maximum index (for a new item).
-    $max = $component->getNewCardinality();
+    $max = $component->getNextAvailableIndex();
     for ($i = 1; $i <= $max; $i++) {
       // For components that use the Summary List pattern, single indexes can be shown.
       if ($this->supportsSummaryList($component) && $index && $i !== $index) {

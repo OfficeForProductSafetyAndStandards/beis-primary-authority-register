@@ -87,8 +87,9 @@ class ParPartnershipMembers extends ParFormPluginBase {
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h2',
-        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#weight' => '-10',
         '#value' => t('Number of members'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
       ],
       '#attributes' => ['class' => 'govuk-form-group'],
     ];

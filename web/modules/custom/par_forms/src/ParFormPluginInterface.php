@@ -59,11 +59,14 @@ interface ParFormPluginInterface extends PluginInspectionInterface, Configurable
    * Identify whether the plugin has already added all the available items
    * for this component instance or whether another item can be added.
    *
+   * @param mixed $data
+   *    If required the data to be counted can be switched to the form_state values.
+   *
    * @return bool
    *   TRUE if no more items can be added.
    *   FALSE if more items can be added.
    */
-  public function isFull(): bool;
+  public function isFull(array $data = NULL): bool;
 
   /**
    * Count the cardinality of already submitted values.

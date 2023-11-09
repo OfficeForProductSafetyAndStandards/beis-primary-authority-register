@@ -53,10 +53,10 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
 
     if ($applicationType == 'direct') {
       $form['section_one']['header'] = [
-        '#type' => 'markup',
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
         '#markup' => $this->t('Please confirm the following'),
-        '#prefix' => '<h3 class="heading-medium">',
-        '#suffix' => '</h3>',
+        '#attributes' => ['class' => ['govuk-heading-m']],
       ];
 
       $form['section_one']['business_eligible_for_partnership'] = [
@@ -138,10 +138,10 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
     }
     elseif ($applicationType == 'coordinated') {
       $form['section_one']['header'] = [
-        '#type' => 'markup',
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
         '#markup' => $this->t('Please confirm the following'),
-        '#prefix' => '<h3 class="heading-medium">',
-        '#suffix' => '</h3>',
+        '#attributes' => ['class' => ['govuk-heading-m']],
       ];
 
       $form['section_one']['coordinator_local_authority_suitable'] = [

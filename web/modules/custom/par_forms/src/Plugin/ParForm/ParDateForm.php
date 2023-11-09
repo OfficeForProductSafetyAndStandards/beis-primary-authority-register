@@ -62,7 +62,7 @@ class ParDateForm extends ParFormPluginBase {
     $date_format = !empty($element['#date_date_format']) ? $element['#date_date_format'] : 'Y-m-d';
 
     try {
-      $date = DrupalDateTime::createFromFormat($date_format, $date, NULL, ['validate_format' => TRUE]);
+      DrupalDateTime::createFromFormat($date_format, $date, NULL, ['validate_format' => TRUE]);
     } catch (\Exception $e) {
       $message = 'The date format is not correct.';
       $this->setError($form, $form_state, $date_element, $message);
