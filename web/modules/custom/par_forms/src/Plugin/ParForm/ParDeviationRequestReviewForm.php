@@ -5,10 +5,12 @@ namespace Drupal\par_forms\Plugin\ParForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\par_data\Entity\ParDataDeviationRequest;
+use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\ParFlowException;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -20,6 +22,18 @@ use Drupal\par_forms\ParFormPluginBase;
  * )
  */
 class ParDeviationRequestReviewForm extends ParDeviationRequestDetail {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected array $entityMapping = [
+    ['notes', 'par_data_deviation_request', 'notes', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the details of this enquiry.'
+    ]],
+    ['files', 'par_data_deviation_request', 'document', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must submit a proposed inspection plan for this enquiry.'
+    ]],
+  ];
 
   /**
    * {@inheritdoc}
@@ -85,5 +99,29 @@ class ParDeviationRequestReviewForm extends ParDeviationRequestDetail {
     }
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+    $status_element = $this->getElement($form, ['primary_authority_status'], $index);
+    $status = $status_element ? $form_state->getValue($status_element['#parents']) : NULL;
+
+    // Set an error if an action is not reviewed.
+    $allowed_statuses = [ParDataDeviationRequest::APPROVED, ParDataDeviationRequest::BLOCKED];
+    if (empty($status) || !in_array($status, $allowed_statuses)) {
+      $message = 'Please choose how you would like to respond to this deviation request.';
+      $this->setError($form, $form_state, $status_element, $message);
+    }
+
+    $blocked_reason_element = $this->getElement($form, ['primary_authority_notes'], $index);
+    $blocked_reason = $blocked_reason_element ? $form_state->getValue($blocked_reason_element['#parents']) : NULL;
+    if ($status == ParDataEnforcementAction::BLOCKED && empty($blocked_reason)) {
+      $message = 'You must explain your reason for blocking this deviation request.';
+      $this->setError($form, $form_state, $blocked_reason_element, $message);
+    }
+
+    parent::validate($form, $form_state, $index, $action);
   }
 }
