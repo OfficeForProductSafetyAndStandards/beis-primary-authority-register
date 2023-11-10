@@ -20,7 +20,7 @@ class ParAuthorityTypeForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['authority_type', 'par_data_authority', 'authority_type', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must choose the most relevant .'
+      'You must fill in the missing information.' => 'You must choose which type of authority is most relevant.'
     ]],
   ];
 
