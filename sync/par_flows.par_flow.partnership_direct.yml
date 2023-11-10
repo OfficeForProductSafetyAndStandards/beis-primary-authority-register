@@ -60,6 +60,8 @@ steps:
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
+    components:
+      about_business: {}
     redirect:
       save: 1
       cancel: 1
