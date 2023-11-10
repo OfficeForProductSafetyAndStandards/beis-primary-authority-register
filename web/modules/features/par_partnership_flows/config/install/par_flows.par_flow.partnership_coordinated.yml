@@ -108,12 +108,16 @@ steps:
   8:
     route: par_partnership_flows.trading_name_add
     form_id: par_partnership_trading_name_add
+    components:
+      trading_name: {}
     redirect:
       save: 1
       cancel: 1
   9:
     route: par_partnership_flows.trading_name_edit
     form_id: par_partnership_trading_name_edit
+    components:
+      trading_name: {}
     redirect:
       save: 1
       cancel: 1
