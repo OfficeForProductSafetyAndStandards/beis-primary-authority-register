@@ -105,12 +105,12 @@ class ParRdHelpDeskDeleteConfirmForm extends ParBaseForm {
 
     if (!$par_data_partnership->isDeletable()) {
       $id = $this->getElementId('deletion_reason', $form);
-      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('This partnership cannot be deleted.', $id));
+      $form_state->setErrorByName($this->getElementName(['deletion_reason']), $this->wrapErrorMessage('This partnership cannot be deleted.', $id));
     }
 
     if (!$form_state->getValue('deletion_reason')) {
       $id = $this->getElementId('deletion_reason', $form);
-      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please supply the reason for cancelling this partnership.', $id));
+      $form_state->setErrorByName($this->getElementName(['deletion_reason']), $this->wrapErrorMessage('Please supply the reason for cancelling this partnership.', $id));
     }
   }
 

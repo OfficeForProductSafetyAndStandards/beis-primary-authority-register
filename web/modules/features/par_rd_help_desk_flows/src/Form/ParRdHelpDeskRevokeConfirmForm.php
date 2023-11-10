@@ -113,9 +113,16 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
 
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
-    if (!$par_data_partnership->isRevocable()) {
+    // Validate that the partnership is revocable.
+    if (!$par_data_partnership?->isRevocable()) {
       $id = $this->getElementId('revocation_reason', $form);
-      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('This partnership cannot be revoked.', $id));
+      $form_state->setErrorByName($this->getElementName(['revocation_reason']), $this->wrapErrorMessage('This partnership cannot be revoked.', $id));
+    }
+
+    // Validate that a reason has been provided for revoking the partnership.
+    if (empty($form_state->getValue('revocation_reason'))) {
+      $id = $this->getElementId('revocation_reason', $form);
+      $form_state->setErrorByName($this->getElementName(['revocation_reason']), $this->wrapErrorMessage('You must give a reason for revoking this partnership.', $id));
     }
   }
 

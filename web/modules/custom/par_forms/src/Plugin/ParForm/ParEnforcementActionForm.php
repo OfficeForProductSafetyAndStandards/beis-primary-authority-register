@@ -2,7 +2,9 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -93,5 +95,20 @@ class ParEnforcementActionForm extends ParFormPluginBase {
     ];
 
     return $form;
+  }
+
+  /**
+   * Validate date field.
+   */
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+    $regulatory_functions_element = $this->getElement($form, ['regulatory_function'], $index);
+    $regulatory_functions = $regulatory_functions_element ? $form_state->getValue($regulatory_functions_element['#parents']) : NULL;
+
+    if (empty($regulatory_functions)) {
+      $message = 'Please choose which regulatory functions this enforcement action relates to.';
+      $this->setError($form, $form_state, $regulatory_functions_element, $message);
+    }
+
+    parent::validate($form, $form_state, $index, $action);
   }
 }

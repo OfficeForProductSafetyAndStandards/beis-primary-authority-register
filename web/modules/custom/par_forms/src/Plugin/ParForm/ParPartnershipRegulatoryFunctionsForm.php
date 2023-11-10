@@ -92,13 +92,32 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
       $form['no_regulatory_functions'] = [
         '#type' => 'container',
         '#attributes' => ['class' => ['govuk-form-group', 'notice']],
-        'warning' => [
+      ];
+      $form['no_regulatory_functions']['warning'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => ['class' => ['govuk-warning-text']],
+        'icon' => [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => '!',
+          '#attributes' => [
+            'class' => ['govuk-warning-text__icon'],
+            'aria-hidden' => 'true',
+          ],
+        ],
+        'strong' => [
           '#type' => 'html_tag',
           '#tag' => 'strong',
           '#value' => $this->t('This authority does not provide any regulatory functions, please update the authority before continuing: %link', ['%link' => $authority_update_link]),
-          '#attributes' => ['class' => 'bold-small'],
-          '#prefix' => '<i class="icon icon-important"><span class="visually-hidden">Warning</span></i>'
-        ],
+          '#attributes' => ['class' => ['govuk-warning-text__text']],
+          'message' => [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => $this->t('Warning'),
+            '#attributes' => ['class' => ['govuk-warning-text__assistive']],
+          ],
+        ]
       ];
 
       return $form;
@@ -111,13 +130,32 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
       $form['covered_by_other_patnerships'] = [
         '#type' => 'container',
         '#attributes' => ['class' => ['govuk-form-group', 'notice']],
-        'warning' => [
+      ];
+      $form['covered_by_other_patnerships']['warning'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => ['class' => ['govuk-warning-text']],
+        'icon' => [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => '!',
+          '#attributes' => [
+            'class' => ['govuk-warning-text__icon'],
+            'aria-hidden' => 'true',
+          ],
+        ],
+        'strong' => [
           '#type' => 'html_tag',
           '#tag' => 'strong',
           '#value' => $this->t('This organisation is already covered for %regulatory_functions by other partnerships.', ['%regulatory_functions' => $covered_by_other_partnerships]),
-          '#attributes' => ['class' => 'bold-small'],
-          '#prefix' => '<i class="icon icon-important"><span class="visually-hidden">Warning</span></i>'
-        ],
+          '#attributes' => ['class' => ['govuk-warning-text__text']],
+          'message' => [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => $this->t('Warning'),
+            '#attributes' => ['class' => ['govuk-warning-text__assistive']],
+          ],
+        ]
       ];
     }
 
