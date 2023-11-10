@@ -14,11 +14,17 @@
 {%
   set classes = [
     'form-control',
-    'govuk-input',
     'govuk-file-upload',
     errors ? 'govuk-input--error'
   ]
 %}
 
+{%
+  set exclude_classes = [
+    'govuk-form-group',
+    'govuk-input',
+  ]
+%}
+
 <span class="form-hint govuk-hint">{{ attributes.placeholder }}</span>
-<input{{ attributes.removeClass('govuk-form-group').addClass(classes).removeAttribute('placeholder') }} />{{ children }}
+<input{{ attributes.removeClass(exclude_classes).addClass(classes).removeAttribute('placeholder') }} />{{ children }}
