@@ -63,11 +63,31 @@ class ParConfirmMembers extends ParFormPluginBase {
           '#type' => 'container',
           '#attributes' => ['class' => 'govuk-form-group'],
         ];
-        $form['confirm']['info'] = [
+        $form['confirm']['warning'] = [
           '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => $this->t('It is a statutory requirement to keep this member list regularly up-to-date.'),
-          '#attributes' => ['class' => ['govuk-body', 'govuk-!-font-weight-bold']],
+          '#tag' => 'div',
+          '#attributes' => ['class' => ['govuk-warning-text']],
+          'icon' => [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => '!',
+            '#attributes' => [
+              'class' => ['govuk-warning-text__icon'],
+              'aria-hidden' => 'true',
+            ],
+          ],
+          'strong' => [
+            '#type' => 'html_tag',
+            '#tag' => 'strong',
+            '#value' => $this->t('It is a statutory requirement to keep this member list regularly up-to-date.'),
+            '#attributes' => ['class' => ['govuk-warning-text__text']],
+            'message' => [
+              '#type' => 'html_tag',
+              '#tag' => 'span',
+              '#value' => $this->t('Warning'),
+              '#attributes' => ['class' => ['govuk-warning-text__assistive']],
+            ],
+          ]
         ];
         $form['confirm']['link'] = [
           '#type' => 'link',

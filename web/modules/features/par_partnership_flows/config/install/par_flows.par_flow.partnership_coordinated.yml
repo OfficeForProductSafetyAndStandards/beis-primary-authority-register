@@ -66,12 +66,16 @@ steps:
   3:
     route: par_partnership_flows.address_add
     form_id: par_partnership_address_add
+    components:
+      address: {}
     redirect:
       save: 1
       cancel: 1
   4:
     route: par_partnership_flows.address_edit
     form_id: par_partnership_address_edit
+    components:
+      address: {}
     redirect:
       save: 1
       cancel: 1
