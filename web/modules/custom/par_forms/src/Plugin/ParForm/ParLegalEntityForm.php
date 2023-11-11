@@ -239,11 +239,30 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     // Ensure that the correct legal entities are entered for coordinated partnerships.
     if ($this->getFlowDataHandler()->getFormPermValue('coordinated_partnership')) {
       $form['legal_entity_intro_fieldset'] = [
-        '#type' => 'markup',
-        '#markup' => '<div class="govuk-form-group notice">
-            <i class="icon icon-important"><span class="visually-hidden">Warning</span></i>
-            <strong class="govuk-!-font-size-19 govuk-!-font-weight-bold">Please enter the legal entities for the members covered by this partnership not the co-ordinator.</strong>
-          </div>',
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => ['class' => ['govuk-warning-text']],
+        'icon' => [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => '!',
+          '#attributes' => [
+            'class' => ['govuk-warning-text__icon'],
+            'aria-hidden' => 'true',
+          ],
+        ],
+        'strong' => [
+          '#type' => 'html_tag',
+          '#tag' => 'strong',
+          '#value' => $this->t('Please enter the legal entities for the members covered by this partnership not the co-ordinator.'),
+          '#attributes' => ['class' => ['govuk-warning-text__text']],
+          'message' => [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => $this->t('Warning'),
+            '#attributes' => ['class' => ['govuk-warning-text__assistive']],
+          ],
+        ]
       ];
     }
 

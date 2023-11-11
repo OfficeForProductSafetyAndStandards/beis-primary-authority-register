@@ -74,11 +74,30 @@ limited company or partnership, as well as other types of organisations such as 
     ];
     if ($this->getFlowDataHandler()->getFormPermValue('coordinated_partnership')) {
       $form['legal_entity_intro']['note'] = [
-        '#type' => 'markup',
-        '#markup' => '<div class="form-group notice">
-              <i class="icon icon-important"><span class="visually-hidden">Warning</span></i>
-              <strong class="bold-small">Please select the legal entities for the co-ordinator not the members covered by this partnership.</strong>
-            </div>',
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => ['class' => ['govuk-warning-text']],
+        'icon' => [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => '!',
+          '#attributes' => [
+            'class' => ['govuk-warning-text__icon'],
+            'aria-hidden' => 'true',
+          ],
+        ],
+        'strong' => [
+          '#type' => 'html_tag',
+          '#tag' => 'strong',
+          '#value' => $this->t('Please select the legal entities for the co-ordinator not the members covered by this partnership.'),
+          '#attributes' => ['class' => ['govuk-warning-text__text']],
+          'message' => [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => $this->t('Warning'),
+            '#attributes' => ['class' => ['govuk-warning-text__assistive']],
+          ],
+        ]
       ];
     }
 
