@@ -3,6 +3,7 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
@@ -31,25 +32,13 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
   }
 
   /**
-   * Helper to get all the editable values.
-   *
-   * Used for when editing or revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Partnership being retrieved.
-   * @param int $trading_name_delta
-   *   The trading name delta.
+   * Load the data for this form.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $trading_name_delta = NULL) {
+  public function loadData() {
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+    $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
 
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $bundle = $par_data_organisation->bundle();
-
-    $this->formItems = [
-      "par_data_organisation:{$bundle}" => [
-        'trading_name' => 'trading_name',
-      ],
-    ];
+    $par_data_organisation = $par_data_partnership?->getOrganisation(TRUE);
 
     if (!is_null($trading_name_delta)) {
       // Store the current value of the sic_code if it's being edited.
@@ -59,26 +48,8 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
         $this->getFlowDataHandler()->setFormPermValue("trading_name", $trading_name);
       }
     }
-  }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $trading_name_delta = NULL) {
-    $this->retrieveEditableValues($par_data_partnership, $trading_name_delta);
-
-    $form['trading_name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Enter a trading name'),
-      '#title_tag' => 'h2',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues("trading_name"),
-      '#description' => $this->t("<p>Sometimes companies trade under a different name to their registered, legal name. This is known as a 'trading name'. State any trading names used by the organisation.</p>"),
-    ];
-
-    // Make sure to add the person cacheability data to this form.
-    $this->addCacheableDependency($par_data_partnership);
-
-    return parent::buildForm($form, $form_state);
+    parent::loadData();
   }
 
   /**
@@ -89,16 +60,18 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
 
     // Save the value for the trading name field.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
+    $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
     $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
 
     $items = $par_data_organisation->get('trading_name')->getValue();
 
+    $trading_name = $this->getFlowDataHandler()->getTempDataValue('trading_name');
+
     if (!isset($trading_name_delta)) {
-      $items[] = $this->getFlowDataHandler()->getTempDataValue('trading_name');
+      $items[] = $trading_name;
     }
     else {
-      $items[$trading_name_delta] = $this->getFlowDataHandler()->getTempDataValue('trading_name');
+      $items[$trading_name_delta] = $trading_name;
     }
 
     $par_data_organisation->set('trading_name', $items);

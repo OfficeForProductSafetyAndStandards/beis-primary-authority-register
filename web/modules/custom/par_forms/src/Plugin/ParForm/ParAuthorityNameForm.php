@@ -20,7 +20,8 @@ class ParAuthorityNameForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['name', 'par_data_authority', 'authority_name', NULL, NULL, 0, [
-      'You must fill in the missing information.' => "You must enter the authority's name."
+      'You must fill in the missing information.' => "You must enter the authority's name.",
+      'This value should not be null.' => "You must enter the authority's name.",
     ]],
   ];
 

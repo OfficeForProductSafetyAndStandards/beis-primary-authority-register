@@ -98,47 +98,29 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
    * {@inheritdoc}
    */
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
-//    $legal_entity = $this->getElementKey('legal_entities_select');
-//    $alternative_legal_entity = $this->getElementKey('alternative_legal_entity');
-//    if (empty($form_state->getValue($legal_entity)) && empty($form_state->getValue($alternative_legal_entity))) {
-//      $form_state->setErrorByName($legal_entity, $this->t('<a href="#edit-legal_entities_select">You must choose a legal entity.</a>'));
-//    }
-
-    $status_key = $this->getElementKey('primary_authority_status', $index);
-    $status = $this->getFlowDataHandler()->getTempDataValue($status_key);
+    $status_element = $this->getElement($form, ['primary_authority_status'], $index);
+    $status = $status_element ? $form_state->getValue($status_element['#parents']) : NULL;
 
     // Set an error if an action is not reviewed.
     $allowed_statuses = [ParDataEnforcementAction::APPROVED, ParDataEnforcementAction::BLOCKED, ParDataEnforcementAction::REFERRED];
-    if ($status && !in_array($status, $allowed_statuses)) {
-      $message = $this->wrapErrorMessage('Please choose how you would like to respond to this notice.', $this->getElementId($status_key, $form));
-      $form_state->setErrorByName($this->getElementName($status_key), $message);
+    if (empty($status) || !in_array($status, $allowed_statuses)) {
+      $message = 'Please choose how you would like to respond to this notice.';
+      $this->setError($form, $form_state, $status_element, $message);
     }
 
-    $blocked_reason_key = $this->getElementKey('primary_authority_notes', $index);
-    $blocked_reason = $this->getFlowDataHandler()->getTempDataValue($blocked_reason_key);
+    $blocked_reason_element = $this->getElement($form, ['primary_authority_notes'], $index);
+    $blocked_reason = $blocked_reason_element ? $form_state->getValue($blocked_reason_element['#parents']) : NULL;
     if ($status == ParDataEnforcementAction::BLOCKED && empty($blocked_reason)) {
-
-      $message = $this->wrapErrorMessage('You must explain your reason for blocking this notice.', $this->getElementId($blocked_reason_key, $form));
-      $form_state->setErrorByName($this->getElementName($blocked_reason_key), $message);
+      $message = 'You must explain your reason for blocking this notice.';
+      $this->setError($form, $form_state, $blocked_reason_element, $message);
     }
 
-    $referred_reason_key = $this->getElementKey('referral_notes', $index);
-    $referred_reason = $this->getFlowDataHandler()->getTempDataValue($referred_reason_key);
+    $referred_reason_element = $this->getElement($form, ['referral_notes'], $index);
+    $referred_reason = $referred_reason_element ? $form_state->getValue($referred_reason_element['#parents']) : NULL;
     if ($status == ParDataEnforcementAction::REFERRED && empty($referred_reason)) {
-
-      $message = $this->wrapErrorMessage('You must explain why you are referring this notice.', $this->getElementId($referred_reason_key, $form));
-      $form_state->setErrorByName($this->getElementName($referred_reason_key), $message);
+      $message = 'You must explain why you are referring this notice.';
+      $this->setError($form, $form_state, $referred_reason_element, $message);
     }
-
-    // Set an error if this action has already been reviewed.
-//    if ($action->isApproved() || $action->isBlocked() || $action->isReferred()) {
-//      $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'This action has already been reviewed.');
-//    }
-
-    // Set an error if it is not possible to change to this status.
-//    if (!isset($form_data['primary_authority_status']) || !$action->canTransition($form_data['primary_authority_status'])) {
-//      $this->setElementError(['actions', $delta, 'primary_authority_status'], $form_state, 'This action cannot be changed because it has already been reviewed.');
-//    }
 
     parent::validate($form, $form_state, $index, $action);
   }

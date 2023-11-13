@@ -7,6 +7,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -25,6 +26,8 @@ class ParAuthorityDisplay extends ParFormPluginBase {
    */
   public function loadData(int $index = 1): void {
     $par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');
+    $par_data_premises = $this->getFlowDataHandler()->getParameter('par_data_premises') ??
+      $par_data_authority?->getPremises(TRUE);
 
     if ($par_data_authority) {
       if ($par_data_authority->hasField('authority_name')) {
@@ -36,10 +39,6 @@ class ParAuthorityDisplay extends ParFormPluginBase {
 
       if ($par_data_authority->hasField('authority_type')) {
         $this->getFlowDataHandler()->setFormPermValue("authority_type", $par_data_authority->getAuthorityType());
-      }
-
-      if ($address = $par_data_authority->getPremises(TRUE)) {
-        $this->getFlowDataHandler()->setFormPermValue("authority_address", $address->label());
       }
 
       if ($par_data_authority->hasField('field_regulatory_function')) {
@@ -59,6 +58,10 @@ class ParAuthorityDisplay extends ParFormPluginBase {
             ->setFormPermValue("regulatory_functions", $this->t('This authority does not provide any regulatory functions.'));
         }
       }
+    }
+
+    if ($par_data_premises instanceof ParDataPremises) {
+      $this->getFlowDataHandler()->setFormPermValue("authority_address", $par_data_premises->label());
     }
 
     parent::loadData($index);

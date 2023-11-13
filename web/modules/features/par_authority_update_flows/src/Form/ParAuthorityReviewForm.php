@@ -3,10 +3,12 @@
 namespace Drupal\par_authority_update_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_authority_update_flows\ParFlowAccessTrait;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_data\Entity\ParDataAuthority;
+use Drupal\par_data\Entity\ParDataPremises;
 
 /**
  * The authority update review form.
@@ -27,10 +29,15 @@ class ParAuthorityReviewForm extends ParBaseForm {
     // Set the data values on the entities
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataAuthority[] $par_data_authority */
+    /** @var ParDataAuthority $par_data_authority */
+    /** @var ParDataPremises $par_data_premises */
 
     if (isset($par_data_authority)) {
       $this->getFlowDataHandler()->setParameter('par_data_authority', $par_data_authority);
+    }
+
+    if (isset($par_data_authority)) {
+      $this->getFlowDataHandler()->setParameter('par_data_premises', $par_data_premises);
     }
 
     parent::loadData();
@@ -38,19 +45,39 @@ class ParAuthorityReviewForm extends ParBaseForm {
 
   public function createEntities() {
     $par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');
+    $par_data_premises = $par_data_authority?->getPremises(TRUE);
 
-    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    // Get the cache IDs for the various forms that needs to be extracted from.
     $authority_name_cid = $this->getFlowNegotiator()->getFormKey('par_authority_update_name');
     $authority_type_cid = $this->getFlowNegotiator()->getFormKey('par_authority_update_type');
+    $authority_address_cid = $this->getFlowNegotiator()->getFormKey('authority_address');
     $ons_code_cid = $this->getFlowNegotiator()->getFormKey('par_authority_update_ons');
     $regulatory_functions_cid = $this->getFlowNegotiator()->getFormKey('par_authority_update_regulatory_functions');
 
-    if ($par_data_authority) {
+    if ($par_data_authority instanceof ParDataAuthority) {
       if ($authority_name = $this->getFlowDataHandler()->getTempDataValue('name', $authority_name_cid)) {
         $par_data_authority->set('authority_name', $authority_name);
       }
       if ($authority_type = $this->getFlowDataHandler()->getTempDataValue('authority_type', $authority_type_cid)) {
         $par_data_authority->set('authority_type', $authority_type);
+      }
+      if (!empty($this->getFlowDataHandler()->getFormTempData($authority_address_cid))) {
+        $par_data_premises = $par_data_authority?->getPremises(TRUE);
+        // Set the address values.
+        $address = [
+          'country_code' => $this->getFlowDataHandler()->getTempDataValue('country_code', $authority_address_cid),
+          'address_line1' => $this->getFlowDataHandler()->getTempDataValue('address_line1', $authority_address_cid),
+          'address_line2' => $this->getFlowDataHandler()->getTempDataValue('address_line2', $authority_address_cid),
+          'locality' => $this->getFlowDataHandler()->getTempDataValue('town_city', $authority_address_cid),
+          'administrative_area' => $this->getFlowDataHandler()->getTempDataValue('county', $authority_address_cid),
+          'postal_code' => $this->getFlowDataHandler()->getTempDataValue('postcode', $authority_address_cid),
+        ];
+        $par_data_premises->set('address', $address);
+
+        // Set the nation value.
+        $nation = $this->getFlowDataHandler()->getTempDataValue('country_code') === 'GB' ?
+          $this->getFlowDataHandler()->getTempDataValue('nation') : '';
+        $par_data_premises->setNation($nation);
       }
       if ($ons_code = $this->getFlowDataHandler()->getTempDataValue('ons_code', $ons_code_cid)) {
         $par_data_authority->set('ons_code', $ons_code);
@@ -64,6 +91,7 @@ class ParAuthorityReviewForm extends ParBaseForm {
 
     return [
       'par_data_authority' => $par_data_authority ?? NULL,
+      'par_data_premises' => $par_data_premises ?? NULL,
     ];
   }
 
@@ -75,8 +103,30 @@ class ParAuthorityReviewForm extends ParBaseForm {
     $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
 
     $form['info'] = [
-      '#type' => 'markup',
-      '#markup' => "<p><strong>Please be aware that changing the name of the authority will affect all past and ongoing partnerships. Only do this with the correct legal authorisation.</strong></p>"
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#attributes' => ['class' => ['govuk-warning-text']],
+      'icon' => [
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#value' => '!',
+        '#attributes' => [
+          'class' => ['govuk-warning-text__icon'],
+          'aria-hidden' => 'true',
+        ],
+      ],
+      'strong' => [
+        '#type' => 'html_tag',
+        '#tag' => 'strong',
+        '#value' => $this->t('Please be aware that changing the name of the authority will affect all past and ongoing partnerships. Only do this with the correct legal authorisation.'),
+        '#attributes' => ['class' => ['govuk-warning-text__text']],
+        'message' => [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => $this->t('Warning'),
+          '#attributes' => ['class' => ['govuk-warning-text__assistive']],
+        ],
+      ]
     ];
 
     return parent::buildForm($form, $form_state);
@@ -91,9 +141,13 @@ class ParAuthorityReviewForm extends ParBaseForm {
     // Set the data values on the entities
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataAuthority[] $par_data_authority */
+    /** @var ParDataAuthority $par_data_authority */
+    /** @var ParDataPremises $par_data_premises */
 
-    if ($par_data_authority && $par_data_authority->save()) {
+    if ($par_data_authority instanceof ParDataEntityInterface && $par_data_authority->save()) {
+      if ($par_data_premises instanceof ParDataEntityInterface) {
+        $par_data_premises->save();
+      }
 
       $this->getFlowDataHandler()->deleteStore();
     }

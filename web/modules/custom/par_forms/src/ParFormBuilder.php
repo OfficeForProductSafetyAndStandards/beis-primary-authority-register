@@ -127,8 +127,8 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
     // Get the data to validate from the form_state.
     $data = $component->getDataFromFormState($form_state);
 
-    // The maximum number of items .
-    $max = $component->getCurrentIndex($data);
+    // The max index is the highest index that should be validated.
+    $max = $component->getNextAvailableIndex($data);
     for ($i = 1; $i <= $max; $i++) {
       // Single cardinality plugins should always be validated.
       if (!$component->isMultiple()) {
@@ -248,7 +248,7 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
       $component->getPrefix() => $component->getWrapper()
     ];
 
-    // Get the maximum index (for a new item).
+    // The max index is the highest index that should be displayed.
     $max = $component->getNextAvailableIndex();
     for ($i = 1; $i <= $max; $i++) {
       // For components that use the Summary List pattern, single indexes can be shown.

@@ -2,8 +2,10 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParEntityMapping;
+use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -39,7 +41,7 @@ class ParMessageForm extends ParFormPluginBase {
       '#title' => $this->t('Submit a response'),
       '#title_tag' => 'h2',
       '#default_value' => $this->getDefaultValuesByKey('message', $index),
-      '#description' => '<p>Use this section to respond to the original query.</p>',
+      '#description' => 'Use this section to respond to the original query.',
     ];
 
     $form['files'] = [
@@ -58,5 +60,20 @@ class ParMessageForm extends ParFormPluginBase {
     ];
 
     return $form;
+  }
+
+  /**
+   * Validate date field.
+   */
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+    $response_element = $this->getElement($form, ['message'], $index);
+    $response = $response_element ? $form_state->getValue($response_element['#parents']) : NULL;
+
+    if (empty($response)) {
+      $message = 'You must enter a response.';
+      $this->setError($form, $form_state, $response_element, $message);
+    }
+
+    parent::validate($form, $form_state, $index, $action);
   }
 }

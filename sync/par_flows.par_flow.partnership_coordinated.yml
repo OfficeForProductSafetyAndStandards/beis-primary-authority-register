@@ -61,18 +61,24 @@ steps:
   2:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
+    components:
+      about_business: {}
     redirect:
       save: 1
       cancel: 1
   3:
     route: par_partnership_flows.address_add
     form_id: par_partnership_address_add
+    components:
+      address: {}
     redirect:
       save: 1
       cancel: 1
   4:
     route: par_partnership_flows.address_edit
     form_id: par_partnership_address_edit
+    components:
+      address: {}
     redirect:
       save: 1
       cancel: 1
@@ -105,12 +111,16 @@ steps:
   8:
     route: par_partnership_flows.trading_name_add
     form_id: par_partnership_trading_name_add
+    components:
+      trading_name: {}
     redirect:
       save: 1
       cancel: 1
   9:
     route: par_partnership_flows.trading_name_edit
     form_id: par_partnership_trading_name_edit
+    components:
+      trading_name: {}
     redirect:
       save: 1
       cancel: 1
