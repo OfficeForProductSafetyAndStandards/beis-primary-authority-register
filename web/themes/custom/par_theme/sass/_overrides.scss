@@ -81,9 +81,29 @@
   }
 
   .govuk-header__navigation-item {
-    @include govuk-media-query ($from: desktop) {
+    @include govuk-media-query($from: desktop) {
       margin-left: 15px;
       margin-right: 0;
+    }
+  }
+
+  .govuk-header__navigation-item--active {
+    a {
+      &:link,
+      &:hover,
+      &:visited {
+        color: govuk-colour("white");
+        text-decoration: underline;
+        text-decoration-thickness: 3px;
+
+        @if $govuk-link-underline-offset {
+          text-underline-offset: $govuk-link-underline-offset;
+        }
+      }
+      &:focus {
+        border: 0;
+        @include govuk-focused-text;
+      }
     }
   }
 }
