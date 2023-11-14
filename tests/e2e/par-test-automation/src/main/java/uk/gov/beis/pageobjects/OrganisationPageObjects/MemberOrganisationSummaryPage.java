@@ -45,16 +45,16 @@ public class MemberOrganisationSummaryPage extends BasePageObject {
 	@FindBy(id = "edit-done")
 	private WebElement doneBtn;
 	
-	String organisationNameLocator = "//fieldset[@id='edit-organisation-name']/div/fieldset/div[contains(text(), '?')]";
-	String organisationAddressLocator = "//fieldset[@id='edit-member-registered-address']/div/fieldset/div/p[contains(text(), '?')]";
-	String dateOfMembershipLocator = "//fieldset[@id='edit-membership-date']/div/fieldset/div/time[contains(text(), '?')]";
-	String primaryContactNameLocator = "//fieldset[@id='edit-member-primary-contact']/div/fieldset/div[contains(text(), '?')]";
-	String primaryContactWorkLocator = "//fieldset[@id='edit-member-primary-contact']/div/fieldset/div[contains(text(), '?')]";
-	String primaryContactMobileLocator = "//fieldset[@id='edit-member-primary-contact']/div/fieldset/div[contains(text(), '?')]";
-	String primaryContactEmailLocator = "//fieldset[@id='edit-member-primary-contact']/div/fieldset/div/a[contains(text(), '?')]";
-	String legalEntitiesLocator = "//fieldset[@id='edit-legal-entities']/div/fieldset/div[contains(text(), '?')]";
-	String tradingNameLocator = "//fieldset[@id='edit-trading-names']/div/fieldset/div[contains(text(), '?')]";
-	String coveredByInspectionPlanLocator = "//fieldset[@id='edit-covered-by-inspection']/div/fieldset/div[contains(text(), '?')]";
+	String organisationNameLocator = "//div[@id='edit-organisation-name']/div/div[contains(text(), '?')]";
+	String organisationAddressLocator = "//div[@id='edit-member-registered-address']/div/div/p[contains(text(), '?')]";
+	String dateOfMembershipLocator = "//div[@id='edit-membership-date']/div/div/time[contains(text(), '?')]";
+	String primaryContactNameLocator = "//div[@id='edit-member-primary-contact']/div/div[contains(text(), '?')]";
+	String primaryContactWorkLocator = "//div[@id='edit-member-primary-contact']/div/div[contains(text(), '?')]";
+	String primaryContactMobileLocator = "//div[@id='edit-member-primary-contact']/div/div[contains(text(), '?')]";
+	String primaryContactEmailLocator = "//div[@id='edit-member-primary-contact']/div/div/a[contains(text(), '?')]";
+	String legalEntitiesLocator = "//div[@id='edit-legal-entities']/div/div[contains(text(), '?')]";
+	String tradingNameLocator = "//div[@id='edit-trading-names']/div/div[contains(text(), '?')]";
+	String coveredByInspectionPlanLocator = "//div[@id='edit-covered-by-inspection']/div/div[contains(text(), '?')]";
 	
 	public MemberOrganisationSummaryPage() throws ClassNotFoundException, IOException {
 		super();

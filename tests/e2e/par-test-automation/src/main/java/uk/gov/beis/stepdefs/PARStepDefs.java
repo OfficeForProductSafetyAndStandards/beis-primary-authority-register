@@ -1911,10 +1911,10 @@ public class PARStepDefs {
 	public void the_members_list_type_is_changed_successfully() throws Throwable {
 		LOG.info("Verifying the Members List Type has been Changed Successfully.");
 		
-		String requestText = "Please request a copy of the Primary Authority Membership List from the co-ordinator.";
+		String requestText = "Please request a copy of the Primary Authority Membership List from the co-ordinator. ";
 		
-		String copyAvailableText = " The co-ordinator must make the copy available as soon as reasonably practicable and, in any event, not later "
-				+ "than the third working day after the date of receiving the request at no charge.";
+		String copyAvailableText = "The co-ordinator must make the copy available as soon as reasonably practicable and, in any event, "
+				+ "not later than the third working day after the date of receiving the request at no charge.";
 		
 		Assert.assertTrue("FAILED: Memebers List Type was not Changed.", partnershipInformationPage.checkMembersListType(requestText + copyAvailableText));
 	}

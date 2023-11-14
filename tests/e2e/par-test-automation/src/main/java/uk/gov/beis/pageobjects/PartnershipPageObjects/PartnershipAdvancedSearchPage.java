@@ -60,10 +60,13 @@ public class PartnershipAdvancedSearchPage extends BasePageObject {
 	}
 	
 	public boolean checkPartnershipDetails(String status, String action) {
-		WebElement status1 = driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[3][contains(text(),'" + status + "')]"));
-		WebElement action1 = driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[7]/a[contains(text(),'" + action + "')]"));
+		WebElement statusElement = driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[3][normalize-space()='"+ status +"']"));
+		//WebElement status = driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[3][contains(text(),'" + status + "')]"));
+		WebElement actionElement = driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[7]/a[contains(text(),'" + action + "')]"));
 		
-		return (status1.isDisplayed() && action1.isDisplayed());
+		// //td[@class='views-field views-field-partnership-status-1'][normalize-space()='Active']
+		
+		return (statusElement.isDisplayed() && actionElement.isDisplayed());
 	}
 	
 	public boolean checkPartnershipExists() {

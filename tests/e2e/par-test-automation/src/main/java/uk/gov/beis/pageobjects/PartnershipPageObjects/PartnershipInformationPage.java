@@ -121,15 +121,13 @@ public class PartnershipInformationPage extends BasePageObject {
 	private String businessPCode = "//div/p[contains(text(),'?')]";
 	private String businessCountry = "//div/p[contains(text(),'?')]";
 	
-	private String sic = "//div[contains(text(),'?')]";
-	
-	private String membersListTypeTextLocator = "//div[@id='edit-par-component-partnership-members']/div/div/fieldset/div/p";
+	private String sic = "//div/p[contains(text(),'?')]";
 	
 	private String legalEntityNameLocator = "//tr/td/div/div/div[contains(text(), '?')]";
 	private String legalEntityStatusLocator = "./../../../../td/span[contains(text(), '?')]";
 	private String legalEntityActionLinksLocator = "./../../../../td/div/p/a[contains(text(), '?')]";
 	
-	private String tradename = "//div[contains(text(),'?')]";
+	private String tradename = "//div/p[contains(text(),'?')]";
 	
 	private String contactFullName = "//div[contains(text(),'?')]";
 	private String contactWorkNumber = "//div[contains(text(),'?')]";
@@ -350,13 +348,9 @@ public class PartnershipInformationPage extends BasePageObject {
 	}
 	
 	public boolean checkMembersListType(String text) {
+		String listTypeLocator = "//div[@id='edit-list']/p[normalize-space()='?']";
 		
-		// //div[@id='edit-par-component-partnership-members']/div/div/fieldset/div/p[contains(text(), '?')]
-		//return partnershipMembersSection.findElement(By.xpath(membersListTypeTextLocator.replace("?", text))).isDisplayed(); // Is not working for some reason.
-		
-		return partnershipMembersSection.findElement(By.xpath(membersListTypeTextLocator)).isDisplayed();
-		
-		
+		return partnershipMembersSection.findElement(By.xpath(listTypeLocator.replace("?", text))).isDisplayed();
 	}
 	
 	public boolean verifyLegalEntity(String status) {
