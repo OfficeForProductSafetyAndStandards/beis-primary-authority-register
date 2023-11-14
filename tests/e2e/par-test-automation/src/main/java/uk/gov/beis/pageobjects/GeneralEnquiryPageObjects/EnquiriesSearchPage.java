@@ -11,7 +11,7 @@ import uk.gov.beis.utility.DataStore;
 
 public class EnquiriesSearchPage extends BasePageObject {
 	
-	private String enquiry = "(//tr/td[contains(text(),'?')]/following-sibling::td[3])[1]";
+	private String enquiry = "(//tr/td[contains(normalize-space(),'?')]/following-sibling::td[3])[1]";
 	
 	public EnquiriesSearchPage() throws ClassNotFoundException, IOException {
 		super();
