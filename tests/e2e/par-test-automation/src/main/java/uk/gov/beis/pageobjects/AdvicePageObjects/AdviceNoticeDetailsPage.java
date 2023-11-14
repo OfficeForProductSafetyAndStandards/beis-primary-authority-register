@@ -20,8 +20,8 @@ public class AdviceNoticeDetailsPage extends BasePageObject {
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 
-	private String advicetype = "//label[contains(text(),'?')]";
-	private String regfunc = "//label[contains(text(),'?')]";
+	private String advicetype = "//label[contains(text(),'?')]/preceding-sibling::input";
+	private String regfunc = "//label[contains(text(),'?')]/preceding-sibling::input";
 	
 	public AdviceNoticeDetailsPage() throws ClassNotFoundException, IOException {
 		super();
