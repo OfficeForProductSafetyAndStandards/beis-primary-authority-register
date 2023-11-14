@@ -14,7 +14,7 @@
 		<cucumber-junit.version>1.2.4</cucumber-junit.version>
 		
 		<logback.version>1.2.3</logback.version>
-		<junit.version>4.11</junit.version>
+		<junit.version>4.13.2</junit.version>
 		
 		<!-- <selenium-java.version>2.53.1</selenium-java.version> -->
 		<selenium-java.version>4.12.1</selenium-java.version>
