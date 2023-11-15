@@ -17,24 +17,19 @@ public class MergeContactRecordsPage extends BasePageObject {
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 	
-	private String contactLabelLocator = "//label/div[contains(text(), '?')]";
+	private String allContactLebelLocator = "//div/label";
 	
 	public MergeContactRecordsPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
 	public void mergeContacts() {
+		List<WebElement> allContacts = driver.findElements(By.xpath(allContactLebelLocator));
 		
-		List<WebElement> checkboxes = driver.findElements(By.xpath("//input[@type='checkbox']"));
-		
-		for(WebElement box : checkboxes) {
-			box.click();
-		}
-		
-		List<WebElement> contacts = driver.findElements(By.xpath(contactLabelLocator.replace("?", getContactName())));
-		
-		for(WebElement record : contacts) {
-			record.click();
+		for(WebElement contact : allContacts) {
+			if(!contact.getText().contains(getContactName())) {
+				contact.click();
+			}
 		}
 	}
 	

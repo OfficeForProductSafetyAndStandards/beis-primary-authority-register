@@ -19,22 +19,22 @@ public class UserProfilePage extends BasePageObject {
 	@FindBy(xpath = "//p[contains(text(), 'An invitation has already been sent')]")
 	private WebElement invitationSentText;
 
-	@FindBy(xpath = "//div[@class='component-user-detail']//p[3]")
+	@FindBy(xpath = "//div[@class='govuk-grid-row govuk-form-group']/p[3]")
 	private WebElement userAccountType;
 
-	@FindBy(xpath = "//fieldset/p[@class='column-two-thirds'][1]")
+	@FindBy(xpath = "//div/p[@class='govuk-grid-column-two-thirds'][1]")
 	private WebElement userContactName;
 
-	@FindBy(xpath = "//fieldset/p[@class='column-two-thirds'][2]")
+	@FindBy(xpath = "//div/p[@class='govuk-grid-column-two-thirds'][2]")
 	private WebElement userContactEmail;
 
-	@FindBy(xpath = "//fieldset/p[@class='column-one-third'][2]")
+	@FindBy(xpath = "//div/p[@class='govuk-grid-column-one-third'][2]")
 	private WebElement userContactPhoneNumbers;
 
 	@FindBy(partialLinkText = "Update")
 	private WebElement updateUserBtn;
 
-	@FindBy(css = ".summary")
+	@FindBy(css = ".govuk-details__summary")
 	private WebElement moreInformationBtn;
 
 	@FindBy(id = "contact-detail-locations-1")
