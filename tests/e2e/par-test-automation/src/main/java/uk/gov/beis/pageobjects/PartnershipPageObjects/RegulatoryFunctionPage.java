@@ -21,7 +21,7 @@ public class RegulatoryFunctionPage extends BasePageObject {
 	@FindBy(id = "edit-partnership-cover-bespoke")
 	private WebElement bespokeRadial;
 	
-	@FindBy(xpath = "//input[@class='form-group form-checkbox govuk-checkboxes__input']")
+	@FindBy(xpath = "//input[@class='form-checkbox form-control govuk-input govuk-checkboxes__input']")
 	private WebElement bespokeCheckbox;
 
 	@FindBy(id = "edit-next")

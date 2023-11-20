@@ -18,7 +18,7 @@ public class RemoveEnforcementPage extends BasePageObject {
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 
-	private String removalReasonLocator = "//label[contains(text(),'?')]";
+	private String removalReasonLocator = "//label[contains(text(),'?')]/preceding-sibling::input";
 	
 	public RemoveEnforcementPage() throws ClassNotFoundException, IOException {
 		super();

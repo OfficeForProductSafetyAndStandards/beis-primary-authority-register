@@ -11,7 +11,7 @@ import uk.gov.beis.utility.DataStore;
 
 public class DeviationSearchPage extends BasePageObject {
 
-	private String devReq = "(//tr/td[contains(text(),'?')]/following-sibling::td[5])[1]";
+	private String devReq = "(//tr/td[contains(normalize-space(),'?')]/following-sibling::td[5]/a)[1]";
 	
 	public DeviationSearchPage() throws ClassNotFoundException, IOException {
 		super();

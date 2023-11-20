@@ -20,7 +20,7 @@ public class DeviationReviewPage extends BasePageObject {
 	private WebElement saveBtn;
 	
 	private String descriptionLocator = "//div/p[contains(text(),'?')]";
-	private String statusLocator = "//fieldset/p[contains(text(),'?')]";
+	private String statusLocator = "//div/p[contains(text(),'?')]";
 	private String responseLocator = "//div/p[contains(text(),'?')]";
 	
 	public DeviationReviewPage() throws ClassNotFoundException, IOException {

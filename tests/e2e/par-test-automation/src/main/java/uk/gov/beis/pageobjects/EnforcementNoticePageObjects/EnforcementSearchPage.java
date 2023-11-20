@@ -22,8 +22,9 @@ public class EnforcementSearchPage extends BasePageObject {
 	@FindBy(xpath = "//div/p[contains(text(),'Sorry, there are no sent or received notices')]")
 	private WebElement noResults;
 	
-	private String status = "//td[contains(text(),'?')]/preceding-sibling::td[1]";
-	private String removeEnfBtn = "//td[contains(text(),'?')]/following-sibling::td[1]/a[contains(text(),'remove enforcement')]";
+	private String status = "//td[normalize-space()='?']/preceding-sibling::td[1]";
+	
+	private String removeEnfBtn = "//td[normalize-space()='?']/following-sibling::td[1]/a[contains(text(), 'remove enforcement')]";
 	
 	public EnforcementSearchPage() throws ClassNotFoundException, IOException {
 		super();

@@ -11,7 +11,7 @@ import uk.gov.beis.utility.DataStore;
 
 public class InspectionFeedbackSearchPage extends BasePageObject {
 	
-	private String feedbknotice = "(//tr/td[contains(text(),'?')]/following-sibling::td[3])[1]";
+	private String feedbknotice = "(//tr/td[contains(normalize-space(),'?')]/following-sibling::td[3]/a)[1]";
 	
 	public InspectionFeedbackSearchPage() throws ClassNotFoundException, IOException {
 		super();

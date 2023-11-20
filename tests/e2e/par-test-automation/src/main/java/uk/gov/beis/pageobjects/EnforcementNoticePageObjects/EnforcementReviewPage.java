@@ -16,9 +16,9 @@ public class EnforcementReviewPage extends BasePageObject {
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
 	
-	private String legalEntityNameLocator = "//fieldset/p[contains(text(),'?')]";
+	private String legalEntityNameLocator = "//div/p[contains(text(),'?')]";
 	private String enforcementTitleLocator = "//div/h3[contains(text(),'?')]";
-	private String enforcementTypeLocator = "//fieldset/p[contains(text(),'?')]";
+	private String enforcementTypeLocator = "//div/p[contains(text(),'?')]";
 	private String enforcementDescriptionLocator = "//div/p[contains(text(),'?')]";
 	private String enforcementFileLocator = "//span/a[contains(text(),'?')]";
 	
