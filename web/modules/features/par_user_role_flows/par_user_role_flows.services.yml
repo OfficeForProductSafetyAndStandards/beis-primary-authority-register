@@ -1,0 +1,10 @@
+services:
+  par_user_role_flows.par_flow_custom_subscriber:
+    class: '\Drupal\par_user_role_flows\EventSubscriber\ParFlowCustomSubscriber'
+    tags:
+      - { name: 'event_subscriber' }
+  par_user_role_flows.role_change_access:
+    class: Drupal\par_user_role_flows\Access\RoleChangeCheck
+    arguments: ['@par_roles.role_manager', '@par_flows.negotiator']
+    tags:
+      - { name: access_check, applies_to: _par_role_change_access_check }

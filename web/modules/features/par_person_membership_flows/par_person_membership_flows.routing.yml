@@ -1,0 +1,54 @@
+par_person_membership_flows.remove_membership:
+  path: '/user/{user}/institution/remove/{institution_type}/{institution_id}'
+  defaults:
+    _form: '\Drupal\par_person_membership_flows\Form\ParRemoveInstitutionForm'
+    _title_callback: '\Drupal\par_person_membership_flows\Form\ParRemoveInstitutionForm::titleCallback'
+  requirements:
+    _permission: 'manage institution membership'
+    _par_membership_remove_access_check: 'TRUE'
+    user: \d+
+    institution_id: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+par_person_membership_flows.select_person:
+  path: '/user/{user}/institution/add/select-person'
+  defaults:
+    _form: '\Drupal\par_person_membership_flows\Form\ParSelectPersonForm'
+    _title_callback: '\Drupal\par_person_membership_flows\Form\ParSelectPersonForm::titleCallback'
+  requirements:
+    _permission: 'manage institution membership'
+    _par_membership_add_access_check : 'TRUE'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+par_person_membership_flows.select_institution:
+  path: '/user/{user}/institution/add/select-institution'
+  defaults:
+    _form: '\Drupal\par_person_membership_flows\Form\ParSelectInstitutionForm'
+    _title_callback: '\Drupal\par_person_membership_flows\Form\ParSelectInstitutionForm::titleCallback'
+  requirements:
+    _permission: 'manage institution membership'
+    _par_membership_add_access_check : 'TRUE'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user
+par_person_membership_flows.add_membership:
+  path: '/user/{user}/institution/add/confirm'
+  defaults:
+    _form: '\Drupal\par_person_membership_flows\Form\ParAddInstitutionForm'
+    _title_callback: '\Drupal\par_person_membership_flows\Form\ParAddInstitutionForm::titleCallback'
+  requirements:
+    _permission: 'manage institution membership'
+    _par_membership_add_access_check : 'TRUE'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user

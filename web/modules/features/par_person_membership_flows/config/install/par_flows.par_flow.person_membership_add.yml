@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies: {}
+id: person_membership_add
+label: 'Person Add Membership Flow'
+default_title: null
+default_section_title: 'Add user memberships'
+description: ''
+save_method: end
+states:
+  - user
+final_routes:
+  - par_profile_view_flows.profile
+steps:
+  1:
+    route: par_person_membership_flows.select_person
+    form_id: par_membership_select_person
+    components:
+      person_select: {}
+  2:
+    route: par_person_membership_flows.select_institution
+    form_id: par_membership_select_institution
+    components:
+      memberships_select: {}
+  3:
+    route: par_person_membership_flows.add_membership
+    form_id: par_membership_remove
+    form_data:
+      person_select: par_membership_select_person
+      memberships_select: par_membership_select_institution

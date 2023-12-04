@@ -27,7 +27,7 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[ParFlowEvents::FLOW_DONE][] = ['onEvent', 300];
+    $events[ParFlowEvents::FLOW_SUBMIT][] = ['onEvent', 300];
     return $events;
   }
 

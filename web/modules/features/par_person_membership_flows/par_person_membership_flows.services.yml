@@ -1,0 +1,15 @@
+services:
+  par_person_membership_flows.membership_remove_access:
+    class: Drupal\par_person_membership_flows\Access\InstitutionRemovalCheck
+    arguments: ['@par_roles.role_manager', '@par_flows.negotiator']
+    tags:
+      - { name: access_check, applies_to: _par_membership_remove_access_check }
+  par_person_membership_flows.membership_add_access:
+    class: Drupal\par_person_membership_flows\Access\InstitutionAdditionCheck
+    arguments: ['@par_roles.role_manager', '@par_flows.negotiator']
+    tags:
+      - { name: access_check, applies_to: _par_membership_add_access_check }
+  par_person_membership_flows.par_flow_custom_subscriber:
+    class: '\Drupal\par_person_membership_flows\EventSubscriber\ParFlowCustomSubscriber'
+    tags:
+      - { name: 'event_subscriber' }

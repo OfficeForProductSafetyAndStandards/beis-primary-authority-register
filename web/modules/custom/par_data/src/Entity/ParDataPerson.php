@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Link;
@@ -140,13 +141,14 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
    * {@inheritdoc}
    *
    * A person can be matched to a user account if:
-   * a) the user id is set on the field_user_account
    * b) the user account is not set (as above) but the email matches the user account email
+   * a) the user id is set on the field_user_account
+   *
    * @see ParDataManager::getUserPeople()
    */
   public function getUserAccount(): ?UserInterface {
-    return $this->hasUserAccount() ?
-      $this->retrieveUserAccount() : $this->lookupUserAccount();
+    return $this->lookupUserAccount() ??
+      $this->hasUserAccount() ? $this->retrieveUserAccount() : NULL;
   }
 
   /**
@@ -541,6 +543,23 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     }
 
     return isset($preference_message) ? $preference_message : null;
+  }
+
+  /**
+   * @return iterable<EntityInterface>
+   */
+   public function getInstitutions(): iterable {
+    $relationships = $this->getRelationships(NULL, NULL, TRUE);
+
+    // Get all the relationships that reference this person.
+    $relationships = array_filter($relationships, function ($relationship) {
+      return ParDataRelationship::DIRECTION_REVERSE === $relationship->getRelationshipDirection() &&
+        ($relationship->getEntity() instanceof ParDataMembershipInterface);
+    });
+
+    foreach ($relationships as $relationship) {
+      yield $relationship->getEntity();
+    }
   }
 
   public function getReferencedLocations() {

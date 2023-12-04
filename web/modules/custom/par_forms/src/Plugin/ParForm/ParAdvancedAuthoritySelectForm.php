@@ -48,6 +48,9 @@ class ParAdvancedAuthoritySelectForm extends ParFormPluginBase {
       '#autocomplete_route_parameters' => [
         'plugin' => $this->getPluginId(),
       ],
+      '#autocomplete_query_parameters' => [
+        'target_type' => 'par_data_authority',
+      ],
     ];
 
 //      $form['intro'] = [

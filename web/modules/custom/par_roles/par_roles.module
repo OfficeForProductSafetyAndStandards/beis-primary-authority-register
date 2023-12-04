@@ -7,6 +7,7 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Access\AccessResult;
+use Drupal\par_data\Entity\ParDataPerson;
 
 /**
  * Implements hook_help().
@@ -25,45 +26,19 @@ function par_roles_help($route_name, RouteMatchInterface $route_match) {
 }
 
 function par_roles_user_presave($account) {
-  $par_data_manager = \Drupal::service('par_data.manager');
+  /** @var \Drupal\par_roles\ParRoleManagerInterface $par_role_manager */
+  $par_role_manager = \Drupal::service('par_roles.role_manager');
+  // Auto-assign the correct roles based on memberships.
+  $account = $par_role_manager->autoAssignRoles($account);
 
-  // Do not run this check for test accounts.
-  if (preg_match('/@example.com$/', $account->getEmail()) === 1) {
-    return;
-  }
-
-  // Check whether they are the last user with a given role in any of their authorities.
-  $authority_member = $par_data_manager->isMemberOfAuthority($account);
-
-  // Add the relevant authority role if they are an authority member.
-  if ($authority_member) {
-    $authority_member = $par_data_manager->isRoleInAllMemberAuthorities($account, ['par_authority']);
-    $authority_manager = $par_data_manager->isRoleInAllMemberAuthorities($account, ['par_authority_manager']);
-
-    // If there are no other primary authority users in any of the member's
-    // authorities then assign them the primary authority role.
-    if (!$authority_member && !$authority_manager) {
-      $account->addRole('par_authority');
-      $account->removeRole('par_enforcement');
-    }
-    elseif (!$account->hasRole('par_authority_manager')
-      && !$account->hasRole('par_authority')
-      && !$account->hasRole('par_enforcement')) {
-      $account->addRole('par_authority');
-    }
-  }
-  else {
-    $account->removeRole('par_authority_manager');
-    $account->removeRole('par_authority');
-    $account->removeRole('par_enforcement');
-  }
-
-  $organisation_member = $par_data_manager->isMemberOfOrganisation($account);
-  if ($organisation_member) {
-    $account->addRole('par_organisation');
-  }
-  elseif (!$organisation_member) {
-    $account->removeRole('par_organisation');
+  if (!$par_role_manager->hasPeople($account)) {
+    // Create a person record that contains the bare minimum information.
+    // This ensures there is always a contact record for each user to complete.
+    $person = ParDataPerson::create([
+      'email' => $account->getEmail(),
+      'field_user_account' => [$account->id()],
+    ]);
+    $person->save();
   }
 }
 

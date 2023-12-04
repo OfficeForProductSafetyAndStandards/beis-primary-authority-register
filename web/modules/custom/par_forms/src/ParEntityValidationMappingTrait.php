@@ -215,7 +215,7 @@ trait ParEntityValidationMappingTrait {
   }
 
   /**
-   * Get's the element target depending on the cardinality of this plugin.
+   * Gets the element target depending on the cardinality of this plugin.
    *
    * E.g. par_component_name[0][element_name]
    *

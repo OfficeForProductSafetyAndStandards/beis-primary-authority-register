@@ -45,33 +45,18 @@ class ParUserDetail extends ParFormPluginBase {
       $this->setDefaultValuesByKey('user_login', $index, $last_login_date);
       $this->setDefaultValuesByKey('user_active', $index, (bool) $user->isActive());
 
+      /** @var \Drupal\par_roles\ParRoleManagerInterface $par_role_manager */
+      $par_role_manager = \Drupal::service('par_roles.role_manager');
+
+      // Display the user roles.
+      $user_roles = $par_role_manager->displayRoles($user);
+      if (!empty($user_roles)) {
+        $this->setDefaultValuesByKey("user_roles", $index, implode(', ', $user_roles));
+      }
+
       // Disable blocking of last user in an authority/organisation.
-      try {
-        $isLastSurvingAuthorityMember = !$this->getParDataManager()
-          ->isRoleInAllMemberAuthorities($user, ['par_authority']);
-      }
-      catch (ParDataException $e) {
-        $isLastSurvingAuthorityMember = FALSE;
-      }
-      try {
-        $isLastSurvingOrganisationMember = !$this->getParDataManager()
-          ->isRoleInAllMemberOrganisations($user, ['par_organisation']);
-      }
-      catch (ParDataException $e) {
-        $isLastSurvingOrganisationMember = FALSE;
-      }
-      $this->setDefaultValuesByKey('user_unblockable', $index, (bool) ($isLastSurvingAuthorityMember || $isLastSurvingOrganisationMember));
+      $this->setDefaultValuesByKey('user_unblockable', $index, !$par_role_manager->blockable($user, TRUE));
 
-
-      $roles = Role::loadMultiple($user->getRoles());
-      $user_roles = [];
-      foreach ($roles as $user_role) {
-        if (in_array($user_role->id(), ['par_authority', 'par_authority_manager', 'par_enforcement', 'par_organisation', 'par_helpdesk', 'senior_administration_officer'])) {
-          $user_roles[] = $user_role->label();
-        }
-      }
-
-      $this->setDefaultValuesByKey("user_roles", $index, implode(', ', $user_roles));
       $this->getFlowDataHandler()->setFormPermValue("user_id", $user->id());
     }
     elseif ($par_data_person instanceof ParDataEntityInterface) {
@@ -118,16 +103,34 @@ class ParUserDetail extends ParFormPluginBase {
 
     if ($user_id = $this->getFlowDataHandler()->getFormPermValue('user_id')) {
       $form['user_account']['email'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => '<strong>E-mail</strong><br>' . $this->getDefaultValuesByKey('user_account', $index, ''),
-        '#attributes' => ['class' => ['govuk-grid-column-full']],
+        '#type' => 'container',
+        '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
+        'title' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h3',
+          '#value' => 'E-mail',
+          '#attributes' => ['class' => ['govuk-heading-s']],
+        ],
+        'value' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->getDefaultValuesByKey('user_account', $index, ''),
+        ],
       ];
       $form['user_account']['roles'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => '<strong>Type of account</strong><br>' . $this->getDefaultValuesByKey('user_roles', $index, ''),
+        '#type' => 'container',
         '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
+        'title' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h3',
+          '#value' => 'Type of account',
+          '#attributes' => ['class' => ['govuk-heading-s']],
+        ],
+        'value' => [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->getDefaultValuesByKey('user_roles', $index, 'This user has no roles.'),
+        ],
       ];
 
       // Check whether the user is active.
@@ -135,10 +138,19 @@ class ParUserDetail extends ParFormPluginBase {
       $unblockable = $this->getDefaultValuesByKey('user_unblockable', $index, FALSE);
       if ($active) {
         $form['user_account']['last_access'] = [
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => '<strong>Last sign in</strong><br>' . $this->getDefaultValuesByKey('user_login', $index, 'Never signed in'),
+          '#type' => 'container',
           '#attributes' => ['class' => ['govuk-grid-column-one-third']],
+          'title' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h3',
+            '#value' => 'Last sign in',
+            '#attributes' => ['class' => ['govuk-heading-s']],
+          ],
+          'value' => [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $this->getDefaultValuesByKey('user_login', $index, 'Never signed in'),
+          ],
         ];
       }
       else {
@@ -154,42 +166,60 @@ class ParUserDetail extends ParFormPluginBase {
         $form['user_account']['blocked'] = [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => 'This user can not be removed because they are the only member of one of their authorities or organisations.<br>',
+          '#value' => 'This user can not be removed because they are the only member of one of their authorities or organisations.',
           '#attributes' => ['class' => ['govuk-grid-column-full']],
         ];
       }
 
       $params = ['user' => $user_id];
-      // Try to add a block user link.
+      // Try to add a role management link.
       try {
-        $block_flow = ParFlow::load('block_user');
-        $block_link = $block_flow ?
-          $block_flow->getStartLink(1, 'Block user account', $params) : NULL;
-        if ($block_link && $block_link instanceof Link) {
-          $form['user_account']['block'] = [
+        $roles_flow = ParFlow::load('manage_user_roles');
+        $roles_link = $roles_flow?->getStartLink(1, 'Manage roles', $params);
+        if ($roles_link instanceof Link) {
+          $form['user_account']['manage_roles'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
-            '#value' => $block_link->toString(),
-            '#attributes' => ['class' => ['govuk-grid-column-full']],
+            '#value' => $roles_link->toString(),
+            '#attributes' => ['class' => ['govuk-grid-column-one-quarter']],
           ];
         }
-      } catch (ParFlowException $e) {
+      }
+      catch (ParFlowException $e) {
 
       }
 
       // Try to add a block user link.
       try {
+        $block_flow = ParFlow::load('block_user');
+        $block_link = $block_flow?->getStartLink(1, 'Block user account', $params);
+        if ($block_link instanceof Link) {
+          $form['user_account']['block'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $block_link->toString(),
+            '#attributes' => ['class' => ['govuk-grid-column-one-quarter']],
+          ];
+        }
+      }
+      catch (ParFlowException $e) {
+
+      }
+
+      // Try to add an un-block user link.
+      try {
         $unblock_flow = ParFlow::load('unblock_user');
-        $unblock_link = $unblock_flow ? $unblock_flow->getStartLink(1, 'Re-activate user account', $params) : NULL;
-        if ($unblock_link && $unblock_link instanceof Link) {
+        $unblock_link = $unblock_flow?->getStartLink(1, 'Re-activate user account', $params);
+        if ($unblock_link instanceof Link) {
           $form['user_account']['unblock'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $unblock_link->toString(),
-            '#attributes' => ['class' => ['govuk-grid-column-full']],
+            '#attributes' => ['class' => ['govuk-grid-column-one-quarter']],
           ];
         }
-      } catch (ParFlowException $e) {
+      }
+      catch (ParFlowException $e) {
 
       }
 
@@ -222,7 +252,8 @@ class ParUserDetail extends ParFormPluginBase {
             ]),
           ];
         }
-      } catch (ParFlowException $e) {
+      }
+      catch (ParFlowException $e) {
 
       }
     }

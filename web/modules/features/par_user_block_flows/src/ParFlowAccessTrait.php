@@ -44,23 +44,11 @@ trait ParFlowAccessTrait {
       $this->accessResult = AccessResult::forbidden('This user is already blocked.');
     }
 
-    // Disable blocking of last user in an authority/organisation.
-    try {
-      $isLastSurvingAuthorityMember = !$this->getParDataManager()
-        ->isRoleInAllMemberAuthorities($user, ['par_authority']);
-    }
-    catch (ParDataException $e) {
-      $isLastSurvingAuthorityMember = FALSE;
-    }
-    try {
-      $isLastSurvingOrganisationMember = !$this->getParDataManager()
-        ->isRoleInAllMemberOrganisations($user, ['par_organisation']);
-    }
-    catch (ParDataException $e) {
-      $isLastSurvingOrganisationMember = FALSE;
-    }
+    /** @var \Drupal\par_roles\ParRoleManagerInterface $par_role_manager */
+    $par_role_manager = \Drupal::service('par_roles.role_manager');
 
-    if ($access_route_negotiator->getFlowName() === 'block_user' && ($isLastSurvingAuthorityMember || $isLastSurvingOrganisationMember)) {
+    // Disable blocking of last user in an authority/organisation.
+    if ($access_route_negotiator->getFlowName() === 'block_user' && !$par_role_manager->blockable($user)) {
       $this->accessResult = AccessResult::forbidden('This user is the only member of their authority or organisation.');
     }
 

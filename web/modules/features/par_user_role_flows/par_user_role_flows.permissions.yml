@@ -1,0 +1,4 @@
+change user role:
+  title: 'Change a user role'
+  description: "Allow users to change another user's role."
+  restrict access: TRUE

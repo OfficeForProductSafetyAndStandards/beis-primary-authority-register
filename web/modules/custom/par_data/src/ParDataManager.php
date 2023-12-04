@@ -921,43 +921,11 @@ class ParDataManager implements ParDataManagerInterface {
    * @param UserInterface $account
    *   A user account.
    *
-   * @return \Drupal\Core\Entity\EntityInterface[]
+   * @return \Drupal\par_data\Entity\ParDataPersonInterface[]
    *   PAR People related to the user account.
    */
-  public function getUserPeople(UserInterface $account) {
-    // Cache this function per request.
-    $function_id = __FUNCTION__ . $account->get('mail')->getString();
-    $entities = &drupal_static($function_id);
-    if (!empty($entities)) {
-      return $entities;
-    }
-
-    $conditions = [
-      [
-        'AND' => [
-          ['field_user_account', $account->id(), 'IN'],
-         ],
-      ],
-      [
-        'AND' => [
-          ['email', $account->get('mail')->getString()],
-        ],
-      ],
-    ];
-
-    $entities = $this->getEntitiesByQuery('par_data_person', $conditions, NULL, 'id', 'ASC', 'OR');
-
-    // There is a need to check that any par_data_person entities returned
-    // do not link to any other active users. This can't be done directly with
-    // a query due to cases where the user account may have been removed.
-    $entities = array_filter($entities, function ($entity) use ($account) {
-      if ($entity->retrieveUserAccount() && $entity->retrieveUserAccount()->id() !== $account->id()) {
-        return FALSE;
-      }
-      return TRUE;
-    });
-
-    return $entities;
+  public function getUserPeople(UserInterface $account): array {
+    return \Drupal::service('par_roles.role_manager')->getPeople($account);
   }
 
   /**

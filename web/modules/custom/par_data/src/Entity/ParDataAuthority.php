@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\user\UserInterface;
 
 /**
  * Defines the par_data_authority entity.
@@ -79,7 +80,9 @@ class ParDataAuthority extends ParDataEntity implements ParDataMembershipInterfa
 
     foreach ($people as $person) {
       $user = $person->getUserAccount();
-      $users[$user->getEmail()] = $person->getUserAccount();
+      if ($user instanceof UserInterface) {
+        $users[$user->getEmail()] = $user;
+      }
     }
 
     return $users;
@@ -105,19 +108,26 @@ class ParDataAuthority extends ParDataEntity implements ParDataMembershipInterfa
   }
 
   /**
-   * Whether the person is already on the authority.
-   *
-   * @return bool
-   *   TRUE if the person already exists on the authority.
-   *   FALSE if not found on the authority.
+   * {@inheritDoc}
    */
-  public function hasPerson(ParDataPersonInterface $person): bool {
-    foreach ($this->get('field_person')->referencedEntities() as $existing) {
-      if ($existing->id() === $person->id()) {
-        return TRUE;
+  public function removePerson(ParDataPersonInterface $person): void {
+    foreach ($this->getPerson() as $index => $existing_person) {
+      if ($existing_person->id() === $person->id()) {
+        $this->get('field_person')->removeItem($index);
       }
     }
-    return FALSE;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function hasPerson(ParDataPersonInterface $person): bool {
+    $existing_people = $this->getPerson();
+    $exists = array_filter($existing_people, function ($existing_person) use ($person) {
+      return $existing_person->id() === $person->id();
+    });
+
+    return !empty($exists);
   }
 
   /**

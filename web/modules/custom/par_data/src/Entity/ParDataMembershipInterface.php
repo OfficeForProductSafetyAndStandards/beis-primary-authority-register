@@ -29,4 +29,30 @@ interface ParDataMembershipInterface {
    * @return ParDataPersonInterface[]
    */
   public function getPerson(bool $primary = FALSE): mixed;
+
+  /**
+   * Add a person.
+   *
+   * @param ParDataPersonInterface $person
+   */
+  public function addPerson(ParDataPersonInterface $person): void;
+
+  /**
+   * Remove a person.
+   *
+   * @param ParDataPersonInterface $person
+   */
+  public function removePerson(ParDataPersonInterface $person): void;
+
+  /**
+   * Whether the person is already on the authority.
+   *
+   * @param ParDataPersonInterface $person
+   *
+   * @return bool
+   *   TRUE if the person already exists on the institution.
+   *   FALSE if not found on the institution.
+   */
+  public function hasPerson(ParDataPersonInterface $person): bool;
+
 }
