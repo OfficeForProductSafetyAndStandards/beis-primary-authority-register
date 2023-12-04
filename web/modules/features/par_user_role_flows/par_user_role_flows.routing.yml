@@ -1,0 +1,13 @@
+par_user_role_flows.change_role:
+  path: '/user/{user}/roles'
+  defaults:
+    _form: '\Drupal\par_user_role_flows\Form\ParChangeRoleForm'
+    _title_callback: '\Drupal\par_user_role_flows\Form\ParChangeRoleForm::titleCallback'
+  requirements:
+    _permission: 'block user'
+    _par_role_change_access_check : 'TRUE'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user

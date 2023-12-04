@@ -152,6 +152,22 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
   }
 
   /**
+   * Get the fields that make up an entity's label.
+   */
+  public function getLabelFields() {
+    $label_fields = (array) $this->getConfigurationElementByType('entity', 'label_fields') ?? [];
+
+    $entity_field_manager = \Drupal::service('entity_field.manager');
+    $field_map = $entity_field_manager->getFieldMap();
+
+    $entity_type_id = $this->getEntityType()->getBundleOf();
+
+    return array_filter($label_fields, function ($label_field) use ($entity_type_id, $field_map) {
+      return isset($field_map[$entity_type_id][$label_field]);
+    });
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getRequiredFields() {

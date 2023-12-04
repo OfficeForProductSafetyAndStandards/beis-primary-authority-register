@@ -1,0 +1,22 @@
+uuid: 8830c6c8-8485-4bcd-b5e4-a8983718447e
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: l0WN5lZIcU3PNadGqs6uQeGAw2tjpUpQN6Gd4xU9odY
+id: manage_user_roles
+label: 'Manage User Roles Flow'
+default_title: null
+default_section_title: 'Manage user roles'
+description: ''
+save_method: end
+states:
+  - user
+final_routes:
+  - par_profile_view_flows.profile
+steps:
+  1:
+    route: par_user_role_flows.change_role
+    form_id: par_change_user_roles
+    components:
+      advanced_role_select: {  }

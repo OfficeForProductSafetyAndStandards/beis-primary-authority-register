@@ -123,6 +123,7 @@ module:
   par_partnership_document_remove_flows: 0
   par_partnership_flows: 0
   par_person_create_flows: 0
+  par_person_membership_flows: 0
   par_person_merge_flows: 0
   par_person_update_flows: 0
   par_profile_update_flows: 0
@@ -135,6 +136,7 @@ module:
   par_subscriptions: 0
   par_transfer_partnerships_flows: 0
   par_user_block_flows: 0
+  par_user_role_flows: 0
   par_validation: 0
   password_policy: 0
   password_policy_character_types: 0

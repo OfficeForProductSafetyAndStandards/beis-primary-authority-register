@@ -1,0 +1,4 @@
+manage institution membership:
+  title: 'Manage memberships'
+  description: 'Allow users to manage who can be a member of their institutions.'
+  restrict access: TRUE

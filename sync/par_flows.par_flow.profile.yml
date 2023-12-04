@@ -20,5 +20,6 @@ steps:
     form_id: par_profile
     components:
       user_detail: {  }
+      user_institutions: {  }
       contact_locations_detail:
         cardinality: -1

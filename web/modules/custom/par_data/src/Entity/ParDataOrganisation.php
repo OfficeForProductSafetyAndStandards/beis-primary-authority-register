@@ -5,6 +5,7 @@ namespace Drupal\par_data\Entity;
 use CommerceGuys\Addressing\Exception\UnknownCountryException;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\user\UserInterface;
 
 /**
  * Defines the par_data_organisation entity.
@@ -80,7 +81,9 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
 
     foreach ($people as $person) {
       $user = $person->getUserAccount();
-      $users[$user->getEmail()] = $person->getUserAccount();
+      if ($user instanceof UserInterface) {
+        $users[$user->getEmail()] = $user;
+      }
     }
 
     return $users;
@@ -94,6 +97,38 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
     $person = !empty($people) ? current($people) : NULL;
 
     return $primary ? $person : $people;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function addPerson(ParDataPersonInterface $person): void {
+    if (!$this->hasPerson($person)) {
+      $this->get('field_person')->appendItem($person->id());
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function removePerson(ParDataPersonInterface $person): void {
+    foreach ($this->getPerson() as $index => $existing_person) {
+      if ($existing_person->id() === $person->id()) {
+        $this->get('field_person')->removeItem($index);
+      }
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public function hasPerson(ParDataPersonInterface $person): bool {
+    $existing_people = $this->getPerson();
+    $exists = array_filter($existing_people, function ($existing_person) use ($person) {
+      return $existing_person->id() === $person->id();
+    });
+
+    return !empty($exists);
   }
 
   /**

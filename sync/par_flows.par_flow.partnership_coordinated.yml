@@ -62,7 +62,7 @@ steps:
     route: par_partnership_flows.about_business
     form_id: par_partnership_about_business
     components:
-      about_business: {}
+      about_business: {  }
     redirect:
       save: 1
       cancel: 1
@@ -70,7 +70,7 @@ steps:
     route: par_partnership_flows.address_add
     form_id: par_partnership_address_add
     components:
-      address: {}
+      address: {  }
     redirect:
       save: 1
       cancel: 1
@@ -78,7 +78,7 @@ steps:
     route: par_partnership_flows.address_edit
     form_id: par_partnership_address_edit
     components:
-      address: {}
+      address: {  }
     redirect:
       save: 1
       cancel: 1
@@ -112,7 +112,7 @@ steps:
     route: par_partnership_flows.trading_name_add
     form_id: par_partnership_trading_name_add
     components:
-      trading_name: {}
+      trading_name: {  }
     redirect:
       save: 1
       cancel: 1
@@ -120,7 +120,7 @@ steps:
     route: par_partnership_flows.trading_name_edit
     form_id: par_partnership_trading_name_edit
     components:
-      trading_name: {}
+      trading_name: {  }
     redirect:
       save: 1
       cancel: 1

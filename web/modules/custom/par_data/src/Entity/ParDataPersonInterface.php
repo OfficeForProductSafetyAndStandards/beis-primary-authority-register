@@ -3,6 +3,7 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\user\UserInterface;
+use \Generator;
 
 /**
  * The interface for PAR person entities.
@@ -71,5 +72,15 @@ interface ParDataPersonInterface extends ParDataEntityInterface {
    *   Their full name including title/salutation field.
    */
   public function getFullName(): string;
+
+  /**
+   * Get the institutions related to this person.
+   *
+   * An institution is an entity that a person can belong to and be a member of.
+   *
+   * @return Generator & iterable<ParDataMembershipInterface>
+   *   The institutions belonging to this person.
+   */
+  public function getInstitutions(): iterable;
 
 }
