@@ -34,6 +34,7 @@ dependencies:
     - par_profile_view_flows
     - par_roles
     - par_search_partnership_flows
+    - par_user_role_flows
     - role_delegation
 id: par_authority_manager
 label: 'Authority Manager'
@@ -84,6 +85,7 @@ permissions:
   - 'assign par_authority role'
   - 'assign par_authority_manager role'
   - 'assign par_enforcement role'
+  - 'change user role'
   - 'confirm partnership'
   - 'create authority user'
   - 'create enforcement user'
@@ -108,6 +110,9 @@ permissions:
   - 'edit par_data_sic_code entities'
   - 'invite authority members'
   - 'invite user'
+  - invite_type_invite_authority_manager
+  - invite_type_invite_authority_member
+  - invite_type_invite_enforcement_officer
   - invite_type_invite_organisation_member
   - 'manage own authority'
   - 'manage people'

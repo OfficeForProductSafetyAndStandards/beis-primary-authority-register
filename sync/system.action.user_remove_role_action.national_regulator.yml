@@ -1,0 +1,14 @@
+uuid: 350252a8-dd4f-49a5-b4a0-3ae7d8a68456
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.national_regulator
+  module:
+    - user
+id: user_remove_role_action.national_regulator
+label: 'Remove the National Regulator role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: national_regulator

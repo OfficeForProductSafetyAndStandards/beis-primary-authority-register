@@ -12,6 +12,7 @@ dependencies:
     - node
     - par_authority_add_flows
     - par_authority_update_flows
+    - par_dashboards
     - par_data
     - par_deviation_review_flows
     - par_deviation_view_flows
@@ -19,6 +20,7 @@ dependencies:
     - par_enforcement_send_flows
     - par_enquiry_view_flows
     - par_inspection_feedback_view_flows
+    - par_invite_user_flows
     - par_member_add_flows
     - par_member_cease_flows
     - par_member_list_update_flows
@@ -46,11 +48,12 @@ dependencies:
     - par_search_partnership_flows
     - par_subscriptions
     - par_user_block_flows
+    - par_user_role_flows
     - role_delegation
     - toolbar
 id: par_helpdesk
 label: 'Processing Team Member'
-weight: -4
+weight: -3
 is_admin: null
 permissions:
   - 'access content overview'
@@ -75,6 +78,7 @@ permissions:
   - 'access par_data_regulatory_function entities'
   - 'access par_data_sic_code entities'
   - 'access toolbar'
+  - 'access user partnerships'
   - 'access user profiles'
   - 'add authority'
   - 'add coordinated member'
@@ -102,17 +106,19 @@ permissions:
   - 'administer users'
   - 'amend own partnerships'
   - 'approve enforcement notice'
-  - 'approve partnerships'
   - 'assign all memberships'
+  - 'assign national_regulator role'
   - 'assign par_authority role'
   - 'assign par_authority_manager role'
   - 'assign par_enforcement role'
   - 'assign par_helpdesk role'
   - 'assign par_organisation role'
+  - 'assign par_organisation_manager role'
   - 'block user'
+  - 'bypass par_data access'
   - 'bypass par_data membership'
-  - 'cancel partnership applications'
   - 'cease coordinated member'
+  - 'change user role'
   - 'confirm partnership'
   - 'confirm partnership amendments'
   - 'create article content'
@@ -168,7 +174,15 @@ permissions:
   - 'edit par_data_regulatory_function entities'
   - 'edit par_data_sic_code entities'
   - 'invite authority members'
+  - 'invite user'
+  - invite_type_invite_authority_manager
+  - invite_type_invite_authority_member
+  - invite_type_invite_enforcement_officer
+  - invite_type_invite_link
+  - invite_type_invite_national_regulator
+  - invite_type_invite_organisation_manager
   - invite_type_invite_organisation_member
+  - invite_type_invite_processing_team_member
   - 'manage all authorities'
   - 'manage all organisations'
   - 'manage own authority'
@@ -181,9 +195,9 @@ permissions:
   - 'receive partnership_nominate notification'
   - 'remove partnership authority contact'
   - 'remove partnership organisation contact'
+  - 'resend own invitations'
   - 'review deviation request'
   - 'revoke partnership inspection plan'
-  - 'revoke partnerships'
   - 'search partnerships'
   - 'unblock user'
   - 'unlock membership list'

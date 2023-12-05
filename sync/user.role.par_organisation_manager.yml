@@ -1,4 +1,4 @@
-uuid: b6588f03-8317-4473-b1ca-f668571052d9
+uuid: 0d187da4-08fb-4edf-aac0-10569eb4bd05
 langcode: en
 status: true
 dependencies:
@@ -6,7 +6,7 @@ dependencies:
     - filter.format.basic_html
   module:
     - filter
-    - par_dashboards
+    - invite
     - par_data
     - par_enforcement_send_flows
     - par_invite_user_flows
@@ -25,15 +25,14 @@ dependencies:
     - par_partnership_flows
     - par_person_create_flows
     - par_person_update_flows
-    - par_profile_view_flows
     - par_roles
+    - par_user_role_flows
     - role_delegation
-id: par_organisation
-label: 'Organisation Member'
-weight: -5
+id: par_organisation_manager
+label: 'Organisation Manager'
+weight: -4
 is_admin: null
 permissions:
-  - 'access par dashboard'
   - 'access par_data_advice entities'
   - 'access par_data_authority entities'
   - 'access par_data_coordinated_business entities'
@@ -52,7 +51,6 @@ permissions:
   - 'access par_data_premises entities'
   - 'access par_data_regulatory_function entities'
   - 'access par_data_sic_code entities'
-  - 'access user partnerships'
   - 'add coordinated member'
   - 'add par_data_advice entities'
   - 'add par_data_authority entities'
@@ -74,7 +72,9 @@ permissions:
   - 'add par_data_sic_code entities'
   - 'add partnership organisation contact'
   - 'assign par_organisation role'
+  - 'assign par_organisation_manager role'
   - 'cease coordinated member'
+  - 'change user role'
   - 'confirm partnership'
   - 'confirm partnership amendments'
   - 'create organisation user'
@@ -98,6 +98,8 @@ permissions:
   - 'edit par_data_regulatory_function entities'
   - 'edit par_data_sic_code entities'
   - 'invite user'
+  - invite_type_invite_organisation_manager
+  - invite_type_invite_organisation_member
   - 'manage own organisation'
   - 'manage people'
   - 'receive new_inspection_plan notification'
@@ -117,8 +119,6 @@ permissions:
   - 'upload coordinated member'
   - 'use text format basic_html'
   - 'view enforcement notice'
-  - 'view own notifications'
-  - 'view own profile'
   - 'view unpublished par_data_advice entities'
   - 'view unpublished par_data_authority entities'
   - 'view unpublished par_data_coordinated_business entities'

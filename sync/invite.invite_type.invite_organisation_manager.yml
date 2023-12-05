@@ -1,0 +1,8 @@
+uuid: 1cc570f5-a802-46c3-b9ff-d5438366d110
+langcode: en
+status: null
+dependencies: {  }
+id: invite_organisation_manager
+label: 'Invite Organisation Manager'
+description: ''
+data: 'a:4:{s:11:"use_default";i:1;s:16:"subject_editable";i:0;s:10:"html_email";i:0;s:11:"target_role";s:24:"par_organisation_manager";}'

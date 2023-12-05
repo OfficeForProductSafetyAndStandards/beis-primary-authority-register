@@ -36,7 +36,7 @@ class ParRoleManager implements ParRoleManagerInterface {
    * be applied to any user by someone with the appropriate permissions.
    */
   const GENERAL_ROLES = [
-    'senior_administration_officer', 'par_helpdesk', 'national_regulator'
+    'secretary_state', 'senior_administration_officer', 'par_helpdesk', 'national_regulator'
   ];
 
   /**

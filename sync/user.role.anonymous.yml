@@ -23,7 +23,6 @@ permissions:
   - 'access comments'
   - 'access content'
   - 'access par_data_regulatory_function entities'
-  - 'administer par_data_partnership entity types'
   - 'receive subscription_verify_notification notification'
   - 'search public register'
   - 'subscribe to par_news'
