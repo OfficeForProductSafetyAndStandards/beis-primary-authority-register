@@ -27,8 +27,7 @@ steps:
     route: par_invite_user_flows.choose_institution
     form_id: par_invite_institution
     components:
-      authority_select: {}
-      organisation_select: {}
+      memberships_select: {}
     form_data:
       select_person: par_choose_person
       contact_details: par_profile_update
