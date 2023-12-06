@@ -30,6 +30,7 @@ dependencies:
     - par_partnership_contact_update_flows
     - par_partnership_flows
     - par_person_create_flows
+    - par_person_membership_flows
     - par_person_update_flows
     - par_profile_view_flows
     - par_roles
@@ -114,6 +115,7 @@ permissions:
   - invite_type_invite_authority_member
   - invite_type_invite_enforcement_officer
   - invite_type_invite_organisation_member
+  - 'manage institution membership'
   - 'manage own authority'
   - 'manage people'
   - 'raise enforcement notice'

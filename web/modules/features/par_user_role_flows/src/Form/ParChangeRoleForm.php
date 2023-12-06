@@ -63,8 +63,6 @@ class ParChangeRoleForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    /** @var \Drupal\par_roles\ParRoleManagerInterface $par_role_manager */
-    $par_role_manager = \Drupal::service('par_roles.role_manager');
     $user = $this->getFlowDataHandler()->getParameter('user');
 
     $roles = array_filter((array) $this->getFlowDataHandler()->getTempDataValue('general'));
@@ -82,7 +80,7 @@ class ParChangeRoleForm extends ParBaseForm {
       }
     }
 
-    // Block this user.
+    // Save the user with the new roles added.
     if ($user && $user->save()) {
       // Also invalidate the user account cache if there is one.
       \Drupal::entityTypeManager()->getStorage('user')->resetCache([$user->id()]);

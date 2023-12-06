@@ -36,8 +36,6 @@ default:
   roles:
     -
       target_id: par_helpdesk
-    -
-      target_id: senior_administration_officer
   role_change:
     -
       target_id: __role_delegation_empty_field_value__

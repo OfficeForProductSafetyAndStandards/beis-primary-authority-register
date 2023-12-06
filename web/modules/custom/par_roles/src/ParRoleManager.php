@@ -473,7 +473,7 @@ class ParRoleManager implements ParRoleManagerInterface {
       foreach ($this->getInstitutions($account, $institution_type) as $institution) {
         if ($this->isLastMember($institution, $account, $role)) {
           throw new ParRoleException(
-            sprintf("Cannot remove the %s role because there are no other members of the %s %s",
+            sprintf("Cannot remove the %s role because there are no other members with this role in the %s %s.",
               $this->getRoleLabel($role),
               self::INSTITUTION_LABEL[$institution_type],
               $institution->label(),
@@ -532,17 +532,20 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * Get all the roles of similar or higher authority in the role hierarchy.
    *
-   * @param string $institution_type
-   *   The institution type to check.
    * @param string $role
-   *   The role to start the hierarchy search for.
+   *    The role to start the hierarchy search for.
+   * @param ?string $institution_type
+   *   The institution type to check.
    *
    * @return array|string[]
    */
-  protected function getRolesByHierarchy(string $institution_type, string $role): array {
-    $roles = self::INSTITUTION_ROLES[$institution_type] ?? [];
+  public function getRolesByHierarchy(string $role, string $institution_type = NULL): array {
+    $roles = $institution_type ?
+      self::INSTITUTION_ROLES[$institution_type] : self::GENERAL_ROLES;
+
     $index = array_search($role, $roles);
     $position = $index !== FALSE ? $index + 1 : NULL;
+
     return $position ?
       array_slice($roles, 0, $position) : [];
   }
@@ -584,7 +587,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   protected function isLastMember(ParDataMembershipInterface $institution, UserInterface $account, string $role = NULL): bool {
     // Get all the roles of similar or great authority in the role hierarchy.
     $required_roles = $role ?
-      $this->getRolesByHierarchy($institution->getEntityTypeId(), $role) :
+      $this->getRolesByHierarchy($role, $institution->getEntityTypeId()) :
       self::INSTITUTION_ROLES[$institution->getEntityTypeId()];
 
     // Check each colleague to see if they have any of the required roles.
