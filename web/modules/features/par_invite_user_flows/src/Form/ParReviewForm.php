@@ -220,10 +220,10 @@ class ParReviewForm extends ParBaseForm {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
     // Get the cache IDs for the various forms that needs to be extracted from.
-    $link_account_cid = $this->getFlowNegotiator()->getFormKey('par_profile_invite_link');
-    $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_invite_institution');
-    $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_invite_institution');
-    $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
+    $link_account_cid = $this->getFlowNegotiator()->getFormKey('link_account');
+    $select_authority_cid = $this->getFlowNegotiator()->getFormKey('select_memberships');
+    $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('select_memberships');
+    $cid_role_select = $this->getFlowNegotiator()->getFormKey('select_role');
     $cid_invitation = $this->getFlowNegotiator()->getFormKey('par_invite');
 
     // If there is an existing user attach it to this person.
