@@ -143,20 +143,26 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
 
     // General rules.
     $general_role_options = $this->getFlowDataHandler()->getFormPermValue('general_roles_options');
-    $form['roles']['general'] = [
-      '#type' => 'checkboxes',
-      '#title' => t('Would you like to assign any general roles?'),
-      '#description' => t('These rules apply to the entire Primary Authority Register, and not to any specific authority or organisation.'),
-      '#title_tag' => 'h2',
-      '#options' => $general_role_options,
-      '#default_value' => $this->getDefaultValuesByKey('general', $index, []),
-      '#return_value' => 'on',
-      '#attributes' => ['class' => ['govuk-form-group']],
-    ];
+    if (!empty($general_role_options)) {
+      $form['roles']['general'] = [
+        '#type' => 'checkboxes',
+        '#title' => t('Would you like to assign any general roles?'),
+        '#description' => t('These rules apply to the entire Primary Authority Register, and not to any specific authority or organisation.'),
+        '#title_tag' => 'h2',
+        '#options' => $general_role_options,
+        '#default_value' => $this->getDefaultValuesByKey('general', $index, []),
+        '#return_value' => 'on',
+        '#attributes' => ['class' => ['govuk-form-group']],
+      ];
+    }
 
     // Institution rules.
     $institution_role_options = $this->getFlowDataHandler()->getFormPermValue("institution_roles_options");
     foreach ($institution_role_options as $institution_type => $institution_roles) {
+      if (empty($institution_roles)) {
+        continue;
+      }
+
       $form['roles'][$institution_type] = [
         '#type' => 'checkboxes',
         '#title' => t('Would you like to assign any %institution roles?', ['%institution' => ParRoleManager::INSTITUTION_LABEL[$institution_type]]),

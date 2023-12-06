@@ -1,0 +1,14 @@
+uuid: d82cc786-9f49-4fc2-9710-8635fc9f7090
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.par_organisation_manager
+  module:
+    - user
+id: user_add_role_action.par_organisation_manager
+label: 'Add the Organisation Manager role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: par_organisation_manager

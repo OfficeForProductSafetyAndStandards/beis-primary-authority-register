@@ -1,0 +1,14 @@
+uuid: 9e363bb7-b3dd-48bb-a507-b123fbfa2f29
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.par_organisation_manager
+  module:
+    - user
+id: user_remove_role_action.par_organisation_manager
+label: 'Remove the Organisation Manager role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: par_organisation_manager

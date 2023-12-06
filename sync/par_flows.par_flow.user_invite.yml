@@ -19,32 +19,31 @@ steps:
     route: par_invite_user_flows.link_contact
     form_id: par_profile_invite_link
     components:
-      link_contact: {  }
+      link_contact: {}
     form_data:
       select_person: par_choose_person
       contact_details: par_profile_update
   2:
-    route: par_invite_user_flows.choose_role
-    form_id: par_choose_role
-    components:
-      role_select: {  }
-    form_data:
-      contact_details: par_add_contact
-      link_account: par_profile_invite_link
-  3:
     route: par_invite_user_flows.choose_institution
     form_id: par_invite_institution
     components:
-      authority_select: {  }
-      organisation_select: {  }
+      memberships_select: {}
     form_data:
       select_person: par_choose_person
       contact_details: par_profile_update
+  3:
+    route: par_invite_user_flows.choose_role
+    form_id: par_choose_role
+    components:
+      advanced_role_select: {}
+    form_data:
+      contact_details: par_add_contact
+      link_account: par_profile_invite_link
   4:
     route: par_invite_user_flows.invite_contact
     form_id: par_invite
     components:
-      invite: {  }
+      invite: {}
     form_data:
       select_person: par_choose_person
       contact_details: par_add_contact
@@ -54,10 +53,9 @@ steps:
     form_id: par_invite_review
     form_data:
       select_person: par_choose_person
-      contact_details: par_profile_update
+      select_role: par_choose_role
       link_account: par_profile_invite_link
-      select_authority: par_update_institution
-      select_organisation: par_update_institution
+      select_memberships: par_invite_institution
       invite: par_profile_invite
     redirect:
       save: 6
