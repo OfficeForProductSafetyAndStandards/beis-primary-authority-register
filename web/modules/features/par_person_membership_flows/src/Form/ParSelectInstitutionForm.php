@@ -36,6 +36,10 @@ class ParSelectInstitutionForm extends ParBaseForm {
    */
   public function loadData() {
     parent::loadData();
+
+    // Because this form is only to add memberships, do not pre-populate defaults.
+    $this->getFlowDataHandler()->setFormPermValue('par_data_authority_id', []);
+    $this->getFlowDataHandler()->setFormPermValue('par_data_organisation_id', []);
   }
 
 }
