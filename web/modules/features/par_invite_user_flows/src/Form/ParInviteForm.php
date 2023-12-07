@@ -52,8 +52,6 @@ class ParInviteForm extends ParBaseForm {
     // Get the authorities and organisation memberships for the person.
     $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_memberships_cid);
     $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_memberships_cid);
-    $par_data_authorities = $par_data_person->updateAuthorityMemberships($authority_ids, FALSE);
-    $par_data_organisations = $par_data_person->updateOrganisationMemberships($organisation_ids, FALSE);
 
     // Get the general roles.
     $roles = array_filter((array) $this->getFlowDataHandler()->getDefaultValues('general', [], $cid_role_select));
@@ -76,8 +74,8 @@ class ParInviteForm extends ParBaseForm {
     // Because we can only send out one invite even if the user has multiple roles.
     // First try to send the invites for the general roles, because the others
     // will be automatically assigned based on memberships.
-    $institution_type = !empty($par_data_authorities) ? 'par_data_authority' :
-      (!empty($par_data_organisations) ? 'par_data_organisation' : NULL);
+    $institution_type = !empty($authority_ids) ? 'par_data_authority' :
+      (!empty($organisation_ids) ? 'par_data_organisation' : NULL);
     foreach ($this->getParRoleManager()->getRolesByHierarchy(NULL, $institution_type) as $role) {
       if (in_array($role, $roles) && isset($invites_types[$role])) {
         $invitation_type = $invites_types[$role];
@@ -86,7 +84,7 @@ class ParInviteForm extends ParBaseForm {
     }
 
     $role_options = $this->getParDataManager()->getEntitiesAsOptions(Role::loadMultiple($roles));
-    
+
     // The invitation type must be set first.
     $this->getFlowDataHandler()->setFormPermValue('invitation_type', $invitation_type ?? 'none');
     $this->getFlowDataHandler()->setFormPermValue("roles", $role_options);
@@ -107,11 +105,11 @@ class ParInviteForm extends ParBaseForm {
     $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $cid_link_account);
 
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
-    $role = $this->getFlowDataHandler()->getDefaultValues('role', '', $cid_role_select);
+    $roles = $this->getFlowDataHandler()->getDefaultValues('roles', '', $cid_role_select);
 
     // Skip the invitation process if a user id has already been matched
-    // or the user has choosen not to add a user.
-    if (!empty($user_id) || !$role) {
+    // or the user has chosen not to add a user.
+    if (!empty($user_id) || empty($roles)) {
       $url = $this->getFlowNegotiator()->getFlow()->progress();
       return new RedirectResponse($url->toString());
     }

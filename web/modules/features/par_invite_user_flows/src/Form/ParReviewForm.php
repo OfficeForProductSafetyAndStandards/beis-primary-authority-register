@@ -3,6 +3,7 @@
 namespace Drupal\par_invite_user_flows\Form;
 
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
@@ -40,6 +41,13 @@ class ParReviewForm extends ParBaseForm {
    */
   protected function getParRoleManager(): ParRoleManagerInterface {
     return \Drupal::service('par_roles.role_manager');
+  }
+
+  /**
+   * Get the Entity Type manager.
+   */
+  protected function getEntityTypeManager(): EntityTypeManagerInterface {
+    return \Drupal::service('entity_type.manager');
   }
 
   /**
@@ -250,9 +258,11 @@ class ParReviewForm extends ParBaseForm {
 
     // Get the authorities and organisation memberships for the person.
     $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_memberships_cid);
+    $par_data_authorities = !empty($authority_ids) ?
+      $this->getEntityTypeManager()->getStorage('par_data_authority')->loadMultiple($authority_ids) : [];
     $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_memberships_cid);
-    $par_data_authorities = $par_data_person->updateAuthorityMemberships($authority_ids, FALSE);
-    $par_data_organisations = $par_data_person->updateOrganisationMemberships($organisation_ids, FALSE);
+    $par_data_organisations = !empty($organisation_ids) ?
+      $this->getEntityTypeManager()->getStorage('par_data_organisation')->loadMultiple($organisation_ids) : [];
 
     // Get the general roles.
     $roles = array_filter((array) $this->getFlowDataHandler()->getDefaultValues('general', [], $cid_role_select));
@@ -275,8 +285,8 @@ class ParReviewForm extends ParBaseForm {
     // Because we can only send out one invite even if the user has multiple roles.
     // First try to send the invites for the general roles, because the others
     // will be automatically assigned based on memberships.
-    $institution_type = !empty($par_data_authorities) ? 'par_data_authority' :
-      (!empty($par_data_organisations) ? 'par_data_organisation' : NULL);
+    $institution_type = !empty($authority_ids) ? 'par_data_authority' :
+      (!empty($organisation_ids) ? 'par_data_organisation' : NULL);
     foreach ($this->getParRoleManager()->getRolesByHierarchy(NULL, $institution_type) as $role) {
       if (in_array($role, $roles) && isset($invites_types[$role])) {
         $invitation_type = $invites_types[$role];
@@ -302,8 +312,8 @@ class ParReviewForm extends ParBaseForm {
       'account' => $account,
       'invite' => $invite ?? NULL,
       'roles' => $roles,
-      'par_data_authority' => !empty($par_data_authorities) ? $par_data_authorities : NULL,
-      'par_data_organisation' => !empty($par_data_organisations) ? $par_data_organisations : NULL,
+      'par_data_authority' => $par_data_authorities,
+      'par_data_organisation' => $par_data_organisations,
     ];
   }
 
@@ -329,8 +339,12 @@ class ParReviewForm extends ParBaseForm {
     // Save the person.
     $par_data_person->save();
 
-    // Save the institutions.
-    $combined = array_merge($par_data_authority ?? [], $par_data_organisation ?? []);
+    // Memberships can ONLY be processed after the person is saved.
+    $par_data_authority = $par_data_person->updateMemberships($par_data_authority, 'par_data_authority');
+    $par_data_organisation = $par_data_person->updateMemberships($par_data_organisation, 'par_data_organisation');
+
+    // Save all the institutions.
+    $combined = array_merge($par_data_authority, $par_data_organisation);
     foreach ($combined as $institution) {
       if ($institution instanceof ParDataMembershipInterface) {
         $institution->save();
@@ -339,6 +353,10 @@ class ParReviewForm extends ParBaseForm {
 
     // Save & send the invite.
     if ($invite instanceof InviteInterface && $invite->save()) {
+      // We also need to clear the relationships caches once
+      // any new relationships have been saved.
+      $par_data_person->getRelationships(NULL, NULL, TRUE);
+
       // There shouldn't be a user account but if there is, save it to invalidate cache.
       $account?->save();
 
