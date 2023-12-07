@@ -228,7 +228,7 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
       $element_name = "{$institution_type}_element";
       $value_name = "{$institution_type}_roles";
       $$element_name = $this->getElement($form, ['roles', $institution_type], $index);
-      $$value_name = $general_element ?
+      $$value_name = $$element_name ?
         array_filter($form_state->getValue($$element_name['#parents'])) : [];
     }
 
@@ -239,15 +239,18 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
       empty($par_data_organisation_roles)) {
 
       $message = 'You must select at least one role.';
-      $this->setError($form, $form_state, $general_element, $message);
+      if ($general_element) {
+        $this->setError($form, $form_state, $general_element, $message);
+      }
       foreach ($institution_role_options as $institution_type => $institution_roles) {
         // Only set the error if there are some institution roles.
         if (!empty($institution_roles)) {
           $element_name = "{$institution_type}_element";
-          $this->setError($form, $form_state, $$element_name, $message);
+          if ($$element_name) {
+            $this->setError($form, $form_state, $$element_name, $message);
+          }
         }
       }
-      $this->setError($form, $form_state, $par_data_organisation_element, $message);
     }
 
     // Check that there is at least one institution role for each institution the user has.

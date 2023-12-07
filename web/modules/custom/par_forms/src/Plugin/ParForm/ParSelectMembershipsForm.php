@@ -154,7 +154,8 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
         $entity_ids = array_filter($default_value);
         $entities = !empty($entity_ids) ? $this->getParDataManager()
           ->getEntitiesByType($target_type, $entity_ids) : [];
-        $default_value = $this->getParDataManager()->getEntitiesAsAutocomplete($entities);
+        $default_values = $this->getParDataManager()->getEntitiesAsAutocomplete($entities);
+        $default_value = implode(', ', $default_values);
 
         // The par autocomplete element.
         $form[$element_key] = $base + [
