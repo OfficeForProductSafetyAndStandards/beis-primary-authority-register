@@ -78,9 +78,12 @@ interface ParDataPersonInterface extends ParDataEntityInterface {
    *
    * An institution is an entity that a person can belong to and be a member of.
    *
+   * @param ?string $type
+   *   The institution type to return, defaults to returning all institutions.
+   *
    * @return Generator & iterable<ParDataMembershipInterface>
    *   The institutions belonging to this person.
    */
-  public function getInstitutions(): iterable;
+  public function getInstitutions(string $type = NULL): iterable;
 
 }

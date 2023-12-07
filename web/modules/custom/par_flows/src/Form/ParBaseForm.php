@@ -434,7 +434,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     try {
       // Get the redirect route to the next form based on the flow configuration
       // 'operation' parameter that matches the submit button's name.
-      $submit_action = $form_state->getTriggeringElement()['#name'];
+      $submit_action = $form_state->getTriggeringElement() ?
+        $form_state->getTriggeringElement()['#name'] : NULL;
 
       // Get the next route from the flow.
       $url = $this->getFlowNegotiator()->getFlow()->progress($submit_action);
@@ -476,7 +477,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Rebuild the form rather than redirect to ensure that form state values are persisted.
     $this->selfRedirect($form, $form_state, TRUE);
 
-    [$button, $plugin_namespace, $index] = explode(':', $form_state->getTriggeringElement()['#name']);
+    $triggering_element = $form_state->getTriggeringElement() ?
+      $form_state->getTriggeringElement()['#name'] : NULL;
+    if ($triggering_element) {
+      [$button, $plugin_namespace, $index] = explode(':', $triggering_element);
+    }
 
     // Get the component.
     $component = $this->getComponent($plugin_namespace);
@@ -498,7 +503,11 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Ensure that destination query params don't redirect.
     $this->selfRedirect($form, $form_state, FALSE);
 
-    [$button, $plugin_namespace, $index] = explode(':', $form_state->getTriggeringElement()['#name']);
+    $triggering_element = $form_state->getTriggeringElement() ?
+      $form_state->getTriggeringElement()['#name'] : NULL;
+    if ($triggering_element) {
+      [$button, $plugin_namespace, $index] = explode(':', $triggering_element);
+    }
 
     // Get the component.
     $component = $this->getComponent($plugin_namespace);
@@ -614,7 +623,8 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $submitted_values = $form_state->cleanValues()->getValues();
 
     // Remove the triggering element button from the form_state.
-    $triggering_element = $form_state->getTriggeringElement()['#name'];
+    $triggering_element = $form_state->getTriggeringElement() ?
+      $form_state->getTriggeringElement()['#name'] : NULL;
     if (isset($submitted_values[$triggering_element])) {
       unset($submitted_values[$triggering_element]);
     }

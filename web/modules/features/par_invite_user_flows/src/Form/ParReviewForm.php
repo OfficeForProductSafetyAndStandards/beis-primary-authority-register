@@ -3,6 +3,7 @@
 namespace Drupal\par_invite_user_flows\Form;
 
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
@@ -11,6 +12,7 @@ use Drupal\invite\InviteInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataLegalEntity;
+use Drupal\par_data\Entity\ParDataMembershipInterface;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
@@ -29,8 +31,6 @@ use Drupal\user\Entity\User;
  */
 class ParReviewForm extends ParBaseForm {
 
-  use ParFlowAccessTrait;
-
   /**
    * {@inheritdoc}
    */
@@ -44,6 +44,13 @@ class ParReviewForm extends ParBaseForm {
   }
 
   /**
+   * Get the Entity Type manager.
+   */
+  protected function getEntityTypeManager(): EntityTypeManagerInterface {
+    return \Drupal::service('entity_type.manager');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function loadData() {
@@ -53,12 +60,12 @@ class ParReviewForm extends ParBaseForm {
     /** @var ParDataPerson $par_data_person */
     /** @var User $account */
     /** @var Invite $invite */
-    /** @var [] $roles */
+    /** @var array $roles */
     /** @var ParDataAuthority[] $par_data_authority */
     /** @var ParDataOrganisation[] $par_data_organisation */
 
     // Get the cache IDs for the various forms that needs to be extracted from.
-    $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
+    $cid_role_select = $this->getFlowNegotiator()->getFormKey('select_role');
     $cid_invitation = $this->getFlowNegotiator()->getFormKey('par_invite');
 
     // Set the basic details for the contact.
@@ -75,10 +82,20 @@ class ParReviewForm extends ParBaseForm {
       $this->getFlowDataHandler()->setFormPermValue("user_status", 'invited');
 
       // Show the role they've being invited to perform.
-      $rid = $this->getFlowDataHandler()->getDefaultValues('role', NULL, $cid_role_select);
-      $role = !empty($rid) ? Role::load($rid) : NULL;
-      $role_options = $role ? $this->getParDataManager()->getEntitiesAsOptions([$role], []) : NULL;
-      $this->getFlowDataHandler()->setFormPermValue("role", isset($role_options[$rid]) ? $role_options[$rid]: '(none)');
+      $rids = array_filter((array) $this->getFlowDataHandler()->getTempDataValue('general', $cid_role_select));
+      foreach (ParRoleManager::INSTITUTION_ROLES as $institution_type => $institution_roles) {
+        $institution_roles = array_filter((array) $this->getFlowDataHandler()->getTempDataValue($institution_type, $cid_role_select));
+        $rids += $institution_roles;
+      }
+      $roles = [];
+      foreach ($rids as $rid) {
+        $role = !empty($rid) ? Role::load($rid) : NULL;
+        if ($role) {
+          $roles[$rid] = $role->label();
+        }
+      }
+
+      $this->getFlowDataHandler()->setFormPermValue("roles", implode(', ', $roles) ?? '(none)');
     }
 
     if ($par_data_authority) {
@@ -162,14 +179,21 @@ class ParReviewForm extends ParBaseForm {
         break;
     }
 
-    if ($role = $this->getFlowDataHandler()->getFormPermValue("role")) {
+    if ($roles = $this->getFlowDataHandler()->getFormPermValue("roles")) {
       $form['target_role'] = [
-        '#type' => 'fieldset',
-        '#title' => 'Type of user',
-        '#attributes' => ['class' => 'govuk-form-group'],
+        '#type' => 'container',
         [
-          '#markup' => $role,
-        ]
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#value' => 'Type of user',
+          '#attributes' => ['class' => 'govuk-heading-m'],
+        ],
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $roles,
+          '#attributes' => ['class' => 'govuk-form-group'],
+        ],
       ];
     }
 
@@ -221,8 +245,7 @@ class ParReviewForm extends ParBaseForm {
 
     // Get the cache IDs for the various forms that needs to be extracted from.
     $link_account_cid = $this->getFlowNegotiator()->getFormKey('link_account');
-    $select_authority_cid = $this->getFlowNegotiator()->getFormKey('select_memberships');
-    $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('select_memberships');
+    $select_memberships_cid = $this->getFlowNegotiator()->getFormKey('select_memberships');
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('select_role');
     $cid_invitation = $this->getFlowNegotiator()->getFormKey('par_invite');
 
@@ -234,10 +257,12 @@ class ParReviewForm extends ParBaseForm {
     }
 
     // Get the authorities and organisation memberships for the person.
-    $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
-    $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
-    $par_data_authorities = $par_data_person->updateAuthorityMemberships($authority_ids);
-    $par_data_organisations = $par_data_person->updateOrganisationMemberships($organisation_ids);
+    $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_memberships_cid);
+    $par_data_authorities = !empty($authority_ids) ?
+      $this->getEntityTypeManager()->getStorage('par_data_authority')->loadMultiple($authority_ids) : [];
+    $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_memberships_cid);
+    $par_data_organisations = !empty($organisation_ids) ?
+      $this->getEntityTypeManager()->getStorage('par_data_organisation')->loadMultiple($organisation_ids) : [];
 
     // Get the general roles.
     $roles = array_filter((array) $this->getFlowDataHandler()->getDefaultValues('general', [], $cid_role_select));
@@ -260,9 +285,9 @@ class ParReviewForm extends ParBaseForm {
     // Because we can only send out one invite even if the user has multiple roles.
     // First try to send the invites for the general roles, because the others
     // will be automatically assigned based on memberships.
-    $institution_type = !empty($par_data_authorities) ? 'par_data_authority' :
-      (!empty($par_data_organisations) ? 'par_data_organisation' : NULL);
-    foreach ($this->getParRoleManager()->getRolesByHierarchy($institution_type) as $role) {
+    $institution_type = !empty($authority_ids) ? 'par_data_authority' :
+      (!empty($organisation_ids) ? 'par_data_organisation' : NULL);
+    foreach ($this->getParRoleManager()->getRolesByHierarchy(NULL, $institution_type) as $role) {
       if (in_array($role, $roles) && isset($invites_types[$role])) {
         $invitation_type = $invites_types[$role];
         break;
@@ -285,10 +310,10 @@ class ParReviewForm extends ParBaseForm {
     return [
       'par_data_person' => $par_data_person,
       'account' => $account,
-      'invite' => $invite,
+      'invite' => $invite ?? NULL,
       'roles' => $roles,
-      'par_data_authority' => !empty($par_data_authorities) ? $par_data_authorities : NULL,
-      'par_data_organisation' => !empty($par_data_organisations) ? $par_data_organisations : NULL,
+      'par_data_authority' => $par_data_authorities,
+      'par_data_organisation' => $par_data_organisations,
     ];
   }
 
@@ -298,41 +323,41 @@ class ParReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
+    $select_memberships_cid = $this->getFlowNegotiator()->getFormKey('select_memberships');
+    $cid_role_select = $this->getFlowNegotiator()->getFormKey('select_role');
+
     // Set the data values on the entities
     $entities = $this->createEntities();
     extract($entities);
     /** @var ParDataPerson $par_data_person */
     /** @var User $account */
     /** @var Invite $invite */
-    /** @var [] $roles */
+    /** @var array $roles */
     /** @var ParDataAuthority[] $par_data_authority */
     /** @var ParDataOrganisation[] $par_data_organisation */
 
     // Save the person.
     $par_data_person->save();
 
-    // Update the institutional memberships after the person is saved.
-    $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
-    if (!empty($authority_ids)) {
-      $par_data_person->updateAuthorityMemberships($authority_ids, TRUE);
-    }
-    $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
-    if (!empty($organisation_ids)) {
-      $par_data_person->updateOrganisationMemberships($organisation_ids, TRUE);
-    }
+    // Memberships can ONLY be processed after the person is saved.
+    $par_data_authority = $par_data_person->updateMemberships($par_data_authority, 'par_data_authority');
+    $par_data_organisation = $par_data_person->updateMemberships($par_data_organisation, 'par_data_organisation');
 
-    // Roles MUST be added after the memberships are saved.
-    foreach ($roles as $role) {
-      try {
-        $account = $this->getParRoleManager()->addRole($account, $role);
-      }
-      catch (ParRoleException $ignore) {
-
+    // Save all the institutions.
+    $combined = array_merge($par_data_authority, $par_data_organisation);
+    foreach ($combined as $institution) {
+      if ($institution instanceof ParDataMembershipInterface) {
+        $institution->save();
       }
     }
 
+    // Save & send the invite.
     if ($invite instanceof InviteInterface && $invite->save()) {
-      // Save the user to invalidate the cache.
+      // We also need to clear the relationships caches once
+      // any new relationships have been saved.
+      $par_data_person->getRelationships(NULL, NULL, TRUE);
+
+      // There shouldn't be a user account but if there is, save it to invalidate cache.
       $account?->save();
 
       // Also invalidate the user account cache if there is one.

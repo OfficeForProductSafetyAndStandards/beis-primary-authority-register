@@ -25,6 +25,7 @@ use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
 use Drupal\par_data\Plugin\Field\FieldType\ParStatusChangedField;
 use Drupal\par_data\Plugin\Field\FieldType\ParStatusField;
+use Drupal\par_roles\ParRoleManagerInterface;
 use Drupal\trance\Trance;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\par_data\Plugin\Field\FieldType\ParLabelField;
@@ -79,6 +80,15 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
+  }
+
+  /**
+   * Simple getter to inject the PAR Role Manager service.
+   *
+   * @return ParRoleManagerInterface
+   */
+  public function getParRoleManager(): ParRoleManagerInterface {
+    return \Drupal::service('par_roles.role_manager');
   }
 
   /**

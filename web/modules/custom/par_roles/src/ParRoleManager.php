@@ -532,16 +532,21 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * Get all the roles of similar or higher authority in the role hierarchy.
    *
-   * @param string $role
+   * @param ?string $role
    *    The role to start the hierarchy search for.
    * @param ?string $institution_type
    *   The institution type to check.
    *
    * @return array|string[]
    */
-  public function getRolesByHierarchy(string $role, string $institution_type = NULL): array {
+  public function getRolesByHierarchy(string $role = NULL, string $institution_type = NULL): array {
     $roles = $institution_type ?
       self::INSTITUTION_ROLES[$institution_type] : self::GENERAL_ROLES;
+
+    // Return all roles if non needle is present.
+    if (!$role) {
+      return $roles;
+    }
 
     $index = array_search($role, $roles);
     $position = $index !== FALSE ? $index + 1 : NULL;

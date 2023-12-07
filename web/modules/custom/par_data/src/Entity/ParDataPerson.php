@@ -241,18 +241,131 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   }
 
   /**
+   * Update this person's memberships.
+   *
+   * This will add and remove memberships as appropriate.
+   *
+   * Tasks:
+   *   - Add this person to all the membership entities provided.
+   *   - Remove all the memberships this person has that aren't provided.
+   *      - Condition: If the user doesn't have permission to assign all
+   *        memberships, then only remove the memberships they have permission on.
+   *
+   * @param ParDataMembershipInterface[] $memberships
+   *   A list of IDs to save.
+   * @param ?string $type
+   *   If an institution type is provided only update the memberships for that type.
+   *
+   * @return ParDataMembershipInterface[]
+   *   An array of updated institutions.
+   */
+  public function updateMemberships(array $memberships, string $type = NULL): array {
+    $current_user = \Drupal::currentUser()->isAuthenticated() ?
+      User::load(\Drupal::currentUser()->id()) : NULL;
+    // Fail silently if no user.
+    if (!$current_user) {
+      return [];
+    }
+
+    // Filter out all institutions that don't match the type, if supplied.
+    if ($type) {
+      $memberships = array_filter($memberships, function ($membership) use ($type) {
+        return $type === $membership->getEntityTypeId();
+      });
+    }
+
+    // Get this person's current memberships.
+    $current_memberships = iterator_to_array($this->getInstitutions($type));
+
+    // Get the memberships to remove, the current memberships that are not being updated.
+    $remove_memberships = array_diff_uassoc($current_memberships, $memberships, function ($a, $b) {
+      return $a instanceof ParDataMembershipInterface && $b instanceof ParDataMembershipInterface &&
+      $a->uuid() === $b->uuid() ? 0 : -1;
+    });
+
+    // Users without the 'bypass par_data membership' permission can only manage their own institutions.
+    if (!$current_user->hasPermission('bypass par_data membership')) {
+      $current_user_memberships = iterator_to_array($this->getParRoleManager()->getInstitutions($current_user));
+
+      // Filter memberships.
+      $memberships = array_intersect_uassoc($current_user_memberships, $memberships, function ($a, $b) {
+        return $a instanceof ParDataMembershipInterface && $b instanceof ParDataMembershipInterface &&
+        $a->uuid() === $b->uuid() ? 0 : -1;
+      });
+
+      // Filter remove memberships.
+      $remove_memberships = array_intersect_uassoc($current_user_memberships, $remove_memberships, function ($a, $b) {
+        return $a instanceof ParDataMembershipInterface && $b instanceof ParDataMembershipInterface &&
+        $a->uuid() === $b->uuid() ? 0 : -1;
+      });
+    }
+
+    // Add.
+    $memberships = $this->addMemberships($memberships);
+
+    // Remove.
+    $remove_memberships = $this->removeMemberships($remove_memberships);
+
+    // Return all memberships that have changed, and ignore the rest.
+    return array_merge($memberships, $remove_memberships);
+  }
+
+  /**
+   * Add this person to the correct institutions.
+   *
+   * @param ParDataMembershipInterface[] $memberships
+   *   A list of IDs to save.
+   *
+   * @return ParDataMembershipInterface[]
+   *   An array of updated institutions.
+   */
+  public function addMemberships(array $memberships): array {
+    foreach ($memberships as &$membership) {
+      if (!$membership instanceof ParDataMembershipInterface) {
+        continue;
+      }
+
+      $membership->addPerson($this);
+    }
+
+    return $memberships;
+  }
+
+  /**
+   * Remove this person from the supplied institutions.
+   *
+   * @param ParDataMembershipInterface[] $memberships
+   *   A list of IDs to save.
+   *
+   * @return ParDataMembershipInterface[]
+   *   An array of updated institutions.
+   */
+  public function removeMemberships(array $memberships): array {
+    foreach ($memberships as &$membership) {
+      if (!$membership instanceof ParDataMembershipInterface) {
+        continue;
+      }
+
+      $membership->removePerson($this);
+    }
+
+    return $memberships;
+  }
+
+  /**
    * A helper function to save this person to the correct authorities.
    *
-   * @param $authorities
+   * @param $ids
    *   A list of authority IDs to save.
    * @param bool $save
    *
    * @return array
    *   An array of updated authorities.
    */
-  public function updateAuthorityMemberships($authorities, $save = FALSE) {
-    $authorities = NestedArray::filter((array) $authorities);
-    $unset = [];
+  public function updateAuthorityMemberships($ids, $save = FALSE) {
+    $ids = NestedArray::filter((array) $ids);
+    $par_data_authorities = [];
+    $unset_ids = [];
 
     $user = User::load(\Drupal::currentUser()->id());
     $relationships = $this->getRelationships('par_data_authority');
@@ -261,8 +374,8 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
         $id = $relationship->getEntity()->id();
 
         // Unset any relationships that are not selected.
-        if (!array_search($id, $authorities)) {
-          $unset[] = $id;
+        if (!array_search($id, $ids)) {
+          $unset_ids[] = $id;
         }
       }
     }
@@ -277,20 +390,20 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
 
         // Any existing relationships that the current user is
         // not allowed to update should not be removed.
-        if (!isset($user_authorities_ids[$id]) && !array_search($id, $authorities)) {
-          $authorities[] = $id;
+        if (!isset($user_authorities_ids[$id]) && !array_search($id, $ids)) {
+          $par_data_authorities[] = $id;
         }
         // Any existing relationships that the current user is
         // allowed to update but that have been excluded should be removed.
-        if (isset($user_authorities_ids[$id]) && !array_search($id, $authorities)) {
-          $unset[] = $id;
+        if (isset($user_authorities_ids[$id]) && !array_search($id, $ids)) {
+          $unset_ids[] = $id;
         }
       }
     }
 
     // Add this person to any authorities.
-    $authorities = ParDataAuthority::loadMultiple(array_unique($authorities));
-    foreach ($authorities as $authority) {
+    $par_data_authorities = ParDataAuthority::loadMultiple(array_unique($ids));
+    foreach ($par_data_authorities as $authority) {
       $referenced_ids = array_column($authority->get('field_person')->getValue(), 'target_id');
       // Check that we're not adding a duplicate.
       $search = array_search($this->id(), $referenced_ids);
@@ -306,23 +419,22 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     }
 
     // Remove this person from any authorities.
-    if ($save) {
-      $removed_authorities = isset($unset) ? ParDataAuthority::loadMultiple(array_unique($unset)) : [];
-      foreach ($removed_authorities as $authority) {
-        $referenced_ids = array_column($authority->get('field_person')->getValue(), 'target_id');
-        // For some insanely annoying reason the field re-counts the index
-        // on removing an item so performing this in reverse ensures none
-        // of the remaining keys queued for deletion will get re-counted.
-        $keys = array_reverse(array_keys($referenced_ids, $this->id()));
-        if ($keys) {
-          foreach ($keys as $key) {
-            if ($authority->get('field_person')->offsetExists($key)) {
-              $authority->get('field_person')->removeItem($key);
-            }
+    $removed_authorities = isset($unset) ? ParDataAuthority::loadMultiple(array_unique($unset)) : [];
+    foreach ($removed_authorities as $authority) {
+      $referenced_ids = array_column($authority->get('field_person')->getValue(), 'target_id');
+      // For some insanely annoying reason the field re-counts the index
+      // on removing an item so performing this in reverse ensures none
+      // of the remaining keys queued for deletion will get re-counted.
+      $keys = array_reverse(array_keys($referenced_ids, $this->id()));
+      if ($keys) {
+        foreach ($keys as $key) {
+          if ($authority->get('field_person')->offsetExists($key)) {
+            $authority->get('field_person')->removeItem($key);
           }
+        }
+        if ($save) {
           $authority->save();
         }
-
       }
     }
 
@@ -548,7 +660,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * @return iterable<EntityInterface>
    */
-   public function getInstitutions(): iterable {
+   public function getInstitutions(string $type = NULL): iterable {
     $relationships = $this->getRelationships(NULL, NULL, TRUE);
 
     // Get all the relationships that reference this person.
@@ -557,9 +669,20 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
         ($relationship->getEntity() instanceof ParDataMembershipInterface);
     });
 
+    if ($type) {
+      $relationships = array_filter($relationships, function ($relationship) use ($type) {
+        return ($type === $relationship->getEntity()->getEntityTypeId());
+      });
+    }
+
     foreach ($relationships as $relationship) {
       yield $relationship->getEntity();
     }
+  }
+
+  public function hasInstitutions(string $type = NULL) {
+    $institutions = $this->getInstitutions($type);
+    return (bool) $institutions->current();
   }
 
   public function getReferencedLocations() {

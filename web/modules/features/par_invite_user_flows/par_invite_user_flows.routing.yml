@@ -5,7 +5,7 @@ par_invite_user_flows.link_contact:
     _title_callback: '\Drupal\par_invite_user_flows\Form\ParLinkContactForm::titleCallback'
   requirements:
     _permission: 'invite user'
-    _custom_access: '\Drupal\par_invite_user_flows\Form\ParLinkContactForm::accessCallback'
+    _par_invite_access_check : 'TRUE'
     par_data_person: \d+
   options:
     parameters:
@@ -19,7 +19,7 @@ par_invite_user_flows.choose_role:
     _title_callback: '\Drupal\par_invite_user_flows\Form\ParRoleForm::titleCallback'
   requirements:
     _permission: 'invite user'
-    _custom_access: '\Drupal\par_invite_user_flows\Form\ParRoleForm::accessCallback'
+    _par_invite_access_check : 'TRUE'
     par_data_person: \d+
   options:
     parameters:
@@ -29,25 +29,11 @@ par_invite_user_flows.choose_role:
 par_invite_user_flows.choose_institution:
   path: '/person/{par_data_person}/invite/membership'
   defaults:
-    _form: '\Drupal\par_invite_user_flows\Form\ParUpdateInstitutionForm'
-    _title_callback: '\Drupal\par_invite_user_flows\Form\ParUpdateInstitutionForm::titleCallback'
+    _form: '\Drupal\par_invite_user_flows\Form\ParChooseInstitutionForm'
+    _title_callback: '\Drupal\par_invite_user_flows\Form\ParChooseInstitutionForm::titleCallback'
   requirements:
     _permission: 'invite user'
-    _custom_access: '\Drupal\par_invite_user_flows\Form\ParUpdateInstitutionForm::accessCallback'
-    par_data_person: \d+
-  options:
-    parameters:
-      par_data_person:
-        type: entity:par_data_person
-
-par_invite_user_flows.invite_contact:
-  path: '/person/{par_data_person}/invite/contact'
-  defaults:
-    _form: '\Drupal\par_invite_user_flows\Form\ParInviteForm'
-    _title_callback: '\Drupal\par_invite_user_flows\Form\ParInviteForm::titleCallback'
-  requirements:
-    _permission: 'invite user'
-    _custom_access: '\Drupal\par_invite_user_flows\Form\ParInviteForm::accessCallback'
+    _par_invite_access_check : 'TRUE'
     par_data_person: \d+
   options:
     parameters:
@@ -61,7 +47,21 @@ par_invite_user_flows.review:
     _title_callback: '\Drupal\par_invite_user_flows\Form\ParReviewForm::titleCallback'
   requirements:
     _permission: 'invite user'
-    _custom_access: '\Drupal\par_invite_user_flows\Form\ParReviewForm::accessCallback'
+    _par_invite_access_check : 'TRUE'
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_person:
+        type: entity:par_data_person
+
+par_invite_user_flows.invite_contact:
+  path: '/person/{par_data_person}/invite/contact'
+  defaults:
+    _form: '\Drupal\par_invite_user_flows\Form\ParInviteForm'
+    _title_callback: '\Drupal\par_invite_user_flows\Form\ParInviteForm::titleCallback'
+  requirements:
+    _permission: 'invite user'
+    _par_invite_access_check : 'TRUE'
     par_data_person: \d+
   options:
     parameters:
@@ -75,7 +75,6 @@ par_invite_user_flows.completed:
     _title_callback: '\Drupal\par_invite_user_flows\Controller\ParConfirmedController::titleCallback'
   requirements:
     _permission: 'invite user'
-    _custom_access: '\Drupal\par_invite_user_flows\Controller\ParConfirmedController::accessCallback'
     par_data_person: \d+
   options:
     parameters:
