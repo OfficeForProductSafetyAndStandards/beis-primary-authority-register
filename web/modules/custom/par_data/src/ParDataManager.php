@@ -835,7 +835,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Helper function to get all entities as autocomplete options.
    *
-   * @param EntityInterface $entities
+   * @param EntityInterface[] $entities
    *   An array of entities to turn into options.
    * @param array $options
    *   An optional array of options to append to.

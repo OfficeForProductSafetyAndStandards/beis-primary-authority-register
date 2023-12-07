@@ -1,0 +1,6 @@
+services:
+  par_invite_user_flows.invite_access:
+    class: Drupal\par_invite_user_flows\Access\InviteCheck
+    arguments: ['@par_roles.role_manager', '@par_flows.negotiator']
+    tags:
+      - { name: access_check, applies_to: _par_invite_access_check }

@@ -34,8 +34,8 @@ steps:
     components:
       advanced_role_select: {}
     form_data:
-      contact_details: par_add_contact
       link_account: par_profile_invite_link
+      select_memberships: par_invite_institution
   4:
     route: par_invite_user_flows.invite_contact
     form_id: par_invite
@@ -43,8 +43,9 @@ steps:
       invite: {}
     form_data:
       select_person: par_choose_person
-      contact_details: par_add_contact
       user_account: par_profile_invite_link
+      select_memberships: par_invite_institution
+      select_role: par_choose_role
   5:
     route: par_invite_user_flows.review
     form_id: par_invite_review

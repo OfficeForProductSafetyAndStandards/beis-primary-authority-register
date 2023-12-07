@@ -306,23 +306,22 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     }
 
     // Remove this person from any authorities.
-    if ($save) {
-      $removed_authorities = isset($unset) ? ParDataAuthority::loadMultiple(array_unique($unset)) : [];
-      foreach ($removed_authorities as $authority) {
-        $referenced_ids = array_column($authority->get('field_person')->getValue(), 'target_id');
-        // For some insanely annoying reason the field re-counts the index
-        // on removing an item so performing this in reverse ensures none
-        // of the remaining keys queued for deletion will get re-counted.
-        $keys = array_reverse(array_keys($referenced_ids, $this->id()));
-        if ($keys) {
-          foreach ($keys as $key) {
-            if ($authority->get('field_person')->offsetExists($key)) {
-              $authority->get('field_person')->removeItem($key);
-            }
+    $removed_authorities = isset($unset) ? ParDataAuthority::loadMultiple(array_unique($unset)) : [];
+    foreach ($removed_authorities as $authority) {
+      $referenced_ids = array_column($authority->get('field_person')->getValue(), 'target_id');
+      // For some insanely annoying reason the field re-counts the index
+      // on removing an item so performing this in reverse ensures none
+      // of the remaining keys queued for deletion will get re-counted.
+      $keys = array_reverse(array_keys($referenced_ids, $this->id()));
+      if ($keys) {
+        foreach ($keys as $key) {
+          if ($authority->get('field_person')->offsetExists($key)) {
+            $authority->get('field_person')->removeItem($key);
           }
+        }
+        if ($save) {
           $authority->save();
         }
-
       }
     }
 
@@ -548,7 +547,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * @return iterable<EntityInterface>
    */
-   public function getInstitutions(): iterable {
+   public function getInstitutions(string $type = NULL): iterable {
     $relationships = $this->getRelationships(NULL, NULL, TRUE);
 
     // Get all the relationships that reference this person.
@@ -557,9 +556,20 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
         ($relationship->getEntity() instanceof ParDataMembershipInterface);
     });
 
+    if ($type) {
+      $relationships = array_filter($relationships, function ($relationship) use ($type) {
+        return ($type === $relationship->getEntity()->getEntityTypeId());
+      });
+    }
+
     foreach ($relationships as $relationship) {
       yield $relationship->getEntity();
     }
+  }
+
+  public function hasInstitutions(string $type = NULL) {
+    $institutions = $this->getInstitutions($type);
+    return (bool) $institutions->current();
   }
 
   public function getReferencedLocations() {

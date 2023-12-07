@@ -15,8 +15,6 @@ use Drupal\user\Entity\User;
  */
 class ParRoleForm extends ParBaseForm {
 
-  use ParFlowAccessTrait;
-
   /**
    * Set the page title.
    */

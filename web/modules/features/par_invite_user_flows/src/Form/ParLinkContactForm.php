@@ -13,8 +13,6 @@ use Drupal\par_invite_user_flows\ParFlowAccessTrait;
  */
 class ParLinkContactForm extends ParBaseForm {
 
-  use ParFlowAccessTrait;
-
   /**
    * Set the page title.
    */

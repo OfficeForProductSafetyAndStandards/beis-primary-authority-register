@@ -6,6 +6,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 use Drupal\par_roles\ParRoleException;
@@ -13,6 +14,7 @@ use Drupal\par_roles\ParRoleManager;
 use Drupal\par_roles\ParRoleManagerInterface;
 use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -50,8 +52,23 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
       $current_user = NULL;
     }
 
+    // Get the form cache ID for membership selection.
+    $membership_selection_cid = $this->getFlowNegotiator()->getFormKey('select_memberships');
+    // Lookup whether any memberships have been assigned in this journey.
+    $assigned_membership_ids = array_filter([
+      'par_data_authority' => $this->getFlowDataHandler()->getTempDataValue("par_data_authority_id", $membership_selection_cid),
+      'par_data_organisation' => $this->getFlowDataHandler()->getTempDataValue("par_data_organisation_id", $membership_selection_cid),
+    ]);
+
     // Get the user account.
     $account = $this->getFlowDataHandler()->getParameter('user');
+    // Get the person.
+    $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
+
+    // Try to get the account from the person.
+    if (!$account && $par_data_person instanceof ParDataPersonInterface) {
+      $account = $par_data_person->getUserAccount();
+    }
 
     // All allowed roles.
     $roles = $this->defaultConfiguration()['roles'] ?? [];
@@ -74,10 +91,23 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
 
       // If the role is an institution role.
       if (in_array($rid, $this->getParRoleManager()->getAllInstitutionRoles())) {
+        // Get the institution type from the role.
         $institution_type = $this->getParRoleManager()->getInstitutionTypeByRole($rid);
-        // Only process this role if the user has memberships to this institution type.
-        if ($this->getParRoleManager()->hasInstitutions($account, $institution_type)) {
-          $institution_roles[$institution_type][$rid] = $role?->label();
+
+        // Only process this role if memberships have been assigned at a previous step.
+        if (!empty($assigned_membership_ids) &&
+          !empty($assigned_membership_ids[$institution_type])) {
+            $institution_roles[$institution_type][$rid] = $role?->label();
+        }
+        // Or if the user has memberships to this institution type.
+        if (empty($assigned_membership_ids) && $account instanceof UserInterface &&
+          $this->getParRoleManager()->hasInstitutions($account, $institution_type)) {
+            $institution_roles[$institution_type][$rid] = $role?->label();
+        }
+        // Or if the person has memberships to this institution type.
+        else if (empty($assigned_membership_ids) && !$account && $par_data_person instanceof ParDataPersonInterface &&
+          $par_data_person->hasInstitutions($institution_type)) {
+            $institution_roles[$institution_type][$rid] = $role?->label();
         }
       }
       // If the role is a general role.

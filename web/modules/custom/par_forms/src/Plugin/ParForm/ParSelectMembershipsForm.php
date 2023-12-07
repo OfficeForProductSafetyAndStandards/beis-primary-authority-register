@@ -4,10 +4,14 @@ namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\NestedArray;
+use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_forms\Controller\ParAutocompleteController;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
+use Drupal\par_roles\ParRoleManagerInterface;
 use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\Component\Utility\Html;
 
@@ -27,78 +31,68 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
   const ADVANCED_SELECTION_LIMIT = 10;
 
   /**
+   * Get the PAR Role manager.
+   */
+  protected function getParRoleManager(): ParRoleManagerInterface {
+    return \Drupal::service('par_roles.role_manager');
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function loadData(int $index = 1): void {
-    $user_organisations = [];
-    $user_authorities = [];
+    // Get the user account.
+    $account = $this->getFlowDataHandler()->getParameter('user');
+    // Get the person.
+    $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
-    // If the person being edited has an ordinary user account get all the user's
-    // memberships, otherwise use the person being edited if there is one.
-    if ($account = $this->getFlowDataHandler()->getParameter('user')) {
-      $memberships = $this->getParDataManager()->hasMemberships($account, TRUE);
-
-      $user_organisations = array_filter($memberships, function ($membership) {
-        return ('par_data_organisation' === $membership->getEntityTypeId());
-      });
-      $user_authorities = array_filter($memberships, function ($membership) {
-        return ('par_data_authority' === $membership->getEntityTypeId());
-      });
-    }
-    else if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
-      // Get the directly related authorities and organisations.
-      $par_relationship_manager = $this->getParDataManager()->getReducedIterator(1);
-      $memberships = $par_relationship_manager->getRelatedEntities($par_data_person);
-
-      $user_organisations = array_filter($memberships, function ($membership) {
-        return ('par_data_organisation' === $membership->getEntityTypeId());
-      });
-      $user_authorities = array_filter($memberships, function ($membership) {
-        return ('par_data_authority' === $membership->getEntityTypeId());
-      });
+    // Try to get the account from the person.
+    if (!$account && $par_data_person instanceof ParDataPersonInterface) {
+      $account = $par_data_person->getUserAccount();
     }
 
-    // If the user has permissions to select from all memberships.
+    // Get the current memberships from the user account if there is one.
+    if ($account instanceof UserInterface) {
+      $user_authorities = iterator_to_array($this->getParRoleManager()->getInstitutions($account, 'par_data_authority'));
+      $user_organisations = iterator_to_array($this->getParRoleManager()->getInstitutions($account, 'par_data_organisation'));
+    }
+    // Otherwise try to get the current memberships from the person.
+    else if (!$account && $par_data_person instanceof ParDataPersonInterface) {
+      $user_authorities = iterator_to_array($par_data_person->getInstitutions('par_data_authority'));
+      $user_organisations = iterator_to_array($par_data_person->getInstitutions('par_data_organisation'));
+    }
+
+    // Provide all institutions as options if the current user has the correct permissions.
     if ($this->getFlowNegotiator()->getCurrentUser()->hasPermission('assign all memberships')) {
-      $organisation_options = $this->getParDataManager()->getEntitiesByProperty('par_data_organisation', 'deleted', 0);
-      $authority_options = $this->getParDataManager()->getEntitiesByProperty('par_data_authority', 'deleted', 0);
+      $authorities = $this->getParDataManager()->getEntitiesByProperty('par_data_organisation', 'deleted', 0);
+      $organisations = $this->getParDataManager()->getEntitiesByProperty('par_data_authority', 'deleted', 0);
     }
+    // Otherwise only allow the current user to assign memberships that they also have.
     else {
       // Get the memberships for the current user.
       $current_user = $this->getFlowNegotiator()->getCurrentUser();
-      $memberships = $this->getParDataManager()
-        ->hasMemberships($current_user, TRUE);
 
-      $organisation_options = array_filter($memberships, function ($membership) {
-        return ('par_data_organisation' === $membership->getEntityTypeId());
-      });
-      $authority_options = array_filter($memberships, function ($membership) {
-        return ('par_data_authority' === $membership->getEntityTypeId());
-      });
+      $authorities = iterator_to_array($this->getParRoleManager()->getInstitutions($current_user, 'par_data_authority'));
+      $organisations = iterator_to_array($this->getParRoleManager()->getInstitutions($current_user, 'par_data_organisation'));
     }
 
-    // Store the existing organisation memberships
-    $organisation_ids = [];
-    foreach ($user_organisations as $user_organisation) {
-      $organisation_ids[] = $user_organisation->id();
-    }
-    // Transform the default values into the autocomplete format.
-    if ($organisation_options > self::ADVANCED_SELECTION_LIMIT) {
-      $organisation_entities = !empty(array_filter($organisation_ids)) ? $this->getParDataManager()
-        ->getEntitiesByType('par_data_organisation', $organisation_ids) : [];
-      $organisation_ids = $this->getParDataManager()->getEntitiesAsAutocomplete($organisation_entities);
-    }
-    $this->getFlowDataHandler()->setFormPermValue('par_data_organisation_id', $organisation_ids);
+    // Get the user's authority and organisation as an array of IDs.
+    $authority_ids = array_keys($this->getParDataManager()->getEntitiesAsOptions($user_authorities ?? []));
+    $organisation_ids = array_keys($this->getParDataManager()->getEntitiesAsOptions($user_organisations ?? []));
 
-    // Store the existing authority memberships.
-    $authority_ids = [];
-    foreach ($user_authorities as $user_authority) {
-      $authority_ids[] = $user_authority->id();
-    }
+    // Get the authorities and organisations as options.
+    $authority_options = $this->getParDataManager()->getEntitiesAsOptions($authorities);
+    $organisation_options = $this->getParDataManager()->getEntitiesAsOptions($organisations);
+
+    // Set authority information,
     $this->getFlowDataHandler()->setFormPermValue('par_data_authority_id', $authority_ids);
+    $this->getFlowDataHandler()->setFormPermValue('par_data_authority_original', $authority_ids);
+    $this->getFlowDataHandler()->setFormPermValue('authority_options', $authority_options);
 
-    $this->getFlowDataHandler()->setFormPermValue('organisation_options', $this->getParDataManager()->getEntitiesAsOptions($organisation_options, []));
-    $this->getFlowDataHandler()->setFormPermValue('authority_options', $this->getParDataManager()->getEntitiesAsOptions($authority_options, []));
+    // Set organisation information.
+    $this->getFlowDataHandler()->setFormPermValue('par_data_organisation_id', $organisation_ids);
+    $this->getFlowDataHandler()->setFormPermValue('par_data_organisation_original', $organisation_ids);
+    $this->getFlowDataHandler()->setFormPermValue('organisation_options', $organisation_options);
 
     parent::loadData($index);
   }
@@ -140,6 +134,13 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
 
       }
 
+      // Render a hidden element to store the user's original memberships,
+      // this helps to identify which memberships the current user cannot modify.
+      $form["{$target_type}_original"] = [
+        '#type' => 'hidden',
+        '#value' => $this->getDefaultValuesByKey("{$target_type}_original", $index, []),
+      ];
+
       // Get the base for all elements.
       $base = [
         '#title' => $element_title ?? '',
@@ -150,16 +151,16 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
       // Identify the type of selection interface that should be used.
       if (count($options) > self::ADVANCED_SELECTION_LIMIT) {
         // Transform the default values into the autocomplete format.
-        $authority_ids = array_filter($default_value);
-        $authority_entities = !empty($authority_ids) ? $this->getParDataManager()
-          ->getEntitiesByType($target_type, $authority_ids) : [];
-        $authority_values = $this->getParDataManager()->getEntitiesAsAutocomplete($authority_entities);
+        $entity_ids = array_filter($default_value);
+        $entities = !empty($entity_ids) ? $this->getParDataManager()
+          ->getEntitiesByType($target_type, $entity_ids) : [];
+        $default_value = $this->getParDataManager()->getEntitiesAsAutocomplete($entities);
 
         // The par autocomplete element.
         $form[$element_key] = $base + [
           '#type' => 'textfield',
           '#description' => $this->t('If you need to enter multiple values please separate them with a comma.'),
-          '#default_value' => $authority_values,
+          '#default_value' => $default_value,
           '#autocomplete_route_name' => 'par_forms.autocomplete',
           '#autocomplete_route_parameters' => [
             'plugin' => $this->getPluginId(),
