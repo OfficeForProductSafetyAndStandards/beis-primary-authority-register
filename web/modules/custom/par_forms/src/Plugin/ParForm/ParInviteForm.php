@@ -145,11 +145,11 @@ HEREDOC;
     if (!$this->getFlowDataHandler()->getDefaultValues('invitation_type', FALSE)) {
       throw new ParFormException('There is no invitation type selected for this invitation.');
     }
-var_dump($this->getFlowDataHandler()->getDefaultValues('existing', FALSE));
+
     // If the contact has an existing user account skip the invitation.
     if ($this->getFlowDataHandler()->getDefaultValues('existing', FALSE)) {
-//      $url = $this->getFlowNegotiator()->getFlow()->progress();
-//      return new RedirectResponse($url->toString());
+      $url = $this->getFlowNegotiator()->getFlow()->progress();
+      return new RedirectResponse($url->toString());
     }
 
     // There must be a sender and a recipient to continue.
