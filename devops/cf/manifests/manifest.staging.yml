@@ -4,6 +4,7 @@ applications:
       - route: beis-par-staging.cloudapps.digital
     buildpacks:
       - https://github.com/cloudfoundry/php-buildpack.git#v4.6.13
+    stack: cflinuxfs3
     memory: 2G
     disk_quota: 5G
     timeout: 120
