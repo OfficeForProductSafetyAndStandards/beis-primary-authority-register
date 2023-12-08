@@ -1,6 +1,7 @@
 _meta:
   version: '1.0'
-  entity_type: c75e5abf-e377-4f5c-8704-b9ba816c5886
+  entity_type: user
+  uuid: c75e5abf-e377-4f5c-8704-b9ba816c5886
   default_langcode: en
 default:
   preferred_langcode:
