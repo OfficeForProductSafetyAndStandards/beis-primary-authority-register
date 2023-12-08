@@ -9,7 +9,7 @@ default:
       value: en
   name:
     -
-      value: par_business@example.com
+      value: par_business_manager@example.com
   pass:
     -
       value: TestPassword
