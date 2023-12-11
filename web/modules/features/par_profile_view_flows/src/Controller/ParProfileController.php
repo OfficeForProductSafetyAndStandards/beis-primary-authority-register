@@ -52,7 +52,7 @@ class ParProfileController extends ParBaseController {
 
   public function loadData() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
-    $user = $par_data_person?->getUserAccount();
+    $user = $par_data_person?->lookupUserAccount();
 
     if ($user) {
       $this->getFlowDataHandler()->setParameter('user', $user);
