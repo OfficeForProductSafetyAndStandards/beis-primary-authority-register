@@ -115,6 +115,23 @@ class ParRoleManager implements ParRoleManagerInterface {
   }
 
   /**
+   * Get the roles that the current user can manage.
+   */
+  public function getAssignableRoles() {
+    $roles = $this->getAllRoles();
+    $current_user = $this->getCurrentUser();
+
+    // If the user has the bypass membership permission they can assign all roles.
+    if (!$this->getCurrentUser()->hasPermission('bypass par_data membership')) {
+      $roles = array_filter($roles, function($role) use ($current_user) {
+        return !$current_user->hasPermission("assign {$role} role");
+      });
+    }
+
+    return $roles;
+  }
+
+  /**
    * Get the label for the institution type.
    */
 
@@ -307,7 +324,9 @@ class ParRoleManager implements ParRoleManagerInterface {
     }
 
     // Add the role after all old roles have been removed to ensure roles aren't doubled up.
-    $account->addRole($role);
+    if (in_array($role, $this->getAssignableRoles())) {
+      $account->addRole($role);
+    }
 
     return $account;
   }
@@ -322,7 +341,9 @@ class ParRoleManager implements ParRoleManagerInterface {
     }
 
     // Remove the role.
-    $account->removeRole($role);
+    if (in_array($role, $this->getAssignableRoles())) {
+      $account->removeRole($role);
+    }
 
     return $account;
   }
