@@ -104,7 +104,6 @@ permissions:
   - 'add par_data_sic_code entities'
   - 'add partnership authority contact'
   - 'add partnership organisation contact'
-  - 'administer list par_news'
   - 'administer users'
   - 'amend own partnerships'
   - 'approve enforcement notice'

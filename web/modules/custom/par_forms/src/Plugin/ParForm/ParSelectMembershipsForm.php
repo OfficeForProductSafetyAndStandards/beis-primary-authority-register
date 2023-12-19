@@ -116,7 +116,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
     foreach ($elements as $target_type => $options) {
       $element_weight = $i*10;
       $element_key = "{$target_type}_id";
-      $default_value = $this->getDefaultValuesByKey($element_key, $index, NULL);
+      $default_value = $this->getDefaultValuesByKey($element_key, $index, []);
 
       // Do not render an input element if there are no options to select.
       if (empty($options)) {

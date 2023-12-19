@@ -60,9 +60,10 @@ class ParAddInstitutionForm extends ParBaseForm {
     }
 
     $institution_ids = [
-      'par_data_authority' => $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', [], $cid_institution_select),
-      'par_data_organisation' => $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', [], $cid_institution_select),
+      'par_data_authority' => (array) $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', [], $cid_institution_select),
+      'par_data_organisation' => (array) $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', [], $cid_institution_select),
     ];
+
     // Loop through and add the person to the institution.
     $institutions = [];
     $institution_names = [];
