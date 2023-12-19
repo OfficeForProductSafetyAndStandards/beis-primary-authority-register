@@ -33,7 +33,7 @@ Feature: Other Happy Paths
   @regression @authority @authorityManagement
   Scenario: Verify The Transfer of a Partnership from an Existing Authority to a New Authority (Happy Path - PAR-2287)
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
+    And the user logs in with the "senior_administrator@example.com" user credentials
     When the user searches for an Authority with the same Regulatory Functions "Upper West Side Borough Council"
     And the user completes the partnership transfer process
     Then the partnership is transferred to the new authority successfully

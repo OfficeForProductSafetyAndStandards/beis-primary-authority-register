@@ -5,7 +5,7 @@ Feature: Coordinated Partnership Happy Paths
   Scenario: Verify Coordinated Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
     Given the user is on the PAR home page
     And the user visits the login page
-    And the user logs in with the "par_authority@example.com" user credentials
+    And the user logs in with the "par_authority_manager@example.com" user credentials
     Then the user is on the dashboard page
     When the user creates a new "Co-ordinated" partnership application with the following details:
       | Authority | Partnership Info | AddressLine1 | AddressLine2 | Town | County     | Country        | Nation  | Postcode | Title | Firstname | Lastname | WorkNumber   | MobileNumber | Email                    |
@@ -19,14 +19,14 @@ Feature: Coordinated Partnership Happy Paths
     Then the second part of the partnership application is successfully completed
     # Verify all the Partnership Details are Displayed
     Given the user is on the PAR login page
-    And the user logs in with the "par_authority@example.com" user credentials
+    And the user logs in with the "par_authority_manager@example.com" user credentials
     When the user searches for the last created partnership
     Then the partnership application is completed successfully
 
   @regression @coordinated @organisationMember @authorityManagement
   Scenario: Successfully Nominate a Coordinated Partnership (Happy Path - PAR-2261)
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
+    And the user logs in with the "secretary_state@example.com" user credentials
     When the user searches for the last created partnership
     And the user approves the partnership
     And the user searches again for the last created partnership

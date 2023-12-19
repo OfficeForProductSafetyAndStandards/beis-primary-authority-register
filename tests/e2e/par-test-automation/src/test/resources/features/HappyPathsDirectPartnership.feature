@@ -29,7 +29,7 @@ Feature: Direct Partnership Happy Paths
     Then the second part of the partnership application is successfully completed
     # Nominate the Partnership
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
+    And the user logs in with the "secretary_state@example.com" user credentials
     When the user searches for the last created partnership
     And the user approves the partnership
     And the user searches again for the last created partnership
@@ -64,7 +64,7 @@ Feature: Direct Partnership Happy Paths
   @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct @update @legalEntities
   Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
+    And the user logs in with the "secretary_state@example.com" user credentials
     When the user searches for the last created partnership
     And the user approves the partnership
     And the user searches again for the last created partnership
@@ -95,7 +95,7 @@ Feature: Direct Partnership Happy Paths
   @regression @direct @update @legalEntities
   Scenario: Verify the Nomination of Legal Entity Amendments for an Active Partnership (Happy Path - PAR-2311)
     Given the user is on the PAR login page
-    And the user logs in with the "par_authority@example.com" user credentials
+    And the user logs in with the "par_authority_manager@example.com" user credentials
     When the user searches for the last created partnership
     And the user Amends the legal entities with the following details:
       | Entity Type | Entity Name    |
@@ -103,13 +103,13 @@ Feature: Direct Partnership Happy Paths
     Then the user verifies the amendments are created successfully with status "Confirmed by the Authority"
     # Confirm Amendments as the Business User
     Given the user is on the PAR login page
-    And the user logs in with the "par_business@example.com" user credentials
+    And the user logs in with the "par_business_manager@example.com" user credentials
     When the user searches for the last created partnership
     And the user confirms the legal entity amendments
     Then the user verifies the amendments are confirmed successfully with status "Confirmed by the Organisation"
     # Nominate the Amendments as the Help Desk User
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
+    And the user logs in with the "secretary_state@example.com" user credentials
     When the user searches for the last created partnership Authority
     And the user nominates the legal entity amendments
     Then the user verifies the amendments are nominated successfully with status "Active"
@@ -117,7 +117,7 @@ Feature: Direct Partnership Happy Paths
   @regression @direct @update @legalEntities
   Scenario: Verify the Revocation and reinstatement of a Legal Entity for an Active Partnership (Happy Path - PAR-2312, PAR-2313)
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
+    And the user logs in with the "senior_administrator@example.com" user credentials
     When the user searches for the last created partnership Authority
     And the user revokes the legal entity with the reason "Test Revoke"
     Then the user verifies the legal entity was revoked successfully with status "Revoked"
@@ -128,7 +128,7 @@ Feature: Direct Partnership Happy Paths
   @regression @direct @update @legalEntities
   Scenario: Verify the Removal of a Legal Entity from an Active Partnership (Happy Path - PAR-2314)
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
+    And the user logs in with the "senior_administrator@example.com" user credentials
     When the user searches for the last created partnership Authority
     And the user removes the legal entity
     Then the user verifies the legal entity was removed successfully
@@ -211,7 +211,7 @@ Feature: Direct Partnership Happy Paths
   @regression @advicenotice
   Scenario: Verify Upload and Removal of an Advice Notice (Happy Path - PAR-1876)
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
+    And the user logs in with the "senior_administrator@example.com" user credentials
     When the user searches for the last created partnership
     And the user uploads an advice notice against the partnership with the following details:
       | Title              | Type of Advice         | Reg Function      | Description         |
@@ -224,7 +224,7 @@ Feature: Direct Partnership Happy Paths
   @regression @advicenotice
   Scenario: Verify Upload of Advice Notice (Happy Path - PAR-1873)
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
+    And the user logs in with the "secretary_state@example.com" user credentials
     When the user searches for the last created partnership
     And the user uploads an advice notice against the partnership with the following details:
       | Title          | Type of Advice         | Reg Function      | Description  |
@@ -250,7 +250,7 @@ Feature: Direct Partnership Happy Paths
   @regression @enforcement
   Scenario: Verify a Help Desk user can remove an Enforcement Notice Successfully (Happy Path - PAR-1855)
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
+    And the user logs in with the "secretary_state@example.com" user credentials
     When the user searches for the last created enforcement notice
     And the user removes the enforcement notice
     Then the enforcement notice is removed successfully
@@ -426,7 +426,7 @@ Feature: Direct Partnership Happy Paths
   @regression @inspectionplan
   Scenario: Verify Revocation and then Removal of an Inspection Plan (Happy Path - PAR-1866, PAR-1867)
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
+    And the user logs in with the "secretary_state@example.com" user credentials
     When the user searches for the last created partnership
     And the user revokes the last created inspection plan
     Then the inspection plan is revoked successfully
