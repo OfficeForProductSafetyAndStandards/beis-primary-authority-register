@@ -103,7 +103,7 @@ Feature: Direct Partnership Happy Paths
     Then the user verifies the amendments are created successfully with status "Confirmed by the Authority"
     # Confirm Amendments as the Business User
     Given the user is on the PAR login page
-    And the user logs in with the "par_business_manager@example.com" user credentials
+    And the user logs in with the "par_business@example.com" user credentials
     When the user searches for the last created partnership
     And the user confirms the legal entity amendments
     Then the user verifies the amendments are confirmed successfully with status "Confirmed by the Organisation"

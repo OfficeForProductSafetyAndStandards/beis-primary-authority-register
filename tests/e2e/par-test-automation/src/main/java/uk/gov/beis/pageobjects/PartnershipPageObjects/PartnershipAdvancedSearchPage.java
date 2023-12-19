@@ -81,12 +81,12 @@ public class PartnershipAdvancedSearchPage extends BasePageObject {
 	}
 	
 	public PartnershipInformationPage selectPrimaryAuthorityLink() {
-		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + "')]/parent::td/parent::tr/td[1]/a[1]")).click();
+		driver.findElement(By.xpath("//td/a[contains(normalize-space(),'" + DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + "')]")).click(); // /parent::td/parent::tr/td[1]/a[1]
 		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
 	public PartnershipInformationPage selectOrganisationLink() {
-		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[1]/a[2]")).click();
+		driver.findElement(By.xpath("//td/a[contains(normalize-space(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]")).click(); // /parent::td/parent::tr/td[1]/a[2]
 		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

@@ -506,6 +506,8 @@ public class PARStepDefs {
 		
 		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
 		case ("par_helpdesk@example.com"):
+		case ("senior_administrator@example.com"):
+		case ("secretary_state@example.com"):
 			LOG.info("Selecting Search partnerships");
 			helpDeskDashboardPage.selectSearchPartnerships();
 			partnershipAdvancedSearchPage.searchPartnerships();
@@ -515,6 +517,7 @@ public class PARStepDefs {
 			dashboardPage.selectSearchforPartnership();
 			partnershipSearchPage.searchPartnerships();
 			break;
+		case ("par_business_manager@example.com"):
 		case ("par_business@example.com"):
 			LOG.info("Selecting See your partnerships");
 			dashboardPage.selectSeePartnerships();
