@@ -178,8 +178,6 @@ class ParHelpdeskDashboardController extends ControllerBase {
       ];
     }
 
-
-
     // Manage users.
     $build['people'] = [
       '#type' => 'container',

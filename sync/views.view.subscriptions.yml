@@ -339,7 +339,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'administer list par_news'
+          perm: 'view list par_news'
       cache:
         type: none
         options: {  }

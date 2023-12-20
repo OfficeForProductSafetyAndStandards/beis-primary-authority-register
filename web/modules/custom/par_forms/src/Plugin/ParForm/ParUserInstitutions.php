@@ -100,6 +100,7 @@ class ParUserInstitutions extends ParFormPluginBase {
     foreach ($institutions as $institution) {
       // Add the label.
       $form['user_institutions']['list']['#items'][$institution->id()] = [
+        '#type' => 'container',
         'label' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
@@ -127,7 +128,7 @@ class ParUserInstitutions extends ParFormPluginBase {
           ];
           $form['user_institutions']['list']['#items'][$institution->id()]['label']['remove'] = [
             '#type' => 'link',
-            '#title' => $membership_remove_link?->toString(),
+            '#title' => $membership_remove_link?->getText(),
             '#url' => $membership_remove_link?->getUrl(),
             '#options' => $options,
             '#weight' => 100,
@@ -147,7 +148,7 @@ class ParUserInstitutions extends ParFormPluginBase {
         $options = ['attributes' => ['class' => ['add-institution']]];
         $form['user_institutions']['add'] = [
           '#type' => 'link',
-          '#title' => $membership_add_link?->toString(),
+          '#title' => $membership_add_link?->getText(),
           '#url' => $membership_add_link?->getUrl(),
           '#options' => $options,
           '#weight' => 100,
