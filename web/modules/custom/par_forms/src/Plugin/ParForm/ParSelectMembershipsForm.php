@@ -64,8 +64,8 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
 
     // Provide all institutions as options if the current user has the correct permissions.
     if ($this->getFlowNegotiator()->getCurrentUser()->hasPermission('assign all memberships')) {
-      $authorities = $this->getParDataManager()->getEntitiesByProperty('par_data_organisation', 'deleted', 0);
-      $organisations = $this->getParDataManager()->getEntitiesByProperty('par_data_authority', 'deleted', 0);
+      $authorities = $this->getParDataManager()->getEntitiesByProperty('par_data_authority', 'deleted', 0);
+      $organisations = $this->getParDataManager()->getEntitiesByProperty('par_data_organisation', 'deleted', 0);
     }
     // Otherwise only allow the current user to assign memberships that they also have.
     else {
@@ -144,6 +144,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
       // Get the base for all elements.
       $base = [
         '#title' => $element_title ?? '',
+        '#title_tag' => 'h2',
         '#attributes' => ['class' => ['govuk-form-group']],
         '#weight' => $element_weight
       ];
