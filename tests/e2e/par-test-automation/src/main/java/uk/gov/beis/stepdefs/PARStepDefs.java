@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.Map;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -2259,52 +2260,53 @@ public class PARStepDefs {
 	public void the_user_creates_a_new_person(DataTable details) throws Throwable {
 		helpDeskDashboardPage.selectManagePeople();
 		managePeoplePage.selectAddPerson();
-
-		LOG.info("Adding a new person.");
-		contactDetailsPage.enterContactWithRandomName(details);
-		contactDetailsPage.clickContinueButton();
-
-		LOG.info("Successfully entered new contact details.");
-
-		giveUserAccountPage.selectInviteUserToCreateAccount();
-		giveUserAccountPage.clickContinueButton();
-
-		LOG.info("Successfully chose to invite the person to create an account.");
-		userMembershipPage.selectOrganisation(details);
-		userMembershipPage.selectAuthority(details);
-		userMembershipPage.clickContinueButton();
 		
-		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
-		LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
+		String firstName = RandomStringUtils.randomAlphabetic(8);
+		String lastName = RandomStringUtils.randomAlphabetic(8);
+		String emailAddress = firstName + "@" + lastName + ".com";
 
-		userTypePage.selectEnforcementOfficer();
-		userTypePage.goToAccountInvitePage();
-		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
-
-		accountInvitePage.clickInviteButton();
-
-		LOG.info("Successfully sent account invite.");
-
-		profileReviewPage.goToProfileCompletionPage();
-		profileCompletionPage.goToUserProfilePage();
+		DataStore.saveValue(UsableValues.PERSON_FIRSTNAME, firstName); 
+		DataStore.saveValue(UsableValues.PERSON_LASTNAME, lastName);
+		DataStore.saveValue(UsableValues.PERSON_EMAIL_ADDRESS, emailAddress);
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.PERSON_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.PERSON_WORK_NUMBER, data.get("WorkNumber"));
+			DataStore.saveValue(UsableValues.PERSON_MOBILE_NUMBER, data.get("MobileNumber"));
+		}
+		
+		LOG.info("Adding a new person.");
+		//contactDetailsPage.enterContactWithRandomName(details);
+		
+		contactDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
+		contactDetailsPage.enterFirstName(DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME));
+		contactDetailsPage.enterLastName(DataStore.getSavedValue(UsableValues.PERSON_LASTNAME));
+		contactDetailsPage.enterWorkNumber(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
+		contactDetailsPage.enterMobileNumber(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
+		contactDetailsPage.enterEmail(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS));
+		
+		contactDetailsPage.clickContinueButton();
 	}
 
-	@Then("^the user can verify the person was created successfully and can see resend an account invite$")
-	public void the_user_can_verify_the_person_was_created_successfully_and_can_see_resend_an_account_invite() throws Throwable {
+	@Then("^the user can verify the person was created successfully and can send an account invitation$")
+	public void the_user_can_verify_the_person_was_created_successfully_and_can_send_an_account_invitation() throws Throwable {
+		
 		assertTrue("Failed: Header does not contain the person's fullname and title.", userProfilePage.checkHeaderForName());
-		assertTrue("Failed: Cannot find the Re-send account creation invite link.", userProfilePage.checkForUserAccountInvitationLink());
+		assertTrue("Failed: Cannot find the User account invitation link.", userProfilePage.checkForUserAccountInvitationLink());
 		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", userProfilePage.checkContactName());
 		assertTrue("Failed: Contact email field does not contain the correct email address.", userProfilePage.checkContactEmail());
 		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", userProfilePage.checkContactPhoneNumbers());
-		assertTrue("Failed: Both Contact Locations are not displayed.", userProfilePage.seeMoreContactInformation());
+		assertTrue("Failed: Contact Locations are displayed.", userProfilePage.checkContactLocationsIsEmpty());
+		
+		userProfilePage.clickDoneButton();
 	}
 
 	@When("^the user searches for an existing person successfully$")
 	public void the_user_searches_for_an_existing_person_successfully() throws Throwable {
-		helpDeskDashboardPage.selectManagePeople();
+		//helpDeskDashboardPage.selectManagePeople();
 
-		String personsName = DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " "
-				+ DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
+		String personsName = DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
 
 		managePeoplePage.enterNameOrEmail(personsName);
 		managePeoplePage.clickSubmit();
@@ -2319,43 +2321,58 @@ public class PARStepDefs {
 		LOG.info("Updating an existing person.");
 		userProfilePage.clickUpdateUserButton();
 		
-		contactDetailsPage.enterContactWithRandomName(details);
+		String firstName = RandomStringUtils.randomAlphabetic(8);
+		String lastName = RandomStringUtils.randomAlphabetic(8);
+		String emailAddress = firstName + "@" + lastName + ".com";
+
+		DataStore.saveValue(UsableValues.PERSON_FIRSTNAME, firstName); 
+		DataStore.saveValue(UsableValues.PERSON_LASTNAME, lastName);
+		DataStore.saveValue(UsableValues.PERSON_EMAIL_ADDRESS, emailAddress);
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.PERSON_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.PERSON_WORK_NUMBER, data.get("WorkNumber"));
+			DataStore.saveValue(UsableValues.PERSON_MOBILE_NUMBER, data.get("MobileNumber"));
+		}
+		
+		LOG.info("Updating Contact Details.");
+		//contactDetailsPage.enterContactWithRandomName(details);
+		
+		contactDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
+		contactDetailsPage.enterFirstName(DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME));
+		contactDetailsPage.enterLastName(DataStore.getSavedValue(UsableValues.PERSON_LASTNAME));
+		contactDetailsPage.enterWorkNumber(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
+		contactDetailsPage.enterMobileNumber(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
+		contactDetailsPage.enterEmail(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS));
+		
 		contactDetailsPage.clickContinueButton();
-
-		LOG.info("Successfully entered new contact details.");
-
-		giveUserAccountPage.selectInviteUserToCreateAccount();
-		giveUserAccountPage.clickContinueButton();
-
-		LOG.info("Successfully chose to invite the person to create an account.");
-		userMembershipPage.selectOrganisation(details);
-		userMembershipPage.selectAuthority(details);
-		userMembershipPage.clickContinueButton();
-
-		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
-		LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
-
-		userTypePage.selectAuthorityMember();
-		userTypePage.goToAccountInvitePage();
-
-		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
-
-		accountInvitePage.clickInviteButton();
-
-		LOG.info("Successfully sent account invite.");
-
-		profileReviewPage.goToProfileCompletionPage();
-		profileCompletionPage.goToUserProfilePage();
+		
+		//giveUserAccountPage.selectInviteUserToCreateAccount();
+		//giveUserAccountPage.clickContinueButton();
+		//LOG.info("Successfully chose to invite the person to create an account.");
+		//userMembershipPage.selectOrganisation(details);
+		//userMembershipPage.selectAuthority(details);
+		//userMembershipPage.clickContinueButton();
+		//LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
+		//LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
+		//userTypePage.selectAuthorityMember();
+		//userTypePage.goToAccountInvitePage();
+		//LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
+		//accountInvitePage.clickInviteButton();
+		//LOG.info("Successfully sent account invite.");
+		//profileReviewPage.goToProfileCompletionPage();
+		//profileCompletionPage.goToUserProfilePage();
 	}
 
-	@Then("^the user can verify the person was updated successfully and can see resend an account invite$")
-	public void the_user_can_verify_the_person_was_updated_successfully_and_can_see_resend_an_account_invite() throws Throwable {
+	@Then("^the user can verify the person was updated successfully and can send an account invitation$")
+	public void the_user_can_verify_the_person_was_updated_successfully_and_can_send_an_account_invitation() throws Throwable {
 		assertTrue("Failed: Header does not contain the person's fullname and title.", userProfilePage.checkHeaderForName());
-		assertTrue("Failed: Cannot find the Re-send account creation invite link.", userProfilePage.checkForUserAccountInvitationLink());
+		assertTrue("Failed: Cannot find the User account invitation link.", userProfilePage.checkForUserAccountInvitationLink());
 		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", userProfilePage.checkContactName());
 		assertTrue("Failed: Contact email field does not contain the correct email address.", userProfilePage.checkContactEmail());
 		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", userProfilePage.checkContactPhoneNumbers());
-		assertTrue("Failed: Both Contact Locations are not displayed.", userProfilePage.seeMoreContactInformation());
+		assertTrue("Failed: Contact Locations are displayed.", userProfilePage.checkContactLocationsIsEmpty());
 	}
 	
 	@When("^the user creates a new contact with the following details:$")

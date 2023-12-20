@@ -61,10 +61,7 @@ public class PartnershipAdvancedSearchPage extends BasePageObject {
 	
 	public boolean checkPartnershipDetails(String status, String action) {
 		WebElement statusElement = driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[3][normalize-space()='"+ status +"']"));
-		//WebElement status = driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[3][contains(text(),'" + status + "')]"));
 		WebElement actionElement = driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[7]/a[contains(text(),'" + action + "')]"));
-		
-		// //td[@class='views-field views-field-partnership-status-1'][normalize-space()='Active']
 		
 		return (statusElement.isDisplayed() && actionElement.isDisplayed());
 	}
@@ -81,12 +78,12 @@ public class PartnershipAdvancedSearchPage extends BasePageObject {
 	}
 	
 	public PartnershipInformationPage selectPrimaryAuthorityLink() {
-		driver.findElement(By.xpath("//td/a[contains(normalize-space(),'" + DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + "')]")).click(); // /parent::td/parent::tr/td[1]/a[1]
+		driver.findElement(By.xpath("//td/a[contains(normalize-space(),'" + DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + "')]")).click();
 		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
 	public PartnershipInformationPage selectOrganisationLink() {
-		driver.findElement(By.xpath("//td/a[contains(normalize-space(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]")).click(); // /parent::td/parent::tr/td[1]/a[2]
+		driver.findElement(By.xpath("//td/a[contains(normalize-space(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]")).click();
 		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

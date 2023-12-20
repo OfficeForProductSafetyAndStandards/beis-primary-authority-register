@@ -62,6 +62,36 @@ public class ContactDetailsPage extends BasePageObject {
 		super();
 	}
 	
+	public void enterTitle(String title) {
+		titleField.clear();
+		titleField.sendKeys(title);
+	}
+	
+	public void enterFirstName(String firstname) {
+		firstnameField.clear();
+		firstnameField.sendKeys(firstname);
+	}
+	
+	public void enterLastName(String lastname) {
+		lastnameField.clear();
+		lastnameField.sendKeys(lastname);
+	}
+	
+	public void enterWorkNumber(String worknumber) {
+		workPhoneField.clear();
+		workPhoneField.sendKeys(worknumber);
+	}
+	
+	public void enterMobileNumber(String mobilenumber) {
+		mobilePhoneField.clear();
+		mobilePhoneField.sendKeys(mobilenumber);
+	}
+	
+	public void enterEmail(String email) {
+		emailAddressField.clear();
+		emailAddressField.sendKeys(email);
+	}
+	
 	public void enterEmailAddress(String email) {
 		emailAddressField.clear();
 		emailAddressField.sendKeys(email);

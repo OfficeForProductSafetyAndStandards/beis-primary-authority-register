@@ -16,8 +16,8 @@ public class UserProfilePage extends BasePageObject {
 	@FindBy(tagName = "h1")
 	private WebElement profileHeader;
 	
-	@FindBy(xpath = "//p[contains(text(), 'An invitation has already been sent')]")
-	private WebElement invitationSentText;
+	@FindBy(xpath = "//div/a[contains(normalize-space(), 'Invite the user to create an account')]")
+	private WebElement accountInvitationLink;
 
 	@FindBy(xpath = "//div[@class='govuk-grid-row govuk-form-group']/p[3]")
 	private WebElement userAccountType;
@@ -51,15 +51,15 @@ public class UserProfilePage extends BasePageObject {
 	}
 	
 	public Boolean checkHeaderForName() {
-		return profileHeader.getText().contains(getPersonsName());
+		return profileHeader.getText().contains(getExpectedPersonsName());
 	}
 
 	public Boolean checkForUserAccountInvitationLink() {
-		return invitationSentText.isDisplayed();
+		return accountInvitationLink.isDisplayed();
 	}
 
 	public Boolean checkUserAccountEmail() {
-		return userContactEmail.getText().contains(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
+		return userContactEmail.getText().contains(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS));
 	}
 
 	public Boolean checkUserAccountType() {
@@ -67,11 +67,11 @@ public class UserProfilePage extends BasePageObject {
 	}
 
 	public Boolean checkContactName() {
-		return userContactName.getText().contains(getPersonsName());
+		return userContactName.getText().contains(getExpectedPersonsName());
 	}
 
 	public Boolean checkContactEmail() {
-		return userContactEmail.getText().contains(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL).toLowerCase());
+		return userContactEmail.getText().contains(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS).toLowerCase());
 	}
 
 	public String getContactEmail() {
@@ -97,7 +97,20 @@ public class UserProfilePage extends BasePageObject {
 		return numbersDisplayed;
 	}
 	
-	public Boolean seeMoreContactInformation() {
+	public Boolean checkContactLocationsIsEmpty() {
+		moreInformationBtn.click();
+		
+		String locations = whereToContactDetails.getText().trim();
+		
+		if(locations.isEmpty()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public Boolean seeMoreContactInformation() { // Update for the new Authority and Organisation select test.
 		moreInformationBtn.click();
 		
 		Boolean locationsDisplayed = false;
@@ -113,6 +126,7 @@ public class UserProfilePage extends BasePageObject {
 		return locationsDisplayed;
 	}
 
+	// Merge Contact Records
 	public Boolean checkContactRecordAdded() {
 		String contactsNameLocator = "//p[contains(text(), '?')]";
 		
@@ -139,10 +153,12 @@ public class UserProfilePage extends BasePageObject {
 		doneBtn.click();
 		return PageFactory.initElements(driver, ManagePeoplePage.class);
 	}
-
-	private String getPersonsName() {
-		return DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " "
-				+ DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " "
-				+ DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
+	
+	private String getExpectedPersonsName() {
+		return DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " " + DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
+	}
+	
+	private String getPersonsName() { // Temp?
+		return DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " " + DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
 	}
 }

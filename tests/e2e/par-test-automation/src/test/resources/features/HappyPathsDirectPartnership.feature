@@ -38,7 +38,7 @@ Feature: Direct Partnership Happy Paths
     When the user Deletes the Partnership with the following reason: "Partnership is incorrect."
     Then the Partnership was Deleted Successfully
 
-  @regression @partnershipapplication @direct @update @usermanagement @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @legalEntities @testUpdates
+  @regression @partnershipapplication @direct @update @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @legalEntities @testUpdates
   Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -61,7 +61,7 @@ Feature: Direct Partnership Happy Paths
     When the user searches for the last created partnership
     Then the partnership application is completed successfully
 
-  @regression @usermanagement @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct @update @legalEntities
+  @regression @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct @update @legalEntities
   Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
     Given the user is on the PAR login page
     And the user logs in with the "secretary_state@example.com" user credentials
