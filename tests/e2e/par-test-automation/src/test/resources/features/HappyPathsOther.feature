@@ -75,7 +75,7 @@ Feature: Other Happy Paths
   @regression @helpDesk @PARNewsSubscription
   Scenario: Verify a Helpdesk user can add a new Email to the PAR News Subscription List (Happy Path - PAR-2073)
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
+    And the user logs in with the "senior_administrator@example.com" user credentials
     When the user is on the Manage a subscription list page
     And the user enters a new email to add to the list "new_user@authority.co.uk"
     Then the user can verify the new email was added successfully
@@ -83,7 +83,7 @@ Feature: Other Happy Paths
   @regression @helpDesk @PARNewsSubscription
   Scenario: Verify a Helpdesk user can remove an eisting Email from the PAR News Subscription List (Happy Path - PAR-2074)
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
+    And the user logs in with the "senior_administrator@example.com" user credentials
     When the user is on the Manage a subscription list page
     And the user enters an email to be removed from the list "new_user@authority.co.uk"
     Then the user can verify the email was removed successfully
@@ -91,7 +91,7 @@ Feature: Other Happy Paths
   @regression @helpDesk @PARNewsSubscription
   Scenario: Verify a Helpdesk user can replace the PAR News Subscription List with a new List (Happy Path - PAR-2075)
     Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
+    And the user logs in with the "senior_administrator@example.com" user credentials
     When the user is on the Manage a subscription list page
     And the user enters a list of new emails to replace the subscription list
     Then the user can verify an email from the original list was removed successfully
