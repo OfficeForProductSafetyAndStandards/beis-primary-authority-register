@@ -29,10 +29,10 @@ public class MemberListPage extends BasePageObject {
 	@FindBy(xpath = "//input[contains(@value,'Continue')]")
 	private WebElement continueBtn;
 	
-	String memberNameLocator = "//td/a[contains(text(),'?')]";
-	String ceaseMemberLocator = "//td/a[contains(text(),'Cease membership')]";
+	String memberNameLocator = "//td/a[contains(normalize-space(),'?')]";
+	String ceaseMemberLocator = "//td/a[contains(normalize-space(),'Cease membership')]";
 	
-	String memberSize = "//select/option[contains(text(),'?')]";
+	String memberSize = "//select/option[contains(normalize-space(),'?')]";
 	
 	public MemberListPage() throws ClassNotFoundException, IOException {
 		super();
@@ -72,9 +72,12 @@ public class MemberListPage extends BasePageObject {
 		return driver.findElement(By.xpath(memberNameLocator.replace("?", DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME)))).isDisplayed();
 	}
 	
-	public boolean checkMembershipCeased() {
-		return driver.findElements(By.xpath("//td/a")).isEmpty() && 
-				driver.findElement(By.xpath("//td[@class = 'views-field views-field-date-membership-ceased']/time")).getText().contains(DataStore.getSavedValue(UsableValues.MEMBERSHIP_CEASE_DATE));
+	public boolean checkMembershipActionButtons() {
+		return driver.findElements(By.xpath("(//td[@class='views-field views-field-par-flow-link-1'])[1]/a")).isEmpty();
+	}
+	
+	public String getMembershipCeasedDate() {
+		return driver.findElement(By.xpath("//td[@class = 'views-field views-field-date-membership-ceased']/time")).getText();
 	}
 	
 	public boolean checkMembersListUploaded() {

@@ -88,13 +88,29 @@ public class EnterTheDatePage extends BasePageObject {
 	private void getMembershipDate() {
 		String fullDate = dayField.getAttribute("value") + " " + convertMonthDate(monthField.getAttribute("value")) + " " + yearField.getAttribute("value");
 		
-		DataStore.saveValue(UsableValues.MEMBERSHIP_START_DATE, fullDate);
+		if(fullDate.startsWith("0")) {
+			String newDate = fullDate.substring(1); // Removing the 0.
+			
+			DataStore.saveValue(UsableValues.MEMBERSHIP_START_DATE, newDate);
+		}
+		else {
+			DataStore.saveValue(UsableValues.MEMBERSHIP_START_DATE, fullDate);
+		}
+		
 	}
 	
 	private String convertMonthDate(String value) {
 		String month = "";
+		String newValue = "";
 		
-		switch(value) {
+		if(value.startsWith("0")) {
+			newValue = value.substring(1); // Removing the 0.
+		}
+		else {
+			newValue = value;
+		}
+		
+		switch(newValue) {
 		case "1":
 			month = "January";
 			break;

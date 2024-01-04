@@ -1865,8 +1865,11 @@ public class PARStepDefs {
 	@Then("^the member organistion has been Ceased successfully$")
 	public void the_member_organistion_has_been_Ceased_successfully() throws Throwable {
 		LOG.info("Verify the Member Organisation has been Ceased Successfully.");
+		
 		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
-		Assert.assertTrue("FAILED: Links are still present and/ or the Cease date is incorrect.", memberListPage.checkMembershipCeased());
+		
+		Assert.assertTrue("Failed: Links are still present.", memberListPage.checkMembershipActionButtons());
+		Assert.assertEquals("Failed: Dates do not match.", DataStore.getSavedValue(UsableValues.MEMBERSHIP_CEASE_DATE), memberListPage.getMembershipCeasedDate());
 	}
 	
 	@When("^the user Uploads a members list to the coordinated partnership with the following file \"([^\"]*)\"$")
