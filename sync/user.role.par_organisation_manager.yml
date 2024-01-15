@@ -34,6 +34,7 @@ label: 'Organisation Manager'
 weight: -4
 is_admin: null
 permissions:
+  - 'access par dashboard'
   - 'access par_data_advice entities'
   - 'access par_data_authority entities'
   - 'access par_data_coordinated_business entities'
@@ -52,6 +53,7 @@ permissions:
   - 'access par_data_premises entities'
   - 'access par_data_regulatory_function entities'
   - 'access par_data_sic_code entities'
+  - 'access user partnerships'
   - 'add coordinated member'
   - 'add par_data_advice entities'
   - 'add par_data_authority entities'
