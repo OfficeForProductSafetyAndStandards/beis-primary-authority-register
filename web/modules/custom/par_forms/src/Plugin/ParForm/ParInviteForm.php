@@ -55,7 +55,7 @@ HEREDOC;
    */
   public function loadData(int $index = 1): void {
     $invitation_type = $this->getFlowDataHandler()->getDefaultValues('invitation_type', FALSE);
-    var_dump($invitation_type); die;
+
     if ($invitation_type && $invite_type_config = $this->config("invite.invite_type.{$invitation_type}")) {
       $data = unserialize($invite_type_config->get('data'));
       $this->getFlowDataHandler()->setFormPermValue('invitation_type_data', $data);
