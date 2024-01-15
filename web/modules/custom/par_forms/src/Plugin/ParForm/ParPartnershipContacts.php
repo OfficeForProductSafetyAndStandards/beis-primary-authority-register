@@ -141,14 +141,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
       $entity_view_builder = $this->getParDataManager()->getViewBuilder($entity->getEntityTypeId());
       $entity_view = $entity_view_builder->view($entity, 'detailed');
 
-      // Get update and remove links.
-      try {
-        $params = ['type' => $contact_format, 'par_data_person' => $entity->id()];
-        $contact_update_flow = ParFlow::load('partnership_contact_update');
-        $update_contact_link = $contact_update_flow?->getStartLink(1, 'edit ' . strtolower($entity->label()), $params);
-      } catch (ParFlowException $e) {
-
-      }
+      // Get the remove link.
       try {
         $params = ['type' => $contact_format, 'par_data_person' => $entity->id()];
         $contact_remove_flow = ParFlow::load('partnership_contact_remove');
@@ -167,12 +160,6 @@ class ParPartnershipContacts extends ParFormPluginBase {
           [...$entity_view],
         ],
         'operations' => [
-          'update' => [
-            '#type' => 'html_tag',
-            '#tag' => 'p',
-            '#value' => $update_contact_link ? $update_contact_link->toString() : '',
-            '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
-          ],
           'remove' => [
             '#type' => 'html_tag',
             '#tag' => 'p',
