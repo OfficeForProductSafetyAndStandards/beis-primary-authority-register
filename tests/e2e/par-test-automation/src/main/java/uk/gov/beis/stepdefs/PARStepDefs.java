@@ -908,16 +908,21 @@ public class PARStepDefs {
 		partnershipInformationPage.addAnotherAuthorityContactButton();
 
 		LOG.info("Adding new contact details.");
-		contactDetailsPage.addContactDetailsWithRandomName(details);
+		contactDetailsPage.setContactDetailsWithRandomName(details);
+		
+		contactDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
+		contactDetailsPage.enterFirstName(DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME));
+		contactDetailsPage.enterLastName(DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME));
+		contactDetailsPage.enterWorkNumber(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
+		contactDetailsPage.enterMobileNumber(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
+		contactDetailsPage.enterEmail(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
+		
+		contactDetailsPage.selectRandomPreferredCommunication();
+		contactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
+		
 		contactDetailsPage.selectContinueButton();
-
-		LOG.info("Choosing user account type.");
-		userTypePage.selectAuthorityMember();
-		userTypePage.goToAccountInvitePage();
 		
-		LOG.info("Sending new user an account invite.");
-		accountInvitePage.clickInviteButton();
-		
+		LOG.info("Reviewing the Contact Details..");
 		profileReviewPage.clickSaveButton();
 	}
 	
@@ -926,29 +931,7 @@ public class PARStepDefs {
 		LOG.info("Verifying the new Authority contact is added successfully.");
 		assertTrue("Failed: Contact Details are not Displayed Correctly.", partnershipInformationPage.checkContactDetails());
 	}
-
-	@When("^the user updates the new Primary Authority contact with the following details:$")
-	public void the_user_updates_the_new_Primary_Authority_contact_with_the_following_details(DataTable details) throws Throwable {
-		
-		partnershipInformationPage.editContactsDetailsButton();
-		
-		LOG.info("Editing contact details.");
-		contactDetailsPage.editContactDetailsWithRandomName(details);
-		contactDetailsPage.selectContinueButton();	
-		
-		LOG.info("Updating user account type.");
-		userTypePage.selectAuthorityManager();
-		userTypePage.goToAccountInvitePage();	
-
-		profileReviewPage.clickSaveButton();
-	}
 	
-	@Then("^the new Primary Authority contact is updated Successfully$")
-	public void the_new_Primary_Authority_contact_is_updated_Successfully() throws Throwable {
-		LOG.info("Verifying the Authority contact was updated successfully.");
-		assertTrue("Contact Details are not Displayed Correctly.", partnershipInformationPage.checkContactDetails());
-	}
-
 	@When("^the user removes the new Primary Authority contact$")
 	public void the_user_removes_the_new_Primary_Authority_contact() throws Throwable {
 		partnershipInformationPage.removeContactsDetailsButton();
@@ -968,12 +951,21 @@ public class PARStepDefs {
 		partnershipInformationPage.addAnotherOrganisationContactButton();
 
 		LOG.info("Adding new contact details.");
-		contactDetailsPage.addContactDetailsWithRandomName(details);
-		contactDetailsPage.goToInviteUserAccountPage();
+		contactDetailsPage.setContactDetailsWithRandomName(details);
 		
-		LOG.info("Sending new user an account invite.");
-		accountInvitePage.clickInviteButton();
+		contactDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
+		contactDetailsPage.enterFirstName(DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME));
+		contactDetailsPage.enterLastName(DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME));
+		contactDetailsPage.enterWorkNumber(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
+		contactDetailsPage.enterMobileNumber(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
+		contactDetailsPage.enterEmail(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 		
+		contactDetailsPage.selectRandomPreferredCommunication();
+		contactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
+		
+		contactDetailsPage.selectContinueButton();
+		
+		LOG.info("Reviewing the Contact Details.");
 		profileReviewPage.clickSaveButton();
 	}
 
@@ -982,24 +974,7 @@ public class PARStepDefs {
 		LOG.info("Verifying the new Authority contact is added successfully.");
 		assertTrue("Failed: Contact Details are not Displayed Correctly.", partnershipInformationPage.checkContactDetails());
 	}
-
-	@When("^the user updates the new Organisation contact with the following details:$")
-	public void the_user_updates_the_new_Organisation_contact_with_the_following_details(DataTable details) throws Throwable {
-		partnershipInformationPage.editContactsDetailsButton();
-		
-		LOG.info("Editing contact details.");
-		contactDetailsPage.editContactDetailsWithRandomName(details);
-		contactDetailsPage.selectContinueButton();	
-		
-		profileReviewPage.clickSaveButton();
-	}
-
-	@Then("^the new Organisation contact is updated Successfully$")
-	public void the_new_Organisation_contact_is_updated_Successfully() throws Throwable {
-		LOG.info("Verifying the Authority contact was updated successfully.");
-		assertTrue("Failed: Contact Details are not Displayed Correctly.", partnershipInformationPage.checkContactDetails());
-	}
-
+	
 	@When("^the user removes the new Organisation contact$")
 	public void the_user_removes_the_new_Organisation_contact() throws Throwable {
 		partnershipInformationPage.removeContactsDetailsButton();

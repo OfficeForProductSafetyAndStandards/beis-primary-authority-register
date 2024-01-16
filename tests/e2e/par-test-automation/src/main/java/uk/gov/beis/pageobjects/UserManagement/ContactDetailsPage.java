@@ -62,6 +62,24 @@ public class ContactDetailsPage extends BasePageObject {
 		super();
 	}
 	
+	public void setContactDetailsWithRandomName(DataTable person) {
+		String firstName = RandomStringUtils.randomAlphabetic(8);
+		String lastName = RandomStringUtils.randomAlphabetic(8);
+		String emailAddress = firstName + "@" + lastName + ".com";
+
+		DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, firstName); 
+		DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, lastName);
+		DataStore.saveValue(UsableValues.BUSINESS_EMAIL, emailAddress);
+		
+		for (Map<String, String> data : person.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.PERSON_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.PERSON_WORK_NUMBER, data.get("WorkNumber"));
+			DataStore.saveValue(UsableValues.PERSON_MOBILE_NUMBER, data.get("MobileNumber"));
+			DataStore.saveValue(UsableValues.CONTACT_NOTES, data.get("ContactNotes"));
+		}
+	}
+	
 	public void enterTitle(String title) {
 		titleField.clear();
 		titleField.sendKeys(title);
@@ -146,36 +164,6 @@ public class ContactDetailsPage extends BasePageObject {
 		emailAddressField.sendKeys(emailAddress);
 	}
 	
-	public void addContactDetailsWithRandomName(DataTable person) {
-		clearAllFields();
-		clearPreferredCommunicationMethods();
-		
-		String firstName = RandomStringUtils.randomAlphabetic(8);
-		String lastName = RandomStringUtils.randomAlphabetic(8);
-		String emailAddress = firstName + "@" + lastName + ".com";
-
-		DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, firstName); 
-		DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, lastName);
-		DataStore.saveValue(UsableValues.BUSINESS_EMAIL, emailAddress);
-		
-		setContactDetails(person);
-		
-		emailAddressField.sendKeys(emailAddress);
-	}
-	
-	public void editContactDetailsWithRandomName(DataTable person) {
-		clearEditJourneyFields();
-		clearPreferredCommunicationMethods();
-		
-		String firstName = RandomStringUtils.randomAlphabetic(8);
-		String lastName = RandomStringUtils.randomAlphabetic(8);
-
-		DataStore.saveValue(UsableValues.BUSINESS_FIRSTNAME, firstName); 
-		DataStore.saveValue(UsableValues.BUSINESS_LASTNAME, lastName);
-		
-		setContactDetails(person);
-	}
-	
 	public void selectPreferredEmail() {
 		if(!preferredEmailCheckbox.isSelected()) {
 			preferredEmailCheckbox.click();
@@ -196,6 +184,30 @@ public class ContactDetailsPage extends BasePageObject {
 		if(!preferredMobilephoneCheckbox.isSelected()) {
 			preferredMobilephoneCheckbox.click();
 			
+			DataStore.saveValue(UsableValues.PREFERRED_CONTACT_METHOD, "Mobilephone");
+		}
+	}
+	
+	public void selectRandomPreferredCommunication() {
+		clearPreferredCommunicationMethods();
+		
+		ArrayList<WebElement> communicationMethods = new ArrayList<WebElement>();
+		communicationMethods.add(preferredEmailCheckbox);
+		communicationMethods.add(preferredWorkphoneCheckbox);
+		communicationMethods.add(preferredMobilephoneCheckbox);
+		
+		Random rand = new Random();
+		
+		WebElement chosenMethod = communicationMethods.get(rand.nextInt(communicationMethods.size()));
+		chosenMethod.click();
+		
+		if(chosenMethod == preferredEmailCheckbox) {
+			DataStore.saveValue(UsableValues.PREFERRED_CONTACT_METHOD, "Email");
+		}
+		else if(chosenMethod == preferredWorkphoneCheckbox) {
+			DataStore.saveValue(UsableValues.PREFERRED_CONTACT_METHOD, "Workphone");
+		}
+		else if(chosenMethod == preferredMobilephoneCheckbox) {
 			DataStore.saveValue(UsableValues.PREFERRED_CONTACT_METHOD, "Mobilephone");
 		}
 	}
@@ -225,9 +237,9 @@ public class ContactDetailsPage extends BasePageObject {
 		return PageFactory.initElements(driver, GiveUserAccountPage.class);
 	}
 	
-	public UserRoleTypePage selectContinueButton() {
+	public ProfileReviewPage selectContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, UserRoleTypePage.class);
+		return PageFactory.initElements(driver, ProfileReviewPage.class);
 	}
 	
 	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
@@ -243,48 +255,6 @@ public class ContactDetailsPage extends BasePageObject {
 	public ContactCommunicationPreferencesPage goToContactCommunicationPreferencesPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, ContactCommunicationPreferencesPage.class);
-	}
-	
-	private void setContactDetails(DataTable person) {
-		for (Map<String, String> data : person.asMaps(String.class, String.class)) {
-			
-			DataStore.saveValue(UsableValues.PERSON_TITLE, data.get("Title"));
-			DataStore.saveValue(UsableValues.PERSON_WORK_NUMBER, data.get("WorkNumber"));
-			DataStore.saveValue(UsableValues.PERSON_MOBILE_NUMBER, data.get("MobileNumber"));
-			DataStore.saveValue(UsableValues.CONTACT_NOTES, data.get("ContactNotes"));
-		}
-		
-		titleField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
-		firstnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME));
-		lastnameField.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME));
-		workPhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
-		mobilePhoneField.sendKeys(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
-		
-		selectRandomPreferredCommunication();
-		
-		contactNotesTextfield.sendKeys(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
-	}
-	
-	private void selectRandomPreferredCommunication() {
-		ArrayList<WebElement> communicationMethods = new ArrayList<WebElement>();
-		communicationMethods.add(preferredEmailCheckbox);
-		communicationMethods.add(preferredWorkphoneCheckbox);
-		communicationMethods.add(preferredMobilephoneCheckbox);
-		
-		Random rand = new Random();
-		
-		WebElement chosenMethod = communicationMethods.get(rand.nextInt(communicationMethods.size()));
-		chosenMethod.click();
-		
-		if(chosenMethod == preferredEmailCheckbox) {
-			DataStore.saveValue(UsableValues.PREFERRED_CONTACT_METHOD, "Email");
-		}
-		else if(chosenMethod == preferredWorkphoneCheckbox) {
-			DataStore.saveValue(UsableValues.PREFERRED_CONTACT_METHOD, "Workphone");
-		}
-		else if(chosenMethod == preferredMobilephoneCheckbox) {
-			DataStore.saveValue(UsableValues.PREFERRED_CONTACT_METHOD, "Mobilephone");
-		}
 	}
 	
 	private void clearAllFields() {

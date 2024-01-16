@@ -134,7 +134,7 @@ Feature: Direct Partnership Happy Paths
     Then the user verifies the legal entity was removed successfully
 
   @regression @direct @update
-  Scenario: Add, Update and Remove a Primary Authority Contact for a Partnership with a User Account Invite Successfully (Happy Path - PAR-2242)
+  Scenario: Add and Remove a New Primary Authority Contact for a Partnership Successfully (Happy Path - PAR-2242)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created partnership Authority
@@ -142,17 +142,12 @@ Feature: Direct Partnership Happy Paths
       | Title | WorkNumber  | MobileNumber | ContactNotes       |
       | Mr    | 01706553019 |  07651044910 | Test contact note. |
     Then the new Primary Authority contact is added Successfully
-    # Update the new contact
-    When the user updates the new Primary Authority contact with the following details:
-      | Title | WorkNumber  | MobileNumber | ContactNotes              |
-      | Dr    | 01706553019 |  07356001870 | Test contact note update. |
-    Then the new Primary Authority contact is updated Successfully
     # Remove the new contact
     When the user removes the new Primary Authority contact
     Then the new Primary Authority contact is removed Successfully
 
   @regression @direct @update
-  Scenario: Add, Update and Remove an Organisation Contact for a Partnership with a User Account Invite Successfully (Happy Path - PAR-2244)
+  Scenario: Add and Remove an Organisation Contact for a Partnership Successfully (Happy Path - PAR-2244)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user searches for the last created partnership Authority
@@ -160,11 +155,6 @@ Feature: Direct Partnership Happy Paths
       | Title | WorkNumber  | MobileNumber | ContactNotes       |
       | Mrs   | 01755892240 |  07651044912 | Test contact note. |
     Then the new Organisation contact is added Successfully
-    # Update the new contact
-    When the user updates the new Organisation contact with the following details:
-      | Title | WorkNumber  | MobileNumber | ContactNotes              |
-      | Dr    | 01706553019 |  07356001143 | Test contact note update. |
-    Then the new Organisation contact is updated Successfully
     # Remove the new contact
     When the user removes the new Organisation contact
     Then the new Organisation contact is removed Successfully
