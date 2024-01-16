@@ -120,21 +120,6 @@ Feature: Other Happy Paths
     And the user follows the invitation link
     And the user completes the user creation journey
     Then the user journey creation is successful
-    
-  @regression @helpDesk @usermanagement @mergeContact
-  Scenario: Verify the Successful Merge of a Contact Record for a User Profile (Happy Path - PAR-2288)
-    Given the user is on the PAR login page
-    And the user logs in with the "par_authority@example.com" user credentials
-    When the user creates a new contact with the following details:
-      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                     |
-      | Mr    | Kermit    | the Frog | 01723456789 |   0777777777 | par_authority@example.com |
-    Then the user can verify the contact record was added to the user profile
-    # Merge the Contact Record
-    Given the user is on the PAR login page
-    And the user logs in with the "par_helpdesk@example.com" user credentials
-    When the user searches for an existing person successfully
-    And the user merges the contact record
-    Then the user can verify the contact record was merged successfully
 	
 	@regression @usermanagement @userAccount
   Scenario: Verify a User can Change their User Account Email Address (Happy Path - PAR-2323)

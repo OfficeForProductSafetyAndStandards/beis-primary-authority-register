@@ -143,11 +143,6 @@ public class UserProfilePage extends BasePageObject {
 		updateUserBtn.click();
 		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
-
-	public MergeContactRecordsPage clickMergeContactRecords() {
-		mergeContactRecordsLink.click();
-		return PageFactory.initElements(driver, MergeContactRecordsPage.class);
-	}
 	
 	public ManagePeoplePage clickDoneButton() {
 		doneBtn.click();

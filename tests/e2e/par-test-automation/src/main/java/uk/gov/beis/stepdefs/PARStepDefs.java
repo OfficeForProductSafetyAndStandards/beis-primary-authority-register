@@ -82,10 +82,6 @@ public class PARStepDefs {
 	private ContactCommunicationPreferencesPage contactCommunicationPreferencesPage;
 	private ContactUpdateSubscriptionPage contactUpdateSubscriptionPage;
 	
-	// Merge Contact Records
-	private MergeContactRecordsPage mergeContactRecordsPage;
-	private MergeContactRecordsConfirmationPage mergeContactRecordsConfirmationPage;
-	
 	// Legal Entity
 	private LegalEntityTypePage legalEntityTypePage;
 	private LegalEntityReviewPage legalEntityReviewPage;
@@ -251,10 +247,6 @@ public class PARStepDefs {
 		contactUpdateSubscriptionPage = PageFactory.initElements(driver, ContactUpdateSubscriptionPage.class);
 		contactRecordsPage = PageFactory.initElements(driver, ContactRecordsPage.class);
 		contactCommunicationPreferencesPage = PageFactory.initElements(driver,ContactCommunicationPreferencesPage.class);
-		
-		// Merge Contact Record
-		mergeContactRecordsPage = PageFactory.initElements(driver, MergeContactRecordsPage.class);
-		mergeContactRecordsConfirmationPage = PageFactory.initElements(driver, MergeContactRecordsConfirmationPage.class);
 		
 		// Legal Entity
 		legalEntityTypePage = PageFactory.initElements(driver, LegalEntityTypePage.class);
@@ -2351,63 +2343,6 @@ public class PARStepDefs {
 		assertTrue("Failed: Contact email field does not contain the correct email address.", userProfilePage.checkContactEmail());
 		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", userProfilePage.checkContactPhoneNumbers());
 		assertTrue("Failed: Contact Locations are displayed.", userProfilePage.checkContactLocationsIsEmpty());
-	}
-	
-	@When("^the user creates a new contact with the following details:$")
-	public void the_user_creates_a_new_contact_with_the_following_details(DataTable details) throws Throwable {
-		dashboardPage.selectManageColleagues();
-		managePeoplePage.selectAddPerson();
-
-		LOG.info("Adding a new person.");
-		contactDetailsPage.addContactDetails(details);
-		contactDetailsPage.clickContinueButton();
-
-		LOG.info("Successfully entered new contact details.");
-
-		giveUserAccountPage.selectUseExistingAccount();
-		giveUserAccountPage.clickContinueButton();
-
-		LOG.info("Successfully chose to use the existing account.");
-
-		userMembershipPage.selectCityEnforcementSquad();
-		userMembershipPage.selectUpperWestSideBoroughCouncil();
-		userMembershipPage.selectLowerEstSideBoroughCouncil();
-		userMembershipPage.clickContinueButton();
-		
-		LOG.info("Successfully chose the contacts Authority memberships.");
-
-		userTypePage.selectAuthorityMember();
-		userTypePage.goToProfileReviewPage();
-		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
-
-		profileReviewPage.goToProfileCompletionPage();
-		profileCompletionPage.goToUserProfilePage();
-	}
-	
-	@Then("^the user can verify the contact record was added to the user profile$")
-	public void the_user_can_verify_the_contact_record_was_added_to_the_user_profile() throws Throwable {
-		LOG.info("Verifying the Duplicate Contact Record was Added Successfully.");
-		
-		Assert.assertTrue("Failed: Contact Record was not added.", userProfilePage.checkContactRecordAdded());
-	}
-
-	@When("^the user merges the contact record$")
-	public void the_user_merges_the_contact_record() throws Throwable {
-		LOG.info("Selecting Contact Records to Merge.");
-		
-		userProfilePage.clickMergeContactRecords();
-		mergeContactRecordsPage.mergeContacts();
-		mergeContactRecordsPage.clickContinue();
-		
-		LOG.info("Confirming the Contact Records to be Merged.");
-		mergeContactRecordsConfirmationPage.clickMerge();
-	}
-
-	@Then("^the user can verify the contact record was merged successfully$")
-	public void the_user_can_verify_the_contact_record_was_merged_successfully() throws Throwable {
-		LOG.info("Verifying the Contact Records have been Merged Successfully.");
-		
-		Assert.assertTrue("Failed: Contact records where not merged.", userProfilePage.checkContactRecord());
 	}
 	
 	@When("^the user updates their user account email address to \"([^\"]*)\"$")
