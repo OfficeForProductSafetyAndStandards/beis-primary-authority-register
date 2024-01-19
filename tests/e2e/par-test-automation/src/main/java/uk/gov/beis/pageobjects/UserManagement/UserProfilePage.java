@@ -16,12 +16,21 @@ public class UserProfilePage extends BasePageObject {
 	@FindBy(tagName = "h1")
 	private WebElement profileHeader;
 	
+	@FindBy(xpath = "//div[@class='govuk-grid-row govuk-form-group']//div[1]/p")
+	private WebElement userAccountEmail;
+	
 	@FindBy(xpath = "//div/a[contains(normalize-space(), 'Invite the user to create an account')]")
 	private WebElement accountInvitationLink;
 
-	@FindBy(xpath = "//div[@class='govuk-grid-row govuk-form-group']/p[3]")
+	@FindBy(xpath = "//div[@class='govuk-grid-row govuk-form-group']//div[2]/p")
 	private WebElement userAccountType;
-
+	
+	@FindBy(linkText = "Manage roles")
+	private WebElement managerolesLink;
+	
+	@FindBy(linkText = "Add a membership")
+	private WebElement addMembershipLink;
+	
 	@FindBy(xpath = "//div/p[@class='govuk-grid-column-two-thirds'][1]")
 	private WebElement userContactName;
 
@@ -52,6 +61,10 @@ public class UserProfilePage extends BasePageObject {
 	
 	public Boolean checkHeaderForName() {
 		return profileHeader.getText().contains(getExpectedPersonsName());
+	}
+	
+	public String getUserAccountEmail() {
+		return userAccountEmail.getText().trim();
 	}
 
 	public Boolean checkForUserAccountInvitationLink() {
@@ -138,6 +151,15 @@ public class UserProfilePage extends BasePageObject {
 		
 		return driver.findElements(By.xpath(contactsNameLocator.replace("?", getPersonsName()))).size() == 1;
 	}
+	
+	public UserRoleTypePage clickManageRolesLink() {
+		managerolesLink.click();
+		return PageFactory.initElements(driver, UserRoleTypePage.class);
+	}
+	
+	// Add Membership
+	
+	// Remove Membership
 	
 	public ContactDetailsPage clickUpdateUserButton() {
 		updateUserBtn.click();

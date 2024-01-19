@@ -96,6 +96,27 @@ Feature: Other Happy Paths
     And the user enters a list of new emails to replace the subscription list
     Then the user can verify an email from the original list was removed successfully
 
+	@regression @usermanagement
+	Scenario: Verify an Member User can be assigned the Manager Role and assign another Member the Manager Role Successfully (Happy Path - PAR-2378)
+		Given the user is on the PAR home page
+    When the user visits the login page
+		And the user logs in with the "par_helpdesk@example.com" user credentials
+		When the user searches for the "par_authority_manager@example.com" user account
+		And the user clicks the manage contact link
+		Then the user can view the user account successfully
+		# Change the user role.
+		When the user changes the users role to "Authority Manager"
+		Then the user role was changed successfully
+		# Verify the Authority Manager can change the Authority Member's role.
+		Given the user is on the PAR login page
+		And the user logs in with the "par_authority_manager@example.com" user credentials
+		When the user searches for the "par_authority@example.com" user account
+		And the user clicks the manage contact link
+		Then the user can view the user account successfully
+		# Change the user role.
+		When the user changes the users role to "Authority Manager"
+		Then the user role was changed successfully
+
   @regression @helpDesk @usermanagement
   Scenario: Verify the Addition and Update of a New Persons Contact Record as a Help Desk User (Happy Path - PAR-2097)
     Given the user is on the PAR login page

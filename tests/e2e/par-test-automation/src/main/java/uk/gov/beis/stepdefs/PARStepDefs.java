@@ -2226,6 +2226,65 @@ public class PARStepDefs {
 		assertTrue("Failed: The new list did not replace the original list.", newsLetterSubscriptionPage.verifyTableElementIsNull());
 	}
 	
+	@When("^the user searches for the \"([^\"]*)\" user account$")
+	public void the_user_searches_for_the_user_account(String userEmail) throws Throwable {
+		LOG.info("Searching for the user.");
+		
+		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
+		case ("par_helpdesk@example.com"):
+		case ("senior_administrator@example.com"):
+		case ("secretary_state@example.com"):
+			LOG.info("Selecting Manage people.");
+			helpDeskDashboardPage.selectManagePeople();
+			break;
+		case ("par_authority_manager@example.com"):
+		case ("par_authority@example.com"):
+		case ("par_business_manager@example.com"):
+		case ("par_business@example.com"):
+			LOG.info("Selecting Manage Colleagues.");
+			dashboardPage.selectManageColleagues();
+			break;
+		}
+		
+		DataStore.saveValue(UsableValues.PERSON_EMAIL_ADDRESS, userEmail);
+		
+		managePeoplePage.enterNameOrEmail(userEmail);
+		managePeoplePage.clickSubmit();
+	}
+
+	@When("^the user clicks the manage contact link$")
+	public void the_user_clicks_the_manage_contact_link() throws Throwable {
+		LOG.info("Clicking the Manage Contact link.");
+		managePeoplePage.clickManageContact();
+	}
+
+	@Then("^the user can view the user account successfully$")
+	public void the_user_can_view_the_user_account_successfully() throws Throwable {
+		LOG.info("Verify the correct user profile is displayed.");
+	    assertEquals(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS), userProfilePage.getUserAccountEmail());
+	}
+
+	@When("^the user changes the users role to \"([^\"]*)\"$")
+	public void the_user_changes_the_users_role_to(String roleType) throws Throwable {
+		LOG.info("Selecting the Manage Roles Link.");
+		userProfilePage.clickManageRolesLink();
+		
+		LOG.info("Deselecting all roles.");
+		userTypePage.deselectAllMemberships();
+		
+		LOG.info("Selecting the new role.");
+		DataStore.saveValue(UsableValues.ACCOUNT_TYPE, roleType);
+		userTypePage.chooseMembershipRole(roleType);
+		userTypePage.goToUserProfilePage();
+	}
+
+	@Then("^the user role was changed successfully$")
+	public void the_user_role_was_changed_successfully() throws Throwable {
+		LOG.info("Verify the User Account Type was changed successfully.");
+		
+	    assertTrue(userProfilePage.checkUserAccountType());
+	}
+	
 	@When("^the user creates a new person:$")
 	public void the_user_creates_a_new_person(DataTable details) throws Throwable {
 		helpDeskDashboardPage.selectManagePeople();
@@ -2274,7 +2333,6 @@ public class PARStepDefs {
 
 	@When("^the user searches for an existing person successfully$")
 	public void the_user_searches_for_an_existing_person_successfully() throws Throwable {
-		//helpDeskDashboardPage.selectManagePeople();
 
 		String personsName = DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
 
