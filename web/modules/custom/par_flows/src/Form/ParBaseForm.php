@@ -246,7 +246,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       $form = array_merge($form, $plugin);
     }
 
-
     // Enable the default actions wrapper.
     $form['actions'] = [
       '#type' => 'actions',

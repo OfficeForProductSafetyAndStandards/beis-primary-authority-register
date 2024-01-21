@@ -152,11 +152,21 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
     // Get all the allowed authorities.
     $all_role_options = $this->getFlowDataHandler()->getFormPermValue('all_roles_options');
 
-    $form['intro'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'p',
-      '#markup' => "Some of the roles given to a user are assigned automatically and you may not be able to change them.<br><br>The user may also have other roles that you are not permitted to change.",
-    ];
+
+    if (empty($all_role_options)) {
+      $form['intro'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => 'You do not have permission to assign any roles to this user.'
+      ];
+    }
+    else {
+      $form['intro'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => 'Some of the roles given to a user are assigned automatically, and you may not be able to change them.<br><br>The user may also have other roles that you are not permitted to change.',
+      ];
+    }
 
     $form['roles'] = [
       '#type' => 'container',
