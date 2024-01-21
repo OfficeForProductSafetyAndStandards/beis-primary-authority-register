@@ -75,7 +75,7 @@ class InstitutionAdditionCheck implements AccessInterface {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account, $institution_type = NULL, $institutuion_id = NULL) {
+  public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account, UserInterface $user, $institution_type = NULL, $institutuion_id = NULL) {
     try {
       // Get a new flow negotiator that points to the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
@@ -85,6 +85,10 @@ class InstitutionAdditionCheck implements AccessInterface {
 
     $current_user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
 
+    // Disable users from managing their own memberships.
+    if ($current_user->isAuthenticated() && $user->id() === $current_user->id()) {
+      return AccessResult::forbidden('This user is already must be active to change their roles.');
+    }
 
     return AccessResult::allowed();
   }

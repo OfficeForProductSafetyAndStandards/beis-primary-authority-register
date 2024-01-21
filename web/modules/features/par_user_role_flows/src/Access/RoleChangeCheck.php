@@ -75,7 +75,7 @@ class RoleChangeCheck implements AccessInterface {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
+  public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account, UserInterface $user) {
     try {
       // Get a new flow negotiator that points to the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
@@ -84,6 +84,11 @@ class RoleChangeCheck implements AccessInterface {
     }
 
     $current_user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
+
+    // Disable role management for blocked users.
+    if (!$user->isActive()) {
+      return AccessResult::forbidden('This user is already must be active to change their roles.');
+    }
 
 
     return AccessResult::allowed();

@@ -14,15 +14,12 @@ use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_roles\ParRoleException;
 use Drupal\par_roles\ParRoleManager;
 use Drupal\par_roles\ParRoleManagerInterface;
-use Drupal\par_user_role_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\User;
 
 /**
  * A controller for blocking user accounts.
  */
 class ParChangeRoleForm extends ParBaseForm {
-
-  use ParFlowAccessTrait;
 
   /**
    * @return DateFormatterInterface
