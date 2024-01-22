@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceNoticeSearchPage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
+import uk.gov.beis.pageobjects.UserManagement.UserProfilePage;
 
 public class RemovePage extends BasePageObject {
 	
@@ -43,5 +44,10 @@ public class RemovePage extends BasePageObject {
 	public AdviceNoticeSearchPage goToAdviceNoticeSearchPage() {
 		removeNextBtn.click();
 		return PageFactory.initElements(driver, AdviceNoticeSearchPage.class);
+	}
+	
+	public UserProfilePage goToUserProfilePage() {
+		removeNextBtn.click();
+		return PageFactory.initElements(driver, UserProfilePage.class);
 	}
 }

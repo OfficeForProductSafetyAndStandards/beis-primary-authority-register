@@ -17,7 +17,7 @@ Feature: Other Happy Paths
     And the user can search for a PA Organisation Trading name Company number
     Then the user is shown the information for that partnership
 
-  @regression @authority @authorityManagement
+  @regression @authority @authorityManagement @usermanagement
   Scenario: Verify Addition/Update of Authority (Happy Path - PAR-1849, PAR-1850)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -97,7 +97,7 @@ Feature: Other Happy Paths
     Then the user can verify an email from the original list was removed successfully
 
 	@regression @usermanagement
-	Scenario: Verify an Member User can be assigned the Manager Role and assign another Member the Manager Role Successfully (Happy Path - PAR-2378)
+	Scenario: Verify a Member User can be assigned the Manager Role and assign another Member the Manager Role Successfully (Happy Path - PAR-2378)
 		Given the user is on the PAR home page
     When the user visits the login page
 		And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -116,7 +116,22 @@ Feature: Other Happy Paths
 		# Change the user role.
 		When the user changes the users role to "Authority Manager"
 		Then the user role was changed successfully
-
+	
+	@regression @usermanagement
+	Scenario: Verify a User can add and remove an Authority membership for another user Successfully (Happy Path - PAR-2379)
+		Given the user is on the PAR home page
+    When the user visits the login page
+		And the user logs in with the "senior_administrator@example.com" user credentials
+		When the user searches for the "par_authority@example.com" user account
+		And the user clicks the manage contact link
+		Then the user can view the user account successfully
+		# Add a membership.
+		When the user adds a new Authority membership
+		Then the Authority membership was added successfully
+		# Remove a membership.
+		When the user removes the last added Authority membership
+		Then the Authority membership was removed successfully
+		
   @regression @helpDesk @usermanagement
   Scenario: Verify the Addition and Update of a New Persons Contact Record as a Help Desk User (Happy Path - PAR-2097)
     Given the user is on the PAR login page

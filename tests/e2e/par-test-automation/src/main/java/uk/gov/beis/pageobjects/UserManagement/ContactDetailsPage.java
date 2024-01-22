@@ -232,9 +232,9 @@ public class ContactDetailsPage extends BasePageObject {
 		return PageFactory.initElements(driver, EnterTheDatePage.class);
 	}
 	
-	public GiveUserAccountPage clickContinueButton() {
+	public UserProfilePage clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, GiveUserAccountPage.class);
+		return PageFactory.initElements(driver, UserProfilePage.class);
 	}
 	
 	public ProfileReviewPage selectContinueButton() {

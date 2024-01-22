@@ -1,6 +1,7 @@
 package uk.gov.beis.stepdefs;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -76,6 +77,8 @@ public class PARStepDefs {
 	private UserRoleTypePage userTypePage;
 	private ProfileReviewPage profileReviewPage;
 	private ProfileCompletionPage profileCompletionPage;
+	private ChoosePersonToAddPage choosePersonToAddPage;
+	private AddMembershipConfirmationPage addMembershipConfirmationPage;
 	
 	// Contact Record
 	private ContactRecordsPage contactRecordsPage;
@@ -235,13 +238,14 @@ public class PARStepDefs {
 		// User Management
 		profileReviewPage = PageFactory.initElements(driver, ProfileReviewPage.class);
 		profileCompletionPage = PageFactory.initElements(driver, ProfileCompletionPage.class);
-		
 		contactDetailsPage = PageFactory.initElements(driver, ContactDetailsPage.class);
 		managePeoplePage = PageFactory.initElements(driver, ManagePeoplePage.class);
 		userMembershipPage = PageFactory.initElements(driver, UserMembershipPage.class);
 		giveUserAccountPage = PageFactory.initElements(driver, GiveUserAccountPage.class);
 		userTypePage = PageFactory.initElements(driver, UserRoleTypePage.class);
 		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
+		choosePersonToAddPage  = PageFactory.initElements(driver, ChoosePersonToAddPage.class);
+		addMembershipConfirmationPage  = PageFactory.initElements(driver, AddMembershipConfirmationPage.class);
 		
 		// Contact Record
 		contactUpdateSubscriptionPage = PageFactory.initElements(driver, ContactUpdateSubscriptionPage.class);
@@ -2250,11 +2254,14 @@ public class PARStepDefs {
 		
 		managePeoplePage.enterNameOrEmail(userEmail);
 		managePeoplePage.clickSubmit();
+		
+		
 	}
 
 	@When("^the user clicks the manage contact link$")
 	public void the_user_clicks_the_manage_contact_link() throws Throwable {
 		LOG.info("Clicking the Manage Contact link.");
+		DataStore.saveValue(UsableValues.PERSON_FULLNAME_TITLE, managePeoplePage.GetPersonName());
 		managePeoplePage.clickManageContact();
 	}
 
@@ -2283,6 +2290,42 @@ public class PARStepDefs {
 		LOG.info("Verify the User Account Type was changed successfully.");
 		
 	    assertTrue(userProfilePage.checkUserAccountType());
+	}
+	
+	@When("^the user adds a new Authority membership$")
+	public void the_user_adds_a_new_Authority_membership() throws Throwable {
+		userProfilePage.clickAddMembershipLink();
+		
+		LOG.info("Choosing the person to add the new membership to.");
+		choosePersonToAddPage.choosePerson();
+		choosePersonToAddPage.clickContinueButton();
+		
+		LOG.info("Choosing the new Authority Membership.");
+		userMembershipPage.chooseAuthorityMembership(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		userMembershipPage.clickContinueButton();
+		
+		addMembershipConfirmationPage.clickContinueButton();
+	}
+
+	@Then("^the Authority membership was added successfully$")
+	public void the_Authority_membership_was_added_successfully() throws Throwable {
+		LOG.info("Verify the new Authority membership was added successfully.");
+		
+		assertTrue(userProfilePage.checkUserMembershipDisplayed());
+	}
+
+	@When("^the user removes the last added Authority membership$")
+	public void the_user_removes_the_last_added_Authority_membership() throws Throwable {
+		LOG.info("Remove the last added Authority Membership.");
+		userProfilePage.clickRemoveMembershipLink();
+		removePage.goToUserProfilePage();
+	}
+
+	@Then("^the Authority membership was removed successfully$")
+	public void the_Authority_membership_was_removed_successfully() throws Throwable {
+		LOG.info("Verify the Authority membership was removed successfully.");
+		
+		assertTrue(userProfilePage.checkMembershipRemoved());
 	}
 	
 	@When("^the user creates a new person:$")

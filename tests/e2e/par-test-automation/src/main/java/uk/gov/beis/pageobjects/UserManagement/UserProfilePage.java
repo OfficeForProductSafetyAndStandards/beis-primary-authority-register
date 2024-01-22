@@ -9,12 +9,10 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.RemovePage;
 import uk.gov.beis.utility.DataStore;
 
 public class UserProfilePage extends BasePageObject {
-	
-	@FindBy(tagName = "h1")
-	private WebElement profileHeader;
 	
 	@FindBy(xpath = "//div[@class='govuk-grid-row govuk-form-group']//div[1]/p")
 	private WebElement userAccountEmail;
@@ -55,12 +53,17 @@ public class UserProfilePage extends BasePageObject {
 	@FindBy(linkText = "Done")
 	private WebElement doneBtn;
 	
+	private String profileHeader = "//h1[contains(normalize-space(),'?')]";
+	
+	private String userMembershipLocator = "//div/p[contains(normalize-space(), '?')]";
+	private String removeMembershipLocator = "//div/p[contains(normalize-space(), '?')]/a";
+	
 	public UserProfilePage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
 	public Boolean checkHeaderForName() {
-		return profileHeader.getText().contains(getExpectedPersonsName());
+		return driver.findElement(By.xpath(profileHeader.replace("?", getExpectedPersonsName()))).isDisplayed();
 	}
 	
 	public String getUserAccountEmail() {
@@ -79,6 +82,14 @@ public class UserProfilePage extends BasePageObject {
 		return userAccountType.getText().contains(DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
 	}
 
+	public Boolean checkUserMembershipDisplayed() {
+		return driver.findElement(By.xpath(userMembershipLocator.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_NAME)))).isDisplayed();
+	}
+	
+	public Boolean checkMembershipRemoved() {
+		return driver.findElements(By.xpath(userMembershipLocator.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_NAME)))).isEmpty();
+	}
+	
 	public Boolean checkContactName() {
 		return userContactName.getText().contains(getExpectedPersonsName());
 	}
@@ -138,28 +149,22 @@ public class UserProfilePage extends BasePageObject {
 		
 		return locationsDisplayed;
 	}
-
-	// Merge Contact Records
-	public Boolean checkContactRecordAdded() {
-		String contactsNameLocator = "//p[contains(text(), '?')]";
-		
-		return driver.findElements(By.xpath(contactsNameLocator.replace("?", getPersonsName()))).size() > 1;
-	}
-	
-	public Boolean checkContactRecord() {
-		String contactsNameLocator = "//p[contains(text(), '?')]";
-		
-		return driver.findElements(By.xpath(contactsNameLocator.replace("?", getPersonsName()))).size() == 1;
-	}
 	
 	public UserRoleTypePage clickManageRolesLink() {
 		managerolesLink.click();
 		return PageFactory.initElements(driver, UserRoleTypePage.class);
 	}
 	
-	// Add Membership
+	public ChoosePersonToAddPage clickAddMembershipLink() {
+		addMembershipLink.click();
+		return PageFactory.initElements(driver, ChoosePersonToAddPage.class);
+	}
 	
-	// Remove Membership
+	public RemovePage clickRemoveMembershipLink() {
+		driver.findElement(By.xpath(removeMembershipLocator.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_NAME)))).click();
+		return PageFactory.initElements(driver, RemovePage.class);
+	}
+	
 	
 	public ContactDetailsPage clickUpdateUserButton() {
 		updateUserBtn.click();
@@ -173,9 +178,5 @@ public class UserProfilePage extends BasePageObject {
 	
 	private String getExpectedPersonsName() {
 		return DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " " + DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
-	}
-	
-	private String getPersonsName() { // Temp?
-		return DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " " + DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
 	}
 }

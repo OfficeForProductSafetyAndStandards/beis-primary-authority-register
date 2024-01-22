@@ -50,7 +50,7 @@ public class ManagePeoplePage extends BasePageObject {
 	}
 	
 	public String GetPersonName() {
-		return personNameTableElement.getText();
+		return personNameTableElement.getText().trim();
 	}
 	
 	public UserProfilePage clickManageContact() {
