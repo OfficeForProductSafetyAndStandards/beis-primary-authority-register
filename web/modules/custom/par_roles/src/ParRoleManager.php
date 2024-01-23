@@ -115,6 +115,23 @@ class ParRoleManager implements ParRoleManagerInterface {
   }
 
   /**
+   * Get the roles that the current user can manage.
+   */
+  public function getAssignableRoles() {
+    $roles = $this->getAllRoles();
+    $current_user = $this->getCurrentUser();
+
+    // If the user has the bypass membership permission they can assign all roles.
+    if (!$this->getCurrentUser()->hasPermission('bypass par_data membership')) {
+      $roles = array_filter($roles, function($role) use ($current_user) {
+        return $current_user->hasPermission("assign {$role} role");
+      });
+    }
+
+    return $roles;
+  }
+
+  /**
    * Get the label for the institution type.
    */
 
@@ -286,29 +303,29 @@ class ParRoleManager implements ParRoleManagerInterface {
     if ($this->validateAccount($account)) {
       // Check that the role can be assigned to this user.
       $this->roleAllowed($account, $role);
-
-      // Remove all other roles the user has for this type of institution.
-      $institution_type = $this->getInstitutionTypeByRole($role);
-      $institution_roles = self::INSTITUTION_ROLES[$institution_type] ?? [];
-
-      // Get all the roles of this institution type the user has,
-      // that aren't the role being added.
-      $remove_to_roles = array_diff(
-        array_intersect(
-          $account->getRoles(),
-          $institution_roles
-        ),
-        [$role]
-      );
-
-      foreach ($remove_to_roles as $remove_role) {
-        $account = $this->removeRole($account, $remove_role);
-      }
     }
 
-    // Add the role after all old roles have been removed to ensure roles aren't doubled up.
-    $account->addRole($role);
+    // Add the role.
+    if (in_array($role, $this->getAssignableRoles())) {
+      $account->addRole($role);
+    }
 
+    $institution_type = $this->getInstitutionTypeByRole($role);
+    $institution_roles = self::INSTITUTION_ROLES[$institution_type] ?? [];
+
+    // Remove all roles of lower privilege.
+    $role_hierarchy = $this->getRolesByHierarchy($role, $institution_type);
+    $remove_to_roles = array_diff(
+      array_intersect(
+        $account->getRoles(),
+        $institution_roles
+      ),
+      $role_hierarchy
+    );
+
+    foreach ($remove_to_roles as $remove_role) {
+      $account = $this->removeRole($account, $remove_role);
+    }
     return $account;
   }
 
@@ -322,7 +339,9 @@ class ParRoleManager implements ParRoleManagerInterface {
     }
 
     // Remove the role.
-    $account->removeRole($role);
+    if (in_array($role, $this->getAssignableRoles())) {
+      $account->removeRole($role);
+    }
 
     return $account;
   }
@@ -466,6 +485,14 @@ class ParRoleManager implements ParRoleManagerInterface {
     foreach (self::INSTITUTION_ROLES as $institution_type => $institution_roles) {
       // If the role isn't an institution role then no checks need to be performed.
       if (!in_array($role, $institution_roles, TRUE)) {
+        continue;
+      }
+
+      // If the user has a role of higher privilege then stop checking this role.
+      $institution_type = $this->getInstitutionTypeByRole($role);
+      $roles_of_higher_privilege = array_diff($this->getRolesByHierarchy($role, $institution_type), [$role]);
+      $alternative_user_roles = array_intersect($roles_of_higher_privilege, $account->getRoles());
+      if (!empty($alternative_user_roles)) {
         continue;
       }
 
@@ -624,8 +651,8 @@ class ParRoleManager implements ParRoleManagerInterface {
       return FALSE;
     }
 
-    // Do not run validation checks for test accounts.
-    if (preg_match('/@example.com$/', $account->getEmail()) === 1) {
+    // Do not run validation checks for test accounts through the cli.
+    if (PHP_SAPI === 'cli' && preg_match('/@example.com$/', $account->getEmail()) === 1) {
       return FALSE;
     }
 

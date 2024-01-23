@@ -14,15 +14,12 @@ use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_roles\ParRoleException;
 use Drupal\par_roles\ParRoleManager;
 use Drupal\par_roles\ParRoleManagerInterface;
-use Drupal\par_user_role_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\User;
 
 /**
  * A controller for blocking user accounts.
  */
 class ParChangeRoleForm extends ParBaseForm {
-
-  use ParFlowAccessTrait;
 
   /**
    * @return DateFormatterInterface
@@ -65,15 +62,28 @@ class ParChangeRoleForm extends ParBaseForm {
 
     $user = $this->getFlowDataHandler()->getParameter('user');
 
+    $all_roles = $this->getParRoleManager()->getAllRoles();
     $roles = array_filter((array) $this->getFlowDataHandler()->getTempDataValue('general'));
     foreach (ParRoleManager::INSTITUTION_ROLES as $institution_type => $institution_roles) {
       $institution_roles = array_filter((array) $this->getFlowDataHandler()->getTempDataValue($institution_type));
       $roles += $institution_roles;
     }
 
+    // Add Roles.
     foreach ($roles as $role) {
       try {
         $user = $this->getParRoleManager()->addRole($user, $role);
+      }
+      catch (ParRoleException $ignore) {
+
+      }
+    }
+
+    // Remove Roles.
+    $remove_roles = array_diff($all_roles, $roles);
+    foreach ($remove_roles as $role) {
+      try {
+        $user = $this->getParRoleManager()->removeRole($user, $role);
       }
       catch (ParRoleException $ignore) {
 
