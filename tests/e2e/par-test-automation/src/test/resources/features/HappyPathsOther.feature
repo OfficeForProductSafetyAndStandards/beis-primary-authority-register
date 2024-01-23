@@ -132,6 +132,36 @@ Feature: Other Happy Paths
 		When the user removes the last added Authority membership
 		Then the Authority membership was removed successfully
 		
+	@regression @usermanagement
+	Scenario: Verify a Senior Administrator can Block and Reinstate a User Account Successfully (Happy Path - PAR-2382)
+		Given the user is on the PAR home page
+    When the user visits the login page
+		And the user logs in with the "senior_administrator@example.com" user credentials
+		When the user searches for the "national_regulator@example.com" user account
+		And the user clicks the manage contact link
+		Then the user can view the user account successfully
+		# Block the User Account.
+		When the user blocks the user account
+		Then the user verifies the account was blocked successfully
+		# Attempt to log in with the blocked user account.
+		Given the user is on the PAR login page
+		And the user logs in with the "national_regulator@example.com" user credentials
+		Then the user cannot sign in and receives an error message
+		# Sign in as the Senior Adminstrator again.
+		Given the user is on the PAR home page
+    When the user visits the login page
+		And the user logs in with the "senior_administrator@example.com" user credentials
+		When the user searches for the "national_regulator@example.com" user account
+		And the user clicks the manage contact link
+		Then the user can view the user account successfully
+		# Re-activate the user account.
+		When the user reinstates the user account
+		Then the user verifies the account is reinstated successfully
+		# Attempt to log in with the re-activated user account.
+		Given the user is on the PAR login page
+		And the user logs in with the "national_regulator@example.com" user credentials
+		Then the user is on the dashboard page
+		
   @regression @helpDesk @usermanagement
   Scenario: Verify the Addition and Update of a New Persons Contact Record as a Help Desk User (Happy Path - PAR-2097)
     Given the user is on the PAR login page

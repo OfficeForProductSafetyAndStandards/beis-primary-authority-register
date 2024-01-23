@@ -42,10 +42,8 @@ public class PartnershipDescriptionPage extends BasePageObject {
 		descriptionBox.sendKeys(description);
 		
 		try {
-			scrollToElement(driver.findElement(By.id("edit-next")));
 			driver.findElement(By.id("edit-next")).click();
 		} catch (Exception e) {
-			scrollToElement(driver.findElement(By.id("edit-save")));
 			driver.findElement(By.id("edit-save")).click();
 		}
 

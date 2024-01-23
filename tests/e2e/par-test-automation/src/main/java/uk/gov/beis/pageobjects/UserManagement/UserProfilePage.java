@@ -9,6 +9,8 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.pageobjects.BlockPage;
+import uk.gov.beis.pageobjects.ReinstatePage;
 import uk.gov.beis.pageobjects.RemovePage;
 import uk.gov.beis.utility.DataStore;
 
@@ -25,6 +27,12 @@ public class UserProfilePage extends BasePageObject {
 	
 	@FindBy(linkText = "Manage roles")
 	private WebElement managerolesLink;
+	
+	@FindBy(linkText = "Block user account")
+	private WebElement blockUserAccountLink;
+	
+	@FindBy(linkText = "Re-activate user account")
+	private WebElement reactivateUserAccountLink;
 	
 	@FindBy(linkText = "Add a membership")
 	private WebElement addMembershipLink;
@@ -54,7 +62,6 @@ public class UserProfilePage extends BasePageObject {
 	private WebElement doneBtn;
 	
 	private String profileHeader = "//h1[contains(normalize-space(),'?')]";
-	
 	private String userMembershipLocator = "//div/p[contains(normalize-space(), '?')]";
 	private String removeMembershipLocator = "//div/p[contains(normalize-space(), '?')]/a";
 	
@@ -84,6 +91,22 @@ public class UserProfilePage extends BasePageObject {
 
 	public Boolean checkUserMembershipDisplayed() {
 		return driver.findElement(By.xpath(userMembershipLocator.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_NAME)))).isDisplayed();
+	}
+	
+	public Boolean checkUserAccountIsNotActive() {
+		return driver.findElement(By.xpath("//p/strong[contains(normalize-space(), 'The account is no longer active')]")).isDisplayed();
+	}
+	
+	public Boolean checkLastSignInHeaderIsDisplayed() {
+		return driver.findElement(By.xpath("//div/h3[contains(normalize-space(), 'Last sign in')]")).isDisplayed();
+	}
+	
+	public Boolean checkReactivateUserAccountLinkIsDisplayed() {
+		return reactivateUserAccountLink.isDisplayed();
+	}
+	
+	public Boolean checkBlockUserAccountLinkIsDisplayed() {
+		return blockUserAccountLink.isDisplayed();
 	}
 	
 	public Boolean checkMembershipRemoved() {
@@ -155,6 +178,16 @@ public class UserProfilePage extends BasePageObject {
 		return PageFactory.initElements(driver, UserRoleTypePage.class);
 	}
 	
+	public BlockPage clickBlockUserAccountLink() {
+		blockUserAccountLink.click();
+		return PageFactory.initElements(driver, BlockPage.class);
+	}
+	
+	public ReinstatePage clickReactivateUserAccountLink() {
+		reactivateUserAccountLink.click();
+		return PageFactory.initElements(driver, ReinstatePage.class);
+	}
+	
 	public ChoosePersonToAddPage clickAddMembershipLink() {
 		addMembershipLink.click();
 		return PageFactory.initElements(driver, ChoosePersonToAddPage.class);
@@ -164,7 +197,6 @@ public class UserProfilePage extends BasePageObject {
 		driver.findElement(By.xpath(removeMembershipLocator.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_NAME)))).click();
 		return PageFactory.initElements(driver, RemovePage.class);
 	}
-	
 	
 	public ContactDetailsPage clickUpdateUserButton() {
 		updateUserBtn.click();

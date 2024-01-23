@@ -206,6 +206,7 @@ public class PARStepDefs {
 	private CompletionPage completionPage;
 	private RevokePage revokePage;
 	private ReinstatePage reinstatePage;
+	private BlockPage blockPage;
 	private RemovePage removePage;
 	private DeletePage deletePage;
 	
@@ -373,6 +374,7 @@ public class PARStepDefs {
 		completionPage = PageFactory.initElements(driver, CompletionPage.class);
 		revokePage = PageFactory.initElements(driver, RevokePage.class);
 		reinstatePage = PageFactory.initElements(driver, ReinstatePage.class);
+		blockPage = PageFactory.initElements(driver, BlockPage.class);
 		deletePage = PageFactory.initElements(driver, DeletePage.class);
 		removePage = PageFactory.initElements(driver, RemovePage.class);
 	}
@@ -2328,6 +2330,44 @@ public class PARStepDefs {
 		assertTrue(userProfilePage.checkMembershipRemoved());
 	}
 	
+	@When("^the user blocks the user account$")
+	public void the_user_blocks_the_user_account() throws Throwable {
+		LOG.info("Block the User Account.");
+		userProfilePage.clickBlockUserAccountLink();
+		blockPage.goToUserProfilePage();
+	}
+
+	@Then("^the user verifies the account was blocked successfully$")
+	public void the_user_verifies_the_account_was_blocked_successfully() throws Throwable {
+		LOG.info("Verifying the User account was blocked.");
+		
+		assertTrue(userProfilePage.checkUserAccountIsNotActive());
+		assertTrue(userProfilePage.checkReactivateUserAccountLinkIsDisplayed());
+	}
+
+	@Then("^the user cannot sign in and receives an error message$")
+	public void the_user_cannot_sign_in_and_receives_an_error_message() throws Throwable {
+		LOG.info("Verifying the User cannot sign in and receives an error message.");
+		
+		assertTrue(loginPage.checkErrorSummary("The username national_regulator@example.com has not been activated or is blocked."));
+		assertTrue(loginPage.checkErrorMessage("The username national_regulator@example.com has not been activated or is blocked."));
+	}
+
+	@When("^the user reinstates the user account$")
+	public void the_user_reinstates_the_user_account() throws Throwable {
+		LOG.info("Re-activate the User Account.");
+		userProfilePage.clickReactivateUserAccountLink();
+		reinstatePage.goToUserProfilePage();
+	}
+
+	@Then("^the user verifies the account is reinstated successfully$")
+	public void the_user_verifies_the_account_is_reinstated_successfully() throws Throwable {
+		LOG.info("Verifying the User account has been re-activated.");
+		
+		assertTrue(userProfilePage.checkLastSignInHeaderIsDisplayed());
+		assertTrue(userProfilePage.checkBlockUserAccountLinkIsDisplayed());
+	}
+	
 	@When("^the user creates a new person:$")
 	public void the_user_creates_a_new_person(DataTable details) throws Throwable {
 		helpDeskDashboardPage.selectManagePeople();
@@ -2349,8 +2389,6 @@ public class PARStepDefs {
 		}
 		
 		LOG.info("Adding a new person.");
-		//contactDetailsPage.enterContactWithRandomName(details);
-		
 		contactDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
 		contactDetailsPage.enterFirstName(DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME));
 		contactDetailsPage.enterLastName(DataStore.getSavedValue(UsableValues.PERSON_LASTNAME));
@@ -2408,8 +2446,6 @@ public class PARStepDefs {
 		}
 		
 		LOG.info("Updating Contact Details.");
-		//contactDetailsPage.enterContactWithRandomName(details);
-		
 		contactDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
 		contactDetailsPage.enterFirstName(DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME));
 		contactDetailsPage.enterLastName(DataStore.getSavedValue(UsableValues.PERSON_LASTNAME));
@@ -2418,22 +2454,6 @@ public class PARStepDefs {
 		contactDetailsPage.enterEmail(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS));
 		
 		contactDetailsPage.clickContinueButton();
-		
-		//giveUserAccountPage.selectInviteUserToCreateAccount();
-		//giveUserAccountPage.clickContinueButton();
-		//LOG.info("Successfully chose to invite the person to create an account.");
-		//userMembershipPage.selectOrganisation(details);
-		//userMembershipPage.selectAuthority(details);
-		//userMembershipPage.clickContinueButton();
-		//LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
-		//LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
-		//userTypePage.selectAuthorityMember();
-		//userTypePage.goToAccountInvitePage();
-		//LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
-		//accountInvitePage.clickInviteButton();
-		//LOG.info("Successfully sent account invite.");
-		//profileReviewPage.goToProfileCompletionPage();
-		//profileCompletionPage.goToUserProfilePage();
 	}
 
 	@Then("^the user can verify the person was updated successfully and can send an account invitation$")

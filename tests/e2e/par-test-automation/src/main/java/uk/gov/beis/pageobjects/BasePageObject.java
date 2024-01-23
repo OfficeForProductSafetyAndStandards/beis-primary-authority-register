@@ -4,16 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Select;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,10 +26,21 @@ public class BasePageObject {
 	protected static FluentWait<WebDriver> wait;
 	private static JavascriptExecutor js;
 
+	private String errorSummaryLocator = "//div/ul/li[contains(normalize-space(), '?')]";
+	private String errorMessageLocator = "//div/span[contains(normalize-space(), '?')]";
+	
 	// create a web driver instance when BasePageObject instantiated using the shared driver
 	public BasePageObject() {
 		driver = ScenarioContext.lastDriver;
 		js = (JavascriptExecutor) driver;
+	}
+	
+	public Boolean checkErrorSummary(String errorMessage) {
+		return driver.findElement(By.xpath(errorSummaryLocator.replace("?", errorMessage))).isDisplayed();
+	}
+	
+	public Boolean checkErrorMessage(String errorMessage) {
+		return driver.findElement(By.xpath(errorMessageLocator.replace("?", errorMessage))).isDisplayed();
 	}
 	
 	public void uploadDocument(WebElement filebrowser, String filename) {
@@ -77,66 +84,7 @@ public class BasePageObject {
 		
 		return columnData.toArray(new String[0]);
 	}
-
-	public WebElement waitUntilCickable(WebElement element) {
-		return wait.until(ExpectedConditions.elementToBeClickable(element));
-	}
-
-	// added functionality to wait for specific element in DOM
-	public WebElement waitForExpectedElement(WebElement element) {
-		return wait.until(ExpectedConditions.visibilityOf(element));
-	}
 	
-	// same as above but returns a boolean (true or false) depending on if the element is displayed
-	public boolean isElementDisplayed(WebElement element) {
-		return waitForExpectedElement(element).isDisplayed();
-	}
-
-	public void click(WebElement element) {
-		try {
-			scrollToElement(element);
-			waitUntilCickable(element).click();
-		} catch (WebDriverException stale) {
-			scrollToElement(element);
-			waitUntilCickable(element).click();
-		}
-	}
-
-	public String getText(WebElement element) {
-		return waitForExpectedElement(element).getText();
-	}
-
-	public void selectDropDownValue(WebElement element, String value) {
-		waitForExpectedElement(element);
-		Select select = new Select(element);
-		try {
-			select.selectByVisibleText(value);
-		} catch (NoSuchElementException no) {
-			throw new InputMismatchException("There is not value in the the dropdown list matching: " + value);
-		}
-	}
-	
-	public WebElement scrollToElement(WebElement element) {
-		try {
-			executeJs("function scrollIntoView(el) {" + "var offsetTop = $(el).offset().top;"
-					+ "var adjustment = Math.max(0,( $(window).height() - $(el).outerHeight(true) ) / 2);"
-					+ "var scrollTop = offsetTop - adjustment;" + "$('html,body').animate({" + "scrollTop: scrollTop"
-					+ "}, 0);" + "} scrollIntoView(arguments[0]);", element);
-		} catch (WebDriverException web) {
-			scrollIntoView(element);
-		}
-		return element;
-	}
-
-	public WebElement scrollIntoView(WebElement element) {
-		try {
-			executeJs("arguments[0].scrollIntoView(true);", element);
-		} catch (WebDriverException web) {
-			// do nothing
-		}
-		return element;
-	}
-
 	public static String executeJs(String script) {
 		return String.valueOf(js.executeScript(script));
 	}
