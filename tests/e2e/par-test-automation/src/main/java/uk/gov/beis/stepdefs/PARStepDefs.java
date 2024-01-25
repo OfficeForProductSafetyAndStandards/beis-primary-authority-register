@@ -1,11 +1,13 @@
 package uk.gov.beis.stepdefs;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Map;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -75,15 +77,13 @@ public class PARStepDefs {
 	private UserRoleTypePage userTypePage;
 	private ProfileReviewPage profileReviewPage;
 	private ProfileCompletionPage profileCompletionPage;
+	private ChoosePersonToAddPage choosePersonToAddPage;
+	private AddMembershipConfirmationPage addMembershipConfirmationPage;
 	
 	// Contact Record
 	private ContactRecordsPage contactRecordsPage;
 	private ContactCommunicationPreferencesPage contactCommunicationPreferencesPage;
 	private ContactUpdateSubscriptionPage contactUpdateSubscriptionPage;
-	
-	// Merge Contact Records
-	private MergeContactRecordsPage mergeContactRecordsPage;
-	private MergeContactRecordsConfirmationPage mergeContactRecordsConfirmationPage;
 	
 	// Legal Entity
 	private LegalEntityTypePage legalEntityTypePage;
@@ -206,6 +206,7 @@ public class PARStepDefs {
 	private CompletionPage completionPage;
 	private RevokePage revokePage;
 	private ReinstatePage reinstatePage;
+	private BlockPage blockPage;
 	private RemovePage removePage;
 	private DeletePage deletePage;
 	
@@ -238,22 +239,19 @@ public class PARStepDefs {
 		// User Management
 		profileReviewPage = PageFactory.initElements(driver, ProfileReviewPage.class);
 		profileCompletionPage = PageFactory.initElements(driver, ProfileCompletionPage.class);
-		
 		contactDetailsPage = PageFactory.initElements(driver, ContactDetailsPage.class);
 		managePeoplePage = PageFactory.initElements(driver, ManagePeoplePage.class);
 		userMembershipPage = PageFactory.initElements(driver, UserMembershipPage.class);
 		giveUserAccountPage = PageFactory.initElements(driver, GiveUserAccountPage.class);
 		userTypePage = PageFactory.initElements(driver, UserRoleTypePage.class);
 		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
+		choosePersonToAddPage  = PageFactory.initElements(driver, ChoosePersonToAddPage.class);
+		addMembershipConfirmationPage  = PageFactory.initElements(driver, AddMembershipConfirmationPage.class);
 		
 		// Contact Record
 		contactUpdateSubscriptionPage = PageFactory.initElements(driver, ContactUpdateSubscriptionPage.class);
 		contactRecordsPage = PageFactory.initElements(driver, ContactRecordsPage.class);
 		contactCommunicationPreferencesPage = PageFactory.initElements(driver,ContactCommunicationPreferencesPage.class);
-		
-		// Merge Contact Record
-		mergeContactRecordsPage = PageFactory.initElements(driver, MergeContactRecordsPage.class);
-		mergeContactRecordsConfirmationPage = PageFactory.initElements(driver, MergeContactRecordsConfirmationPage.class);
 		
 		// Legal Entity
 		legalEntityTypePage = PageFactory.initElements(driver, LegalEntityTypePage.class);
@@ -376,6 +374,7 @@ public class PARStepDefs {
 		completionPage = PageFactory.initElements(driver, CompletionPage.class);
 		revokePage = PageFactory.initElements(driver, RevokePage.class);
 		reinstatePage = PageFactory.initElements(driver, ReinstatePage.class);
+		blockPage = PageFactory.initElements(driver, BlockPage.class);
 		deletePage = PageFactory.initElements(driver, DeletePage.class);
 		removePage = PageFactory.initElements(driver, RemovePage.class);
 	}
@@ -506,6 +505,8 @@ public class PARStepDefs {
 		
 		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
 		case ("par_helpdesk@example.com"):
+		case ("senior_administrator@example.com"):
+		case ("secretary_state@example.com"):
 			LOG.info("Selecting Search partnerships");
 			helpDeskDashboardPage.selectSearchPartnerships();
 			partnershipAdvancedSearchPage.searchPartnerships();
@@ -515,6 +516,7 @@ public class PARStepDefs {
 			dashboardPage.selectSearchforPartnership();
 			partnershipSearchPage.searchPartnerships();
 			break;
+		case ("par_business_manager@example.com"):
 		case ("par_business@example.com"):
 			LOG.info("Selecting See your partnerships");
 			dashboardPage.selectSeePartnerships();
@@ -904,16 +906,21 @@ public class PARStepDefs {
 		partnershipInformationPage.addAnotherAuthorityContactButton();
 
 		LOG.info("Adding new contact details.");
-		contactDetailsPage.addContactDetailsWithRandomName(details);
+		contactDetailsPage.setContactDetailsWithRandomName(details);
+		
+		contactDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
+		contactDetailsPage.enterFirstName(DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME));
+		contactDetailsPage.enterLastName(DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME));
+		contactDetailsPage.enterWorkNumber(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
+		contactDetailsPage.enterMobileNumber(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
+		contactDetailsPage.enterEmail(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
+		
+		contactDetailsPage.selectRandomPreferredCommunication();
+		contactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
+		
 		contactDetailsPage.selectContinueButton();
-
-		LOG.info("Choosing user account type.");
-		userTypePage.selectAuthorityMember();
-		userTypePage.goToAccountInvitePage();
 		
-		LOG.info("Sending new user an account invite.");
-		accountInvitePage.clickInviteButton();
-		
+		LOG.info("Reviewing the Contact Details..");
 		profileReviewPage.clickSaveButton();
 	}
 	
@@ -922,29 +929,7 @@ public class PARStepDefs {
 		LOG.info("Verifying the new Authority contact is added successfully.");
 		assertTrue("Failed: Contact Details are not Displayed Correctly.", partnershipInformationPage.checkContactDetails());
 	}
-
-	@When("^the user updates the new Primary Authority contact with the following details:$")
-	public void the_user_updates_the_new_Primary_Authority_contact_with_the_following_details(DataTable details) throws Throwable {
-		
-		partnershipInformationPage.editContactsDetailsButton();
-		
-		LOG.info("Editing contact details.");
-		contactDetailsPage.editContactDetailsWithRandomName(details);
-		contactDetailsPage.selectContinueButton();	
-		
-		LOG.info("Updating user account type.");
-		userTypePage.selectAuthorityManager();
-		userTypePage.goToAccountInvitePage();	
-
-		profileReviewPage.clickSaveButton();
-	}
 	
-	@Then("^the new Primary Authority contact is updated Successfully$")
-	public void the_new_Primary_Authority_contact_is_updated_Successfully() throws Throwable {
-		LOG.info("Verifying the Authority contact was updated successfully.");
-		assertTrue("Contact Details are not Displayed Correctly.", partnershipInformationPage.checkContactDetails());
-	}
-
 	@When("^the user removes the new Primary Authority contact$")
 	public void the_user_removes_the_new_Primary_Authority_contact() throws Throwable {
 		partnershipInformationPage.removeContactsDetailsButton();
@@ -964,12 +949,21 @@ public class PARStepDefs {
 		partnershipInformationPage.addAnotherOrganisationContactButton();
 
 		LOG.info("Adding new contact details.");
-		contactDetailsPage.addContactDetailsWithRandomName(details);
-		contactDetailsPage.goToInviteUserAccountPage();
+		contactDetailsPage.setContactDetailsWithRandomName(details);
 		
-		LOG.info("Sending new user an account invite.");
-		accountInvitePage.clickInviteButton();
+		contactDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
+		contactDetailsPage.enterFirstName(DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME));
+		contactDetailsPage.enterLastName(DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME));
+		contactDetailsPage.enterWorkNumber(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
+		contactDetailsPage.enterMobileNumber(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
+		contactDetailsPage.enterEmail(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
 		
+		contactDetailsPage.selectRandomPreferredCommunication();
+		contactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
+		
+		contactDetailsPage.selectContinueButton();
+		
+		LOG.info("Reviewing the Contact Details.");
 		profileReviewPage.clickSaveButton();
 	}
 
@@ -978,24 +972,7 @@ public class PARStepDefs {
 		LOG.info("Verifying the new Authority contact is added successfully.");
 		assertTrue("Failed: Contact Details are not Displayed Correctly.", partnershipInformationPage.checkContactDetails());
 	}
-
-	@When("^the user updates the new Organisation contact with the following details:$")
-	public void the_user_updates_the_new_Organisation_contact_with_the_following_details(DataTable details) throws Throwable {
-		partnershipInformationPage.editContactsDetailsButton();
-		
-		LOG.info("Editing contact details.");
-		contactDetailsPage.editContactDetailsWithRandomName(details);
-		contactDetailsPage.selectContinueButton();	
-		
-		profileReviewPage.clickSaveButton();
-	}
-
-	@Then("^the new Organisation contact is updated Successfully$")
-	public void the_new_Organisation_contact_is_updated_Successfully() throws Throwable {
-		LOG.info("Verifying the Authority contact was updated successfully.");
-		assertTrue("Failed: Contact Details are not Displayed Correctly.", partnershipInformationPage.checkContactDetails());
-	}
-
+	
 	@When("^the user removes the new Organisation contact$")
 	public void the_user_removes_the_new_Organisation_contact() throws Throwable {
 		partnershipInformationPage.removeContactsDetailsButton();
@@ -1861,8 +1838,11 @@ public class PARStepDefs {
 	@Then("^the member organistion has been Ceased successfully$")
 	public void the_member_organistion_has_been_Ceased_successfully() throws Throwable {
 		LOG.info("Verify the Member Organisation has been Ceased Successfully.");
+		
 		memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
-		Assert.assertTrue("FAILED: Links are still present and/ or the Cease date is incorrect.", memberListPage.checkMembershipCeased());
+		
+		Assert.assertTrue("Failed: Links are still present.", memberListPage.checkMembershipActionButtons());
+		Assert.assertEquals("Failed: Dates do not match.", DataStore.getSavedValue(UsableValues.MEMBERSHIP_CEASE_DATE), memberListPage.getMembershipCeasedDate());
 	}
 	
 	@When("^the user Uploads a members list to the coordinated partnership with the following file \"([^\"]*)\"$")
@@ -2252,56 +2232,190 @@ public class PARStepDefs {
 		assertTrue("Failed: The new list did not replace the original list.", newsLetterSubscriptionPage.verifyTableElementIsNull());
 	}
 	
+	@When("^the user searches for the \"([^\"]*)\" user account$")
+	public void the_user_searches_for_the_user_account(String userEmail) throws Throwable {
+		LOG.info("Searching for the user.");
+		
+		switch (DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
+		case ("par_helpdesk@example.com"):
+		case ("senior_administrator@example.com"):
+		case ("secretary_state@example.com"):
+			LOG.info("Selecting Manage people.");
+			helpDeskDashboardPage.selectManagePeople();
+			break;
+		case ("par_authority_manager@example.com"):
+		case ("par_authority@example.com"):
+		case ("par_business_manager@example.com"):
+		case ("par_business@example.com"):
+			LOG.info("Selecting Manage Colleagues.");
+			dashboardPage.selectManageColleagues();
+			break;
+		}
+		
+		DataStore.saveValue(UsableValues.PERSON_EMAIL_ADDRESS, userEmail);
+		
+		managePeoplePage.enterNameOrEmail(userEmail);
+		managePeoplePage.clickSubmit();
+		
+		
+	}
+
+	@When("^the user clicks the manage contact link$")
+	public void the_user_clicks_the_manage_contact_link() throws Throwable {
+		LOG.info("Clicking the Manage Contact link.");
+		DataStore.saveValue(UsableValues.PERSON_FULLNAME_TITLE, managePeoplePage.GetPersonName());
+		managePeoplePage.clickManageContact();
+	}
+
+	@Then("^the user can view the user account successfully$")
+	public void the_user_can_view_the_user_account_successfully() throws Throwable {
+		LOG.info("Verify the correct user profile is displayed.");
+	    assertEquals(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS), userProfilePage.getUserAccountEmail());
+	}
+
+	@When("^the user changes the users role to \"([^\"]*)\"$")
+	public void the_user_changes_the_users_role_to(String roleType) throws Throwable {
+		LOG.info("Selecting the Manage Roles Link.");
+		userProfilePage.clickManageRolesLink();
+		
+		LOG.info("Deselecting all roles.");
+		userTypePage.deselectAllMemberships();
+		
+		LOG.info("Selecting the new role.");
+		DataStore.saveValue(UsableValues.ACCOUNT_TYPE, roleType);
+		userTypePage.chooseMembershipRole(roleType);
+		userTypePage.goToUserProfilePage();
+	}
+
+	@Then("^the user role was changed successfully$")
+	public void the_user_role_was_changed_successfully() throws Throwable {
+		LOG.info("Verify the User Account Type was changed successfully.");
+		
+	    assertTrue(userProfilePage.checkUserAccountType());
+	}
+	
+	@When("^the user adds a new Authority membership$")
+	public void the_user_adds_a_new_Authority_membership() throws Throwable {
+		userProfilePage.clickAddMembershipLink();
+		
+		LOG.info("Choosing the person to add the new membership to.");
+		choosePersonToAddPage.choosePerson();
+		choosePersonToAddPage.clickContinueButton();
+		
+		LOG.info("Choosing the new Authority Membership.");
+		userMembershipPage.chooseAuthorityMembership(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		userMembershipPage.clickContinueButton();
+		
+		addMembershipConfirmationPage.clickContinueButton();
+	}
+
+	@Then("^the Authority membership was added successfully$")
+	public void the_Authority_membership_was_added_successfully() throws Throwable {
+		LOG.info("Verify the new Authority membership was added successfully.");
+		
+		assertTrue(userProfilePage.checkUserMembershipDisplayed());
+	}
+
+	@When("^the user removes the last added Authority membership$")
+	public void the_user_removes_the_last_added_Authority_membership() throws Throwable {
+		LOG.info("Remove the last added Authority Membership.");
+		userProfilePage.clickRemoveMembershipLink();
+		removePage.goToUserProfilePage();
+	}
+
+	@Then("^the Authority membership was removed successfully$")
+	public void the_Authority_membership_was_removed_successfully() throws Throwable {
+		LOG.info("Verify the Authority membership was removed successfully.");
+		
+		assertTrue(userProfilePage.checkMembershipRemoved());
+	}
+	
+	@When("^the user blocks the user account$")
+	public void the_user_blocks_the_user_account() throws Throwable {
+		LOG.info("Block the User Account.");
+		userProfilePage.clickBlockUserAccountLink();
+		blockPage.goToUserProfilePage();
+	}
+
+	@Then("^the user verifies the account was blocked successfully$")
+	public void the_user_verifies_the_account_was_blocked_successfully() throws Throwable {
+		LOG.info("Verifying the User account was blocked.");
+		
+		assertTrue(userProfilePage.checkUserAccountIsNotActive());
+		assertTrue(userProfilePage.checkReactivateUserAccountLinkIsDisplayed());
+	}
+
+	@Then("^the user cannot sign in and receives an error message$")
+	public void the_user_cannot_sign_in_and_receives_an_error_message() throws Throwable {
+		LOG.info("Verifying the User cannot sign in and receives an error message.");
+		
+		assertTrue(loginPage.checkErrorSummary("The username national_regulator@example.com has not been activated or is blocked."));
+		assertTrue(loginPage.checkErrorMessage("The username national_regulator@example.com has not been activated or is blocked."));
+	}
+
+	@When("^the user reinstates the user account$")
+	public void the_user_reinstates_the_user_account() throws Throwable {
+		LOG.info("Re-activate the User Account.");
+		userProfilePage.clickReactivateUserAccountLink();
+		reinstatePage.goToUserProfilePage();
+	}
+
+	@Then("^the user verifies the account is reinstated successfully$")
+	public void the_user_verifies_the_account_is_reinstated_successfully() throws Throwable {
+		LOG.info("Verifying the User account has been re-activated.");
+		
+		assertTrue(userProfilePage.checkLastSignInHeaderIsDisplayed());
+		assertTrue(userProfilePage.checkBlockUserAccountLinkIsDisplayed());
+	}
+	
 	@When("^the user creates a new person:$")
 	public void the_user_creates_a_new_person(DataTable details) throws Throwable {
 		helpDeskDashboardPage.selectManagePeople();
 		managePeoplePage.selectAddPerson();
-
-		LOG.info("Adding a new person.");
-		contactDetailsPage.enterContactWithRandomName(details);
-		contactDetailsPage.clickContinueButton();
-
-		LOG.info("Successfully entered new contact details.");
-
-		giveUserAccountPage.selectInviteUserToCreateAccount();
-		giveUserAccountPage.clickContinueButton();
-
-		LOG.info("Successfully chose to invite the person to create an account.");
-		userMembershipPage.selectOrganisation(details);
-		userMembershipPage.selectAuthority(details);
-		userMembershipPage.clickContinueButton();
 		
-		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
-		LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
+		String firstName = RandomStringUtils.randomAlphabetic(8);
+		String lastName = RandomStringUtils.randomAlphabetic(8);
+		String emailAddress = firstName + "@" + lastName + ".com";
 
-		userTypePage.selectEnforcementOfficer();
-		userTypePage.goToAccountInvitePage();
-		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
-
-		accountInvitePage.clickInviteButton();
-
-		LOG.info("Successfully sent account invite.");
-
-		profileReviewPage.goToProfileCompletionPage();
-		profileCompletionPage.goToUserProfilePage();
+		DataStore.saveValue(UsableValues.PERSON_FIRSTNAME, firstName); 
+		DataStore.saveValue(UsableValues.PERSON_LASTNAME, lastName);
+		DataStore.saveValue(UsableValues.PERSON_EMAIL_ADDRESS, emailAddress);
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.PERSON_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.PERSON_WORK_NUMBER, data.get("WorkNumber"));
+			DataStore.saveValue(UsableValues.PERSON_MOBILE_NUMBER, data.get("MobileNumber"));
+		}
+		
+		LOG.info("Adding a new person.");
+		contactDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
+		contactDetailsPage.enterFirstName(DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME));
+		contactDetailsPage.enterLastName(DataStore.getSavedValue(UsableValues.PERSON_LASTNAME));
+		contactDetailsPage.enterWorkNumber(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
+		contactDetailsPage.enterMobileNumber(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
+		contactDetailsPage.enterEmail(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS));
+		
+		contactDetailsPage.clickContinueButton();
 	}
 
-	@Then("^the user can verify the person was created successfully and can see resend an account invite$")
-	public void the_user_can_verify_the_person_was_created_successfully_and_can_see_resend_an_account_invite() throws Throwable {
+	@Then("^the user can verify the person was created successfully and can send an account invitation$")
+	public void the_user_can_verify_the_person_was_created_successfully_and_can_send_an_account_invitation() throws Throwable {
+		
 		assertTrue("Failed: Header does not contain the person's fullname and title.", userProfilePage.checkHeaderForName());
-		assertTrue("Failed: Cannot find the Re-send account creation invite link.", userProfilePage.checkForUserAccountInvitationLink());
+		assertTrue("Failed: Cannot find the User account invitation link.", userProfilePage.checkForUserAccountInvitationLink());
 		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", userProfilePage.checkContactName());
 		assertTrue("Failed: Contact email field does not contain the correct email address.", userProfilePage.checkContactEmail());
 		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", userProfilePage.checkContactPhoneNumbers());
-		assertTrue("Failed: Both Contact Locations are not displayed.", userProfilePage.seeMoreContactInformation());
+		assertTrue("Failed: Contact Locations are displayed.", userProfilePage.checkContactLocationsIsEmpty());
+		
+		userProfilePage.clickDoneButton();
 	}
 
 	@When("^the user searches for an existing person successfully$")
 	public void the_user_searches_for_an_existing_person_successfully() throws Throwable {
-		helpDeskDashboardPage.selectManagePeople();
 
-		String personsName = DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " "
-				+ DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
+		String personsName = DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
 
 		managePeoplePage.enterNameOrEmail(personsName);
 		managePeoplePage.clickSubmit();
@@ -2316,100 +2430,40 @@ public class PARStepDefs {
 		LOG.info("Updating an existing person.");
 		userProfilePage.clickUpdateUserButton();
 		
-		contactDetailsPage.enterContactWithRandomName(details);
+		String firstName = RandomStringUtils.randomAlphabetic(8);
+		String lastName = RandomStringUtils.randomAlphabetic(8);
+		String emailAddress = firstName + "@" + lastName + ".com";
+
+		DataStore.saveValue(UsableValues.PERSON_FIRSTNAME, firstName); 
+		DataStore.saveValue(UsableValues.PERSON_LASTNAME, lastName);
+		DataStore.saveValue(UsableValues.PERSON_EMAIL_ADDRESS, emailAddress);
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.PERSON_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.PERSON_WORK_NUMBER, data.get("WorkNumber"));
+			DataStore.saveValue(UsableValues.PERSON_MOBILE_NUMBER, data.get("MobileNumber"));
+		}
+		
+		LOG.info("Updating Contact Details.");
+		contactDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.PERSON_TITLE));
+		contactDetailsPage.enterFirstName(DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME));
+		contactDetailsPage.enterLastName(DataStore.getSavedValue(UsableValues.PERSON_LASTNAME));
+		contactDetailsPage.enterWorkNumber(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
+		contactDetailsPage.enterMobileNumber(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
+		contactDetailsPage.enterEmail(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS));
+		
 		contactDetailsPage.clickContinueButton();
-
-		LOG.info("Successfully entered new contact details.");
-
-		giveUserAccountPage.selectInviteUserToCreateAccount();
-		giveUserAccountPage.clickContinueButton();
-
-		LOG.info("Successfully chose to invite the person to create an account.");
-		userMembershipPage.selectOrganisation(details);
-		userMembershipPage.selectAuthority(details);
-		userMembershipPage.clickContinueButton();
-
-		LOG.info("Chosen Organisation: " + DataStore.getSavedValue(UsableValues.CHOSEN_ORGANISATION));
-		LOG.info("Chosen Authority: " + DataStore.getSavedValue(UsableValues.CHOSEN_AUTHORITY));
-
-		userTypePage.selectAuthorityMember();
-		userTypePage.goToAccountInvitePage();
-
-		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
-
-		accountInvitePage.clickInviteButton();
-
-		LOG.info("Successfully sent account invite.");
-
-		profileReviewPage.goToProfileCompletionPage();
-		profileCompletionPage.goToUserProfilePage();
 	}
 
-	@Then("^the user can verify the person was updated successfully and can see resend an account invite$")
-	public void the_user_can_verify_the_person_was_updated_successfully_and_can_see_resend_an_account_invite() throws Throwable {
+	@Then("^the user can verify the person was updated successfully and can send an account invitation$")
+	public void the_user_can_verify_the_person_was_updated_successfully_and_can_send_an_account_invitation() throws Throwable {
 		assertTrue("Failed: Header does not contain the person's fullname and title.", userProfilePage.checkHeaderForName());
-		assertTrue("Failed: Cannot find the Re-send account creation invite link.", userProfilePage.checkForUserAccountInvitationLink());
+		assertTrue("Failed: Cannot find the User account invitation link.", userProfilePage.checkForUserAccountInvitationLink());
 		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", userProfilePage.checkContactName());
 		assertTrue("Failed: Contact email field does not contain the correct email address.", userProfilePage.checkContactEmail());
 		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", userProfilePage.checkContactPhoneNumbers());
-		assertTrue("Failed: Both Contact Locations are not displayed.", userProfilePage.seeMoreContactInformation());
-	}
-	
-	@When("^the user creates a new contact with the following details:$")
-	public void the_user_creates_a_new_contact_with_the_following_details(DataTable details) throws Throwable {
-		dashboardPage.selectManageColleagues();
-		managePeoplePage.selectAddPerson();
-
-		LOG.info("Adding a new person.");
-		contactDetailsPage.addContactDetails(details);
-		contactDetailsPage.clickContinueButton();
-
-		LOG.info("Successfully entered new contact details.");
-
-		giveUserAccountPage.selectUseExistingAccount();
-		giveUserAccountPage.clickContinueButton();
-
-		LOG.info("Successfully chose to use the existing account.");
-
-		userMembershipPage.selectCityEnforcementSquad();
-		userMembershipPage.selectUpperWestSideBoroughCouncil();
-		userMembershipPage.selectLowerEstSideBoroughCouncil();
-		userMembershipPage.clickContinueButton();
-		
-		LOG.info("Successfully chose the contacts Authority memberships.");
-
-		userTypePage.selectAuthorityMember();
-		userTypePage.goToProfileReviewPage();
-		LOG.info("User Account Type: " + DataStore.getSavedValue(UsableValues.ACCOUNT_TYPE));
-
-		profileReviewPage.goToProfileCompletionPage();
-		profileCompletionPage.goToUserProfilePage();
-	}
-	
-	@Then("^the user can verify the contact record was added to the user profile$")
-	public void the_user_can_verify_the_contact_record_was_added_to_the_user_profile() throws Throwable {
-		LOG.info("Verifying the Duplicate Contact Record was Added Successfully.");
-		
-		Assert.assertTrue("Failed: Contact Record was not added.", userProfilePage.checkContactRecordAdded());
-	}
-
-	@When("^the user merges the contact record$")
-	public void the_user_merges_the_contact_record() throws Throwable {
-		LOG.info("Selecting Contact Records to Merge.");
-		
-		userProfilePage.clickMergeContactRecords();
-		mergeContactRecordsPage.mergeContacts();
-		mergeContactRecordsPage.clickContinue();
-		
-		LOG.info("Confirming the Contact Records to be Merged.");
-		mergeContactRecordsConfirmationPage.clickMerge();
-	}
-
-	@Then("^the user can verify the contact record was merged successfully$")
-	public void the_user_can_verify_the_contact_record_was_merged_successfully() throws Throwable {
-		LOG.info("Verifying the Contact Records have been Merged Successfully.");
-		
-		Assert.assertTrue("Failed: Contact records where not merged.", userProfilePage.checkContactRecord());
+		assertTrue("Failed: Contact Locations are displayed.", userProfilePage.checkContactLocationsIsEmpty());
 	}
 	
 	@When("^the user updates their user account email address to \"([^\"]*)\"$")

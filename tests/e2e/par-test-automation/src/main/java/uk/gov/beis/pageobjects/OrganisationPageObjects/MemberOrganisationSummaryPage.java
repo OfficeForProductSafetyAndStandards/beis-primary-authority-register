@@ -45,16 +45,16 @@ public class MemberOrganisationSummaryPage extends BasePageObject {
 	@FindBy(id = "edit-done")
 	private WebElement doneBtn;
 	
-	String organisationNameLocator = "//div[@id='edit-organisation-name']/div/div[contains(text(), '?')]";
-	String organisationAddressLocator = "//div[@id='edit-member-registered-address']/div/div/p[contains(text(), '?')]";
-	String dateOfMembershipLocator = "//div[@id='edit-membership-date']/div/div/time[contains(text(), '?')]";
-	String primaryContactNameLocator = "//div[@id='edit-member-primary-contact']/div/div[contains(text(), '?')]";
-	String primaryContactWorkLocator = "//div[@id='edit-member-primary-contact']/div/div[contains(text(), '?')]";
-	String primaryContactMobileLocator = "//div[@id='edit-member-primary-contact']/div/div[contains(text(), '?')]";
-	String primaryContactEmailLocator = "//div[@id='edit-member-primary-contact']/div/div/a[contains(text(), '?')]";
-	String legalEntitiesLocator = "//div[@id='edit-legal-entities']/div/div[contains(text(), '?')]";
-	String tradingNameLocator = "//div[@id='edit-trading-names']/div/div[contains(text(), '?')]";
-	String coveredByInspectionPlanLocator = "//div[@id='edit-covered-by-inspection']/div/div[contains(text(), '?')]";
+	String organisationNameLocator = "//div[@id='edit-organisation-name']/div/div[contains(normalize-space(), '?')]";
+	String organisationAddressLocator = "//div[@id='edit-member-registered-address']/div/div/p[contains(normalize-space(), '?')]";
+	String dateOfMembershipLocator = "//div[@id='edit-membership-date']/div/div/time[contains(normalize-space(), '?')]";
+	String primaryContactNameLocator = "//div[@id='edit-member-primary-contact']/div/div[contains(normalize-space(), '?')]";
+	String primaryContactWorkLocator = "//div[@id='edit-member-primary-contact']/div/div[contains(normalize-space(), '?')]";
+	String primaryContactMobileLocator = "//div[@id='edit-member-primary-contact']/div/div[contains(normalize-space(), '?')]";
+	String primaryContactEmailLocator = "//div[@id='edit-member-primary-contact']/div/div/a[contains(normalize-space(), '?')]";
+	String legalEntitiesLocator = "//div[@id='edit-legal-entities']/div/div[contains(normalize-space(), '?')]";
+	String tradingNameLocator = "//div[@id='edit-trading-names']/div/div[contains(normalize-space(), '?')]";
+	String coveredByInspectionPlanLocator = "//div[@id='edit-covered-by-inspection']/div/div[contains(normalize-space(), '?')]";
 	
 	public MemberOrganisationSummaryPage() throws ClassNotFoundException, IOException {
 		super();

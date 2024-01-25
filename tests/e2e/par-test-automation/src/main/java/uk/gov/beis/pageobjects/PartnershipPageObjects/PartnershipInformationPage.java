@@ -385,10 +385,9 @@ public class PartnershipInformationPage extends BasePageObject {
 		WebElement emailAddress = driver.findElement(By.xpath(contactEmailAddress.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL).toLowerCase())));
 		WebElement contactNotes = driver.findElement(By.xpath(contactCommunicationNotes.replace("?", DataStore.getSavedValue(UsableValues.CONTACT_NOTES))));
 		
-		WebElement editLink = driver.findElement(By.linkText("edit " + getContactsName().toLowerCase()));
 		WebElement removeLink = driver.findElement(By.linkText("remove " + getContactsName().toLowerCase() + " from this partnership"));
 		
-		return fullName.isDisplayed() && workphoneNumber.isDisplayed() && mobilephoneNumber.isDisplayed() && emailAddress.isDisplayed() && contactNotes.isDisplayed() && editLink.isDisplayed() && removeLink.isDisplayed()
+		return fullName.isDisplayed() && workphoneNumber.isDisplayed() && mobilephoneNumber.isDisplayed() && emailAddress.isDisplayed() && contactNotes.isDisplayed() && removeLink.isDisplayed()
 				&& chooseRandomPreferredCommunicationMethod();
 	}
 	

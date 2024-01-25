@@ -8,17 +8,17 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
-public class MergeContactRecordsConfirmationPage extends BasePageObject {
+public class AddMembershipConfirmationPage extends BasePageObject {
 	
 	@FindBy(id = "edit-next")
-	private WebElement mergeBtn;
+	private WebElement continueBtn;
 	
-	public MergeContactRecordsConfirmationPage() throws ClassNotFoundException, IOException {
+	public AddMembershipConfirmationPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
-	public UserProfilePage clickMerge() {
-		mergeBtn.click();
+	public UserProfilePage clickContinueButton() {
+		continueBtn.click();
 		return PageFactory.initElements(driver, UserProfilePage.class);
 	}
 }
