@@ -18,10 +18,10 @@ import uk.gov.beis.utility.DataStore;
 public class LoginPage extends BasePageObject {
 	
 	@FindBy(id = "edit-name")
-	private WebElement username;
+	private WebElement emailTextfield;
 	
 	@FindBy(id = "edit-pass")
-	private WebElement password;
+	private WebElement passwordTextfield;
 	
 	@FindBy(id = "edit-submit")
 	private WebElement loginBtn;
@@ -38,9 +38,24 @@ public class LoginPage extends BasePageObject {
 		return PageFactory.initElements(driver, LoginPage.class);
 	}
 	
+	public void enterEmailAddress(String email) {
+		emailTextfield.clear();
+		emailTextfield.sendKeys(email);
+	}
+	
+	public void enterPassword(String password) {
+		passwordTextfield.clear();
+		passwordTextfield.sendKeys(password);
+	}
+	
 	public void enterLoginDetails(String user, String pass) {
-		username.sendKeys(user);
-		password.sendKeys(pass);
+		emailTextfield.sendKeys(user);
+		passwordTextfield.sendKeys(pass);
+	}
+	
+	public LoginPage selectSignIn() {
+		loginBtn.click();
+		return PageFactory.initElements(driver, LoginPage.class);
 	}
 
 	public BaseDashboardPage clickSignIn() {

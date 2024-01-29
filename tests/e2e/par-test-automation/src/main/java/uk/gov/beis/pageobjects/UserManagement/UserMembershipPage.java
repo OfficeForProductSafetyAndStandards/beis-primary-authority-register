@@ -2,7 +2,6 @@ package uk.gov.beis.pageobjects.UserManagement;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -14,10 +13,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.gov.beis.pageobjects.BasePageObject;
 
 public class UserMembershipPage extends BasePageObject {
-	
-	//@FindBy(id = "edit-par-data-authority-id")
-	//private WebElement authorityTextField;
-	
 	@FindBy(id = "edit-par-data-organisation-id")
 	private WebElement organisationTextField;
 	
@@ -31,7 +26,6 @@ public class UserMembershipPage extends BasePageObject {
 	}
 	
 	public void chooseAuthorityMembership(String authorityName) {
-		
 		if(!driver.findElements(By.id("edit-par-data-authority-id")).isEmpty()) {
 			
 			WebElement authorityTextField = driver.findElement(By.id("edit-par-data-authority-id"));

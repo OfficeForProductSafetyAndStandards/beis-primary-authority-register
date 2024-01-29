@@ -4,13 +4,14 @@ import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import Configuration.SeleniumDriverConfig;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import uk.gov.beis.enums.Browser;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.supportfactory.WebdriverFactory;
 
@@ -30,11 +31,13 @@ public class Hooks {
 		WebdriverFactory.checkBrowserRequired(isDifferentDriverRequired());
 		LOG.info("... Doing BeforeMethod createdriver routine...");
 		
-		driver = WebdriverFactory.createWebdriver();
+		//driver = WebdriverFactory.createWebdriver();
 		
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		driver.manage().window().maximize();
+		//driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
+		//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		//driver.manage().window().maximize();
+		
+		driver = new SeleniumDriverConfig(Browser.Chrome, 10, 10).driver;
 		
 		ScenarioContext.lastDriver = driver;
 	}
