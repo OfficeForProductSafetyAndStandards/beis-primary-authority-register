@@ -1,6 +1,5 @@
 package uk.gov.beis.stepdefs;
 
-import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
@@ -29,13 +28,8 @@ public class Hooks {
 		LOG = LoggerFactory.getLogger(Hooks.class);
 		tag = (List<String>) scenario.getSourceTagNames();
 		WebdriverFactory.checkBrowserRequired(isDifferentDriverRequired());
+		
 		LOG.info("... Doing BeforeMethod createdriver routine...");
-		
-		//driver = WebdriverFactory.createWebdriver();
-		
-		//driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
-		//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		//driver.manage().window().maximize();
 		
 		driver = new SeleniumDriverConfig(Browser.Chrome, 10, 10).driver;
 		

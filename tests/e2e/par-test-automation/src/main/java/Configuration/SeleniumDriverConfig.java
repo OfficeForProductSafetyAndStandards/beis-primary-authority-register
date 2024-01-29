@@ -63,7 +63,7 @@ public class SeleniumDriverConfig {
 			System.setProperty("webdriver.chrome.driver", CHROMEDRIVER_WINDOWS);
 			
 			ChromeOptions options = new ChromeOptions();
-			options.addArguments(getChromeOptions());
+			options.addArguments(getBrowserOptions(PropertiesUtil.getSharedPropertyValue(CHROME_OPTIONS_KEY)));
 			
 			return new ChromeDriver(options);
 			
@@ -72,7 +72,7 @@ public class SeleniumDriverConfig {
 			System.setProperty("webdriver.gecko.driver", GECKODRIVER_WINDOWS);
 			
 			FirefoxOptions fireOptions = new FirefoxOptions();
-			fireOptions.addArguments(getFireFoxOptions());
+			fireOptions.addArguments(getBrowserOptions(PropertiesUtil.getSharedPropertyValue(FireFox_OPTIONS_KEY)));
 			
 			return new FirefoxDriver(fireOptions);
 			
@@ -81,15 +81,8 @@ public class SeleniumDriverConfig {
 		}
 	}
 	
-	private static List<String> getChromeOptions() {
-		// optionsStr should be a comma separated list.
-		String OptionsStr = PropertiesUtil.getSharedPropertyValue(CHROME_OPTIONS_KEY);
+	private static List<String> getBrowserOptions(String options) {
 		// Split string separated by zero or more whitespace, followed by comma, followed by zero or more whitespace.
-		return Arrays.asList(OptionsStr.split("\\s*,\\s*"));
-	}
-	
-	private static List<String> getFireFoxOptions() {
-		String OptionsStr = PropertiesUtil.getSharedPropertyValue(FireFox_OPTIONS_KEY);
-		return Arrays.asList(OptionsStr.split("\\s*,\\s*"));
+		return Arrays.asList(options.split("\\s*,\\s*"));
 	}
 }
