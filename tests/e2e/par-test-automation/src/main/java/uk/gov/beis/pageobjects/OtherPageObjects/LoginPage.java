@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.OtherPageObjects;
 
 import java.io.IOException;
 
@@ -11,6 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
+import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.UserDashboardPageObjects.*;
 import uk.gov.beis.pageobjects.UserManagement.PasswordPage;
 import uk.gov.beis.utility.DataStore;

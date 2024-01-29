@@ -31,7 +31,7 @@ public class Hooks {
 		
 		LOG.info("... Doing BeforeMethod createdriver routine...");
 		
-		driver = new SeleniumDriverConfig(Browser.Chrome, 10, 10).driver;
+		driver = new SeleniumDriverConfig(Browser.Chromeheadless, 10, 10).driver;
 		
 		ScenarioContext.lastDriver = driver;
 	}
@@ -40,9 +40,11 @@ public class Hooks {
 	public void closeBrowser(Scenario scenario) throws Exception, Throwable {
 		if (scenario.isFailed()) {
 			LOG.info("Doing After Method routine");
+			driver.close();
 			driver.quit();
 		} else {
 			LOG.info("... Shutting down gracefully...");
+			driver.close();
 			driver.quit();
 		}
 	}

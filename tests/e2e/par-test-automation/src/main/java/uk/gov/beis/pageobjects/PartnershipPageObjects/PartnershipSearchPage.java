@@ -9,7 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DeclarationPage;
+import uk.gov.beis.pageobjects.SharedPageObjects.DeclarationPage;
 import uk.gov.beis.utility.DataStore;
 
 public class PartnershipSearchPage extends BasePageObject {

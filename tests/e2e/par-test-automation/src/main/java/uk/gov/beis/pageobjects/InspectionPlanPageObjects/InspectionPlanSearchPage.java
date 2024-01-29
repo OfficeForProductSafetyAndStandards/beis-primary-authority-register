@@ -9,8 +9,8 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.RemovePage;
-import uk.gov.beis.pageobjects.RevokePage;
+import uk.gov.beis.pageobjects.SharedPageObjects.RemovePage;
+import uk.gov.beis.pageobjects.SharedPageObjects.RevokePage;
 import uk.gov.beis.utility.DataStore;
 
 public class InspectionPlanSearchPage extends BasePageObject {

@@ -9,10 +9,10 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.AddAddressPage;
-import uk.gov.beis.pageobjects.EnterTheDatePage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanCoveragePage;
 import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
+import uk.gov.beis.pageobjects.SharedPageObjects.AddAddressPage;
+import uk.gov.beis.pageobjects.SharedPageObjects.EnterTheDatePage;
 import uk.gov.beis.pageobjects.UserManagement.ContactDetailsPage;
 import uk.gov.beis.utility.DataStore;
 

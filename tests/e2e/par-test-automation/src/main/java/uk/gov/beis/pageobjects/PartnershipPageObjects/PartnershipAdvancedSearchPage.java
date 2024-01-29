@@ -9,10 +9,10 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DeclarationPage;
-import uk.gov.beis.pageobjects.DeletePage;
-import uk.gov.beis.pageobjects.ReinstatePage;
-import uk.gov.beis.pageobjects.RevokePage;
+import uk.gov.beis.pageobjects.SharedPageObjects.DeclarationPage;
+import uk.gov.beis.pageobjects.SharedPageObjects.DeletePage;
+import uk.gov.beis.pageobjects.SharedPageObjects.ReinstatePage;
+import uk.gov.beis.pageobjects.SharedPageObjects.RevokePage;
 import uk.gov.beis.utility.DataStore;
 
 public class PartnershipAdvancedSearchPage extends BasePageObject {
