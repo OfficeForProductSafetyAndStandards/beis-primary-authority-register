@@ -89,6 +89,18 @@ public class AddAddressPage extends BasePageObject {
 		postcodeTextBox.sendKeys(postcode);
 	}
 	
+	public void clearAddressFields() {
+		addressLine1TextBox.clear();
+		addressLine2TextBox.clear();
+		townOrCityTextBox.clear();
+		countyTextBox.clear();
+		postcodeTextBox.clear();
+	}
+	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
 	public ContactDetailsPage goToAddContactDetailsPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, ContactDetailsPage.class);
@@ -99,7 +111,7 @@ public class AddAddressPage extends BasePageObject {
 		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 	}
 	
-	public PartnershipInformationPage clickContinueButton() {
+	public PartnershipInformationPage goToPartnershipInformationPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}

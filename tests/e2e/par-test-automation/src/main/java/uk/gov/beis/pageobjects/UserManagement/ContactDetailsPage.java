@@ -217,6 +217,10 @@ public class ContactDetailsPage extends BasePageObject {
 		contactNotesTextfield.sendKeys(note);
 	}
 	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
 	public AccountInvitePage goToInviteUserAccountPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, AccountInvitePage.class);
@@ -232,7 +236,7 @@ public class ContactDetailsPage extends BasePageObject {
 		return PageFactory.initElements(driver, EnterTheDatePage.class);
 	}
 	
-	public UserProfilePage clickContinueButton() {
+	public UserProfilePage goToUserProfilePage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, UserProfilePage.class);
 	}
@@ -257,7 +261,7 @@ public class ContactDetailsPage extends BasePageObject {
 		return PageFactory.initElements(driver, ContactCommunicationPreferencesPage.class);
 	}
 	
-	private void clearAllFields() {
+	public void clearAllFields() {
 		clearEditJourneyFields();
 		
 		emailAddressField.clear();

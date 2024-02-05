@@ -108,6 +108,20 @@ public class CheckPartnershipInformationPage extends BasePageObject {
 		return tradeName.isDisplayed();
 	}
 	
+	public void acceptTermsAndConditions() {
+		if(!authorityConfirmCheckbox.isSelected()) {
+			authorityConfirmCheckbox.click();
+		}
+	}
+	
+	public void deselectConfirmationCheckbox() {
+		if(authorityConfirmCheckbox.isSelected()) {
+			authorityConfirmCheckbox.click();
+		}
+		
+		saveBtn.click();
+	}
+	
 	public PartnershipCompletionPage confirmApplication() {
 		if(!organisationConfirmCheckbox.isSelected()) {
 			organisationConfirmCheckbox.click();

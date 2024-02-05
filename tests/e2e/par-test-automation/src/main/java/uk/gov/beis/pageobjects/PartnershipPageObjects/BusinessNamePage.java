@@ -30,6 +30,10 @@ public class BusinessNamePage extends BasePageObject {
 		businessName.sendKeys(name);
 	}
 	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
 	public AddAddressPage goToAddressPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, AddAddressPage.class);

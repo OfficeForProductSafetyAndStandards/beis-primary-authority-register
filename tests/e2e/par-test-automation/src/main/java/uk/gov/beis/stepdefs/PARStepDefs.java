@@ -2040,7 +2040,7 @@ public class PARStepDefs {
 		websiteManager.contactDetailsPage.enterMobileNumber(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
 		websiteManager.contactDetailsPage.enterEmail(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS));
 		
-		websiteManager.contactDetailsPage.clickContinueButton();
+		websiteManager.contactDetailsPage.goToUserProfilePage();
 	}
 
 	@Then("^the user can verify the person was created successfully and can send an account invitation$")
@@ -2097,7 +2097,7 @@ public class PARStepDefs {
 		websiteManager.contactDetailsPage.enterMobileNumber(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
 		websiteManager.contactDetailsPage.enterEmail(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS));
 		
-		websiteManager.contactDetailsPage.clickContinueButton();
+		websiteManager.contactDetailsPage.goToUserProfilePage();
 	}
 
 	@Then("^the user can verify the person was updated successfully and can send an account invitation$")

@@ -26,6 +26,10 @@ public class AuthorityPage extends BasePageObject {
 		super();
 	}
 	
+	public void selectContinueButton() {
+		continueBtn.click();
+	}
+	
 	public PartnershipTypePage selectAuthority(String auth) {
 		WebElement authority = driver.findElement(By.xpath(authorityLocator.replace("?", auth)));
 		

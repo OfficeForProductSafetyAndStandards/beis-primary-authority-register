@@ -26,8 +26,8 @@ public class BasePageObject {
 	protected static FluentWait<WebDriver> wait;
 	private static JavascriptExecutor js;
 
-	private String errorSummaryLocator = "//div/ul/li[contains(normalize-space(), '?')]";
-	private String errorMessageLocator = "//div/span[contains(normalize-space(), '?')]";
+	private String errorSummaryLocator = "//div/ul/li[contains(normalize-space(), \"?\")]";
+	private String errorMessageLocator = "//div/span[contains(normalize-space(), \"?\")]";
 	
 	// create a web driver instance when BasePageObject instantiated using the shared driver
 	public BasePageObject() {

@@ -37,6 +37,10 @@ public class PartnershipDescriptionPage extends BasePageObject {
 		businessDescriptionBox.sendKeys(description);
 	}
 	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
 	public BusinessNamePage enterPartnershipDescription(String description) throws Throwable {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
