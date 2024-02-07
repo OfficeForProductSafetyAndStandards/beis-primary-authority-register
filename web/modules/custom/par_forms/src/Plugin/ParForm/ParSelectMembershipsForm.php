@@ -182,10 +182,11 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
         ];
       }
       else {
+        // The default value must be converted back from an array.
         $form[$element_key] = $base + [
           '#type' => 'radios',
           '#options' => $options,
-          '#default_value' => $default_value,
+          '#default_value' => !empty($default_value) ? current($default_value) : NULL,
         ];
       }
 
@@ -244,10 +245,13 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
         $form_state->setValue($element, $selected[$target_type]);
       }
       // If multiple choices are allowed the resulting value may be an array with keys but empty values.
+      elseif ($multiple) {
+        $selected[$target_type] = NestedArray::filter((array) $form_state->getValue($element));
+      }
+      // Singular values must be converted to an array.
       else {
-        $selected[$target_type] = $multiple ?
-          NestedArray::filter((array) $form_state->getValue($element)) :
-          $form_state->getValue($element);
+        $selected[$target_type] = (array) $form_state->getValue($element);
+        $form_state->setValue($element, $selected[$target_type]);
       }
     }
 

@@ -96,7 +96,7 @@ class RoleChangeCheck implements AccessInterface {
     $roles = [];
     foreach ($this->getParRoleManager()->getAllRoles() as $role) {
       // If the user doesn't have permission ignore the role.
-      if (!$role || !$current_user->hasPermission("assign {$role} role")) {
+      if (!$current_user || !$role || !$current_user->hasPermission("assign {$role} role")) {
         continue;
       }
 

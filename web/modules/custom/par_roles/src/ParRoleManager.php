@@ -164,7 +164,7 @@ class ParRoleManager implements ParRoleManagerInterface {
     $function_id = __FUNCTION__ . $account->get('mail')->getString();
     $entities = &drupal_static($function_id);
     if (!empty($entities)) {
-      return (array) $entities;
+      return array_filter((array) $entities);
     }
 
     // Add the basic query conditions.
