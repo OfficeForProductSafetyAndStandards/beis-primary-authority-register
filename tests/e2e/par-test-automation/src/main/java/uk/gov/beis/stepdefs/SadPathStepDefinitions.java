@@ -66,7 +66,9 @@ public class SadPathStepDefinitions {
 	@When("^the user selects a \"([^\"]*)\" partnership type$")
 	public void the_user_selects_a_partnership_type(String partnershipType) throws Throwable {
 		LOG.info("Select partnership type.");
-		websiteManager.parPartnershipTypePage.selectPartnershipType(partnershipType);
+		DataStore.saveValue(UsableValues.PARTNERSHIP_TYPE, partnershipType);
+		
+		websiteManager.parPartnershipTypePage.selectPartnershipType(DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE));
 	}
 
 	@When("^the user does not confirm the terms and conditions$")
@@ -196,6 +198,208 @@ public class SadPathStepDefinitions {
 		LOG.info("Accept the Terms and Conditions and complete the Partnership Application.");
 		websiteManager.checkPartnershipInformationPage.completeApplication();
 		websiteManager.parPartnershipCompletionPage.clickDoneButton();
+	}
+	
+	@When("^the user does not confirm they have permission from the organisation$")
+	public void the_user_does_not_confirm_they_have_permission_from_the_organisation() throws Throwable {
+		LOG.info("Not declaring permission to complete the partnership by proxy.");
+		websiteManager.declarationPage.deselectConfirmCheckbox();
+		websiteManager.declarationPage.clickContinueButton();
+	}
+	
+	@When("^the user confirms they have permission from the organisation$")
+	public void the_user_confirms_they_have_permission_from_the_organisation() throws Throwable {
+		LOG.info("Declaring permission to complete partnership by proxy.");
+		websiteManager.declarationPage.selectConfirmCheckbox();
+		websiteManager.declarationPage.goToBusinessDetailsPage();
+	}
+
+	@When("^the user leaves the details about the organisation field empty$")
+	public void the_user_leaves_the_details_about_the_organisation_field_empty() throws Throwable {
+		LOG.info("Leaving the details about the Organisation field empty.");
+		websiteManager.aboutTheOrganisationPage.enterDescription("");
+		websiteManager.aboutTheOrganisationPage.clickContinueButton();
+	}
+
+	@When("^the user enters details about the organisation$")
+	public void the_user_enters_details_about_the_organisation() throws Throwable {
+		LOG.info("Entering details about the Organisation.");
+		
+		DataStore.saveValue(UsableValues.BUSINESS_DESC, "Error Message Testing.");
+		
+		websiteManager.aboutTheOrganisationPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
+		websiteManager.aboutTheOrganisationPage.goToAddressPage();
+	}
+
+	@When("^the user leaves all address details fields empty$")
+	public void the_user_leaves_all_address_details_fields_empty() throws Throwable {
+		LOG.info("Leaving all address fields empty.");
+		websiteManager.addAddressPage.clearAddressFields();
+		websiteManager.addAddressPage.clickContinueButton();
+	}
+
+	@When("^the user confirms the address details with the following:$")
+	public void the_user_confirms_the_address_details_with_the_following(DataTable details) throws Throwable {
+		LOG.info("Reentering the address details.");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("AddressLine1"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE2, data.get("AddressLine2"));
+			
+			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("Town"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTY, data.get("County"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTRY, data.get("Country"));
+			DataStore.saveValue(UsableValues.BUSINESS_NATION, data.get("Nation"));
+			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("Postcode"));
+		}
+		
+		websiteManager.addAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY),
+				DataStore.getSavedValue(UsableValues.BUSINESS_NATION), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		websiteManager.addAddressPage.goToAddContactDetailsPage();
+	}
+
+	@When("^the user leaves all contact details fields empty$")
+	public void the_user_leaves_all_contact_details_fields_empty() throws Throwable {
+		LOG.info("Leave the contact details fields empty.");
+		websiteManager.contactDetailsPage.clearAllFields();
+		websiteManager.contactDetailsPage.clickContinueButton();
+	}
+
+	@When("^the user confirms the primary contact details with the following:$")
+	public void the_user_confirms_the_primary_contact_details_with_the_following(DataTable details) throws Throwable {
+		LOG.info("Reeneter the contact details.");
+		websiteManager.contactDetailsPage.addContactDetails(details);
+		
+		LOG.info("Select the prefered contact methods.");
+		websiteManager.contactDetailsPage.selectPreferredEmail();
+		websiteManager.contactDetailsPage.selectPreferredWorkphone();
+		websiteManager.contactDetailsPage.selectPreferredMobilephone();
+		DataStore.saveValue(UsableValues.CONTACT_NOTES, "Test Note.");
+		websiteManager.contactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
+		websiteManager.contactDetailsPage.goToSICCodePage();
+	}
+
+	@When("^the user confirms the sic code$")
+	public void the_user_confirms_the_sic_code() throws Throwable {
+		LOG.info("Selecting SIC Code");
+		DataStore.saveValue(UsableValues.SIC_CODE, "allow people to eat");
+		websiteManager.sicCodePage.selectSICCode(DataStore.getSavedValue(UsableValues.SIC_CODE));
+	}
+
+	@When("^the user does not confirm the number of employees$")
+	public void the_user_does_not_confirm_the_number_of_employees() throws Throwable {
+		LOG.info("Not selecting a number of employees option.");
+	    websiteManager.employeesPage.clickContinueButton();
+	}
+
+	@When("^the user confirms the number of employees$")
+	public void the_user_confirms_the_number_of_employees() throws Throwable {
+		
+		switch (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase()) {
+
+		case ("direct"):
+			LOG.info("Selecting No of Employees");
+			DataStore.saveValue(UsableValues.NO_EMPLOYEES, "50 to 249");
+			websiteManager.employeesPage.selectNoEmployees(DataStore.getSavedValue(UsableValues.NO_EMPLOYEES));
+			break;
+
+		case ("co-ordinated"):
+			LOG.info("Selecting Membership List size");
+			DataStore.saveValue(UsableValues.MEMBERLIST_SIZE, "Medium");
+			websiteManager.memberListPage.selectMemberSize(DataStore.getSavedValue(UsableValues.MEMBERLIST_SIZE));
+			break;
+		}
+	}
+
+	@When("^the user leaves the trading name field empty$")
+	public void the_user_leaves_the_trading_name_field_empty() throws Throwable {
+		LOG.info("Leaving the Trading Name field empty.");
+		websiteManager.tradingPage.enterTradingName("");
+		websiteManager.tradingPage.clickContinueButton();
+	}
+
+	@When("^the user enters a trading name \"([^\"]*)\"$")
+	public void the_user_enters_a_trading_name(String tradingName) throws Throwable {
+		LOG.info("Entering a Trading Name.");
+		DataStore.saveValue(UsableValues.TRADING_NAME, tradingName);
+		websiteManager.tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+		websiteManager.tradingPage.goToLegalEntityTypePage();
+	}
+
+	@When("^the user does not select a registered, charity or unregistered legal entity$")
+	public void the_user_does_not_select_a_registered_charity_or_unregistered_legal_entity() throws Throwable {
+		LOG.info("Not selecting a Legal Entity type.");
+		websiteManager.legalEntityTypePage.clickContinueButton();
+	}
+
+	@When("^the user selects an \"([^\"]*)\" legal entity$")
+	public void the_user_selects_an_legal_entity(String entityType) throws Throwable {
+		LOG.info("Selecting a Legal Entity type.");
+		websiteManager.legalEntityTypePage.selectUnregisteredEntity(entityType, "");
+	}
+
+	@When("^the user does not select a legal entity type or enter a legal entity name$")
+	public void the_user_does_not_select_a_legal_entity_type_or_enter_a_legal_entity_name() throws Throwable {
+		LOG.info("Entering a Legal Entity type but not selecting an entity structure or entering an entity name.");
+		websiteManager.legalEntityTypePage.clickContinueButton();
+	}
+
+	@When("^the user chooses a legal entity with the following details:$")
+	public void the_user_chooses_a_legal_entity_with_the_following_details(DataTable details) throws Throwable {
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Legal Entity Name"));
+			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal Entity Type"));
+		}
+		
+		LOG.info("Entering a Legal Entity.");
+		websiteManager.legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		websiteManager.legalEntityTypePage.goToLegalEntityReviewPage();
+	}
+
+	@When("^the user confirms the legal entity$")
+	public void the_user_confirms_the_legal_entity() throws Throwable {
+		LOG.info("Confirm the Legal Entity.");
+		websiteManager.legalEntityReviewPage.goToCheckPartnershipInformationPage();
+	}
+
+	@When("^the user does not confirm they have read the terms and conditions$")
+	public void the_user_does_not_confirm_they_have_read_the_terms_and_conditions() throws Throwable {
+		LOG.info("Not accepting the partnership terms and conditions.");
+		websiteManager.checkPartnershipInformationPage.deselectOrganisationConfirmationCheckbox();
+	}
+
+	@Then("^the user confirms the second part of the partnership application$")
+	public void the_user_confirms_the_second_part_of_the_partnership_application() throws Throwable {
+		LOG.info("Verify the Partnership Information.");
+		
+		Assert.assertTrue("About the Organisation is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyAboutTheOrganisation());
+		Assert.assertTrue("Organisation Name is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyOrganisationName());
+		Assert.assertTrue("Organisation Address is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyOrganisationAddress());
+		Assert.assertTrue("Organisation Contact is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyContactAtTheOrganisation());
+		
+		Assert.assertTrue("Primary SIC Code is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyPrimarySICCode());
+		
+		switch (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase()) {
+			case ("direct"):
+				LOG.info("Checking Employee Size.");
+				Assert.assertTrue("Number of Employees is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyNumberOfEmployees());
+				break;
+			case ("co-ordinated"):
+				LOG.info("Checking Members Size.");
+				Assert.assertTrue("Members Size is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyMemberSize());
+				break;
+		}
+		
+		Assert.assertTrue("Legal Entity is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyLegalEntity());
+		Assert.assertTrue("Trading Name is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyTradingName());
+		
+		LOG.info("Complete Partnership Application.");
+		websiteManager.checkPartnershipInformationPage.confirmApplication();
+		websiteManager.parPartnershipCompletionPage.clickDoneButton();
+	    
+	    LOG.info("Set second part of journey part to true.");
+		ScenarioContext.secondJourneyPart = true;
 	}
 	
 	

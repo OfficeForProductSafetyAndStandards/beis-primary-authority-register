@@ -221,7 +221,7 @@ public class PARStepDefs {
 		
 		LOG.info("Add business description");
 		websiteManager.aboutTheOrganisationPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
-		websiteManager.aboutTheOrganisationPage.clickContinueButton();
+		websiteManager.aboutTheOrganisationPage.goToAddressPage();
 		
 		LOG.info("Confirming address details");
 		websiteManager.addAddressPage.goToAddContactDetailsPage();
@@ -239,22 +239,23 @@ public class PARStepDefs {
 		switch (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase()) {
 
 		case ("direct"):
-			LOG.info("Selecting No of Employees");
+			LOG.info("Selecting No of Employees.");
 			websiteManager.employeesPage.selectNoEmployees(DataStore.getSavedValue(UsableValues.NO_EMPLOYEES));
 			break;
 
 		case ("co-ordinated"):
-			LOG.info("Selecting Membership List size");
+			LOG.info("Selecting Membership List size.");
 			websiteManager.memberListPage.selectMemberSize(DataStore.getSavedValue(UsableValues.MEMBERLIST_SIZE));
 			break;
 		}
 
-		LOG.info("Entering business trading name");
+		LOG.info("Entering business trading name.");
 		websiteManager.tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
 		websiteManager.tradingPage.goToLegalEntityTypePage();
 		
+		LOG.info("Entering a Legal Entity.");
 		websiteManager.legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
-		websiteManager.legalEntityTypePage.clickContinueButton();
+		websiteManager.legalEntityTypePage.goToLegalEntityReviewPage();
 		
 		websiteManager.legalEntityReviewPage.goToCheckPartnershipInformationPage();
 		
@@ -459,7 +460,7 @@ public class PARStepDefs {
 		websiteManager.partnershipInformationPage.selectAmendLegalEntitiesLink();
 		
 		websiteManager.legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
-		websiteManager.legalEntityTypePage.clickContinueButton();
+		websiteManager.legalEntityTypePage.goToLegalEntityReviewPage();
 		websiteManager.legalEntityReviewPage.goToConfirmThisAmendmentPage();
 		
 		websiteManager.confirmThisAmendmentPage.confirmLegalEntityAmendments();
@@ -1370,7 +1371,7 @@ public class PARStepDefs {
 		
 		LOG.info("Entering the Member Organisation's Legal Entity.");
 		websiteManager.legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
-		websiteManager.legalEntityTypePage.clickContinueButton();
+		websiteManager.legalEntityTypePage.goToLegalEntityReviewPage();
 		websiteManager.legalEntityReviewPage.clickContinueForMember();
 		
 		LOG.info("Confirming the Member Organisation is covered by the Inspection Plan.");

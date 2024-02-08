@@ -122,6 +122,14 @@ public class CheckPartnershipInformationPage extends BasePageObject {
 		saveBtn.click();
 	}
 	
+	public void deselectOrganisationConfirmationCheckbox() {
+		if(organisationConfirmCheckbox.isSelected()) {
+			organisationConfirmCheckbox.click();
+		}
+		
+		saveBtn.click();
+	}
+	
 	public PartnershipCompletionPage confirmApplication() {
 		if(!organisationConfirmCheckbox.isSelected()) {
 			organisationConfirmCheckbox.click();

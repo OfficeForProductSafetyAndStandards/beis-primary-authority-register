@@ -13,7 +13,8 @@ import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage
 
 public class TradingPage extends BasePageObject {
 	
-	@FindBy(xpath = "//div/input[@class='form-text form-control govuk-input']")
+	//@FindBy(xpath = "//div/input[@class='form-text form-control govuk-input']")
+	@FindBy(id= "edit-trading-name")
 	private WebElement tradingName;
 	
 	@FindBy(id = "edit-next")
@@ -34,6 +35,10 @@ public class TradingPage extends BasePageObject {
 	public void editMemberTradingName(String name) {
 		tradingName.clear();
 		tradingName.sendKeys(name);
+	}
+	
+	public void clickContinueButton() {
+		continueBtn.click();
 	}
 	
 	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {

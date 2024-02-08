@@ -30,7 +30,11 @@ public class AboutTheOrganisationPage extends BasePageObject {
 		descriptionBox.sendKeys(description);
 	}
 	
-	public AddAddressPage clickContinueButton() {
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
+	public AddAddressPage goToAddressPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, AddAddressPage.class);
 	}

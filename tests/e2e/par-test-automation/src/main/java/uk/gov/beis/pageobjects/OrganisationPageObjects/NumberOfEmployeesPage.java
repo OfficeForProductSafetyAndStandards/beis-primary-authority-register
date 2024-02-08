@@ -25,6 +25,10 @@ public class NumberOfEmployeesPage extends BasePageObject {
 		driver.findElement(By.xpath(noEmployees.replace("?", number))).click();
 	}
 	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
 	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);

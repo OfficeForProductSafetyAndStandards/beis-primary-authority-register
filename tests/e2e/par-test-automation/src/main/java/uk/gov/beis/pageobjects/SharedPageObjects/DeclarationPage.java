@@ -46,6 +46,12 @@ public class DeclarationPage extends BasePageObject {
 		}
 	}
 	
+	public void deselectConfirmCheckbox() {
+		if(confirmationCheckbox.isSelected()) {
+			confirmationCheckbox.click();
+		}
+	}
+	
 	public void selectConfirmCheckbox() {
 		if(!confirmationCheckbox.isSelected()) {
 			confirmationCheckbox.click();
@@ -56,6 +62,10 @@ public class DeclarationPage extends BasePageObject {
 		if(!dataPolcyCheckbox.isSelected()) {
 			dataPolcyCheckbox.click();
 		}
+	}
+	
+	public void clickContinueButton() {
+		continueBtn.click();
 	}
 	
 	public ContactDetailsPage goToContactDetailsPage() {
