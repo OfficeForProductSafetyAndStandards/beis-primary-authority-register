@@ -21,7 +21,7 @@ public class RegulatoryFunctionPage extends BasePageObject {
 	@FindBy(id = "edit-partnership-cover-bespoke")
 	private WebElement bespokeRadial;
 	
-	@FindBy(xpath = "//input[@class='form-checkbox form-control govuk-input govuk-checkboxes__input']")
+	@FindBy(xpath = "//input[@type='checkbox']")
 	private WebElement bespokeCheckbox;
 
 	@FindBy(id = "edit-next")
@@ -40,6 +40,16 @@ public class RegulatoryFunctionPage extends BasePageObject {
 		normalOrSequencedRadial.click();
 	}
 	
+	public void deselectBespokeFunctions() {
+		bespokeRadial.click();
+		
+		if(bespokeRadial.isSelected()) {
+			if(bespokeCheckbox.isSelected()) {
+				bespokeCheckbox.click();
+			}
+		}
+	}
+	
 	public void selectBespokeFunctions() {
 		bespokeRadial.click();
 		
@@ -48,6 +58,10 @@ public class RegulatoryFunctionPage extends BasePageObject {
 				bespokeCheckbox.click();
 			}
 		}
+	}
+	
+	public void selectContinueButton() {
+		continueBtn.click();
 	}
 	
 	public PartnershipApprovalPage goToPartnershipApprovedPage() {

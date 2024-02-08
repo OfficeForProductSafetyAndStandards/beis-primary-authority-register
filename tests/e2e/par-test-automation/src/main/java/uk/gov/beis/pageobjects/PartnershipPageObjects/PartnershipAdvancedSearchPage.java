@@ -66,6 +66,12 @@ public class PartnershipAdvancedSearchPage extends BasePageObject {
 		return (statusElement.isDisplayed() && actionElement.isDisplayed());
 	}
 	
+	public boolean checkPartnershipStatus(String status) {
+		WebElement statusElement = driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[3][normalize-space()='"+ status +"']"));
+		
+		return statusElement.isDisplayed();
+	}
+	
 	public boolean checkPartnershipExists() {
 		return driver.findElements(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]")).isEmpty();
 	}

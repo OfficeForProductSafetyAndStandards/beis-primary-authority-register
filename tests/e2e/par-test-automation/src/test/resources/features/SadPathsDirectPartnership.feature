@@ -113,3 +113,20 @@ Feature: Direct Partnership Sad Paths
     And the user does not confirm they have read the terms and conditions
     Then the user is shown the "Please confirm you have read the terms and conditions." error message
     And the user confirms the second part of the partnership application
+
+  @regression @sadpath @partnershipapplication @test
+  Scenario: Verify a user receives Error Messages for required fields when Nominating a Partnership (Sad Path - PAR-2394)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "secretary_state@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user selects the approve partnership action link
+    And the user does not confirm they are authorised to approve
+    Then the user is shown the "You must confirm you are authorised to approve this partnership." error message
+    When the user confirms they are authorised to approve
+    And the user selects the bespoke Radio but not the type of bespoke regulatory functions
+    Then the user is shown the "You must choose at least one regulatory function." error message
+    When the user selects the type of bespoke regulatory functions
+    And the user searches again for the last created partnership
+    Then the partnership is approved successfully

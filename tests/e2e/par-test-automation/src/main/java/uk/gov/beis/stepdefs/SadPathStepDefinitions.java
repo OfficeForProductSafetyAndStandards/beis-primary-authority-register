@@ -402,6 +402,48 @@ public class SadPathStepDefinitions {
 		ScenarioContext.secondJourneyPart = true;
 	}
 	
+	@When("^the user selects the approve partnership action link$")
+	public void the_user_selects_the_approve_partnership_action_link() throws Throwable {
+		LOG.info("Select last created partnership Approval link.");
+		websiteManager.partnershipAdvancedSearchPage.selectApproveBusinessNameLink();
+	}
+
+	@When("^the user does not confirm they are authorised to approve$")
+	public void the_user_does_not_confirm_they_are_authorised_to_approve() throws Throwable {
+		LOG.info("Not confirming the user is authorised to approve the partnership.");
+		websiteManager.declarationPage.clickContinueButton();
+	}
+
+	@When("^the user confirms they are authorised to approve$")
+	public void the_user_confirms_they_are_authorised_to_approve() throws Throwable {
+		LOG.info("Confirming the user is authorised to approve the partnership.");
+		websiteManager.declarationPage.selectAuthorisedCheckbox();
+		websiteManager.declarationPage.goToRegulatoryFunctionsPage();
+	}
+
+	@When("^the user selects the bespoke Radio but not the type of bespoke regulatory functions$")
+	public void the_user_selects_the_bespoke_Radio_but_not_the_type_of_bespoke_regulatory_functions() throws Throwable {
+		LOG.info("Selecting the Bespoke Radio button but not selecting the type of Regulatory Functions.");
+		websiteManager.regulatoryFunctionPage.deselectBespokeFunctions();
+		websiteManager.regulatoryFunctionPage.selectContinueButton();
+	}
+	
+	@When("^the user selects the type of bespoke regulatory functions$")
+	public void the_user_selects_the_type_of_bespoke_regulatory_functions() throws Throwable {
+		LOG.info("Selecting the Bespoke Radio button andthe type of Regulatory Functions.");
+		websiteManager.regulatoryFunctionPage.selectBespokeFunctions();
+		websiteManager.regulatoryFunctionPage.goToPartnershipApprovedPage();
+		
+		LOG.info("Complete the Partnership Approval.");
+		websiteManager.partnershipApprovalPage.completeApplication();
+	}
+
+	@Then("^the partnership is approved successfully$")
+	public void the_partnership_is_approved_successfully() throws Throwable {
+		LOG.info("Check status of partnership is set to Active");
+		assertTrue(websiteManager.partnershipAdvancedSearchPage.checkPartnershipStatus("Active"));
+	}
+	
 	
 	// Other Features
 	@Given("^the user is on the home page$")
