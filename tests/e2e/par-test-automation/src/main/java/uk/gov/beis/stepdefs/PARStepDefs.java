@@ -433,7 +433,7 @@ public class PARStepDefs {
 		websiteManager.sicCodePage.editSICCode(DataStore.getSavedValue(UsableValues.SIC_CODE));
 		
 		websiteManager.partnershipInformationPage.editTradingName();
-		websiteManager.tradingPage.editTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+		websiteManager.tradingPage.goToPartnershipInformationPage(DataStore.getSavedValue(UsableValues.TRADING_NAME));
 	}
 
 	@Then("^all of the Partnership details have been updated successfully$")
@@ -1730,7 +1730,7 @@ public class PARStepDefs {
 		websiteManager.aboutTheOrganisationPage.goToBusinessDetailsPage();
 		
 		websiteManager.businessDetailsPage.editTradingName();
-		websiteManager.tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+		websiteManager.tradingPage.editTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
 		websiteManager.tradingPage.goToBusinessDetailsPage();
 		
 		websiteManager.businessDetailsPage.editSICCode();

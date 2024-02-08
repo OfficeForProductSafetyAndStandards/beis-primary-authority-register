@@ -13,9 +13,14 @@ import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage
 
 public class TradingPage extends BasePageObject {
 	
-	//@FindBy(xpath = "//div/input[@class='form-text form-control govuk-input']")
 	@FindBy(id= "edit-trading-name")
 	private WebElement tradingName;
+	
+	@FindBy(id= "edit-par-component-trading-name-0-trading-name")
+	private WebElement editTradingName;
+	
+	@FindBy(xpath = "//div/input[@class='form-text form-control govuk-input']")
+	private WebElement memberTradingName;
 	
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
@@ -32,6 +37,11 @@ public class TradingPage extends BasePageObject {
 		tradingName.sendKeys(name);
 	}
 	
+	public void editTradingName(String name) {
+		editTradingName.clear();
+		editTradingName.sendKeys(name);
+	}
+	
 	public void editMemberTradingName(String name) {
 		tradingName.clear();
 		tradingName.sendKeys(name);
@@ -46,7 +56,7 @@ public class TradingPage extends BasePageObject {
 		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 	}
 	
-	public PartnershipInformationPage editTradingName(String name) {
+	public PartnershipInformationPage goToPartnershipInformationPage(String name) {
 		tradingName.clear();
 		tradingName.sendKeys(name);
 		
@@ -65,8 +75,8 @@ public class TradingPage extends BasePageObject {
 	}
 	
 	public LegalEntityTypePage addTradingNameForMember(String name) {
-		tradingName.clear();
-		tradingName.sendKeys(name);
+		memberTradingName.clear();
+		memberTradingName.sendKeys(name);
 		
 		continueBtn.click();
 		return PageFactory.initElements(driver, LegalEntityTypePage.class);

@@ -31,6 +31,10 @@ public class RevokePage extends BasePageObject {
 		reasonTextArea.sendKeys(reason);
 	}
 	
+	public void clickRevokeButton() {
+		revokeNextBtn.click();
+	}
+	
 	public PartnershipRevokedPage goToPartnershipRevokedPage() {
 		revokeNextBtn.click();
 		return PageFactory.initElements(driver, PartnershipRevokedPage.class);

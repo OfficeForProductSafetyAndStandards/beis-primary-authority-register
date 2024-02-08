@@ -440,7 +440,54 @@ public class SadPathStepDefinitions {
 
 	@Then("^the partnership is approved successfully$")
 	public void the_partnership_is_approved_successfully() throws Throwable {
-		LOG.info("Check status of partnership is set to Active");
+		LOG.info("Check status of partnership is set to Active.");
+		assertTrue(websiteManager.partnershipAdvancedSearchPage.checkPartnershipStatus("Active"));
+	}
+	
+	@When("^the user selects the revoke partnership action link$")
+	public void the_user_selects_the_revoke_partnership_action_link() throws Throwable {
+		LOG.info("Selecting the Revoke Partnership link.");
+		websiteManager.partnershipAdvancedSearchPage.selectRevokeBusinessNameLink();
+	}
+
+	@When("^the user leaves the revoke reason field empty$")
+	public void the_user_leaves_the_revoke_reason_field_empty() throws Throwable {
+		LOG.info("Leaving the Revoke reason field empty.");
+		websiteManager.revokePage.enterReasonForRevocation("");
+		websiteManager.revokePage.clickRevokeButton();
+	}
+
+	@When("^the user enters a revoke reason$")
+	public void the_user_enters_a_revoke_reason() throws Throwable {
+		LOG.info("Revoking last created partnership.");
+		websiteManager.revokePage.enterReasonForRevocation("Test Revoke.");
+		websiteManager.revokePage.goToPartnershipRevokedPage();
+		
+		websiteManager.partnershipRevokedPage.goToAdvancedPartnershipSearchPage();
+	}
+
+	@Then("^the partnership is revoked successfully$")
+	public void the_partnership_is_revoked_successfully() throws Throwable {
+		LOG.info("Check status of partnership is set to Revoked.");
+		assertTrue(websiteManager.partnershipAdvancedSearchPage.checkPartnershipStatus("Revoked"));
+	}
+
+	@When("^the user selects the restore partnership action link$")
+	public void the_user_selects_the_restore_partnership_action_link() throws Throwable {
+		LOG.info("Selecting the Reinstate Partnership link.");
+		websiteManager.partnershipAdvancedSearchPage.selectRestoreBusinessNameLink();
+	}
+	
+	@When("^the user restores the revoked partnership$")
+	public void the_user_restores_the_revoked_partnership() throws Throwable {
+		LOG.info("Reinstate the revoked Partnership.");
+		websiteManager.reinstatePage.goToPartnershipRestoredPage();
+		websiteManager.partnershipRestoredPage.goToAdvancedPartnershipSearchPage();
+	}
+
+	@Then("^the partnership is restored successfully$")
+	public void the_partnership_is_restored_successfully() throws Throwable {
+		LOG.info("Check status of partnership is set to Active.");
 		assertTrue(websiteManager.partnershipAdvancedSearchPage.checkPartnershipStatus("Active"));
 	}
 	

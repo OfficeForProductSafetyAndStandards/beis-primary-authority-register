@@ -18,7 +18,7 @@
 #Sample Feature Definition Template
 Feature: Direct Partnership Sad Paths
 
-  @regression @sadpath @partnershipapplication @test
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring
   Scenario: Verify a user receives Error Messages for required fields during the Partnership Application and Completion Process (Sad Path - PAR-2392, PAR-2393)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -114,7 +114,7 @@ Feature: Direct Partnership Sad Paths
     Then the user is shown the "Please confirm you have read the terms and conditions." error message
     And the user confirms the second part of the partnership application
 
-  @regression @sadpath @partnershipapplication @test
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring
   Scenario: Verify a user receives Error Messages for required fields when Nominating a Partnership (Sad Path - PAR-2394)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -130,3 +130,21 @@ Feature: Direct Partnership Sad Paths
     When the user selects the type of bespoke regulatory functions
     And the user searches again for the last created partnership
     Then the partnership is approved successfully
+
+  @regression @sadpath @partnershiprevokingrestoring
+  Scenario: Verify a user receives Error Messages for required fields when Revoking and Reinstating a Partnership (Sad Path - PAR-2395)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "secretary_state@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user selects the revoke partnership action link
+    And the user leaves the revoke reason field empty
+    Then the user is shown the "You must give a reason for revoking this partnership." error message
+    When the user enters a revoke reason
+    And the user searches again for the last created partnership
+    Then the partnership is revoked successfully
+    When the user selects the restore partnership action link
+    And the user restores the revoked partnership
+    And the user searches again for the last created partnership
+    Then the partnership is restored successfully

@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.BasePageObject;
 
 public class LegalEntityTypePage extends BasePageObject {
@@ -35,23 +34,6 @@ public class LegalEntityTypePage extends BasePageObject {
 	public LegalEntityTypePage() throws ClassNotFoundException, IOException {
 		super();
 	}
-	
-	//public LegalEntityReviewPage selectEntityType(String name, String type, String reg) {
-	//	if (!type.equalsIgnoreCase("unregistered")) {
-	//		ScenarioContext.registered = true;
-	//		driver.findElement(By.xpath(legalEntType.replace("?", type))).click();
-	//		driver.findElement(By.id("edit-par-component-legal-entity-0-registered-legal-entity-number")).sendKeys(reg);
-	//	} else {
-	//		ScenarioContext.registered = false;
-	//		driver.findElement(By.xpath(legalEntType.replace("?", type))).click();
-	//		driver.findElement(By.xpath("//label[contains(text(),'Other')]")).click();
-	//		driver.findElement(By.xpath("//input[@class='form-group form-text form-control govuk-input']")).sendKeys(name);
-	//	}
-	//	
-	//	continueBtn.click();
-	//	
-	//	return PageFactory.initElements(driver, LegalEntityReviewPage.class);
-	//}
 	
 	public void selectRegisteredOrganisation(String registrationNumber) {
 		registeredOrganisationRadial.click();
