@@ -721,6 +721,12 @@ public class SadPathStepDefinitions {
 		LOG.info("Selecting the Add another authority contact link.");
 		websiteManager.partnershipInformationPage.addAnotherAuthorityContactButton();
 	}
+	
+	@When("^the user selects the add another organisation contact link$")
+	public void the_user_selects_the_add_another_organisation_contact_link() throws Throwable {
+		LOG.info("Selecting the Add another organisation contact link.");
+		websiteManager.partnershipInformationPage.addAnotherOrganisationContactButton();
+	}
 
 	@When("^the user enters the following authority contact details:$")
 	public void the_user_enters_the_following_authority_contact_details(DataTable details) throws Throwable {

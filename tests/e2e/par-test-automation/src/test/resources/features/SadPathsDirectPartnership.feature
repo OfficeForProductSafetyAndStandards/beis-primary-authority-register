@@ -267,3 +267,27 @@ Feature: Direct Partnership Sad Paths
     When the user removes the new Primary Authority Contact
     Then the new Primary Authority contact is removed Successfully
     And the user signs out
+
+  @regression @sadpath @partnershipupdate @sadContactDetails
+  Scenario: Verify a user receives Error Messages for required fields when Adding and Removing an Organisation Contact for a Partnership (Sad Path - PAR-2403)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership Authority
+    And the user selects the add another organisation contact link
+    And the user leaves the contact details fields empty
+    Then the user is shown the following error messages:
+      | ErrorMessage                                           |
+      | You must enter the first name for this contact.        |
+      | You must enter the last name for this contact.         |
+      | You must enter the work phone number for this contact. |
+      | You must enter the email address for this contact.     |
+    When the user enters the following authority contact details:
+      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                   |
+      | Dr    | Sarah     | Smythe   | 02056698234 |  07798573542 | sarahsmythe@example.com |
+    Then the new contact is added successfully
+    # Remove the new contact.
+    When the user removes the new Organisation contact
+    Then the new Organisation contact is removed Successfully
+    And the user signs out
