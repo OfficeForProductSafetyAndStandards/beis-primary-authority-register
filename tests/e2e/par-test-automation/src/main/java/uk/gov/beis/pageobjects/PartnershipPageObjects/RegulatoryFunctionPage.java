@@ -64,6 +64,10 @@ public class RegulatoryFunctionPage extends BasePageObject {
 		continueBtn.click();
 	}
 	
+	public void selectSaveButton() {
+		saveBtn.click();
+	}
+	
 	public PartnershipApprovalPage goToPartnershipApprovedPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, PartnershipApprovalPage.class);

@@ -491,6 +491,163 @@ public class SadPathStepDefinitions {
 		assertTrue(websiteManager.partnershipAdvancedSearchPage.checkPartnershipStatus("Active"));
 	}
 	
+	@When("^the user does not update the information about the partnership field empty$")
+	public void the_user_does_not_update_the_information_about_the_partnership_field_empty() throws Throwable {
+		LOG.info("Leaving the Infdormation about the Partnership field empty.");
+		websiteManager.partnershipInformationPage.editAboutPartnership();
+		
+		websiteManager.parPartnershipDescriptionPage.enterDescription("");
+		websiteManager.parPartnershipDescriptionPage.clickSaveButton();
+	}
+	
+	@When("^the user enters the following information about the partnership \"([^\"]*)\"$")
+	public void the_user_enters_the_following_information_about_the_partnership(String information) throws Throwable {
+		LOG.info("Entering information about the partnership.");
+		DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, information);
+		
+		websiteManager.parPartnershipDescriptionPage.enterDescription(DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO));
+		websiteManager.parPartnershipDescriptionPage.goToPartnershipInformationPage();
+	}
+
+	@Then("^the information about the partnership is updated successfully$")
+	public void the_information_about_the_partnership_is_updated_successfully() throws Throwable {
+		LOG.info("Verifying About the Partnership have been updated Successfully.");
+		
+		assertTrue(websiteManager.partnershipInformationPage.verifyAboutThePartnership());
+	}
+
+	@When("^the user updates the partnership to bespoke but does not choose the regulatory functions$")
+	public void the_user_updates_the_partnership_to_bespoke_but_does_not_choose_the_regulatory_functions() throws Throwable {
+		LOG.info("Selecting the Bespoke Radio but not selecting the Regulatory Functions checkbox.");
+		
+		websiteManager.partnershipInformationPage.editRegulatoryFunctions();
+		websiteManager.regulatoryFunctionPage.deselectBespokeFunctions();
+		websiteManager.regulatoryFunctionPage.selectSaveButton();
+	}
+
+	@When("^the user updates the regulatory function$")
+	public void the_user_updates_the_regulatory_function() throws Throwable {
+		LOG.info("Selecting the Bespoke Regulatory Functions.");
+		DataStore.saveValue(UsableValues.PARTNERSHIP_REGFUNC, "Alphabet learning");
+		websiteManager.regulatoryFunctionPage.selectBespokeFunctions();
+		websiteManager.regulatoryFunctionPage.selectSaveButton();
+	}
+
+	@Then("^the regulatory function is updated successfully$")
+	public void the_regulatory_function_is_updated_successfully() throws Throwable {
+		LOG.info("Verifying the Regulatory Functions have been updated Successfully.");
+		
+		assertTrue(websiteManager.partnershipInformationPage.checkRegulatoryFunctions());
+		websiteManager.partnershipInformationPage.clickSave();
+	}
+
+	@When("^the user leaves the organisation address fields empty$")
+	public void the_user_leaves_the_organisation_address_fields_empty() throws Throwable {
+		LOG.info("Leave all Address fields empty.");
+		websiteManager.partnershipInformationPage.editOrganisationAddress();
+		websiteManager.addAddressPage.clearAddressFields();
+		websiteManager.addAddressPage.clickSaveButton();
+	}
+
+	@When("^the user updates the address with the following details:$")
+	public void the_user_updates_the_address_with_the_following_details(DataTable details) throws Throwable {
+		LOG.info("Updating the address.");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("AddressLine1"));
+			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE2, data.get("AddressLine2"));
+			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("Town"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTY, data.get("County"));
+			DataStore.saveValue(UsableValues.BUSINESS_COUNTRY, data.get("Country"));
+			DataStore.saveValue(UsableValues.BUSINESS_NATION, data.get("Nation"));
+			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("Postcode"));
+		}
+		
+		websiteManager.addAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY), 
+				DataStore.getSavedValue(UsableValues.BUSINESS_NATION), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		websiteManager.addAddressPage.saveGoToPartnershipInformationPage();
+	}
+	
+	@Then("^the organisation address is updated successfully$")
+	public void the_organisation_address_is_updated_successfully() throws Throwable {
+		LOG.info("Verifying the Organisation Address has been updated Successfully.");
+
+		assertTrue(websiteManager.partnershipInformationPage.checkOrganisationAddress());
+	}
+
+	@When("^the user does not update the about the organisation field empty$")
+	public void the_user_does_not_update_the_about_the_organisation_field_empty() throws Throwable {
+		LOG.info("Leaving the Information about the Organisation field empty.");
+		
+		websiteManager.partnershipInformationPage.editAboutTheOrganisation();
+		websiteManager.parPartnershipDescriptionPage.updateBusinessDescription("");
+		websiteManager.parPartnershipDescriptionPage.clickSaveButton();
+	}
+
+	@When("^the user updates the organisation information with the following: \"([^\"]*)\"$")
+	public void the_user_updates_the_organisation_information_with_the_following(String information) throws Throwable {
+		LOG.info("Updating the Information about the Organisation.");
+		DataStore.saveValue(UsableValues.BUSINESS_DESC, information);
+		websiteManager.parPartnershipDescriptionPage.updateBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
+		websiteManager.parPartnershipDescriptionPage.goToPartnershipInformationPage();
+	}
+
+	@Then("^the information about the organisation is updated successfully$")
+	public void the_information_about_the_organisation_is_updated_successfully() throws Throwable {
+		LOG.info("Verifying all the remaining Partnership details have been updated Successfully.");
+		
+		assertTrue(websiteManager.partnershipInformationPage.checkAboutTheOrganisation());
+	}
+
+	@When("^the user clicks the add another trading name link but leaves the text field empty$")
+	public void the_user_clicks_the_add_another_trading_name_link_but_leaves_the_text_field_empty() throws Throwable {
+		LOG.info("Adding a new Trading Name but leaving the field empty.");
+		
+		websiteManager.partnershipInformationPage.addAnotherTradingName();
+		websiteManager.tradingPage.enterTradingName("");
+		websiteManager.tradingPage.clickSaveButton();
+	}
+
+	@When("^the user enters a new trading name: \"([^\"]*)\"$")
+	public void the_user_enters_a_new_trading_name(String tradingName) throws Throwable {
+		LOG.info("Adding a new Trading Name.");
+		DataStore.saveValue(UsableValues.TRADING_NAME, tradingName);
+		websiteManager.tradingPage.goToPartnershipInformationPage(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+	}
+
+	@Then("^the new trading name is added successfully$")
+	public void the_new_trading_name_is_added_successfully() throws Throwable {
+		LOG.info("Verifying the Trading Name was added Successfully.");
+		
+		assertTrue(websiteManager.partnershipInformationPage.verifyTradingName());
+	}
+
+	@When("^the user edits the trading name but leaves the text field empty$")
+	public void the_user_edits_the_trading_name_but_leaves_the_text_field_empty() throws Throwable {
+		LOG.info("Updating a Trading Name but leaving the field empty.");
+		
+		websiteManager.partnershipInformationPage.editTradingName();
+		websiteManager.tradingPage.enterTradingName("");
+		websiteManager.tradingPage.clickSaveButton();
+	}
+
+	@When("^the user updates the trading name: \"([^\"]*)\"$")
+	public void the_user_updates_the_trading_name(String tradingName) throws Throwable {
+		LOG.info("Updating a Trading Name.");
+		
+		DataStore.saveValue(UsableValues.TRADING_NAME, tradingName);
+		websiteManager.tradingPage.goToPartnershipInformationPage(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+	}
+
+	@Then("^the trading name is updated successfully$")
+	public void the_trading_name_is_updated_successfully() throws Throwable {
+		LOG.info("Verifying the Trading Name was updated Successfully.");
+		
+		assertTrue(websiteManager.partnershipInformationPage.verifyTradingName());
+		websiteManager.partnershipInformationPage.clickSave();
+	}
+	
 	
 	// Other Features
 	@Given("^the user is on the home page$")

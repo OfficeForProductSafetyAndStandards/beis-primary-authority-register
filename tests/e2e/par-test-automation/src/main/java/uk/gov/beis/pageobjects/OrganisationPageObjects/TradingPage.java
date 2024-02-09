@@ -51,6 +51,10 @@ public class TradingPage extends BasePageObject {
 		continueBtn.click();
 	}
 	
+	public void clickSaveButton() {
+		saveBtn.click();
+	}
+	
 	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);

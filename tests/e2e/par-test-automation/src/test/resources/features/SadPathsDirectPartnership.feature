@@ -18,7 +18,7 @@
 #Sample Feature Definition Template
 Feature: Direct Partnership Sad Paths
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate
   Scenario: Verify a user receives Error Messages for required fields during the Partnership Application and Completion Process (Sad Path - PAR-2392, PAR-2393)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -114,7 +114,7 @@ Feature: Direct Partnership Sad Paths
     Then the user is shown the "Please confirm you have read the terms and conditions." error message
     And the user confirms the second part of the partnership application
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate
   Scenario: Verify a user receives Error Messages for required fields when Nominating a Partnership (Sad Path - PAR-2394)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -148,3 +148,43 @@ Feature: Direct Partnership Sad Paths
     And the user restores the revoked partnership
     And the user searches again for the last created partnership
     Then the partnership is restored successfully
+
+  @regression @sadpath @partnershipupdate
+  Scenario: Verify a user receives Error Messages for required fields when Updating a Partnerships Information (Sad Path - PAR-2400)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership Authority
+    And the user does not update the information about the partnership field empty
+    Then the user is shown the "You must enter some information about this partnership." error message
+    When the user enters the following information about the partnership "Test Partnership Information."
+    Then the information about the partnership is updated successfully
+    When the user updates the partnership to bespoke but does not choose the regulatory functions
+    Then the user is shown the "You must choose at least one regulatory function." error message
+    When the user updates the regulatory function
+    Then the regulatory function is updated successfully
+    # Change Partnership Information page tp continue updating.
+    When the user searches for the last created partnership Organisation
+    And the user leaves the organisation address fields empty
+    Then the user is shown the following error messages:
+      | ErrorMessage                                     |
+      | You must enter the first line of your address    |
+      | You must enter the town or city for this address |
+      | You must enter a valid postcode.                 |
+    When the user updates the address with the following details:
+      | AddressLine1 | AddressLine2 | Town       | County              | Country        | Nation  | Postcode |
+      | 01 Bridge    | Town Hall    | Manchester | Greater Manachester | United Kingdom | England | BL2 6GH  |
+    Then the organisation address is updated successfully
+    When the user does not update the about the organisation field empty
+    Then the user is shown the "You must enter a description for the business." error message
+    When the user updates the organisation information with the following: "Test Organisation Information."
+    Then the information about the organisation is updated successfully
+    When the user clicks the add another trading name link but leaves the text field empty
+    Then the user is shown the "You must enter the trading name for this organisation" error message
+    When the user enters a new trading name: "New Trading Name"
+    Then the new trading name is added successfully
+    When the user edits the trading name but leaves the text field empty
+    Then the user is shown the "You must enter the trading name for this organisation." error message
+    When the user updates the trading name: "Updated Trading Name"
+    Then the trading name is updated successfully

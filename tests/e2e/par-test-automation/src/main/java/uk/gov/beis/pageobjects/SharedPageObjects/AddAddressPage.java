@@ -101,6 +101,10 @@ public class AddAddressPage extends BasePageObject {
 		continueBtn.click();
 	}
 	
+	public void clickSaveButton() {
+		saveBtn.click();
+	}
+	
 	public ContactDetailsPage goToAddContactDetailsPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, ContactDetailsPage.class);
@@ -116,7 +120,7 @@ public class AddAddressPage extends BasePageObject {
 		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
-	public PartnershipInformationPage clickSaveButton() {
+	public PartnershipInformationPage saveGoToPartnershipInformationPage() {
 		saveBtn.click();
 		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}

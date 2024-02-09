@@ -63,6 +63,9 @@ public class PartnershipInformationPage extends BasePageObject {
 	@FindBy(linkText = "edit trading name")
 	private WebElement editTradingNameLink;
 	
+	@FindBy(linkText = "add another trading name")
+	private WebElement addAnotherTradingNameLink;
+	
 	// Data Fields
 	@FindBy(id = "edit-regulatory-functions")
 	private WebElement regulatoryFunctionText;
@@ -277,6 +280,11 @@ public class PartnershipInformationPage extends BasePageObject {
 	
 	public TradingPage editTradingName() {
 		editTradingNameLink.click();
+		return PageFactory.initElements(driver, TradingPage.class);
+	}
+	
+	public TradingPage addAnotherTradingName() {
+		addAnotherTradingNameLink.click();
 		return PageFactory.initElements(driver, TradingPage.class);
 	}
 	

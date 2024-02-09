@@ -375,7 +375,7 @@ public class PARStepDefs {
 		
 		websiteManager.partnershipInformationPage.editAboutPartnership();
 		websiteManager.parPartnershipDescriptionPage.enterDescription(DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO));
-		websiteManager.parPartnershipDescriptionPage.clickSave();
+		websiteManager.parPartnershipDescriptionPage.goToPartnershipInformationPage();
 		
 		websiteManager.partnershipInformationPage.editRegulatoryFunctions();
 		websiteManager.regulatoryFunctionPage.updateRegFunction();
@@ -420,14 +420,14 @@ public class PARStepDefs {
 		websiteManager.addAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
 				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY), 
 				DataStore.getSavedValue(UsableValues.BUSINESS_NATION), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
-		websiteManager.addAddressPage.clickSaveButton();
+		websiteManager.addAddressPage.saveGoToPartnershipInformationPage();
 		
 		LOG.info("Selected Country: " + DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY));
 		LOG.info("Selected Nation: " + DataStore.getSavedValue(UsableValues.BUSINESS_NATION));
 		
 		websiteManager.partnershipInformationPage.editAboutTheOrganisation();
 		websiteManager.parPartnershipDescriptionPage.updateBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
-		websiteManager.parPartnershipDescriptionPage.clickSave();
+		websiteManager.parPartnershipDescriptionPage.goToPartnershipInformationPage();
 		
 		websiteManager.partnershipInformationPage.editSICCode();
 		websiteManager.sicCodePage.editSICCode(DataStore.getSavedValue(UsableValues.SIC_CODE));
