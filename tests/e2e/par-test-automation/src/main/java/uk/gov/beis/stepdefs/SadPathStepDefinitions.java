@@ -716,6 +716,40 @@ public class SadPathStepDefinitions {
 		websiteManager.amendmentCompletedPage.goToPartnershipDetailsPage();
 	}
 	
+	@When("^the user selects the add another authority contact link$")
+	public void the_user_selects_the_add_another_authority_contact_link() throws Throwable {
+		LOG.info("Selecting the Add another authority contact link.");
+		websiteManager.partnershipInformationPage.addAnotherAuthorityContactButton();
+	}
+
+	@When("^the user enters the following authority contact details:$")
+	public void the_user_enters_the_following_authority_contact_details(DataTable details) throws Throwable {
+		LOG.info("Entering the Authority contact details.");
+		websiteManager.contactDetailsPage.addContactDetails(details);
+		websiteManager.contactDetailsPage.selectRandomPreferredCommunication();
+		websiteManager.contactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
+		
+		websiteManager.contactDetailsPage.selectContinueButton();
+		
+		LOG.info("Reviewing the Contact Details.");
+		websiteManager.profileReviewPage.clickSaveButton();
+	}
+
+	@Then("^the new contact is added successfully$")
+	public void the_new_contact_is_added_successfully() throws Throwable {
+		LOG.info("Verifying the new Authority contact is added successfully.");
+		assertTrue("Failed: Contact Details are not Displayed Correctly.", websiteManager.partnershipInformationPage.checkContactDetails());
+	}
+
+	@When("^the user removes the new Primary Authority Contact$")
+	public void the_user_removes_the_new_Primary_Authority_Contact() throws Throwable {
+		LOG.info("Selecting the Remove contact link.");
+		websiteManager.partnershipInformationPage.removeContactsDetailsButton();
+		
+		LOG.info("Removing the contact.");
+		websiteManager.removePage.goToPartnershipDetailsPage();
+	}
+	
 	
 	// Other Features
 	@Given("^the user is on the home page$")

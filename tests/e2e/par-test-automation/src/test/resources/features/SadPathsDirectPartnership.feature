@@ -18,7 +18,7 @@
 #Sample Feature Definition Template
 Feature: Direct Partnership Sad Paths
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails
   Scenario: Verify a user receives Error Messages for required fields during the Partnership Application and Completion Process (Sad Path - PAR-2392, PAR-2393)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -115,7 +115,7 @@ Feature: Direct Partnership Sad Paths
     And the user confirms the second part of the partnership application
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails
   Scenario: Verify a user receives Error Messages for required fields when Nominating a Partnership (Sad Path - PAR-2394)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -193,7 +193,7 @@ Feature: Direct Partnership Sad Paths
     Then the trading name is updated successfully
     And the user signs out
 
-  @regression @sadpath @partnershipupdate @sadLegalEntities @test
+  @regression @sadpath @partnershipupdate @sadLegalEntities
   Scenario: Verify a user receives Error Messages for required fields when Amending Legal Entities for a Partnership (Sad Path - PAR-2401)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -242,4 +242,28 @@ Feature: Direct Partnership Sad Paths
     Then the user is shown the "Please confirm the amendments to this partnership." error message
     When the user confirms the legal entity amendment
     Then the user verifies the amendments are created successfully with status "Active"
+    And the user signs out
+
+  @regression @sadpath @partnershipupdate @sadContactDetails
+  Scenario: Verify a user receives Error Messages for required fields when Adding and Removing a Primary Authority Contact for a Partnership (Sad Path - PAR-2402)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership Authority
+    And the user selects the add another authority contact link
+    And the user leaves the contact details fields empty
+    Then the user is shown the following error messages:
+      | ErrorMessage                                           |
+      | You must enter the first name for this contact.        |
+      | You must enter the last name for this contact.         |
+      | You must enter the work phone number for this contact. |
+      | You must enter the email address for this contact.     |
+    When the user enters the following authority contact details:
+      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                    |
+      | Dr    | Sandra    | Smythe   | 02056698103 |  07798573404 | sandrasmythe@example.com |
+    Then the new contact is added successfully
+    # Remove the new contact.
+    When the user removes the new Primary Authority Contact
+    Then the new Primary Authority contact is removed Successfully
     And the user signs out
