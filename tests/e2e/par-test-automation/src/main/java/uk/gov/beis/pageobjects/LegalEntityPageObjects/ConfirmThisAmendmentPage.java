@@ -20,13 +20,24 @@ public class ConfirmThisAmendmentPage extends BasePageObject {
 		super();
 	}
 	
-	public AmendmentCompletedPage confirmLegalEntityAmendments() {
+	public void deselectConfirmationCheckbox() {
+		if(confirmationCheckbox.isSelected()) {
+			confirmationCheckbox.click();
+		}
+	}
+	
+	public void selectConfirmationCheckbox() {
 		if(!confirmationCheckbox.isSelected()) {
 			confirmationCheckbox.click();
 		}
-		
+	}
+	
+	public void selectSubmitAmendmentButton() {
 		submitAmendmentBtn.click();
-		
+	}
+	
+	public AmendmentCompletedPage goToAmendmentCompletedPage() {
+		submitAmendmentBtn.click();
 		return PageFactory.initElements(driver, AmendmentCompletedPage.class);
 	}
 }

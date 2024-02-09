@@ -18,7 +18,7 @@
 #Sample Feature Definition Template
 Feature: Direct Partnership Sad Paths
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities
   Scenario: Verify a user receives Error Messages for required fields during the Partnership Application and Completion Process (Sad Path - PAR-2392, PAR-2393)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -113,8 +113,9 @@ Feature: Direct Partnership Sad Paths
     And the user does not confirm they have read the terms and conditions
     Then the user is shown the "Please confirm you have read the terms and conditions." error message
     And the user confirms the second part of the partnership application
+    And the user signs out
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities
   Scenario: Verify a user receives Error Messages for required fields when Nominating a Partnership (Sad Path - PAR-2394)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -130,6 +131,7 @@ Feature: Direct Partnership Sad Paths
     When the user selects the type of bespoke regulatory functions
     And the user searches again for the last created partnership
     Then the partnership is approved successfully
+    And the user signs out
 
   @regression @sadpath @partnershiprevokingrestoring
   Scenario: Verify a user receives Error Messages for required fields when Revoking and Reinstating a Partnership (Sad Path - PAR-2395)
@@ -148,6 +150,7 @@ Feature: Direct Partnership Sad Paths
     And the user restores the revoked partnership
     And the user searches again for the last created partnership
     Then the partnership is restored successfully
+    And the user signs out
 
   @regression @sadpath @partnershipupdate
   Scenario: Verify a user receives Error Messages for required fields when Updating a Partnerships Information (Sad Path - PAR-2400)
@@ -188,3 +191,55 @@ Feature: Direct Partnership Sad Paths
     Then the user is shown the "You must enter the trading name for this organisation." error message
     When the user updates the trading name: "Updated Trading Name"
     Then the trading name is updated successfully
+    And the user signs out
+
+  @regression @sadpath @partnershipupdate @sadLegalEntities @test
+  Scenario: Verify a user receives Error Messages for required fields when Amending Legal Entities for a Partnership (Sad Path - PAR-2401)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user does not choose the type of legal entity
+    Then the user is shown the "Please choose whether this is a registered or unregistered legal entity." error message
+    When the user chooses "A registered organisation" legal entity type but does not enter the number
+    Then the user is shown the "Please enter the legal entity number." error message
+    When the user chooses "A charity" legal entity type but does not enter the number
+    Then the user is shown the "Please enter the legal entity number." error message
+    When the user chooses the "An unregistered entity" legal entity type but does not choose the structure or enter the name
+    Then the user is shown the following error messages:
+      | ErrorMessage                                            |
+      | You must choose which legal entity type you are adding. |
+      | Please enter the name of the legal entity.              |
+    When the user chooses the unregistered entity structure but does not enter the name
+    Then the user is shown the "Please enter the name of the legal entity." error message
+    When the user adds a legal entity amendment with the name: "Test Entity Amendment"
+    And the user does not confirm the amendment
+    Then the user is shown the "Please confirm the amendment to this partnership." error message
+    When the user confirms the legal entity amendment
+    Then the user verifies the amendments are created successfully with status "Confirmed by the Authority"
+    And the user signs out
+    # Confirm the Legal Entity Amendments as the Business User.
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership Authority
+    And the user selects the confirm amendments link
+    And the user does not confirm the amendment
+    Then the user is shown the "Please confirm the amendment to this partnership." error message
+    When the user confirms the legal entity amendment
+    Then the user verifies the amendments are created successfully with status "Confirmed by the Organisation"
+    And the user signs out
+    # Nominate the Legal Entity Amendments as the Secretary of State User.
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "secretary_state@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership Authority
+    And the user clicks the nominate amendments link
+    And the user does not confirm the amendment
+    Then the user is shown the "Please confirm the amendments to this partnership." error message
+    When the user confirms the legal entity amendment
+    Then the user verifies the amendments are created successfully with status "Active"
+    And the user signs out

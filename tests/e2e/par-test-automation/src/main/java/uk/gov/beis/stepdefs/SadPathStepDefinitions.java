@@ -648,6 +648,74 @@ public class SadPathStepDefinitions {
 		websiteManager.partnershipInformationPage.clickSave();
 	}
 	
+	@When("^the user does not choose the type of legal entity$")
+	public void the_user_does_not_choose_the_type_of_legal_entity() throws Throwable {
+		LOG.info("Not selecting a Legal Entity type.");
+		websiteManager.partnershipInformationPage.selectAmendLegalEntitiesLink();
+		websiteManager.legalEntityTypePage.clickContinueButton();
+	}
+
+	@When("^the user chooses \"([^\"]*)\" legal entity type but does not enter the number$")
+	public void the_user_chooses_legal_entity_type_but_does_not_enter_the_number(String type) throws Throwable {
+		LOG.info("Choosing a Legal Entity type but not entering its Registration number.");
+		websiteManager.legalEntityTypePage.selectLegalEntityType(type);
+		websiteManager.legalEntityTypePage.clickContinueButton();
+	}
+
+	@When("^the user chooses the \"([^\"]*)\" legal entity type but does not choose the structure or enter the name$")
+	public void the_user_chooses_the_legal_entity_type_but_does_not_choose_the_structure_or_enter_the_name(String type) throws Throwable {
+		LOG.info("Choosing a Legal Entity trype but not selecting its Structure or entering its name.");
+		websiteManager.legalEntityTypePage.selectLegalEntityType(type);
+		websiteManager.legalEntityTypePage.clickContinueButton();
+	}
+
+	@When("^the user chooses the unregistered entity structure but does not enter the name$")
+	public void the_user_chooses_the_unregistered_entity_structure_but_does_not_enter_the_name() throws Throwable {
+		LOG.info("Choosing a Legal Entity trype and selecting its Structure but not entering its name.");
+		DataStore.saveValue(UsableValues.ENTITY_TYPE, "Sole trader");
+		
+		websiteManager.legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), "");
+		websiteManager.legalEntityTypePage.clickContinueButton();
+	}
+
+	@When("^the user adds a legal entity amendment with the name: \"([^\"]*)\"$")
+	public void the_user_adds_a_legal_entity_amendment_with_the_name(String entityName) throws Throwable {
+		LOG.info("Choosing a Legal Entity trype, selecting its Structure and entering its name.");
+		DataStore.saveValue(UsableValues.ENTITY_NAME, "Error Message Testing Co.");
+		
+		websiteManager.legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		websiteManager.legalEntityTypePage.goToLegalEntityReviewPage();
+		websiteManager.legalEntityReviewPage.goToConfirmThisAmendmentPage();
+	}
+	
+	@When("^the user selects the confirm amendments link$")
+	public void the_user_selects_the_confirm_amendments_link() throws Throwable {
+		LOG.info("Selecting the Confirm legal aentity amendments link.");
+		websiteManager.partnershipInformationPage.selectConfirmLegalEntitiesLink();
+	}
+	
+	@When("^the user clicks the nominate amendments link$")
+	public void the_user_clicks_the_nominate_amendments_link() throws Throwable {
+		LOG.info("Selecting the Nominate legal entity amendments link.");
+		websiteManager.partnershipInformationPage.selectNominateLegalEntitiesLink();
+	}
+
+	@When("^the user does not confirm the amendment$")
+	public void the_user_does_not_confirm_the_amendment() throws Throwable {
+		LOG.info("Submitting the Legal Entity Amendments without confirming they are correct.");
+		websiteManager.confirmThisAmendmentPage.deselectConfirmationCheckbox();
+		websiteManager.confirmThisAmendmentPage.selectSubmitAmendmentButton();
+	}
+
+	@When("^the user confirms the legal entity amendment$")
+	public void the_user_confirms_the_legal_entity_amendment() throws Throwable {
+		LOG.info("Confirming the Legal Entity Amendments.");
+		websiteManager.confirmThisAmendmentPage.selectConfirmationCheckbox();
+		websiteManager.confirmThisAmendmentPage.goToAmendmentCompletedPage();
+		
+		websiteManager.amendmentCompletedPage.goToPartnershipDetailsPage();
+	}
+	
 	
 	// Other Features
 	@Given("^the user is on the home page$")

@@ -29,10 +29,14 @@ public class LegalEntityTypePage extends BasePageObject {
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 	
-	String legalEntType = "//label[contains(text(),'?')]/preceding-sibling::input";
+	private String legalEntTypeRadio = "//label[contains(normalize-space(),'?')]/preceding-sibling::input";
 	
 	public LegalEntityTypePage() throws ClassNotFoundException, IOException {
 		super();
+	}
+	
+	public void selectLegalEntityType(String entityType) {
+		driver.findElement(By.xpath(legalEntTypeRadio.replace("?", entityType))).click();
 	}
 	
 	public void selectRegisteredOrganisation(String registrationNumber) {
@@ -73,7 +77,7 @@ public class LegalEntityTypePage extends BasePageObject {
 	}
 	
 	private void enterUnregisteredEntityDetails(String entityType, String entityName) {
-		driver.findElement(By.xpath(legalEntType.replace("?", entityType))).click();
+		driver.findElement(By.xpath(legalEntTypeRadio.replace("?", entityType))).click();
 		
 		legalEntityNameTextbox.clear();
 		legalEntityNameTextbox.sendKeys(entityName);

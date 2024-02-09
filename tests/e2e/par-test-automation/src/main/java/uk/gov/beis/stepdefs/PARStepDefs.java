@@ -79,6 +79,12 @@ public class PARStepDefs {
 		LOG.info("Verifying the Cookie Banner is not Displayed.");
 		Assert.assertTrue("Failed: The Cookie Banner is still Displayed.", websiteManager.dashboardPage.checkCookieBannerExists());
 	}
+	
+	@Then("^the user signs out$")
+	public void the_user_signs_out() throws Throwable {
+		LOG.info("Signing out of User account.");
+	    websiteManager.basePageObject.clickSignOut();
+	}
 
 	@When("^the user creates a new \"([^\"]*)\" partnership application with the following details:$")
 	public void the_user_creates_a_new_partnership_application_with_the_following_details(String type, DataTable details) throws Throwable {
@@ -463,7 +469,8 @@ public class PARStepDefs {
 		websiteManager.legalEntityTypePage.goToLegalEntityReviewPage();
 		websiteManager.legalEntityReviewPage.goToConfirmThisAmendmentPage();
 		
-		websiteManager.confirmThisAmendmentPage.confirmLegalEntityAmendments();
+		websiteManager.confirmThisAmendmentPage.selectConfirmationCheckbox();
+		websiteManager.confirmThisAmendmentPage.goToAmendmentCompletedPage();
 		
 		websiteManager.amendmentCompletedPage.goToPartnershipDetailsPage();
 	}
@@ -479,7 +486,8 @@ public class PARStepDefs {
 		LOG.info("Confirm the Legal Entity as the Business User.");
 		
 		websiteManager.partnershipInformationPage.selectConfirmLegalEntitiesLink();
-		websiteManager.confirmThisAmendmentPage.confirmLegalEntityAmendments();
+		websiteManager.confirmThisAmendmentPage.selectConfirmationCheckbox();
+		websiteManager.confirmThisAmendmentPage.goToAmendmentCompletedPage();
 		websiteManager.amendmentCompletedPage.goToDashBoardPage();
 	}
 	
@@ -499,7 +507,9 @@ public class PARStepDefs {
 		LOG.info("Nominate the Legal Entity as the Help Desk User.");
 		
 		websiteManager.partnershipInformationPage.selectNominateLegalEntitiesLink();
-		websiteManager.confirmThisAmendmentPage.confirmLegalEntityAmendments();
+		
+		websiteManager.confirmThisAmendmentPage.selectConfirmationCheckbox();
+		websiteManager.confirmThisAmendmentPage.goToAmendmentCompletedPage();
 		websiteManager.amendmentCompletedPage.goToPartnershipDetailsPage();
 	}
 	
