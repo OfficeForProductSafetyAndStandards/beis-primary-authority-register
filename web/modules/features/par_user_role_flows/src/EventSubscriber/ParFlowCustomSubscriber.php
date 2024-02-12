@@ -17,7 +17,7 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
    * @return \Drupal\par_roles\ParRoleManagerInterface
    */
   protected function getParRoleManager() {
-    return \Drupal::service('par_roles.manager');
+    return \Drupal::service('par_roles.role_manager');
   }
 
   /**
