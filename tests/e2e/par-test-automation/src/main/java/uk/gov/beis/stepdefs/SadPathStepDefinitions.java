@@ -929,4 +929,31 @@ public class SadPathStepDefinitions {
 		Assert.assertTrue("Failed: Status not set to \"Active\"", websiteManager.adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Active"));
 	}
 	
+	@When("^the user selects the archive link$")
+	public void the_user_selects_the_archive_link() throws Throwable {
+		LOG.info("Select the Archiving Advice Link.");
+		
+		websiteManager.adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		websiteManager.adviceNoticeSearchPage.selectArchiveAdviceButton();
+	}
+
+	@When("^the user does not enter a reason for archiving$")
+	public void the_user_does_not_enter_a_reason_for_archiving() throws Throwable {
+		LOG.info("LEave the Archive Reason empty and click Save.");
+		websiteManager.adviceArchivePage.enterArchiveReason("");
+		websiteManager.adviceArchivePage.selectSaveButton();
+	}
+
+	@When("^the user enters a reason for archiving the advice$")
+	public void the_user_enters_a_reason_for_archiving_the_advice() throws Throwable {
+		LOG.info("LEave the Archive Reason empty and click Save.");
+		websiteManager.adviceArchivePage.enterReasonForArchiving("Sad Path Testing.");
+	}
+
+	@Then("^the advice is archived successfully$")
+	public void the_advice_is_archived_successfully() throws Throwable {
+		LOG.info("Verify the Advice was Archived successfully and has the Archived status.");
+		Assert.assertTrue(websiteManager.adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Archived"));
+	}
+	
 }

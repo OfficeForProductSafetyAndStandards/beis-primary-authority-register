@@ -316,7 +316,7 @@ Feature: Direct Partnership Sad Paths
     Then the advice is created successfully
     And the user signs out
 
-  @regression @sadpath @advice @test
+  @regression @sadpath @advice
   Scenario: Verify a user receives Error Messages for required fields when Editing Advice to a Partnership (Sad Path - PAR-2405)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -335,4 +335,19 @@ Feature: Direct Partnership Sad Paths
       | Title                     | Type of Advice         | Reg Function      | Description            |
       | Sad Path Advice Edit Test | Background information | Alphabet learning | Sad Path Edit Testing. |
     Then the advice is updated successfully
+    And the user signs out
+
+  @regression @sadpath @advice @test
+  Scenario: Verify a user receives Error Messages for required fields when Archiving Advice for a Partnership (Sad Path - PAR-2406)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "senior_administrator@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user selects the see all advice link
+    And the user selects the archive link
+    And the user does not enter a reason for archiving
+    Then the user is shown the "Please supply the reason for archiving this document." error message
+    When the user enters a reason for archiving the advice
+    Then the advice is archived successfully
     And the user signs out
