@@ -26,8 +26,12 @@ public class UserMembershipPage extends BasePageObject {
 	}
 	
 	public void chooseAuthorityMembership(String authorityName) {
-		if(!driver.findElements(By.id("edit-par-data-authority-id")).isEmpty()) {
-			
+		
+		if(!driver.findElements(By.xpath(authorityRadioLocator.replace("?", authorityName))).isEmpty()) {
+			WebElement authorityRadio = driver.findElement(By.xpath(authorityRadioLocator.replace("?", authorityName)));
+			authorityRadio.click();
+		}
+		else {
 			WebElement authorityTextField = driver.findElement(By.id("edit-par-data-authority-id"));
 			authorityTextField.clear();
 			authorityTextField.sendKeys(authorityName);
@@ -42,13 +46,16 @@ public class UserMembershipPage extends BasePageObject {
 				widget.click();
 			}
 		}
-		else {
-			WebElement authorityRadio = driver.findElement(By.xpath(authorityRadioLocator.replace("?", authorityName)));
+		
+		//if(!driver.findElements(By.id("edit-par-data-authority-id")).isEmpty()) {
 			
-			if(authorityRadio != null) {
-				authorityRadio.click();
-			}
-		}
+			
+		//}
+		//else {
+		//	if(authorityRadio != null) {
+				
+		//	}
+		//}
 	}
 	
 	public void chooseOrganisationMembership(String organisationName) {

@@ -744,7 +744,14 @@ public class SadPathStepDefinitions {
 	@Then("^the new contact is added successfully$")
 	public void the_new_contact_is_added_successfully() throws Throwable {
 		LOG.info("Verifying the new Authority contact is added successfully.");
-		assertTrue("Failed: Contact Details are not Displayed Correctly.", websiteManager.partnershipInformationPage.checkContactDetails());
+		
+		String fullName = DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " " + DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
+		String workNumber = DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER);
+		String mobileNumber = DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER);
+		String email = DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL).toLowerCase();
+		String contactNote = DataStore.getSavedValue(UsableValues.CONTACT_NOTES);
+		
+		assertTrue(fullName +", "+ workNumber +", "+ mobileNumber +","+ email +", "+ contactNote, websiteManager.partnershipInformationPage.checkContactDetails());
 	}
 
 	@When("^the user removes the new Primary Authority Contact$")

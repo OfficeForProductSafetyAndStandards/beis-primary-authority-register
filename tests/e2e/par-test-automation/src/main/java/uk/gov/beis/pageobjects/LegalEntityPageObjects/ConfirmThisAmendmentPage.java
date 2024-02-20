@@ -37,7 +37,10 @@ public class ConfirmThisAmendmentPage extends BasePageObject {
 	}
 	
 	public AmendmentCompletedPage goToAmendmentCompletedPage() {
-		submitAmendmentBtn.click();
+		if(submitAmendmentBtn.isDisplayed() && confirmationCheckbox.isSelected()) {
+			submitAmendmentBtn.click();
+		}
+		
 		return PageFactory.initElements(driver, AmendmentCompletedPage.class);
 	}
 }

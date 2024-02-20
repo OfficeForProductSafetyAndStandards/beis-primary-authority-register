@@ -284,8 +284,8 @@ Feature: Direct Partnership Sad Paths
       | You must enter the work phone number for this contact. |
       | You must enter the email address for this contact.     |
     When the user enters the following authority contact details:
-      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                   |
-      | Dr    | Sarah     | Smythe   | 02056698234 |  07798573542 | sarahsmythe@example.com |
+      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                  |
+      | Mrs   | Sarah     | Hardy    | 02056698234 |  07798573542 | sarahhardy@example.com |
     Then the new contact is added successfully
     # Remove the new contact.
     When the user removes the new Organisation contact
