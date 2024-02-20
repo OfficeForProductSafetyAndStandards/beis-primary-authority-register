@@ -956,4 +956,34 @@ public class SadPathStepDefinitions {
 		Assert.assertTrue(websiteManager.adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Archived"));
 	}
 	
+	@When("^the user selects the remove link$")
+	public void the_user_selects_the_remove_link() throws Throwable {
+		LOG.info("Select the Remove Advice Link.");
+		
+		websiteManager.adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		websiteManager.adviceNoticeSearchPage.selectRemoveAdviceButton();
+	}
+
+	@When("^the user does not enter a reason for removing$")
+	public void the_user_does_not_enter_a_reason_for_removing() throws Throwable {
+		LOG.info("Leave the remove text field empty and click the save button.");
+		websiteManager.removePage.enterRemoveReason("");
+		websiteManager.removePage.selectRemoveButton();
+	}
+
+	@When("^the user enters a reason for removing the advice$")
+	public void the_user_enters_a_reason_for_removing_the_advice() throws Throwable {
+		LOG.info("Enter a reason to remove the Advice.");
+		websiteManager.removePage.enterRemoveReason("Sad Path Testing.");
+		websiteManager.removePage.goToAdviceNoticeSearchPage();
+	}
+
+	@Then("^the advice is removed successfully$")
+	public void the_advice_is_removed_successfully() throws Throwable {
+		LOG.info("Verify the Advice was Removed Successfully.");
+		websiteManager.adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		
+		Assert.assertTrue("Failed: Advice Notice was not Removed.", websiteManager.adviceNoticeSearchPage.checkNoResultsReturned());
+	}
+	
 }

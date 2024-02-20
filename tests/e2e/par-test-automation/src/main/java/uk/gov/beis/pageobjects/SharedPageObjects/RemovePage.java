@@ -32,6 +32,10 @@ public class RemovePage extends BasePageObject {
 		removeReasonTextArea.sendKeys(reason);
 	}
 	
+	public void selectRemoveButton() {
+		removeNextBtn.click();
+	}
+	
 	public InspectionPlanSearchPage goToInspectionPlanSearchPage() throws Throwable {
 		removeNextBtn.click();
 		return PageFactory.initElements(driver, InspectionPlanSearchPage.class);
