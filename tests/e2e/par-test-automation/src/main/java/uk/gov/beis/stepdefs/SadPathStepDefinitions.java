@@ -1054,4 +1054,10 @@ public class SadPathStepDefinitions {
 		Assert.assertTrue("Failed: Inspection Plan Status is not set to Current.", websiteManager.inspectionPlanSearchPage.getPlanStatus().equalsIgnoreCase("Current"));
 	}
 	
+	@When("^the user clicks the edit link$")
+	public void the_user_clicks_the_edit_link() throws Throwable {
+		LOG.info("Select the Inspection Plans Edit link.");
+		websiteManager.inspectionPlanSearchPage.selectEditLink();
+	}
+	
 }

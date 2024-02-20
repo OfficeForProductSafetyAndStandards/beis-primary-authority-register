@@ -367,7 +367,7 @@ Feature: Direct Partnership Sad Paths
     Then the advice is removed successfully
     And the user signs out
 
-  @regression @sadpath @sadinspectionplan @test
+  @regression @sadpath @sadinspectionplan
   Scenario: Verify a user receives Error Messages for required fields when Uploading an Inspection Plan for a Partnership (Sad Path - PAR-2408)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -387,6 +387,29 @@ Feature: Direct Partnership Sad Paths
     When the user enters the following inspection plan details:
       | Title               | Description           |
       | Sad Path Inspection | Inspecting sad paths. |
+    And the user does not enter an expiry date
+    Then the user is shown the "You must enter the date the inspection plan expires e.g. 30 - 01 - 2022" error message
+    When the user enters an inspection plan expiry date
+    Then the inspection plan is created successfully
+    And the user signs out
+
+  @regression @sadpath @sadinspectionplan @test
+  Scenario: Verify a user receives Error Messages for required fields when Editing an Inspection Plan for a Partnership (Sad Path - PAR-2409)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "senior_administrator@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user selects the see all inspection plans link
+    And the user clicks the edit link
+    And the user does not enter inspection plan details
+    Then the user is shown the following error messages:
+      | ErrorMessage                                                |
+      | You must provide a title for this inspection plan document. |
+      | You must fill in the missing information.                   |
+    When the user enters the following inspection plan details:
+      | Title               | Description           |
+      | Sad Path Inspection Update | Inspecting sad paths Update. |
     And the user does not enter an expiry date
     Then the user is shown the "You must enter the date the inspection plan expires e.g. 30 - 01 - 2022" error message
     When the user enters an inspection plan expiry date

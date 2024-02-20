@@ -40,6 +40,7 @@ public class EnterTheDatePage extends BasePageObject {
 	
 	// date field can be used for Sad path tests or future date tests.
 	public void enterCurrentDate() {
+		clearDateFields();
 		dayField.sendKeys(String.valueOf(LocalDate.now().getDayOfMonth()));
 		monthField.sendKeys(String.valueOf(LocalDate.now().getMonthValue()));
 		yearField.sendKeys(String.valueOf(LocalDate.now().getYear()));
@@ -50,6 +51,7 @@ public class EnterTheDatePage extends BasePageObject {
 	}
 	
 	public void  enterDate(String value) {
+		clearDateFields();
 		String dateToInput = DateFormatter.getDynamicDate(value);
 		
 		LOG.info("Date is: " + dateToInput);
