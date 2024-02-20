@@ -393,7 +393,7 @@ Feature: Direct Partnership Sad Paths
     Then the inspection plan is created successfully
     And the user signs out
 
-  @regression @sadpath @sadinspectionplan @test
+  @regression @sadpath @sadinspectionplan
   Scenario: Verify a user receives Error Messages for required fields when Editing an Inspection Plan for a Partnership (Sad Path - PAR-2409)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -408,10 +408,25 @@ Feature: Direct Partnership Sad Paths
       | You must provide a title for this inspection plan document. |
       | You must fill in the missing information.                   |
     When the user enters the following inspection plan details:
-      | Title               | Description           |
+      | Title                      | Description                  |
       | Sad Path Inspection Update | Inspecting sad paths Update. |
     And the user does not enter an expiry date
     Then the user is shown the "You must enter the date the inspection plan expires e.g. 30 - 01 - 2022" error message
     When the user enters an inspection plan expiry date
     Then the inspection plan is created successfully
+    And the user signs out
+
+  @regression @sadpath @sadinspectionplan @test
+  Scenario: Verify a user receives Error Messages for required fields when Revoking an Inspection Plan for a Partnership (Sad Path - PAR-2410)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "senior_administrator@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user selects the see all inspection plans link
+    And the user clicks the revoke link
+    And the user does not enter a reason for revoking
+    Then the user is shown the "Please supply the reason for revoking this document." error message
+    When the user enters a reason to revoke the inspection plan
+    Then the inspection plan is revoked successfully
     And the user signs out

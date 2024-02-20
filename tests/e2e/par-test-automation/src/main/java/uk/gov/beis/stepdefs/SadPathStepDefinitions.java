@@ -1060,4 +1060,24 @@ public class SadPathStepDefinitions {
 		websiteManager.inspectionPlanSearchPage.selectEditLink();
 	}
 	
+	@When("^the user clicks the revoke link$")
+	public void the_user_clicks_the_revoke_link() throws Throwable {
+		LOG.info("Select the Inspection Plans Revoke link.");
+		websiteManager.inspectionPlanSearchPage.selectRevokeLink();
+	}
+
+	@When("^the user does not enter a reason for revoking$")
+	public void the_user_does_not_enter_a_reason_for_revoking() throws Throwable {
+		LOG.info("Leave the revoke reason field empty and click the save button.");
+		websiteManager.revokePage.enterReasonForRevocation("");
+		websiteManager.revokePage.selectRevokeButton();
+	}
+
+	@When("^the user enters a reason to revoke the inspection plan$")
+	public void the_user_enters_a_reason_to_revoke_the_inspection_plan() throws Throwable {
+		LOG.info("Revoke the Inspection Plan.");
+		websiteManager.revokePage.enterReasonForRevocation("Sad Path Test.");
+		websiteManager.revokePage.goToInspectionPlanSearchPage();
+	}
+	
 }
