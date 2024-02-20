@@ -887,6 +887,7 @@ public class SadPathStepDefinitions {
 	@When("^the user does not enter advice details$")
 	public void the_user_does_not_enter_advice_details() throws Throwable {
 		LOG.info("Select the Save button without entering Advice Details receive an Error Message.");
+		websiteManager.adviceNoticeDetailsPage.clearAllFields();
 		websiteManager.adviceNoticeDetailsPage.selectSaveButton();
 	}
 
@@ -912,6 +913,20 @@ public class SadPathStepDefinitions {
 	public void the_advice_is_created_successfully() throws Throwable {
 		LOG.info("Verify the Advice was created successfully and has an Active status.");
 		Assert.assertTrue(websiteManager.adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Active"));
+	}
+	
+	@When("^the user selects the edit link$")
+	public void the_user_selects_the_edit_link() throws Throwable {
+		LOG.info("Searching for the newly added Advice notice.");
+		
+		websiteManager.adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		websiteManager.adviceNoticeSearchPage.selectEditAdviceButton();
+	}
+
+	@Then("^the advice is updated successfully$")
+	public void the_advice_is_updated_successfully() throws Throwable {
+		LOG.info("Verify the Advice was updated successfully and has an Active status.");
+		Assert.assertTrue("Failed: Status not set to \"Active\"", websiteManager.adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Active"));
 	}
 	
 }

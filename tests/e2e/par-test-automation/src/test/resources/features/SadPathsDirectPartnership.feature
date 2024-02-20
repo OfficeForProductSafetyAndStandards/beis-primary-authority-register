@@ -292,7 +292,7 @@ Feature: Direct Partnership Sad Paths
     Then the new Organisation contact is removed Successfully
     And the user signs out
 
-  @regression @sadpath @advice @test
+  @regression @sadpath @advice
   Scenario: Verify a user receives Error Messages for required fields when Uploading Advice to a Partnership (Sad Path - PAR-2404)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -314,4 +314,25 @@ Feature: Direct Partnership Sad Paths
       | Title                | Type of Advice         | Reg Function      | Description       |
       | Sad Path Advice Test | Background information | Alphabet learning | Sad Path Testing. |
     Then the advice is created successfully
+    And the user signs out
+
+  @regression @sadpath @advice @test
+  Scenario: Verify a user receives Error Messages for required fields when Editing Advice to a Partnership (Sad Path - PAR-2405)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "senior_administrator@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user selects the see all advice link
+    And the user selects the edit link
+    And the user does not enter advice details
+    Then the user is shown the following error messages:
+      | ErrorMessage                                                       |
+      | You must provide a title for this advice document.                 |
+      | You must provide a summary for this advice document.               |
+      | You must choose which regulatory functions this advice applies to. |
+    When the user enters the following advice details:
+      | Title                     | Type of Advice         | Reg Function      | Description            |
+      | Sad Path Advice Edit Test | Background information | Alphabet learning | Sad Path Edit Testing. |
+    Then the advice is updated successfully
     And the user signs out
