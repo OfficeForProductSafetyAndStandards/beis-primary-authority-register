@@ -860,6 +860,58 @@ public class SadPathStepDefinitions {
 		
 		assertTrue(websiteManager.loginPage.checkErrorSummary("Unrecognized username or password. Forgot your password?"));
 	}
+	
+	@When("^the user selects the see all advice link$")
+	public void the_user_selects_the_see_all_advice_link() throws Throwable {
+		LOG.info("Navigate to the See All Advice page.");
+		websiteManager.partnershipAdvancedSearchPage.selectPartnershipLink();
+		websiteManager.partnershipInformationPage.selectSeeAllAdviceNotices();
+	}
 
+	@When("^the user selects upload without choosing a file$")
+	public void the_user_selects_upload_without_choosing_a_file() throws Throwable {
+		LOG.info("Navigate to the Upload Advice Documents page.");
+		websiteManager.adviceNoticeSearchPage.selectUploadLink();
+		
+		LOG.info("Select the Upload button without Uploading a file to receive an Error Message.");
+		websiteManager.uploadAdviceNoticePage.selectUploadButton();
+	}
+
+	@When("^the user uploads an advice file$")
+	public void the_user_uploads_an_advice_file() throws Throwable {
+		LOG.info("Upload an Advice document.");
+		websiteManager.uploadAdviceNoticePage.chooseFile("link.txt");
+		websiteManager.uploadAdviceNoticePage.uploadFile();
+	}
+
+	@When("^the user does not enter advice details$")
+	public void the_user_does_not_enter_advice_details() throws Throwable {
+		LOG.info("Select the Save button without entering Advice Details receive an Error Message.");
+		websiteManager.adviceNoticeDetailsPage.selectSaveButton();
+	}
+
+	@When("^the user enters the following advice details:$")
+	public void the_user_enters_the_following_advice_details(DataTable details) throws Throwable {
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.ADVICENOTICE_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.ADVICENOTICE_TYPE, data.get("Type of Advice"));
+			DataStore.saveValue(UsableValues.ADVICENOTICE_REGFUNCTION, data.get("Reg Function"));
+			DataStore.saveValue(UsableValues.ADVICENOTICE_DESCRIPTION, data.get("Description"));
+		}
+		
+		websiteManager.adviceNoticeDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
+		websiteManager.adviceNoticeDetailsPage.selectAdviceType(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TYPE));
+		websiteManager.adviceNoticeDetailsPage.selectRegulatoryFunction(DataStore.getSavedValue(UsableValues.ADVICENOTICE_REGFUNCTION));
+		websiteManager.adviceNoticeDetailsPage.enterDescription(DataStore.getSavedValue(UsableValues.ADVICENOTICE_DESCRIPTION));
+		websiteManager.adviceNoticeDetailsPage.clickSave();
+	}
+
+	@Then("^the advice is created successfully$")
+	public void the_advice_is_created_successfully() throws Throwable {
+		LOG.info("Verify the Advice was created successfully and has an Active status.");
+		Assert.assertTrue(websiteManager.adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Active"));
+	}
 	
 }

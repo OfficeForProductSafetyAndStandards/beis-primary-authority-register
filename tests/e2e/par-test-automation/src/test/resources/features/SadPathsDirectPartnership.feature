@@ -18,7 +18,7 @@
 #Sample Feature Definition Template
 Feature: Direct Partnership Sad Paths
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice
   Scenario: Verify a user receives Error Messages for required fields during the Partnership Application and Completion Process (Sad Path - PAR-2392, PAR-2393)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -115,7 +115,7 @@ Feature: Direct Partnership Sad Paths
     And the user confirms the second part of the partnership application
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice
   Scenario: Verify a user receives Error Messages for required fields when Nominating a Partnership (Sad Path - PAR-2394)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -290,4 +290,28 @@ Feature: Direct Partnership Sad Paths
     # Remove the new contact.
     When the user removes the new Organisation contact
     Then the new Organisation contact is removed Successfully
+    And the user signs out
+
+  @regression @sadpath @advice @test
+  Scenario: Verify a user receives Error Messages for required fields when Uploading Advice to a Partnership (Sad Path - PAR-2404)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "senior_administrator@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user selects the see all advice link
+    And the user selects upload without choosing a file
+    Then the user is shown the "Upload file(s) field is required." error message
+    When the user uploads an advice file
+    And the user does not enter advice details
+    Then the user is shown the following error messages:
+      | ErrorMessage                                                       |
+      | You must provide a title for this advice document.                 |
+      | You must choose what type of advice this is.                       |
+      | You must provide a summary for this advice document.               |
+      | You must choose which regulatory functions this advice applies to. |
+    When the user enters the following advice details:
+      | Title                | Type of Advice         | Reg Function      | Description       |
+      | Sad Path Advice Test | Background information | Alphabet learning | Sad Path Testing. |
+    Then the advice is created successfully
     And the user signs out
