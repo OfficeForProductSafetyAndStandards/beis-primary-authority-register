@@ -1,5 +1,6 @@
 package uk.gov.beis.stepdefs;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -1078,6 +1079,25 @@ public class SadPathStepDefinitions {
 		LOG.info("Revoke the Inspection Plan.");
 		websiteManager.revokePage.enterReasonForRevocation("Sad Path Test.");
 		websiteManager.revokePage.goToInspectionPlanSearchPage();
+	}
+	
+	@When("^the user clicks the remove link$")
+	public void the_user_clicks_the_remove_link() throws Throwable {
+		LOG.info("Select the Inspection Plans Remove link.");
+		websiteManager.inspectionPlanSearchPage.selectRemoveLink();
+	}
+
+	@When("^the user enters a reason to remove the inspection plan$")
+	public void the_user_enters_a_reason_to_remove_the_inspection_plan() throws Throwable {
+		LOG.info("Remove the Inspection Plan.");
+		websiteManager.removePage.enterRemoveReason("Sad Path Test.");
+		websiteManager.removePage.goToInspectionPlanSearchPage();
+	}
+
+	@Then("^the inspection plan is removed successfully$")
+	public void the_inspection_plan_is_removed_successfully() throws Throwable {
+		LOG.info("Verifying the Inspection Plan was Removed Successfully.");
+		assertEquals("Failed: Inspection Plan was not Removed.", websiteManager.inspectionPlanSearchPage.getPlanStatus(), "No results returned");
 	}
 	
 }

@@ -416,7 +416,7 @@ Feature: Direct Partnership Sad Paths
     Then the inspection plan is created successfully
     And the user signs out
 
-  @regression @sadpath @sadinspectionplan @test
+  @regression @sadpath @sadinspectionplan
   Scenario: Verify a user receives Error Messages for required fields when Revoking an Inspection Plan for a Partnership (Sad Path - PAR-2410)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -429,4 +429,19 @@ Feature: Direct Partnership Sad Paths
     Then the user is shown the "Please supply the reason for revoking this document." error message
     When the user enters a reason to revoke the inspection plan
     Then the inspection plan is revoked successfully
+    And the user signs out
+
+  @regression @sadpath @sadinspectionplan
+  Scenario: Verify a user receives Error Messages for required fields when Removing an Inspection Plan for a Partnership (Sad Path - PAR-2411)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "senior_administrator@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user selects the see all inspection plans link
+    And the user clicks the remove link
+    And the user does not enter a reason for removing
+    Then the user is shown the "Please enter the reason you are removing this inspection plan." error message
+    When the user enters a reason to remove the inspection plan
+    Then the inspection plan is removed successfully
     And the user signs out
