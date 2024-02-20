@@ -18,7 +18,7 @@
 #Sample Feature Definition Template
 Feature: Direct Partnership Sad Paths
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice @sadinspectionplan
   Scenario: Verify a user receives Error Messages for required fields during the Partnership Application and Completion Process (Sad Path - PAR-2392, PAR-2393)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -115,7 +115,7 @@ Feature: Direct Partnership Sad Paths
     And the user confirms the second part of the partnership application
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice @sadinspectionplan
   Scenario: Verify a user receives Error Messages for required fields when Nominating a Partnership (Sad Path - PAR-2394)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -352,7 +352,7 @@ Feature: Direct Partnership Sad Paths
     Then the advice is archived successfully
     And the user signs out
 
-  @regression @sadpath @advice @test
+  @regression @sadpath @advice
   Scenario: Verify a user receives Error Messages for required fields when Removing Advice for a Partnership (Sad Path - PAR-2407)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -365,4 +365,30 @@ Feature: Direct Partnership Sad Paths
     Then the user is shown the "Please enter the reason you are removing this advice." error message
     When the user enters a reason for removing the advice
     Then the advice is removed successfully
+    And the user signs out
+
+  @regression @sadpath @sadinspectionplan @test
+  Scenario: Verify a user receives Error Messages for required fields when Uploading an Inspection Plan for a Partnership (Sad Path - PAR-2408)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "senior_administrator@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user selects the see all inspection plans link
+    And the user selects the upload inspection plan link
+    And the user attempts to upload an inspection plan without choosing a file
+    Then the user is shown the "Upload file(s) field is required" error message
+    When the user uploads an inspection plan file
+    And the user does not enter inspection plan details
+    Then the user is shown the following error messages:
+      | ErrorMessage                                                |
+      | You must provide a title for this inspection plan document. |
+      | You must fill in the missing information.                   |
+    When the user enters the following inspection plan details:
+      | Title               | Description           |
+      | Sad Path Inspection | Inspecting sad paths. |
+    And the user does not enter an expiry date
+    Then the user is shown the "You must enter the date the inspection plan expires e.g. 30 - 01 - 2022" error message
+    When the user enters an inspection plan expiry date
+    Then the inspection plan is created successfully
     And the user signs out

@@ -986,4 +986,72 @@ public class SadPathStepDefinitions {
 		Assert.assertTrue("Failed: Advice Notice was not Removed.", websiteManager.adviceNoticeSearchPage.checkNoResultsReturned());
 	}
 	
+	@When("^the user selects the see all inspection plans link$")
+	public void the_user_selects_the_see_all_inspection_plans_link() throws Throwable {
+		LOG.info("Navigate to the See All Inspection Plans page.");
+		websiteManager.partnershipAdvancedSearchPage.selectPartnershipLink();
+		websiteManager.partnershipInformationPage.selectSeeAllInspectionPlans();
+	}
+	
+	@When("^the user selects the upload inspection plan link$")
+	public void the_user_selects_the_upload_inspection_plan_link() throws Throwable {
+		LOG.info("Navigate to the Upload Inspection Plan page.");
+		websiteManager.inspectionPlanSearchPage.selectUploadLink();
+	}
+	
+	@When("^the user attempts to upload an inspection plan without choosing a file$")
+	public void the_user_attempts_to_upload_an_inspection_plan_without_choosing_a_file() throws Throwable {
+		LOG.info("Select the Upload Button without uploading an Inspection Plan Document.");
+		websiteManager.uploadInspectionPlanPage.selectUploadButton();
+	}
+
+	@When("^the user uploads an inspection plan file$")
+	public void the_user_uploads_an_inspection_plan_file() throws Throwable {
+		LOG.info("Upload an Inspection Plan Document.");
+		websiteManager.uploadInspectionPlanPage.chooseFile("link.txt");
+		websiteManager.uploadInspectionPlanPage.uploadFile();
+	}
+
+	@When("^the user does not enter inspection plan details$")
+	public void the_user_does_not_enter_inspection_plan_details() throws Throwable {
+		LOG.info("Leave the Inspection Plan details fields empty and click the Save button.");
+		websiteManager.inspectionPlanDetailsPage.clearAllFields();
+		websiteManager.inspectionPlanDetailsPage.selectSaveButton();
+	}
+
+	@When("^the user enters the following inspection plan details:$")
+	public void the_user_enters_the_following_inspection_plan_details(DataTable details) throws Throwable {
+		LOG.info("Enter Inspection Plan details.");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			
+			DataStore.saveValue(UsableValues.INSPECTIONPLAN_TITLE, data.get("Title"));
+			DataStore.saveValue(UsableValues.INSPECTIONPLAN_DESCRIPTION, data.get("Description"));
+		}
+		
+		websiteManager.inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
+		websiteManager.inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
+		websiteManager.inspectionPlanDetailsPage.goToInspectionPlanExpirePage();
+	}
+
+	@When("^the user does not enter an expiry date$")
+	public void the_user_does_not_enter_an_expiry_date() throws Throwable {
+		LOG.info("Leave the Inpsection Plan Expiry date fields empty and click the Save button.");
+		websiteManager.enterTheDatePage.clearDateFields();
+		websiteManager.enterTheDatePage.selectSaveButton();
+	}
+	
+	@When("^the user enters an inspection plan expiry date$")
+	public void the_user_enters_an_inspection_plan_expiry_date() throws Throwable {
+		LOG.info("Enter Inspection Plan Expiry Date.");
+		websiteManager.enterTheDatePage.enterDate("ddMMYYYY");
+		websiteManager.enterTheDatePage.goToInspectionPlanSearchPage();
+	}
+
+	@Then("^the inspection plan is created successfully$")
+	public void the_inspection_plan_is_created_successfully() throws Throwable {
+		LOG.info("Verifying the Inpsection Plan was created successfully and has the Current status.");
+		Assert.assertTrue("Failed: Inspection Plan Status is not set to Current.", websiteManager.inspectionPlanSearchPage.getPlanStatus().equalsIgnoreCase("Current"));
+	}
+	
 }

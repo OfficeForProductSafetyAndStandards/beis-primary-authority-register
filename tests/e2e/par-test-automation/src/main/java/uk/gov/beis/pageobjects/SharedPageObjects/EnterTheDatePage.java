@@ -58,6 +58,16 @@ public class EnterTheDatePage extends BasePageObject {
 		monthField.sendKeys(dateToInput.substring(2, 4));
 		yearField.sendKeys(dateToInput.substring(4, 8));
 	}
+	
+	public void clearDateFields() {
+		dayField.clear();
+		monthField.clear();
+		yearField.clear();
+	}
+	
+	public void selectSaveButton() {
+		saveBtn.click();
+	}
 
 	public InspectionPlanSearchPage goToInspectionPlanSearchPage() {
 		saveBtn.click();

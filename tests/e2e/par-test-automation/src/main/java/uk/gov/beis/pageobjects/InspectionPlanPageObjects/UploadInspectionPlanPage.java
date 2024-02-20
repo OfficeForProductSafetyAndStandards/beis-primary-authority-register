@@ -24,6 +24,10 @@ public class UploadInspectionPlanPage extends BasePageObject {
 		uploadDocument(chooseFile, filename);
 	}
 	
+	public void selectUploadButton() {
+		uploadBtn.click();
+	}
+	
 	public InspectionPlanDetailsPage uploadFile() {
 		uploadBtn.click();
 		return PageFactory.initElements(driver, InspectionPlanDetailsPage.class);

@@ -670,7 +670,7 @@ public class PARStepDefs {
 		
 		websiteManager.inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
 		websiteManager.inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
-		websiteManager.inspectionPlanDetailsPage.clickSave();
+		websiteManager.inspectionPlanDetailsPage.goToInspectionPlanExpirePage();
 		
 		websiteManager.enterTheDatePage.enterDate("ddMMYYYY");
 		websiteManager.enterTheDatePage.goToInspectionPlanSearchPage();
@@ -698,7 +698,7 @@ public class PARStepDefs {
 		
 		websiteManager.inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
 		websiteManager.inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
-		websiteManager.inspectionPlanDetailsPage.clickSave();
+		websiteManager.inspectionPlanDetailsPage.goToInspectionPlanExpirePage();
 		
 		websiteManager.enterTheDatePage.goToInspectionPlanSearchPage();
 		websiteManager.inspectionPlanSearchPage.selectInspectionPlan();

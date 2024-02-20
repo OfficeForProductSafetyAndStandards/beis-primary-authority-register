@@ -33,8 +33,17 @@ public class InspectionPlanDetailsPage extends BasePageObject {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
 	}
+	
+	public void clearAllFields() {
+		title.clear();
+		descriptionBox.clear();
+	}
+	
+	public void selectSaveButton() {
+		saveBtn.click();
+	}
 
-	public EnterTheDatePage clickSave() {
+	public EnterTheDatePage goToInspectionPlanExpirePage() {
 		saveBtn.click();
 		return PageFactory.initElements(driver, EnterTheDatePage.class);
 	}
