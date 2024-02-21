@@ -18,7 +18,7 @@
 #Sample Feature Definition Template
 Feature: Direct Partnership Sad Paths
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice @sadinspectionplan @saddeviationrequest
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice @sadinspectionplan @saddeviationrequest @sadinspectionfedback
   Scenario: Verify a user receives Error Messages for required fields during the Partnership Application and Completion Process (Sad Path - PAR-2392, PAR-2393)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -115,7 +115,7 @@ Feature: Direct Partnership Sad Paths
     And the user confirms the second part of the partnership application
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice @sadinspectionplan @saddeviationrequest
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice @sadinspectionplan @saddeviationrequest @sadinspectionfedback
   Scenario: Verify a user receives Error Messages for required fields when Nominating a Partnership (Sad Path - PAR-2394)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -454,5 +454,16 @@ Feature: Direct Partnership Sad Paths
     Then the user is on the dashboard page
     When the user searches for the last created partnership
     And the user selects the Request to deviate from the inspection plan link
+    Then the user is shown the "You can not complete this journey because this partnership doesn't have any inspection plans." error message
+    And the user signs out
+
+  @regression @sadpath @sadinspectionfedback
+  Scenario: Verify a user receives Error Messages when attempting to send Inspection Feedback without an Inspection Plan (Sad Path - PAR-2425)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user selects the Submit feedback following an inspection link
     Then the user is shown the "You can not complete this journey because this partnership doesn't have any inspection plans." error message
     And the user signs out

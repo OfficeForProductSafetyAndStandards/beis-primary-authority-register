@@ -192,6 +192,11 @@ public class PartnershipInformationPage extends BasePageObject {
 		sendInspectionFeedbackBtn.click();
 		return PageFactory.initElements(driver, EnforcementOfficerContactDetailsPage.class);
 	}
+	
+	public ChooseAnInspectionPlanPage clickSendInspectionFeedbk() {
+		reqToDeviateFromInspectionPlan.click();
+		return PageFactory.initElements(driver, ChooseAnInspectionPlanPage.class);
+	}
 
 	public EnforcementOfficerContactDetailsPage selectDeviateInspectionPlan() {
 		reqToDeviateFromInspectionPlan.click();

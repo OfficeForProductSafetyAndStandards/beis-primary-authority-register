@@ -1110,4 +1110,12 @@ public class SadPathStepDefinitions {
 		websiteManager.chooseAnInspectionPlanPage.selectContinueButton();
 	}
 	
+	@When("^the user selects the Submit feedback following an inspection link$")
+	public void the_user_selects_the_Submit_feedback_following_an_inspection_link() throws Throwable {
+		LOG.info("Attempt to send Inspection Feedback.");
+		websiteManager.partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		websiteManager.partnershipInformationPage.clickSendInspectionFeedbk();
+		websiteManager.chooseAnInspectionPlanPage.selectContinueButton();
+	}
+	
 }
