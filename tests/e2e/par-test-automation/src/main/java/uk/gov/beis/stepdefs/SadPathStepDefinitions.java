@@ -752,6 +752,8 @@ public class SadPathStepDefinitions {
 		String email = DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL).toLowerCase();
 		String contactNote = DataStore.getSavedValue(UsableValues.CONTACT_NOTES);
 		
+		// Need to assert each element separately and run the test one at a time per assert to debug the Failure.
+		
 		assertTrue(fullName +", "+ workNumber +", "+ mobileNumber +","+ email +", "+ contactNote, websiteManager.partnershipInformationPage.checkContactDetails());
 	}
 
@@ -1098,6 +1100,14 @@ public class SadPathStepDefinitions {
 	public void the_inspection_plan_is_removed_successfully() throws Throwable {
 		LOG.info("Verifying the Inspection Plan was Removed Successfully.");
 		assertEquals("Failed: Inspection Plan was not Removed.", websiteManager.inspectionPlanSearchPage.getPlanStatus(), "No results returned");
+	}
+	
+	@When("^the user selects the Request to deviate from the inspection plan link$")
+	public void the_user_selects_the_Request_to_deviate_from_the_inspection_plan_link() throws Throwable {
+		LOG.info("Attempt to create a Deviation Request.");
+		websiteManager.partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		websiteManager.partnershipInformationPage.clickDeviateInspectionPlan();
+		websiteManager.chooseAnInspectionPlanPage.selectContinueButton();
 	}
 	
 }

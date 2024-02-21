@@ -18,7 +18,7 @@
 #Sample Feature Definition Template
 Feature: Direct Partnership Sad Paths
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice @sadinspectionplan
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice @sadinspectionplan @saddeviationrequest
   Scenario: Verify a user receives Error Messages for required fields during the Partnership Application and Completion Process (Sad Path - PAR-2392, PAR-2393)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -115,7 +115,7 @@ Feature: Direct Partnership Sad Paths
     And the user confirms the second part of the partnership application
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice @sadinspectionplan
+  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice @sadinspectionplan @saddeviationrequest
   Scenario: Verify a user receives Error Messages for required fields when Nominating a Partnership (Sad Path - PAR-2394)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -444,4 +444,15 @@ Feature: Direct Partnership Sad Paths
     Then the user is shown the "Please enter the reason you are removing this inspection plan." error message
     When the user enters a reason to remove the inspection plan
     Then the inspection plan is removed successfully
+    And the user signs out
+
+  @regression @sadpath @saddeviationrequest
+  Scenario: Verify a user receives Error Messages when attempting to send a Deviation Request without an Inspection Plan (Sad Path - PAR-2424)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user selects the Request to deviate from the inspection plan link
+    Then the user is shown the "You can not complete this journey because this partnership doesn't have any inspection plans." error message
     And the user signs out

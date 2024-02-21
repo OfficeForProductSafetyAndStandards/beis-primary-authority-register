@@ -20,6 +20,7 @@ import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
 import uk.gov.beis.pageobjects.OtherPageObjects.EnforcementOfficerContactDetailsPage;
 import uk.gov.beis.pageobjects.SharedPageObjects.AddAddressPage;
+import uk.gov.beis.pageobjects.SharedPageObjects.ChooseAnInspectionPlanPage;
 import uk.gov.beis.pageobjects.SharedPageObjects.ReinstatePage;
 import uk.gov.beis.pageobjects.SharedPageObjects.RemovePage;
 import uk.gov.beis.pageobjects.SharedPageObjects.RevokePage;
@@ -195,6 +196,11 @@ public class PartnershipInformationPage extends BasePageObject {
 	public EnforcementOfficerContactDetailsPage selectDeviateInspectionPlan() {
 		reqToDeviateFromInspectionPlan.click();
 		return PageFactory.initElements(driver, EnforcementOfficerContactDetailsPage.class);
+	}
+	
+	public ChooseAnInspectionPlanPage clickDeviateInspectionPlan() {
+		reqToDeviateFromInspectionPlan.click();
+		return PageFactory.initElements(driver, ChooseAnInspectionPlanPage.class);
 	}
 
 	// Update Partnership Details

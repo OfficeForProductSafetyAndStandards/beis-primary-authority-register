@@ -191,6 +191,7 @@ public class WebsiteManager {
 	public BlockPage blockPage;
 	public RemovePage removePage;
 	public DeletePage deletePage;
+	public ChooseAnInspectionPlanPage chooseAnInspectionPlanPage;
 	public BasePageObject basePageObject;
 	
 	public WebsiteManager() {
@@ -361,6 +362,7 @@ public class WebsiteManager {
 		blockPage = PageFactory.initElements(driver, BlockPage.class);
 		deletePage = PageFactory.initElements(driver, DeletePage.class);
 		removePage = PageFactory.initElements(driver, RemovePage.class);
+		chooseAnInspectionPlanPage = PageFactory.initElements(driver, ChooseAnInspectionPlanPage.class);
 		basePageObject = PageFactory.initElements(driver, BasePageObject.class);
 	}
 }
