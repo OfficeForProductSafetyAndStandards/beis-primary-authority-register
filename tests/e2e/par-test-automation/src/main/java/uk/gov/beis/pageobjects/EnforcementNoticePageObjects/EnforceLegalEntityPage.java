@@ -27,17 +27,11 @@ public class EnforceLegalEntityPage extends BasePageObject {
 		legalEntityNameField.sendKeys(name);
 	}
 	
-	//public EnforcementLegalEntityPage selectLegalEntity(String ent) {
-	//	driver.findElement(By.xpath(legEnt.replace("?", ent))).click();
-	//	return PageFactory.initElements(driver, EnforcementLegalEntityPage.class);
-	//}
-	
-	//public EnforcementLegalEntityPage enterEntity(String entity) {
-	//	legalEntityNameField.sendKeys(entity);
-	//	return PageFactory.initElements(driver, EnforcementLegalEntityPage.class);
-	//}
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
 
-	public EnforcementDetailsPage clickContinue() {
+	public EnforcementDetailsPage goToEnforcementDetailsPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, EnforcementDetailsPage.class);
 	}

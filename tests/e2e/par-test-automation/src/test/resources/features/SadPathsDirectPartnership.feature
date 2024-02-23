@@ -18,7 +18,7 @@
 #Sample Feature Definition Template
 Feature: Direct Partnership Sad Paths
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice @sadinspectionplan @saddeviationrequest @sadinspectionfedback
+  @regression @sadpath @partnershipapplication @sadupdate @sadLegalEntities @sadadvice @sadinspectionplan @sadenforcement @saddeviationrequest @sadinspectionfedback
   Scenario: Verify a user receives Error Messages for required fields during the Partnership Application and Completion Process (Sad Path - PAR-2392, PAR-2393)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -115,7 +115,7 @@ Feature: Direct Partnership Sad Paths
     And the user confirms the second part of the partnership application
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @partnershiprevokingrestoring @partnershipupdate @sadLegalEntities @sadContactDetails @advice @sadinspectionplan @saddeviationrequest @sadinspectionfedback
+  @regression @sadpath @partnershipapplication @sadupdate @sadLegalEntities @sadadvice @sadinspectionplan @sadenforcement @saddeviationrequest @sadinspectionfedback
   Scenario: Verify a user receives Error Messages for required fields when Nominating a Partnership (Sad Path - PAR-2394)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -133,7 +133,7 @@ Feature: Direct Partnership Sad Paths
     Then the partnership is approved successfully
     And the user signs out
 
-  @regression @sadpath @partnershiprevokingrestoring
+  @regression @sadpath @sadupdate
   Scenario: Verify a user receives Error Messages for required fields when Revoking and Reinstating a Partnership (Sad Path - PAR-2395)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -152,7 +152,7 @@ Feature: Direct Partnership Sad Paths
     Then the partnership is restored successfully
     And the user signs out
 
-  @regression @sadpath @partnershipupdate
+  @regression @sadpath @sadupdate
   Scenario: Verify a user receives Error Messages for required fields when Updating a Partnerships Information (Sad Path - PAR-2400)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -193,7 +193,7 @@ Feature: Direct Partnership Sad Paths
     Then the trading name is updated successfully
     And the user signs out
 
-  @regression @sadpath @partnershipupdate @sadLegalEntities
+  @regression @sadpath @sadupdate @sadLegalEntities
   Scenario: Verify a user receives Error Messages for required fields when Amending Legal Entities for a Partnership (Sad Path - PAR-2401)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -244,7 +244,7 @@ Feature: Direct Partnership Sad Paths
     Then the user verifies the amendments are created successfully with status "Active"
     And the user signs out
 
-  @regression @sadpath @partnershipupdate @sadContactDetails
+  @regression @sadpath @sadupdate
   Scenario: Verify a user receives Error Messages for required fields when Adding and Removing a Primary Authority Contact for a Partnership (Sad Path - PAR-2402)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -268,7 +268,7 @@ Feature: Direct Partnership Sad Paths
     Then the new Primary Authority contact is removed Successfully
     And the user signs out
 
-  @regression @sadpath @partnershipupdate @sadContactDetails
+  @regression @sadpath @sadupdate
   Scenario: Verify a user receives Error Messages for required fields when Adding and Removing an Organisation Contact for a Partnership (Sad Path - PAR-2403)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -292,7 +292,7 @@ Feature: Direct Partnership Sad Paths
     Then the new Organisation contact is removed Successfully
     And the user signs out
 
-  @regression @sadpath @advice
+  @regression @sadpath @sadadvice
   Scenario: Verify a user receives Error Messages for required fields when Uploading Advice to a Partnership (Sad Path - PAR-2404)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -316,7 +316,7 @@ Feature: Direct Partnership Sad Paths
     Then the advice is created successfully
     And the user signs out
 
-  @regression @sadpath @advice
+  @regression @sadpath @sadadvice
   Scenario: Verify a user receives Error Messages for required fields when Editing Advice to a Partnership (Sad Path - PAR-2405)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -337,7 +337,7 @@ Feature: Direct Partnership Sad Paths
     Then the advice is updated successfully
     And the user signs out
 
-  @regression @sadpath @advice
+  @regression @sadpath @sadadvice
   Scenario: Verify a user receives Error Messages for required fields when Archiving Advice for a Partnership (Sad Path - PAR-2406)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -352,7 +352,7 @@ Feature: Direct Partnership Sad Paths
     Then the advice is archived successfully
     And the user signs out
 
-  @regression @sadpath @advice
+  @regression @sadpath @sadadvice
   Scenario: Verify a user receives Error Messages for required fields when Removing Advice for a Partnership (Sad Path - PAR-2407)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -429,6 +429,43 @@ Feature: Direct Partnership Sad Paths
     Then the user is shown the "Please supply the reason for revoking this document." error message
     When the user enters a reason to revoke the inspection plan
     Then the inspection plan is revoked successfully
+    And the user signs out
+
+  @regression @sadpath @sadenforcement
+  Scenario: Verify a user receives Error Messages for required fields when Raising an Enforcement Notice (Sad Path - PAR-2426)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user clicks the Send a notification of a proposed enforcement action link
+    And the user leaves the enforcement officer contact detail fields empty
+    Then the user is shown the following error messages:
+      | ErrorMessage                                           |
+      | You must enter the first name for this contact.        |
+      | You must enter the last name for this contact.         |
+      | You must enter the work phone number for this contact. |
+    When the user enters the following enforcement officer contact details:
+      | Firstname | Lastname | Workphone   |
+      | Grover    | Muppet   | 01723456789 |
+    And the user does not enter the name of the legal entity
+    Then the user is shown the "You must choose a legal entity." error message
+    When the user enters the name of the legal entity
+    And the user does not provide a summary of the enforcement details
+    Then the user is shown the "You must enter a summary description for this notice of enforcement action." error message
+    When the user enters a summary with the enforcement details:
+    |Enforcement Action|Summary|
+    |Proposed|Test summary.|
+    And the user leaves the enforcement action detail fields empty
+    Then the user is shown the following error messages:
+      | ErrorMessage                                                                 |
+      | Please choose which regulatory functions this enforcement action relates to. |
+      | You must enter a title for this enforcement action.                          |
+      | You must enter the details of this enforcement action.                       |
+    When the user enters the following details for an enforcement action:
+      | Title                            | Regulatory Function | Description       | Attachment |
+      | Enforcement Notice to be Blocked | Alphabet learning   | Test Enforcement. | link.txt   |
+    Then the enforcement notice is created successfully
     And the user signs out
 
   @regression @sadpath @sadinspectionplan

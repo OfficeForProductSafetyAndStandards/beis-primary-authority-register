@@ -1118,4 +1118,89 @@ public class SadPathStepDefinitions {
 		websiteManager.chooseAnInspectionPlanPage.selectContinueButton();
 	}
 	
+	@When("^the user clicks the Send a notification of a proposed enforcement action link$")
+	public void the_user_clicks_the_Send_a_notification_of_a_proposed_enforcement_action_link() throws Throwable {
+		LOG.info("Navigate to the Partnership.");
+		websiteManager.partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		
+		LOG.info("Start the Enforcement Notice Creation.");
+		websiteManager.partnershipInformationPage.createEnforcement();
+		websiteManager.enforcementNotificationPage.clickContinue();
+	}
+
+	@When("^the user leaves the enforcement officer contact detail fields empty$")
+	public void the_user_leaves_the_enforcement_officer_contact_detail_fields_empty() throws Throwable {
+		LOG.info("Leave the Enforcement Officer contact details empty.");
+		websiteManager.enforcementOfficerContactDetailsPage.clearAllFIelds();
+		websiteManager.enforcementOfficerContactDetailsPage.clickContinueButton();
+	}
+
+	@When("^the user enters the following enforcement officer contact details:$")
+	public void the_user_enters_the_following_enforcement_officer_contact_details(DataTable details) throws Throwable {
+	    LOG.info("Enter the Enforcement Officer contact details.");
+	    websiteManager.enforcementOfficerContactDetailsPage.setContactDetails(details);
+	    websiteManager.enforcementOfficerContactDetailsPage.enterFirstname(DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME));
+	    websiteManager.enforcementOfficerContactDetailsPage.enterLastname(DataStore.getSavedValue(UsableValues.PERSON_LASTNAME));
+	    websiteManager.enforcementOfficerContactDetailsPage.enterWorkPhoneNumber(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
+		websiteManager.enforcementOfficerContactDetailsPage.goToEnforceLegalEntityPage();
+	}
+
+	@When("^the user does not enter the name of the legal entity$")
+	public void the_user_does_not_enter_the_name_of_the_legal_entity() throws Throwable {
+		LOG.info("Leave the Legal Entity field empty.");
+		websiteManager.enforceLegalEntityPage.enterLegalEntityName("");
+		websiteManager.enforceLegalEntityPage.clickContinueButton();
+		
+	}
+
+	@When("^the user enters the name of the legal entity$")
+	public void the_user_enters_the_name_of_the_legal_entity() throws Throwable {
+		LOG.info("Enter the Legal Entity name.");
+		websiteManager.enforceLegalEntityPage.enterLegalEntityName(DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		websiteManager.enforceLegalEntityPage.goToEnforcementDetailsPage();
+	}
+
+	@When("^the user does not provide a summary of the enforcement details$")
+	public void the_user_does_not_provide_a_summary_of_the_enforcement_details() throws Throwable {
+		LOG.info("Leave the Enforcement Notification summary field empty.");
+		websiteManager.enforcementDetailsPage.enterEnforcementDescription("");
+		websiteManager.enforcementDetailsPage.clickContinueButton();
+	}
+	
+	@When("^the user enters a summary with the enforcement details:$")
+	public void the_user_enters_a_summary_with_the_enforcement_details(DataTable details) throws Throwable {
+		LOG.info("Choose the Enforcment action type and enter a summary.");
+		websiteManager.enforcementDetailsPage.setEnforcementDetails(details);
+		websiteManager.enforcementDetailsPage.selectEnforcementType(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TYPE));
+		websiteManager.enforcementDetailsPage.enterEnforcementDescription(DataStore.getSavedValue(UsableValues.ENFORCEMENT_SUMMARY));
+		websiteManager.enforcementDetailsPage.goToEnforcementActionPage();
+	}
+
+	@When("^the user leaves the enforcement action detail fields empty$")
+	public void the_user_leaves_the_enforcement_action_detail_fields_empty() throws Throwable {
+		LOG.info("Leave the Enforcement action fields empty.");
+		websiteManager.enforcementActionPage.clearAllFields();
+		websiteManager.enforcementActionPage.clickContinueButton();
+	}
+
+	@When("^the user enters the following details for an enforcement action:$")
+	public void the_user_enters_the_following_details_for_an_enforcement_action(DataTable details) throws Throwable {
+		LOG.info("Enter the Enforcment Action details.");
+		websiteManager.enforcementActionPage.setEnforcementActionDetails(details);
+		websiteManager.enforcementActionPage.enterTitle(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TITLE));
+	    websiteManager.enforcementActionPage.selectRegulatoryFunctions(DataStore.getSavedValue(UsableValues.ENFORCEMENT_REGFUNC));
+		websiteManager.enforcementActionPage.enterEnforcementDescription(DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION).toLowerCase());
+		websiteManager.enforcementActionPage.chooseFile(DataStore.getSavedValue(UsableValues.ENFORCEMENT_FILENAME));
+		websiteManager.enforcementActionPage.goToEnforcementReviewPage();
+	}
+
+	@Then("^the enforcement notice is created successfully$")
+	public void the_enforcement_notice_is_created_successfully() throws Throwable {
+	    LOG.info("Choose the Enforcment action type and enter a summary.");
+	    Assert.assertTrue("Failed: Enforcement Details are not Correct.", websiteManager.enforcementReviewPage.checkEnforcementCreation());
+		
+		websiteManager.enforcementReviewPage.saveChanges();
+		websiteManager.enforcementCompletionPage.goToPartnershipConfirmationPage();
+	}
+	
 }

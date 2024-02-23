@@ -829,17 +829,17 @@ public class PARStepDefs {
 		websiteManager.enforcementOfficerContactDetailsPage.goToEnforceLegalEntityPage();
 		
 		websiteManager.enforceLegalEntityPage.enterLegalEntityName(DataStore.getSavedValue(UsableValues.ENTITY_NAME));
-		websiteManager.enforceLegalEntityPage.clickContinue();
+		websiteManager.enforceLegalEntityPage.goToEnforcementDetailsPage();
 		
 		websiteManager.enforcementDetailsPage.selectEnforcementType(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TYPE));
 		websiteManager.enforcementDetailsPage.enterEnforcementDescription(DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION));
-		websiteManager.enforcementDetailsPage.clickContinue();
+		websiteManager.enforcementDetailsPage.goToEnforcementActionPage();
 		
 		websiteManager.enforcementActionPage.selectRegulatoryFunctions(DataStore.getSavedValue(UsableValues.ENFORCEMENT_REGFUNC));
 		websiteManager.enforcementActionPage.chooseFile(DataStore.getSavedValue(UsableValues.ENFORCEMENT_FILENAME));
 		websiteManager.enforcementActionPage.enterEnforcementDescription(DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION).toLowerCase());
 		websiteManager.enforcementActionPage.enterTitle(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TITLE));
-		websiteManager.enforcementActionPage.clickContinue();
+		websiteManager.enforcementActionPage.goToEnforcementReviewPage();
 	}
 
 	@Then("^all the fields for the enforcement notice are updated correctly$")
