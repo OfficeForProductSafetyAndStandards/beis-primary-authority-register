@@ -1,6 +1,6 @@
 # beispar/db:latest
 
-FROM postgres:13.6
+FROM postgres:13.14
 
 ARG DATABASE_FILE='./db-dump-production-seed.sql'
 

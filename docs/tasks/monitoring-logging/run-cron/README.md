@@ -1,34 +1,30 @@
-# Application configuration
+# Running regular or scheduled events
 
-Drupal has a robust system for managing the application configuration.
+The Primary Authority Register relies on scheduled actions happening at regular intervals in order run critical functions like cleaning caches and sending notifications.
 
-It uses a concept of 'active' configuration, which is the stored in the database for improved performance, and 'staged' configuration, which is stored in the filesystem for improved manageability and the ability to revision changes through git.
+Cron is a utility for running events at regular intervals and helps ensure that requests are made to Drupal cron handler to run these actions.
 
-> See [managing configuration](https://www.drupal.org/docs/administering-a-drupal-site/configuration-management/managing-your-sites-configuration)
+## Running cron
 
-## Active configuration
+Cron can be run:
+* By visiting the [cron admin page](https://primary-authority.beis.gov.uk/admin/config/system/cron) as an administrative user.
+* By making an http request against the cron endpoint listed on this page.
+* By running `../vendor/bin/drush cron` from the `/web` directory.
 
-Active configuration is stored in the database, and managed through the administrative UI that Drupal provides.
+The service [Uptime Robot](https://uptimerobot.com/) is also used to run cron every 5 minutes.
 
-Configuration is always deployed with the code, so any changes made to the active configuration must be exported to the staged configuration in order to be deployed. From the `/web` directory run:
+## Checking that cron is running regularly
 
-```
-../vendor/bin/drush config:export
-```
+In order for many of the regular events and tasks to happen within PAR it is important to confirm that the cron is being triggered at regular intervals:
 
-## Staged configuration
+1. This can be done by visiting the [cron admin page](https://primary-authority.beis.gov.uk/admin/config/system/cron) as an administrative user, and looking for the time it was last run.
 
-Staged configuration is stored in yaml files in the `/sync` directory.
+2. It is also important to sign in to [Uptime Robot](https://uptimerobot.com/) and confirm that it is configured to make regular http requests against the cron endpoint.
 
-Any changes made to these files must be imported into the site before they will take effect. From the `/web` directory run:
-```
-../vendor/bin/drush config:import
-```
+## Debugging cron
 
-## Make changes to the configuration
+Drupal contains a cron handler that subsequently calls all the scheduled actions within the service.
 
-Only the staged configuration is deployed to higher environments, changes made to the staged configuration must be committed to git and deployed through the usual process.
+> See all [cron jobs](https://primary-authority.beis.gov.uk/admin/config/system/cron/jobs)
 
-The easiest and safest way, however, to make changes to the configuration is to start a local instance of the website, sign in as the administrator account, and make the necessary changes through the Administrative UI that Drupal provides.
-
-This ensures that invalid configuration cannot be applied. But it does require the active configuration be exported to the staged config.
+Logs for each running job can be accessed from the 'operations' column of this page.

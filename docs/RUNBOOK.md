@@ -12,6 +12,13 @@ This is based on legal partnerships between business and individual local author
 
 For more information see [What is Primary Authority?](https://www.gov.uk/guidance/local-regulation-primary-authority#what-is-primary-authority)
 
+## Regular Activities
+
+* Check dependencies are up to date - monthly
+* Check errors are being logged - monthly
+* Check uptime monitor is operational - monthly
+* Check cron is running - monthly
+
 ## Tasks
 
 This runbook will describe the following topic areas and how to accomplish key tasks within each.
@@ -19,13 +26,9 @@ This runbook will describe the following topic areas and how to accomplish key t
 ### Software Development
 
 * Setup a local environment
-* Understanding project structure
-* Updating the frontend design
-* Add a data entity
-* Add a user journey
-* Add a notification message
-* Add regular or scheduled actions
+* Making changes to the code
 * Making changes to drupal contributed modules
+* Updating the GDS Design System
 * Dependency management and software updates
 
 ### Configuration
@@ -73,8 +76,8 @@ This runbook will describe the following topic areas and how to accomplish key t
 
 ### Security
 
-* PaaS Vulnerability scanning
 * Check software versions are up-to-date
+* Check Drupal security advisory
 * Infrastructure upgrades
 
 ### Operating the service

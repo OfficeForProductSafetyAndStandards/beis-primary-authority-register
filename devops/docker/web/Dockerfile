@@ -35,13 +35,16 @@ RUN PHP_DEPS="\
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 # Enable the requisite Apache modules.
-RUN a2enmod rewrite \
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y w3m \
+    && a2enmod rewrite \
     && a2enmod proxy \
     && a2enmod proxy_http \
     && a2enmod proxy_ajp \
     && a2enmod proxy_balancer \
     && a2enmod proxy_connect \
-    && a2enmod proxy_html
+    && a2enmod proxy_html \
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 # Configure Apache virtual host
 COPY ./par.localhost.conf /etc/apache2/sites-available/par.localhost.conf
