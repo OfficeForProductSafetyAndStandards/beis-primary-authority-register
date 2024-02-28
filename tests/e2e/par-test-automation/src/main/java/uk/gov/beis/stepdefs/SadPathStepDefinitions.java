@@ -1203,4 +1203,10 @@ public class SadPathStepDefinitions {
 		websiteManager.enforcementCompletionPage.goToPartnershipConfirmationPage();
 	}
 	
+	@When("^the user selects the block button without entering a reason to block$")
+	public void the_user_selects_the_block_button_without_entering_a_reason_to_block() throws Throwable {
+		LOG.info("Select Block Radio and leave the Reason field empty.");
+		websiteManager.proposedEnforcementPage.selectBlock();
+		websiteManager.proposedEnforcementPage.clickContinueButton();
+	}
 }

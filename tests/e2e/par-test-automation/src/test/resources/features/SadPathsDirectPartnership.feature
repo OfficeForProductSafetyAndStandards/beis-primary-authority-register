@@ -416,21 +416,6 @@ Feature: Direct Partnership Sad Paths
     Then the inspection plan is created successfully
     And the user signs out
 
-  @regression @sadpath @sadinspectionplan
-  Scenario: Verify a user receives Error Messages for required fields when Revoking an Inspection Plan for a Partnership (Sad Path - PAR-2410)
-    Given the user is on the PAR home page
-    When the user visits the login page
-    And the user logs in with the "senior_administrator@example.com" user credentials
-    Then the user is on the dashboard page
-    When the user searches for the last created partnership
-    And the user selects the see all inspection plans link
-    And the user clicks the revoke link
-    And the user does not enter a reason for revoking
-    Then the user is shown the "Please supply the reason for revoking this document." error message
-    When the user enters a reason to revoke the inspection plan
-    Then the inspection plan is revoked successfully
-    And the user signs out
-
   @regression @sadpath @sadenforcement
   Scenario: Verify a user receives Error Messages for required fields when Raising an Enforcement Notice (Sad Path - PAR-2426)
     Given the user is on the PAR home page
@@ -454,8 +439,8 @@ Feature: Direct Partnership Sad Paths
     And the user does not provide a summary of the enforcement details
     Then the user is shown the "You must enter a summary description for this notice of enforcement action." error message
     When the user enters a summary with the enforcement details:
-    |Enforcement Action|Summary|
-    |Proposed|Test summary.|
+      | Enforcement Action | Summary       |
+      | Proposed           | Test summary. |
     And the user leaves the enforcement action detail fields empty
     Then the user is shown the following error messages:
       | ErrorMessage                                                                 |
@@ -466,6 +451,33 @@ Feature: Direct Partnership Sad Paths
       | Title                            | Regulatory Function | Description       | Attachment |
       | Enforcement Notice to be Blocked | Alphabet learning   | Test Enforcement. | link.txt   |
     Then the enforcement notice is created successfully
+    And the user signs out
+
+  @regression @sadpath @sadenforcement
+  Scenario: Verify a user receives Error Messages for required fields when Blocking an Enforcement Notice (Sad Path - PAR-2427)
+    Given the user is on the PAR home page
+    When the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user selects the last created enforcement notice
+    And the user selects the block button without entering a reason to block
+    Then the user is shown the "You must explain your reason for blocking this notice." error message
+    When the user blocks the enforcement notice with the following reason: "Test Block."
+    Then the enforcement notice is set to blocked status
+
+  @regression @sadpath @sadinspectionplan
+  Scenario: Verify a user receives Error Messages for required fields when Revoking an Inspection Plan for a Partnership (Sad Path - PAR-2410)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "senior_administrator@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user selects the see all inspection plans link
+    And the user clicks the revoke link
+    And the user does not enter a reason for revoking
+    Then the user is shown the "Please supply the reason for revoking this document." error message
+    When the user enters a reason to revoke the inspection plan
+    Then the inspection plan is revoked successfully
     And the user signs out
 
   @regression @sadpath @sadinspectionplan

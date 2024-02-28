@@ -885,7 +885,7 @@ public class PARStepDefs {
 	public void the_user_approves_the_enforcement_notice() throws Throwable {
 		LOG.info("Approve the EnforcementNotice.");
 		websiteManager.proposedEnforcementPage.selectAllow();
-		websiteManager.proposedEnforcementPage.clickContinue();
+		websiteManager.proposedEnforcementPage.goToEnforcementReviewPage();
 		
 		websiteManager.enforcementReviewPage.saveChanges();
 		websiteManager.enforcementCompletionPage.clickDone();
@@ -931,7 +931,7 @@ public class PARStepDefs {
 		LOG.info("Block the Enforcement Notice.");
 		websiteManager.proposedEnforcementPage.selectBlock();
 		websiteManager.proposedEnforcementPage.enterReasonForBlockingEnforcement(reason);
-		websiteManager.proposedEnforcementPage.clickContinue();
+		websiteManager.proposedEnforcementPage.goToEnforcementReviewPage();
 		
 		websiteManager.enforcementReviewPage.saveChanges();
 		websiteManager.enforcementCompletionPage.clickDone();
