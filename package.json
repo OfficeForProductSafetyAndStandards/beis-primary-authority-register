@@ -7,22 +7,25 @@
     "url": "https://github.com/UKGovernmentBEIS/beis-primary-authority-register"
   },
   "engines": {
-    "node": ">=7.0.0"
+    "node": ">=18.0.0"
   },
   "engine-trict": true,
   "dependencies": {
-    "@drupal/autocomplete": "0.0.2",
-    "chosen-js": "^1.8.7",
-    "gulp": "^4.0.0",
-    "gulp-cli": "^2.1.0",
-    "gulp-sass": "^4.0.0",
+    "gulp": "^3.9.1",
+    "gulp-cli": "^2.3.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-sass-variables": "^1.2.0",
     "gulp-sourcemaps": "^2.6.5",
-    "ideal-postcodes-autocomplete": "^0.2.1"
+    "ideal-postcodes-autocomplete": "^0.2.1",
+    "sass": "^1.70.0"
   },
   "scripts": {
     "gulp": "gulp",
-    "install-govuk-theme": "cd web/themes/contrib/govuk_theme && npm install && gulp build",
-    "install-par-theme": "cd web/themes/custom/par_theme && npm install && gulp build",
+    "install-govuk-theme": "cd web/themes/contrib/govuk_theme && npm install && node_modules/.bin/gulp build",
+    "install-par-theme": "cd web/themes/custom/par_theme && npm install && node_modules/.bin/gulp build",
+    "update-govuk-theme": "cd web/themes/contrib/govuk_theme && npm update && node_modules/.bin/gulp build",
+    "update-par-theme": "cd web/themes/contrib/par_theme && npm update && node_modules/.bin/gulp build",
+    "update-frontend": "npm update && npm run update-govuk-theme && npm run install-par-theme",
     "frontend": "npm i && npm run install-govuk-theme && npm run install-par-theme"
   }
 }
