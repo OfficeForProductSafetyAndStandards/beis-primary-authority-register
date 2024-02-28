@@ -1,12 +1,4 @@
-$govuk-global-styles: true !default;
-$govuk-assets-path: '../assets/' !default;
-
-$govuk-compatibility-govukelements: false !default;
-$govuk-compatibility-govuktemplate: false !default;
-$govuk-compatibility-govukfrontendtoolkit: false !default;
-$govuk-use-legacy-palette: false !default;
-
-@import "govuk-frontend/govuk/all";
+@import "node_modules/govuk-frontend/govuk/all";
 @import "typography";
 @import "overrides";
 @import "search";

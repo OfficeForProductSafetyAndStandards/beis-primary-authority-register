@@ -12,18 +12,6 @@ All dependencies are defined in the root `composer.json` file, which uses a typi
 
 These versions are then locked in place in the `composer.lock` file, and installed in the root `/vendor` directory.
 
-### Check if updates are needed
-
-To identify what packages need to be updated run (from `project root` inside docker container):
-```
-composer show -Dlo --no-dev
-```
-
-To identify all packages that have security vulnerabilities that need patching run (from `web` directory inside docker container):
-```
-./vendor/bin/drush pm:security
-```
-
 ### Update dependencies
 
 To update dependencies within the existing semver constraints run `composer update` and commit the changes to the `composer.lock` file.
