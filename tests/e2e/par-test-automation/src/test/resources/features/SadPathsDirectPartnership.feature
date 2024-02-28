@@ -464,6 +464,29 @@ Feature: Direct Partnership Sad Paths
     Then the user is shown the "You must explain your reason for blocking this notice." error message
     When the user blocks the enforcement notice with the following reason: "Test Block."
     Then the enforcement notice is set to blocked status
+    And the user signs out
+
+  @regression @sadpath @sadenforcement
+  Scenario: Verify a user receives Error Messages for required fields when Removing an Enforcement Notice (Sad Path - PAR-2428)
+    Given the user is on the PAR home page
+    When the user is on the PAR login page
+    And the user logs in with the "senior_administrator@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created enforcement notice
+    And the user selects the Remove enforcement action link
+    And the user does not select a reason or enter a description for the removal
+    Then the user is shown the following error messages:
+      | ErrorMessage                                                      |
+      | You must select a reason for removal.                             |
+      | Please give a description of why this removal is being requested. |
+    When the user provides the following reason and a description for the removal:
+      | RemovalReason                   | RemovalDescription |
+      | This is a duplicate enforcement | Test Removal.      |
+    And the user does not confirm they want to remove the enforcement notice
+    Then the user is shown the "You must confirm you wish to remove this item." error message
+    When the user confirms they want the enforcement notice removing
+    Then the enforcement notice is removed successfully
+    And the user signs out
 
   @regression @sadpath @sadinspectionplan
   Scenario: Verify a user receives Error Messages for required fields when Revoking an Inspection Plan for a Partnership (Sad Path - PAR-2410)

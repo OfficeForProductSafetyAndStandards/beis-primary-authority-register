@@ -64,8 +64,9 @@ public class DeclarationPage extends BasePageObject {
 		}
 	}
 	
-	public void clickContinueButton() {
+	public DeclarationPage clickContinueButton() {
 		continueBtn.click();
+		return PageFactory.initElements(driver, DeclarationPage.class);
 	}
 	
 	public ContactDetailsPage goToContactDetailsPage() {

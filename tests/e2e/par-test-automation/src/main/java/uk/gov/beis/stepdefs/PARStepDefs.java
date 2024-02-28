@@ -904,15 +904,16 @@ public class PARStepDefs {
 		LOG.info("Select last created enforcement");
 		websiteManager.helpDeskDashboardPage.selectManageEnforcementNotices();
 		websiteManager.enforcementSearchPage.searchForEnforcementNotice(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
-		websiteManager.enforcementSearchPage.removeEnforcement();
 	}
 	
 	@When("^the user removes the enforcement notice$")
 	public void the_user_removes_the_enforcement_notice() throws Throwable {
 		LOG.info("Remove the Enforcement Notice.");
-		websiteManager.removeEnforcementPage.selectReasonForRemoval("This is a duplicate enforcement");
-		websiteManager.removeEnforcementPage.enterReasonForRemoval("Test Remove.");
-		websiteManager.removeEnforcementPage.clickContinue();
+		websiteManager.enforcementSearchPage.removeEnforcement();
+		
+		websiteManager.removeEnforcementPage.selectRemovalReason("This is a duplicate enforcement");
+		websiteManager.removeEnforcementPage.enterRemovalDescription("Test Remove.");
+		websiteManager.removeEnforcementPage.goToDeclarationPage();
 		
 		websiteManager.declarationPage.selectConfirmCheckbox();
 		websiteManager.declarationPage.goToEnforcementSearchPage();

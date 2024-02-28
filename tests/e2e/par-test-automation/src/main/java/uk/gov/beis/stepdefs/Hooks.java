@@ -31,7 +31,7 @@ public class Hooks {
 		
 		LOG.info("... Doing BeforeMethod createdriver routine...");
 		
-		driver = new SeleniumDriverConfig(Browser.Chrome, 10, 10).driver;
+		driver = new SeleniumDriverConfig(Browser.Chrome, 15, 15).driver;
 		
 		ScenarioContext.lastDriver = driver;
 	}

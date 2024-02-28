@@ -24,16 +24,20 @@ public class RemoveEnforcementPage extends BasePageObject {
 		super();
 	}
 	
-	public void selectReasonForRemoval(String reason) {
+	public void selectRemovalReason(String reason) {
 		driver.findElement(By.xpath(removalReasonLocator.replace("?", reason))).click();
 	}
 	
-	public void enterReasonForRemoval(String reason) {
+	public void enterRemovalDescription(String reason) {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(reason);
 	}
 	
-	public DeclarationPage clickContinue() {
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
+	public DeclarationPage goToDeclarationPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, DeclarationPage.class);
 	}

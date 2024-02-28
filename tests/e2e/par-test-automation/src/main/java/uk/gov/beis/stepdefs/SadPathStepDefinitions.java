@@ -1209,4 +1209,44 @@ public class SadPathStepDefinitions {
 		websiteManager.proposedEnforcementPage.selectBlock();
 		websiteManager.proposedEnforcementPage.clickContinueButton();
 	}
+	
+	@When("^the user selects the Remove enforcement action link$")
+	public void the_user_selects_the_Remove_enforcement_action_link() throws Throwable {
+		LOG.info("Selecting the Remove Enforcement action link..");
+		websiteManager.enforcementSearchPage.removeEnforcement();
+	}
+
+	@When("^the user does not select a reason or enter a description for the removal$")
+	public void the_user_does_not_select_a_reason_or_enter_a_description_for_the_removal() throws Throwable {
+		LOG.info("Not selecting a Removal Reason or enterting an Removal Description..");
+		websiteManager.removeEnforcementPage.clickContinueButton();
+	}
+
+	@When("^the user provides the following reason and a description for the removal:$")
+	public void the_user_provides_the_following_reason_and_a_description_for_the_removal(DataTable details) throws Throwable {
+		LOG.info("Entering the Enforcement Notice Removal reason and description.");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.REMOVAL_REASON, data.get("RemovalReason"));
+			DataStore.saveValue(UsableValues.REMOVAL_DESCRIPTION, data.get("RemovalDescription"));
+		}
+		
+		websiteManager.removeEnforcementPage.selectRemovalReason(DataStore.getSavedValue(UsableValues.REMOVAL_REASON));
+		websiteManager.removeEnforcementPage.enterRemovalDescription(DataStore.getSavedValue(UsableValues.REMOVAL_DESCRIPTION));
+		websiteManager.removeEnforcementPage.goToDeclarationPage();
+	}
+
+	@When("^the user does not confirm they want to remove the enforcement notice$")
+	public void the_user_does_not_confirm_they_want_to_remove_the_enforcement_notice() throws Throwable {
+		LOG.info("Not Confirming the Enforcement Notice removal.");
+		websiteManager.declarationPage.deselectConfirmCheckbox();
+		websiteManager.declarationPage.clickContinueButton();
+	}
+
+	@When("^the user confirms they want the enforcement notice removing$")
+	public void the_user_confirms_they_want_the_enforcement_notice_removing() throws Throwable {
+		LOG.info("Confirming the Enforcement Notice removal.");
+		websiteManager.declarationPage.selectConfirmCheckbox();
+		websiteManager.declarationPage.goToEnforcementSearchPage(); // Test fails due to the button not being clicked properly, Selenium "hovers" on the button as it is shown as highlighted.
+	}
 }

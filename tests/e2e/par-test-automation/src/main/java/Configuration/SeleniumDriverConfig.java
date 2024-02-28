@@ -37,6 +37,7 @@ public class SeleniumDriverConfig {
 		
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadInSeconds));
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWaitInSeconds));
+		
 		driver.manage().window().maximize();
 	}
 	
