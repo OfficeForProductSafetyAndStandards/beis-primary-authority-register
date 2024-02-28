@@ -28,7 +28,7 @@ public class BasePageObject {
 
 	protected Logger LOG = LoggerFactory.getLogger(BasePageObject.class);
 	protected static FluentWait<WebDriver> wait;
-	private static JavascriptExecutor js;
+	private static JavascriptExecutor javascriptExecutor;
 
 	private String errorSummaryLocator = "//div/ul/li[contains(normalize-space(), \"?\")]";
 	private String errorMessageLocator = "//div/span[contains(normalize-space(), \"?\")]";
@@ -36,7 +36,7 @@ public class BasePageObject {
 	// create a web driver instance when BasePageObject instantiated using the shared driver
 	public BasePageObject() {
 		driver = ScenarioContext.lastDriver;
-		js = (JavascriptExecutor) driver;
+		javascriptExecutor = (JavascriptExecutor) driver;
 	}
 	
 	public void clickSignOut() {
@@ -94,11 +94,11 @@ public class BasePageObject {
 	}
 	
 	public static String executeJs(String script) {
-		return String.valueOf(js.executeScript(script));
+		return String.valueOf(javascriptExecutor.executeScript(script));
 	}
 
-	public String executeJs(String script, WebElement element) {
-		return String.valueOf(js.executeScript(script, element));
+	public void executeJavaScript(String script, WebElement element) {
+		javascriptExecutor.executeScript(script, element);
 	}
 
 	public void refresh() {

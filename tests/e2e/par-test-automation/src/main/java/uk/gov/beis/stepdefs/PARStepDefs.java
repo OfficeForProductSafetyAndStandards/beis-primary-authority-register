@@ -470,7 +470,7 @@ public class PARStepDefs {
 		websiteManager.legalEntityReviewPage.goToConfirmThisAmendmentPage();
 		
 		websiteManager.confirmThisAmendmentPage.selectConfirmationCheckbox();
-		websiteManager.confirmThisAmendmentPage.goToAmendmentCompletedPage();
+		websiteManager.confirmThisAmendmentPage.submitAmendmentButton();
 		
 		websiteManager.amendmentCompletedPage.goToPartnershipDetailsPage();
 	}

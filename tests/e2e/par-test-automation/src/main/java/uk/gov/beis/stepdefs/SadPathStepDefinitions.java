@@ -276,7 +276,11 @@ public class SadPathStepDefinitions {
 		websiteManager.contactDetailsPage.selectPreferredEmail();
 		websiteManager.contactDetailsPage.selectPreferredWorkphone();
 		websiteManager.contactDetailsPage.selectPreferredMobilephone();
-		DataStore.saveValue(UsableValues.CONTACT_NOTES, "Test Note.");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.CONTACT_NOTES, data.get("ContactNote"));
+		}
+		
 		websiteManager.contactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
 		websiteManager.contactDetailsPage.goToSICCodePage();
 	}
@@ -712,6 +716,15 @@ public class SadPathStepDefinitions {
 	public void the_user_confirms_the_legal_entity_amendment() throws Throwable {
 		LOG.info("Confirming the Legal Entity Amendments.");
 		websiteManager.confirmThisAmendmentPage.selectConfirmationCheckbox();
+		websiteManager.confirmThisAmendmentPage.submitAmendmentButton();
+		
+		websiteManager.amendmentCompletedPage.goToPartnershipDetailsPage();
+	}
+	
+	@When("^the user nominates the legal entity amendment$")
+	public void the_user_nominates_the_legal_entity_amendment() throws Throwable {
+		LOG.info("Nominating the Legal Entity Amendments.");
+		websiteManager.confirmThisAmendmentPage.selectConfirmationCheckbox();
 		websiteManager.confirmThisAmendmentPage.goToAmendmentCompletedPage();
 		
 		websiteManager.amendmentCompletedPage.goToPartnershipDetailsPage();
@@ -734,8 +747,12 @@ public class SadPathStepDefinitions {
 		LOG.info("Entering the Authority contact details.");
 		websiteManager.contactDetailsPage.addContactDetails(details);
 		websiteManager.contactDetailsPage.selectRandomPreferredCommunication();
-		websiteManager.contactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
 		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.CONTACT_NOTES, data.get("ContactNotes"));
+		}
+		
+		websiteManager.contactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
 		websiteManager.contactDetailsPage.selectContinueButton();
 		
 		LOG.info("Reviewing the Contact Details.");

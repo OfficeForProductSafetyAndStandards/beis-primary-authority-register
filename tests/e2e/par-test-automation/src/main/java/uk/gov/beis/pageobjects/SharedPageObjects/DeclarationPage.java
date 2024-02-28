@@ -2,6 +2,7 @@ package uk.gov.beis.pageobjects.SharedPageObjects;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -64,9 +65,8 @@ public class DeclarationPage extends BasePageObject {
 		}
 	}
 	
-	public DeclarationPage clickContinueButton() {
+	public void clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, DeclarationPage.class);
 	}
 	
 	public ContactDetailsPage goToContactDetailsPage() {
@@ -85,7 +85,9 @@ public class DeclarationPage extends BasePageObject {
 	}
 	
 	public EnforcementSearchPage goToEnforcementSearchPage() {
-		continueBtn.click();
+		WebElement element = driver.findElement(By.xpath("//input[@value='Remove']"));
+		
+		executeJavaScript("arguments[0].click();", element);
 		return PageFactory.initElements(driver, EnforcementSearchPage.class);
 	}
 }

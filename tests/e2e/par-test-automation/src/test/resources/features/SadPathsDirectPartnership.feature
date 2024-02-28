@@ -89,8 +89,8 @@ Feature: Direct Partnership Sad Paths
       | You must enter the work phone number for this contact. |
       | You must enter the email address for this contact.     |
     When the user confirms the primary contact details with the following:
-      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                   |
-      | Dr    | David     | Smythe   | 02045678912 |  07745665913 | davidsmythe@example.com |
+      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                   | ContactNote           |
+      | Dr    | David     | Smythe   | 02045678912 |  07745665913 | davidsmythe@example.com | Testing Contact Note. |
     And the user confirms the sic code
     When the user does not confirm the number of employees
     Then the user is shown the "You must select how many employees this business has." error message
@@ -240,7 +240,7 @@ Feature: Direct Partnership Sad Paths
     And the user clicks the nominate amendments link
     And the user does not confirm the amendment
     Then the user is shown the "Please confirm the amendments to this partnership." error message
-    When the user confirms the legal entity amendment
+    When the user nominates the legal entity amendment
     Then the user verifies the amendments are created successfully with status "Active"
     And the user signs out
 
@@ -260,8 +260,8 @@ Feature: Direct Partnership Sad Paths
       | You must enter the work phone number for this contact. |
       | You must enter the email address for this contact.     |
     When the user enters the following authority contact details:
-      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                    |
-      | Dr    | Sandra    | Smythe   | 02056698103 |  07798573404 | sandrasmythe@example.com |
+      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                    | ContactNotes |
+      | Dr    | Sandra    | Smythe   | 02056698103 |  07798573404 | sandrasmythe@example.com | Test Note.   |
     Then the new contact is added successfully
     # Remove the new contact.
     When the user removes the new Primary Authority Contact
@@ -284,8 +284,8 @@ Feature: Direct Partnership Sad Paths
       | You must enter the work phone number for this contact. |
       | You must enter the email address for this contact.     |
     When the user enters the following authority contact details:
-      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                  |
-      | Mrs   | Sarah     | Hardy    | 02056698234 |  07798573542 | sarahhardy@example.com |
+      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                  | ContactNotes |
+      | Mrs   | Sarah     | Hardy    | 02056698234 |  07798573542 | sarahhardy@example.com | Test Note.   |
     Then the new contact is added successfully
     # Remove the new contact.
     When the user removes the new Organisation contact
