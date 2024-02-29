@@ -261,13 +261,10 @@ jobs:
       - *prepare_application
       - *check_application
       - run:
-          name: "Install test dependencies"
+          name: "Installing tests"
           command: |
-            cd tests
-            mkdir -p ./reports/phpunit
-            mkdir -p ./reports/nightwatch
-            npm install
-            npm run selenium-install
+            echo "$(pwd)"
+            echo "Test running has been decomissioned. See runbook for steps to run new test suite."
       - run:
           name: "Run unit tests"
           command: |
@@ -296,13 +293,10 @@ jobs:
       - *prepare_application
       - *check_application
       - run:
-          name: "Install test dependencies"
+          name: "Installing tests"
           command: |
-            cd tests
-            mkdir -p ./reports/phpunit
-            mkdir -p ./reports/nightwatch
-            npm install
-            npm run selenium-install
+            echo "$(pwd)"
+            echo "Test running has been decomissioned. See runbook for steps to run new test suite."
       - run:
           name: "Run unit tests"
           command: |
