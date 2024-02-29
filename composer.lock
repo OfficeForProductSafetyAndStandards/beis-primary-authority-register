@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "29c1073a3bc2409c5c27235892d3935c",
+    "content-hash": "3da1f024de83a69e7b8cf04ee1c5dd96",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -3667,29 +3667,26 @@
         },
         {
             "name": "drupal/govuk_theme",
-            "version": "1.17.0",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/govuk_theme.git",
-                "reference": "8.x-1.17"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/govuk_theme-8.x-1.17.zip",
-                "reference": "8.x-1.17",
-                "shasum": "76e309dfcfdd1b3225227add243f53ceef707013"
+                "reference": "37c77e0e5be22da4361cfc8f94c4086b9a1f6858"
             },
             "require": {
                 "drupal/core": "^8 || ^9 || ^10"
             },
             "type": "drupal-theme",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
-                    "version": "8.x-1.17",
-                    "datestamp": "1709158665",
+                    "version": "8.x-1.18+3-dev",
+                    "datestamp": "1709199578",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -20057,6 +20054,7 @@
         "drupal/audit_log": 20,
         "drupal/flysystem_s3": 20,
         "drupal/govuk_cookies": 20,
+        "drupal/govuk_theme": 20,
         "drupal/invite": 20,
         "drupal/registered_organisations": 20,
         "drupal/trance": 20
