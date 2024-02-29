@@ -65,7 +65,7 @@
         "drupal/google_analytics": "~4.0.0",
         "drupal/govuk_cookies": "1.0.x-dev",
         "drupal/govuk_notify": "~2.2.0 || ~3.0.0",
-        "drupal/govuk_theme": "~1.17.0",
+        "drupal/govuk_theme": "dev-1.x",
         "drupal/health_check": "3.0.0",
         "drupal/http_response_headers": "~2.0.0",
         "drupal/inline_entity_form": "~1.0.0",
