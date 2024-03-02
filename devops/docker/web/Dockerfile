@@ -1,5 +1,5 @@
 # beispar/app:latest
-FROM php:8.2-apache-buster as production
+FROM php:8.3-apache-bookworm as production
 
 # Configure PHP extensions
 ## Using php upgrade from https://github.com/chialab/docker-php

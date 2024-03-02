@@ -37,6 +37,12 @@ class ParCacheCommands extends DrushCommands {
     $this->cacheFactory = $cache_factory;
   }
 
+  public static function create(ContainerInterface $container, DrushContainer $drush): self {
+      return new static(
+        $container->get('par_cache.persistent.cache_factory')
+      );
+  }
+
   /**
    * Flush permanent cache bin.
    *
