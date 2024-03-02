@@ -57,6 +57,14 @@ class ParNotificationCommands extends DrushCommands {
     $this->messageExpiryManager = $message_expiry_manager;
   }
 
+  public static function create(ContainerInterface $container, DrushContainer $drush): self {
+      return new static(
+        $container->get('plugin.manager.par_subscription_manager'),
+        $container->get('par_notification.message_handler'),
+        $container->get('message_expire.manager')
+      );
+  }
+
   /**
    * Warm the PAR Data caches.
    *

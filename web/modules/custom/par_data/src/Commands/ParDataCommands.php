@@ -51,6 +51,14 @@ class ParDataCommands extends DrushCommands {
     $this->organisationManager = $organisationManager;
   }
 
+  public static function create(ContainerInterface $container, DrushContainer $drush): self {
+      return new static(
+        $container->get('par_data.manager'),
+        $container->get('entity_type.manager'),
+        $container->get('registered_organisations.organisation_manager')
+      );
+  }
+
   /**
    * Warm the PAR Data caches.
    *
