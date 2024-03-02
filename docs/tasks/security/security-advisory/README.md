@@ -10,7 +10,7 @@ There are a number of ways to keep up-to-date with these updates including subsc
 
 To identify all packages that have security vulnerabilities that need patching run (from `web` directory inside docker container):
 ```
-./vendor/bin/drush pm:security
+composer audit
 ```
 
 ## Remediations
