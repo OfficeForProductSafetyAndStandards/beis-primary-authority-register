@@ -7,13 +7,13 @@ orbs:
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v5.1.1
+      - image: beispar/web:v5.2.0
         name: web
         environment:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: beispar/db:v1.0.3
+      - image: beispar/db:v1.0.5
         environment:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
@@ -58,12 +58,12 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v13-repo-{{ .Branch }}-{{ .Revision }}
+        - v14-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v13-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+        - v14-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -183,7 +183,7 @@ jobs:
           name: "Unpacking sanitised database"
           command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - save_cache:
-          key: v13-repo-{{ .Branch }}-{{ .Revision }}
+          key: v14-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
@@ -207,7 +207,7 @@ jobs:
             echo "Test running has been decomissioned. See runbook for steps to run new test suite."
       - *restore_scaffold
       - save_cache:
-          key: v13-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+          key: v14-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
           paths:
             - ./node_modules
             - ./vendor
