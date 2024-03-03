@@ -13,7 +13,7 @@ references:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: beispar/db:v1.0.3
+      - image: beispar/db:v1.0.5
         name: db
         environment:
           POSTGRES_USER: par
@@ -302,13 +302,6 @@ jobs:
           name: "Run unit tests"
           command: |
             ./vendor/bin/paratest --processes=16 --no-coverage
-      - run:
-          name: "[disabled] Run feature tests"
-          command: |
-            cd tests
-            echo "e2e full tests are disabled"
-            echo "to enable run: 'npm run ci -- --tag ci'"
-            echo "to generate reports run: 'npm run generate-report'"
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
