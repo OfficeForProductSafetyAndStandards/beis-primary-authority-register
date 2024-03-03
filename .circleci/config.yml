@@ -345,7 +345,6 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *import_database
       - *build_assets
       - *remove_assets
       - run:
