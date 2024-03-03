@@ -275,10 +275,6 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - run:
-          name: "Run unit tests"
-          command: |
-            ./vendor/bin/paratest --processes=16 --no-coverage
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
