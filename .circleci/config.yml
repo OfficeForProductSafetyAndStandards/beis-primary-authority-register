@@ -13,14 +13,15 @@ references:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: beispar/db:v1.0.5
+      - image: beispar/db:v1.0.3
+        name: db
         environment:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
           POSTGRES_DB: par
 
       - image: opensearchproject/opensearch:1.2.4
-        name: os.localhost
+        name: os
         environment:
           - cluster.name=opensearch-cluster
           - node.name=beis-par-search
