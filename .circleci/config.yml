@@ -258,25 +258,10 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *import_database
-      - *prepare_application
-      - *check_application
-      - run:
-          name: "Installing tests"
-          command: |
-            echo "$(pwd)"
-            echo "Test running has been decomissioned. See runbook for steps to run new test suite."
       - run:
           name: "Run unit tests"
           command: |
             ./vendor/bin/paratest --processes=16 --no-coverage
-      - run:
-          name: "[disabled] Run feature tests"
-          command: |
-            cd tests
-            echo "e2e smoke tests are disabled"
-            echo "to enable run: 'npm run ci -- --tag ci'"
-            echo "to generate reports run: 'npm run generate-report'"
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
@@ -290,14 +275,6 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *import_database
-      - *prepare_application
-      - *check_application
-      - run:
-          name: "Installing tests"
-          command: |
-            echo "$(pwd)"
-            echo "Test running has been decomissioned. See runbook for steps to run new test suite."
       - run:
           name: "Run unit tests"
           command: |
