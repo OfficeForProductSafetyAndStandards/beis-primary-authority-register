@@ -13,7 +13,7 @@ references:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: beispar/db:v1.0.3
+      - image: beispar/db:v1.0.5
         name: db
         environment:
           POSTGRES_USER: par
@@ -59,12 +59,12 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v14-repo-{{ .Branch }}-{{ .Revision }}
+        - v15-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v14-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+        - v15-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -184,7 +184,7 @@ jobs:
           name: "Unpacking sanitised database"
           command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - save_cache:
-          key: v14-repo-{{ .Branch }}-{{ .Revision }}
+          key: v15-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
@@ -208,7 +208,7 @@ jobs:
             echo "Test running has been decomissioned. See runbook for steps to run new test suite."
       - *restore_scaffold
       - save_cache:
-          key: v14-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+          key: v15-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
           paths:
             - ./node_modules
             - ./vendor
@@ -258,25 +258,10 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *import_database
-      - *prepare_application
-      - *check_application
-      - run:
-          name: "Installing tests"
-          command: |
-            echo "$(pwd)"
-            echo "Test running has been decomissioned. See runbook for steps to run new test suite."
       - run:
           name: "Run unit tests"
           command: |
             ./vendor/bin/paratest --processes=16 --no-coverage
-      - run:
-          name: "[disabled] Run feature tests"
-          command: |
-            cd tests
-            echo "e2e smoke tests are disabled"
-            echo "to enable run: 'npm run ci -- --tag ci'"
-            echo "to generate reports run: 'npm run generate-report'"
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
@@ -290,25 +275,10 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *import_database
-      - *prepare_application
-      - *check_application
-      - run:
-          name: "Installing tests"
-          command: |
-            echo "$(pwd)"
-            echo "Test running has been decomissioned. See runbook for steps to run new test suite."
       - run:
           name: "Run unit tests"
           command: |
             ./vendor/bin/paratest --processes=16 --no-coverage
-      - run:
-          name: "[disabled] Run feature tests"
-          command: |
-            cd tests
-            echo "e2e full tests are disabled"
-            echo "to enable run: 'npm run ci -- --tag ci'"
-            echo "to generate reports run: 'npm run generate-report'"
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
