@@ -427,6 +427,8 @@ jobs:
           command: |
             ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
       - *aws_setup
+      - store_artifacts:
+          path: /tmp/backups/
       - aws-s3/copy:
           from: "/tmp/backups/"
           to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
