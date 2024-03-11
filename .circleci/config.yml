@@ -89,6 +89,7 @@ references:
       command: |
         cd web
         ../vendor/bin/drush @par.dev sql:cli < ../backups/${SEED_DATABASE}.sql
+        pg_restore --username= USERNAME --host=HOST --port= --clean --if-exists --no-owner --no-privileges --no-password
         ../drupal-update.sh
 
   prepare_application: &prepare_application
@@ -433,9 +434,9 @@ jobs:
           from: "/tmp/backups/"
           to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
           arguments: |
-            --cache-control "max-age=0"
-            --recursive
-            --exclude "*"
+            --cache-control "max-age=0" \
+            --recursive \
+            --exclude "*" \
             --include "db-dump-*.tar.gz"
 
   sanitise_database:
