@@ -551,9 +551,9 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     # Running a python script instead of bash because python has immediate
     # access to all of the environment variables and configuration.
     printf "Importing the database...\n"
-    cf ssh $TARGET_ENV -c "cd app && \
+    cf ssh $TARGET_ENV -c "cd $REMOTE_BUILD_DIR/web && \
         tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
-        python ./devops/tools/import_db.py -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
+        ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
         rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
 fi
 
