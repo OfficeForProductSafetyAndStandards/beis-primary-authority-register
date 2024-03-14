@@ -393,6 +393,8 @@ function cf_poll_task {
     done
     task_status=$(cf tasks $1 | awk '//{print $1, $2, $3}' | grep -m 1 "$2" | awk '//{print $3}')
     if [[ $task_status == "FAILED" ]]; then
+      printf "Task $2 has failed...\n"
+      cf logs $1 --recent | tail -100
       exit 99
     fi
     printf "Task $2 has completed ($task_status)...\n"
@@ -564,10 +566,10 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
 fi
 
 printf "Running post deployment tasks...\n"
-cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/post_deploy.py"
-# cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "./drupal-update.sh"
+# cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/post_deploy.py"
+cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "./drupal-update.sh"
 
-cf_poll_task $TARGET_ENV DB_IMPORT
+cf_poll_task $TARGET_ENV POST_DEPLOY
 printf "Deployment completed...\n"
 
 
