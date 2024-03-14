@@ -1075,7 +1075,7 @@ public class PARStepDefs {
 		
 		websiteManager.inspectionFeedbackDetailsPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION));
 		websiteManager.inspectionFeedbackDetailsPage.chooseFile("link.txt");
-		websiteManager.inspectionFeedbackDetailsPage.clickContinue();
+		websiteManager.inspectionFeedbackDetailsPage.goToFeedbackConfirmationPage();
 	}
 	
 	@Then("^the inspection feedback is created successfully$")

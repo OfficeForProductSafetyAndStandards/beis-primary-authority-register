@@ -1336,4 +1336,37 @@ public class SadPathStepDefinitions {
 		websiteManager.replyDeviationRequestPage.chooseFile("link.txt");
 		websiteManager.replyDeviationRequestPage.goToDeviationReviewPage();
 	}
+	
+	@When("^the user clicks the Submit Feedback following an inspection link$")
+	public void the_user_clicks_the_Submit_Feedback_following_an_inspection_link() throws Throwable {
+		LOG.info("Submit Feedback following an Inspection.");
+		websiteManager.partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		websiteManager.partnershipInformationPage.selectSendInspectionFeedbk();
+	}
+
+	@When("^the user does not enter inspection plan feedback$")
+	public void the_user_does_not_enter_inspection_plan_feedback() throws Throwable {
+		LOG.info("Leave feedback details fields empty.");
+		websiteManager.inspectionFeedbackDetailsPage.clearAllFields();
+		websiteManager.inspectionFeedbackDetailsPage.clickContinueButton();
+	}
+
+	@When("^the user enters the following inspection plan feedback \"([^\"]*)\"$")
+	public void the_user_enters_the_following_inspection_plan_feedback(String feedback) throws Throwable {
+		LOG.info("Complete feedback fields.");
+		DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION, feedback);
+		
+		websiteManager.inspectionFeedbackDetailsPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION));
+		websiteManager.inspectionFeedbackDetailsPage.chooseFile("link.txt");
+		websiteManager.inspectionFeedbackDetailsPage.goToFeedbackConfirmationPage();
+	}
+
+	@Then("^the inspection plan feedback is created successfully$")
+	public void the_inspection_plan_feedback_is_created_successfully() throws Throwable {
+		LOG.info("Verifying the Inspection Feedback Details.");
+		Assert.assertTrue("Failed: Inspection Feedback Details are Incorrect.", websiteManager.inspectionFeedbackConfirmationPage.checkInspectionFeedback());
+		
+		websiteManager.inspectionFeedbackConfirmationPage.goToInspectionFeedbackCompletionPage();
+		websiteManager.inspectionFeedbackCompletionPage.complete();
+	}
 }
