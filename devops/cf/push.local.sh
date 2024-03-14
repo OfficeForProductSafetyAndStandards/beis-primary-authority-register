@@ -554,7 +554,8 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "./scripts/drop.sh && \
         cd $REMOTE_BUILD_DIR/web && \
         tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
-        ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
+        ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
+        rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
     
     # Wait for database to be imported.
     cf_poll_task $TARGET_ENV DB_IMPORT
@@ -563,7 +564,8 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
 fi
 
 printf "Running post deployment tasks...\n"
-cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "./drupal-update.sh"
+cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/post_deploy.py"
+# cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "./drupal-update.sh"
 
 cf_poll_task $TARGET_ENV DB_IMPORT
 printf "Deployment completed...\n"
