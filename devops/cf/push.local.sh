@@ -566,12 +566,15 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
 fi
 
 printf "Running post deployment tasks...\n"
-# cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/post_deploy.py"
 cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "./drupal-update.sh"
 
 cf_poll_task $TARGET_ENV POST_DEPLOY
 printf "Deployment completed...\n"
 
+
+
+    cf run-task beis-par-staging -m 2G -k 2G --name DB_IMPORT -c "cd web && \
+        ../vendor/bin/drush @par.paas sql:query 'select * from pg_tables where tablename = `batch`'"
 
 ####################################################################################
 # Blue-green deployment switch
@@ -632,7 +635,8 @@ echo "##########################################################################
 printf "Running the post deployment scripts...\n"
 
 ## Run cron to perform necessary startup tasks
-cf ssh $TARGET_ENV -c "cd app/devops/tools && python cron_runner.py"
+cf run-task $TARGET_ENV -c "./scripts/cron-run.sh" -m 4G -k 4G --name CRON_RUNNER
+cf_poll_task $TARGET_ENV CRON_RUNNER
 
 ## Run the cache warmer asynchronously with lots of memory
 cf run-task $TARGET_ENV -c "./scripts/cache-warmer.sh" -m 4G -k 4G --name CACHE_WARMER
