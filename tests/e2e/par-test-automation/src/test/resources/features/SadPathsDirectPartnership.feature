@@ -624,7 +624,7 @@ Feature: Direct Partnership Sad Paths
     Then the inspection feedback response is displayed successfully
     And the user signs out
 
-  @regression @sadpath @sadenquiry @test
+  @regression @sadpath @sadenquiry
   Scenario: Verify a user receives Error Messages for required fields when sending a General Enquiry (Sad Path - PAR-2434)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -647,8 +647,35 @@ Feature: Direct Partnership Sad Paths
     Then the general enquiry is created successfully
     And the user signs out
 
-  #
-  
+  @regression @sadpath @sadenquiry
+  Scenario: Verify a user receives Error Messages for required fields when responding to a General Enquiry (Sad Path - PAR-2435)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    When the user searches for the last created general enquiry
+    And the user tries to submit a response without any details
+    Then the user is shown the "You must enter a response." error message
+    When the user enters the following response: "Authority Response."
+    Then the general enquiry response is displayed successfully
+    And the user signs out
+    # Submit a Response as the Enforcement Officer.
+    Given the user is on the PAR login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    When the user searches for the last created general enquiry
+    And the user tries to submit a response without any details
+    Then the user is shown the "You must enter a response." error message
+    When the user enters the following response: "Enforcement Officer Response."
+    Then the general enquiry response is displayed successfully
+    And the user signs out
+    # Submit a Response as the Help Desk User.
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created general enquiry
+    And the user tries to submit a response without any details
+    Then the user is shown the "You must enter a response." error message
+    When the user enters the following response: "Help Desk Response."
+    Then the general enquiry response is displayed successfully
+    And the user signs out
+
   @regression @sadpath @sadinspectionplan
   Scenario: Verify a user receives Error Messages for required fields when Revoking an Inspection Plan for a Partnership (Sad Path - PAR-2410)
     Given the user is on the PAR home page
