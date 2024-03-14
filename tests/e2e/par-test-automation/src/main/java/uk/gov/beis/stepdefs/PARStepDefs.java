@@ -1030,7 +1030,7 @@ public class PARStepDefs {
 		
 		websiteManager.replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1));
 		websiteManager.replyDeviationRequestPage.chooseFile("link.txt");
-		websiteManager.replyDeviationRequestPage.clickSave();
+		websiteManager.replyDeviationRequestPage.goToDeviationReviewPage();
 	}
 	
 	@Then("^the response is displayed successfully$")
@@ -1051,7 +1051,7 @@ public class PARStepDefs {
 		
 		websiteManager.replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1));
 		websiteManager.replyDeviationRequestPage.chooseFile("link.txt");
-		websiteManager.replyDeviationRequestPage.clickSave();
+		websiteManager.replyDeviationRequestPage.goToDeviationReviewPage();
 	}
 
 	@Then("^the deviation reply received successfully$")

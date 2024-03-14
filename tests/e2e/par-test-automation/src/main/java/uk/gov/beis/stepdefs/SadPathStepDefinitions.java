@@ -1310,4 +1310,30 @@ public class SadPathStepDefinitions {
 		websiteManager.deviationApprovalPage.clearAllFields();
 		websiteManager.deviationApprovalPage.clickContinueButton();
 	}
+	
+	
+	@When("^the user selects the approved deviation request$")
+	public void the_user_selects_the_approved_deviation_request() throws Throwable {
+		LOG.info("Select the latest Deviation Request.");
+		websiteManager.deviationSearchPage.selectDeviationRequest();
+	}
+	
+	@When("^the user tries to submit a response without any details$")
+	public void the_user_tries_to_submit_a_response_without_any_details() throws Throwable {
+		LOG.info("Attempt to submit a Deviation Request response without any details.");
+		websiteManager.deviationReviewPage.submitResponse();
+		
+		websiteManager.replyDeviationRequestPage.clearAllFields();
+		websiteManager.replyDeviationRequestPage.clickSaveButton();
+	}
+
+	@When("^the user enters the following response: \"([^\"]*)\"$")
+	public void the_user_enters_the_following_response(String response) throws Throwable {
+		LOG.info("Submit reply to the deviation request.");
+		DataStore.saveValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1, response);
+		
+		websiteManager.replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1));
+		websiteManager.replyDeviationRequestPage.chooseFile("link.txt");
+		websiteManager.replyDeviationRequestPage.goToDeviationReviewPage();
+	}
 }

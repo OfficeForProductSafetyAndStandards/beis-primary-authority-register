@@ -517,7 +517,7 @@ Feature: Direct Partnership Sad Paths
     And the user signs out
 
   @regression @sadpath @saddeviation
-  Scenario: Verify a user receives Error Messages for required fields when blocking a Deviation from the Inspection Plan (Sad Path - PAR-2430)
+  Scenario: Verify a user receives Error Messages for required fields when blocking a Deviation from the Inspection Plan Request (Sad Path - PAR-2430)
     Given the user is on the PAR home page
     When the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
@@ -527,8 +527,51 @@ Feature: Direct Partnership Sad Paths
     Then the user is shown the "You must explain your reason for blocking this deviation request." error message
     When the user blocks the deviation request with the following reason: "Test Block"
     Then the deviation request is set to blocked status
+    And the user signs out
 
-  #
+  @regression @sadpath @saddeviation
+  Scenario: Verify a user receives Error Messages for required fields when responding to a Deviation from the Inspection Plan Request (Sad Path - PAR-2431)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    When the user searches for the last created partnership
+    And the user submits a deviation request against an inspection plan with the following details:
+      | Description                 |
+      | Sad Deviation Request Test. |
+    Then the Deviation Request is created Successfully
+    And the user signs out
+    # Approve the Deviation Request
+    Given the user is on the PAR home page
+    When the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created deviation request
+    Then the user successfully approves the deviation request
+    # Submit a Response as the Authority User.
+    When the user selects the approved deviation request
+    And the user tries to submit a response without any details
+    Then the user is shown the "You must enter a response." error message
+    When the user enters the following response: "Authority Response."
+    Then the response is displayed successfully
+    And the user signs out
+    # Submit a Response as the Enforcement Officer.
+    Given the user is on the PAR login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    When the user searches for the last created deviation request
+    And the user tries to submit a response without any details
+    Then the user is shown the "You must enter a response." error message
+    When the user enters the following response: "Enforcement Officer Response."
+    Then the response is displayed successfully
+    And the user signs out
+    # Submit a REsponse as the Help Desk User.
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created deviation request
+    And the user tries to submit a response without any details
+    Then the user is shown the "You must enter a response." error message
+    When the user enters the following response: "Enforcement Officer Response."
+    Then the response is displayed successfully
+    And the user signs out
+
   @regression @sadpath @sadinspectionplan
   Scenario: Verify a user receives Error Messages for required fields when Revoking an Inspection Plan for a Partnership (Sad Path - PAR-2410)
     Given the user is on the PAR home page
