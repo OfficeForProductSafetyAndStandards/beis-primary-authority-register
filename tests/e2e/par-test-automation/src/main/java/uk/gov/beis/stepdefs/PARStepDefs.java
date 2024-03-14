@@ -993,7 +993,7 @@ public class PARStepDefs {
 		
 		websiteManager.deviationApprovalPage.selectBlock();
 		websiteManager.deviationApprovalPage.enterReasonForBlocking(reason);
-		websiteManager.deviationApprovalPage.clickContinue();
+		websiteManager.deviationApprovalPage.goToDeviationReviewPage();
 	}
 
 	@Then("^the deviation request is set to blocked status$")
@@ -1009,7 +1009,7 @@ public class PARStepDefs {
 	public void the_user_successfully_approves_the_deviation_request() throws Throwable {
 		LOG.info("Approve the deviation request");
 		websiteManager.deviationApprovalPage.selectAllow();
-		websiteManager.deviationApprovalPage.clickContinue();
+		websiteManager.deviationApprovalPage.goToDeviationReviewPage();
 		
 		Assert.assertTrue("Failed: Deviation request status not correct", websiteManager.deviationReviewPage.checkDeviationStatusApproved());
 		websiteManager.deviationReviewPage.saveChanges();

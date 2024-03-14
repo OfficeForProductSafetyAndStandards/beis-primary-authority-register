@@ -1301,4 +1301,13 @@ public class SadPathStepDefinitions {
 		websiteManager.deviationReviewPage.saveChanges();
 		websiteManager.deviationCompletionPage.complete();
 	}
+	
+	@When("^the user selects blocks the deviation without providing a reason$")
+	public void the_user_selects_blocks_the_deviation_without_providing_a_reason() throws Throwable {
+		LOG.info("Block the deviation request without providing a reason.");
+		
+		websiteManager.deviationApprovalPage.selectBlock();
+		websiteManager.deviationApprovalPage.clearAllFields();
+		websiteManager.deviationApprovalPage.clickContinueButton();
+	}
 }

@@ -516,10 +516,19 @@ Feature: Direct Partnership Sad Paths
     Then the deviation request is created successfully
     And the user signs out
 
-#
+  @regression @sadpath @saddeviation
+  Scenario: Verify a user receives Error Messages for required fields when blocking a Deviation from the Inspection Plan (Sad Path - PAR-2430)
+    Given the user is on the PAR home page
+    When the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created deviation request
+    And the user selects blocks the deviation without providing a reason
+    Then the user is shown the "You must explain your reason for blocking this deviation request." error message
+    When the user blocks the deviation request with the following reason: "Test Block"
+    Then the deviation request is set to blocked status
 
-#
-
+  #
   @regression @sadpath @sadinspectionplan
   Scenario: Verify a user receives Error Messages for required fields when Revoking an Inspection Plan for a Partnership (Sad Path - PAR-2410)
     Given the user is on the PAR home page
