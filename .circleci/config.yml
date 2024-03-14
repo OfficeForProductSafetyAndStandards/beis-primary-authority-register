@@ -434,7 +434,7 @@ jobs:
           from: "/tmp/backups/"
           to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
           arguments: |
-            --cache-control "max-age=0" \
+            --cache-control "max-age=0"
 
   sanitise_database:
     <<: *defaults
