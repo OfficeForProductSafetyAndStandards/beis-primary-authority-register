@@ -1159,7 +1159,7 @@ public class SadPathStepDefinitions {
 	    websiteManager.enforcementOfficerContactDetailsPage.enterFirstname(DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME));
 	    websiteManager.enforcementOfficerContactDetailsPage.enterLastname(DataStore.getSavedValue(UsableValues.PERSON_LASTNAME));
 	    websiteManager.enforcementOfficerContactDetailsPage.enterWorkPhoneNumber(DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER));
-		websiteManager.enforcementOfficerContactDetailsPage.goToEnforceLegalEntityPage();
+		websiteManager.enforcementOfficerContactDetailsPage.clickContinueButton();
 	}
 
 	@When("^the user does not enter the name of the legal entity$")
@@ -1167,7 +1167,6 @@ public class SadPathStepDefinitions {
 		LOG.info("Leave the Legal Entity field empty.");
 		websiteManager.enforceLegalEntityPage.enterLegalEntityName("");
 		websiteManager.enforceLegalEntityPage.clickContinueButton();
-		
 	}
 
 	@When("^the user enters the name of the legal entity$")
@@ -1265,5 +1264,41 @@ public class SadPathStepDefinitions {
 		LOG.info("Confirming the Enforcement Notice removal.");
 		websiteManager.declarationPage.selectConfirmCheckbox();
 		websiteManager.declarationPage.goToEnforcementSearchPage(); // Test fails due to the button not being clicked properly, Selenium "hovers" on the button as it is shown as highlighted.
+	}
+	
+	@When("^the user clicks the Request to deviate from the inspection plan link$")
+	public void the_user_clicks_the_Request_to_deviate_from_the_inspection_plan_link() throws Throwable {
+		LOG.info("Navigating to and select Send Deviation Request.");
+		websiteManager.partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		websiteManager.partnershipInformationPage.selectDeviateInspectionPlan();
+	}
+
+	@When("^the user does not enter the deviation request details$")
+	public void the_user_does_not_enter_the_deviation_request_details() throws Throwable {
+		LOG.info("Leave the Description and File Upload empty.");
+		websiteManager.requestDeviationPage.clearFields();
+		websiteManager.requestDeviationPage.clickContinueButton();
+	}
+
+	@When("^the user enters the deviation request with the following details:$")
+	public void the_user_enters_the_deviation_request_with_the_following_details(DataTable details) throws Throwable {
+		LOG.info("Enter the Deviation Request details.");
+		
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.DEVIATION_DESCRIPTION, data.get("Description"));
+		}
+		
+		websiteManager.requestDeviationPage.enterDescription(DataStore.getSavedValue(UsableValues.DEVIATION_DESCRIPTION));
+		websiteManager.requestDeviationPage.chooseFile("link.txt");
+		websiteManager.requestDeviationPage.goToDeviationReviewPage();
+	}
+
+	@Then("^the deviation request is created successfully$")
+	public void the_deviation_request_is_created_successfully() throws Throwable {
+		LOG.info("Verify the Deviation Request is created Successfully.");
+		
+		Assert.assertTrue("Failed: Deviation Request details are not displayed.", websiteManager.deviationReviewPage.checkDeviationCreation());
+		websiteManager.deviationReviewPage.saveChanges();
+		websiteManager.deviationCompletionPage.complete();
 	}
 }

@@ -18,7 +18,7 @@
 #Sample Feature Definition Template
 Feature: Direct Partnership Sad Paths
 
-  @regression @sadpath @partnershipapplication @sadupdate @sadLegalEntities @sadadvice @sadinspectionplan @sadenforcement @saddeviationrequest @sadinspectionfedback
+  @regression @sadpath @partnershipapplication @sadupdate @sadLegalEntities @sadadvice @sadinspectionplan @sadenforcement @saddeviation @sadinspectionfedback
   Scenario: Verify a user receives Error Messages for required fields during the Partnership Application and Completion Process (Sad Path - PAR-2392, PAR-2393)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -115,7 +115,7 @@ Feature: Direct Partnership Sad Paths
     And the user confirms the second part of the partnership application
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @sadupdate @sadLegalEntities @sadadvice @sadinspectionplan @sadenforcement @saddeviationrequest @sadinspectionfedback
+  @regression @sadpath @partnershipapplication @sadupdate @sadLegalEntities @sadadvice @sadinspectionplan @sadenforcement @saddeviation @sadinspectionfedback
   Scenario: Verify a user receives Error Messages for required fields when Nominating a Partnership (Sad Path - PAR-2394)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -367,7 +367,7 @@ Feature: Direct Partnership Sad Paths
     Then the advice is removed successfully
     And the user signs out
 
-  @regression @sadpath @sadinspectionplan
+  @regression @sadpath @sadinspectionplan @saddeviation
   Scenario: Verify a user receives Error Messages for required fields when Uploading an Inspection Plan for a Partnership (Sad Path - PAR-2408)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -487,6 +487,38 @@ Feature: Direct Partnership Sad Paths
     When the user confirms they want the enforcement notice removing
     Then the enforcement notice is removed successfully
     And the user signs out
+
+  @regression @sadpath @saddeviation
+  Scenario: Verify a user receives Error Messages for required fields when requesting a Deviation from the Inspection Plan (Sad Path - PAR-2429)
+    Given the user is on the PAR home page
+    When the user is on the PAR login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user clicks the Request to deviate from the inspection plan link
+    And the user leaves the enforcement officer contact detail fields empty
+    Then the user is shown the following error messages:
+      | ErrorMessage                                           |
+      | You must enter the first name for this contact.        |
+      | You must enter the last name for this contact.         |
+      | You must enter the work phone number for this contact. |
+    When the user enters the following enforcement officer contact details:
+      | Firstname | Lastname | Workphone   |
+      | Grover    | Muppet   | 01723456789 |
+    And the user does not enter the deviation request details
+    Then the user is shown the following error messages:
+      | ErrorMessage                                                 |
+      | You must enter the details of this enquiry.                  |
+      | You must submit a proposed inspection plan for this enquiry. |
+    When the user enters the deviation request with the following details:
+      | Description         |
+      | Sad Deviation Test. |
+    Then the deviation request is created successfully
+    And the user signs out
+
+#
+
+#
 
   @regression @sadpath @sadinspectionplan
   Scenario: Verify a user receives Error Messages for required fields when Revoking an Inspection Plan for a Partnership (Sad Path - PAR-2410)

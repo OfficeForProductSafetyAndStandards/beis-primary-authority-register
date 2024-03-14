@@ -960,7 +960,7 @@ public class PARStepDefs {
 		
 		websiteManager.requestDeviationPage.enterDescription(DataStore.getSavedValue(UsableValues.DEVIATION_DESCRIPTION));
 		websiteManager.requestDeviationPage.chooseFile("link.txt");
-		websiteManager.requestDeviationPage.clickContinue();
+		websiteManager.requestDeviationPage.goToDeviationReviewPage();
 	}
 
 	@Then("^the Deviation Request is created Successfully$")
