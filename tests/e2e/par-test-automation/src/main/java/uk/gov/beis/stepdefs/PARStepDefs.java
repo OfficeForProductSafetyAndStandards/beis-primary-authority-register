@@ -1023,12 +1023,12 @@ public class PARStepDefs {
 		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
 			
-			DataStore.saveValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1, data.get("Description"));
+			DataStore.saveValue(UsableValues.MESSAGE_RESPONSE, data.get("Description"));
 		}
 		
 		websiteManager.deviationReviewPage.submitResponse();
 		
-		websiteManager.replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1));
+		websiteManager.replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE));
 		websiteManager.replyDeviationRequestPage.chooseFile("link.txt");
 		websiteManager.replyDeviationRequestPage.goToDeviationReviewPage();
 	}
@@ -1044,12 +1044,12 @@ public class PARStepDefs {
 		LOG.info("Submit reply to the deviation request");
 		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
-			DataStore.saveValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1, data.get("Description"));
+			DataStore.saveValue(UsableValues.MESSAGE_RESPONSE, data.get("Description"));
 		}
 		
 		websiteManager.deviationReviewPage.submitResponse();
 		
-		websiteManager.replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1));
+		websiteManager.replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE));
 		websiteManager.replyDeviationRequestPage.chooseFile("link.txt");
 		websiteManager.replyDeviationRequestPage.goToDeviationReviewPage();
 	}
@@ -1113,12 +1113,12 @@ public class PARStepDefs {
 		LOG.info("Submit response to inspection feedback request");
 		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
-			DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1, data.get("Description"));
+			DataStore.saveValue(UsableValues.MESSAGE_RESPONSE, data.get("Description"));
 		}
 
 		websiteManager.inspectionFeedbackConfirmationPage.submitResponse();
 		
-		websiteManager.replyInspectionFeedbackPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1));
+		websiteManager.replyInspectionFeedbackPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE));
 		websiteManager.replyInspectionFeedbackPage.chooseFile("link.txt");
 		websiteManager.replyInspectionFeedbackPage.clickSave();
 	}
@@ -1128,12 +1128,12 @@ public class PARStepDefs {
 		LOG.info("Submit reply to inspection feedback response");
 		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
-			DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1, data.get("Description"));
+			DataStore.saveValue(UsableValues.MESSAGE_RESPONSE, data.get("Description"));
 		}
 		
 		websiteManager.inspectionFeedbackConfirmationPage.submitResponse();
 		
-		websiteManager.replyInspectionFeedbackPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1));
+		websiteManager.replyInspectionFeedbackPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE));
 		websiteManager.replyInspectionFeedbackPage.chooseFile("link.txt");
 		websiteManager.replyInspectionFeedbackPage.clickSave();
 	}
@@ -1217,12 +1217,12 @@ public class PARStepDefs {
 		LOG.info("Submit reply to the enquiry");
 		
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
-			DataStore.saveValue(UsableValues.ENQUIRY_REPLY, data.get("Description"));
+			DataStore.saveValue(UsableValues.MESSAGE_RESPONSE, data.get("Description"));
 		}
 		
 		websiteManager.enquiryReviewPage.submitResponse();
 		
-		websiteManager.replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY));
+		websiteManager.replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE));
 		websiteManager.replyEnquiryPage.chooseFile("link.txt");
 		websiteManager.replyEnquiryPage.clickSave();
 	}
@@ -1230,12 +1230,12 @@ public class PARStepDefs {
 	@When("^the user sends a reply to the general enquiry with the following details:$")
 	public void the_user_sends_a_reply_to_the_general_enquiry_with_the_following_details(DataTable dets) throws Throwable {
 		for (Map<String, String> data : dets.asMaps(String.class, String.class)) {
-			DataStore.saveValue(UsableValues.ENQUIRY_REPLY, data.get("Description"));
+			DataStore.saveValue(UsableValues.MESSAGE_RESPONSE, data.get("Description"));
 		}
 		
 		websiteManager.enquiryReviewPage.submitResponse();
 		
-		websiteManager.replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY));
+		websiteManager.replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE));
 		websiteManager.replyEnquiryPage.chooseFile("link.txt");
 		websiteManager.replyEnquiryPage.clickSave();
 	}

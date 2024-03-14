@@ -1330,9 +1330,9 @@ public class SadPathStepDefinitions {
 	@When("^the user enters the following response: \"([^\"]*)\"$")
 	public void the_user_enters_the_following_response(String response) throws Throwable {
 		LOG.info("Submit reply to the deviation request.");
-		DataStore.saveValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1, response);
+		DataStore.saveValue(UsableValues.MESSAGE_RESPONSE, response);
 		
-		websiteManager.replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1));
+		websiteManager.replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE));
 		websiteManager.replyDeviationRequestPage.chooseFile("link.txt");
 		websiteManager.replyDeviationRequestPage.goToDeviationReviewPage();
 	}

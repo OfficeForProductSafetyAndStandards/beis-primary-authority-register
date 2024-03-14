@@ -33,7 +33,7 @@ public class DeviationReviewPage extends BasePageObject {
 	}
 	
 	public boolean checkDeviationResponse() {
-		WebElement response = driver.findElement(By.xpath(responseLocator.replace("?", DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1))));
+		WebElement response = driver.findElement(By.xpath(responseLocator.replace("?", DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE))));
 		return (response.isDisplayed());
 	}
 	

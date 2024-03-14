@@ -595,8 +595,35 @@ Feature: Direct Partnership Sad Paths
     Then the inspection plan feedback is created successfully
     And the user signs out
 
-  #
-  
+  @regression @sadpath @sadinspectionfeedback @test
+  Scenario: Verify a user receives Error Messages for required fields when responding to Feedback following an Inspection (Sad Path - PAR-2433)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority@example.com" user credentials
+    When the user searches for the last created inspection feedback
+    And the user tries to submit a response without any details
+    Then the user is shown the "You must enter a response." error message
+    When the user enters the following response: "Authority Response."
+    Then the inspection feedback response is displayed successfully
+    And the user signs out
+    # Submit a Response as the Enforcement Officer.
+    Given the user is on the PAR login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    When the user searches for the last created inspection feedback
+    And the user tries to submit a response without any details
+    Then the user is shown the "You must enter a response." error message
+    When the user enters the following response: "Enforcement Officer Response."
+    Then the inspection feedback response is displayed successfully
+    And the user signs out
+    # Submit a Response as the Help Desk User.
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the last created inspection feedback
+    And the user tries to submit a response without any details
+    Then the user is shown the "You must enter a response." error message
+    When the user enters the following response: "Help Desk Response."
+    Then the inspection feedback response is displayed successfully
+    And the user signs out
+
   #
   
   #
