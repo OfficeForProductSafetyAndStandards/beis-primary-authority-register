@@ -18,7 +18,7 @@
 #Sample Feature Definition Template
 Feature: Direct Partnership Sad Paths
 
-  @regression @sadpath @partnershipapplication @sadupdate @sadLegalEntities @sadadvice @sadinspectionplan @sadenforcement @saddeviation @sadinspectionfeedback
+  @regression @sadpath @partnershipapplication @sadupdate @sadLegalEntities @sadadvice @sadinspectionplan @sadenforcement @saddeviation @sadinspectionfeedback @sadenquiry
   Scenario: Verify a user receives Error Messages for required fields during the Partnership Application and Completion Process (Sad Path - PAR-2392, PAR-2393)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -115,7 +115,7 @@ Feature: Direct Partnership Sad Paths
     And the user confirms the second part of the partnership application
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @sadupdate @sadLegalEntities @sadadvice @sadinspectionplan @sadenforcement @saddeviation @sadinspectionfeedback
+  @regression @sadpath @partnershipapplication @sadupdate @sadLegalEntities @sadadvice @sadinspectionplan @sadenforcement @saddeviation @sadinspectionfeedback @sadenquiry
   Scenario: Verify a user receives Error Messages for required fields when Nominating a Partnership (Sad Path - PAR-2394)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -591,11 +591,11 @@ Feature: Direct Partnership Sad Paths
       | Grover    | Muppet   | 01723456789 |
     And the user does not enter inspection plan feedback
     Then the user is shown the "You must enter the details of this enquiry." error message
-    When the user enters the following inspection plan feedback "Sad Inspection Plan Feedback."
+    When the user enters the following inspection plan feedback "Sad Inspection Plan Feedback Test."
     Then the inspection plan feedback is created successfully
     And the user signs out
 
-  @regression @sadpath @sadinspectionfeedback @test
+  @regression @sadpath @sadinspectionfeedback
   Scenario: Verify a user receives Error Messages for required fields when responding to Feedback following an Inspection (Sad Path - PAR-2433)
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
@@ -624,8 +624,29 @@ Feature: Direct Partnership Sad Paths
     Then the inspection feedback response is displayed successfully
     And the user signs out
 
-  #
-  
+  @regression @sadpath @sadenquiry @test
+  Scenario: Verify a user receives Error Messages for required fields when sending a General Enquiry (Sad Path - PAR-2434)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "par_enforcement_officer@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user clicks the Send a general enquiry to the primary authority link
+    And the user leaves the enforcement officer contact detail fields empty
+    Then the user is shown the following error messages:
+      | ErrorMessage                                           |
+      | You must enter the first name for this contact.        |
+      | You must enter the last name for this contact.         |
+      | You must enter the work phone number for this contact. |
+    When the user enters the following enforcement officer contact details:
+      | Firstname | Lastname | Workphone   |
+      | Grover    | Muppet   | 01723456789 |
+    And the user does not enter the general enquiry details
+    Then the user is shown the "You must enter the details of this enquiry." error message
+    When the user enters the following general enquiry details "Sad General Enquiry Test."
+    Then the general enquiry is created successfully
+    And the user signs out
+
   #
   
   @regression @sadpath @sadinspectionplan

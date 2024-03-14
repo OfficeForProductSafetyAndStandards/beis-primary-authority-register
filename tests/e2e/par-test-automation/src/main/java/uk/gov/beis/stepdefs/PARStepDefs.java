@@ -1159,7 +1159,7 @@ public class PARStepDefs {
 		
 		websiteManager.requestEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION));
 		websiteManager.requestEnquiryPage.chooseFile("link.txt");
-		websiteManager.requestEnquiryPage.clickContinue();
+		websiteManager.requestEnquiryPage.goToEnquiryReviewPage();
 	}
 	
 	@When("^the user sends a general enquiry for an enforcement notice with the following details:$")
@@ -1179,7 +1179,7 @@ public class PARStepDefs {
 		
 		websiteManager.requestEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION));
 		websiteManager.requestEnquiryPage.chooseFile("link.txt");
-		websiteManager.requestEnquiryPage.clickContinue();
+		websiteManager.requestEnquiryPage.goToEnquiryReviewPage();
 	}
 
 	@Then("^the Enquiry is created Successfully$")

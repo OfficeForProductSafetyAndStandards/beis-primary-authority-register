@@ -1369,4 +1369,37 @@ public class SadPathStepDefinitions {
 		websiteManager.inspectionFeedbackConfirmationPage.goToInspectionFeedbackCompletionPage();
 		websiteManager.inspectionFeedbackCompletionPage.complete();
 	}
+	
+	@When("^the user clicks the Send a general enquiry to the primary authority link$")
+	public void the_user_clicks_the_Send_a_general_enquiry_to_the_primary_authority_link() throws Throwable {
+		LOG.info("Send a General Enquiry.");
+		websiteManager.partnershipSearchPage.selectBusinessNameLinkFromPartnership();
+		websiteManager.partnershipInformationPage.sendGeneralEnquiry();
+	}
+
+	@When("^the user does not enter the general enquiry details$")
+	public void the_user_does_not_enter_the_general_enquiry_details() throws Throwable {
+		LOG.info("Leave the Enquiry detail fields empty.");
+		websiteManager.requestEnquiryPage.clearAllFields();
+		websiteManager.requestEnquiryPage.clickContinueButton();
+	}
+
+	@When("^the user enters the following general enquiry details \"([^\"]*)\"$")
+	public void the_user_enters_the_following_general_enquiry_details(String description) throws Throwable {
+		LOG.info("Enter Enquiry details.");
+		DataStore.saveValue(UsableValues.ENQUIRY_DESCRIPTION, description);
+		
+		websiteManager.requestEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION));
+		websiteManager.requestEnquiryPage.chooseFile("link.txt");
+		websiteManager.requestEnquiryPage.goToEnquiryReviewPage();
+	}
+
+	@Then("^the general enquiry is created successfully$")
+	public void the_general_enquiry_is_created_successfully() throws Throwable {
+		LOG.info("Verify the enquiry is created.");
+		Assert.assertTrue("Failed: Enquiry details are not correct.", websiteManager.enquiryReviewPage.checkEnquiryDescription());
+		
+		websiteManager.enquiryReviewPage.saveChanges();
+		websiteManager.enquiryCompletionPage.complete();
+	}
 }
