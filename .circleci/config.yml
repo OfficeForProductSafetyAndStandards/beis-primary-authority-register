@@ -432,8 +432,8 @@ jobs:
           from: "/tmp/backups/"
           to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
           arguments: |
-            --cache-control "max-age=0" --recursive --exclude "*" --include "db-dump-*.tar.gz"
-
+            --cache-control "max-age=0" --exclude "*" --include "db-dump-*.tar.gz" --recursive
+ 
   sanitise_database:
     <<: *defaults
     steps:
