@@ -428,11 +428,9 @@ jobs:
           command: |
             ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
       - *aws_setup
-      - aws-s3/copy:
-          from: "/tmp/backups/"
-          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
-          arguments: |
-            --cache-control "max-age=0" --exclude "*" --include "db-dump-*.tar.gz" --recursive
+      - run: # https://discuss.circleci.com/t/aws-s3-cp-errors-on-exclude-argument/50086
+          name: "Backup database to S3"
+          command: aws s3 cp /tmp/backups/ s3://${S3_ARTIFACTS_BUCKET}/backups/ --recursive --exclude "*" --include "db-dump-*.tar.gz"
  
   sanitise_database:
     <<: *defaults
@@ -662,7 +660,8 @@ workflows:
   db_sanitise:
     triggers:
       - schedule:
-          cron: "0 0 * * 1,2,3,4,5"
+          # cron: "0 0 * * 1,2,3,4,5"
+          cron: "0,5,10,15,20,25,30,35,40,45,50,55 * * * *"
           filters:
             branches:
               only:
