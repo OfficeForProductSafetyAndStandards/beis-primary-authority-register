@@ -59,12 +59,12 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v15-repo-{{ .Branch }}-{{ .Revision }}
+        - v16-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v15-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+        - v16-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -185,7 +185,7 @@ jobs:
           name: "Unpacking sanitised database"
           command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - save_cache:
-          key: v15-repo-{{ .Branch }}-{{ .Revision }}
+          key: v16-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
@@ -209,7 +209,7 @@ jobs:
             echo "Test running has been decomissioned. See runbook for steps to run new test suite."
       - *restore_scaffold
       - save_cache:
-          key: v15-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+          key: v16-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
           paths:
             - ./node_modules
             - ./vendor
@@ -432,9 +432,9 @@ jobs:
           from: "/tmp/backups/"
           to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
           arguments: |
-            --cache-control "max-age=0" \
-            --recursive \
-            --exclude "*" \
+            --cache-control "max-age=0"
+            --recursive
+            --exclude "*"
             --include "db-dump-*.tar.gz"
 
   sanitise_database:
