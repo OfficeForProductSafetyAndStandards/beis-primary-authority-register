@@ -394,7 +394,7 @@ function cf_poll_task {
     task_status=$(cf tasks $1 | awk '//{print $1, $2, $3}' | grep -m 1 "$2" | awk '//{print $3}')
     if [[ $task_status == "FAILED" ]]; then
       printf "Task $2 has failed...\n"
-      cf logs $1 --recent | tail -100
+      cf logs $1 --recent | tail -500
       exit 99
     fi
     printf "Task $2 has completed ($task_status)...\n"
@@ -570,11 +570,6 @@ cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "./drupal-update.sh"
 
 cf_poll_task $TARGET_ENV POST_DEPLOY
 printf "Deployment completed...\n"
-
-
-
-    cf run-task beis-par-staging -m 2G -k 2G --name DB_IMPORT -c "cd web && \
-        ../vendor/bin/drush @par.paas sql:query 'select * from pg_tables where tablename = `batch`'"
 
 ####################################################################################
 # Blue-green deployment switch
