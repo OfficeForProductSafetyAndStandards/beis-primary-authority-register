@@ -519,7 +519,10 @@ jobs:
           from: "/tmp/backups/"
           to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
           arguments: |
-            --cache-control "max-age=0"
+            --cache-control "max-age=0" \
+            --recursive \
+            --exclude "*" \
+            --include "db-dump-*.tar.gz"
 
 workflows:
   version: 2.1
