@@ -33,8 +33,9 @@ services:
   os:
     image: opensearchproject/opensearch:1.2.4
     restart: always
+    hostname: beis-par-search
     volumes:
-      - ./data/opensearch:/usr/share/opensearch/data
+      - opensearch-data1:/usr/share/opensearch/data
     environment:
       - cluster.name=opensearch-cluster
       - node.name=beis-par-search
@@ -55,11 +56,9 @@ services:
 
   search-dashboard:
     image: opensearchproject/opensearch-dashboards:1.2.0
-    links:
-      - db:db.localhost
-      - os:os.localhost
+    hostname: opensearch_dashboard
     environment:
-      - OPENSEARCH_HOSTS=["http://os.localhost:9200"]
+      - OPENSEARCH_HOSTS=["http://beis-par-search:9200"]
       - DISABLE_SECURITY_DASHBOARDS_PLUGIN=true # disables security dashboards plugin in OpenSearch Dashboards
     labels:
       - io.docksal.virtual-host=dashboard.opensearch.${VIRTUAL_HOST},dashboard.opensearch.${VIRTUAL_HOST}.*
@@ -86,3 +85,7 @@ services:
     volumes:
       - ${PROJECT_ROOT}/.docksal/etc/redis/redis.conf:/usr/local/etc/redis/redis.conf
     command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+
+volumes:
+  opensearch-data1:
+    driver: local
