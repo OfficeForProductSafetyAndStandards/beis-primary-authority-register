@@ -10,21 +10,19 @@ parameter needs to be *db* and **not** *localhost* to work in this
 environment. Better still use the environmental variables, for example
 ```php
 $databases['default']['default'] = [
-  'database' => getenv('MYSQL_DATABASE'),
-  'username' => getenv('MYSQL_USER'),
-  'password' => getenv('MYSQL_PASSWORD'),
-  'host' => getenv('MYSQL_HOST'),
-  'driver' => 'mysql',
-  'prefix' => 'fiss2_',
-  'collation' => 'utf8mb4_general_ci',
-  'charset' => 'utf8mb4',
+  'database' => getenv('POSTGRES_DB'),
+  'username' => getenv('POSTGRES_USER'),
+  'password' => getenv('POSTGRES_PASSWORD'),
+  'host' => getenv('POSTGRES_HOST'),
+  'driver' => 'pgsql',
+  'prefix' => '',
 ];
 ```
 
 ## ClamAV
 A container provides the service which is used by this web site.
 
-From clamav.settings.yml in the config/default/docksal folder.
+From clamav.settings.yml in the sync-docksal folder.
 
 ```yaml
 scan_mode: '0'
