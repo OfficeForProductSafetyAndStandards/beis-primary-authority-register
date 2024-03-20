@@ -51,7 +51,7 @@ directory from outside the git repository file structure.
 There is an [installation script](../scripts/docksal/install.sh) in $PROJECT_ROOT/scripts/docksal/install.sh .
 It is expected that it is run from outside the cli container.
 It expects to import a SQL file call db-dump-production-sanitised.sql from the
-directory [backups](./backups).
+directory [backups](../backups).
 
 # Notes
 
