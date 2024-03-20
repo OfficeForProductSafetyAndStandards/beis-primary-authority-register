@@ -13,7 +13,7 @@ references:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: beispar/db:v1.0.5
+      - image: beispar/db:v1.0.7
         name: db
         environment:
           POSTGRES_USER: par
