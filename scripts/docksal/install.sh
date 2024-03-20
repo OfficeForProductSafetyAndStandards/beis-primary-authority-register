@@ -1,15 +1,15 @@
 fin restart
 fin composer install &&
-npm install &&
-npm run frontend &&
-fin drush si -y &&
-fin drush @par.paas sql:drop -y &&
+fin exec npm install &&
+fin exec npm run frontend &&
+# fin drush --yes site:install &&
+fin drush @par.paas --yes sql:drop &&
 fin drush @par.paas sql:cli < backups/db-dump-production-sanitised.sql &&
-fin drush updb -y &&
-fin drush cim -y &&
-fin drush pmu config_readonly -y &&
-fin drush cset search_api.server.opensearch backend_config.connector_config.url https://beis-primary-authority-register.fin.site:9201 -y &&
-fin drush cset system.performance css.preprocess false &&
-fin drush cset system.performance js.preprocess false &&
-fin drush cr &&
-fin drush uli
+fin drush --yes updatedb &&
+fin drush --yes config:import &&
+fin drush pm:uninstall --yes config_readonly &&
+fin drush config:set --yes search_api.server.opensearch backend_config.connector_config.url https://os:9200 &&
+fin drush config:set --yes system.performance css.preprocess false &&
+fin drush config:set --yes system.performance js.preprocess false &&
+fin drush cache:rebuid &&
+fin drush user:login

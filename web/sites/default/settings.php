@@ -907,7 +907,7 @@ if (isset($db_credentials)) {
 if (isset($redis_credentials)) {
   // Enable Redis services.
   $settings['redis.connection']['interface'] = 'Predis';
-  $settings['redis.connection']['scheme'] = 'tls';
+  $settings['redis.connection']['scheme'] = $redis_credentials->scheme ?? 'tls';
   $settings['redis.connection']['host'] = $redis_credentials->host;
   $settings['redis.connection']['port'] = $redis_credentials->port;
   $settings['redis.connection']['password'] = $redis_credentials->password;

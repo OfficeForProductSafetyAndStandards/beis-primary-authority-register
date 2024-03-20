@@ -1,5 +1,30 @@
 version: "3.9"
 services:
+  cli:
+    environment:
+      - SIMPLETEST_BASE_URL=http://web/
+      - BROWSERTEST_OUTPUT_BASE_URL=http://${VIRTUAL_HOST}
+      - SIMPLETEST_DB=sqlite://localhost//var/www/data/default/sqlite/test.sqlite
+      - COMPOSER_DEFAULT_VERSION
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD
+      - VCAP_SERVICES
+      - PAR_HASH_SALT
+      - REDIS_SCHEME
+      - APP_ENV
+      # To get cron to work these environment need the SECRET_ prefix.
+      - SECRET_OPENSEARCH_INITIAL_ADMIN_PASSWORD=$OPENSEARCH_INITIAL_ADMIN_PASSWORD
+      - SECRET_POSTGRES_HOST=$POSTGRES_HOST
+      - SECRET_POSTGRES_PORT=$POSTGRES_PORT
+      - SECRET_POSTGRES_DB=$POSTGRES_DB
+      - SECRET_POSTGRES_USER=$POSTGRES_USER
+      - SECRET_POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - SECRET_VIRTUAL_HOST=$VIRTUAL_HOST
+      - SECRET_VCAP_SERVICES=$VCAP_SERVICES
+      - SECRET_PAR_HASH_SALT=$PAR_HASH_SALT
+      - SECRET_REDIS_SCHEME=$REDIS_SCHEME
+      - SECRET_APP_ENV=$APP_ENV
+      - SECRET_WEB_KEEPALIVE=0
+
   db:
     extends:
       file: ${HOME}/.docksal/stacks/services.yml
@@ -7,13 +32,7 @@ services:
 
   os:
     image: opensearchproject/opensearch:1.2.4
-    container_name: beis-par-search
     restart: always
-    ports:
-      - "9200:9200"
-      - "9600:9600" # required for Performance Analyzer
-    networks:
-      - par-net
     volumes:
       - ./data/opensearch:/usr/share/opensearch/data
     environment:
@@ -25,6 +44,7 @@ services:
       - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # minimum and maximum Java heap size, recommend setting both to 50% of system RAM
       - DISABLE_INSTALL_DEMO_CONFIG=true # disables execution of install_demo_configuration.sh bundled with security plugin, which installs demo certificates and security configurations to OpenSearch
       - DISABLE_SECURITY_PLUGIN=true # disables security plugin entirely in OpenSearch by setting plugins.security.disabled: true in opensearch.yml
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=$OPENSEARCH_INITIAL_ADMIN_PASSWORD # Sets the demo admin user password when using demo configuration, required for OpenSearch 2.12 and later
     ulimits:
       memlock:
         soft: -1
@@ -35,20 +55,34 @@ services:
 
   search-dashboard:
     image: opensearchproject/opensearch-dashboards:1.2.0
-    container_name: opensearch-dashboards
-    ports:
-      - "5601:5601"
-    expose:
-      - "5601"
     links:
       - db:db.localhost
       - os:os.localhost
-    networks:
-      - par-net
     environment:
       - OPENSEARCH_HOSTS=["http://os.localhost:9200"]
       - DISABLE_SECURITY_DASHBOARDS_PLUGIN=true # disables security dashboards plugin in OpenSearch Dashboards
+    labels:
+      - io.docksal.virtual-host=dashboard.opensearch.${VIRTUAL_HOST},dashboard.opensearch.${VIRTUAL_HOST}.*
+      - io.docksal.virtual-port=${OPENSEARCH_DASHBOARD_PORT_MAPPING:-5601}
+      - io.docksal.cert-name=${VIRTUAL_HOST_CERT_NAME:-none}
 
-networks:
-  par-net:
-    driver: bridge
+  clamav:
+    hostname: clamav
+    image: clamav/clamav:latest
+
+  mail:
+    extends:
+      file: ${HOME}/.docksal/stacks/services.yml
+      service: mail
+    image: mailhog/mailhog
+    labels:
+      - io.docksal.virtual-host=webmail.${VIRTUAL_HOST}
+    user: root
+
+  redis:
+    extends:
+      file: ${HOME}/.docksal/stacks/services.yml
+      service: redis
+    volumes:
+      - ${PROJECT_ROOT}/.docksal/etc/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
