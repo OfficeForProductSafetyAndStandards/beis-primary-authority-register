@@ -51,6 +51,26 @@ It is expected that it is run from outside the cli container.
 It expects to import a SQL file call db-dump-production-sanitised.sql from the
 directory [backups](../backups).
 
+Opensearch
+
+If opensearch does not work, then use the following command to see the logs from the container
+
+```bash
+fin logs os
+```
+
+If you see the following message
+
+```bash
+max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+```
+
+then run the following command
+
+```bash
+sudo sysctl -w vm.max_map_count=262144
+```
+
 # Notes
 
 - Drupal is a [registered trademark](https://drupal.com/trademark) of [Dries
