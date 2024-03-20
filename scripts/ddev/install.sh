@@ -1,8 +1,7 @@
 ddev restart
 ddev composer install &&
 npm install &&
-npm run install-govuk-theme &&
-npm run install-par-theme &&
+npm run frontend &&
 ddev drush si -y &&
 ddev drush @par.paas sql:drop -y &&
 ddev drush @par.paas sql:cli < backups/db-dump-production-sanitised.sql &&

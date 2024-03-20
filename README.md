@@ -162,6 +162,7 @@ npm install
 npm run install-govuk-theme
 npm run install-par-theme
 npm run gulp
+npm run frontend
 ```
 
 #### Database (optional)

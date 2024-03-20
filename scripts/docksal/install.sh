@@ -1,8 +1,7 @@
 fin restart
 fin composer install &&
 npm install &&
-npm run install-govuk-theme &&
-npm run install-par-theme &&
+npm run frontend &&
 fin drush si -y &&
 fin drush @par.paas sql:drop -y &&
 fin drush @par.paas sql:cli < backups/db-dump-production-sanitised.sql &&
