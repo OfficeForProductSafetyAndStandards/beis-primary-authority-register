@@ -51,7 +51,23 @@ It is expected that it is run from outside the cli container.
 It expects to import a SQL file call db-dump-production-sanitised.sql from the
 directory [backups](../backups).
 
-Opensearch
+If you get this message
+```bash
+In DefinitionErrorExceptionPass.php line 51:
+
+  You have requested a non-existent parameter "cache_lifecycle_bins".
+```
+
+then it is suggested that you add the following to the docksal-local.yml file
+```yaml
+parameters:
+  cache_lifecycle_bins:
+    - 'config'
+```
+to [services.local.non-production.yml](../web/sites/default/services.local.non-production.yml)
+it probably can be removed at a later date and does not have to be committed.
+
+# Opensearch
 
 If opensearch does not work, then use the following command to see the logs from the container
 
