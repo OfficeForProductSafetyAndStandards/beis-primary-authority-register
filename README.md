@@ -127,18 +127,20 @@ If you wish to update an existing local site without a db import
 ```
 
 ### Docksal users
-If docksal is your local setup of choice, there are a couple of useful tasks in the scripts/docksal directory.
+If [docksal](https://docksal.io) is your local setup, there is are scripts in
+the scripts/docksal directory to reinstall the site with a fresh copy of the
+production database or to just update the current database after a change of
+code.
 
-To set up / reinstall on ddev run, you will need to have an up-to-date DB in the /backups directory.
-NB. The solr.server and system.performance settings
+To set up / reinstall on docksal, you will need to have an up-to-date DB in the
+/backups directory.
 
-Ensure to empty the db connection settings from lines 1170 - 1180 pf settings.php first
-```
+``` bash
 ./scripts/docksal/install.sh
 ```
-If you wish to update an existing local site without a db import
+If you wish to update an existing local site without a database import
 ```
-./scripts/ddev/update.sh
+./scripts/docksal/update.sh
 ```
 
 ### Set up
