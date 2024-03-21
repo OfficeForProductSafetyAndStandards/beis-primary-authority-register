@@ -11,6 +11,7 @@ services:
       - PAR_HASH_SALT
       - REDIS_SCHEME
       - APP_ENV
+      - OPENSEARCH_HOSTNAME
       # To get cron to work these environment need the SECRET_ prefix.
       - SECRET_OPENSEARCH_INITIAL_ADMIN_PASSWORD=$OPENSEARCH_INITIAL_ADMIN_PASSWORD
       - SECRET_POSTGRES_HOST=$POSTGRES_HOST
@@ -23,6 +24,7 @@ services:
       - SECRET_PAR_HASH_SALT=$PAR_HASH_SALT
       - SECRET_REDIS_SCHEME=$REDIS_SCHEME
       - SECRET_APP_ENV=$APP_ENV
+      - SECRET_OPENSEARCH_HOSTNAME=$OPENSEARCH_HOSTNAME
       - SECRET_WEB_KEEPALIVE=0
 
   db:
@@ -31,16 +33,16 @@ services:
       service: pgsql
 
   os:
-    image: opensearchproject/opensearch:1.2.4
+    image: ${OPENSEARCH_IMAGE:-opensearchproject/opensearch:1.2.4}
     restart: always
-    hostname: beis-par-search
+    hostname: ${OPENSEARCH_HOSTNAME}
     volumes:
       - opensearch-data1:/usr/share/opensearch/data
     environment:
       - cluster.name=opensearch-cluster
-      - node.name=beis-par-search
-      - discovery.seed_hosts=beis-par-search
-      - cluster.initial_master_nodes=beis-par-search
+      - node.name=${OPENSEARCH_HOSTNAME}
+      - discovery.seed_hosts=${OPENSEARCH_HOSTNAME}
+      - cluster.initial_master_nodes=${OPENSEARCH_HOSTNAME}
       - bootstrap.memory_lock=true # along with the memlock settings below, disables swapping
       - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # minimum and maximum Java heap size, recommend setting both to 50% of system RAM
       - DISABLE_INSTALL_DEMO_CONFIG=true # disables execution of install_demo_configuration.sh bundled with security plugin, which installs demo certificates and security configurations to OpenSearch
@@ -55,10 +57,10 @@ services:
         hard: 65536
 
   search-dashboard:
-    image: opensearchproject/opensearch-dashboards:1.2.0
+    image: ${OPENSEARCH_DASHBOARDS_IMAGE:-opensearchproject/opensearch-dashboards:1.2.0}
     hostname: opensearch_dashboard
     environment:
-      - OPENSEARCH_HOSTS=["http://beis-par-search:9200"]
+      - OPENSEARCH_HOSTS=["http://${OPENSEARCH_HOSTNAME}:9200"]
       - DISABLE_SECURITY_DASHBOARDS_PLUGIN=true # disables security dashboards plugin in OpenSearch Dashboards
     labels:
       - io.docksal.virtual-host=dashboard.opensearch.${VIRTUAL_HOST},dashboard.opensearch.${VIRTUAL_HOST}.*
