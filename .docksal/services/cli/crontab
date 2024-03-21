@@ -1,0 +1,1 @@
+* * * * * bash -l -c '/var/www/vendor/bin/drush --root=/var/www/web core:cron -l $VIRTUAL_HOST'
