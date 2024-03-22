@@ -85,6 +85,7 @@ class ParRemoveInspectionPlanForm extends ParBaseForm {
       '#title' => $this->t('Enter the reason you are removing this inspection plan'),
       '#type' => 'textarea',
       '#rows' => 5,
+      '#required' => TRUE,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('remove_reason', FALSE),
     ];
 
