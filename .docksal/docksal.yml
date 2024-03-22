@@ -1,0 +1,93 @@
+version: "3.9"
+services:
+  cli:
+    environment:
+      - SIMPLETEST_BASE_URL=http://web/
+      - BROWSERTEST_OUTPUT_BASE_URL=http://${VIRTUAL_HOST}
+      - SIMPLETEST_DB=sqlite://localhost//var/www/data/default/sqlite/test.sqlite
+      - COMPOSER_DEFAULT_VERSION
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD
+      - REDIS_SCHEME
+      - OPENSEARCH_HOSTNAME
+      - VCAP_SERVICES
+      - APP_ENV
+      - PAR_HASH_SALT
+      # To get cron to work these environment need the SECRET_ prefix.
+      - SECRET_OPENSEARCH_INITIAL_ADMIN_PASSWORD=$OPENSEARCH_INITIAL_ADMIN_PASSWORD
+      - SECRET_POSTGRES_HOST=$POSTGRES_HOST
+      - SECRET_POSTGRES_PORT=$POSTGRES_PORT
+      - SECRET_POSTGRES_DB=$POSTGRES_DB
+      - SECRET_POSTGRES_USER=$POSTGRES_USER
+      - SECRET_POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - SECRET_VIRTUAL_HOST=$VIRTUAL_HOST
+      - SECRET_VCAP_SERVICES=$VCAP_SERVICES
+      - SECRET_REDIS_SCHEME=$REDIS_SCHEME
+      - SECRET_OPENSEARCH_HOSTNAME=$OPENSEARCH_HOSTNAME
+      - SECRET_WEB_KEEPALIVE=0
+      - SECRET_APP_ENV=$APP_ENV
+      - SECRET_PAR_HASH_SALT=$PAR_HASH_SALT
+
+  db:
+    extends:
+      file: ${HOME}/.docksal/stacks/services.yml
+      service: pgsql
+
+  os:
+    image: ${OPENSEARCH_IMAGE:-opensearchproject/opensearch:1.2.4}
+    restart: always
+    hostname: ${OPENSEARCH_HOSTNAME}
+    volumes:
+      - opensearch-data1:/usr/share/opensearch/data
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=${OPENSEARCH_HOSTNAME}
+      - discovery.seed_hosts=${OPENSEARCH_HOSTNAME}
+      - cluster.initial_master_nodes=${OPENSEARCH_HOSTNAME}
+      - bootstrap.memory_lock=true # along with the memlock settings below, disables swapping
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # minimum and maximum Java heap size, recommend setting both to 50% of system RAM
+      - DISABLE_INSTALL_DEMO_CONFIG=true # disables execution of install_demo_configuration.sh bundled with security plugin, which installs demo certificates and security configurations to OpenSearch
+      - DISABLE_SECURITY_PLUGIN=true # disables security plugin entirely in OpenSearch by setting plugins.security.disabled: true in opensearch.yml
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=$OPENSEARCH_INITIAL_ADMIN_PASSWORD # Sets the demo admin user password when using demo configuration, required for OpenSearch 2.12 and later
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
+        hard: 65536
+
+  search-dashboard:
+    image: ${OPENSEARCH_DASHBOARDS_IMAGE:-opensearchproject/opensearch-dashboards:1.2.0}
+    hostname: opensearch_dashboard
+    environment:
+      - OPENSEARCH_HOSTS=["http://${OPENSEARCH_HOSTNAME}:9200"]
+      - DISABLE_SECURITY_DASHBOARDS_PLUGIN=true # disables security dashboards plugin in OpenSearch Dashboards
+    labels:
+      - io.docksal.virtual-host=dashboard.opensearch.${VIRTUAL_HOST},dashboard.opensearch.${VIRTUAL_HOST}.*
+      - io.docksal.virtual-port=${OPENSEARCH_DASHBOARD_PORT_MAPPING:-5601}
+      - io.docksal.cert-name=${VIRTUAL_HOST_CERT_NAME:-none}
+
+  clamav:
+    hostname: clamav
+    image: clamav/clamav:latest
+
+  mail:
+    extends:
+      file: ${HOME}/.docksal/stacks/services.yml
+      service: mail
+    image: mailhog/mailhog
+    labels:
+      - io.docksal.virtual-host=webmail.${VIRTUAL_HOST}
+    user: root
+
+  redis:
+    extends:
+      file: ${HOME}/.docksal/stacks/services.yml
+      service: redis
+    volumes:
+      - ${PROJECT_ROOT}/.docksal/etc/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+
+volumes:
+  opensearch-data1:
+    driver: local

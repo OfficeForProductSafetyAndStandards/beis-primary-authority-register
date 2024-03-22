@@ -72,6 +72,8 @@ There is a docker-compose file in the project root which contains all the images
 * Postgres
 * Opensearch
 
+There are various local build stack options available depending on developer preference, the default is the custom docker-compose approach, however there are options for ARM64, Ddev and Docksal users (see further down this file)
+
 Just run `docker-compose up -d` from the project root.
 
 To run commands within the primary container:
@@ -103,6 +105,44 @@ If on windows follow the instructions below, essentially docker performance on w
   * This can be found by navigating to `\\wsl$\{DISTRO}\home` in the file explorer, where `{DISTRO}` can be found by running `wsl -l`, e.g. `Ubuntu-22.04`
 * php, composer & patch (available through `C:/Program Files/Git/usr/bin`) need to be added to the system path
 
+### Mac M1 users
+Mac users on ARM64 devices will need to copy the docker-compose.overrides.yml.example to docker-compose.overrides.yml, this swaps the precompiled images to latest docker images for Postgres
+```
+cp docker-compose.override.yml.example docker-compose.override.yml
+docker-compose up -d
+```
+
+### Ddev users
+If ddev is your local setup of choice, there are a couple of useful tasks in the scripts/ddev directory.
+
+To set up / reinstall on ddev run, you will need to have an up-to-date DB in the /backups directory.
+NB. The solr.server and system.performance settings
+```
+./scripts/ddev/install.sh
+```
+
+If you wish to update an existing local site without a db import
+```
+./scripts/ddev/update.sh
+```
+
+### Docksal users
+If [docksal](https://docksal.io) is your local setup, there is are scripts in
+the scripts/docksal directory to reinstall the site with a fresh copy of the
+production database or to just update the current database after a change of
+code.
+
+To set up / reinstall on docksal, you will need to have an up-to-date DB in the
+/backups directory.
+
+``` bash
+./scripts/docksal/install.sh
+```
+If you wish to update an existing local site without a database import
+```
+./scripts/docksal/update.sh
+```
+
 ### Set up
 
 There are a few main tasks that need to be performed after pulling new code or downloading a new database.
@@ -124,6 +164,7 @@ npm install
 npm run install-govuk-theme
 npm run install-par-theme
 npm run gulp
+npm run frontend
 ```
 
 #### Database (optional)

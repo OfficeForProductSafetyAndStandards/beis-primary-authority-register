@@ -888,6 +888,15 @@ if ($env_services = getenv("VCAP_SERVICES")) {
   $os_credentials = isset($services->opensearch) ? $services->opensearch[0]->credentials : NULL;
 }
 
+// For the Docksal environment use a modified version of the the SECRET.
+if (!$services && $env_services = getenv("SECRET_VCAP_SERVICES")) {
+  $env_services = str_replace('\"', '"', $env_services);
+  $services = json_decode($env_services);
+  $db_credentials = isset($services->postgres) ? $services->postgres[0]->credentials : NULL;
+  $redis_credentials = isset($services->redis) ? $services->redis[0]->credentials : NULL;
+  $os_credentials = isset($services->opensearch) ? $services->opensearch[0]->credentials : NULL;
+}
+
 // Set the PaaS database connection credentials.
 if (isset($db_credentials)) {
   $databases['default']['default'] = [
@@ -907,7 +916,7 @@ if (isset($db_credentials)) {
 if (isset($redis_credentials)) {
   // Enable Redis services.
   $settings['redis.connection']['interface'] = 'Predis';
-  $settings['redis.connection']['scheme'] = 'tls';
+  $settings['redis.connection']['scheme'] = $redis_credentials->scheme ?? 'tls';
   $settings['redis.connection']['host'] = $redis_credentials->host;
   $settings['redis.connection']['port'] = $redis_credentials->port;
   $settings['redis.connection']['password'] = $redis_credentials->password;
