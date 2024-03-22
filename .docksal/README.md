@@ -5,19 +5,9 @@ It has been noted that with the current version of *fin*, it does not cope well
 with having spaces in the root directory path.
 
 ## DB
-Please note that in settings.php in the server directory, the database 'host'
-parameter needs to be *db* and **not** *localhost* to work in this
-environment. Better still use the environmental variables, for example
-```php
-$databases['default']['default'] = [
-  'database' => getenv('POSTGRES_DB'),
-  'username' => getenv('POSTGRES_USER'),
-  'password' => getenv('POSTGRES_PASSWORD'),
-  'host' => getenv('POSTGRES_HOST'),
-  'driver' => 'pgsql',
-  'prefix' => '',
-];
-```
+The settings for the database connection are in the environmental variable
+[_VCAP_SERVICES_](https://docs.cloudfoundry.org/devguide/deploy-apps/environment-variable.html)
+which is set in [docksal.env](./docksal-local.env).
 
 ## ClamAV
 A container provides the service which is used by this web site.
@@ -86,6 +76,10 @@ then run the following command
 ```bash
 sudo sysctl -w vm.max_map_count=262144
 ```
+
+# API keys.
+There is a list of API keys in the file [.env.example](../.env.example) which is
+used to set the environmental variables in the file [docksal-local.env](./docksal-local.env).
 
 # Notes
 
