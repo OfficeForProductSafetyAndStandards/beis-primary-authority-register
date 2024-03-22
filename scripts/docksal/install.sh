@@ -11,7 +11,6 @@ fin drush --yes updatedb &&
 fin drush --yes updatedb &&
 fin drush --yes config:import &&
 fin drush pm:uninstall --yes config_readonly &&
-fin drush config:set --yes search_api.server.opensearch backend_config.connector_config.url http://beis-par-search:9200 &&
 fin drush config:set --yes system.performance css.preprocess false &&
 fin drush config:set --yes system.performance js.preprocess false &&
 fin drush cache:rebuild &&
