@@ -79,4 +79,9 @@ public class UserMembershipPage extends BasePageObject {
 		continueBtn.click();
 		return PageFactory.initElements(driver, AddMembershipConfirmationPage.class);
 	}
+	
+	public UserRoleTypePage goToUserRoleTypePage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, UserRoleTypePage.class);
+	}
 }

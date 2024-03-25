@@ -1283,8 +1283,8 @@ public class PARStepDefs {
 	@When("^the user visits the maillog page and extracts the invite link$")
 	public void the_user_visits_the_maillog_page_and_extracts_the_invite_link() throws Throwable {
 		websiteManager.mailLogPage.navigateToUrl();
-		websiteManager.mailLogPage.searchForUserAccountInvite(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
-		websiteManager.mailLogPage.selectEamilAndGetINviteLink(DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL));
+		websiteManager.mailLogPage.searchForUserAccountInvite(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS));
+		websiteManager.mailLogPage.selectEamilAndGetINviteLink(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS));
 	}
 
 	@When("^the user follows the invitation link$")
@@ -2120,6 +2120,42 @@ public class PARStepDefs {
 		assertTrue("Failed: Contact email field does not contain the correct email address.", websiteManager.userProfilePage.checkContactEmail());
 		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", websiteManager.userProfilePage.checkContactPhoneNumbers());
 		assertTrue("Failed: Contact Locations are displayed.", websiteManager.userProfilePage.checkContactLocationsIsEmpty());
+	}
+	
+	@When("^the user selects the manage people link$")
+	public void the_user_selects_the_manage_people_link() throws Throwable {
+		LOG.info("Navigate to the Manage People page.");
+	    websiteManager.helpDeskDashboardPage.selectManagePeople();
+	}
+	
+	@When("^the user selects the invite user link$")
+	public void the_user_selects_the_invite_user_link() throws Throwable {
+		LOG.info("Selecting the Invite the user to create an account link.");
+		websiteManager.userProfilePage.clickInviteUserCreateAccountLink();
+	}
+
+	@When("^the user chooses the new users membership and role$")
+	public void the_user_chooses_the_new_users_membership_and_role() throws Throwable {
+		LOG.info("Choosing the new users membership and role.");
+		websiteManager.userMembershipPage.chooseAuthorityMembership("Upper West Side Borough Council");
+		websiteManager.userMembershipPage.goToUserRoleTypePage();
+		
+		websiteManager.userTypePage.chooseMembershipRole("Authority Member");
+		websiteManager.userTypePage.goToUserAccountInvitePage();
+	}
+
+	@When("^the sends the user account invitation$")
+	public void the_sends_the_user_account_invitation() throws Throwable {
+		LOG.info("Sending the user account invitation.");
+		websiteManager.accountInvitePage.goToInvitationReviewPage();
+		websiteManager.userAccountInvitationReviewPage.clickSendInviationButton();
+		websiteManager.completionPage.clickDoneForInvitation();
+	}
+
+	@Then("^the user verifies the user account invitation was sent successfully$")
+	public void the_user_verifies_the_user_account_invitation_was_sent_successfully() throws Throwable {
+		LOG.info("Verifying the User Account Invitation was sent.");
+		assertTrue(websiteManager.userProfilePage.checkForReSendUserAccountInvitationLink());
 	}
 	
 	@When("^the user updates their user account email address to \"([^\"]*)\"$")

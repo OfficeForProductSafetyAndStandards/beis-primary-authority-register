@@ -96,73 +96,73 @@ Feature: Other Happy Paths
     And the user enters a list of new emails to replace the subscription list
     Then the user can verify an email from the original list was removed successfully
 
-	@regression @usermanagement
-	Scenario: Verify a Member User can be assigned the Manager Role and assign another Member the Manager Role Successfully (Happy Path - PAR-2378)
-		Given the user is on the PAR home page
+  @regression @usermanagement
+  Scenario: Verify a Member User can be assigned the Manager Role and assign another Member the Manager Role Successfully (Happy Path - PAR-2378)
+    Given the user is on the PAR home page
     When the user visits the login page
-		And the user logs in with the "par_helpdesk@example.com" user credentials
-		When the user searches for the "par_authority_manager@example.com" user account
-		And the user clicks the manage contact link
-		Then the user can view the user account successfully
-		# Change the user role.
-		When the user changes the users role to "Authority Manager"
-		Then the user role was changed successfully
-		# Verify the Authority Manager can change the Authority Member's role.
-		Given the user is on the PAR login page
-		And the user logs in with the "par_authority_manager@example.com" user credentials
-		When the user searches for the "par_authority@example.com" user account
-		And the user clicks the manage contact link
-		Then the user can view the user account successfully
-		# Change the user role.
-		When the user changes the users role to "Authority Manager"
-		Then the user role was changed successfully
-	
-	@regression @usermanagement
-	Scenario: Verify a User can add and remove an Authority membership for another user Successfully (Happy Path - PAR-2379)
-		Given the user is on the PAR home page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user searches for the "par_authority_manager@example.com" user account
+    And the user clicks the manage contact link
+    Then the user can view the user account successfully
+    # Change the user role.
+    When the user changes the users role to "Authority Manager"
+    Then the user role was changed successfully
+    # Verify the Authority Manager can change the Authority Member's role.
+    Given the user is on the PAR login page
+    And the user logs in with the "par_authority_manager@example.com" user credentials
+    When the user searches for the "par_authority@example.com" user account
+    And the user clicks the manage contact link
+    Then the user can view the user account successfully
+    # Change the user role.
+    When the user changes the users role to "Authority Manager"
+    Then the user role was changed successfully
+
+  @regression @usermanagement
+  Scenario: Verify a User can add and remove an Authority membership for another user Successfully (Happy Path - PAR-2379)
+    Given the user is on the PAR home page
     When the user visits the login page
-		And the user logs in with the "senior_administrator@example.com" user credentials
-		When the user searches for the "par_authority@example.com" user account
-		And the user clicks the manage contact link
-		Then the user can view the user account successfully
-		# Add a membership.
-		When the user adds a new Authority membership
-		Then the Authority membership was added successfully
-		# Remove a membership.
-		When the user removes the last added Authority membership
-		Then the Authority membership was removed successfully
-		
-	@regression @usermanagement
-	Scenario: Verify a Senior Administrator can Block and Reinstate a User Account Successfully (Happy Path - PAR-2382)
-		Given the user is on the PAR home page
+    And the user logs in with the "senior_administrator@example.com" user credentials
+    When the user searches for the "par_authority@example.com" user account
+    And the user clicks the manage contact link
+    Then the user can view the user account successfully
+    # Add a membership.
+    When the user adds a new Authority membership
+    Then the Authority membership was added successfully
+    # Remove a membership.
+    When the user removes the last added Authority membership
+    Then the Authority membership was removed successfully
+
+  @regression @usermanagement
+  Scenario: Verify a Senior Administrator can Block and Reinstate a User Account Successfully (Happy Path - PAR-2382)
+    Given the user is on the PAR home page
     When the user visits the login page
-		And the user logs in with the "senior_administrator@example.com" user credentials
-		When the user searches for the "national_regulator@example.com" user account
-		And the user clicks the manage contact link
-		Then the user can view the user account successfully
-		# Block the User Account.
-		When the user blocks the user account
-		Then the user verifies the account was blocked successfully
-		# Attempt to log in with the blocked user account.
-		Given the user is on the PAR login page
-		And the user logs in with the "national_regulator@example.com" user credentials
-		Then the user cannot sign in and receives an error message
-		# Sign in as the Senior Adminstrator again.
-		Given the user is on the PAR home page
+    And the user logs in with the "senior_administrator@example.com" user credentials
+    When the user searches for the "national_regulator@example.com" user account
+    And the user clicks the manage contact link
+    Then the user can view the user account successfully
+    # Block the User Account.
+    When the user blocks the user account
+    Then the user verifies the account was blocked successfully
+    # Attempt to log in with the blocked user account.
+    Given the user is on the PAR login page
+    And the user logs in with the "national_regulator@example.com" user credentials
+    Then the user cannot sign in and receives an error message
+    # Sign in as the Senior Adminstrator again.
+    Given the user is on the PAR home page
     When the user visits the login page
-		And the user logs in with the "senior_administrator@example.com" user credentials
-		When the user searches for the "national_regulator@example.com" user account
-		And the user clicks the manage contact link
-		Then the user can view the user account successfully
-		# Re-activate the user account.
-		When the user reinstates the user account
-		Then the user verifies the account is reinstated successfully
-		# Attempt to log in with the re-activated user account.
-		Given the user is on the PAR login page
-		And the user logs in with the "national_regulator@example.com" user credentials
-		Then the user is on the dashboard page
-		
-  @regression @helpDesk @usermanagement
+    And the user logs in with the "senior_administrator@example.com" user credentials
+    When the user searches for the "national_regulator@example.com" user account
+    And the user clicks the manage contact link
+    Then the user can view the user account successfully
+    # Re-activate the user account.
+    When the user reinstates the user account
+    Then the user verifies the account is reinstated successfully
+    # Attempt to log in with the re-activated user account.
+    Given the user is on the PAR login page
+    And the user logs in with the "national_regulator@example.com" user credentials
+    Then the user is on the dashboard page
+
+  @regression @helpDesk @usermanagement @test
   Scenario: Verify the Addition and Update of a New Persons Contact Record as a Help Desk User (Happy Path - PAR-2097)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -176,8 +176,20 @@ Feature: Other Happy Paths
       | Title | WorkNumber  | MobileNumber |
       | Dr    | 01204996501 |  07405882265 |
     Then the user can verify the person was updated successfully and can send an account invitation
-	
-	@regression @usermanagement
+
+  @regression @helpDesk @usermanagement @test
+  Scenario: Verify a New User can be invited to create a User Account (Happy Path - PAR-2457)
+    Given the user is on the PAR login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    When the user selects the manage people link
+    And the user searches for an existing person successfully
+    When the user selects the invite user link
+    And the user chooses the new users membership and role
+    And the sends the user account invitation
+    Then the user verifies the user account invitation was sent successfully
+    And the user signs out
+
+  @regression @usermanagement
   Scenario: Verify Completion of User Creation journey (Happy Path - PAR-1904)
     Given the user is on the PAR login page
     And the user logs in with the "par_admin@example.com" user credentials
@@ -186,8 +198,8 @@ Feature: Other Happy Paths
     And the user follows the invitation link
     And the user completes the user creation journey
     Then the user journey creation is successful
-	
-	@regression @usermanagement @userAccount
+
+  @regression @usermanagement @userAccount
   Scenario: Verify a User can Change their User Account Email Address (Happy Path - PAR-2323)
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
@@ -202,7 +214,7 @@ Feature: Other Happy Paths
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     Then the user can verify the new email address is displayed on the header
-	
+
   @regression @helpDesk @statistics
   Scenario: Verify the Help Desk User can see the Statistics Page (Happy Path - PAR-2315)
     Given the user is on the PAR login page

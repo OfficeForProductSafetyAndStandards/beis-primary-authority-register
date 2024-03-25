@@ -61,6 +61,7 @@ public class WebsiteManager {
 	public ProfileCompletionPage profileCompletionPage;
 	public ChoosePersonToAddPage choosePersonToAddPage;
 	public AddMembershipConfirmationPage addMembershipConfirmationPage;
+	public UserAccountInvitationReviewPage userAccountInvitationReviewPage;
 
 	// Contact Record
 	public ContactRecordsPage contactRecordsPage;
@@ -232,6 +233,7 @@ public class WebsiteManager {
 		userProfilePage = PageFactory.initElements(driver, UserProfilePage.class);
 		choosePersonToAddPage = PageFactory.initElements(driver, ChoosePersonToAddPage.class);
 		addMembershipConfirmationPage = PageFactory.initElements(driver, AddMembershipConfirmationPage.class);
+		userAccountInvitationReviewPage = PageFactory.initElements(driver, UserAccountInvitationReviewPage.class);
 
 		// Contact Record
 		contactUpdateSubscriptionPage = PageFactory.initElements(driver, ContactUpdateSubscriptionPage.class);
