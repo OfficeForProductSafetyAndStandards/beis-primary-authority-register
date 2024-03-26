@@ -90,6 +90,12 @@ references:
         pg_restore --username= USERNAME --host=HOST --port= --clean --if-exists --no-owner --no-privileges --no-password
         ../drupal-update.sh
 
+  configure_secrets: &configure_secrets
+    run:
+      name: "Configure secrets"
+      command: |
+        ./devops/vault/vault-export.sh ci
+
   prepare_application: &prepare_application
     run:
       name: "Prepare the application"
@@ -218,6 +224,7 @@ jobs:
             - ./web/themes/contrib
             - ./web/themes/custom
             - ./drush/contrib
+      - *configure_secrets
       - run:
           name: "Create workspace"
           command: |
