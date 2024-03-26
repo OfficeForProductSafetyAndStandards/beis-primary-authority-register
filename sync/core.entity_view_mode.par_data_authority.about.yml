@@ -8,5 +8,6 @@ _core:
   default_config_hash: sgf_NpBE0DUFOHEuHzegjWV2nSM1xICgOw__G2iwMAk
 id: par_data_authority.about
 label: About
+description: ''
 targetEntityType: par_data_authority
 cache: true

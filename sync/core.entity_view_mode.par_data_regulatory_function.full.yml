@@ -8,5 +8,6 @@ _core:
   default_config_hash: EYdYP0kDlDSh4XX9MD1eUNCJNXXcBNAk26wlaQnCqfo
 id: par_data_regulatory_function.full
 label: Full
+description: ''
 targetEntityType: par_data_regulatory_function
 cache: true

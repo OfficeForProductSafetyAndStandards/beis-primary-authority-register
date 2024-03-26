@@ -8,5 +8,6 @@ _core:
   default_config_hash: 6-Dc86HIe5yZKwroguYAt0Alv3AGKIeiGsf4m8EsfrM
 id: par_data_general_enquiry.title
 label: Title
+description: ''
 targetEntityType: par_data_general_enquiry
 cache: true
