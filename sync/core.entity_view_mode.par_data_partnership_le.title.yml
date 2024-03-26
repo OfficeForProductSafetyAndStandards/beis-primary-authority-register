@@ -6,5 +6,6 @@ dependencies:
     - par_data
 id: par_data_partnership_le.title
 label: Title
+description: ''
 targetEntityType: par_data_partnership_le
 cache: true

@@ -8,5 +8,6 @@ _core:
   default_config_hash: yOFbSCvFrCMy_dgIGMDCgPdt9_Mf5CuYkzSeftZyhEg
 id: par_data_person.title
 label: Title
+description: ''
 targetEntityType: par_data_person
 cache: true

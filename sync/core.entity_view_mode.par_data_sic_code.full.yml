@@ -8,5 +8,6 @@ _core:
   default_config_hash: lYmu9CPSuz1M-HAsCfBziIfdYY4cTTriovUJMZ8VlbA
 id: par_data_sic_code.full
 label: Full
+description: ''
 targetEntityType: par_data_sic_code
 cache: true
