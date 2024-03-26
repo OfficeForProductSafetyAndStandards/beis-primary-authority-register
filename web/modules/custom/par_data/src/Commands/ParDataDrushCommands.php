@@ -15,7 +15,7 @@ use Drush\Commands\DrushCommands;
 /**
  * Drush commands for PAR Data.
  */
-class ParDataCommands extends DrushCommands {
+class ParDataDrushCommands extends DrushCommands {
 
   /**
    * The par_data.manager service.
