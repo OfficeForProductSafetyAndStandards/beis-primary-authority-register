@@ -162,7 +162,7 @@ Feature: Other Happy Paths
     And the user logs in with the "national_regulator@example.com" user credentials
     Then the user is on the dashboard page
 
-  @regression @helpDesk @usermanagement @test
+  @regression @helpDesk @usermanagement
   Scenario: Verify the Addition and Update of a New Persons Contact Record as a Help Desk User (Happy Path - PAR-2097)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -177,7 +177,7 @@ Feature: Other Happy Paths
       | Dr    | 01204996501 |  07405882265 |
     Then the user can verify the person was updated successfully and can send an account invitation
 
-  @regression @helpDesk @usermanagement @test
+  @regression @helpDesk @usermanagement
   Scenario: Verify a New User can be invited to create a User Account (Happy Path - PAR-2457)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials

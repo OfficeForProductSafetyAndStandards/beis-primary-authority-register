@@ -42,10 +42,10 @@ Feature: Direct Partnership Sad Paths
     When the user enters an orgnasiation name
     And the user leaves all the address fields empty
     Then the user is shown the following error messages:
-      | ErrorMessage                                     |
-      | You must enter the first line of your address    |
-      | You must enter the town or city for this address |
-      | You must enter a valid postcode                  |
+      | ErrorMessage                                  |
+      | You must enter the first line of your address |
+      | Town/City field is required.                  |
+      | You must enter a valid postcode.              |
     When the user enters an address with the following details:
       | AddressLine1 | AddressLine2 | Town       | County              | Country        | Nation  | Postcode |
       | 01 Bridge    | Town Hall    | Manchester | Greater Manachester | United Kingdom | England | BL2 6GH  |
@@ -74,10 +74,10 @@ Feature: Direct Partnership Sad Paths
     When the user enters details about the organisation
     And the user leaves all address details fields empty
     Then the user is shown the following error messages:
-      | ErrorMessage                                     |
-      | You must enter the first line of your address    |
-      | You must enter the town or city for this address |
-      | You must enter a valid postcode                  |
+      | ErrorMessage                                  |
+      | You must enter the first line of your address |
+      | Town/City field is required.                  |
+      | You must enter a valid postcode.              |
     When the user confirms the address details with the following:
       | AddressLine1 | AddressLine2 | Town       | County              | Country        | Nation  | Postcode |
       | 01 Bridge    | Town Hall    | Manchester | Greater Manachester | United Kingdom | England | BL2 6GH  |
@@ -171,10 +171,10 @@ Feature: Direct Partnership Sad Paths
     When the user searches for the last created partnership Organisation
     And the user leaves the organisation address fields empty
     Then the user is shown the following error messages:
-      | ErrorMessage                                     |
-      | You must enter the first line of your address    |
-      | You must enter the town or city for this address |
-      | You must enter a valid postcode.                 |
+      | ErrorMessage                                  |
+      | You must enter the first line of your address |
+      | Town/City field is required.                  |
+      | You must enter a valid postcode.              |
     When the user updates the address with the following details:
       | AddressLine1 | AddressLine2 | Town       | County              | Country        | Nation  | Postcode |
       | 01 Bridge    | Town Hall    | Manchester | Greater Manachester | United Kingdom | England | BL2 6GH  |
