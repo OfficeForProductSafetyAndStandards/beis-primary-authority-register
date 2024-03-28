@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6cdaf15dec2f329669dc8004f4a6a365",
+    "content-hash": "a65ce3b7b70a7a9519bff45ecc6ae19b",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -171,16 +171,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.301.9",
+            "version": "3.301.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "23eda9eeb6c44a3ed6a12951b61020dc6048f7f5"
+                "reference": "2fd8cae93e87326f2263c420fa9031ad8903a2f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/23eda9eeb6c44a3ed6a12951b61020dc6048f7f5",
-                "reference": "23eda9eeb6c44a3ed6a12951b61020dc6048f7f5",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2fd8cae93e87326f2263c420fa9031ad8903a2f2",
+                "reference": "2fd8cae93e87326f2263c420fa9031ad8903a2f2",
                 "shasum": ""
             },
             "require": {
@@ -260,9 +260,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.301.9"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.301.7"
             },
-            "time": "2024-03-27T18:26:04+00:00"
+            "time": "2024-03-25T18:14:28+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -5717,17 +5717,17 @@
         },
         {
             "name": "drupal/search_api_opensearch",
-            "version": "2.0.0",
+            "version": "2.0.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/search_api_opensearch.git",
-                "reference": "2.0.0"
+                "reference": "2.0.0-beta3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api_opensearch-2.0.0.zip",
-                "reference": "2.0.0",
-                "shasum": "ad19d03e60fc29607a14287b66f1d65e8dc6be74"
+                "url": "https://ftp.drupal.org/files/projects/search_api_opensearch-2.0.0-beta3.zip",
+                "reference": "2.0.0-beta3",
+                "shasum": "c2d61fda842d2f192c0bcc018e140e6c82fbbca8"
             },
             "require": {
                 "drupal/core": "^9 || ^10",
@@ -5737,8 +5737,9 @@
                 "php": "^8"
             },
             "require-dev": {
-                "aws/aws-sdk-php": "^3.0",
-                "drupal/geofield": "^1.46"
+                "drupal/coder": "^8.3",
+                "drupal/geofield": "^1.46",
+                "drush/drush": "^11.0"
             },
             "suggest": {
                 "aws/aws-sdk-php": "Required when using search_api_aws_signature_connector.",
@@ -5747,11 +5748,11 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.0",
-                    "datestamp": "1711512726",
+                    "version": "2.0.0-beta3",
+                    "datestamp": "1692570235",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -5771,10 +5772,6 @@
                 {
                     "name": "larowlan",
                     "homepage": "https://www.drupal.org/user/395439"
-                },
-                {
-                    "name": "longwave",
-                    "homepage": "https://www.drupal.org/user/246492"
                 }
             ],
             "description": "Provides an OpenSearch backend for Search API.",
@@ -14768,16 +14765,16 @@
         },
         {
             "name": "composer/xdebug-handler",
-            "version": "3.0.4",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "4f988f8fdf580d53bdb2d1278fe93d1ed5462255"
+                "reference": "ced299686f41dce890debac69273b47ffe98a40c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/4f988f8fdf580d53bdb2d1278fe93d1ed5462255",
-                "reference": "4f988f8fdf580d53bdb2d1278fe93d1ed5462255",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/ced299686f41dce890debac69273b47ffe98a40c",
+                "reference": "ced299686f41dce890debac69273b47ffe98a40c",
                 "shasum": ""
             },
             "require": {
@@ -14788,7 +14785,7 @@
             "require-dev": {
                 "phpstan/phpstan": "^1.0",
                 "phpstan/phpstan-strict-rules": "^1.1",
-                "phpunit/phpunit": "^8.5 || ^9.6 || ^10.5"
+                "symfony/phpunit-bridge": "^6.0"
             },
             "type": "library",
             "autoload": {
@@ -14812,9 +14809,9 @@
                 "performance"
             ],
             "support": {
-                "irc": "ircs://irc.libera.chat:6697/composer",
+                "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/xdebug-handler/issues",
-                "source": "https://github.com/composer/xdebug-handler/tree/3.0.4"
+                "source": "https://github.com/composer/xdebug-handler/tree/3.0.3"
             },
             "funding": [
                 {
@@ -14830,7 +14827,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-26T18:29:49+00:00"
+            "time": "2022-02-25T21:32:43+00:00"
         },
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
@@ -17124,16 +17121,16 @@
         },
         {
             "name": "php-http/discovery",
-            "version": "1.19.3",
+            "version": "1.19.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "7fbed2f92518827eb0ece6bf869f8c6b054d5730"
+                "reference": "61e1a1eb69c92741f5896d9e05fb8e9d7e8bb0cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/7fbed2f92518827eb0ece6bf869f8c6b054d5730",
-                "reference": "7fbed2f92518827eb0ece6bf869f8c6b054d5730",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/61e1a1eb69c92741f5896d9e05fb8e9d7e8bb0cb",
+                "reference": "61e1a1eb69c92741f5896d9e05fb8e9d7e8bb0cb",
                 "shasum": ""
             },
             "require": {
@@ -17142,7 +17139,6 @@
             },
             "conflict": {
                 "nyholm/psr7": "<1.0",
-                "sebastian/comparator": ">=5.0",
                 "zendframework/zend-diactoros": "*"
             },
             "provide": {
@@ -17158,7 +17154,7 @@
                 "php-http/httplug": "^1.0 || ^2.0",
                 "php-http/message-factory": "^1.0",
                 "phpspec/phpspec": "^5.1 || ^6.1 || ^7.3",
-                "symfony/phpunit-bridge": "^6.4.4 || ^7.0.1"
+                "symfony/phpunit-bridge": "^6.2"
             },
             "type": "composer-plugin",
             "extra": {
@@ -17197,9 +17193,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/discovery/issues",
-                "source": "https://github.com/php-http/discovery/tree/1.19.3"
+                "source": "https://github.com/php-http/discovery/tree/1.19.2"
             },
-            "time": "2024-03-28T07:38:36+00:00"
+            "time": "2023-11-30T16:49:05+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
