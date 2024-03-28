@@ -8,5 +8,6 @@ _core:
   default_config_hash: 5ICJ1XHiKZKdUnZQlXeQ04LPyX7YT1gGSF1WKmtE870
 id: par_data_coordinated_business.summary
 label: Summary
+description: ''
 targetEntityType: par_data_coordinated_business
 cache: true

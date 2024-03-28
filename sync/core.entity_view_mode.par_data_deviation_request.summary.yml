@@ -8,5 +8,6 @@ _core:
   default_config_hash: z2aaoTayPwRQsXEKvPsuxPiWbeFxq1sNi8gRtiX66Ss
 id: par_data_deviation_request.summary
 label: Summary
+description: ''
 targetEntityType: par_data_deviation_request
 cache: true

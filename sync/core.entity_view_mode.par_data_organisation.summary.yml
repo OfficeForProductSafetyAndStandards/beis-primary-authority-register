@@ -8,5 +8,6 @@ _core:
   default_config_hash: gGZMu7U6oySKVnO_1_du5-YHc6tZu15ayfizWpr39w4
 id: par_data_organisation.summary
 label: Summary
+description: ''
 targetEntityType: par_data_organisation
 cache: true

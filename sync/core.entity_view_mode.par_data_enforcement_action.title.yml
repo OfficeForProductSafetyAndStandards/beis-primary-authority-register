@@ -8,5 +8,6 @@ _core:
   default_config_hash: 7pU4UiPcSfGvXNOL_PU7puEycalIKXCkTiFPdalA1CA
 id: par_data_enforcement_action.title
 label: Title
+description: ''
 targetEntityType: par_data_enforcement_action
 cache: true

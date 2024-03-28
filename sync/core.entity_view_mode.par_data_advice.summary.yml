@@ -8,5 +8,6 @@ _core:
   default_config_hash: QyECKG-KVxAUP8Ejal7UxpI5dv7qd7IUv8Cjg_oUL-8
 id: par_data_advice.summary
 label: Summary
+description: ''
 targetEntityType: par_data_advice
 cache: true

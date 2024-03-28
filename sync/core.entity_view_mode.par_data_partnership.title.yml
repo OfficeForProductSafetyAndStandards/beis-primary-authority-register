@@ -8,5 +8,6 @@ _core:
   default_config_hash: u7LdxIP3EFKg0xiWiqvDgqSSA7YiKHPOXYufRpTsvgc
 id: par_data_partnership.title
 label: Title
+description: ''
 targetEntityType: par_data_partnership
 cache: true
