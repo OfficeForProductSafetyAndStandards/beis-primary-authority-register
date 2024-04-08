@@ -21,7 +21,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'Primary Authority Register | Your authorities'
+      title: 'Your authorities'
       fields:
         id:
           id: id
