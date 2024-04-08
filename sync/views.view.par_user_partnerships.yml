@@ -1064,6 +1064,7 @@ display:
           plugin_id: standard
           required: false
       css_class: par-user-partnership-list
+      use_ajax: true
       header: {  }
       footer:
         par_flow_link:

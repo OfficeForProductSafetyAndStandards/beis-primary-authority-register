@@ -2001,6 +2001,7 @@ display:
           contextual_filters_or: false
       relationships: {  }
       css_class: par-advanced-partnership-search-list
+      use_ajax: true
       header:
         par_flow_link:
           id: par_flow_link
