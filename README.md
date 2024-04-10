@@ -2,7 +2,7 @@
 
 # Primary Authority Register
 
-[![Build Status](https://travis-ci.org/UKGovernmentBEIS/beis-primary-authority-register.svg?branch=master)](https://travis-ci.org/UKGovernmentBEIS/beis-primary-authority-register)
+The Primary Authority Register is the product responsible for storing and managing information about all the partnerships within the Primary Authority scheme.
 
 ## Web Application
 
