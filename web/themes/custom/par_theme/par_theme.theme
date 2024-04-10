@@ -28,7 +28,7 @@ function par_theme_preprocess_html(array &$variables) {
   $name = (string) $variables['head_title']['name'] ?? '';
 
   // Remove the duplicate site name from the title.
-  $title_fragments = array_filter($title_fragments, function($value) use ($name) {
+  $title_fragments = array_filter($title_fragments, function ($value) use ($name) {
     return $value !== $name;
   });
 
