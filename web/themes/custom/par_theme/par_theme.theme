@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Functions to support theming in the PAR theme.
+ */
+
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
 
