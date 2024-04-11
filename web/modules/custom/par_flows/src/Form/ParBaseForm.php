@@ -111,16 +111,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $this->urlGenerator = $url_generator;
 
     $this->setCurrentUser();
-
-    // @TODO Move this to middleware to stop it being loaded when this controller
-    // is constructed outside a request for a route this controller resolves.
-    try {
-      $this->getFlowNegotiator()->getFlow();
-
-      $this->loadData();
-    } catch (ParFlowException $e) {
-
-    }
   }
 
   /**
