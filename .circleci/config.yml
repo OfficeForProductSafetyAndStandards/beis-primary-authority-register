@@ -7,7 +7,7 @@ orbs:
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v5.1.1
+      - image: beispar/web:v5.2.2
         environment:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
