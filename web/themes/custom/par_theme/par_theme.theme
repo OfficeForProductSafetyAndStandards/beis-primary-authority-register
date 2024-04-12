@@ -60,12 +60,12 @@ function par_theme_preprocess_fieldset(array &$variables) {
   // Get the form element.
   $element = &$variables['element'];
 
-  // Count the child elements, some radio and checkbox elements display
+  // Count the child elements, some radio and checkbox elements display.
   // inline if there are 2 or fewer options.
   $variables['child_count'] = isset($element['#options']) ?
     count($variables['element']['#options']) : 0;
 
-  // Allow the title tag to be selected, by default this is only a <span>
+  // Allow the title tag to be selected, by default this is only a <span>.
   if (!empty($element['#title_tag'])) {
     $variables['legend']['title_tag'] = $element['#title_tag'];
   }
