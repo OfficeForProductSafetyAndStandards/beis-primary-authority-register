@@ -3,10 +3,8 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\TypedData\DataDefinition;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_forms\ParFormBuilder;
-use Drupal\par_forms\ParFormPluginBase;
 
 /**
  * Address form plugin.
@@ -67,7 +65,6 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
       '#weight' => 10,
     ];
 
-
     $form['primary_authority_notes'] = [
       '#type' => 'textarea',
       '#weight' => 11,
@@ -76,7 +73,7 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
       '#states' => [
         'visible' => [
           ':input[name="' . $this->getTargetName($this->getElementKey('primary_authority_status', $index)) . '"]' => ['value' => ParDataEnforcementAction::BLOCKED],
-        ]
+        ],
       ],
     ];
     $form['referral_notes'] = [
@@ -87,7 +84,7 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
       '#states' => [
         'visible' => [
           ':input[name="' . $this->getTargetName($this->getElementKey('primary_authority_status', $index)) . '"]' => ['value' => ParDataEnforcementAction::REFERRED],
-        ]
+        ],
       ],
     ];
 
@@ -124,4 +121,5 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

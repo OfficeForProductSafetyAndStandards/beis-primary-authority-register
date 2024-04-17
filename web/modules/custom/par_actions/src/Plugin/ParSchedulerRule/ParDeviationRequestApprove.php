@@ -20,6 +20,9 @@ use Drupal\par_actions\ParSchedulerRuleBase;
  */
 class ParDeviationRequestApprove extends ParSchedulerRuleBase {
 
+  /**
+   *
+   */
   public function query() {
     $query = parent::query();
 
@@ -27,4 +30,5 @@ class ParDeviationRequestApprove extends ParSchedulerRuleBase {
 
     return $query;
   }
+
 }

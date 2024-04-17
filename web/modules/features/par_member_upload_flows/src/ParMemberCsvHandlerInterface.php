@@ -2,10 +2,7 @@
 
 namespace Drupal\par_member_upload_flows;
 
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\file\FileInterface;
-use Drupal\file_entity\FileEntityInterface;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 
 /**
@@ -14,9 +11,9 @@ use Drupal\par_data\Entity\ParDataPartnership;
 interface ParMemberCsvHandlerInterface {
 
   /**
-   * Process a CSV file
+   * Process a CSV file.
    *
-   * @param FileInterface $file
+   * @param \Drupal\file\FileInterface $file
    * @param array $rows
    *   An array to add processed rows to.
    *
@@ -28,7 +25,7 @@ interface ParMemberCsvHandlerInterface {
   /**
    * Save data to a CSV file.
    *
-   * @param ParDataPartnership $par_data_partnership
+   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The partnership to generate a name for.
    * @param array $rows
    *   An array to add processed rows to.
@@ -65,28 +62,29 @@ interface ParMemberCsvHandlerInterface {
   /**
    * Validates a given CSV row.
    *
-   * @return ParCsvViolation[]|NULL
+   * @return ParCsvViolation[]|null
    */
   public function validate(array $rows);
-//
-//  /**
-//   * Process the CSV.
-//   *
-//   * @return bool
-//   */
-//  public function process();
-//
-//  /**
-//   * Cleanup tasks required before the batch completes.
-//   *
-//   * @return bool
-//   */
-//  public function cleanup();
-//
-//  /**
-//   * Completion tasks once all data has been imported.
-//   *
-//   * @return bool
-//   */
-//  public function complete();
+
+  //
+  //  /**
+  //   * Process the CSV.
+  //   *
+  //   * @return bool
+  //   */
+  //  public function process();
+  //
+  //  /**
+  //   * Cleanup tasks required before the batch completes.
+  //   *
+  //   * @return bool
+  //   */
+  //  public function cleanup();
+  //
+  //  /**
+  //   * Completion tasks once all data has been imported.
+  //   *
+  //   * @return bool
+  //   */
+  //  public function complete();
 }

@@ -20,6 +20,9 @@ use Drupal\par_data\Entity\ParDataLegalEntity;
  */
 class ParLegalEntityUpdate extends ParSchedulerRuleBase {
 
+  /**
+   *
+   */
   public function query() {
     $query = parent::query();
 
@@ -31,4 +34,5 @@ class ParLegalEntityUpdate extends ParSchedulerRuleBase {
 
     return $query;
   }
+
 }

@@ -8,7 +8,6 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
-use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -53,7 +52,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     //   route: example.route_name_2
     //   form_id: example_form_id
     //   form_data:
-    //     upload: form_id_where_person_was_added
+    //     upload: form_id_where_person_was_added.
     $cid = $this->getFlowNegotiator()->getFormKey('contact_form');
     $conditions = [
       'name' => [
@@ -81,7 +80,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     $person_view_builder = $this->getParDataManager()->getViewBuilder('par_data_person');
 
     $people_options = [];
-    foreach($people as $person) {
+    foreach ($people as $person) {
       $person_view = $person_view_builder->view($person, 'detailed');
 
       $people_options[$person->id()] = $this->renderMarkupField($person_view)['#markup'];
@@ -140,7 +139,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
       //   route: example.route_name_2
       //   form_id: example_form_id
       //   form_data:
-      //     upload: form_id_where_person_was_added
+      //     upload: form_id_where_person_was_added.
       $cid = $this->getFlowNegotiator()->getFormKey('contact_form');
       $par_data_person = ParDataPerson::create([
         'type' => 'person',
@@ -150,7 +149,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
         'work_phone' => $this->getFlowDataHandler()->getTempDataValue('work_phone', $cid),
         'mobile_phone' => $this->getFlowDataHandler()->getTempDataValue('mobile_phone', $cid),
         'email' => $this->getFlowDataHandler()->getTempDataValue('email', $cid),
-        'communication_notes' => $this->getFlowDataHandler()->getTempDataValue('notes', $cid)
+        'communication_notes' => $this->getFlowDataHandler()->getTempDataValue('notes', $cid),
       ]);
 
       // Save the email preference.
@@ -207,7 +206,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
     if ($par_data_person && $par_data_partnership->save() &&
         $par_data_member_entity->save()) {
-        $this->getFlowDataHandler()->deleteStore();
+      $this->getFlowDataHandler()->deleteStore();
 
       // Inject PAR Person we just created into the next step.
       $this->getFlowDataHandler()->setParameter('par_data_person', $par_data_person->id());

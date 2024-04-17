@@ -3,17 +3,9 @@
 namespace Drupal\par_transfer_partnerships_flows\Form;
 
 use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
-use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
 
 /**
  * The form for reviewing any changes before they are made.
@@ -36,12 +28,12 @@ class ParReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership[] $partnerships */
-    /** @var ParDataAuthority $old_authority */
-    /** @var ParDataAuthority $new_authority */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership[] $partnerships */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority $old_authority */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority $new_authority */
 
     // Get all the contacts for each of the partnerships.
     $primary_authority_contacts = [];
@@ -84,7 +76,7 @@ class ParReviewForm extends ParBaseForm {
         '#tag' => 'p',
         '#value' => $this->t("The partnerships will be transferred from @old to @new",
             ['@old' => $old_authority->label(), '@new' => $new_authority->label()]
-          ),
+        ),
       ],
     ];
 
@@ -172,8 +164,8 @@ class ParReviewForm extends ParBaseForm {
       '#type' => 'html_tag',
       '#tag' => 'p',
       '#value' => $pending_enquiry_count > 0 ?
-        $this->t("All other notices of enforcement action and deviation requests that have been approved, along with all inspection plan feedback and all other enquiries will remain with the existing authority and will not be transferred.") :
-        $this->t("All notices of enforcement action, deviation requests, inspection plan feedback and all other enquiries will remain with the existing authority and will not be transferred."),
+      $this->t("All other notices of enforcement action and deviation requests that have been approved, along with all inspection plan feedback and all other enquiries will remain with the existing authority and will not be transferred.") :
+      $this->t("All notices of enforcement action, deviation requests, inspection plan feedback and all other enquiries will remain with the existing authority and will not be transferred."),
     ];
 
     // Display the date of change.
@@ -209,6 +201,9 @@ class ParReviewForm extends ParBaseForm {
     return parent::buildForm($form, $form_state);
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     // Get the old authority.
     $old_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');
@@ -244,12 +239,12 @@ class ParReviewForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership[] $partnerships */
-    /** @var ParDataAuthority $old_authority */
-    /** @var ParDataAuthority $new_authority */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership[] $partnerships */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority $old_authority */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority $new_authority */
 
     // Ensure that the transfer has been confirmed.
     if (!$form_state->getValue('confirmation')) {
@@ -263,7 +258,7 @@ class ParReviewForm extends ParBaseForm {
       $old_functions = array_values($old_authority->get('field_regulatory_function')->getValue());
       $new_functions = array_values($new_authority->get('field_regulatory_function')->getValue());
 
-      // Sort the array elements
+      // Sort the array elements.
       sort($old_functions);
       sort($new_functions);
 
@@ -291,13 +286,13 @@ class ParReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership[] $partnerships */
-    /** @var ParDataAuthority $old_authority */
-    /** @var ParDataAuthority $new_authority */
-    /** @var DrupalDateTime $transfer_date */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership[] $partnerships */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority $old_authority */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority $new_authority */
+    /** @var \Drupal\Core\Datetime\DrupalDateTime $transfer_date */
 
     // Transfer the partnership.
     foreach ($partnerships as $partnership) {

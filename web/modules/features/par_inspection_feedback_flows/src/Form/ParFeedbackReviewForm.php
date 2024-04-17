@@ -5,12 +5,10 @@ namespace Drupal\par_inspection_feedback_flows\Form;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
-use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataInspectionFeedback;
-use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_flows\ParDisplayTrait;
+use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_inspection_feedback_flows\ParFlowAccessTrait;
 
 /**
@@ -21,17 +19,22 @@ class ParFeedbackReviewForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = "Review submission";
 
+  /**
+   * Load the data for this.
+   */
   public function loadData() {
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataInspectionFeedback $par_data_inspection_feedback */
-    /** @var FileInterface[] $document */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataInspectionFeedback $par_data_inspection_feedback */
+    /** @var \Drupal\file\Entity\FileInterface[] $document */
 
     if ($par_data_inspection_feedback->hasField('request_date')) {
       $this->getFlowDataHandler()->setFormPermValue("request_date", $par_data_inspection_feedback->request_date->view('full'));
@@ -47,6 +50,9 @@ class ParFeedbackReviewForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -62,7 +68,7 @@ class ParFeedbackReviewForm extends ParBaseForm {
     $par_data_inspection_feedback = ParDataInspectionFeedback::create([
       'notes' => $this->getFlowDataHandler()->getTempDataValue('notes', $deviation_request_cid),
       'field_enforcing_authority' => $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', NULL, $enforcing_authority_cid),
-      'field_person' =>  $this->getFlowDataHandler()->getDefaultValues('enforcement_officer_id', NULL, $enforcement_officer_cid),
+      'field_person' => $this->getFlowDataHandler()->getDefaultValues('enforcement_officer_id', NULL, $enforcement_officer_cid),
       'field_inspection_plan' => $this->getFlowDataHandler()->getDefaultValues('inspection_plan_id', NULL, $inspection_plan_cid),
       'field_partnership' => $par_data_partnership->id(),
       'request_date' => $request_date->format('Y-m-d'),
@@ -89,12 +95,12 @@ class ParFeedbackReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataInspectionFeedback $par_data_inspection_feedback */
-    /** @var FileInterface[] $document */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataInspectionFeedback $par_data_inspection_feedback */
+    /** @var \Drupal\file\Entity\FileInterface[] $document */
 
     $par_data_inspection_feedback->set('document', $document);
 
@@ -110,4 +116,5 @@ class ParFeedbackReviewForm extends ParBaseForm {
         ->error($message, $replacements);
     }
   }
+
 }

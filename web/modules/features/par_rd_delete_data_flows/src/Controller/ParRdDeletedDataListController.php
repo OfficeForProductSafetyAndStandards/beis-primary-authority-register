@@ -9,13 +9,11 @@ use Drupal\Core\Link;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
-use Drupal\par_rd_help_desk_flows\ParFlowAccessTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -106,7 +104,7 @@ class ParRdDeletedDataListController extends ControllerBase {
           // Split the items up into chunks:
           $chunks = array_chunk($deleted_data, $this->numberPerPage);
 
-          // TODO: Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
+          // @todo Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
           // Please confirm that `$entity_type` is an instance of `\Drupal\Core\Entity\EntityType`. Only the method name and not the class name was checked for this replacement, so this may be a false positive.
           $build['entity_types'][$entity_type->id()] = [
             '#type' => 'fieldset',
@@ -126,7 +124,7 @@ class ParRdDeletedDataListController extends ControllerBase {
                 'preset' => $this->config('pagerer.settings')
                   ->get('core_override_preset'),
               ],
-            ]
+            ],
           ];
 
           // Add the items for our current page to the fieldset.
@@ -136,7 +134,7 @@ class ParRdDeletedDataListController extends ControllerBase {
               $route_params['entity_id'] = $entity->id();
               $link_options = [
                 'absolute' => TRUE,
-                'attributes' => ['class' => 'flow-link']
+                'attributes' => ['class' => 'flow-link'],
               ];
 
               $url = Url::fromRoute('par_rd_delete_data_flows.delete_data_confirm', $route_params, $link_options);
@@ -155,7 +153,7 @@ class ParRdDeletedDataListController extends ControllerBase {
           }
         }
         else {
-          // TODO: Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
+          // @todo Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
           // Please confirm that `$entity_type` is an instance of `\Drupal\Core\Entity\EntityType`. Only the method name and not the class name was checked for this replacement, so this may be a false positive.
           $build['entity_types'][$entity_type->id()] = [
             '#type' => 'fieldset',
@@ -175,7 +173,7 @@ class ParRdDeletedDataListController extends ControllerBase {
               $route_params['entity_id'] = $entity->id();
               $link_options = [
                 'absolute' => TRUE,
-                'attributes' => ['class' => 'flow-link']
+                'attributes' => ['class' => 'flow-link'],
               ];
 
               $url = Url::fromRoute('par_rd_delete_data_flows.delete_data_confirm', $route_params, $link_options);
@@ -197,133 +195,132 @@ class ParRdDeletedDataListController extends ControllerBase {
       }
     }
 
-//    // Manage partnerships.
-//    $build['partnerships'] = [
-//      '#type' => 'fieldset',
-//      '#title' => $this->t('Partnerships'),
-//      '#attributes' => ['class' => 'govuk-form-group'],
-//      '#collapsible' => FALSE,
-//      '#collapsed' => FALSE,
-//      '#cache' => ['contexts' => ['user.par_memberships:authority']]
-//    ];
-//
-//    $manage_partnerships = $this->getLinkByRoute('view.advanced_partnership_search.advanced_search');
-//    $manage_link = $manage_partnerships->setText('Manage partnerships')->toString();
-//    $build['partnerships']['manage'] = [
-//      '#type' => 'markup',
-//      '#markup' => "<p>{$manage_link}</p>",
-//    ];
-//
-//    // Partnerships search link.
-//    $search_partnerships = $this->getLinkByRoute('view.partnership_search.search_partnerships');
-//    $search_link = $search_partnerships->setText('Search for a partnership')->toString();
-//    $build['partnerships']['link'] = [
-//      '#type' => 'markup',
-//      '#markup' => "<p>{$search_link}</p>",
-//      '#pre' => "<p>Search for active partnerships to check advice and raise notice of enforcement action.</p>",
-//    ];
-//
-//
-//    // Manage authorities and organisations.
-//    $build['institutions'] = [
-//      '#type' => 'fieldset',
-//      '#title' => $this->t('Authorities & Organisations'),
-//      '#attributes' => ['class' => 'govuk-form-group'],
-//      '#collapsible' => FALSE,
-//      '#collapsed' => FALSE,
-//    ];
-//    $manage_authorities_link = $this->getLinkByRoute('view.helpdesk_authorities.authority_page');
-//    if ($manage_authorities_link) {
-//      $build['institutions']['authorities'] = [
-//        '#type' => 'markup',
-//        '#markup' => "<p>{$manage_authorities_link->setText('Manage authorities')->toString()}</p>",
-//      ];
-//    }
-//    $manage_organisations_link = $this->getLinkByRoute('view.helpdesk_organisations.par_helpdesk_organisation_page');
-//    if ($manage_organisations_link) {
-//      $build['institutions']['organisations'] = [
-//        '#type' => 'markup',
-//        '#markup' => "<p>{$manage_organisations_link->setText('Manage organisations')->toString()}</p>",
-//      ];
-//    }
-//
-//
-//
-//    // Manage users.
-//    $build['people'] = [
-//      '#type' => 'fieldset',
-//      '#title' => $this->t('People'),
-//      '#attributes' => ['class' => 'govuk-form-group'],
-//      '#collapsible' => FALSE,
-//      '#collapsed' => FALSE,
-//      '#cache' => ['contexts' => ['user.par_memberships:authority']]
-//    ];
-//
-////    $manage_users = $this->getLinkByRoute('view.user_admin_people.helpdesk_users');
-////    $manage_users_link = $manage_users->setText('Manage user accounts')->toString();
-////    $build['people']['users'] = [
-////      '#type' => 'markup',
-////      '#markup' => "<p>{$manage_users_link}</p>",
-////    ];
-//
-//    $manage_users = $this->getLinkByRoute('view.par_people.people');
-//    $manage_users_link = $manage_users->setText('Manage people')->toString();
-//    $build['people']['people'] = [
-//      '#type' => 'markup',
-//      '#markup' => "<p>{$manage_users_link}</p>",
-//    ];
-//
-//    // Manage enforcements.
-//    $build['enforcements'] = [
-//      '#type' => 'fieldset',
-//      '#title' => $this->t('Enforcements'),
-//      '#attributes' => ['class' => 'govuk-form-group'],
-//      '#collapsible' => FALSE,
-//      '#collapsed' => FALSE,
-//      '#cache' => ['contexts' => ['user.par_memberships:authority']]
-//    ];
-//    $link = $this->getLinkByRoute('view.par_user_enforcements.enforcement_notices_page')
-//      ->setText('Manage enforcement notices')
-//      ->toString();
-//    $build['enforcements'][] = [
-//      '#type' => 'markup',
-//      '#markup' => "<p>{$link}</p>",
-//    ];
-//
-//    $deviation_requests_link = $this->getLinkByRoute('view.par_user_deviation_requests.deviation_requests_page')
-//      ->setText('Manage deviation requests')
-//      ->toString();
-//    $build['enforcements'][] = [
-//      '#type' => 'markup',
-//      '#markup' => "<p>{$deviation_requests_link}</p>",
-//    ];
-//
-//    $inspection_feedback_link = $this->getLinkByRoute('view.par_user_inspection_feedback.inspection_feedback_page')
-//      ->setText('Manage inspection feedback')
-//      ->toString();
-//    $build['enforcements'][] = [
-//      '#type' => 'markup',
-//      '#markup' => "<p>{$inspection_feedback_link}</p>",
-//    ];
-//
-//    // Manage enquiries.
-//    $build['enquiries'] = [
-//      '#type' => 'fieldset',
-//      '#title' => $this->t('Enquiries'),
-//      '#attributes' => ['class' => 'govuk-form-group'],
-//      '#collapsible' => FALSE,
-//      '#collapsed' => FALSE,
-//      '#cache' => ['contexts' => ['user.par_memberships:authority']]
-//    ];
-//
-//    $general_enquiries_link = $this->getLinkByRoute('view.par_user_general_enquiries.general_enquiries_page')
-//      ->setText('Manage general enquiries')
-//      ->toString();
-//    $build['enquiries'][] = [
-//      '#type' => 'markup',
-//      '#markup' => "<p>{$general_enquiries_link}</p>",
-//    ];
-
+    // // Manage partnerships.
+    //    $build['partnerships'] = [
+    //      '#type' => 'fieldset',
+    //      '#title' => $this->t('Partnerships'),
+    //      '#attributes' => ['class' => 'govuk-form-group'],
+    //      '#collapsible' => FALSE,
+    //      '#collapsed' => FALSE,
+    //      '#cache' => ['contexts' => ['user.par_memberships:authority']]
+    //    ];
+    //
+    //    $manage_partnerships = $this->getLinkByRoute('view.advanced_partnership_search.advanced_search');
+    //    $manage_link = $manage_partnerships->setText('Manage partnerships')->toString();
+    //    $build['partnerships']['manage'] = [
+    //      '#type' => 'markup',
+    //      '#markup' => "<p>{$manage_link}</p>",
+    //    ];
+    //
+    //    // Partnerships search link.
+    //    $search_partnerships = $this->getLinkByRoute('view.partnership_search.search_partnerships');
+    //    $search_link = $search_partnerships->setText('Search for a partnership')->toString();
+    //    $build['partnerships']['link'] = [
+    //      '#type' => 'markup',
+    //      '#markup' => "<p>{$search_link}</p>",
+    //      '#pre' => "<p>Search for active partnerships to check advice and raise notice of enforcement action.</p>",
+    //    ];
+    //
+    //
+    //    // Manage authorities and organisations.
+    //    $build['institutions'] = [
+    //      '#type' => 'fieldset',
+    //      '#title' => $this->t('Authorities & Organisations'),
+    //      '#attributes' => ['class' => 'govuk-form-group'],
+    //      '#collapsible' => FALSE,
+    //      '#collapsed' => FALSE,
+    //    ];
+    //    $manage_authorities_link = $this->getLinkByRoute('view.helpdesk_authorities.authority_page');
+    //    if ($manage_authorities_link) {
+    //      $build['institutions']['authorities'] = [
+    //        '#type' => 'markup',
+    //        '#markup' => "<p>{$manage_authorities_link->setText('Manage authorities')->toString()}</p>",
+    //      ];
+    //    }
+    //    $manage_organisations_link = $this->getLinkByRoute('view.helpdesk_organisations.par_helpdesk_organisation_page');
+    //    if ($manage_organisations_link) {
+    //      $build['institutions']['organisations'] = [
+    //        '#type' => 'markup',
+    //        '#markup' => "<p>{$manage_organisations_link->setText('Manage organisations')->toString()}</p>",
+    //      ];
+    //    }
+    //
+    //
+    //
+    //    // Manage users.
+    //    $build['people'] = [
+    //      '#type' => 'fieldset',
+    //      '#title' => $this->t('People'),
+    //      '#attributes' => ['class' => 'govuk-form-group'],
+    //      '#collapsible' => FALSE,
+    //      '#collapsed' => FALSE,
+    //      '#cache' => ['contexts' => ['user.par_memberships:authority']]
+    //    ];
+    //
+    // $manage_users = $this->getLinkByRoute('view.user_admin_people.helpdesk_users');
+    // $manage_users_link = $manage_users->setText('Manage user accounts')->toString();
+    // $build['people']['users'] = [
+    // '#type' => 'markup',
+    // '#markup' => "<p>{$manage_users_link}</p>",
+    // ];
+    //
+    //    $manage_users = $this->getLinkByRoute('view.par_people.people');
+    //    $manage_users_link = $manage_users->setText('Manage people')->toString();
+    //    $build['people']['people'] = [
+    //      '#type' => 'markup',
+    //      '#markup' => "<p>{$manage_users_link}</p>",
+    //    ];
+    //
+    //    // Manage enforcements.
+    //    $build['enforcements'] = [
+    //      '#type' => 'fieldset',
+    //      '#title' => $this->t('Enforcements'),
+    //      '#attributes' => ['class' => 'govuk-form-group'],
+    //      '#collapsible' => FALSE,
+    //      '#collapsed' => FALSE,
+    //      '#cache' => ['contexts' => ['user.par_memberships:authority']]
+    //    ];
+    //    $link = $this->getLinkByRoute('view.par_user_enforcements.enforcement_notices_page')
+    //      ->setText('Manage enforcement notices')
+    //      ->toString();
+    //    $build['enforcements'][] = [
+    //      '#type' => 'markup',
+    //      '#markup' => "<p>{$link}</p>",
+    //    ];
+    //
+    //    $deviation_requests_link = $this->getLinkByRoute('view.par_user_deviation_requests.deviation_requests_page')
+    //      ->setText('Manage deviation requests')
+    //      ->toString();
+    //    $build['enforcements'][] = [
+    //      '#type' => 'markup',
+    //      '#markup' => "<p>{$deviation_requests_link}</p>",
+    //    ];
+    //
+    //    $inspection_feedback_link = $this->getLinkByRoute('view.par_user_inspection_feedback.inspection_feedback_page')
+    //      ->setText('Manage inspection feedback')
+    //      ->toString();
+    //    $build['enforcements'][] = [
+    //      '#type' => 'markup',
+    //      '#markup' => "<p>{$inspection_feedback_link}</p>",
+    //    ];
+    //
+    //    // Manage enquiries.
+    //    $build['enquiries'] = [
+    //      '#type' => 'fieldset',
+    //      '#title' => $this->t('Enquiries'),
+    //      '#attributes' => ['class' => 'govuk-form-group'],
+    //      '#collapsible' => FALSE,
+    //      '#collapsed' => FALSE,
+    //      '#cache' => ['contexts' => ['user.par_memberships:authority']]
+    //    ];
+    //
+    //    $general_enquiries_link = $this->getLinkByRoute('view.par_user_general_enquiries.general_enquiries_page')
+    //      ->setText('Manage general enquiries')
+    //      ->toString();
+    //    $build['enquiries'][] = [
+    //      '#type' => 'markup',
+    //      '#markup' => "<p>{$general_enquiries_link}</p>",
+    //    ];
     return $build;
   }
 

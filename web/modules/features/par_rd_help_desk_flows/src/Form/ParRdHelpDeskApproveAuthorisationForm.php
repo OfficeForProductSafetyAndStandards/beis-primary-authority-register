@@ -2,13 +2,12 @@
 
 namespace Drupal\par_rd_help_desk_flows\Form;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\par_data\ParDataException;
-use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\Core\Access\AccessResult;
+use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_flows\ParFlowException;
 use Symfony\Component\Routing\Route;
 
@@ -34,9 +33,10 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL): AccessResult {
     try {
-      // Get a new flow negotiator that points the the route being checked for access.
+      // New flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    }
+    catch (ParFlowException $e) {
 
     }
 
@@ -125,4 +125,5 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
 
     parent::validateForm($form, $form_state);
   }
+
 }

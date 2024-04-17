@@ -2,13 +2,9 @@
 
 namespace Drupal\par_partnership_flows\Controller;
 
-
-use Drupal\Core\Link;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataAdvice;
-use Drupal\par_data\ParDataException;
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Controller\ParBaseController;
-use Drupal\par_flows\Controller\ParBaseInterface;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
@@ -43,7 +39,7 @@ class ParPartnershipFlowsAdvicePageController extends ParBaseController {
         '#type' => 'html_tag',
         '#tag' => 'h2',
         '#value' => 'Archived advice',
-        '#attributes' => ['class' => 'govuk-heading-m']
+        '#attributes' => ['class' => 'govuk-heading-m'],
       ];
     }
 
@@ -59,4 +55,5 @@ class ParPartnershipFlowsAdvicePageController extends ParBaseController {
 
     return parent::build($build);
   }
+
 }

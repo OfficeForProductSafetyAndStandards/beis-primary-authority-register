@@ -3,8 +3,10 @@
 namespace Drupal\par_actions\Plugin\Factory;
 
 use Drupal\Core\Datetime\DrupalDateTime;
-use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
 
+/**
+ *
+ */
 class BusinessDaysCalculator {
 
   const MONDAY    = 1;
@@ -16,9 +18,12 @@ class BusinessDaysCalculator {
   const SUNDAY    = 7;
 
   /**
-   * @param DrupalDateTime   $startDate       Date to start calculations from
-   * @param DrupalDateTime[] $holidays        Array of holidays, holidays are not considered business days.
-   * @param int[]      $nonBusinessDays Array of days of the week which are not business days.
+   * @param \Drupal\Core\Datetime\DrupalDateTime $startDate
+   *   Date to start calculations from.
+   * @param \Drupal\Core\Datetime\DrupalDateTime[] $holidays
+   *   Array of holidays, holidays are not considered business days.
+   * @param int[] $nonBusinessDays
+   *   Array of days of the week which are not business days.
    */
   public function __construct(DrupalDateTime $startDate, array $holidays, array $nonBusinessDays) {
     $this->date = $startDate;
@@ -26,6 +31,9 @@ class BusinessDaysCalculator {
     $this->nonBusinessDays = $nonBusinessDays;
   }
 
+  /**
+   *
+   */
   public function addBusinessDays($howManyDays) {
     $i = 0;
     while ($i < $howManyDays) {
@@ -36,6 +44,9 @@ class BusinessDaysCalculator {
     }
   }
 
+  /**
+   *
+   */
   public function removeBusinessDays($howManyDays) {
     $i = 0;
     while ($i < $howManyDays) {
@@ -46,20 +57,30 @@ class BusinessDaysCalculator {
     }
   }
 
+  /**
+   *
+   */
   public function getDate() {
     return $this->date;
   }
 
+  /**
+   *
+   */
   private function isBusinessDay(DrupalDateTime $date) {
-    if (in_array((int)$date->format('N'), $this->nonBusinessDays)) {
-      return false; //Date is a nonBusinessDay.
+    if (in_array((int) $date->format('N'), $this->nonBusinessDays)) {
+      // Date is a nonBusinessDay.
+      return FALSE;
     }
     foreach ($this->holidays as $day) {
       $day = new DrupalDateTime($day, 'UTC');
       if ($date->format('Y-m-d') == $day->format('Y-m-d')) {
-        return false; //Date is a holiday.
+        // Date is a holiday.
+        return FALSE;
       }
     }
-    return true; //Date is a business day.
+    // Date is a business day.
+    return TRUE;
   }
+
 }

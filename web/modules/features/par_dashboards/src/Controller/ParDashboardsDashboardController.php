@@ -9,14 +9,9 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\message\Entity\Message;
-use Drupal\message\MessageInterface;
-use Drupal\par_dashboards\ParFlowAccessTrait;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParDisplayTrait;
-use Drupal\par_flows\ParFlowException;
-use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\par_flows\ParRedirectTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
@@ -34,27 +29,27 @@ class ParDashboardsDashboardController extends ControllerBase {
   /**
    * The response cache kill switch.
    *
-   * @var KillSwitch $killSwitch
+   * @var \Drupal\Core\PageCache\ResponsePolicy\KillSwitch
    */
   protected KillSwitch $killSwitch;
 
   /**
    * The flow negotiator.
    *
-   * @var ConfigEntityStorageInterface $flowStorage
+   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
    */
   protected ConfigEntityStorageInterface $flowStorage;
 
   /**
    * Constructs a Par Form.
    *
-   * @param ConfigEntityStorageInterface $flow_storage
+   * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flow_storage
    *   The flow entity storage handler.
-   * @param ParDataManagerInterface $par_data_manager
+   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
    *   The current user object.
-   * @param AccountInterface $current_user
+   * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user object.
-   * @param KillSwitch $kill_switch
+   * @param \Drupal\Core\PageCache\ResponsePolicy\KillSwitch $kill_switch
    *   The page cache kill switch.
    */
   public function __construct(ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user, KillSwitch $kill_switch) {
@@ -92,7 +87,7 @@ class ParDashboardsDashboardController extends ControllerBase {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    *
-   * @return AccessResult
+   * @return \Drupal\Core\Access\AccessResult
    */
   public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
     // Disallow anyone with the permission to view the helpdesk dashboard.
@@ -137,9 +132,9 @@ class ParDashboardsDashboardController extends ControllerBase {
       $build['partnerships'] = [
         '#lazy_builder' => [
           'par_dashboards.components:managePartnershipComponent',
-          [FALSE]
+          [FALSE],
         ],
-        '#create_placeholder' => TRUE
+        '#create_placeholder' => TRUE,
       ];
     }
 
@@ -148,9 +143,9 @@ class ParDashboardsDashboardController extends ControllerBase {
       $build['partnerships_find'] = [
         '#lazy_builder' => [
           'par_dashboards.components:searchPartnershipComponent',
-          []
+          [],
         ],
-        '#create_placeholder' => TRUE
+        '#create_placeholder' => TRUE,
       ];
     }
 
@@ -166,35 +161,34 @@ class ParDashboardsDashboardController extends ControllerBase {
       $build['messages'] = [
         '#lazy_builder' => [
           'par_dashboards.components:messagesComponent',
-          [FALSE]
+          [FALSE],
         ],
-        '#create_placeholder' => TRUE
+        '#create_placeholder' => TRUE,
       ];
     }
 
-//    // @TODO Added as part of PAR-1439, to discover if users need the ability to
-//    // update their own information.
-//
-//    // Authority & organisation management links.
-//    if ($this->getCurrentUser()->hasPermission('update partnership authority details')
-//      || $this->getCurrentUser()->hasPermission('update partnership organisation details')) {
-//      $build['institutions'] = [
-//        '#lazy_builder' => [
-//          'par_dashboards.components:manageInstitutionsComponent',
-//          []
-//        ],
-//        '#create_placeholder' => TRUE
-//      ];
-//    }
-
-    // User management
+    // // @todo Added as part of PAR-1439, to discover if users need the ability to
+    //    // update their own information.
+    //
+    //    // Authority & organisation management links.
+    //    if ($this->getCurrentUser()->hasPermission('update partnership authority details')
+    //      || $this->getCurrentUser()->hasPermission('update partnership organisation details')) {
+    //      $build['institutions'] = [
+    //        '#lazy_builder' => [
+    //          'par_dashboards.components:manageInstitutionsComponent',
+    //          []
+    //        ],
+    //        '#create_placeholder' => TRUE
+    //      ];
+    //    }
+    // User management.
     if ($this->getCurrentUser()->hasPermission('manage people')) {
       $build['people'] = [
         '#lazy_builder' => [
           'par_dashboards.components:manageUsersComponent',
-          []
+          [],
         ],
-        '#create_placeholder' => TRUE
+        '#create_placeholder' => TRUE,
       ];
     }
 
@@ -203,9 +197,9 @@ class ParDashboardsDashboardController extends ControllerBase {
       $build['user'] = [
         '#lazy_builder' => [
           'par_dashboards.components:manageProfileComponent',
-          []
+          [],
         ],
-        '#create_placeholder' => TRUE
+        '#create_placeholder' => TRUE,
       ];
     }
 

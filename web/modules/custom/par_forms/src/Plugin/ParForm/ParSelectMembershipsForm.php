@@ -2,18 +2,14 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\NestedArray;
-use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_forms\Controller\ParAutocompleteController;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 use Drupal\par_roles\ParRoleManagerInterface;
-use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Drupal\Component\Utility\Html;
 
 /**
  * Form for selecting memberships available to the current user.
@@ -57,7 +53,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
       $user_organisations = iterator_to_array($this->getParRoleManager()->getInstitutions($account, 'par_data_organisation'));
     }
     // Otherwise try to get the current memberships from the person.
-    else if (!$account && $par_data_person instanceof ParDataPersonInterface) {
+    elseif (!$account && $par_data_person instanceof ParDataPersonInterface) {
       $user_authorities = iterator_to_array($par_data_person->getInstitutions('par_data_authority'));
       $user_organisations = iterator_to_array($par_data_person->getInstitutions('par_data_organisation'));
     }
@@ -84,7 +80,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
     $authority_options = $this->getParDataManager()->getEntitiesAsOptions($authorities);
     $organisation_options = $this->getParDataManager()->getEntitiesAsOptions($organisations);
 
-    // Set authority information,
+    // Set authority information,.
     $this->getFlowDataHandler()->setFormPermValue('par_data_authority_id', $authority_ids);
     $this->getFlowDataHandler()->setFormPermValue('par_data_authority_original', $authority_ids);
     $this->getFlowDataHandler()->setFormPermValue('authority_options', $authority_options);
@@ -112,9 +108,9 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
       'par_data_authority' => $authority_options,
       'par_data_organisation' => $organisation_options,
     ];
-    $i=0;
+    $i = 0;
     foreach ($elements as $target_type => $options) {
-      $element_weight = $i*10;
+      $element_weight = $i * 10;
       $element_key = "{$target_type}_id";
       $default_value = $this->getDefaultValuesByKey($element_key, $index, []);
 
@@ -146,7 +142,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
         '#title' => $element_title ?? '',
         '#title_tag' => 'h2',
         '#attributes' => ['class' => ['govuk-form-group']],
-        '#weight' => $element_weight
+        '#weight' => $element_weight,
       ];
 
       // Identify the type of selection interface that should be used.
@@ -170,7 +166,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
           '#autocomplete_query_parameters' => [
             'target_type' => $target_type,
           ],
-          '#multiple' => $multiple ? TRUE : FALSE
+          '#multiple' => $multiple ? TRUE : FALSE,
         ];
 
       }
@@ -277,4 +273,5 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

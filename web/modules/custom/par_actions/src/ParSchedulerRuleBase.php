@@ -3,13 +3,9 @@
 namespace Drupal\par_actions;
 
 use Drupal\Component\Plugin\PluginBase;
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Core\Queue\QueueFactory;
-use Drupal\Core\Queue\QueueInterface;
 use Drupal\par_actions\Plugin\Factory\BusinessDaysCalculator;
 use Drupal\par_data\Entity\ParDataEntity;
-use Drupal\par_data\ParDataManagerInterface;
 use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
 
 /**
@@ -81,7 +77,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
     $frequency = $this->pluginDefinition['frequency'] ?? self::DEFAULT_FREQUENCY;
 
     // Only a limited subset of the relative time formats are allowed for simplicity.
-    // e.g. 3 weeks, 2 months, 1 year
+    // e.g. 3 weeks, 2 months, 1 year.
     return !empty($frequency) && preg_match("/^[0-9]*[\s]+(day|week|month|year)[s]*$/", $frequency) === 1 ?
       "+" . $this->pluginDefinition['frequency'] :
       self::DEFAULT_FREQUENCY;
@@ -115,7 +111,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
   /**
    * Simple getter to inject the PAR Data Manager service.
    *
-   * @return ParDataManagerInterface
+   * @return \Drupal\par_data\ParDataManagerInterface
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
@@ -134,7 +130,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    * Get the action manager service.
    *
    * @return \Drupal\Core\Cache\CacheBackendInterface
-   *  A cache bin instance.
+   *   A cache bin instance.
    */
   public function getCacheBin() {
     return \Drupal::cache('par_actions');
@@ -206,7 +202,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
       // The only supported operator at the moment is "<=" meaning that
       // the modified expiry (calculator) date provided by the 'time' property
       // must be greater than or equal to the entity's date property.
-      // e.g. $entity->date <= $calculator->date
+      // e.g. $entity->date <= $calculator->date.
       $operator = '<=';
       $query->condition($this->getProperty(), $scheduled_time->format('Y-m-d'), $operator);
     }
@@ -270,9 +266,9 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    * {@inheritdoc}
    */
   public function buildQueue() {
-    /** @var QueueFactory $queue_factory */
+    /** @var \Drupal\Core\Queue\QueueFactory $queue_factory */
     $queue_factory = \Drupal::service('queue');
-    /** @var QueueInterface $queue */
+    /** @var \Drupal\Core\Queue\QueueInterface $queue */
     $queue = $queue_factory->get('par_scheduled_actions');
 
     $entities = $this->getItems();

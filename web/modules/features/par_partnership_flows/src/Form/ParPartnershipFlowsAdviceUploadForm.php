@@ -3,15 +3,13 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
-
-use Drupal\file\Entity\File;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
-use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
+use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
  * The advice document upload form.
@@ -59,8 +57,10 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
 
     // PAR-1158 add the required external link for advice templates.
     $par_text = t('For advice templates, go to: ');
-    $options = ['attributes' => ['target' => '_blank'],
-               'fragment' => 'templates'];
+    $options = [
+      'attributes' => ['target' => '_blank'],
+      'fragment' => 'templates',
+    ];
     $url_obj = Url::fromUri('https://www.gov.uk/government/collections/primary-authority-documents', $options);
 
     $link = Link::fromTextAndUrl(t('Primary Authority templates'), $url_obj)->toString();
@@ -95,9 +95,9 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("files"),
       '#upload_validators' => [
         'file_validate_extensions' => [
-          0 => $file_extensions
-        ]
-      ]
+          0 => $file_extensions,
+        ],
+      ],
     ];
 
     return parent::buildForm($form, $form_state);

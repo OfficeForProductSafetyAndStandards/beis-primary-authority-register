@@ -1,21 +1,16 @@
 <?php
-/**
- * @file
- * Contains \Drupal\test_api\Controller\TestAPIController.
- */
 
 namespace Drupal\par_actions\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Queue\QueueWorkerManagerInterface;
 use Drupal\Core\State\StateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Controller routines for test_api routes.
@@ -79,7 +74,7 @@ class ParQueueCheckController extends ControllerBase {
    * Identify which queues still have items in them.
    */
   public function checkQueues(Request $request) {
-    // Disable page cache
+    // Disable page cache.
     $this->killSwitch->trigger();
 
     $timestamp = $this->state->get('system.cron_last');
@@ -95,7 +90,7 @@ class ParQueueCheckController extends ControllerBase {
 
     foreach ($this->queueWorker->getDefinitions() as $name => $queue_definition) {
       // Let's only list the PAR queues.
-      if (substr($name, 0, 4 ) !== "par_") {
+      if (substr($name, 0, 4) !== "par_") {
         continue;
       }
 
@@ -108,4 +103,5 @@ class ParQueueCheckController extends ControllerBase {
 
     return new JsonResponse($response);
   }
+
 }

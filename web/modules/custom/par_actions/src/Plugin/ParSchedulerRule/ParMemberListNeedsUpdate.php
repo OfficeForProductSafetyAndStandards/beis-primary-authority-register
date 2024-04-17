@@ -21,6 +21,9 @@ use Drupal\par_data\Entity\ParDataPartnership;
  */
 class ParMemberListNeedsUpdate extends ParSchedulerRuleBase {
 
+  /**
+   *
+   */
   public function query() {
     $entity_type_definition = \Drupal::entityTypeManager()->getDefinition($this->getEntity());
     $query = parent::query();
@@ -65,4 +68,5 @@ class ParMemberListNeedsUpdate extends ParSchedulerRuleBase {
 
     return array_diff_key($coordinated_partnerships, $up_to_date);
   }
+
 }

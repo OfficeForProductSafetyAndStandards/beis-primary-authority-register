@@ -14,7 +14,9 @@ class ParEnquiryConfirmationForm extends ParBaseController {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Enquiry sent';
 
@@ -31,4 +33,5 @@ class ParEnquiryConfirmationForm extends ParBaseController {
     return parent::build($build);
 
   }
+
 }

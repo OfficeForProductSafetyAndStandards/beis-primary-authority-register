@@ -2,9 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataOrganisationType;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -69,7 +67,7 @@ class EntityParOrganisationTest extends ParDataTestBase {
       'coordinator_type' => $this->randomString(256),
       'trading_name' => [
         $this->randomString(501),
-      ]
+      ],
     ];
 
     $entity = ParDataOrganisation::create($values + $this->getOrganisationValues());
@@ -84,4 +82,5 @@ class EntityParOrganisationTest extends ParDataTestBase {
     $entity = ParDataOrganisation::create($this->getOrganisationValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'PAR Organisation entity saved correctly.');
   }
+
 }

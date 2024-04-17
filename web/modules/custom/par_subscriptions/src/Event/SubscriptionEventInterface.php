@@ -2,8 +2,6 @@
 
 namespace Drupal\par_subscriptions\Event;
 
-use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
-
 /**
  * Interface for the Subscription Event.
  */
@@ -26,12 +24,13 @@ interface SubscriptionEventInterface {
   /**
    * Get the subscription entity.
    *
-   * @return ParSubscriptionInterface
+   * @return \Drupal\par_subscriptions\Entity\ParSubscriptionInterface
    */
   public function getSubscription();
 
   /**
-   * @return ParSubscriptionInterface
+   * @return \Drupal\par_subscriptions\Entity\ParSubscriptionInterface
    */
   public function getEntity();
+
 }

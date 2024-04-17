@@ -3,7 +3,6 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\Url;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
@@ -71,7 +70,7 @@ class ParGdprForm extends ParFormPluginBase {
         'notify you of any updates to partnerships you have control of',
         'allow other users to enquire about any of these partnerships',
         'record ownership of any enforcements you raise against another partnership',
-        'notify you about any changes to these enforcements'
+        'notify you about any changes to these enforcements',
       ],
       '#attributes' => ['class' => ['govuk-list', 'govuk-form-group', 'govuk-list--bullet']],
     ];
@@ -99,4 +98,5 @@ class ParGdprForm extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

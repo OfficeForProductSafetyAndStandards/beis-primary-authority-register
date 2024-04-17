@@ -4,8 +4,12 @@ namespace Drupal\par_subscriptions\EventSubscriber;
 
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
+use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ *
+ */
 class UserDefaultSubscriber implements EventSubscriberInterface {
 
   /**
@@ -13,17 +17,20 @@ class UserDefaultSubscriber implements EventSubscriberInterface {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  public static function getSubscribedEvents() {
     $events[EntityEvents::insert('user')][] = ['onEvent', 10];
     return $events;
   }
 
+  /**
+   *
+   */
   public function getSubscriptionManager() {
     return \Drupal::service('par_subscriptions.manager');
   }
 
   /**
-   * @param EntityEvent $event
+   * @param \Drupal\Core\Entity\EntityEvent $event
    */
   public function onEvent(EntityEvent $event) {
     /** @var \Drupal\user\Entity\User $user */
@@ -37,9 +44,10 @@ class UserDefaultSubscriber implements EventSubscriberInterface {
         NULL;
 
       // Silently subscribe & verify the user.
-      if ($subscription instanceof \Drupal\par_subscriptions\Entity\ParSubscriptionInterface) {
+      if ($subscription instanceof ParSubscriptionInterface) {
         $subscription->verify();
       }
     }
   }
+
 }

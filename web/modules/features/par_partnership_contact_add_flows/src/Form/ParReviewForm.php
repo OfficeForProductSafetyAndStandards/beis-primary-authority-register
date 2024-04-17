@@ -2,27 +2,13 @@
 
 namespace Drupal\par_partnership_contact_add_flows\Form;
 
-use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
-use Drupal\invite\Entity\Invite;
-use Drupal\invite\InviteInterface;
-use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
-use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataMembershipInterface;
-use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
-use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
 use Drupal\par_forms\Plugin\ParForm\ParDedupePersonForm;
 use Drupal\par_partnership_contact_add_flows\ParFlowAccessTrait;
-use Drupal\user\Entity\User;
 
 /**
  * The form for the partnership details.
@@ -40,11 +26,11 @@ class ParReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function loadData() {
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataPerson $par_data_person */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
 
     $type = $this->getFlowDataHandler()->getParameter('type');
 
@@ -89,7 +75,7 @@ class ParReviewForm extends ParBaseForm {
         '#title' => 'Name',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('full_name', '(none)'),
-        ]
+        ],
       ],
     ];
 
@@ -101,7 +87,7 @@ class ParReviewForm extends ParBaseForm {
         '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('email', '(none)'),
-        ]
+        ],
       ],
       'work_phone' => [
         '#type' => 'fieldset',
@@ -109,7 +95,7 @@ class ParReviewForm extends ParBaseForm {
         '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('work_phone', '(none)'),
-        ]
+        ],
       ],
       'mobile_phone' => [
         '#type' => 'fieldset',
@@ -117,7 +103,7 @@ class ParReviewForm extends ParBaseForm {
         '#title' => 'Mobile phone',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('mobile_phone', '(none)'),
-        ]
+        ],
       ],
     ];
 
@@ -127,6 +113,9 @@ class ParReviewForm extends ParBaseForm {
     return parent::buildForm($form, $form_state);
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     // Get the cache IDs for the various forms that needs to be extracted from.
     $contact_details_cid = $this->getFlowNegotiator()->getFormKey('par_add_contact');
@@ -186,11 +175,11 @@ class ParReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataPerson $par_data_person */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
 
     $type = $this->getFlowDataHandler()->getParameter('type');
 

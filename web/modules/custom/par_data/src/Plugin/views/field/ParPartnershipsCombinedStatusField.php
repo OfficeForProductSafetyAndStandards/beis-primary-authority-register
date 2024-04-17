@@ -1,17 +1,11 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\par_data\Plugin\views\field\ParPartnershipsCombinedStatusField
- */
-
 namespace Drupal\par_data\Plugin\views\field;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
-
-use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Field handler to get the PAR Partnership Combined Status Fields.
@@ -22,7 +16,8 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class ParPartnershipsCombinedStatusField extends FieldPluginBase {
 
-  /*
+  /**
+   *
    * @{inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
@@ -64,30 +59,30 @@ class ParPartnershipsCombinedStatusField extends FieldPluginBase {
         'partnership_info_agreed_authority' => 'PA Partnership Info Agreed',
         'partnership_info_agreed_business' => 'Business Partnership Details Confirmed',
         'terms_authority_agreed' => 'PA Terms and Conditions',
-        'terms_organisation_agreed' => 'Business/Organisation Terms Agreed'
+        'terms_organisation_agreed' => 'Business/Organisation Terms Agreed',
       ],
-      '#default_value' => $this->options['status_fields']  ?: []
+      '#default_value' => $this->options['status_fields'] ?: [],
     ];
 
     $form['status_on_label'] = [
       '#title' => 'On Label',
       '#description' => 'Text to show when all fields return true',
       '#type' => 'textfield',
-      '#default_value' => $this->options['status_on_label'] ?: ''
+      '#default_value' => $this->options['status_on_label'] ?: '',
     ];
 
     $form['status_off_label'] = [
       '#title' => 'Off Label',
       '#description' => 'Text to show when not all fields are true',
       '#type' => 'textfield',
-      '#default_value' => $this->options['status_off_label'] ?: ''
+      '#default_value' => $this->options['status_off_label'] ?: '',
     ];
   }
 
   /**
    * @{inheritdoc}
    *
-   * @param ResultRow $values
+   * @param \Drupal\views\ResultRow $values
    *
    * @return string $documentation_completion
    */
@@ -112,4 +107,5 @@ class ParPartnershipsCombinedStatusField extends FieldPluginBase {
 
     }
   }
+
 }

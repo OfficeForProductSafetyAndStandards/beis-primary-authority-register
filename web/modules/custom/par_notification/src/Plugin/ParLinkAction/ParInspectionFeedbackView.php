@@ -6,7 +6,6 @@ use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_notification\ParLinkActionBase;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Send the user to view the inspection feedback.
@@ -48,4 +47,5 @@ class ParInspectionFeedbackView extends ParLinkActionBase {
 
     return NULL;
   }
+
 }

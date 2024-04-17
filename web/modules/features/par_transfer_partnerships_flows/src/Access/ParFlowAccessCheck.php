@@ -2,22 +2,20 @@
 
 namespace Drupal\par_transfer_partnerships_flows\Access;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Access\AccessResult;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataManagerInterface;
-use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
 
 /**
-* Checks access for displaying the transfer partnership pages.
-*/
+ * Checks access for displaying the transfer partnership pages.
+ */
 class ParFlowAccessCheck implements AccessInterface {
 
   /**
@@ -77,7 +75,8 @@ class ParFlowAccessCheck implements AccessInterface {
     try {
       // Get a new flow negotiator that points to the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    }
+    catch (ParFlowException $e) {
 
     }
 

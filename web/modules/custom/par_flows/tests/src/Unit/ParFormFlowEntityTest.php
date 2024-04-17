@@ -1,15 +1,9 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\par_flows\Unit\ParFlowEntityTest
- */
-
 namespace Drupal\Tests\par_flows\Unit;
 
-use Drupal\par_flows\ParFlowException;
-use Drupal\Tests\UnitTestCase;
 use Drupal\par_flows\Entity\ParFlow;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * Test the step lookup methods of the flow entity.
@@ -32,7 +26,7 @@ class ParFormFlowEntityTest extends UnitTestCase {
 
   /**
    * The simulated previous step route for any given test.
-  */
+   */
   protected string $previousRoute = 'par_test_forms.first';
 
   /**
@@ -41,7 +35,7 @@ class ParFormFlowEntityTest extends UnitTestCase {
   protected function setUp(): void {
     parent::setUp();
 
-    $values = array(
+    $values = [
       'id' => 'test',
       'title' => 'Test Form Flow',
       'description' => 'This is the test form flow, it is very similar to the example.',
@@ -74,7 +68,7 @@ class ParFormFlowEntityTest extends UnitTestCase {
           'route' => 'par_test_forms.confirmation',
         ],
       ],
-    );
+    ];
     $this->testFlow = $this->getMockBuilder('Drupal\par_flows\Entity\ParFlow')
       ->onlyMethods(['getCurrentRoute'])
       ->setConstructorArgs([$values, 'par_flow'])
@@ -89,6 +83,9 @@ class ParFormFlowEntityTest extends UnitTestCase {
     $this->assertEquals('test', $this->testFlow->id());
   }
 
+  /**
+   *
+   */
   public function getCurrentRoute(): string {
     return $this->currentRoute;
   }
@@ -163,6 +160,7 @@ class ParFormFlowEntityTest extends UnitTestCase {
     // Check the next step is correct.
     $this->assertEquals('par_test_forms.fourth', $next_url->getRouteName(), "The next route has been correctly identified given an operation.");
   }
+
   /**
    * @covers ::getStepByFormId
    */
@@ -225,7 +223,7 @@ class ParFormFlowEntityTest extends UnitTestCase {
   public function testGetFlowForms() {
     $form_ids = $this->testFlow->getFlowForms();
 
-    // Check the route and form_id
+    // Check the route and form_id.
     $this->assertEquals(4, count($form_ids), "All forms have been found.");
 
     $expected = [
@@ -236,4 +234,5 @@ class ParFormFlowEntityTest extends UnitTestCase {
     ];
     $this->assertEquals($expected, $form_ids, "The loaded forms are correct.");
   }
+
 }

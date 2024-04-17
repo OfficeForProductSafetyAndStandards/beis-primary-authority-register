@@ -3,13 +3,13 @@
 namespace Drupal\par_data\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Url;
 use Drupal\par_data\ParDataManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Url;
 
 /**
-* A controller managing par data admin pages.
-*/
+ * A controller managing par data admin pages.
+ */
 class ParDataController extends ControllerBase {
 
   /**
@@ -37,8 +37,8 @@ class ParDataController extends ControllerBase {
   }
 
   /**
-  * The main page for listing par entities.
-  */
+   * The main page for listing par entities.
+   */
   public function content() {
     $types = [];
 

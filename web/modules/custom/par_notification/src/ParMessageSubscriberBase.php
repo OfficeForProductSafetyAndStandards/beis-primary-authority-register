@@ -5,9 +5,7 @@ namespace Drupal\par_notification;
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\message\MessageInterface;
-use Drupal\par_data\Entity\ParDataMembershipInterface;
 use Drupal\par_data\ParDataManagerInterface;
-use Drupal\par_notification\ParMessageHandlerInterface;
 
 /**
  * Provides a base implementation for a Par Link Action plugin.
@@ -20,14 +18,14 @@ abstract class ParMessageSubscriberBase extends PluginBase implements ParMessage
   /**
    * The account object.
    *
-   * @var AccountInterface
+   * @var \Drupal\Core\Session\AccountInterface
    */
   protected AccountInterface $user;
 
   /**
    * The account object.
    *
-   * @var ParDataManagerInterface
+   * @var \Drupal\par_data\ParDataManagerInterface
    */
   protected ParDataManagerInterface $par_data_manager;
 
@@ -62,7 +60,7 @@ abstract class ParMessageSubscriberBase extends PluginBase implements ParMessage
   /**
    * Get the par message handler.
    *
-   * @return ParMessageHandlerInterface
+   * @return \Drupal\par_notification\ParMessageHandlerInterface
    */
   protected function getMessageHandler(): ParMessageHandlerInterface {
     return \Drupal::service('par_notification.message_handler');

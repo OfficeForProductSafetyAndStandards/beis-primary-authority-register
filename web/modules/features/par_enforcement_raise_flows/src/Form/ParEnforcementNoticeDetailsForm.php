@@ -4,10 +4,9 @@ namespace Drupal\par_enforcement_raise_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_enforcement_raise_flows\ParFlowAccessTrait;
+use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\user\Entity\User;
 
 /**
@@ -22,17 +21,20 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
    */
   protected $entityMapping = [
     ['summary', 'par_data_enforcement_notice', 'summary', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter a summary description for this notice of enforcement action.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter a summary description for this notice of enforcement action.',
+    ],
+    ],
   ];
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Enforcement details';
 
   /**
-   * Load the data for this form.
+   * Load the data for this.
    */
   public function loadData() {
     $cid = $this->getFlowNegotiator()->getFormKey('par_authority_selection');

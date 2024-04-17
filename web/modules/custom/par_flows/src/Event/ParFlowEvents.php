@@ -8,7 +8,6 @@ namespace Drupal\par_flows\Event;
  * It is best practice to define the unique names for events as constants on a class.
  * This provides a place for documentation of the events. As well as allowing the event dispatcher
  * to use the constants instead of hard coding a string.
- *
  */
 final class ParFlowEvents {
 
@@ -90,12 +89,15 @@ final class ParFlowEvents {
    */
   const FLOW_SUBMIT = 'par_flows.event_submit';
 
+  /**
+   *
+   */
   public static function getAlLEvents() {
     return [
       self::FLOW_CANCEL,
       self::FLOW_DONE,
       self::FLOW_BACK,
-      self::FLOW_SUBMIT
+      self::FLOW_SUBMIT,
     ];
   }
 
@@ -108,22 +110,22 @@ final class ParFlowEvents {
       case 'back':
         return ParFlowEvents::FLOW_BACK;
 
-        break;
+      break;
 
       case 'done':
         return ParFlowEvents::FLOW_DONE;
 
-        break;
+      break;
 
       case 'cancel':
         return ParFlowEvents::FLOW_CANCEL;
 
-        break;
+      break;
 
       default:
         return ParFlowEvents::FLOW_SUBMIT;
 
-        break;
+      break;
     }
   }
 

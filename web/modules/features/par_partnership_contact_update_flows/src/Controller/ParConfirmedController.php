@@ -3,7 +3,6 @@
 namespace Drupal\par_partnership_contact_update_flows\Controller;
 
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Controller\ParBaseController;
 
 /**

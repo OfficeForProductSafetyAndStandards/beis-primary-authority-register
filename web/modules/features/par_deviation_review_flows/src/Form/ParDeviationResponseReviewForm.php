@@ -2,15 +2,10 @@
 
 namespace Drupal\par_deviation_review_flows\Form;
 
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataDeviationRequest;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\ParDataException;
 use Drupal\par_deviation_review_flows\ParFlowAccessTrait;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
 
 /**
  * The confirmation for reviewing a deviation request.
@@ -20,15 +15,20 @@ class ParDeviationResponseReviewForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = "Review response";
 
+  /**
+   * Load the data for this.
+   */
   public function loadData() {
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataDeviationRequest $par_data_deviation_request */
+    /** @var \Drupal\par_data\Entity\ParDataDeviationRequest $par_data_deviation_request */
 
     if ($par_data_deviation_request && $par_data_partnership = $par_data_deviation_request->getPartnership(TRUE)) {
       $this->getFlowDataHandler()->setParameter('par_data_partnership', $par_data_partnership);
@@ -37,10 +37,13 @@ class ParDeviationResponseReviewForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+   * Implements createEntities().
+   */
   public function createEntities() {
     $par_data_deviation_request = $this->getFlowDataHandler()->getParameter('par_data_deviation_request');
 
-    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    // Get the cache IDs for the various forms that needs to be extracted from.
     $deviation_review_cid = $this->getFlowNegotiator()->getFormKey('par_deviation_request_respond');
 
     $status = $this->getFlowDataHandler()->getTempDataValue('primary_authority_status', $deviation_review_cid);
@@ -67,7 +70,7 @@ class ParDeviationResponseReviewForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    // @TODO Validate that any referred actions have a primary authority to refer to.
+    // @todo Validate that any referred actions have a primary authority to refer to.
   }
 
   /**
@@ -79,7 +82,7 @@ class ParDeviationResponseReviewForm extends ParBaseForm {
     // Set the correct values for the entities to be saved.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataDeviationRequest $par_data_deviation_request */
+    /** @var \Drupal\par_data\Entity\ParDataDeviationRequest $par_data_deviation_request */
 
     // Save the deviation request.
     if ($par_data_deviation_request->save()) {
@@ -93,4 +96,5 @@ class ParDeviationResponseReviewForm extends ParBaseForm {
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
     }
   }
+
 }

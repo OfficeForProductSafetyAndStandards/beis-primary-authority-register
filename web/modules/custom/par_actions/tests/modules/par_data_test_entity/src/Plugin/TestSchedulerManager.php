@@ -2,9 +2,9 @@
 
 namespace Drupal\par_data_test_entity\Plugin;
 
-use Drupal\Component\Plugin\PluginManagerBase;
 use Drupal\Component\Plugin\Discovery\StaticDiscovery;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
+use Drupal\Component\Plugin\PluginManagerBase;
 
 /**
  * Defines a plugin manager used by Plugin API unit tests.

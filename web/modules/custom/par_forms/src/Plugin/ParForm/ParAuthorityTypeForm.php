@@ -2,11 +2,10 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
- * Select an authority type
+ * Select an authority type.
  *
  * @ParForm(
  *   id = "authority_type",
@@ -20,8 +19,9 @@ class ParAuthorityTypeForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['authority_type', 'par_data_authority', 'authority_type', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must choose which type of authority is most relevant.'
-    ]],
+      'You must fill in the missing information.' => 'You must choose which type of authority is most relevant.',
+    ],
+    ],
   ];
 
   /**
@@ -30,7 +30,7 @@ class ParAuthorityTypeForm extends ParFormPluginBase {
   public function loadData(int $index = 1): void {
     $par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');
     if ($par_data_authority) {
-        $this->getFlowDataHandler()->setFormPermValue("authority_type", $par_data_authority->get('authority_type')->getString());
+      $this->getFlowDataHandler()->setFormPermValue("authority_type", $par_data_authority->get('authority_type')->getString());
     }
 
     $authority_bundle = $this->getParDataManager()->getParBundleEntity('par_data_authority');
@@ -40,7 +40,6 @@ class ParAuthorityTypeForm extends ParFormPluginBase {
       $this->getFlowDataHandler()
         ->setFormPermValue("authority_type_options", (array) $types);
     }
-
 
     parent::loadData($index);
   }
@@ -60,4 +59,5 @@ class ParAuthorityTypeForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

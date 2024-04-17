@@ -2,14 +2,13 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\file\Entity\File;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\file\Entity\File;
-use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
+use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
  * The inspection plan document form.
@@ -24,13 +23,14 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
    */
   protected $entityMapping = [
     ['title', 'par_data_inspection_plan', 'title', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must provide a title for this inspection plan document.'
-    ]],
+      'This value should not be null.' => 'You must provide a title for this inspection plan document.',
+    ],
+    ],
     ['summary', 'par_data_inspection_plan', 'summary', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must provide a summary for this inspection plan document.'
-    ]],
+      'This value should not be null.' => 'You must provide a summary for this inspection plan document.',
+    ],
+    ],
   ];
-
 
   /**
    * {@inheritdoc}

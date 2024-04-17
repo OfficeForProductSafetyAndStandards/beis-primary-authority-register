@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ *
+ */
 class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
 
   /**
@@ -52,7 +55,8 @@ class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
   /**
    * Redirect requests for the user page to the relevant dashboard.
    *
-   * @param RequestEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\RequestEvent $event
+   *
    * @return void
    */
   public function redirectProfilePage(RequestEvent $event) {
@@ -79,7 +83,7 @@ class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
       if ($this->account->hasPermission('access helpdesk')) {
         $dashboard = 'par_help_desks_flows.helpdesk_dashboard';
       }
-      else if ($this->account->hasPermission('access par dashboard')) {
+      elseif ($this->account->hasPermission('access par dashboard')) {
         $dashboard = 'par_dashboards.dashboard';
       }
       if (isset($dashboard)) {

@@ -125,8 +125,8 @@ class ParDataSicCode extends ParDataEntity {
     // SIC Code.
     $fields['sic_code'] = BaseFieldDefinition::create('string')
       ->setLabel(t('SIC Code'))
-//      @TODO Make this field unique when migration to real SICs is complete.
-//      ->addConstraint('UniqueField')
+    // @todo Make this field unique when migration to real SICs is complete.
+    //   ->addConstraint('UniqueField')
       ->setDescription(t('The SIC code identification number.'))
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)

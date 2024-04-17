@@ -12,7 +12,7 @@ interface ParNotificationEventInterface {
   /**
    * Get the message that is being sent.
    *
-   * @return MessageInterface
+   * @return \Drupal\message\MessageInterface
    *   The message.
    */
   public function getMessage(): MessageInterface;
@@ -34,7 +34,7 @@ interface ParNotificationEventInterface {
    * @param array $output
    *   The message output must have the following view mode keys:
    *    - mail_subject
-   *    - mail_body
+   *    - mail_body.
    */
   public function setOutput(array $output);
 

@@ -2,8 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\Xss;
 use Drupal\par_forms\ParFormPluginBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -17,6 +15,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class ParSubscriptionPreferencesForm extends ParFormPluginBase {
 
+  /**
+   *
+   */
   public function getSubscriptionManager() {
     return \Drupal::service('par_subscriptions.manager');
   }
@@ -67,4 +68,5 @@ class ParSubscriptionPreferencesForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

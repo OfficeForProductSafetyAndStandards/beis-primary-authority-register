@@ -2,9 +2,9 @@
 
 namespace Drupal\par_data\Entity;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\par_data\ParDataException;
 
 /**
@@ -141,13 +141,13 @@ class ParDataInspectionPlan extends ParDataEntity {
   /**
    * Revoke if this entity is revokable and is not new.
    *
-   *  @param boolean $save
+   * @param bool $save
    *   Whether to save the entity after revoking.
    *
-   *  @param String $reason
+   * @param string $reason
    *   The reason this entity is being revoked.
    *
-   * @return boolean
+   * @return bool
    *   True if the entity was revoked, false for all other results.
    */
   public function revoke($save = TRUE, $reason = '') {
@@ -207,7 +207,6 @@ class ParDataInspectionPlan extends ParDataEntity {
     $revoke_time_stamp_value = $revoke_time_stamp->format("Y-m-d");
     $this->set('valid_date', ['value' => $this->get('valid_date')->value, 'end_value' => $revoke_time_stamp_value]);
   }
-
 
   /**
    * {@inheritdoc}

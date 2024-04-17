@@ -14,7 +14,9 @@ class ParEnforcementConfirmController extends ParBaseController {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Enforcement notice sent';
 
@@ -32,4 +34,5 @@ class ParEnforcementConfirmController extends ParBaseController {
     return parent::build($build);
 
   }
+
 }

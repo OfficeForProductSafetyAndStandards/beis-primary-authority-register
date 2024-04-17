@@ -2,11 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataAuthorityType;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -77,4 +73,5 @@ class EntityParAuthorityTest extends ParDataTestBase {
     $entity = ParDataAuthority::create($this->getAuthorityValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'PAR Authority entity saved correctly.');
   }
+
 }

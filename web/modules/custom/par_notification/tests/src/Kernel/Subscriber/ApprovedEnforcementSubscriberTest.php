@@ -13,6 +13,9 @@ class ApprovedEnforcementSubscriberTest extends ParNotificationTestBase {
 
   protected $entity;
 
+  /**
+   *
+   */
   public function getEntity() {
     if (!$this->entity) {
       $this->entity = $this->createEnforcement();
@@ -90,4 +93,5 @@ class ApprovedEnforcementSubscriberTest extends ParNotificationTestBase {
     // There should be one primary contact (the enforcement officer) and 2 contacts who have opted in to receive all notifications.
     $this->assertTrue((count($recipients) === 3), t("There are %recipients recipients for approved enforcement subscriber test.", ['%recipients' => count($recipients)]));
   }
+
 }

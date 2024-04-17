@@ -2,9 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPartnershipType;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -72,4 +70,5 @@ class EntityParPartnershipTest extends ParDataTestBase {
     $entity = ParDataPartnership::create($this->getCoordinatedPartnershipValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'PAR Partnership entity saved correctly.');
   }
+
 }

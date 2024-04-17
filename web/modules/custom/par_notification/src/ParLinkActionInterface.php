@@ -3,13 +3,13 @@
 namespace Drupal\par_notification;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\message\MessageInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Drupal\Core\Link;
 
 /**
- * Defines an interface for the Par Link Action plugins
+ * Defines an interface for the Par Link Action plugins.
  *
  * @see plugin_api
  */

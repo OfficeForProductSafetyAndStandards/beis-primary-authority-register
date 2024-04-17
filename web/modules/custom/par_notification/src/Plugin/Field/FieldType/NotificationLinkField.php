@@ -27,15 +27,15 @@ class NotificationLinkField extends FieldItemList implements FieldItemListInterf
   /**
    * Get the PAR Link Manager service.
    *
-   * @return ParLinkManagerInterface
+   * @return \Drupal\par_notification\ParLinkManagerInterface
    */
   public function getLinkManager(): ParLinkManagerInterface {
     return \Drupal::service('plugin.manager.par_link_manager');
   }
 
   /**
-  * {@inheritdoc}
-  */
+   * {@inheritdoc}
+   */
   protected function computeValue() {
     $message = $this->getEntity();
 

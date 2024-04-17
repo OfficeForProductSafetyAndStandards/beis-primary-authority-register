@@ -7,6 +7,9 @@ use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParEventSubscriberBase;
 
+/**
+ *
+ */
 class PartnershipNominatedSubscriber extends ParEventSubscriberBase {
 
   /**
@@ -21,7 +24,7 @@ class PartnershipNominatedSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  public static function getSubscribedEvents() {
     // Nomination event should fire after a partnership has been nominated.
     $events[ParDataEvent::statusChange('par_data_partnership', 'confirmed_rd')][] = ['onEvent', -101];
 
@@ -29,12 +32,12 @@ class PartnershipNominatedSubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * @param ParDataEventInterface $event
+   * @param \Drupal\par_data\Event\ParDataEventInterface $event
    */
   public function onEvent(ParDataEventInterface $event) {
     $this->setEvent($event);
 
-    /** @var ParDataPartnership $entity */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $entity */
     $entity = $event->getEntity();
 
     // Only send messages for active partnerships.
@@ -48,4 +51,5 @@ class PartnershipNominatedSubscriber extends ParEventSubscriberBase {
       $this->sendMessage($arguments);
     }
   }
+
 }

@@ -167,12 +167,18 @@ class ParDataAuthority extends ParDataEntity implements ParDataMembershipInterfa
     }
   }
 
+  /**
+   *
+   */
   public function getAuthorityType() {
     $authority_bundle = $this->getParDataManager()->getParBundleEntity('par_data_authority');
 
     return $authority_bundle->getAllowedFieldlabel('authority_type', $this->get('authority_type')->getString());
   }
 
+  /**
+   *
+   */
   public function getName() {
     return $this->get('authority_name')->getString();
   }

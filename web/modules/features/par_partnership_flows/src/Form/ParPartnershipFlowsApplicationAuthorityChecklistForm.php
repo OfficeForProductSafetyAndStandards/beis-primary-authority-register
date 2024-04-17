@@ -3,7 +3,6 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Markup;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
@@ -206,17 +205,16 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
       }
 
       // Section two validation.
-
       // Check if an empty value is provided.
       if ($form_state->getValue('business_regulated_by_one_authority') === FALSE) {
-        $this->setElementError(['section_two','business_regulated_by_one_authority'], $form_state, 'Please confirm the organisation is regulated by only one local authority.');
+        $this->setElementError(['section_two', 'business_regulated_by_one_authority'], $form_state, 'Please confirm the organisation is regulated by only one local authority.');
       }
 
       // Warn that business needs to be informed their local authority still regulates.
       if ($form_state->getValue('business_regulated_by_one_authority') == 1 &&
         $form_state->getValue('is_local_authority') == 0 &&
         $form_state->getValue('business_informed_local_authority_still_regulates') == 0) {
-        $this->setElementError(['section_two','business_informed_local_authority_still_regulates'], $form_state, 'The organisation needs to be informed about local authority.');
+        $this->setElementError(['section_two', 'business_informed_local_authority_still_regulates'], $form_state, 'The organisation needs to be informed about local authority.');
       }
     }
     elseif ($applicationType == 'coordinated') {

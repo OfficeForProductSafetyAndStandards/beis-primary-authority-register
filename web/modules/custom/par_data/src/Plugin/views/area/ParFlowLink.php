@@ -4,14 +4,10 @@ namespace Drupal\par_data\Plugin\views\area;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\EventSubscriber\AjaxResponseSubscriber;
-use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
-use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\views\Plugin\views\area\AreaPluginBase;
-use Drupal\views\Plugin\views\display\PathPluginBase;
 
 /**
  * Views area par_flow_link handler.
@@ -64,28 +60,28 @@ class ParFlowLink extends AreaPluginBase {
       '#title' => 'Title',
       '#description' => 'Select the title for this link.',
       '#type' => 'textfield',
-      '#default_value' => $this->options['title']  ?: '',
+      '#default_value' => $this->options['title'] ?: '',
     ];
 
     $form['assistive_text'] = [
       '#title' => 'Assistive text',
       '#description' => 'Enter some descriptive text for screenreaders (this will be hidden).',
       '#type' => 'textfield',
-      '#default_value' => $this->options['assistive_text']  ?: '',
+      '#default_value' => $this->options['assistive_text'] ?: '',
     ];
 
     $form['link'] = [
       '#title' => 'Link',
       '#description' => 'Select the link that you wish to display. You can use substitutions in the format `/route/%/pattern`, but they must be available in the current route.',
       '#type' => 'textfield',
-      '#default_value' => $this->options['link']  ?: '',
+      '#default_value' => $this->options['link'] ?: '',
     ];
 
     $form['class'] = [
       '#title' => 'Link classes',
       '#description' => 'Enter any additional classes to be added to the link, separated by a comma.',
       '#type' => 'textfield',
-      '#default_value' => $this->options['class']  ?: '',
+      '#default_value' => $this->options['class'] ?: '',
     ];
   }
 
@@ -118,7 +114,7 @@ class ParFlowLink extends AreaPluginBase {
     }
     $options = ['attributes' => $attributes];
 
-    // @TODO There is an issue here when rendering the flow link in an
+    // @todo There is an issue here when rendering the flow link in an
     // admin view which doesn't have any route parameters.
     //
     // Error: Call to a member function isCoordinated() on null in Drupal\par_member_add_flows\Form\ParOrganisationNameForm->accessCallback()
@@ -130,7 +126,6 @@ class ParFlowLink extends AreaPluginBase {
     //
     // Perhaps rather than passing all current route parameters to the Url::fromRoute
     // we could configure which parameters should be passed.
-
     // Get the route name from the path match.
     $route_matches = $this->getRouteProvier()->getRoutesByPattern($path);
     if ($route_matches->count() > 0) {

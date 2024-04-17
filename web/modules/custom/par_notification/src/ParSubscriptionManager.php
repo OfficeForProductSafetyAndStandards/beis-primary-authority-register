@@ -12,11 +12,8 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\message\MessageInterface;
 use Drupal\message\MessageTemplateInterface;
-use Drupal\par_notification\ParRecipient;
-use Drupal\user\Entity\Role;
 use Drupal\user\RoleInterface;
 use Drupal\user\RoleStorageInterface;
-use Drupal\user\UserInterface;
 
 /**
  * Provides a link management service for notifications.
@@ -43,7 +40,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
   /**
    * The email validator service.
    *
-   * @var EmailValidatorInterface
+   * @var \Drupal\Component\Utility\EmailValidatorInterface
    */
   protected EmailValidatorInterface $emailValidator;
 
@@ -64,8 +61,8 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
    *   Cache backend instance to use.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler to invoke the alter hook with.
-   * @param EmailValidatorInterface $email_validator
-   *  The email validator service.
+   * @param \Drupal\Component\Utility\EmailValidatorInterface $email_validator
+   *   The email validator service.
    * @param \Drupal\Core\Session\AccountInterface $user
    *   The current user.
    */
@@ -89,7 +86,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
   /**
    * Get the ParDataHandler service.
    *
-   * @return RoleStorageInterface
+   * @return \Drupal\user\Entity\RoleStorageInterface
    *   The role storage service.
    */
   private function getRoleStorage(): RoleStorageInterface {
@@ -99,7 +96,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
   /**
    * Get the current user.
    *
-   * @return AccountInterface
+   * @return \Drupal\Core\Session\AccountInterface
    *   The current user.
    */
   public function getCurrentUser(): AccountInterface {
@@ -109,7 +106,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
   /**
    * Get the email validator service.
    *
-   * @return EmailValidatorInterface
+   * @return \Drupal\Component\Utility\EmailValidatorInterface
    *   The email validator.
    */
   public function getEmailValidator(): EmailValidatorInterface {
@@ -134,7 +131,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
       $definition['rules'] = [
         'rule-based',
         'user-preference-based',
-        'membership-based'
+        'membership-based',
       ];
     }
   }
@@ -191,7 +188,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
     foreach ($subscribers as $definition) {
       $subscriber = $this->createInstance($definition['id'], $definition);
       try {
-        /** @var ParRecipient[] $plugin_recipients */
+        /** @var \Drupal\par_notification\ParRecipient[] $plugin_recipients */
         $plugin_recipients = $subscriber->getRecipients($message);
       }
       catch (ParNotificationException $e) {
@@ -218,10 +215,13 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
     return array_unique($recipients, SORT_STRING);
   }
 
+  /**
+   *
+   */
   public function getRecipientEmails(MessageInterface $message): array {
     $recipients = $this->getRecipients($message);
 
-    return array_values(array_map(function($recipient) {
+    return array_values(array_map(function ($recipient) {
       return $recipient->getEmail();
     }, $recipients));
   }
@@ -258,10 +258,10 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
     $role_storage = \Drupal::entityTypeManager()->getStorage('user_role');
     $permission = "receive {$template->id()} notification";
 
-    /** @var Role[] $roles */
+    /** @var \Drupal\user\Entity\Role[] $roles */
     $roles = $role_storage->loadMultiple();
 
-    $roles = array_filter($roles, function($role) use ($permission) {
+    $roles = array_filter($roles, function ($role) use ($permission) {
       return ($role->hasPermission($permission));
     });
 
@@ -279,12 +279,12 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
    * This excludes any roles that the user does not have, or that do not grant
    * permission to receive this message type.
    *
-   * @param AccountInterface $account
+   * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account to cross-check with.
-   * @param MessageTemplateInterface $message
+   * @param \Drupal\message\MessageTemplateInterface $message
    *   The message type to get the roles for.
    *
-   * @return RoleInterface[]
+   * @return \Drupal\user\Entity\RoleInterface[]
    *   An array of user roles.
    */
   public function getUserNotificationRoles(AccountInterface $account, MessageTemplateInterface $message): array {
@@ -309,21 +309,21 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
    *
    * Always excludes the anonymous role.
    *
-   * @param RoleInterface[] $roles
+   * @param \Drupal\user\Entity\RoleInterface[] $roles
    *   An array of roles to check.
    * @param bool $include
    *   Whether to include only the subscribed entity roles (default)
    *   Or exclude them, and return all other roles.
    *
-   * @param RoleInterface[]
+   * @param \Drupal\user\Entity\RoleInterface[]
    *   The roles that apply to the subscribed entities.
    */
   public function filterSubscribedEntityRoles(array $roles, bool $include = TRUE): ?array {
     $permission = 'bypass par_data membership';
-    return array_filter($roles, function($role) use ($permission, $include) {
+    return array_filter($roles, function ($role) use ($permission, $include) {
       return $role->id() !== RoleInterface::ANONYMOUS_ID &&
-        ( $include && !$role->hasPermission($permission) ||
-          !$include && $role->hasPermission($permission) );
+        ($include && !$role->hasPermission($permission) ||
+          !$include && $role->hasPermission($permission));
     });
   }
 

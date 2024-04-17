@@ -3,39 +3,32 @@
 namespace Drupal\par_flows\Form;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
+use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
-use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
-use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\par_data\ParDataManagerInterface;
-use Drupal\par_flows\Event\ParFlowEvent;
-use Drupal\par_flows\Event\ParFlowEvents;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParControllerTrait;
+use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParFlowDataHandler;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
+use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_forms\ParEntityValidationMappingTrait;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Entity\EntityConstraintViolationListInterface;
-use Drupal\par_flows\ParRedirectTrait;
-use Drupal\par_flows\ParDisplayTrait;
-use Drupal\Core\Access\AccessResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * The base form controller for all PAR forms.
@@ -62,7 +55,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * The access result.
    *
-   * @var ?AccessResult $accessResult
+   * @var ?AccessResult
    */
   protected ?AccessResult $accessResult = NULL;
 
@@ -80,18 +73,18 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *   ],
    * ]
    *
-   * @var array $formItems
+   * @var array
    */
   protected array $formItems = [];
 
   /**
    * The key values to be ignored from form submissions.
    *
-   * @var ?array $ignoreValues
+   * @var ?array
    */
   protected ?array $ignoreValues;
 
-  /*
+  /**
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
    *
    * @param \Drupal\par_flows\ParFlowNegotiatorInterface $negotiation
@@ -112,13 +105,14 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
     $this->setCurrentUser();
 
-    // @TODO Move this to middleware to stop it being loaded when this controller
+    // @todo Move this to middleware to stop it being loaded when this controller
     // is constructed outside a request for a route this controller resolves.
     try {
       $this->getFlowNegotiator()->getFlow();
 
       $this->loadData();
-    } catch (ParFlowException $e) {
+    }
+    catch (ParFlowException $e) {
 
     }
   }
@@ -176,16 +170,16 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   }
 
   /**
-   *  Default access callback.
+   * Default access callback.
    *
-   * @param Route $route
+   * @param \Symfony\Component\Routing\Route $route
    *   The route.
-   * @param RouteMatchInterface $route_match
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match object to be checked.
-   * @param AccountInterface $account
+   * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    *
-   * @return AccessResult
+   * @return \Drupal\Core\Access\AccessResult
    *   The access result.
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account): AccessResult {
@@ -254,7 +248,6 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // The 'done' is a primary and final action, meaning no other actions should be performed.
     // The 'upload', 'save' and 'next are all primary actions with varying subtleties.
     // The 'back' and 'cancel' are secondary actions and can complement a primary action.
-
     // The done action completes the flow without performing any changes,
     // removing any remaining persistent data in the process.
     if ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
@@ -334,7 +327,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#validate' => ['::validateCancelForm'],
           '#limit_validation_errors' => [],
           '#attributes' => [
-            'class' => ['cta-cancel', 'govuk-button', 'govuk-button--secondary']
+            'class' => ['cta-cancel', 'govuk-button', 'govuk-button--secondary'],
           ],
         ];
       }
@@ -349,7 +342,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
           '#validate' => ['::validateCancelForm'],
           '#limit_validation_errors' => [],
           '#attributes' => [
-            'class' => ['cta-back', 'govuk-button', 'govuk-button--secondary']
+            'class' => ['cta-back', 'govuk-button', 'govuk-button--secondary'],
           ],
         ];
       }
@@ -383,12 +376,12 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       $index_key = ['_index', $component->getPrefix()];
       $index = $form_state->getValue($index_key);
 
-      // Validate the component
+      // Validate the component.
       $this->getFormBuilder()->validate($component, $form, $form_state, $index);
     }
 
     // Validate all the form elements.
-    // @TODO @deprecated All forms should use form plugin components going forward.
+    // @todo @deprecated All forms should use form plugin components going forward.
     foreach ($this->createMappedEntities() as $entity) {
       $values = $form_state->getValues();
       $this->buildEntity($entity, $values);
@@ -399,7 +392,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
         $field_names = $this->getFieldNamesByEntityType($entity->getEntityTypeId());
         $violations = $entity->validate()->filterByFieldAccess()->getByFields($field_names);
       }
-      catch(\Exception $e) {
+      catch (\Exception $e) {
         $this->getLogger($this->getLoggerChannel())->critical('An error occurred validating form %entity_id: @details.', ['%entity_id' => $entity->getEntityTypeId(), '@details' => $e->getMessage()]);
       }
 
@@ -472,6 +465,9 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     }
   }
 
+  /**
+   *
+   */
   public function changeItem(array &$form, FormStateInterface $form_state) {
     // Rebuild the form rather than redirect to ensure that form state values are persisted.
     $this->selfRedirect($form, $form_state, TRUE);
@@ -674,7 +670,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       // Reindex all data multiple cardinality plugin data.
       $this->reindexData($data);
 
-        // Set the new form values.
+      // Set the new form values.
       $this->getFlowDataHandler()->setFormTempData($data);
     }
   }
@@ -701,7 +697,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
 
       // For summary lists ensure only the indexes being modified are added.
       if ($this->getFormBuilder()->supportsSummaryList($component)) {
-          $data[$component->getPrefix()] = $data[$component->getPrefix()] + $existing_data[$component->getPrefix()];
+        $data[$component->getPrefix()] = $data[$component->getPrefix()] + $existing_data[$component->getPrefix()];
       }
       // There are no other situations where existing structured component data is persisted.
       unset($existing_data[$component->getPrefix()]);
@@ -770,7 +766,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * A helper function to ensure in form buttons don't redirect away.
    *
    * @param array $form
-   * @param FormStateInterface $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
   public function selfRedirect(array &$form, FormStateInterface $form_state, bool $rebuild = TRUE) {
     // Setting a redirection allows form values to be cleared.
@@ -800,7 +796,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state to set the error on.
    *
-   * @return string $form_element_page_anchor
+   * @return string
    *   Form element/wrapper anchor ID.
    */
   public function getFormElementPageAnchor($element_key, FormStateInterface &$form_state) {
@@ -809,7 +805,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     // Catch some potential FAPI mistakes.
     if (!isset($form_element['#type']) ||
       !isset($form_element['#id'])) {
-      return false;
+      return FALSE;
     }
 
     // Several options e.g. radios, checkboxes are appended with --wrapper.
@@ -819,6 +815,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       case 'checkboxes':
         $form_element_page_anchor = $form_element['#id'] . '--wrapper';
         break;
+
       default:
         $form_element_page_anchor = $form_element['#id'];
         break;
@@ -850,7 +847,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * Return the date formatter service.
    *
-   * @return DateFormatterInterface
+   * @return \Drupal\Core\Datetime\DateFormatterInterface
    */
   protected function getDateFormatter() {
     return \Drupal::service('date.formatter');

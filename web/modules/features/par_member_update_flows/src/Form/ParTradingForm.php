@@ -17,10 +17,15 @@ class ParTradingForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = "Add trading name";
 
+  /**
+   *
+   */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataCoordinatedBusiness $par_data_coordinated_business = NULL, $trading_name_delta = NULL) {
     $this->getFlowDataHandler()->setParameter('trading_name_delta', $trading_name_delta);
 
@@ -28,7 +33,7 @@ class ParTradingForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
+   * Load the data for this.
    */
   public function loadData() {
     $par_data_coordinated_business = $this->getFlowDataHandler()->getParameter('par_data_coordinated_business');
@@ -37,6 +42,9 @@ class ParTradingForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+   *
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -49,7 +57,8 @@ class ParTradingForm extends ParBaseForm {
     if (isset($trading_name_delta)) {
       try {
         $par_data_organisation->get('trading_name')->set((int) $trading_name_delta, $trading_name);
-      } catch (MissingDataException $e) {
+      }
+      catch (MissingDataException $e) {
         $message = $this->t('Trading name could not be saved for %form_id due to missing data: %error');
         $replacements = [
           '%form_id' => $this->getFormId(),

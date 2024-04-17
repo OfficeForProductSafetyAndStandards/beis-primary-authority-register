@@ -2,16 +2,19 @@
 
 namespace Drupal\par_subscriptions\EventSubscriber;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\par_subscriptions\Entity\ParSubscriptionList;
-use Drupal\par_subscriptions\ParSubscriptionManager;
-use Drupal\user\Entity\User;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\Core\Config\ConfigEvents;
 use Drupal\Core\Config\ConfigImporterEvent;
 use Drupal\Core\Config\ConfigManagerInterface;
 use Drupal\Core\Config\StorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
+use Drupal\par_subscriptions\ParSubscriptionManager;
+use Drupal\user\Entity\User;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ *
+ */
 class PopulateListSubscriber implements EventSubscriberInterface {
 
   /**
@@ -91,7 +94,7 @@ class PopulateListSubscriber implements EventSubscriberInterface {
           NULL;
 
         // Silently subscribe & verify the user.
-        if ($subscription instanceof \Drupal\par_subscriptions\Entity\ParSubscriptionInterface) {
+        if ($subscription instanceof ParSubscriptionInterface) {
           $subscription->verify();
         }
       }
@@ -103,8 +106,9 @@ class PopulateListSubscriber implements EventSubscriberInterface {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  public static function getSubscribedEvents() {
     $events[ConfigEvents::IMPORT][] = ['onConfigImporterImport', 30];
     return $events;
   }
+
 }

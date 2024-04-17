@@ -2,7 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -20,8 +19,9 @@ class ParContactPreferencesForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['notes', 'par_data_person', 'communication_notes', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter any communication notes that are relevant to this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter any communication notes that are relevant to this contact.',
+    ],
+    ],
   ];
 
   /**
@@ -75,4 +75,5 @@ class ParContactPreferencesForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

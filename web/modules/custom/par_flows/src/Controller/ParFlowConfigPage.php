@@ -5,14 +5,12 @@ namespace Drupal\par_flows\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A form controller for subscription lists.
  */
-class ParFlowConfigPage extends ControllerBase  {
+class ParFlowConfigPage extends ControllerBase {
 
   /**
    * The flow storage.
@@ -75,4 +73,5 @@ class ParFlowConfigPage extends ControllerBase  {
   public function build($build = []) {
 
   }
+
 }

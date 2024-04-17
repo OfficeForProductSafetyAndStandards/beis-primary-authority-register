@@ -2,7 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_forms\ParFormPluginBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -36,7 +35,7 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
             ['trading_name', ' ' . $search_query, 'CONTAINS'],
             ['trading_name', $search_query . ' ', 'CONTAINS'],
             ['trading_name', $search_query, 'STARTS_WITH'],
-          ]
+          ],
         ],
       ];
 
@@ -85,4 +84,5 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

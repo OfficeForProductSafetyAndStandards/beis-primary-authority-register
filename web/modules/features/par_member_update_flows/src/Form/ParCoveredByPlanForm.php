@@ -14,12 +14,14 @@ class ParCoveredByPlanForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = "Inspection plan coverage";
 
   /**
-   * {@inheritdoc}
+   * Load the data for this.
    */
   public function loadData() {
     $par_data_coordinated_business = $this->getFlowDataHandler()
@@ -28,6 +30,9 @@ class ParCoveredByPlanForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+   *
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

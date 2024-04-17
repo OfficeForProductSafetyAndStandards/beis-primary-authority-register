@@ -2,7 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -20,8 +19,9 @@ class ParOnsForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['ons_code', 'par_data_authority', 'ons_code', NULL, NULL, 0, [
-      'You must fill in the missing information.' => "You must enter an ONS code."
-    ]],
+      'You must fill in the missing information.' => "You must enter an ONS code.",
+    ],
+    ],
   ];
 
   /**
@@ -33,7 +33,6 @@ class ParOnsForm extends ParFormPluginBase {
     if ($par_data_authority && $ons_code = $par_data_authority->get('ons_code')) {
       $this->getFlowDataHandler()->setFormPermValue("ons_code", $ons_code->getString());
     }
-
 
     parent::loadData($index);
   }
@@ -51,4 +50,5 @@ class ParOnsForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

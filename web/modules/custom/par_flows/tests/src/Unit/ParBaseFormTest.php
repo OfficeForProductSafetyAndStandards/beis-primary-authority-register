@@ -1,14 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\par_flows\Unit\ParFlowEntityTest
- */
-
 namespace Drupal\Tests\par_flows\Unit;
 
 use Drupal\Tests\UnitTestCase;
-use Drupal\par_flows\Form\ParBaseForm;
 
 /**
  * Test the logical methods of the base form.
@@ -68,4 +62,5 @@ class ParBaseFormTest extends UnitTestCase {
     $this->assertTrue($this->baseForm->decideBooleanValue('on'), "The boolean value is correctly identified as being 'on'.");
     $this->assertTrue($this->baseForm->decideBooleanValue(TRUE), "The boolean value is correctly identified as being 'on'.");
   }
+
 }

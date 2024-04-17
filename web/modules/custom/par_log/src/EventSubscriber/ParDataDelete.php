@@ -4,7 +4,6 @@ namespace Drupal\par_log\EventSubscriber;
 
 use Drupal\audit_log\AuditLogEventInterface;
 use Drupal\audit_log\EventSubscriber\EventSubscriberInterface;
-use Drupal\Core\Render\Markup;
 use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 
@@ -18,7 +17,7 @@ class ParDataDelete implements EventSubscriberInterface {
   /**
    * The supported action for this logger.
    */
-  CONST ACTION = 'delete';
+  const ACTION = 'delete';
 
   /**
    * {@inheritdoc}

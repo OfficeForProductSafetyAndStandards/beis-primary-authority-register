@@ -2,14 +2,13 @@
 
 namespace Drupal\par_rd_help_desk_flows\Form;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\Core\Access\AccessResult;
 use Drupal\par_flows\ParFlowException;
 use Symfony\Component\Routing\Route;
 
@@ -37,7 +36,8 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
     try {
       // Get a new flow negotiator that points the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    }
+    catch (ParFlowException $e) {
 
     }
 
@@ -76,7 +76,7 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
       }
       catch (ParDataException $e) {
         // If the partnership could not be saved the application can't be progressed.
-        // @TODO Find a better way to alert the user without redirecting them away from the form.
+        // @todo Find a better way to alert the user without redirecting them away from the form.
         $this->messenger()->addMessage('There was an error approving this partnership, please check it is ready to be approved.');
         $url = $this->getFlowNegotiator()->getFlow()->progress('cancel');
         $form_state->setRedirectUrl($url);

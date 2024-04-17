@@ -11,6 +11,11 @@ use Drupal\par_flows\Form\ParBaseForm;
  */
 class ParAddLegalEntityForm extends ParBaseForm {
 
+  /**
+   * Sets the page title.
+   *
+   * @var pageTitle
+   */
   protected $pageTitle = 'Add Legal Entities';
 
   /**

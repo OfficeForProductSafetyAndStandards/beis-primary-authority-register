@@ -3,11 +3,7 @@
 namespace Drupal\Tests\par_actions\Kernel;
 
 use Drupal\Core\Session\AccountInterface;
-use Drupal\file\Entity\File;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
-use Drupal\KernelTests\Core\Plugin\PluginTestBase;
-use Drupal\par_data_test_entity\Entity\ParDataTestEntity;
-use Drupal\par_data_test_entity\Entity\ParDataTestEntityType;
 use Drupal\par_data_test_entity\Plugin\TestSchedulerManager;
 
 /**
@@ -20,12 +16,12 @@ class ParSchedulerTestBase extends EntityKernelTestBase {
   static $modules = ['user', 'language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'par_data_test_entity', 'par_actions', 'datetime', 'link'];
 
   /**
-   * @var AccountInterface $account
+   * @var \Drupal\Core\Session\AccountInterface
    */
   protected AccountInterface $account;
 
   /**
-   * @var TestSchedulerManager $schedulerManager
+   * @var \Drupal\par_data_test_entity\Plugin\TestSchedulerManager
    */
   protected TestSchedulerManager $schedulerManager;
 
@@ -42,8 +38,7 @@ class ParSchedulerTestBase extends EntityKernelTestBase {
   protected function setUp(): void {
     // Must change the bytea_output to the format "escape" before running tests.
     // @see https://www.drupal.org/node/2810049
-    //db_query("ALTER DATABASE 'par' SET bytea_output = 'escape';")->execute();
-
+    // db_query("ALTER DATABASE 'par' SET bytea_output = 'escape';")->execute();
     parent::setUp();
 
     // Setup test scheduler plugin manager.
@@ -53,7 +48,7 @@ class ParSchedulerTestBase extends EntityKernelTestBase {
     $this->account = $this->createUser(['uid' => 2], $this->permissions);
     \Drupal::currentUser()->setAccount($this->account);
 
-    // Mimic some of the functionality in \Drupal\Tests\file\Kernel\FileManagedUnitTestBase
+    // Mimic some of the functionality in \Drupal\Tests\file\Kernel\FileManagedUnitTestBase.
     $this->setUpFilesystem();
 
     // Install out entity hooks.
@@ -63,7 +58,7 @@ class ParSchedulerTestBase extends EntityKernelTestBase {
 
     // Install config for par_data if required.
     $this->installConfig('par_data');
-    // Install the test entity feature config
+    // Install the test entity feature config.
     $this->installConfig('par_data_test_entity');
 
     // Set up entity schema.
@@ -74,6 +69,9 @@ class ParSchedulerTestBase extends EntityKernelTestBase {
     $this->installEntitySchema('user');
   }
 
+  /**
+   *
+   */
   public function getBaseValues(): array {
     return [
       'uid' => $this->account,
@@ -81,10 +79,14 @@ class ParSchedulerTestBase extends EntityKernelTestBase {
     ];
   }
 
+  /**
+   *
+   */
   public function getTestEntityValues($expiry_date = '2020-01-01'): array {
     return [
       'type' => 'test',
       'expiry_date' => $expiry_date,
     ] + $this->getBaseValues();
   }
+
 }

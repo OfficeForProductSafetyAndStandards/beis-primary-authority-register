@@ -5,7 +5,6 @@ namespace Drupal\par_member_upload_flows\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_member_upload_flows\ParMemberCsvHandlerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -23,7 +22,7 @@ class ParMemberDownload extends ControllerBase {
   /**
    * Constructs a ParMemberDownload page.
    *
-   * @param KillSwitch $kill_switch
+   * @param \Drupal\Core\PageCache\ResponsePolicy\KillSwitch $kill_switch
    *   The page cache kill switch.
    */
   public function __construct(KillSwitch $kill_switch) {
@@ -68,7 +67,7 @@ class ParMemberDownload extends ControllerBase {
   }
 
   /**
-   * @return ParMemberCsvHandlerInterface
+   * @return \Drupal\par_member_upload_flows\ParMemberCsvHandlerInterface
    */
   public function getCsvHandler() {
     return \Drupal::service('par_member_upload_flows.csv_handler');

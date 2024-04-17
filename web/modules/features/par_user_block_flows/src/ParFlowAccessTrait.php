@@ -3,16 +3,16 @@
 namespace Drupal\par_user_block_flows;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\ParDataException;
 use Drupal\par_flows\ParFlowException;
 use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
-use Drupal\Core\Routing\RouteMatchInterface;
 
+/**
+ *
+ */
 trait ParFlowAccessTrait {
 
   /**
@@ -27,7 +27,8 @@ trait ParFlowAccessTrait {
     try {
       // Get a new flow negotiator that points the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    }
+    catch (ParFlowException $e) {
 
     }
 
@@ -59,4 +60,5 @@ trait ParFlowAccessTrait {
 
     return parent::accessCallback($route, $route_match, $account);
   }
+
 }

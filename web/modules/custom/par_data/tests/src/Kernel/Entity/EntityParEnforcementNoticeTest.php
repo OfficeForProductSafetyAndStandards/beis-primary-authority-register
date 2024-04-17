@@ -2,11 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\Entity\ParDataEnforcementNoticeType;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -74,4 +70,5 @@ class EntityParEnforcementNoticeTest extends ParDataTestBase {
     $entity = ParDataEnforcementNotice::create($this->getEnforcementNoticeValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'Par Enforcement Notice entity saved correctly.');
   }
+
 }

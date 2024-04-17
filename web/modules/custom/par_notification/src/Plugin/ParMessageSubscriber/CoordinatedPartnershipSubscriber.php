@@ -3,8 +3,6 @@
 namespace Drupal\par_notification\Plugin\ParMessageSubscriber;
 
 use Drupal\message\MessageInterface;
-use Drupal\par_data\Entity\ParDataPersonInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_notification\ParMessageSubscriberBase;
 use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParRecipient;
@@ -31,7 +29,7 @@ class CoordinatedPartnershipSubscriber extends ParMessageSubscriberBase {
     $recipients = parent::getRecipients($message);
 
     try {
-      /** @var ParDataPartnership[] $partnerships */
+      /** @var \Drupal\par_data\Entity\ParDataPartnership[] $partnerships */
       $partnerships = $this->getMessageHandler()->getPrimaryData($message);
     }
     catch (ParNotificationException $e) {
@@ -40,7 +38,7 @@ class CoordinatedPartnershipSubscriber extends ParMessageSubscriberBase {
 
     foreach ($partnerships as $partnership) {
       // This message should be sent to the primary authority contacts at the authority.
-      /** @var ParDataPersonInterface $people */
+      /** @var \Drupal\par_data\Entity\ParDataPersonInterface $people */
       $people = $partnership->getOrganisationPeople();
       foreach ($people as $key => $person) {
         $recipients[] = new ParRecipient(
@@ -61,7 +59,7 @@ class CoordinatedPartnershipSubscriber extends ParMessageSubscriberBase {
     $subscriptions = parent::getSubscribedEntities($message);
 
     try {
-      /** @var ParDataPartnership[] $partnerships */
+      /** @var \Drupal\par_data\Entity\ParDataPartnership[] $partnerships */
       $partnerships = $this->getMessageHandler()->getPrimaryData($message);
     }
     catch (ParNotificationException $e) {
@@ -78,4 +76,5 @@ class CoordinatedPartnershipSubscriber extends ParMessageSubscriberBase {
 
     return $subscriptions;
   }
+
 }

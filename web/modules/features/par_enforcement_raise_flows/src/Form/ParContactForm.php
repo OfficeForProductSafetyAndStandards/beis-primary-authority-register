@@ -4,8 +4,8 @@ namespace Drupal\par_enforcement_raise_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_enforcement_raise_flows\ParFlowAccessTrait;
+use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\user\Entity\User;
 
 /**
@@ -16,12 +16,14 @@ class ParContactForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Contact details for enforcement officer';
 
   /**
-   * Load the data for this form.
+   * Load the data for this.
    */
   public function loadData() {
     $cid = $this->getFlowNegotiator()->getFormKey('par_authority_selection');

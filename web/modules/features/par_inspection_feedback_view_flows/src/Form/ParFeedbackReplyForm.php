@@ -4,9 +4,8 @@ namespace Drupal\par_inspection_feedback_view_flows\Form;
 
 use Drupal\comment\Entity\Comment;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_inspection_feedback_view_flows\ParFlowAccessTrait;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
+use Drupal\par_inspection_feedback_view_flows\ParFlowAccessTrait;
 
 /**
  * Reviewing inspection feedback.
@@ -16,7 +15,9 @@ class ParFeedbackReplyForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = "Reply to inspection feedback";
 
@@ -56,4 +57,5 @@ class ParFeedbackReplyForm extends ParBaseForm {
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
     }
   }
+
 }

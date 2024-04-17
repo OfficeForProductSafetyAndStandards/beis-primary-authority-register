@@ -5,7 +5,6 @@ namespace Drupal\par_member_update_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_member_update_flows\ParFlowAccessTrait;
 
 /**
@@ -16,12 +15,14 @@ class ParLegalEntityForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Update legal entity';
 
   /**
-   * {@inheritdoc}
+   * Load the data for this.
    */
   public function loadData() {
     $par_data_coordinated_business = $this->getFlowDataHandler()->getParameter('par_data_coordinated_business');
@@ -31,6 +32,9 @@ class ParLegalEntityForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+   *
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

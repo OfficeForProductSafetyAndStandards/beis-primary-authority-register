@@ -2,16 +2,15 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataDeviationRequest;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
-use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParEventSubscriberBase;
 
+/**
+ *
+ */
 class ReviewedDeviationRequestSubscriber extends ParEventSubscriberBase {
 
   /**
@@ -26,7 +25,7 @@ class ReviewedDeviationRequestSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  public static function getSubscribedEvents() {
     $events[ParDataEvent::statusChange('par_data_deviation_request', 'approved')][] = ['onEvent', 800];
     $events[ParDataEvent::statusChange('par_data_deviation_request', 'blocked')][] = ['onEvent', 800];
 
@@ -34,12 +33,12 @@ class ReviewedDeviationRequestSubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * @param ParDataEventInterface $event
+   * @param \Drupal\par_data\Event\ParDataEventInterface $event
    */
   public function onEvent(ParDataEventInterface $event) {
     $this->setEvent($event);
 
-    /** @var ParDataDeviationRequest $entity */
+    /** @var \Drupal\par_data\Entity\ParDataDeviationRequest $entity */
     $entity = $event->getEntity();
     $par_data_partnership = $entity?->getPartnership(TRUE);
 
@@ -55,4 +54,5 @@ class ReviewedDeviationRequestSubscriber extends ParEventSubscriberBase {
       $this->sendMessage($arguments);
     }
   }
+
 }

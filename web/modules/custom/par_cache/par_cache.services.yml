@@ -4,6 +4,6 @@ services:
     public: false
     decorates: cache_factory
     decoration_priority: 10
-    arguments: ['@par_cache.persistent.cache_factory.inner', '@settings', '%cache_lifecycle_bins%']
+    arguments: ['@par_cache.persistent.cache_factory.inner', '@settings']
     properties:
       _serviceId: 'cache_factory'

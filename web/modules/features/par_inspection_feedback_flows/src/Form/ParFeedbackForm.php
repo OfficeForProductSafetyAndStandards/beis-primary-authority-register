@@ -2,9 +2,6 @@
 
 namespace Drupal\par_inspection_feedback_flows\Form;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_inspection_feedback_flows\ParFlowAccessTrait;
 
@@ -16,7 +13,9 @@ class ParFeedbackForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Feedback';
 

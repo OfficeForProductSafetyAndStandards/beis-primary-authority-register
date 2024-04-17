@@ -13,7 +13,9 @@ class ParSelectAuthorityForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Choose the primary authority you are representing';
 

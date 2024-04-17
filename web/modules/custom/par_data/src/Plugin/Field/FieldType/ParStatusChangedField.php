@@ -5,7 +5,6 @@ namespace Drupal\par_data\Plugin\Field\FieldType;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\TypedData\ComputedItemListTrait;
-use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 
 /**
@@ -22,13 +21,16 @@ class ParStatusChangedField extends FieldItemList {
 
   use ComputedItemListTrait;
 
+  /**
+   *
+   */
   protected function getDateFormatter() {
     return \Drupal::service('date.formatter');
   }
 
   /**
-  * {@inheritdoc}
-  */
+   * {@inheritdoc}
+   */
   protected function computeValue() {
     $entity = $this->getEntity();
 

@@ -2,12 +2,11 @@
 
 namespace Drupal\par_data\Access;
 
-use Drupal\user\Entity\User;
-use Drupal\Core\Entity\EntityAccessControlHandler;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityAccessControlHandler;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\user\Entity\User;
 
 /**
  * Access controller for trance entities.
@@ -70,7 +69,7 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
         // All users are allowed to view regardless of their membership.
         return AccessResult::allowedIfHasPermission($account, $permission);
 
-        break;
+      break;
 
       case 'update':
         $permission = 'edit ' . $this->entityTypeId . ' entities';

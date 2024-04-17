@@ -1,7 +1,8 @@
 <?php
 
-use Drupal\Component\Utility\Random;
-use Drupal\Core\Site\Settings;
+/**
+ * @file
+ */
 
 /**
  * Implements hook_drush_sql_sync_sanitize.

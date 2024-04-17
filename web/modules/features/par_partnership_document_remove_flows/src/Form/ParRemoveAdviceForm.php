@@ -3,8 +3,6 @@
 namespace Drupal\par_partnership_document_remove_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataEntity;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_document_remove_flows\ParFlowAccessTrait;
@@ -50,7 +48,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
     $delta = $this->getFlowDataHandler()->getFormPermValue('field_advice_delta');
 
     // If there is no advice cancel this journey.
-    // @TODO Find a way to do this whilst telling the user what has happened.
+    // @todo Find a way to do this whilst telling the user what has happened.
     if ($delta === NULL) {
       $url = $this->getFlowNegotiator()->getFlow()->progress('cancel');
       return new RedirectResponse($url->toString());
@@ -115,6 +113,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
       $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please enter the reason you are removing this advice.', $id));
     }
   }
+
   /**
    * {@inheritdoc}
    */

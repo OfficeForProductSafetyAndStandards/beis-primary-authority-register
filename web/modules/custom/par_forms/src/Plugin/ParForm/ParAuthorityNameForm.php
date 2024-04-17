@@ -2,7 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -22,9 +21,9 @@ class ParAuthorityNameForm extends ParFormPluginBase {
     ['name', 'par_data_authority', 'authority_name', NULL, NULL, 0, [
       'You must fill in the missing information.' => "You must enter the authority's name.",
       'This value should not be null.' => "You must enter the authority's name.",
-    ]],
+    ],
+    ],
   ];
-
 
   /**
    * Load the data for this form.
@@ -50,4 +49,5 @@ class ParAuthorityNameForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

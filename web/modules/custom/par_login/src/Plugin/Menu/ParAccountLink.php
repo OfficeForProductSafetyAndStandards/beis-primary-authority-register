@@ -70,7 +70,7 @@ class ParAccountLink extends MenuLinkDefault {
     if ($this->currentUser->hasPermission('access helpdesk')) {
       return 'par_help_desks_flows.helpdesk_dashboard';
     }
-    else if ($this->currentUser->hasPermission('access par dashboard')) {
+    elseif ($this->currentUser->hasPermission('access par dashboard')) {
       return 'par_dashboards.dashboard';
     }
 

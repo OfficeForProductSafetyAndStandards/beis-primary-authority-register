@@ -4,8 +4,6 @@ namespace Drupal\par_notification\Plugin\ParMessageSubscriber;
 
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEnquiryInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\ParDataException;
 use Drupal\par_notification\ParMessageSubscriberBase;
 use Drupal\par_notification\ParNotificationException;
@@ -33,9 +31,9 @@ class NewDeviationRequestSubscriber extends ParMessageSubscriberBase {
     $recipients = parent::getRecipients($message);
 
     try {
-      /** @var ParDataEnquiryInterface[] $deviation_requests */
+      /** @var \Drupal\par_data\Entity\ParDataEnquiryInterface[] $deviation_requests */
       $deviation_requests = $this->getMessageHandler()->getPrimaryData($message);
-      /** @var ParDataPartnership[] $partnerships */
+      /** @var \Drupal\par_data\Entity\ParDataPartnership[] $partnerships */
       $partnerships = [];
 
       foreach ($deviation_requests as $deviation_request) {
@@ -45,13 +43,13 @@ class NewDeviationRequestSubscriber extends ParMessageSubscriberBase {
         );
       }
     }
-    catch (ParNotificationException|ParDataException $e) {
+    catch (ParNotificationException | ParDataException $e) {
       return $recipients;
     }
 
     foreach ($partnerships as $partnership) {
       // This message should be sent to the primary authority contacts at the authority.
-      /** @var ParDataPersonInterface $people */
+      /** @var \Drupal\par_data\Entity\ParDataPersonInterface $people */
       $people = $partnership->getAuthorityPeople();
       foreach ($people as $key => $person) {
         $recipients[] = new ParRecipient(
@@ -72,7 +70,7 @@ class NewDeviationRequestSubscriber extends ParMessageSubscriberBase {
     $subscriptions = parent::getSubscribedEntities($message);
 
     try {
-      /** @var ParDataEnquiryInterface $enquiry_entities [] */
+      /** @var \Drupal\par_data\Entity\ParDataEnquiryInterface $enquiry_entities [] */
       $enquiry_entities = $this->getMessageHandler()->getPrimaryData($message);
     }
     catch (ParNotificationException $e) {
@@ -105,4 +103,5 @@ class NewDeviationRequestSubscriber extends ParMessageSubscriberBase {
 
     return $subscriptions;
   }
+
 }

@@ -6,7 +6,10 @@ use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParEventSubscriberBase;
 
-class PartnershipAmendmentNominatedTaskSubscriber extends ParEventSubscriberBase  {
+/**
+ *
+ */
+class PartnershipAmendmentNominatedTaskSubscriber extends ParEventSubscriberBase {
 
   /**
    * The message template ID that needs to be completed.
@@ -20,7 +23,7 @@ class PartnershipAmendmentNominatedTaskSubscriber extends ParEventSubscriberBase
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  public static function getSubscribedEvents() {
     // Confirmation event should fire after a partnership has been confirmed.
     $events[ParDataEvent::customAction('par_data_partnership', 'amendment_nominated')][] = ['onEvent', -101];
 
@@ -28,7 +31,7 @@ class PartnershipAmendmentNominatedTaskSubscriber extends ParEventSubscriberBase
   }
 
   /**
-   * @param ParDataEventInterface $event
+   * @param \Drupal\par_data\Event\ParDataEventInterface $event
    */
   public function onEvent(ParDataEventInterface $event) {
     $entity = $event?->getEntity();
@@ -46,4 +49,5 @@ class PartnershipAmendmentNominatedTaskSubscriber extends ParEventSubscriberBase
       $this->getMessageExpiryService()->expire($messages);
     }
   }
+
 }

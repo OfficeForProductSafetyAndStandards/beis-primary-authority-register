@@ -26,4 +26,5 @@ class ParLogServiceProvider extends ServiceProviderBase {
       }
     }
   }
+
 }

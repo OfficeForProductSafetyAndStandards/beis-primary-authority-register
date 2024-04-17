@@ -3,8 +3,8 @@
 namespace Drupal\par_inspection_feedback_flows\Controller;
 
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_inspection_feedback_flows\ParFlowAccessTrait;
 use Drupal\par_flows\Controller\ParBaseController;
+use Drupal\par_inspection_feedback_flows\ParFlowAccessTrait;
 
 /**
  * A controller for rendering a specific partner page.
@@ -14,7 +14,9 @@ class ParFeedbackConfirmationForm extends ParBaseController {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Inspection plan feedback sent';
 
@@ -30,4 +32,5 @@ class ParFeedbackConfirmationForm extends ParBaseController {
 
     return parent::build($build);
   }
+
 }

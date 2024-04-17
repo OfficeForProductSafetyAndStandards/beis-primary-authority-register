@@ -2,9 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -51,7 +49,7 @@ class ParPartnershipActionsForm extends ParFormPluginBase {
         '#title' => $this->t("Send a notification of a proposed enforcement action"),
         '#url' => $enforcement_notice_link->getUrl(),
         '#options' => $options,
-        '#weight' => 100
+        '#weight' => 100,
       ];
     }
 
@@ -111,4 +109,5 @@ class ParPartnershipActionsForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

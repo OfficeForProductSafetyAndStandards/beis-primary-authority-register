@@ -5,7 +5,6 @@ namespace Drupal\par_notification\Plugin\ParLinkAction;
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
 use Drupal\par_notification\ParLinkActionBase;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Final redirection to dashboard.
@@ -26,4 +25,5 @@ class ParNotFound extends ParLinkActionBase {
     // This should be the last redirection to happen if no other one could be found.
     return Url::fromRoute('par_notification.link_not_found', ['message' => $message->id()]);
   }
+
 }

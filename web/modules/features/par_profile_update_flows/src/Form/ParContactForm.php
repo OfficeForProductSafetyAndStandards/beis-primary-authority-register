@@ -2,9 +2,7 @@
 
 namespace Drupal\par_profile_update_flows\Form;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_profile_update_flows\ParFlowAccessTrait;
 
@@ -16,7 +14,9 @@ class ParContactForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Update contact details';
 
@@ -30,7 +30,7 @@ class ParContactForm extends ParBaseForm {
     $person = $this->getFlowDataHandler()->getDefaultValues('user_person', '', $cid_person_select);
     $par_data_person = !empty($person) ? ParDataPerson::load($person) : NULL;
 
-    // If no profile record could be found then create a new one based from the user account.
+    // If no profile record could be found then create a new one.
     if (!$par_data_person instanceof ParDataPerson) {
       $par_data_person = ParDataPerson::create([
         'type' => 'person',

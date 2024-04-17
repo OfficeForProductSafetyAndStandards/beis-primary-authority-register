@@ -2,23 +2,14 @@
 
 namespace Drupal\par_enforcement_raise_flows\Form;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\ParDataException;
 use Drupal\par_enforcement_raise_flows\ParFlowAccessTrait;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\Core\Access\AccessResult;
-use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginInterface;
-use Symfony\Component\Routing\Route;
 
 /**
  * The confirmation for creating a new enforcement notice.
@@ -28,17 +19,22 @@ class ParEnforcementReviewForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Review the enforcement notice';
 
+  /**
+   * Load the data for this.
+   */
   public function loadData() {
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataEnforcementNotice $par_data_enforcement_notice */
-    /** @var ParDataEnforcementAction[] $par_data_enforcement_actions */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataEnforcementNotice $par_data_enforcement_notice */
+    /** @var \Drupal\par_data\Entity\ParDataEnforcementAction[] $par_data_enforcement_actions */
 
     if ($par_data_enforcement_notice->hasField('notice_type')) {
       $this->getFlowDataHandler()->setFormPermValue("notice_type", $par_data_enforcement_notice->get('notice_type')->getString());
@@ -72,6 +68,9 @@ class ParEnforcementReviewForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -91,7 +90,7 @@ class ParEnforcementReviewForm extends ParBaseForm {
       'summary' => $this->getFlowDataHandler()->getTempDataValue('summary', $enforcement_notice_cid),
       'field_primary_authority' => $par_data_partnership->getAuthority(),
       'field_enforcing_authority' => $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', NULL, $enforcing_authority_cid),
-      'field_person' =>  $this->getFlowDataHandler()->getDefaultValues('enforcement_officer_id', NULL, $enforcement_officer_cid),
+      'field_person' => $this->getFlowDataHandler()->getDefaultValues('enforcement_officer_id', NULL, $enforcement_officer_cid),
       'field_partnership' => $par_data_partnership->id(),
       'notice_date' => $date->format('Y-m-d'),
     ]);
@@ -138,12 +137,12 @@ class ParEnforcementReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataEnforcementNotice $par_data_enforcement_notice */
-    /** @var ParDataEnforcementAction[] $par_data_enforcement_actions */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataEnforcementNotice $par_data_enforcement_notice */
+    /** @var \Drupal\par_data\Entity\ParDataEnforcementAction[] $par_data_enforcement_actions */
 
     foreach ($par_data_enforcement_actions as $enforcement_action) {
       if ($enforcement_action->save()) {

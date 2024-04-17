@@ -2,25 +2,19 @@
 
 namespace Drupal\par_reporting;
 
-
 use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
-use Drupal\Core\Messenger\Messenger;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Security\TrustedCallbackInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\user\Entity\User;
-use Drupal\user\UserInterface;
 
 /**
-* Manages all functionality universal to Par Data.
-*/
+ * Manages all functionality universal to Par Data.
+ */
 class ParReportingManager extends DefaultPluginManager implements ParReportingManagerInterface, TrustedCallbackInterface {
 
   use LoggerChannelTrait;
@@ -60,8 +54,8 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
   /**
    * Get the cache bin.
    *
-   * @return CacheBackendInterface
-   *  A cache bin instance.
+   * @return \Drupal\Core\Cache\CacheBackendInterface
+   *   A cache bin instance.
    */
   public function getCacheBin(): CacheBackendInterface {
     return \Drupal::cache();
@@ -70,7 +64,7 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
   /**
    * Dynamic getter for the messenger service.
    *
-   * @return MessengerInterface
+   * @return \Drupal\Core\Messenger\MessengerInterface
    */
   public function getMessenger(): MessengerInterface {
     return \Drupal::service('messenger');
@@ -173,10 +167,9 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
     $cid = "par_reporting:stat:$id";
     $cache = $this->getCacheBin()->get($cid);
     // Return cached statistics if found.
-//    if ($cache) {
-//      return $cache->data;
-//    }
-
+    //    if ($cache) {
+    //      return $cache->data;
+    //    }.
     try {
       $definition = $this->getDefinition($id);
       $plugin = $definition ? $this->createInstance($definition['id'], $definition) : NULL;
@@ -196,4 +189,5 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
 
     return $stat;
   }
+
 }

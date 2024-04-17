@@ -14,4 +14,5 @@ interface ParSubscriptionManagerInterface {
    *   An array containing the available list ids.
    */
   public function getLists();
+
 }

@@ -79,11 +79,11 @@ class ParDataEnforcementNotice extends ParDataEntity {
   public function filterRelationshipsByAction($relationship, $action) {
     switch ($action) {
       case 'manage':
-      // Exclude any references to partnerships, this is a one-way relationship.
-      // Partnerships relate to enforcement notices but not the other way round.
-      if ($relationship->getEntity()->getEntityTypeId() === 'par_data_partnership') {
-        return FALSE;
-      }
+        // Exclude any references to partnerships, this is a one-way relationship.
+        // Partnerships relate to enforcement notices but not the other way round.
+        if ($relationship->getEntity()->getEntityTypeId() === 'par_data_partnership') {
+          return FALSE;
+        }
 
     }
 
@@ -186,7 +186,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
       'name' => [
         'AND' => [
           ['field_organisation', $par_data_organisation->id()],
-        ]
+        ],
       ],
     ];
 
@@ -273,7 +273,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
       }
     }
 
-    return isset($status) ? $status : NULL;
+    return $status ?? NULL;
   }
 
   /**
@@ -310,7 +310,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
    * @return ParDataEnforcementNotice
    *   Cloned notice entity if a referral exists or NULL.
    *
-   * @throws ParDataException if the referral cannot be cloned
+   * @throws \Drupal\par_data\ParDataException if the referral cannot be cloned
    */
   public function cloneNotice($referral_authority_id, ParDataEnforcementAction $cloned_action) {
     if ($referral_authority_id && $primary_authority = ParDataAuthority::load($referral_authority_id)) {

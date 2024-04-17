@@ -3,9 +3,9 @@
 namespace Drupal\par_authority_update_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_authority_update_flows\ParFlowAccessTrait;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_authority_update_flows\ParFlowAccessTrait;
 
 /**
  * The authority address update form.
@@ -15,12 +15,14 @@ class ParAuthorityAddressForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Primary address';
 
   /**
-   * {@inheritdoc}
+   * Load the data for this.
    */
   public function loadData() {
     $par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');

@@ -3,7 +3,6 @@
 namespace Drupal\par_data\Form;
 
 use Drupal\Core\Entity\ContentEntityDeleteForm;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 
 /**
  * Provides a form for deleting par_data entities.

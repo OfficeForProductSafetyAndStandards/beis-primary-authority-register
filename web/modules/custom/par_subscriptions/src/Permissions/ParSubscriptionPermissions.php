@@ -7,6 +7,9 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_subscriptions\ParSubscriptionManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ *
+ */
 class ParSubscriptionPermissions implements ContainerInjectionInterface {
 
   use StringTranslationTrait;
@@ -14,7 +17,7 @@ class ParSubscriptionPermissions implements ContainerInjectionInterface {
   /**
    * The subscription manager.
    *
-   * @var ParSubscriptionManagerInterface $subscriptionManager
+   * @var \Drupal\par_subscriptions\ParSubscriptionManagerInterface
    */
   protected ParSubscriptionManagerInterface $subscriptionManager;
 
@@ -50,29 +53,29 @@ class ParSubscriptionPermissions implements ContainerInjectionInterface {
   public function permissions() {
     $permissions = [];
 
-    foreach($this->getSubscriptionManager()->getLists() as $list) {
+    foreach ($this->getSubscriptionManager()->getLists() as $list) {
       // Subscribe to a list.
       $permissions += [
         "subscribe to $list" => [
-          'title' => $this->t('Subscribe to subscription %list', array('%list' => $list)),
-          'description' => $this->t('Allow users to subscribe to the %list subscription list.', array('%list' => $list)),
-        ]
+          'title' => $this->t('Subscribe to subscription %list', ['%list' => $list]),
+          'description' => $this->t('Allow users to subscribe to the %list subscription list.', ['%list' => $list]),
+        ],
       ];
 
       // View a list.
       $permissions += [
         "view list $list" => [
-          'title' => $this->t('View subscribers to %list', array('%list' => $list)),
-          'description' => $this->t('Allow users to see who is subscribed to %list.', array('%list' => $list)),
-        ]
+          'title' => $this->t('View subscribers to %list', ['%list' => $list]),
+          'description' => $this->t('Allow users to see who is subscribed to %list.', ['%list' => $list]),
+        ],
       ];
 
       // Administer a list.
       $permissions += [
         "administer list $list" => [
-          'title' => $this->t('Manage subscribers to %list', array('%list' => $list)),
-          'description' => $this->t('Allow users to manage the %list subscription list.', array('%list' => $list)),
-        ]
+          'title' => $this->t('Manage subscribers to %list', ['%list' => $list]),
+          'description' => $this->t('Allow users to manage the %list subscription list.', ['%list' => $list]),
+        ],
       ];
     }
 

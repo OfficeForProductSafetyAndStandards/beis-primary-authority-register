@@ -2,22 +2,21 @@
 
 namespace Drupal\par_partnership_flows\Access;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Access\AccessResult;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_data\ParDataManagerInterface;
-use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
 
 /**
-* Checks access for updating legal entities on the partnership.
-*/
+ * Checks access for updating legal entities on the partnership.
+ */
 class LegalEntityUpdateCheck implements AccessInterface {
 
   /**
@@ -38,9 +37,9 @@ class LegalEntityUpdateCheck implements AccessInterface {
    * CustomAccessCheck constructor.
    *
    * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
-   *   Data Manager Service
+   *   Data Manager Service.
    * @param \Drupal\par_flows\ParFlowNegotiatorInterface $flow_negotiator
-   *   Flow Negotiator Service
+   *   Flow Negotiator Service.
    */
   public function __construct(ParDataManagerInterface $par_data_manager, ParFlowNegotiatorInterface $flow_negotiator) {
     $this->parDataManager = $par_data_manager;
@@ -77,7 +76,8 @@ class LegalEntityUpdateCheck implements AccessInterface {
     try {
       // Get a new flow negotiator that points to the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    }
+    catch (ParFlowException $e) {
 
     }
 

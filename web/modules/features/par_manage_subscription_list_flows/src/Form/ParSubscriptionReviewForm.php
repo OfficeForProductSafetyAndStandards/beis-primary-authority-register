@@ -23,6 +23,9 @@ class ParSubscriptionReviewForm extends ParBaseForm {
     return 'Help Desk | Review changes';
   }
 
+  /**
+   *
+   */
   public function getSubscriptionManager() {
     return \Drupal::service('par_subscriptions.manager');
   }
@@ -48,7 +51,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
           '#markup' => "$subscribe_list",
           '#prefix' => '<p>',
           '#suffix' => '</p>',
-        ]
+        ],
       ];
     }
     if (!empty($unsubscribe)) {
@@ -62,7 +65,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
           '#markup' => "$unsubscribe_list",
           '#prefix' => '<p>',
           '#suffix' => '</p>',
-        ]
+        ],
       ];
     }
 

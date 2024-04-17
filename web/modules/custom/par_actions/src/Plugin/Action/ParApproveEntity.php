@@ -19,10 +19,16 @@ use Drupal\par_data\Entity\ParDataEntityInterface;
  */
 class ParApproveEntity extends ActionBase {
 
+  /**
+   *
+   */
   public function getCurrentUser() {
     return \Drupal::currentUser();
   }
 
+  /**
+   *
+   */
   public function getAccountSwitcher() {
     return \Drupal::service('account_switcher');
   }
@@ -54,7 +60,7 @@ class ParApproveEntity extends ActionBase {
    * {@inheritdoc}
    */
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
-    // @TODO Implement entity/action checks
+    // @todo Implement entity/action checks
     $result = AccessResult::allowed();
     return $return_as_object ? $result : $result->isAllowed();
   }

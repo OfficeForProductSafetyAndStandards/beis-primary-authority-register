@@ -2,15 +2,9 @@
 
 namespace Drupal\par_user_block_flows\Form;
 
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_user_block_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\User;
 
@@ -22,7 +16,7 @@ class ParUnblockUserController extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * @return DateFormatterInterface
+   * @return \Drupal\Core\Datetime\DateFormatterInterface
    */
   protected function getDateFormatter() {
     return \Drupal::service('date.formatter');
@@ -33,6 +27,9 @@ class ParUnblockUserController extends ParBaseForm {
    */
   protected $pageTitle = "Re-activate this user account";
 
+  /**
+   * Load the data for this.
+   */
   public function loadData() {
     $user = $this->getFlowDataHandler()->getParameter('user');
     if (!$user && $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
@@ -54,7 +51,7 @@ class ParUnblockUserController extends ParBaseForm {
     // Add a message to explain the action being taken.
     $form['info'] = [
       '#type' => 'markup',
-      '#markup' => "<p>You are about to <strong>re-activate</strong> {$this->getFlowDataHandler()->getDefaultValues('email', 'this user')}. <br><br>This will grant them access to the Primary Authority Register using their old password.</p>"
+      '#markup' => "<p>You are about to <strong>re-activate</strong> {$this->getFlowDataHandler()->getDefaultValues('email', 'this user')}. <br><br>This will grant them access to the Primary Authority Register using their old password.</p>",
     ];
 
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {

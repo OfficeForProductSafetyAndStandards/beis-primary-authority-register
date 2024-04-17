@@ -1,15 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\par_flows\Unit\ParFlowEntityTest
- */
-
 namespace Drupal\Tests\par_data\Unit;
 
-use Drupal\par_data\Entity\ParDataPartnershipType;
 use Drupal\Tests\UnitTestCase;
-use Drupal\par_data\Entity\ParDataType;
 
 /**
  * Test the step lookup methods of the flow entity.
@@ -31,7 +24,7 @@ class ParDataTypeTest extends UnitTestCase {
   protected function setUp(): void {
     parent::setUp();
 
-    $values = array(
+    $values = [
       'id' => 'test',
       'title' => 'Test Data Entity Type',
       'description' => 'This is the test entity type.',
@@ -56,7 +49,7 @@ class ParDataTypeTest extends UnitTestCase {
           'boolean_values' => [
             'on' => 'Agreed',
             'off' => 'Awaiting confirmation',
-          ]
+          ],
         ],
         'field_salutation' => [
           'allowed_values' => [
@@ -67,7 +60,7 @@ class ParDataTypeTest extends UnitTestCase {
           ],
         ],
       ],
-    );
+    ];
 
     $this->parDataType = $this->getMockForAbstractClass('Drupal\par_data\Entity\ParDataType', [$values, 'test']);
   }
@@ -178,4 +171,5 @@ class ParDataTypeTest extends UnitTestCase {
     $this->assertEquals('Ms', $this->parDataType->getAllowedFieldlabel('field_salutation', 'ms'), "The correct display label was returned for the given field value.");
     $this->assertFalse($this->parDataType->getAllowedFieldlabel('field_salutation', 'Elephant'), "The original value was not found nothing returned.");
   }
+
 }

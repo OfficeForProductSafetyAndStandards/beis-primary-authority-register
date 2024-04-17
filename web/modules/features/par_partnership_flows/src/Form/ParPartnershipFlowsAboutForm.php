@@ -21,8 +21,9 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
    */
   protected $entityMapping = [
     ['about_partnership', 'par_data_partnership', 'about_partnership', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter some information about this partnership.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter some information about this partnership.',
+    ],
+    ],
   ];
 
   protected $pageTitle = 'Information about the partnership';

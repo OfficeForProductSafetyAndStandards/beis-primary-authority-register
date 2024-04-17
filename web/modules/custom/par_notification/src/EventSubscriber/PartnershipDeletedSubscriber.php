@@ -4,15 +4,12 @@ namespace Drupal\par_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
-use Drupal\message\Entity\Message;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Event\ParDataEvent;
-use Drupal\par_data\Event\ParDataEventInterface;
-use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParEventSubscriberBase;
 
+/**
+ *
+ */
 class PartnershipDeletedSubscriber extends ParEventSubscriberBase {
 
   /**
@@ -27,7 +24,7 @@ class PartnershipDeletedSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  public static function getSubscribedEvents() {
     // Notify on partnership removal.
     $events[EntityEvents::predelete('par_data_partnership')][] = ['onEvent', -100];
 
@@ -35,12 +32,12 @@ class PartnershipDeletedSubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * @param EntityEvent $event
+   * @param \Drupal\Core\Entity\EntityEvent $event
    */
   public function onEvent(EntityEvent $event) {
     $this->setEvent($event);
 
-    /** @var ParDataPartnership $entity */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $entity */
     $entity = $event->getEntity();
 
     // Only send messages for partnerships.
@@ -52,4 +49,5 @@ class PartnershipDeletedSubscriber extends ParEventSubscriberBase {
       $this->sendMessage($arguments);
     }
   }
+
 }

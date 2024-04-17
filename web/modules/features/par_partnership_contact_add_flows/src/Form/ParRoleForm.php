@@ -3,13 +3,9 @@
 namespace Drupal\par_partnership_contact_add_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
 use Drupal\par_partnership_contact_add_flows\ParFlowAccessTrait;
-use Drupal\user\Entity\Role;
-use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -20,7 +16,9 @@ class ParRoleForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'What type of user would you like to create?';
 
@@ -28,7 +26,7 @@ class ParRoleForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function loadData() {
-    // Set the user account that is being updated as a parameter for plugins to access
+    // Set the user account that is being updated as a parameter for plugins to access.
     $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
     $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
     $account = ParChooseAccount::getUserAccount($account_selection);
@@ -72,4 +70,5 @@ class ParRoleForm extends ParBaseForm {
 
     return parent::buildForm($form, $form_state);
   }
+
 }

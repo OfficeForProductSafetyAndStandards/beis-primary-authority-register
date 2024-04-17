@@ -124,7 +124,7 @@ class ParDataEnforcementAction extends ParDataEntity {
    * Get the notice that the action belongs to.
    *
    * @param bool $single
-   *   Whether to return an array or just a single entity
+   *   Whether to return an array or just a single entity.
    *
    * @return mixed|null
    */
@@ -232,9 +232,9 @@ class ParDataEnforcementAction extends ParDataEntity {
    * Block if this entity is can be blocked and is not new.
    *
    * @param string $authority_notes
-   *  primary authority notes submitted when the status is updated to blocked in the form.
+   *   primary authority notes submitted when the status is updated to blocked in the form.
    *
-   * @return boolean
+   * @return bool
    *   True if the entity was blocked, false for all other results.
    */
   public function block($authority_notes, $save = TRUE) {
@@ -273,11 +273,10 @@ class ParDataEnforcementAction extends ParDataEntity {
    * Refer an Action of an Enforcement notification.
    *
    * @param string $refer_notes
-   *  referral notes indicating the reason for the referral status update in the form.
+   *   referral notes indicating the reason for the referral status update in the form.
    *
-   * @return boolean
+   * @return bool
    *   True if the entity has been set to a referred state, false for all other results.
-   *
    */
   public function refer($refer_notes, $save = TRUE) {
     if ($this->isNew()) {
@@ -348,8 +347,8 @@ class ParDataEnforcementAction extends ParDataEntity {
   /**
    * Clone an enforcement notice action entity to support the referral process.
    *
-   * @return ParDataEnforcementAction|boolean
-   *  cloned action entity if a referral exists or NULL.
+   * @return ParDataEnforcementAction|bool
+   *   cloned action entity if a referral exists or NULL.
    */
   public function cloneAction($referral_authority_id) {
     if ($referral_authority_id) {

@@ -15,7 +15,6 @@ use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_application_flows\ParFlowAccessTrait;
-use Drupal\Core\Messenger\MessengerInterface;
 
 /**
  * The partnership form for the partnership details.
@@ -25,7 +24,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Check partnership information';
 
@@ -33,16 +34,16 @@ class ParConfirmationReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataOrganisation $par_data_organisation */
-    /** @var ParDataAuthority $par_data_authority */
-    /** @var ParDataPerson $primary_authority_contact */
-    /** @var ParDataPerson $organisation_contact */
-    /** @var ParDataPremises $par_data_premises */
-    /** @var Invite $invite */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority $par_data_authority */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $primary_authority_contact */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $organisation_contact */
+    /** @var \Drupal\par_data\Entity\ParDataPremises $par_data_premises */
+    /** @var \Drupal\invite\Entity\Invite $invite */
 
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
@@ -100,12 +101,12 @@ class ParConfirmationReviewForm extends ParBaseForm {
                 ->setText('Change this organisation')
                 ->toString(),
             ]),
-          ]
+          ],
         ];
         $form['partnership']['organisation']['organisation_registered_address'] = $this->renderEntities('Organisation address', [$par_data_premises], 'summary', [], TRUE);
 
         // Display contacts at the organisation.
-        $form['partnership']['organisation']['organisation_contact'] =  $this->renderEntities('Contact at the organisation', [$organisation_contact]);
+        $form['partnership']['organisation']['organisation_contact'] = $this->renderEntities('Contact at the organisation', [$organisation_contact]);
       }
 
       // Show the primary authority name.
@@ -128,7 +129,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
             '#markup' => $par_data_authority->label(),
             '#prefix' => '<div>',
             '#suffix' => '</div>',
-          ]
+          ],
         ];
 
         // Display the authority contacts for information.
@@ -204,16 +205,16 @@ class ParConfirmationReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataOrganisation $par_data_organisation */
-    /** @var ParDataAuthority $par_data_authority */
-    /** @var ParDataPerson $primary_authority_contact */
-    /** @var ParDataPerson $organisation_contact */
-    /** @var ParDataPremises $par_data_premises */
-    /** @var Invite $invite */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority $par_data_authority */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $primary_authority_contact */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $organisation_contact */
+    /** @var \Drupal\par_data\Entity\ParDataPremises $par_data_premises */
+    /** @var \Drupal\invite\Entity\Invite $invite */
 
     // Set the premises and contact information on organisation and partnership.
     if ($primary_authority_contact && $organisation_contact->save() && $par_data_premises->save()) {
@@ -248,7 +249,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     if ($par_data_partnership && $par_data_authority && $par_data_organisation) {
       $save = $par_data_partnership->save();
       if ($save && $invite instanceof Invite) {
-        // @TODO Make sure partnership notification isn't sent for users that don't have accounts.
+        // @todo Make sure partnership notification isn't sent for users that don't have accounts.
         $invite->save();
       }
     }
@@ -262,12 +263,15 @@ class ParConfirmationReviewForm extends ParBaseForm {
         ->error($message, $replacements);
 
       // If the partnership could not be saved the application can't be progressed.
-      // @TODO Find a better way to alert the user without redirecting them away from the form.
+      // @todo Find a better way to alert the user without redirecting them away from the form.
       $this->messenger()->addMessage('There was an error progressing your partnership, please contact the helpdesk for more information.');
       $form_state->setRedirectUrl($this->getFlowNegotiator()->getFlow()->progress('cancel'));
     }
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     // Load the Authority.
     $cid_authority_select = $this->getFlowNegotiator()->getFormKey('authority_select');
@@ -279,7 +283,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
 
     // Load an existing address if provided.
     $cid_organisation_select = $this->getFlowNegotiator()->getFormKey('organisation_select');
-    $existing_organisation = $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id','new', $cid_organisation_select);
+    $existing_organisation = $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', 'new', $cid_organisation_select);
     if (isset($existing_organisation) && $existing_organisation !== 'new'
       && $par_data_organisation = ParDataOrganisation::load($existing_organisation)) {
 
@@ -292,12 +296,12 @@ class ParConfirmationReviewForm extends ParBaseForm {
       $cid_organisation_name = $this->getFlowNegotiator()->getFormKey('organisation_name');
       $par_data_organisation = ParDataOrganisation::create([
         'type' => 'organisation',
-        'organisation_name' => $this->getFlowDataHandler()->getDefaultValues('name','', $cid_organisation_name),
+        'organisation_name' => $this->getFlowDataHandler()->getDefaultValues('name', '', $cid_organisation_name),
       ]);
     }
 
     $cid_organisation_address = $this->getFlowNegotiator()->getFormKey('organisation_address');
-    $nation = $this->getFlowDataHandler()->getDefaultValues('country','', $cid_organisation_address);
+    $nation = $this->getFlowDataHandler()->getDefaultValues('country', '', $cid_organisation_address);
     $par_data_organisation->setNation($nation);
     if (!isset($par_data_premises)) {
       $par_data_premises = ParDataPremises::create([
@@ -305,11 +309,11 @@ class ParConfirmationReviewForm extends ParBaseForm {
         'uid' => $this->getCurrentUser()->id(),
         'address' => [
           'country_code' => $this->getFlowDataHandler()->getDefaultValues('country_code', '', $cid_organisation_address),
-          'address_line1' => $this->getFlowDataHandler()->getDefaultValues('address_line1','', $cid_organisation_address),
-          'address_line2' => $this->getFlowDataHandler()->getDefaultValues('address_line2','', $cid_organisation_address),
-          'locality' => $this->getFlowDataHandler()->getDefaultValues('town_city','', $cid_organisation_address),
-          'administrative_area' => $this->getFlowDataHandler()->getDefaultValues('county','', $cid_organisation_address),
-          'postal_code' => $this->getFlowDataHandler()->getDefaultValues('postcode','', $cid_organisation_address),
+          'address_line1' => $this->getFlowDataHandler()->getDefaultValues('address_line1', '', $cid_organisation_address),
+          'address_line2' => $this->getFlowDataHandler()->getDefaultValues('address_line2', '', $cid_organisation_address),
+          'locality' => $this->getFlowDataHandler()->getDefaultValues('town_city', '', $cid_organisation_address),
+          'administrative_area' => $this->getFlowDataHandler()->getDefaultValues('county', '', $cid_organisation_address),
+          'postal_code' => $this->getFlowDataHandler()->getDefaultValues('postcode', '', $cid_organisation_address),
         ],
       ]);
       $par_data_premises->setNation($nation);
@@ -363,10 +367,12 @@ class ParConfirmationReviewForm extends ParBaseForm {
           $invitation_type = 'invite_enforcement_officer';
 
           break;
+
         case 'par_authority':
           $invitation_type = 'invite_authority_member';
 
           break;
+
         case 'par_organisation':
           $invitation_type = 'invite_organisation_member';
 
@@ -389,13 +395,13 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
 
     return [
-      'par_data_partnership' => isset($par_data_partnership) ? $par_data_partnership : NULL,
-      'par_data_organisation' => isset($par_data_organisation) ? $par_data_organisation : NULL,
-      'par_data_authority' => isset($par_data_authority) ? $par_data_authority : NULL,
-      'primary_authority_contact' => isset($primary_authority_contact) ? $primary_authority_contact : NULL,
-      'organisation_contact' => isset($organisation_contact) ? $organisation_contact : NULL,
-      'par_data_premises' => isset($par_data_premises) ? $par_data_premises : NULL,
-      'invite' => isset($invite) ? $invite : NULL,
+      'par_data_partnership' => $par_data_partnership ?? NULL,
+      'par_data_organisation' => $par_data_organisation ?? NULL,
+      'par_data_authority' => $par_data_authority ?? NULL,
+      'primary_authority_contact' => $primary_authority_contact ?? NULL,
+      'organisation_contact' => $organisation_contact ?? NULL,
+      'par_data_premises' => $par_data_premises ?? NULL,
+      'invite' => $invite ?? NULL,
     ];
   }
 

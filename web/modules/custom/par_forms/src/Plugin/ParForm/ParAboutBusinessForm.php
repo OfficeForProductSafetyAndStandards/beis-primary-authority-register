@@ -2,9 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Component\Utility\Html;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -22,8 +19,9 @@ class ParAboutBusinessForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['about_business', 'par_data_organisation', 'comments', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter a description for the business.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter a description for the business.',
+    ],
+    ],
   ];
 
   /**
@@ -52,4 +50,5 @@ class ParAboutBusinessForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

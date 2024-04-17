@@ -4,12 +4,12 @@ namespace Drupal\par_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParEventSubscriberBase;
 
+/**
+ *
+ */
 class NewEnforcementSubscriber extends ParEventSubscriberBase {
 
   /**
@@ -24,19 +24,19 @@ class NewEnforcementSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  public static function getSubscribedEvents() {
     $events[EntityEvents::insert('par_data_enforcement_notice')][] = ['onEvent', 800];
 
     return $events;
   }
 
   /**
-   * @param EntityEvent $event
+   * @param \Drupal\Core\Entity\EntityEvent $event
    */
   public function onEvent(EntityEvent $event) {
     $this->setEvent($event);
 
-    /** @var ParDataEnforcementNotice $entity */
+    /** @var \Drupal\par_data\Entity\ParDataEnforcementNotice $entity */
     $entity = $event->getEntity();
 
     // Only send messages for active deviation requests.

@@ -2,9 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -23,8 +21,9 @@ class ParPartnershipTypeForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['about_business', 'par_data_partnership', 'partnership_type', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'Please select the type of application.'
-    ]],
+      'You must fill in the missing information.' => 'Please select the type of application.',
+    ],
+    ],
   ];
 
   /**
@@ -41,6 +40,7 @@ class ParPartnershipTypeForm extends ParFormPluginBase {
           $application_type_descriptions[$key] = "For a partnership with a single business.";
 
           break;
+
         case 'coordinated':
           $application_type_descriptions[$key] = "For a partnership with a trade association or other organisation to provide advice to a group of businesses.";
 
@@ -72,7 +72,6 @@ class ParPartnershipTypeForm extends ParFormPluginBase {
       '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
-
     return $form;
   }
 
@@ -89,4 +88,5 @@ class ParPartnershipTypeForm extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

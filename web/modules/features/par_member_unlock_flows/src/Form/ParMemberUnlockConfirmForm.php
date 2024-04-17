@@ -3,10 +3,8 @@
 namespace Drupal\par_member_unlock_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
-use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_flows\ParDisplayTrait;
+use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_member_unlock_flows\ParFlowAccessTrait;
 
 /**
@@ -17,7 +15,9 @@ class ParMemberUnlockConfirmForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = "Membership Unlock";
 

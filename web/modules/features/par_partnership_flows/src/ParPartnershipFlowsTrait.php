@@ -11,7 +11,6 @@ use Drupal\user\Entity\User;
  * This trait MUST be used only on forms on controllers that
  * extend the par_flows base form and controller.
  */
-
 trait ParPartnershipFlowsTrait {
 
   /**

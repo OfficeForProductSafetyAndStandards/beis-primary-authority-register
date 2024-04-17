@@ -6,7 +6,6 @@ use Drupal\Core\Controller\ControllerBase;
 
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Routing\CurrentRouteMatch;
-use Drupal\message\Entity\Message;
 use Drupal\message\MessageInterface;
 use Drupal\par_notification\ParLinkManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -69,11 +68,12 @@ class ParLinkManagerController extends ControllerBase {
    * Process a received request with help from the link manager.
    */
   public function receive(Request $request, MessageInterface $message) {
-    // Disable page cache
+    // Disable page cache.
     $this->killSwitch->trigger();
 
     $response = $this->linkManager->receive($this->currentRoute, $message);
 
     return $response;
   }
+
 }

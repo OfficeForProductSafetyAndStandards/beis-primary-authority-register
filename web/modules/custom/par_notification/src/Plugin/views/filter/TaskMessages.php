@@ -13,6 +13,9 @@ use Drupal\views\Plugin\views\filter\FilterPluginBase;
  */
 class TaskMessages extends FilterPluginBase {
 
+  /**
+   *
+   */
   public function query() {
     // Ensure the base table.
     $this->ensureMyTable();
@@ -42,4 +45,5 @@ class TaskMessages extends FilterPluginBase {
       $this->query->addWhere($this->options['group'], $condition);
     }
   }
+
 }

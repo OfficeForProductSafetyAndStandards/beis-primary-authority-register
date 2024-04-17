@@ -2,27 +2,14 @@
 
 namespace Drupal\par_partnership_contact_update_flows\Form;
 
-use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
 use Drupal\invite\Entity\Invite;
 use Drupal\invite\InviteConstants;
 use Drupal\invite\InviteInterface;
-use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
-use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
 use Drupal\par_partnership_contact_update_flows\ParFlowAccessTrait;
-use Drupal\user\Entity\User;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * The form for the partnership details.
@@ -37,7 +24,7 @@ class ParReviewForm extends ParBaseForm {
   protected $pageTitle = 'Review contact information';
 
   /**
-   * @return DateFormatterInterface
+   * @return \Drupal\Core\Datetime\DateFormatterInterface
    */
   protected function getEntityTypeManager() {
     return \Drupal::service('entity_type.manager');
@@ -47,15 +34,15 @@ class ParReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function loadData() {
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataPerson $par_data_person */
-    /** @var User $account */
-    /** @var ParDataAuthority $par_data_authority */
-    /** @var ParDataOrganisation $par_data_organisation */
-    /** @var Invite $invite */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
+    /** @var \Drupal\user\Entity\User $account */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority $par_data_authority */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
+    /** @var \Drupal\invite\Entity\Invite $invite */
     $type = $this->getFlowDataHandler()->getParameter('type');
 
     if (isset($par_data_person)) {
@@ -97,7 +84,7 @@ class ParReviewForm extends ParBaseForm {
         '#title' => 'Name',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('full_name', '(none)'),
-        ]
+        ],
       ],
     ];
 
@@ -109,7 +96,7 @@ class ParReviewForm extends ParBaseForm {
         '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('email', '(none)'),
-        ]
+        ],
       ],
       'work_phone' => [
         '#type' => 'fieldset',
@@ -117,7 +104,7 @@ class ParReviewForm extends ParBaseForm {
         '#title' => 'Work phone',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('work_phone', '(none)'),
-        ]
+        ],
       ],
       'mobile_phone' => [
         '#type' => 'fieldset',
@@ -125,7 +112,7 @@ class ParReviewForm extends ParBaseForm {
         '#title' => 'Mobile phone',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('mobile_phone', '(none)'),
-        ]
+        ],
       ],
     ];
 
@@ -175,6 +162,9 @@ class ParReviewForm extends ParBaseForm {
     return parent::buildForm($form, $form_state);
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     $current_user = $this->getCurrentUser();
 
@@ -252,7 +242,7 @@ class ParReviewForm extends ParBaseForm {
           ->getStorage('invite')
           ->loadByProperties([
             'field_invite_email_address' => $email,
-            'status' => InviteConstants::INVITE_VALID
+            'status' => InviteConstants::INVITE_VALID,
           ]);
       }
 
@@ -276,7 +266,7 @@ class ParReviewForm extends ParBaseForm {
         $invite->setPlugin('invite_by_email');
       }
 
-      //@TODO If the email address has been updated we may also need to consider recinding
+      // @todo If the email address has been updated we may also need to consider recinding
       // invitations to the old email address (but only if it is not attached to another
       // par_data_person contact record).
     }
@@ -310,13 +300,13 @@ class ParReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataPerson $par_data_person */
-    /** @var User $account */
-    /** @var Invite $invite */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
+    /** @var \Drupal\user\Entity\User $account */
+    /** @var \Drupal\invite\Entity\Invite $invite */
     $type = $this->getFlowDataHandler()->getParameter('type');
 
     if ($par_data_person->save()) {

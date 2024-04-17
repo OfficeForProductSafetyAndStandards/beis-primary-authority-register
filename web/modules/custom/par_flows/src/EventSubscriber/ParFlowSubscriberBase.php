@@ -2,18 +2,11 @@
 
 namespace Drupal\par_flows\EventSubscriber;
 
-use Drupal\par_flows\Event\ParFlowEvents;
-use Drupal\par_flows\ParFlowException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\par_flows\Event\ParFlowEvent;
-use Drupal\par_flows\Event\ParFlowEventInterface;
-use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
-use Symfony\Component\Routing\Route;
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Url;
 
-
+/**
+ *
+ */
 abstract class ParFlowSubscriberBase implements EventSubscriberInterface {
 
   /**
@@ -29,5 +22,3 @@ abstract class ParFlowSubscriberBase implements EventSubscriberInterface {
   }
 
 }
-
-

@@ -2,8 +2,6 @@
 
 namespace Drupal\par_forms;
 
-use Drupal\par_data\ParDataManagerInterface;
-
 /**
  * A simple mapping between form element and entity property.
  */
@@ -52,7 +50,7 @@ class ParEntityMapping {
   }
 
   /**
-   * @return ParDataManagerInterface
+   * @return \Drupal\par_data\ParDataManagerInterface
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
@@ -97,7 +95,7 @@ class ParEntityMapping {
   /**
    * Get the field property for this mapping.
    *
-   * @return string|NULL
+   * @return string|null
    */
   public function getFieldProperty() {
     return $this->property;
@@ -118,6 +116,7 @@ class ParEntityMapping {
    * @return string
    */
   public function getErrorMessage($message) {
-    return isset($this->errorMessageOverrides[(string) $message]) ? $this->errorMessageOverrides[(string) $message] : $message;
+    return $this->errorMessageOverrides[(string) $message] ?? $message;
   }
+
 }

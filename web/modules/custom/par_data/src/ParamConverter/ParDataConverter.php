@@ -7,7 +7,9 @@ use Drupal\Core\ParamConverter\ParamConverterInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Symfony\Component\Routing\Route;
 
-
+/**
+ *
+ */
 class ParDataConverter implements ParamConverterInterface {
 
   /**
@@ -62,8 +64,11 @@ class ParDataConverter implements ParamConverterInterface {
     $this->settings = $config_factory->get('par_data.settings');
   }
 
+  /**
+   *
+   */
   public function __call($method, $args) {
-    return call_user_func_array(array($this->parent, $method), $args);
+    return call_user_func_array([$this->parent, $method], $args);
   }
 
   /**
@@ -86,7 +91,7 @@ class ParDataConverter implements ParamConverterInterface {
         $entity = !empty($entities) ? current($entities) : NULL;
       }
 
-      return isset($entity) ? $entity : NULL;
+      return $entity ?? NULL;
     }
     else {
       return $this->parent->convert($value, $definition, $name, $defaults);

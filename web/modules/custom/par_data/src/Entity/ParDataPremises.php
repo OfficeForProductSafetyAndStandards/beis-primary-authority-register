@@ -2,7 +2,6 @@
 
 namespace Drupal\par_data\Entity;
 
-use CommerceGuys\Addressing\AddressFormat\AddressField;
 use CommerceGuys\Addressing\Exception\UnknownCountryException;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -115,7 +114,8 @@ class ParDataPremises extends ParDataEntity {
         $address_country = $address_country_code ? $this->getCountryRepository()->get($address_country_code) : NULL;
 
         $country = $address_country ? $address_country->getName() : '';
-      } catch (UnknownCountryException $exception) {
+      }
+      catch (UnknownCountryException $exception) {
         $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
       }
     }
@@ -186,10 +186,10 @@ class ParDataPremises extends ParDataEntity {
         ],
         'langcode_override' => '',
       ])
-      ->setDisplayOptions('form', array(
+      ->setDisplayOptions('form', [
         'type' => 'address_default',
         'weight' => 1,
-      ))
+      ])
       ->setDisplayConfigurable('form', FALSE)
       ->setDisplayOptions('view', [
         'label' => 'hidden',

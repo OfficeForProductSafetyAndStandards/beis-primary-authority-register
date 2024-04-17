@@ -3,12 +3,12 @@
 namespace Drupal\par_subscriptions\Routing;
 
 use Drupal\Component\Utility\Html;
-use Drupal\par_subscriptions\ParSubscriptionManagerInterface;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\par_subscriptions\ParSubscriptionManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Defines dynamic routes.
@@ -43,20 +43,29 @@ class ParSubscriptionRoutes implements ContainerInjectionInterface {
   /**
    * {@inheritdoc}
    *
-   * new Route()...
-   * @param string       $path         The path pattern to match
-   * @param array        $defaults     An array of default parameter values
-   * @param array        $requirements An array of requirements for parameters (regexes)
-   * @param array        $options      An array of options
-   * @param string       $host         The host pattern to match
-   * @param string|array $schemes      A required URI scheme or an array of restricted schemes
-   * @param string|array $methods      A required HTTP method or an array of restricted methods
-   * @param string       $condition    A condition that should evaluate to true for the route to match
+   * New Route()...
+   *
+   * @param string $path
+   *   The path pattern to match.
+   * @param array $defaults
+   *   An array of default parameter values.
+   * @param array $requirements
+   *   An array of requirements for parameters (regexes)
+   * @param array $options
+   *   An array of options.
+   * @param string $host
+   *   The host pattern to match.
+   * @param string|array $schemes
+   *   A required URI scheme or an array of restricted schemes.
+   * @param string|array $methods
+   *   A required HTTP method or an array of restricted methods.
+   * @param string $condition
+   *   A condition that should evaluate to true for the route to match.
    */
   public function routes() {
     $route_collection = new RouteCollection();
 
-    foreach($this->getSubscriptionManager()->getLists() as $list) {
+    foreach ($this->getSubscriptionManager()->getLists() as $list) {
       $list_slug = Html::getClass($list);
 
       // Subscribe to a list.

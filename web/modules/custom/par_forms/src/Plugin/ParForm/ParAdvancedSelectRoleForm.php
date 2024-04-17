@@ -2,20 +2,15 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
-use Drupal\par_roles\ParRoleException;
 use Drupal\par_roles\ParRoleManager;
 use Drupal\par_roles\ParRoleManagerInterface;
 use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Role selection form plugin.
@@ -97,17 +92,17 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
         // Only process this role if memberships have been assigned at a previous step.
         if (!empty($assigned_membership_ids) &&
           !empty($assigned_membership_ids[$institution_type])) {
-            $institution_roles[$institution_type][$rid] = $role?->label();
+          $institution_roles[$institution_type][$rid] = $role?->label();
         }
         // Or if the user has memberships to this institution type.
         if (empty($assigned_membership_ids) && $account instanceof UserInterface &&
           $this->getParRoleManager()->hasInstitutions($account, $institution_type)) {
-            $institution_roles[$institution_type][$rid] = $role?->label();
+          $institution_roles[$institution_type][$rid] = $role?->label();
         }
         // Or if the person has memberships to this institution type.
-        else if (empty($assigned_membership_ids) && !$account && $par_data_person instanceof ParDataPersonInterface &&
+        elseif (empty($assigned_membership_ids) && !$account && $par_data_person instanceof ParDataPersonInterface &&
           $par_data_person->hasInstitutions($institution_type)) {
-            $institution_roles[$institution_type][$rid] = $role?->label();
+          $institution_roles[$institution_type][$rid] = $role?->label();
         }
       }
       // If the role is a general role.
@@ -152,12 +147,11 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
     // Get all the allowed authorities.
     $all_role_options = $this->getFlowDataHandler()->getFormPermValue('all_roles_options');
 
-
     if (empty($all_role_options)) {
       $form['intro'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => 'You do not have permission to assign any roles to this user.'
+        '#value' => 'You do not have permission to assign any roles to this user.',
       ];
     }
     else {
@@ -279,4 +273,5 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

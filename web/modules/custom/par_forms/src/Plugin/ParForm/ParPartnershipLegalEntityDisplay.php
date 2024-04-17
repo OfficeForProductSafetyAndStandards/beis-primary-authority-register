@@ -2,18 +2,9 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 use Drupal\registered_organisations\DataException;
 use Drupal\registered_organisations\RegisterException;
@@ -38,7 +29,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function loadData(int $index = 1): void {
-    /* @var ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     if ($par_data_partnership instanceof ParDataEntityInterface) {
@@ -54,9 +45,9 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function getElements(array $form = [], int $index = 1) {
-    /* @var ParDataPartnership $partnership */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $partnership */
     $partnership = $this->getDefaultValuesByKey('partnership', $index, []);
-    /* @var ParDataPartnershipLegalEntity[] $partnership_legal_entities */
+    /** @var \Drupal\par_data\Entity\ParDataPartnershipLegalEntity[] $partnership_legal_entities */
     $partnership_legal_entities = $this->getDefaultValuesByKey('partnership_legal_entities', $index, []);
 
     // Get the unique pager for this component.
@@ -75,7 +66,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     try {
       $link_label = !empty($partnership_legal_entities) && count($partnership_legal_entities) >= 1
         ? "Add another legal entity" : "Add a legal entity";
-      $link_options = [ 'attributes' => ['class' => ['add-action']] ];
+      $link_options = ['attributes' => ['class' => ['add-action']]];
       $link = $this->getFlowNegotiator()->getFlow()
         ->getOperationLink('add_legal_entity', $link_label, $route_params, $link_options);
       if ($link instanceof Link) {
@@ -87,7 +78,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     }
     // Generate the partnership amendment link for active partnerships.
     try {
-      $link_options = [ 'attributes' => ['class' => ['amend-partnership-action']] ];
+      $link_options = ['attributes' => ['class' => ['amend-partnership-action']]];
       $link = $this->getFlowNegotiator()->getFlow('amend_partnership')
         ->getStartLink(1, "Amend the legal entities", $route_params, $link_options);
       if ($link instanceof Link) {
@@ -99,7 +90,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     }
     // Generate the partnership amendment confirmation link for active partnerships.
     try {
-      $link_options = [ 'attributes' => ['class' => ['confirm-amendment-action']] ];
+      $link_options = ['attributes' => ['class' => ['confirm-amendment-action']]];
       $link = $this->getFlowNegotiator()->getFlow('confirm_partnership_amendment')
         ->getStartLink(1, "Confirm the amendments", $route_params, $link_options);
       if ($link instanceof Link) {
@@ -111,7 +102,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
     }
     // Generate the partnership amendment nomination link for active partnerships.
     try {
-      $link_options = [ 'attributes' => ['class' => ['nominate-amendment-action']] ];
+      $link_options = ['attributes' => ['class' => ['nominate-amendment-action']]];
       $link = $this->getFlowNegotiator()->getFlow('nominate_partnership_amendment')
         ->getStartLink(1, "Nominate the amendments", $route_params, $link_options);
       if ($link instanceof Link) {
@@ -145,13 +136,13 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       'actions' => [
         '#theme' => 'item_list',
         '#attributes' => ['class' => ['govuk-list']],
-        '#weight' => 99
+        '#weight' => 99,
       ],
     ];
 
     // Render all the component action links as a list.
     foreach ($actions as $key => $action) {
-      /** @var Link $action */
+      /** @var \Drupal\Core\Link $action */
       $form['partnership_legal_entities']['actions']['#items'][$key] = [
         '#type' => 'link',
         '#title' => $action->getText(),
@@ -188,7 +179,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       // Get the actual legal entity instance.
       $legal_entity = $partnership_legal_entity->getLegalEntity();
 
-      // @TODO Remove updateLegacyEntities() once the majority of legacy legal entities are updated.
+      // @todo Remove updateLegacyEntities() once the majority of legacy legal entities are updated.
       if ($legal_entity?->isLegacyEntity()) {
         try {
           $updated = $legal_entity->updateLegacyEntities();
@@ -196,7 +187,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
             $legal_entity->save();
           }
         }
-        catch (RegisterException|TemporaryException|DataException $ignored) {
+        catch (RegisterException | TemporaryException | DataException $ignored) {
           // Catch all errors silently.
         }
       }
@@ -291,13 +282,13 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         '#value' => $this->t($status_message, [
           '@status' => $status,
           '@start' => $start,
-          '@end' => $end
+          '@end' => $end,
         ]),
       ];
     }
 
     // Only show the operations column if user has access to modify the legal entities.
-    if (!empty($legal_entity_actions) && array_search('Actions', $headers) === false) {
+    if (!empty($legal_entity_actions) && array_search('Actions', $headers) === FALSE) {
       $headers[3] = 'Actions';
     }
 
@@ -341,4 +332,5 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }
+
 }

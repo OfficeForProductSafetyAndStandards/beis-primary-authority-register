@@ -2,8 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -97,7 +95,7 @@ limited company or partnership, as well as other types of organisations such as 
             '#value' => $this->t('Warning'),
             '#attributes' => ['class' => ['govuk-warning-text__assistive']],
           ],
-        ]
+        ],
       ];
     }
 

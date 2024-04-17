@@ -3,13 +3,10 @@
 namespace Drupal\par_notification;
 
 use Drupal\Component\Plugin\PluginBase;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
-use Drupal\par_data\ParDataManagerInterface;
-use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -92,7 +89,7 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
   /**
    * Simple getter to access the current user.
    *
-   * @return AccountInterface
+   * @return \Drupal\Core\Session\AccountInterface
    */
   public function getUser(): AccountInterface {
     return $this->user;

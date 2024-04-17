@@ -3,15 +3,18 @@
 namespace Drupal\par_member_add_flows\Controller;
 
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Controller\ParBaseController;
-use Drupal\par_member_add_flows\ParPartnershipFlowsTrait;
 
 /**
  * A controller for displaying the member confirmation.
  */
 class ParMembershipConfirmedController extends ParBaseController {
 
+  /**
+   * Sets the page title.
+   *
+   * @var pageTitle
+   */
   protected $pageTitle = 'Member added';
 
   /**

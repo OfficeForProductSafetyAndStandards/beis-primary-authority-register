@@ -6,12 +6,14 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
-use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\Core\TempStore\PrivateTempStore;
+use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_forms\ParFormPluginInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
+/**
+ *
+ */
 class ParFlowDataHandler implements ParFlowDataHandlerInterface {
 
   const TEMP_PREFIX = 't:';
@@ -23,28 +25,28 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * The PAR Flow Negotiator.
    *
-   * @var ParFlowNegotiatorInterface $negotiator
+   * @var ParFlowNegotiatorInterface
    */
   public ParFlowNegotiatorInterface $negotiator;
 
   /**
    * The PAR data manager for acting upon PAR Data.
    *
-   * @var ParDataManagerInterface $parDataManager
+   * @var \Drupal\par_data\ParDataManagerInterface
    */
   protected ParDataManagerInterface $parDataManager;
 
   /**
    * The PAR data manager for acting upon PAR Data.
    *
-   * @var SessionManagerInterface $sessionManager
+   * @var \Drupal\Core\Session\SessionManagerInterface
    */
   protected SessionManagerInterface $sessionManager;
 
   /**
    * The current user account.
    *
-   * @var AccountInterface $account
+   * @var \Drupal\Core\Session\AccountInterface
    */
   protected AccountInterface $account;
 
@@ -53,7 +55,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    *
    * Each key (form) will last 1 week since it was last updated.
    *
-   * @var PrivateTempStore $store
+   * @var \Drupal\Core\TempStore\PrivateTempStore
    */
   protected PrivateTempStore $store;
 
@@ -63,36 +65,36 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    * Enables route variables to be fetched, but also overridden
    * by the implementing form/controller.
    *
-   * @var array|ParameterBag $parameters
+   * @var array|ParameterBag
    */
   protected iterable $parameters = [];
 
   /**
    * The raw data parameters.
    *
-   * @var array|ParameterBag $parameters
+   * @var array|ParameterBag
    */
   protected iterable $rawParameters = [];
 
   /**
    * Caches data loaded from the permanent store.
    *
-   * @var array $data
+   * @var array
    */
   protected array $data = [];
 
   /**
    * Constructs a ParFlowDataHandler instance.
    *
-   * @param PrivateTempStoreFactory $temp_store_factory
+   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
    *   The private temporary store.
    * @param ParFlowNegotiatorInterface $negotiator
    *   The flow negotiator.
-   * @param ParDataManagerInterface $par_data_manager
+   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
    *   The par data manager.
-   * @param SessionManagerInterface $session_manager
+   * @param \Drupal\Core\Session\SessionManagerInterface $session_manager
    *   The session manager.
-   * @param AccountInterface $current_user
+   * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The entity bundle info service.
    */
   public function __construct(PrivateTempStoreFactory $temp_store_factory, ParFlowNegotiatorInterface $negotiator, ParDataManagerInterface $par_data_manager, SessionManagerInterface $session_manager, AccountInterface $current_user) {
@@ -437,6 +439,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    *
    * This is a copy of NestedArray::filter() with the changes made to filter
    * multidimensional arrays correctly.
+   *
    * @see https://www.drupal.org/project/drupal/issues/3381640
    *
    * @param array $array
@@ -463,7 +466,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    *
    * Values that should be treated as empty:
    * - NULL
-   * - "" or empty strings
+   * - "" or empty strings.
    *
    * Values that should not be treated as empty:
    * - False
@@ -477,4 +480,5 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
     // Exclude bool and numeric values from the filtering.
     return !empty($value) || is_numeric($value) || is_bool($value);
   }
+
 }

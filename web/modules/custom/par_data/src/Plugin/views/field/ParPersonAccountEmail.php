@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\d8views\Plugin\views\field\NodeTypeFlagger
- */
-
 namespace Drupal\par_data\Plugin\views\field;
 
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\user\UserInterface;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
@@ -50,4 +44,5 @@ class ParPersonAccountEmail extends FieldPluginBase {
       return $account instanceof UserInterface ? strtolower($account->getEmail()) : strtolower($entity->getEmail());
     }
   }
+
 }

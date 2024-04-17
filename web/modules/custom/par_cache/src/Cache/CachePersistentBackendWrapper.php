@@ -42,7 +42,7 @@ class CachePersistentBackendWrapper implements CacheBackendInterface, CacheTagsI
    * Call any missing methods on the decorated service.
    */
   public function __call($method, $args) {
-    return call_user_func_array(array($this->cacheBackend, $method), $args);
+    return call_user_func_array([$this->cacheBackend, $method], $args);
   }
 
   /**

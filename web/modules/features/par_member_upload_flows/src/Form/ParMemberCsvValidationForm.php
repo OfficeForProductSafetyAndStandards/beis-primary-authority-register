@@ -9,8 +9,6 @@ use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
-use Drupal\par_member_upload_flows\ParMemberCsvHandler;
-use Drupal\par_member_upload_flows\ParMemberCsvHandlerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -21,12 +19,14 @@ class ParMemberCsvValidationForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'CSV validation errors';
 
   /**
-   * @return ParMemberCsvHandlerInterface
+   * @return \Drupal\par_member_upload_flows\ParMemberCsvHandlerInterface
    */
   public function getCsvHandler() {
     return \Drupal::service('par_member_upload_flows.csv_handler');
@@ -67,7 +67,7 @@ class ParMemberCsvValidationForm extends ParBaseForm {
       '#description' => $this->t('You can read more about preparing a CSV file on the %guidance. If you need assistance please contact pa@beis.gov.uk', ['%guidance' => $guidance_link->toString()]),
       '#attributes' => [
         'class' => ['govuk-form-group'],
-      ]
+      ],
     ];
 
     // Add the errors to the table rows.
@@ -117,7 +117,7 @@ class ParMemberCsvValidationForm extends ParBaseForm {
         '#config' => [
           'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
         ],
-      ]
+      ],
     ];
 
     // Add the items for our current page to the fieldset.
@@ -135,7 +135,7 @@ class ParMemberCsvValidationForm extends ParBaseForm {
       $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Continue with upload');
     }
     // Otherwise, require the csv to be re-uploaded.
-    else if ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
+    elseif ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
       $form['actions']['done']['#value'] = 'Re-upload';
       $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Re-upload');
     }

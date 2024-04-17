@@ -3,14 +3,9 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Entity\Element\EntityAutocomplete;
-use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_forms\Controller\ParAutocompleteController;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
-use Drupal\user\Entity\User;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Advanced selection mechanism for authorities.
@@ -26,7 +21,7 @@ class ParAdvancedAuthoritySelectForm extends ParFormPluginBase {
    * {@inheritdoc}
    */
   public function loadData(int $index = 1): void {
-    // Determine the selection mechanism based
+    // Determine the selection mechanism based.
     if ($this->getFlowDataHandler()->getCurrentUser()->hasPermission('bypass par_data membership')) {
       $selection_mechanism = 'autocomplete';
     }
@@ -53,13 +48,12 @@ class ParAdvancedAuthoritySelectForm extends ParFormPluginBase {
       ],
     ];
 
-//      $form['intro'] = [
-//        '#type' => 'markup',
-//        '#markup' => "There are no authorities to choose from.",
-//        '#prefix' => '<p class=""form-group">',
-//        '#suffix' => '</p>',
-//      ];
-
+    // $form['intro'] = [
+    //        '#type' => 'markup',
+    //        '#markup' => "There are no authorities to choose from.",
+    //        '#prefix' => '<p class=""form-group">',
+    //        '#suffix' => '</p>',
+    //      ];
     return $form;
   }
 
@@ -82,4 +76,5 @@ class ParAdvancedAuthoritySelectForm extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

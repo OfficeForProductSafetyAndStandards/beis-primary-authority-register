@@ -90,7 +90,7 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
   /**
    * Get message template storage.
    *
-   * @return EntityStorageInterface
+   * @return \Drupal\Core\Entity\EntityStorageInterface
    *   The entity storage for message template (bundle) entities.
    */
   public function getMessageTemplateStorage(): EntityStorageInterface {
@@ -100,7 +100,7 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
   /**
    * Get the current user.
    *
-   * @return AccountInterface
+   * @return \Drupal\Core\Session\AccountInterface
    *   The current user.
    */
   public function getCurrentUser(): AccountInterface {
@@ -151,10 +151,11 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
       }
     }
 
-    if (!empty($definitions))
+    if (!empty($definitions)) {
       usort($definitions, function ($a, $b) {
         return $a['weight'] <=> $b['weight'];
-      });{
+      });
+    }{
     }
 
     return $definitions;
@@ -163,7 +164,7 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
   /**
    * Get only the enabled rules that applies to this notification.
    *
-   * @param MessageTemplateInterface $notification_type
+   * @param \Drupal\message\MessageTemplateInterface $notification_type
    *   The message template id (the message bundle).
    *
    * @return array
@@ -183,7 +184,7 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
   /**
    * Get messages types that can contain tasks.
    *
-   * @return MessageTemplateInterface[]
+   * @return \Drupal\message\MessageTemplateInterface[]
    *   An array of message templates that contain tasks.
    */
   public function getTaskTemplates(): array {

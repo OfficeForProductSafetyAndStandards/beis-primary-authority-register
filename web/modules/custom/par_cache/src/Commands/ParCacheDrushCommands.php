@@ -3,10 +3,7 @@
 namespace Drupal\par_cache\Commands;
 
 use Drupal\Core\Cache\CacheFactoryInterface;
-use Drupal\Core\Cache\Cache;
 use Drush\Commands\DrushCommands;
-use Drush\Exceptions\UserAbortException;
-
 
 /**
  * Drush commands for PAR Caches.
@@ -37,8 +34,11 @@ class ParCacheCommands extends DrushCommands {
     $this->cacheFactory = $cache_factory;
   }
 
+  /**
+   *
+   */
   public static function create(ContainerInterface $container, DrushContainer $drush): self {
-      return new static(
+    return new static(
         $container->get('par_cache.persistent.cache_factory')
       );
   }

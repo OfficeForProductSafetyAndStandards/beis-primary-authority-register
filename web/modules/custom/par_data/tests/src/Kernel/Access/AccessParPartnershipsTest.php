@@ -2,17 +2,12 @@
 
 namespace Drupal\Tests\par_data\Kernel\Access;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataAuthorityType;
 use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPremises;
-use Drupal\par_data\ParDataManagerInterface;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
-use Drupal\user\Entity\User;
-use Drupal\Core\Cache\Cache;
 
 /**
  * Tests PAR Authority entity.
@@ -21,11 +16,13 @@ use Drupal\Core\Cache\Cache;
  */
 class AccessParPartnershipsTest extends ParDataTestBase {
 
-  /** @var  ParDataManagerInterface */
+  /**
+   * @var  \Drupal\par_data\ParDataManagerInterface */
   protected $parDataManager;
 
   protected $email = 'test@example.com';
-  /** @var  User */
+  /**
+   * @var  \Drupal\user\Entity\User */
   protected $membershipUser;
 
   protected $partnerships = [];
@@ -52,7 +49,7 @@ class AccessParPartnershipsTest extends ParDataTestBase {
    */
   public function testPatnershipMembership() {
     // Create 20 partnerships.
-    for ($i=0; $i < 20; $i++) {
+    for ($i = 0; $i < 20; $i++) {
       $partnership_values = [
         'name' => "Partnership $i",
       ];
@@ -65,10 +62,10 @@ class AccessParPartnershipsTest extends ParDataTestBase {
       }
       else {
         $this->people[$i] = ParDataPerson::create([
-            'name' => "Person $i",
-            'email' => $this->email,
-            'field_user_account' => [$this->membershipUser->id()]
-          ] + $this->getPersonValues()
+          'name' => "Person $i",
+          'email' => $this->email,
+          'field_user_account' => [$this->membershipUser->id()],
+        ] + $this->getPersonValues()
         );
         $this->people[$i]->save();
       }
@@ -140,4 +137,5 @@ class AccessParPartnershipsTest extends ParDataTestBase {
       }
     }
   }
+
 }

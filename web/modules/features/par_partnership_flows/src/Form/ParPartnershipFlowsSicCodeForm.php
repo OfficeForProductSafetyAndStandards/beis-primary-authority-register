@@ -66,7 +66,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
 
     $options = [];
     // Get the list of valid sic codes.
-    // @TODO This kinda logic shouldn't be in this form. Let's create a method to do this mapping.
+    // @todo This kinda logic shouldn't be in this form. Let's create a method to do this mapping.
     $sic_codes = $this->parDataManager->getEntitiesByType('par_data_sic_code');
     foreach ($sic_codes as $sic_code) {
       $options[$sic_code->id()] = $sic_code->label();
@@ -107,7 +107,8 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
 
     if ($par_data_organisation->save()) {
       $this->getFlowDataHandler()->deleteStore();
-    } else {
+    }
+    else {
       $message = $this->t('This %field could not be saved for %form_id');
       $replacements = [
         '%field' => $this->getFlowDataHandler()->getTempDataValue('trading_name'),

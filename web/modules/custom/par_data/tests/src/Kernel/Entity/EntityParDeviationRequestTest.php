@@ -2,11 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataDeviationRequest;
-use Drupal\par_data\Entity\ParDataDeviationRequestType;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -59,4 +55,5 @@ class EntityParDeviationRequestTest extends ParDataTestBase {
     $entity = ParDataDeviationRequest::create($this->getDeviationRequestValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'Par Deviation Request entity saved correctly.');
   }
+
 }

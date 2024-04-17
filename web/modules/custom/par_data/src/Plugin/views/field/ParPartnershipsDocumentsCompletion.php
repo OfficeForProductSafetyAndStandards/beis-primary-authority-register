@@ -1,17 +1,11 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\par_data\Plugin\views\field\ParPartnershipsDocumentsCompletion
- */
-
 namespace Drupal\par_data\Plugin\views\field;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
-
-use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Field handler to get the PAR Data status.
@@ -22,7 +16,8 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class ParPartnershipsDocumentsCompletion extends FieldPluginBase {
 
-  /*
+  /**
+   *
    * @{inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
@@ -59,7 +54,7 @@ class ParPartnershipsDocumentsCompletion extends FieldPluginBase {
   /**
    * @{inheritdoc}
    *
-   * @param ResultRow $values
+   * @param \Drupal\views\ResultRow $values
    *
    * @return string $documentation_completion
    */
@@ -81,4 +76,5 @@ class ParPartnershipsDocumentsCompletion extends FieldPluginBase {
 
     }
   }
+
 }

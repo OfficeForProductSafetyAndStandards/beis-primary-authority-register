@@ -4,7 +4,6 @@ namespace Drupal\par_data\Entity;
 
 /**
  * The interface for the base PAR entity type class.
- *
  */
 interface ParDataTypeInterface {
 
@@ -50,10 +49,10 @@ interface ParDataTypeInterface {
   /**
    * Get the fields required to complete this entity.
    *
-   * @param boolean $include_required
+   * @param bool $include_required
    *   Whether to automatically include required fields.
    *
-   * @return NULL|mixed[]
+   * @return null|mixed[]
    *   An array of field names.
    */
   public function getCompletionFields($include_required);

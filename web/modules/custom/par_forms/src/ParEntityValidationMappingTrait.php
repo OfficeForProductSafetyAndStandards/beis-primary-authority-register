@@ -3,27 +3,26 @@
 namespace Drupal\par_forms;
 
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Routing\RouteProvider;
 use Drupal\Core\Url;
-use Drupal\par_data\ParDataManagerInterface;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
+/**
+ *
+ */
 trait ParEntityValidationMappingTrait {
 
   /**
-   * @return ParDataManagerInterface
+   * @return \Drupal\par_data\ParDataManagerInterface
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
   }
 
   /**
-   * @return Serializer
+   * @return \Symfony\Component\Serializer\Serializer
    */
   public function getSerializer() {
     return \Drupal::service('serializer');
@@ -40,7 +39,7 @@ trait ParEntityValidationMappingTrait {
       try {
         $mappings[] = new ParEntityMapping(...$mapping);
       }
-      catch(\TypeError $e) {
+      catch (\TypeError $e) {
         $this->getLogger($this->getLoggerChannel())->critical('An error occurred trying to create entity validation mapping for: @mapping `@details`', ['@mapping' => $this->getSerializer()->serialize($mapping, 'json'), '@details' => $e->getMessage()]);
       }
     }
@@ -73,20 +72,20 @@ trait ParEntityValidationMappingTrait {
   /**
    * A helper function to get the element based on the entity path.
    *
-   * @param ConstraintViolationInterface $violation
+   * @param \Symfony\Component\Validator\ConstraintViolationInterface $violation
    *
    * @return ParEntityMapping
    *   The map that relates to this violation.
    */
   public function getElementByViolation($violation) {
     $matched = array_filter($this->getEntityMappings(), function ($mapping) use ($violation) {
-      /** @var $mapping ParEntityMapping */
+      /** @var ParEntityMapping $mapping */
       if ($violation->getRoot() instanceof EntityAdapter) {
-        @list($field_name, $delta, $property) = explode('.', $violation->getPropertyPath(), 3);
+        @[$field_name, $delta, $property] = explode('.', $violation->getPropertyPath(), 3);
       }
       elseif ($violation->getRoot() instanceof FieldItemListInterface) {
         $field_name = $violation->getRoot()->getName();
-        @list($delta, $property) = explode('.', $violation->getPropertyPath(), 3);
+        @[$delta, $property] = explode('.', $violation->getPropertyPath(), 3);
       }
 
       return (isset($field_name) && $mapping->getFieldName() === $field_name
@@ -100,7 +99,7 @@ trait ParEntityValidationMappingTrait {
   /**
    * Get the error message from a violation and wrap it accordingly.
    *
-   * @param ConstraintViolationInterface $violation
+   * @param \Symfony\Component\Validator\ConstraintViolationInterface $violation
    *   The violation to display.
    * @param ParEntityMapping $mapping
    *   The mapping that handles the display of this error.
@@ -162,6 +161,9 @@ trait ParEntityValidationMappingTrait {
     }
   }
 
+  /**
+   *
+   */
   public function createMappedEntities() {
     $entities = [];
 
@@ -175,6 +177,9 @@ trait ParEntityValidationMappingTrait {
     return $entities;
   }
 
+  /**
+   *
+   */
   public function createMappedEntity($type, $bundle) {
     $entity_class = $this->getParDataManager()->getParEntityType($type)->getClass();
     return $entity_class::create([
@@ -200,7 +205,7 @@ trait ParEntityValidationMappingTrait {
   /**
    * Get's the element name depending on the cardinality of this plugin.
    *
-   * E.g. par_component_name][0][element_name
+   * E.g. par_component_name][0][element_name.
    *
    * @param $element
    *   The element key.
@@ -227,7 +232,7 @@ trait ParEntityValidationMappingTrait {
    */
   public function getTargetName($element) {
     $element = (array) $element;
-    for ($i=0; $i < count($element); $i++) {
+    for ($i = 0; $i < count($element); $i++) {
       if ($i === 0) {
         $name = $element[$i];
       }

@@ -2,13 +2,10 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Url;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 use Drupal\par_forms\ParSummaryListInterface;
@@ -35,8 +32,9 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
    */
   protected array $entityMapping = [
     ['registry', 'par_data_legal_entity', 'registry', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must choose the type of legal entity.'
-    ]],
+      'This value should not be null.' => 'You must choose the type of legal entity.',
+    ],
+    ],
   ];
 
   /**
@@ -71,7 +69,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
         case 'companies_house':
         case 'charity_commission':
 
-          $this->setDefaultValuesByKey(['registered','legal_entity_number'], $index, $par_data_legal_entity->getRegisteredNumber());
+          $this->setDefaultValuesByKey(['registered', 'legal_entity_number'], $index, $par_data_legal_entity->getRegisteredNumber());
           break;
 
         case ParDataLegalEntity::DEFAULT_REGISTER:
@@ -79,11 +77,11 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
           if (in_array($par_data_legal_entity->getType(), $unregistered_types)) {
             $this->setDefaultValuesByKey(['unregistered', 'legal_entity_type'], $index, $par_data_legal_entity->getType());
           }
-          $this->setDefaultValuesByKey(['unregistered','legal_entity_name'], $index, $par_data_legal_entity->getName());
+          $this->setDefaultValuesByKey(['unregistered', 'legal_entity_name'], $index, $par_data_legal_entity->getName());
           break;
 
         default:
-          $this->setDefaultValuesByKey(['registered','legal_entity_number'], $index, $par_data_legal_entity->getRegisteredNumber());
+          $this->setDefaultValuesByKey(['registered', 'legal_entity_number'], $index, $par_data_legal_entity->getRegisteredNumber());
 
       }
     }
@@ -126,7 +124,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       (empty($name) || empty($type))) {
       NestedArray::unsetValue($item, $registry_key);
     }
-    else if (in_array($registry, ['companies_house', 'charity_commission']) &&
+    elseif (in_array($registry, ['companies_house', 'charity_commission']) &&
       empty($number)) {
       NestedArray::unsetValue($item, $registry_key);
     }
@@ -175,10 +173,10 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
 
       // Turn the data into a legal entity.
       $values = [
-        'registry' => $this->getDefaultValuesByKey(['registry'], $index,  ParDataLegalEntity::DEFAULT_REGISTER),
-        'registered_name' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_name'], $index,  ''),
-        'registered_number' => trim($this->getDefaultValuesByKey(['registered', 'legal_entity_number'], $index,  '')),
-        'legal_entity_type' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_type'], $index,  ''),
+        'registry' => $this->getDefaultValuesByKey(['registry'], $index, ParDataLegalEntity::DEFAULT_REGISTER),
+        'registered_name' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_name'], $index, ''),
+        'registered_number' => trim($this->getDefaultValuesByKey(['registered', 'legal_entity_number'], $index, '')),
+        'legal_entity_type' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_type'], $index, ''),
       ];
       $legal_entity = ParDataLegalEntity::create($values);
       // Lookup the correct values for registered entities.
@@ -262,7 +260,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
             '#value' => $this->t('Warning'),
             '#attributes' => ['class' => ['govuk-warning-text__assistive']],
           ],
-        ]
+        ],
       ];
     }
 
@@ -273,7 +271,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       '#description' => $this->t("A legal entity is any kind of individual or organisation that has legal standing. This can include a limited company or partnership, as well as other types of organisations such as trusts and charities."),
       '#options' => $registry_options,
       '#options_descriptions' => $registry_options_descriptions,
-      '#default_value' => $this->getDefaultValuesByKey('registry', $index, ),
+      '#default_value' => $this->getDefaultValuesByKey('registry', $index,),
       '#after_build' => [
         [get_class($this), 'optionsDescriptions'],
       ],
@@ -374,9 +372,9 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     }
 
     if ($register_id === ParDataLegalEntity::DEFAULT_REGISTER) {
-      $type_element = $this->getElement($form, ['unregistered','legal_entity_type'], $index);
+      $type_element = $this->getElement($form, ['unregistered', 'legal_entity_type'], $index);
       $legal_entity_type = $type_element ? $form_state->getValue($type_element['#parents']) : NULL;
-      $name_element = $this->getElement($form, ['unregistered','legal_entity_name'], $index);
+      $name_element = $this->getElement($form, ['unregistered', 'legal_entity_name'], $index);
       $legal_entity_name = $name_element ? trim((string) $form_state->getValue($name_element['#parents'])) : NULL;
 
       if (empty($legal_entity_type)) {
@@ -392,7 +390,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       // Check that this legal entity isn't already used by another item.
       if (isset($existing_data)) {
         foreach ($existing_data as $item) {
-          $item_name = NestedArray::getValue($item, ['unregistered','legal_entity_name']);
+          $item_name = NestedArray::getValue($item, ['unregistered', 'legal_entity_name']);
           $item_name = trim((string) $item_name);
           if ($legal_entity_name === $item_name) {
             $message = 'This legal entity has already been added.';
@@ -404,9 +402,9 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       // Validate additional rules.
       parent::validate($form, $form_state, $index, $action);
     }
-    else if (in_array($register_id, ['companies_house', 'charity_commission'])) {
+    elseif (in_array($register_id, ['companies_house', 'charity_commission'])) {
       // Get the legal entity number to look up.
-      $number_element = $this->getElement($form, ['registered','legal_entity_number'], $index);
+      $number_element = $this->getElement($form, ['registered', 'legal_entity_number'], $index);
       $legal_entity_number = $number_element ? trim((string) $form_state->getValue($number_element['#parents'])) : NULL;
 
       if (empty($legal_entity_number)) {
@@ -444,7 +442,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       // Check that this legal entity isn't already used by another item.
       if (isset($existing_data)) {
         foreach ($existing_data as $item) {
-          $item_number = NestedArray::getValue($item, ['registered','legal_entity_number']);
+          $item_number = NestedArray::getValue($item, ['registered', 'legal_entity_number']);
           $item_number = trim((string) $item_number);
           if ($legal_entity_number === $item_number) {
             $message = 'This legal entity has already been added.';
@@ -456,7 +454,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       // Validate additional rules if a profile was found.
       parent::validate($form, $form_state, $index, $action);
     }
-    else if ($registry_element) {
+    elseif ($registry_element) {
       $message = 'Please choose whether this is a registered or unregistered legal entity.';
       $this->setError($form, $form_state, $registry_element, $message);
     }

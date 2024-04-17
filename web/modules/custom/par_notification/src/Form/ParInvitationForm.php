@@ -2,14 +2,11 @@
 
 namespace Drupal\par_notification\Form;
 
+use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\invite\Entity\Invite;
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataPersonInterface;
-use Drupal\user\Entity\User;
-use Drupal\Core\Form\FormBase;
-use Drupal\login_destination\Entity\LoginDestination;
-use Drupal\Core\Url;
 
 /**
  * The invitation form for new users.
@@ -25,7 +22,7 @@ class ParInvitationForm extends FormBase {
     'field_deviation_request',
     'field_general_enquiry',
     'field_inspection_feedback',
-    'field_inspection_plan'
+    'field_inspection_plan',
   ];
 
   /**
@@ -35,6 +32,9 @@ class ParInvitationForm extends FormBase {
     return 'par_notification_invite';
   }
 
+  /**
+   *
+   */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
   }
@@ -90,7 +90,7 @@ class ParInvitationForm extends FormBase {
       '#limit_validation_errors' => [],
       '#attributes' => [
         'class' => ['flow-link', 'govuk-button', 'govuk-button--secondary'],
-        'onclick' =>  "location.reload();",
+        'onclick' => "location.reload();",
       ],
     ];
 
@@ -121,7 +121,7 @@ class ParInvitationForm extends FormBase {
 
     // Send invitation.
     if ($submit_action === 'invite') {
-      /** @var MessageInterface $message */
+      /** @var \Drupal\message\MessageInterface $message */
       $message = \Drupal::routeMatch()->getParameter('message');
 
       try {
@@ -156,15 +156,15 @@ class ParInvitationForm extends FormBase {
    * must be used to identify the user's role.
    *
    * @return string
-   *  The invitiation type to be created.
+   *   The invitiation type to be created.
    */
   public function getInvitationType(MessageInterface $message) {
-    // @TODO PAR-1736: Add invitations for more message types.
+    // @todo PAR-1736: Add invitations for more message types.
     switch ($message->getTemplate()->id()) {
       case 'approved_enforcement':
         return 'invite_organisation_member';
 
-        break;
+      break;
 
     }
 
@@ -186,7 +186,7 @@ class ParInvitationForm extends FormBase {
           && $entity->getEmail() === $email);
       });
 
-      // @TODO this doesn't necessarily return the most related person,
+      // @todo this doesn't necessarily return the most related person,
       // if there are multiple entities it will just return the first one found.
       return current($people);
     }

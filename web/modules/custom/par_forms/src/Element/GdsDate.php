@@ -3,9 +3,9 @@
 namespace Drupal\par_forms\Element;
 
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\CompositeFormElementTrait;
 use Drupal\Core\Render\Element\FormElement;
-use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Provides a GDS Date element.
@@ -38,7 +38,7 @@ class GdsDate extends FormElement {
       '#input' => TRUE,
       '#theme' => 'gds_date',
       '#process' => [
-        [$class, 'processGdsDate']
+        [$class, 'processGdsDate'],
       ],
       '#pre_render' => [
         [$class, 'preRenderCompositeFormElement'],
@@ -61,10 +61,10 @@ class GdsDate extends FormElement {
       '#type' => 'textfield',
       '#title' => 'Day',
       '#attributes' => [
-        'name' => $element['#name'] ."_day",
+        'name' => $element['#name'] . "_day",
         'pattern' => "(0?[1-9]|[12][0-9]|3[01])",
         'size' => 6,
-        'class' => ['govuk-input', 'govuk-date-input__input', 'govuk-input--width-2']
+        'class' => ['govuk-input', 'govuk-date-input__input', 'govuk-input--width-2'],
       ],
       '#label_attributes' => [
         'class' => ['govuk-label', 'govuk-date-input__label'],
@@ -77,10 +77,10 @@ class GdsDate extends FormElement {
       '#type' => 'textfield',
       '#title' => 'Month',
       '#attributes' => [
-        'name' => $element['#name'] ."_month",
+        'name' => $element['#name'] . "_month",
         'pattern' => "(1|2|3|4|5|6|7|8|9|10|11|12|01|02|03|04|05|06|07|08|09)",
         'size' => 6,
-        'class' => ['govuk-input', 'govuk-date-input__input', 'govuk-input--width-2']
+        'class' => ['govuk-input', 'govuk-date-input__input', 'govuk-input--width-2'],
       ],
       '#label_attributes' => [
         'class' => ['govuk-label', 'govuk-date-input__label'],
@@ -93,10 +93,10 @@ class GdsDate extends FormElement {
       '#type' => 'textfield',
       '#title' => 'Year',
       '#attributes' => [
-        'name' => $element['#name'] ."_year",
+        'name' => $element['#name'] . "_year",
         'pattern' => "[0-9]{4}",
         'size' => 12,
-        'class' => ['govuk-input', 'govuk-date-input__input', 'govuk-input--width-3']
+        'class' => ['govuk-input', 'govuk-date-input__input', 'govuk-input--width-3'],
       ],
       '#label_attributes' => [
         'class' => ['govuk-label', 'govuk-date-input__label'],
@@ -141,7 +141,8 @@ class GdsDate extends FormElement {
           'month' => $date->format('m'),
           'year' => $date->format('Y'),
         ];
-      } catch (\Exception $e) {
+      }
+      catch (\Exception $e) {
         $value = [];
       }
       return $value;
@@ -150,4 +151,5 @@ class GdsDate extends FormElement {
       return [];
     }
   }
+
 }

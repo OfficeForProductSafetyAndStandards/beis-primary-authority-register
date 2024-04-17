@@ -5,6 +5,9 @@ namespace Drupal\par_cache\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ *
+ */
 class ParCacheCompilerPass implements CompilerPassInterface {
 
   /**

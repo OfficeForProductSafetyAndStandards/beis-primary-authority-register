@@ -48,7 +48,7 @@ class ParSelectAuthoritiesForm extends ParBaseForm {
       $old_functions = array_values($from->get('field_regulatory_function')->getValue());
       $new_functions = array_values($to->get('field_regulatory_function')->getValue());
 
-      // Sort the array elements
+      // Sort the array elements.
       sort($old_functions);
       sort($new_functions);
 

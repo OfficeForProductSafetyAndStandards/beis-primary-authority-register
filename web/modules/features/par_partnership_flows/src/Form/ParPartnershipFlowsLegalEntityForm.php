@@ -2,20 +2,11 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
-use Drupal\user\Entity\User;
-use Symfony\Component\Routing\Route;
 
 /**
  * The primary contact form for the partnership details steps of the
@@ -56,7 +47,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     parent::validateForm($form, $form_state);
 
     // Get the partnership.
-    /* @var ParDataPartnership $partnership */
+    /** @var ParDataPartnership $partnership */
     $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // Creating the legal entity and validate it doesn't already exist.
@@ -127,12 +118,12 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       $legal_entity->save();
 
       // Now add the legal entity to the partnership.
-      /* @var ParDataPartnership $par_data_partnership */
+      /** @var ParDataPartnership $par_data_partnership */
       $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
       $par_data_partnership->addLegalEntity($legal_entity);
 
       // Add the new legal entity to the organisation.
-      /* @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
+      /** @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
       $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
       $par_data_organisation->addLegalEntity($legal_entity);
 
@@ -151,4 +142,5 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     }
 
   }
+
 }

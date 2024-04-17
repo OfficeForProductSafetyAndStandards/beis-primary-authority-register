@@ -3,11 +3,8 @@
 namespace Drupal\par_data\Commands;
 
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
-use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\par_data\ParDataManagerInterface;
-use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\par_data\ParDataManagerInterface;
 use Drupal\registered_organisations\OrganisationManagerInterface;
 use Drupal\search_api\ConsoleException;
 use Drush\Commands\DrushCommands;
@@ -20,21 +17,21 @@ class ParDataDrushCommands extends DrushCommands {
   /**
    * The par_data.manager service.
    *
-   * @var ParDataManagerInterface
+   * @var \Drupal\par_data\ParDataManagerInterface
    */
   protected ParDataManagerInterface $parDataManager;
 
   /**
    * The entity_type.manager service.
    *
-   * @var EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The registered_organisations.organisation_manager service.
    *
-   * @var OrganisationManagerInterface
+   * @var \Drupal\registered_organisations\OrganisationManagerInterface
    */
   protected OrganisationManagerInterface $organisationManager;
 
@@ -51,8 +48,11 @@ class ParDataDrushCommands extends DrushCommands {
     $this->organisationManager = $organisationManager;
   }
 
+  /**
+   *
+   */
   public static function create(ContainerInterface $container, DrushContainer $drush): self {
-      return new static(
+    return new static(
         $container->get('par_data.manager'),
         $container->get('entity_type.manager'),
         $container->get('registered_organisations.organisation_manager')
@@ -68,8 +68,7 @@ class ParDataDrushCommands extends DrushCommands {
    * @validate-module-enabled par_data
    *
    * @command par-data:cache-warm
-   * @aliases pcw
-
+   * @aliases pcw   *
    */
   public function cache_warm($type) {
     $count = 0;
@@ -117,8 +116,7 @@ class ParDataDrushCommands extends DrushCommands {
    * @command par-data:index-health
    * @option index-health
    *   Whether to check the index health.
-   * @aliases pih
-
+   * @aliases pih   *
    */
   public function index_health($index = NULL, array $options = ['index-health' => NULL]) {
     $include_index_health = $options['index-health'];
@@ -171,8 +169,7 @@ class ParDataDrushCommands extends DrushCommands {
    * @validate-module-enabled par_data
    *
    * @command par-data:update-registered-organisations
-   * @aliases puro
-
+   * @aliases puro   *
    */
   public function update_registered_organisations(?string $register = NULL) {
     $scheduler = \Drupal::service('plugin.manager.par_scheduler');
@@ -191,4 +188,5 @@ class ParDataDrushCommands extends DrushCommands {
 
     return "All legacy entities updated for processing.";
   }
+
 }

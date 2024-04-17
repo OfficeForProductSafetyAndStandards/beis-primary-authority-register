@@ -3,35 +3,29 @@
 namespace Drupal\par_flows\Controller;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
-use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Link;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
-use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\par_data\ParDataManagerInterface;
-use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\ParBaseInterface;
 use Drupal\par_flows\ParControllerTrait;
+use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\par_flows\ParRedirectTrait;
-use Drupal\par_flows\ParDisplayTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Access\AccessResult;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Route;
-use Drupal\par_flows\Event\ParFlowEvents;
 
 /**
-* A controller for all styleguide page output.
-*/
+ * A controller for all styleguide page output.
+ */
 class ParBaseController extends ControllerBase implements ParBaseInterface {
 
   use ParRedirectTrait;
@@ -43,18 +37,18 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   /**
    * The response cache kill switch.
    *
-   * @var KillSwitch $killSwitch
+   * @var \Drupal\Core\PageCache\ResponsePolicy\KillSwitch
    */
   protected KillSwitch $killSwitch;
 
   /**
    * The access result.
    *
-   * @var ?AccessResult $accessResult
+   * @var ?AccessResult
    */
   protected ?AccessResult $accessResult = NULL;
 
-  /*
+  /**
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
    *
    * @param \Drupal\par_flows\ParFlowNegotiatorInterface $negotiation
@@ -78,13 +72,14 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
 
     $this->setCurrentUser();
 
-    // @TODO Move this to middleware to stop it being loaded when this controller
+    // @todo Move this to middleware to stop it being loaded when this controller
     // is contructed outside a request for a route this controller resolves.
     try {
       $this->getFlowNegotiator()->getFlow();
 
       $this->loadData();
-    } catch (ParFlowException $e) {
+    }
+    catch (ParFlowException $e) {
 
     }
   }
@@ -137,7 +132,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
         '#url' => $done_url,
         '#attributes' => [
           'class' => ['govuk-button', 'govuk-form-group'],
-          'role' => 'button'
+          'role' => 'button',
         ],
       ];
     }
@@ -150,7 +145,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
           '#url' => $next_url,
           '#attributes' => [
             'class' => ['govuk-button', 'govuk-form-group'],
-            'role' => 'button'
+            'role' => 'button',
           ],
         ];
       }
@@ -163,7 +158,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
           '#url' => $cancel_url,
           '#attributes' => [
             'class' => ['cta-cancel', 'govuk-button', 'govuk-button--secondary'],
-            'role' => 'button'
+            'role' => 'button',
           ],
         ];
       }
@@ -174,18 +169,21 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
         'contexts' => $this->getCacheContexts(),
         'tags' => $this->getCacheTags(),
         'max-age' => $this->getCacheMaxAge(),
-      ]
+      ],
     ];
 
     return $build + $cache;
   }
 
+  /**
+   *
+   */
   public function getProceedingUrl($action) {
     // Determine the appropriate redirection url.
     $url = $this->getFlowNegotiator()->getFlow()->progress($action);
 
     // All links other than cancel should display as primary buttons.
-    switch($action) {
+    switch ($action) {
       case 'cancel':
         $route_options = [];
         break;
@@ -198,8 +196,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
       $url->mergeOptions($route_options);
     }
 
-    // @TODO Cancelling a flow through a link cannot delete the flow data.
-
+    // @todo Cancelling a flow through a link cannot delete the flow data.
     return $url;
   }
 
@@ -221,6 +218,3 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   }
 
 }
-
-
-

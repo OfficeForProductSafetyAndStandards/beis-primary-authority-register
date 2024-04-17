@@ -13,7 +13,9 @@ class ParEnforcementReferredAuthorityForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = "Respond to notice of enforcement actions | Refer enforcement action(s)";
 

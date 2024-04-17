@@ -2,33 +2,22 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\Component\Utility\Random;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityPublishedTrait;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\RevisionLogEntityTrait;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
-use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Mail\MailFormatHelper;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItem;
-use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\ParDataException;
-use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
+use Drupal\par_data\Plugin\Field\FieldType\ParLabelField;
 use Drupal\par_data\Plugin\Field\FieldType\ParStatusChangedField;
 use Drupal\par_data\Plugin\Field\FieldType\ParStatusField;
 use Drupal\par_roles\ParRoleManagerInterface;
 use Drupal\trance\Trance;
-use Drupal\Component\Datetime\TimeInterface;
-use Drupal\par_data\Plugin\Field\FieldType\ParLabelField;
 
 /**
  * Defines the PAR entities.
@@ -55,7 +44,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Render the string version of this entity.
    */
-  public function __toString(){
+  public function __toString() {
     return $this->t("@type: @label (@id)", [
       '@type' => mb_strtoupper($this->getTypeEntity()->label()),
       '@label' => $this->label(),
@@ -76,7 +65,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Simple getter to inject the PAR Data Manager service.
    *
-   * @return ParDataManagerInterface
+   * @return \Drupal\par_data\ParDataManagerInterface
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
@@ -85,7 +74,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Simple getter to inject the PAR Role Manager service.
    *
-   * @return ParRoleManagerInterface
+   * @return \Drupal\par_roles\ParRoleManagerInterface
    */
   public function getParRoleManager(): ParRoleManagerInterface {
     return \Drupal::service('par_roles.role_manager');
@@ -136,7 +125,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function label() {
-    //PAR-988 prevent the page crashing when NULL is returned by getTypeEntity() on the current entity.
+    // PAR-988 prevent the page crashing when NULL is returned by getTypeEntity() on the current entity.
     if (is_object($this->getTypeEntity())) {
       $label_fields = $this->getTypeEntity()->getConfigurationElementByType('entity', 'label_fields');
     }
@@ -145,7 +134,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     if (isset($label_fields) && is_string($label_fields)) {
       $labels[] = $this->getLabelValue($label_fields);
     }
-    else if (isset($label_fields) && is_array($label_fields)) {
+    elseif (isset($label_fields) && is_array($label_fields)) {
       foreach ($label_fields as $field) {
         $labels[] = $this->getLabelValue($field);
       }
@@ -156,6 +145,9 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     return isset($label) && !empty($label) ? $label : parent::label();
   }
 
+  /**
+   *
+   */
   protected function getLabelValue($value) {
     [$field_name, $property_name] = explode(':', $value . ':');
 
@@ -261,7 +253,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    * {@inheritdoc}
    */
   public function delete($reason = '', $deletable = FALSE) {
-    // Do not allow removal if the entity is not a deletable entity type
+    // Do not allow removal if the entity is not a deletable entity type.
     if (!$this->isDeletable() && !$deletable) {
       return FALSE;
     }
@@ -280,14 +272,14 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         // Do not show more than 3 dependencies.
         if (count($dependencies) >= 3) {
           $dependencies[] = $this->t("... there are %count more...", [
-            '%count' => count($required_relationships) - 3
+            '%count' => count($required_relationships) - 3,
           ]);
         }
       }
       // Set a message to indicate that deletion failed.
-      $message = $this->t("Deletion of %entity failed because there are some entities which depend on it:".PHP_EOL."@dependencies", [
+      $message = $this->t("Deletion of %entity failed because there are some entities which depend on it:" . PHP_EOL . "@dependencies", [
         '%entity' => $this->label(),
-        '@dependencies' => implode(PHP_EOL, $dependencies)
+        '@dependencies' => implode(PHP_EOL, $dependencies),
       ]);
       $this->getMessenger()->addWarning($message);
 
@@ -593,7 +585,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Determine whether this entity can transition
+   * Determine whether this entity can transition.
    *
    * @return bool
    *   TRUE if transition is allowed.
@@ -606,7 +598,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Get the boolean value for a field.
    *
-   * @return boolean
+   * @return bool
    */
   public function getBoolean($field_name) {
     $field = $this->hasField($field_name) ? $this->get($field_name) : NULL;
@@ -660,7 +652,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Get the number of referenced entities listed on a partnership.
    *
-   *  @param String $referenced_entity_field
+   * @param string $referenced_entity_field
    *   The field name (machine name) of type of referenced entity to count.
    *
    * @param bool $include_none_active
@@ -687,7 +679,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Get all the entities that are rely on this entity.
    *
-   * @TODO Once PAR-1349 has been looked at this method should probably
+   * @todo Once PAR-1349 has been looked at this method should probably
    * be rolled into self::getRequiredRelationships()
    *
    * @return array
@@ -715,7 +707,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * A required relationship is one that cannot be removed or broken.
    *
-   * @TODO There are many complex rules to determine these relationships,
+   * @todo There are many complex rules to determine these relationships,
    * this needs to be worked out in greater detail in PAR-1349
    *
    * @return array|\Drupal\par_data\ParDataRelationship|\Drupal\par_data\ParDataRelationship[]
@@ -738,18 +730,18 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *   The target type to return entities for.
    * @param string $action
    *   The action type to return relationships for.
-   * @param boolean $reset
+   * @param bool $reset
    *   Whether to reset the cache.
    *
-   * @return ParDataRelationship[]
+   * @return \Drupal\par_data\ParDataRelationship[]
    *   An array of entities keyed by type.
    */
   public function getRelationships($target = NULL, $action = NULL, $reset = FALSE) {
     // Enable in memory caching for repeated entity lookups.
     $unique_function_id = __FUNCTION__ . ':'
       . $this->uuid() . ':'
-      . (isset($target) ? $target : 'null') . ':'
-      . (isset($action) ? $action : 'null');
+      . ($target ?? 'null') . ':'
+      . ($action ?? 'null');
     $relationships = &drupal_static($unique_function_id);
     if (!$reset && isset($relationships)) {
       return $relationships;
@@ -781,8 +773,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
                 // Add relationship and entity tags to cache tags.
                 $tags[] = $relationship->getEntity()
-                    ->getEntityTypeId() . ':' . $relationship->getEntity()
-                    ->id();
+                  ->getEntityTypeId() . ':' . $relationship->getEntity()
+                  ->id();
                 $relationships[$referenced_entity->uuid()] = $relationship;
               }
             }
@@ -800,8 +792,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
                 // Add relationship and entity tags to cache tags.
                 $tags[] = $relationship->getEntity()
-                    ->getEntityTypeId() . ':' . $relationship->getEntity()
-                    ->id();
+                  ->getEntityTypeId() . ':' . $relationship->getEntity()
+                  ->id();
                 $relationships[$referenced_entity->uuid()] = $relationship;
               }
             }
@@ -812,14 +804,14 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       \Drupal::cache('par_data')->set("relationships:{$this->uuid()}", $relationships, Cache::PERMANENT, $tags);
     }
 
-    // Return only permitted relationships for a given action
+    // Return only permitted relationships for a given action.
     if ($target) {
       $relationships = array_filter($relationships, function ($relationship) use ($target) {
         return $this->filterRelationshipsByTarget($relationship, $target);
       });
     }
 
-    // Return only permitted relationships for a given action
+    // Return only permitted relationships for a given action.
     if ($action) {
       $relationships = array_filter($relationships, function ($relationship) use ($action) {
         return $this->filterRelationshipsByAction($relationship, $action);
@@ -881,7 +873,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
           return FALSE;
         }
 
-        // @TODO PAR-1025: This is a temporary fix to resolve performance issues
+        // @todo PAR-1025: This is a temporary fix to resolve performance issues
         // with looking up the large numbers of premises.
         if ($relationship->getEntity()->getEntityTypeId() === 'par_data_premises') {
           return FALSE;
@@ -900,7 +892,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
    *
    * @param \Drupal\par_data\Entity\ParDataEntityInterface $entity
    *   The entity to merge into the current entity.
-   * @param boolean $save
+   * @param bool $save
    *   Whether to save _this_ entity once the merge is complete.
    *
    * @throws \Drupal\par_data\ParDataException
@@ -979,11 +971,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       }
     }
 
-    // @TODO Currently we do not have any non-PAR entities that reference a PAR entity.
+    // @todo Currently we do not have any non-PAR entities that reference a PAR entity.
     // PAR entities sometimes reference non-PAR entities, but not the other way round.
     // If any non-PAR entities are given references to PAR entities then this will need
     // to be accounted for.
-
     // Act on any references to non-PAR entities such as users or documents.
     $entity_field_manager = $this->getParDataManager()->getEntityFieldManager();
     $field_definitions = $entity_field_manager->getFieldDefinitions($entity->getEntityTypeId(), $entity->bundle());
@@ -1047,7 +1038,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $fields = $this->getTypeEntity()->getCompletionFields();
     foreach ($fields as $field_name) {
       if ($include_deltas) {
-        // @TODO Count multiple field values individually rather than as one field.
+        // @todo Count multiple field values individually rather than as one field.
       }
       else {
         if ($this->hasField($field_name)) {
@@ -1293,7 +1284,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       ->setComputed(TRUE)
       ->setClass(ParStatusChangedField::class)
       ->setSettings([
-        'datetime_type' => DateTimeItem::DATETIME_TYPE_DATE
+        'datetime_type' => DateTimeItem::DATETIME_TYPE_DATE,
       ])
       ->setDisplayOptions('view', [
         'type' => 'datetime_default',
@@ -1305,4 +1296,5 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     return $fields;
   }
+
 }

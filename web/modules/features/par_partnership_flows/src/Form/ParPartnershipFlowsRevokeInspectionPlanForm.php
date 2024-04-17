@@ -3,18 +3,13 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataInspectionPlan;
 use Drupal\par_data\Entity\ParDataEntity;
-use Drupal\Core\Access\AccessResult;
+use Drupal\par_data\Entity\ParDataInspectionPlan;
+use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_flows\ParDisplayTrait;
-use Drupal\par_flows\ParFlowException;
-use Symfony\Component\Routing\Route;
-use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
+use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
  * The revoke inspection plan form.
@@ -30,11 +25,10 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
    */
   protected $entityMapping = [
     [ParDataEntity::REVOKE_REASON_FIELD, 'par_data_inspection_plan', ParDataEntity::REVOKE_REASON_FIELD, NULL, NULL, 0, [
-      'This value should not be null.' => 'Please supply the reason for revoking this document.'
-    ]],
+      'This value should not be null.' => 'Please supply the reason for revoking this document.',
+    ],
+    ],
   ];
-
-
 
   /**
    * {@inheritdoc}

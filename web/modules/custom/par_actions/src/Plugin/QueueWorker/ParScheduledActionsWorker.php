@@ -6,14 +6,14 @@ use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\par_actions\ParActionsException;
 
 /**
-* A cron worker to process long running actions.
-*
-* @QueueWorker(
-*   id = "par_scheduled_actions",
-*   title = @Translation("PAR Scheduler Queue"),
-*   cron = {"time" = 60}
-* )
-*/
+ * A cron worker to process long running actions.
+ *
+ * @QueueWorker(
+ *   id = "par_scheduled_actions",
+ *   title = @Translation("PAR Scheduler Queue"),
+ *   cron = {"time" = 60}
+ * )
+ */
 class ParScheduledActionsWorker extends QueueWorkerBase {
 
   /**
@@ -45,7 +45,7 @@ class ParScheduledActionsWorker extends QueueWorkerBase {
       return;
     }
 
-    $configuration = isset($data['configuration']) ? $data['configuration'] : [];
+    $configuration = $data['configuration'] ?? [];
 
     $action = $this->getActionPlugin($data['action'], $configuration);
     if (empty($action)) {

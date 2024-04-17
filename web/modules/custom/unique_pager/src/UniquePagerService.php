@@ -5,6 +5,9 @@ namespace Drupal\unique_pager;
 use Drupal\Core\Pager\PagerManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 
+/**
+ *
+ */
 class UniquePagerService {
 
   /**
@@ -18,6 +21,7 @@ class UniquePagerService {
    * The pagers for the current page.
    *
    * Keyed by pager element, with the pager id as the value.
+   *
    * @example [3 => 'first_item_pager']
    */
   protected $pagers = [];
@@ -115,4 +119,5 @@ class UniquePagerService {
       $this->pagers[(int) $element] = $id;
     }
   }
+
 }

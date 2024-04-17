@@ -28,7 +28,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
   /**
    * The entity type manager.
    *
-   * @var EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected EntityTypeManagerInterface $entityTypeManager;
 
@@ -49,30 +49,30 @@ class ParMessageHandler implements ParMessageHandlerInterface {
   /**
    * The message notifier.
    *
-   * @var MessageNotifier
+   * @var \Drupal\message_notify\MessageNotifier
    */
   protected MessageNotifier $messageNotifier;
 
   /**
    * The current user.
    *
-   * @var AccountInterface
+   * @var \Drupal\Core\Session\AccountInterface
    */
   protected AccountInterface $currentUser;
 
   /**
    * Constructs a ParMessageHandler instance.
    *
-   * @param EntityTypeManagerInterface $entity_type_manager
-   *  The entity type manager.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param ParSubscriptionManagerInterface $subscription_manager
-   *  The subscription manager.
+   *   The subscription manager.
    * @param ParLinkManagerInterface $link_manager
-   *  The notification link manager.
-   * @param MessageNotifier $message_notifier
-   *  The message notifier.
-   * @param AccountInterface $user
-   *  The current user.
+   *   The notification link manager.
+   * @param \Drupal\message_notify\MessageNotifier $message_notifier
+   *   The message notifier.
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *   The current user.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, ParSubscriptionManagerInterface $subscription_manager, ParLinkManagerInterface $link_manager, MessageNotifier $message_notifier, AccountInterface $user) {
     $this->entityTypeManager = $entity_type_manager;
@@ -95,7 +95,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
   /**
    * Get the entity type manager.
    *
-   * @return EntityTypeManagerInterface
+   * @return \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   public function getEntityTypeManager(): EntityTypeManagerInterface {
     return $this->entityTypeManager;
@@ -122,7 +122,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
   /**
    * Get the message notifier.
    *
-   * @return MessageNotifier
+   * @return \Drupal\message_notify\MessageNotifier
    */
   public function getMessageNotifier(): MessageNotifier {
     return $this->messageNotifier;
@@ -131,7 +131,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
   /**
    * Get the current user.
    *
-   * @return AccountInterface
+   * @return \Drupal\Core\Session\AccountInterface
    *   The current user.
    */
   public function getCurrentUser(): AccountInterface {
@@ -141,7 +141,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
   /**
    * Get message template storage.
    *
-   * @return EntityStorageInterface
+   * @return \Drupal\Core\Entity\EntityStorageInterface
    *   The entity storage for message template (bundle) entities.
    */
   public function getMessageTemplateStorage(): EntityStorageInterface {
@@ -151,7 +151,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
   /**
    * Get message storage.
    *
-   * @return EntityStorageInterface
+   * @return \Drupal\Core\Entity\EntityStorageInterface
    *   The entity storage for messages.
    */
   public function getMessageStorage(): EntityStorageInterface {
@@ -163,7 +163,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
    */
   public function createMessage(string $template_id) {
     // Check that a template could be found.
-    /** @var MessageTemplateInterface $message_template */
+    /** @var \Drupal\message\MessageTemplateInterface $message_template */
     $message_template = $this->getMessageTemplateStorage()->load($template_id);
 
     // Create one message per user.
@@ -171,7 +171,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
       throw new ParNotificationException('No template could be found.');
     }
 
-    /** @var MessageInterface $message */
+    /** @var \Drupal\message\MessageInterface $message */
     $message = $this->getMessageStorage()->create([
       'template' => $message_template?->id(),
     ]);
@@ -219,7 +219,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
   /**
    * Message personalisation callback.
    */
-  static function personalise(MessageInterface $message) {
+  public static function personalise(MessageInterface $message) {
     return 'Primary Authority User';
   }
 
@@ -228,7 +228,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
    *
    * This function is temporary and only needed for install hooks.
    *
-   * @return MessageInterface[]
+   * @return \Drupal\message\MessageInterface[]
    *   An array of messages.
    */
   public function getMessagesWithData() {
@@ -265,7 +265,6 @@ class ParMessageHandler implements ParMessageHandlerInterface {
    *
    * @return mixed
    *   The field name.
-   *
    */
   public function getPrimaryField(MessageTemplateInterface $template): mixed {
     $message_types = [
@@ -330,7 +329,6 @@ class ParMessageHandler implements ParMessageHandlerInterface {
    *
    * @return mixed
    *   The field name.
-   *
    */
   private function getMessageGroup(MessageTemplateInterface $template): mixed {
     $groups = [

@@ -22,7 +22,7 @@ class ParMemberListUpdatedField extends FieldItemList {
   use ComputedItemListTrait;
 
   /**
-  * {@inheritdoc}
+   * {@inheritdoc}
    */
   protected function computeValue() {
     $entity = $this->getEntity();

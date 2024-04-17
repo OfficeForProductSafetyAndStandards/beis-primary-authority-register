@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\par_actions\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data_test_entity\Entity\ParDataTestEntity;
 use Drupal\Tests\par_actions\Kernel\ParSchedulerTestBase;
 
@@ -52,7 +51,7 @@ class SchedulerRuleExpiryTest extends ParSchedulerTestBase {
 
     $entities = $plugin->getItems();
     $assertions = ['2020-01-03', '2020-01-06', '2020-01-10', '2020-01-13', '2020-01-17', '2020-01-20'];
-    foreach ($entities as $entity){
+    foreach ($entities as $entity) {
       if (!in_array($entity->get('expiry_date')->getString(), $assertions)) {
         $this->assertFalse(TRUE, t('Retrieved an incorrectly expired entity with expiry date: %date.', ['%date' => (string) $entity->get('expiry_date')->getString()]));
       }
@@ -100,7 +99,7 @@ class SchedulerRuleExpiryTest extends ParSchedulerTestBase {
 
     $entities = $plugin->getItems();
     $assertions = ['2020-01-03', '2020-01-06', '2020-01-10', '2020-01-13', '2020-01-17', '2020-01-20', '2020-01-24', '2020-01-27'];
-    foreach ($entities as $entity){
+    foreach ($entities as $entity) {
       if (!in_array($entity->get('expiry_date')->getString(), $assertions)) {
         $this->assertFalse(TRUE, t('Retrieved an incorrectly expired entity with expiry date: %date.', ['%date' => (string) $entity->get('expiry_date')->getString()]));
       }
@@ -148,7 +147,7 @@ class SchedulerRuleExpiryTest extends ParSchedulerTestBase {
 
     $entities = $plugin->getItems();
     $assertions = ['2020-01-03', '2020-01-06', '2020-01-10', '2020-01-13', '2020-01-17', '2020-01-20', '2020-01-24'];
-    foreach ($entities as $entity){
+    foreach ($entities as $entity) {
       if (!in_array($entity->get('expiry_date')->getString(), $assertions)) {
         $this->assertFalse(TRUE, t('Retrieved an incorrectly expired entity with expiry date: %date.', ['%date' => (string) $entity->get('expiry_date')->getString()]));
       }
@@ -196,7 +195,7 @@ class SchedulerRuleExpiryTest extends ParSchedulerTestBase {
 
     $entities = $plugin->getItems();
     $assertions = ['2020-01-03', '2020-01-06', '2020-01-10'];
-    foreach ($entities as $entity){
+    foreach ($entities as $entity) {
       if (!in_array($entity->get('expiry_date')->getString(), $assertions)) {
         $this->assertFalse(TRUE, t('Retrieved an incorrectly expired entity with expiry date: %date.', ['%date' => (string) $entity->get('expiry_date')->getString()]));
       }
@@ -244,7 +243,7 @@ class SchedulerRuleExpiryTest extends ParSchedulerTestBase {
 
     $entities = $plugin->getItems();
     $assertions = ['2020-01-03', '2020-01-06', '2020-01-10', '2020-01-13'];
-    foreach ($entities as $entity){
+    foreach ($entities as $entity) {
       if (!in_array($entity->get('expiry_date')->getString(), $assertions)) {
         $this->assertFalse(TRUE, t('Retrieved an incorrectly expired entity with expiry date: %date.', ['%date' => (string) $entity->get('expiry_date')->getString()]));
       }
@@ -252,4 +251,5 @@ class SchedulerRuleExpiryTest extends ParSchedulerTestBase {
 
     $this->assertEquals(count($assertions), count($entities), t('Retrieved %assertions expired entities.', ['%assertions' => (string) count($assertions)]));
   }
+
 }

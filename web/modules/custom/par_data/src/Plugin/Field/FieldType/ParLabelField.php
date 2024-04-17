@@ -20,8 +20,8 @@ class ParLabelField extends FieldItemList {
   use ComputedItemListTrait;
 
   /**
-  * {@inheritdoc}
-  */
+   * {@inheritdoc}
+   */
   protected function computeValue() {
     return $this->getEntity()->label();
   }

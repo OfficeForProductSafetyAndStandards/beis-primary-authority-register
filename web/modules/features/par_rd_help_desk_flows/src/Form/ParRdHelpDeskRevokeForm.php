@@ -37,7 +37,7 @@ class ParRdHelpDeskRevokeForm extends ParBaseForm {
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
-    $form['partnership_info'] =[
+    $form['partnership_info'] = [
       '#type' => 'container',
       'heading' => [
         '#type' => 'html_tag',
@@ -67,4 +67,5 @@ class ParRdHelpDeskRevokeForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
   }
+
 }

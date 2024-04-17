@@ -5,7 +5,6 @@ namespace Drupal\par_notification\Plugin\ParLinkAction;
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
 use Drupal\par_notification\ParLinkActionBase;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Check if a deviation request has already been approved.
@@ -36,4 +35,5 @@ class ParUnauthenticatedUser extends ParLinkActionBase {
 
     return NULL;
   }
+
 }

@@ -2,15 +2,9 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -23,6 +17,9 @@ use Drupal\par_forms\ParFormPluginBase;
  */
 class ParContactDisplay extends ParFormPluginBase {
 
+  /**
+   *
+   */
   public function getContacts() {
     // Get the configured field to get the contact records from.
     $contact_field = isset($this->getConfiguration()['contact_field']) ? (string) $this->getConfiguration()['contact_field'] : "field_person";
@@ -120,7 +117,8 @@ class ParContactDisplay extends ParFormPluginBase {
         $actions = t('@link', [
           '@link' => $link ? $link->toString() : '',
         ]);
-      } catch (ParFlowException $e) {
+      }
+      catch (ParFlowException $e) {
 
       }
 
@@ -137,7 +135,7 @@ class ParContactDisplay extends ParFormPluginBase {
         'actions' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => isset($actions) ? $actions : 'Update contact details',
+          '#value' => $actions ?? 'Update contact details',
           '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         ],
         'email' => [
@@ -203,4 +201,5 @@ class ParContactDisplay extends ParFormPluginBase {
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }
+
 }

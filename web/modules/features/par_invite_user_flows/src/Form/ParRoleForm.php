@@ -2,12 +2,7 @@
 
 namespace Drupal\par_invite_user_flows\Form;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_invite_user_flows\ParFlowAccessTrait;
-use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
 
 /**
@@ -16,7 +11,9 @@ use Drupal\user\Entity\User;
 class ParRoleForm extends ParBaseForm {
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Change the type of user';
 
@@ -39,16 +36,15 @@ class ParRoleForm extends ParBaseForm {
     return parent::titleCallback();
   }
 
-
   /**
-   * {@inheritdoc}
+   * Load the data for this.
    */
   public function loadData() {
     parent::loadData();
 
     // Remove the empty value, a user account must be invited in this journey.
     $role_options = (array) $this->getFlowDataHandler()->getFormPermValue("roles_options");
-    $role_options = array_filter($role_options, function($k) {
+    $role_options = array_filter($role_options, function ($k) {
       return !empty($k);
     }, ARRAY_FILTER_USE_KEY);
 

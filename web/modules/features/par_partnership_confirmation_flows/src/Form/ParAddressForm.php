@@ -2,8 +2,6 @@
 
 namespace Drupal\par_partnership_confirmation_flows\Form;
 
-use CommerceGuys\Addressing\AddressFormat\AddressField;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_confirmation_flows\ParFlowAccessTrait;
 
@@ -15,7 +13,9 @@ class ParAddressForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Confirm the primary address details';
 

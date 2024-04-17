@@ -2,7 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -22,14 +21,17 @@ class ParAddressForm extends ParFormPluginBase {
     ['country_code', 'par_data_premises', 'address', 'country_code', NULL, 0, []],
     ['address_line1', 'par_data_premises', 'address', 'address_line1', NULL, 0, [
       'Street address field is required.' => 'You must enter the first line of your address',
-    ]],
+    ],
+    ],
     ['address_line2', 'par_data_premises', 'address', 'address_line2', NULL, 0, []],
     ['town_city', 'par_data_premises', 'address', 'locality', NULL, 0, [
-      'Post town field is required.' => 'You must enter the town or city for this address'
-    ]],
+      'Post town field is required.' => 'You must enter the town or city for this address',
+    ],
+    ],
     ['postcode', 'par_data_premises', 'address', 'postal_code', NULL, 0, [
-      'Postal code field is required.' => 'You must enter a valid postcode.'
-    ]],
+      'Postal code field is required.' => 'You must enter a valid postcode.',
+    ],
+    ],
     ['nation', 'par_data_premises', 'nation', NULL, NULL, 0, []],
   ];
 
@@ -126,9 +128,10 @@ class ParAddressForm extends ParFormPluginBase {
       '#attributes' => [
         'class' => ['govuk-input--width-10'],
         'autocomplete' => 'postal-code',
-      ]
+      ],
     ];
 
     return $form;
   }
+
 }

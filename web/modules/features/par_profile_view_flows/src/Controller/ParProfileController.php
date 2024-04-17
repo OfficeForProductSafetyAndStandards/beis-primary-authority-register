@@ -2,16 +2,8 @@
 
 namespace Drupal\par_profile_view_flows\Controller;
 
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\invite\Entity\Invite;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_flows\Controller\ParBaseController;
-use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\invite\InviteConstants;
+use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_forms\ParFormPluginInterface;
 
 /**
@@ -20,14 +12,14 @@ use Drupal\par_forms\ParFormPluginInterface;
 class ParProfileController extends ParBaseController {
 
   /**
-   * @return DateFormatterInterface
+   * Get Date formatter.
    */
   protected function getDateFormatter() {
     return \Drupal::service('date.formatter');
   }
 
   /**
-   * @return DateFormatterInterface
+   * Get type.
    */
   protected function getEntityTypeManager() {
     return \Drupal::service('entity_type.manager');
@@ -50,6 +42,9 @@ class ParProfileController extends ParBaseController {
     return parent::titleCallback();
   }
 
+  /**
+   * Load the data for this.
+   */
   public function loadData() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
     $user = $par_data_person?->lookupUserAccount();
@@ -64,7 +59,7 @@ class ParProfileController extends ParBaseController {
         ->getStorage('invite')
         ->loadByProperties([
           'field_invite_email_address' => $par_data_person->getEmail(),
-          'status' => InviteConstants::INVITE_VALID
+          'status' => InviteConstants::INVITE_VALID,
         ]);
 
       if (count($invitations) >= 1) {
@@ -80,8 +75,8 @@ class ParProfileController extends ParBaseController {
     }
 
     if ($par_data_person && $people = $par_data_person->getSimilarPeople()) {
-      // We have some legacy data which has caused some people to have over 100 contacts.
-      // An upper limit needs to be set as this can't all be processed within the same page.
+      // Handle legacy data which has caused people to have over 100 contacts.
+      // Set an upper limit as this can't all be processed within the same page.
       $this->getFlowDataHandler()->setParameter('contacts', array_slice($people, 0, 100, TRUE));
 
       // In order to display multiple cardinality the contact_locations_detail
@@ -97,7 +92,7 @@ class ParProfileController extends ParBaseController {
         $this->getFlowDataHandler()->setPluginTempData($contact_locations_detail_component, $values);
       }
     }
-    else if ($par_data_person) {
+    elseif ($par_data_person) {
       $this->getFlowDataHandler()->setParameter('contacts', [$par_data_person]);
 
       // In order to display multiple cardinality the contact_locations_detail
@@ -107,7 +102,7 @@ class ParProfileController extends ParBaseController {
       $contact_locations_detail_component = $this->getComponent('contact_locations_detail');
       if ($contact_locations_detail_component instanceof ParFormPluginInterface) {
         // Set a single value.
-        $values = [ ['username' => $par_data_person->label()] ];
+        $values = [['username' => $par_data_person->label()]];
         $this->getFlowDataHandler()->setPluginTempData($contact_locations_detail_component, $values);
       }
     }
@@ -115,6 +110,9 @@ class ParProfileController extends ParBaseController {
     parent::loadData();
   }
 
+  /**
+   * Implements build().
+   */
   public function build($build = []) {
     // When new contacts are added these can't clear the cache,
     // for now we will keep this page uncached.

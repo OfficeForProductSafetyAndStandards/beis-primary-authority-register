@@ -20,6 +20,9 @@ use Drupal\par_actions\ParSchedulerRuleBase;
  */
 class ParInspectionPlanRevoke extends ParSchedulerRuleBase {
 
+  /**
+   *
+   */
   public function query() {
     $query = parent::query();
 

@@ -2,8 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -21,14 +19,17 @@ class ParContactDetailsBasicForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['first_name', 'par_data_person', 'first_name', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the first name for this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the first name for this contact.',
+    ],
+    ],
     ['last_name', 'par_data_person', 'last_name', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the last name for this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the last name for this contact.',
+    ],
+    ],
     ['work_phone', 'par_data_person', 'work_phone', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the work phone number for this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the work phone number for this contact.',
+    ],
+    ],
   ];
 
   /**
@@ -53,8 +54,8 @@ class ParContactDetailsBasicForm extends ParFormPluginBase {
       '#title' => $this->t('Enter the first name'),
       '#default_value' => $this->getDefaultValuesByKey('first_name', $index),
       '#attributes' => [
-        'autocomplete' => 'given-name'
-      ]
+        'autocomplete' => 'given-name',
+      ],
     ];
 
     $form['last_name'] = [
@@ -62,8 +63,8 @@ class ParContactDetailsBasicForm extends ParFormPluginBase {
       '#title' => $this->t('Enter the last name'),
       '#default_value' => $this->getDefaultValuesByKey('last_name', $index),
       '#attributes' => [
-        'autocomplete' => 'family-name'
-      ]
+        'autocomplete' => 'family-name',
+      ],
     ];
 
     $form['work_phone'] = [
@@ -71,10 +72,11 @@ class ParContactDetailsBasicForm extends ParFormPluginBase {
       '#title' => $this->t('Enter the work phone number'),
       '#default_value' => $this->getDefaultValuesByKey('work_phone', $index),
       '#attributes' => [
-        'autocomplete' => 'tel'
-      ]
+        'autocomplete' => 'tel',
+      ],
     ];
 
     return $form;
   }
+
 }

@@ -3,14 +3,12 @@
 namespace Drupal\par_validation\Plugin\Validation\Constraint;
 
 use Drupal\Core\Field\FieldItemInterface;
-use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\user\Entity\Role;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
-* Validates the ParRequiredConstraint constraint.
-*/
+ * Validates the ParRequiredConstraint constraint.
+ */
 class ParRequiredValidator extends ConstraintValidator {
 
   /**
@@ -37,7 +35,7 @@ class ParRequiredValidator extends ConstraintValidator {
           $property = $item instanceof FieldItemInterface ? $item->mainPropertyName() : $value;
         }
 
-        if (!isset($item->$property) || false === $item->$property || (empty($item->$property) && '0' != $item->$property)) {
+        if (!isset($item->$property) || FALSE === $item->$property || (empty($item->$property) && '0' != $item->$property)) {
           $this->context->addViolation($message, ['@value' => $item->$property]);
         }
       }

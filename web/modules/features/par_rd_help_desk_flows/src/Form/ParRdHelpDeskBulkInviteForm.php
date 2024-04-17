@@ -8,7 +8,6 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\user\Entity\User;
-use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
  * Class InviteByEmailBlockForm.
@@ -153,7 +152,7 @@ HEREDOC;
     if ($business_user = $par_data_person->getUserAccount()) {
       $required_token = '[site:login-url]';
     }
-    else{
+    else {
       $required_token = '[invite:invite-accept-link]';
     }
     if (!strpos($form_state->getValue('email_body'), $required_token)) {

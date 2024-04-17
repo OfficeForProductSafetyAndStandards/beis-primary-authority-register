@@ -3,12 +3,10 @@
 namespace Drupal\par_partnership_flows\Controller;
 
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
-use \Drupal\views\Views;
 
 /**
  * A controller for rendering a list of advice documents.
@@ -31,7 +29,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       '#type' => 'html_tag',
       '#tag' => 'h2',
       '#value' => $par_data_partnership->label(),
-      '#attributes' => ['class' => 'govuk-heading-m']
+      '#attributes' => ['class' => 'govuk-heading-m'],
     ];
 
     switch ($this->getFlowNegotiator()->getFlowName()) {
@@ -71,12 +69,12 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
         $build['actions']['upload'] = [
           '#type' => 'markup',
           '#markup' => '<br>' . t('@link', [
-              '@link' => $this->getFlowNegotiator()
-                ->getFlow()
-                ->getNextLink('upload', $this->getRouteParams())
-                ->setText('Upload advice')
-                ->toString(),
-            ]),
+            '@link' => $this->getFlowNegotiator()
+              ->getFlow()
+              ->getNextLink('upload', $this->getRouteParams())
+              ->setText('Upload advice')
+              ->toString(),
+          ]),
         ];
       }
       catch (ParFlowException $e) {
@@ -88,11 +86,12 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     // for now we will keep this page uncached.
     $this->killSwitch->trigger();
 
-    // Make sure changes to the partnership invalidate this page
+    // Make sure changes to the partnership invalidate this page.
     if ($par_data_partnership) {
       $this->addCacheableDependency($par_data_partnership);
     }
 
     return parent::build($build);
   }
+
 }

@@ -3,11 +3,9 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
-use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -31,7 +29,7 @@ class ParDedupePersonForm extends ParFormPluginBase {
    * @return mixed
    *   A user account if selected, otherwise null.
    */
-  static function getDedupedPerson($value) {
+  public static function getDedupedPerson($value) {
     foreach ([self::ADD_NEW] as $opt) {
       if ($value === $opt) {
         return NULL;
@@ -143,4 +141,5 @@ class ParDedupePersonForm extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

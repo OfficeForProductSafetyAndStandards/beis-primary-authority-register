@@ -2,9 +2,6 @@
 
 namespace Drupal\par_notification\Commands;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Database\Connection;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\message\MessageInterface;
 use Drupal\message_expire\MessageExpiryManagerInterface;
 use Drupal\par_notification\ParMessageHandlerInterface;
@@ -42,11 +39,11 @@ class ParNotificationCommands extends DrushCommands {
   /**
    * ParDataCommands constructor.
    *
-   * @param ParSubscriptionManagerInterface $par_subscription_manager
+   * @param \Drupal\par_notification\ParSubscriptionManagerInterface $par_subscription_manager
    *   The notification subscription manager service.
-   * @param ParMessageHandlerInterface $par_message_handler
+   * @param \Drupal\par_notification\ParMessageHandlerInterface $par_message_handler
    *   The message handler service.
-   * @param MessageExpiryManagerInterface $message_expiry_manager
+   * @param \Drupal\message_expire\MessageExpiryManagerInterface $message_expiry_manager
    *   The message expiry manager service.
    */
   public function __construct(ParSubscriptionManagerInterface $par_subscription_manager, ParMessageHandlerInterface $par_message_handler, MessageExpiryManagerInterface $message_expiry_manager) {
@@ -57,8 +54,11 @@ class ParNotificationCommands extends DrushCommands {
     $this->messageExpiryManager = $message_expiry_manager;
   }
 
+  /**
+   *
+   */
   public static function create(ContainerInterface $container, DrushContainer $drush): self {
-      return new static(
+    return new static(
         $container->get('plugin.manager.par_subscription_manager'),
         $container->get('par_notification.message_handler'),
         $container->get('message_expire.manager')
@@ -71,8 +71,7 @@ class ParNotificationCommands extends DrushCommands {
    * @validate-module-enabled par_notification
    *
    * @command par-notification:scrub-messages
-   * @aliases pdm
-
+   * @aliases pdm   *
    */
   public function scrub_messages() {
     $total_query = \Drupal::entityTypeManager()
@@ -115,7 +114,7 @@ class ParNotificationCommands extends DrushCommands {
 
       // Identify whether any of the primary data has already been accounted for.
       $events = &$count['events'];
-      $unique_data = array_filter($primary_data, function($data) use ($message, $events) {
+      $unique_data = array_filter($primary_data, function ($data) use ($message, $events) {
         $event_key = implode(':', [
           $message->getTemplate()->id(),
           $data?->id() ?? $message->id(),
@@ -198,8 +197,7 @@ class ParNotificationCommands extends DrushCommands {
    * @command par-data:index-health
    * @option index-health
    *   Whether to check the index health.
-   * @aliases pih
-
+   * @aliases pih   *
    */
   public function index_health($index = NULL, array $options = ['index-health' => NULL]) {
     $include_index_health = $options['index-health'];
@@ -242,4 +240,5 @@ class ParNotificationCommands extends DrushCommands {
 
     return "Index health good.";
   }
+
 }

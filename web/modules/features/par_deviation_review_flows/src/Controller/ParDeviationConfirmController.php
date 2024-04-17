@@ -14,7 +14,9 @@ class ParDeviationConfirmController extends ParBaseController {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Response to deviation request sent';
 
@@ -46,4 +48,5 @@ class ParDeviationConfirmController extends ParBaseController {
     return parent::build($build);
 
   }
+
 }

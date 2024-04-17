@@ -3,9 +3,9 @@
 namespace Drupal\par_authority_update_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_authority_update_flows\ParFlowAccessTrait;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_authority_update_flows\ParFlowAccessTrait;
 
 /**
  * The ons code update form.
@@ -15,7 +15,9 @@ class ParAuthorityOnsForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'ONS Code';
 

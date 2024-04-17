@@ -3,15 +3,17 @@
 namespace Drupal\par_partnership_flows;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
-use Drupal\par_flows\ParFlowException;
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
-use Drupal\Core\Routing\RouteMatchInterface;
 
+/**
+ *
+ */
 trait ParPartnershipFlowAccessTrait {
 
   /**
@@ -105,4 +107,5 @@ trait ParPartnershipFlowAccessTrait {
 
     return parent::accessCallback($route, $route_match, $account);
   }
+
 }

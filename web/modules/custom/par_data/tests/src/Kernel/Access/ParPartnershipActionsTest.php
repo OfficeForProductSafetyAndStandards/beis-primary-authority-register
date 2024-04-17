@@ -3,19 +3,10 @@
 namespace Drupal\Tests\par_data\Kernel\Access;
 
 use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
-use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataAuthorityType;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPremises;
-use Drupal\par_data\ParDataManagerInterface;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
-use Drupal\user\Entity\User;
-use Drupal\Core\Cache\Cache;
 
 /**
  * Tests for standard actions performed against the entity.
@@ -25,31 +16,31 @@ use Drupal\Core\Cache\Cache;
 class ParPartnershipActionsTest extends ParDataTestBase {
 
   /**
-   * @var ParDataPartnership
+   * @var \Drupal\par_data\Entity\ParDataPartnership
    *   A partnership that is awaiting approval.
    */
   protected $pending_partnership;
 
   /**
-   * @var ParDataPartnership
+   * @var \Drupal\par_data\Entity\ParDataPartnership
    *   A partnership that has just been nominated.
    */
   protected $nominated_partnership;
 
   /**
-   * @var ParDataPartnership
+   * @var \Drupal\par_data\Entity\ParDataPartnership
    *   A partnership that has been active for some time.
    */
   protected $active_partnership;
 
   /**
-   * @var ParDataPartnership
+   * @var \Drupal\par_data\Entity\ParDataPartnership
    *   A partnership that has been recently revoked.
    */
   protected $revoked_partnership;
 
   /**
-   * @var ParDataPartnership
+   * @var \Drupal\par_data\Entity\ParDataPartnership
    *   A partnership that has been revoked for some time.
    */
   protected $old_partnership;
@@ -108,7 +99,7 @@ class ParPartnershipActionsTest extends ParDataTestBase {
   }
 
   /**
-   * Test to validate Rule 1: There are no pending enforcements against the partnership
+   * Test to validate Rule 1: There are no pending enforcements against the partnership.
    */
   public function testRevocationRules() {
     // Common rule 1: Partnerships that are already revoked should not be revocable.
@@ -143,9 +134,9 @@ class ParPartnershipActionsTest extends ParDataTestBase {
     $enforcement->save();
 
     // Partnership rule 2: The partnership must not have any pending enforcements to be revoked.
-//    $this->assertTrue(!$this->active_partnership->isRevocable(), t('Partnerships with pending enforcements should not be revocable.'));
-//    $enforcement_action->save();
-//    $this->assertTrue($this->active_partnership->isRevocable(), t('Partnerships with approved enforcements should be revocable.'));
+    //    $this->assertTrue(!$this->active_partnership->isRevocable(), t('Partnerships with pending enforcements should not be revocable.'));
+    //    $enforcement_action->save();
+    //    $this->assertTrue($this->active_partnership->isRevocable(), t('Partnerships with approved enforcements should be revocable.'));.
   }
 
   /**
@@ -160,4 +151,5 @@ class ParPartnershipActionsTest extends ParDataTestBase {
     // Rule 1: Partnerships revoked more than a day ago should not be restorable.
     $this->assertTrue(!$this->old_partnership->isRestorable(), t('Partnerships revoked more than a day ago should not be restorable.'));
   }
+
 }

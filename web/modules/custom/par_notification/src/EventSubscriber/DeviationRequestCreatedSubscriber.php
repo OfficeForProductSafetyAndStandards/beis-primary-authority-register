@@ -4,13 +4,13 @@ namespace Drupal\par_notification\EventSubscriber;
 
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
-use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataDeviationRequest;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Event\ParDataEventInterface;
-use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParEventSubscriberBase;
 
+/**
+ *
+ */
 class DeviationRequestCreatedSubscriber extends ParEventSubscriberBase {
 
   /**
@@ -25,19 +25,19 @@ class DeviationRequestCreatedSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  public static function getSubscribedEvents() {
     $events[EntityEvents::insert('par_data_deviation_request')][] = ['onEvent', 800];
 
     return $events;
   }
 
   /**
-   * @param EntityEvent $event
+   * @param \Drupal\Core\Entity\EntityEvent $event
    */
   public function onEvent(EntityEvent $event) {
     $this->setEvent($event);
 
-    /** @var ParDataDeviationRequest $entity */
+    /** @var \Drupal\par_data\Entity\ParDataDeviationRequest $entity */
     $entity = $event->getEntity();
     $par_data_partnership = $entity?->getPartnership(TRUE);
 
@@ -52,4 +52,5 @@ class DeviationRequestCreatedSubscriber extends ParEventSubscriberBase {
       $this->sendMessage($arguments);
     }
   }
+
 }

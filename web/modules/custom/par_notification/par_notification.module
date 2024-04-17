@@ -5,18 +5,16 @@
  * Contains par_notification.module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\link\LinkItemInterface;
 use Drupal\message\MessageInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Database\Query\SelectInterface;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\Core\Database\Query\AlterableInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\user\Entity\User;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\par_notification\Plugin\Field\FieldType\NotificationLinkField;
-//use Drupal\par_notification\Plugin\Field\FieldType\ParNotificationStatus;
+
+// Use Drupal\par_notification\Plugin\Field\FieldType\ParNotificationStatus;.
 
 /**
  * Implements hook_help().
@@ -48,7 +46,6 @@ function par_notification_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
-
 
 /**
  * Implements hook_entity_presave().
@@ -115,7 +112,7 @@ function par_notification_entity_insert(EntityInterface $message) {
  * Implements hook_entity_type_alter().
  */
 function par_notification_entity_type_alter(array &$entity_types) {
-  /** @var $entity_types EntityTypeInterface[] */
+  /** @var \Drupal\Core\Entity\EntityTypeInterface[] $entity_types */
 
   // Add an access control handler for message entities.
   if (isset($entity_types['message'])) {

@@ -5,10 +5,8 @@ namespace Drupal\par_member_cease_flows\Form;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
-use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_flows\ParDisplayTrait;
-use Drupal\par_member_cease_flows\ParFlowAccessTrait;
+use Drupal\par_flows\Form\ParBaseForm;
 
 /**
  * The confirming the user is authorised to revoke partnerships.
@@ -16,7 +14,9 @@ use Drupal\par_member_cease_flows\ParFlowAccessTrait;
 class ParMemberCeaseConfirmForm extends ParBaseForm {
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = "Membership Ceased";
 
@@ -74,6 +74,5 @@ class ParMemberCeaseConfirmForm extends ParBaseForm {
 
     }
   }
-
 
 }

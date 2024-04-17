@@ -8,15 +8,12 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Link;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Url;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
-use Drupal\par_rd_help_desk_flows\ParFlowAccessTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -32,14 +29,14 @@ class ParHelpdeskDashboardController extends ControllerBase {
   /**
    * The response cache kill switch.
    *
-   * @var KillSwitch $killSwitch
+   * @var \Drupal\Core\PageCache\ResponsePolicy\KillSwitch
    */
   protected KillSwitch $killSwitch;
 
   /**
    * The flow negotiator.
    *
-   * @var ConfigEntityStorageInterface $flowStorage
+   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
    */
   protected ConfigEntityStorageInterface $flowStorage;
 
@@ -142,7 +139,7 @@ class ParHelpdeskDashboardController extends ControllerBase {
         '#value' => $this->t('Partnerships'),
         '#attributes' => ['class' => ['govuk-heading-m']],
       ],
-      '#cache' => ['contexts' => ['user.par_memberships:authority']]
+      '#cache' => ['contexts' => ['user.par_memberships:authority']],
     ];
 
     $manage_partnerships = $this->getLinkByRoute('view.advanced_partnership_search.advanced_search');
@@ -188,7 +185,7 @@ class ParHelpdeskDashboardController extends ControllerBase {
         '#value' => $this->t('People'),
         '#attributes' => ['class' => ['govuk-heading-m']],
       ],
-      '#cache' => ['contexts' => ['user.par_memberships:authority']]
+      '#cache' => ['contexts' => ['user.par_memberships:authority']],
     ];
 
     $manage_users = $this->getLinkByRoute('view.par_people.people');
@@ -217,7 +214,7 @@ class ParHelpdeskDashboardController extends ControllerBase {
         '#value' => $this->t('Enforcements'),
         '#attributes' => ['class' => ['govuk-heading-m']],
       ],
-      '#cache' => ['contexts' => ['user.par_memberships:authority']]
+      '#cache' => ['contexts' => ['user.par_memberships:authority']],
     ];
     $link = $this->getLinkByRoute('view.par_user_enforcements.enforcement_notices_page')
       ->setText('Manage enforcement notices')
@@ -253,7 +250,7 @@ class ParHelpdeskDashboardController extends ControllerBase {
         '#value' => $this->t('Enquiries'),
         '#attributes' => ['class' => ['govuk-heading-m']],
       ],
-      '#cache' => ['contexts' => ['user.par_memberships:authority']]
+      '#cache' => ['contexts' => ['user.par_memberships:authority']],
     ];
 
     $general_enquiries_link = $this->getLinkByRoute('view.par_user_general_enquiries.general_enquiries_page')
@@ -280,7 +277,8 @@ class ParHelpdeskDashboardController extends ControllerBase {
       $params = ['user' => $this->getCurrentUser()->id()];
       $manage_profile_flow = ParFlow::load('profile_update');
       $manage_profile_link = $manage_profile_flow?->getStartLink(1, 'Manage your profile details', $params);
-    } catch (ParFlowException $e) {
+    }
+    catch (ParFlowException $e) {
 
     }
 
@@ -292,7 +290,6 @@ class ParHelpdeskDashboardController extends ControllerBase {
         '#options' => $manage_profile_link->getUrl()->getOptions(),
       ];
     }
-
 
     return $build;
   }

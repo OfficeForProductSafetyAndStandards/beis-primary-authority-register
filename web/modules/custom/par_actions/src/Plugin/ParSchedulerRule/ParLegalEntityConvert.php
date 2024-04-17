@@ -3,7 +3,6 @@
 namespace Drupal\par_actions\Plugin\ParSchedulerRule;
 
 use Drupal\par_actions\ParSchedulerRuleBase;
-use Drupal\par_data\Entity\ParDataLegalEntity;
 
 /**
  * Approve an enforcement notice.
@@ -20,6 +19,9 @@ use Drupal\par_data\Entity\ParDataLegalEntity;
  */
 class ParLegalEntityConvert extends ParSchedulerRuleBase {
 
+  /**
+   *
+   */
   public function query() {
     $query = parent::query();
 
@@ -28,4 +30,5 @@ class ParLegalEntityConvert extends ParSchedulerRuleBase {
 
     return $query;
   }
+
 }

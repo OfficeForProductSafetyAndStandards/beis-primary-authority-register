@@ -4,12 +4,12 @@ namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\file\Entity\File;
 use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\file\Entity\File;
-use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
+use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
  * The advice document form.
@@ -24,20 +24,23 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
    */
   protected $entityMapping = [
     ['advice_title', 'par_data_advice', 'advice_title', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must provide a title for this advice document.'
-    ]],
+      'This value should not be null.' => 'You must provide a title for this advice document.',
+    ],
+    ],
     ['notes', 'par_data_advice', 'notes', NULL, NULL, 0, [
       'This value should not be null.' => 'You must provide a summary for this advice document.',
-      'You must fill in the missing information.' => 'You must provide a summary for this advice document.'
-    ]],
+      'You must fill in the missing information.' => 'You must provide a summary for this advice document.',
+    ],
+    ],
     ['advice_type', 'par_data_advice', 'advice_type', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must choose what type of advice this is.'
-    ]],
+      'This value should not be null.' => 'You must choose what type of advice this is.',
+    ],
+    ],
     ['regulatory_functions', 'par_data_advice', 'field_regulatory_function', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must choose which regulatory functions this advice applies to.'
-    ]],
+      'This value should not be null.' => 'You must choose which regulatory functions this advice applies to.',
+    ],
+    ],
   ];
-
 
   /**
    * {@inheritdoc}
@@ -120,7 +123,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#attributes' => ['class' => ['file']],
-          '#value' => $file->getFileName()
+          '#value' => $file->getFileName(),
         ];
       }
     }
@@ -267,7 +270,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       }
     }
     // Save existing advice entities.
-    else if (!empty($assigned_reg_functions) && $par_data_advice->save()) {
+    elseif (!empty($assigned_reg_functions) && $par_data_advice->save()) {
       $this->getFlowDataHandler()->deleteStore();
     }
     // Log an error.

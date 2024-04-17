@@ -47,21 +47,21 @@ class SubscriptionEvent extends EntityEvent implements SubscriptionEventInterfac
   /**
    * @return string
    */
-  public function getEmail(){
+  public function getEmail() {
     return $this->email;
   }
 
   /**
    * @return string
    */
-  public function getListName(){
+  public function getListName() {
     return $this->listName;
   }
 
   /**
    * @return \Drupal\par_subscriptions\Entity\ParSubscriptionInterface
    */
-  public function getSubscription(){
+  public function getSubscription() {
     return $this->subscription;
   }
 

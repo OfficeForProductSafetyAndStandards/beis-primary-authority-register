@@ -2,12 +2,9 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\TypedData\Type\DateTimeInterface;
-use Drupal\par_data\ParDataException;
 
 /**
  * Defines the par_data_coodinated_business entity.
@@ -155,7 +152,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
     $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
     foreach ($enforcement_notices as $uuid => $relationship) {
       if ($relationship->getEntity()->isActive()) {
-        return Null;
+        return NULL;
       }
     }
 
@@ -201,8 +198,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
    * Add a legal entity for this Coordinated Business.
    *
    * @param ParDataLegalEntity $legal_entity
-   *   A PAR Legal Entity to add.
-
+   *   A PAR Legal Entity to add.   *.
    */
   public function addLegalEntity(ParDataLegalEntity $legal_entity) {
     $legal_entities = $this->getLegalEntity();

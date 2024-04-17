@@ -3,11 +3,10 @@
 namespace Drupal\par_flows\Event;
 
 use Drupal\Component\Utility\NestedArray;
-use Drupal\par_flows\Event\ParFlowEvents;
-use Symfony\Contracts\EventDispatcher\Event;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\par_flows\Entity\ParFlowInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event that is fired when a user logs in.
@@ -17,7 +16,7 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   /**
    * The par flow.
    *
-   * @var ParFlowInterface
+   * @var \Drupal\par_flows\Entity\ParFlowInterface
    */
   protected $flow;
 
@@ -67,9 +66,9 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   /**
    * Constructs the object.
    *
-   * @param ParFlowInterface $flow
+   * @param \Drupal\par_flows\Entity\ParFlowInterface $flow
    *   The flow the event was triggered on.
-   * @param RouteMatchInterface $route
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route
    *   The current route.
    * @param string $operation
    *   The operation being performed.
@@ -125,7 +124,7 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   /**
    * Set the next url to redirect to.
    *
-   * @param Url $url
+   * @param \Drupal\Core\Url $url
    *   A url object to redirect to.
    */
   public function setUrl(Url $url) {

@@ -2,9 +2,7 @@
 
 namespace Drupal\par_profile_update_flows\Form;
 
-use CommerceGuys\Addressing\AddressFormat\AddressField;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_profile_update_flows\ParFlowAccessTrait;
@@ -23,7 +21,9 @@ class ParGdprForm extends ParBaseForm {
   const GDPR_START_TIME = 1527206400;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Confirm acceptance of data policy';
 

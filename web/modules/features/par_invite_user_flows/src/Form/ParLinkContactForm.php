@@ -2,11 +2,8 @@
 
 namespace Drupal\par_invite_user_flows\Form;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_invite_user_flows\ParFlowAccessTrait;
 
 /**
  * The form for linking a contact to a user.
@@ -14,12 +11,14 @@ use Drupal\par_invite_user_flows\ParFlowAccessTrait;
 class ParLinkContactForm extends ParBaseForm {
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Link this person to a user account?';
 
   /**
-   * {@inheritdoc}
+   * Load the data for this.
    */
   public function loadData() {
     $cid_person_select = $this->getFlowNegotiator()->getFormKey('par_choose_person');

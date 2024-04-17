@@ -6,7 +6,6 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -51,15 +50,15 @@ class ParConfirmationReviewForm extends ParBaseForm {
       '#value' => $par_data_partnership->id(),
     ];
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataOrganisation $par_data_organisation */
-    /** @var ParDataPerson $par_data_person */
-    /** @var ParDataPremises $par_data_premises */
-    /** @var ParDataLegalEntity[] $par_data_legal_entities */
-    /** @var ParDataLegalEntity[] $par_data_legal_entities_existing */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
+    /** @var \Drupal\par_data\Entity\ParDataPremises $par_data_premises */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntity[] $par_data_legal_entities */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntity[] $par_data_legal_entities_existing */
 
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
@@ -92,7 +91,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     ];
 
     // Display contacts at the organisation.
-    $form['organisation_contacts'] = $this->renderSection('Contacts at the Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed'], [],  TRUE, TRUE);
+    $form['organisation_contacts'] = $this->renderSection('Contacts at the Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed'], [], TRUE, TRUE);
     $form['organisation_contacts']['field_organisation_person']['operations']['edit'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
@@ -148,7 +147,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $legal_entities = array_filter($par_data_legal_entities_existing + $par_data_legal_entities);
     $form['legal_entities'] = $this->renderEntities('Legal entities', $legal_entities);
 
-    // Display the links to change legal entities
+    // Display the links to change legal entities.
     $form['legal_entity_link'] = [
       '#type' => 'markup',
       '#markup' => t('@link', [
@@ -233,6 +232,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $par_data_partnership->getOrganisation(TRUE);
@@ -352,15 +354,15 @@ class ParConfirmationReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataOrganisation $par_data_organisation */
-    /** @var ParDataPerson $par_data_person */
-    /** @var ParDataPremises $par_data_premises */
-    /** @var ParDataLegalEntity[] $par_data_legal_entities */
-    /** @var ParDataLegalEntity[] $par_data_legal_entities_existing */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
+    /** @var \Drupal\par_data\Entity\ParDataPremises $par_data_premises */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntity[] $par_data_legal_entities */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntity[] $par_data_legal_entities_existing */
 
     // Add all references if not already set.
     if ($par_data_person->save() && !$par_data_partnership->getOrganisationPeople(TRUE)) {
@@ -419,7 +421,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
         ->error($message, $replacements);
 
       // If the partnership could not be saved the application can't be progressed.
-      // @TODO Find a better way to alert the user without redirecting them away from the form.
+      // @todo Find a better way to alert the user without redirecting them away from the form.
       $this->messenger()->addMessage('There was an error progressing your partnership, please contact the helpdesk for more information.');
       $form_state->setRedirectUrl($this->getFlowNegotiator()->getFlow()->progress('cancel'));
     }

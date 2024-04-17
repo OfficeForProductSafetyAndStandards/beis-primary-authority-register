@@ -5,9 +5,8 @@
  * Contains par_header.module.
  */
 
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
+use Drupal\user\Entity\User;
 
 /**
  * Implements hook_link_alter().
@@ -17,7 +16,7 @@ function par_header_link_alter(&$variables) {
   /**
    * The URL of the link.
    *
-   * @var Url
+   * @var \Drupal\Core\Url
    */
   $url = $variables['url'];
 
@@ -27,7 +26,7 @@ function par_header_link_alter(&$variables) {
     }
     elseif ($variables['text'] == 'My account') {
       // Get current user.
-      $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+      $user = User::load(\Drupal::currentUser()->id());
 
       // Override My Account link with username.
       $variables['text'] = t('@username', ['@username' => $user->get('name')->value]);

@@ -4,8 +4,8 @@ namespace Drupal\par_notification\Event;
 
 use Drupal\message\MessageInterface;
 use Drupal\par_notification\ParRecipient;
-use Symfony\Contracts\EventDispatcher\Event;
 use Drupal\par_notification\ParSubscriptionManagerInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * The event fired whenever a notification is being sent out.
@@ -24,14 +24,14 @@ class ParNotificationEvent extends Event implements ParNotificationEventInterfac
   /**
    * The message being acted upon.
    *
-   * @param MessageInterface $message
+   * @param \Drupal\message\MessageInterface $message
    */
   protected MessageInterface $message;
 
   /**
    * The email address that the message is being sent to.
    *
-   * @param ParRecipient $recipient
+   * @param \Drupal\par_notification\ParRecipient $recipient
    */
   protected ParRecipient $recipient;
 
@@ -40,7 +40,7 @@ class ParNotificationEvent extends Event implements ParNotificationEventInterfac
    *
    * There should be an array key for each view_mode, including:
    *  - mail_subject
-   *  - mail_body
+   *  - mail_body.
    *
    * @param array $output
    */
@@ -53,7 +53,7 @@ class ParNotificationEvent extends Event implements ParNotificationEventInterfac
     // Get all the recipients for this message.
     $recipients = $this->getSubscriptionManager()->getRecipients($message);
 
-    // Filter for just this recipient
+    // Filter for just this recipient.
     $recipients = array_filter($recipients, function ($recipient) use ($email) {
       return $recipient->getEmail() === $email;
     });
@@ -63,21 +63,21 @@ class ParNotificationEvent extends Event implements ParNotificationEventInterfac
   /**
    * Get the subscription manager.
    *
-   * @return ParSubscriptionManagerInterface
+   * @return \Drupal\par_notification\ParSubscriptionManagerInterface
    */
   public function getSubscriptionManager(): ParSubscriptionManagerInterface {
     return \Drupal::service('plugin.manager.par_subscription_manager');
   }
 
   /**
-   * @return MessageInterface
+   * @return \Drupal\message\MessageInterface
    */
   public function getMessage(): MessageInterface {
     return $this->message;
   }
 
   /**
-   * @return ParRecipient
+   * @return \Drupal\par_notification\ParRecipient
    */
   public function getRecipient(): ParRecipient {
     return $this->recipient;
@@ -110,4 +110,3 @@ class ParNotificationEvent extends Event implements ParNotificationEventInterfac
   }
 
 }
-

@@ -2,25 +2,14 @@
 
 namespace Drupal\par_profile_update_flows\Form;
 
-use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
 use Drupal\invite\Entity\Invite;
-use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
-use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
-use Drupal\par_forms\Plugin\ParForm\ParConfirmRemoval;
 use Drupal\par_profile_update_flows\ParFlowAccessTrait;
 use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 use Drupal\user\Entity\User;
-use Drupal\user\UserInterface;
 
 /**
  * The form for the partnership details.
@@ -57,13 +46,13 @@ class ParReviewForm extends ParBaseForm {
         ->setParameter('par_data_person', $par_data_person);
     }
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPerson $par_data_person */
-    /** @var User $account */
-    /** @var ParDataAuthority[] $par_data_authority */
-    /** @var ParDataOrganisation[] $par_data_organisation */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
+    /** @var \Drupal\user\Entity\User $account */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority[] $par_data_authority */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation[] $par_data_organisation */
 
     $this->getFlowDataHandler()->setFormPermValue("full_name", $par_data_person->getFullName());
     $this->getFlowDataHandler()->setFormPermValue("work_phone", $par_data_person->getWorkPhone());
@@ -109,7 +98,7 @@ class ParReviewForm extends ParBaseForm {
         '#title' => 'Name',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('full_name', ''),
-        ]
+        ],
       ],
     ];
 
@@ -129,7 +118,7 @@ class ParReviewForm extends ParBaseForm {
         '#title' => 'Work phone',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('work_phone', ''),
-        ]
+        ],
       ],
       'mobile_phone' => [
         '#type' => 'fieldset',
@@ -137,7 +126,7 @@ class ParReviewForm extends ParBaseForm {
         '#title' => 'Mobile phone',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('mobile_phone', ''),
-        ]
+        ],
       ],
       'communication_noes' => [
         '#type' => 'fieldset',
@@ -157,7 +146,7 @@ class ParReviewForm extends ParBaseForm {
         '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $authorities,
-        ]
+        ],
       ];
     }
     if ($organisations = $this->getFlowDataHandler()->getDefaultValues('organisations', NULL)) {
@@ -167,7 +156,7 @@ class ParReviewForm extends ParBaseForm {
         '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $organisations,
-        ]
+        ],
       ];
     }
 
@@ -184,6 +173,9 @@ class ParReviewForm extends ParBaseForm {
     return parent::buildForm($form, $form_state);
   }
 
+  /**
+   * Implements createEntities().
+   */
   public function createEntities() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
@@ -237,7 +229,7 @@ class ParReviewForm extends ParBaseForm {
       $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
     }
 
-    // Get the authorities and organisations that will be associated with the person.
+    // Get authorities & organisations that will be associated with the person.
     $authority_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_authority_id', $select_authority_cid);
     $organisation_ids = $this->getFlowDataHandler()->getTempDataValue('par_data_organisation_id', $select_organisation_cid);
     $par_data_authorities = $par_data_person->updateAuthorityMemberships($authority_ids);
@@ -262,13 +254,13 @@ class ParReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPerson $par_data_person */
-    /** @var User $account */
-    /** @var ParDataAuthority[] $par_data_authority */
-    /** @var ParDataOrganisation[] $par_data_organisation */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
+    /** @var \Drupal\user\Entity\User $account */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority[] $par_data_authority */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation[] $par_data_organisation */
 
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $select_authority_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
@@ -330,7 +322,7 @@ class ParReviewForm extends ParBaseForm {
         break;
     }
 
-    // Create invitation if an invitation type has been set and no existing user has been found.
+    // Create invite if a type has been set and no existing user has been found.
     if (isset($invitation_type) && !$account) {
       $invite = Invite::create([
         'type' => $invitation_type,

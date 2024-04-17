@@ -15,7 +15,9 @@ class ParSubscriptionPreferencesForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Update subscriptions';
 
@@ -32,9 +34,11 @@ class ParSubscriptionPreferencesForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+   *
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-
 
   }
 

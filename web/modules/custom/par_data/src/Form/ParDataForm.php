@@ -2,12 +2,8 @@
 
 namespace Drupal\par_data\Form;
 
-use Drupal\Component\Datetime\TimeInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
 
 /**
  * Form controller for par_data edit forms.
@@ -86,14 +82,14 @@ class ParDataForm extends ContentEntityForm {
       ];
     }
 
-    $form['revision_log'] += array(
-      '#states' => array(
-        'visible' => array(
-          ':input[name="revision"]' => array('checked' => TRUE),
-        ),
-      ),
+    $form['revision_log'] += [
+      '#states' => [
+        'visible' => [
+          ':input[name="revision"]' => ['checked' => TRUE],
+        ],
+      ],
       '#group' => 'revision_information',
-    );
+    ];
 
     $form['status'] = [
       '#type' => 'checkbox',

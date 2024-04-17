@@ -4,14 +4,11 @@ namespace Drupal\par_actions\Plugin\Action;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Action\ActionBase;
-use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\registered_organisations\DataException;
 use Drupal\registered_organisations\OrganisationManagerInterface;
 use Drupal\registered_organisations\RegisterException;
-use Drupal\registered_organisations\TemporaryException;
 
 /**
  * Updates a legal entity name.
@@ -27,7 +24,7 @@ class ParConvertLegacyLegalEntity extends ActionBase {
   /**
    * Get the registered_organisation manager.
    *
-   * @return OrganisationManagerInterface
+   * @return \Drupal\registered_organisations\OrganisationManagerInterface
    */
   public function getOrganisationManager(): OrganisationManagerInterface {
     return \Drupal::service('registered_organisations.organisation_manager');
@@ -49,7 +46,7 @@ class ParConvertLegacyLegalEntity extends ActionBase {
           $entity->save();
         }
       }
-      catch (RegisterException|DataException $ignored) {
+      catch (RegisterException | DataException $ignored) {
         // Catch unmanageable errors which should result in no further processing.
       }
     }
@@ -59,7 +56,7 @@ class ParConvertLegacyLegalEntity extends ActionBase {
    * {@inheritdoc}
    */
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
-    // @TODO Implement entity/action checks
+    // @todo Implement entity/action checks
     $result = AccessResult::allowed();
     return $return_as_object ? $result : $result->isAllowed();
   }

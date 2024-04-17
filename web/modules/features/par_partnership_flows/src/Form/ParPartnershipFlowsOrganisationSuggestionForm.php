@@ -39,7 +39,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
 
     // Go to previous step if search query is not specified.
     if (!$searchQuery) {
-      // @TODO Find a way to notify the user they have been redirected.
+      // @todo Find a way to notify the user they have been redirected.
       return $this->getFlowNegotiator()->getFlow()->progress('cancel');
     }
 
@@ -48,7 +48,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
         'OR' => [
           ['organisation_name', $searchQuery, 'STARTS_WITH'],
           ['trading_name', $searchQuery, 'STARTS_WITH'],
-        ]
+        ],
       ],
     ];
 

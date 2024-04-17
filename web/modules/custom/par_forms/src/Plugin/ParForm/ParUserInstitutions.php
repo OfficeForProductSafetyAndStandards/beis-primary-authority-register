@@ -2,21 +2,10 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Core\Link;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 use Drupal\par_roles\ParRoleManagerInterface;
-use Drupal\user\Entity\Role;
 use Drupal\user\UserInterface;
 
 /**
@@ -72,7 +61,7 @@ class ParUserInstitutions extends ParFormPluginBase {
       '#type' => 'container',
       '#weight' => -1,
       '#attributes' => ['class' => ['govuk-form-group']],
-      '#cache' => ['tags' => $cache_tags]
+      '#cache' => ['tags' => $cache_tags],
     ];
 
     $message = count($institutions) >= 1 ?
@@ -114,7 +103,7 @@ class ParUserInstitutions extends ParFormPluginBase {
           $params = [
             'user' => $user?->id(),
             'institution_type' => $institution?->getEntityTypeId(),
-            'institution_id' => $institution?->id()
+            'institution_id' => $institution?->id(),
           ];
           $membership_remove_flow = ParFlow::load('person_membership_remove');
           $membership_remove_link = $membership_remove_flow?->getStartLink(1, 'Remove this membership', $params);
@@ -122,9 +111,9 @@ class ParUserInstitutions extends ParFormPluginBase {
             'attributes' => [
               'class' => [
                 'remove-institution',
-                'govuk-!-margin-left-5'
-              ]
-            ]
+                'govuk-!-margin-left-5',
+              ],
+            ],
           ];
           $form['user_institutions']['list']['#items'][$institution->id()]['label']['remove'] = [
             '#type' => 'link',
@@ -175,4 +164,5 @@ class ParUserInstitutions extends ParFormPluginBase {
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }
+
 }

@@ -6,7 +6,6 @@ use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_notification\ParLinkActionBase;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Send the user to view the general enquiry.
@@ -48,4 +47,5 @@ class ParGeneralEnquiryView extends ParLinkActionBase {
 
     return NULL;
   }
+
 }

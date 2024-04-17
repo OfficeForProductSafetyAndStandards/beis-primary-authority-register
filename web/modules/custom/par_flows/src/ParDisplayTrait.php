@@ -2,14 +2,13 @@
 
 namespace Drupal\par_flows;
 
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
-use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Field\FormatterInterface;
 use Drupal\file\Plugin\Field\FieldType\FileFieldItemList;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 
+/**
+ *
+ */
 trait ParDisplayTrait {
 
   protected $pagerId = 1;
@@ -64,9 +63,9 @@ trait ParDisplayTrait {
    *
    * @param string $section
    *   The section name to display on operation links.
-   * @param EntityReferenceFieldItemListInterface $field
+   * @param \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field
    *   The field to render.
-   * @param EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity that we're performing the operations on.
    * @param string $view_mode
    *   The view mode to render the fields from.
@@ -109,7 +108,7 @@ trait ParDisplayTrait {
    *
    * @param string $section
    *   The section name to display on operation links.
-   * @param EntityReferenceFieldItemListInterface $field
+   * @param \Drupal\Core\Field\EntityReferenceFieldItemListInterface $field
    *   The field to render.
    * @param string $view_mode
    *   The view mode to render the fields from.
@@ -152,7 +151,7 @@ trait ParDisplayTrait {
    *
    * @param string $section
    *   The section name to display on operation links.
-   * @param EntityInterface[] $entities
+   * @param \Drupal\Core\Entity\EntityInterface[] $entities
    *   The entities to render.
    * @param string $view_mode
    *   The view mode to render the fields from.
@@ -179,7 +178,7 @@ trait ParDisplayTrait {
       $rendered_entity = $entity_view_builder->view($entity, $view_mode);
       $elements[$delta] = [
         '#type' => 'container',
-        '#attributes' => ['class' => 'govuk-form-group']
+        '#attributes' => ['class' => 'govuk-form-group'],
       ];
       $elements[$delta]['entity'] = $this->renderMarkupField($rendered_entity);
 
@@ -194,11 +193,11 @@ trait ParDisplayTrait {
   /**
    * @param string $section
    *   The section name to display on operation links.
-   * @param EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity that we're performing the operations on.
-   * @param FieldItemListInterface $field
+   * @param \Drupal\Core\Field\FieldItemListInterface $field
    *   The field that the operation relates to.
-   * @param integer $delta
+   * @param int $delta
    *   The field delta to display the opperation link for.
    * @param array $operations
    *   An array of operations that we want to get.
@@ -244,7 +243,7 @@ trait ParDisplayTrait {
       }
     }
 
-    // @TODO We will eventually need to add delete/revoke/archive and various other operations.
+    // @todo We will eventually need to add delete/revoke/archive and various other operations.
     return ['operations' => $operation_links];
   }
 
@@ -257,7 +256,7 @@ trait ParDisplayTrait {
    * @param string $section
    *   The section title to use for this field-set.
    *
-   * @param EntityInterface $entity
+   * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity containing the fields to be rendered.
    *
    * @param array $fields
@@ -266,13 +265,13 @@ trait ParDisplayTrait {
    * @param array $operations
    *   An array required operations.
    *
-   * @param Boolean $title
+   * @param bool $title
    *   Weather or not to display a title for this section.
    *
-   * @param Boolean $single
+   * @param bool $single
    *
-   * @param Boolean $section_title_only
-   *    An option to only output a title with the correct markup.
+   * @param bool $section_title_only
+   *   An option to only output a title with the correct markup.
    *
    * @return mixed
    */
@@ -319,7 +318,7 @@ trait ParDisplayTrait {
         }
 
         // Reference fields need to be rendered slightly differently.
-        // @TODO File entity removal temporary fix. This entire trait is superseded by components.
+        // @todo File entity removal temporary fix. This entire trait is superseded by components.
         // @deprecated
         if ($field instanceof EntityReferenceFieldItemListInterface
             && !$field instanceof FileFieldItemList) {
@@ -355,7 +354,8 @@ trait ParDisplayTrait {
       if (isset($operations) && (in_array('add', $operations)) && !($single && !$field->isEmpty())) {
         try {
           $add_link = $this->getFlowNegotiator()->getFlow()->getLinkByCurrentOperation('add_' . $field->getName(), [], [], TRUE);
-        } catch (ParFlowException $e) {
+        }
+        catch (ParFlowException $e) {
           $this->getLogger($this->getLoggerChannel())->notice($e);
         }
         if (isset($add_link)) {
@@ -370,6 +370,9 @@ trait ParDisplayTrait {
     return $element;
   }
 
+  /**
+   *
+   */
   public function renderTable($rows, $id) {
     // PAR-1461: Ensure pagers are unique per page.
     if (count($rows) > $this->numberPerPage) {
@@ -384,7 +387,7 @@ trait ParDisplayTrait {
 
       $element = [
         'items' => [
-          '#type' => 'container'
+          '#type' => 'container',
         ],
         'pager' => [
           '#type' => 'pager',
@@ -395,7 +398,7 @@ trait ParDisplayTrait {
             'preset' => $this->config('pagerer.settings')
               ->get('core_override_preset'),
           ],
-        ]
+        ],
       ];
 
       // Add the items for our current page to the fieldset.
@@ -406,7 +409,7 @@ trait ParDisplayTrait {
     else {
       $element = [
         'items' => [
-          '#type' => 'container'
+          '#type' => 'container',
         ],
       ];
 
@@ -435,8 +438,9 @@ trait ParDisplayTrait {
       return $percentage . '%';
     }
 
-    // show a UTF-8 ✔.
+    // Show a UTF-8 ✔.
     return '✔';
 
   }
+
 }

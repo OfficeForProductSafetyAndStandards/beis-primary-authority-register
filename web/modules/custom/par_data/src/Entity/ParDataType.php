@@ -2,12 +2,10 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\par_data\ParDataManagerInterface;
 use Drupal\trance\TranceType;
 
 /**
  * The base PAR entity type class.
- *
  */
 abstract class ParDataType extends TranceType implements ParDataTypeInterface {
 
@@ -38,7 +36,7 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
   /**
    * Simple getter to inject the PAR Data Manager service.
    *
-   * @return ParDataManagerInterface
+   * @return \Drupal\par_data\ParDataManagerInterface
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
@@ -77,7 +75,7 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    */
   public function getConfigurationElement($element) {
     $config = $this->getConfiguration();
-    return isset($config[$element]) ? $config[$element] : [];
+    return $config[$element] ?? [];
   }
 
   /**
@@ -107,7 +105,7 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
     }
 
     $element_configuration = $this->getConfigurationElement($element);
-    return isset($element_configuration[$type]) ? $element_configuration[$type] : NULL;
+    return $element_configuration[$type] ?? NULL;
   }
 
   /**
@@ -192,6 +190,9 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
     return isset($status_field) && !empty($allowed_statuses) ? key($allowed_statuses) : NULL;
   }
 
+  /**
+   *
+   */
   public function getFieldLabel($field_name, $value): ?string {
     // If the field is configured with allowed values.
     if (!empty($this->getAllowedValues($field_name))) {
@@ -218,7 +219,7 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
   public function getBooleanFieldLabel($field_name, bool $value = FALSE) {
     $boolean_values = $this->getBooleanValues($field_name);
     $key = $value ? 'on' : 'off';
-    return isset($boolean_values[$key]) ? $boolean_values[$key] : FALSE;
+    return $boolean_values[$key] ?? FALSE;
   }
 
   /**
@@ -253,7 +254,7 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
    */
   public function getAllowedFieldlabel($field_name, $value = FALSE) {
     $allowed_values = $this->getAllowedValues($field_name);
-    return isset($allowed_values[$value]) ? $allowed_values[$value] : FALSE;
+    return $allowed_values[$value] ?? FALSE;
   }
 
   /**
@@ -280,7 +281,7 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
       'user_id',
       'created',
       'changed',
-      'name'
+      'name',
     ];
   }
 

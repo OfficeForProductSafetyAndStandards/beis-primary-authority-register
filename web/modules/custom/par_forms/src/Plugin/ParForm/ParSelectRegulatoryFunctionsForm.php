@@ -2,7 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -20,8 +19,9 @@ class ParSelectRegulatoryFunctionsForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['regulatory_functions', 'par_data_authority', 'field_regulatory_function', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must choose which regulatory functions apply to this authority.'
-    ]],
+      'This value should not be null.' => 'You must choose which regulatory functions apply to this authority.',
+    ],
+    ],
   ];
 
   /**
@@ -30,7 +30,7 @@ class ParSelectRegulatoryFunctionsForm extends ParFormPluginBase {
   public function loadData(int $index = 1): void {
     $regulatory_functions = $this->getParDataManager()->getEntitiesByType('par_data_regulatory_function');
     if ($regulatory_functions) {
-        $this->getFlowDataHandler()->setFormPermValue("regulatory_function_options", $this->getParDataManager()->getEntitiesAsOptions($regulatory_functions));
+      $this->getFlowDataHandler()->setFormPermValue("regulatory_function_options", $this->getParDataManager()->getEntitiesAsOptions($regulatory_functions));
     }
 
     // Decide which entity to use.
@@ -60,4 +60,5 @@ class ParSelectRegulatoryFunctionsForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

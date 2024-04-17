@@ -3,8 +3,6 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\TypedData\DataDefinition;
-use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormException;
@@ -22,7 +20,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ParInviteForm extends ParFormPluginBase {
 
   /**
-   * Invitation messages
+   * Invitation messages.
    */
   public function getMessage($invitation_type) {
     $sender_name = $this->getFlowDataHandler()->getDefaultValues('inviter_name', FALSE);
@@ -71,7 +69,7 @@ HEREDOC;
       $this->getFlowDataHandler()->setFormPermValue("recipient_name", $par_data_person->getFullName());
     }
 
-    // Set the default value for the sender
+    // Set the default value for the sender.
     if ($account = $this->getFlowNegotiator()->getCurrentUser()) {
       $this->getFlowDataHandler()->setTempDataValue("from", $account->getEmail());
       $this->getFlowDataHandler()->setTempDataValue("inviter", $account->id());
@@ -89,7 +87,7 @@ HEREDOC;
       }
       $authority_person = $par_data_authority ? $this->getParDataManager()->getUserPerson($account, $par_data_authority) : NULL;
       $organisation_person = $par_data_organisation ? $this->getParDataManager()->getUserPerson($account, $par_data_organisation) : NULL;
-      if($account->hasPermission('invite helpdesk members')) {
+      if ($account->hasPermission('invite helpdesk members')) {
         $sender_name = 'BEIS RD Department';
       }
       elseif ($authority_person) {
@@ -121,7 +119,7 @@ HEREDOC;
       }
     }
     if (!empty($par_roles)) {
-      $roles = array_filter($par_roles, function ($role_id) use($invitation_type) {
+      $roles = array_filter($par_roles, function ($role_id) use ($invitation_type) {
         if ($invitation_type === 'invite_authority_member') {
           return in_array($role_id, ['par_authority_manager', 'par_authority', 'par_enforcement']);
         }
@@ -291,4 +289,5 @@ HEREDOC;
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

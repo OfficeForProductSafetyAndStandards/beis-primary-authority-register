@@ -3,11 +3,6 @@
 namespace Drupal\par_reporting;
 
 use Drupal\Component\Plugin\PluginBase;
-use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Core\Queue\QueueFactory;
-use Drupal\Core\Queue\QueueInterface;
-use Drupal\par_data\ParDataManagerInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Provides a base implementation for a ParSchedule plugin.
@@ -44,7 +39,7 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticInterf
    * {@inheritdoc}
    */
   public function getStatus() {
-    return $this->pluginDefinition['status'] ?? true;
+    return $this->pluginDefinition['status'] ?? TRUE;
   }
 
   /**
@@ -57,7 +52,7 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticInterf
   /**
    * Simple getter to inject the PAR Reporting Manager service.
    *
-   * @return ParDataManagerInterface
+   * @return \Drupal\par_data\ParDataManagerInterface
    */
   public function getReportingManager() {
     return \Drupal::service('par_reporting.manager');
@@ -66,7 +61,7 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticInterf
   /**
    * Simple getter to inject the PAR Data Manager service.
    *
-   * @return ParDataManagerInterface
+   * @return \Drupal\par_data\ParDataManagerInterface
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
@@ -75,7 +70,7 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticInterf
   /**
    * Simple getter to inject the Entity Type Manager service.
    *
-   * @return EntityTypeManagerInterface
+   * @return \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   public function getEntityTypeManager() {
     return \Drupal::service('entity_type.manager');
@@ -103,7 +98,7 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticInterf
     ];
     foreach ($precision_intervals as $letter => $interval) {
       if ((int) $stat > $interval) {
-        $whole = floor((10*$stat) / $interval) / 10;
+        $whole = floor((10 * $stat) / $interval) / 10;
         $stat = sprintf('%.1f%s', $whole, "$letter");
         break;
       }

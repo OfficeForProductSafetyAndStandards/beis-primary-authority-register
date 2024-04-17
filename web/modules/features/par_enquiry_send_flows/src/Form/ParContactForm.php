@@ -4,8 +4,8 @@ namespace Drupal\par_enquiry_send_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_enquiry_send_flows\ParFlowAccessTrait;
+use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\user\Entity\User;
 
 /**
@@ -16,7 +16,9 @@ class ParContactForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Contact details for enforcement officer';
 

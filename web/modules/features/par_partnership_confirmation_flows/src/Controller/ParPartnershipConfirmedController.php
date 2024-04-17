@@ -3,9 +3,7 @@
 namespace Drupal\par_partnership_confirmation_flows\Controller;
 
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Controller\ParBaseController;
-use Drupal\par_partnership_confirmation_flows\ParPartnershipFlowsTrait;
 
 /**
  * A controller for displaying the application confirmation.

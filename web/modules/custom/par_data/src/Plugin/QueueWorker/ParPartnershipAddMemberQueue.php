@@ -79,8 +79,7 @@ class ParPartnershipAddMemberQueue extends QueueWorkerBase {
 
     // Add the organisation to the coordinated business entity and add to the partnership.
     if (isset($entities['par_data_coordinated_business']) && $entities['par_data_coordinated_business'] instanceof ParDataEntityInterface) {
-      // @TODO Check that the organisation isn't already a coordinated business entity on this partnership.
-
+      // @todo Check that the organisation isn't already a coordinated business entity on this partnership.
       $par_data_coordinated_business = $entities['par_data_coordinated_business'];
       $par_data_coordinated_business->set('field_organisation', [$par_data_organisation->id()]);
       $par_data_coordinated_business->save();
@@ -102,7 +101,7 @@ class ParPartnershipAddMemberQueue extends QueueWorkerBase {
   public function createMemberEntities($member) {
     $entities = [];
     foreach ($member as $type => $fields) {
-      list($entity_type_name, $entity_bundle_name) = explode(':', $type . ':');
+      [$entity_type_name, $entity_bundle_name] = explode(':', $type . ':');
       $entity_type = $this->getParDataManager()->getParEntityType($entity_type_name);
       $entity_storage = $this->getParDataManager()->getEntityTypeStorage($entity_type->id());
       $entity_bundle = $this->getParDataManager()->getParBundleEntity($entity_type->id(), $entity_bundle_name);
@@ -121,7 +120,8 @@ class ParPartnershipAddMemberQueue extends QueueWorkerBase {
           foreach ($properties as $property => $value) {
             $entity_values[$field][$property] = $this->processFieldValue($entity_type, $entity_bundle, $field_definition, $value);
           }
-        } else {
+        }
+        else {
           $value = $properties;
           $entity_values[$field] = $this->processFieldValue($entity_type, $entity_bundle, $field_definition, $value);
         }
@@ -135,6 +135,9 @@ class ParPartnershipAddMemberQueue extends QueueWorkerBase {
     return $entities;
   }
 
+  /**
+   *
+   */
   public function processFieldValue($entity_type, $entity_bundle, $field_definition, $value) {
     // Fields with limited values may need to be converted to their stored value.
     if ($allowed_values = $entity_bundle->getAllowedValues($field_definition->getName())) {
@@ -152,4 +155,5 @@ class ParPartnershipAddMemberQueue extends QueueWorkerBase {
 
     return $value;
   }
+
 }

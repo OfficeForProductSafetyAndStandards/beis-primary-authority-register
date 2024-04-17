@@ -14,7 +14,7 @@ class ParUpdateListTypeForm extends ParBaseForm {
   protected $pageTitle = 'How would you like to display the member list?';
 
   /**
-   * {@inheritdoc}
+   * Load the data for this.
    */
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()
@@ -23,6 +23,9 @@ class ParUpdateListTypeForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+   *
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

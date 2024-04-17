@@ -2,7 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataLegalEntity;
@@ -248,7 +247,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $enforcing_authority,
-          ]
+          ],
         ];
       }
     }
@@ -367,11 +366,12 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $enforcing_authority,
-          ]
+          ],
         ];
       }
     }
 
     return $form;
   }
+
 }

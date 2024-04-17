@@ -2,19 +2,15 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\comment\CommentInterface;
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityEvents;
-use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataDeviationRequest;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataGeneralEnquiry;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Event\ParDataEventInterface;
-use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParEventSubscriberBase;
 
+/**
+ *
+ */
 class DeviationRequestReplyReceivedSubscriber extends ParEventSubscriberBase {
 
   /**
@@ -29,21 +25,21 @@ class DeviationRequestReplyReceivedSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  public static function getSubscribedEvents() {
     $events[EntityEvents::insert('comment')][] = ['onEvent', 800];
 
     return $events;
   }
 
   /**
-   * @param EntityEvent $event
+   * @param \Drupal\Core\Entity\EntityEvent $event
    */
   public function onEvent(EntityEvent $event) {
     $this->setEvent($event);
 
-    /** @var CommentInterface $entity */
+    /** @var \Drupal\comment\CommentInterface $entity */
     $entity = $event->getEntity();
-    /** @var ParDataDeviationRequest $commented_entity */
+    /** @var \Drupal\par_data\Entity\ParDataDeviationRequest $commented_entity */
     $commented_entity = $entity->getCommentedEntity();
     $par_data_partnership = $commented_entity?->getPartnership(TRUE);
 

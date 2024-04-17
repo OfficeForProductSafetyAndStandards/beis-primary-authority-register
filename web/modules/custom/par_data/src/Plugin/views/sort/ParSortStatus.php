@@ -4,7 +4,6 @@ namespace Drupal\par_data\Plugin\views\sort;
 
 use Drupal\Core\Database\Database;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataType;
 use Drupal\par_data\Entity\ParDataTypeInterface;
 use Drupal\views\FieldAPIHandlerTrait;
 use Drupal\views\Plugin\views\sort\SortPluginBase;
@@ -32,8 +31,8 @@ class ParSortStatus extends SortPluginBase {
    */
   protected function defineOptions() {
     $options = parent::defineOptions();
-    $options['allowed_values'] = array('default' => 0);
-    $options['null_heavy'] = array('default' => 0);
+    $options['allowed_values'] = ['default' => 0];
+    $options['null_heavy'] = ['default' => 0];
     return $options;
   }
 
@@ -42,18 +41,18 @@ class ParSortStatus extends SortPluginBase {
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
-    $form['allowed_values'] = array(
+    $form['allowed_values'] = [
       '#type' => 'radios',
       '#title' => t('Sort by status'),
-      '#options' => array(t('No'), t('Yes')),
+      '#options' => [t('No'), t('Yes')],
       '#default_value' => $this->options['allowed_values'],
-    );
-    $form['null_heavy'] = array(
+    ];
+    $form['null_heavy'] = [
       '#type' => 'radios',
       '#title' => t('Treat null values as heavier than the allowed values'),
-      '#options' => array(t('No'), t('Yes')),
+      '#options' => [t('No'), t('Yes')],
       '#default_value' => $this->options['null_heavy'],
-    );
+    ];
   }
 
   /**

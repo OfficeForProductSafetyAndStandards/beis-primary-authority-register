@@ -4,10 +4,8 @@ namespace Drupal\par_enforcement_raise_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_enforcement_raise_flows\ParFlowAccessTrait;
-use Drupal\user\Entity\User;
+use Drupal\par_flows\Form\ParBaseForm;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -18,12 +16,14 @@ class ParChecklistForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Have you discussed this issue with the Primary Authority?';
 
   /**
-   * Load the data for this form.
+   * Load the data for this.
    */
   public function loadData() {
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {

@@ -2,14 +2,9 @@
 
 namespace Drupal\par_member_list_update_flows\Form;
 
-use CommerceGuys\Intl\Formatter\ParsedPattern;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
-use Drupal\par_log\EventSubscriber\ParData;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Confirm the number of members.
@@ -30,13 +25,13 @@ class ParConfirmListDetailsForm extends ParBaseForm {
   protected $pageTitle = 'Is the list up-to-date?';
 
   /**
-   * {@inheritdoc}
+   * Load the data for this.
    */
   public function loadData() {
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
 
     $par_data_partnership = $this->getFlowDataHandler()
       ->getParameter('par_data_partnership');
@@ -89,7 +84,7 @@ class ParConfirmListDetailsForm extends ParBaseForm {
           'There are <strong>@count</strong> active members in the member list.',
           ['@count' => $member_number]
         ),
-      ]
+      ],
     ];
 
     switch ($member_display) {
@@ -139,7 +134,7 @@ class ParConfirmListDetailsForm extends ParBaseForm {
           '#title' => $member_link->toString(),
           '#url' => $member_link,
           '#attributes' => ['class' => 'external-link'],
-        ]
+        ],
       ];
     }
 
@@ -150,7 +145,7 @@ class ParConfirmListDetailsForm extends ParBaseForm {
       '#title_tag' => 'h2',
       '#options' => [
         self::CONFIRM => 'Yes, these details are correct',
-        self::UPDATE => 'No, these details need to be updated'
+        self::UPDATE => 'No, these details need to be updated',
       ],
       '#default_value' => self::CONFIRM,
       '#attributes' => ['class' => ['govuk-form-group']],
@@ -174,6 +169,9 @@ class ParConfirmListDetailsForm extends ParBaseForm {
     parent::validateForm($form, $form_state);
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -190,7 +188,7 @@ class ParConfirmListDetailsForm extends ParBaseForm {
       // If no list type has been selected return the partnership without changes.
       if (empty($type) || !isset($allowed_types[$type])) {
         return [
-          'par_data_partnership' => $par_data_partnership
+          'par_data_partnership' => $par_data_partnership,
         ];
       }
 

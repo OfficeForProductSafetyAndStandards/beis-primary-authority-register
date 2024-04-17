@@ -5,22 +5,13 @@
  * Contains par_data.module.
  */
 
-
-use Drupal\field\FieldStorageConfigInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPersonType;
-use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
-use Drupal\par_data\Event\ParDataEvent;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Plugin\field\FieldType\ParStatusField;
-use Drupal\par_data\Plugin\field\FieldType\ParLabelField;
-use Drupal\par_data\Plugin\field\FieldType\ParStatusChangedField;
-use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_help().
@@ -77,7 +68,7 @@ function par_data_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
   $par_data_manager = \Drupal::service('par_data.manager');
   if ($par_data_manager->getParEntityType($entity_type->id())) {
     foreach ($fields as $name => $field) {
-      // @TODO Implement validation of reference fields.
+      // @todo Implement validation of reference fields.
       // $fields[$name]->addConstraint('par_required', []);
     }
   }
@@ -86,7 +77,7 @@ function par_data_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $
 /**
  * Implements hook_views_query_alter().
  *
- * @TODO There is a known outstanding issue with postgres compatability that requires work.
+ * @todo There is a known outstanding issue with postgres compatability that requires work.
  * @see Patch #53 only covers entity queries https://www.drupal.org/node/2464481#comment-10076086
  *
  * This hook adds case insensitivity to certain views filter fields.
@@ -100,7 +91,7 @@ function par_data_views_query_alter(ViewExecutable $view, QueryPluginBase $query
   // It is not a given that the query properties are public.
   // @see PAR-1760 & Drupal\search_api\Plugin\views\query\SearchApiQuery
   try {
-    $rq = new ReflectionProperty($query,'where');
+    $rq = new ReflectionProperty($query, 'where');
     if (!$rq->isPublic()) {
       return;
     }
@@ -236,7 +227,6 @@ function par_data_entity_extra_field_info() {
 
   return $extra;
 }
-
 
 /**
  * Implements hook_entity_view().

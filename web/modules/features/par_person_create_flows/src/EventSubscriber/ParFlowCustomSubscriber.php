@@ -2,14 +2,16 @@
 
 namespace Drupal\par_person_create_flows\EventSubscriber;
 
+use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataPersonInterface;
+use Drupal\par_flows\Event\ParFlowEventInterface;
 use Drupal\par_flows\Event\ParFlowEvents;
 use Drupal\par_flows\EventSubscriber\ParFlowSubscriberBase;
 use Drupal\par_flows\ParFlowException;
-use Drupal\par_flows\Event\ParFlowEventInterface;
-use Drupal\Core\Url;
 
-
+/**
+ *
+ */
 class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
 
   /**
@@ -26,13 +28,13 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  public static function getSubscribedEvents() {
     $events[ParFlowEvents::FLOW_SUBMIT][] = ['onEvent', 300];
     return $events;
   }
 
   /**
-   * @param ParFlowEventInterface $event
+   * @param \Drupal\par_flows\Event\ParFlowEventInterface $event
    */
   public function onEvent(ParFlowEventInterface $event) {
     // Ignore if a redirect url has already been found.
@@ -53,11 +55,12 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
 
     if ($person instanceof ParDataPersonInterface) {
       try {
-          $extra_params = ['par_data_person' => $person->id()];
-          $route_params = $event->getFlow()
-            ->getRequiredParams($redirect_route, $extra_params);
-          $event->setUrl(Url::fromRoute($redirect_route, $route_params));
-      } catch (ParFlowException $e) {
+        $extra_params = ['par_data_person' => $person->id()];
+        $route_params = $event->getFlow()
+          ->getRequiredParams($redirect_route, $extra_params);
+        $event->setUrl(Url::fromRoute($redirect_route, $route_params));
+      }
+      catch (ParFlowException $e) {
 
       }
     }

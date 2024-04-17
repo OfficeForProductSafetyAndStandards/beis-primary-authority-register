@@ -4,15 +4,11 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Xss;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
-use Drupal\par_flows\ParFlowException;
-use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
@@ -142,7 +138,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
    *
    * A person can be matched to a user account if:
    * b) the user account is not set (as above) but the email matches the user account email
-   * a) the user id is set on the field_user_account
+   * a) the user id is set on the field_user_account.
    *
    * @see ParDataManager::getUserPeople()
    */
@@ -202,7 +198,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
       return FALSE;
     });
 
-    return isset($people) ? $people : [];
+    return $people ?? [];
   }
 
   /**
@@ -630,6 +626,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
    *   Text to display.
    * @param string $preference_field
    *   Preference field machine name.
+   *
    * @return string
    *   Pseudo field value.
    */
@@ -646,6 +643,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
    *
    * @param string $preference_field
    *   Preference field id.
+   *
    * @return string|null
    *   Preference field boolean value label text.
    */
@@ -654,13 +652,13 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
       $preference_message = "preferred";
     }
 
-    return isset($preference_message) ? $preference_message : null;
+    return $preference_message ?? NULL;
   }
 
   /**
    * @return iterable<EntityInterface>
    */
-   public function getInstitutions(string $type = NULL): iterable {
+  public function getInstitutions(string $type = NULL): iterable {
     $relationships = $this->getRelationships(NULL, NULL, TRUE);
 
     // Get all the relationships that reference this person.
@@ -680,11 +678,17 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     }
   }
 
+  /**
+   *
+   */
   public function hasInstitutions(string $type = NULL) {
     $institutions = $this->getInstitutions($type);
     return (bool) $institutions->current();
   }
 
+  /**
+   *
+   */
   public function getReferencedLocations() {
     $locations = [];
     $relationships = $this->getRelationships(NULL, NULL, TRUE);
@@ -707,6 +711,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
           $label .= 'Contact at the authority: ';
 
           break;
+
         case 'par_data_partnership:field_organisation_person':
           $label .= 'Primary contact for the organisation: ';
 

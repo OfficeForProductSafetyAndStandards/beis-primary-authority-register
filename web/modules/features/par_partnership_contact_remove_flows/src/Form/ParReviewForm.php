@@ -2,23 +2,10 @@
 
 namespace Drupal\par_partnership_contact_remove_flows\Form;
 
-use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
-use Drupal\invite\Entity\Invite;
-use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
-use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
-use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
 use Drupal\par_partnership_contact_remove_flows\ParFlowAccessTrait;
-use Drupal\user\Entity\User;
 
 /**
  * The form for the partnership details.
@@ -82,7 +69,7 @@ class ParReviewForm extends ParBaseForm {
       '#type' => 'markup',
       '#markup' => $this->t('Please confirm you wish to remove @person from the @partnership.', [
         '@person' => $this->getFlowDataHandler()->getDefaultValues('contact_name', ''),
-        '@partnership' => $this->getFlowDataHandler()->getDefaultValues('partnership_label', '')
+        '@partnership' => $this->getFlowDataHandler()->getDefaultValues('partnership_label', ''),
       ]),
       '#prefix' => '<p>',
       '#suffix' => '</p>',

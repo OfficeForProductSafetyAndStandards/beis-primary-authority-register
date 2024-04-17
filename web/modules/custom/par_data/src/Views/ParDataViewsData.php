@@ -11,6 +11,9 @@ use Drupal\views\EntityViewsDataInterface;
  */
 class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterface {
 
+  /**
+   *
+   */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
   }
@@ -33,25 +36,25 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
     }
 
     // Document Completion as a %.
-    $data['par_partnerships_revision']['document_completion'] = array(
+    $data['par_partnerships_revision']['document_completion'] = [
       'title' => t('Documents Completion Percentage'),
       'field' => [
         'title' => t('Documents Completion Percentage'),
         'help' => t('Completion percentage for partnership required documents'),
         'id' => 'par_partnership_revision_documents_completion_percentage',
       ],
-    );
+    ];
 
     // PAR Status Filter.
     // This will always get the allowed statuses from the first bundle.
-    // @TODO Get the list of bundles which the view supports and use these.
+    // @todo Get the list of bundles which the view supports and use these.
     $par_entity = $this->getParDataManager()->getParEntityType($this->entityType->id());
     $entity_bundle = $par_entity ? $this->getParDataManager()->getParBundleEntity($this->entityType->id()) : NULL;
     if (isset($par_entity) && isset($entity_bundle) && $entity_bundle instanceof ParDataTypeInterface) {
       $status_field = $entity_bundle->getConfigurationElementByType('entity', 'status_field');
     }
     if (isset($status_field)) {
-      $data[$this->entityType->getDataTable()][$status_field]  = [
+      $data[$this->entityType->getDataTable()][$status_field] = [
         'title' => t('PAR Status Field'),
         'filter' => [
           'title' => t('PAR Status'),
@@ -149,7 +152,7 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
 
     // @see PAR-1750 Enable the membership last updated date.
     if ($this->entityType->id() === 'par_data_partnership') {
-      $data[$this->entityType->getDataTable()]['par_data_member_number']  = [
+      $data[$this->entityType->getDataTable()]['par_data_member_number'] = [
         'title' => t('PAR Membership Number'),
         'field' => [
           'title' => t('PAR Membership Number'),
@@ -158,7 +161,7 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
         ],
       ];
 
-      $data[$this->entityType->getDataTable()]['par_data_members_last_updated']  = [
+      $data[$this->entityType->getDataTable()]['par_data_members_last_updated'] = [
         'title' => t('PAR Membership Last Updated'),
         'field' => [
           'title' => t('PAR Membership Last Updated'),

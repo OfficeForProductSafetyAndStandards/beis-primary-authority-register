@@ -3,10 +3,9 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\file\FileInterface;
+use Drupal\file\Entity\File;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\file\Entity\File;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
@@ -49,8 +48,8 @@ class ParPartnershipFlowsMemberUploadForm extends ParBaseForm {
       '#upload_validators' => [
         'file_validate_extensions' => [
           0 => 'csv',
-        ]
-      ]
+        ],
+      ],
     ];
 
     return parent::buildForm($form, $form_state);

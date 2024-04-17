@@ -77,7 +77,7 @@ final class ParDataCommands extends DrushCommands {
    * @throws \Drupal\search_api\ConsoleException
    *   If a batch process could not be created.
    */
-   #[CLI\Command(name: 'par_data:index-health', aliases: ['pih'])]
+  #[CLI\Command(name: 'par_data:index-health', aliases: ['pih'])]
    #[CLI\Argument(name: 'index', description: 'The type of data to be warmed.')]
    #[CLI\Option(name: 'index-health', description: 'Whether to check the index health.')]
    #[CLI\Usage(name: 'par_data:index-health partnerships', description: 'Usage description')]
@@ -126,7 +126,7 @@ final class ParDataCommands extends DrushCommands {
   /**
    * Update registered entities.
    */
-   #[CLI\Command(name: 'par_data:update-registered-organisations', aliases: ['puro'])]
+  #[CLI\Command(name: 'par_data:update-registered-organisations', aliases: ['puro'])]
    #[CLI\Argument(name: 'register', description: 'The register to update or NULL to update entities not assigned to a register.')]
    #[CLI\Usage(name: 'par_data:update-registered-organisations companies_house', description: 'Usage description')]
   public function update_registered_organisations(?string $register = NULL) {

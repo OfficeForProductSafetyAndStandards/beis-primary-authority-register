@@ -4,7 +4,6 @@ namespace Drupal\par_notification\Plugin\ParMessageSubscriber;
 
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\Entity\ParDataEnquiryInterface;
 use Drupal\par_data\ParDataException;
 use Drupal\par_notification\ParMessageSubscriberBase;
 use Drupal\par_notification\ParNotificationException;
@@ -33,10 +32,10 @@ class ReviewedEnforcementSubscriber extends ParMessageSubscriberBase {
     $recipients = parent::getRecipients($message);
 
     try {
-      /** @var ParDataEnforcementNotice[] $enforcement_notice */
+      /** @var \Drupal\par_data\Entity\ParDataEnforcementNotice[] $enforcement_notice */
       $enforcement_notices = $this->getMessageHandler()->getPrimaryData($message);
     }
-    catch (ParNotificationException|ParDataException $e) {
+    catch (ParNotificationException | ParDataException $e) {
       return $recipients;
     }
 
@@ -64,7 +63,7 @@ class ReviewedEnforcementSubscriber extends ParMessageSubscriberBase {
     $subscriptions = parent::getSubscribedEntities($message);
 
     try {
-      /** @var ParDataEnforcementNotice[] $enforcement_notices */
+      /** @var \Drupal\par_data\Entity\ParDataEnforcementNotice[] $enforcement_notices */
       $enforcement_notices = $this->getMessageHandler()->getPrimaryData($message);
     }
     catch (ParNotificationException $e) {
@@ -83,4 +82,5 @@ class ReviewedEnforcementSubscriber extends ParMessageSubscriberBase {
 
     return $subscriptions ?? [];
   }
+
 }

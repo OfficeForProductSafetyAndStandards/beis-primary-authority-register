@@ -2,23 +2,19 @@
 
 namespace Drupal\par_data;
 
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Database\Connection;
-use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Cache\MemoryCache\MemoryCacheInterface;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\par_data\Entity\ParDataEntity;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\trance\TranceStorage;
-use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Defines the storage class for flows.
@@ -60,7 +56,7 @@ class ParDataStorage extends TranceStorage {
    * {@inheritdoc}
    */
   public function create(array $values = []) {
-    $bundle = isset($values['type']) ? $values['type'] : NULL;
+    $bundle = $values['type'] ?? NULL;
     $bundle_entity = \Drupal::service('par_data.manager')->getParBundleEntity($this->entityTypeId, $bundle);
 
     // Set the type if not already set.

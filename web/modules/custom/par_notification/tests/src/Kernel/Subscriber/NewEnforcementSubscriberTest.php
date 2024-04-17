@@ -13,6 +13,9 @@ class NewEnforcementSubscriberTest extends ParNotificationTestBase {
 
   protected $entity;
 
+  /**
+   *
+   */
   public function getEntity() {
     if (!$this->entity) {
       $this->entity = $this->createEnforcement();
@@ -72,4 +75,5 @@ class NewEnforcementSubscriberTest extends ParNotificationTestBase {
     });
     $this->assertTrue((count($secondary_contacts) === 2), t("Secondary contact's notification preferences respected for ReviewedEnforcementSubscriber."));
   }
+
 }

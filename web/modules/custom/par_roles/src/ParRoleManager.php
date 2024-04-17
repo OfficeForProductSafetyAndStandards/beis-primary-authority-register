@@ -4,20 +4,18 @@ namespace Drupal\par_roles;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Query\QueryInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\par_data\Entity\ParDataMembershipInterface;
 use Drupal\par_data\Entity\ParDataPersonInterface;
-use Drupal\par_data\ParDataManagerInterface;
-use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\user\Entity\Role;
-use Drupal\user\RoleInterface;
 use Drupal\user\UserInterface;
-use Drupal\Core\Session\AccountInterface;
-use Generator;
 
 /**
  * Manages all user role functionality within PAR.
  *
  * Roles within an institution are applied automatically,
+ *
  * @see self::autoAssignRoles();
  *
  * Roles can also be added and removed independently,
@@ -36,7 +34,7 @@ class ParRoleManager implements ParRoleManagerInterface {
    * be applied to any user by someone with the appropriate permissions.
    */
   const GENERAL_ROLES = [
-    'secretary_state', 'senior_administration_officer', 'par_helpdesk', 'national_regulator'
+    'secretary_state', 'senior_administration_officer', 'par_helpdesk', 'national_regulator',
   ];
 
   /**
@@ -48,7 +46,7 @@ class ParRoleManager implements ParRoleManagerInterface {
    */
   const INSTITUTION_ROLES = [
     'par_data_authority' => ['par_authority_manager', 'par_authority', 'par_enforcement'],
-    'par_data_organisation' => ['par_organisation_manager', 'par_organisation']
+    'par_data_organisation' => ['par_organisation_manager', 'par_organisation'],
   ];
 
   /**
@@ -64,30 +62,30 @@ class ParRoleManager implements ParRoleManagerInterface {
    */
   const INSTITUTION_LABEL = [
     'par_data_authority' => 'authority',
-    'par_data_organisation' => 'organisation'
+    'par_data_organisation' => 'organisation',
   ];
 
   /**
    * The EntityTypeManager service.
    *
-   * @var EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The current user.
    *
-   * @var AccountProxyInterface
+   * @var \Drupal\Core\Session\AccountProxyInterface
    */
   protected AccountProxyInterface $currentUser;
 
   /**
    * Constructs a ParRoleManager instance.
    *
-   * @param EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param AccountProxyInterface $current_user
-   *   The current user
+   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   *   The current user.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, AccountProxyInterface $current_user) {
     $this->entityTypeManager = $entity_type_manager;
@@ -97,7 +95,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * Getter for the EntityTypeManager Service.
    *
-   * @return EntityTypeManagerInterface
+   * @return \Drupal\Core\Entity\EntityTypeManagerInterface
    *   The entity type manager.
    */
   protected function getEntityTypeManager(): EntityTypeManagerInterface {
@@ -107,7 +105,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * Getter for the user account.
    *
-   * @return AccountInterface
+   * @return \Drupal\Core\Session\AccountInterface
    *   A user account.
    */
   protected function getCurrentUser(): AccountInterface {
@@ -123,7 +121,7 @@ class ParRoleManager implements ParRoleManagerInterface {
 
     // If the user has the bypass membership permission they can assign all roles.
     if (!$this->getCurrentUser()->hasPermission('bypass par_data membership')) {
-      $roles = array_filter($roles, function($role) use ($current_user) {
+      $roles = array_filter($roles, function ($role) use ($current_user) {
         return $current_user->hasPermission("assign {$role} role");
       });
     }
@@ -196,7 +194,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function getInstitutions(UserInterface $account, $institution_type = NULL): Generator {
+  public function getInstitutions(UserInterface $account, $institution_type = NULL): \Generator {
     foreach ($this->getPeople($account) as $person) {
       foreach ($person->getInstitutions() as $institution) {
         // Allow institutions to be filtered by type.
@@ -404,17 +402,16 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * Gets the query interface needed to look up the people related to a user.
    *
-   * @param UserInterface $account
+   * @param \Drupal\user\UserInterface $account
    *   The user account to lookup.
    *
-   * @return QueryInterface
+   * @return \Drupal\Core\Entity\Query\QueryInterface
    */
   private function getPeopleQuery(UserInterface $account): QueryInterface {
     $query = $this->getEntityTypeManager()->getStorage('par_data_person')
       ->getQuery('OR')
       ->accessCheck(FALSE)
       ->sort('id', 'DESC');
-
 
     // Add the basic query conditions.
     $query->condition('email', $account->getEmail());
@@ -560,7 +557,7 @@ class ParRoleManager implements ParRoleManagerInterface {
    * Get all the roles of similar or higher authority in the role hierarchy.
    *
    * @param ?string $role
-   *    The role to start the hierarchy search for.
+   *   The role to start the hierarchy search for.
    * @param ?string $institution_type
    *   The institution type to check.
    *
@@ -585,16 +582,16 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * Get all the user's colleagues in a given institution.
    *
-   * @param ParDataMembershipInterface $institution
+   * @param \Drupal\par_data\Entity\ParDataMembershipInterface $institution
    *   The institution to check.
-   * @param UserInterface $account
+   * @param \Drupal\user\UserInterface $account
    *   The user to exclude.
    *
-   * @return UserInterface[]
+   * @return \Drupal\user\UserInterface[]
    *   All user accounts that are colleagues.
    */
   protected function getColleagues(ParDataMembershipInterface $institution, UserInterface $account): array {
-    return array_filter($institution->getMembers(), function($member) use ($account) {
+    return array_filter($institution->getMembers(), function ($member) use ($account) {
       return $member->id() !== $account->id();
     });
   }
@@ -606,9 +603,9 @@ class ParRoleManager implements ParRoleManagerInterface {
    * institution will be used to only look for colleagues with a similar or
    * higher role.
    *
-   * @param ParDataMembershipInterface $institution
+   * @param \Drupal\par_data\Entity\ParDataMembershipInterface $institution
    *   The institution to check for.
-   * @param UserInterface $account
+   * @param \Drupal\user\UserInterface $account
    *   The user to check.
    * @param ?string $role
    *   The role to check, if none is supplied all roles will be checked.
@@ -638,9 +635,9 @@ class ParRoleManager implements ParRoleManagerInterface {
    *
    * This enables roles checks to be bypassed in some situations:
    *   - For the admin role.
-   *   - For test accounts that end with @exmaple.com
+   *   - For test accounts that end with @exmaple.com.
    *
-   * @param UserInterface $account
+   * @param \Drupal\user\UserInterface $account
    *   The account to validate.
    *
    * @return bool

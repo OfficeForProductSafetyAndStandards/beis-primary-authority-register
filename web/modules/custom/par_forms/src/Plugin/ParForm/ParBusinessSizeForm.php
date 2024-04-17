@@ -2,7 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -20,8 +19,9 @@ class ParBusinessSizeForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['business_size', 'par_data_organisation', 'size', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter how many members are coordinated by this business.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter how many members are coordinated by this business.',
+    ],
+    ],
   ];
 
   /**
@@ -57,4 +57,5 @@ class ParBusinessSizeForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

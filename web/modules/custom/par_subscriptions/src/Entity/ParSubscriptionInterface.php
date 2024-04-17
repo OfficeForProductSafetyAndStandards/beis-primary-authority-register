@@ -45,26 +45,26 @@ interface ParSubscriptionInterface {
   /**
    * Is the subscription verified.
    *
-   * @return boolean
+   * @return bool
    */
   public function isVerified();
 
   /**
-   * Subscribe
+   * Subscribe.
    *
    * @return string
    */
   public function subscribe();
 
   /**
-   * Verify
+   * Verify.
    *
    * @return string
    */
   public function verify();
 
   /**
-   * Unsubscribe
+   * Unsubscribe.
    *
    * @return string
    */

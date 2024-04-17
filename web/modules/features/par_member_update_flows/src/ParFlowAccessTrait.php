@@ -3,14 +3,17 @@
 namespace Drupal\par_member_update_flows;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\ParFlowException;
 use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
-use Drupal\Core\Routing\RouteMatchInterface;
 
+/**
+ *
+ */
 trait ParFlowAccessTrait {
 
   /**
@@ -23,9 +26,10 @@ trait ParFlowAccessTrait {
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataCoordinatedBusiness $par_data_coordinated_business = NULL): AccessResult {
     try {
-      // Get a new flow negotiator that points the the route being checked for access.
+      // New flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    }
+    catch (ParFlowException $e) {
 
     }
 
@@ -54,4 +58,5 @@ trait ParFlowAccessTrait {
 
     return parent::accessCallback($route, $route_match, $account);
   }
+
 }

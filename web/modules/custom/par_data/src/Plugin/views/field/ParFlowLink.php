@@ -1,21 +1,13 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\par_data\Plugin\views\field\ParPartnershipsCombinedStatusField
- */
-
 namespace Drupal\par_data\Plugin\views\field;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
-
-use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Field handler to get the PAR Partnership Combined Status Fields.
@@ -26,7 +18,8 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class ParFlowLink extends FieldPluginBase {
 
-  /*
+  /**
+   *
    * @{inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
@@ -64,35 +57,35 @@ class ParFlowLink extends FieldPluginBase {
       '#title' => 'Title',
       '#description' => 'Select the title for this link.',
       '#type' => 'textfield',
-      '#default_value' => $this->options['title']  ?: '',
+      '#default_value' => $this->options['title'] ?: '',
     ];
 
     $form['assistive_text'] = [
       '#title' => 'Assistive text',
       '#description' => 'Enter some descriptive text for screenreaders (this will be hidden).',
       '#type' => 'textfield',
-      '#default_value' => $this->options['assistive_text']  ?: '',
+      '#default_value' => $this->options['assistive_text'] ?: '',
     ];
 
     $form['link'] = [
       '#title' => 'Link',
       '#description' => 'Select the link that you wish to display.',
       '#type' => 'textfield',
-      '#default_value' => $this->options['link']  ?: '',
+      '#default_value' => $this->options['link'] ?: '',
     ];
 
     $form['hidden'] = [
       '#title' => 'Hidden',
       '#description' => 'Whether to hide if the link is not accessible or does not exist.',
       '#type' => 'checkbox',
-      '#default_value' => $this->options['hidden']  ?: '',
+      '#default_value' => $this->options['hidden'] ?: '',
     ];
   }
 
   /**
    * @{inheritdoc}
    *
-   * @param ResultRow $values
+   * @param \Drupal\views\ResultRow $values
    *
    * @return string $documentation_completion
    */
@@ -109,9 +102,10 @@ class ParFlowLink extends FieldPluginBase {
 
     $link = $url ? Link::fromTextAndUrl($text, $url)->toRenderable() : NULL;
 
-    // Hide the link
+    // Hide the link.
     $text = empty($this->options['hidden']) ? $text : '';
 
     return !empty($link) && $url->access() && $url->isRouted() ? \Drupal::service('renderer')->render($link) : $text;
   }
+
 }

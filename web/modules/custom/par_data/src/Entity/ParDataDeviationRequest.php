@@ -3,8 +3,6 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\comment\CommentManagerInterface;
-use Drupal\comment\CommentStorageInterface;
-use Drupal\comment\Entity\Comment;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\ParDataException;
@@ -144,7 +142,7 @@ class ParDataDeviationRequest extends ParDataEntity implements ParDataEnquiryInt
    * {@inheritDoc}>
    */
   public function getReplies(): array {
-    /** @var CommentStorageInterface $comment_storage */
+    /** @var \Drupal\comment\CommentStorageInterface $comment_storage */
     $comment_storage = \Drupal::entityTypeManager()->getStorage('comment');
     $thread = $comment_storage->loadThread($this, 'messages', CommentManagerInterface::COMMENT_MODE_FLAT);
     return array_values($thread);
@@ -244,12 +242,12 @@ class ParDataDeviationRequest extends ParDataEntity implements ParDataEnquiryInt
   }
 
   /**
-   * Revoke if this entity is revokable and is not new
+   * Revoke if this entity is revokable and is not new.
    *
    * @param string $authority_notes
-   *  primary authority notes submitted when the status is updated to blocked in the form.
+   *   primary authority notes submitted when the status is updated to blocked in the form.
    *
-   * @return boolean
+   * @return bool
    *   True if the entity was revoked, false for all other results.
    */
   public function block($authority_notes, $save = TRUE) {
@@ -437,15 +435,15 @@ class ParDataDeviationRequest extends ParDataEntity implements ParDataEnquiryInt
           'form_location' => 1,
           'preview' => 1,
           'comment_type' => 'par_deviation_request_comments',
-          'locked' => false,
+          'locked' => FALSE,
 
-      ])
+        ])
       ->setDefaultValue(
         [
           'status' => 2,
           'cid' => 0,
           'last_comment_timestamp' => 0,
-          'last_comment_name' => null,
+          'last_comment_name' => NULL,
           'last_comment_uid' => 0,
           'comment_count' => 0,
         ]
@@ -459,7 +457,7 @@ class ParDataDeviationRequest extends ParDataEntity implements ParDataEnquiryInt
           'anonymous' => 0,
           'preview' => 1,
           'comment_type' => 'par_deviation_request_comments',
-          'locked' => false,
+          'locked' => FALSE,
 
         ],
         'weight' => 1,
@@ -469,4 +467,5 @@ class ParDataDeviationRequest extends ParDataEntity implements ParDataEnquiryInt
 
     return $fields;
   }
+
 }

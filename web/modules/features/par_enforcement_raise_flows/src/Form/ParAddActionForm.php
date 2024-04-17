@@ -2,10 +2,8 @@
 
 namespace Drupal\par_enforcement_raise_flows\Form;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_enforcement_raise_flows\ParFlowAccessTrait;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_data\Entity\ParDataPartnership;
 
 /**
  * The raise form for creating a new enforcement notice.
@@ -20,12 +18,14 @@ class ParAddActionForm extends ParBaseForm {
   protected $flow = 'raise_enforcement';
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Add an action to the enforcement notice';
 
   /**
-   * Load the data for this form.
+   * Load the data for this.
    */
   public function loadData() {
 
@@ -39,7 +39,7 @@ class ParAddActionForm extends ParBaseForm {
 
           // Only need to get the new cardinality of the first plugin,
           // as all plugins on the page share the same value.
-          // @TODO Consider re-instigating this pattern of one action per page, but not needed now.
+          // @todo Consider re-instigating this pattern of one action per page, but not needed now.
           // $this->getFlowDataHandler()->setParameter('cardinality', $component->getNewCardinality());
           break;
         }

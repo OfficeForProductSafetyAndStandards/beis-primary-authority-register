@@ -26,7 +26,7 @@ class ParChecklistForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
+   * Load the data for this.
    */
   public function loadData() {
     // Load application type from previous step.

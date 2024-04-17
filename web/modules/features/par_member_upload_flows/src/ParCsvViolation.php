@@ -32,9 +32,12 @@ class ParCsvViolation {
   /**
    * Constructor.
    *
-   * @param int $line The line of the violation
-   * @param string $column The column of the violation
-   * @param string $message The error message
+   * @param int $line
+   *   The line of the violation.
+   * @param string $column
+   *   The column of the violation.
+   * @param string $message
+   *   The error message.
    */
   public function __construct(int|null $line, string|null $column, string $message = '', bool $fatal = TRUE) {
     $this->setLine($line)
@@ -68,7 +71,7 @@ class ParCsvViolation {
    * @return ParCsvViolation
    */
   public function setColumn($column) {
-    if ($column !== null) {
+    if ($column !== NULL) {
       $column = (string) $column;
     }
 
@@ -108,4 +111,5 @@ class ParCsvViolation {
   public function isFatal(): bool {
     return $this->fatal;
   }
+
 }

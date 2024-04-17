@@ -3,7 +3,6 @@
 namespace Drupal\par_data\Event;
 
 use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 
 /**
@@ -63,4 +62,3 @@ class ParDataEvent extends EntityEvent implements ParDataEventInterface {
   }
 
 }
-

@@ -2,16 +2,9 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -49,7 +42,7 @@ class ParSicCodeDisplay extends ParFormPluginBase {
     // Get the SIC codes.
     $sic_codes = $this->getDefaultValuesByKey('sic_codes', $index, []);
 
-    //  Generate the add new SIC code link.
+    // Generate the add new SIC code link.
     try {
       $sic_code_add_link = $this->getFlowNegotiator()->getFlow()
         ->getOperationLink('add_field_sic_code');
@@ -173,4 +166,5 @@ class ParSicCodeDisplay extends ParFormPluginBase {
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }
+
 }

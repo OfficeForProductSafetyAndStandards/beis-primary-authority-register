@@ -5,11 +5,13 @@ namespace Drupal\par_flows;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Link;
-use Symfony\Component\HttpFoundation\Request;
 use Drupal\Core\Url;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
+/**
+ *
+ */
 trait ParRedirectTrait {
 
   /**
@@ -73,12 +75,12 @@ trait ParRedirectTrait {
   /**
    * Get link for any given step.
    *
-   * @param Url $url
-   *    The Url to convert to a link.
+   * @param \Drupal\Core\Url $url
+   *   The Url to convert to a link.
    * @param string $text
-   *    The title for the link.
+   *   The title for the link.
    * @param array $link_options
-   *    Any additional options to add to the Link.
+   *   Any additional options to add to the Link.
    *
    * @return ?Link
    */
@@ -92,7 +94,7 @@ trait ParRedirectTrait {
   /**
    * Merge Url with default options.
    *
-   * @param Url &$url
+   * @param \Drupal\Core\Url &$url
    *   The Url object to set default options form.
    * @param array $url_options
    *   Any additional options to add to the Url.
@@ -101,7 +103,7 @@ trait ParRedirectTrait {
     // Set the defaults.
     $defaults = [
       'absolute' => TRUE,
-      'attributes' => ['class' => ['flow-link', 'govuk-link']]
+      'attributes' => ['class' => ['flow-link', 'govuk-link']],
     ];
 
     // Preserve selected known query parameters to ensure paging remains constant.

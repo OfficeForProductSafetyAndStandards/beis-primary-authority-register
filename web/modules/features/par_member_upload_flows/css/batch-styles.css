@@ -1,10 +1,10 @@
 #updateprogress {
-    margin-top: 3em;
+  margin-top: 3em;
 }
 .progress__track {
-    height: auto;
+  height: auto;
 }
 
 .messages--error {
-    display: none;
+  display: none;
 }

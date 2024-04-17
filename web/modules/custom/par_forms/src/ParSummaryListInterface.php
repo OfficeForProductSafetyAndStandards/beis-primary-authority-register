@@ -19,7 +19,8 @@ interface ParSummaryListInterface {
    *  - multiple cardinality
    *  - SummaryListInterface
    *
-   * @param array $form = []
+   * @param array $form
+   *   = []
    *   The form array to add the summary list to.
    *
    * @return mixed

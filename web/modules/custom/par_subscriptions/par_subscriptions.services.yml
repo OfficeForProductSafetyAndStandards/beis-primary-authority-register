@@ -14,8 +14,8 @@ services:
     class: Drupal\par_subscriptions\EventSubscriber\UserDefaultSubscriber
     tags:
       - { name: 'event_subscriber' }
-  par_subscriptions.verify_subscriber:
-    class: Drupal\par_subscriptions\EventSubscriber\VerifySubscriber
-    tags:
-      - { name: 'event_subscriber' }
+#  par_subscriptions.verify_subscriber:
+#    class: Drupal\par_subscriptions\EventSubscriber\VerifySubscriber
+#    tags:
+#      - { name: 'event_subscriber' }
 

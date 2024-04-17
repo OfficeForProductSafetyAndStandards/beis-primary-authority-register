@@ -2,17 +2,10 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\file\FileInterface;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\file\Entity\File;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
@@ -59,7 +52,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
     'par_data_coordinated_business' => [
       'date_membership_began' => 15,
       'date_membership_ceased' => 16,
-    ]
+    ],
   ];
 
   /**
@@ -73,21 +66,30 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
     ],
   ];
 
+  /**
+   *
+   */
   protected function getColumns() {
     return $this->columns;
   }
 
+  /**
+   *
+   */
   public function getColumn($entity_type, $field_name, $property = NULL) {
     $columns = $this->getColumns();
 
     if ($property) {
-      return isset($columns[$entity_type][$field_name][$property]) ? $columns[$entity_type][$field_name][$property] -1 : NULL;
+      return isset($columns[$entity_type][$field_name][$property]) ? $columns[$entity_type][$field_name][$property] - 1 : NULL;
     }
     else {
-      return isset($columns[$entity_type][$field_name]) ? $columns[$entity_type][$field_name] -1 : NULL;
+      return isset($columns[$entity_type][$field_name]) ? $columns[$entity_type][$field_name] - 1 : NULL;
     }
   }
 
+  /**
+   *
+   */
   protected function getDefaults() {
     return $this->defaults;
   }
@@ -178,7 +180,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
         $viewBuilder = $this->getParDataManager()->getViewBuilder('par_data_organisation');
 
         $radio_options = [];
-        foreach($existing_options as $option) {
+        foreach ($existing_options as $option) {
           $option_view = $viewBuilder->view($option, 'title');
 
           $radio_options[$option->id()] = $this->renderMarkupField($option_view)['#markup'];
@@ -203,8 +205,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
       ];
     }
 
-    // @TODO Automatically submit the form if there are no members that require attention.
-
+    // @todo Automatically submit the form if there are no members that require attention.
     return parent::buildForm($form, $form_state);
   }
 
@@ -230,7 +231,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_member_upload');
     $members = $this->getFlowDataHandler()->getTempDataValue("coordinated_members", $cid);
     foreach ($members as $i => $member) {
-      $requires_attention = isset($attentions[$i]) ? $attentions[$i] : NULL;
+      $requires_attention = $attentions[$i] ?? NULL;
 
       // Process the row.
       $this->processRow($route_partnership->id(), $member, $requires_attention);
@@ -273,7 +274,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
       }
     }
 
-    // Make sure we set the default values
+    // Make sure we set the default values.
     $data = $data + $this->getDefaults();
 
     // Send all the data off to the queue for processing.
@@ -302,8 +303,9 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
       $queue = \Drupal::queue('par_partnership_add_members', TRUE);
       $queue->createQueue();
       $queue->createItem($data);
-    } catch (\Exception $e) {
-      // @TODO Log this in a way that errors can be reported to the uploader.
+    }
+    catch (\Exception $e) {
+      // @todo Log this in a way that errors can be reported to the uploader.
     }
 
     $this->messenger()->addMessage(t('The members are being processed, please check back shortly to see the membership list updated.'), 'status');

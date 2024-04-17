@@ -4,8 +4,6 @@ namespace Drupal\par_notification\Plugin\ParMessageSubscriber;
 
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEnquiryInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\ParDataException;
 use Drupal\par_notification\ParMessageSubscriberBase;
 use Drupal\par_notification\ParNotificationException;
@@ -34,9 +32,9 @@ class NewEnquirySubscriber extends ParMessageSubscriberBase {
     $recipients = parent::getRecipients($message);
 
     try {
-      /** @var ParDataEnquiryInterface $enquiries */
+      /** @var \Drupal\par_data\Entity\ParDataEnquiryInterface $enquiries */
       $enquiries = $this->getMessageHandler()->getPrimaryData($message);
-      /** @var ParDataPartnership[] $partnerships */
+      /** @var \Drupal\par_data\Entity\ParDataPartnership[] $partnerships */
       $partnerships = [];
 
       foreach ($enquiries as $enquiry) {
@@ -49,7 +47,7 @@ class NewEnquirySubscriber extends ParMessageSubscriberBase {
         }
       }
     }
-    catch (ParNotificationException|ParDataException $e) {
+    catch (ParNotificationException | ParDataException $e) {
       return $recipients;
     }
 
@@ -57,7 +55,7 @@ class NewEnquirySubscriber extends ParMessageSubscriberBase {
       // This message should be sent to the primary authority contacts for the
       // partnership, if no partnership is associated with this enquiry then no
       // recipients will receive this message.
-      /** @var ParDataPersonInterface $people */
+      /** @var \Drupal\par_data\Entity\ParDataPersonInterface $people */
       $people = $partnership->getAuthorityPeople();
       foreach ($people as $key => $person) {
         $recipients[] = new ParRecipient(
@@ -78,7 +76,7 @@ class NewEnquirySubscriber extends ParMessageSubscriberBase {
     $subscriptions = parent::getSubscribedEntities($message);
 
     try {
-      /** @var ParDataEnquiryInterface $enquiry_entities [] */
+      /** @var \Drupal\par_data\Entity\ParDataEnquiryInterface $enquiry_entities [] */
       $enquiry_entities = $this->getMessageHandler()->getPrimaryData($message);
     }
     catch (ParNotificationException $e) {
@@ -111,4 +109,5 @@ class NewEnquirySubscriber extends ParMessageSubscriberBase {
 
     return $subscriptions;
   }
+
 }

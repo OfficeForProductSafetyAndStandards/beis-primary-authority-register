@@ -2,11 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -68,7 +63,7 @@ class ParAdviceList extends ParFormPluginBase {
         // The second column contains a summary of the confirmed details.
         $advice_details = '';
         $advice_type_value = $advice->get('advice_type')->getString();
-        if ($advice_type = $advice->getTypeEntity()->getAllowedFieldlabel('advice_type', $advice_type_value)){
+        if ($advice_type = $advice->getTypeEntity()->getAllowedFieldlabel('advice_type', $advice_type_value)) {
           $advice_details = "{$advice_type}";
           if ($regulatory_functions = $advice->getRegulatoryFunction()) {
             $advice_details .= " covering: " . PHP_EOL;
@@ -116,4 +111,5 @@ class ParAdviceList extends ParFormPluginBase {
 
     return $form;
   }
+
 }

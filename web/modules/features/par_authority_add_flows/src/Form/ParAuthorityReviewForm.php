@@ -3,11 +3,10 @@
 namespace Drupal\par_authority_add_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\par_authority_add_flows\ParFlowAccessTrait;
+use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_authority_add_flows\ParFlowAccessTrait;
-use Drupal\par_forms\ParFormBuilder;
-use Drupal\par_data\Entity\ParDataAuthority;
 
 /**
  * The authority add review form.
@@ -17,19 +16,21 @@ class ParAuthorityReviewForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Page title.
+   *
+   * @var ?string
    */
   protected $pageTitle = 'Review authority details';
 
   /**
-   * {@inheritdoc}
+   * Load the data for this.
    */
   public function loadData() {
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataAuthority $par_data_authority */
-    /** @var ParDataPremises $par_data_premises */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority $par_data_authority */
+    /** @var \Drupal\par_data\Entity\ParDataPremises $par_data_premises */
 
     if ($par_data_authority) {
       if ($par_data_authority->hasField('authority_name')) {
@@ -67,6 +68,9 @@ class ParAuthorityReviewForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     // Get the cache IDs for the various forms that needs needs to be extracted from.
     $authority_name_cid = $this->getFlowNegotiator()->getFormKey('par_authority_add_name');
@@ -82,24 +86,24 @@ class ParAuthorityReviewForm extends ParBaseForm {
     ]);
 
     // Get the nation from the address and set on the authority.
-    $nation = $this->getFlowDataHandler()->getDefaultValues('nation','', $authority_address_cid);
+    $nation = $this->getFlowDataHandler()->getDefaultValues('nation', '', $authority_address_cid);
     if (!$nation) {
       $nation = $this->getFlowDataHandler()
         ->getDefaultValues('country_code', '', $authority_address_cid);
     }
     $par_data_authority->setNation($nation);
 
-    // Create a new address
+    // Create a new address.
     $par_data_premises = ParDataPremises::create([
       'type' => 'premises',
       'uid' => $this->getCurrentUser()->id(),
       'address' => [
         'country_code' => $this->getFlowDataHandler()->getDefaultValues('country_code', '', $authority_address_cid),
-        'address_line1' => $this->getFlowDataHandler()->getDefaultValues('address_line1','', $authority_address_cid),
-        'address_line2' => $this->getFlowDataHandler()->getDefaultValues('address_line2','', $authority_address_cid),
-        'locality' => $this->getFlowDataHandler()->getDefaultValues('town_city','', $authority_address_cid),
-        'administrative_area' => $this->getFlowDataHandler()->getDefaultValues('county','', $authority_address_cid),
-        'postal_code' => $this->getFlowDataHandler()->getDefaultValues('postcode','', $authority_address_cid),
+        'address_line1' => $this->getFlowDataHandler()->getDefaultValues('address_line1', '', $authority_address_cid),
+        'address_line2' => $this->getFlowDataHandler()->getDefaultValues('address_line2', '', $authority_address_cid),
+        'locality' => $this->getFlowDataHandler()->getDefaultValues('town_city', '', $authority_address_cid),
+        'administrative_area' => $this->getFlowDataHandler()->getDefaultValues('county', '', $authority_address_cid),
+        'postal_code' => $this->getFlowDataHandler()->getDefaultValues('postcode', '', $authority_address_cid),
       ],
     ]);
     $par_data_premises->setNation($nation);
@@ -132,11 +136,11 @@ class ParAuthorityReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataAuthority $par_data_authority */
-    /** @var ParDataPremises $par_data_premises */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority $par_data_authority */
+    /** @var \Drupal\par_data\Entity\ParDataPremises $par_data_premises */
 
     // Save the address and add to the authority.
     if ($par_data_premises && $par_data_premises->save()) {

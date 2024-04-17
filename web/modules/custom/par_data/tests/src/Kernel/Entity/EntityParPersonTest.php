@@ -2,9 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPersonType;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -77,4 +75,5 @@ class EntityParPersonTest extends ParDataTestBase {
     $entity = ParDataPerson::create($this->getPersonValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'PAR Person entity saved correctly.');
   }
+
 }

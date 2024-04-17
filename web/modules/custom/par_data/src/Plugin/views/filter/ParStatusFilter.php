@@ -7,8 +7,6 @@ use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
 use Drupal\views\ViewExecutable;
 
-use Drupal\user\Entity\User;
-
 /**
  * @ingroup views_filter_handlers
  *
@@ -26,12 +24,15 @@ class ParStatusFilter extends FilterPluginBase {
   /**
    * @param \Drupal\views\ViewExecutable $view
    * @param \Drupal\views\Plugin\views\display\DisplayPluginBase $display
-   * @param array|NULL $options
+   * @param array|null $options
    */
   public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);
   }
 
+  /**
+   *
+   */
   protected function defineOptions() {
     $options = parent::defineOptions();
 

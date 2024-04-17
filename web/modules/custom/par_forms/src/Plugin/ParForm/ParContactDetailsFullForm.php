@@ -2,8 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -21,23 +19,29 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['first_name', 'par_data_person', 'first_name', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the first name for this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the first name for this contact.',
+    ],
+    ],
     ['last_name', 'par_data_person', 'last_name', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the last name for this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the last name for this contact.',
+    ],
+    ],
     ['work_phone', 'par_data_person', 'work_phone', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the work phone number for this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the work phone number for this contact.',
+    ],
+    ],
     ['mobile_phone', 'par_data_person', 'mobile_phone', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the mobile phone number for this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the mobile phone number for this contact.',
+    ],
+    ],
     ['email', 'par_data_person', 'email', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the email address for this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the email address for this contact.',
+    ],
+    ],
     ['notes', 'par_data_person', 'communication_notes', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter any communication notes that are relevant to this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter any communication notes that are relevant to this contact.',
+    ],
+    ],
   ];
 
   /**
@@ -81,7 +85,7 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
       '#type' => 'html_tag',
       '#tag' => 'h2',
       '#value' => $this->t('Enter the contact details'),
-      '#attributes' => ['class' => ['govuk-heading-m']]
+      '#attributes' => ['class' => ['govuk-heading-m']],
     ];
 
     $form['salutation'] = [
@@ -89,35 +93,35 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
       '#title' => $this->t('Enter the title (optional)'),
       '#description' => $this->t('For example, Ms Mr Mrs Dr'),
       '#default_value' => $this->getDefaultValuesByKey('salutation', $index),
-      '#attributes' => ['autocomplete' => 'honorific-prefix']
+      '#attributes' => ['autocomplete' => 'honorific-prefix'],
     ];
 
     $form['first_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the first name'),
       '#default_value' => $this->getDefaultValuesByKey('first_name', $index),
-      '#attributes' => ['autocomplete' => 'given-name']
+      '#attributes' => ['autocomplete' => 'given-name'],
     ];
 
     $form['last_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter the last name'),
       '#default_value' => $this->getDefaultValuesByKey('last_name', $index),
-      '#attributes' => ['autocomplete' => 'family-name']
+      '#attributes' => ['autocomplete' => 'family-name'],
     ];
 
     $form['work_phone'] = [
       '#type' => 'tel',
       '#title' => $this->t('Enter the work phone number'),
       '#default_value' => $this->getDefaultValuesByKey('work_phone', $index),
-      '#attributes' => ['autocomplete' => 'tel']
+      '#attributes' => ['autocomplete' => 'tel'],
     ];
 
     $form['mobile_phone'] = [
       '#type' => 'tel',
       '#title' => $this->t('Enter the mobile phone number (optional)'),
       '#default_value' => $this->getDefaultValuesByKey('mobile_phone', $index),
-      '#attributes' => ['autocomplete' => 'tel']
+      '#attributes' => ['autocomplete' => 'tel'],
     ];
 
     // Prevent modifying of email address when un-editable.
@@ -146,7 +150,7 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
       $form['email'] = [
         '#type' => 'hidden',
         '#value' => $this->getDefaultValuesByKey('email', $index),
-        '#attributes' => ['autocomplete' => 'email']
+        '#attributes' => ['autocomplete' => 'email'],
       ];
     }
     else {
@@ -154,7 +158,7 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
         '#type' => 'email',
         '#title' => $this->t('Enter the email address'),
         '#default_value' => $this->getDefaultValuesByKey('email', $index),
-        '#attributes' => ['autocomplete' => 'email']
+        '#attributes' => ['autocomplete' => 'email'],
       ];
     }
 
@@ -184,4 +188,5 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

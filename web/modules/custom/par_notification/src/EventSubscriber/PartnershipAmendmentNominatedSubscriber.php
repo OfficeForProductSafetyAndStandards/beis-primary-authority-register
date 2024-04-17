@@ -2,14 +2,14 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\Core\Access\AccessResult;
-use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
-use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParEventSubscriberBase;
 
+/**
+ *
+ */
 class PartnershipAmendmentNominatedSubscriber extends ParEventSubscriberBase {
 
   /**
@@ -24,7 +24,7 @@ class PartnershipAmendmentNominatedSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  public static function getSubscribedEvents() {
     // Confirmation event should fire after a partnership has been confirmed.
     $events[ParDataEvent::customAction('par_data_partnership', 'amendment_nominated')][] = ['onEvent', -101];
 
@@ -32,12 +32,12 @@ class PartnershipAmendmentNominatedSubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * @param ParDataEventInterface $event
+   * @param \Drupal\par_data\Event\ParDataEventInterface $event
    */
   public function onEvent(ParDataEventInterface $event) {
     $this->setEvent($event);
 
-    /** @var ParDataPartnership $entity */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $entity */
     $entity = $event->getEntity();
 
     $partnership_legal_entities = $entity->getPartnershipLegalEntities(TRUE);
@@ -53,4 +53,5 @@ class PartnershipAmendmentNominatedSubscriber extends ParEventSubscriberBase {
       $this->sendMessage($arguments);
     }
   }
+
 }

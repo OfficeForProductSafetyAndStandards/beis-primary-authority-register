@@ -3,14 +3,7 @@
 namespace Drupal\par_enforcement_remove_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataEnforcementAction;
-use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\Entity\ParDataEntity;
-use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
-use Drupal\par_forms\Plugin\ParForm\ParConfirmRemoval;
-use Drupal\par_forms\Plugin\ParForm\ParNotificationFollowup;
 
 /**
  * The confirmation for creating a new enforcement notice.
@@ -18,12 +11,14 @@ use Drupal\par_forms\Plugin\ParForm\ParNotificationFollowup;
 class ParEnforcementRemovalConfirmForm extends ParBaseForm {
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = "Notice of enforcement actions | Review";
 
   /**
-   * Load the data for this form.
+   * Load the data for this.
    */
   public function loadData() {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
@@ -43,7 +38,6 @@ class ParEnforcementRemovalConfirmForm extends ParBaseForm {
     $enforcement_name = $this->getFlowDataHandler()->getFormPermValue('enforcement_name');
     $action_labels = $this->getFlowDataHandler()->getFormPermValue('actions_names');
 
-
     $form['summary'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Do you want to remove this?'),
@@ -61,7 +55,7 @@ class ParEnforcementRemovalConfirmForm extends ParBaseForm {
         '#list_type' => 'ul',
         '#items' => $action_labels,
         '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
-      ]
+      ],
     ];
 
     // Change the main button title to 'remove'.
@@ -103,4 +97,5 @@ class ParEnforcementRemovalConfirmForm extends ParBaseForm {
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
     }
   }
+
 }

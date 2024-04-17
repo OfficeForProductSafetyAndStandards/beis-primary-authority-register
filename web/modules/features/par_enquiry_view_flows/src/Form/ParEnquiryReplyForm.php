@@ -3,11 +3,9 @@
 namespace Drupal\par_enquiry_view_flows\Form;
 
 use Drupal\comment\Entity\Comment;
-use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_enquiry_view_flows\ParFlowAccessTrait;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
 
 /**
  * Replying to enquiry.
@@ -17,12 +15,14 @@ class ParEnquiryReplyForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = "Reply to enquiry";
 
   /**
-   * @return CacheTagsInvalidatorInterface
+   * @return \Drupal\Core\Cache\CacheTagsInvalidatorInterface
    */
   public function getCacheTagsInvalidator() {
     return \Drupal::service('cache_tags.invalidator');
@@ -66,4 +66,5 @@ class ParEnquiryReplyForm extends ParBaseForm {
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
     }
   }
+
 }

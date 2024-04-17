@@ -6,7 +6,8 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use \Drupal\Core\Link;
+use Drupal\Core\Link;
+use Drupal\Core\Session\AccountInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -51,7 +52,6 @@ function par_login_form_user_form_alter(&$form, &$form_state) {
     $form['account']['password_policy_status']['#attributes'] = ['class' => ['govuk-form-group']];
   }
 }
-
 
 /**
  * Validates the user login form.
@@ -100,13 +100,19 @@ function par_login_toolbar_alter(&$items) {
   unset($items['user']);
 }
 
+/**
+ *
+ */
 function par_login_menu_links_discovered_alter(&$links) {
   if (isset($links['user.page'])) {
-    //$links['user.page']['route_name'] = 'par_dashboards.dashboard';
+    // $links['user.page']['route_name'] = 'par_dashboards.dashboard';
   }
 }
 
-function par_login_user_format_name_alter(&$name, \Drupal\Core\Session\AccountInterface $account) {
+/**
+ *
+ */
+function par_login_user_format_name_alter(&$name, AccountInterface $account) {
   // Display the user's email instead of name.
   if ($account->isAuthenticated()) {
     $name = $account->getEmail();

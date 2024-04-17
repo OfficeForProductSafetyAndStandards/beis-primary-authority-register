@@ -50,4 +50,5 @@ final class SubscriptionEvents {
   public static function unsubscribe($list) {
     return self::UNSUBSCRIBE . '.' . $list;
   }
+
 }

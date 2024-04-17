@@ -2,20 +2,17 @@
 
 namespace Drupal\par_forms\Controller;
 
-use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\par_data\ParDataManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\par_data\Entity\ParDataTypeInterface;
-use Drupal\Core\Entity\ContentEntityTypeInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
-* A controller for handling autocomplete callbacks.
-*/
+ * A controller for handling autocomplete callbacks.
+ */
 class ParAutocompleteController extends ControllerBase {
 
   /**
@@ -45,7 +42,7 @@ class ParAutocompleteController extends ControllerBase {
   /**
    * Get the ParDataManager service.
    *
-   * @return ParDataManagerInterface
+   * @return \Drupal\par_data\ParDataManagerInterface
    */
   public function getParDataManager(): ParDataManagerInterface {
     return $this->parDataManager;
@@ -61,8 +58,8 @@ class ParAutocompleteController extends ControllerBase {
   }
 
   /**
-  * The main callback for autocomplete.
-  */
+   * The main callback for autocomplete.
+   */
   public function callback(Request $request) {
     // Get the input parameters.
     $input = $request->query->get('q');
@@ -85,9 +82,9 @@ class ParAutocompleteController extends ControllerBase {
       return new JsonResponse([], 400);
     }
 
-    /** @var ContentEntityTypeInterface $entity_type */
+    /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $entity_type */
     $entity_type = \Drupal::entityTypeManager()->getDefinition($target_type);
-    /** @var ParDataTypeInterface $entity_bundle */
+    /** @var \Drupal\par_data\Entity\ParDataTypeInterface $entity_bundle */
     $entity_bundle = $this->getParDataManager()->getParBundleEntity($target_type);
 
     // Add the default search conditions.

@@ -62,7 +62,7 @@ class ParSelectMemberForm extends ParFormPluginBase {
 
     // Initialize pager and get current page.
     $number_of_items = 10;
-    $pager = $this->getUniquePager()->getPager('par_plugin_member_select_'.$index);
+    $pager = $this->getUniquePager()->getPager('par_plugin_member_select_' . $index);
     $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($partnership_organisations), $number_of_items, $pager);
 
     // Split the items up into chunks:
@@ -102,4 +102,5 @@ class ParSelectMemberForm extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

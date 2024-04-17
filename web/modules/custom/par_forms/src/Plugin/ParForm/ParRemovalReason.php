@@ -3,13 +3,6 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -43,7 +36,7 @@ class ParRemovalReason extends ParFormPluginBase {
     $options = $this->getFlowDataHandler()->getFormPermValue("reason_options");
     $item = $this->getFlowDataHandler()->getFormPermValue("item_name");
 
-    $form['reason_selection'] =  [
+    $form['reason_selection'] = [
       '#type' => 'radios',
       '#title' => $this->t('Why are you deleting this @item', ['@item' => strtolower($item)]),
       '#title_tag' => 'h2',
@@ -53,7 +46,7 @@ class ParRemovalReason extends ParFormPluginBase {
       '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
-    $form['reason_description'] =  [
+    $form['reason_description'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Please describe why this @item is being removed.', ['@item' => strtolower($item)]),
       '#attributes' => ['class' => ['govuk-form-group']],
@@ -80,4 +73,5 @@ class ParRemovalReason extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

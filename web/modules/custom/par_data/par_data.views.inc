@@ -5,10 +5,9 @@
  * The views data file.
  */
 
-use \Drupal\search_api\Entity\Index;
-use \Drupal\Core\Field\TypedData\FieldItemDataDefinition;
-use \Drupal\search_api\Utility\Utility;
-use \Drupal\par_data\Entity\ParDataEntity;
+use Drupal\Core\Field\TypedData\FieldItemDataDefinition;
+use Drupal\par_data\Entity\ParDataEntity;
+use Drupal\search_api\Entity\Index;
 
 /**
  * Implements hook_views_data_alter().
@@ -88,7 +87,7 @@ function par_data_views_data_alter(array &$data) {
           }
           // Otherwise an autocomplete can be added.
           else {
-            // @TODO Create a new autocomplete filter.
+            // @todo Create a new autocomplete filter.
           }
         }
       }

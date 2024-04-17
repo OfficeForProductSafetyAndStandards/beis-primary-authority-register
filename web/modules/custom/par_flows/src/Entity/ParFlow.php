@@ -3,16 +3,13 @@
 namespace Drupal\par_flows\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\Event\ParFlowEvents;
 use Drupal\par_flows\ParDefaultActionsTrait;
-use Drupal\par_flows\ParFlowDataHandler;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\par_forms\ParFormPluginInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
@@ -153,7 +150,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * The current route used to determine which part of the flow is being dealt with.
    *
-   * @var RouteMatchInterface
+   * @var \Drupal\Core\Routing\RouteMatchInterface
    */
   protected $currentRoute;
 
@@ -193,7 +190,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * Get the current route.
    *
-   * @return RouteMatchInterface
+   * @return \Drupal\Core\Routing\RouteMatchInterface
    */
   public function getCurrentRouteMatch() {
     // Submit the route with all the same parameters.
@@ -311,7 +308,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    * @return string
    *   The plugin name.
    */
-  static function getComponentName($key, $settings) {
+  public static function getComponentName($key, $settings) {
     return $settings[ParFormPluginInterface::NAME_PROPERTY] ?? $key;
   }
 
@@ -327,7 +324,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * Start the journey.
    *
-   * @return Url
+   * @return \Drupal\Core\Url
    */
   public function start($step = 1, $params = []): Url {
     $route = $this->getRouteByStep($step);
@@ -351,7 +348,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    * @param array $params
    *   Additional params to be used for determining the route.
    *
-   * @throws ParFlowException
+   * @throws \Drupal\par_flows\ParFlowException
    *
    * @return ?Url
    */
@@ -378,7 +375,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     $this->mergeOptions($url);
     return $url;
   }
-
 
   /**
    * {@inheritdoc}
@@ -498,8 +494,8 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     foreach ($this->getSteps() as $key => $step) {
       if (isset($step['route']) && $route === $step['route']) {
         $match = [
-            'step' => $key,
-          ] + $step;
+          'step' => $key,
+        ] + $step;
       }
     }
 
@@ -513,7 +509,6 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     $form_data_keys = $this->getStepFormDataKeys($step);
     return isset($form_data_keys[$form_data_key]) ? $this->getStepByFormId($form_data_keys[$form_data_key]) : NULL;
   }
-
 
   /**
    * {@inheritdoc}
@@ -583,7 +578,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
     $route = $step['route'];
 
-    /** @var Link $link */
+    /** @var \Drupal\Core\Link $link */
     $link = $this->getLinkByRoute($route, $route_params, $link_options, $check_access);
 
     return $link ? $link : NULL;
@@ -636,4 +631,5 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
 
     return $this->getLinkByUrl($url, $text, $link_options);
   }
+
 }

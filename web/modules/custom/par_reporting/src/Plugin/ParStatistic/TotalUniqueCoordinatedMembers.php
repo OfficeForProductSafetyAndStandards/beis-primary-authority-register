@@ -17,6 +17,9 @@ use Drupal\par_reporting\ParStatisticBase;
  */
 class TotalUniqueCoordinatedMembers extends ParStatisticBase {
 
+  /**
+   *
+   */
   public function getStat(): int {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
       ->condition('partnership_status', 'confirmed_rd');
@@ -65,12 +68,14 @@ class TotalUniqueCoordinatedMembers extends ParStatisticBase {
           }
 
           break;
+
         // If counting external lists just count the partnership once.
         case ParDataPartnership::MEMBER_DISPLAY_EXTERNAL:
         case ParDataPartnership::MEMBER_DISPLAY_REQUEST:
           $external_count += $partnership->numberOfMembers();
 
           break;
+
         // If the member list hasn't been updated since release `v63.0` just count the partnership once.
         default:
           $count[] = $partnership->label();

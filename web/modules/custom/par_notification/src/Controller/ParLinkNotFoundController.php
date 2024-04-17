@@ -3,17 +3,8 @@
 namespace Drupal\par_notification\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
-use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
-use Drupal\Core\Routing\CurrentRouteMatch;
-use Drupal\Core\State\StateInterface;
-use Drupal\message\Entity\Message;
-use Drupal\par_notification\ParLinkManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Controller for handling link redirection requests that can't be resolved.
@@ -48,4 +39,5 @@ class ParLinkNotFoundController extends ControllerBase {
 
     return $build;
   }
+
 }

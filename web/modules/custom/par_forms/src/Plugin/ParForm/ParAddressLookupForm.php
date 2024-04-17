@@ -2,9 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
-use Drupal\par_forms\ParFormPluginBase;
 
 /**
  * Address form plugin.
@@ -45,4 +43,5 @@ class ParAddressLookupForm extends ParAddressForm {
 
     return $form;
   }
+
 }

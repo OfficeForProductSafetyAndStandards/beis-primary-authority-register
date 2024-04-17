@@ -13,6 +13,9 @@ class NewPartnershipSubscriberTest extends ParNotificationTestBase {
 
   protected $entity;
 
+  /**
+   *
+   */
   public function getEntity() {
     if (!$this->entity) {
       $this->entity = $this->createPartnership();
@@ -126,4 +129,5 @@ class NewPartnershipSubscriberTest extends ParNotificationTestBase {
     });
     $this->assertTrue((count($secondary_contacts) === 6), t("Secondary contact's notification preferences respected for PartnershipRevocationSubscriber."));
   }
+
 }

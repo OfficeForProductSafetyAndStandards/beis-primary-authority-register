@@ -4,7 +4,6 @@ namespace Drupal\par_notification;
 
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\message\MessageInterface;
-use Drupal\par_data\Entity\ParDataMembershipInterface;
 
 /**
  * Defines an interface for the Par Message Subscriber plugins.
@@ -17,9 +16,10 @@ interface ParMessageSubscriberInterface extends PluginInspectionInterface {
    * Gets the email addresses that a message will be sent to.
    *
    * There are some rules which are applied automatically in the plugin base.
+   *
    * @see ParMessageSubscriberBase
    *
-   * @param MessageInterface $message
+   * @param \Drupal\message\MessageInterface $message
    *   The message that is being sent.
    *
    * @return string[]
@@ -33,12 +33,12 @@ interface ParMessageSubscriberInterface extends PluginInspectionInterface {
    *
    * Only entities with ParDataSubscriptionInterface can subscribe to messages:
    *  - Authorities
-   *  - Organisations
+   *  - Organisations.
    *
-   * @param MessageInterface $message
+   * @param \Drupal\message\MessageInterface $message
    *   The message that is being sent.
    *
-   * @return ParDataMembershipInterface[]
+   * @return \Drupal\par_data\Entity\ParDataMembershipInterface[]
    *   An array of par data entities that subscribe to this message.
    */
   public function getSubscribedEntities(MessageInterface $message): array;

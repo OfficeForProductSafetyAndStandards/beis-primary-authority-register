@@ -8,8 +8,8 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
-use Drupal\user\Entity\User;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
+use Drupal\user\Entity\User;
 
 /**
  * Class InviteByEmailBlockForm.
@@ -21,7 +21,8 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
   use ParPartnershipFlowsTrait;
   use ParPartnershipFlowAccessTrait;
 
-  /** @var invite type */
+  /**
+   * @var invite type */
   protected $invite_type;
 
   protected $pageTitle = 'Notify user of partnership invitation';
@@ -60,7 +61,7 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
       $authority = current($par_data_partnership->get('field_authority')->referencedEntities());
       $authority_person = $authority ? $this->getParDataManager()->getUserPerson($account, $authority) : NULL;
 
-      if($account->hasPermission('invite authority members')) {
+      if ($account->hasPermission('invite authority members')) {
         $sender_name = 'BEIS RD Department';
       }
       else {
@@ -285,7 +286,7 @@ HEREDOC;
     if ($par_data_person->getUserAccount()) {
       $required_token = '[site:login-url]';
     }
-    else{
+    else {
       $required_token = '[invite:invite-accept-link]';
     }
     if (!strpos($form_state->getValue('email_body'), $required_token)) {

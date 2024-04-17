@@ -2,17 +2,19 @@
 
 namespace Drupal\par_notification;
 
+use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
-use Drupal\message\MessageInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\message\MessageInterface;
 use Drupal\message\MessageTemplateInterface;
 use Drupal\message_expire\MessageExpiryManagerInterface;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\Core\Entity\EntityEvent;
 
+/**
+ *
+ */
 abstract class ParEventSubscriberBase implements EventSubscriberInterface {
 
   use LoggerChannelTrait;
@@ -23,7 +25,7 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
   const MESSAGE_ID = '';
 
   /**
-   * @var ParDataEventInterface|EntityEvent $event
+   * @var \Drupal\par_data\Event\ParDataEventInterface|EntityEvent
    */
   protected ParDataEventInterface|EntityEvent $event;
 
@@ -40,7 +42,7 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
   /**
    * Get the current user sending the message.
    *
-   * @return AccountProxyInterface
+   * @return \Drupal\Core\Session\AccountProxyInterface
    */
   public function getCurrentUser(): AccountProxyInterface {
     return \Drupal::currentUser();
@@ -59,7 +61,7 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
   /**
    * Get the message expiry service.
    *
-   * @return MessageExpiryManagerInterface
+   * @return \Drupal\message_expire\MessageExpiryManagerInterface
    *   The message expiry service.
    */
   public function getMessageExpiryService(): MessageExpiryManagerInterface {
@@ -86,7 +88,7 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
   public function getMessages($event) {
     $entity = $event?->getEntity();
 
-    /** @var MessageTemplateInterface $template */
+    /** @var \Drupal\message\MessageTemplateInterface $template */
     $template = $this->getMessageHandler()->getMessageTemplateStorage()->load(static::MESSAGE_ID);
     $field = $this->getMessageHandler()->getPrimaryField($template);
 
@@ -110,7 +112,7 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
    *
    * @param array $arguments
    *   An array of replacement arguments to be set on the message.
-   * @param ParDataEntityInterface[] $parameters
+   * @param \Drupal\par_data\Entity\ParDataEntityInterface[] $parameters
    *   The additional data parameters to be added to the message.
    */
   public function sendMessage(array $arguments = [], array $parameters = []) {
@@ -119,7 +121,8 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
     // Create the message.
     try {
       $message = $this->getMessageHandler()->createMessage(static::MESSAGE_ID);
-    } catch (ParNotificationException $e) {
+    }
+    catch (ParNotificationException $e) {
       return;
     }
 

@@ -7,7 +7,6 @@ use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\TypedData\Type\DateTimeInterface;
 use Drupal\Core\Url;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItem;
 use Drupal\link\LinkItemInterface;
@@ -307,7 +306,7 @@ class ParDataPartnership extends ParDataEntity {
     $awaiting_statuses = [
       $this->getTypeEntity()->getDefaultStatus(),
       'confirmed_authority',
-      'confirmed_business'
+      'confirmed_business',
     ];
 
     return in_array($this->getRawStatus(), $awaiting_statuses);
@@ -317,7 +316,7 @@ class ParDataPartnership extends ParDataEntity {
    * {@inheritdoc}
    */
   public function inProgress() {
-    // Freeze partnerships that have un approved enforcement notices
+    // Freeze partnerships that have un approved enforcement notices.
     $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
     foreach ($enforcement_notices as $uuid => $relationship) {
       if ($relationship->getEntity()->inProgress()) {
@@ -408,7 +407,7 @@ class ParDataPartnership extends ParDataEntity {
    * members attached to the partnerhip's member list (only used for 'internal' lists).
    *
    * @return int
-   *  The number of active members.
+   *   The number of active members.
    */
   public function numberOfMembers() {
     // Make sure not to request this more than once for a given entity.
@@ -423,13 +422,13 @@ class ParDataPartnership extends ParDataEntity {
       case self::MEMBER_DISPLAY_INTERNAL:
         return $this->countMembers();
 
-        break;
+      break;
       case self::MEMBER_DISPLAY_EXTERNAL:
       case self::MEMBER_DISPLAY_REQUEST:
         return !$this->get('member_number')->isEmpty() ?
           (int) $this->get('member_number')->getString() : 0;
 
-        break;
+      break;
     }
 
     return 0;
@@ -468,6 +467,7 @@ class ParDataPartnership extends ParDataEntity {
         }
 
         break;
+
       case self::MEMBER_DISPLAY_EXTERNAL:
       case self::MEMBER_DISPLAY_REQUEST:
         $partnership_storage = $this->entityTypeManager()->getStorage($this->getEntityTypeId());
@@ -494,9 +494,9 @@ class ParDataPartnership extends ParDataEntity {
    * Get the time the membership list was last updated.
    *
    * @return bool
-   *  Whether the member list needs updating.
-   *  TRUE if it hasn't been updated recently
-   *  FALSE if it has been updated recently
+   *   Whether the member list needs updating.
+   *   TRUE if it hasn't been updated recently
+   *   FALSE if it has been updated recently
    */
   public function memberListNeedsUpdating($since = '-3 months') {
     // Only for coordinated partnerships.
@@ -513,7 +513,8 @@ class ParDataPartnership extends ParDataEntity {
     // Get comparable timestamp.
     try {
       $since_datetime = new DrupalDateTime($since);
-    } catch (Exception $e) {
+    }
+    catch (Exception $e) {
       throw new ParDataException('Date format incorrect when comparing membership last updated date.');
     }
 
@@ -525,7 +526,7 @@ class ParDataPartnership extends ParDataEntity {
    * Get the membership link.
    *
    * @return \Drupal\Core\Url
-   *  The URL for the external member link.
+   *   The URL for the external member link.
    */
   public function getMemberLink() {
     $url = !$this->get('member_link')->isEmpty()
@@ -539,7 +540,7 @@ class ParDataPartnership extends ParDataEntity {
    * Get the membership list display type.
    *
    * @return string
-   *  The user configured method of displaying the member list.
+   *   The user configured method of displaying the member list.
    */
   public function getMemberDisplay() {
     if (!$this->get('member_display')->isEmpty()) {
@@ -560,11 +561,11 @@ class ParDataPartnership extends ParDataEntity {
 
   /**
    * @return string
-   *  The default
+   *   The default
    */
   public function getDefaultMemberDisplay() {
     // If there are any uploaded members default to an internal list.
-    if ($this->countMembers(0, true) > 0) {
+    if ($this->countMembers(0, TRUE) > 0) {
       return self::MEMBER_DISPLAY_INTERNAL;
     }
 
@@ -638,13 +639,16 @@ class ParDataPartnership extends ParDataEntity {
       return $date;
     }
     // Or look it up using the entity's revisions logs.
-    else if ($timestamp = $this->getStatusTime('confirmed_rd')) {
+    elseif ($timestamp = $this->getStatusTime('confirmed_rd')) {
       return DrupalDateTime::createFromTimestamp($timestamp);
     }
 
     return NULL;
   }
 
+  /**
+   *
+   */
   private function getApprovedDateField(): ?DrupalDateTime {
     return $this->hasField('approved_date') && !$this->get('approved_date')->isEmpty() ?
       $this->approved_date?->date :
@@ -673,13 +677,16 @@ class ParDataPartnership extends ParDataEntity {
       return $date;
     }
     // Or look it up using the entity's revisions logs.
-    else if ($timestamp = $this->getStatusTime(ParDataEntity::REVOKE_FIELD)) {
+    elseif ($timestamp = $this->getStatusTime(ParDataEntity::REVOKE_FIELD)) {
       return DrupalDateTime::createFromTimestamp($timestamp);
     }
 
     return NULL;
   }
 
+  /**
+   *
+   */
   private function getRevocationDateField(): ?DrupalDateTime {
     return $this->hasField('revocation_date') && !$this->get('revocation_date')->isEmpty() ?
       $this->revocation_date?->date :
@@ -766,7 +773,7 @@ class ParDataPartnership extends ParDataEntity {
    * @param ParDataPerson $person
    *   A PAR Person to check for.
    *
-   * @return boolean
+   * @return bool
    *   Whether the person is an organisation member or not.
    */
   public function personIisOrganisationMember(ParDataPerson $person) {
@@ -782,7 +789,7 @@ class ParDataPartnership extends ParDataEntity {
    * @param ParDataPerson $person
    *   A PAR Person to check for.
    *
-   * @return boolean
+   * @return bool
    *   Whether the person is an authority member or not.
    */
   public function personIsAuthorityMember(ParDataPerson $person) {
@@ -793,10 +800,10 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Check if a user is a member of the Authority.
    *
-   * @param AccountInterface $account
+   * @param \Drupal\Core\Session\AccountInterface $account
    *   A Drupal user account to check for.
    *
-   * @return boolean
+   * @return bool
    *   Whether the user is an authority member or not.
    */
   public function isOrganisationMember(AccountInterface $account) {
@@ -814,10 +821,10 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Check if a user is a member of the Authority.
    *
-   * @param AccountInterface $account
+   * @param \Drupal\Core\Session\AccountInterface $account
    *   A Drupal user account to check for.
    *
-   * @return boolean
+   * @return bool
    *   Whether the user is an authority member or not.
    */
   public function isAuthorityMember(AccountInterface $account) {
@@ -835,25 +842,31 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get all the names of regulatory functions associated with the partnership.
    *
-   * @return array()
+   * @return array
    *   An array containing all the regulatory function names associated with the current partnership.
    */
   public function getPartnershipRegulatoryFunctionNames() {
     $partnership_regulatory_functions = $this->getRegulatoryFunction();
 
-    $partnership_reg_fun_name_list = array();
+    $partnership_reg_fun_name_list = [];
 
     foreach ($partnership_regulatory_functions as $key => $regulatory_function_entity) {
-      $partnership_reg_fun_name_list[$regulatory_function_entity->get('id')->getString()] =  $regulatory_function_entity->get('function_name')->getString();
+      $partnership_reg_fun_name_list[$regulatory_function_entity->get('id')->getString()] = $regulatory_function_entity->get('function_name')->getString();
     }
 
     return $partnership_reg_fun_name_list;
   }
 
+  /**
+   *
+   */
   public function isDirect() {
     return $this->get('partnership_type')->getString() === 'direct';
   }
 
+  /**
+   *
+   */
   public function isCoordinated() {
     return $this->get('partnership_type')->getString() === 'coordinated';
   }
@@ -866,7 +879,7 @@ class ParDataPartnership extends ParDataEntity {
    * however,
    *
    * @param ParDataLegalEntity $legal_entity
-   *  The legal entity to add.
+   *   The legal entity to add.
    *
    * @return ParDataPartnershipLegalEntity
    *   Return a new or existing partnership legal entity.
@@ -895,7 +908,7 @@ class ParDataPartnership extends ParDataEntity {
    * Get partnership legal entities for this partnership.
    *
    * @param bool $active
-   *  If TRUE then only active PLEs are returned. Default FALSE.
+   *   If TRUE then only active PLEs are returned. Default FALSE.
    *
    * @return ParDataPartnershipLegalEntity[]
    */
@@ -1067,7 +1080,7 @@ class ParDataPartnership extends ParDataEntity {
       'partnership' => [
         'AND' => [
           ['field_partnership', $this->id()],
-        ]
+        ],
       ],
     ];
 
@@ -1092,7 +1105,7 @@ class ParDataPartnership extends ParDataEntity {
       'partnership' => [
         'AND' => [
           ['field_partnership', $this->id()],
-        ]
+        ],
       ],
     ];
 
@@ -1117,7 +1130,7 @@ class ParDataPartnership extends ParDataEntity {
       'partnership' => [
         'AND' => [
           ['field_partnership', $this->id()],
-        ]
+        ],
       ],
     ];
 
@@ -1142,7 +1155,7 @@ class ParDataPartnership extends ParDataEntity {
       'partnership' => [
         'AND' => [
           ['field_partnership', $this->id()],
-        ]
+        ],
       ],
     ];
 
@@ -1294,7 +1307,7 @@ class ParDataPartnership extends ParDataEntity {
       ->setComputed(TRUE)
       ->setClass(ParMemberListUpdatedField::class)
       ->setSettings([
-        'datetime_type' => DateTimeItem::DATETIME_TYPE_DATE
+        'datetime_type' => DateTimeItem::DATETIME_TYPE_DATE,
       ])
       ->setDisplayOptions('view', [
         'type' => 'datetime_default',
@@ -1350,7 +1363,7 @@ class ParDataPartnership extends ParDataEntity {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    // Member link
+    // Member link.
     $fields['member_link'] = BaseFieldDefinition::create('link')
       ->setLabel(t('Member list link'))
       ->setDescription(t('The link to the publicly available external member list.'))
@@ -1371,7 +1384,6 @@ class ParDataPartnership extends ParDataEntity {
         'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
-
 
     // Partnership Status.
     $fields['cost_recovery'] = BaseFieldDefinition::create('string')

@@ -2,9 +2,7 @@
 
 namespace Drupal\par_profile_update_flows\Form;
 
-use CommerceGuys\Addressing\AddressFormat\AddressField;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_profile_update_flows\ParFlowAccessTrait;
 
@@ -16,7 +14,9 @@ class ParChooseContactForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Choose which contact to update';
 
@@ -28,9 +28,11 @@ class ParChooseContactForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+   * Implements submitForm().
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
-
 
   }
 

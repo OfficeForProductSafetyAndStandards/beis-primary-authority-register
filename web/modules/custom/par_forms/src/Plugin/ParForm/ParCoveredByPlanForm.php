@@ -2,7 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -20,8 +19,9 @@ class ParCoveredByPlanForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['covered_by_inspection', 'par_data_coordinated_business', 'covered_by_inspection', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must choose whether this member is covered by any of the inspection plans.'
-    ]],
+      'You must fill in the missing information.' => 'You must choose whether this member is covered by any of the inspection plans.',
+    ],
+    ],
   ];
 
   /**
@@ -56,4 +56,5 @@ class ParCoveredByPlanForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

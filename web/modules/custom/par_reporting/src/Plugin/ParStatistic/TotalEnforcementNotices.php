@@ -16,6 +16,9 @@ use Drupal\par_reporting\ParStatisticBase;
  */
 class TotalEnforcementNotices extends ParStatisticBase {
 
+  /**
+   *
+   */
   public function getStat(): int {
     $query = $this->getParDataManager()->getEntityQuery('par_data_enforcement_notice');
 

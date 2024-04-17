@@ -39,38 +39,62 @@ use Drupal\par_subscriptions\Event\SubscriptionEvents;
  */
 class ParSubscription extends ContentEntityBase implements ContentEntityInterface, ParSubscriptionInterface {
 
+  /**
+   *
+   */
   private function getEventDispatcher() {
     return \Drupal::service('event_dispatcher');
   }
 
+  /**
+   *
+   */
   public function getListId() {
     return $this->get('list')->getString();
   }
 
+  /**
+   *
+   */
   public function getListName() {
     return $this->list->entity->label();
   }
 
+  /**
+   *
+   */
   public function getCode() {
     return $this->get('code')->getString();
   }
 
+  /**
+   *
+   */
   public function getEmail() {
     return $this->get('email')->getString();
   }
 
+  /**
+   *
+   */
   public function displayEmail() {
     $email = $this->getEmail();
-    $replaceable = substr($email, 1, strpos($email, '@')-1);
+    $replaceable = substr($email, 1, strpos($email, '@') - 1);
 
     // Return a partly obfuscated email address.
     return str_replace($replaceable, 'xxxxxx', $email);
   }
 
+  /**
+   *
+   */
   public function isVerified() {
     return $this->get('verified')->get(0)->getValue()['value'] === 1;
   }
 
+  /**
+   *
+   */
   public function subscribe() {
     $this->save();
 
@@ -80,11 +104,17 @@ class ParSubscription extends ContentEntityBase implements ContentEntityInterfac
     $this->getEventDispatcher()->dispatch($event, $name);
   }
 
+  /**
+   *
+   */
   public function verify() {
     $this->set('verified', 1);
     $this->save();
   }
 
+  /**
+   *
+   */
   public function unsubscribe() {
     $this->delete();
 

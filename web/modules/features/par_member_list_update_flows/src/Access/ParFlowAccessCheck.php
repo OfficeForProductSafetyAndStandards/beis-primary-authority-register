@@ -2,10 +2,10 @@
 
 namespace Drupal\par_member_list_update_flows\Access;
 
-use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Routing\Access\AccessInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
@@ -13,7 +13,6 @@ use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
-use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
  * Checks access for par flows.
@@ -69,7 +68,8 @@ class ParFlowAccessCheck implements AccessInterface {
     try {
       // Get a new flow negotiator that points to the route being checked for access.
       $access_route_negotiator = $this->flowNegotiator->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    }
+    catch (ParFlowException $e) {
 
     }
 

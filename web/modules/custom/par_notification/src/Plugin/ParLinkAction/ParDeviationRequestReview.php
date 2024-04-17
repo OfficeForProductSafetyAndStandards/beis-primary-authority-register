@@ -2,16 +2,12 @@
 
 namespace Drupal\par_notification\Plugin\ParLinkAction;
 
-use Drupal\Core\Entity\Query\ConditionInterface;
-use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_notification\ParLinkActionBase;
 use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParTaskInterface;
-use Drupal\par_data\Entity\ParDataDeviationRequest;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Send the user to the deviation review page if it has not already been reviewed.
@@ -44,7 +40,7 @@ class ParDeviationRequestReview extends ParLinkActionBase implements ParTaskInte
       throw new ParNotificationException('This message is invalid.');
     }
 
-    /** @var ParDataDeviationRequest[] $deviation_requests */
+    /** @var \Drupal\par_data\Entity\ParDataDeviationRequest[] $deviation_requests */
     $deviation_requests = $message->get($this->getPrimaryField())->referencedEntities();
     // If any of the deviation requests are awaiting approval this is not complete.
     foreach ($deviation_requests as $deviation_request) {
@@ -77,4 +73,5 @@ class ParDeviationRequestReview extends ParLinkActionBase implements ParTaskInte
 
     return NULL;
   }
+
 }

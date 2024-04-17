@@ -2,11 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataInspectionFeedback;
-use Drupal\par_data\Entity\ParDataInspectionFeedbackType;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -58,4 +54,5 @@ class EntityParInspectionFeedbackTest extends ParDataTestBase {
     $entity = ParDataInspectionFeedback::create($this->getInspectionFeedbackValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'Par Inspection Feedback entity saved correctly.');
   }
+
 }

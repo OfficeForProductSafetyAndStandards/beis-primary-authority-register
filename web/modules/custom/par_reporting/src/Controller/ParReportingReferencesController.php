@@ -7,11 +7,10 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Url;
 
 /**
-* A controller listing all par reference fields and their purpose.
-*/
+ * A controller listing all par reference fields and their purpose.
+ */
 class ParReportingReferencesController extends ControllerBase {
 
   /**
@@ -61,8 +60,8 @@ class ParReportingReferencesController extends ControllerBase {
   }
 
   /**
-  * The main page for listing par entities.
-  */
+   * The main page for listing par entities.
+   */
   public function content() {
     $build = [];
 
@@ -76,7 +75,7 @@ class ParReportingReferencesController extends ControllerBase {
           '#type' => 'html_tag',
           '#tag' => 'h2',
           '#attributes' => ['class' => ['govuk-heading-m']],
-          '#value' => $entity_type
+          '#value' => $entity_type,
         ],
         '#attributes' => ['class' => ['govuk-form-group']],
       ];

@@ -4,11 +4,7 @@ namespace Drupal\par_log\EventSubscriber;
 
 use Drupal\audit_log\AuditLogEventInterface;
 use Drupal\audit_log\EventSubscriber\EventSubscriberInterface;
-use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
-use Drupal\Core\Render\Markup;
-use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\Tests\Core\Entity\RevisionableEntity;
 
 /**
  * Responds to audit log events where fields have been removed.
@@ -20,7 +16,7 @@ class ParDataRemoveField implements EventSubscriberInterface {
   /**
    * The supported action for this logger.
    */
-  CONST ACTION = 'update';
+  const ACTION = 'update';
 
   /**
    * {@inheritdoc}
@@ -35,7 +31,8 @@ class ParDataRemoveField implements EventSubscriberInterface {
 
     /** @var \Drupal\par_data\Entity\ParDataEntityInterface $entity */
     $entity = $event->getEntity();
-    $removed = []; $revision = [];
+    $removed = [];
+    $revision = [];
 
     // Analyse all the reference fields for the entity
     // to identify if any fields have been removed.
@@ -70,9 +67,9 @@ class ParDataRemoveField implements EventSubscriberInterface {
       return FALSE;
     }
 
-    $label = implode(', '.PHP_EOL, $removed);
+    $label = implode(', ' . PHP_EOL, $removed);
     $parent = (string) $entity;
-    $reason = implode(', '.PHP_EOL, $revision);
+    $reason = implode(', ' . PHP_EOL, $revision);
 
     // Set the message format for PAR Entity deletions.
     $message = <<<EOT

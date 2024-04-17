@@ -3,11 +3,8 @@
 namespace Drupal\par_invite_user_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPersonInterface;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_invite_user_flows\ParFlowAccessTrait;
 use Drupal\par_roles\ParRoleManager;
 use Drupal\par_roles\ParRoleManagerInterface;
 use Drupal\user\Entity\Role;
@@ -20,7 +17,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ParInviteForm extends ParBaseForm {
 
   /**
-   * Set the page title.
+   * Sets the page title.
+   *
+   * @var pageTitle
    */
   protected $pageTitle = 'Invite the person to create an account';
 
@@ -32,7 +31,7 @@ class ParInviteForm extends ParBaseForm {
   }
 
   /**
-   * {@inheritdoc}
+   * Load the data for this.
    */
   public function loadData() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
