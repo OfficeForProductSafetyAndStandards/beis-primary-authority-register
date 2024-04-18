@@ -60,8 +60,10 @@ class ParChecklistForm extends ParBaseForm {
       '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
     ];
 
-    // There is a legal requirement to mention that the PA is the processor (under GDPR) and as such they must
-    // adhere to the Office for Safety and Standards procedures concerning anything that could constitute personal data.
+    // There is a legal requirement to mention that the PA is the processor
+    // (under GDPR) and as such they must adhere to the Office for Safety and
+    // Standards procedures concerning anything that could
+    // constitute personal data.
     $form['help'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',

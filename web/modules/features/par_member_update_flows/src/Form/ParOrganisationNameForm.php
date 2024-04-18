@@ -10,6 +10,11 @@ use Drupal\par_flows\Form\ParBaseForm;
  */
 class ParOrganisationNameForm extends ParBaseForm {
 
+  /**
+   * Page title.
+   *
+   * @var ?string
+   */
   protected $pageTitle = 'Add member organisation name';
 
   /**

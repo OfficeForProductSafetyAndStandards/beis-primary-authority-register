@@ -6,6 +6,8 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_confirmation_flows\ParFlowAccessTrait;
 
 /**
+ * Employee Number form.
+ *
  * The about partnership form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */

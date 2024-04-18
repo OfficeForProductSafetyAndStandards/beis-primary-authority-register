@@ -9,6 +9,8 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_confirmation_flows\ParFlowAccessTrait;
 
 /**
+ * Organisation Legal Entity form.
+ *
  * The primary contact form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */
@@ -27,14 +29,13 @@ class ParLegalEntityForm extends ParBaseForm {
    * Load the data for this form.
    */
   public function loadData() {
-    // Must tell the component plugin where to get data for the selection screen.
+    // Tell the component plugin where to get data for the selection screen.
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_select_legal_entities');
-    // $this->getFlowDataHandler()->setParameter('select_legal_entity_cid', $cid);
     parent::loadData();
   }
 
   /**
-   *
+   * Implements validateForm().
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $existing_legal_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_select_legal_entities');

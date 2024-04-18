@@ -27,7 +27,7 @@ class ParAddressForm extends ParBaseForm {
     $organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
     $par_data_premises = $organisation ? $organisation->getPremises(TRUE) : NULL;
 
-    // Override the route parameter so that data loaded will be from this entity.
+    // Override the route parameter to get data loaded will be from this entity.
     $this->getFlowDataHandler()->setParameter('par_data_premises', $par_data_premises);
 
     parent::loadData();

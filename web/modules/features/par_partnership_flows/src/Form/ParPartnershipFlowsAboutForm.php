@@ -26,6 +26,11 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
     ],
   ];
 
+  /**
+   * Page title.
+   *
+   * @var ?string
+   */
   protected $pageTitle = 'Information about the partnership';
 
   /**

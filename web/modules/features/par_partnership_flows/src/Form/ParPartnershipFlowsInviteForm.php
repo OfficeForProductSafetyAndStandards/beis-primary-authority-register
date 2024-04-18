@@ -25,6 +25,11 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
    * @var invite type */
   protected $invite_type;
 
+  /**
+   * Page title.
+   *
+   * @var ?string
+   */
   protected $pageTitle = 'Notify user of partnership invitation';
 
   /**

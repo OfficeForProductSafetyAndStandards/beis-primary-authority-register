@@ -15,12 +15,10 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
   use ParPartnershipFlowsTrait;
   use ParPartnershipFlowAccessTrait;
 
-  // Protected $formItems = [
-  //    'par_data_partnership:partnership' => [
-  //      'about_partnership' => 'about_partnership',
-  //    ],.
   /**
-   * ];.
+   * Page title.
+   *
+   * @var ?string
    */
   protected $pageTitle = 'What kind of partnership are you applying for?';
 

@@ -20,7 +20,9 @@ use Drupal\user\Entity\User;
 class ParReviewForm extends ParBaseForm {
 
   /**
-   * {@inheritdoc}
+   * Page title.
+   *
+   * @var ?string
    */
   protected $pageTitle = 'Invitation review';
 

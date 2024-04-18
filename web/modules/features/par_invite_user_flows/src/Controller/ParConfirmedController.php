@@ -10,6 +10,11 @@ use Drupal\par_flows\Controller\ParBaseController;
  */
 class ParConfirmedController extends ParBaseController {
 
+  /**
+   * Page title.
+   *
+   * @var ?string
+   */
   protected $pageTitle = 'The invitation has been sent';
 
   /**

@@ -15,6 +15,11 @@ class ParPartnershipFlowsPartnershipConfirmedController extends ParBaseControlle
   use ParPartnershipFlowsTrait;
   use ParPartnershipFlowAccessTrait;
 
+  /**
+   * Page title.
+   *
+   * @var ?string
+   */
   protected $pageTitle = 'New partnership application | Thank you for completing the application';
 
   /**

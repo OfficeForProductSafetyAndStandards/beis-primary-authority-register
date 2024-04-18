@@ -15,7 +15,9 @@ class ParMemberDetailsForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * {@inheritdoc}
+   * Page title.
+   *
+   * @var ?string
    */
   protected $pageTitle = 'Member summary';
 

@@ -34,7 +34,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
-    // Override the route parameter so that data loaded will be from this entity.
+    // Override the route parameter to get data loaded will be from this entity.
     $this->getFlowDataHandler()->setParameter('partnership_info_agreed_business', $par_data_partnership->getBoolean('partnership_info_agreed_business'));
     $this->getFlowDataHandler()->setParameter('terms_organisation_agreed', $par_data_partnership->getBoolean('terms_organisation_agreed'));
 
@@ -200,7 +200,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $form['help_text'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
-      '#value' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
+      '#value' => $this->t("You won't be able to change these details after you save them. Please check everything is correct."),
       '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
@@ -233,7 +233,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   }
 
   /**
-   *
+   * Implements createEntities().
    */
   public function createEntities() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
@@ -298,12 +298,16 @@ class ParConfirmationReviewForm extends ParBaseForm {
     // Loop through all stored values and create the legal entity.
     foreach ($legal_entities as $delta => $legal_entity) {
       // Creating the legal entity and using ParDataLegalEntity::lookup() allows
-      // information to be retrieved from a registered source like Companies House.
+      // Info to be retrieved from a registered source like Companies House.
       $par_data_legal_entities[$delta] = ParDataLegalEntity::create([
-        'registry' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'registry'], $legal_cid),
-        'registered_name' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'unregistered', 'legal_entity_name'], $legal_cid),
-        'registered_number' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'registered', 'legal_entity_number'], $legal_cid),
-        'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'unregistered', 'legal_entity_type'], $legal_cid),
+        'registry' => $this->getFlowDataHandler()->getTempDataValue(
+          [$legal_entity_prefix, $delta, 'registry'], $legal_cid),
+        'registered_name' => $this->getFlowDataHandler()->getTempDataValue(
+          [$legal_entity_prefix, $delta, 'unregistered', 'legal_entity_name'], $legal_cid),
+        'registered_number' => $this->getFlowDataHandler()->getTempDataValue(
+          [$legal_entity_prefix, $delta, 'registered', 'legal_entity_number'], $legal_cid),
+        'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue(
+          [ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'unregistered', 'legal_entity_type'], $legal_cid),
       ]);
       $par_data_legal_entities[$delta]->lookup();
 
@@ -420,7 +424,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       $this->getLogger($this->getLoggerChannel())
         ->error($message, $replacements);
 
-      // If the partnership could not be saved the application can't be progressed.
+      // If the partnership cannot be saved the application can't be progressed.
       // @todo Find a better way to alert the user without redirecting them away from the form.
       $this->messenger()->addMessage('There was an error progressing your partnership, please contact the helpdesk for more information.');
       $form_state->setRedirectUrl($this->getFlowNegotiator()->getFlow()->progress('cancel'));

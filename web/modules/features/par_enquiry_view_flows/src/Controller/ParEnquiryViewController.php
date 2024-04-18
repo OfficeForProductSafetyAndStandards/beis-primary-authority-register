@@ -14,7 +14,9 @@ class ParEnquiryViewController extends ParBaseController {
   use ParFlowAccessTrait;
 
   /**
-   * {@inheritdoc}
+   * Page title.
+   *
+   * @var ?string
    */
   protected $pageTitle = 'View enquiry';
 

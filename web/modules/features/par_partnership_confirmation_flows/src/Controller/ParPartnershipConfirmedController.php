@@ -10,6 +10,11 @@ use Drupal\par_flows\Controller\ParBaseController;
  */
 class ParPartnershipConfirmedController extends ParBaseController {
 
+  /**
+   * Page title.
+   *
+   * @var ?string
+   */
   protected $pageTitle = 'New partnership application | Thank you for completing the application';
 
   /**

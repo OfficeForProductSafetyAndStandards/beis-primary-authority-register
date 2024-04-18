@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Organisation Legal Entities selection form.
+ *
  * This generates a list of legal entities stored on the PAR Organisation as
  * checkboxes.
  */
@@ -16,6 +17,11 @@ class ParSelectLegalEntitiesForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
 
+  /**
+   * Page title.
+   *
+   * @var ?string
+   */
   protected $pageTitle = 'Choose the legal entities for the partnership';
 
   /**

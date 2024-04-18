@@ -16,6 +16,11 @@ class ParPartnershipFlowsInviteSentController extends ParBaseController {
   use ParPartnershipFlowsTrait;
   use ParPartnershipFlowAccessTrait;
 
+  /**
+   * Page title.
+   *
+   * @var ?string
+   */
   protected $pageTitle = 'Notification sent';
 
   /**

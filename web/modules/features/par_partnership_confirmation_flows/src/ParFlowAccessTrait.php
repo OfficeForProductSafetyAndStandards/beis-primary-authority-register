@@ -10,7 +10,7 @@ use Drupal\par_flows\ParFlowException;
 use Symfony\Component\Routing\Route;
 
 /**
- *
+ * PAR Flow Access trait.
  */
 trait ParFlowAccessTrait {
 

@@ -15,6 +15,11 @@ class ParRemoveInspectionPlanForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
 
+  /**
+   * Page title.
+   *
+   * @var ?string
+   */
   protected $pageTitle = 'Are you sure you want to remove this inspection plan?';
 
   /**

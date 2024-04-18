@@ -18,6 +18,11 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
   use ParPartnershipFlowsTrait;
   use ParPartnershipFlowAccessTrait;
 
+  /**
+   * Page title.
+   *
+   * @var ?string
+   */
   protected $pageTitle = 'Which authority are you acting on behalf of?';
 
   /**

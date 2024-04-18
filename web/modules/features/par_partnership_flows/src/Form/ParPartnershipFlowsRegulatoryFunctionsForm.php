@@ -15,6 +15,11 @@ class ParPartnershipFlowsRegulatoryFunctionsForm extends ParBaseForm {
   use ParPartnershipFlowsTrait;
   use ParPartnershipFlowAccessTrait;
 
+  /**
+   * Page title.
+   *
+   * @var ?string
+   */
   protected $pageTitle = 'Update regulatory functions';
 
   /**

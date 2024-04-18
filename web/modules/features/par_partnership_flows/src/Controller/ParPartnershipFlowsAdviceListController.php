@@ -16,6 +16,11 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
   use ParPartnershipFlowsTrait;
   use ParPartnershipFlowAccessTrait;
 
+  /**
+   * Page title.
+   *
+   * @var ?string
+   */
   protected $pageTitle = 'Advice';
 
   /**

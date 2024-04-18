@@ -44,7 +44,7 @@ class ParAuthorityReviewForm extends ParBaseForm {
   }
 
   /**
-   *
+   * Implements createEntities().
    */
   public function createEntities() {
     $par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');

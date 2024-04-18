@@ -26,6 +26,11 @@ class ParPartnershipFlowsApplicationOrganisationForm extends ParBaseForm {
     ],
   ];
 
+  /**
+   * Page title.
+   *
+   * @var ?string
+   */
   protected $pageTitle = 'Who are you in partnership with?';
 
   /**

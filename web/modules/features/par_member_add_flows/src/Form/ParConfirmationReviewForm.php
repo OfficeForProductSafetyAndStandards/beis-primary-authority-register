@@ -21,7 +21,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * {@inheritdoc}
+   * Page title.
+   *
+   * @var ?string
    */
   protected $pageTitle = 'Member summary';
 
