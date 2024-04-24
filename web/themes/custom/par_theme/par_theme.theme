@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Functions to support theming in the PAR theme.
+ */
+
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
 
@@ -15,6 +20,7 @@ function par_theme_preprocess(&$variables) {
  * Implements hook_preprocess_page().
  *
  * @param array $variables
+ *   Drupal HTML vars.
  */
 function par_theme_preprocess_html(array &$variables) {
   // As per accessibility issue PAR-1545 page titles must not contain duplicate names.
@@ -23,7 +29,7 @@ function par_theme_preprocess_html(array &$variables) {
   $name = (string) $variables['head_title']['name'] ?? '';
 
   // Remove the duplicate site name from the title.
-  $title_fragments = array_filter($title_fragments, function($value) use ($name) {
+  $title_fragments = array_filter($title_fragments, function ($value) use ($name) {
     return $value !== $name;
   });
 
@@ -55,12 +61,12 @@ function par_theme_preprocess_fieldset(array &$variables) {
   // Get the form element.
   $element = &$variables['element'];
 
-  // Count the child elements, some radio and checkbox elements display
+  // Count the child elements, some radio and checkbox elements display.
   // inline if there are 2 or fewer options.
   $variables['child_count'] = isset($element['#options']) ?
     count($variables['element']['#options']) : 0;
 
-  // Allow the title tag to be selected, by default this is only a <span>
+  // Allow the title tag to be selected, by default this is only a <span>.
   if (!empty($element['#title_tag'])) {
     $variables['legend']['title_tag'] = $element['#title_tag'];
   }
@@ -226,4 +232,3 @@ function par_theme_page_attachments_alter(array &$attachments) {
 function par_theme_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
   $suggestions[] = 'views_view__' . $variables['view']->id();
 }
-

@@ -428,7 +428,7 @@ jobs:
       - run: # https://discuss.circleci.com/t/aws-s3-cp-errors-on-exclude-argument/50086
           name: "Backup database to S3"
           command: aws s3 cp /tmp/backups/ s3://${S3_ARTIFACTS_BUCKET}/backups/ --recursive --exclude "*" --include "db-dump-*.tar.gz"
- 
+
   sanitise_database:
     <<: *defaults
     steps:
