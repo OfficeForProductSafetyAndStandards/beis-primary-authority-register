@@ -300,21 +300,16 @@ public class SadPathStepDefinitions {
 
 	@When("^the user confirms the number of employees$")
 	public void the_user_confirms_the_number_of_employees() throws Throwable {
-		
-		switch (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase()) {
-
-		case ("direct"):
-			LOG.info("Selecting No of Employees");
-			DataStore.saveValue(UsableValues.NO_EMPLOYEES, "50 to 249");
-			websiteManager.employeesPage.selectNoEmployees(DataStore.getSavedValue(UsableValues.NO_EMPLOYEES));
-			break;
-
-		case ("co-ordinated"):
-			LOG.info("Selecting Membership List size");
-			DataStore.saveValue(UsableValues.MEMBERLIST_SIZE, "Medium");
-			websiteManager.memberListPage.selectMemberSize(DataStore.getSavedValue(UsableValues.MEMBERLIST_SIZE));
-			break;
-		}
+		LOG.info("Selecting No of Employees");
+		DataStore.saveValue(UsableValues.NO_EMPLOYEES, "50 to 249");
+		websiteManager.employeesPage.selectNoEmployees(DataStore.getSavedValue(UsableValues.NO_EMPLOYEES));
+	}
+	
+	@When("^the user confirms the size of the membership list as \"([^\"]*)\"$")
+	public void the_user_confirms_the_size_of_the_membership_list_as(String size) throws Throwable {
+		LOG.info("Selecting Membership List size");
+		DataStore.saveValue(UsableValues.MEMBERLIST_SIZE, size);
+		websiteManager.memberListPage.selectMemberSize(DataStore.getSavedValue(UsableValues.MEMBERLIST_SIZE));
 	}
 
 	@When("^the user leaves the trading name field empty$")
