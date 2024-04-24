@@ -221,6 +221,10 @@ public class ContactDetailsPage extends BasePageObject {
 		continueBtn.click();
 	}
 	
+	public void clickSaveButton() {
+		saveBtn.click();
+	}
+	
 	public AccountInvitePage goToInviteUserAccountPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, AccountInvitePage.class);

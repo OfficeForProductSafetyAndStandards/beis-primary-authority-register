@@ -47,6 +47,7 @@ public class EnterTheDatePage extends BasePageObject {
 		
 		String fullDate = String.valueOf(LocalDate.now().getDayOfMonth()) + " " + convertMonthDate(String.valueOf(LocalDate.now().getMonthValue())) + " " + String.valueOf(LocalDate.now().getYear());
 		
+		DataStore.saveValue(UsableValues.MEMBERSHIP_START_DATE, fullDate);
 		DataStore.saveValue(UsableValues.MEMBERSHIP_CEASE_DATE, fullDate);
 	}
 	

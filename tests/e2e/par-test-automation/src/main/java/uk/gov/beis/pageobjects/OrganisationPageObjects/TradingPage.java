@@ -53,6 +53,10 @@ public class TradingPage extends BasePageObject {
 		memberTradingName.sendKeys(name);
 	}
 	
+	public void clearTradingName() {
+		tradingName.clear();
+	}
+	
 	public void clickContinueButton() {
 		continueBtn.click();
 	}

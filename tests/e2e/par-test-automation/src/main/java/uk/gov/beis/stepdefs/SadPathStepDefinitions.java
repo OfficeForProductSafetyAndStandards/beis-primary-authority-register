@@ -1475,9 +1475,175 @@ public class SadPathStepDefinitions {
 
 	@Then("^the new member organistion has been added to the partnership successfully$")
 	public void the_new_member_organistion_has_been_added_to_the_partnership_successfully() throws Throwable {
-LOG.info("Verify the Member Organisation was added to the Co-ordinated Partnership Successfully.");
+		LOG.info("Verify the Member Organisation was added to the Co-ordinated Partnership Successfully.");
 		
 		websiteManager.memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
 		Assert.assertTrue("Failed: Member Organisation was not Created.", websiteManager.memberListPage.checkMemberCreated());
+	}
+	
+	@When("^the user searches for the last created organisation member$")
+	public void the_user_searches_for_the_last_created_organisation_member() throws Throwable {
+		LOG.info("Navigate to the Member summary page for a Member Organisation.");
+		websiteManager.partnershipAdvancedSearchPage.selectOrganisationLink();
+		websiteManager.partnershipInformationPage.selectShowMembersListLink();
+		
+		websiteManager.memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		websiteManager.memberListPage.selectMembersName();
+	}
+
+	@Then("^the user is on the organisation members summary page$")
+	public void the_user_is_on_the_organisation_members_summary_page() throws Throwable {
+		LOG.info("Verify the user is on the Member Summary page.");
+		Assert.assertTrue("Failed: Member Organisation was not Created.", websiteManager.memberOrganisationSummaryPage.checkMemberOrganisationSummaryPage());
+	}
+
+	@When("^the user selects the edit organisation name link$")
+	public void the_user_selects_the_edit_organisation_name_link() throws Throwable {
+		LOG.info("Select the Edit Member Organisation's Name Link.");
+		websiteManager.memberOrganisationSummaryPage.selectEditOrganisationName();
+	}
+
+	@When("^the user leaves the organisation name text field empty$")
+	public void the_user_leaves_the_organisation_name_text_field_empty() throws Throwable {
+		LOG.info("Clear the Member Organisation's Name Text Field.");
+		websiteManager.addOrganisationNamePage.clearOrganisationNameField();
+		websiteManager.addOrganisationNamePage.clickSaveButton();
+	}
+
+	@When("^the user enters an organisation name \"([^\"]*)\"$")
+	public void the_user_enters_an_organisation_name(String name) throws Throwable {
+		LOG.info("Updating the Member Organisation's Name.");
+		DataStore.saveValue(UsableValues.MEMBER_ORGANISATION_NAME, name);
+		websiteManager.addOrganisationNamePage.editMemberOrganisationName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+	}
+
+	@When("^the user selects the edit address link$")
+	public void the_user_selects_the_edit_address_link() throws Throwable {
+		LOG.info("Select the Edit Member Organisation's Address Link.");
+		websiteManager.memberOrganisationSummaryPage.selectEditAddress();
+	}
+
+	@When("^the user leaves the organisation address text fields empty$")
+	public void the_user_leaves_the_organisation_address_text_fields_empty() throws Throwable {
+		LOG.info("Clear the Member Organisation's Address Fields.");
+		websiteManager.addAddressPage.clearAddressFields();
+		websiteManager.addAddressPage.clickSaveButton();
+	}
+
+	@When("^the user enters the following organisation addess:$")
+	public void the_user_enters_the_following_organisation_addess(DataTable details) throws Throwable {
+		LOG.info("Updating the Member Organisation's Address.");
+		websiteManager.addAddressPage.editAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
+				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		
+		websiteManager.addAddressPage.goToMemberOrganisationSummaryPage();
+	}
+
+	@When("^the user selects the edit membership start date link$")
+	public void the_user_selects_the_edit_membership_start_date_link() throws Throwable {
+		LOG.info("Select the Edit Member Organisation's Membership Start Date Link.");
+		websiteManager.memberOrganisationSummaryPage.selectEditMembershipStartDate();
+	}
+
+	@When("^the user leaves the date fields empty$")
+	public void the_user_leaves_the_date_fields_empty() throws Throwable {
+		LOG.info("Clear the Member Organisation's Membership Start Date Fields.");
+		websiteManager.enterTheDatePage.clearDateFields();
+		websiteManager.enterTheDatePage.selectSaveButton();
+	}
+	
+	@When("^the user edits the member organisation membership start date$")
+	public void the_user_edits_the_member_organisation_membership_start_date() throws Throwable {
+		LOG.info("Enter the Member Organisation's Membership Start Date.");
+		websiteManager.enterTheDatePage.enterCurrentDate();
+		websiteManager.enterTheDatePage.selectSaveButton();
+	}
+
+	@When("^the user selects the edit person link$")
+	public void the_user_selects_the_edit_person_link() throws Throwable {
+		LOG.info("Select the Edit Member Organisation's Contact Details Link.");
+		websiteManager.memberOrganisationSummaryPage.selectEditPerson();
+	}
+
+	@When("^the user leaves the contact detail text fields empty$")
+	public void the_user_leaves_the_contact_detail_text_fields_empty() throws Throwable {
+		LOG.info("Clear the Member Organisation's Contact Details Fields.");
+		websiteManager.contactDetailsPage.clearAllFields();
+		websiteManager.contactDetailsPage.clickSaveButton();
+	}
+
+	@When("^the user enters the following contact details:$")
+	public void the_user_enters_the_following_contact_details(DataTable details) throws Throwable {
+		LOG.info("Updating the Member Organisation's Contact Details.");
+		websiteManager.contactDetailsPage.addContactDetails(details);
+		websiteManager.contactDetailsPage.goToMemberOrganisationSummaryPage();
+	}
+
+	@When("^the user selects the add another legal entity link$")
+	public void the_user_selects_the_add_another_legal_entity_link() throws Throwable {
+		LOG.info("Select the Add Member Organisation's Legal Entity Link.");
+		websiteManager.memberOrganisationSummaryPage.selectAddAnotherLegalEntity();
+	}
+	
+	@When("^the user does not select a registered, charity or unregistered legal entity for the member$")
+	public void the_user_does_not_select_a_registered_charity_or_unregistered_legal_entity_for_the_member() throws Throwable {
+		LOG.info("Not selecting a Legal Entity type.");
+		websiteManager.updateLegalEntityPage.clickSaveButton();
+	}
+	
+	@When("^the user selects an \"([^\"]*)\" legal entity for the member$")
+	public void the_user_selects_an_legal_entity_for_the_member(String type) throws Throwable {
+	    LOG.info("Selecting a Legal Entity type.");
+		websiteManager.updateLegalEntityPage.selectUnregisteredEntity(type, "");
+	}
+	
+	@When("^the user does not select a legal entity type or enter a legal entity name for the member$")
+	public void the_user_does_not_select_a_legal_entity_type_or_enter_a_legal_entity_name_for_the_member() throws Throwable {
+		LOG.info("Entering a Legal Entity type but not selecting an entity structure or entering an entity name.");
+		websiteManager.updateLegalEntityPage.clickSaveButton();
+	}
+	
+	@When("^the user chooses a legal entity with the following details for the member:$")
+	public void the_user_chooses_a_legal_entity_with_the_following_details_for_the_member(DataTable details) throws Throwable {
+		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
+			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Legal Entity Name"));
+			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal Entity Type"));
+		}
+		
+		LOG.info("Entering a Legal Entity.");
+		websiteManager.updateLegalEntityPage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
+		websiteManager.updateLegalEntityPage.goToMemberOrganisationSummaryPage();
+	}
+
+	@When("^the user selects the add another trading name link$")
+	public void the_user_selects_the_add_another_trading_name_link() throws Throwable {
+		LOG.info("Select the Edit Member Organisation's Trading Name.");
+		websiteManager.memberOrganisationSummaryPage.selectEditTradingName();
+	}
+
+	@When("^the user leaves the trading name text field empty$")
+	public void the_user_leaves_the_trading_name_text_field_empty() throws Throwable {
+		LOG.info("Clear the Member Organisation's Trading Name Field.");
+		websiteManager.tradingPage.clearTradingName();
+		websiteManager.tradingPage.clickSaveButton();
+	}
+
+	@When("^the user enters the following trading name \"([^\"]*)\"$")
+	public void the_user_enters_the_following_trading_name(String name) throws Throwable {
+		LOG.info("Updating the Member Organisation's Trading Name.");
+		DataStore.saveValue(UsableValues.MEMBER_ORGANISATION_NAME, name);
+		websiteManager.tradingPage.editMemberTradingName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		websiteManager.tradingPage.goToMemberOrganisationSummaryPage();
+	}
+
+	@Then("^the member organisation is updated successfully$")
+	public void the_member_organisation_is_updated_successfully() throws Throwable {
+		LOG.info("Verifying All Member Details are Correct.");
+		Assert.assertTrue(websiteManager.memberOrganisationSummaryPage.checkMemberDetails());
+		websiteManager.memberOrganisationSummaryPage.selectDone();
+		
+		LOG.info("Verify the Updated Member Organisation Name is Displayed on the Members List.");
+		websiteManager.memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		Assert.assertTrue("Failed: Member Organisation was not Updated.", websiteManager.memberListPage.checkMemberCreated());
 	}
 }

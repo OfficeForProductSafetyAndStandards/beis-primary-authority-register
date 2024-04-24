@@ -95,6 +95,11 @@ public class MemberOrganisationSummaryPage extends BasePageObject {
 		return PageFactory.initElements(driver, InspectionPlanCoveragePage.class);
 	}
 	
+	public Boolean checkMemberOrganisationSummaryPage() {
+		WebElement organisationName = driver.findElement(By.xpath(organisationNameLocator.replace("?", DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME))));
+		return organisationName.isDisplayed();
+	}
+	
 	public Boolean checkMemberDetails() {
 		WebElement organisationName = driver.findElement(By.xpath(organisationNameLocator.replace("?", DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME))));
 		WebElement organisationAddress = driver.findElement(By.xpath(organisationAddressLocator.replace("?", getOrganisationAddress())));

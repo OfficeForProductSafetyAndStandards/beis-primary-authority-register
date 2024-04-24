@@ -29,6 +29,9 @@ public class LegalEntityTypePage extends BasePageObject {
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 	
+	@FindBy(id = "edit-save")
+	private WebElement saveBtn;
+	
 	private String legalEntTypeRadio = "//label[contains(normalize-space(),'?')]/preceding-sibling::input";
 	
 	public LegalEntityTypePage() throws ClassNotFoundException, IOException {
@@ -69,6 +72,10 @@ public class LegalEntityTypePage extends BasePageObject {
 	
 	public void clickContinueButton() {
 		continueBtn.click();
+	}
+	
+	public void clickSaveButton() {
+		saveBtn.click();
 	}
 	
 	public LegalEntityReviewPage goToLegalEntityReviewPage() {

@@ -33,6 +33,10 @@ public class AddOrganisationNamePage extends BasePageObject {
 		continueBtn.click();
 	}
 	
+	public void clickSaveButton() {
+		saveBtn.click();
+	}
+	
 	public void clearOrganisationNameField() {
 		organisationName.clear();
 	}

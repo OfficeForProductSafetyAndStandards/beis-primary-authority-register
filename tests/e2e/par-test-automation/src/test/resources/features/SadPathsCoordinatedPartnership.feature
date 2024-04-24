@@ -1,21 +1,3 @@
-#Author: your.email@your.domain.com
-#Keywords Summary :
-#Feature: List of scenarios.
-#Scenario: Business rule through list of steps with arguments.
-#Given: Some precondition step
-#When: Some key actions
-#Then: To observe outcomes or validation
-#And,But: To enumerate more Given,When,Then steps
-#Scenario Outline: List of steps for data-driven as an Examples and <placeholder>
-#Examples: Container for s table
-#Background: List of steps run before each of the scenarios
-#""" (Doc Strings)
-#| (Data Tables)
-#@ (Tags/Labels):To group Scenarios
-#<> (placeholder)
-#""
-## (Comments)
-#Sample Feature Definition Template
 Feature: Coordinated Partnership Sad Paths
 
   @regression @sadpath @partnershipapplication @sadorganisationmember
@@ -48,7 +30,7 @@ Feature: Coordinated Partnership Sad Paths
       | You must enter a valid postcode.              |
     When the user enters an address with the following details:
       | AddressLine1 | AddressLine2 | Town       | County              | Country        | Nation  | Postcode |
-      | 07 Bridge    | Town Hall    | Manchester | Greater Manachester | United Kingdom | England | BL2 6GH  |
+      | 07 Bridge    | Town Hall    | Manchester | Greater Manchester | United Kingdom | England | BL2 6GH  |
     And the user leaves the contact details fields empty
     Then the user is shown the following error messages:
       | ErrorMessage                                           |
@@ -80,7 +62,7 @@ Feature: Coordinated Partnership Sad Paths
       | You must enter a valid postcode.              |
     When the user confirms the address details with the following:
       | AddressLine1 | AddressLine2 | Town       | County              | Country        | Nation  | Postcode |
-      | 07 Bridge    | Town Hall    | Manchester | Greater Manachester | United Kingdom | England | BL2 6GH  |
+      | 07 Bridge    | Town Hall    | Manchester | Greater Manchester | United Kingdom | England | BL2 6GH  |
     And the user leaves all contact details fields empty
     Then the user is shown the following error messages:
       | ErrorMessage                                           |
@@ -131,7 +113,7 @@ Feature: Coordinated Partnership Sad Paths
     Then the partnership is approved successfully
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @sadorganisationmember @test
+  @regression @sadpath @partnershipapplication @sadorganisationmember
   Scenario: Verify a user receives Error Messages for required fields when Adding a Member Organisation to a Coordinated Partnership (Sad Path - PAR-2465)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -149,8 +131,8 @@ Feature: Coordinated Partnership Sad Paths
       | Town/City field is required.                  |
       | You must enter a valid postcode.              |
     When the user enters an address with the following details:
-      | AddressLine1 | AddressLine2 | Town       | County              | Country        | Nation  | Postcode |
-      | 24 Bridge Street    | Town Hall    | Manchester | Greater Manachester | United Kingdom | England | BL2 6GH  |
+      | AddressLine1     | AddressLine2 | Town       | County              | Country        | Nation  | Postcode |
+      | 24 Bridge Street | Town Hall    | Manchester | Greater Manchester | United Kingdom | England | BL2 6GH  |
     And the user leaves the contact details fields empty
     Then the user is shown the following error messages:
       | ErrorMessage                                           |
@@ -159,8 +141,8 @@ Feature: Coordinated Partnership Sad Paths
       | You must enter the work phone number for this contact. |
       | You must enter the email address for this contact.     |
     When the user enters a contact with the following details:
-      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                  |
-      | Dr    | Tom     | Cat    | 02055778899 |  07345910568 | tomcat@example.com |
+      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email              |
+      | Dr    | Tom       | Cat      | 02055778899 |  07345910568 | tomcat@example.com |
     And the user leaves the membership start date fields empty
     Then the user is shown the "The date format is not correct." error message
     When the user enters a membership start date
@@ -181,4 +163,61 @@ Feature: Coordinated Partnership Sad Paths
     And the user confirms the legal entity for the new member
     And the user confirms the addition of the new member organisation
     Then the new member organistion has been added to the partnership successfully
+    And the user signs out
+
+  @regression @sadpath @partnershipapplication @sadorganisationmember
+  Scenario: Verify a user receives Error Messages for required fields when Updating a Member Organisation for a Coordinated Partnership (Sad Path - PAR-2466)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user searches for the last created organisation member
+    Then the user is on the organisation members summary page
+    When the user selects the edit organisation name link
+    And the user leaves the organisation name text field empty
+    Then the user is shown the "You must enter the member's name." error message
+    When the user enters an organisation name "Sad Path Member Organisation Co."
+    And the user selects the edit address link
+    And the user leaves the organisation address text fields empty
+    Then the user is shown the following error messages:
+      | ErrorMessage                                  |
+      | You must enter the first line of your address |
+      | Town/City field is required.                  |
+      | You must enter a valid postcode.              |
+    When the user enters the following organisation addess:
+      | AddressLine1     | AddressLine2 | Town       | County              | Country        | Nation  | Postcode |
+      | 24 Bridge Street | Town Hall    | Manchester | Greater Manchester | United Kingdom | England | BL4 6GH  |
+    And the user selects the edit membership start date link
+    And the user leaves the date fields empty
+    Then the user is shown the "The date format is not correct" error message
+    When the user edits the member organisation membership start date
+    And the user selects the edit person link
+    And the user leaves the contact detail text fields empty
+    Then the user is shown the following error messages:
+      | ErrorMessage                                          |
+      | You must enter the first name for this contact.        |
+      | You must enter the last name for this contact.         |
+      | You must enter the work phone number for this contact. |
+      | You must enter the email address for this contact.     |
+    When the user enters the following contact details:
+      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email              |
+      | Mr    | Tom       | Cat      | 02055778899 |  07345910568 | tomcat@example.com |
+    And the user selects the add another legal entity link
+    And the user does not select a registered, charity or unregistered legal entity for the member
+    Then the user is shown the "Please choose whether this is a registered or unregistered legal entity." error message
+    When the user selects an "unregistered" legal entity for the member
+    And the user does not select a legal entity type or enter a legal entity name for the member
+    Then the user is shown the following error messages:
+      | ErrorMessage                                            |
+      | You must choose which legal entity type you are adding. |
+      | Please enter the name of the legal entity.              |
+    When the user chooses a legal entity with the following details for the member:
+      | Legal Entity Name | Legal Entity Type |
+      | Error Member Co.  | Partnership       |
+    And the user selects the add another trading name link
+    And the user leaves the trading name text field empty
+    Then the user is shown the "You must enter the trading name for this organisation." error message
+    When the user enters the following trading name "Sad Path Member Organisation Co."
+    Then the member organisation is updated successfully
     And the user signs out
