@@ -67,6 +67,10 @@ public class EnterTheDatePage extends BasePageObject {
 		yearField.clear();
 	}
 	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
 	public void selectSaveButton() {
 		saveBtn.click();
 	}

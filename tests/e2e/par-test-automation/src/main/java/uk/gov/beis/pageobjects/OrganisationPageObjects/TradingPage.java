@@ -19,7 +19,8 @@ public class TradingPage extends BasePageObject {
 	@FindBy(id= "edit-par-component-trading-name-0-trading-name")
 	private WebElement editTradingName;
 	
-	@FindBy(xpath = "//div/input[@class='form-text form-control govuk-input']")
+	//@FindBy(xpath = "//div/input[@class='form-text form-control govuk-input']")
+	@FindBy(id= "edit-par-component-trading-name-0-trading-name")
 	private WebElement memberTradingName;
 	
 	@FindBy(id = "edit-next")
@@ -45,6 +46,11 @@ public class TradingPage extends BasePageObject {
 	public void editMemberTradingName(String name) {
 		tradingName.clear();
 		tradingName.sendKeys(name);
+	}
+	
+	public void enterTradingNameForMember(String name) {
+		memberTradingName.clear();
+		memberTradingName.sendKeys(name);
 	}
 	
 	public void clickContinueButton() {

@@ -1364,7 +1364,7 @@ public class PARStepDefs {
 		websiteManager.memberListPage.selectAddAMemberLink();
 		
 		LOG.info("Entering the Member Organisation's Name.");
-		websiteManager.addOrganisationNamePage.enterMemberOrganisationName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		websiteManager.addOrganisationNamePage.goToAuthorityAddressDetailsPage(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
 		
 		LOG.info("Entering the Member Organisation's Address.");
 		websiteManager.authorityAddressDetailsPage.enterMemberOrganisationAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),

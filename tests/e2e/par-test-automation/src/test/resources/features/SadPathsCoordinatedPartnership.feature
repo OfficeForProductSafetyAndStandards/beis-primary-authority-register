@@ -18,7 +18,7 @@
 #Sample Feature Definition Template
 Feature: Coordinated Partnership Sad Paths
 
-  @regression @sadpath @partnershipapplication
+  @regression @sadpath @partnershipapplication @sadorganisationmember
   Scenario: Verify a user receives Error Messages for required fields during the Coordinated Partnership Application and Completion (Sad Path - PAR-2459, PAR-2460)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -112,8 +112,8 @@ Feature: Coordinated Partnership Sad Paths
     Then the user is shown the "Please confirm you have read the terms and conditions." error message
     And the user confirms the second part of the partnership application
     And the user signs out
-    
-	@regression @sadpath @partnershipapplication
+
+  @regression @sadpath @partnershipapplication @sadorganisationmember
   Scenario: Verify a user receives Error Messages for required fields when Nominating a Coordinated Partnership (Sad Path - PAR-2461)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -129,4 +129,56 @@ Feature: Coordinated Partnership Sad Paths
     When the user selects the type of bespoke regulatory functions
     And the user searches again for the last created partnership
     Then the partnership is approved successfully
+    And the user signs out
+
+  @regression @sadpath @partnershipapplication @sadorganisationmember @test
+  Scenario: Verify a user receives Error Messages for required fields when Adding a Member Organisation to a Coordinated Partnership (Sad Path - PAR-2465)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user adds a new organisation member
+    When the user leaves the member organisation name field empty
+    Then the user is shown the "You must enter the member's name." error message
+    When the user enters the following organisation name "Sad Member Organisation"
+    And the user leaves the address fields empty
+    Then the user is shown the following error messages:
+      | ErrorMessage                                  |
+      | You must enter the first line of your address |
+      | Town/City field is required.                  |
+      | You must enter a valid postcode.              |
+    When the user enters an address with the following details:
+      | AddressLine1 | AddressLine2 | Town       | County              | Country        | Nation  | Postcode |
+      | 24 Bridge Street    | Town Hall    | Manchester | Greater Manachester | United Kingdom | England | BL2 6GH  |
+    And the user leaves the contact details fields empty
+    Then the user is shown the following error messages:
+      | ErrorMessage                                           |
+      | You must enter the first name for this contact.        |
+      | You must enter the last name for this contact.         |
+      | You must enter the work phone number for this contact. |
+      | You must enter the email address for this contact.     |
+    When the user enters a contact with the following details:
+      | Title | Firstname | Lastname | WorkNumber  | MobileNumber | Email                  |
+      | Dr    | Tom     | Cat    | 02055778899 |  07345910568 | tomcat@example.com |
+    And the user leaves the membership start date fields empty
+    Then the user is shown the "The date format is not correct." error message
+    When the user enters a membership start date
+    And the user leaves the member trading name field empty
+    Then the user is shown the "You must enter the trading name for this organisation." error message
+    When the user enters the member trading name "Sad Member Organisation Co."
+    And the user does not select a registered, charity or unregistered legal entity
+    Then the user is shown the "Please choose whether this is a registered or unregistered legal entity." error message
+    When the user selects an "unregistered" legal entity
+    And the user does not select a legal entity type or enter a legal entity name
+    Then the user is shown the following error messages:
+      | ErrorMessage                                            |
+      | You must choose which legal entity type you are adding. |
+      | Please enter the name of the legal entity.              |
+    When the user chooses a legal entity with the following details:
+      | Legal Entity Name | Legal Entity Type |
+      | Error Member Co.  | Partnership       |
+    And the user confirms the legal entity for the new member
+    And the user confirms the addition of the new member organisation
+    Then the new member organistion has been added to the partnership successfully
     And the user signs out

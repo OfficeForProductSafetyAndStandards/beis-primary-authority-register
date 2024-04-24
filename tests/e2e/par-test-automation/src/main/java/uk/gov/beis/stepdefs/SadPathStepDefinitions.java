@@ -1397,4 +1397,87 @@ public class SadPathStepDefinitions {
 		websiteManager.enquiryReviewPage.saveChanges();
 		websiteManager.enquiryCompletionPage.complete();
 	}
+	
+	@When("^the user adds a new organisation member$")
+	public void the_user_adds_a_new_organisation_member() throws Throwable {
+		LOG.info("Add a Single Member Organisation to a Co-ordinated Partnership.");
+		websiteManager.partnershipAdvancedSearchPage.selectOrganisationLink();
+		websiteManager.partnershipInformationPage.selectShowMembersListLink();
+		websiteManager.memberListPage.selectAddAMemberLink();
+	}
+
+	@When("^the user leaves the member organisation name field empty$")
+	public void the_user_leaves_the_member_organisation_name_field_empty() throws Throwable {
+		LOG.info("Clear the Member Organisation Text Field.");
+		websiteManager.addOrganisationNamePage.clearOrganisationNameField();
+		websiteManager.addOrganisationNamePage.clickContinueButton();
+	}
+
+	@When("^the user enters the following organisation name \"([^\"]*)\"$")
+	public void the_user_enters_the_following_organisation_name(String name) throws Throwable {
+		LOG.info("Entering the Member Organisation's Name.");
+		DataStore.saveValue(UsableValues.MEMBER_ORGANISATION_NAME, name);
+		websiteManager.addOrganisationNamePage.goToAuthorityAddressDetailsPage(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+	}
+
+	@When("^the user leaves the address fields empty$")
+	public void the_user_leaves_the_address_fields_empty() throws Throwable {
+		LOG.info("Clear the Member Organisation Address Text Fields.");
+		websiteManager.authorityAddressDetailsPage.clearMemberAddressTextFields();
+		websiteManager.authorityAddressDetailsPage.clickContinueButton();
+	}
+
+	@When("^the user leaves the membership start date fields empty$")
+	public void the_user_leaves_the_membership_start_date_fields_empty() throws Throwable {
+		LOG.info("Clear the Membership Start Date.");
+		websiteManager.enterTheDatePage.clearDateFields();
+		websiteManager.enterTheDatePage.clickContinueButton();
+	}
+
+	@When("^the user enters a membership start date$")
+	public void the_user_enters_a_membership_start_date() throws Throwable {
+		LOG.info("Entering the Member Organisation's Membership Start Date.");
+		websiteManager.enterTheDatePage.enterCurrentDate();
+		websiteManager.enterTheDatePage.clickContinueButtonForMembershipBegan();
+	}
+	
+	@When("^the user leaves the member trading name field empty$")
+	public void the_user_leaves_the_member_trading_name_field_empty() throws Throwable {
+		LOG.info("Clear the Member Organisation's Trading Name Text Field.");
+		websiteManager.tradingPage.enterTradingNameForMember("");
+		websiteManager.tradingPage.clickContinueButton();
+	}
+
+	@When("^the user enters the member trading name \"([^\"]*)\"$")
+	public void the_user_enters_the_member_trading_name(String name) throws Throwable {
+		LOG.info("Entering the Member's Trading Name.");
+		DataStore.saveValue(UsableValues.TRADING_NAME, name);
+		websiteManager.tradingPage.enterTradingNameForMember(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+		websiteManager.tradingPage.goToLegalEntityTypePage();
+	}
+	
+	@When("^the user confirms the legal entity for the new member$")
+	public void the_user_confirms_the_legal_entity_for_the_new_member() throws Throwable {
+		LOG.info("Confirm the Legal Entity.");
+		websiteManager.legalEntityReviewPage.clickContinueForMember();
+	}
+
+	@When("^the user confirms the addition of the new member organisation$")
+	public void the_user_confirms_the_addition_of_the_new_member_organisation() throws Throwable {
+		LOG.info("Confirming the Member Organisation is covered by the Inspection Plan.");
+		websiteManager.inspectionPlanCoveragePage.selectYesRadial();
+		websiteManager.inspectionPlanCoveragePage.selectContinueForMember();
+		
+		LOG.info("Saving the Member Organisation's Details.");
+		websiteManager.memberOrganisationSummaryPage.selectSave();
+		websiteManager.memberOrganisationAddedConfirmationPage.selectDone();
+	}
+
+	@Then("^the new member organistion has been added to the partnership successfully$")
+	public void the_new_member_organistion_has_been_added_to_the_partnership_successfully() throws Throwable {
+LOG.info("Verify the Member Organisation was added to the Co-ordinated Partnership Successfully.");
+		
+		websiteManager.memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		Assert.assertTrue("Failed: Member Organisation was not Created.", websiteManager.memberListPage.checkMemberCreated());
+	}
 }
