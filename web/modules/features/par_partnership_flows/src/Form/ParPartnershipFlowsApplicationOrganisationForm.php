@@ -8,6 +8,8 @@ use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
+ * PAR Partnership Flows.
+ *
  * The primary contact form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */

@@ -145,7 +145,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
       $this->getLogger($this->getLoggerChannel())
         ->error($message, $replacements);
 
-      // If the partnership could not be saved the application can't be progressed.
+      // If Partnership could not be saved the application cant be progressed.
       // @todo Find a better way to alert the user without redirecting them away from the form.
       $this->messenger()->addMessage('There was an error progressing your partnership, please contact the helpdesk for more information.');
       $form_state->setRedirectUrl($this->getFlowNegotiator()->getFlow()->progress('cancel'));

@@ -51,7 +51,7 @@ class ParDeviationViewController extends ParBaseController {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function build($build = []) {
     $par_data_deviation_request = $this->getFlowDataHandler()->getParameter('par_data_deviation_request');

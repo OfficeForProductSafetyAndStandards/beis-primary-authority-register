@@ -37,6 +37,8 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
   }
 
   /**
+   * Implements retrieveEditableValues().
+   *
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    */

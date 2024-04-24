@@ -210,7 +210,8 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
         $this->setElementError(['section_two', 'business_regulated_by_one_authority'], $form_state, 'Please confirm the organisation is regulated by only one local authority.');
       }
 
-      // Warn that business needs to be informed their local authority still regulates.
+      // Warn that business needs to be informed that
+      // their local authority still regulates.
       if ($form_state->getValue('business_regulated_by_one_authority') == 1 &&
         $form_state->getValue('is_local_authority') == 0 &&
         $form_state->getValue('business_informed_local_authority_still_regulates') == 0) {

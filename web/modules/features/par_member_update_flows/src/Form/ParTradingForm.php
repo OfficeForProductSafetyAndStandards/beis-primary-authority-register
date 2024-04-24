@@ -24,7 +24,7 @@ class ParTradingForm extends ParBaseForm {
   protected $pageTitle = "Add trading name";
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataCoordinatedBusiness $par_data_coordinated_business = NULL, $trading_name_delta = NULL) {
     $this->getFlowDataHandler()->setParameter('trading_name_delta', $trading_name_delta);
@@ -43,7 +43,7 @@ class ParTradingForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);

@@ -22,15 +22,14 @@ class ParRdHelpDeskBulkInviteForm extends ParBaseForm {
   protected $flow = 'invite';
 
   /**
+   * Implements retrieveEditableValues().
+   *
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $par_data_person = NULL) {
     if ($par_data_person) {
-      // Set the default subject for the invite email, this can be changed by the user.
+      // Set the default subject for the invite email.
       $this->getFlowDataHandler()->setFormPermValue("email_subject", 'New Partnership on the Primary Authority Register');
 
       // Get the email for the business contact that this email will go to.
@@ -123,7 +122,7 @@ HEREDOC;
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('email_body'),
     ];
 
-    // Disable the default 'save' action which takes precedence over 'next' action.
+    // Disable the default save action which takes precedence over next action.
     $this->getFlowNegotiator()->getFlow()->disableAction('save');
 
     // Make sure to add the partnership cacheability data to this form.
@@ -157,7 +156,7 @@ HEREDOC;
     }
     if (!strpos($form_state->getValue('email_body'), $required_token)) {
       $id = $this->getElementId(['email_body'], $form);
-      $form_state->setErrorByName($this->getElementName('email_body'), $this->wrapErrorMessage($this->t('You must make sure you have the invite token \'@invite_token\' somewhere in your message', ['@invite_token' => $required_token]), $id));
+      $form_state->setErrorByName($this->getElementName('email_body'), $this->wrapErrorMessage($this->t("You must make sure you have the invite token '@invite_token' somewhere in your message", ['@invite_token' => $required_token]), $id));
     }
 
     parent::validateForm($form, $form_state);

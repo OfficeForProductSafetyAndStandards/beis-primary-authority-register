@@ -12,6 +12,9 @@ class ParAboutPartnershipForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
 
+  /**
+   * {@inheritdoc}
+   */
   protected $pageTitle = 'Information about the new partnership';
 
 }

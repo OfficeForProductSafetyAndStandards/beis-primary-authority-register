@@ -9,6 +9,8 @@ use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
+ * PAR Partnership Flows.
+ *
  * The primary contact form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */
@@ -58,11 +60,13 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       'registered_number' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_number'),
     ]);
 
-    // If this is an existing legal entity check that it is not already active on the partnership.
+    // If this is an existing legal entity
+    // check that it is not already active on the partnership.
     $partnership_legal_entities = $partnership->getPartnershipLegalEntities(TRUE);
     if (!$legal_entity->isNew() && !empty($partnership_legal_entities)) {
-      // Set start and end dates for the period of the new PLE. If the partnership is
-      // not yet active the from_date is NULL, once it is active the from_date is today's date.
+      // Set start and end dates for the period of the new PLE.
+      // If the partnership is not yet active the from_date is NULL,
+      // once it is active the from_date is today's date.
       $start_date = $partnership->isActive() ? new DrupalDateTime('now') : NULL;
       $end_date = NULL;
 

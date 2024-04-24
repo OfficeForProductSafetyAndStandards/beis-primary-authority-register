@@ -56,7 +56,7 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function createEntities() {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');

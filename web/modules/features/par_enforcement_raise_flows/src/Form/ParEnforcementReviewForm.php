@@ -69,7 +69,7 @@ class ParEnforcementReviewForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function createEntities() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');

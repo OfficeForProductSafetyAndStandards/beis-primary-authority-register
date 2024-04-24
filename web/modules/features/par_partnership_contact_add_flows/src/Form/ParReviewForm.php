@@ -114,7 +114,7 @@ class ParReviewForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function createEntities() {
     // Get the cache IDs for the various forms that needs to be extracted from.

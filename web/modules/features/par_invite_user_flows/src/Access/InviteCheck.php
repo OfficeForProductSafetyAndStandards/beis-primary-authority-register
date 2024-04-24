@@ -46,8 +46,6 @@ class InviteCheck implements AccessInterface {
 
   /**
    * Get the Par Flow Negotiator.
-   *
-   * @return \Drupal\par_flows\ParFlowNegotiatorInterface
    */
   public function getFlowNegotiator(): ParFlowNegotiatorInterface {
     return $this->flowNegotiator;
@@ -55,20 +53,15 @@ class InviteCheck implements AccessInterface {
 
   /**
    * Get the Par Data Manager.
-   *
-   * @return \Drupal\par_roles\ParRoleManagerInterface
    */
   public function getParRoleManager(): ParRoleManagerInterface {
     return $this->parRoleManager;
   }
 
   /**
-   * @param \Symfony\Component\Routing\Route $route
-   *   The route.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The route match object to be checked.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The account being checked.
+   * Implements accessCallback().
+   *
+   * The route, the route match object to be checked and the account being checked.
    */
   public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPersonInterface $par_data_person) {
     try {

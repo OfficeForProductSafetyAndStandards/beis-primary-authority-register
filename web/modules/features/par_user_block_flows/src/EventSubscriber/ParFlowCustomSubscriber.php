@@ -9,14 +9,12 @@ use Drupal\par_flows\EventSubscriber\ParFlowSubscriberBase;
 use Drupal\par_flows\ParFlowException;
 
 /**
- *
+ * {@inheritdoc}
  */
 class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
 
   /**
    * Get the par data manager.
-   *
-   * @return \Drupal\par_data\ParDataManagerInterface
    */
   protected function getParDataManager() {
     return \Drupal::service('par_data.manager');
@@ -24,8 +22,6 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
 
   /**
    * The events to react to.
-   *
-   * @return mixed
    */
   public static function getSubscribedEvents() {
     foreach (ParFlowEvents::getAlLEvents() as $event) {
@@ -35,7 +31,7 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
   }
 
   /**
-   * @param \Drupal\par_flows\Event\ParFlowEventInterface $event
+   * The events action.
    */
   public function onEvent(ParFlowEventInterface $event) {
     // Ignore if a redirect url has already been found.
@@ -51,7 +47,7 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
     // The final route depends on the 'type' parameter in the route.
     $redirect_route = 'par_profile_view_flows.profile';
 
-    // Work out a valid person that is attached to this user to redirect back with.
+    // Get valid person that is attached to this user to redirect back with.
     $account = $this->getFlowDataHandler()->getParameter('user');
     $people = $account ? $this->getParDataManager()->getUserPeople($account) : NULL;
     $person = $people ? current($people) : NULL;

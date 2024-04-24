@@ -30,6 +30,8 @@ class ParPartnershipFlowsInspectionPlanUploadForm extends ParBaseForm {
   }
 
   /**
+   * Implements retrieveEditableValues().
+   *
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
@@ -56,7 +58,7 @@ class ParPartnershipFlowsInspectionPlanUploadForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_inspection_plan);
 
     // External link for inspection plan templates.
-    $par_text = t('For inspection plan templates, go to: ');
+    $par_text = t('For inspection plan templates, go to:');
     $options = [
       'attributes' => ['target' => '_blank'],
       'fragment' => 'templates',
@@ -64,7 +66,7 @@ class ParPartnershipFlowsInspectionPlanUploadForm extends ParBaseForm {
     $url_obj = Url::fromUri('https://www.gov.uk/government/collections/primary-authority-documents', $options);
 
     $link = Link::fromTextAndUrl(t('Primary Authority templates'), $url_obj)->toString();
-    $output = $par_text . $link;
+    $output = $par_text . ' ' . $link;
     $form['inspection_plan__type_help_text_link'] = [
       '#type' => 'markup',
       '#markup' => "<p>{$output}</p>",

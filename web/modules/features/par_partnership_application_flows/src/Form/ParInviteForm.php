@@ -12,9 +12,13 @@ use Drupal\par_flows\Form\ParBaseForm;
 class ParInviteForm extends ParBaseForm {
 
   /**
-   * @var invite type */
-  protected $invite_type = 'invite_organisation_member';
+   * {@inheritdoc}
+   */
+  protected $inviteType = 'invite_organisation_member';
 
+  /**
+   * {@inheritdoc}
+   */
   protected $pageTitle = 'Invite the business';
 
   /**
@@ -22,7 +26,7 @@ class ParInviteForm extends ParBaseForm {
    */
   public function loadData() {
     // The invitation type must be set first.
-    $this->getFlowDataHandler()->setFormPermValue('invitation_type', $this->invite_type);
+    $this->getFlowDataHandler()->setFormPermValue('invitation_type', $this->inviteType);
 
     $cid_contact = $this->getFlowNegotiator()->getFormKey('contact');
     $recipient_name = $this->getFlowDataHandler()->getDefaultValues('first_name', '', $cid_contact);

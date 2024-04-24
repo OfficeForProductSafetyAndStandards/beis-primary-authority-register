@@ -51,12 +51,12 @@ class ParEnquiryReviewForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function createEntities() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
-    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    // Get the cache IDs for the various forms that needs to be extracted from.
     $enforcement_officer_cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_officer_details');
     $enforcing_authority_cid = $this->getFlowNegotiator()->getFormKey('par_authority_selection');
     $enquiry_cid = $this->getFlowNegotiator()->getFormKey('par_enquiry');

@@ -26,7 +26,7 @@ class ParRoleForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function loadData() {
-    // Set the user account that is being updated as a parameter for plugins to access.
+    // Set the user account that is being updated as a parameter for plugins.
     $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
     $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
     $account = ParChooseAccount::getUserAccount($account_selection);

@@ -24,7 +24,7 @@ class ParReviewForm extends ParBaseForm {
   protected $pageTitle = 'Review contact information';
 
   /**
-   * @return \Drupal\Core\Datetime\DateFormatterInterface
+   * {@inheritdoc}
    */
   protected function getEntityTypeManager() {
     return \Drupal::service('entity_type.manager');
@@ -163,7 +163,7 @@ class ParReviewForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function createEntities() {
     $current_user = $this->getCurrentUser();
@@ -234,7 +234,8 @@ class ParReviewForm extends ParBaseForm {
           break;
       }
     }
-    // Create invitation if an invitation type has been set and no existing user has been found.
+    // Create invitation if an invitation type has been set
+    // and no existing user has been found.
     $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
     if (isset($invitation_type) && $account_selection === ParChooseAccount::CREATE) {
       if ($email = $this->getFlowDataHandler()->getTempDataValue('email', $contact_details_cid)) {
@@ -267,8 +268,8 @@ class ParReviewForm extends ParBaseForm {
       }
 
       // @todo If the email address has been updated we may also need to consider recinding
-      // invitations to the old email address (but only if it is not attached to another
-      // par_data_person contact record).
+      // invitations to the old email address (but only if it is not attached
+      // to another par_data_person contact record).
     }
     // Update the user account.
     elseif ($account) {

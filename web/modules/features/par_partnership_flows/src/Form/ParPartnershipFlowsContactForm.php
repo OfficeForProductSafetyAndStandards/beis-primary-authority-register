@@ -10,6 +10,8 @@ use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
+ * PAR Partnership Flows.
+ *
  * The primary contact form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */
@@ -70,7 +72,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function titleCallback() {
     // Check if editing an existing entity.
@@ -92,6 +94,8 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   }
 
   /**
+   * Implements retrieveEditableValues().
+   *
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *

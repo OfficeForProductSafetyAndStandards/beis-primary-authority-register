@@ -34,11 +34,6 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
    * Helper to get all the editable values.
    *
    * Used for when editing or revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Authority being retrieved.
-   * @param int $sic_code_delta
-   *   The field delta to update.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $field_sic_code_delta = NULL) {
     if (!is_null($field_sic_code_delta)) {
@@ -59,7 +54,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $field_sic_code_delta);
     $par_data_organisation = current($par_data_partnership->getOrganisation());
 
-    // Display the correct introductory text based on the action that is being performed.
+    // Display the correct intro text based on the action being performed.
     $intro_text = $this->getFlowDataHandler()->getDefaultValues("sic_code", NULL) ?
       'Change the SIC Code of your organisation' :
       'Add a new SIC Code to your organisation';

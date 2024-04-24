@@ -49,7 +49,7 @@ class ParFeedbackViewController extends ParBaseController {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function build($build = []) {
     $par_data_inspection_feedback = $this->getFlowDataHandler()->getParameter('par_data_inspection_feedback');

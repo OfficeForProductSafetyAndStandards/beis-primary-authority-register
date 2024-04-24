@@ -41,7 +41,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validation;
 
 /**
- *
+ * {@inheritdoc}
  */
 class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
@@ -109,7 +109,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   protected ParFlowDataHandlerInterface $flowDataHandler;
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function getMappings(): array {
     $mappings = [
@@ -168,7 +168,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   protected function getDateFormatter(): DateFormatterInterface {
     return \Drupal::service('date.formatter');
@@ -259,7 +259,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function getMapping($key) {
     $mappings = $this->getMappings();
@@ -267,7 +267,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function getMappingByHeading($heading): int|string|null {
     $mappings = $this->getMappings();
@@ -276,7 +276,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function getValue($row, $key, $default = NULL) {
     $column = $this->getMapping($key);
@@ -310,7 +310,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   protected function getConstraints($row): array {
     /** @var \Drupal\par_data\Entity\ParDataPremisesType $par_data_premises_type */
@@ -432,7 +432,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function transform($row): array {
     $data = [];
@@ -945,7 +945,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function backup(ParDataPartnership $par_data_partnership) {
     return $par_data_partnership->getCoordinatedMember();
@@ -1103,7 +1103,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function clean($old, $new, $par_data_partnership): void {
     $diff = array_udiff($old, $new, function ($a, $b) {
@@ -1208,7 +1208,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function upload($data, $par_data_partnership): bool {
     try {
@@ -1308,7 +1308,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public static function batch__process($data, ParDataPartnership $par_data_partnership, &$context): void {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
@@ -1322,7 +1322,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public static function batch__update(ParDataPartnership $par_data_partnership, &$context): void {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
@@ -1337,7 +1337,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public static function batch__clean($old_members, $par_data_partnership, &$context): void {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');

@@ -9,14 +9,12 @@ use Drupal\par_flows\EventSubscriber\ParFlowSubscriberBase;
 use Drupal\par_flows\ParFlowException;
 
 /**
- *
+ * {@inheritdoc}
  */
 class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
 
   /**
    * The events to react to.
-   *
-   * @return mixed
    */
   public static function getSubscribedEvents() {
     foreach (ParFlowEvents::getAlLEvents() as $event) {
@@ -26,7 +24,7 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
   }
 
   /**
-   * @param \Drupal\par_flows\Event\ParFlowEventInterface $event
+   * {@inheritdoc}
    */
   public function onEvent(ParFlowEventInterface $event) {
     // Ignore if a redirect url has already been found.

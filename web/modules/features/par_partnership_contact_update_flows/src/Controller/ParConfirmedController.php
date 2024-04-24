@@ -10,6 +10,9 @@ use Drupal\par_flows\Controller\ParBaseController;
  */
 class ParConfirmedController extends ParBaseController {
 
+  /**
+   * {@inheritdoc}
+   */
   protected $pageTitle = 'Thank you!';
 
   /**

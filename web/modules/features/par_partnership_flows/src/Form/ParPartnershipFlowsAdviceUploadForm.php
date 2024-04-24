@@ -30,13 +30,10 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
   }
 
   /**
+   * Implements retrieveEditableValues().
+   *
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Partnership being retrieved.
-   * @param \Drupal\par_data\Entity\ParDataAdvice $par_data_advice
-   *   The advice being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
     if (isset($par_data_advice)) {
@@ -56,7 +53,7 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
     $this->retrieveEditableValues($par_data_partnership, $par_data_advice);
 
     // PAR-1158 add the required external link for advice templates.
-    $par_text = t('For advice templates, go to: ');
+    $par_text = t("For advice templates, go to:");
     $options = [
       'attributes' => ['target' => '_blank'],
       'fragment' => 'templates',
@@ -64,7 +61,7 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
     $url_obj = Url::fromUri('https://www.gov.uk/government/collections/primary-authority-documents', $options);
 
     $link = Link::fromTextAndUrl(t('Primary Authority templates'), $url_obj)->toString();
-    $output = $par_text . $link;
+    $output = $par_text . ' ' . $link;
     $form['advice_type_help_text_link'] = [
       '#type' => 'markup',
       '#markup' => "<p>{$output}</p>",

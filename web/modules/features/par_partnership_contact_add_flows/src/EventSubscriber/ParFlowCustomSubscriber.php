@@ -9,7 +9,7 @@ use Drupal\par_flows\EventSubscriber\ParFlowSubscriberBase;
 use Drupal\par_flows\ParFlowException;
 
 /**
- *
+ * {@inheritdoc}
  */
 class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
 

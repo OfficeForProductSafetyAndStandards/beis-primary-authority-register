@@ -51,7 +51,7 @@ class ParEnquiryViewController extends ParBaseController {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function build($build = []) {
     $par_data_general_enquiry = $this->getFlowDataHandler()->getParameter('par_data_general_enquiry');

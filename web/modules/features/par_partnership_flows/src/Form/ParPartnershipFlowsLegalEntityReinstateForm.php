@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Route;
 /**
  * Reinstate a partnership legal entity that has been revoked.
  */
-class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
+class ParPartnershipFlowsLegalEntityReinstateForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
 
@@ -31,12 +31,9 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
   }
 
   /**
-   * @param \Symfony\Component\Routing\Route $route
-   *   The route.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The route match object to be checked.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The account being checked.
+   * Implements accessCallback().
+   *
+   * Route match object to be checked and the account being checked.
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_le = NULL): AccessResult {
 
@@ -46,7 +43,7 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
       $this->accessResult = AccessResult::forbidden('The user is not allowed to access this page.');
     }
 
-    // Restrict access when partnership is active to users with administrator role.
+    // Restrict access when partnership is active to users with admin role.
     if ($par_data_partnership->isActive() && !$account->hasPermission('amend active partnerships')) {
       $this->accessResult = AccessResult::forbidden('This partnership is active and user\'s role does not allow changes to be made.');
     }
@@ -130,7 +127,7 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
     /** @var \Drupal\par_data\Entity\ParDataPartnershipLegalEntity $partnership_legal_entity */
     $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
 
-    // We can't reinstate a PLE if there is already an active PLE for the same LE.
+    // Cannot reinstate a PLE if there is already an active PLE for the same LE.
     if (!$partnership_legal_entity->isRestorable()) {
       $id = $this->getElementId(['registered_number'], $form);
       $form_state->setErrorByName($this->getElementName('registered_number'), $this->wrapErrorMessage('This legal entity is already an active participant in the partnership.', $id));

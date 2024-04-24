@@ -202,7 +202,7 @@ class ParReviewForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function createEntities() {
     // Get the old authority.

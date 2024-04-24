@@ -64,12 +64,9 @@ class ParFlowAccessCheck implements AccessInterface {
   }
 
   /**
-   * @param \Symfony\Component\Routing\Route $route
-   *   The route.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The route match object to be checked.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The account being checked.
+   * Implements accessCallback().
+   *
+   * The route, the route match object to be checked and the account being checked.
    */
   public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataAuthority $par_data_authority = NULL) {
     try {

@@ -12,6 +12,9 @@ class ParApplicationTypeForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
 
+  /**
+   * {@inheritdoc}
+   */
   protected $pageTitle = 'What kind of partnership are you applying for?';
 
 }

@@ -14,6 +14,8 @@ use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
 
 /**
+ * PAR Partnership flows trait.
+ *
  * Form to delete a partnership_legal_entity.
  */
 class ParPartnershipFlowsLegalEntityRemoveForm extends ParBaseForm {
@@ -31,12 +33,7 @@ class ParPartnershipFlowsLegalEntityRemoveForm extends ParBaseForm {
   }
 
   /**
-   * @param \Symfony\Component\Routing\Route $route
-   *   The route.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The route match object to be checked.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The account being checked.
+   * Implements accessCallback().
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_le = NULL): AccessResult {
 
@@ -46,12 +43,12 @@ class ParPartnershipFlowsLegalEntityRemoveForm extends ParBaseForm {
       $this->accessResult = AccessResult::forbidden('The user is not allowed to access this page.');
     }
 
-    // Restrict access when partnership is active to users with administrator role.
+    // Restrict access when partnership is active to users with admin role.
     if ($par_data_partnership?->isActive() && !$account->hasPermission('amend active partnerships')) {
       $this->accessResult = AccessResult::forbidden('This partnership is active therefore the legal entities cannot be changed.');
     }
 
-    // Restrict business users who have already confirmed their business details.
+    // Restrict business users who have already confirmed their details.
     if ($par_data_partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
       $this->accessResult = AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
     }
@@ -137,7 +134,7 @@ class ParPartnershipFlowsLegalEntityRemoveForm extends ParBaseForm {
     /** @var \Drupal\par_data\Entity\ParDataPartnershipLegalEntity $partnership_legal_entity */
     $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
 
-    // We can't reinstate a PLE if there is already an active PLE for the same LE.
+    // We can't reinstate a PLE if there is already an active PLE.
     if (!$partnership_legal_entity->isDeletable()) {
       $id = $this->getElementId(['registered_name'], $form);
       $form_state->setErrorByName($this->getElementName('registered_number'), $this->wrapErrorMessage('This legal entity is not deletable.', $id));

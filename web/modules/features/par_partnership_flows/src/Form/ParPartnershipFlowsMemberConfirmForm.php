@@ -67,14 +67,14 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
   ];
 
   /**
-   *
+   * {@inheritdoc}
    */
   protected function getColumns() {
     return $this->columns;
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function getColumn($entity_type, $field_name, $property = NULL) {
     $columns = $this->getColumns();
@@ -88,7 +88,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   protected function getDefaults() {
     return $this->defaults;

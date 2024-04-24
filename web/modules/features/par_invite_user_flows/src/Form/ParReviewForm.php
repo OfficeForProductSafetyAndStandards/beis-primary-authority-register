@@ -231,7 +231,7 @@ class ParReviewForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function createEntities() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');

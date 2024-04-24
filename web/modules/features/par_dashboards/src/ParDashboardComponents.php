@@ -117,7 +117,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function getCurrentUser() {
     if ($this->currentUser->isAuthenticated()) {
@@ -128,14 +128,14 @@ class ParDashboardComponents implements TrustedCallbackInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function getParDataManager() {
     return $this->parDataManager;
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function managePartnershipComponent($count = FALSE) {
     $build['partnerships'] = [
@@ -188,7 +188,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function searchPartnershipComponent() {
     $build['partnerships_find'] = [
@@ -225,7 +225,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function manageInstitutionsComponent() {
     $heading_parts = [];
@@ -274,7 +274,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function manageUsersComponent() {
     $build['people'] = [
@@ -300,7 +300,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function manageProfileComponent() {
     $build['user'] = [
@@ -337,7 +337,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function messagesComponent($count = FALSE) {
     $build = [];

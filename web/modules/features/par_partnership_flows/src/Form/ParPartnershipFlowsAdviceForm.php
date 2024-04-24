@@ -55,6 +55,8 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   }
 
   /**
+   * Implements retrieveEditableValues().
+   *
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *
@@ -281,8 +283,8 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
         '%form_id' => $this->getFormId(),
       ];
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
-      // We need to delete the temp store if no regulatory functions are selected on form submission.
-      // To prevent incorrect default values being assigned to the field on re-edit.
+      // Delete the temp store if no regulatory functions are selected.
+      // Prevents incorrect default values being assigned to field on edit.
       $this->getFlowDataHandler()->deleteStore();
     }
   }

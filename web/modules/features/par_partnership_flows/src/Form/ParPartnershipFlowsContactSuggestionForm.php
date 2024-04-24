@@ -23,14 +23,13 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
    *
    * @var string
    */
-  protected $par_data_person_id;
+  protected $parDataPersonId;
 
   /**
+   * Implements retrieveEditableValues().
+   *
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
 
@@ -40,19 +39,6 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-
-    // Get files from "contact_form" step.
-    // To use this form there must be a "form_data['contact_form']" key in the step configuration:
-    // 1:
-    //   route: example.route_name
-    //   form_id: form_id_where_person_was_added
-    //   form_data:
-    //     upload: par_partnership_advice_upload_edit
-    // 2:
-    //   route: example.route_name_2
-    //   form_id: example_form_id
-    //   form_data:
-    //     upload: form_id_where_person_was_added.
     $cid = $this->getFlowNegotiator()->getFormKey('contact_form');
     $conditions = [
       'name' => [
@@ -86,7 +72,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
       $people_options[$person->id()] = $this->renderMarkupField($person_view)['#markup'];
     }
 
-    $form['par_data_person_id'] = [
+    $form['parDataPersonId'] = [
       '#type' => 'radios',
       '#title' => t('Did you mean any of these users?'),
       '#title_tag' => 'h2',
@@ -95,10 +81,10 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
     // If no suggestions were found we want to automatically submit the form.
     if (count($people_options) === 0) {
-      $this->getFlowDataHandler()->setTempDataValue('par_data_person_id', 'new');
+      $this->getFlowDataHandler()->setTempDataValue('parDataPersonId', 'new');
       $this->submitForm($form, $form_state);
 
-      // The par person parameter should have been set within the submitForm method().
+      // Person parameter should have been set within the submitForm method().
       $url = $this->getFlowNegotiator()->getFlow()->progress('save');
       return new RedirectResponse($url->toString());
     }
@@ -126,20 +112,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
     // Get partnership entity from URL.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    if ($this->getFlowDataHandler()->getDefaultValues('par_data_person_id') === 'new') {
-
-      // Get files from "contact_form" step.
-      // To use this form there must be a "form_data['contact_form']" key in the step configuration:
-      // 1:
-      //   route: example.route_name
-      //   form_id: form_id_where_person_was_added
-      //   form_data:
-      //     upload: par_partnership_advice_upload_edit
-      // 2:
-      //   route: example.route_name_2
-      //   form_id: example_form_id
-      //   form_data:
-      //     upload: form_id_where_person_was_added.
+    if ($this->getFlowDataHandler()->getDefaultValues('parDataPersonId') === 'new') {
       $cid = $this->getFlowNegotiator()->getFormKey('contact_form');
       $par_data_person = ParDataPerson::create([
         'type' => 'person',
@@ -169,7 +142,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
     }
     else {
-      $person_id = $this->getFlowDataHandler()->getDefaultValues('par_data_person_id');
+      $person_id = $this->getFlowDataHandler()->getDefaultValues('parDataPersonId');
       $par_data_person = ParDataPerson::load($person_id);
 
     }
@@ -178,7 +151,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
 
       // Set route param for invite form.
       $this->getFlowDataHandler()->setParameter('par_data_person', $par_data_person->id());
-      $this->par_data_person_id = $par_data_person->id();
+      $this->parDataPersonId = $par_data_person->id();
 
       // Based on the flow we're in we also need to
       // Update field_person on authority or organisation.

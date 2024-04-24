@@ -47,8 +47,6 @@ class LegalEntityAddCheck implements AccessInterface {
 
   /**
    * Get the Par Flow Negotiator.
-   *
-   * @return \Drupal\par_flows\ParFlowNegotiatorInterface
    */
   public function getFlowNegotiator(): ParFlowNegotiatorInterface {
     return $this->flowNegotiator;
@@ -56,24 +54,17 @@ class LegalEntityAddCheck implements AccessInterface {
 
   /**
    * Get the Par Data Manager.
-   *
-   * @return \Drupal\par_data\ParDataManagerInterface
    */
   public function getParDataManager(): ParDataManagerInterface {
     return $this->parDataManager;
   }
 
   /**
-   * @param \Symfony\Component\Routing\Route $route
-   *   The route.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The route match object to be checked.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The account being checked.
+   * Implements access().
    */
   public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
     try {
-      // Get a new flow negotiator that points to the route being checked for access.
+      // New flow negotiator that points to the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
     }
     catch (ParFlowException $e) {
@@ -97,7 +88,7 @@ class LegalEntityAddCheck implements AccessInterface {
       return AccessResult::forbidden('This partnership is revoked therefore the legal entities cannot be added.');
     }
 
-    // Restrict business users who have already confirmed their business details.
+    // Restrict business users who have already confirmed business details.
     if ($par_data_partnership->getRawStatus() === 'confirmed_business' && !$account->hasPermission('approve partnerships')) {
       return AccessResult::forbidden('This partnership has been confirmed by the business therefore the legal entities cannot be changed.');
     }

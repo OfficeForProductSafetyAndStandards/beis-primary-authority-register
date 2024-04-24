@@ -170,12 +170,12 @@ class ParConfirmListDetailsForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function createEntities() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
-    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    // Get the cache IDs for the various forms that needs to be extracted from.
     $list_type_cid = $this->getFlowNegotiator()->getFormKey('par_update_list_type');
     $member_link_cid = $this->getFlowNegotiator()->getFormKey('par_update_member_link');
     $member_number_cid = $this->getFlowNegotiator()->getFormKey('par_update_member_number');

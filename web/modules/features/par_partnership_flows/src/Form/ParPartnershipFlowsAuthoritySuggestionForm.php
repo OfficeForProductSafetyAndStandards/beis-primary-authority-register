@@ -26,11 +26,10 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
   protected $pageTitle = 'Which authority are you acting on behalf of?';
 
   /**
+   * Implements retrieveEditableValues().
+   *
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
 
@@ -41,7 +40,7 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
    */
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
-    // Only set the state for the temp cache if we are passing a partnership object via the route.
+    // Set state of temp cache if we are passing a partnership object.
     if ($par_data_partnership) {
       $this->retrieveEditableValues($par_data_partnership);
     }

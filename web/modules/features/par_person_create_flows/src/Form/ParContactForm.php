@@ -90,7 +90,7 @@ class ParContactForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function createEntity() {
     $par_data_person = ParDataPerson::create([

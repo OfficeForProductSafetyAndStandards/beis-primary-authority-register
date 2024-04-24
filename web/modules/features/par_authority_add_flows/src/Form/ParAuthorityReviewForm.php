@@ -69,10 +69,10 @@ class ParAuthorityReviewForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function createEntities() {
-    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    // Get the cache IDs for the various forms that needs to be extracted from.
     $authority_name_cid = $this->getFlowNegotiator()->getFormKey('par_authority_add_name');
     $authority_type_cid = $this->getFlowNegotiator()->getFormKey('par_authority_add_type');
     $authority_address_cid = $this->getFlowNegotiator()->getFormKey('par_authority_add_address');

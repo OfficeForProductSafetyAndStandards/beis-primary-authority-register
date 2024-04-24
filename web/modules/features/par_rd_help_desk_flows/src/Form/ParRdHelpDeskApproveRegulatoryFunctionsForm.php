@@ -34,7 +34,7 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL): AccessResult {
     try {
-      // Get a new flow negotiator that points the route being checked for access.
+      // New flow negotiator that points the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
     }
     catch (ParFlowException $e) {
@@ -75,7 +75,7 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
         $partnership->nominate();
       }
       catch (ParDataException $e) {
-        // If the partnership could not be saved the application can't be progressed.
+        // If the partnership could not save the application cannot progress.
         // @todo Find a better way to alert the user without redirecting them away from the form.
         $this->messenger()->addMessage('There was an error approving this partnership, please check it is ready to be approved.');
         $url = $this->getFlowNegotiator()->getFlow()->progress('cancel');

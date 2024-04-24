@@ -9,6 +9,9 @@ use Drupal\par_flows\Controller\ParBaseController;
  */
 class ParPartnershipCompletedController extends ParBaseController {
 
+  /**
+   * {@inheritdoc}
+   */
   protected $pageTitle = 'Partnership application completed';
 
   /**
@@ -38,7 +41,7 @@ class ParPartnershipCompletedController extends ParBaseController {
     ];
     $build['next_steps']['chase'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('If you don\'t receive a notification that the organisation has completed the partnership information please get in contact with them.'),
+      '#markup' => $this->t("If you don't receive a notification that the organisation has completed the partnership information please get in contact with them."),
       '#prefix' => '<p>',
       '#suffix' => '</p>',
     ];

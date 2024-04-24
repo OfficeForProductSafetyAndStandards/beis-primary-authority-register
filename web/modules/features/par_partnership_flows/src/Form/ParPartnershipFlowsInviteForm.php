@@ -7,7 +7,6 @@ use Drupal\invite\Entity\Invite;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use Drupal\user\Entity\User;
 
@@ -19,35 +18,37 @@ use Drupal\user\Entity\User;
 class ParPartnershipFlowsInviteForm extends ParBaseForm {
 
   use ParPartnershipFlowsTrait;
-  use ParPartnershipFlowAccessTrait;
+  use ParPartnershiplowAccessTrait;
 
   /**
-   * @var invite type */
-  protected $invite_type;
+   * InviteType.
+   *
+   * @var string
+   */
+  protected $inviteType;
 
   /**
    * Page title.
    *
-   * @var ?string
+   * @var string
    */
   protected $pageTitle = 'Notify user of partnership invitation';
 
   /**
+   * Implements retrieveEditableValues().
+   *
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Partnership being retrieved.
    */
   public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $par_data_person = NULL) {
     // Flows containing the Authority Contact step.
     if (in_array($this->getFlowNegotiator()->getFlowName(), ['invite_authority_members', 'partnership_authority'])) {
-      $this->invite_type = "invite_authority_member";
+      $this->inviteYype = "invite_authority_member";
     }
 
     // Flows containing the Organisation Contact step.
     if (in_array($this->getFlowNegotiator()->getFlowName(), ['partnership_application', 'partnership_direct'])) {
-      $this->invite_type = "invite_organisation_member";
+      $this->inviteType = "invite_organisation_member";
     }
 
     if ($par_data_person) {
@@ -144,7 +145,7 @@ Thanks for your help.
 HEREDOC;
       }
 
-      // Set the default subject for the invite email, this can be changed by the user.
+      // Set the subject for the invite email, this can be changed by the user.
       $this->getFlowDataHandler()->setFormPermValue("email_subject", $email_subject);
 
       $this->getFlowDataHandler()->setFormPermValue("email_body", $message_body);
@@ -157,8 +158,8 @@ HEREDOC;
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
 
-    $invite_type = $this->config("invite.invite_type.{$this->invite_type}");
-    $data = unserialize($invite_type->get('data'));
+    $inviteType = $this->config("invite.invite_type.{$this->inviteType}");
+    $data = unserialize($inviteType->get('data'));
 
     if ($this->getFlowDataHandler()->getDefaultValues('recipient_exists', FALSE)) {
       $form['recipient_exists'] = [
@@ -191,13 +192,13 @@ HEREDOC;
     ];
 
     // Get Recipient.
-    if ($this->invite_type === 'invite_authority_member') {
+    if ($this->inviteType === 'invite_authority_member') {
       $description = $this->t('This is the contact email address for the new authority member/enforcement officer.');
       $title = t('Authority Member email');
     }
     else {
-      $description = $this->t('This is the organisation\'s contact email address. If you need to send this invite to another person please contact the helpdesk.');
-      $title = t('Organisation Contact email');
+      $description = $this->t("This is the organisation's contact email address. If you need to send this invite to another person please contact the helpdesk.");
+      $title = t("Organisation Contact email");
     }
 
     $form['recipient_email'] = [
@@ -244,10 +245,10 @@ HEREDOC;
           '#description' => t('Choose which role to give this person.'),
           // @todo reduce options.
           '#options' => array_filter($par_roles, function ($role_id) {
-            if ($this->invite_type === 'invite_authority_member') {
+            if ($this->inviteType === 'invite_authority_member') {
               return in_array($role_id, ['par_authority', 'par_enforcement']);
             }
-            if ($this->invite_type === 'invite_organisation_member') {
+            if ($this->inviteType === 'invite_organisation_member') {
               return in_array($role_id, ['par_organisation']);
             }
           }, ARRAY_FILTER_USE_KEY),
@@ -257,7 +258,7 @@ HEREDOC;
 
     }
 
-    // Disable the default 'save' action which takes precedence over 'next' action.
+    // Disable the default save action which takes precedence over next action.
     $this->getFlowNegotiator()->getFlow()->disableAction('save');
 
     // Make sure to add the partnership cacheability data to this form.
@@ -296,7 +297,7 @@ HEREDOC;
     }
     if (!strpos($form_state->getValue('email_body'), $required_token)) {
       $id = $this->getElementId(['email_body'], $form);
-      $form_state->setErrorByName($this->getElementName('email_body'), $this->wrapErrorMessage($this->t('You must make sure you have the invite token \'@invite_token\' somewhere in your message', ['@invite_token' => $required_token]), $id));
+      $form_state->setErrorByName($this->getElementName('email_body'), $this->wrapErrorMessage($this->t("You must make sure you have the invite token '@invite_token' somewhere in your message", ['@invite_token' => $required_token]), $id));
     }
 
     parent::validateForm($form, $form_state);
@@ -309,13 +310,13 @@ HEREDOC;
     parent::submitForm($form, $form_state);
 
     // Override invite type if selected the Enforcement Officer role in form.
-    if ($this->invite_type === 'invite_authority_member' &&
+    if ($this->inviteType === 'invite_authority_member' &&
       $this->getFlowDataHandler()->getTempDataValue('target_role') === 'par_enforcement') {
-      $this->invite_type = 'invite_enforcement_officer';
+      $this->inviteType = 'invite_enforcement_officer';
     }
 
     $invite = Invite::create([
-      'type' => $this->invite_type,
+      'type' => $this->inviteType,
       'user_id' => $this->getFlowDataHandler()->getTempDataValue('inviter'),
       'invitee' => $this->getFlowDataHandler()->getTempDataValue('recipient_email'),
     ]);

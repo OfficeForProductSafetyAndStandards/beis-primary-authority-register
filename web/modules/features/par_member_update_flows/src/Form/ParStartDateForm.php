@@ -31,7 +31,7 @@ class ParStartDateForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $date = $this->getFlowDataHandler()->getTempDataValue('date_membership_began');

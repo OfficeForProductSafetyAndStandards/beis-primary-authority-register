@@ -11,21 +11,18 @@ use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
 
 /**
- *
+ * {@inheritdoc}
  */
 trait ParFlowAccessTrait {
 
   /**
-   * @param \Symfony\Component\Routing\Route $route
-   *   The route.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The route match object to be checked.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The account being checked.
+   * Implements accessCallback().
+   *
+   * The route, the route match object to be checked and the account being checked.
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPerson $par_data_person = NULL, User $user = NULL): AccessResult {
     try {
-      // Get a new flow negotiator that points the route being checked for access.
+      // New flow negotiator that points the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
     }
     catch (ParFlowException $e) {

@@ -67,7 +67,7 @@ class ParContactForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function createEntity() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');

@@ -90,8 +90,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
             '#suffix' => '</div>',
           ],
         ];
-        // This link cannot come straight back to the review screen, because
-        // changing the organisation requires address and contact to be updated too.
+        // This link cannot come straight back to the review screen,
+        // because changing the organisation requires
+        // address and contact to be updated too.
         $form['partnership']['organisation']['organisation_name']['operations'] = [
           'edit' => [
             '#type' => 'markup',
@@ -170,7 +171,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       $form['help_text'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
+        '#value' => $this->t("You won't be able to change these details after you save them. Please check everything is correct."),
         '#attributes' => ['class' => ['govuk-form-group']],
       ];
     }
@@ -178,7 +179,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       $form['help_text'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#value' => $this->t('The partnership could not be created, please contact the Helpdesk if this problem persists.'),
+        '#value' => $this->t("The partnership could not be created, please contact the Helpdesk if this problem persists."),
         '#attributes' => ['class' => ['govuk-form-group']],
       ];
     }
@@ -226,7 +227,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       $par_data_partnership->set('field_authority_person', $primary_authority_contact->id());
     }
 
-    // Set the primary authority and the organisation information on the partnership.
+    // Set the primary authority and the organisation info on the partnership.
     if ($par_data_authority && $par_data_organisation->save()) {
       $par_data_partnership->set('field_organisation', $par_data_organisation->id());
       $par_data_partnership->set('field_authority', $par_data_authority->id());
@@ -262,7 +263,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       $this->getLogger($this->getLoggerChannel())
         ->error($message, $replacements);
 
-      // If the partnership could not be saved the application can't be progressed.
+      // If the partnership could not save the application cant be progressed.
       // @todo Find a better way to alert the user without redirecting them away from the form.
       $this->messenger()->addMessage('There was an error progressing your partnership, please contact the helpdesk for more information.');
       $form_state->setRedirectUrl($this->getFlowNegotiator()->getFlow()->progress('cancel'));
@@ -270,7 +271,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function createEntities() {
     // Load the Authority.

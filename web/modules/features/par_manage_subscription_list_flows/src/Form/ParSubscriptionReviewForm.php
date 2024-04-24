@@ -24,7 +24,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
   }
 
   /**
-   *
+   * Implements getSubscriptionManager().
    */
   public function getSubscriptionManager() {
     return \Drupal::service('par_subscriptions.manager');

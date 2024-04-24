@@ -27,14 +27,14 @@ class ParSubscriptionManageForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function getEmailValidator() {
     return \Drupal::service('email.validator');
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function getSubscriptionManager() {
     return \Drupal::service('par_subscriptions.manager');

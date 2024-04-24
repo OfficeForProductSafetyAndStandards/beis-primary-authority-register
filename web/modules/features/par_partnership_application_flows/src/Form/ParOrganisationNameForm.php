@@ -12,6 +12,9 @@ class ParOrganisationNameForm extends ParBaseForm {
 
   use ParFlowAccessTrait;
 
+  /**
+   * {@inheritdoc}
+   */
   protected $pageTitle = 'Who are you in partnership with?';
 
 }

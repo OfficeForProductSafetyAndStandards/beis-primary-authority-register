@@ -25,7 +25,7 @@ class ParInviteForm extends ParBaseForm {
   protected $pageTitle = 'Invite the person to create an account';
 
   /**
-   * @return \Drupal\Core\Datetime\DateFormatterInterface
+   * {@inheritdoc}
    */
   protected function getEntityTypeManager() {
     return \Drupal::service('entity_type.manager');
@@ -35,7 +35,7 @@ class ParInviteForm extends ParBaseForm {
    * {@inheritdoc}
    */
   public function loadData() {
-    // Set the user account that is being updated as a parameter for plugins to access.
+    // Set the user account that is being updated as a parameter for plugins.
     $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
     $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
     $account = ParChooseAccount::getUserAccount($account_selection);
@@ -94,7 +94,7 @@ class ParInviteForm extends ParBaseForm {
       return new RedirectResponse($url->toString());
     }
 
-    // Skip the invitation process if there is already a pending invitation for this user.
+    // Skip the process if there is already a pending invitation for this user.
     // See if there are any outstanding invitations.
     $invitations = $this->getEntityTypeManager()
       ->getStorage('invite')

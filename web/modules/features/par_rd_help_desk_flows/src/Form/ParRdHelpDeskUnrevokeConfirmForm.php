@@ -31,7 +31,7 @@ class ParRdHelpDeskUnrevokeConfirmForm extends ParBaseForm {
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL): AccessResult {
     try {
-      // Get a new flow negotiator that points the route being checked for access.
+      // New flow negotiator that points the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
     }
     catch (ParFlowException $e) {

@@ -14,6 +14,8 @@ use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
 
 /**
+ * PAR Partnership Flows trait.
+ *
  * The primary contact form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */
@@ -32,12 +34,7 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
   }
 
   /**
-   * @param \Symfony\Component\Routing\Route $route
-   *   The route.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The route match object to be checked.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The account being checked.
+   * Implements accessCallback().
    */
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_le = NULL): AccessResult {
 
@@ -47,7 +44,7 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
       $this->accessResult = AccessResult::forbidden('The user is not allowed to access this page.');
     }
 
-    // Restrict access when partnership is active to users with administrator role.
+    // Restrict access when partnership is active to users with admin role.
     if (!$account->hasPermission('amend active partnerships')) {
       $this->accessResult = AccessResult::forbidden('This partnership is active and user\'s role does not allow changes to be made.');
     }
@@ -134,7 +131,7 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
     /** @var \Drupal\par_data\Entity\ParDataPartnershipLegalEntity $partnership_legal_entity */
     $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
 
-    // We can't reinstate a PLE if there is already an active PLE for the same LE.
+    // We can't reinstate a PLE if there is an active PLE for the same LE.
     if (!$partnership_legal_entity->isRevocable()) {
       $id = $this->getElementId(['registered_name'], $form);
       $form_state->setErrorByName($this->getElementName('registered_number'), $this->wrapErrorMessage('This legal entity is not revocable.', $id));

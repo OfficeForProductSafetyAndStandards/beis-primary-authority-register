@@ -9,6 +9,8 @@ use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
+ * PAR Partnership Flows.
+ *
  * The about partnership form for the partnership details steps of the
  * 1st Data Validation/Transition User Journey.
  */
@@ -25,6 +27,8 @@ class ParPartnershipFlowsEmployeeNoForm extends ParBaseForm {
   protected $pageTitle = 'Edit number of employees';
 
   /**
+   * Implements retrieveEditableValues().
+   *
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    *

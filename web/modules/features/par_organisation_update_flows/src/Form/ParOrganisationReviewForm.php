@@ -36,12 +36,12 @@ class ParOrganisationReviewForm extends ParBaseForm {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function createEntities() {
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
 
-    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    // Get the cache IDs for the various forms that needs to be extracted from.
     $organisation_name_cid = $this->getFlowNegotiator()->getFormKey('par_organisation_update_name');
     $organisation_about_cid = $this->getFlowNegotiator()->getFormKey('par_organisation_update_about_organisation');
     $trading_names_cid = $this->getFlowNegotiator()->getFormKey('par_organisation_update_trading_names');

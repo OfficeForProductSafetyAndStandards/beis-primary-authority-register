@@ -62,8 +62,9 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
       ];
     }
 
-    // PAR-1359 only allow advice uploading on active partnerships as only active partnerships have regulatory
-    // functions assigned to them. Hide upload button when user is on the search path.
+    // Only allow advice uploading on active partnerships as
+    // only active partnerships have regulatory functions assigned to them.
+    // Hide upload button when user is on the search path.
     if ($par_data_partnership->isActive() && $this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
       $build['actions'] = [
         '#type' => 'fieldset',

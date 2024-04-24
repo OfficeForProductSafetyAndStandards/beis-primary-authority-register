@@ -25,11 +25,10 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
   protected $pageTitle = 'Are you looking for one of these businesses?';
 
   /**
+   * Implements retrieveEditableValues().
+   *
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Partnership being retrieved.
    */
   public function retrieveEditableValues() {
 
