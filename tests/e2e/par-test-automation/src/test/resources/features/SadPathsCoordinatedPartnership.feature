@@ -1,6 +1,6 @@
 Feature: Coordinated Partnership Sad Paths
 
-  @regression @sadpath @partnershipapplication @sadorganisationmember
+  @regression @sadpath @partnershipapplication @sadorganisationmember @sadorganisationmemberlist
   Scenario: Verify a user receives Error Messages for required fields during the Coordinated Partnership Application and Completion (Sad Path - PAR-2459, PAR-2460)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -95,7 +95,7 @@ Feature: Coordinated Partnership Sad Paths
     And the user confirms the second part of the partnership application
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @sadorganisationmember
+  @regression @sadpath @partnershipapplication @sadorganisationmember @sadorganisationmemberlist
   Scenario: Verify a user receives Error Messages for required fields when Nominating a Coordinated Partnership (Sad Path - PAR-2461)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -235,4 +235,18 @@ Feature: Coordinated Partnership Sad Paths
     Then the user is shown the "The date format is not correct." error message
     When the user enter the membership cease date
     Then the organisations membership is cesased successfully
+    And the user signs out
+
+  @regression @sadpath @partnershipapplication @sadorganisationmemberlist
+  Scenario: Verify a user receives Error Messages for required fields when Uploading a Member Organisation List to a Coordinated Partnership (Sad Path - PAR-2468)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user selects the upload a member list link.
+    And the user does not upload the member list csv file
+    Then the user is shown the "Upload a list of members field is required." error message
+    When the user uploads a members list csv file
+    Then the members list was upload successfully
     And the user signs out

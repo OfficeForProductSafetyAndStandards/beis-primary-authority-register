@@ -1678,4 +1678,39 @@ public class SadPathStepDefinitions {
 		Assert.assertTrue("Failed: Links are still present.", websiteManager.memberListPage.checkMembershipActionButtons());
 		Assert.assertEquals("Failed: Dates do not match.", DataStore.getSavedValue(UsableValues.MEMBERSHIP_CEASE_DATE), websiteManager.memberListPage.getMembershipCeasedDate());
 	}
+	
+	@When("^the user selects the upload a member list link\\.$")
+	public void the_user_selects_the_upload_a_member_list_link() throws Throwable {
+		LOG.info("Navigate to the Member Organisation List Upload.");
+		websiteManager.partnershipAdvancedSearchPage.selectOrganisationLink();
+		websiteManager.partnershipInformationPage.selectShowMembersListLink();
+		
+		LOG.info("Select the Member Organisation List Upload Link.");
+		websiteManager.memberListPage.selectUploadMembersListLink();
+	}
+
+	@When("^the user does not upload the member list csv file$")
+	public void the_user_does_not_upload_the_member_list_csv_file() throws Throwable {
+		LOG.info("Do not Uploade the Members List CSV File and click the Upload button.");
+		websiteManager.uploadListOfMembersPage.clearCSVFile();
+		websiteManager.uploadListOfMembersPage.clickUploadButton();
+	}
+
+	@When("^the user uploads a members list csv file$")
+	public void the_user_uploads_a_members_list_csv_file() throws Throwable {
+		LOG.info("Uploading the Members List CSV File.");
+		websiteManager.uploadListOfMembersPage.chooseCSVFile();
+		websiteManager.uploadListOfMembersPage.selectUpload();
+		
+		LOG.info("Confirm the Uploade of the Members List CSV File.");
+		websiteManager.confirmMemberUploadPage.selectUpload();
+		websiteManager.memberListUploadedPage.selectDone();
+	}
+
+	@Then("^the members list was upload successfully$")
+	public void the_members_list_was_upload_successfully() throws Throwable {
+		LOG.info("Verify the Members List was Uploaded Successfully.");
+		websiteManager.memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		Assert.assertTrue("FAILED: Business names are not displayed in the table.", websiteManager.memberListPage.checkMembersListUploaded());
+	}
 }
