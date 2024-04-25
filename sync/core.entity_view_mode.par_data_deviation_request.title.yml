@@ -8,5 +8,6 @@ _core:
   default_config_hash: tlsdBpTxSMmF9ZUuxrfrHUo5VV-jh3b3Rp3s_pKeM7M
 id: par_data_deviation_request.title
 label: Title
+description: ''
 targetEntityType: par_data_deviation_request
 cache: true

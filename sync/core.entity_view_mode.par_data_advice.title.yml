@@ -8,5 +8,6 @@ _core:
   default_config_hash: SgyXzkG_XdIrI4JjIT7eFlHZMzVN7WiE_7iF8KFYugw
 id: par_data_advice.title
 label: Title
+description: ''
 targetEntityType: par_data_advice
 cache: true

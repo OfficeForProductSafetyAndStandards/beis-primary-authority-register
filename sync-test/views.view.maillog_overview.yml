@@ -1,4 +1,4 @@
-uuid: 99e935d2-7d2e-4d62-93be-da9aa59987c6
+uuid: f03ddcbb-ea95-46c1-8b15-81a32b672a35
 langcode: en
 status: true
 dependencies:
@@ -6,11 +6,12 @@ dependencies:
     - system.menu.admin
   module:
     - maillog
+    - user
   enforced:
     module:
       - maillog
 _core:
-  default_config_hash: SentX2vMVdSwdCGG33n1_hb9MfAEjswvc8Oyob3KQSA
+  default_config_hash: xQe_9UDnOYMgxHaQU_vAbBAt_2NfDnyCjJ_ue6vh_uA
 id: maillog_overview
 label: 'Maillog overview'
 module: views
@@ -35,8 +36,8 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: standard
-          label: Maillog_ID
-          exclude: true
+          label: '#'
+          exclude: false
           alter:
             alter_text: false
             text: ''
@@ -54,7 +55,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: null
             word_boundary: true
             ellipsis: true
             more_link: false
@@ -68,11 +69,11 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: false
+          element_label_colon: true
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: ''
+          empty: 'There are currently no mails to report.'
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
@@ -142,7 +143,7 @@ display:
             alter_text: false
             text: ''
             make_link: true
-            path: '/admin/reports/maillog/details/{{ id }}'
+            path: '/admin/reports/maillog/details/{{id}}'
             absolute: false
             external: false
             replace_spaces: false
@@ -307,8 +308,9 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'view maillog'
       cache:
         type: none
         options: {  }
@@ -336,99 +338,10 @@ display:
           order: DESC
           expose:
             label: ''
-            field_identifier: sent_date
           exposed: false
           granularity: second
       arguments: {  }
-      filters:
-        subject:
-          id: subject
-          table: maillog
-          field: subject
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: string
-          operator: contains
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: subject_op
-            label: Subject
-            description: ''
-            use_operator: false
-            operator: subject_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: subject
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              par_authority: '0'
-              par_enforcement: '0'
-              par_organisation: '0'
-              par_helpdesk: '0'
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        header_to:
-          id: header_to
-          table: maillog
-          field: header_to
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: string
-          operator: '='
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: header_to_op
-            label: To
-            description: ''
-            use_operator: false
-            operator: header_to_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: header_to
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              par_authority: '0'
-              par_enforcement: '0'
-              par_organisation: '0'
-              par_helpdesk: '0'
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
+      filters: {  }
       style:
         type: table
         options:
@@ -436,14 +349,14 @@ display:
           row_class: ''
           default_row_class: true
           columns:
-            idmaillog: idmaillog
+            id: id
             sent_date: sent_date
             subject: subject
             header_from: header_from
             header_to: header_to
           default: '-1'
           info:
-            idmaillog:
+            id:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -498,11 +411,11 @@ display:
       footer: {  }
       display_extenders: {  }
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_interface'
-        - url
         - url.query_args
+        - user.permissions
       tags: {  }
       cacheable: false
   page_1:
@@ -522,10 +435,10 @@ display:
         parent: system.admin_reports
         context: '0'
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_interface'
-        - url
         - url.query_args
+        - user.permissions
       tags: {  }
       cacheable: false

@@ -8,5 +8,6 @@ _core:
   default_config_hash: cGewLqi40IUOIGXqZOJeLLGy0ZhyF0a7O_KFMDDEleI
 id: par_data_inspection_plan.title
 label: Title
+description: ''
 targetEntityType: par_data_inspection_plan
 cache: true

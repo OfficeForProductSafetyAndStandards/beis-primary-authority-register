@@ -12,12 +12,12 @@ use Drupal\Core\Url;
 class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
 
   /**
-   * Get the par data manager.
+   * Get the par role manager.
    *
-   * @return \Drupal\par_data\ParDataManagerInterface
+   * @return \Drupal\par_roles\ParRoleManagerInterface
    */
-  protected function getParDataManager() {
-    return \Drupal::service('par_data.manager');
+  protected function getParRoleManager() {
+    return \Drupal::service('par_roles.role_manager');
   }
 
   /**
@@ -51,14 +51,14 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
 
     // Work out a valid person that is attached to this user to redirect back with.
     $account = $this->getFlowDataHandler()->getParameter('user');
-    $people = $account ? $this->getParDataManager()->getUserPeople($account) : NULL;
-    $person = $people ? current($people) : NULL;
+    $people = $account ? $this->getParRoleManager()->getPeople($account) : NULL;
+    $person = !empty($people) ? current($people) : NULL;
 
     try {
       $extra_params = ['par_data_person' => $person];
       $route_params = $event->getFlow()->getRequiredParams($redirect_route, $extra_params);
       $event->setUrl(Url::fromRoute($redirect_route, $route_params));
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException|InvalidParameterException $e) {
 
     }
   }

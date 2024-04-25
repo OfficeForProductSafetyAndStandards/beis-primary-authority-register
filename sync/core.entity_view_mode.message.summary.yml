@@ -6,5 +6,6 @@ dependencies:
     - message
 id: message.summary
 label: Summary
+description: ''
 targetEntityType: message
 cache: true

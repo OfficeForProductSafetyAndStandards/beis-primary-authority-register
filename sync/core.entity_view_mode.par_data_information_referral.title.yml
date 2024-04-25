@@ -8,5 +8,6 @@ _core:
   default_config_hash: xLchT8TikqYdQ8IOrd9RDWghOPQHbpF287XmoATXQA0
 id: par_data_information_referral.title
 label: Title
+description: ''
 targetEntityType: par_data_information_referral
 cache: true

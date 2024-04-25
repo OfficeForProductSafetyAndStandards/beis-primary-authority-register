@@ -1,11 +1,12 @@
 name: PAR Theme
 type: theme
-version: v2.0.6
+version: v2.2.1
 package: Custom
 description: A Drupal theme based on the GDS GOV.UK Frontend Toolkit.
 core_version_requirement: ^9 || ^10
 base theme: govuk
 libraries:
+  - govuk/framework
   - par_theme/framework
 regions:
   cookies: 'Cookies'

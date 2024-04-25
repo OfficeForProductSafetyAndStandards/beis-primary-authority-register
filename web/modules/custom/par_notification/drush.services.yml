@@ -1,9 +1,0 @@
-services:
-  par_notification.commands:
-    class: \Drupal\par_notification\Commands\ParNotificationCommands
-    arguments:
-      - '@plugin.manager.par_subscription_manager'
-      - '@par_notification.message_handler'
-      - '@message_expire.manager'
-    tags:
-      - { name: drush.command }

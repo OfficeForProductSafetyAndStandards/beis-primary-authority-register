@@ -7,20 +7,19 @@ orbs:
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v5.0.3
-        name: web
+      - image: beispar/web:v5.2.0
         environment:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: beispar/db:v1.0.3
+      - image: cimg/postgres:13.4-postgis
         environment:
+          PGHOST: localhost
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
           POSTGRES_DB: par
 
       - image: opensearchproject/opensearch:1.2.4
-        name: os.localhost
         environment:
           - cluster.name=opensearch-cluster
           - node.name=beis-par-search
@@ -58,12 +57,12 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v12-repo-{{ .Branch }}-{{ .Revision }}
+        - v16-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v12-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+        - v16-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
 
   restore_scaffold: &restore_scaffold
     run:
@@ -88,7 +87,14 @@ references:
       command: |
         cd web
         ../vendor/bin/drush @par.dev sql:cli < ../backups/${SEED_DATABASE}.sql
+        pg_restore --username= USERNAME --host=HOST --port= --clean --if-exists --no-owner --no-privileges --no-password
         ../drupal-update.sh
+
+  configure_secrets: &configure_secrets
+    run:
+      name: "Configure secrets"
+      command: |
+        ./devops/vault/vault-export.sh ci
 
   prepare_application: &prepare_application
     run:
@@ -152,15 +158,7 @@ jobs:
             echo "S3_BUCKET_ARTIFACTS=$S3_BUCKET_ARTIFACTS" >> .env
             echo "S3_BUCKET_PRIVATE=$S3_BUCKET_PRIVATE" >> .env
             echo "S3_BUCKET_PUBLIC=$S3_BUCKET_PUBLIC" >> .env
-            echo "PAR_HASH_SALT=$PAR_HASH_SALT" >> .env
             echo "APP_ENV=$APP_ENV" >> .env
-            echo "SENTRY_ENVIRONMENT=$APP_ENV" >> .env
-            echo "SENTRY_DSN=$SENTRY_DSN" >> .env
-            echo "SENTRY_DSN_PUBLIC=$SENTRY_DSN_PUBLIC" >> .env
-            echo "PAR_GOVUK_NOTIFY_KEY=$PAR_GOVUK_NOTIFY_KEY" >> .env
-            echo "PAR_GOVUK_NOTIFY_TEMPLATE=$PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
-            echo "CLAMAV_HTTP_USER=$CLAMAV_HTTP_USER" >> .env
-            echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
       - run:
           name: "Database preparation"
           command: |
@@ -183,7 +181,7 @@ jobs:
           name: "Unpacking sanitised database"
           command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - save_cache:
-          key: v12-repo-{{ .Branch }}-{{ .Revision }}
+          key: v16-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
@@ -204,10 +202,10 @@ jobs:
           name: "Installing tests"
           command: |
             echo "$(pwd)"
-            cd ./tests && rm -rf node_modules && npm install
+            echo "Test running has been decomissioned. See runbook for steps to run new test suite."
       - *restore_scaffold
       - save_cache:
-          key: v12-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+          key: v16-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
           paths:
             - ./node_modules
             - ./vendor
@@ -218,6 +216,7 @@ jobs:
             - ./web/themes/contrib
             - ./web/themes/custom
             - ./drush/contrib
+      - *configure_secrets
       - run:
           name: "Create workspace"
           command: |
@@ -257,28 +256,10 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *import_database
-      - *prepare_application
-      - *check_application
-      - run:
-          name: "Install test dependencies"
-          command: |
-            cd tests
-            mkdir -p ./reports/phpunit
-            mkdir -p ./reports/nightwatch
-            npm install
-            npm run selenium-install
       - run:
           name: "Run unit tests"
           command: |
             ./vendor/bin/paratest --processes=16 --no-coverage
-      - run:
-          name: "[disabled] Run feature tests"
-          command: |
-            cd tests
-            echo "e2e smoke tests are disabled"
-            echo "to enable run: 'npm run ci -- --tag ci'"
-            echo "to generate reports run: 'npm run generate-report'"
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
@@ -292,28 +273,6 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *import_database
-      - *prepare_application
-      - *check_application
-      - run:
-          name: "Install test dependencies"
-          command: |
-            cd tests
-            mkdir -p ./reports/phpunit
-            mkdir -p ./reports/nightwatch
-            npm install
-            npm run selenium-install
-      - run:
-          name: "Run unit tests"
-          command: |
-            ./vendor/bin/paratest --processes=16 --no-coverage
-      - run:
-          name: "[disabled] Run feature tests"
-          command: |
-            cd tests
-            echo "e2e full tests are disabled"
-            echo "to enable run: 'npm run ci -- --tag ci'"
-            echo "to generate reports run: 'npm run generate-report'"
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
@@ -384,7 +343,6 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *import_database
       - *build_assets
       - *remove_assets
       - run:
@@ -413,7 +371,6 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *import_database
       - *remove_assets
       - run:
           name: "Remove additional sensitive assets"
@@ -441,7 +398,6 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *import_database
       - *build_assets
       - *remove_assets
       - run:
@@ -469,14 +425,9 @@ jobs:
           command: |
             ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
       - *aws_setup
-      - aws-s3/copy:
-          from: "/tmp/backups/"
-          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
-          arguments: |
-            --cache-control "max-age=0" \
-            --recursive \
-            --exclude="*" \
-            --include "db-dump-*.tar.gz"
+      - run: # https://discuss.circleci.com/t/aws-s3-cp-errors-on-exclude-argument/50086
+          name: "Backup database to S3"
+          command: aws s3 cp /tmp/backups/ s3://${S3_ARTIFACTS_BUCKET}/backups/ --recursive --exclude "*" --include "db-dump-*.tar.gz"
 
   sanitise_database:
     <<: *defaults
@@ -500,7 +451,7 @@ jobs:
           command: cd backups && ls -lah ${UNSANITISED_DATABASE}.sql
       - run:
           name: "Importing database"
-          command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${UNSANITISED_DATABASE}.sql | ../vendor/bin/drush @par.dev sql:cli
+          command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${UNSANITISED_DATABASE}.sql | ../vendor/bin/drush @par.paas sql:cli
           environment:
             APP_ENV: ci-sanitise
       - run:
@@ -556,14 +507,10 @@ jobs:
           command: ./scripts/db-backup.sh production -z -d "/tmp/backups" -a '@par.seed'
           environment:
             APP_ENV: ci-sanitise
-      - aws-s3/copy:
-          from: "/tmp/backups/"
-          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
-          arguments: |
-            --cache-control "max-age=0" \
-            --recursive \
-            --exclude="*" \
-            --include "db-dump-*.tar.gz"
+      - run: # https://discuss.circleci.com/t/aws-s3-cp-errors-on-exclude-argument/50086
+          name: "Backup database to S3"
+          command: aws s3 cp /tmp/backups/ s3://${S3_ARTIFACTS_BUCKET}/backups/ --recursive --exclude "*" --include "db-dump-*.tar.gz"
+
 
 workflows:
   version: 2.1

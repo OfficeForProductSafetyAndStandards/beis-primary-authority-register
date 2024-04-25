@@ -1,5 +1,5 @@
 # beispar/app:latest
-FROM php:8.2-apache-buster as production
+FROM php:8.3-apache-bookworm as production
 
 # Configure PHP extensions
 ## Using php upgrade from https://github.com/chialab/docker-php
@@ -35,13 +35,16 @@ RUN PHP_DEPS="\
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 # Enable the requisite Apache modules.
-RUN a2enmod rewrite \
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y w3m \
+    && a2enmod rewrite \
     && a2enmod proxy \
     && a2enmod proxy_http \
     && a2enmod proxy_ajp \
     && a2enmod proxy_balancer \
     && a2enmod proxy_connect \
-    && a2enmod proxy_html
+    && a2enmod proxy_html \
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 # Configure Apache virtual host
 COPY ./par.localhost.conf /etc/apache2/sites-available/par.localhost.conf
@@ -60,7 +63,7 @@ RUN cd /tmp \
 
 # Install node
 ## Using the node installation from https://github.com/nodejs/docker-node
-ENV NODE_VERSION 7.3.0
+ENV NODE_VERSION 20.11.1
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
     && case "${dpkgArch##*-}" in \
       amd64) ARCH='x64';; \
@@ -156,9 +159,9 @@ ARG BUILD_PACKAGES="\
 # Add apt sources, update the packages list and install the dependencies.
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends --no-upgrade $BUILD_DEPS \
-    && curl -sS https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | gpg -o /etc/apt/keyrings/cloudfoundry.gpg --dearmor \
-    && curl -sS https://apt.releases.hashicorp.com/gpg | gpg -o /etc/apt/keyrings/vault.gpg --dearmor \
-    && curl -sS https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg -o /etc/apt/keyrings/postgresql.gpg --dearmor \
+    && curl --retry 3 --retry-max-time 120 -sS https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | gpg -o /etc/apt/keyrings/cloudfoundry.gpg --dearmor \
+    && curl --retry 3 --retry-max-time 120 -sS https://apt.releases.hashicorp.com/gpg | gpg -o /etc/apt/keyrings/vault.gpg --dearmor \
+    && curl --retry 3 --retry-max-time 120 -sS https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg -o /etc/apt/keyrings/postgresql.gpg --dearmor \
     && sh -c 'echo "deb [signed-by=/etc/apt/keyrings/cloudfoundry.gpg] https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list' \
     && sh -c 'echo "deb [signed-by=/etc/apt/keyrings/vault.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list' \
     && sh -c 'echo "deb [signed-by=/etc/apt/keyrings/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' \
@@ -200,7 +203,7 @@ ARG BUILD_DEPS="\
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends --no-upgrade $BUILD_DEPS \
     && mkdir -p /etc/apt/keyrings \
-    && curl -sS https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /etc/apt/keyrings/adoptium.asc \
+    && curl --retry 3 --retry-max-time 120 -sS https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /etc/apt/keyrings/adoptium.asc \
     && sh -c 'echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/adoptium.list' \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y temurin-8-jdk \
@@ -296,7 +299,7 @@ RUN echo "Using Firefox version: $FIREFOX_VERSION" \
 # Install chrome
 # See https://chromedriver.chromium.org/downloads/version-selection && https://github.com/SeleniumHQ/docker-selenium
 ARG CHROME_CHANNEL="google-chrome-stable"
-RUN curl -sS https://dl.google.com/linux/linux_signing_key.pub | gpg -o /etc/apt/keyrings/google.gpg --dearmor \
+RUN curl --retry 3 --retry-max-time 120 -sS https://dl.google.com/linux/linux_signing_key.pub | gpg -o /etc/apt/keyrings/google.gpg --dearmor \
     && sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/google.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list' \
     && apt-get update \
     && echo "Using Google Chrome from: "$CHROME_CHANNEL \
@@ -311,6 +314,7 @@ RUN curl -sS https://dl.google.com/linux/linux_signing_key.pub | gpg -o /etc/apt
 RUN CHROME_MAJOR_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9]+)(\.[0-9]+){3}.*/\1/") \
     && CHROMEDRIVER_VERSION=$(curl -Ls https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_"$CHROME_MAJOR_VERSION") \
     && CHROMEDRIVER_DOWNLOAD_URL=https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/"$CHROMEDRIVER_VERSION"/linux64/chromedriver-linux64.zip \
+    && CHROMEDRIVER_DOWNLOAD_URL=https://storage.googleapis.com/chrome-for-testing-public/"$CHROMEDRIVER_VERSION"/linux64/chromedriver-linux64.zip \
     && echo "Using ChromeDriver from: $CHROMEDRIVER_DOWNLOAD_URL" \
     && echo "Using ChromeDriver version: $CHROMEDRIVER_VERSION" \
     && curl -Ls --show-error --fail --retry 3 --output /tmp/chromedriver_linux64.zip "$CHROMEDRIVER_DOWNLOAD_URL" \

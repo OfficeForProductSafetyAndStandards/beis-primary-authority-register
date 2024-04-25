@@ -393,6 +393,8 @@ function cf_poll_task {
     done
     task_status=$(cf tasks $1 | awk '//{print $1, $2, $3}' | grep -m 1 "$2" | awk '//{print $3}')
     if [[ $task_status == "FAILED" ]]; then
+      printf "Task $2 has failed...\n"
+      cf logs $1 --recent | tail -500
       exit 99
     fi
     printf "Task $2 has completed ($task_status)...\n"
@@ -551,14 +553,23 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     # Running a python script instead of bash because python has immediate
     # access to all of the environment variables and configuration.
     printf "Importing the database...\n"
-    cf ssh $TARGET_ENV -c "cd app && \
+    cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "./scripts/drop.sh && \
+        cd $REMOTE_BUILD_DIR/web && \
         tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
-        python ./devops/tools/import_db.py -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
+        ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
         rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
+    
+    # Wait for database to be imported.
+    cf_poll_task $TARGET_ENV DB_IMPORT
+
+    printf "Database imported...\n"
 fi
 
-cf ssh $TARGET_ENV -c "cd app && python ./devops/tools/post_deploy.py"
+printf "Running post deployment tasks...\n"
+cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "./drupal-update.sh"
 
+cf_poll_task $TARGET_ENV POST_DEPLOY
+printf "Deployment completed...\n"
 
 ####################################################################################
 # Blue-green deployment switch
@@ -619,7 +630,8 @@ echo "##########################################################################
 printf "Running the post deployment scripts...\n"
 
 ## Run cron to perform necessary startup tasks
-cf ssh $TARGET_ENV -c "cd app/devops/tools && python cron_runner.py"
+cf run-task $TARGET_ENV -c "./scripts/cron-run.sh" -m 4G -k 4G --name CRON_RUNNER
+cf_poll_task $TARGET_ENV CRON_RUNNER
 
 ## Run the cache warmer asynchronously with lots of memory
 cf run-task $TARGET_ENV -c "./scripts/cache-warmer.sh" -m 4G -k 4G --name CACHE_WARMER

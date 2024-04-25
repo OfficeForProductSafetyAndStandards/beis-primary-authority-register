@@ -1,0 +1,23 @@
+diff --git a/core/modules/system/system.install b/core/modules/system/system.install
+index 118125e60f..6bc89db8bf 100644
+--- a/core/modules/system/system.install
++++ b/core/modules/system/system.install
+@@ -1853,16 +1853,8 @@ function system_update_10101(&$sandbox = NULL) {
+   $connection = \Drupal::database();
+   $schema = $connection->schema();
+ 
+-  // Update batch table.
+-  if ($schema->tableExists('batch')) {
+-    $schema->changeField('batch', 'bid', 'bid', [
+-      'description' => 'Primary Key: Unique batch ID.',
+-      'type' => 'serial',
+-      'unsigned' => TRUE,
+-      'not null' => TRUE,
+-    ]);
+-  }
+-
++  // Deliberately not running this update.
++  // @TODO find a way to run this update once we have released.
+ }
+ 
+ /**
