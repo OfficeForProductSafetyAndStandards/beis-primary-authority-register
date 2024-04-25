@@ -35,6 +35,8 @@ public class EnforceLegalEntityPage extends BasePageObject {
 		}
 	}
 	
+	// Add a method which does the same as above but instead of selecting the radio button, it tests the second radio button which then requires the name being entered into a text field.
+	
 	public void clickContinueButton() {
 		continueBtn.click();
 	}
