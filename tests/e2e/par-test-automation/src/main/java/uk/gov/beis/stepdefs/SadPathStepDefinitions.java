@@ -1488,12 +1488,13 @@ public class SadPathStepDefinitions {
 		websiteManager.partnershipInformationPage.selectShowMembersListLink();
 		
 		websiteManager.memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
-		websiteManager.memberListPage.selectMembersName();
+		
 	}
 
 	@Then("^the user is on the organisation members summary page$")
 	public void the_user_is_on_the_organisation_members_summary_page() throws Throwable {
 		LOG.info("Verify the user is on the Member Summary page.");
+		websiteManager.memberListPage.selectMembersName();
 		Assert.assertTrue("Failed: Member Organisation was not Created.", websiteManager.memberOrganisationSummaryPage.checkMemberOrganisationSummaryPage());
 	}
 
@@ -1645,5 +1646,36 @@ public class SadPathStepDefinitions {
 		LOG.info("Verify the Updated Member Organisation Name is Displayed on the Members List.");
 		websiteManager.memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
 		Assert.assertTrue("Failed: Member Organisation was not Updated.", websiteManager.memberListPage.checkMemberCreated());
+	}
+	
+	@When("^the user selects the cease membership link$")
+	public void the_user_selects_the_cease_membership_link() throws Throwable {
+		LOG.info("Selecting the Cease membership link..");
+		websiteManager.memberListPage.selectCeaseMembership();
+	}
+
+	@When("^the user leaves the memebrship cease date fields empty$")
+	public void the_user_leaves_the_memebrship_cease_date_fields_empty() throws Throwable {
+		LOG.info("Leaving the Date fields empty.");
+		websiteManager.enterTheDatePage.clearDateFields();
+		websiteManager.enterTheDatePage.clickContinueButton();
+	}
+
+	@When("^the user enter the membership cease date$")
+	public void the_user_enter_the_membership_cease_date() throws Throwable {
+		LOG.info("Entering the Current Date for the Cessation to Happen.");
+		websiteManager.enterTheDatePage.enterCurrentDate();
+		websiteManager.enterTheDatePage.goToMembershipCeasedPage();
+		
+		websiteManager.membershipCeasedPage.goToMembersListPage();
+	}
+
+	@Then("^the organisations membership is cesased successfully$")
+	public void the_organisations_membership_is_cesased_successfully() throws Throwable {
+		LOG.info("Verify the Member Organisation has been Ceased Successfully.");
+		websiteManager.memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		
+		Assert.assertTrue("Failed: Links are still present.", websiteManager.memberListPage.checkMembershipActionButtons());
+		Assert.assertEquals("Failed: Dates do not match.", DataStore.getSavedValue(UsableValues.MEMBERSHIP_CEASE_DATE), websiteManager.memberListPage.getMembershipCeasedDate());
 	}
 }

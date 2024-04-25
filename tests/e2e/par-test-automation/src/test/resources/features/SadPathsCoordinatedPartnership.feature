@@ -29,7 +29,7 @@ Feature: Coordinated Partnership Sad Paths
       | Town/City field is required.                  |
       | You must enter a valid postcode.              |
     When the user enters an address with the following details:
-      | AddressLine1 | AddressLine2 | Town       | County              | Country        | Nation  | Postcode |
+      | AddressLine1 | AddressLine2 | Town       | County             | Country        | Nation  | Postcode |
       | 07 Bridge    | Town Hall    | Manchester | Greater Manchester | United Kingdom | England | BL2 6GH  |
     And the user leaves the contact details fields empty
     Then the user is shown the following error messages:
@@ -61,7 +61,7 @@ Feature: Coordinated Partnership Sad Paths
       | Town/City field is required.                  |
       | You must enter a valid postcode.              |
     When the user confirms the address details with the following:
-      | AddressLine1 | AddressLine2 | Town       | County              | Country        | Nation  | Postcode |
+      | AddressLine1 | AddressLine2 | Town       | County             | Country        | Nation  | Postcode |
       | 07 Bridge    | Town Hall    | Manchester | Greater Manchester | United Kingdom | England | BL2 6GH  |
     And the user leaves all contact details fields empty
     Then the user is shown the following error messages:
@@ -131,7 +131,7 @@ Feature: Coordinated Partnership Sad Paths
       | Town/City field is required.                  |
       | You must enter a valid postcode.              |
     When the user enters an address with the following details:
-      | AddressLine1     | AddressLine2 | Town       | County              | Country        | Nation  | Postcode |
+      | AddressLine1     | AddressLine2 | Town       | County             | Country        | Nation  | Postcode |
       | 24 Bridge Street | Town Hall    | Manchester | Greater Manchester | United Kingdom | England | BL2 6GH  |
     And the user leaves the contact details fields empty
     Then the user is shown the following error messages:
@@ -186,7 +186,7 @@ Feature: Coordinated Partnership Sad Paths
       | Town/City field is required.                  |
       | You must enter a valid postcode.              |
     When the user enters the following organisation addess:
-      | AddressLine1     | AddressLine2 | Town       | County              | Country        | Nation  | Postcode |
+      | AddressLine1     | AddressLine2 | Town       | County             | Country        | Nation  | Postcode |
       | 24 Bridge Street | Town Hall    | Manchester | Greater Manchester | United Kingdom | England | BL4 6GH  |
     And the user selects the edit membership start date link
     And the user leaves the date fields empty
@@ -195,7 +195,7 @@ Feature: Coordinated Partnership Sad Paths
     And the user selects the edit person link
     And the user leaves the contact detail text fields empty
     Then the user is shown the following error messages:
-      | ErrorMessage                                          |
+      | ErrorMessage                                           |
       | You must enter the first name for this contact.        |
       | You must enter the last name for this contact.         |
       | You must enter the work phone number for this contact. |
@@ -220,4 +220,19 @@ Feature: Coordinated Partnership Sad Paths
     Then the user is shown the "You must enter the trading name for this organisation." error message
     When the user enters the following trading name "Sad Path Member Organisation Co."
     Then the member organisation is updated successfully
+    And the user signs out
+
+  @regression @sadpath @partnershipapplication @sadorganisationmember
+  Scenario: Verify a user receives Error Messages for required fields when Ceasing a Member Organisation for a Coordinated Partnership (Sad Path - PAR-2467)
+    Given the user is on the PAR home page
+    When the user visits the login page
+    And the user logs in with the "par_helpdesk@example.com" user credentials
+    Then the user is on the dashboard page
+    When the user searches for the last created partnership
+    And the user searches for the last created organisation member
+    And the user selects the cease membership link
+    And the user leaves the memebrship cease date fields empty
+    Then the user is shown the "The date format is not correct." error message
+    When the user enter the membership cease date
+    Then the organisations membership is cesased successfully
     And the user signs out
