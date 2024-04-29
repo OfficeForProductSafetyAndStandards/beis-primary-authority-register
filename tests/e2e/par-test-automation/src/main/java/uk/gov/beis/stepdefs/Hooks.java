@@ -1,16 +1,16 @@
 package uk.gov.beis.stepdefs;
 
-import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import Configuration.SeleniumDriverConfig;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import uk.gov.beis.enums.Browser;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.supportfactory.WebdriverFactory;
 
@@ -28,13 +28,10 @@ public class Hooks {
 		LOG = LoggerFactory.getLogger(Hooks.class);
 		tag = (List<String>) scenario.getSourceTagNames();
 		WebdriverFactory.checkBrowserRequired(isDifferentDriverRequired());
+		
 		LOG.info("... Doing BeforeMethod createdriver routine...");
 		
-		driver = WebdriverFactory.createWebdriver();
-		
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		driver.manage().window().maximize();
+		driver = new SeleniumDriverConfig(Browser.Chrome, 15, 15).driver;
 		
 		ScenarioContext.lastDriver = driver;
 	}
@@ -43,9 +40,11 @@ public class Hooks {
 	public void closeBrowser(Scenario scenario) throws Exception, Throwable {
 		if (scenario.isFailed()) {
 			LOG.info("Doing After Method routine");
+			driver.close();
 			driver.quit();
 		} else {
 			LOG.info("... Shutting down gracefully...");
+			driver.close();
 			driver.quit();
 		}
 	}

@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.EnforcementOfficerContactDetailsPage;
+import uk.gov.beis.pageobjects.OtherPageObjects.EnforcementOfficerContactDetailsPage;
 
 public class EnforcementNotificationPage extends BasePageObject {
 	

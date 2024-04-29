@@ -33,6 +33,32 @@ public class AuthorityAddressDetailsPage extends BasePageObject {
 		super();
 	}
 	
+	public void enterMemberAddressDetails(String address1, String address2, String townCity, String countyName, String postalcode) {
+		addressLine1.clear();
+		addressLine2.clear();
+		townOrCity.clear();
+		county.clear();
+		postcode.clear();
+		
+		addressLine1.sendKeys(address1);
+		addressLine2.sendKeys(address2);
+		townOrCity.sendKeys(townCity);
+		county.sendKeys(countyName);
+		postcode.sendKeys(postalcode);
+	}
+	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
+	public void clearMemberAddressTextFields() {
+		addressLine1.clear();
+		addressLine2.clear();
+		townOrCity.clear();
+		county.clear();
+		postcode.clear();
+	}
+	
 	public ONSCodePage enterAddressDetails(String address1, String address2, String townCity, String countyName, String postalcode) {
 		addressLine1.clear();
 		addressLine2.clear();

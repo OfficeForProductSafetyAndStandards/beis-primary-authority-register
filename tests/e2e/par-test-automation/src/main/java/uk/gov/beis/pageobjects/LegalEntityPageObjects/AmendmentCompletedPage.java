@@ -12,7 +12,7 @@ import uk.gov.beis.pageobjects.UserDashboardPageObjects.DashboardPage;
 
 public class AmendmentCompletedPage extends BasePageObject {
 	
-	@FindBy(xpath = "//a[contains(text(), 'Done')]")
+	@FindBy(xpath = "//a[contains(normalize-space(), 'Done')]")
 	private WebElement doneBtn;
 	
 	public AmendmentCompletedPage() throws ClassNotFoundException, IOException {

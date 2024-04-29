@@ -31,10 +31,18 @@ public class InspectionFeedbackDetailsPage extends BasePageObject{
 	public void chooseFile(String filename) {
 		uploadDocument(chooseFile, filename);
 	}
-
-	public InspectionFeedbackConfirmationPage clickContinue() {
+	
+	public void clearAllFields() {
+		descriptionBox.clear();
+		chooseFile.clear();
+	}
+	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
+	public InspectionFeedbackConfirmationPage goToFeedbackConfirmationPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, InspectionFeedbackConfirmationPage.class);
 	}
-
 }

@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.OtherPageObjects;
 
 import java.io.IOException;
 
@@ -10,6 +10,7 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
+import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.utility.DataStore;
 
 public class MailLogPage extends BasePageObject {
@@ -23,7 +24,7 @@ public class MailLogPage extends BasePageObject {
 	@FindBy(name = "name")
 	private WebElement username;
 	
-	private String email = "//tr/td[contains(text(),'?')]/preceding-sibling::td/a[contains(text(),'Invitation')]";
+	private String email = "//tr/td[contains(normalize-space(),'?')]/preceding-sibling::td/a[contains(text(),'Invitation')]";
 	
 	public MailLogPage() throws ClassNotFoundException, IOException {
 		super();
@@ -40,7 +41,7 @@ public class MailLogPage extends BasePageObject {
 	}
 
 	public MailLogPage selectEamilAndGetINviteLink(String emailid) {
-		driver.findElement(By.xpath(email.replace("?", emailid))).click();
+		driver.findElement(By.xpath(email.replace("?", emailid.toLowerCase()))).click();
 		String invite = driver.findElement(By.xpath("//div/label[contains(text(),'Body')]/following-sibling::pre")).getText();
 		String[] parts = invite.split("\\s+");
 		

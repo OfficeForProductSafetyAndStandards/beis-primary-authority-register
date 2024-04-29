@@ -20,6 +20,17 @@ public class PartnershipTermsPage extends BasePageObject {
 		super();
 	}
 	
+	public PartnershipTermsPage deselectTerms() {
+		
+		if (confirmCheckbox.isSelected())
+		{
+			confirmCheckbox.click();
+		}
+		
+		continueBtn.click();
+		return PageFactory.initElements(driver, PartnershipTermsPage.class);
+	}
+	
 	public PartnershipDescriptionPage acceptTerms() {
 		
 		if (!confirmCheckbox.isSelected())
@@ -30,5 +41,4 @@ public class PartnershipTermsPage extends BasePageObject {
 		continueBtn.click();
 		return PageFactory.initElements(driver, PartnershipDescriptionPage.class);
 	}
-
 }

@@ -23,6 +23,10 @@ public class UploadAdviceNoticePage extends BasePageObject{
 	public void chooseFile(String filename) {
 		uploadDocument(chooseFile, filename);
 	}
+	
+	public void selectUploadButton() {
+		uploadBtn.click();
+	}
 
 	public AdviceNoticeDetailsPage uploadFile() {
 		uploadBtn.click();

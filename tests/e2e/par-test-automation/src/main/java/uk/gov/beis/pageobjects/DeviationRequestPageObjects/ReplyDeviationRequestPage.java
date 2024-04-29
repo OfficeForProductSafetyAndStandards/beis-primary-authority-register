@@ -31,8 +31,17 @@ public class ReplyDeviationRequestPage extends BasePageObject {
 	public void chooseFile(String filename) {
 		uploadDocument(chooseFile, filename);
 	}
+	
+	public void clearAllFields() {
+		descriptionBox.clear();
+		chooseFile.clear();
+	}
 
-	public DeviationReviewPage clickSave() {
+	public void clickSaveButton() {
+		saveBtn.click();
+	}
+
+	public DeviationReviewPage goToDeviationReviewPage() {
 		saveBtn.click();
 		return PageFactory.initElements(driver, DeviationReviewPage.class);
 	}
