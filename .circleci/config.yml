@@ -351,6 +351,7 @@ jobs:
             ls -lah /tmp/workspace
       - *aws_setup
       - aws-s3/copy:
+          name: "Copy latest production database"
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${UNSANITISED_DATABASE}-latest.tar.gz"
           to: "backups/${UNSANITISED_DATABASE}-latest.tar.gz"
           arguments: |
@@ -369,6 +370,14 @@ jobs:
           command: |
             cd web
             ../vendor/bin/drush @par.paas sql:sanitize -y
+      - run:
+          name: "Update application"
+          command: ./drupal-update.sh
+      - run:
+          name: "Export database ready for environment"
+          command: |
+            cd web
+            ../vendor/bin/drush @par.paas sql:dump --result-file=../backups/${SEED_DATABASE}.sql -y
       - run:
           name: "Deploy to staging environment"
           command: |
