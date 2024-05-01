@@ -134,7 +134,7 @@ references:
         rm -fr /tests
 
   workspace_root: &workspace_root
-                    /tmp/workspace
+        /tmp/workspace
 
   attach_workspace: &attach_workspace
     attach_workspace:
@@ -165,10 +165,10 @@ jobs:
             mkdir -p backups
       - *aws_setup
       - aws-s3/copy:
-          arguments: |
-            --cache-control "max-age=0"
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
           to: backups/${SEED_DATABASE}-latest.tar.gz
+          arguments: |
+            --cache-control "max-age=0"
       - run:
           name: "Unpacking seed database"
           command: cd backups && tar --no-same-owner -zxvf ${SEED_DATABASE}-latest.tar.gz
