@@ -112,7 +112,6 @@ references:
         cd web
         ../vendor/bin/drush --yes --quiet config-split:export dev_config
         ../vendor/bin/drush --yes --quiet config-split:export test_config
-        ../vendor/bin/drush --yes --quiet config:import
         ../vendor/bin/drush core-requirements --severity=2
         curl -sD - -o /dev/null http://par.localhost
 
@@ -134,7 +133,7 @@ references:
         rm -fr /tests
 
   workspace_root: &workspace_root
-        /tmp/workspace
+                    /tmp/workspace
 
   attach_workspace: &attach_workspace
     attach_workspace:
