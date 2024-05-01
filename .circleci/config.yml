@@ -360,7 +360,7 @@ jobs:
           arguments: |
             --cache-control "max-age=0"
       - run:
-          name: "Unpacking database"
+          name: "Unpack database"
           command: cd backups && tar --no-same-owner -zxvf ${UNSANITISED_DATABASE}-latest.tar.gz
       - run:
           name: "Check db archive date"
