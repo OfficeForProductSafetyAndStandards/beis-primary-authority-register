@@ -350,8 +350,7 @@ jobs:
           command: |
             ls -lah /tmp/workspace
       - *aws_setup
-      - run:
-          name: "Copy latest production database"
+      - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${UNSANITISED_DATABASE}-latest.tar.gz"
           to: "backups/${UNSANITISED_DATABASE}-latest.tar.gz"
           arguments: |
