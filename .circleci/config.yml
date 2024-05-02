@@ -355,32 +355,19 @@ jobs:
           arguments: |
             --cache-control "max-age=0"
       - aws-s3/copy:
-          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${UNSANITISED_DATABASE}-latest.tar.gz"
-          to: "backups/${UNSANITISED_DATABASE}-latest.tar.gz"
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
+          to: "backups/${SEED_DATABASE}-latest.tar.gz"
           arguments: |
             --cache-control "max-age=0"
       - run:
           name: "Unpack database"
-          command: cd backups && tar --no-same-owner -zxvf ${UNSANITISED_DATABASE}-latest.tar.gz
+          command: cd backups && tar --no-same-owner -zxvf ${SEED_DATABASE}-latest.tar.gz
       - run:
           name: "Check db archive date"
-          command: cd backups && ls -lah ${UNSANITISED_DATABASE}.sql
+          command: cd backups && ls -lah ${SEED_DATABASE}.sql
       - run:
           name: "Importing database"
-          command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${UNSANITISED_DATABASE}.sql | ../vendor/bin/drush @par.paas sql:cli
-      - run:
-          name: "Sanitise database"
-          command: |
-            cd web
-            ../vendor/bin/drush @par.paas sql:sanitize -y
-      - run:
-          name: "Update application"
-          command: ./drupal-update.sh
-      - run:
-          name: "Export database ready for environment"
-          command: |
-            cd web
-            ../vendor/bin/drush @par.paas sql:dump --result-file=../backups/${SEED_DATABASE}.sql -y
+          command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${SEED_DATABASE}.sql | ../vendor/bin/drush @par.paas sql:cli
       - run:
           name: "Deploy to staging environment"
           command: |
