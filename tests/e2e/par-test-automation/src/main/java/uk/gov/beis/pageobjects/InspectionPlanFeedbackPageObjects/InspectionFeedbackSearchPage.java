@@ -3,7 +3,6 @@ package uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects;
 import java.io.IOException;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
@@ -17,8 +16,7 @@ public class InspectionFeedbackSearchPage extends BasePageObject {
 		super();
 	}
 	
-	public InspectionFeedbackConfirmationPage selectInspectionFeedbackNotice() {
+	public void selectInspectionFeedbackNotice() {
 		driver.findElement(By.xpath(feedbknotice.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME)))).click();
-		return PageFactory.initElements(driver, InspectionFeedbackConfirmationPage.class);
 	}
 }
