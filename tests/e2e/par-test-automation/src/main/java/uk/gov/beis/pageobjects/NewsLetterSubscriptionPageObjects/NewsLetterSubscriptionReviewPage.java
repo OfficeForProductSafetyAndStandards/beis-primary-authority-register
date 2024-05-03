@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -17,8 +16,7 @@ public class NewsLetterSubscriptionReviewPage extends BasePageObject {
 		super();
 	}
 	
-	public NewsLetterSubscriptionPage clickUpdateListButton() {
+	public void clickUpdateListButton() {
 		updateListBtn.click();
-		return PageFactory.initElements(driver, NewsLetterSubscriptionPage.class);
 	}
 }
