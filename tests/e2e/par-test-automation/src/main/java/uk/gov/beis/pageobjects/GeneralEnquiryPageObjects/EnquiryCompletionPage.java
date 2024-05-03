@@ -4,10 +4,8 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
 
 public class EnquiryCompletionPage extends BasePageObject {
 
@@ -18,8 +16,7 @@ public class EnquiryCompletionPage extends BasePageObject {
 		super();
 	}
 
-	public PartnershipInformationPage complete() {
+	public void clickDoneButton() {
 		doneBtn.click();
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }
