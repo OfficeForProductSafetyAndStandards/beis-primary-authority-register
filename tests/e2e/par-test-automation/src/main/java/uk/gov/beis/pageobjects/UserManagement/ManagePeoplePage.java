@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -32,9 +31,8 @@ public class ManagePeoplePage extends BasePageObject {
 		super();
 	}
 	
-	public ContactDetailsPage selectAddPerson() {
+	public void selectAddPerson() {
 		addPersonBtn.click();
-		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
 	public void enterNameOrEmail(String searchText) {
@@ -53,8 +51,7 @@ public class ManagePeoplePage extends BasePageObject {
 		return personNameTableElement.getText().trim();
 	}
 	
-	public UserProfilePage clickManageContact() {
+	public void clickManageContact() {
 		manageContactBtn.click();
-		return PageFactory.initElements(driver, UserProfilePage.class);
 	}
 }

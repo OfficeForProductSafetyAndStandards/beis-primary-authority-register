@@ -8,16 +8,10 @@ import java.util.Random;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import cucumber.api.DataTable;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
-import uk.gov.beis.pageobjects.OtherPageObjects.AccountInvitePage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
-import uk.gov.beis.pageobjects.SharedPageObjects.EnterTheDatePage;
 import uk.gov.beis.utility.DataStore;
 
 public class ContactDetailsPage extends BasePageObject {
@@ -223,46 +217,6 @@ public class ContactDetailsPage extends BasePageObject {
 	
 	public void clickSaveButton() {
 		saveBtn.click();
-	}
-	
-	public AccountInvitePage goToInviteUserAccountPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, AccountInvitePage.class);
-	}
-	
-	public SICCodePage goToSICCodePage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, SICCodePage.class);
-	}
-	
-	public EnterTheDatePage clickContinueButtonForMemberContact() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, EnterTheDatePage.class);
-	}
-	
-	public UserProfilePage goToUserProfilePage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, UserProfilePage.class);
-	}
-	
-	public ProfileReviewPage selectContinueButton() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, ProfileReviewPage.class);
-	}
-	
-	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
-	}
-	
-	public MemberOrganisationSummaryPage goToMemberOrganisationSummaryPage() {
-		saveBtn.click();
-		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
-	}
-	
-	public ContactCommunicationPreferencesPage goToContactCommunicationPreferencesPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, ContactCommunicationPreferencesPage.class);
 	}
 	
 	public void clearAllFields() {

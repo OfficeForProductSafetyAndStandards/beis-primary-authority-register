@@ -4,10 +4,8 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.SharedPageObjects.DeclarationPage;
 
 public class PasswordPage extends BasePageObject {
 	
@@ -24,15 +22,13 @@ public class PasswordPage extends BasePageObject {
 		super();
 	}
 	
-	public PasswordPage enterPassword(String password, String confirm) {
+	public void enterPassword(String password, String confirm) {
 		passwordField.sendKeys(password);
 		confirmPasswordField.sendKeys(confirm);
-		return PageFactory.initElements(driver, PasswordPage.class);
 	}
 
-	public DeclarationPage selectRegister() {
+	public void clickRegisterButton() {
 		register.click();
-		return PageFactory.initElements(driver, DeclarationPage.class);
 	}
 
 }

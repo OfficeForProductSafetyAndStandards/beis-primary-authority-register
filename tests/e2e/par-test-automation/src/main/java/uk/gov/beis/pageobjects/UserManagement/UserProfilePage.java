@@ -5,13 +5,9 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.SharedPageObjects.BlockPage;
-import uk.gov.beis.pageobjects.SharedPageObjects.ReinstatePage;
-import uk.gov.beis.pageobjects.SharedPageObjects.RemovePage;
 import uk.gov.beis.utility.DataStore;
 
 public class UserProfilePage extends BasePageObject {
@@ -180,44 +176,36 @@ public class UserProfilePage extends BasePageObject {
 		return locationsDisplayed;
 	}
 	
-	public UserMembershipPage clickInviteUserCreateAccountLink() {
+	public void clickInviteUserCreateAccountLink() {
 		accountInvitationLink.click();
-		return PageFactory.initElements(driver, UserMembershipPage.class);
 	}
 	
-	public UserRoleTypePage clickManageRolesLink() {
+	public void clickManageRolesLink() {
 		managerolesLink.click();
-		return PageFactory.initElements(driver, UserRoleTypePage.class);
 	}
 	
-	public BlockPage clickBlockUserAccountLink() {
+	public void clickBlockUserAccountLink() {
 		blockUserAccountLink.click();
-		return PageFactory.initElements(driver, BlockPage.class);
 	}
 	
-	public ReinstatePage clickReactivateUserAccountLink() {
+	public void clickReactivateUserAccountLink() {
 		reactivateUserAccountLink.click();
-		return PageFactory.initElements(driver, ReinstatePage.class);
 	}
 	
-	public ChoosePersonToAddPage clickAddMembershipLink() {
+	public void clickAddMembershipLink() {
 		addMembershipLink.click();
-		return PageFactory.initElements(driver, ChoosePersonToAddPage.class);
 	}
 	
-	public RemovePage clickRemoveMembershipLink() {
+	public void clickRemoveMembershipLink() {
 		driver.findElement(By.xpath(removeMembershipLocator.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_NAME)))).click();
-		return PageFactory.initElements(driver, RemovePage.class);
 	}
 	
-	public ContactDetailsPage clickUpdateUserButton() {
+	public void clickUpdateUserButton() {
 		updateUserBtn.click();
-		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
-	public ManagePeoplePage clickDoneButton() {
+	public void clickDoneButton() {
 		doneBtn.click();
-		return PageFactory.initElements(driver, ManagePeoplePage.class);
 	}
 	
 	private String getExpectedPersonsName() {

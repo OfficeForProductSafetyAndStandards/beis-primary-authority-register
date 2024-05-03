@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
@@ -30,8 +29,7 @@ public class ChoosePersonToAddPage extends BasePageObject{
 		}
 	}
 	
-	public UserMembershipPage clickContinueButton() {
+	public void clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, UserMembershipPage.class);
 	}
 }
