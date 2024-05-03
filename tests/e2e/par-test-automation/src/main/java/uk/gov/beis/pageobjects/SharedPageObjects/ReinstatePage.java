@@ -4,12 +4,8 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipRestoredPage;
-import uk.gov.beis.pageobjects.UserManagement.UserProfilePage;
 
 public class ReinstatePage extends BasePageObject {
 	
@@ -23,18 +19,11 @@ public class ReinstatePage extends BasePageObject {
 		super();
 	}
 	
-	public PartnershipRestoredPage goToPartnershipRestoredPage() {
+	public void clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, PartnershipRestoredPage.class);
 	}
 	
-	public PartnershipInformationPage goToPartnershipDetailsPage() {
+	public void clickReinstateButton() {
 		reinstateBtn.click();
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
-	}
-	
-	public UserProfilePage goToUserProfilePage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, UserProfilePage.class);
 	}
 }
