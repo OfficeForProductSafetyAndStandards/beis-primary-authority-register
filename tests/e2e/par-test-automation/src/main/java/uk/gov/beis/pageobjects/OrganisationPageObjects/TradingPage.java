@@ -4,12 +4,8 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
 
 public class TradingPage extends BasePageObject {
 	
@@ -63,41 +59,5 @@ public class TradingPage extends BasePageObject {
 	
 	public void clickSaveButton() {
 		saveBtn.click();
-	}
-	
-	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
-	}
-	
-	public PartnershipInformationPage goToPartnershipInformationPage(String name) {
-		tradingName.clear();
-		tradingName.sendKeys(name);
-		
-		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
-	}
-	
-	public BusinessDetailsPage goToBusinessDetailsPage() {
-		saveBtn.click();
-		return PageFactory.initElements(driver, BusinessDetailsPage.class);
-	}
-	
-	public LegalEntityTypePage goToLegalEntityTypePage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, LegalEntityTypePage.class);
-	}
-	
-	public LegalEntityTypePage addTradingNameForMember(String name) {
-		memberTradingName.clear();
-		memberTradingName.sendKeys(name);
-		
-		continueBtn.click();
-		return PageFactory.initElements(driver, LegalEntityTypePage.class);
-	}
-	
-	public MemberOrganisationSummaryPage goToMemberOrganisationSummaryPage() {
-		saveBtn.click();
-		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
 	}
 }
