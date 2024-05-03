@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -20,14 +19,14 @@ public class ConfirmThisTranferPage extends BasePageObject {
 		super();
 	}
 	
-	public TransferCompletedPage confirmPartnershipTransfer() {
+	public void confirmPartnershipTransfer() {
 
 		if(!confirmationCheckbox.isSelected()) {
 			confirmationCheckbox.click();
 		}
-		
+	}
+	
+	public void clickTransferButton() {
 		transferBtn.click();
-		
-		return PageFactory.initElements(driver, TransferCompletedPage.class);
 	}
 }
