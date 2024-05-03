@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
@@ -23,7 +22,6 @@ public class EnforcementSearchPage extends BasePageObject {
 	private WebElement noResults;
 	
 	private String status = "//td[normalize-space()='?']/preceding-sibling::td[1]";
-	
 	private String removeEnfBtn = "//td[normalize-space()='?']/following-sibling::td[1]/a[contains(text(), 'remove enforcement')]";
 	
 	public EnforcementSearchPage() throws ClassNotFoundException, IOException {
@@ -36,18 +34,17 @@ public class EnforcementSearchPage extends BasePageObject {
 		searchBtn.click();
 	}
 	
-	public ProposedEnforcementPage selectEnforcement() {
+	public void selectEnforcement() {
 		driver.findElement(By.linkText(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TITLE))).click();
-		return PageFactory.initElements(driver, ProposedEnforcementPage.class);
 	}
 	
-	public RemoveEnforcementPage removeEnforcement() {
+	public void removeEnforcement() {
 		driver.findElement(By.xpath(removeEnfBtn.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME)))).click();
-		return PageFactory.initElements(driver, RemoveEnforcementPage.class);
 	}
 
 	public boolean confirmNoReturnedResults() {
 		boolean value = false;
+		
 		if (driver.findElement(By.xpath("//div/p[contains(text(),'Sorry, there are no sent or received notices')]")).isDisplayed())
 		{
 			value = true;
