@@ -68,9 +68,4 @@ public class AdviceNoticeDetailsPage extends BasePageObject {
 	public void selectSaveButton() {
 		saveBtn.click();
 	}
-	
-	public AdviceNoticeSearchPage clickSave() {
-		saveBtn.click();
-		return PageFactory.initElements(driver, AdviceNoticeSearchPage.class);
-	}
 }

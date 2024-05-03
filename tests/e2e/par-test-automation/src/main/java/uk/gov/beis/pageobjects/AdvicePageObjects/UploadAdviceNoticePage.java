@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -26,10 +25,5 @@ public class UploadAdviceNoticePage extends BasePageObject{
 	
 	public void selectUploadButton() {
 		uploadBtn.click();
-	}
-
-	public AdviceNoticeDetailsPage uploadFile() {
-		uploadBtn.click();
-		return PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
 	}
 }
