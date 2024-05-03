@@ -5,10 +5,8 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 
 public class UpdateLegalEntityPage extends BasePageObject {
 	
@@ -65,10 +63,5 @@ public class UpdateLegalEntityPage extends BasePageObject {
 	
 	public void clickSaveButton() {
 		saveBtn.click();
-	}
-	
-	public MemberOrganisationSummaryPage goToMemberOrganisationSummaryPage() {
-		saveBtn.click();
-		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
 	}
 }
