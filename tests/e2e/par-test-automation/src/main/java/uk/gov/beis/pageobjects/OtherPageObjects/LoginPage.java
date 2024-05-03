@@ -6,14 +6,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.UserDashboardPageObjects.*;
-import uk.gov.beis.pageobjects.UserManagement.PasswordPage;
 import uk.gov.beis.utility.DataStore;
 
 public class LoginPage extends BasePageObject {
@@ -33,10 +30,13 @@ public class LoginPage extends BasePageObject {
 		super();
 	}
 	
-	public LoginPage navigateToUrl() throws InterruptedException {
+	public void navigateToUrl() {
 		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url") + "/user/login%3Fcurrent");
 		checkLoginPage();
-		return PageFactory.initElements(driver, LoginPage.class);
+	}
+	
+	public void navigateToInviteLink() throws InterruptedException {
+		ScenarioContext.lastDriver.get(DataStore.getSavedValue(UsableValues.INVITE_LINK));
 	}
 	
 	public void enterEmailAddress(String email) {
@@ -54,34 +54,11 @@ public class LoginPage extends BasePageObject {
 		passwordTextfield.sendKeys(pass);
 	}
 	
-	public LoginPage selectSignIn() {
+	public void selectSignIn() {
 		loginBtn.click();
-		return PageFactory.initElements(driver, LoginPage.class);
-	}
-
-	public BaseDashboardPage clickSignIn() {
-		loginBtn.click();
-		
-		switch(DataStore.getSavedValue(UsableValues.LOGIN_USER)) {
-			case ("par_helpdesk@example.com"):
-				LOG.info("Help Desk Dashboard.");
-				return PageFactory.initElements(driver, HelpDeskDashboardPage.class);
-			default:
-				return PageFactory.initElements(driver, DashboardPage.class);
-		}
-	}
-
-	public PasswordPage navigateToInviteLink() throws InterruptedException {
-		ScenarioContext.lastDriver.get(DataStore.getSavedValue(UsableValues.INVITE_LINK));
-		return PageFactory.initElements(driver, PasswordPage.class);
 	}
 	
-	public HomePage selectLogout() {
-		driver.findElement(By.linkText("Sign out")).click();
-		return PageFactory.initElements(driver, HomePage.class);
-	}
-	
-	public LoginPage checkLoginPage() {
+	public void checkLoginPage() {
 		try {
 			driver.findElement(By.xpath(login.replace("?", "Sign in")));
 			LOG.info("user is signed out");
@@ -89,6 +66,5 @@ public class LoginPage extends BasePageObject {
 			driver.findElement(By.linkText("Sign out")).click();
 			driver.findElement(By.linkText("Sign in")).click();
 		}
-		return PageFactory.initElements(driver, LoginPage.class);
 	}
 }

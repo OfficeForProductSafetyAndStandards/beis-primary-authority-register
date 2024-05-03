@@ -5,15 +5,10 @@ import java.util.Map;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import cucumber.api.DataTable;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DeviationRequestPageObjects.RequestDeviationPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforceLegalEntityPage;
-import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.RequestEnquiryPage;
-import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackDetailsPage;
 import uk.gov.beis.utility.DataStore;
 
 public class EnforcementOfficerContactDetailsPage extends BasePageObject {
@@ -66,25 +61,5 @@ public class EnforcementOfficerContactDetailsPage extends BasePageObject {
 	
 	public void clickContinueButton() {
 		continueBtn.click();
-	}
-
-	public EnforceLegalEntityPage goToEnforceLegalEntityPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, EnforceLegalEntityPage.class);
-	}
-	
-	public RequestDeviationPage goToDeviationRequestPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, RequestDeviationPage.class);
-	}
-	
-	public InspectionFeedbackDetailsPage goToInspectionFeedbackDetailsPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, InspectionFeedbackDetailsPage.class);
-	}
-	
-	public RequestEnquiryPage goToRequestEnquiryPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, RequestEnquiryPage.class);
 	}
 }
