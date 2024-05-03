@@ -37,6 +37,7 @@ references:
       SANITISED_DATABASE: db-dump-production-sanitised
       UNSANITISED_DATABASE: db-dump-production-unsanitised
       SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
+      SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
 
     working_directory: /var/www/html
 
@@ -44,7 +45,7 @@ references:
     aws-cli/setup:
       aws_access_key_id: S3_ACCESS_KEY
       aws_secret_access_key: S3_SECRET_KEY
-      region: eu-west-2
+      region: S3_REGION
 
   clean_working_directory: &clean_working_directory
     run:
@@ -169,7 +170,7 @@ jobs:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
           to: backups/${SEED_DATABASE}-latest.tar.gz
       - run:
-          name: "Unpacking seed database"
+          name: "Unpack seed database"
           command: cd backups && tar --no-same-owner -zxvf ${SEED_DATABASE}-latest.tar.gz
       - aws-s3/copy:
           arguments: |
