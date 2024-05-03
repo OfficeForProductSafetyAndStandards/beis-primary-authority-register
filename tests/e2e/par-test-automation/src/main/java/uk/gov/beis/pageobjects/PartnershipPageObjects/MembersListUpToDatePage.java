@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -31,8 +30,7 @@ public class MembersListUpToDatePage extends BasePageObject {
 		noRadial.click();
 	}
 	
-	public PartnershipInformationPage clicksave() {
+	public void clicksaveButton() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }
