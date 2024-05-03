@@ -37,7 +37,6 @@ references:
       SANITISED_DATABASE: db-dump-production-sanitised
       UNSANITISED_DATABASE: db-dump-production-unsanitised
       SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
-      SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
 
     working_directory: /var/www/html
 
