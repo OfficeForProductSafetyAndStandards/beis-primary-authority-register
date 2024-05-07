@@ -16,6 +16,7 @@ Feature: Other Happy Paths
     When the user is on the search for a partnership page
     And the user can search for a PA Organisation Trading name Company number
     Then the user is shown the information for that partnership
+    And the user signs out
 
   @regression @authority @authorityManagement @usermanagement
   Scenario: Verify Addition/Update of Authority (Happy Path - PAR-1849, PAR-1850)
@@ -29,6 +30,7 @@ Feature: Other Happy Paths
     When the user searches for the last created authority
     And the user updates all the fields for newly created authority
     Then the update for the authority is successful
+    And the user signs out
 
   @regression @authority @authorityManagement
   Scenario: Verify The Transfer of a Partnership from an Existing Authority to a New Authority (Happy Path - PAR-2287)
@@ -37,6 +39,7 @@ Feature: Other Happy Paths
     When the user searches for an Authority with the same Regulatory Functions "Upper West Side Borough Council"
     And the user completes the partnership transfer process
     Then the partnership is transferred to the new authority successfully
+    And the user signs out
 
   @regression @organisation
   Scenario: Verify Update of Organisation (Happy Path - PAR-1851)
@@ -45,6 +48,7 @@ Feature: Other Happy Paths
     When the user searches for the last created organisation
     And the user updates all the fields for last created organisation
     Then all the fields are updated correctly
+    And the user signs out
 
   @regression @helpDesk @PARNewsSubscription
   Scenario: Verify an Authority contact is subscribed to PAR News (Happy Path - PAR-2076)
@@ -52,12 +56,14 @@ Feature: Other Happy Paths
     And the user logs in with the "par_authority@example.com" user credentials
     When the user selects a contact to update
     Then the user can successfully subscribe to PAR News
+    And the user signs out
     #Helpdesk Verification
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user is on the Subscriptions page
     And the user searches for the par_authority email
     Then the user can verify the email is successfully in the Subscriptions List
+    And the user signs out
 
   @regression @helpDesk @PARNewsSubscription
   Scenario: Verify an Authority contact is unsubscribed from PAR News (Happy Path - PAR-2077)
@@ -65,12 +71,14 @@ Feature: Other Happy Paths
     And the user logs in with the "par_authority@example.com" user credentials
     When the user selects a contact to update
     Then the user can successfully unsubscribe from PAR News
+    And the user signs out
     #Helpdesk Verification
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user is on the Subscriptions page
     And the user searches for the par_authority email
     Then the user can verify the email is successfully removed from the Subscriptions List
+    And the user signs out
 
   @regression @helpDesk @PARNewsSubscription
   Scenario: Verify a Helpdesk user can add a new Email to the PAR News Subscription List (Happy Path - PAR-2073)
@@ -79,6 +87,7 @@ Feature: Other Happy Paths
     When the user is on the Manage a subscription list page
     And the user enters a new email to add to the list "new_user@authority.co.uk"
     Then the user can verify the new email was added successfully
+    And the user signs out
 
   @regression @helpDesk @PARNewsSubscription
   Scenario: Verify a Helpdesk user can remove an eisting Email from the PAR News Subscription List (Happy Path - PAR-2074)
@@ -87,6 +96,7 @@ Feature: Other Happy Paths
     When the user is on the Manage a subscription list page
     And the user enters an email to be removed from the list "new_user@authority.co.uk"
     Then the user can verify the email was removed successfully
+    And the user signs out
 
   @regression @helpDesk @PARNewsSubscription
   Scenario: Verify a Helpdesk user can replace the PAR News Subscription List with a new List (Happy Path - PAR-2075)
@@ -95,6 +105,7 @@ Feature: Other Happy Paths
     When the user is on the Manage a subscription list page
     And the user enters a list of new emails to replace the subscription list
     Then the user can verify an email from the original list was removed successfully
+    And the user signs out
 
   @regression @usermanagement
   Scenario: Verify a Member User can be assigned the Manager Role and assign another Member the Manager Role Successfully (Happy Path - PAR-2378)
@@ -107,6 +118,7 @@ Feature: Other Happy Paths
     # Change the user role.
     When the user changes the users role to "Authority Manager"
     Then the user role was changed successfully
+    And the user signs out
     # Verify the Authority Manager can change the Authority Member's role.
     Given the user is on the PAR login page
     And the user logs in with the "par_authority_manager@example.com" user credentials
@@ -116,6 +128,7 @@ Feature: Other Happy Paths
     # Change the user role.
     When the user changes the users role to "Authority Manager"
     Then the user role was changed successfully
+    And the user signs out
 
   @regression @usermanagement
   Scenario: Verify a User can add and remove an Authority membership for another user Successfully (Happy Path - PAR-2379)
@@ -131,6 +144,7 @@ Feature: Other Happy Paths
     # Remove a membership.
     When the user removes the last added Authority membership
     Then the Authority membership was removed successfully
+    And the user signs out
 
   @regression @usermanagement
   Scenario: Verify a Senior Administrator can Block and Reinstate a User Account Successfully (Happy Path - PAR-2382)
@@ -143,6 +157,7 @@ Feature: Other Happy Paths
     # Block the User Account.
     When the user blocks the user account
     Then the user verifies the account was blocked successfully
+    And the user signs out
     # Attempt to log in with the blocked user account.
     Given the user is on the PAR login page
     And the user logs in with the "national_regulator@example.com" user credentials
@@ -157,10 +172,12 @@ Feature: Other Happy Paths
     # Re-activate the user account.
     When the user reinstates the user account
     Then the user verifies the account is reinstated successfully
+    And the user signs out
     # Attempt to log in with the re-activated user account.
     Given the user is on the PAR login page
     And the user logs in with the "national_regulator@example.com" user credentials
     Then the user is on the dashboard page
+    And the user signs out
 
   @regression @helpDesk @usermanagement
   Scenario: Verify the Addition and Update of a New Persons Contact Record as a Help Desk User (Happy Path - PAR-2097)
@@ -176,6 +193,7 @@ Feature: Other Happy Paths
       | Title | WorkNumber  | MobileNumber |
       | Dr    | 01204996501 |  07405882265 |
     Then the user can verify the person was updated successfully and can send an account invitation
+    And the user signs out
 
   @regression @helpDesk @usermanagement
   Scenario: Verify a New User can be invited to create a User Account (Happy Path - PAR-2457)
@@ -198,6 +216,7 @@ Feature: Other Happy Paths
     And the user follows the invitation link
     And the user completes the user creation journey
     Then the user journey creation is successful
+    And the user signs out
 
   @regression @usermanagement @userAccount
   Scenario: Verify a User can Change their User Account Email Address (Happy Path - PAR-2323)
@@ -205,6 +224,7 @@ Feature: Other Happy Paths
     And the user logs in with the "par_authority@example.com" user credentials
     When the user updates their user account email address to "par_authority_2@example.com"
     Then the user can verify the new email address is displayed on the header
+    And the user signs out
     # Log in with the new Email Address and revertback to the original Email Address
     Given the user is on the PAR login page
     And the user logs in with the "par_authority_2@example.com" user credentials
@@ -214,6 +234,7 @@ Feature: Other Happy Paths
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
     Then the user can verify the new email address is displayed on the header
+    And the user signs out
 
   @regression @helpDesk @statistics
   Scenario: Verify the Help Desk User can see the Statistics Page (Happy Path - PAR-2315)
@@ -221,6 +242,7 @@ Feature: Other Happy Paths
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user navigates to the statistics page
     Then the statistics page is dispalyed successfully
+    And the user signs out
 
   @regression @homePageLinks
   Scenario: Verify a User can view Guidance for Local Regulation Primary Authority Successfully (Happy Path - PAR-2289)
