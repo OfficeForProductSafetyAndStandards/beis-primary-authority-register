@@ -554,11 +554,11 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     # access to all of the environment variables and configuration.
     printf "Importing the database $DB_NAME.sql...\n"
     cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "./scripts/drop.sh && \
-        cd $BUILD_DIR/web && \
-        tar --no-same-owner -zxvf $BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $BUILD_DIR/$DB_DIR && \
-        ../vendor/bin/drush @par.paas sql:cli < $BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
-        rm -f $BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
-        rm -f $BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz"
+        cd $BUILD_DIR && \
+        tar --no-same-owner -zxvf $DB_DIR/$DB_NAME.tar.gz -C $DB_DIR && \
+        vendor/bin/drush @par.paas sql:cli < $DB_DIR/$DB_NAME.sql && \
+        rm -f $DB_DIR/$DB_NAME.sql && \
+        rm -f $DB_DIR/$DB_NAME.tar.gz"
 
     # Wait for database to be imported.
     cf_poll_task $TARGET_ENV DB_IMPORT
