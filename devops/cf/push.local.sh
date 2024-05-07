@@ -546,7 +546,7 @@ cf start $TARGET_ENV
 ## Import the seed database and then delete it.
 if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     if [[ ! -f "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" ]]; then
-        printf "Seed database required, but could not find one at '$BUILD_DIR/$DB_DIR/sanitised-db.sql'.\n"
+        printf "Seed database required, but could not find one at '$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz'.\n"
         exit 6
     fi
 
@@ -554,10 +554,11 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     # access to all of the environment variables and configuration.
     printf "Importing the database $DB_NAME.sql...\n"
     cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "./scripts/drop.sh && \
-        cd $REMOTE_BUILD_DIR/web && \
-        tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
-        ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
-        rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
+        cd $BUILD_DIR/web && \
+        tar --no-same-owner -zxvf $BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $BUILD_DIR/$DB_DIR && \
+        ../vendor/bin/drush @par.paas sql:cli < $BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
+        rm -f $BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
+        rm -f $BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz"
 
     # Wait for database to be imported.
     cf_poll_task $TARGET_ENV DB_IMPORT
