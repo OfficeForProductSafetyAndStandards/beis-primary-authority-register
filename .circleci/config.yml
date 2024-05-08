@@ -366,8 +366,9 @@ jobs:
           name: "Check db archive date"
           command: cd backups && ls -lah ${SEED_DATABASE}.sql
       - run:
-          name: "Importing database"
-          command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${SEED_DATABASE}.sql | ../vendor/bin/drush @par.paas sql:cli
+          name: "Import database"
+          command: |
+            cd ../web && ../vendor/bin/drush @par.paas sql:cli < ../backups/${SEED_DATABASE}.sql && ../drupal-update.sh
       - run:
           name: "Deploy to staging environment"
           command: |
