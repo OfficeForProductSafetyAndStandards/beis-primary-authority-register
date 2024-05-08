@@ -8,4 +8,5 @@ ini_set('max_execution_time', 120);
 // Setting to enable PAR Green header/footer override.
 $settings['par_branded_header_footer'] = TRUE;
 
-$settings['hash_salt'] = getenv('HASH_SALT');
+$settings['hash_salt'] = getenv('PAR_HASH_SALT');
+
