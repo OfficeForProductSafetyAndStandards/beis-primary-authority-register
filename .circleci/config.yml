@@ -368,7 +368,7 @@ jobs:
       - run:
           name: "Import database"
           command: |
-            cd ../web && ../vendor/bin/drush @par.paas sql:cli < ../backups/${SEED_DATABASE}.sql && ../drupal-update.sh
+            cd web && ../vendor/bin/drush @par.paas sql:cli < ../backups/${SEED_DATABASE}.sql && ../drupal-update.sh
       - run:
           name: "Deploy to staging environment"
           command: |
