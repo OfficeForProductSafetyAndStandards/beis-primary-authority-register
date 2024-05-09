@@ -34,7 +34,7 @@ references:
       TEST_REPORTS: ~/par/tests/reports
       S3_ARTIFACTS_BUCKET: beis-par-artifacts
       SEED_DATABASE: db-dump-production-seed
-      SANITISED_DATABASE: db-dump-production-sanitised
+      SANITISED_DATABASE: db-dump-production-sanitised-latest
       UNSANITISED_DATABASE: db-dump-production-unsanitised
       SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
 
@@ -355,8 +355,8 @@ jobs:
           arguments: |
             --cache-control "max-age=0"
       - aws-s3/copy:
-          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
-          to: "backups/${SEED_DATABASE}-latest.tar.gz"
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
+          to: "backups/${SANITISED_DATABASE}-latest.tar.gz"
           arguments: |
             --cache-control "max-age=0"
       - run:
