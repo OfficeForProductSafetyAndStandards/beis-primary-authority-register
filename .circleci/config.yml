@@ -361,20 +361,20 @@ jobs:
             --cache-control "max-age=0"
       - run:
           name: "Unpack database"
-          command: cd backups && tar --no-same-owner -zxvf ${SEED_DATABASE}-latest.tar.gz
+          command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - run:
           name: "Check db archive date"
           command: cd backups && ls -lah ${SEED_DATABASE}.sql
       - run:
           name: "Import database"
           command: |
-            cd web && ../vendor/bin/drush @par.paas sql:cli < ../backups/${SEED_DATABASE}.sql && ../drupal-update.sh
+            cd web && ../vendor/bin/drush @par.paas sql:cli < ../backups/${SANITISED_DATABASE}.sql && ../drupal-update.sh
       - run:
           name: "Deploy to staging environment"
           command: |
             DEPLOY_ENV="staging"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SEED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_prod:
     <<: *defaults
