@@ -373,9 +373,8 @@ jobs:
           name: "Deploy to staging environment"
           command: |
             DEPLOY_ENV="staging"
-            export REMOTE_BUILD_DIR="/var/www/html"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /tmp/workspace/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_prod:
     <<: *defaults

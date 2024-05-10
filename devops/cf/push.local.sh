@@ -140,6 +140,7 @@ done
 
 # Defaults that incorporate user defined values
 DB_IMPORT=${DB_IMPORT:="$BUILD_DIR/$DB_DIR/$DB_NAME.sql"}
+printf "DB Import path: $DB_IMPORT \n"
 
 ## Ensure an environment has been passed
 if [[ $# -ne 1 ]]; then
@@ -276,6 +277,7 @@ fi
 printf "Archiving the seed database in $BUILD_DIR/$DB_DIR...\n"
 mkdir -p "$BUILD_DIR/$DB_DIR"
 if [[ -f $DB_IMPORT ]]; then
+    printf "Preparing DB Import: $BUILD_DIR/$DB_DIR/$DB_NAME.sql \n"
     cp "$DB_IMPORT" "$BUILD_DIR/$DB_DIR/$DB_NAME.sql"
     tar -zcvf "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" -C $BUILD_DIR/$DB_DIR "$DB_NAME.sql"
 fi
