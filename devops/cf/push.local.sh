@@ -546,7 +546,7 @@ cf start $TARGET_ENV
 ## Import the seed database and then delete it.
 if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
     if [[ ! -f "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" ]]; then
-        printf "Seed database required, but could not find one at '$BUILD_DIR/$DB_DIR/sanitised-db.sql'.\n"
+        printf "Seed database required, but could not find one at '$BUILD_DIR/$DB_DIR/DB_NAME.sql'.\n"
         exit 6
     fi
 
@@ -554,6 +554,7 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
     # access to all of the environment variables and configuration.
     printf "Importing the database $DB_NAME.sql...\n"
     cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "./scripts/drop.sh && \
+        ls -la /var/www/html && ls -la /home/vcap/app && \
         cd $REMOTE_BUILD_DIR/web && \
         tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
         ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
