@@ -454,35 +454,7 @@ jobs:
           command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${UNSANITISED_DATABASE}.sql | ../vendor/bin/drush @par.paas sql:cli
           environment:
             APP_ENV: ci-sanitise
-      - run:
-          name: "Setup application"
-          command: ./drupal-update.sh
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
-          name: "Run cron"
-          command: |
-            cd web
-            ../vendor/bin/drush cron
-          environment:
-            APP_ENV: ci-sanitise
       - *check_application
-      - run:
-          name: "Un-install temporary data @temp"
-          command: |
-            cd web
-            ../vendor/bin/drush pm-uninstall par_data_test -y
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
-          name: "Un-install dev only modules"
-          command: |
-            cd web
-            ../vendor/bin/drush pm-uninstall webprofiler -y
-            ../vendor/bin/drush pm-uninstall maillog -y
-            ../vendor/bin/drush pm-uninstall dblog -y
-          environment:
-            APP_ENV: ci-sanitise
       - run:
           name: "Sanitise database"
           command: |
@@ -493,13 +465,6 @@ jobs:
       - run:
           name: "Backup sanitised database"
           command: ./scripts/db-backup.sh production -s -d "/tmp/backups" -a '@par.dev'
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
-          name: "Remove all user data"
-          command: |
-            cd web
-            ../vendor/bin/drush @par.dev devel-generate:users --kill 0
           environment:
             APP_ENV: ci-sanitise
       - run:
