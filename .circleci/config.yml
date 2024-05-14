@@ -454,7 +454,6 @@ jobs:
           command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${UNSANITISED_DATABASE}.sql | ../vendor/bin/drush @par.paas sql:cli
           environment:
             APP_ENV: ci-sanitise
-      - *check_application
       - run:
           name: "Sanitise database"
           command: |
