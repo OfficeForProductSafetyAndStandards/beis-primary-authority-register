@@ -560,6 +560,7 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
         cd $REMOTE_BUILD_DIR/web && \
         tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
         ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
+        ../vendor/bin/drush user:unblock dadmin && \
         rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
 
     # Wait for database to be imported.
