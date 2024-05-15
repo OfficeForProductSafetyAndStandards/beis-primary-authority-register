@@ -2,8 +2,8 @@
 
 $settings['trusted_host_patterns'] = ['primary-authority.beis.gov.uk'];
 
-ini_set('memory_limit', '1024M');
-ini_set('max_execution_time', 120);
+ini_set('memory_limit', '2G');
+ini_set('max_execution_time', 1200);
 
 // Setting to enable PAR Green header/footer override.
 $settings['par_branded_header_footer'] = TRUE;
