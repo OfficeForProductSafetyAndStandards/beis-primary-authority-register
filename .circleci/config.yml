@@ -18,7 +18,7 @@ references:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
           POSTGRES_DB: par
-          PGOPTIONS: -c statement_timeout=7200000
+          PGOPTIONS: "-c statement_timeout=7200000"
 
       - image: opensearchproject/opensearch:1.2.4
         environment:
