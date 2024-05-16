@@ -33,9 +33,5 @@ if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
  */
 $config['system.logging']['error_level'] = 'verbose';
 
-// Ensure ci always runs with the same memory that other environments do.
-ini_set('memory_limit', '1024M');
-ini_set('max_execution_time', 120);
-
 // Enable tota11y library.
 $settings['enable_tota11y'] = TRUE;
