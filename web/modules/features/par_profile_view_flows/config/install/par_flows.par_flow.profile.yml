@@ -17,6 +17,15 @@ steps:
     form_id: par_profile
     components:
       user_detail: {}
-      user_institutions: {}
+  2:
+    route: par_profile_view_flows.contacts
+    form_id: par_profile
+    components:
       contact_locations_detail:
         cardinality: -1
+  3:
+    route: par_profile_view_flows.organisations
+    form_id: par_profile
+    components:
+      user_institutions: {}
+
