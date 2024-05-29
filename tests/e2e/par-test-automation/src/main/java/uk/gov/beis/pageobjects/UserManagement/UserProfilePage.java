@@ -12,6 +12,15 @@ import uk.gov.beis.utility.DataStore;
 
 public class UserProfilePage extends BasePageObject {
 	
+	@FindBy(xpath = "//a[contains(normalize-space(), 'Profile')]")
+	private WebElement profileTab;
+	
+	@FindBy(xpath = "//a[contains(normalize-space(), 'Contacts')]")
+	private WebElement contactsTab;
+	
+	@FindBy(xpath = "//a[contains(normalize-space(), 'Authorities and Organisations')]")
+	private WebElement membershipsTab;
+	
 	@FindBy(xpath = "//div[@class='govuk-grid-row govuk-form-group']//div[1]/p")
 	private WebElement userAccountEmail;
 	
@@ -66,6 +75,18 @@ public class UserProfilePage extends BasePageObject {
 	
 	public UserProfilePage() throws ClassNotFoundException, IOException {
 		super();
+	}
+	
+	public void clickProfileTabButton() {
+		profileTab.click();
+	}
+	
+	public void clickContactsTabButton() {
+		contactsTab.click();
+	}
+	
+	public void clickMembershipsTabButton() {
+		membershipsTab.click();
 	}
 	
 	public Boolean checkHeaderForName() {

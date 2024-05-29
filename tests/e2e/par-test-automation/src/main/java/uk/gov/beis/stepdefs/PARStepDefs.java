@@ -1973,6 +1973,7 @@ public class PARStepDefs {
 	
 	@When("^the user adds a new Authority membership$")
 	public void the_user_adds_a_new_Authority_membership() throws Throwable {
+		websiteManager.userProfilePage.clickMembershipsTabButton();
 		websiteManager.userProfilePage.clickAddMembershipLink();
 		
 		LOG.info("Choosing the person to add the new membership to.");
@@ -1989,7 +1990,7 @@ public class PARStepDefs {
 	@Then("^the Authority membership was added successfully$")
 	public void the_Authority_membership_was_added_successfully() throws Throwable {
 		LOG.info("Verify the new Authority membership was added successfully.");
-		
+		websiteManager.userProfilePage.clickMembershipsTabButton();
 		assertTrue(websiteManager.userProfilePage.checkUserMembershipDisplayed());
 	}
 
@@ -2078,9 +2079,11 @@ public class PARStepDefs {
 
 	@Then("^the user can verify the person was created successfully and can send an account invitation$")
 	public void the_user_can_verify_the_person_was_created_successfully_and_can_send_an_account_invitation() throws Throwable {
-		
+		LOG.info("Verify the new person's details.");
 		assertTrue("Failed: Header does not contain the person's fullname and title.", websiteManager.userProfilePage.checkHeaderForName());
 		assertTrue("Failed: Cannot find the User account invitation link.", websiteManager.userProfilePage.checkForUserAccountInvitationLink());
+		
+		websiteManager.userProfilePage.clickContactsTabButton();
 		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", websiteManager.userProfilePage.checkContactName());
 		assertTrue("Failed: Contact email field does not contain the correct email address.", websiteManager.userProfilePage.checkContactEmail());
 		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", websiteManager.userProfilePage.checkContactPhoneNumbers());
@@ -2105,6 +2108,7 @@ public class PARStepDefs {
 	@When("^the user updates an existing person:$")
 	public void the_user_updates_an_existing_person_with_the_following_details(DataTable details) throws Throwable {
 		LOG.info("Updating an existing person.");
+		websiteManager.userProfilePage.clickContactsTabButton();
 		websiteManager.userProfilePage.clickUpdateUserButton();
 		
 		String firstName = RandomStringUtils.randomAlphabetic(8);
@@ -2135,8 +2139,11 @@ public class PARStepDefs {
 
 	@Then("^the user can verify the person was updated successfully and can send an account invitation$")
 	public void the_user_can_verify_the_person_was_updated_successfully_and_can_send_an_account_invitation() throws Throwable {
+		LOG.info("Verify the contact details have been updated.");
 		assertTrue("Failed: Header does not contain the person's fullname and title.", websiteManager.userProfilePage.checkHeaderForName());
 		assertTrue("Failed: Cannot find the User account invitation link.", websiteManager.userProfilePage.checkForUserAccountInvitationLink());
+		
+		websiteManager.userProfilePage.clickContactsTabButton();
 		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", websiteManager.userProfilePage.checkContactName());
 		assertTrue("Failed: Contact email field does not contain the correct email address.", websiteManager.userProfilePage.checkContactEmail());
 		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", websiteManager.userProfilePage.checkContactPhoneNumbers());
