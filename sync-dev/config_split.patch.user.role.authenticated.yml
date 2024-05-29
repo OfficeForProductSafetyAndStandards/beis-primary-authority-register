@@ -1,0 +1,7 @@
+adding:
+  dependencies:
+    module:
+      - maillog
+  permissions:
+    - 'view maillog'
+removing: {  }
