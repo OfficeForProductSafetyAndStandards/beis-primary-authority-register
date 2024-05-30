@@ -1306,7 +1306,7 @@ public class PARStepDefs {
 	@When("^the user completes the user creation journey$")
 	public void the_user_completes_the_user_creation_journey() throws Throwable {
 		LOG.info("Completing the User Creation Journey.");
-		
+		websiteManager.passwordPage.clickDrupalHideButton();
 		websiteManager.passwordPage.enterPassword("TestPassword", "TestPassword");
 		websiteManager.passwordPage.clickRegisterButton();
 		

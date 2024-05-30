@@ -18,6 +18,9 @@ public class PasswordPage extends BasePageObject {
 	@FindBy(id = "edit-next")
 	private WebElement register;
 	
+	@FindBy(xpath = "//button[@class='hide-button']")
+	private WebElement drupalToolBarHideButton;
+	
 	public PasswordPage() throws ClassNotFoundException, IOException {
 		super();
 	}
@@ -30,5 +33,8 @@ public class PasswordPage extends BasePageObject {
 	public void clickRegisterButton() {
 		register.click();
 	}
-
+	
+	public void clickDrupalHideButton() {
+		drupalToolBarHideButton.click();
+	}
 }
