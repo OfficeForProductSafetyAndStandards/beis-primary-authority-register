@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.SharedPageObjects;
 
 import java.io.IOException;
 
@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceNoticeSearchPage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
@@ -29,6 +30,10 @@ public class RemovePage extends BasePageObject {
 	public void enterRemoveReason(String reason) {
 		removeReasonTextArea.clear();
 		removeReasonTextArea.sendKeys(reason);
+	}
+	
+	public void selectRemoveButton() {
+		removeNextBtn.click();
 	}
 	
 	public InspectionPlanSearchPage goToInspectionPlanSearchPage() throws Throwable {

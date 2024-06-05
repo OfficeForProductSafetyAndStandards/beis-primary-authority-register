@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.SharedPageObjects;
 
 import java.io.IOException;
 
@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
+import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.AuthorityPageObjects.ONSCodePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
@@ -88,6 +89,22 @@ public class AddAddressPage extends BasePageObject {
 		postcodeTextBox.sendKeys(postcode);
 	}
 	
+	public void clearAddressFields() {
+		addressLine1TextBox.clear();
+		addressLine2TextBox.clear();
+		townOrCityTextBox.clear();
+		countyTextBox.clear();
+		postcodeTextBox.clear();
+	}
+	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
+	public void clickSaveButton() {
+		saveBtn.click();
+	}
+	
 	public ContactDetailsPage goToAddContactDetailsPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, ContactDetailsPage.class);
@@ -98,12 +115,12 @@ public class AddAddressPage extends BasePageObject {
 		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 	}
 	
-	public PartnershipInformationPage clickContinueButton() {
+	public PartnershipInformationPage goToPartnershipInformationPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
-	public PartnershipInformationPage clickSaveButton() {
+	public PartnershipInformationPage saveGoToPartnershipInformationPage() {
 		saveBtn.click();
 		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}

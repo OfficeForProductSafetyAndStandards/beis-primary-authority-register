@@ -63,6 +63,10 @@ public class UpdateLegalEntityPage extends BasePageObject {
 		}
 	}
 	
+	public void clickSaveButton() {
+		saveBtn.click();
+	}
+	
 	public MemberOrganisationSummaryPage goToMemberOrganisationSummaryPage() {
 		saveBtn.click();
 		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);

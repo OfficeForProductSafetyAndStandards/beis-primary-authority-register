@@ -9,10 +9,10 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DeclarationPage;
-import uk.gov.beis.pageobjects.DeletePage;
-import uk.gov.beis.pageobjects.ReinstatePage;
-import uk.gov.beis.pageobjects.RevokePage;
+import uk.gov.beis.pageobjects.SharedPageObjects.DeclarationPage;
+import uk.gov.beis.pageobjects.SharedPageObjects.DeletePage;
+import uk.gov.beis.pageobjects.SharedPageObjects.ReinstatePage;
+import uk.gov.beis.pageobjects.SharedPageObjects.RevokePage;
 import uk.gov.beis.utility.DataStore;
 
 public class PartnershipAdvancedSearchPage extends BasePageObject {
@@ -64,6 +64,12 @@ public class PartnershipAdvancedSearchPage extends BasePageObject {
 		WebElement actionElement = driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[7]/a[contains(text(),'" + action + "')]"));
 		
 		return (statusElement.isDisplayed() && actionElement.isDisplayed());
+	}
+	
+	public boolean checkPartnershipStatus(String status) {
+		WebElement statusElement = driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[3][normalize-space()='"+ status +"']"));
+		
+		return statusElement.isDisplayed();
 	}
 	
 	public boolean checkPartnershipExists() {

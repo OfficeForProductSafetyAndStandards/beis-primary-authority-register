@@ -9,9 +9,9 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.BlockPage;
-import uk.gov.beis.pageobjects.ReinstatePage;
-import uk.gov.beis.pageobjects.RemovePage;
+import uk.gov.beis.pageobjects.SharedPageObjects.BlockPage;
+import uk.gov.beis.pageobjects.SharedPageObjects.ReinstatePage;
+import uk.gov.beis.pageobjects.SharedPageObjects.RemovePage;
 import uk.gov.beis.utility.DataStore;
 
 public class UserProfilePage extends BasePageObject {
@@ -22,6 +22,9 @@ public class UserProfilePage extends BasePageObject {
 	@FindBy(xpath = "//div/a[contains(normalize-space(), 'Invite the user to create an account')]")
 	private WebElement accountInvitationLink;
 
+	@FindBy(xpath = "//div/a[contains(normalize-space(), 'Re-send the invitation')]")
+	private WebElement reSendInvitationLink;
+	
 	@FindBy(xpath = "//div[@class='govuk-grid-row govuk-form-group']//div[2]/p")
 	private WebElement userAccountType;
 	
@@ -79,6 +82,10 @@ public class UserProfilePage extends BasePageObject {
 
 	public Boolean checkForUserAccountInvitationLink() {
 		return accountInvitationLink.isDisplayed();
+	}
+	
+	public Boolean checkForReSendUserAccountInvitationLink() {
+		return reSendInvitationLink.isDisplayed();
 	}
 
 	public Boolean checkUserAccountEmail() {
@@ -171,6 +178,11 @@ public class UserProfilePage extends BasePageObject {
 		}
 		
 		return locationsDisplayed;
+	}
+	
+	public UserMembershipPage clickInviteUserCreateAccountLink() {
+		accountInvitationLink.click();
+		return PageFactory.initElements(driver, UserMembershipPage.class);
 	}
 	
 	public UserRoleTypePage clickManageRolesLink() {

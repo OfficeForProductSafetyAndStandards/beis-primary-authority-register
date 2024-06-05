@@ -9,7 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.HomePage;
+import uk.gov.beis.pageobjects.OtherPageObjects.HomePage;
 import uk.gov.beis.utility.DataStore;
 
 public class AuthorityPage extends BasePageObject {
@@ -24,6 +24,10 @@ public class AuthorityPage extends BasePageObject {
 	
 	public AuthorityPage() throws ClassNotFoundException, IOException {
 		super();
+	}
+	
+	public void selectContinueButton() {
+		continueBtn.click();
 	}
 	
 	public PartnershipTypePage selectAuthority(String auth) {

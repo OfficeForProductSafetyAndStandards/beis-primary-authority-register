@@ -13,10 +13,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.gov.beis.pageobjects.BasePageObject;
 
 public class UserMembershipPage extends BasePageObject {
-	
-	@FindBy(id = "edit-par-data-authority-id")
-	private WebElement authorityTextField;
-	
 	@FindBy(id = "edit-par-data-organisation-id")
 	private WebElement organisationTextField;
 	
@@ -30,7 +26,13 @@ public class UserMembershipPage extends BasePageObject {
 	}
 	
 	public void chooseAuthorityMembership(String authorityName) {
-		if(authorityTextField != null) {
+		
+		if(!driver.findElements(By.xpath(authorityRadioLocator.replace("?", authorityName))).isEmpty()) {
+			WebElement authorityRadio = driver.findElement(By.xpath(authorityRadioLocator.replace("?", authorityName)));
+			authorityRadio.click();
+		}
+		else {
+			WebElement authorityTextField = driver.findElement(By.id("edit-par-data-authority-id"));
 			authorityTextField.clear();
 			authorityTextField.sendKeys(authorityName);
 			
@@ -44,13 +46,16 @@ public class UserMembershipPage extends BasePageObject {
 				widget.click();
 			}
 		}
-		else {
-			WebElement authorityRadio = driver.findElement(By.xpath(authorityRadioLocator.replace("?", authorityName)));
+		
+		//if(!driver.findElements(By.id("edit-par-data-authority-id")).isEmpty()) {
 			
-			if(authorityRadio != null) {
-				authorityRadio.click();
-			}
-		}
+			
+		//}
+		//else {
+		//	if(authorityRadio != null) {
+				
+		//	}
+		//}
 	}
 	
 	public void chooseOrganisationMembership(String organisationName) {
@@ -73,5 +78,10 @@ public class UserMembershipPage extends BasePageObject {
 	public AddMembershipConfirmationPage clickContinueButton() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, AddMembershipConfirmationPage.class);
+	}
+	
+	public UserRoleTypePage goToUserRoleTypePage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, UserRoleTypePage.class);
 	}
 }

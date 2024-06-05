@@ -37,6 +37,14 @@ public class PartnershipDescriptionPage extends BasePageObject {
 		businessDescriptionBox.sendKeys(description);
 	}
 	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
+	public void clickSaveButton() {
+		saveBtn.click();
+	}
+	
 	public BusinessNamePage enterPartnershipDescription(String description) throws Throwable {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
@@ -61,7 +69,7 @@ public class PartnershipDescriptionPage extends BasePageObject {
 		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
 	}
 	
-	public PartnershipInformationPage clickSave() {
+	public PartnershipInformationPage goToPartnershipInformationPage() {
 		saveBtn.click();
 		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}

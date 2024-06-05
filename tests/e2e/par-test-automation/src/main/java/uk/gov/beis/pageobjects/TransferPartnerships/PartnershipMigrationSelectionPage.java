@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.EnterTheDatePage;
+import uk.gov.beis.pageobjects.SharedPageObjects.EnterTheDatePage;
 
 public class PartnershipMigrationSelectionPage extends BasePageObject {
 	

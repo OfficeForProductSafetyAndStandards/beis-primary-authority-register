@@ -1,11 +1,13 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.SharedPageObjects;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementSearchPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.AboutTheOrganisationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.RegulatoryFunctionPage;
@@ -45,6 +47,12 @@ public class DeclarationPage extends BasePageObject {
 		}
 	}
 	
+	public void deselectConfirmCheckbox() {
+		if(confirmationCheckbox.isSelected()) {
+			confirmationCheckbox.click();
+		}
+	}
+	
 	public void selectConfirmCheckbox() {
 		if(!confirmationCheckbox.isSelected()) {
 			confirmationCheckbox.click();
@@ -55,6 +63,10 @@ public class DeclarationPage extends BasePageObject {
 		if(!dataPolcyCheckbox.isSelected()) {
 			dataPolcyCheckbox.click();
 		}
+	}
+	
+	public void clickContinueButton() {
+		continueBtn.click();
 	}
 	
 	public ContactDetailsPage goToContactDetailsPage() {
@@ -73,7 +85,9 @@ public class DeclarationPage extends BasePageObject {
 	}
 	
 	public EnforcementSearchPage goToEnforcementSearchPage() {
-		continueBtn.click();
+		WebElement element = driver.findElement(By.xpath("//input[@value='Remove']"));
+		
+		executeJavaScript("arguments[0].click();", element);
 		return PageFactory.initElements(driver, EnforcementSearchPage.class);
 	}
 }
