@@ -31,7 +31,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'Primary Authority Register | Advanced partnership search'
+      title: 'Advanced partnership search'
       fields:
         counter:
           id: counter
@@ -2084,7 +2084,7 @@ display:
     display_plugin: data_export
     position: 2
     display_options:
-      title: 'Primary Authority Register | Partnership Report Download'
+      title: 'Partnership Report Download'
       fields:
         id:
           id: id

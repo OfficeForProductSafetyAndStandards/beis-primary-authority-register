@@ -25,7 +25,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'Primary Authority Register | Search for a partnership'
+      title: 'Search for a partnership'
       fields:
         id:
           id: id
