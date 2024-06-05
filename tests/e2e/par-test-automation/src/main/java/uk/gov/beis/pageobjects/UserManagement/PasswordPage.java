@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DeclarationPage;
+import uk.gov.beis.pageobjects.SharedPageObjects.DeclarationPage;
 
 public class PasswordPage extends BasePageObject {
 	

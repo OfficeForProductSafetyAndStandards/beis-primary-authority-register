@@ -6,9 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import uk.gov.beis.pageobjects.AddAddressPage;
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessDetailsPage;
+import uk.gov.beis.pageobjects.SharedPageObjects.AddAddressPage;
 
 public class BusinessNamePage extends BasePageObject {
 	
@@ -28,6 +28,10 @@ public class BusinessNamePage extends BasePageObject {
 	public void enterBusinessName(String name) {
 		businessName.clear();
 		businessName.sendKeys(name);
+	}
+	
+	public void clickContinueButton() {
+		continueBtn.click();
 	}
 	
 	public AddAddressPage goToAddressPage() {

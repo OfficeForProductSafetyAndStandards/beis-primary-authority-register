@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.HomePage;
+import uk.gov.beis.pageobjects.OtherPageObjects.HomePage;
 
 public class CookiesPage extends BasePageObject {
 

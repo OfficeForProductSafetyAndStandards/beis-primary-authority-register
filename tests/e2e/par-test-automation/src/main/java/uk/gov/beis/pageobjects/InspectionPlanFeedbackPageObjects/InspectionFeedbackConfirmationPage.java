@@ -34,7 +34,7 @@ public class InspectionFeedbackConfirmationPage extends BasePageObject {
 	}
 	
 	public boolean checkInspectionResponse() {
-		WebElement response = driver.findElement(By.xpath(responseLocator.replace("?", DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_RESPONSE1))));
+		WebElement response = driver.findElement(By.xpath(responseLocator.replace("?", DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE))));
 		WebElement fileUpload = driver.findElement(By.xpath(fileLocator.replace("?", "link")));
 		return response.isDisplayed() && fileUpload.isDisplayed();
 	}

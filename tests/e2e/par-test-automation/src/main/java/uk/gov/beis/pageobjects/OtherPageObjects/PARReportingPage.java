@@ -1,9 +1,11 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.OtherPageObjects;
 
 import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
+import uk.gov.beis.pageobjects.BasePageObject;
 
 public class PARReportingPage extends BasePageObject {
 	

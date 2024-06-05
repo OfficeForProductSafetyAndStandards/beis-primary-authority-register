@@ -10,11 +10,6 @@ import org.openqa.selenium.support.PageFactory;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.EnforcementOfficerContactDetailsPage;
-import uk.gov.beis.pageobjects.AddAddressPage;
-import uk.gov.beis.pageobjects.ReinstatePage;
-import uk.gov.beis.pageobjects.RemovePage;
-import uk.gov.beis.pageobjects.RevokePage;
 import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceNoticeSearchPage;
 import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementNotificationPage;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
@@ -23,6 +18,12 @@ import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberListPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
+import uk.gov.beis.pageobjects.OtherPageObjects.EnforcementOfficerContactDetailsPage;
+import uk.gov.beis.pageobjects.SharedPageObjects.AddAddressPage;
+import uk.gov.beis.pageobjects.SharedPageObjects.ChooseAnInspectionPlanPage;
+import uk.gov.beis.pageobjects.SharedPageObjects.ReinstatePage;
+import uk.gov.beis.pageobjects.SharedPageObjects.RemovePage;
+import uk.gov.beis.pageobjects.SharedPageObjects.RevokePage;
 import uk.gov.beis.pageobjects.UserManagement.ContactDetailsPage;
 import uk.gov.beis.utility.DataStore;
 
@@ -62,6 +63,9 @@ public class PartnershipInformationPage extends BasePageObject {
 	
 	@FindBy(linkText = "edit trading name")
 	private WebElement editTradingNameLink;
+	
+	@FindBy(linkText = "add another trading name")
+	private WebElement addAnotherTradingNameLink;
 	
 	// Data Fields
 	@FindBy(id = "edit-regulatory-functions")
@@ -188,10 +192,20 @@ public class PartnershipInformationPage extends BasePageObject {
 		sendInspectionFeedbackBtn.click();
 		return PageFactory.initElements(driver, EnforcementOfficerContactDetailsPage.class);
 	}
+	
+	public ChooseAnInspectionPlanPage clickSendInspectionFeedbk() {
+		reqToDeviateFromInspectionPlan.click();
+		return PageFactory.initElements(driver, ChooseAnInspectionPlanPage.class);
+	}
 
 	public EnforcementOfficerContactDetailsPage selectDeviateInspectionPlan() {
 		reqToDeviateFromInspectionPlan.click();
 		return PageFactory.initElements(driver, EnforcementOfficerContactDetailsPage.class);
+	}
+	
+	public ChooseAnInspectionPlanPage clickDeviateInspectionPlan() {
+		reqToDeviateFromInspectionPlan.click();
+		return PageFactory.initElements(driver, ChooseAnInspectionPlanPage.class);
 	}
 
 	// Update Partnership Details
@@ -277,6 +291,11 @@ public class PartnershipInformationPage extends BasePageObject {
 	
 	public TradingPage editTradingName() {
 		editTradingNameLink.click();
+		return PageFactory.initElements(driver, TradingPage.class);
+	}
+	
+	public TradingPage addAnotherTradingName() {
+		addAnotherTradingNameLink.click();
 		return PageFactory.initElements(driver, TradingPage.class);
 	}
 	
