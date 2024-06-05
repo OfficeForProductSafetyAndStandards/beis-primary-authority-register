@@ -134,7 +134,7 @@ references:
         rm -fr /tests
 
   workspace_root: &workspace_root
-    /tmp/workspace
+                    /tmp/workspace
 
   attach_workspace: &attach_workspace
     attach_workspace:
