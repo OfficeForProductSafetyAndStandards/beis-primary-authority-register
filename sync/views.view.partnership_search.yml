@@ -1204,6 +1204,7 @@ display:
           preserve_facet_query_args: false
           contextual_filters_or: false
       relationships: {  }
+      use_ajax: true
       header: {  }
       footer:
         par_flow_link:
